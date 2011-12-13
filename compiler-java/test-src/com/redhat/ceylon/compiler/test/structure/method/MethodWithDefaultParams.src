@@ -24,6 +24,10 @@ class MethodWithDefaultParams {
 }
 public final class MethodWithDefaultParams$impl {
     
+    public MethodWithDefaultParams$impl() {
+        super();
+    }
+    
     static long f1$n() {
         return 5L;
     }
@@ -59,6 +63,10 @@ interface MethodWithDefaultParams2 {
     public abstract void f4(final long n, final long m);
 }
 public final class MethodWithDefaultParams2$impl {
+    
+    public MethodWithDefaultParams2$impl() {
+        super();
+    }
     
     static long f1$n() {
         return 5L;

@@ -426,6 +426,10 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("method/MethodTypeParams");
     }
     @Test
+    public void testMthMethodWithDefaultParams(){
+        compareWithJavaSource("method/MethodWithDefaultParams");
+    }
+    @Test
     public void testMthMethodWithLocalObject(){
         compareWithJavaSource("method/MethodWithLocalObject");
     }
