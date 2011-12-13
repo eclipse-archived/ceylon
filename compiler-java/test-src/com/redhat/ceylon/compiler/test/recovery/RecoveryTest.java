@@ -35,6 +35,12 @@ public class RecoveryTest extends CompilerTest {
         compile(35, "ClassWithBrokenMembers.ceylon");
     }
 
+    @Test
+    public void testRcvDuplicateDeclarations(){
+        // this is https://github.com/ceylon/ceylon-compiler/issues/250
+        compile(2, "DuplicateDeclaration1.ceylon", "DuplicateDeclaration2.ceylon");
+    }
+
     private void compile(int expectedErrors, String... ceylon){
         DiagnosticCollector<JavaFileObject> errorCollector = new DiagnosticCollector<JavaFileObject>();
         Boolean success = getCompilerTask(defaultOptions, errorCollector , ceylon).call();
