@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared class PrimitiveDataTypesTest () extends Test() {
+shared class SequenceTest () extends Test() {
   
     @test
     shared void test(){
@@ -26,10 +26,11 @@ shared class PrimitiveDataTypesTest () extends Test() {
         assertEquals({3, 3, 6}, stringSequence[].size);
         
         // wholePart is boxed
-        assertEquals({3, 3, 6}, intSequence[].wholePart);
         Integer[] intSequence = {3, 3, 6};
+        assertEquals({3, 3, 6}, intSequence[].wholePart);
         
         // invoke
         assertEquals({`f`, `b`, `l`}, stringSequence[].item(0));
+        assertEquals({`f`, `b`, `l`}, stringSequence[].item{index = 0;});
     }
 }
