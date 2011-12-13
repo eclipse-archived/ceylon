@@ -164,7 +164,17 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 void loadFromSource(Tree.Declaration decl) {
                     String name = Util.quoteIfJavaKeyword(decl.getIdentifier().getText());
                     String fqn = pkgName.isEmpty() ? name : pkgName+"."+name;
-                    reader.enterClass(names.fromString(fqn), tree.getSourceFile());
+                    try{
+                        reader.enterClass(names.fromString(fqn), tree.getSourceFile());
+                    }catch(AssertionError error){
+                        // this happens when we have already registered a source file for this decl, so let's
+                        // print out a helpful message
+                        // see https://github.com/ceylon/ceylon-compiler/issues/250
+                        ClassSymbol previousClass = lookupClassSymbol(fqn);
+                        log.error("ceylon", "Duplicate declaration error: "+fqn+" is declared twice: once in "
+                                +tree.getSourceFile()+" and again in: "+
+                                (previousClass != null ? previousClass.classfile : "another file"));
+                    }
                 }
                 
                 @Override
