@@ -109,6 +109,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     private final Set<String> loadedPackages = new HashSet<String>();
     private final Map<String,LazyPackage> packagesByName = new HashMap<String,LazyPackage>();
     private boolean packageDescriptorsNeedLoading = false;
+    private Options options;
     
     public static CeylonModelLoader instance(Context context) {
         CeylonModelLoader instance = context.get(CeylonModelLoader.class);
@@ -129,7 +130,8 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         types = Types.instance(context);
         typeFactory = TypeFactory.instance(context);
         typeParser = new TypeParser(this, typeFactory);
-        isBootstrap = Options.instance(context).get(OptionName.BOOTSTRAPCEYLON) != null;
+        options = Options.instance(context);
+        isBootstrap = options.get(OptionName.BOOTSTRAPCEYLON) != null;
     }
 
     public void loadStandardModules(){
@@ -559,7 +561,9 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         if(pkgName.isEmpty())
             return null;
         String moduleClassName = pkgName + ".module";
-        System.err.println("Trying to look up module from "+moduleClassName);
+        if(options.get(OptionName.VERBOSE) != null){
+            Log.printLines(log.noticeWriter, "[Trying to look up module from "+moduleClassName+"]");
+        }
         ClassSymbol moduleClass = loadClass(pkgName, moduleClassName);
         if(moduleClass != null){
             // load its module annotation
@@ -582,7 +586,9 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             javaPkg.complete();
             moduleClass = lookupClassSymbol(className);
         }catch(CompletionFailure x){
-            System.err.println("Failed to complete "+className);
+            if(options.get(OptionName.VERBOSE) != null){
+                Log.printLines(log.noticeWriter, "[Failed to complete class "+className+"]");
+            }
         }
         return moduleClass;
     }
@@ -1369,10 +1375,14 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             return;
         }
         String className = pkg.getQualifiedNameString() + ".$package";
-        System.err.println("Trying to look up package from "+className);
+        if(options.get(OptionName.VERBOSE) != null){
+            Log.printLines(log.noticeWriter, "[Trying to look up package from "+className+"]");
+        }
         ClassSymbol packageClass = loadClass(pkg.getQualifiedNameString(), className);
         if(packageClass == null){
-            System.err.println("Failed to complete "+className);
+            if(options.get(OptionName.VERBOSE) != null){
+                Log.printLines(log.noticeWriter, "[Failed to complete "+className+"]");
+            }
             // missing: leave it private
             return;
         }
@@ -1380,7 +1390,9 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         if(packageClass.classfile.getKind() != Kind.CLASS){
             // must have come from source, in which case we walked it and
             // loaded its values already
-            System.err.println("We're compiling the package "+className);
+            if(options.get(OptionName.VERBOSE) != null){
+                Log.printLines(log.noticeWriter, "[We are compiling the package "+className+"]");
+            }
             return;
         }
         loadCompiledPackage(packageClass, pkg);
