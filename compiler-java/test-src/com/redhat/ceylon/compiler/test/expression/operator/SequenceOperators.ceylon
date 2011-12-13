@@ -54,6 +54,8 @@ shared class SequenceOperators() {
         Integer[] spreadMemberWithUnboxedType = sequence[].size;
         Integer[] intSequence = {1};
         Integer[] spreadMemberWithBoxedType = intSequence[].wholePart;
-        Character?[] spreadInvoke = sequence[].item(0);
+        variable Character?[] spreadInvoke;
+        spreadInvoke := sequence[].item(0);
+        spreadInvoke := sequence[].item{index = 0;};
     }
 }
