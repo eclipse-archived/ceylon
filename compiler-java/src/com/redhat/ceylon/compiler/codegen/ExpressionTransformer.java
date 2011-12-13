@@ -158,14 +158,21 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     private JCExpression applyErasureAndBoxing(JCExpression result, Term expr, BoxingStrategy boxingStrategy, ProducedType expectedType) {
         ProducedType exprType = expr.getTypeModel();
+        boolean exprBoxed = !Util.isUnBoxed(expr);
+        return applyErasureAndBoxing(result, exprType, exprBoxed, boxingStrategy, expectedType);
+    }
+    
+    private JCExpression applyErasureAndBoxing(JCExpression result, ProducedType exprType,
+            boolean exprBoxed,
+            BoxingStrategy boxingStrategy, ProducedType expectedType) {
         
         if (expectedType != null
                 && !(expectedType.getDeclaration() instanceof TypeParameter) 
-                && willEraseToObject(expr.getTypeModel())
+                && willEraseToObject(exprType)
                 // don't add cast to an erased type 
                 && !willEraseToObject(expectedType)
                 // don't add cast for null
-                && !isNothing(expr.getTypeModel())) {
+                && !isNothing(exprType)) {
             // Erased types need a type cast
             JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.TYPE_ARGUMENT);
             exprType = expectedType;
@@ -173,7 +180,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
 
         // we must to the boxing after the cast to the proper type
-        return boxUnboxIfNecessary(result, expr, exprType, boxingStrategy);
+        return boxUnboxIfNecessary(result, exprBoxed, exprType, boxingStrategy);
     }
 
     public JCExpression transformStringExpression(Tree.StringTemplate expr) {
