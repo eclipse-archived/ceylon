@@ -85,4 +85,8 @@ public class ArtifactProvider {
     public String toString() {
         return homeRepo.getPath();
     }
+    
+    public VirtualFile getHomeRepo() {
+        return homeRepo;
+    }
 }
