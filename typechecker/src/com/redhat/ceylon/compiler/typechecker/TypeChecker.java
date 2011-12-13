@@ -47,6 +47,21 @@ public class TypeChecker {
         System.out.println("Parsed in " + time/1000000 + " ms");
     }
     
+    TypeChecker(VFS vfs, List<VirtualFile> srcDirectories, List<VirtualFile> repositories, boolean verifyDependencies, 
+            AssertionVisitor assertionVisitor, boolean verbose) {
+        long start = System.nanoTime();
+        this.srcDirectories = srcDirectories;
+        this.verbose = verbose;
+        this.context = new Context(repositories, vfs);
+        this.phasedUnits = new PhasedUnits(context);
+        this.verifyDependencies = verifyDependencies;
+        this.assertionVisitor = assertionVisitor;
+        statsVisitor = new StatisticsVisitor();
+        phasedUnits.parseUnits(srcDirectories);
+        long time = System.nanoTime()-start;
+        System.out.println("Parsed in " + time/1000000 + " ms");
+    }
+
     public PhasedUnits getPhasedUnits() {
         return phasedUnits;
     }

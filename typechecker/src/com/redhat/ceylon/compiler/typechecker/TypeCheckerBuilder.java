@@ -22,6 +22,7 @@ import java.util.List;
 public class TypeCheckerBuilder {
     private boolean verbose = false;
     private List<VirtualFile> srcDirectories = new ArrayList<VirtualFile>();
+    private List<VirtualFile> repositories = new ArrayList<VirtualFile>();
     private final VFS vfs = new VFS();
     private boolean verifyDependencies = true;
     private AssertionVisitor assertionVisitor = new AssertionVisitor() { 
@@ -47,6 +48,23 @@ public class TypeCheckerBuilder {
 	 */
 	public TypeCheckerBuilder addSrcDirectory(VirtualFile srcDirectory) {
         srcDirectories.add( srcDirectory);
+        return this;
+    }
+
+    /**
+     * Let's you add a directory or a file.
+     * Directories are better as the type checker can extract the context like module name, package etc
+     */
+    public TypeCheckerBuilder addRepository(File repository) {
+        return addRepository( vfs.getFromFile( repository ) );
+    }
+
+    /**
+     * Let's you add a directory or a file.
+     * Directories are better as the type checker can extract the context like module name, package etc
+     */
+    public TypeCheckerBuilder addRepository(VirtualFile repository) {
+        repositories.add( repository );
         return this;
     }
 
@@ -79,7 +97,12 @@ public class TypeCheckerBuilder {
     }
 
     public TypeChecker getTypeChecker() {
-        return new TypeChecker(vfs, srcDirectories, verifyDependencies, assertionVisitor, verbose);
+        if (repositories.isEmpty()) {
+            return new TypeChecker(vfs, srcDirectories, verifyDependencies, assertionVisitor, verbose);
+        } else {
+            return new TypeChecker(vfs, srcDirectories, repositories, verifyDependencies, assertionVisitor, verbose);
+        }
+        
     }
 
 }
