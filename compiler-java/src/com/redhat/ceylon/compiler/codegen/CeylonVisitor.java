@@ -154,10 +154,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         boolean annots = gen.checkCompilerAnnotations(decl);
         Scope container = decl.getDeclarationModel().getContainer();
         if (container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) {
-            boolean isInterface = container instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
-            classBuilder.defs(gen.classGen().transform(decl));
-            if(isInterface && decl.getBlock() != null)
-                classBuilder.concreteInterfaceMemberDefs(gen.classGen().transformConcreteInterfaceMember(decl, ((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)container).getType()));
+            classBuilder.method(decl);
         } else {
             appendList(gen.classGen().transformWrappedMethod(decl));
         }

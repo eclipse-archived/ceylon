@@ -34,6 +34,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.util.Decl;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -393,6 +394,14 @@ public class ClassDefinitionBuilder {
         } else {
             // Otherwise it's local to the constructor
             init(gen.make().VarDef(gen.make().Modifiers(modifiers, List.<JCTree.JCAnnotation>nil()), attrNameNm, type, initialValue));
+        }
+        return this;
+    }
+
+    public ClassDefinitionBuilder method(Tree.MethodDefinition method) {
+        defs(gen.classGen().transform(method));
+        if (Decl.withinInterface(method) && method.getBlock() != null) {
+            concreteInterfaceMemberDefs(gen.classGen().transformConcreteInterfaceMember(method, ((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)Decl.container(method)).getType()));
         }
         return this;
     }
