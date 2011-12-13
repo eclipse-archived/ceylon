@@ -23,7 +23,6 @@ package com.redhat.ceylon.compiler.loader;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
-import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.util.Context;
 
 public class CompilerModule extends Module {
@@ -47,7 +46,7 @@ public class CompilerModule extends Module {
         
         // unless we're the default module, in which case we have to check this at the end,
         // since every package can be part of the default module
-        boolean defaultModule = Util.isDefaultModule(this);
+        boolean defaultModule = isDefault();
         if(!defaultModule){
             pkg = findPackageInModule(this, name);
             if(pkg != null)

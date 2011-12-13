@@ -197,11 +197,10 @@ public class Util {
 
     public static String getArchiveName(Module module, String extension) {
         String moduleName = module.getNameAsString();
-        // FIXME: do better than this
-        if(isDefaultModule(module))
+        if(module.isDefault())
             moduleName = "default_module";
         String version = module.getVersion();
-        if(version == null || version.equals("<unknown>"))
+        if(version == null || version.equals("unversioned"))
             version = "unversioned";
         return moduleName+"-"+version+"."+extension;
     }
@@ -211,14 +210,13 @@ public class Util {
         String moduleName = module.getNameAsString();
         String modulePath;
         
-        // FIXME: do better than this
-        if(isDefaultModule(module))
+        if(module.isDefault())
             modulePath = ""; // goes at the root
         else
             modulePath = moduleName.replace('.', File.separatorChar);
         
         String version = module.getVersion();
-        if(version == null || version.equals("<unknown>"))
+        if(version == null || version.equals("unversioned"))
             version = "unversioned";
         modulePath += File.separatorChar + version;
         
@@ -241,9 +239,5 @@ public class Util {
         if(path.startsWith(File.separator))
             path = path.substring(1);
         return path;
-    }
-
-    public static boolean isDefaultModule(Module module) {
-        return module.getNameAsString().equals(DEFAULT_MODULE_NAME);
     }
 }
