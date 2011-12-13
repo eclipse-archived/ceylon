@@ -2,7 +2,14 @@
 
   <property file="build.properties"/>	
 
-  <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
+  <property name="name" value="Ceylon compiler"/>
+  <!-- Detect user's HOME directory -->
+  <condition property="ceylon.repo.base" value="${user.home}/Ceylon" else="${user.home}/.ceylon">
+    <and>
+      <os family="windows"/>
+    </and>
+  </condition>
+  <property name="ceylon.repo.dir" location="${ceylon.repo.base}/repo"/>
   <property name="typechecker.jar" location="${ceylon.repo.dir}/com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
   <property name="runtime.jar" location="${ceylon.repo.dir}/ceylon/language/${module.ceylon.language.version}/ceylon.language-${module.ceylon.language.version}.car"/>
 
@@ -16,15 +23,16 @@
   <property name="build.classes" location="${build}/classes"/>
   <property name="build.ceylon.cars" location="${build}/ceylon-cars"/>
   <property name="build.lib" location="${build}/lib"/>
+  <property name="build.dist" location="${build}/dist"/>
   <property name="test.reports" location="${build}/test-reports"/>
 
   <property name="markdown.lib" location="${base.path}/markdownj-core-faf3bf83000.jar"/>
 
   <!-- Jarfiles everything ends up in -->
   <property name="compiler.dir" value="${ceylon.repo.dir}/com/redhat/ceylon/compiler/${module.com.redhat.ceylon.compiler.version}"/>
-  <property name="compiler.jar" value="${compiler.dir}/com.redhat.ceylon.compiler-${module.com.redhat.ceylon.compiler.version}.jar"/>
-  <property name="ceylon-tests.dir" location="${build.ceylon.cars}/com/redhat/ceylon/compiler/test/ceylon/0.1"/>
-  <property name="ceylon-tests.car" location="${ceylon-tests.dir}/com.redhat.ceylon.compiler.test.ceylon-0.1.car"/>
+  <property name="compiler.jar" value="com.redhat.ceylon.compiler-${module.com.redhat.ceylon.compiler.version}.jar"/>
+  <property name="ceylon-tests.dir" location="${build.ceylon.cars}/com/redhat/ceylon/compiler/test/ceylon/${module.com.redhat.ceylon.compiler.version}"/>
+  <property name="ceylon-tests.car" location="${ceylon-tests.dir}/com.redhat.ceylon.compiler.test.ceylon-${module.com.redhat.ceylon.compiler.version}.car"/>
 
   <!-- The directory that parser tests live in, and
        the directory test results get written into -->
@@ -46,7 +54,7 @@
 
   <path id="test.run.classpath">
     <path refid="compiler.classpath"/>
-    <pathelement path="${compiler.jar}"/>
+    <pathelement path="${compiler.dir}/${compiler.jar}"/>
     <pathelement path="${runtime.jar}"/>
     <pathelement path="${junit.lib}"/>
     <pathelement path="${build.classes}"/>
@@ -60,6 +68,19 @@
 
   <!-- ################################################################## -->
 
+  <!-- constant to declare a file binary for checksumsum -->
+  <property name="checksum.binary-prefix" value=" *" />
+  <!-- Helper target, used to create a sha1 checksum file  -->
+  <!-- Requires 'file' as a parameter. -->
+  <target name="sha1sum">
+    <fail unless="file"/>
+    <fail if="filename"/>
+    <fail if="value"/>
+    <basename file="${file}" property="filename"/>
+    <checksum file="${file}" property="value" algorithm="sha1"/>
+    <echo file="${file}.sha1" message="${value}${checksum.binary-prefix}${filename}"/>
+  </target>
+
   <!-- Rule to clean everything up -->
   <target name="clean">
     <delete dir="${build}"/>
@@ -72,15 +93,9 @@
     <mkdir dir="${ceylon.repo.dir}"/>
   </target>
 
-  <target name="publish"
-     depends="publish.compiler"
-     description="Publish Ceylon compiler module to default repo">
-  </target>
-
-  <target name="publish.compiler" depends="compiler.classes,init.repo">
-    <delete dir="${compiler.dir}"/>
-    <mkdir dir="${compiler.dir}"/>
-    <zip destfile="${compiler.jar}">
+  <target name="dist" depends="compiler.classes,init.repo"
+    description="Create Ceylon compiler distribution">
+    <zip destfile="${build.dist}/${compiler.jar}">
       <fileset dir="${build.classes}">
         <exclude name="ceylon/**"/>
         <exclude name="com/redhat/ceylon/compiler/test/**"/>
@@ -89,7 +104,18 @@
         <include name="com/sun/tools/javac/resources/*.properties"/>
       </fileset>
     </zip>
-    <checksum file="${compiler.jar}" algorithm="sha1"/>
+    <antcall target="sha1sum">
+      <param name="file" value="${build.dist}/${compiler.jar}" />
+    </antcall>    
+  </target>
+
+  <target name="publish"
+     depends="dist"
+     description="Publish Ceylon compiler module to default repo">
+    <delete dir="${compiler.dir}"/>
+    <mkdir dir="${compiler.dir}"/>
+    <copy file="${build.dist}/${compiler.jar}" todir="${compiler.dir}"/>
+    <copy file="${build.dist}/${compiler.jar}.sha1" todir="${compiler.dir}"/>
   </target>
 
   <target name="clean.repo"
@@ -133,6 +159,7 @@
 
   <!-- Rule to build compiler jar -->
   <target name="build" depends="compiler.classes">
+    <mkdir dir="${build.dist}"/>
     <mkdir dir="${build.lib}"/>
     <mkdir dir="${build.ceylon.cars}"/>
     <jar destfile="${build.lib}/compiler.jar">
@@ -266,7 +293,7 @@
   <target name="ceylonc" depends="publish">
     <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc" >
       <classpath>
-        <pathelement location="${compiler.jar}"/>      	
+        <pathelement location="${compiler.dir}/${compiler.jar}"/>      	
       </classpath>
     </taskdef>
   </target>
