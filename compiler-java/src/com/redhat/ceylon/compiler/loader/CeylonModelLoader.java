@@ -38,6 +38,7 @@ import javax.tools.JavaFileObject.Kind;
 import com.redhat.ceylon.compiler.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.tools.CeylonLog;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
+import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
@@ -137,6 +138,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     public void loadStandardModules(){
         // set up the type factory
         Module languageModule = findOrCreateModule("ceylon.language");
+        ((CompilerModuleManager)phasedUnits.getModuleManager()).getCeylonEnter().addModuleToClassPath(languageModule, true);
         Package languagePackage = findOrCreatePackage(languageModule, "ceylon.language");
         typeFactory.setPackage(languagePackage);
         /*
@@ -535,17 +537,18 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         }else if(pkgName.startsWith("java.")){
             moduleName = Arrays.asList("java");
             isJava = true;
-        }else if(pkgName.startsWith("sun.")){
+        } else if(pkgName.startsWith("sun.")){
             moduleName = Arrays.asList("sun");
             isJava = true;
-        }else if(pkgName.startsWith("ceylon.language."))
+        } else if(pkgName.startsWith("ceylon.language."))
             moduleName = Arrays.asList("ceylon","language");
         else
             moduleName = Arrays.asList(pkgName.split("\\."));
-         Module module = phasedUnits.getModuleManager().getOrCreateModule(moduleName, null);
-         // make sure that when we load the ceylon language module we set it to where
-         // the typechecker will look for it
-         if(pkgName != null
+        
+        Module module = phasedUnits.getModuleManager().getOrCreateModule(moduleName, null);
+        // make sure that when we load the ceylon language module we set it to where
+        // the typechecker will look for it
+        if(pkgName != null
                  && pkgName.startsWith("ceylon.language.")
                  && ceylonContext.getModules().getLanguageModule() == null){
              ceylonContext.getModules().setLanguageModule(module);

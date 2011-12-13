@@ -37,6 +37,7 @@ import com.redhat.ceylon.compiler.tools.CeylonLog;
 import com.redhat.ceylon.compiler.tools.CeylonPhasedUnit;
 import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
+import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleValidator;
@@ -145,6 +146,12 @@ public class CeylonEnter extends Enter {
     public void completeCeylonTrees(List<JCCompilationUnit> trees) {
         if (hasRun)
             throw new RuntimeException("Waaaaa, running twice!!!");
+        //By now le language module version should be known (as local)
+        //or we should use the default one.
+        Module languageModule = ceylonContext.getModules().getLanguageModule();
+        if (languageModule.getVersion() == null) {
+            languageModule.setVersion(TypeChecker.LANGUAGE_MODULE_VERSION);
+        }
         // load the standard modules
         modelLoader.loadStandardModules();
         // load the modules we are compiling first
