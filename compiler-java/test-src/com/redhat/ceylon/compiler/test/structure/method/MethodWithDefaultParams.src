@@ -1,0 +1,86 @@
+package com.redhat.ceylon.compiler.test.structure.method;
+
+class MethodWithDefaultParams {
+    
+    private final void f1(final long n) {
+    }
+    
+    private final void f2(final long n, final .java.lang.String s) {
+    }
+    
+    private final void f3(final long n, final long m) {
+    }
+    
+    private final void f4(final long n, final long m) {
+    }
+    
+    MethodWithDefaultParams() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new MethodWithDefaultParams();
+    }
+}
+public final class MethodWithDefaultParams$impl {
+    
+    static long f1$n() {
+        return 5L;
+    }
+    
+    static .java.lang.String f2$s(final long n) {
+        return "test";
+    }
+    
+    static long f3$n() {
+        return 5L;
+    }
+    
+    static long f3$m(final long n) {
+        return n;
+    }
+    
+    static long f4$n() {
+        return 5L;
+    }
+    
+    static long f4$m(final long n) {
+        return .ceylon.language.Integer.instance(n).plus(.ceylon.language.Integer.instance(1L)).longValue();
+    }
+}
+interface MethodWithDefaultParams2 {
+    
+    public abstract void f1(final long n);
+    
+    public abstract void f2(final long n, final .java.lang.String s);
+    
+    public abstract void f3(final long n, final long m);
+    
+    public abstract void f4(final long n, final long m);
+}
+public final class MethodWithDefaultParams2$impl {
+    
+    static long f1$n() {
+        return 5L;
+    }
+    
+    static .java.lang.String f2$s(final long n) {
+        return "test";
+    }
+    
+    static long f3$n() {
+        return 5L;
+    }
+    
+    static long f3$m(final long n) {
+        return n;
+    }
+    
+    static long f4$n() {
+        return 5L;
+    }
+    
+    static long f4$m(final long n) {
+        return .ceylon.language.Integer.instance(n).plus(.ceylon.language.Integer.instance(1L)).longValue();
+    }
+}
