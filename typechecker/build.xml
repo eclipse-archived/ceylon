@@ -14,6 +14,7 @@
 
     <!-- Set build directories for all formats. -->
     <property name="build.dir" value="${basedir}/build"/>
+    <property name="build.dist" value="${build.dir}/dist"/>
     <property name="build.classes" location="${build.dir}/classes"/>
 
     <property name="src" location="src"/>
@@ -32,7 +33,12 @@
     <property name="db.style.htmlsingle" value="html.xsl"/>
 
     <!-- Local repository -->
-    <property name="repo.local.dir" value="${user.home}/.ceylon/repo"/>
+    <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
+    <property name="ceylon.typechecker.dir" value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}"/>
+    <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
+    <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}"/>
+    <property name="ceylon.typechecker.repo" value="${ceylon.repo.dir}/${ceylon.typechecker.dir}"/>
+    <property name="ceylon.typechecker.dist" value="${build.dist}/${ceylon.typechecker.dir}"/>
 
     <!-- Classpath for the build tools. -->
     <path id="lib.classpath">
@@ -305,30 +311,45 @@
         </javac>
     </target>
 
-    <target name="publish.typechecker" depends="compile,init.repo">
-        <property name="typechecker.dir"
-                  value="${repo.local.dir}/com/redhat/ceylon/typechecker/${module.com.redhat.typechecker.version}"/>
-        <property name="typechecker.jar"
-                  value="${typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.typechecker.version}.jar"/>
-        <delete dir="${typechecker.dir}"/>
-        <mkdir dir="${typechecker.dir}"/>
-        <zip destfile="${typechecker.jar}">
-            <fileset dir="${build.classes}">
-                <include name="**/*.class"/>
-            </fileset>
-        </zip>
-        <checksum file="${typechecker.jar}" algorithm="sha1"/>
+    <!-- constant to declare a file binary for checksumsum -->
+    <property name="checksum.binary-prefix" value=" *" />
+    <!-- Helper target, used to create a sha1 checksum file  -->
+    <!-- Requires 'file' as a parameter. -->
+    <target name="sha1sum">
+        <fail unless="file"/>
+        <fail if="filename"/>
+        <fail if="value"/>
+        <basename file="${file}" property="filename"/>
+        <checksum file="${file}" property="value" algorithm="sha1"/>
+        <echo file="${file}.sha1" message="${value}${checksum.binary-prefix}${filename}"/>
     </target>
-
     <!-- Repository targets -->
     <target name="init.repo"
             description="Init local ceylon repository and add ceylon.language">
-        <mkdir dir="${repo.local.dir}"/>
+        <mkdir dir="${ceylon.typechecker.repo}"/>
     </target>
 
     <target name="clean.repo"
             description="Clean local ceylon repository">
-        <delete dir="${repo.local.dir}"/>
+        <delete dir="${ceylon.typechecker.repo}"/>
+    </target>
+
+    <target name="dist" depends="compile">
+        <mkdir dir="${build.dist}"/>
+        <zip destfile="${build.dist}/${ceylon.typechecker.jar}">
+            <fileset dir="${build.classes}">
+                <include name="**/*.class"/>
+            </fileset>
+        </zip>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist}/${ceylon.typechecker.jar}" />
+        </antcall>
+    </target>
+
+    <target name="publish.typechecker" depends="dist,clean.repo,init.repo">
+        <copy todir="${ceylon.typechecker.repo}">
+            <fileset dir="${ceylon.typechecker.dist}"/>
+        </copy>
     </target>
 
     <target name="publish"
