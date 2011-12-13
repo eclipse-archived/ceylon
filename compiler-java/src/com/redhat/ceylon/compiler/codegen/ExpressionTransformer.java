@@ -924,7 +924,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         // Prepare the first argument holding the primary for the call
                         String callVarName = aliasName("call");
                         JCExpression callVarExpr = make().Ident(names().fromString(callVarName));
-                        ProducedType type = ((Tree.QualifiedMemberExpression)ce.getPrimary()).getPrimary().getTypeModel();
+                        ProducedType type = ((Tree.QualifiedMemberExpression)ce.getPrimary()).getTarget().getQualifyingType();
                         JCVariableDecl callVar = makeVar(callVarName, makeJavaType(type, NO_PRIMITIVES), primaryExpr);
                         args.prepend(callVar);
                         tmpCallPrimExpr = makeIdentOrSelect(callVarExpr, selector);
