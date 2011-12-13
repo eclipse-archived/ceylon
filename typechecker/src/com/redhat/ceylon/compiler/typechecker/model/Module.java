@@ -42,16 +42,6 @@ public class Module {
         return packages;
     }
 
-    public List<Package> getSharedPackages() {
-        List<Package> list = new ArrayList<Package>();
-        for (Package p: packages) {
-        	if (p.isShared()) {
-        		list.add(p);
-        	}
-        }
-        return list;
-    }
-
     public List<ModuleImport> getImports() {
         return imports;
     }
@@ -72,45 +62,78 @@ public class Module {
         this.version = version;
     }
 
-    public List<Package> getAllPackages() {
-        List<Package> list = new ArrayList<Package>();
-        list.addAll(packages);
-        for (ModuleImport mi: imports) {
-            list.addAll(mi.getModule().getSharedPackages());
-        }
-        return list;
-    }
-
-    List<Package> getAllKnownPackages() {
-        List<Package> list = new ArrayList<Package>();
-        list.addAll(packages);
-        for (ModuleImport mi: imports) {
-            list.addAll(mi.getModule().getPackages());
-        }
-        return list;
-    }
-
-    public Package getDirectPackage(String name) {
-        for (Package pkg: packages) {
+    /**
+     * Return the matching package amongst the dependency tree.
+     *
+     * With Visibility.VISIBLE, only return truly visible matching package from the module:
+     * - local packages
+     * - shared packages of dependent modules
+     * - shared packages of exported submodules
+     *
+     * With Visibility.ALL, return matching package from the module from all its
+     * dependencies recursively relgardless of visibility rules
+     */
+    public Package getPackage(String name, Visibility visibility) {
+        //all local packages are visible to the module
+        for(Package pkg : getPackages()) {
             if ( pkg.getQualifiedNameString().equals(name) ) {
+                return pkg;
+            }
+        }
+        //all first level modules are imported and visible
+        for (ModuleImport modImport : getImports()) {
+            Package pkg = getMatchingPackage(name, visibility, modImport);
+            if(pkg!=null) {
                 return pkg;
             }
         }
         return null;
     }
-    
-    public Package getPackage(String name) {
-        Package pkg = getDirectPackage(name);
-        if(pkg != null)
-            return pkg;
-        for (ModuleImport mi: imports) {
-            pkg = mi.getModule().getDirectPackage(name);
-            if(pkg != null)
-                return pkg;
+
+    private Package getMatchingPackage(String name, Visibility visibility, ModuleImport modImport) {
+        Module module = modImport.getModule();
+        if (module.getNameAsString().startsWith(name)) {
+            //we may have a winner
+            for (Package modPkg : module.getPackages()) {
+                if (modPkg.getQualifiedNameString().equals(name)) {
+                    if (visibility==Visibility.ALL||modPkg.isShared()) {
+                        return modPkg;
+                    }
+                }
+            }
+        }
+        Package deepPackage = getPackageFromSecondLevelOrMoreModuleImportList(name, visibility, module.getImports());
+        if (deepPackage!=null) {
+            return deepPackage;
         }
         return null;
     }
-    
+
+    /**
+     * Return matching package directly owned by the module
+     * Inherited packages are not considered.
+     */
+    public Package getDirectPackage(String name) {
+        for (Package pkg: packages) {
+            if ( pkg.getQualifiedNameString().equals(name) ) {
+                return pkg;
+             }
+        }
+        return null;
+    }
+
+    private Package getPackageFromSecondLevelOrMoreModuleImportList(String name, Visibility visibility, List<ModuleImport> imports) {
+        for(ModuleImport modImport : imports) {
+            if (visibility==Visibility.ALL||modImport.isExport()) {
+                Package matchingPackage = getMatchingPackage(name, visibility, modImport);
+                if (matchingPackage!=null) {
+                    return matchingPackage;
+                }
+            }
+        }
+        return null;
+    }
+
     public String getNameAsString() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < name.size(); i++) {
@@ -156,5 +179,10 @@ public class Module {
 
     public void setDefault(boolean isDefault) {
         this.isDefault = isDefault;
+    }
+
+    public static enum Visibility {
+        ALL,
+        VISIBLE
     }
 }
