@@ -2488,7 +2488,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.NaturalLiteral that) {
-        setLiteralType(that, unit.getNaturalDeclaration());
+        setLiteralType(that, unit.getIntegerDeclaration());
     }
     
     @Override public void visit(Tree.FloatLiteral that) {

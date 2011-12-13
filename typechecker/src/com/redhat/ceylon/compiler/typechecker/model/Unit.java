@@ -221,8 +221,7 @@ public class Unit {
         return (TypeDeclaration) getLanguageModuleDeclaration("Float");
     }
     
-    //TODO: rename!
-    public TypeDeclaration getNaturalDeclaration() {
+    public TypeDeclaration getIntegerDeclaration() {
         return (TypeDeclaration) getLanguageModuleDeclaration("Integer");
     }
         
