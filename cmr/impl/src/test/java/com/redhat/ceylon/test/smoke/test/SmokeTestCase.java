@@ -23,12 +23,9 @@
 package com.redhat.ceylon.test.smoke.test;
 
 import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.impl.DefaultNode;
+import com.redhat.ceylon.cmr.impl.RemoteContentStore;
 import com.redhat.ceylon.cmr.impl.RootRepository;
 import com.redhat.ceylon.cmr.impl.RootRepositoryBuilder;
-import com.redhat.ceylon.cmr.spi.ContentStore;
-import com.redhat.ceylon.cmr.spi.OpenNode;
-import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
 import org.junit.Assert;
 import org.junit.Test;
@@ -84,11 +81,7 @@ public class SmokeTestCase {
         RootRepositoryBuilder builder = new RootRepositoryBuilder(getRepositoryRoot());
 
         InMemoryContentStore imcs = new InMemoryContentStore();
-        OpenNode com = new DefaultNode("com");
-        com.addService(ContentStore.class, imcs);
-        com.addService(StructureBuilder.class, imcs);
-
-        Repository repo = builder.linkNode(com).buildRepository();
+        Repository repo = builder.linkNode(imcs.createRoot("com")).buildRepository();
 
         ByteArrayInputStream baos = new ByteArrayInputStream("qwerty".getBytes());
         String name = "com.redhat.fizbiz";
@@ -96,6 +89,29 @@ public class SmokeTestCase {
         try {
             repo.putArtifact(name, version, baos);
 
+            File file = repo.getArtifact(name, version);
+            Assert.assertNotNull(file);
+        } finally {
+            repo.removeArtifact(name, version);
+        }
+    }
+
+    @Test
+    public void testRemoteContent() throws Exception {
+        String repoURL = "http://jboss-as7-modules-repository.googlecode.com/svn/trunk/ceylon";
+        try {
+            new URL(repoURL).openStream();
+        } catch (Exception ignore) {
+            return; // probably not on the internet?
+        }
+        
+        RootRepositoryBuilder builder = new RootRepositoryBuilder(getRepositoryRoot());
+        RemoteContentStore rcs = new RemoteContentStore(repoURL);
+        Repository repo = builder.linkNode(rcs.createRoot("com")).buildRepository();
+
+        String name = "com.redhat.fizbiz";
+        String version = "1.0.0.Beta1";
+        try {
             File file = repo.getArtifact(name, version);
             Assert.assertNotNull(file);
         } finally {

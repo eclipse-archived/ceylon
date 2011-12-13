@@ -106,6 +106,13 @@ public class FileContentStore implements ContentStore, StructureBuilder {
         return new FileContentHandle(node, file);
     }
 
+    public OpenNode createRoot(String label) {
+        OpenNode node = new DefaultNode(label);
+        node.addService(ContentStore.class, this);
+        node.addService(StructureBuilder.class, this);
+        return node;
+    }
+
     public OpenNode find(Node parent, String child) {
         final File pf = getFile(parent);
 

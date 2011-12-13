@@ -142,7 +142,8 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
             final String markerLabel = label + NODE_MARKER;
             final OpenNode marker = children.get(markerLabel);
             if (marker == null) {
-                child = findService(StructureBuilder.class).find(this, label);
+                final StructureBuilder builder = findService(StructureBuilder.class);
+                child = builder.find(this, label);
                 if (child != null) {
                     child = put(children, label, child);
                 }

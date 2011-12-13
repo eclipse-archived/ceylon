@@ -66,6 +66,14 @@ public class InMemoryContentStore implements ContentStore, StructureBuilder {
     }
 
     @Override
+    public OpenNode createRoot(String label) {
+        OpenNode node = new DefaultNode(label);
+        node.addService(ContentStore.class, this);
+        node.addService(StructureBuilder.class, this);
+        return node;
+    }
+
+    @Override
     public OpenNode find(Node parent, String child) {
         // automagically build the tree
         DefaultNode node = new DefaultNode(child);

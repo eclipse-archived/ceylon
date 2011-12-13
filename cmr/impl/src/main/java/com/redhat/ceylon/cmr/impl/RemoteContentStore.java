@@ -29,6 +29,8 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -40,15 +42,24 @@ public class RemoteContentStore implements ContentStore, StructureBuilder {
     
     private static final Logger log = Logger.getLogger(RemoteContentStore.class.getName());
     private static final String SEPARATOR = "/";
+    private static final String CAR = ".car";
+    private static final String JAR = ".jar";
 
     private final String root;
+    private final Set<String> suffixes = new HashSet<String>();
 
     public RemoteContentStore(String root) {
         if (root == null)
             throw new IllegalArgumentException("Null root url");
         this.root = root;
+        addSuffix(CAR);
+        addSuffix(JAR);
     }
 
+    public void addSuffix(String suffix) {
+        suffixes.add(suffix);        
+    }
+    
     public ContentHandle popContent(Node node) {
         return urlExists(node) ? new RemoteContentHandle(node) : null;
     }
@@ -59,6 +70,14 @@ public class RemoteContentStore implements ContentStore, StructureBuilder {
 
     public ContentHandle putContent(Node node, InputStream stream) throws IOException {
         return null; // cannot write
+    }
+
+    public OpenNode createRoot(String label) {
+        final RemoteNode node = new RemoteNode(label);
+        node.addService(ContentStore.class, this);
+        node.addService(StructureBuilder.class, this);
+        node.setHandle(DefaultNode.HANDLE_MARKER);
+        return node;
     }
 
     public OpenNode find(Node parent, String child) {
@@ -106,16 +125,22 @@ public class RemoteContentStore implements ContentStore, StructureBuilder {
         if (url == null)
             return false;
 
+        InputStream is = null;
         try {
-            return (url.openStream() != null); // should this do?
+            is = url.openStream();
+            return (is != null); // should this do?
         } catch (IOException ignored) {
             return false;
+        } finally {
+            IOUtils.safeClose(is);
         }
     }
     
     protected boolean hasContent(String child) {
-        // let's assume we have a file name, hence suffix with '.'
-        return child.contains(".");
+        for (String suffix : suffixes)
+            if (child.endsWith(suffix))
+                return true;
+        return false;
     }
 
     private class RemoteContentHandle implements ContentHandle {
