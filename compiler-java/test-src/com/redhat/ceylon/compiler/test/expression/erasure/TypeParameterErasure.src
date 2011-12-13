@@ -96,15 +96,15 @@ class TypeParameterErasure {
     
     private final <T extends com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right>T parameterizedWithBounds(final T t) {
         t.right();
-        (let T $call$1 = t in $call$1.right(); null);
+        (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right $call$1 = t in $call$1.right(); null);
         return t;
     }
     
     private final <T extends com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left & com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right>T parameterizedWithIntersectionBounds(final T t) {
         t.left();
-        (let T $call$3 = t in $call$3.left(); null);
+        (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $call$3 = t in $call$3.left(); null);
         t.right();
-        (let T $call$5 = t in $call$5.right(); null);
+        (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right $call$5 = t in $call$5.right(); null);
         return t;
     }
     
@@ -187,15 +187,15 @@ class TypeParameterErasure {
         
         public final <Inner extends com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left>Inner parameterizedWithBounds(final Inner i, final T t) {
             i.left();
-            (let Inner $call$31 = i in $call$31.left(); null);
+            (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $call$31 = i in $call$31.left(); null);
             return i;
         }
         
         public final <Inner extends com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left & com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right>Inner parameterizedWithIntersectionBounds(final Inner i, final T t) {
             i.left();
-            (let Inner $call$33 = i in $call$33.left(); null);
+            (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $call$33 = i in $call$33.left(); null);
             i.right();
-            (let Inner $call$35 = i in $call$35.right(); null);
+            (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right $call$35 = i in $call$35.right(); null);
             return i;
         }
         
@@ -217,7 +217,7 @@ class TypeParameterErasure {
         
         ParameterizedWithBounds(T t) {
             t.left();
-            (let T $call$37 = t in $call$37.left(); null);
+            (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $call$37 = t in $call$37.left(); null);
         }
     }
     
@@ -228,9 +228,9 @@ class TypeParameterErasure {
         
         ParameterizedWithIntersectionBounds(T t) {
             t.left();
-            (let T $call$39 = t in $call$39.left(); null);
+            (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $call$39 = t in $call$39.left(); null);
             t.right();
-            (let T $call$41 = t in $call$41.right(); null);
+            (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right $call$41 = t in $call$41.right(); null);
             final .java.lang.Object middle = new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.CMiddle();
             requiresCastLeft(t);
             (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $arg$42$0 = t in requiresCastLeft($arg$42$0); null);
