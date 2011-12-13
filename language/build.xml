@@ -28,13 +28,7 @@
     <tstamp/>
 
     <!-- Local repository -->
-    <!-- Detect user's HOME directory -->
-    <condition property="ceylon.repo.base" value="${user.home}/Ceylon" else="${user.home}/.ceylon">
-        <and>
-            <os family="windows"/>
-        </and>
-    </condition>
-    <property name="ceylon.repo.dir" location="${ceylon.repo.base}/repo"/>
+    <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
     
     <!-- ceylon.language -->
     <property name="module.language.src" value="${basedir}/src"/>
