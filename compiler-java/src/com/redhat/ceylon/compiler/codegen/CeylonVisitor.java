@@ -152,8 +152,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if(hasErrors(decl))
             return;
         boolean annots = gen.checkCompilerAnnotations(decl);
-        Scope container = decl.getDeclarationModel().getContainer();
-        if (container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) {
+        if (Decl.container(decl) instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) {
             classBuilder.method(decl);
         } else {
             appendList(gen.classGen().transformWrappedMethod(decl));
@@ -164,7 +163,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.MethodDeclaration meth) {
         if(hasErrors(meth))
             return;
-        classBuilder.defs(gen.classGen().transform(meth));
+        classBuilder.method(meth);
     }
     
     private boolean hasErrors(Node decl) {
