@@ -324,6 +324,10 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/Klass");
     }
     @Test
+    public void testKlsDefaultedInitializerParameter(){
+        compareWithJavaSource("klass/DefaultedInitializerParameter");
+    }
+    @Test
     public void testKlsPublicClass(){
         compareWithJavaSource("klass/PublicKlass");
     }
