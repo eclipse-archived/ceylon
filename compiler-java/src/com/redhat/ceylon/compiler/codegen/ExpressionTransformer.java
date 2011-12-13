@@ -69,8 +69,12 @@ import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCConditional;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
+import com.sun.tools.javac.tree.JCTree.JCForLoop;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
+import com.sun.tools.javac.tree.JCTree.JCNewArray;
+import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCUnary;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -1121,18 +1125,93 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     public JCExpression transform(Tree.QualifiedMemberExpression expr, TermTransformer transformer) {
         JCExpression result;
-        JCExpression primaryExpr = transformQualifiedMemberPrimary(expr);
         if (expr.getMemberOperator() instanceof Tree.SafeMemberOp) {
+            JCExpression primaryExpr = transformQualifiedMemberPrimary(expr);
             String tmpVarName = aliasName("safe");
             JCExpression typeExpr = makeJavaType(expr.getTarget().getQualifyingType(), NO_PRIMITIVES);
             JCExpression transExpr = transformMemberExpression(expr, makeIdent(tmpVarName), transformer);
             JCExpression testExpr = make().Binary(JCTree.NE, makeIdent(tmpVarName), makeNull());                
             JCExpression condExpr = make().Conditional(testExpr, transExpr, makeNull());
             result = makeLetExpr(tmpVarName, null, typeExpr, primaryExpr, condExpr);
+        } else if (expr.getMemberOperator() instanceof Tree.SpreadOp) {
+            result = transformSpreadOperator(expr, transformer);
         } else {
+            JCExpression primaryExpr = transformQualifiedMemberPrimary(expr);
             result = transformMemberExpression(expr, primaryExpr, transformer);
         }
         return result;
+    }
+
+    private JCExpression transformSpreadOperator(QualifiedMemberExpression expr, TermTransformer transformer) {
+        at(expr);
+        
+        String varBaseName = aliasName("spread");
+        // sequence
+        String srcSequenceName = varBaseName+"$0";
+        ProducedType srcSequenceType = typeFact().getNonemptySequenceType(expr.getPrimary().getTypeModel());
+        JCExpression srcSequenceTypeExpr = makeJavaType(srcSequenceType, NO_PRIMITIVES);
+        JCExpression srcSequenceExpr = transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, srcSequenceType);
+
+        // reset back here after transformExpression
+        at(expr);
+
+        // size, getSize() always unboxed, but we need to cast to int for Java array access
+        String sizeName = varBaseName+"$2";
+        JCExpression sizeType = make().TypeIdent(TypeTags.INT);
+        JCExpression sizeExpr = make().TypeCast(syms().intType, make().Apply(null, 
+                make().Select(makeIdent(srcSequenceName), names().fromString("getSize")), 
+                List.<JCTree.JCExpression>nil()));
+        
+        // new array
+        String newArrayName = varBaseName+"$4";
+        JCExpression arrayElementType = makeJavaType(expr.getTarget().getType(), NO_PRIMITIVES);
+        JCExpression newArrayType = make().TypeArray(arrayElementType);
+        JCNewArray newArrayExpr = make().NewArray(arrayElementType, List.of(makeIdent(sizeName)), null);
+        
+        // return the new array
+        JCNewClass returnArray = make().NewClass(null, null, 
+                make().TypeApply(make().QualIdent(syms().ceylonArraySequenceType.tsym), List.of(arrayElementType)), 
+                List.of(makeIdent(newArrayName)), null);
+        
+        // for loop
+        Name indexVarName = names().fromString(aliasName("index"));
+        // int index = 0
+        JCStatement initVarDef = make().VarDef(make().Modifiers(0), indexVarName, make().TypeIdent(TypeTags.INT), makeInteger(0));
+        List<JCStatement> init = List.of(initVarDef);
+        // index < size
+        JCExpression cond = make().Binary(JCTree.LT, make().Ident(indexVarName), makeIdent(sizeName));
+        // index++
+        JCExpression stepExpr = make().Unary(JCTree.POSTINC, make().Ident(indexVarName));
+        List<JCExpressionStatement> step = List.of(make().Exec(stepExpr));
+        
+        // newArray[index]
+        JCExpression dstArrayExpr = make().Indexed(makeIdent(newArrayName), make().Ident(indexVarName));
+        // srcSequence.item(box(index))
+        // index is always boxed
+        JCExpression boxedIndex = boxType(make().Ident(indexVarName), typeFact().getIntegerDeclaration().getType());
+        JCExpression sequenceItemExpr = make().Apply(null, 
+                make().Select(makeIdent(srcSequenceName), names().fromString("item")),
+                List.<JCExpression>of(boxedIndex));
+        // item.member
+        JCExpression appliedExpr = transformMemberExpression(expr, sequenceItemExpr, transformer);
+        // reset back here after transformMemberExpression
+        at(expr);
+        // we always need to box to put in array
+        appliedExpr = boxUnboxIfNecessary(appliedExpr, expr, 
+                expr.getTarget().getType(), BoxingStrategy.BOXED);
+        // newArray[index] = box(srcSequence.item(box(index)).member)
+        JCStatement body = make().Exec(make().Assign(dstArrayExpr, appliedExpr));
+        
+        // for
+        JCForLoop forStmt = make().ForLoop(init, cond , step , body);
+        
+        // build the whole thing
+        return makeLetExpr(varBaseName, 
+                List.<JCStatement>of(forStmt), 
+                srcSequenceTypeExpr, srcSequenceExpr,
+                sizeType, sizeExpr,
+                newArrayType, newArrayExpr,
+                returnArray);
     }
 
     private JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberExpression expr) {
