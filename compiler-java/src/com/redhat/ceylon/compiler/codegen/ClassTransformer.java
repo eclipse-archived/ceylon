@@ -77,7 +77,9 @@ public class ClassTransformer extends AbstractTransformer {
 
     public List<JCTree> transform(final Tree.ClassOrInterface def) {
         String className = def.getIdentifier().getText();
-        ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder.klass(this, className);
+        ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder
+                .klass(this, className)
+                .constructor(def);
         
         CeylonVisitor visitor = new CeylonVisitor(gen(), classBuilder);
         def.visitChildren(visitor);
@@ -351,12 +353,12 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     // Creates a method to retrieve the value for a defaulted parameter
-    public JCMethodDecl transformDefaultedParameter(Tree.Parameter param, Tree.AnyMethod method) {
-        String name = method.getIdentifier().getText() + "$" + param.getIdentifier().getText();
+    public JCMethodDecl transformDefaultedParameter(Tree.Parameter param, String containerName, Tree.ParameterList params) {
+        String name = containerName + "$" + param.getIdentifier().getText();
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, true, name);
         
         // Add any of the preceding parameters as parameters to the method
-        for (Tree.Parameter p : method.getParameterLists().get(0).getParameters()) {
+        for (Tree.Parameter p : params.getParameters()) {
             if (p == param) {
                 break;
             }

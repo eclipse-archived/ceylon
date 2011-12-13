@@ -20,7 +20,6 @@
 
 package com.redhat.ceylon.compiler.codegen;
 
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -177,7 +176,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     
     // Class Initializer parameter
     public void visit(Tree.Parameter param) {
-        classBuilder.parameter(param);
+        // Ignore
     }
 
     public void visit(Tree.Block b) {
