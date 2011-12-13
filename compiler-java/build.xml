@@ -10,8 +10,12 @@
     </and>
   </condition>
   <property name="ceylon.repo.dir" location="${ceylon.repo.base}/repo"/>
-  <property name="typechecker.jar" location="${ceylon.repo.dir}/com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
-  <property name="runtime.jar" location="${ceylon.repo.dir}/ceylon/language/${module.ceylon.language.version}/ceylon.language-${module.ceylon.language.version}.car"/>
+  <property name="ceylon.typechecker.dir" value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}"/>
+  <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
+  <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}"/>
+  <property name="ceylon.runtime.dir" value="ceylon/language/${module.ceylon.language.version}"/>
+  <property name="ceylon.runtime.car" value="${ceylon.runtime.dir}/ceylon.language-${module.ceylon.language.version}.car"/>
+  <property name="ceylon.runtime.lib" location="${ceylon.repo.dir}/${ceylon.runtime.car}"/>
 
   <!-- The Java source files for the compiler -->
   <property name="javac.src" location="langtools/src/share/classes"/>
@@ -29,8 +33,11 @@
   <property name="markdown.lib" location="${base.path}/markdownj-core-faf3bf83000.jar"/>
 
   <!-- Jarfiles everything ends up in -->
-  <property name="compiler.dir" value="${ceylon.repo.dir}/com/redhat/ceylon/compiler/${module.com.redhat.ceylon.compiler.version}"/>
-  <property name="compiler.jar" value="com.redhat.ceylon.compiler-${module.com.redhat.ceylon.compiler.version}.jar"/>
+  <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/${module.com.redhat.ceylon.compiler.version}"/>
+  <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler-${module.com.redhat.ceylon.compiler.version}.jar"/>
+  <property name="ceylon.compiler.lib" location="${ceylon.repo.dir}/${ceylon.compiler.jar}"/>
+  <property name="ceylon.compiler.repo" value="${ceylon.repo.dir}/${ceylon.compiler.dir}"/>
+  <property name="ceylon.compiler.dist" value="${build.dist}/${ceylon.compiler.dir}"/>
   <property name="ceylon-tests.dir" location="${build.ceylon.cars}/com/redhat/ceylon/compiler/test/ceylon/${module.com.redhat.ceylon.compiler.version}"/>
   <property name="ceylon-tests.car" location="${ceylon-tests.dir}/com.redhat.ceylon.compiler.test.ceylon-${module.com.redhat.ceylon.compiler.version}.car"/>
 
@@ -40,22 +47,22 @@
   <property name="parser.test.dst" location="${build}/test/parser"/>
 
   <path id="compiler.classpath">
-    <pathelement path="${typechecker.jar}"/>
+    <pathelement path="${ceylon.typechecker.lib}"/>
     <pathelement path="${antlr.lib}"/>
-  	<pathelement path="${markdown.lib}"/>
+    <pathelement path="${markdown.lib}"/>
   </path>
 
   <path id="test.compile.classpath">
     <path refid="compiler.classpath"/>
-    <pathelement path="${runtime.jar}"/>
+    <pathelement path="${ceylon.runtime.lib}"/>
     <pathelement path="${build.classes}"/>
     <pathelement path="${junit.lib}"/>
   </path>
 
   <path id="test.run.classpath">
     <path refid="compiler.classpath"/>
-    <pathelement path="${compiler.dir}/${compiler.jar}"/>
-    <pathelement path="${runtime.jar}"/>
+    <pathelement path="${ceylon.compiler.lib}"/>
+    <pathelement path="${ceylon.runtime.lib}"/>
     <pathelement path="${junit.lib}"/>
     <pathelement path="${build.classes}"/>
     <pathelement path="${ceylon-tests.car}"/>
@@ -90,12 +97,16 @@
   <!-- Repository targets -->
   <target name="init.repo"
       description="Initialize the default local Ceylon module repository">
-    <mkdir dir="${ceylon.repo.dir}"/>
+    <mkdir dir="${ceylon.compiler.repo}"/>
+  </target>
+  <target name="clean.repo"
+     description="Clean default local Ceylon module repository">
+    <delete dir="${ceylon.compiler.repo}"/>
   </target>
 
-  <target name="dist" depends="compiler.classes,init.repo"
+  <target name="dist" depends="compiler.classes"
     description="Create Ceylon compiler distribution">
-    <zip destfile="${build.dist}/${compiler.jar}">
+    <zip destfile="${build.dist}/${ceylon.compiler.jar}">
       <fileset dir="${build.classes}">
         <exclude name="ceylon/**"/>
         <exclude name="com/redhat/ceylon/compiler/test/**"/>
@@ -105,22 +116,16 @@
       </fileset>
     </zip>
     <antcall target="sha1sum">
-      <param name="file" value="${build.dist}/${compiler.jar}" />
+      <param name="file" value="${build.dist}/${ceylon.compiler.jar}" />
     </antcall>    
   </target>
 
   <target name="publish"
-     depends="dist"
+     depends="dist,clean.repo,init.repo"
      description="Publish Ceylon compiler module to default repo">
-    <delete dir="${compiler.dir}"/>
-    <mkdir dir="${compiler.dir}"/>
-    <copy file="${build.dist}/${compiler.jar}" todir="${compiler.dir}"/>
-    <copy file="${build.dist}/${compiler.jar}.sha1" todir="${compiler.dir}"/>
-  </target>
-
-  <target name="clean.repo"
-     description="Clean default local Ceylon module repository">
-    <delete dir="${ceylon.repo.dir}"/>
+     <copy todir="${ceylon.compiler.repo}">
+        <fileset dir="${ceylon.compiler.dist}"/>
+    </copy>
   </target>
 
   <!-- Rule to compile and test -->
@@ -133,7 +138,8 @@
        srcdir="${javac.src}:${ceylonc.src}"
        destdir="${build.classes}"
        debug="true"
-       classpathref="compiler.classpath">
+       classpathref="compiler.classpath"
+       includeantruntime="true">
       <include name="com/redhat/**"/>
       <include name="com/sun/tools/javac/**"/>
       <include name="com/sun/source/**"/>
@@ -152,7 +158,8 @@
        srcdir="${test.src}"
        destdir="${build.classes}"
        debug="true"
-       classpathref="test.compile.classpath">
+       classpathref="test.compile.classpath"
+       includeantruntime="false">
       <include name="com/redhat/ceylon/compiler/test/**"/>
     </javac>
   </target>
@@ -180,7 +187,7 @@
     <apply executable="java">
       <arg value="-ea"/>
       <arg value="-cp"/>
-      <arg value="${compiler.jar}:${antlr.lib}"/>
+      <arg value="${ceylon.compiler.lib}:${antlr.lib}"/>
       <arg value="com.redhat.ceylon.compiler.launcher.CeylonCompiler"/>
       <arg value="-d"/>
       <arg value="${parser.test.dst}"/>
@@ -293,7 +300,7 @@
   <target name="ceylonc" depends="publish">
     <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc" >
       <classpath>
-        <pathelement location="${compiler.dir}/${compiler.jar}"/>      	
+        <pathelement location="${ceylon.compiler.lib}"/>
       </classpath>
     </taskdef>
   </target>
