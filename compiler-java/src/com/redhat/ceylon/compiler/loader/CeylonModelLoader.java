@@ -138,7 +138,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     public void loadStandardModules(){
         // set up the type factory
         Module languageModule = findOrCreateModule("ceylon.language");
-        ((CompilerModuleManager)phasedUnits.getModuleManager()).getCeylonEnter().addModuleToClassPath(languageModule, true);
+        ((CompilerModuleManager)phasedUnits.getModuleManager()).getCeylonEnter().addModuleToClassPath(languageModule, false);
         Package languagePackage = findOrCreatePackage(languageModule, "ceylon.language");
         typeFactory.setPackage(languagePackage);
         /*
