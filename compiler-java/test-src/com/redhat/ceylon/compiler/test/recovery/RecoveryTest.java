@@ -47,9 +47,14 @@ public class RecoveryTest extends CompilerTest {
         for(Diagnostic<? extends JavaFileObject> diagnostic : errorCollector.getDiagnostics()){
             if(diagnostic.getKind() == Kind.ERROR)
                 errors++;
-            System.err.println("("+diagnostic.getKind()+") "+diagnostic.getSource().getName()
-                    +"["+diagnostic.getLineNumber()+","+diagnostic.getColumnNumber()+"]: "
-                    +diagnostic.getMessage(Locale.getDefault()));
+            if(diagnostic.getSource() != null){
+                System.err.println("("+diagnostic.getKind()+") "+diagnostic.getSource().getName()
+                        +"["+diagnostic.getLineNumber()+","+diagnostic.getColumnNumber()+"]: "
+                        +diagnostic.getMessage(Locale.getDefault()));
+            }else{
+                System.err.println("("+diagnostic.getKind()+"): "
+                        +diagnostic.getMessage(Locale.getDefault()));
+            }
         }
         return errors;
     }
