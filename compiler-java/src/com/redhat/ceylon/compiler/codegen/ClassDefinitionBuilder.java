@@ -34,6 +34,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
 import com.redhat.ceylon.compiler.util.Decl;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.tree.JCTree;
@@ -398,6 +399,20 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
+    public ClassDefinitionBuilder constructor(Tree.ClassOrInterface def) {
+        if (def instanceof Tree.AnyClass) {
+            ParameterList paramList = ((Tree.AnyClass)def).getParameterList();
+            for (Tree.Parameter param : paramList.getParameters()) {
+                parameter(param);
+                // Does the parameter have a default value?
+                if (param.getSpecifierExpression() != null) {
+                    concreteInterfaceMemberDefs(gen.classGen().transformDefaultedParameter(param, gen.names().init.toString(), paramList));
+                }
+            }
+        }
+        return this;
+    }
+
     public ClassDefinitionBuilder method(Tree.AnyMethod method) {
         defs(gen.classGen().transform(method));
         if (method instanceof Tree.MethodDefinition) {
@@ -406,10 +421,12 @@ public class ClassDefinitionBuilder {
                 concreteInterfaceMemberDefs(gen.classGen().transformConcreteInterfaceMember(m, ((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)Decl.container(method)).getType()));
             }
         }
-        for (Tree.Parameter param : method.getParameterLists().get(0).getParameters()) {
+        String methodName = method.getIdentifier().getText();
+        ParameterList paramList = method.getParameterLists().get(0);
+        for (Tree.Parameter param : paramList.getParameters()) {
             // Does the parameter have a default value?
             if (param.getSpecifierExpression() != null) {
-                concreteInterfaceMemberDefs(gen.classGen().transformDefaultedParameter(param, method));
+                concreteInterfaceMemberDefs(gen.classGen().transformDefaultedParameter(param, methodName, paramList));
             }
         }
         return this;
