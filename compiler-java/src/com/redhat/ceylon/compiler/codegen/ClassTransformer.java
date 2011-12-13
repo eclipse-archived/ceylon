@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
 import com.redhat.ceylon.compiler.util.Decl;
 import com.redhat.ceylon.compiler.util.Util;
@@ -321,7 +322,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     public JCMethodDecl transformConcreteInterfaceMember(MethodDefinition def, ProducedType type) {
         String name = def.getIdentifier().getText();
-        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(gen(), true, name);
+        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, true, name);
         
         JCExpression typeExpr = makeJavaType(type);
         methodBuilder.parameter(FINAL, "$this", typeExpr, List.<JCTree.JCAnnotation>nil());
@@ -346,6 +347,33 @@ public class ClassTransformer extends AbstractTransformer {
         return methodBuilder
             .modifiers(transformMethodDeclFlags(def) | STATIC)
             .isActual(Decl.isActual(def))
+            .build();
+    }
+
+    // Creates a method to retrieve the value for a defaulted parameter
+    public JCMethodDecl transformDefaultedParameter(Tree.Parameter param, Tree.AnyMethod method) {
+        String name = method.getIdentifier().getText() + "$" + param.getIdentifier().getText();
+        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, true, name);
+        
+        // Add any of the preceding parameters as parameters to the method
+        for (Tree.Parameter p : method.getParameterLists().get(0).getParameters()) {
+            if (p == param) {
+                break;
+            }
+            methodBuilder.parameter(p);
+        }
+
+        // The method's return type is the same as the parameter's type
+        methodBuilder.resultType(param.getDeclarationModel());
+
+        // The implementation of the method
+        SpecifierExpression spec = param.getSpecifierExpression();
+        JCExpression expr = expressionGen().transformExpression(spec.getExpression(), Util.getBoxingStrategy(param.getDeclarationModel()), param.getDeclarationModel().getType());
+        JCBlock body = at(spec).Block(0, List.<JCStatement> of(at(spec).Return(expr)));
+        methodBuilder.block(body);
+        
+        return methodBuilder
+            .modifiers(STATIC)
             .build();
     }
 

@@ -398,10 +398,19 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
-    public ClassDefinitionBuilder method(Tree.MethodDefinition method) {
+    public ClassDefinitionBuilder method(Tree.AnyMethod method) {
         defs(gen.classGen().transform(method));
-        if (Decl.withinInterface(method) && method.getBlock() != null) {
-            concreteInterfaceMemberDefs(gen.classGen().transformConcreteInterfaceMember(method, ((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)Decl.container(method)).getType()));
+        if (method instanceof Tree.MethodDefinition) {
+            Tree.MethodDefinition m = (Tree.MethodDefinition)method;
+            if (Decl.withinInterface(m) && m.getBlock() != null) {
+                concreteInterfaceMemberDefs(gen.classGen().transformConcreteInterfaceMember(m, ((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)Decl.container(method)).getType()));
+            }
+        }
+        for (Tree.Parameter param : method.getParameterLists().get(0).getParameters()) {
+            // Does the parameter have a default value?
+            if (param.getSpecifierExpression() != null) {
+                concreteInterfaceMemberDefs(gen.classGen().transformDefaultedParameter(param, method));
+            }
         }
         return this;
     }
