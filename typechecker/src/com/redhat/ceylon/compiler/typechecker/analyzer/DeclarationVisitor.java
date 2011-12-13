@@ -490,8 +490,15 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.Parameter that) {
         super.visit(that);
         if (that.getSpecifierExpression()!=null) {
-            that.getSpecifierExpression()
-                .addWarning("parameter default values are not yet supported");
+            if (declaration.isActual()) {
+            	that.getSpecifierExpression().
+            	    addError("parameter of actual declaration may not define default value: parameter " +
+            			name(that.getIdentifier()) + " of " + declaration.getName());
+            }
+            else {
+                that.getSpecifierExpression()
+                    .addWarning("parameter default values are not yet supported");
+            }
         }
     }
     

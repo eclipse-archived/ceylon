@@ -27,5 +27,13 @@ class Parameters() {
     @error broken4({"hello"});
     void broken5<T>(@error Entry<T,Unknown> e) {}
     @error broken5("hello"->"goodbye");
+    
+    class Super() {
+    	shared default void greet(String greeting) {}
+    }
+    
+    class Sub() extends Super() {
+    	shared actual void greet(@error String greeting="hello") {}
+    }
 
 }

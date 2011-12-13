@@ -3064,8 +3064,8 @@ SequencedParam?
     
         <programlisting>DefaultParam: Param Specifier</programlisting>
         
-        <para>The <literal>=</literal> specifier is used throughout the language to indicate a 
-        value which cannot be reassigned.</para>
+        <para>The <literal>=</literal> specifier is used throughout the language to indicate 
+        a value which cannot be reassigned.</para>
         
         <programlisting>Specifier: "=" Expression</programlisting>
         
@@ -3080,6 +3080,9 @@ SequencedParam?
         <para>If the declared type of the parameter is an optional type (a subtype of
         <literal>Nothing</literal>) then the default argument expression must be a value
         reference to <literal>null</literal>.</para>
+        
+        <para>A parameter of a method or class annotated <literal>actual</literal> may not 
+        specify a default argument.</para>
         
         </section>
         
