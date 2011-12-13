@@ -44,6 +44,7 @@ public class RemoteContentStore implements ContentStore, StructureBuilder {
     private static final String SEPARATOR = "/";
     private static final String CAR = ".car";
     private static final String JAR = ".jar";
+    private static final String ZIP = ".zip";
 
     private final String root;
     private final Set<String> suffixes = new HashSet<String>();
@@ -54,6 +55,7 @@ public class RemoteContentStore implements ContentStore, StructureBuilder {
         this.root = root;
         addSuffix(CAR);
         addSuffix(JAR);
+        addSuffix(ZIP);
     }
 
     public void addSuffix(String suffix) {
