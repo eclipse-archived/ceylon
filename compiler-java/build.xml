@@ -3,13 +3,7 @@
   <property file="build.properties"/>	
 
   <property name="name" value="Ceylon compiler"/>
-  <!-- Detect user's HOME directory -->
-  <condition property="ceylon.repo.base" value="${user.home}/Ceylon" else="${user.home}/.ceylon">
-    <and>
-      <os family="windows"/>
-    </and>
-  </condition>
-  <property name="ceylon.repo.dir" location="${ceylon.repo.base}/repo"/>
+  <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
   <property name="ceylon.typechecker.dir" value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}"/>
   <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
   <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}"/>
