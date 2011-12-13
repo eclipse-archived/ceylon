@@ -515,10 +515,12 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     public Module findOrCreateModule(String pkgName) {
         java.util.List<String> moduleName;
         boolean isJava = false;
+        boolean defaultModule = false;
         // FIXME: this is a rather simplistic view of the world
-        if(pkgName == null)
-            moduleName = Arrays.asList(Util.DEFAULT_MODULE_NAME);
-        else if(pkgName.startsWith("java.")){
+        if(pkgName == null){
+            moduleName = Arrays.asList(Module.DEFAULT_MODULE_NAME);
+            defaultModule = true;
+        }else if(pkgName.startsWith("java.")){
             moduleName = Arrays.asList("java");
             isJava = true;
         }else if(pkgName.startsWith("sun.")){
@@ -539,6 +541,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
          ((CompilerModule)module).setJava(isJava);
          // FIXME: this can't be that easy.
          module.setAvailable(true);
+         module.setDefault(defaultModule);
          return module;
     }
 
