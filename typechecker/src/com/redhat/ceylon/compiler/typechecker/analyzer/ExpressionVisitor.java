@@ -42,7 +42,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
-import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -281,7 +280,7 @@ public class ExpressionVisitor extends Visitor {
     private void checkReified(Node that, ProducedType type) {
         if (type!=null) {
             TypeDeclaration dec = type.getDeclaration();
-			if (dec instanceof UnionType) {
+            if (dec instanceof UnionType) {
                 for (ProducedType pt: dec.getCaseTypes()) {
                     checkReified(that, pt);
                 }
@@ -1627,12 +1626,14 @@ public class ExpressionVisitor extends Visitor {
         checkAssignability(that.getTerm());
     }
     
-    private void checkOperandType(ProducedType pt, TypeDeclaration td, 
+    private ProducedType checkOperandType(ProducedType pt, TypeDeclaration td, 
             Node node, String message) {
-        if (pt.getSupertype(td)==null) {
+        ProducedType supertype = pt.getSupertype(td);
+        if (supertype==null) {
             node.addError(message + ": " + pt.getDeclaration().getName() +
                     " is not a subtype of " + td.getName());
         }
+        return supertype;
     }
 
     private void checkOperandType(ProducedType pt, ProducedType operand, 
@@ -1643,19 +1644,25 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void checkOperandTypes(ProducedType lhst, ProducedType rhst, 
+    private ProducedType checkOperandTypes(ProducedType lhst, ProducedType rhst, 
             TypeDeclaration td, Node node, String message) {
         ProducedType ut = unionType(lhst, rhst, unit);
-        ProducedType st = Util.producedType(td, ut);
+        ProducedType st = producedType(td, ut);
         checkOperandType(st, lhst, node, message);
         checkOperandType(st, rhst, node, message);
+        return ut.getSupertype(td);
     }
 
     private void visitIncrementDecrement(Tree.Term that,
             ProducedType pt, Tree.Term term) {
         if (pt!=null) {
-            checkOperandType(pt, unit.getOrdinalDeclaration(), term,
-                    "operand expression must be of ordinal type");
+            ProducedType ot = checkOperandType(pt, unit.getOrdinalDeclaration(), 
+                    term, "operand expression must be of ordinal type");
+            if (ot!=null) {
+                ProducedType ta = ot.getTypeArgumentList().get(0);
+                checkAssignable(ta, pt, that, 
+                        "result type must be assignable to declared type");
+            }
             that.setTypeModel(pt);
         }
     }
@@ -1701,10 +1708,9 @@ public class ExpressionVisitor extends Visitor {
         if ( rhst!=null && lhst!=null ) {
             checkOperandTypes(lhst, rhst, unit.getOrdinalDeclaration(), that,
                     "operand expressions must be of compatible ordinal type");
-            checkOperandTypes(lhst, rhst, unit.getComparableDeclaration(), that, 
+            ProducedType ct = checkOperandTypes(lhst, rhst, 
+                    unit.getComparableDeclaration(), that, 
                     "operand expressions must be comparable");
-            ProducedType ct = unionType(lhst, rhst, unit)
-                    .getSupertype(unit.getComparableDeclaration());
             if (ct!=null) {
                 ProducedType pt = producedType(unit.getRangeDeclaration(), 
                         ct.getTypeArgumentList().get(0));
@@ -1731,12 +1737,10 @@ public class ExpressionVisitor extends Visitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            checkOperandType(lhst, type, that.getLeftTerm(), 
+            ProducedType lhsst = checkOperandType(lhst, type, that.getLeftTerm(), 
                     "operand expression must be of numeric type");
-            checkOperandType(rhst, type, that.getRightTerm(), 
+            ProducedType rhsst = checkOperandType(rhst, type, that.getRightTerm(), 
                     "operand expression must be of numeric type");
-            ProducedType rhsst = rhst.getSupertype(type);
-            ProducedType lhsst = lhst.getSupertype(type);
             if (rhsst!=null && lhsst!=null) {
                 rhst = rhsst.getTypeArgumentList().get(0);
                 lhst = lhsst.getTypeArgumentList().get(0);
@@ -1782,13 +1786,11 @@ public class ExpressionVisitor extends Visitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            checkOperandType(lhst, type, that.getLeftTerm(), 
+            ProducedType nt = checkOperandType(lhst, type, that.getLeftTerm(), 
                     "operand expression must be of numeric type");
             that.setTypeModel(lhst);
-            ProducedType nt = lhst.getSupertype(type);
             if (nt!=null) {
-                ProducedType t = nt.getTypeArguments().isEmpty() ? 
-                        nt : nt.getTypeArgumentList().get(0);
+                ProducedType t = nt.getTypeArgumentList().get(0);
                 //that.setTypeModel(t); //stef requests lhst to make it easier on backend
                 if (!rhst.isSubtypeOf(unit.getCastableType(t)) &&
                         !rhst.isExactly(lhst)) { //note the language spec does not actually bless this
@@ -1796,6 +1798,8 @@ public class ExpressionVisitor extends Visitor {
                             rhst.getProducedTypeName() + " is not promotable to " +
                             nt.getProducedTypeName());
                 }
+                checkAssignable(t, lhst, that, 
+                		"result type must be assignable to declared type");
             }
         }
     }
@@ -1805,9 +1809,8 @@ public class ExpressionVisitor extends Visitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            checkOperandTypes(lhst, rhst, sd, that, 
+            ProducedType ut = checkOperandTypes(lhst, rhst, sd, that, 
                     "operand expressions must be compatible");
-            ProducedType ut = unionType(lhst, rhst, unit).getSupertype(sd);
             if (ut!=null) {
                 ProducedType t = ut.getTypeArguments().isEmpty() ? 
                         ut : ut.getTypeArgumentList().get(0);
@@ -1886,9 +1889,8 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration type) {
         ProducedType t = type(that);
         if (t!=null) {
-            checkOperandType(t, type, that.getTerm(), 
+            ProducedType nt = checkOperandType(t, type, that.getTerm(), 
                     "operand expression must be of correct type");
-            ProducedType nt = t.getSupertype(type);
             if (nt!=null) {
                 ProducedType at = nt.getTypeArguments().isEmpty() ? 
                         nt : nt.getTypeArgumentList().get(0);

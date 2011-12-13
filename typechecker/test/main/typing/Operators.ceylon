@@ -238,4 +238,24 @@ class Operators() {
     
     Float ff = null?1.0 + null?2.0;
     
+    variable Ordinal<Integer> oi:=0;
+    oi++;
+    --oi;
+    variable Numeric<Integer> ai:=0;
+    ai+=1;
+    ai:=ai+1;
+    ai:=ai-1;
+    
+    void testStef<T>(T t) given T satisfies Integer {
+
+        variable T oi:=t;
+        @error oi++;
+        @error --oi;
+        variable T ai:=t;
+        @error ai+=1;
+        @error ai:=ai+1;
+        @error ai:=ai-1;
+
+    }
+    
 }
