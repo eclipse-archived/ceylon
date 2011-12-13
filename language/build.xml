@@ -40,10 +40,10 @@
     <property name="ceylon.language.dir" value="${module.language.dir}/${module.ceylon.language.version}"/>
     <property name="ceylon.language.src" value="${ceylon.language.dir}/${module.language.name}-${module.ceylon.language.version}.src"/>
     <property name="ceylon.language.car" value="${ceylon.language.dir}/${module.language.name}-${module.ceylon.language.version}.car"/>
-    <property name="ceylon.language.repo" value="${ceylon.repo.base}/${ceylon.language.dir}"/>
+    <property name="ceylon.language.repo" value="${ceylon.repo.dir}/${ceylon.language.dir}"/>
     <property name="ceylon.language.dist" value="${build.dist}/${ceylon.language.dir}"/>
 
-    <property name="tests.file" value="${build.test}/unversioned/default_module-unversioned.car"/>
+    <property name="tests.car" value="${build.test}/default/default.car"/>
 
     <!-- ################################################################## -->
     <!-- constant to declare a file binary for checksumsum -->
@@ -166,7 +166,7 @@
       
 	  <target name="test" depends="build,compile.tests"
 	  	 description="compile and run the tests">
-	  	 <java classname="run" classpath="${tests.file};${runtime.jar}"/>
+	  	 <java classname="run" classpath="${tests.car};${runtime.jar}"/>
 	  </target>
 
 </project>
