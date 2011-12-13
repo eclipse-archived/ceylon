@@ -30,6 +30,24 @@ public class Decl {
     }
 
     /**
+     * Returns the declaration's container
+     * @param decl The declaration
+     * @return the declaration's container
+     */
+    public static Scope container(Tree.Declaration decl) {
+        return container(decl.getDeclarationModel());
+    }
+
+    /**
+     * Returns the declaration's container
+     * @param decl The declaration
+     * @return the declaration's container
+     */
+    public static Scope container(Declaration decl) {
+        return decl.getContainer();
+    }
+
+    /**
      * Determines whether the declaration's containing scope is a method
      * @param decl The declaration
      * @return true if the declaration is within a method
@@ -44,8 +62,7 @@ public class Decl {
      * @return true if the declaration is within a method
      */
     public static boolean withinMethod(Declaration decl) {
-        Scope container = decl.getContainer();
-        return container instanceof Method;
+        return container(decl) instanceof Method;
     }
     
     /**
@@ -54,8 +71,7 @@ public class Decl {
      * @return true if the declaration is within a package
      */
     public static boolean withinPackage(Tree.Declaration decl) {
-        Scope container = decl.getDeclarationModel().getContainer();
-        return container instanceof com.redhat.ceylon.compiler.typechecker.model.Package;
+        return container(decl) instanceof com.redhat.ceylon.compiler.typechecker.model.Package;
     }
     
     /**
@@ -64,8 +80,16 @@ public class Decl {
      * @return true if the declaration is within a class
      */
     public static boolean withinClass(Tree.Declaration decl) {
-        Scope container = decl.getDeclarationModel().getContainer();
-        return container instanceof com.redhat.ceylon.compiler.typechecker.model.Class;
+        return container(decl) instanceof com.redhat.ceylon.compiler.typechecker.model.Class;
+    }
+    
+    /**
+     * Determines whether the declaration's containing scope is an interface
+     * @param decl The declaration
+     * @return true if the declaration is within an interface
+     */
+    public static boolean withinInterface(Tree.Declaration decl) {
+        return container(decl) instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
     }
     
     /**
@@ -83,8 +107,7 @@ public class Decl {
      * @return true if the declaration is within a class or interface
      */
     public static boolean withinClassOrInterface(Declaration decl) {
-        Scope container = decl.getContainer();
-        return container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+        return container(decl) instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
     }
     
     public static boolean isShared(Tree.Declaration decl) {
