@@ -50,10 +50,10 @@ shared class SequenceOperators() {
         upperRange := sequence[1...];
         upperRange := this.sequence[1...];
         upperRange := sequence[box(1)...];
-/*
-        Integer[] spreadMember = n1[].size;
-        variable Iterable<String>[] spreadInvoke = n1[].lines();
-        spreadInvoke = n1[].lines{};
-*/       
+        
+        Integer[] spreadMemberWithUnboxedType = sequence[].size;
+        Integer[] intSequence = {1};
+        Integer[] spreadMemberWithBoxedType = intSequence[].wholePart;
+        Character?[] spreadInvoke = sequence[].item(0);
     }
 }
