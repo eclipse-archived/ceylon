@@ -145,9 +145,9 @@
 
         <para>In a compilation source directory, all packages that do not belong to an
         identified module belong to the <emphasis>default module</emphasis>. The name
-        of the default module is <literal>[default]</literal>. The default module has no
+        of the default module is <literal>default</literal>. The default module has no
         version and cannot be published to a remote repository nor to the local
-        repository cache (under <filename>~/.ceylon/repo</filename></para>
+        repository cache (under <filename>~/.ceylon/repo</filename>)</para>
         
         <para>A module <emphasis>version identifier</emphasis> is a
         character string containing digits, periods, and lowercase
@@ -172,6 +172,8 @@
         
         <programlisting>ceylon.language-1.0.1.car</programlisting>
         <programlisting>org.hibernate-3.0.0.beta.car</programlisting>
+
+        <para>The default module has no version, its module archive name is <literal>default.car</literal></para>
         
         <para>A <emphasis>source archive name</emphasis> is of the following 
         standard form:</para>
@@ -182,6 +184,8 @@
         
         <programlisting>ceylon.language-1.0.1.src</programlisting>
         <programlisting>org.hibernate-3.0.0.beta.src</programlisting>
+
+        <para>The default module has no version, its source archive name is <literal>default.src</literal></para>
         
         <para>Finally, a <emphasis>legacy archive name</emphasis> is of the 
         following standard form:</para>
@@ -348,7 +352,11 @@
         is the filesystem path or URL of the repository,
         <literal><emphasis>&lt;repository&gt;</emphasis></literal> is the name
         of the archive, and <literal><emphasis>&lt;module-path&gt;</emphasis></literal> 
-        is formed by replacing every period with a slash in the module name.</para> 
+        is formed by replacing every period with a slash in the module name.</para>
+
+        <para>The default module having no version, it's access path does not contain the version.</para>
+
+        <programlisting><emphasis>&lt;repository&gt;</emphasis>/default/<emphasis>&lt;archive&gt;</emphasis></programlisting>
         
         <para>For example, the module archive <literal>ceylon.language-1.0.1.car</literal> 
         and source archive <literal>ceylon.language-1.0.1.src</literal> belonging to the 
