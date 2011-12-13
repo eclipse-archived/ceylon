@@ -168,5 +168,41 @@ public class ArraySequence<Element> implements Sequence<Element> {
     public java.lang.String toString() {
         return Sequence$impl.toString(this);
     }
+
+    @Override
+    public boolean equals(java.lang.Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Sequence))
+            return false;
+        Sequence other = (Sequence) obj;
+        if(getSize() != other.getSize())
+            return false;
+        Iterator<Element> thisIterator = getIterator();
+        Iterator otherIterator = other.getIterator();
+        while(thisIterator != null){
+            // shouldn't happen
+            if(otherIterator == null)
+                return false;
+            Element thisHead = thisIterator.getHead();
+            java.lang.Object otherHead = otherIterator.getHead();
+            if(thisHead == null && otherIterator != null)
+                return false;
+            if(thisHead != null){
+                if(otherIterator == null)
+                    return false;
+                if(!thisHead.equals(otherHead))
+                    return false;
+            }
+            thisIterator = (Iterator<Element>) thisIterator.getTail();
+            otherIterator = otherIterator.getTail();
+        }
+        // shouldn't happen
+        if(otherIterator != null)
+            return false;
+        return true;
+    }
     
 }
