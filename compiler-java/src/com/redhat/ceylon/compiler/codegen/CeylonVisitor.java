@@ -24,7 +24,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.util.Decl;
 import com.sun.tools.javac.tree.JCTree;
@@ -83,7 +82,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         gen.resetCompilerAnnotations(annots);
     }
 
-    private boolean hasClassErrors(ClassOrInterface decl) {
+    private boolean hasClassErrors(Tree.ClassOrInterface decl) {
         ClassErrorVisitor errorVisitor = new ClassErrorVisitor();
         return errorVisitor.hasErrors(decl);
     }
@@ -280,11 +279,11 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
     
     public void visit(Tree.QualifiedMemberExpression access) {
-        append(gen.expressionGen().transform(access, null));
+        append(gen.expressionGen().transform(access));
     }
 
     public void visit(Tree.BaseMemberExpression access) {
-        append(gen.expressionGen().transform(access, null));
+        append(gen.expressionGen().transform(access));
     }
     
     /*
@@ -357,7 +356,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.UnaryOperatorExpression op) {
-        append(gen.expressionGen().transform(op, null));
+        append(gen.expressionGen().transform(op));
     }
 
     public void visit(Tree.PositiveOp op) {
@@ -369,7 +368,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.BinaryOperatorExpression op) {
-        append(gen.expressionGen().transformBinaryOperator(op, null, null));
+        append(gen.expressionGen().transform(op));
     }
     
     public void visit(Tree.ComparisonOp op) {
