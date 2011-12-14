@@ -36,6 +36,13 @@ import com.redhat.ceylon.compiler.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.tools.CeyloncTool;
 
 public class MiscTest extends CompilerTest {
+
+    @Test
+    public void testDefaultedModel() throws Exception{
+        compile("defaultedmodel/DefineDefaulted.ceylon");
+        compile("defaultedmodel/UseDefaulted.ceylon");
+    }
+    
 	@Test
 	public void testHelloWorld(){
 		compareWithJavaSource("helloworld/helloworld");
