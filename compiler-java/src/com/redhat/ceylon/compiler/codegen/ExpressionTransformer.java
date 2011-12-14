@@ -40,27 +40,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AndOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BinaryOperatorExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Element;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ElementOrRange;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ElementRange;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Exists;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.IndexExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Nonempty;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.OrOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Outer;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequenceEnumeration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.This;
 import com.redhat.ceylon.compiler.util.Decl;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.TypeTags;
@@ -86,6 +65,7 @@ import com.sun.tools.javac.util.Name;
  * This transformer deals with expressions only
  */
 public class ExpressionTransformer extends AbstractTransformer {
+
     private boolean inStatement = false;
     
     public static ExpressionTransformer getInstance(Context context) {
@@ -101,10 +81,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         super(context);
     }
 
+	//
+	// Statement expressions
+	
     public JCStatement transform(Tree.ExpressionStatement tree) {
         // ExpressionStatements do not return any value, therefore we don't care about the type of the expressions.
         inStatement = true;
-        JCStatement result = at(tree).Exec(expressionGen().transformExpression(tree.getExpression(), BoxingStrategy.INDIFFERENT, null));
+        JCStatement result = at(tree).Exec(transformExpression(tree.getExpression(), BoxingStrategy.INDIFFERENT, null));
         inStatement = false;
         return result;
     }
@@ -112,10 +95,13 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCStatement transform(Tree.SpecifierStatement op) {
         // SpecifierStatement do not return any value, therefore we don't care about the type of the expressions.
         inStatement = true;
-        JCStatement result = at(op).Exec(expressionGen().transformAssignment(op, op.getBaseMemberExpression(), op.getSpecifierExpression().getExpression()));
+        JCStatement result = at(op).Exec(transformAssignment(op, op.getBaseMemberExpression(), op.getSpecifierExpression().getExpression()));
         inStatement = false;
         return result;
     }
+    
+    //
+    // Any sort of expression
     
     JCExpression transformExpression(final Tree.Term expr) {
         return transformExpression(expr, BoxingStrategy.BOXED, null);
@@ -133,6 +119,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         CeylonVisitor v = new CeylonVisitor(gen());
+        // FIXME: shouldn't that be in the visitor?
         if (expr instanceof Tree.Expression) {
             // Cope with things like ((expr))
             Tree.Expression expr2 = (Tree.Expression)expr;
@@ -155,7 +142,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         return result;
     }
     
-    private JCExpression applyErasureAndBoxing(JCExpression result, Term expr, BoxingStrategy boxingStrategy, ProducedType expectedType) {
+    //
+    // Boxing and erasure of expressions
+    
+    private JCExpression applyErasureAndBoxing(JCExpression result, Tree.Term expr, BoxingStrategy boxingStrategy, ProducedType expectedType) {
         ProducedType exprType = expr.getTypeModel();
         boolean exprBoxed = !Util.isUnBoxed(expr);
         return applyErasureAndBoxing(result, exprType, exprBoxed, boxingStrategy, expectedType);
@@ -182,15 +172,69 @@ public class ExpressionTransformer extends AbstractTransformer {
         return boxUnboxIfNecessary(result, exprBoxed, exprType, boxingStrategy);
     }
 
+    //
+    // Literals
+    
+    JCExpression ceylonLiteral(String s) {
+        JCLiteral lit = make().Literal(s);
+        return lit;
+    }
+
+    public JCExpression transform(Tree.StringLiteral string) {
+        // FIXME: this is appalling
+        String value = string
+                .getText()
+                .substring(1, string.getText().length() - 1)
+                .replace("\r\n", "\n")
+                .replace("\r", "\n")
+                .replace("\\b", "\b")
+                .replace("\\t", "\t")
+                .replace("\\n", "\n")
+                .replace("\\f", "\f")
+                .replace("\\r", "\r")
+                .replace("\\\\", "\\")
+                .replace("\\\"", "\"")
+                .replace("\\'", "'")
+                .replace("\\`", "`");
+        at(string);
+        return ceylonLiteral(value);
+    }
+
+    public JCExpression transform(Tree.QuotedLiteral string) {
+        String value = string
+                .getText()
+                .substring(1, string.getText().length() - 1);
+        JCExpression result = makeSelect(makeIdent(syms().ceylonQuotedType), "instance");
+        return at(string).Apply(null, result, List.<JCTree.JCExpression>of(make().Literal(value)));
+    }
+
+    public JCExpression transform(Tree.CharLiteral lit) {
+        // FIXME: go unicode, but how?
+        JCExpression expr = make().Literal(TypeTags.CHAR, (int) lit.getText().charAt(1));
+        // XXX make().Literal(lit.value) doesn't work here... something
+        // broken in javac?
+        return expr;
+    }
+
+    public JCExpression transform(Tree.FloatLiteral lit) {
+        JCExpression expr = make().Literal(Double.parseDouble(lit.getText()));
+        return expr;
+    }
+
+    public JCExpression transform(Tree.NaturalLiteral lit) {
+        JCExpression expr = make().Literal(Long.parseLong(lit.getText()));
+        return expr;
+    }
+
     public JCExpression transformStringExpression(Tree.StringTemplate expr) {
         at(expr);
         JCExpression builder;
         builder = make().NewClass(null, null, makeIdent("java.lang.StringBuilder"), List.<JCExpression>nil(), null);
 
-        java.util.List<StringLiteral> literals = expr.getStringLiterals();
-        java.util.List<Expression> expressions = expr.getExpressions();
+        java.util.List<Tree.StringLiteral> literals = expr.getStringLiterals();
+        java.util.List<Tree.Expression> expressions = expr.getExpressions();
         for (int ii = 0; ii < literals.size(); ii += 1) {
-            StringLiteral literal = literals.get(ii);
+            Tree.StringLiteral literal = literals.get(ii);
             if (!"\"\"".equals(literal.getText())) {// ignore empty string literals
                 at(literal);
                 builder = make().Apply(null, makeSelect(builder, "append"), List.<JCExpression>of(transform(literal)));
@@ -200,7 +244,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // after that because we've already exhausted all the expressions
                 break;
             }
-            Expression expression = expressions.get(ii);
+            Tree.Expression expression = expressions.get(ii);
             at(expression);
             // Here in both cases we don't need a type cast for erasure
             if (isCeylonBasicType(expression.getTypeModel())) {// TODO: Test should be erases to String, long, int, boolean, char, byte, float, double
@@ -215,6 +259,36 @@ public class ExpressionTransformer extends AbstractTransformer {
         return make().Apply(null, makeSelect(builder, "toString"), List.<JCExpression>nil());
     }
 
+    public JCExpression transform(Tree.SequenceEnumeration value) {
+        at(value);
+        if (value.getExpressionList() == null) {
+            return makeEmpty();
+        } else {
+            java.util.List<Tree.Expression> list = value.getExpressionList().getExpressions();
+            ProducedType seqElemType = value.getTypeModel().getTypeArgumentList().get(0);
+            return makeSequence(list, seqElemType);
+        }
+    }
+
+    public JCTree transform(Tree.This expr) {
+        at(expr);
+        return makeIdent("this");
+    }
+
+    public JCTree transform(Tree.Super expr) {
+        at(expr);
+        return makeIdent("super");
+    }
+
+    public JCTree transform(Tree.Outer expr) {
+        at(expr);
+        ProducedType outerClass = com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface(expr.getScope());
+        return makeIdent(outerClass.getDeclaration().getName(), "this");
+    }
+
+    //
+    // Unary and Binary operators that can be overridden
+    
     private static Map<Class<? extends Tree.UnaryOperatorExpression>, String> unaryOperators;
     private static Map<Class<? extends Tree.BinaryOperatorExpression>, String> binaryOperators;
 
@@ -225,10 +299,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         // Unary operators
         unaryOperators.put(Tree.PositiveOp.class, "positiveValue");
         unaryOperators.put(Tree.NegativeOp.class, "negativeValue");
-        unaryOperators.put(Tree.NotOp.class, "complement");
-        unaryOperators.put(Tree.FormatOp.class, "string");
+        // FIXME: this isn't tested but not sure the spec still wants it
+        unaryOperators.put(Tree.FormatOp.class, "formatted");
 
-        // Binary operators that act on types
+        // Binary operators
         binaryOperators.put(Tree.SumOp.class, "plus");
         binaryOperators.put(Tree.DifferenceOp.class, "minus");
         binaryOperators.put(Tree.ProductOp.class, "times");
@@ -248,15 +322,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         binaryOperators.put(Tree.SmallAsOp.class, "asSmallAs");
     }
 
-    // FIXME: I'm pretty sure sugar is not supposed to be in there
-    public JCExpression transform(Tree.NotEqualOp op) {
-        Tree.EqualOp newOp = new Tree.EqualOp(op.getToken());
-        newOp.setLeftTerm(op.getLeftTerm());
-        newOp.setRightTerm(op.getRightTerm());
-        Tree.NotOp newNotOp = new Tree.NotOp(op.getToken());
-        newNotOp.setTerm(newOp);
-        return transform(newNotOp);
-    }
+    //
+    // Unary operators
 
     public JCExpression transform(Tree.NotOp op) {
         // No need for an erasure cast since Term must be Boolean and we never need to erase that
@@ -265,87 +332,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         return jcu;
     }
 
-    public JCExpression transform(Tree.AssignOp op) {
-        return transformAssignment(op, op.getLeftTerm(), op.getRightTerm());
-    }
-
-    public JCExpression transformAssignment(Node op, Term leftTerm, Term rightTerm) {
-        // FIXME: can this be anything else than a Primary?
-        TypedDeclaration decl = (TypedDeclaration) ((Tree.Primary)leftTerm).getDeclaration();
-
-        // Remember and disable inStatement for RHS
-        boolean tmpInStatement = inStatement;
-        inStatement = false;
-        
-        // right side
-        final JCExpression rhs = transformExpression(rightTerm, Util.getBoxingStrategy(decl), decl.getType());
-
-        if (tmpInStatement) {
-            return transformAssignment(op, leftTerm, rhs);
-        } else {
-            ProducedType valueType = leftTerm.getTypeModel();
-            return transformSideEffectOperation(op, leftTerm, Util.getBoxingStrategy(decl) == BoxingStrategy.BOXED, 
-                    valueType, valueType, new SideEffectOperationFactory(){
-                @Override
-                public JCExpression makeOperation(JCExpression getter) {
-                    return rhs;
-                }
-            });
-        }
-    }
-    
-    private JCExpression transformAssignment(final Node op, Term leftTerm, JCExpression rhs) {
-        // left hand side can be either BaseMemberExpression, QualifiedMemberExpression or array access (M2)
-        // TODO: array access (M2)
-        JCExpression expr = null;
-        if(leftTerm instanceof Tree.BaseMemberExpression)
-            expr = null;
-        else if(leftTerm instanceof Tree.QualifiedMemberExpression){
-            Tree.QualifiedMemberExpression qualified = ((Tree.QualifiedMemberExpression)leftTerm);
-            expr = transformExpression(qualified.getPrimary(), BoxingStrategy.BOXED, qualified.getTarget().getQualifyingType());
-        }else{
-            log.error("ceylon", "Not supported yet: "+op.getNodeType());
-            return at(op).Erroneous(List.<JCTree>nil());
-        }
-        return transformAssignment(op, leftTerm, expr, rhs);
-    }
-    
-    private JCExpression transformAssignment(Node op, Term leftTerm, JCExpression lhs, JCExpression rhs) {
-        JCExpression result = null;
-
-        // FIXME: can this be anything else than a Primary?
-        TypedDeclaration decl = (TypedDeclaration) ((Tree.Primary)leftTerm).getDeclaration();
-
-        boolean variable = decl.isVariable();
-        
-        at(op);
-        String selector = Util.getSetterName(decl.getName());
-        if (decl.isToplevel()) {
-            // must use top level setter
-            lhs = makeIdentOrSelect(makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()));
-        } else if ((decl instanceof Getter)) {
-            // must use the setter
-            if (Decl.withinMethod(decl)) {
-                lhs = makeIdentOrSelect(lhs, decl.getName() + "$setter");
-            }
-        } else if (variable && (Decl.isClassAttribute(decl))) {
-            // must use the setter, nothing to do
-        } else if (variable && (decl.isCaptured() || decl.isShared())) {
-            // must use the qualified setter
-            lhs = makeIdentOrSelect(lhs, decl.getName());
-        } else {
-            result = at(op).Assign(makeIdentOrSelect(lhs, decl.getName()), rhs);
-        }
-        
-        if (result == null) {
-            result = make().Apply(List.<JCTree.JCExpression>nil(),
-                    makeIdentOrSelect(lhs, selector),
-                    List.<JCTree.JCExpression>of(rhs));
-        }
-        
-        return result;
-    }
-    
     public JCExpression transform(Tree.IsOp op) {
         // we don't need any erasure type cast for an "is" test
         JCExpression expression = transformExpression(op.getTerm());
@@ -353,18 +339,68 @@ public class ExpressionTransformer extends AbstractTransformer {
         return makeTypeTest(expression, op.getType().getTypeModel());
     }
 
-    public JCTree transform(Nonempty op) {
+    public JCTree transform(Tree.Nonempty op) {
         // we don't need any erasure type cast for a "nonempty" test
         JCExpression expression = transformExpression(op.getTerm());
         at(op);
         return makeTypeTest(expression, op.getUnit().getSequenceDeclaration().getType());
     }
 
-    public JCTree transform(Exists op) {
+    public JCTree transform(Tree.Exists op) {
         // we don't need any erasure type cast for an "exists" test
         JCExpression expression = transformExpression(op.getTerm());
         at(op);
         return  make().Binary(JCTree.NE, expression, makeNull());
+    }
+
+    public JCExpression transform(Tree.PositiveOp op) {
+        return transformOverridableUnaryOperator(op, op.getUnit().getInvertableDeclaration());
+    }
+
+    public JCExpression transform(Tree.NegativeOp op) {
+        return transformOverridableUnaryOperator(op, op.getUnit().getInvertableDeclaration());
+    }
+
+    public JCExpression transform(Tree.UnaryOperatorExpression op) {
+        return transformOverridableUnaryOperator(op, (ProducedType)null);
+    }
+
+    private JCExpression transformOverridableUnaryOperator(Tree.UnaryOperatorExpression op, Interface compoundType) {
+        ProducedType leftType = getSupertype(op.getTerm(), compoundType);
+        return transformOverridableUnaryOperator(op, leftType);
+    }
+    
+    private JCExpression transformOverridableUnaryOperator(Tree.UnaryOperatorExpression op, ProducedType expectedType) {
+        at(op);
+        Tree.Term term = op.getTerm();
+        if (term instanceof Tree.NaturalLiteral && op instanceof Tree.NegativeOp) {
+            Tree.NaturalLiteral lit = (Tree.NaturalLiteral) term;
+            return makeLong(-Long.parseLong(lit.getText()));
+        } else if (term instanceof Tree.NaturalLiteral && op instanceof Tree.PositiveOp) {
+            Tree.NaturalLiteral lit = (Tree.NaturalLiteral) term;
+            return makeLong(Long.parseLong(lit.getText()));
+        }
+        
+        String operatorMethodName = unaryOperators.get(op.getClass());
+        if (operatorMethodName == null) {
+            return make().Erroneous();
+        }
+        
+        return make().Apply(null, makeSelect(transformExpression(term, BoxingStrategy.BOXED, expectedType), 
+                Util.getGetterName(operatorMethodName)), List.<JCExpression> nil());
+    }
+
+    //
+    // Binary operators
+    
+    // FIXME: I'm pretty sure sugar is not supposed to be in there
+    public JCExpression transform(Tree.NotEqualOp op) {
+        Tree.EqualOp newOp = new Tree.EqualOp(op.getToken());
+        newOp.setLeftTerm(op.getLeftTerm());
+        newOp.setRightTerm(op.getRightTerm());
+        Tree.NotOp newNotOp = new Tree.NotOp(op.getToken());
+        newNotOp.setTerm(newOp);
+        return transform(newNotOp);
     }
 
     public JCExpression transform(Tree.RangeOp op) {
@@ -387,42 +423,140 @@ public class ExpressionTransformer extends AbstractTransformer {
         return at(op).NewClass(null, null, typeExpr , List.<JCExpression> of(key, elem), null);
     }
 
-    public JCExpression transform(Tree.PositiveOp op) {
-        return transformUnaryOperator(op, op.getUnit().getInvertableDeclaration());
+    public JCTree transform(Tree.DefaultOp op) {
+        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, typeFact().getBooleanDeclaration().getType());
+        JCExpression right = transformExpression(op.getRightTerm());
+        String varName = tempName();
+        JCExpression varIdent = makeIdent(varName);
+        JCExpression test = at(op).Binary(JCTree.NE, varIdent, makeNull());
+        JCExpression cond = make().Conditional(test , varIdent, right);
+        JCExpression typeExpr = makeJavaType(op.getLeftTerm().getTypeModel(), 0);
+        return makeLetExpr(varName, null, typeExpr, left, cond);
     }
 
-    public JCExpression transform(Tree.NegativeOp op) {
-        return transformUnaryOperator(op, op.getUnit().getInvertableDeclaration());
-    }
-
-    public JCExpression transformUnaryOperator(Tree.UnaryOperatorExpression op, Interface compoundType) {
-        ProducedType leftType = getSupertype(op.getTerm(), compoundType);
-        return transform(op, leftType);
+    public JCTree transform(Tree.ThenOp op) {
+        JCExpression left = transformExpression(op.getLeftTerm(), Util.getBoxingStrategy(op.getLeftTerm()), typeFact().getBooleanDeclaration().getType());
+        JCExpression right = transformExpression(op.getRightTerm());
+        return make().Conditional(left , right, makeNull());
     }
     
-    private ProducedType getSupertype(Term term, Interface compoundType){
-        return term.getTypeModel().getSupertype(compoundType);
+    public JCTree transform(Tree.InOp op) {
+        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, typeFact().getEqualityDeclaration().getType());
+        JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, typeFact().getCategoryDeclaration().getType());
+        String varName = tempName();
+        JCExpression varIdent = makeIdent(varName);
+        JCExpression contains = at(op).Apply(null, makeSelect(right, "contains"), List.<JCExpression> of(varIdent));
+        JCExpression typeExpr = makeJavaType(op.getLeftTerm().getTypeModel(), NO_PRIMITIVES);
+        return makeLetExpr(varName, null, typeExpr, left, contains);
     }
 
-    public JCExpression transform(Tree.UnaryOperatorExpression op, ProducedType expectedType) {
-        at(op);
-        Tree.Term term = op.getTerm();
-        if (term instanceof Tree.NaturalLiteral && op instanceof Tree.NegativeOp) {
-            Tree.NaturalLiteral lit = (Tree.NaturalLiteral) term;
-            return makeLong(-Long.parseLong(lit.getText()));
-        } else if (term instanceof Tree.NaturalLiteral && op instanceof Tree.PositiveOp) {
-            Tree.NaturalLiteral lit = (Tree.NaturalLiteral) term;
-            return makeLong(Long.parseLong(lit.getText()));
-        }
-        
-        String operatorMethodName = unaryOperators.get(op.getClass());
-        if (operatorMethodName == null) {
-        	return make().Erroneous();
-        }
-        
-        return make().Apply(null, makeSelect(transformExpression(term, BoxingStrategy.BOXED, expectedType), 
-                Util.getGetterName(operatorMethodName)), List.<JCExpression> nil());
+    // Logical operators
+    
+    public JCExpression transform(Tree.LogicalOp op) {
+        // Both terms are Booleans and can't be erased to anything
+        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.UNBOXED, null);
+        return transformLogicalOp(op, op.getClass(), left, op.getRightTerm());
     }
+
+    private JCExpression transformLogicalOp(Node op, Class<? extends Tree.LogicalOp> operatorClass, 
+            JCExpression left, Tree.Term rightTerm) {
+        // Both terms are Booleans and can't be erased to anything
+        JCExpression right = transformExpression(rightTerm, BoxingStrategy.UNBOXED, null);
+
+        JCBinary jcb = null;
+        if (operatorClass == Tree.AndOp.class) {
+            jcb = at(op).Binary(JCTree.AND, left, right);
+        }else if (operatorClass == Tree.OrOp.class) {
+            jcb = at(op).Binary(JCTree.OR, left, right);
+        }else{
+            log.error("ceylon", "Not supported yet: "+op.getNodeType());
+            return at(op).Erroneous(List.<JCTree>nil());
+        }
+        return jcb;
+    }
+
+    // Comparison operators
+    
+    public JCExpression transform(Tree.ComparisonOp op) {
+        return transformOverridableBinaryOperator(op, op.getUnit().getComparableDeclaration());
+    }
+
+    public JCExpression transform(Tree.CompareOp op) {
+        return transformOverridableBinaryOperator(op, op.getUnit().getComparableDeclaration());
+    }
+
+    // Arithmetic operators
+    
+    public JCExpression transform(Tree.ArithmeticOp op) {
+        return transformOverridableBinaryOperator(op, op.getUnit().getNumericDeclaration());
+    }
+    
+    public JCExpression transform(Tree.SumOp op) {
+        return transformOverridableBinaryOperator(op, op.getUnit().getSummableDeclaration());
+    }
+
+    public JCExpression transform(Tree.RemainderOp op) {
+        return transformOverridableBinaryOperator(op, op.getUnit().getIntegralDeclaration());
+    }
+
+    // Overridable binary operators
+    
+    public JCExpression transform(Tree.BinaryOperatorExpression op) {
+        return transformOverridableBinaryOperator(op, null, null);
+    }
+
+    private JCExpression transformOverridableBinaryOperator(Tree.BinaryOperatorExpression op, Interface compoundType) {
+        ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType);
+        ProducedType rightType = getTypeArgument(leftType);
+        return transformOverridableBinaryOperator(op, leftType, rightType);
+    }
+
+    private JCExpression transformOverridableBinaryOperator(Tree.BinaryOperatorExpression op, ProducedType leftType, ProducedType rightType) {
+        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, leftType);
+        return transformOverridableBinaryOperator(op, op.getClass(), left, rightType);
+    }
+
+    private JCExpression transformOverridableBinaryOperator(Tree.BinaryOperatorExpression op, 
+            Class<? extends Tree.OperatorExpression> operatorClass, 
+            JCExpression left, ProducedType rightType) {
+        JCExpression result = null;
+        
+        JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, rightType);
+        
+        if (operatorClass == Tree.IdenticalOp.class) {
+            result = at(op).Binary(JCTree.EQ, left, right);
+        } else {
+            Class<? extends Tree.OperatorExpression> originalOperatorClass = operatorClass;
+            boolean loseComparison = 
+                    operatorClass == Tree.SmallAsOp.class 
+                    || operatorClass == Tree.SmallerOp.class 
+                    || operatorClass == Tree.LargerOp.class
+                    || operatorClass == Tree.LargeAsOp.class;
+    
+            if (loseComparison) {
+                operatorClass = Tree.CompareOp.class;
+            }
+            
+            String operatorMethodName = binaryOperators.get(operatorClass);
+            if (operatorMethodName == null) {
+                return make().Erroneous();
+            }
+            result = at(op).Apply(null, makeSelect(left, operatorMethodName), List.of(right));
+    
+            if (loseComparison) {
+                String operatorMethodName2 = binaryOperators.get(originalOperatorClass);
+                if (operatorMethodName2 == null) {
+                    return make().Erroneous();
+                }
+                result = at(op).Apply(null, makeSelect(result, operatorMethodName2), List.<JCExpression> nil());
+            }
+        }
+
+        return result;
+    }
+
+    //
+    // Operator-Assignment expressions
 
     public JCExpression transform(final Tree.ArithmeticAssignmentOp op){
         // desugar it
@@ -449,13 +583,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         final ProducedType rightType = getTypeArgument(leftType, 0);
 
         // we work on boxed types
-        return transformSideEffectOperation(op, op.getLeftTerm(), true, 
+        return transformAssignAndReturnOperation(op, op.getLeftTerm(), true, 
                 leftType, rightType, 
-                new SideEffectOperationFactory(){
+                new AssignAndReturnOperationFactory(){
             @Override
-            public JCExpression makeOperation(JCExpression getter) {
-                // make this call: getter OP RHS
-                return transformBinaryOperator(op, infixOpClass, getter, rightType);
+            public JCExpression getNewValue(JCExpression previousValue) {
+                // make this call: previousValue OP RHS
+                return transformOverridableBinaryOperator(op, infixOpClass, previousValue, rightType);
             }
         });
     }
@@ -478,151 +612,19 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         ProducedType valueType = op.getLeftTerm().getTypeModel();
         // we work on unboxed types
-        return transformSideEffectOperation(op, op.getLeftTerm(), false, 
-                valueType, valueType, new SideEffectOperationFactory(){
+        return transformAssignAndReturnOperation(op, op.getLeftTerm(), false, 
+                valueType, valueType, new AssignAndReturnOperationFactory(){
             @Override
-            public JCExpression makeOperation(JCExpression getter) {
-                // make this call: getter OP RHS
-                return transformLogicalOp(op, operatorClass, getter, op.getRightTerm());
+            public JCExpression getNewValue(JCExpression previousValue) {
+                // make this call: previousValue OP RHS
+                return transformLogicalOp(op, operatorClass, previousValue, op.getRightTerm());
             }
         });
     }
 
-    public JCExpression transform(Tree.ComparisonOp op) {
-        return transformArithmeticOperator(op, op.getUnit().getComparableDeclaration());
-    }
-
-    public JCExpression transform(Tree.CompareOp op) {
-        return transformArithmeticOperator(op, op.getUnit().getComparableDeclaration());
-    }
-
-    public JCExpression transform(Tree.ArithmeticOp op) {
-        return transformArithmeticOperator(op, op.getUnit().getNumericDeclaration());
-    }
+    // Postfix operator
     
-    public JCExpression transform(Tree.SumOp op) {
-        return transformArithmeticOperator(op, op.getUnit().getSummableDeclaration());
-    }
-
-    public JCExpression transform(Tree.RemainderOp op) {
-        return transformArithmeticOperator(op, op.getUnit().getIntegralDeclaration());
-    }
-
-    public JCExpression transformArithmeticOperator(Tree.BinaryOperatorExpression op, Interface compoundType) {
-        ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType);
-        ProducedType rightType = getTypeArgument(leftType);
-        return transformBinaryOperator(op, leftType, rightType);
-    }
-    
-    private ProducedType getTypeArgument(ProducedType leftType) {
-        if (leftType!=null && leftType.getTypeArguments().size()==1) {
-            return leftType.getTypeArgumentList().get(0);
-        }
-        return null;
-    }
-
-    private ProducedType getTypeArgument(ProducedType leftType, int i) {
-        if (leftType!=null && leftType.getTypeArguments().size() > i) {
-            return leftType.getTypeArgumentList().get(i);
-        }
-        return null;
-    }
-
-    public JCTree transform(Tree.DefaultOp op) {
-        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, typeFact().getBooleanDeclaration().getType());
-        JCExpression right = transformExpression(op.getRightTerm());
-        String varName = tempName();
-        JCExpression varIdent = makeIdent(varName);
-        JCExpression test = at(op).Binary(JCTree.NE, varIdent, makeNull());
-        JCExpression cond = make().Conditional(test , varIdent, right);
-        JCExpression typeExpr = makeJavaType(op.getLeftTerm().getTypeModel(), 0);
-        return makeLetExpr(varName, null, typeExpr, left, cond);
-    }
-    
-    public JCTree transform(Tree.ThenOp op) {
-        JCExpression left = transformExpression(op.getLeftTerm(), Util.getBoxingStrategy(op.getLeftTerm()), typeFact().getBooleanDeclaration().getType());
-        JCExpression right = transformExpression(op.getRightTerm());
-        return make().Conditional(left , right, makeNull());
-    }
-    
-    public JCTree transform(Tree.InOp op) {
-        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, typeFact().getEqualityDeclaration().getType());
-        JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, typeFact().getCategoryDeclaration().getType());
-        String varName = tempName();
-        JCExpression varIdent = makeIdent(varName);
-        JCExpression contains = at(op).Apply(null, makeSelect(right, "contains"), List.<JCExpression> of(varIdent));
-        JCExpression typeExpr = makeJavaType(op.getLeftTerm().getTypeModel(), NO_PRIMITIVES);
-        return makeLetExpr(varName, null, typeExpr, left, contains);
-    }
-    
-    public JCExpression transformBinaryOperator(Tree.BinaryOperatorExpression op, ProducedType leftType, ProducedType rightType) {
-        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, leftType);
-        return transformBinaryOperator(op, op.getClass(), left, rightType);
-    }
-
-    private JCExpression transformBinaryOperator(BinaryOperatorExpression op, 
-            Class<? extends Tree.OperatorExpression> operatorClass, 
-            JCExpression left, ProducedType rightType) {
-        JCExpression result = null;
-        
-        JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, rightType);
-        
-        if (operatorClass == Tree.IdenticalOp.class) {
-            result = at(op).Binary(JCTree.EQ, left, right);
-        } else {
-            Class<? extends Tree.OperatorExpression> originalOperatorClass = operatorClass;
-            boolean loseComparison = 
-                    operatorClass == Tree.SmallAsOp.class 
-                    || operatorClass == Tree.SmallerOp.class 
-                    || operatorClass == Tree.LargerOp.class
-                    || operatorClass == Tree.LargeAsOp.class;
-    
-            if (loseComparison) {
-                operatorClass = Tree.CompareOp.class;
-            }
-            
-            String operatorMethodName = binaryOperators.get(operatorClass);
-            if (operatorMethodName == null) {
-            	return make().Erroneous();
-            }
-            result = at(op).Apply(null, makeSelect(left, operatorMethodName), List.of(right));
-    
-            if (loseComparison) {
-                String operatorMethodName2 = binaryOperators.get(originalOperatorClass);
-                if (operatorMethodName2 == null) {
-                	return make().Erroneous();
-                }
-                result = at(op).Apply(null, makeSelect(result, operatorMethodName2), List.<JCExpression> nil());
-            }
-        }
-
-        return result;
-    }
-
-    public JCExpression transform(Tree.LogicalOp op) {
-        // Both terms are Booleans and can't be erased to anything
-        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.UNBOXED, null);
-        return transformLogicalOp(op, op.getClass(), left, op.getRightTerm());
-    }
-
-    private JCExpression transformLogicalOp(Node op, Class<? extends Tree.LogicalOp> operatorClass, 
-            JCExpression left, Term rightTerm) {
-        // Both terms are Booleans and can't be erased to anything
-        JCExpression right = transformExpression(rightTerm, BoxingStrategy.UNBOXED, null);
-
-        JCBinary jcb = null;
-        if (operatorClass == AndOp.class) {
-            jcb = at(op).Binary(JCTree.AND, left, right);
-        }else if (operatorClass == OrOp.class) {
-            jcb = at(op).Binary(JCTree.OR, left, right);
-        }else{
-            log.error("ceylon", "Not supported yet: "+op.getNodeType());
-            return at(op).Erroneous(List.<JCTree>nil());
-        }
-        return jcb;
-    }
-    
-    JCExpression transform(Tree.PostfixOperatorExpression expr) {
+    public JCExpression transform(Tree.PostfixOperatorExpression expr) {
         String methodName;
         if (expr instanceof Tree.PostfixIncrementOp){
             methodName = "getSuccessor";
@@ -637,7 +639,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         ProducedType valueType = getSupertype(expr.getTerm(), compoundType);
         ProducedType returnType = getTypeArgument(valueType, 0);
 
-        Term term = expr.getTerm();
+        Tree.Term term = expr.getTerm();
         List<JCVariableDecl> decls = List.nil();
         List<JCStatement> stats = List.nil();
         JCExpression result = null;
@@ -670,7 +672,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         else if(term instanceof Tree.QualifiedMemberExpression){
             // e.attr++
             // (let $tmpE = e, $tmpV = $tmpE.attr; $tmpE.attr = $tmpV.getSuccessor(); $tmpV;)
-            Tree.QualifiedMemberExpression qualified = (QualifiedMemberExpression) term;
+            Tree.QualifiedMemberExpression qualified = (Tree.QualifiedMemberExpression) term;
 
             // transform the primary, this will get us a boxed primary 
             JCExpression e = transformQualifiedMemberPrimary(qualified);
@@ -719,6 +721,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         return make().LetExpr(decls, stats, result);
     }
     
+    // Prefix operator
+    
     public JCExpression transform(Tree.PrefixOperatorExpression expr) {
         final String methodName;
         if (expr instanceof Tree.IncrementOp){
@@ -734,23 +738,26 @@ public class ExpressionTransformer extends AbstractTransformer {
         ProducedType valueType = getSupertype(expr.getTerm(), compoundType);
         ProducedType returnType = getTypeArgument(valueType, 0);
         // we work on boxed types
-        return transformSideEffectOperation(expr, expr.getTerm(), true, 
-                valueType, returnType, new SideEffectOperationFactory(){
+        return transformAssignAndReturnOperation(expr, expr.getTerm(), true, 
+                valueType, returnType, new AssignAndReturnOperationFactory(){
             @Override
-            public JCExpression makeOperation(JCExpression getter) {
-                // make this call: getter.getSuccessor() or getter.getPredecessor()
-                return make().Apply(null, makeSelect(getter, methodName), List.<JCExpression>nil());
+            public JCExpression getNewValue(JCExpression previousValue) {
+                // make this call: previousValue.getSuccessor() or previousValue.getPredecessor()
+                return make().Apply(null, makeSelect(previousValue, methodName), List.<JCExpression>nil());
             }
         });
     }
     
-    private interface SideEffectOperationFactory {
-        JCExpression makeOperation(JCExpression getter);
+    //
+    // Function to deal with expressions that have side-effects
+    
+    private interface AssignAndReturnOperationFactory {
+        JCExpression getNewValue(JCExpression previousValue);
     }
     
-    private JCExpression transformSideEffectOperation(Node operator, Term term, 
+    private JCExpression transformAssignAndReturnOperation(Node operator, Tree.Term term, 
             boolean boxResult, ProducedType valueType, ProducedType returnType, 
-            SideEffectOperationFactory factory){
+            AssignAndReturnOperationFactory factory){
         
         List<JCVariableDecl> decls = List.nil();
         List<JCStatement> stats = List.nil();
@@ -765,7 +772,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             Name varName = names().fromString(tempName("op"));
             // make sure we box the results if necessary
             getter = applyErasureAndBoxing(getter, term, boxResult ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED, valueType);
-            JCExpression newValue = factory.makeOperation(getter);
+            JCExpression newValue = factory.getNewValue(getter);
             // no need to box/unbox here since newValue and $tmpV share the same boxing type
             JCVariableDecl tmpVar = make().VarDef(make().Modifiers(0), varName, exprType, newValue);
             decls = decls.prepend(tmpVar);
@@ -784,7 +791,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         else if(term instanceof Tree.QualifiedMemberExpression){
             // e.attr
             // (let $tmpE = e, $tmpV = OP($tmpE.attr); $tmpE.attr = $tmpV; $tmpV;)
-            Tree.QualifiedMemberExpression qualified = (QualifiedMemberExpression) term;
+            Tree.QualifiedMemberExpression qualified = (Tree.QualifiedMemberExpression) term;
 
             // transform the primary, this will get us a boxed primary 
             JCExpression e = transformQualifiedMemberPrimary(qualified);
@@ -801,7 +808,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression getter = transformMemberExpression(qualified, make().Ident(varEName), null);
             // make sure we box the results if necessary
             getter = applyErasureAndBoxing(getter, term, boxResult ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED, valueType);
-            JCExpression newValue = factory.makeOperation(getter);
+            JCExpression newValue = factory.getNewValue(getter);
             // no need to box/unbox here since newValue and $tmpV share the same boxing type
             JCVariableDecl tmpVVar = make().VarDef(make().Modifiers(0), varVName, attrType, newValue);
 
@@ -833,7 +840,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         return make().LetExpr(decls, stats, result);
     }
 
-    JCExpression transform(Tree.InvocationExpression ce) {
+    //
+    // Invocations
+    
+    public JCExpression transform(Tree.InvocationExpression ce) {
         if (ce.getPositionalArgumentList() != null) {
             return transformPositionalInvocation(ce);
         } else if (ce.getNamedArgumentList() != null) {
@@ -843,7 +853,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
-    private JCExpression transformNamedInvocation(final InvocationExpression ce) {
+    // Named invocation
+    
+    private JCExpression transformNamedInvocation(final Tree.InvocationExpression ce) {
         ListBuffer<JCVariableDecl> vars = ListBuffer.lb();
         ListBuffer<JCExpression> args = ListBuffer.lb();
 
@@ -854,19 +866,19 @@ public class ExpressionTransformer extends AbstractTransformer {
         Declaration primDecl = ce.getPrimary().getDeclaration();
         if (primDecl != null) {
             java.util.List<ParameterList> paramLists = ((Functional)primDecl).getParameterLists();
-            java.util.List<NamedArgument> namedArguments = ce.getNamedArgumentList().getNamedArguments();
+            java.util.List<Tree.NamedArgument> namedArguments = ce.getNamedArgumentList().getNamedArguments();
             java.util.List<Parameter> declaredParams = paramLists.get(0).getParameters();
             Parameter lastDeclared = declaredParams.size() > 0 ? declaredParams.get(declaredParams.size() - 1) : null;
             boolean boundSequenced = false;
             String varBaseName = aliasName("arg");
             
-            for (NamedArgument namedArg : namedArguments) {
+            for (Tree.NamedArgument namedArg : namedArguments) {
                 at(namedArg);
                 Parameter declaredParam = namedArg.getParameter();
                 if (declaredParam.isSequenced()) {
                     boundSequenced = true;
                 }
-                Expression expr = ((Tree.SpecifiedArgument)namedArg).getSpecifierExpression().getExpression();
+                Tree.Expression expr = ((Tree.SpecifiedArgument)namedArg).getSpecifierExpression().getExpression();
                 int index = declaredParams.indexOf(declaredParam);
                 String varName = varBaseName + "$" + index;
                 BoxingStrategy boxType = Util.getBoxingStrategy(declaredParam);
@@ -881,7 +893,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             
             int argCount = namedArguments.size();
-            SequencedArgument sequencedArgument = ce.getNamedArgumentList().getSequencedArgument();
+            Tree.SequencedArgument sequencedArgument = ce.getNamedArgumentList().getSequencedArgument();
             if (sequencedArgument != null) {
                 at(sequencedArgument);
                 int index = namedArguments.size();
@@ -908,12 +920,14 @@ public class ExpressionTransformer extends AbstractTransformer {
         return makeInvocation(ce, vars, args, typeArgs);
     }
 
-    private JCExpression transformPositionalInvocation(InvocationExpression ce) {
+    // Positional invocation
+    
+    private JCExpression transformPositionalInvocation(Tree.InvocationExpression ce) {
         ListBuffer<JCVariableDecl> vars = null;
         ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
 
         Declaration primaryDecl = ce.getPrimary().getDeclaration();
-        PositionalArgumentList positional = ce.getPositionalArgumentList();
+        Tree.PositionalArgumentList positional = ce.getPositionalArgumentList();
 
         java.util.List<ProducedType> typeArgumentModels = getTypeArguments(ce);
         List<JCExpression> typeArgs = transformTypeArguments(typeArgumentModels);
@@ -950,7 +964,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 boxed = makeEmpty();
             } else {
                 // box with an ArraySequence<T>
-                List<Expression> x = List.<Expression>nil();
+                List<Tree.Expression> x = List.<Tree.Expression>nil();
                 for (int ii = numDeclared - 1; ii < numPassed; ii++) {
                     Tree.PositionalArgument arg = positional.getPositionalArguments().get(ii);
                     x = x.append(arg.getExpression());
@@ -964,7 +978,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             for (Tree.PositionalArgument arg : positional.getPositionalArguments()) {
                 at(arg);
                 Parameter declaredParam = arg.getParameter();
-                Expression expr = arg.getExpression();
+                Tree.Expression expr = arg.getExpression();
                 int index = declaredParams.indexOf(declaredParam);
                 String varName = varBaseName + "$" + index;
                 BoxingStrategy boxType = Util.getBoxingStrategy(declaredParam);
@@ -1012,7 +1026,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private JCExpression makeInvocation(
-            final InvocationExpression ce,
+            final Tree.InvocationExpression ce,
             final ListBuffer<JCVariableDecl> vars,
             final ListBuffer<JCExpression> args,
             final List<JCExpression> typeArgs) {
@@ -1059,14 +1073,16 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
 
-    private java.util.List<ProducedType> getTypeArguments(InvocationExpression ce) {
+    // Invocation helper functions
+    
+    private java.util.List<ProducedType> getTypeArguments(Tree.InvocationExpression ce) {
         if(ce.getPrimary() instanceof Tree.StaticMemberOrTypeExpression){
             return ((Tree.StaticMemberOrTypeExpression)ce.getPrimary()).getTypeArguments().getTypeModels();
         }
         return null;
     }
 
-    List<JCExpression> transformTypeArguments(java.util.List<ProducedType> typeArguments) {
+    private List<JCExpression> transformTypeArguments(java.util.List<ProducedType> typeArguments) {
         List<JCExpression> result = List.<JCExpression> nil();
         if(typeArguments != null){
             for (ProducedType arg : typeArguments) {
@@ -1080,7 +1096,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         return result;
     }
     
-    JCExpression transformArg(Term expr, Parameter parameter, boolean isRaw, java.util.List<ProducedType> typeArgumentModels) {
+    // used by ClassDefinitionBuilder too, for super()
+    JCExpression transformArg(Tree.Term expr, Parameter parameter, boolean isRaw, java.util.List<ProducedType> typeArgumentModels) {
         // deal with upstream errors, must have already been reported so let's not throw further
         if(parameter == null)
             return make().Erroneous();
@@ -1118,56 +1135,20 @@ public class ExpressionTransformer extends AbstractTransformer {
         return ((ClassOrInterface)scope).getTypeParameters().indexOf(tp);
     }
 
-    JCExpression ceylonLiteral(String s) {
-        JCLiteral lit = make().Literal(s);
-        return lit;
+    //
+    // Member expressions
+
+    private interface TermTransformer {
+        JCExpression transform(JCExpression primaryExpr, String selector);
     }
 
-    public JCExpression transform(Tree.StringLiteral string) {
-        String value = string
-                .getText()
-                .substring(1, string.getText().length() - 1)
-                .replace("\r\n", "\n")
-                .replace("\r", "\n")
-                .replace("\\b", "\b")
-                .replace("\\t", "\t")
-                .replace("\\n", "\n")
-                .replace("\\f", "\f")
-                .replace("\\r", "\r")
-                .replace("\\\\", "\\")
-                .replace("\\\"", "\"")
-                .replace("\\'", "'")
-                .replace("\\`", "`");
-        at(string);
-        return ceylonLiteral(value);
-    }
-
-    public JCExpression transform(Tree.QuotedLiteral string) {
-        String value = string
-                .getText()
-                .substring(1, string.getText().length() - 1);
-        JCExpression result = makeSelect(makeIdent(syms().ceylonQuotedType), "instance");
-        return at(string).Apply(null, result, List.<JCTree.JCExpression>of(make().Literal(value)));
-    }
-
-    public JCExpression transform(Tree.CharLiteral lit) {
-        JCExpression expr = make().Literal(TypeTags.CHAR, (int) lit.getText().charAt(1));
-        // XXX make().Literal(lit.value) doesn't work here... something
-        // broken in javac?
-        return expr;
-    }
-
-    public JCExpression transform(Tree.FloatLiteral lit) {
-        JCExpression expr = make().Literal(Double.parseDouble(lit.getText()));
-        return expr;
-    }
-
-    public JCExpression transform(Tree.NaturalLiteral lit) {
-        JCExpression expr = make().Literal(Long.parseLong(lit.getText()));
-        return expr;
+    // Qualified members
+    
+    public JCExpression transform(Tree.QualifiedMemberExpression expr) {
+        return transform(expr, null);
     }
     
-    public JCExpression transform(Tree.QualifiedMemberExpression expr, TermTransformer transformer) {
+    private JCExpression transform(Tree.QualifiedMemberExpression expr, TermTransformer transformer) {
         JCExpression result;
         if (expr.getMemberOperator() instanceof Tree.SafeMemberOp) {
             JCExpression primaryExpr = transformQualifiedMemberPrimary(expr);
@@ -1186,7 +1167,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return result;
     }
 
-    private JCExpression transformSpreadOperator(QualifiedMemberExpression expr, TermTransformer transformer) {
+    private JCExpression transformSpreadOperator(Tree.QualifiedMemberExpression expr, TermTransformer transformer) {
         at(expr);
         
         String varBaseName = aliasName("spread");
@@ -1276,12 +1257,14 @@ public class ExpressionTransformer extends AbstractTransformer {
                 expr.getTarget().getQualifyingType());
     }
     
-    public JCExpression transform(Tree.BaseMemberExpression expr, TermTransformer transformer) {
-        return transformMemberExpression(expr, null, transformer);
-    }
+    // Base members
     
-    interface TermTransformer {
-        JCExpression transform(JCExpression primaryExpr, String selector);
+    public JCExpression transform(Tree.BaseMemberExpression expr) {
+        return transformMemberExpression(expr, null, null);
+    }
+
+    private JCExpression transform(Tree.BaseMemberExpression expr, TermTransformer transformer) {
+        return transformMemberExpression(expr, null, transformer);
     }
     
     private JCExpression transformPrimary(Tree.Primary primary, TermTransformer transformer) {
@@ -1404,61 +1387,16 @@ public class ExpressionTransformer extends AbstractTransformer {
         return result;
     }
 
-    private JCExpression makeIdentOrSelect(JCExpression expr, String name, String... names) {
-        if (name != null) {
-            if (expr != null) {
-                return makeSelect(makeSelect(expr, name), names);
-            } else {
-                return makeSelect(makeIdent(name), names);
-            }
-        } else {
-            return expr;
-        }
-    }
+    //
+    // Array access
 
-    private boolean isRecursiveReference(Tree.StaticMemberOrTypeExpression expr) {
-        Declaration decl = expr.getDeclaration();
-        Scope s = expr.getScope();
-        while (!(s instanceof Declaration) && (s.getContainer() != s)) {
-            s = s.getContainer();
-        }
-        return (s instanceof Declaration) && (s == decl);
-    }
-    
-    public JCExpression transform(SequenceEnumeration value) {
-        at(value);
-        if (value.getExpressionList() == null) {
-            return makeEmpty();
-        } else {
-            java.util.List<Expression> list = value.getExpressionList().getExpressions();
-            ProducedType seqElemType = value.getTypeModel().getTypeArgumentList().get(0);
-            return makeSequence(list, seqElemType);
-        }
-    }
-
-    public JCTree transform(This expr) {
-        at(expr);
-        return makeIdent("this");
-    }
-
-    public JCTree transform(Super expr) {
-        at(expr);
-        return makeIdent("super");
-    }
-
-    public JCTree transform(Outer expr) {
-        at(expr);
-        ProducedType outerClass = com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface(expr.getScope());
-        return makeIdent(outerClass.getDeclaration().getName(), "this");
-    }
-
-    public JCTree transform(IndexExpression access) {
+    public JCTree transform(Tree.IndexExpression access) {
         boolean safe = access.getIndexOperator() instanceof Tree.SafeIndexOp;
 
         // depends on the operator
-        ElementOrRange elementOrRange = access.getElementOrRange();
+        Tree.ElementOrRange elementOrRange = access.getElementOrRange();
         if(elementOrRange instanceof Tree.Element){
-            Tree.Element element = (Element) elementOrRange;
+            Tree.Element element = (Tree.Element) elementOrRange;
             // let's see what types there are
             ProducedType leftType = access.getPrimary().getTypeModel();
             if(safe)
@@ -1499,7 +1437,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // look at the lhs
             JCExpression lhs = transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftRangedType);
             // do the indices
-            Tree.ElementRange range = (ElementRange) elementOrRange;
+            Tree.ElementRange range = (Tree.ElementRange) elementOrRange;
             JCExpression start = transformExpression(range.getLowerBound(), BoxingStrategy.BOXED, rightType);
             JCExpression end;
             if(range.getUpperBound() != null)
@@ -1511,4 +1449,134 @@ public class ExpressionTransformer extends AbstractTransformer {
                     make().Select(lhs, names().fromString("span")), List.of(start, end));
         }
     }
+
+    //
+    // Assignment
+
+    public JCExpression transform(Tree.AssignOp op) {
+        return transformAssignment(op, op.getLeftTerm(), op.getRightTerm());
+    }
+
+    private JCExpression transformAssignment(Node op, Tree.Term leftTerm, Tree.Term rightTerm) {
+        // FIXME: can this be anything else than a Primary?
+        TypedDeclaration decl = (TypedDeclaration) ((Tree.Primary)leftTerm).getDeclaration();
+
+        // Remember and disable inStatement for RHS
+        boolean tmpInStatement = inStatement;
+        inStatement = false;
+        
+        // right side
+        final JCExpression rhs = transformExpression(rightTerm, Util.getBoxingStrategy(decl), decl.getType());
+
+        if (tmpInStatement) {
+            return transformAssignment(op, leftTerm, rhs);
+        } else {
+            ProducedType valueType = leftTerm.getTypeModel();
+            return transformAssignAndReturnOperation(op, leftTerm, Util.getBoxingStrategy(decl) == BoxingStrategy.BOXED, 
+                    valueType, valueType, new AssignAndReturnOperationFactory(){
+                @Override
+                public JCExpression getNewValue(JCExpression previousValue) {
+                    return rhs;
+                }
+            });
+        }
+    }
+    
+    private JCExpression transformAssignment(final Node op, Tree.Term leftTerm, JCExpression rhs) {
+        // left hand side can be either BaseMemberExpression, QualifiedMemberExpression or array access (M2)
+        // TODO: array access (M2)
+        JCExpression expr = null;
+        if(leftTerm instanceof Tree.BaseMemberExpression)
+            expr = null;
+        else if(leftTerm instanceof Tree.QualifiedMemberExpression){
+            Tree.QualifiedMemberExpression qualified = ((Tree.QualifiedMemberExpression)leftTerm);
+            expr = transformExpression(qualified.getPrimary(), BoxingStrategy.BOXED, qualified.getTarget().getQualifyingType());
+        }else{
+            log.error("ceylon", "Not supported yet: "+op.getNodeType());
+            return at(op).Erroneous(List.<JCTree>nil());
+        }
+        return transformAssignment(op, leftTerm, expr, rhs);
+    }
+    
+    private JCExpression transformAssignment(Node op, Tree.Term leftTerm, JCExpression lhs, JCExpression rhs) {
+        JCExpression result = null;
+
+        // FIXME: can this be anything else than a Primary?
+        TypedDeclaration decl = (TypedDeclaration) ((Tree.Primary)leftTerm).getDeclaration();
+
+        boolean variable = decl.isVariable();
+        
+        at(op);
+        String selector = Util.getSetterName(decl.getName());
+        if (decl.isToplevel()) {
+            // must use top level setter
+            lhs = makeIdentOrSelect(makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()));
+        } else if ((decl instanceof Getter)) {
+            // must use the setter
+            if (Decl.withinMethod(decl)) {
+                lhs = makeIdentOrSelect(lhs, decl.getName() + "$setter");
+            }
+        } else if (variable && (Decl.isClassAttribute(decl))) {
+            // must use the setter, nothing to do
+        } else if (variable && (decl.isCaptured() || decl.isShared())) {
+            // must use the qualified setter
+            lhs = makeIdentOrSelect(lhs, decl.getName());
+        } else {
+            result = at(op).Assign(makeIdentOrSelect(lhs, decl.getName()), rhs);
+        }
+        
+        if (result == null) {
+            result = make().Apply(List.<JCTree.JCExpression>nil(),
+                    makeIdentOrSelect(lhs, selector),
+                    List.<JCTree.JCExpression>of(rhs));
+        }
+        
+        return result;
+    }
+    
+    //
+    // Type helper functions
+
+    private ProducedType getSupertype(Tree.Term term, Interface compoundType){
+        return term.getTypeModel().getSupertype(compoundType);
+    }
+
+    private ProducedType getTypeArgument(ProducedType leftType) {
+        if (leftType!=null && leftType.getTypeArguments().size()==1) {
+            return leftType.getTypeArgumentList().get(0);
+        }
+        return null;
+    }
+
+    private ProducedType getTypeArgument(ProducedType leftType, int i) {
+        if (leftType!=null && leftType.getTypeArguments().size() > i) {
+            return leftType.getTypeArgumentList().get(i);
+        }
+        return null;
+    }
+    
+    //
+    // Helper functions
+    
+    private JCExpression makeIdentOrSelect(JCExpression expr, String name, String... names) {
+        if (name != null) {
+            if (expr != null) {
+                return makeSelect(makeSelect(expr, name), names);
+            } else {
+                return makeSelect(makeIdent(name), names);
+            }
+        } else {
+            return expr;
+        }
+    }
+
+    private boolean isRecursiveReference(Tree.StaticMemberOrTypeExpression expr) {
+        Declaration decl = expr.getDeclaration();
+        Scope s = expr.getScope();
+        while (!(s instanceof Declaration) && (s.getContainer() != s)) {
+            s = s.getContainer();
+        }
+        return (s instanceof Declaration) && (s == decl);
+    }
+
 }

@@ -70,6 +70,7 @@ import com.sun.tools.javac.comp.AttrContext;
 import com.sun.tools.javac.comp.Env;
 import com.sun.tools.javac.jvm.ClassWriter;
 import com.sun.tools.javac.main.JavaCompiler;
+import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
@@ -79,6 +80,7 @@ import com.sun.tools.javac.util.Context.SourceLanguage.Language;
 import com.sun.tools.javac.util.Convert;
 import com.sun.tools.javac.util.JavacFileManager;
 import com.sun.tools.javac.util.List;
+import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Options;
 import com.sun.tools.javac.util.Pair;
 import com.sun.tools.javac.util.Position;
@@ -100,6 +102,8 @@ public class LanguageCompiler extends JavaCompiler {
 	private CeylonModelLoader modelLoader;
 
     private CeylonEnter ceylonEnter;
+
+    private Options options;
 
     /** Get the PhasedUnits instance for this context. */
     public static PhasedUnits getPhasedUnitsInstance(Context context) {
@@ -163,6 +167,7 @@ public class LanguageCompiler extends JavaCompiler {
         }
         modelLoader = CeylonModelLoader.instance(context);
         ceylonEnter = CeylonEnter.instance(context);
+        options = Options.instance(context);
     }
 
     /**
@@ -310,9 +315,13 @@ public class LanguageCompiler extends JavaCompiler {
         String moduleClassName = pkgName + ".module";
         JavaFileObject fileObject;
         try {
-            System.err.println("Trying to load module "+moduleClassName);
+            if(options.get(OptionName.VERBOSE) != null){
+                Log.printLines(log.noticeWriter, "[Trying to load module "+moduleClassName+"]");
+            }
             fileObject = fileManager.getJavaFileForInput(StandardLocation.SOURCE_PATH, moduleClassName, Kind.SOURCE);
-            System.err.println("Got file object: "+fileObject);
+            if(options.get(OptionName.VERBOSE) != null){
+                Log.printLines(log.noticeWriter, "[Got file object: "+fileObject+"]");
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return loadModuleFromSource(getParentPackage(pkgName), moduleTrees);
