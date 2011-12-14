@@ -1,37 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="ceylon-dist" default="package">
+<project name="ceylon-dist" default="package" basedir=".">
 
-	<property name="ceylon-compiler.dir" value="../ceylon-compiler"/>
-    <property name="ceylon-spec.dir" value="../ceylon-spec"/>
-    <property name="ceylon.language.dir" value="../ceylon.language"/>
-	
-    <property name="dist.dir" value="dist"/>
-    <property name="basedir-from-other.dir" value="../ceylon-dist"/>
+    <property file="build.properties"/>
+    <property name="ceylon-compiler.dir" value="${basedir}/../ceylon-compiler"/>
+    <property name="ceylon-spec.dir" value="${basedir}/../ceylon-spec"/>
+    <property name="ceylon.language.dir" value="${basedir}/../ceylon.language"/>    
+    <property name="dist.dir" value="${basedir}/dist"/>
 
-    <target name="package" depends="copy-compiler-binaries, copy-compiler-libraries, install-compiler, install-typechecker, install-language, generate-spec, generate-apidoc">
-    </target>    	
+<!--    <target name="package" depends="install-compiler, install-typechecker, install-language, generate-spec, generate-apidoc">
+-->
+    <target name="package">
+        <zip destfile="${basedir}/ceylon-${ceylon.version}.zip">
+            <zipfileset dir="${dist.dir}">
+                <include name="bin/**" />
+                <exclude name="bin/ceylon*" />
+            </zipfileset>
+            <zipfileset dir="${dist.dir}" filemode="755">
+                <include name="bin/ceylon*" />
+            </zipfileset>
+            <zipfileset dir="${dist.dir}">
+                <include name="doc/**" />
+                <include name="lib/**" />
+                <include name="repo/**" />
+            </zipfileset>
+            <zipfileset dir="${basedir}">
+                <include name="LICENSE" />
+                <include name="NOTICE" />
+            </zipfileset>
+        </zip>        
+    </target>        
     
-	<target name="copy-compiler-binaries">
+    <target name="copy-compiler-binaries">
         <mkdir dir="${dist.dir}/bin"/>
-    	<copy todir="${dist.dir}/bin">
-    		<fileset dir="${ceylon-compiler.dir}/bin">
+        <copy todir="${dist.dir}/bin">
+            <fileset dir="${ceylon-compiler.dir}/bin">
                 <include name="args.sh"/>
                 <include name="args.bat"/>
-    			<include name="ceylonc"/>
+                <include name="ceylonc"/>
                 <include name="ceylonc.bat"/>
                 <include name="ceylond"/>
-    			<include name="ceylond.bat"/>
-    		</fileset>
-    	</copy>
-    	<chmod perm="0755">
-    		<fileset dir="${dist.dir}/bin">
+                <include name="ceylond.bat"/>
+            </fileset>
+        </copy>
+        <chmod perm="0755">
+            <fileset dir="${dist.dir}/bin">
                 <include name="ceylonc"/>
                 <include name="ceylond"/>
-    		</fileset>
-    	</chmod>
-	</target>       
-	    
-	<target name="copy-compiler-libraries">
+            </fileset>
+        </chmod>
+    </target>       
+        
+    <target name="copy-compiler-libraries">
         <mkdir dir="${dist.dir}/lib"/>
         <copy todir="${dist.dir}/lib">
             <fileset dir="${ceylon-compiler.dir}/lib">
@@ -40,43 +59,56 @@
             </fileset>
         </copy>
     </target>       
-	    
-    <target name="install-compiler">
-    	<mkdir dir="${dist.dir}/repo"/>
-    	<ant antfile="${ceylon-compiler.dir}/build.xml" target="publish" dir="${ceylon-compiler.dir}" inheritall="false">
-    		<property name="ceylon.repo.dir" value="${basedir-from-other.dir}/${dist.dir}/repo"/>
-    	</ant>
+        
+    <target name="install-compiler"
+        depends="copy-compiler-binaries, copy-compiler-libraries">
+        <ant antfile="${ceylon-compiler.dir}/build.xml" target="dist" dir="${ceylon-compiler.dir}" inheritall="false">
+        </ant>
+        <copy todir="${dist.dir}/repo">
+            <fileset dir="${ceylon-compiler.dir}/build/dist">
+            </fileset>
+        </copy>
     </target>       
             
     <target name="install-typechecker">
-        <ant antfile="${ceylon-spec.dir}/build.xml" target="publish" dir="${ceylon-spec.dir}" inheritall="false">
-            <property name="repo.local.dir" value="${basedir-from-other.dir}/${dist.dir}/repo"/>
+        <ant antfile="${ceylon-spec.dir}/build.xml" target="dist" dir="${ceylon-spec.dir}" inheritall="false">
         </ant>
+        <copy todir="${dist.dir}/repo">
+            <fileset dir="${ceylon-spec.dir}/build/dist">
+            </fileset>
+        </copy>
     </target>       
             
     <target name="install-language">
-    	<ant antfile="${ceylon.language.dir}/build.xml" target="publish" dir="${ceylon.language.dir}" inheritall="false">
-            <property name="repo.local.dir" value="${basedir-from-other.dir}/${dist.dir}/repo"/>
+        <ant antfile="${ceylon.language.dir}/build.xml" target="dist" dir="${ceylon.language.dir}" inheritall="false">
         </ant>
+        <copy todir="${dist.dir}/repo">
+            <fileset dir="${ceylon.language.dir}/build/dist">
+            </fileset>
+        </copy>
     </target>       
             
     <target name="generate-spec">
-    	<ant antfile="${ceylon-spec.dir}/build.xml" target="doc" dir="${ceylon-spec.dir}" inheritall="false">
-            <property name="build.dir" value="${basedir-from-other.dir}/${dist.dir}/doc"/>
+        <ant antfile="${ceylon-spec.dir}/build.xml" target="doc" dir="${ceylon-spec.dir}" inheritall="false">
         </ant>
+        <copy todir="${dist.dir}/doc">
+            <fileset dir="${ceylon-spec.dir}/build">
+                <exclude name="dist,classes"/>
+            </fileset>
+        </copy>
     </target>       
             
     <target name="generate-apidoc">
-    	<exec command="${dist.dir}/bin/ceylond" >
-    	    <arg value="-out"/>
-    		<arg value="${dist.dir}/doc/api"/>
-    		<arg value="-src"/>
-    		<arg value="${ceylon.language.dir}/src/"/>
-    	    <env key="CEYLON_REPO" value="${dist.dir}/repo"/>
-    	</exec>
+        <exec command="${dist.dir}/bin/ceylond" >
+            <arg value="-out"/>
+            <arg value="${dist.dir}/doc/api"/>
+            <arg value="-src"/>
+            <arg value="${ceylon.language.dir}/src/"/>
+            <env key="CEYLON_REPO" value="${dist.dir}/repo"/>
+        </exec>
     </target>
-	
-	<target name="clean">
-		<delete dir="${dist.dir}"/>
-	</target>
+    
+    <target name="clean">
+        <delete dir="${dist.dir}"/>
+    </target>
 </project>
