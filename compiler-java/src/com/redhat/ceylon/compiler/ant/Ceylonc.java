@@ -52,6 +52,7 @@ public class Ceylonc extends MatchingTask {
     private File[] compileList;
     private Path classpath;
     private List<Rep> repositories = new LinkedList<Rep>();
+    private File compiler;
 
     /**
      * Sets the classpath
@@ -82,11 +83,6 @@ public class Ceylonc extends MatchingTask {
 		createClasspath().setRefid(classpathReference);
 	}
 
-	// TODO: There must be a better way to get the path for the Ceylon
-    // compiler into the compile() method. Once that better way is
-    // found, remove all references to compilerExecutable in this file.
-    private File compilerExecutable;
-    
 	/**
      * Set the source directories to find the source Java and Ceylon files.
      * @param src the source directories as a path
@@ -144,14 +140,10 @@ public class Ceylonc extends MatchingTask {
      * Set compiler executable depending on the OS.
      */
     public void setCompiler(String compilerPath) {
-		if (System.getProperty("os.name").toLowerCase().indexOf("windows") > -1) {
-			compilerExecutable = new File(compilerPath + ".bat");
-		} else {
-			compilerExecutable = new File(compilerPath);
-		}		
+        compiler = new File(getScriptName(compilerPath));
 	}
 
-	/**
+    /**
      * Clear the list of files to be compiled and copied..
      */
     protected void resetFileLists() {
@@ -203,9 +195,8 @@ public class Ceylonc extends MatchingTask {
      * @exception BuildException if an error occurs
      */
     protected void checkParameters() throws BuildException {
-        if (compilerExecutable == null) {
-            throw new BuildException("compiler attribute must be set!", getLocation());
-        }
+        // this will check that we have one
+        getCompiler();
     }
 
     /**
@@ -216,7 +207,7 @@ public class Ceylonc extends MatchingTask {
             return;
 
         Commandline cmd = new Commandline();
-        cmd.setExecutable(compilerExecutable.getAbsolutePath());
+        cmd.setExecutable(getCompiler());
         if(out != null){
             cmd.createArgument().setValue("-out");
             cmd.createArgument().setValue(out.getAbsolutePath());
@@ -254,5 +245,34 @@ public class Ceylonc extends MatchingTask {
         } catch (IOException e) {
             throw new BuildException("Error running Ceylon compiler", e, getLocation());
         }
+    }
+
+    /**
+     * Tries to find a ceylonc compiler either user-specified or detected
+     */
+    private String getCompiler() {
+        if(this.compiler != null){
+            if(!this.compiler.exists())
+                throw new BuildException("Failed to find compiler executable in "+this.compiler.getPath());
+            if(!this.compiler.canExecute())
+                throw new BuildException("Cannot execute compiler executable in "+this.compiler.getPath()+" (not executable)");
+            return this.compiler.getAbsolutePath();
+        }
+        // try to guess from the "ceylon.home" project property
+        String ceylonHome = getProject().getProperty("ceylon.home");
+        if(ceylonHome == null || ceylonHome.isEmpty()){
+            // try again from the CEYLON_HOME env var
+            ceylonHome = System.getenv("CEYLON_HOME");
+        }
+        if(ceylonHome == null || ceylonHome.isEmpty())
+            throw new BuildException("Failed to find Ceylon home, specify the ceylon.home property or set the CEYLON_HOME environment variable");
+        // now try to find the executable
+        String compilerPath = ceylonHome + File.separatorChar + "bin" + File.separatorChar + getScriptName("ceylonc");
+        File compiler = new File(compilerPath);
+        if(!compiler.exists())
+            throw new BuildException("Failed to find 'ceylonc' executable in "+ceylonHome);
+        if(!compiler.canExecute())
+            throw new BuildException("Cannot execute 'ceylonc' executable in "+ceylonHome+" (not executable)");
+        return compiler.getAbsolutePath();
     }
 }
