@@ -66,6 +66,7 @@ public class ExpressionVisitor extends Visitor {
     
     private Tree.Type returnType;
     private Declaration returnDeclaration;
+    private boolean defaultArgument;
 
     private Unit unit;
     
@@ -100,6 +101,12 @@ public class ExpressionVisitor extends Visitor {
             td.setType( returnType.getTypeModel() );
         }
         returnType = t;
+    }
+    
+    @Override public void visit(Tree.DefaultArgument that) {
+    	defaultArgument=true;
+    	super.visit(that);
+    	defaultArgument=false;
     }
     
     @Override public void visit(Tree.TypeDeclaration that) {
@@ -489,22 +496,25 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.Parameter that) {
         super.visit(that);
-        if (that.getType()!=null) {
-            checkType(that.getType().getTypeModel(), that.getSpecifierExpression());
+        SpecifierExpression se = that.getDefaultArgument()==null ?
+        		null :
+        		that.getDefaultArgument().getSpecifierExpression();
+		if (that.getType()!=null) {
+            checkType(that.getType().getTypeModel(), se);
         }
-        if (that.getSpecifierExpression()!=null) {
+        if (se!=null) {
             if (that.getType().getTypeModel()!=null) {
                 if (unit.isOptionalType(that.getType().getTypeModel())) {
-                    Tree.Term t = that.getSpecifierExpression().getExpression().getTerm();
+                    Tree.Term t = se.getExpression().getTerm();
                     if (t instanceof Tree.BaseMemberExpression) {
                         ProducedReference pr = ((Tree.BaseMemberExpression) t).getTarget();
                         if (pr==null || !pr.getDeclaration().equals(unit.getNullDeclaration())) {
-                            that.getSpecifierExpression().getExpression()
+                            se.getExpression()
                                     .addError("defaulted parameters of optional type must have the default value null");
                         }
                     }
                     else {
-                        that.getSpecifierExpression().getExpression()
+                        se.getExpression()
                                 .addError("defaulted parameters of optional type must have the default value null");
                     }
                 }
@@ -2163,6 +2173,11 @@ public class ExpressionVisitor extends Visitor {
                 visitBaseMemberExpression(that, member, ta, tal);
             }
             //otherwise infer type arguments later
+            if (defaultArgument) {
+            	if (member.isClassOrInterfaceMember()) {
+            		that.addWarning("references to this from default argument expressions not yet supported");
+            	}
+            }
         }
     }
 
@@ -2384,6 +2399,9 @@ public class ExpressionVisitor extends Visitor {
         else {
             that.setTypeModel(ci);
         }
+        if (defaultArgument) {
+        	that.addWarning("references to outer from default argument expressions not yet supported");
+        }
     }
 
     private boolean inExtendsClause = false;
@@ -2415,6 +2433,9 @@ public class ExpressionVisitor extends Visitor {
                 that.setTypeModel(t);
             }
         }
+        if (defaultArgument) {
+        	that.addWarning("references to super from default argument expressions not yet supported");
+        }
     }
     
     @Override public void visit(Tree.This that) {
@@ -2424,6 +2445,9 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             that.setTypeModel(ci.getType());
+        }
+        if (defaultArgument) {
+        	that.addWarning("references to this from default argument expressions not yet supported");
         }
     }
     

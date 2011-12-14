@@ -33,6 +33,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 
 /**
  * First phase of type analysis.
@@ -489,16 +490,17 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.Parameter that) {
         super.visit(that);
-        if (that.getSpecifierExpression()!=null) {
+        SpecifierExpression se = that.getDefaultArgument()==null ?
+        		null :
+        		that.getDefaultArgument().getSpecifierExpression();
+       if (se!=null) {
             if (declaration.isActual()) {
-            	that.getSpecifierExpression().
-            	    addError("parameter of actual declaration may not define default value: parameter " +
+            	se.addError("parameter of actual declaration may not define default value: parameter " +
             			name(that.getIdentifier()) + " of " + declaration.getName());
             }
-            else {
-                that.getSpecifierExpression()
-                    .addWarning("parameter default values are not yet supported");
-            }
+            /*else {
+                se.addWarning("parameter default values are not yet supported");
+            }*/
         }
     }
     
@@ -506,7 +508,7 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.ValueParameterDeclaration that) {
         ValueParameter p = new ValueParameter();
         p.setDeclaration(declaration);
-        p.setDefaulted(that.getSpecifierExpression()!=null);
+        p.setDefaulted(that.getDefaultArgument()!=null);
         p.setSequenced(that.getType() instanceof Tree.SequencedType);
         that.setDeclarationModel(p);
         visitDeclaration(that, p);
@@ -518,7 +520,7 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.FunctionalParameterDeclaration that) {
         FunctionalParameter p = new FunctionalParameter();
         p.setDeclaration(declaration);
-        p.setDefaulted(that.getSpecifierExpression()!=null);
+        p.setDefaulted(that.getDefaultArgument()!=null);
         that.setDeclarationModel(p);
         visitDeclaration(that, p);
         Scope o = enterScope(p);
@@ -546,7 +548,7 @@ public class DeclarationVisitor extends Visitor {
         boolean foundSequenced = false;
         boolean foundDefault = false;
         for (Tree.Parameter p: that.getParameters()) {
-            if (p.getSpecifierExpression()!=null) {
+            if (p.getDefaultArgument()!=null) {
                 if (foundSequenced) {
                     p.addError("default parameter must occur before sequenced parameter");
                 }

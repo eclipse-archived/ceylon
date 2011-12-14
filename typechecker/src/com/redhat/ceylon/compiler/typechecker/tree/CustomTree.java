@@ -176,8 +176,8 @@ public class CustomTree extends Tree {
                 super.visit(visitor);
             }
             else {
-                if (getSpecifierExpression()!=null)
-                    getSpecifierExpression().visit(visitor);
+                if (getDefaultArgument()!=null)
+                	getDefaultArgument().visit(visitor);
                 super.visit(visitor);
             }
         }
@@ -206,8 +206,8 @@ public class CustomTree extends Tree {
                 super.visit(visitor);
             }
             else {
-                if (getSpecifierExpression()!=null)
-                    getSpecifierExpression().visit(visitor);
+                if (getDefaultArgument()!=null)
+                	getDefaultArgument().visit(visitor);
                 super.visit(visitor);
             }
         }

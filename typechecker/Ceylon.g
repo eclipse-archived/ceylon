@@ -781,7 +781,9 @@ parameter returns [Parameter parameter]
       )
       (
         specifier
-        { $parameter.setSpecifierExpression($specifier.specifierExpression); }
+        { DefaultArgument da = new DefaultArgument(null);
+          $parameter.setDefaultArgument(da);
+          da.setSpecifierExpression($specifier.specifierExpression); }
       )?
     ;
 
