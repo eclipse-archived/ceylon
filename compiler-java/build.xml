@@ -21,6 +21,7 @@
   <property name="build.classes" location="${build}/classes"/>
   <property name="build.ceylon.cars" location="${build}/ceylon-cars"/>
   <property name="build.lib" location="${build}/lib"/>
+  <property name="build.api" location="${build}/api"/>
   <property name="build.dist" location="${build}/dist"/>
   <property name="test.reports" location="${build}/test-reports"/>
 
@@ -291,7 +292,7 @@
     </junitreport>
   </target>
 
-  <target name="ceylonc" depends="publish">
+  <target name="ant-tasks" depends="publish">
     <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc" >
       <classpath>
         <pathelement location="${ceylon.compiler.lib}"/>
@@ -303,7 +304,7 @@
     <pathelement path="${junit.lib}"/>
   </path>
 
-  <target name="ceylon-tests.car" depends="publish,test.classes,ceylonc">
+  <target name="ceylon-tests.car" depends="publish,test.classes,ant-tasks">
   	<delete dir="${ceylon-tests.dir}"/>
     <mkdir dir="${ceylon-tests.dir}"/>
     <jar destfile="${ceylon-tests.car}">
