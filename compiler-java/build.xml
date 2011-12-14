@@ -21,6 +21,7 @@
   <property name="build.classes" location="${build}/classes"/>
   <property name="build.ceylon.cars" location="${build}/ceylon-cars"/>
   <property name="build.lib" location="${build}/lib"/>
+  <property name="build.api" location="${build}/api"/>
   <property name="build.dist" location="${build}/dist"/>
   <property name="test.reports" location="${build}/test-reports"/>
 
@@ -291,8 +292,13 @@
     </junitreport>
   </target>
 
-  <target name="ceylonc" depends="publish">
+  <target name="ant-tasks" depends="publish">
     <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc" >
+      <classpath>
+        <pathelement location="${ceylon.compiler.lib}"/>
+      </classpath>
+    </taskdef>
+    <taskdef name="ceylond" classname="com.redhat.ceylon.compiler.ant.Ceylond" >
       <classpath>
         <pathelement location="${ceylon.compiler.lib}"/>
       </classpath>
@@ -301,10 +307,9 @@
 	
   <path id="ceylon.tests.classpath">
     <pathelement path="${junit.lib}"/>
-    <pathelement path="${ceylon-tests.car}"/>
   </path>
-	
-  <target name="ceylon-tests.car" depends="publish,test.classes,ceylonc">
+
+  <target name="ceylon-tests.car" depends="publish,test.classes,ant-tasks">
   	<delete dir="${ceylon-tests.dir}"/>
     <mkdir dir="${ceylon-tests.dir}"/>
     <jar destfile="${ceylon-tests.car}">
@@ -312,13 +317,20 @@
         <include name="com/redhat/ceylon/compiler/test/ceylon/**"/>
       </fileset>
     </jar>
-    <ceylonc     
-	  classpathReference="ceylon.tests.classpath"		    	
-      compiler="bin/ceylonc"
-      srcdir="${test.src}"
-      destdir="${build.ceylon.cars}">
+    <ceylonc
+	  classpathRef="ceylon.tests.classpath"
+      executable="bin/ceylonc"
+      src="${test.src}"
+      out="${build.ceylon.cars}">
        <include name="com/redhat/ceylon/compiler/test/ceylon/*.ceylon"/>
     </ceylonc>
   </target>
 
+  <target name="api" depends="publish,ant-tasks">
+    <ceylond
+      executable="bin/ceylond"
+      src="../ceylon.language/src"
+      out="${build.api}">
+    </ceylond>
+  </target>
 </project>

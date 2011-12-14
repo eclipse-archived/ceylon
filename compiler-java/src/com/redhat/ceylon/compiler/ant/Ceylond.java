@@ -32,56 +32,37 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Project;
+import org.apache.tools.ant.Task;
 import org.apache.tools.ant.taskdefs.Execute;
 import org.apache.tools.ant.taskdefs.LogStreamHandler;
-import org.apache.tools.ant.taskdefs.MatchingTask;
 import org.apache.tools.ant.types.Commandline;
 import org.apache.tools.ant.types.Path;
-import org.apache.tools.ant.types.Reference;
-import org.apache.tools.ant.util.GlobPatternMapper;
-import org.apache.tools.ant.util.SourceFileScanner;
 
-public class Ceylonc extends MatchingTask {
+public class Ceylond extends Task {
 
-    private static final String FAIL_MSG = "Compile failed; see the compiler error output for details.";
+    private static final String FAIL_MSG = "Documentation failed; see the ceylond error output for details.";
 
     private Path src;   
     private File out;
-    private File[] compileList;
-    private Path classpath;
     private List<Rep> repositories = new LinkedList<Rep>();
     private File executable;
+    private boolean omitSource;
+    private boolean includePrivate;
 
     /**
-     * Sets the classpath
-     * @param path
+     * Do not include source code in the documentation
      */
-    public void setClasspath(Path path){
-        if(this.classpath == null)
-            this.classpath = path;
-        else
-            this.classpath.add(path);
+    public void setOmitSource(boolean omitSource){
+        this.omitSource = omitSource;
     }
-    
+
     /**
-     * Adds a &lt;classpath&gt; nested param
+     * Include even non-shared declarations
      */
-    public Path createClasspath(){
-        if(this.classpath == null)
-            return this.classpath = new Path(getProject());
-        else
-            return this.classpath.createPath(); 
+    public void setPrivate(boolean includePrivate){
+        this.includePrivate = includePrivate;
     }
-    
-    /**
-     * Sets the classpath by a path reference
-     * @param classpathReference
-     */
-	public void setClasspathRef(Reference classpathReference) {
-		createClasspath().setRefid(classpathReference);
-	}
 
 	/**
      * Set the source directories to find the source Java and Ceylon files.
@@ -118,75 +99,16 @@ public class Ceylonc extends MatchingTask {
      */
     public void execute() throws BuildException {
         checkParameters();
-        resetFileLists();
         
-        String[] list = src.list();
-        for (int i = 0; i < list.length; i++) {
-            File srcDir = getProject().resolveFile(list[i]);
-            if (!srcDir.exists()) {
-                throw new BuildException("source path \"" + srcDir.getPath() + "\" does not exist!", getLocation());
-            }
-
-            DirectoryScanner ds = getDirectoryScanner(srcDir);
-            String[] files = ds.getIncludedFiles();
-
-            scanDir(srcDir, out != null ? out : srcDir, files);
-        }
-
-        compile();
+        document();
     }
 
     /**
-     * Set compiler executable depending on the OS.
+     * Set ceylond executable depending on the OS.
      */
     public void setExecutable(String executable) {
         this.executable = new File(Util.getScriptName(executable));
 	}
-
-    /**
-     * Clear the list of files to be compiled and copied..
-     */
-    protected void resetFileLists() {
-        compileList = new File[0];
-    }
-
-    /**
-     * Scans the directory looking for source files to be compiled. The results
-     * are returned in the class variable compileList
-     * 
-     * @param srcDir The source directory
-     * @param destDir The destination directory
-     * @param files An array of filenames
-     */
-    private void scanDir(File srcDir, File destDir, String[] files) {
-        // FIXME: we can't compile java at the same time in M1
-        //scanDir(srcDir, destDir, files, "*.java");
-        scanDir(srcDir, destDir, files, "*.ceylon");
-    }
-
-    /**
-     * Scans the directory looking for source files to be compiled. The results
-     * are returned in the class variable compileList
-     * 
-     * @param srcDir The source directory
-     * @param destDir The destination directory
-     * @param files An array of filenames
-     * @param pattern The pattern to match source files
-     */
-    private void scanDir(File srcDir, File destDir, String[] files, String pattern) {
-        GlobPatternMapper m = new GlobPatternMapper();
-        m.setFrom(pattern);
-        m.setTo("*.class");
-        SourceFileScanner sfs = new SourceFileScanner(this);
-        File[] newFiles = sfs.restrictAsFiles(files, srcDir, destDir, m);
-
-        if (newFiles.length > 0) {
-            File[] newCompileList = new File[compileList.length + newFiles.length];
-            System.arraycopy(compileList, 0, newCompileList, 0, compileList.length);
-            System.arraycopy(newFiles, 0, newCompileList, compileList.length, newFiles.length);
-            compileList = newCompileList;
-        }
-    }
 
     /**
      * Check that all required attributes have been set and nothing silly has
@@ -196,18 +118,15 @@ public class Ceylonc extends MatchingTask {
      */
     protected void checkParameters() throws BuildException {
         // this will check that we have one
-        getCompiler();
+        getCeylond();
     }
 
     /**
      * Perform the compilation.
      */
-    private void compile() {
-        if (compileList.length == 0)
-            return;
-
+    private void document() {
         Commandline cmd = new Commandline();
-        cmd.setExecutable(getCompiler());
+        cmd.setExecutable(getCeylond());
         if(out != null){
             cmd.createArgument().setValue("-out");
             cmd.createArgument().setValue(out.getAbsolutePath());
@@ -225,14 +144,10 @@ public class Ceylonc extends MatchingTask {
                 cmd.createArgument().setValue(Util.quoteParameter(rep.url));
             }
         }
-        if(classpath != null){
-        	String path = classpath.toString();
-            cmd.createArgument().setValue("-classpath");
-            cmd.createArgument().setValue(Util.quoteParameter(path));
-        }
-        for (int i = 0; i < compileList.length; i++) {
-            cmd.createArgument().setValue(compileList[i].getAbsolutePath());
-        }
+        if(omitSource)
+            cmd.createArgument().setValue("-omit-source");
+        if(includePrivate)
+            cmd.createArgument().setValue("-private");
 
         try {
             Execute exe = new Execute(new LogStreamHandler(this, Project.MSG_INFO, Project.MSG_WARN));
@@ -250,7 +165,7 @@ public class Ceylonc extends MatchingTask {
     /**
      * Tries to find a ceylonc compiler either user-specified or detected
      */
-    private String getCompiler() {
-        return Util.findCeylonScript(this.executable, "ceylonc", getProject());
+    private String getCeylond() {
+        return Util.findCeylonScript(this.executable, "ceylond", getProject());
     }
 }
