@@ -48,7 +48,7 @@ public class Ceylonc extends MatchingTask {
     private static final String FAIL_MSG = "Compile failed; see the compiler error output for details.";
 
     private Path src;   
-    private File destDir;
+    private File out;
     private File[] compileList;
     private Reference classpathReference;
     private List<Rep> repositories = new LinkedList<Rep>();
@@ -64,13 +64,13 @@ public class Ceylonc extends MatchingTask {
     
 	/**
      * Set the source directories to find the source Java and Ceylon files.
-     * @param srcDir the source directories as a path
+     * @param src the source directories as a path
      */
-    public void setSrcdir(Path srcDir) {
-        if (src == null) {
-            src = srcDir;
+    public void setSrc(Path src) {
+        if (this.src == null) {
+            this.src = src;
         } else {
-            src.append(srcDir);
+            this.src.append(src);
         }
     }
 
@@ -85,10 +85,10 @@ public class Ceylonc extends MatchingTask {
     /**
      * Set the destination directory into which the Java source files should be
      * compiled.
-     * @param destDir the destination director
+     * @param out the destination director
      */
-    public void setDestdir(File destDir) {
-        this.destDir = destDir;
+    public void setOut(File out) {
+        this.out = out;
     }
 
     /**
@@ -103,13 +103,13 @@ public class Ceylonc extends MatchingTask {
         for (int i = 0; i < list.length; i++) {
             File srcDir = getProject().resolveFile(list[i]);
             if (!srcDir.exists()) {
-                throw new BuildException("srcdir \"" + srcDir.getPath() + "\" does not exist!", getLocation());
+                throw new BuildException("source path \"" + srcDir.getPath() + "\" does not exist!", getLocation());
             }
 
             DirectoryScanner ds = getDirectoryScanner(srcDir);
             String[] files = ds.getIncludedFiles();
 
-            scanDir(srcDir, destDir != null ? destDir : srcDir, files);
+            scanDir(srcDir, out != null ? out : srcDir, files);
         }
 
         compile();
@@ -178,17 +178,6 @@ public class Ceylonc extends MatchingTask {
      * @exception BuildException if an error occurs
      */
     protected void checkParameters() throws BuildException {
-        if (src == null) {
-            throw new BuildException("srcdir attribute must be set!", getLocation());
-        }
-        if (src.size() == 0) {
-            throw new BuildException("srcdir attribute must be set!", getLocation());
-        }
-
-        if (destDir != null && !destDir.isDirectory()) {
-            throw new BuildException("destination directory \"" + destDir + "\" does not exist " + "or is not a directory", getLocation());
-        }
-
         if (compilerExecutable == null) {
             throw new BuildException("compiler attribute must be set!", getLocation());
         }
@@ -203,10 +192,14 @@ public class Ceylonc extends MatchingTask {
 
         Commandline cmd = new Commandline();
         cmd.setExecutable(compilerExecutable.getAbsolutePath());
-        cmd.createArgument().setValue("-d");
-        cmd.createArgument().setValue(destDir.getAbsolutePath());
-        cmd.createArgument().setValue("-sourcepath");
-        cmd.createArgument().setValue(src.toString());
+        if(out != null){
+            cmd.createArgument().setValue("-out");
+            cmd.createArgument().setValue(out.getAbsolutePath());
+        }
+        if(src != null){
+            cmd.createArgument().setValue("-src");
+            cmd.createArgument().setValue(src.toString());
+        }
         if(classpathReference != null){
         	String path = classpathReference.getReferencedObject().toString();
         	if (System.getProperty("os.name").toLowerCase().indexOf("windows") > -1) {
