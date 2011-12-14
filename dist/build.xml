@@ -5,23 +5,24 @@
     <property name="ceylon-compiler.dir" value="${basedir}/../ceylon-compiler"/>
     <property name="ceylon-spec.dir" value="${basedir}/../ceylon-spec"/>
     <property name="ceylon.language.dir" value="${basedir}/../ceylon.language"/>    
+    <property name="dist.name" value="ceylon-${ceylon.version}"/>
     <property name="dist.dir" value="${basedir}/dist"/>
 
     <target name="package" depends="install-compiler, install-typechecker, install-language, generate-spec, generate-apidoc">
-        <zip destfile="${basedir}/ceylon-${ceylon.version}.zip">
-            <zipfileset dir="${dist.dir}">
+        <zip destfile="${basedir}/${dist.name}.zip">
+            <zipfileset dir="${dist.dir}" prefix="${dist.name}">
                 <include name="bin/**" />
                 <exclude name="bin/ceylon*" />
             </zipfileset>
-            <zipfileset dir="${dist.dir}" filemode="755">
+            <zipfileset dir="${dist.dir}" filemode="755"  prefix="${dist.name}">
                 <include name="bin/ceylon*" />
             </zipfileset>
-            <zipfileset dir="${dist.dir}">
+            <zipfileset dir="${dist.dir}" prefix="${dist.name}">
                 <include name="doc/**" />
                 <include name="lib/**" />
                 <include name="repo/**" />
             </zipfileset>
-            <zipfileset dir="${basedir}">
+            <zipfileset dir="${basedir}" prefix="${dist.name}">
                 <include name="LICENSE" />
                 <include name="NOTICE" />
             </zipfileset>
