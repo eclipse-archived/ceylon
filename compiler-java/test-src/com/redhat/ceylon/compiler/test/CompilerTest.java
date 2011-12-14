@@ -35,6 +35,8 @@ import java.util.regex.Matcher;
 import javax.tools.DiagnosticListener;
 import javax.tools.JavaFileObject;
 
+import org.junit.Before;
+
 import junit.framework.Assert;
 
 import com.redhat.ceylon.compiler.codegen.AbstractTransformer;
@@ -42,6 +44,7 @@ import com.redhat.ceylon.compiler.codegen.JavaPositionsRetriever;
 import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.tools.CeyloncTool;
+import com.redhat.ceylon.compiler.util.RepositoryLister;
 import com.sun.source.util.TaskEvent;
 import com.sun.source.util.TaskEvent.Kind;
 import com.sun.source.util.TaskListener;
@@ -81,7 +84,25 @@ public abstract class CompilerTest {
 		compareWithJavaSource(name+".src", name+".ceylon");
 	}
 
-    protected void compareWithJavaSourceWithPositions(String name) {
+	@Before
+	public void cleanCars() {
+        File destFile = new File(destDir);
+        List<String> extensionsToDelete = Arrays.asList(".jar", ".car", ".src", ".sha1");
+        new RepositoryLister(extensionsToDelete).list(destFile, new RepositoryLister.Actions() {
+            @Override
+            public void doWithFile(File path) {
+                path.delete();
+            }
+            
+            public void exitDirectory(File path) {
+                if (path.list().length == 0) {
+                    path.delete();
+                }
+            }
+        });
+	}
+	
+	protected void compareWithJavaSourceWithPositions(String name) {
         // make a compiler task
         // FIXME: runFileManager.setSourcePath(dir);
         CeyloncTaskImpl task = getCompilerTask(new String[] {name+".ceylon"});
