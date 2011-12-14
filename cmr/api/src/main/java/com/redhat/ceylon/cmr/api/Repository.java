@@ -32,6 +32,7 @@ import java.io.InputStream;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public interface Repository {
+    static final String NO_VERSION = "**NO_VERSION**";
 
     File getArtifact(String name, String version) throws IOException;
     File getArtifact(ArtifactContext context) throws IOException;

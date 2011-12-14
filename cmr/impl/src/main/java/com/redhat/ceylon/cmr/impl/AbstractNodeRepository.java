@@ -65,14 +65,19 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
     }
 
     protected String getArtifactName(String name, String version, String suffix) {
-        return name + "-" + version + suffix;
+        if (NO_VERSION.equals(version))
+            return name + suffix;
+        else
+            return name + "-" + version + suffix;
     }
 
     protected List<String> getPath(ArtifactContext context, boolean addLeaf) {
         final String name = context.getName();
         final List<String> tokens = new ArrayList<String>();
         tokens.addAll(Arrays.asList(name.split("\\.")));
-        tokens.add(context.getVersion()); // add version
+        final String version = context.getVersion();
+        if (NO_VERSION.equals(version) == false)
+            tokens.add(version); // add version
         if (addLeaf)
             tokens.add(getArtifactName(context)); // add leaf name
         return tokens;

@@ -60,6 +60,14 @@ public class SmokeTestCase {
     }
 
     @Test
+    public void testNoVersion() throws Exception {
+        Repository repo = getRepository();
+
+        File def = repo.getArtifact("default", Repository.NO_VERSION);
+        Assert.assertNotNull(def);
+    }
+
+    @Test
     public void testPut() throws Exception {
         Repository repo = getRepository();
 
