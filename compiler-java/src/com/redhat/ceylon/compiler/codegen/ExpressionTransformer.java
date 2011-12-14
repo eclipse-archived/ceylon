@@ -912,11 +912,17 @@ public class ExpressionTransformer extends AbstractTransformer {
                 JCVariableDecl varDecl = makeVar(varName, typeExpr, makeEmpty());
                 vars.append(varDecl);
             } else {
+                String containerName;
+                if (primaryDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+                    containerName = primaryDecl.getName();
+                } else {
+                    containerName = ((Declaration)primaryDecl.getContainer()).getName();
+                }
+                String className = Util.getCompanionClassName(containerName);
                 // append any arguments for defaulted parameters
                 for (int ii = numPassed; ii < numDeclared; ii++) {
                     Parameter param = declaredParams.get(ii);
                     String varName = varBaseName + "$" + ii;
-                    String className = Util.getCompanionClassName(((Declaration)primaryDecl.getContainer()).getName());
                     String methodName = Util.getDefaultedParamMethodName(primaryDecl, param);
                     List<JCExpression> arglist = (ii > 0) ? makeVarRefArgumentList(varBaseName, ii) : List.<JCExpression> nil();
                     JCExpression argExpr = at(ce).Apply(null, makeIdentOrSelect(null, className, methodName), arglist);
@@ -947,16 +953,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         List<JCExpression> typeArgs = transformTypeArguments(typeArgumentModels);
         boolean isRaw = typeArgs.isEmpty();
         
-        java.util.List<Parameter> declaredParams;
-        if (primaryDecl instanceof Method) {
-            Method methodDecl = (Method)primaryDecl;
-            declaredParams = methodDecl.getParameterLists().get(0).getParameters();
-        } else if (primaryDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-            com.redhat.ceylon.compiler.typechecker.model.Class classDecl = (com.redhat.ceylon.compiler.typechecker.model.Class)primaryDecl;
-            declaredParams = classDecl.getParameterLists().get(0).getParameters();
-        } else {
-            return make().Erroneous();
-        }
+        java.util.List<ParameterList> paramLists = ((Functional)primaryDecl).getParameterLists();
+        java.util.List<Parameter> declaredParams = paramLists.get(0).getParameters();
         int numDeclared = declaredParams.size();
         int numPassed = positional.getPositionalArguments().size();
         Parameter lastDeclaredParam = declaredParams.isEmpty() ? null : declaredParams.get(declaredParams.size() - 1); 
@@ -988,6 +986,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if (numPassed < numDeclared) {
             vars = ListBuffer.lb();
             String varBaseName = aliasName("arg");
+            String containerName;
+            if (primaryDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+                containerName = primaryDecl.getName();
+            } else {
+                containerName = ((Declaration)primaryDecl.getContainer()).getName();
+            }
+            String className = Util.getCompanionClassName(containerName);
             // append the normal args
             for (Tree.PositionalArgument arg : positional.getPositionalArguments()) {
                 at(arg);
@@ -1009,7 +1014,6 @@ public class ExpressionTransformer extends AbstractTransformer {
             for (int ii = numPassed; ii < numDeclared; ii++) {
                 Parameter param = declaredParams.get(ii);
                 String varName = varBaseName + "$" + ii;
-                String className = Util.getCompanionClassName(((Declaration)primaryDecl.getContainer()).getName());
                 String methodName = Util.getDefaultedParamMethodName(primaryDecl, param);
                 List<JCExpression> arglist = (ii > 0) ? makeVarRefArgumentList(varBaseName, ii) : List.<JCExpression> nil();
                 JCExpression argExpr = at(ce).Apply(null, makeIdentOrSelect(null, className, methodName), arglist);
