@@ -53,7 +53,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Nonempty;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.OrOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Outer;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequenceEnumeration;
@@ -845,11 +844,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     private JCExpression transformNamedInvocation(final InvocationExpression ce) {
-        final ListBuffer<JCVariableDecl> args = ListBuffer.lb();
-        final ListBuffer<JCExpression> names = ListBuffer.lb();
+        ListBuffer<JCVariableDecl> vars = ListBuffer.lb();
+        ListBuffer<JCExpression> args = ListBuffer.lb();
 
         java.util.List<ProducedType> typeArgumentModels = getTypeArguments(ce);
-        final List<JCExpression> typeArgs = transformTypeArguments(typeArgumentModels);
+        List<JCExpression> typeArgs = transformTypeArguments(typeArgumentModels);
         boolean isRaw = typeArgs.isEmpty();
 
         Declaration primDecl = ce.getPrimary().getDeclaration();
@@ -878,7 +877,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 JCExpression typeExpr = makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? TYPE_ARGUMENT : 0);
                 JCExpression argExpr = transformExpression(expr, boxType, type);
                 JCVariableDecl varDecl = makeVar(varName, typeExpr, argExpr);
-                args.append(varDecl);
+                vars.append(varDecl);
             }
             
             int argCount = namedArguments.size();
@@ -890,7 +889,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 JCExpression typeExpr = makeJavaType(lastDeclared.getType(), AbstractTransformer.WANT_RAW_TYPE);
                 JCExpression argExpr = makeSequenceRaw(sequencedArgument.getExpressionList().getExpressions());
                 JCVariableDecl varDecl = makeVar(varName, typeExpr, argExpr);
-                args.append(varDecl);
+                vars.append(varDecl);
                 argCount++;
             } else if (lastDeclared != null 
                     && lastDeclared.isSequenced() 
@@ -899,122 +898,160 @@ public class ExpressionTransformer extends AbstractTransformer {
                 String varName = varBaseName + "$" + index;
                 JCExpression typeExpr = makeJavaType(lastDeclared.getType(), AbstractTransformer.WANT_RAW_TYPE);
                 JCVariableDecl varDecl = makeVar(varName, typeExpr, makeEmpty());
-                args.append(varDecl);
+                vars.append(varDecl);
                 argCount++;
             }
             
-            // Make a list of $arg0, $arg1, ... , $argN
-            for (int i = 0; i < argCount; i++) {
-                names.append(make().Ident(names().fromString(varBaseName + "$" + i)));
+            args.appendList(makeVarRefArgumentList(varBaseName, argCount));
+        }
+
+        return makeInvocation(ce, vars, args, typeArgs);
+    }
+
+    private JCExpression transformPositionalInvocation(InvocationExpression ce) {
+        ListBuffer<JCVariableDecl> vars = null;
+        ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
+
+        Declaration primaryDecl = ce.getPrimary().getDeclaration();
+        PositionalArgumentList positional = ce.getPositionalArgumentList();
+
+        java.util.List<ProducedType> typeArgumentModels = getTypeArguments(ce);
+        List<JCExpression> typeArgs = transformTypeArguments(typeArgumentModels);
+        boolean isRaw = typeArgs.isEmpty();
+        String varBaseName = aliasName("arg");
+        
+        java.util.List<Parameter> declaredParams;
+        if (primaryDecl instanceof Method) {
+            Method methodDecl = (Method)primaryDecl;
+            declaredParams = methodDecl.getParameterLists().get(0).getParameters();
+        } else if (primaryDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+            com.redhat.ceylon.compiler.typechecker.model.Class classDecl = (com.redhat.ceylon.compiler.typechecker.model.Class)primaryDecl;
+            declaredParams = classDecl.getParameterLists().get(0).getParameters();
+        } else {
+            return make().Erroneous();
+        }
+        int numDeclared = declaredParams.size();
+        int numPassed = positional.getPositionalArguments().size();
+        Parameter lastDeclaredParam = declaredParams.isEmpty() ? null : declaredParams.get(declaredParams.size() - 1); 
+        if (lastDeclaredParam != null 
+                && lastDeclaredParam.isSequenced()
+                && positional.getEllipsis() == null // foo(sequence...) syntax => no need to box
+                && numPassed >= (numDeclared -1)) {
+            // => call to a varargs method
+            // first, append the normal args
+            for (int ii = 0; ii < numDeclared - 1; ii++) {
+                Tree.PositionalArgument arg = positional.getPositionalArguments().get(ii);
+                args.append(transformArg(arg.getExpression(), arg.getParameter(), isRaw, typeArgumentModels));
+            }
+            JCExpression boxed;
+            // then, box the remaining passed arguments
+            if (numDeclared -1 == numPassed) {
+                // box as Empty
+                boxed = makeEmpty();
+            } else {
+                // box with an ArraySequence<T>
+                List<Expression> x = List.<Expression>nil();
+                for (int ii = numDeclared - 1; ii < numPassed; ii++) {
+                    Tree.PositionalArgument arg = positional.getPositionalArguments().get(ii);
+                    x = x.append(arg.getExpression());
+                }
+                boxed = makeSequenceRaw(x);
+            }
+            args.append(boxed);
+        } else if (numPassed < numDeclared) {
+            vars = ListBuffer.lb();
+            // append the normal args
+            for (Tree.PositionalArgument arg : positional.getPositionalArguments()) {
+                at(arg);
+                Parameter declaredParam = arg.getParameter();
+                Expression expr = arg.getExpression();
+                int index = declaredParams.indexOf(declaredParam);
+                String varName = varBaseName + "$" + index;
+                BoxingStrategy boxType = Util.getBoxingStrategy(declaredParam);
+                ProducedType type = getTypeForParameter(declaredParam, isRaw, typeArgumentModels);
+                // if we can't pick up on the type from the declaration, revert to the type of the expression
+                if(isTypeParameter(type))
+                    type = expr.getTypeModel();
+                JCExpression typeExpr = makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? TYPE_ARGUMENT : 0);
+                JCExpression argExpr = transformExpression(expr, boxType, type);
+                JCVariableDecl varDecl = makeVar(varName, typeExpr, argExpr);
+                vars.append(varDecl);
+            }
+            // append any arguments for defaulted parameters
+            for (int ii = numPassed; ii < numDeclared; ii++) {
+                Parameter param = declaredParams.get(ii);
+                String varName = varBaseName + "$" + ii;
+                String className = Util.getCompanionClassName(((Declaration)primaryDecl.getContainer()).getName());
+                String methodName = Util.getDefaultedParamMethodName(primaryDecl, param);
+                List<JCExpression> arglist = (ii > 0) ? makeVarRefArgumentList(varBaseName, ii) : List.<JCExpression> nil();
+                JCExpression argExpr = at(ce).Apply(null, makeIdentOrSelect(null, className, methodName), arglist);
+                BoxingStrategy boxType = Util.getBoxingStrategy(param);
+                ProducedType type = getTypeForParameter(param, isRaw, typeArgumentModels);
+                JCExpression typeExpr = makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? TYPE_ARGUMENT : 0);
+                JCVariableDecl varDecl = makeVar(varName, typeExpr, argExpr);
+                vars.append(varDecl);
+            }
+            args.appendList(makeVarRefArgumentList(varBaseName, numDeclared));
+        } else {
+            // append the normal args
+            for (Tree.PositionalArgument arg : positional.getPositionalArguments()) {
+                args.append(transformArg(arg.getExpression(), arg.getParameter(), isRaw, typeArgumentModels));
             }
         }
 
+        return makeInvocation(ce, vars, args, typeArgs);
+    }
+
+    // Make a list of $arg0, $arg1, ... , $argN
+    private List<JCExpression> makeVarRefArgumentList(String varBaseName, int argCount) {
+        List<JCExpression> names = List.<JCExpression> nil();
+        for (int i = 0; i < argCount; i++) {
+            names = names.append(make().Ident(names().fromString(varBaseName + "$" + i)));
+        }
+        return names;
+    }
+
+    private JCExpression makeInvocation(
+            final InvocationExpression ce,
+            final ListBuffer<JCVariableDecl> vars,
+            final ListBuffer<JCExpression> args,
+            final List<JCExpression> typeArgs) {
         at(ce);
         if (ce.getPrimary() instanceof Tree.BaseTypeExpression) {
             ProducedType classType = (ProducedType)((Tree.BaseTypeExpression)ce.getPrimary()).getTarget();
-            JCExpression newExpr = make().NewClass(null, null, makeJavaType(classType, CLASS_NEW), names.toList(), null);
-            return make().LetExpr(args.toList(), newExpr);
+            JCExpression newExpr = make().NewClass(null, null, makeJavaType(classType, CLASS_NEW), args.toList(), null);
+            return (vars != null) ? make().LetExpr(vars.toList(), newExpr) : newExpr;
         } else {
             JCExpression result = transformPrimary(ce.getPrimary(), new TermTransformer() {
 
                 @Override
                 public JCExpression transform(JCExpression primaryExpr, String selector) {
                     JCExpression tmpCallPrimExpr = null;
-                    if (primaryExpr != null && selector != null) {
+                    if (vars != null && primaryExpr != null && selector != null) {
                         // Prepare the first argument holding the primary for the call
                         String callVarName = aliasName("call");
                         JCExpression callVarExpr = make().Ident(names().fromString(callVarName));
                         ProducedType type = ((Tree.QualifiedMemberExpression)ce.getPrimary()).getTarget().getQualifyingType();
                         JCVariableDecl callVar = makeVar(callVarName, makeJavaType(type, NO_PRIMITIVES), primaryExpr);
-                        args.prepend(callVar);
+                        vars.prepend(callVar);
                         tmpCallPrimExpr = makeIdentOrSelect(callVarExpr, selector);
                     } else {
                         tmpCallPrimExpr = makeIdentOrSelect(primaryExpr, selector);
                     }
-                    JCExpression callExpr = make().Apply(typeArgs, tmpCallPrimExpr, names.toList());
+                    JCExpression callExpr = make().Apply(typeArgs, tmpCallPrimExpr, args.toList());
 
-                    ProducedType returnType = ce.getTypeModel();
-                    if (isVoid(returnType)) {
-                        // void methods get wrapped like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1); null)
-                        return make().LetExpr(args.toList(), List.<JCStatement>of(make().Exec(callExpr)), makeNull());
+                    if (vars != null) {
+                        ProducedType returnType = ce.getTypeModel();
+                        if (isVoid(returnType)) {
+                            // void methods get wrapped like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1); null)
+                            return make().LetExpr(vars.toList(), List.<JCStatement>of(make().Exec(callExpr)), makeNull());
+                        } else {
+                            // all other methods like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1))
+                            return make().LetExpr(vars.toList(), callExpr);
+                        }
                     } else {
-                        // all other methods like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1))
-                        return make().LetExpr(args.toList(), callExpr);
+                        return callExpr;
                     }
-                }
-                
-            });
-            return result;
-        }
-    }
-
-    private JCExpression transformPositionalInvocation(InvocationExpression ce) {
-        final ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
-
-        boolean isVarargs = false;
-        Declaration primaryDecl = ce.getPrimary().getDeclaration();
-        PositionalArgumentList positional = ce.getPositionalArgumentList();
-
-        java.util.List<ProducedType> typeArgumentModels = getTypeArguments(ce);
-        final List<JCExpression> typeArgs = transformTypeArguments(typeArgumentModels);
-        boolean isRaw = typeArgs.isEmpty();
-        
-        if (primaryDecl instanceof Method || primaryDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-            java.util.List<Parameter> declaredParams;
-            if(primaryDecl instanceof Method){
-                Method methodDecl = (Method)primaryDecl;
-                declaredParams = methodDecl.getParameterLists().get(0).getParameters();
-            }else{
-                com.redhat.ceylon.compiler.typechecker.model.Class classDecl = (com.redhat.ceylon.compiler.typechecker.model.Class)primaryDecl;
-                declaredParams = classDecl.getParameterLists().get(0).getParameters();
-            }
-            int numDeclared = declaredParams.size();
-            java.util.List<PositionalArgument> passedArguments = positional.getPositionalArguments();
-            int numPassed = passedArguments.size();
-            Parameter lastDeclaredParam = declaredParams.isEmpty() ? null : declaredParams.get(declaredParams.size() - 1); 
-            if (lastDeclaredParam != null 
-                    && lastDeclaredParam.isSequenced()
-                    && positional.getEllipsis() == null) {// foo(sequence...) syntax => no need to box
-                // => call to a varargs method
-                isVarargs = true;
-                // first, append the normal args
-                for (int ii = 0; ii < numDeclared - 1; ii++) {
-                    Tree.PositionalArgument arg = positional.getPositionalArguments().get(ii);
-                    args.append(transformArg(arg.getExpression(), arg.getParameter(), isRaw, typeArgumentModels));
-                }
-                JCExpression boxed;
-                // then, box the remaining passed arguments
-                if (numDeclared -1 == numPassed) {
-                    // box as Empty
-                    boxed = makeEmpty();
-                } else {
-                    // box with an ArraySequence<T>
-                    List<Expression> x = List.<Expression>nil();
-                    for (int ii = numDeclared - 1; ii < numPassed; ii++) {
-                        Tree.PositionalArgument arg = positional.getPositionalArguments().get(ii);
-                        x = x.append(arg.getExpression());
-                    }
-                    boxed = makeSequenceRaw(x);
-                }
-                args.append(boxed);
-            }
-        }
-
-        if (!isVarargs) {
-            for (Tree.PositionalArgument arg : positional.getPositionalArguments())
-                args.append(transformArg(arg.getExpression(), arg.getParameter(), isRaw, typeArgumentModels));
-        }
-
-        if (ce.getPrimary() instanceof Tree.BaseTypeExpression) {
-            ProducedType classType = (ProducedType)((Tree.BaseTypeExpression)ce.getPrimary()).getTarget();
-            return at(ce).NewClass(null, null, makeJavaType(classType, CLASS_NEW), args.toList(), null);
-        } else {
-            JCExpression result = transformPrimary(ce.getPrimary(), new TermTransformer() {
-
-                @Override
-                public JCExpression transform(JCExpression primaryExpr, String selector) {
-                    JCExpression tmpCallPrimExpr = makeIdentOrSelect(primaryExpr, selector);
-                    return make().Apply(typeArgs, tmpCallPrimExpr, args.toList());
                 }
                 
             });

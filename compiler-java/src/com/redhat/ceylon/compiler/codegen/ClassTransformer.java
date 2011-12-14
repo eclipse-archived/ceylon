@@ -353,8 +353,8 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     // Creates a method to retrieve the value for a defaulted parameter
-    public JCMethodDecl transformDefaultedParameter(Tree.Parameter param, String containerName, Tree.ParameterList params) {
-        String name = containerName + "$" + param.getIdentifier().getText();
+    public JCMethodDecl transformDefaultedParameter(Tree.Parameter param, Tree.Declaration container, Tree.ParameterList params) {
+        String name = Util.getDefaultedParamMethodName(container.getDeclarationModel(), param.getDeclarationModel());
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, true, name);
         
         // Add any of the preceding parameters as parameters to the method

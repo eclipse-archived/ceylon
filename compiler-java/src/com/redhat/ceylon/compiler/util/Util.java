@@ -106,7 +106,7 @@ public class Util {
         return Character.toLowerCase(getterName.charAt(3)) + getterName.substring(4);
     }
 
-    public static String getConcreteMemberInterfaceImplementationName(String name){
+    public static String getCompanionClassName(String name){
         return name + "$impl";
     }
     
@@ -234,5 +234,16 @@ public class Util {
         if(path.startsWith(File.separator))
             path = path.substring(1);
         return path;
+    }
+
+    public static String getDefaultedParamMethodName(Declaration decl, Parameter param) {
+        if (decl instanceof Method) {
+            return decl.getName() + "$" + param.getName();
+        } else if (decl instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) {
+            return "<init>$" + param.getName();
+        } else {
+            // Should never happen (for now at least)
+            return null;
+        }
     }
 }
