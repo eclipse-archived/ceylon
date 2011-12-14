@@ -19,10 +19,12 @@
  */
 @nomodel
 class Fookls() {
+    shared Integer prop = 42;
     shared void f1(Integer n = 5) {}
     shared void f2(Integer n, String s = "test") {}
     shared void f3(Integer n = 5, Integer m = n) {}
     shared void f4(Integer n = 5, Integer m = n + 1) {}
+    shared void f5(Integer n = prop) {}
 }
 @nomodel
 interface Barface {

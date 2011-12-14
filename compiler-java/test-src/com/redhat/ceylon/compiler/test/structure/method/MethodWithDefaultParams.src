@@ -1,20 +1,29 @@
 package com.redhat.ceylon.compiler.test.structure.method;
 
 class MethodWithDefaultParams {
+    private final long prop;
     
-    private final void f1(final long n) {
+    public final long getProp() {
+        return prop;
     }
     
-    private final void f2(final long n, final .java.lang.String s) {
+    public final void f1(final long n) {
     }
     
-    private final void f3(final long n, final long m) {
+    public final void f2(final long n, final .java.lang.String s) {
     }
     
-    private final void f4(final long n, final long m) {
+    public final void f3(final long n, final long m) {
+    }
+    
+    public final void f4(final long n, final long m) {
+    }
+    
+    public final void f5(final long n) {
     }
     
     MethodWithDefaultParams() {
+        this.prop = 42L;
     }
     
     public static void main(.java.lang.String[] args) {
@@ -28,31 +37,37 @@ public final class MethodWithDefaultParams$impl {
         super();
     }
     
-    static long f1$n() {
+    static long f1$n(com.redhat.ceylon.compiler.test.structure.method.MethodWithDefaultParams $this) {
         return 5L;
     }
     
-    static .java.lang.String f2$s(final long n) {
+    static .java.lang.String f2$s(com.redhat.ceylon.compiler.test.structure.method.MethodWithDefaultParams $this, final long n) {
         return "test";
     }
     
-    static long f3$n() {
+    static long f3$n(com.redhat.ceylon.compiler.test.structure.method.MethodWithDefaultParams $this) {
         return 5L;
     }
     
-    static long f3$m(final long n) {
+    static long f3$m(com.redhat.ceylon.compiler.test.structure.method.MethodWithDefaultParams $this, final long n) {
         return n;
     }
     
-    static long f4$n() {
+    static long f4$n(com.redhat.ceylon.compiler.test.structure.method.MethodWithDefaultParams $this) {
         return 5L;
     }
     
-    static long f4$m(final long n) {
+    static long f4$m(com.redhat.ceylon.compiler.test.structure.method.MethodWithDefaultParams $this, final long n) {
         return .ceylon.language.Integer.instance(n).plus(.ceylon.language.Integer.instance(1L)).longValue();
+    }
+    
+    static long f5$n(com.redhat.ceylon.compiler.test.structure.method.MethodWithDefaultParams $this) {
+        return $this.getProp();
     }
 }
 interface MethodWithDefaultParams2 {
+    
+    public abstract long getProp();
     
     public abstract void f1(final long n);
     
@@ -61,6 +76,8 @@ interface MethodWithDefaultParams2 {
     public abstract void f3(final long n, final long m);
     
     public abstract void f4(final long n, final long m);
+    
+    public abstract void f5(final long n);
 }
 public final class MethodWithDefaultParams2$impl {
     
@@ -68,27 +85,31 @@ public final class MethodWithDefaultParams2$impl {
         super();
     }
     
-    static long f1$n() {
+    static long f1$n(com.redhat.ceylon.compiler.test.structure.method.MethodWithDefaultParams2 $this) {
         return 5L;
     }
     
-    static .java.lang.String f2$s(final long n) {
+    static .java.lang.String f2$s(com.redhat.ceylon.compiler.test.structure.method.MethodWithDefaultParams2 $this, final long n) {
         return "test";
     }
     
-    static long f3$n() {
+    static long f3$n(com.redhat.ceylon.compiler.test.structure.method.MethodWithDefaultParams2 $this) {
         return 5L;
     }
     
-    static long f3$m(final long n) {
+    static long f3$m(com.redhat.ceylon.compiler.test.structure.method.MethodWithDefaultParams2 $this, final long n) {
         return n;
     }
     
-    static long f4$n() {
+    static long f4$n(com.redhat.ceylon.compiler.test.structure.method.MethodWithDefaultParams2 $this) {
         return 5L;
     }
     
-    static long f4$m(final long n) {
+    static long f4$m(com.redhat.ceylon.compiler.test.structure.method.MethodWithDefaultParams2 $this, final long n) {
         return .ceylon.language.Integer.instance(n).plus(.ceylon.language.Integer.instance(1L)).longValue();
+    }
+    
+    static long f5$n(com.redhat.ceylon.compiler.test.structure.method.MethodWithDefaultParams2 $this) {
+        return $this.getProp();
     }
 }
