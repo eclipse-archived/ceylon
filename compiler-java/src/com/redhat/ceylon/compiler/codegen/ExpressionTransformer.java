@@ -863,15 +863,17 @@ public class ExpressionTransformer extends AbstractTransformer {
         List<JCExpression> typeArgs = transformTypeArguments(typeArgumentModels);
         boolean isRaw = typeArgs.isEmpty();
 
-        Declaration primDecl = ce.getPrimary().getDeclaration();
-        if (primDecl != null) {
-            java.util.List<ParameterList> paramLists = ((Functional)primDecl).getParameterLists();
+        Declaration primaryDecl = ce.getPrimary().getDeclaration();
+        if (primaryDecl != null) {
+            java.util.List<ParameterList> paramLists = ((Functional)primaryDecl).getParameterLists();
             java.util.List<Tree.NamedArgument> namedArguments = ce.getNamedArgumentList().getNamedArguments();
             java.util.List<Parameter> declaredParams = paramLists.get(0).getParameters();
             Parameter lastDeclared = declaredParams.size() > 0 ? declaredParams.get(declaredParams.size() - 1) : null;
             boolean boundSequenced = false;
             String varBaseName = aliasName("arg");
             
+            int numDeclared = declaredParams.size();
+            int numPassed = namedArguments.size();
             for (Tree.NamedArgument namedArg : namedArguments) {
                 at(namedArg);
                 Parameter declaredParam = namedArg.getParameter();
@@ -892,7 +894,6 @@ public class ExpressionTransformer extends AbstractTransformer {
                 vars.append(varDecl);
             }
             
-            int argCount = namedArguments.size();
             Tree.SequencedArgument sequencedArgument = ce.getNamedArgumentList().getSequencedArgument();
             if (sequencedArgument != null) {
                 at(sequencedArgument);
@@ -902,7 +903,6 @@ public class ExpressionTransformer extends AbstractTransformer {
                 JCExpression argExpr = makeSequenceRaw(sequencedArgument.getExpressionList().getExpressions());
                 JCVariableDecl varDecl = makeVar(varName, typeExpr, argExpr);
                 vars.append(varDecl);
-                argCount++;
             } else if (lastDeclared != null 
                     && lastDeclared.isSequenced() 
                     && !boundSequenced) {
@@ -911,10 +911,24 @@ public class ExpressionTransformer extends AbstractTransformer {
                 JCExpression typeExpr = makeJavaType(lastDeclared.getType(), AbstractTransformer.WANT_RAW_TYPE);
                 JCVariableDecl varDecl = makeVar(varName, typeExpr, makeEmpty());
                 vars.append(varDecl);
-                argCount++;
+            } else {
+                // append any arguments for defaulted parameters
+                for (int ii = numPassed; ii < numDeclared; ii++) {
+                    Parameter param = declaredParams.get(ii);
+                    String varName = varBaseName + "$" + ii;
+                    String className = Util.getCompanionClassName(((Declaration)primaryDecl.getContainer()).getName());
+                    String methodName = Util.getDefaultedParamMethodName(primaryDecl, param);
+                    List<JCExpression> arglist = (ii > 0) ? makeVarRefArgumentList(varBaseName, ii) : List.<JCExpression> nil();
+                    JCExpression argExpr = at(ce).Apply(null, makeIdentOrSelect(null, className, methodName), arglist);
+                    BoxingStrategy boxType = Util.getBoxingStrategy(param);
+                    ProducedType type = getTypeForParameter(param, isRaw, typeArgumentModels);
+                    JCExpression typeExpr = makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? TYPE_ARGUMENT : 0);
+                    JCVariableDecl varDecl = makeVar(varName, typeExpr, argExpr);
+                    vars.append(varDecl);
+                }
             }
             
-            args.appendList(makeVarRefArgumentList(varBaseName, argCount));
+            args.appendList(makeVarRefArgumentList(varBaseName, numDeclared));
         }
 
         return makeInvocation(ce, vars, args, typeArgs);
@@ -932,7 +946,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         java.util.List<ProducedType> typeArgumentModels = getTypeArguments(ce);
         List<JCExpression> typeArgs = transformTypeArguments(typeArgumentModels);
         boolean isRaw = typeArgs.isEmpty();
-        String varBaseName = aliasName("arg");
         
         java.util.List<Parameter> declaredParams;
         if (primaryDecl instanceof Method) {
@@ -974,6 +987,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             args.append(boxed);
         } else if (numPassed < numDeclared) {
             vars = ListBuffer.lb();
+            String varBaseName = aliasName("arg");
             // append the normal args
             for (Tree.PositionalArgument arg : positional.getPositionalArguments()) {
                 at(arg);
