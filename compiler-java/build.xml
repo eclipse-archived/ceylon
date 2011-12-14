@@ -311,11 +311,11 @@
         <include name="com/redhat/ceylon/compiler/test/ceylon/**"/>
       </fileset>
     </jar>
-    <ceylonc     
-	  classpathReference="ceylon.tests.classpath"		    	
+    <ceylonc
+	  classpathRef="ceylon.tests.classpath"
       compiler="bin/ceylonc"
-      srcdir="${test.src}"
-      destdir="${build.ceylon.cars}">
+      src="${test.src}"
+      out="${build.ceylon.cars}">
        <include name="com/redhat/ceylon/compiler/test/ceylon/*.ceylon"/>
     </ceylonc>
   </target>
