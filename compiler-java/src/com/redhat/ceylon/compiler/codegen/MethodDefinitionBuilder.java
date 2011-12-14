@@ -204,6 +204,9 @@ public class MethodDefinitionBuilder {
     }
     
     public MethodDefinitionBuilder parameter(long modifiers, String name, JCExpression paramType, List<JCAnnotation> annots) {
+        if (annots == null) {
+            annots = List.nil();
+        }
         return parameter(gen.make().VarDef(gen.make().Modifiers(modifiers, annots), gen.names().fromString(name), paramType, null));
     }
     

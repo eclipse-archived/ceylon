@@ -38,7 +38,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
 import com.redhat.ceylon.compiler.util.Decl;
 import com.redhat.ceylon.compiler.util.Util;
@@ -357,6 +356,11 @@ public class ClassTransformer extends AbstractTransformer {
         String name = Util.getDefaultedParamMethodName(container.getDeclarationModel(), param.getDeclarationModel());
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, true, name);
         
+        if (container instanceof Tree.AnyMethod) {
+            ProducedType thisType = getThisType(container);
+            methodBuilder.parameter(0, "$this", makeJavaType(thisType), null);
+        }
+        
         // Add any of the preceding parameters as parameters to the method
         for (Tree.Parameter p : params.getParameters()) {
             if (p == param) {
@@ -369,9 +373,8 @@ public class ClassTransformer extends AbstractTransformer {
         methodBuilder.resultType(param.getDeclarationModel());
 
         // The implementation of the method
-        SpecifierExpression spec = param.getDefaultArgument().getSpecifierExpression();
-        JCExpression expr = expressionGen().transformExpression(spec.getExpression(), Util.getBoxingStrategy(param.getDeclarationModel()), param.getDeclarationModel().getType());
-        JCBlock body = at(spec).Block(0, List.<JCStatement> of(at(spec).Return(expr)));
+        JCExpression expr = expressionGen().transform(param);
+        JCBlock body = at(param).Block(0, List.<JCStatement> of(at(param).Return(expr)));
         methodBuilder.block(body);
         
         return methodBuilder

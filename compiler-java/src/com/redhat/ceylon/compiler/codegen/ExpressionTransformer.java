@@ -40,6 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.util.Decl;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.TypeTags;
@@ -67,6 +68,7 @@ import com.sun.tools.javac.util.Name;
 public class ExpressionTransformer extends AbstractTransformer {
 
     private boolean inStatement = false;
+    private boolean needDollarThis = false;
     
     public static ExpressionTransformer getInstance(Context context) {
         ExpressionTransformer trans = context.get(ExpressionTransformer.class);
@@ -840,6 +842,16 @@ public class ExpressionTransformer extends AbstractTransformer {
         return make().LetExpr(decls, stats, result);
     }
 
+
+    public JCExpression transform(Tree.Parameter param) {
+        // Transform the expression marking that we're inside a defaulted parameter for $this-handling
+        needDollarThis  = true;
+        SpecifierExpression spec = param.getDefaultArgument().getSpecifierExpression();
+        JCExpression expr = expressionGen().transformExpression(spec.getExpression(), Util.getBoxingStrategy(param.getDeclarationModel()), param.getDeclarationModel().getType());
+        needDollarThis = false;
+        return expr;
+    }
+    
     //
     // Invocations
     
@@ -911,10 +923,15 @@ public class ExpressionTransformer extends AbstractTransformer {
                 JCExpression typeExpr = makeJavaType(lastDeclared.getType(), AbstractTransformer.WANT_RAW_TYPE);
                 JCVariableDecl varDecl = makeVar(varName, typeExpr, makeEmpty());
                 vars.append(varDecl);
-            } else {
+            } else if (numPassed < numDeclared) {
+                boolean needsThis = false;
                 String containerName;
                 if (Decl.withinClassOrInterface(primaryDecl)) {
                     containerName = ((Declaration)primaryDecl.getContainer()).getName();
+                    // first append $this
+                    ProducedType thisType = getThisType(primaryDecl);
+                    vars.append(makeVar(varBaseName + "$this$", makeJavaType(thisType), makeNull()));
+                    needsThis = true;
                 } else {
                     containerName = primaryDecl.getName();
                 }
@@ -924,7 +941,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     Parameter param = declaredParams.get(ii);
                     String varName = varBaseName + "$" + ii;
                     String methodName = Util.getDefaultedParamMethodName(primaryDecl, param);
-                    List<JCExpression> arglist = (ii > 0) ? makeVarRefArgumentList(varBaseName, ii) : List.<JCExpression> nil();
+                    List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, ii, needsThis);
                     JCExpression argExpr = at(ce).Apply(null, makeIdentOrSelect(null, className, methodName), arglist);
                     BoxingStrategy boxType = Util.getBoxingStrategy(param);
                     ProducedType type = getTypeForParameter(param, isRaw, typeArgumentModels);
@@ -986,9 +1003,14 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if (numPassed < numDeclared) {
             vars = ListBuffer.lb();
             String varBaseName = aliasName("arg");
+            boolean needsThis = false;
             String containerName;
             if (Decl.withinClassOrInterface(primaryDecl)) {
                 containerName = ((Declaration)primaryDecl.getContainer()).getName();
+                // first append $this
+                ProducedType thisType = getThisType(primaryDecl);
+                vars.append(makeVar(varBaseName + "$this$", makeJavaType(thisType), makeNull()));
+                needsThis = true;
             } else {
                 containerName = primaryDecl.getName();
             }
@@ -1015,7 +1037,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 Parameter param = declaredParams.get(ii);
                 String varName = varBaseName + "$" + ii;
                 String methodName = Util.getDefaultedParamMethodName(primaryDecl, param);
-                List<JCExpression> arglist = (ii > 0) ? makeVarRefArgumentList(varBaseName, ii) : List.<JCExpression> nil();
+                List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, ii, needsThis);
                 JCExpression argExpr = at(ce).Apply(null, makeIdentOrSelect(null, className, methodName), arglist);
                 BoxingStrategy boxType = Util.getBoxingStrategy(param);
                 ProducedType type = getTypeForParameter(param, isRaw, typeArgumentModels);
@@ -1040,6 +1062,16 @@ public class ExpressionTransformer extends AbstractTransformer {
         for (int i = 0; i < argCount; i++) {
             names = names.append(make().Ident(names().fromString(varBaseName + "$" + i)));
         }
+        return names;
+    }
+
+    // Make a list of $arg$this$, $arg0, $arg1, ... , $argN
+    private List<JCExpression> makeThisVarRefArgumentList(String varBaseName, int argCount, boolean needsThis) {
+        List<JCExpression> names = List.<JCExpression> nil();
+        if (needsThis) {
+            names = names.append(make().Ident(names().fromString(varBaseName + "$this$")));
+        }
+        names = names.appendList(makeVarRefArgumentList(varBaseName, argCount));
         return names;
     }
 
@@ -1304,6 +1336,11 @@ public class ExpressionTransformer extends AbstractTransformer {
             return make().Erroneous(List.<JCTree>nil());
         }
         
+        // Explanation: primaryExpr and qualExpr both specify what is to come before the selector
+        // but the important difference is that primaryExpr is used for those situations where
+        // the result comes from the actual Ceylon code while qualExpr is used for those situations
+        // where we need to refer to synthetic objects (like wrapper classes for toplevel methods)
+        
         JCExpression qualExpr = null;
         String selector = null;
         if (decl instanceof Getter) {
@@ -1313,6 +1350,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                 qualExpr = makeIdentOrSelect(makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()), Util.getGetterName(decl.getName()));
                 selector = null;
             } else if (decl.isClassMember()) {
+                if (needDollarThis) {
+                    primaryExpr = null;
+                    qualExpr = makeIdent("$this");
+                }
                 selector = Util.getGetterName(decl.getName());
             } else {
                 // method local attr
@@ -1338,6 +1379,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             } else if (Decl.isClassAttribute(decl)) {
                 // invoke the getter
+                if (needDollarThis) {
+                    primaryExpr = null;
+                    qualExpr = makeIdent("$this");
+                }
                 selector = Util.getGetterName(decl.getName());
              } else if (decl.isCaptured() || decl.isShared()) {
                  // invoke the qualified getter
@@ -1372,6 +1417,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                 selector = null;
             } else {
                 // not toplevel, not within method, must be a class member
+                if (needDollarThis) {
+                    primaryExpr = null;
+                    qualExpr = makeIdent("$this");
+                }
                 selector = Util.quoteMethodName(decl.getName());
             }
         }
@@ -1596,5 +1645,4 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         return (s instanceof Declaration) && (s == decl);
     }
-
 }
