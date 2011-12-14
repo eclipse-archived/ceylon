@@ -47,6 +47,8 @@ public class Ceylonc extends MatchingTask {
 
     private static final String FAIL_MSG = "Compile failed; see the compiler error output for details.";
 
+    private static final boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().indexOf("windows") > -1;
+
     private Path src;   
     private File out;
     private File[] compileList;
@@ -274,5 +276,18 @@ public class Ceylonc extends MatchingTask {
         if(!compiler.canExecute())
             throw new BuildException("Cannot execute 'ceylonc' executable in "+ceylonHome+" (not executable)");
         return compiler.getAbsolutePath();
+    }
+
+    private String getScriptName(String name) {
+        if(IS_WINDOWS)
+            return name + ".bat";
+        return name;
+    }
+
+    private String quoteParameter(String param) {
+        if (IS_WINDOWS) {
+            return "\"" + param + "\"";
+        }
+        return param;
     }
 }
