@@ -1,2 +1,23 @@
-## TODO -- add proper script
-java -Dboot.module.loader=ceylon.modules.bootstrap.loader.DistributionModuleLoader -cp jboss-modules.jar:ceylon-runtime-bootstrap.jar org.jboss.modules.Main -mp .. ceylon.runtime +repository ~/.ceylon/repo +executable ceylon.modules.jboss.runtime.JBossRuntime +module $1
+#!/bin/sh
+
+# resolve links - $0 may be a softlink
+PRG="$0"
+while [ -h "$PRG" ]; do
+    ls=`ls -ld "$PRG"`
+    link=`expr "$ls" : '.*-> \(.*\)$'`
+    if expr "$link" : '/.*' > /dev/null; then
+        PRG="$link"
+    else
+        PRG=`dirname "$PRG"`/"$link"
+    fi
+done
+
+DIR=$(dirname "$PRG")
+
+java -Dboot.module.loader=ceylon.modules.bootstrap.loader.DistributionModuleLoader \
+ -cp $DIR/jboss-modules.jar:$DIR/ceylon-runtime-bootstrap.jar \
+ org.jboss.modules.Main \
+ -mp $DIR/../runtime-repo ceylon.runtime \
+  +executable ceylon.modules.jboss.runtime.JBossRuntime \
+  +repository ~/.ceylon/repo \
+  +module $@
