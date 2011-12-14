@@ -33,7 +33,7 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -90,7 +90,7 @@ public abstract class ModulesTest {
             String name = fullName.substring(0, p);
             String version = fullName.substring(p + 1, fullName.lastIndexOf("."));
 
-            Map<Constants, String> args = new HashMap<Constants, String>();
+            Map<Constants, String> args = new LinkedHashMap<Constants, String>();
             args.put(Constants.EXECUTABLE, RUNTIME_IMPL);
             args.put(Constants.MODULE, name + "/" + version);
             args.put(Constants.REPOSITORY, tmpdir.toString());
@@ -116,7 +116,7 @@ public abstract class ModulesTest {
     }
 
     protected void car(String module, Map<Constants, String> extra) throws Throwable {
-        Map<Constants, String> args = new HashMap<Constants, String>();
+        Map<Constants, String> args = new LinkedHashMap<Constants, String>();
         args.put(Constants.EXECUTABLE, RUNTIME_IMPL);
         args.put(Constants.REPOSITORY, getRepo().getPath());
         args.put(Constants.MODULE, module);
@@ -127,7 +127,7 @@ public abstract class ModulesTest {
     }
 
     protected void src(String module, String src, Map<Constants, String> extra) throws Throwable {
-        Map<Constants, String> args = new HashMap<Constants, String>();
+        Map<Constants, String> args = new LinkedHashMap<Constants, String>();
         args.put(Constants.EXECUTABLE, RUNTIME_IMPL);
         args.put(Constants.MODULE, module);
         args.put(Constants.SOURCE, src);

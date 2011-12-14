@@ -24,7 +24,6 @@ package ceylon.modules.api.runtime;
 
 import ceylon.language.descriptor.Module;
 import ceylon.modules.api.util.CeylonToJava;
-import ceylon.modules.api.util.ModuleVersion;
 import ceylon.modules.spi.Constants;
 
 import java.util.ArrayList;
@@ -88,9 +87,9 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
             throw new IllegalArgumentException("Missing version info: " + exe);
 
         String name = exe.substring(0, p > 0 ? p : exe.length());
-        ModuleVersion mv = (p > 0 ? ModuleVersion.parseVersion(exe.substring(p + 1)) : ModuleVersion.DEFAULT_VERSION);
+        String mv = (p > 0 ? exe.substring(p + 1) : Constants.DEFAULT_VERSION.toString());
 
-        ClassLoader cl = createClassLoader(name, mv.toString(), args);
+        ClassLoader cl = createClassLoader(name, mv, args);
         Module runtimeModule = loadModule(cl, name);
         if (runtimeModule == null)
             throw new IllegalArgumentException("Something went very wrong, missing runtime module!"); // TODO -- dump some more useful msg
@@ -99,7 +98,7 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         if (name.equals(mn) == false)
             throw new IllegalArgumentException("Input module name doesn't match module's name: " + name + " != " + mn);
         String version = CeylonToJava.toString(runtimeModule.getVersion());
-        if (mv.equals(ModuleVersion.parseVersion(version)) == false)
+        if (mv.equals(version) == false && Constants.DEFAULT.toString().equals(name) == false)
             throw new IllegalArgumentException("Input module version doesn't match module's version: " + mv + " != " + version);
 
         List<String> la = new ArrayList<String>();

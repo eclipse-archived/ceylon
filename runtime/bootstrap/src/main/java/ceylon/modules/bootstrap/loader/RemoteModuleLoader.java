@@ -80,7 +80,7 @@ public class RemoteModuleLoader extends BootstrapModuleLoader {
             throw new IllegalArgumentException("Null delegate");
 
         this.delegate = delegate;
-        this.rootURL = System.getProperty("modules.remote.root.url", "http://ceylon-lang.org/modules/repository/");
+        this.rootURL = System.getProperty("modules.remote.root.url", "http://modules.ceylon.org/");
         this.ceylonVersion = System.getProperty("ceylon.modules.version", DEFAULT_CEYLON_VERSION);
         this.repoRoot = new File(getCeylonRepository());
     }

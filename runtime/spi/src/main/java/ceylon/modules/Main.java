@@ -27,7 +27,7 @@ import ceylon.modules.spi.Executable;
 
 import java.security.AccessController;
 import java.security.PrivilegedExceptionAction;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -62,14 +62,13 @@ public class Main {
     }
 
     private static Map<String, String> parseArgs(String[] args) {
-        final Map<String, String> map = new HashMap<String, String>();
+        final Map<String, String> map = new LinkedHashMap<String, String>();
         boolean first = true; // filter out ModuleIdentifier
         int n = args.length;
         for (int i = 0; i < n; i++) {
             final String arg = args[i];
-            if (arg.startsWith(Constants.MODULES_OP.toString())) {
-                i++; // it's a JBoss Modules command
-            } else if (arg.startsWith(Constants.OP.toString())) {
+            // should not see any JBoss Modules args
+            if (arg.startsWith(Constants.OP.toString())) {
                 if (i == n - 1)
                     throw new IllegalArgumentException("Missing argument value: " + arg);
 

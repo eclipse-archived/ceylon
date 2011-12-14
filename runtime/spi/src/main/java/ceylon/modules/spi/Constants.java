@@ -30,14 +30,13 @@ import java.util.Map;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public enum Constants {
-    OP("+"),
-    MODULES_OP("-"),
-    EXTERNAL_OP("-"),
+    OP("-"),
     EXECUTABLE("executable"),
+    DEFAULT("default"),
+    DEFAULT_VERSION("main"),
     MODULE("module"),
     REPOSITORY("repository"),
     SOURCE("src"),
-    DEFAULT("d"),
     SOURCES("sources"),
     CLASSES("classes"),
     CACHE_CONTENT("cache_content"),

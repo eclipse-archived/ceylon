@@ -18,6 +18,6 @@ java -Dboot.module.loader=ceylon.modules.bootstrap.loader.DistributionModuleLoad
  -cp $DIR/jboss-modules.jar:$DIR/ceylon-runtime-bootstrap.jar \
  org.jboss.modules.Main \
  -mp $DIR/../runtime-repo ceylon.runtime \
-  +executable ceylon.modules.jboss.runtime.JBossRuntime \
-  +repository ~/.ceylon/repo \
-  +module $@
+  -executable ceylon.modules.jboss.runtime.JBossRuntime \
+  -repository ~/.ceylon/repo \
+  -module $@
