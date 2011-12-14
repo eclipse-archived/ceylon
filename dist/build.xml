@@ -8,7 +8,7 @@
     <property name="dist.name" value="ceylon-${ceylon.version}"/>
     <property name="dist.dir" value="${basedir}/dist"/>
 
-    <target name="package" depends="install-compiler, install-typechecker, install-language, generate-spec, generate-apidoc">
+    <target name="package" depends="install-compiler, copy-compiler-binaries, copy-compiler-libraries, install-typechecker, install-language, generate-spec, generate-apidoc">
         <zip destfile="${basedir}/${dist.name}.zip">
             <zipfileset dir="${dist.dir}" prefix="${dist.name}">
                 <include name="bin/**" />
@@ -32,7 +32,7 @@
     <target name="copy-compiler-binaries">
         <mkdir dir="${dist.dir}/bin"/>
         <copy todir="${dist.dir}/bin">
-            <fileset dir="${ceylon-compiler.dir}/bin">
+            <fileset dir="${ceylon-compiler.dir}/build/bin">
                 <include name="args.sh"/>
                 <include name="args.bat"/>
                 <include name="ceylonc"/>
@@ -52,15 +52,14 @@
     <target name="copy-compiler-libraries">
         <mkdir dir="${dist.dir}/lib"/>
         <copy todir="${dist.dir}/lib">
-            <fileset dir="${ceylon-compiler.dir}/lib">
+            <fileset dir="${ceylon-compiler.dir}/build/lib">
                 <include name="antlr-*-complete.jar"/>
                 <include name="markdownj-*.jar"/>
             </fileset>
         </copy>
     </target>       
         
-    <target name="install-compiler"
-        depends="copy-compiler-binaries, copy-compiler-libraries">
+    <target name="install-compiler">
         <ant antfile="${ceylon-compiler.dir}/build.xml" target="dist" dir="${ceylon-compiler.dir}" inheritall="false">
         </ant>
         <copy todir="${dist.dir}/repo">
