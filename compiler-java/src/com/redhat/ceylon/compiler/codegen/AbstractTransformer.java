@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.loader.TypeFactory;
 import com.redhat.ceylon.compiler.tools.CeylonLog;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -662,6 +663,26 @@ public abstract class AbstractTransformer implements Transformation {
         } else {
             return decl.getQualifiedNameString();
         }
+    }
+    
+    protected ProducedType getThisType(Tree.Declaration decl) {
+        if (decl instanceof Tree.TypeDeclaration) {
+            return getThisType(((Tree.TypeDeclaration)decl).getDeclarationModel());
+        } else {
+            return getThisType(((Tree.TypedDeclaration)decl).getDeclarationModel());
+        }
+    }
+    
+    protected ProducedType getThisType(Declaration decl) {
+        ProducedType thisType;
+        if (decl instanceof ClassOrInterface) {
+            thisType = ((ClassOrInterface)decl).getType();
+        } else if (decl.isToplevel()) {
+            thisType = ((TypedDeclaration)decl).getType();
+        } else {
+            thisType = getThisType((Declaration)decl.getContainer());
+        }
+        return thisType;
     }
     
     /*
