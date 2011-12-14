@@ -32,28 +32,27 @@
 
                                 <!-- Language -->
                                 <copy file="${user.home}/.ceylon/repo/ceylon/language/${version.com.redhat.ceylon.language}/ceylon.language-${version.com.redhat.ceylon.language}.car"
-                                      tofile="../dist/ceylon/language/${version.com.redhat.ceylon.language}/ceylon.language-${version.com.redhat.ceylon.language}.car"/>
+                                      tofile="../dist/runtime-repo/ceylon/language/${version.com.redhat.ceylon.language}/ceylon.language-${version.com.redhat.ceylon.language}.car"/>
 
                                 <!-- Repository -->
                                 <copy file="${user.home}/.m2/repository/com/redhat/ceylon/cmr/cmr-spi/${version.com.redhat.ceylon.cmr}/cmr-spi-${version.com.redhat.ceylon.cmr}.jar"
-                                      tofile="../dist/com/redhat/ceylon/cmr/main/cmr-spi.jar"/>
+                                      tofile="../dist/runtime-repo/com/redhat/ceylon/cmr/main/cmr-spi.jar"/>
                                 <copy file="${user.home}/.m2/repository/com/redhat/ceylon/cmr/cmr-api/${version.com.redhat.ceylon.cmr}/cmr-api-${version.com.redhat.ceylon.cmr}.jar"
-                                      tofile="../dist/com/redhat/ceylon/cmr/main/cmr-api.jar"/>
+                                      tofile="../dist/runtime-repo/com/redhat/ceylon/cmr/main/cmr-api.jar"/>
                                 <copy file="${user.home}/.m2/repository/com/redhat/ceylon/cmr/cmr-impl/${version.com.redhat.ceylon.cmr}/cmr-impl-${version.com.redhat.ceylon.cmr}.jar"
-                                      tofile="../dist/com/redhat/ceylon/cmr/main/cmr-impl.jar"/>
+                                      tofile="../dist/runtime-repo/com/redhat/ceylon/cmr/main/cmr-impl.jar"/>
 
                                 <!-- Runtime -->
                                 <copy file="../spi/target/modules-spi-${project.version}.jar"
-                                      tofile="../dist/ceylon/runtime/main/ceylon.modules.spi.jar"/>
+                                      tofile="../dist/runtime-repo/ceylon/runtime/main/ceylon.modules.spi.jar"/>
                                 <copy file="../api/target/modules-api-${project.version}.jar"
-                                      tofile="../dist/ceylon/runtime/main/ceylon.modules.api.jar"/>
+                                      tofile="../dist/runtime-repo/ceylon/runtime/main/ceylon.modules.api.jar"/>
                                 <copy file="../impl/target/modules-impl-${project.version}.jar"
-                                      tofile="../dist/ceylon/runtime/main/ceylon.modules.jboss.jar"/>
+                                      tofile="../dist/runtime-repo/ceylon/runtime/main/ceylon.modules.jboss.jar"/>
 
                                 <!-- Create zipped dist/ -->
                                 <zip destfile="${user.home}/.ceylon/repo/ceylon-runtime-bootstrap/ceylon-runtime-bootstrap.zip"
-                                     basedir="../dist"
-                                     excludes="bin/, bin/**, bin/*.*"/>
+                                     basedir="../dist/runtime-repo"/>
                             </target>
                         </configuration>
                         <goals>
