@@ -52,7 +52,7 @@ public class Ceylonc extends MatchingTask {
     private File[] compileList;
     private Path classpath;
     private List<Rep> repositories = new LinkedList<Rep>();
-    private File compiler;
+    private File executable;
 
     /**
      * Sets the classpath
@@ -139,8 +139,8 @@ public class Ceylonc extends MatchingTask {
     /**
      * Set compiler executable depending on the OS.
      */
-    public void setCompiler(String compilerPath) {
-        compiler = new File(Util.getScriptName(compilerPath));
+    public void setExecutable(String executable) {
+        this.executable = new File(Util.getScriptName(executable));
 	}
 
     /**
@@ -251,6 +251,6 @@ public class Ceylonc extends MatchingTask {
      * Tries to find a ceylonc compiler either user-specified or detected
      */
     private String getCompiler() {
-        return Util.findCeylonScript(this.compiler, "ceylonc", getProject());
+        return Util.findCeylonScript(this.executable, "ceylonc", getProject());
     }
 }

@@ -319,7 +319,7 @@
     </jar>
     <ceylonc
 	  classpathRef="ceylon.tests.classpath"
-      compiler="bin/ceylonc"
+      executable="bin/ceylonc"
       src="${test.src}"
       out="${build.ceylon.cars}">
        <include name="com/redhat/ceylon/compiler/test/ceylon/*.ceylon"/>
@@ -328,7 +328,7 @@
 
   <target name="api" depends="publish,ant-tasks">
     <ceylond
-      ceylond="bin/ceylond"
+      executable="bin/ceylond"
       src="../ceylon.language/src"
       out="${build.api}">
     </ceylond>
