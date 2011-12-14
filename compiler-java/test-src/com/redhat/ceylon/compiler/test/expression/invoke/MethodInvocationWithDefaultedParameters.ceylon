@@ -51,8 +51,19 @@ void methodInvocationWithDefaultedParameters() {
     f.f4();
     f.f4(6);
     f.f4(6, 9);
-
-    Barkls b = Barkls();
+    
+    f.f1{};
+    f.f1{n=6;};
+    f.f2{n=1;};
+    f.f2{n=1; s="foo";};
+    f.f3{};
+    f.f3{n=6;};
+    f.f3{m=9; n=6;};
+    f.f4{};
+    f.f4{n=6;};
+    f.f4{m=9; n=6;};
+    
+    Barface b = Barkls();
     b.f1();
     b.f1(6);
     b.f2(1);
