@@ -7,8 +7,7 @@
     <property name="ceylon.language.dir" value="${basedir}/../ceylon.language"/>    
     <property name="dist.dir" value="${basedir}/dist"/>
 
-<!--    <target name="package" depends="install-compiler, install-typechecker, install-language, generate-spec, generate-apidoc">
--->
+    <target name="package" depends="install-compiler, install-typechecker, install-language, generate-spec, generate-apidoc">
     <target name="package">
         <zip destfile="${basedir}/ceylon-${ceylon.version}.zip">
             <zipfileset dir="${dist.dir}">
