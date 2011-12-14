@@ -20,6 +20,7 @@
   <property name="build" location="build"/>
   <property name="build.classes" location="${build}/classes"/>
   <property name="build.ceylon.cars" location="${build}/ceylon-cars"/>
+  <property name="build.bin" location="${build}/bin"/>  
   <property name="build.lib" location="${build}/lib"/>
   <property name="build.api" location="${build}/api"/>
   <property name="build.dist" location="${build}/dist"/>
@@ -99,7 +100,7 @@
     <delete dir="${ceylon.compiler.repo}"/>
   </target>
 
-  <target name="dist" depends="compiler.classes"
+  <target name="dist" depends="build"
     description="Create Ceylon compiler distribution">
     <zip destfile="${build.dist}/${ceylon.compiler.jar}">
       <fileset dir="${build.classes}">
@@ -162,6 +163,7 @@
   <!-- Rule to build compiler jar -->
   <target name="build" depends="compiler.classes">
     <mkdir dir="${build.dist}"/>
+    <mkdir dir="${build.bin}"/>
     <mkdir dir="${build.lib}"/>
     <mkdir dir="${build.ceylon.cars}"/>
     <jar destfile="${build.lib}/compiler.jar">
@@ -173,6 +175,31 @@
         <include name="com/sun/tools/javac/resources/*.properties"/>
       </fileset>
     </jar>
+    <filter token="VERSION" value="${module.com.redhat.ceylon.compiler.version}"/>
+    <copy todir="${build.bin}">
+        <fileset dir="${basedir}/bin">
+            <exclude name="*.in"/>
+        </fileset>
+    </copy>
+    <copy todir="${build.bin}" filtering="yes">
+        <fileset dir="${basedir}/bin">
+            <include name="*.in"/>
+        </fileset>
+        <globmapper from="*.in" to="*"/>
+    </copy>
+    <chmod perm="0755">
+        <fileset dir="${build.bin}">
+            <include name="ceylon"/>
+            <include name="ceylonc"/>
+            <include name="ceylond"/>
+        </fileset>
+    </chmod>
+    <copy todir="${build.lib}">
+        <fileset dir="${basedir}/lib">
+            <include name="antlr-*-complete.jar"/>
+            <include name="markdownj-*.jar"/>
+        </fileset>
+    </copy>    
   </target>
 
   <!-- FIXME: Historical rule -->
@@ -319,7 +346,7 @@
     </jar>
     <ceylonc
 	  classpathRef="ceylon.tests.classpath"
-      executable="bin/ceylonc"
+      executable="${build.bin}/ceylonc"
       src="${test.src}"
       out="${build.ceylon.cars}">
        <include name="com/redhat/ceylon/compiler/test/ceylon/*.ceylon"/>
@@ -328,7 +355,7 @@
 
   <target name="api" depends="publish,ant-tasks">
     <ceylond
-      executable="bin/ceylond"
+      executable="${build.bin}/ceylond"
       src="../ceylon.language/src"
       out="${build.api}">
     </ceylond>
