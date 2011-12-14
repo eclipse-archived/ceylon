@@ -5,6 +5,7 @@
 api/target/
 dist/target/
 dist/bin/jboss-modules.jar
+dist/bin/ceylon-runtime-bootstrap.jar
 dist/runtime-repo/ceylon/language/0.1/ceylon.language-0.1.car
 dist/runtime-repo/com/redhat/ceylon/cmr/main/cmr-spi.jar
 dist/runtime-repo/com/redhat/ceylon/cmr/main/cmr-api.jar
@@ -19,6 +20,7 @@ dist/runtime-repo/ceylon/runtime/main/ceylon.modules.spi.jar.index
 dist/runtime-repo/com/redhat/ceylon/cmr/main/cmr-api.jar.index
 dist/runtime-repo/com/redhat/ceylon/cmr/main/cmr-impl.jar.index
 dist/runtime-repo/com/redhat/ceylon/cmr/main/cmr-spi.jar.index
+bootstrap/target/
 impl/target/
 spi/target/
 testsuite/target/

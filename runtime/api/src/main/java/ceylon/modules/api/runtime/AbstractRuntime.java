@@ -25,6 +25,7 @@ package ceylon.modules.api.runtime;
 import ceylon.language.descriptor.Module;
 import ceylon.modules.api.util.CeylonToJava;
 import ceylon.modules.spi.Constants;
+import com.redhat.ceylon.cmr.api.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +88,7 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
             throw new IllegalArgumentException("Missing version info: " + exe);
 
         String name = exe.substring(0, p > 0 ? p : exe.length());
-        String mv = (p > 0 ? exe.substring(p + 1) : Constants.DEFAULT_VERSION.toString());
+        String mv = (p > 0 ? exe.substring(p + 1) : Repository.NO_VERSION);
 
         ClassLoader cl = createClassLoader(name, mv, args);
         Module runtimeModule = loadModule(cl, name);

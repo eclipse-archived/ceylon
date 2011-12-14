@@ -24,6 +24,7 @@ package org.jboss.ceylon.test.modules.examples.test;
 
 import ceylon.modules.spi.Constants;
 import org.jboss.ceylon.test.modules.ModulesTest;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Collections;
@@ -41,6 +42,12 @@ public class ExamplesTestCase extends ModulesTest {
     @Test
     public void testClient() throws Throwable {
         car("client/1.0.0", Collections.<Constants, String>emptyMap());
+    }
+
+    @Test
+    @Ignore // TODO
+    public void testDefault() throws Throwable {
+        car("default", Collections.<Constants, String>emptyMap());
     }
 
 }
