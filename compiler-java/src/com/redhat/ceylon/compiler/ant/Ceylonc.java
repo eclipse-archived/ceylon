@@ -47,8 +47,6 @@ public class Ceylonc extends MatchingTask {
 
     private static final String FAIL_MSG = "Compile failed; see the compiler error output for details.";
 
-    private static final boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().indexOf("windows") > -1;
-
     private Path src;   
     private File out;
     private File[] compileList;
@@ -142,7 +140,7 @@ public class Ceylonc extends MatchingTask {
      * Set compiler executable depending on the OS.
      */
     public void setCompiler(String compilerPath) {
-        compiler = new File(getScriptName(compilerPath));
+        compiler = new File(Util.getScriptName(compilerPath));
 	}
 
     /**
@@ -224,13 +222,13 @@ public class Ceylonc extends MatchingTask {
                 if(rep.url == null || rep.url.isEmpty())
                     continue;
                 cmd.createArgument().setValue("-rep");
-                cmd.createArgument().setValue(quoteParameter(rep.url));
+                cmd.createArgument().setValue(Util.quoteParameter(rep.url));
             }
         }
         if(classpath != null){
         	String path = classpath.toString();
             cmd.createArgument().setValue("-classpath");
-            cmd.createArgument().setValue(quoteParameter(path));
+            cmd.createArgument().setValue(Util.quoteParameter(path));
         }
         for (int i = 0; i < compileList.length; i++) {
             cmd.createArgument().setValue(compileList[i].getAbsolutePath());
@@ -253,41 +251,6 @@ public class Ceylonc extends MatchingTask {
      * Tries to find a ceylonc compiler either user-specified or detected
      */
     private String getCompiler() {
-        if(this.compiler != null){
-            if(!this.compiler.exists())
-                throw new BuildException("Failed to find compiler executable in "+this.compiler.getPath());
-            if(!this.compiler.canExecute())
-                throw new BuildException("Cannot execute compiler executable in "+this.compiler.getPath()+" (not executable)");
-            return this.compiler.getAbsolutePath();
-        }
-        // try to guess from the "ceylon.home" project property
-        String ceylonHome = getProject().getProperty("ceylon.home");
-        if(ceylonHome == null || ceylonHome.isEmpty()){
-            // try again from the CEYLON_HOME env var
-            ceylonHome = System.getenv("CEYLON_HOME");
-        }
-        if(ceylonHome == null || ceylonHome.isEmpty())
-            throw new BuildException("Failed to find Ceylon home, specify the ceylon.home property or set the CEYLON_HOME environment variable");
-        // now try to find the executable
-        String compilerPath = ceylonHome + File.separatorChar + "bin" + File.separatorChar + getScriptName("ceylonc");
-        File compiler = new File(compilerPath);
-        if(!compiler.exists())
-            throw new BuildException("Failed to find 'ceylonc' executable in "+ceylonHome);
-        if(!compiler.canExecute())
-            throw new BuildException("Cannot execute 'ceylonc' executable in "+ceylonHome+" (not executable)");
-        return compiler.getAbsolutePath();
-    }
-
-    private String getScriptName(String name) {
-        if(IS_WINDOWS)
-            return name + ".bat";
-        return name;
-    }
-
-    private String quoteParameter(String param) {
-        if (IS_WINDOWS) {
-            return "\"" + param + "\"";
-        }
-        return param;
+        return Util.findCeylonScript(this.compiler, "ceylonc", getProject());
     }
 }
