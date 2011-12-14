@@ -175,6 +175,11 @@ public class ExpressionTest extends CompilerTest {
     }
 
     @Test
+    public void testInvMethodInvocationWithDefaultedParameters(){
+        compareWithJavaSource("invoke/MethodInvocationWithDefaultedParameters");
+    }
+
+    @Test
     @Ignore("Not for needed for M1")
     public void testInvNamedArgumentGetterInvocation(){
         compareWithJavaSource("invoke/NamedArgumentGetterInvocation");
