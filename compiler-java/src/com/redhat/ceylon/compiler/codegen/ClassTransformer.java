@@ -369,7 +369,7 @@ public class ClassTransformer extends AbstractTransformer {
         methodBuilder.resultType(param.getDeclarationModel());
 
         // The implementation of the method
-        SpecifierExpression spec = param.getSpecifierExpression();
+        SpecifierExpression spec = param.getDefaultArgument().getSpecifierExpression();
         JCExpression expr = expressionGen().transformExpression(spec.getExpression(), Util.getBoxingStrategy(param.getDeclarationModel()), param.getDeclarationModel().getType());
         JCBlock body = at(spec).Block(0, List.<JCStatement> of(at(spec).Return(expr)));
         methodBuilder.block(body);

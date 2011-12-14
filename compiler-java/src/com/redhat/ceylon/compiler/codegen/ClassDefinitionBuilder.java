@@ -405,7 +405,7 @@ public class ClassDefinitionBuilder {
             for (Tree.Parameter param : paramList.getParameters()) {
                 parameter(param);
                 // Does the parameter have a default value?
-                if (param.getSpecifierExpression() != null) {
+                if (param.getDefaultArgument() != null &&  param.getDefaultArgument().getSpecifierExpression() != null) {
                     concreteInterfaceMemberDefs(gen.classGen().transformDefaultedParameter(param, def, paramList));
                 }
             }
@@ -424,7 +424,7 @@ public class ClassDefinitionBuilder {
         ParameterList paramList = method.getParameterLists().get(0);
         for (Tree.Parameter param : paramList.getParameters()) {
             // Does the parameter have a default value?
-            if (param.getSpecifierExpression() != null) {
+            if (param.getDefaultArgument() != null &&  param.getDefaultArgument().getSpecifierExpression() != null) {
                 concreteInterfaceMemberDefs(gen.classGen().transformDefaultedParameter(param, method, paramList));
             }
         }
