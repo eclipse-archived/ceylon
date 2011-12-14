@@ -149,17 +149,13 @@
 	    </taskdef>
 	  </target>
 	  	    
-	  <path id="tests.classpath">
-	  </path>
-
 	  <target name="compile.tests" depends="ceylonc">
         <delete dir="${build.test}"/>
         <mkdir dir="${build.test}"/>
 	    <ceylonc
-	      classpathReference="tests.classpath"               
-	      compiler="../ceylon-compiler/bin/ceylonc"
-	      srcdir="${test.src}"
-	      destdir="${build.test}">
+	      executable="../ceylon-compiler/bin/ceylonc"
+	      src="${test.src}"
+	      out="${build.test}">
 	       <include name="**/*.ceylon"/>
 	    </ceylonc>
 	  </target>
