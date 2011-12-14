@@ -195,6 +195,9 @@ public class MethodDefinitionBuilder {
             if (decl instanceof Parameter && ((Parameter)decl).isSequenced()) {
                 annots = annots.appendList(gen.makeAtSequenced());
             }
+            if (decl instanceof Parameter && ((Parameter)decl).isDefaulted()) {
+                annots = annots.appendList(gen.makeAtDefaulted());
+            }
             annots = annots.appendList(gen.makeJavaTypeAnnotations(decl));
         }
         return parameter(gen.make().VarDef(gen.make().Modifiers(modifiers, annots), gen.names().fromString(name), type, null));

@@ -299,7 +299,7 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
-    private ClassDefinitionBuilder parameter(String name, TypedDeclaration decl, boolean isSequenced) {
+    private ClassDefinitionBuilder parameter(String name, TypedDeclaration decl, boolean isSequenced, boolean isDefaulted) {
         // Create a parameter for the constructor
         JCExpression type = gen.makeJavaType(decl);
         List<JCAnnotation> annots = List.nil();
@@ -307,6 +307,9 @@ public class ClassDefinitionBuilder {
             annots = annots.appendList(gen.makeAtName(name));
             if (isSequenced) {
                 annots = annots.appendList(gen.makeAtSequenced());
+            }
+            if (isDefaulted) {
+                annots = annots.appendList(gen.makeAtDefaulted());
             }
             annots = annots.appendList(gen.makeJavaTypeAnnotations(decl));
         }
@@ -331,7 +334,7 @@ public class ClassDefinitionBuilder {
     
     public ClassDefinitionBuilder parameter(Parameter param) {
         String name = param.getName();
-        return parameter(name, param, param.isSequenced());
+        return parameter(name, param, param.isSequenced(), param.isDefaulted());
     }
     
     public ClassDefinitionBuilder defs(JCTree statement) {

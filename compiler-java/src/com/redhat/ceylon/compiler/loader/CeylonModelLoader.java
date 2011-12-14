@@ -38,7 +38,6 @@ import javax.tools.JavaFileObject.Kind;
 import com.redhat.ceylon.compiler.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.tools.CeylonLog;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
-import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
@@ -1022,6 +1021,8 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             parameter.setType(obtainType(paramSymbol.type, paramSymbol, (Scope) decl));
             if(getAnnotation(paramSymbol, symtab.ceylonAtSequencedType) != null)
                 parameter.setSequenced(true);
+            if(getAnnotation(paramSymbol, symtab.ceylonAtDefaultedType) != null)
+                parameter.setDefaulted(true);
             markUnboxed(parameter, paramSymbol.type);
             parameter.setDeclaration((Declaration) decl);
             parameters.getParameters().add(parameter);
