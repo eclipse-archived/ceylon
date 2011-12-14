@@ -301,9 +301,8 @@
 	
   <path id="ceylon.tests.classpath">
     <pathelement path="${junit.lib}"/>
-    <pathelement path="${ceylon-tests.car}"/>
   </path>
-	
+
   <target name="ceylon-tests.car" depends="publish,test.classes,ceylonc">
   	<delete dir="${ceylon-tests.dir}"/>
     <mkdir dir="${ceylon-tests.dir}"/>
