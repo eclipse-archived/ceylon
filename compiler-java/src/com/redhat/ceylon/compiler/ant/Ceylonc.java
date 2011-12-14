@@ -28,6 +28,9 @@ package com.redhat.ceylon.compiler.ant;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Project;
@@ -48,6 +51,7 @@ public class Ceylonc extends MatchingTask {
     private File destDir;
     private File[] compileList;
     private Reference classpathReference;
+    private List<Rep> repositories = new LinkedList<Rep>();
 
 	public void setClasspathReference(Reference classpathReference) {
 		this.classpathReference = classpathReference;
@@ -70,6 +74,14 @@ public class Ceylonc extends MatchingTask {
         }
     }
 
+    /**
+     * Adds a module repository
+     * @param rep the new module repository
+     */
+    public void addRep(Rep rep){
+        repositories.add(rep);
+    }
+    
     /**
      * Set the destination directory into which the Java source files should be
      * compiled.
@@ -202,6 +214,15 @@ public class Ceylonc extends MatchingTask {
         	}
             cmd.createArgument().setValue("-classpath");
             cmd.createArgument().setValue(path);
+        }
+        if(repositories != null){
+            for(Rep rep : repositories){
+                // skip empty entries
+                if(rep.url == null || rep.url.isEmpty())
+                    continue;
+                cmd.createArgument().setValue("-rep");
+                cmd.createArgument().setValue(quoteParameter(rep.url));
+            }
         }
         for (int i = 0; i < compileList.length; i++) {
             cmd.createArgument().setValue(compileList[i].getAbsolutePath());
