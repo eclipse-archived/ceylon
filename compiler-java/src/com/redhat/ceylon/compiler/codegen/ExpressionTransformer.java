@@ -913,10 +913,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                 vars.append(varDecl);
             } else {
                 String containerName;
-                if (primaryDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-                    containerName = primaryDecl.getName();
-                } else {
+                if (Decl.withinClassOrInterface(primaryDecl)) {
                     containerName = ((Declaration)primaryDecl.getContainer()).getName();
+                } else {
+                    containerName = primaryDecl.getName();
                 }
                 String className = Util.getCompanionClassName(containerName);
                 // append any arguments for defaulted parameters
@@ -987,10 +987,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             vars = ListBuffer.lb();
             String varBaseName = aliasName("arg");
             String containerName;
-            if (primaryDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-                containerName = primaryDecl.getName();
-            } else {
+            if (Decl.withinClassOrInterface(primaryDecl)) {
                 containerName = ((Declaration)primaryDecl.getContainer()).getName();
+            } else {
+                containerName = primaryDecl.getName();
             }
             String className = Util.getCompanionClassName(containerName);
             // append the normal args
