@@ -50,11 +50,36 @@ public class Ceylonc extends MatchingTask {
     private Path src;   
     private File out;
     private File[] compileList;
-    private Reference classpathReference;
+    private Path classpath;
     private List<Rep> repositories = new LinkedList<Rep>();
 
-	public void setClasspathReference(Reference classpathReference) {
-		this.classpathReference = classpathReference;
+    /**
+     * Sets the classpath
+     * @param path
+     */
+    public void setClasspath(Path path){
+        if(this.classpath == null)
+            this.classpath = path;
+        else
+            this.classpath.add(path);
+    }
+    
+    /**
+     * Adds a &lt;classpath&gt; nested param
+     */
+    public Path createClasspath(){
+        if(this.classpath == null)
+            return this.classpath = new Path(getProject());
+        else
+            return this.classpath.createPath(); 
+    }
+    
+    /**
+     * Sets the classpath by a path reference
+     * @param classpathReference
+     */
+	public void setClasspathRef(Reference classpathReference) {
+		createClasspath().setRefid(classpathReference);
 	}
 
 	// TODO: There must be a better way to get the path for the Ceylon
@@ -200,14 +225,6 @@ public class Ceylonc extends MatchingTask {
             cmd.createArgument().setValue("-src");
             cmd.createArgument().setValue(src.toString());
         }
-        if(classpathReference != null){
-        	String path = classpathReference.getReferencedObject().toString();
-        	if (System.getProperty("os.name").toLowerCase().indexOf("windows") > -1) {
-        		path = "\"" + path + "\"";
-        	}
-            cmd.createArgument().setValue("-classpath");
-            cmd.createArgument().setValue(path);
-        }
         if(repositories != null){
             for(Rep rep : repositories){
                 // skip empty entries
@@ -216,6 +233,11 @@ public class Ceylonc extends MatchingTask {
                 cmd.createArgument().setValue("-rep");
                 cmd.createArgument().setValue(quoteParameter(rep.url));
             }
+        }
+        if(classpath != null){
+        	String path = classpath.toString();
+            cmd.createArgument().setValue("-classpath");
+            cmd.createArgument().setValue(quoteParameter(path));
         }
         for (int i = 0; i < compileList.length; i++) {
             cmd.createArgument().setValue(compileList[i].getAbsolutePath());
