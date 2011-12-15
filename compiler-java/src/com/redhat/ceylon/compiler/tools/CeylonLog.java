@@ -5,6 +5,7 @@ import javax.tools.JavaFileObject;
 import com.redhat.ceylon.compiler.codegen.CeylonFileObject;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.JCDiagnostic;
+import com.sun.tools.javac.util.JCDiagnostic.DiagnosticSource;
 import com.sun.tools.javac.util.JCDiagnostic.DiagnosticType;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
@@ -36,9 +37,12 @@ public class CeylonLog extends Log {
 
     @Override
     public void report(JCDiagnostic diagnostic) {
-        JavaFileObject file = diagnostic.getDiagnosticSource().getFile();
-        if(file instanceof CeylonFileObject && diagnostic.getType() == DiagnosticType.ERROR){
-            ((CeylonFileObject)file).errors++;
+        DiagnosticSource source = diagnostic.getDiagnosticSource();
+        if(source != null){
+            JavaFileObject file = source.getFile();
+            if(file instanceof CeylonFileObject && diagnostic.getType() == DiagnosticType.ERROR){
+                ((CeylonFileObject)file).errors++;
+            }
         }
         super.report(diagnostic);
     }
