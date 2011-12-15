@@ -944,7 +944,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     String varName = varBaseName + "$" + ii;
                     String methodName = Util.getDefaultedParamMethodName(primaryDecl, param);
                     List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, ii, needsThis);
-                    JCExpression argExpr = at(ce).Apply(null, makeIdentOrSelect(null, className, methodName), arglist);
+                    JCExpression argExpr = at(ce).Apply(null, makeIdentOrSelect(null, containerName, className, methodName), arglist);
                     BoxingStrategy boxType = Util.getBoxingStrategy(param);
                     ProducedType type = getTypeForParameter(param, isRaw, typeArgumentModels);
                     JCExpression typeExpr = makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? TYPE_ARGUMENT : 0);
@@ -1042,7 +1042,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 String varName = varBaseName + "$" + ii;
                 String methodName = Util.getDefaultedParamMethodName(primaryDecl, param);
                 List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, ii, needsThis);
-                JCExpression argExpr = at(ce).Apply(null, makeIdentOrSelect(null, className, methodName), arglist);
+                JCExpression argExpr = at(ce).Apply(null, makeIdentOrSelect(null, containerName, className, methodName), arglist);
                 BoxingStrategy boxType = Util.getBoxingStrategy(param);
                 ProducedType type = getTypeForParameter(param, isRaw, typeArgumentModels);
                 JCExpression typeExpr = makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? TYPE_ARGUMENT : 0);
