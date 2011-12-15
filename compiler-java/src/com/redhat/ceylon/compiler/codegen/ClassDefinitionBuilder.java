@@ -25,6 +25,7 @@ import static com.sun.tools.javac.code.Flags.INTERFACE;
 import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.PROTECTED;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
+import static com.sun.tools.javac.code.Flags.STATIC;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -105,8 +106,9 @@ public class ClassDefinitionBuilder {
     public List<JCTree> build() {
         ListBuffer<JCTree> defs = ListBuffer.lb();
         appendDefinitionsTo(defs);
-        if(!typeParamAnnotations.isEmpty())
+        if (!typeParamAnnotations.isEmpty()) {
             annotations(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
+        }
         JCTree.JCClassDecl klass = gen.make().ClassDef(
                 gen.make().Modifiers(modifiers, annotations.toList()),
                 gen.names().fromString(Util.quoteIfJavaKeyword(name)),
@@ -114,17 +116,7 @@ public class ClassDefinitionBuilder {
                 extending,
                 satisfies.toList(),
                 defs.toList());
-        if(concreteInterfaceMemberDefs.isEmpty())
-            return List.<JCTree>of(klass);
-        JCTree.JCClassDecl concreteInterfaceKlass = gen.make().ClassDef(
-                gen.make().Modifiers(PUBLIC | FINAL),
-                gen.names().fromString(Util.getCompanionClassName(name)),
-                // FIXME: type params probably have to get added to the method type params
-                typeParams.toList(),
-                (JCTree)null,
-                List.<JCTree.JCExpression>nil(),
-                concreteInterfaceMemberDefs.toList());
-        return List.<JCTree>of(klass, concreteInterfaceKlass);
+        return List.<JCTree>of(klass);
     }
 
     private void appendDefinitionsTo(ListBuffer<JCTree> defs) {
@@ -133,6 +125,17 @@ public class ClassDefinitionBuilder {
             defs.append(createConstructor());
         }
         defs.appendList(body);
+        if (!concreteInterfaceMemberDefs.isEmpty()) {
+            JCTree.JCClassDecl concreteInterfaceKlass = gen.make().ClassDef(
+                    gen.make().Modifiers(PUBLIC | FINAL | STATIC),
+                    gen.names().fromString(Util.getCompanionClassName(name)),
+                    // FIXME: type params probably have to get added to the method type params
+                    typeParams.toList(),
+                    (JCTree)null,
+                    List.<JCTree.JCExpression>nil(),
+                    concreteInterfaceMemberDefs.toList());
+            defs.append(concreteInterfaceKlass);
+        }
     }
 
     private List<JCTree> appendConcreteInterfaceMembers(java.util.List<ProducedType> satisfies) {
