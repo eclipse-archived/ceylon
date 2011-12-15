@@ -30,28 +30,39 @@
 
 package com.redhat.ceylon.compiler.launcher;
 
-import com.redhat.ceylon.compiler.loader.CeylonEnter;
-import com.redhat.ceylon.compiler.tools.CeylonLog;
-import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
-import com.redhat.ceylon.compiler.tools.LanguageCompiler;
-import com.sun.tools.javac.util.Options;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.EnumSet;
 import java.util.MissingResourceException;
 
+import javax.annotation.processing.Processor;
+import javax.tools.JavaFileManager;
+import javax.tools.JavaFileObject;
+import javax.tools.JavaFileObject.Kind;
+import javax.tools.StandardLocation;
+
+import com.redhat.ceylon.compiler.tools.CeylonLog;
+import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
+import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.sun.tools.javac.code.Source;
 import com.sun.tools.javac.jvm.Target;
 import com.sun.tools.javac.main.CommandLine;
 import com.sun.tools.javac.main.JavaCompiler;
-import com.sun.tools.javac.main.RecognizedOptions;
 import com.sun.tools.javac.main.JavacOption.Option;
+import com.sun.tools.javac.main.RecognizedOptions;
 import com.sun.tools.javac.main.RecognizedOptions.OptionHelper;
-import com.sun.tools.javac.util.*;
 import com.sun.tools.javac.processing.AnnotationProcessingError;
-import javax.tools.JavaFileManager;
-import javax.tools.JavaFileObject;
-import javax.annotation.processing.Processor;
+import com.sun.tools.javac.util.ClientCodeException;
+import com.sun.tools.javac.util.Context;
+import com.sun.tools.javac.util.FatalError;
+import com.sun.tools.javac.util.JavacFileManager;
+import com.sun.tools.javac.util.List;
+import com.sun.tools.javac.util.ListBuffer;
+import com.sun.tools.javac.util.Log;
+import com.sun.tools.javac.util.Messages;
+import com.sun.tools.javac.util.Options;
+import com.sun.tools.javac.util.PropagatedException;
 
 /**
  * This class provides a commandline interface to the GJC compiler.
@@ -379,6 +390,9 @@ public class Main extends com.sun.tools.javac.main.Main {
             if (comp == null)
                 return EXIT_SYSERR;
 
+            if(!classnames.isEmpty())
+                filenames = addModuleSources(filenames);
+            
             if (!filenames.isEmpty()) {
                 // add filenames to fileObjects
                 comp = JavaCompiler.instance(context);
@@ -428,6 +442,18 @@ public class Main extends com.sun.tools.javac.main.Main {
             options = null;
         }
         return EXIT_OK;
+    }
+
+    private List<File> addModuleSources(List<File> filenames) throws IOException {
+        for(String moduleName : classnames){
+            Iterable<JavaFileObject> files = fileManager.list(StandardLocation.SOURCE_PATH, moduleName, EnumSet.of(Kind.SOURCE), true);
+            for(JavaFileObject file : files){
+                File f = new File(file.toUri().getPath());
+                filenames = filenames.prepend(f);
+            }
+        }
+        classnames.clear();
+        return filenames;
     }
 
     /**
