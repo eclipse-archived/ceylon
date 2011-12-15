@@ -132,7 +132,7 @@ public abstract class CeylonDoc extends Markup {
     }
 
     protected File getFolder(Package pkg) {
-        File dir = new File(tool.getDestDir(), join("/", pkg.getName()));
+        File dir = new File(tool.getOutputFolder(pkg.getModule()), join("/", pkg.getName()));
         dir.mkdirs();
         return dir;
     }

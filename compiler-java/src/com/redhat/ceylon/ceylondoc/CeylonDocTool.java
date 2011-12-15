@@ -70,7 +70,7 @@ public class CeylonDocTool {
     private List<PhasedUnit> phasedUnits;
     private Modules modules;
     private String srcDir;
-    private String destDir;
+    private File destDir;
     /**
      * The {@linkplain #shouldInclude(Declaration) visible} subclasses of the key
      */
@@ -99,11 +99,7 @@ public class CeylonDocTool {
     }
 
     public void setDestDir(String destDir) {
-        this.destDir = destDir;
-    }
-
-    public String getDestDir() {
-        return destDir;
+        this.destDir = new File(destDir);
     }
 
     public String getSrcDir() {
@@ -142,11 +138,16 @@ public class CeylonDocTool {
     private File getFolder(Package pkg) {
         Module module = pkg.getModule();
         List<String> unprefixedName = pkg.getName().subList(module.getName().size(), pkg.getName().size());
-        File dir = new File(destDir, join("/", unprefixedName));
+        File dir = new File(getOutputFolder(module), join("/", unprefixedName));
         dir.mkdirs();
         return dir;
     }
     
+    public File getOutputFolder(Module module) {
+        return new File(com.redhat.ceylon.compiler.util.Util.getModulePath(destDir, module),
+                "module-doc");
+    }
+
     private File getFolder(ClassOrInterface klass) {
         return getFolder(getPackage(klass));
     }
@@ -179,7 +180,7 @@ public class CeylonDocTool {
             file = new File(getFolder(klass), filename);
         } else if (modPgkOrDecl instanceof Module) {
             String filename = "index.html";
-            file = new File(new File(destDir), filename);
+            file = new File(getOutputFolder((Module)modPgkOrDecl), filename);
         } else if (modPgkOrDecl instanceof Package) {
             String filename = "index.html";
             file = new File(getFolder((Package)modPgkOrDecl), filename);
@@ -249,15 +250,16 @@ public class CeylonDocTool {
         makeIndex(module);
         makeSearch(module);
         
-        copyResource("resources/style.css", new File(getResourcesDir(), "style.css"));
-        copyResource("resources/shCore.css", new File(getResourcesDir(), "shCore.css"));
-        copyResource("resources/shThemeDefault.css", new File(getResourcesDir(), "shThemeDefault.css"));
-        copyResource("resources/jquery-1.7.min.js", new File(getResourcesDir(), "jquery-1.7.min.js"));
-        copyResource("resources/ceylond.js", new File(getResourcesDir(), "ceylond.js"));
-        copyResource("resources/shCore.js", new File(getResourcesDir(), "shCore.js"));
-        copyResource("resources/shBrushCeylon.js", new File(getResourcesDir(), "shBrushCeylon.js"));
+        File resourcesDir = getResourcesDir(module);
+        copyResource("resources/style.css", new File(resourcesDir, "style.css"));
+        copyResource("resources/shCore.css", new File(resourcesDir, "shCore.css"));
+        copyResource("resources/shThemeDefault.css", new File(resourcesDir, "shThemeDefault.css"));
+        copyResource("resources/jquery-1.7.min.js", new File(resourcesDir, "jquery-1.7.min.js"));
+        copyResource("resources/ceylond.js", new File(resourcesDir, "ceylond.js"));
+        copyResource("resources/shCore.js", new File(resourcesDir, "shCore.js"));
+        copyResource("resources/shBrushCeylon.js", new File(resourcesDir, "shBrushCeylon.js"));
         
-        copyResource("resources/NOTICE.txt", new File(destDir, "NOTICE.txt"));
+        copyResource("resources/NOTICE.txt", new File(getOutputFolder(module), "NOTICE.txt"));
     }
 
     private Writer openWriter(File file) throws IOException {
@@ -265,7 +267,7 @@ public class CeylonDocTool {
     }
     
     private void makeSearch(Module module) throws IOException {
-        Writer writer = openWriter(new File(destDir, "search.html"));
+        Writer writer = openWriter(new File(getOutputFolder(module), "search.html"));
         try {
             new Search(module, this, writer).generate();
         } finally {
@@ -360,7 +362,7 @@ public class CeylonDocTool {
     }
 
     private void makeIndex(Module module) throws IOException {
-        File dir = getResourcesDir();
+        File dir = getResourcesDir(module);
         Writer writer = openWriter(new File(dir, "index.js"));
         try {
             new IndexDoc(this, writer, module).generate();
@@ -369,8 +371,8 @@ public class CeylonDocTool {
         }
     }
 
-    private File getResourcesDir() throws IOException {
-        File dir = new File(destDir, ".resources");
+    private File getResourcesDir(Module module) throws IOException {
+        File dir = new File(getOutputFolder(module), ".resources");
         if (!dir.exists()
                 && !dir.mkdirs()) {
             throw new IOException();
@@ -489,8 +491,8 @@ public class CeylonDocTool {
      * Gets the base URL
      * @return Gets the base URL
      */
-    protected URI getBaseUrl() throws IOException {
-        return new File(getDestDir()).getCanonicalFile().toURI();
+    protected URI getBaseUrl(Module module) throws IOException {
+        return getOutputFolder(module).getCanonicalFile().toURI();
     }
     
     /**
@@ -503,14 +505,14 @@ public class CeylonDocTool {
      * @return A URL suitable for a link from a page at uri to a page at uri2
      * @throws IOException 
      */
-    private URI relativize(URI uri, URI uri2) throws IOException {
+    private URI relativize(Module module, URI uri, URI uri2) throws IOException {
         if (!uri.isAbsolute()) {
             throw new IllegalArgumentException("Expected " + uri + " to be absolute");
         }
         if (!uri2.isAbsolute()) {
             throw new IllegalArgumentException("Expected " + uri2 + " to be absolute");
         }
-        URI baseUrl = getBaseUrl();
+        URI baseUrl = getBaseUrl(module);
         StringBuilder sb = new StringBuilder();
         URI r = uri;
         if (!r.equals(baseUrl)) {
@@ -534,20 +536,22 @@ public class CeylonDocTool {
     }
     
     protected String getObjectUrl(Object from, Object to) throws IOException {
+        Module module = getModule(from);
         URI fromUrl = getAbsoluteObjectUrl(from);
         URI toUrl = getAbsoluteObjectUrl(to);
-        String result = relativize(fromUrl, toUrl).toString();
+        String result = relativize(module, fromUrl, toUrl).toString();
         if (to instanceof Package 
-                && isRootPackage(getModule(from), (Package)to)) {
+                && isRootPackage(module, (Package)to)) {
             result += "#section-package";
         }
         return result;
     }
     
     protected String getResourceUrl(Object from, String to) throws IOException {
+        Module module = getModule(from);
         URI fromUrl = getAbsoluteObjectUrl(from);
-        URI toUrl = getBaseUrl().resolve(".resources/" + to);
-        String result = relativize(fromUrl, toUrl).toString();
+        URI toUrl = getBaseUrl(module).resolve(".resources/" + to);
+        String result = relativize(module, fromUrl, toUrl).toString();
         return result;
     }
     
@@ -561,6 +565,7 @@ public class CeylonDocTool {
      */
     protected String getSrcUrl(Object from, Object modPkgOrDecl) throws IOException {
         URI fromUrl = getAbsoluteObjectUrl(from);
+        Module module = getModule(from);
         Package pkg;
         String filename;
         if (modPkgOrDecl instanceof Element) {
@@ -571,8 +576,8 @@ public class CeylonDocTool {
             pkg = (Package)modPkgOrDecl;
             filename = "package.ceylon";
         } else if (modPkgOrDecl instanceof Module) {
-            Module module = (Module)modPkgOrDecl;
-            pkg = module.getPackage(module.getNameAsString());
+            Module moduleDecl = (Module)modPkgOrDecl;
+            pkg = moduleDecl.getPackage(moduleDecl.getNameAsString());
             filename = "module.ceylon";
         } else {
             throw new RuntimeException("Unexpected: " + modPkgOrDecl);
@@ -582,7 +587,7 @@ public class CeylonDocTool {
         String result;
         if (srcFile.exists()) {
             URI url = srcFile.toURI();
-            result = relativize(fromUrl, url).toString();
+            result = relativize(module, fromUrl, url).toString();
         } else {
             result = null;
         }
