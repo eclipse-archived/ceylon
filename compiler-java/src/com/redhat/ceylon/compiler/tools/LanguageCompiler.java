@@ -349,7 +349,7 @@ public class LanguageCompiler extends JavaCompiler {
     }
 
     // FIXME: this function is terrible, possibly refactor it with getPackage?
-    private File getSrcDir(File sourceFile) {
+    private File getSrcDir(File sourceFile) throws IOException {
         String name;
         try {
             name = sourceFile.getCanonicalPath();
@@ -362,13 +362,7 @@ public class LanguageCompiler extends JavaCompiler {
         int maxPrefixLength = 0;
         File srcDirFile = null;
         for (File prefixFile : prefixes) {
-            String path;
-            try {
-                path = prefixFile.getCanonicalPath();
-            } catch (IOException e) {
-                // FIXME
-                throw new RuntimeException(e);
-            }
+            String path = prefixFile.getCanonicalPath();
             if (name.startsWith(path) && path.length() > maxPrefixLength) {
                 maxPrefixLength = path.length();
                 srcDirFile = prefixFile;
@@ -380,22 +374,27 @@ public class LanguageCompiler extends JavaCompiler {
         throw new RuntimeException(name+ " is not in the current source path: "+((JavacFileManager)fileManager).getLocation(StandardLocation.SOURCE_PATH));
     }
 
-    private String getPackage(JavaFileObject file){
+    private String getPackage(JavaFileObject file) throws IOException{
         Iterable<? extends File> prefixes = ((JavacFileManager)fileManager).getLocation(StandardLocation.SOURCE_PATH);
 
     	// Figure out the package name by stripping the "-src" prefix and
     	// extracting
     	// the package part of the fullname.
+        
+        String filePath = file.toUri().getPath();
+        // go absolute
+        filePath = new File(filePath).getCanonicalPath();
+        
         int srcDirLength = 0;
         for (File prefixFile : prefixes) {
-            String prefix = prefixFile.getPath();
-            if (file.toString().startsWith(prefix) && prefix.length() > srcDirLength) {
+            String prefix = prefixFile.getCanonicalPath();
+            if (filePath.startsWith(prefix) && prefix.length() > srcDirLength) {
                 srcDirLength = prefix.length();
             }
     	}
         
         if (srcDirLength > 0) {
-            String fullname = file.toString().substring(srcDirLength);
+            String fullname = filePath.substring(srcDirLength);
             assert fullname.endsWith(".ceylon");
             fullname = fullname.substring(0, fullname.length() - ".ceylon".length());
             fullname = fullname.replace(File.separator, ".");
