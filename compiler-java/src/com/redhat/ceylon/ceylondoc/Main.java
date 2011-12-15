@@ -65,7 +65,7 @@ public class Main {
             srcDir = "source";
         }
         if(repositories.isEmpty())
-            repositories.addAll(getDefaultRepositories());
+            repositories.addAll(com.redhat.ceylon.compiler.util.Util.getDefaultRepositories());
 
         File file = new File(srcDir);
         if (!file.isDirectory()) {
@@ -84,21 +84,8 @@ public class Main {
         ceylonDocTool.makeDoc();
     }
 
-    private static List<String> getDefaultRepositories(){
-        List<String> defaultRepositories = new LinkedList<String>();
-        String ceylonHome = System.getProperty("ceylon.home");
-        // if it's not set, let's not use it
-        if(ceylonHome != null && !ceylonHome.isEmpty()){
-            defaultRepositories.add(ceylonHome+File.separator+"repo");
-        }
-        defaultRepositories.add(System.getProperty("user.home")+File.separator
-                +".ceylon"+File.separator+"repo");
-        defaultRepositories.add("modules");
-        return defaultRepositories;
-    }
-    
     private static void printUsage() {
-        List<String> defaultRepositories = getDefaultRepositories();
+        List<String> defaultRepositories = com.redhat.ceylon.compiler.util.Util.getDefaultRepositories();
         System.err.print(
                 "Ceylond usage:\n"
                 +"-out <path>:  Output module repository (default: 'modules')\n"

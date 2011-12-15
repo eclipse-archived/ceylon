@@ -21,6 +21,8 @@
 package com.redhat.ceylon.compiler.util;
 
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.tools.StandardLocation;
 
@@ -246,4 +248,18 @@ public class Util {
             return null;
         }
     }
+    
+    public static List<String> getDefaultRepositories(){
+        List<String> defaultRepositories = new LinkedList<String>();
+        String ceylonHome = System.getProperty("ceylon.home");
+        // if it's not set, let's not use it
+        if(ceylonHome != null && !ceylonHome.isEmpty()){
+            defaultRepositories.add(ceylonHome+File.separator+"repo");
+        }
+        defaultRepositories.add(System.getProperty("user.home")+File.separator
+                +".ceylon"+File.separator+"repo");
+        defaultRepositories.add("modules");
+        return defaultRepositories;
+    }
+
 }
