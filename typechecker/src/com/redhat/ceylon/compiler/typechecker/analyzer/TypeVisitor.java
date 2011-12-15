@@ -275,7 +275,10 @@ public class TypeVisitor extends Visitor {
         
     @Override 
     public void visit(Tree.VoidModifier that) {
-        that.setTypeModel(unit.getVoidDeclaration().getType());
+        Class vtd = unit.getVoidDeclaration();
+        if (vtd!=null) {
+		    that.setTypeModel(vtd.getType());
+        }
     }
 
     public void visit(Tree.SequencedType that) {
@@ -322,8 +325,10 @@ public class TypeVisitor extends Visitor {
     
     private void defaultSuperclass(Tree.ExtendedType et, TypeDeclaration c) {
         if (et==null) {
-            //TODO: should be BaseObject, according to the spec!
-            c.setExtendedType(unit.getIdentifiableObjectDeclaration().getType());
+            Class iotd = unit.getIdentifiableObjectDeclaration();
+            if (iotd!=null) {
+			    c.setExtendedType(iotd.getType());
+            }
         }
     }
 
