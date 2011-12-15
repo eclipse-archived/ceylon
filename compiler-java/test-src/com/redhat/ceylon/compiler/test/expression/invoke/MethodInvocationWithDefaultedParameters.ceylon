@@ -18,9 +18,10 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class Fookls() {
+class Fookls(Integer init) {
     shared Integer prop = 42;
     Integer privProp = 24;
+    Integer init = init;
     shared void f1(Integer n = 5) {}
     shared void f2(Integer n, String s = "test") {}
     shared void f3(Integer n = 5, Integer m = n) {}
@@ -28,6 +29,7 @@ class Fookls() {
     shared void f5(Integer n = prop) {}
     shared void f6(Integer n = privProp) {}
     shared void f7(Integer n = this.prop) {}
+    shared void f8(Integer n = init) {}
 }
 @nomodel
 interface Barface {
@@ -51,7 +53,7 @@ class Barkls() satisfies Barface {
 }
 @nomodel
 void methodInvocationWithDefaultedParameters() {
-    Fookls f = Fookls();
+    Fookls f = Fookls(88);
     f.f1();
     f.f1(6);
     f.f2(1);

@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
@@ -1431,6 +1432,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (result == null) {
             boolean useGetter = !(decl instanceof Method);
             if (qualExpr == null && selector == null) {
+                if (needDollarThis && expr.getScope() != decl.getContainer()) {
+                    primaryExpr = null;
+                    qualExpr = makeIdent("$this");
+                }
                 useGetter = decl.isClassOrInterfaceMember() && Util.isErasedAttribute(decl.getName());
                 if (useGetter) {
                     selector = Util.quoteMethodName(decl.getName());
