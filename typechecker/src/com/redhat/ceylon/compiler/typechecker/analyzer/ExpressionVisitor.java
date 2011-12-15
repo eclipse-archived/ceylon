@@ -2173,11 +2173,11 @@ public class ExpressionVisitor extends Visitor {
                 visitBaseMemberExpression(that, member, ta, tal);
             }
             //otherwise infer type arguments later
-            if (defaultArgument) {
+            /*if (defaultArgument) {
             	if (member.isClassOrInterfaceMember()) {
             		that.addWarning("references to this from default argument expressions not yet supported");
             	}
-            }
+            }*/
         }
     }
 
@@ -2400,7 +2400,7 @@ public class ExpressionVisitor extends Visitor {
             that.setTypeModel(ci);
         }
         if (defaultArgument) {
-        	that.addWarning("references to outer from default argument expressions not yet supported");
+        	that.addError("reference to outer from default argument expression");
         }
     }
 
@@ -2434,7 +2434,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         if (defaultArgument) {
-        	that.addWarning("references to super from default argument expressions not yet supported");
+        	that.addError("reference to super from default argument expression");
         }
     }
     
@@ -2446,9 +2446,9 @@ public class ExpressionVisitor extends Visitor {
         else {
             that.setTypeModel(ci.getType());
         }
-        if (defaultArgument) {
+        /*if (defaultArgument) {
         	that.addWarning("references to this from default argument expressions not yet supported");
-        }
+        }*/
     }
     
     @Override public void visit(Tree.SequenceEnumeration that) {
