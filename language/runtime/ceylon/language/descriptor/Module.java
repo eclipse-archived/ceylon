@@ -2,6 +2,7 @@ package ceylon.language.descriptor;
 
 import ceylon.language.Iterable;
 
+import com.redhat.ceylon.compiler.metadata.java.Defaulted;
 import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.Sequenced;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
@@ -16,11 +17,11 @@ public class Module {
 
     public Module(@Name("name") ceylon.language.Quoted name, 
             @Name("version") ceylon.language.Quoted version, 
-            @Name("doc") java.lang.String doc, 
+            @Name("doc") @Defaulted java.lang.String doc, 
             @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>") 
-            @Name("by") ceylon.language.Iterable<? extends ceylon.language.String> by, 
-            @TypeInfo("ceylon.language.Nothing|ceylon.language.Quoted") @Name("license") 
-            ceylon.language.Quoted license,
+            @Name("by") @Defaulted ceylon.language.Iterable<? extends ceylon.language.String> by, 
+            @TypeInfo("ceylon.language.Nothing|ceylon.language.Quoted") 
+            @Name("license") @Defaulted ceylon.language.Quoted license,
             @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.descriptor.Import>") 
             @Name("dependencies") @Sequenced 
             ceylon.language.Iterable<? extends ceylon.language.descriptor.Import> dependencies){

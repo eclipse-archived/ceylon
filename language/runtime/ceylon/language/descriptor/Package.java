@@ -2,6 +2,7 @@ package ceylon.language.descriptor;
 
 import ceylon.language.Iterable;
 
+import com.redhat.ceylon.compiler.metadata.java.Defaulted;
 import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
@@ -12,10 +13,10 @@ public class Package {
     private Iterable<? extends ceylon.language.String> by;
 
     public Package(@Name("name") ceylon.language.Quoted name, 
-    		@Name("shared") boolean shared,
-    		@Name("doc") java.lang.String doc,
+    		@Name("shared") @Defaulted boolean shared,
+    		@Name("doc") @Defaulted java.lang.String doc,
             @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>") 
-            @Name("by") ceylon.language.Iterable<? extends ceylon.language.String> by){
+            @Name("by") @Defaulted ceylon.language.Iterable<? extends ceylon.language.String> by){
         this.name = name;
         this.shared = shared;
         this.doc = doc;

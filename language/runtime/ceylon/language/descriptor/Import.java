@@ -1,5 +1,6 @@
 package ceylon.language.descriptor;
 
+import com.redhat.ceylon.compiler.metadata.java.Defaulted;
 import com.redhat.ceylon.compiler.metadata.java.Name;
 
 public class Import {
@@ -10,8 +11,8 @@ public class Import {
 
     public Import(@Name("name") ceylon.language.Quoted name, 
             @Name("version") ceylon.language.Quoted version, 
-            @Name("optional") boolean optional, 
-            @Name("export") boolean export) {
+            @Name("optional") @Defaulted boolean optional, 
+            @Name("export") @Defaulted boolean export) {
         this.name = name;
         this.version = version;
         this.optional = optional;
