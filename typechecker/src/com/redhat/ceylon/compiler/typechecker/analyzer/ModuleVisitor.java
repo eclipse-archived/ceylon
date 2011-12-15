@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExpressionList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -80,16 +81,16 @@ public class ModuleVisitor extends Visitor {
             Tree.SpecifiedArgument nsa = getArgument(that, "name");
             String moduleName = argumentToString(nsa);
             if (moduleName==null) {
-                unit.addError("missing module name");
+                that.addError("missing module name");
             }
             else if (moduleName.startsWith(Module.DEFAULT_MODULE_NAME)) {
-                unit.addError("default is a reserved module name");
+                that.addError("default is a reserved module name");
             }
             else {
                 Tree.SpecifiedArgument vsa = getArgument(that, "version");
                 String version = argumentToString(vsa);
                 if (version==null) {
-                    unit.addError("missing module version");
+                    that.addError("missing module version");
                 }
                 else {
                     if (version.isEmpty()) {
@@ -99,7 +100,7 @@ public class ModuleVisitor extends Visitor {
                 //mainModule = pkg.getModule();
                 mainModule = moduleManager.getOrCreateModule(pkg.getName(),version); //in compiler the Package has a null Module
                 if (mainModule == null) {
-                    unit.addError("A module cannot be defined at the top level of the hierarchy");
+                    nsa.addError("module must have a nonempty name");
                 }
                 else {
                     mainModule.setVersion(version);
@@ -124,7 +125,7 @@ public class ModuleVisitor extends Visitor {
             Tree.SpecifiedArgument nsa = getArgument(that, "name");
             String moduleName = argumentToString(nsa);
             if (moduleName==null) {
-                unit.addError("missing imported module name");
+                that.addError("missing imported module name");
             }
             else {
                 Tree.SpecifiedArgument vsa = getArgument(that, "version");
@@ -134,7 +135,7 @@ public class ModuleVisitor extends Visitor {
                 }
                 Module importedModule = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(moduleName),version);
                 if (importedModule == null) {
-                    nsa.addError("A module cannot be defined at the top level of the hierarchy");
+                    nsa.addError("module must have a nonempty name");
                 }
                 else if (mainModule != null) {
                     if (importedModule.getVersion() == null) {
@@ -158,7 +159,7 @@ public class ModuleVisitor extends Visitor {
             Tree.SpecifiedArgument nsa = getArgument(that, "name");
             String packageName = argumentToString(nsa);
             if (packageName==null) {
-                unit.addError("missing package name");
+                that.addError("missing package name");
             }
             else {
                 if ( !pkg.getNameAsString().equals(packageName) ) {
@@ -178,13 +179,19 @@ public class ModuleVisitor extends Visitor {
     }
 
     private Tree.SpecifiedArgument getArgument(Tree.InvocationExpression that, String name) {
-        for (Tree.NamedArgument arg: that.getNamedArgumentList().getNamedArguments()) {
-            if (arg instanceof Tree.SpecifiedArgument) {
-                Tree.Identifier aid = arg.getIdentifier();
-                if (aid!=null && aid.getText().equals(name)) {
-                    return (Tree.SpecifiedArgument) arg;
-                }
-            }
+        NamedArgumentList nal = that.getNamedArgumentList();
+        if (nal==null) {
+        	that.addError("module and package descriptors must be defined using named argument lists");
+        }
+        else {
+			for (Tree.NamedArgument arg: nal.getNamedArguments()) {
+	            if (arg instanceof Tree.SpecifiedArgument) {
+	                Tree.Identifier aid = arg.getIdentifier();
+	                if (aid!=null && aid.getText().equals(name)) {
+	                    return (Tree.SpecifiedArgument) arg;
+	                }
+	            }
+	        }
         }
         return null;
     }
@@ -237,10 +244,11 @@ public class ModuleVisitor extends Visitor {
                 return text;
             }
         }
-        else if ( term instanceof Tree.BaseMemberExpression) {
+        else if (term instanceof Tree.BaseMemberExpression) {
             return ((Tree.BaseMemberExpression) term).getIdentifier().getText();
         }
         else {
+        	term.addError("module and package descriptors must be defined using literal value expressions");
             return null;
         }
     }
