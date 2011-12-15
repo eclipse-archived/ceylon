@@ -874,7 +874,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         java.util.List<ProducedType> typeArgumentModels = getTypeArguments(ce);
         List<JCExpression> typeArgs = transformTypeArguments(typeArgumentModels);
         boolean isRaw = typeArgs.isEmpty();
-
+        String callVarName = null;
+        
         Declaration primaryDecl = ce.getPrimary().getDeclaration();
         if (primaryDecl != null) {
             java.util.List<ParameterList> paramLists = ((Functional)primaryDecl).getParameterLists();
@@ -883,6 +884,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             Parameter lastDeclared = declaredParams.size() > 0 ? declaredParams.get(declaredParams.size() - 1) : null;
             boolean boundSequenced = false;
             String varBaseName = aliasName("arg");
+            callVarName = varBaseName + "$callable$";
             
             int numDeclared = declaredParams.size();
             int numPassed = namedArguments.size();
@@ -930,7 +932,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     containerName = ((Declaration)primaryDecl.getContainer()).getName();
                     // first append $this
                     ProducedType thisType = getThisType(primaryDecl);
-                    vars.append(makeVar(varBaseName + "$this$", makeJavaType(thisType), makeNull()));
+                    vars.append(makeVar(varBaseName + "$this$", makeJavaType(thisType, NO_PRIMITIVES), makeNull()));
                     needsThis = true;
                 } else {
                     containerName = primaryDecl.getName();
@@ -954,7 +956,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             args.appendList(makeVarRefArgumentList(varBaseName, numDeclared));
         }
 
-        return makeInvocation(ce, vars, args, typeArgs);
+        return makeInvocation(ce, vars, args, typeArgs, callVarName);
     }
 
     // Positional invocation
@@ -969,6 +971,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         java.util.List<ProducedType> typeArgumentModels = getTypeArguments(ce);
         List<JCExpression> typeArgs = transformTypeArguments(typeArgumentModels);
         boolean isRaw = typeArgs.isEmpty();
+        String callVarName = null;
         
         java.util.List<ParameterList> paramLists = ((Functional)primaryDecl).getParameterLists();
         java.util.List<Parameter> declaredParams = paramLists.get(0).getParameters();
@@ -1003,13 +1006,14 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if (numPassed < numDeclared) {
             vars = ListBuffer.lb();
             String varBaseName = aliasName("arg");
+            callVarName = varBaseName + "$callable$";
             boolean needsThis = false;
             String containerName;
             if (Decl.withinClassOrInterface(primaryDecl)) {
                 containerName = ((Declaration)primaryDecl.getContainer()).getName();
                 // first append $this
                 ProducedType thisType = getThisType(primaryDecl);
-                vars.append(makeVar(varBaseName + "$this$", makeJavaType(thisType), makeNull()));
+                vars.append(makeVar(varBaseName + "$this$", makeJavaType(thisType, NO_PRIMITIVES), makeNull()));
                 needsThis = true;
             } else {
                 containerName = primaryDecl.getName();
@@ -1053,7 +1057,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         }
 
-        return makeInvocation(ce, vars, args, typeArgs);
+        return makeInvocation(ce, vars, args, typeArgs, callVarName);
     }
 
     // Make a list of $arg0, $arg1, ... , $argN
@@ -1079,7 +1083,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             final Tree.InvocationExpression ce,
             final ListBuffer<JCVariableDecl> vars,
             final ListBuffer<JCExpression> args,
-            final List<JCExpression> typeArgs) {
+            final List<JCExpression> typeArgs,
+            final String callVarName) {
         at(ce);
         if (ce.getPrimary() instanceof Tree.BaseTypeExpression) {
             ProducedType classType = (ProducedType)((Tree.BaseTypeExpression)ce.getPrimary()).getTarget();
@@ -1093,7 +1098,6 @@ public class ExpressionTransformer extends AbstractTransformer {
                     JCExpression tmpCallPrimExpr = null;
                     if (vars != null && primaryExpr != null && selector != null) {
                         // Prepare the first argument holding the primary for the call
-                        String callVarName = aliasName("call");
                         JCExpression callVarExpr = make().Ident(names().fromString(callVarName));
                         ProducedType type = ((Tree.QualifiedMemberExpression)ce.getPrimary()).getTarget().getQualifyingType();
                         JCVariableDecl callVar = makeVar(callVarName, makeJavaType(type, NO_PRIMITIVES), primaryExpr);

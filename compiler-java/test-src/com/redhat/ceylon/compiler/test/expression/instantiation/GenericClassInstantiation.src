@@ -27,7 +27,7 @@ class KlassTypeParamsInstantiation {
     
     public final .java.lang.String m3() {
         final com.redhat.ceylon.compiler.test.expression.instantiation.KlassTypeParams<ceylon.language.String, ceylon.language.Integer> k = new com.redhat.ceylon.compiler.test.expression.instantiation.KlassTypeParams<ceylon.language.String, ceylon.language.Integer>(.ceylon.language.String.instance("foo"), .ceylon.language.Integer.instance(2L));
-        return (let com.redhat.ceylon.compiler.test.expression.instantiation.KlassTypeParams<ceylon.language.String, ceylon.language.Integer> $call$1 = k,ceylon.language.String $arg$0$0 = .ceylon.language.String.instance("hello"),ceylon.language.Integer $arg$0$1 = .ceylon.language.Integer.instance(1L) in $call$1.foo($arg$0$0, $arg$0$1)).toString();
+        return (let com.redhat.ceylon.compiler.test.expression.instantiation.KlassTypeParams<ceylon.language.String, ceylon.language.Integer> $arg$0$callable$ = k,ceylon.language.String $arg$0$0 = .ceylon.language.String.instance("hello"),ceylon.language.Integer $arg$0$1 = .ceylon.language.Integer.instance(1L) in $arg$0$callable$.foo($arg$0$0, $arg$0$1)).toString();
     }
     
     public final void typeArgumentInference() {

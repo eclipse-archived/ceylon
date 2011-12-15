@@ -13,7 +13,7 @@ public class NullHandlingOperators {
         final ceylon.language.Integer nBoxed = (let ceylon.language.Integer $ceylontmp1 = natOrNothing1 in $ceylontmp1 != null ? $ceylontmp1 : <ceylon.language.Integer>box(.ceylon.language.Integer.instance(0L)));
         ceylon.language.Integer nullSafeMember = (let ceylon.language.Integer $safe$2 = intOrNothing in $safe$2 != null ? $safe$2.getNegativeValue() : null);
         ceylon.language.Integer nullSafeInvoke = (let ceylon.language.Integer $safe$3 = intOrNothing in $safe$3 != null ? $safe$3.plus(.ceylon.language.Integer.instance(1L)) : null);
-        nullSafeInvoke = (let ceylon.language.Integer $safe$5 = intOrNothing in $safe$5 != null ? (let ceylon.language.Integer $call$6 = $safe$5,ceylon.language.Integer $arg$4$0 = .ceylon.language.Integer.instance(1L) in $call$6.plus($arg$4$0)) : null);
+        nullSafeInvoke = (let ceylon.language.Integer $safe$5 = intOrNothing in $safe$5 != null ? (let ceylon.language.Integer $arg$4$callable$ = $safe$5,ceylon.language.Integer $arg$4$0 = .ceylon.language.Integer.instance(1L) in $arg$4$callable$.plus($arg$4$0)) : null);
     }
     
     private final void testEmpty() {
@@ -39,10 +39,10 @@ public class NullHandlingOperators {
     private final void testThenElse() {
         final long n = 5L;
         final ceylon.language.String foo = .ceylon.language.Integer.instance(n).compare(.ceylon.language.Integer.instance(0L)).largerThan() ? .ceylon.language.String.instance("yes") : null;
-        final ceylon.language.String bar = (let ceylon.language.String $ceylontmp7 = foo in $ceylontmp7 != null ? $ceylontmp7 : .ceylon.language.String.instance("yes"));
-        final ceylon.language.String baz = (let ceylon.language.String $ceylontmp8 = .ceylon.language.Integer.instance(n).compare(.ceylon.language.Integer.instance(0L)).largerThan() ? .ceylon.language.String.instance("yes") : null in $ceylontmp8 != null ? $ceylontmp8 : .ceylon.language.String.instance("no"));
+        final ceylon.language.String bar = (let ceylon.language.String $ceylontmp6 = foo in $ceylontmp6 != null ? $ceylontmp6 : .ceylon.language.String.instance("yes"));
+        final ceylon.language.String baz = (let ceylon.language.String $ceylontmp7 = .ceylon.language.Integer.instance(n).compare(.ceylon.language.Integer.instance(0L)).largerThan() ? .ceylon.language.String.instance("yes") : null in $ceylontmp7 != null ? $ceylontmp7 : .ceylon.language.String.instance("no"));
         final double x = 5.0;
-        final double y = (let ceylon.language.Float $ceylontmp9 = .ceylon.language.Float.instance(x).compare(.ceylon.language.Float.instance(0.0)).largerThan() ? .ceylon.language.Float.instance(x) : null in $ceylontmp9 != null ? $ceylontmp9 : .ceylon.language.Float.instance(1.0)).doubleValue();
+        final double y = (let ceylon.language.Float $ceylontmp8 = .ceylon.language.Float.instance(x).compare(.ceylon.language.Float.instance(0.0)).largerThan() ? .ceylon.language.Float.instance(x) : null in $ceylontmp8 != null ? $ceylontmp8 : .ceylon.language.Float.instance(1.0)).doubleValue();
     }
     
     public NullHandlingOperators() {
