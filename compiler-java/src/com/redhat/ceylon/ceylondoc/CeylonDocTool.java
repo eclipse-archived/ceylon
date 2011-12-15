@@ -69,7 +69,6 @@ public class CeylonDocTool {
 
     private List<PhasedUnit> phasedUnits;
     private Modules modules;
-    private String srcDir;
     private File destDir;
     /**
      * The {@linkplain #shouldInclude(Declaration) visible} subclasses of the key
@@ -100,14 +99,6 @@ public class CeylonDocTool {
 
     public void setDestDir(String destDir) {
         this.destDir = new File(destDir);
-    }
-
-    public String getSrcDir() {
-        return srcDir;
-    }
-
-    public void setSrcDir(String srcDir) {
-        this.srcDir = srcDir;
     }
 
     public void setShowPrivate(boolean showPrivate) {

@@ -80,7 +80,6 @@ public class Main {
         CeylonDocTool ceylonDocTool = new CeylonDocTool(file, repositories);
         ceylonDocTool.setShowPrivate(showPrivate);
         ceylonDocTool.setDestDir(destDir);
-        ceylonDocTool.setSrcDir(srcDir);
         ceylonDocTool.setOmitSource(omitSource);
         ceylonDocTool.makeDoc();
     }
