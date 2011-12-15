@@ -222,4 +222,13 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
             repositories.add(new File(repository));
         return repositories;
     }
+    
+    @Override
+    protected File getClassOutDir() {
+        File outDir = super.getClassOutDir();
+        // set the default value for Ceylon
+        if(outDir == null)
+            classOutDir = new File("modules");
+        return outDir;
+    }
 }
