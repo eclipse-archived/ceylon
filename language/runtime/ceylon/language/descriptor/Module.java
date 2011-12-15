@@ -1,8 +1,10 @@
 package ceylon.language.descriptor;
 
 import ceylon.language.Iterable;
+import ceylon.language.$empty;
 
 import com.redhat.ceylon.compiler.metadata.java.Defaulted;
+import com.redhat.ceylon.compiler.metadata.java.Ignore;
 import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.Sequenced;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
@@ -55,5 +57,25 @@ public class Module {
 
     public Iterable<? extends ceylon.language.descriptor.Import> getDependencies() {
         return dependencies;
+    }
+    
+    @Ignore
+    public static final class Module$impl {
+        
+        public Module$impl() {
+            super();
+        }
+        
+        static java.lang.String $init$doc(ceylon.language.descriptor.Module $this) {
+            return "";
+        }
+        
+        static Iterable<? extends ceylon.language.String> $init$by(ceylon.language.descriptor.Module $this) {
+            return $empty.getEmpty();
+        }
+        
+        static ceylon.language.Quoted $init$license(ceylon.language.descriptor.Module $this) {
+            return null;
+        }
     }
 }

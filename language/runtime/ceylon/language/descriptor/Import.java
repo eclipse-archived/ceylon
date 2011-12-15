@@ -1,6 +1,7 @@
 package ceylon.language.descriptor;
 
 import com.redhat.ceylon.compiler.metadata.java.Defaulted;
+import com.redhat.ceylon.compiler.metadata.java.Ignore;
 import com.redhat.ceylon.compiler.metadata.java.Name;
 
 public class Import {
@@ -33,5 +34,21 @@ public class Import {
 
     public boolean getExport() {
         return export;
+    }
+    
+    @Ignore
+    public static final class Import$impl {
+        
+        public Import$impl() {
+            super();
+        }
+        
+        static boolean $init$optional(ceylon.language.descriptor.Import $this) {
+            return false;
+        }
+        
+        static boolean $init$export(ceylon.language.descriptor.Import $this) {
+            return false;
+        }
     }
 }
