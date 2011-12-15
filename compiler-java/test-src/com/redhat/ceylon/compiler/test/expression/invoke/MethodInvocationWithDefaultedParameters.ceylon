@@ -30,6 +30,7 @@ class Fookls(Integer init) {
     shared void f6(Integer n = privProp) {}
     shared void f7(Integer n = this.prop) {}
     shared void f8(Integer n = init) {}
+    shared void f9(Integer n = init.successor) {}
 }
 @nomodel
 interface Barface {

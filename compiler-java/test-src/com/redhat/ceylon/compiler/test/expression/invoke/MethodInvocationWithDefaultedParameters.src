@@ -37,6 +37,9 @@ class Fookls {
     public final void f8(final long n) {
     }
     
+    public final void f9(final long n) {
+    }
+    
     Fookls(long init) {
         this.init = init;
         this.prop = 42L;
@@ -87,6 +90,10 @@ class Fookls {
         
         static long f8$n(com.redhat.ceylon.compiler.test.expression.invoke.Fookls $this) {
             return $this.init;
+        }
+        
+        static long f9$n(com.redhat.ceylon.compiler.test.expression.invoke.Fookls $this) {
+            return .ceylon.language.Integer.instance($this.init).getSuccessor().longValue();
         }
     }
 }

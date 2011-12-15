@@ -38,7 +38,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
@@ -275,7 +274,11 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCTree transform(Tree.This expr) {
         at(expr);
-        return makeIdent("this");
+        if (needDollarThis) {
+            return makeIdent("$this");
+        } else {
+            return makeIdent("this");
+        }
     }
 
     public JCTree transform(Tree.Super expr) {
@@ -1315,7 +1318,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     // Base members
     
     public JCExpression transform(Tree.BaseMemberExpression expr) {
-        return transformMemberExpression(expr, null, null);
+        return transform(expr, null);
     }
 
     private JCExpression transform(Tree.BaseMemberExpression expr, TermTransformer transformer) {
@@ -1355,10 +1358,6 @@ public class ExpressionTransformer extends AbstractTransformer {
                 qualExpr = makeIdentOrSelect(makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()), Util.getGetterName(decl.getName()));
                 selector = null;
             } else if (decl.isClassMember()) {
-                if (needDollarThis) {
-                    primaryExpr = null;
-                    qualExpr = makeIdent("$this");
-                }
                 selector = Util.getGetterName(decl.getName());
             } else {
                 // method local attr
@@ -1384,10 +1383,6 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             } else if (Decl.isClassAttribute(decl)) {
                 // invoke the getter
-                if (needDollarThis) {
-                    primaryExpr = null;
-                    qualExpr = makeIdent("$this");
-                }
                 selector = Util.getGetterName(decl.getName());
              } else if (decl.isCaptured() || decl.isShared()) {
                  // invoke the qualified getter
@@ -1422,20 +1417,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                 selector = null;
             } else {
                 // not toplevel, not within method, must be a class member
-                if (needDollarThis) {
-                    primaryExpr = null;
-                    qualExpr = makeIdent("$this");
-                }
                 selector = Util.quoteMethodName(decl.getName());
             }
         }
         if (result == null) {
             boolean useGetter = !(decl instanceof Method);
             if (qualExpr == null && selector == null) {
-                if (needDollarThis && expr.getScope() != decl.getContainer()) {
-                    primaryExpr = null;
-                    qualExpr = makeIdent("$this");
-                }
                 useGetter = decl.isClassOrInterfaceMember() && Util.isErasedAttribute(decl.getName());
                 if (useGetter) {
                     selector = Util.quoteMethodName(decl.getName());
@@ -1446,6 +1433,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             
             if (qualExpr == null) {
                 qualExpr = primaryExpr;
+            }
+            
+            if (qualExpr == null && needDollarThis && expr.getScope() != expr.getDeclaration().getContainer()) {
+                qualExpr = makeIdent("$this");
             }
             
             if (transformer != null) {
