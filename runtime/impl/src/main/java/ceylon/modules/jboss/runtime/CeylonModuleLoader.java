@@ -212,7 +212,6 @@ public class CeylonModuleLoader extends ModuleLoader {
                 for (Import i : imports) {
                     if (i.getOptional()) {
                         String path = CeylonToJava.toString(i.getName());
-                        // TODO -- handle "default" differrently!
                         Node<Import> current = root;
                         String[] tokens = path.split("\\.");
                         for (String token : tokens) {

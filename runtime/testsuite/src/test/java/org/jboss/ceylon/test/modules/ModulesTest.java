@@ -23,6 +23,7 @@
 package org.jboss.ceylon.test.modules;
 
 import ceylon.modules.spi.Constants;
+import com.redhat.ceylon.cmr.api.Repository;
 import org.jboss.modules.Main;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.exporter.ZipExporter;
@@ -51,12 +52,23 @@ public abstract class ModulesTest {
 
     protected File createModuleFile(File tmpdir, Archive module) throws Exception {
         String fullName = module.getName();
-        int p = fullName.indexOf("-");
-        if (p < 0)
-            throw new IllegalArgumentException("No name and version split: " + fullName);
 
-        String name = fullName.substring(0, p);
-        String version = fullName.substring(p + 1, fullName.lastIndexOf("."));
+        final boolean isDefault = (Constants.DEFAULT + ".car").equals(fullName);
+
+        String name;
+        String version;
+
+        if (isDefault) {
+            name = Constants.DEFAULT.toString();
+            version = Repository.NO_VERSION;
+        } else {
+            int p = fullName.indexOf("-");
+            if (p < 0)
+                throw new IllegalArgumentException("No name and version split: " + fullName);
+
+            name = fullName.substring(0, p);
+            version = fullName.substring(p + 1, fullName.lastIndexOf("."));
+        }
 
         File targetDir = new File(tmpdir, toPathString(name, version));
         if (targetDir.exists() == false)
@@ -160,7 +172,8 @@ public abstract class ModulesTest {
     protected static String toPathString(String name, String version) {
         final StringBuilder builder = new StringBuilder();
         builder.append(name.replace('.', File.separatorChar));
-        builder.append(File.separatorChar).append(version);
+        if (Repository.NO_VERSION.equals(version) == false)
+            builder.append(File.separatorChar).append(version);
         builder.append(File.separatorChar);
         return builder.toString();
     }
