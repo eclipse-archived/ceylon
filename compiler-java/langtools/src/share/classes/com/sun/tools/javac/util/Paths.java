@@ -483,8 +483,9 @@ public class Paths {
 
     private Path computeSourcePath() {
         String sourcePathArg = options.get(SOURCEPATH);
+        // Ceylon: default source path
         if (sourcePathArg == null)
-            return null;
+            sourcePathArg = "source";
 
         return new Path().addFiles(sourcePathArg);
     }
