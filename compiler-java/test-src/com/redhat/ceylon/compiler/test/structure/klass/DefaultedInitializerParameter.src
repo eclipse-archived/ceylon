@@ -4,67 +4,71 @@ class DefaultedInitializerParameter {
     
     DefaultedInitializerParameter(long n) {
     }
-}
-public final class DefaultedInitializerParameter$impl {
     
-    public DefaultedInitializerParameter$impl() {
-        super();
-    }
-    
-    static long <init>$n() {
-        return 5L;
+    public static final class DefaultedInitializerParameter$impl {
+        
+        public DefaultedInitializerParameter$impl() {
+            super();
+        }
+        
+        static long <init>$n() {
+            return 5L;
+        }
     }
 }
 class DefaultedInitializerParameter2 {
     
     DefaultedInitializerParameter2(long n, .java.lang.String s) {
     }
-}
-public final class DefaultedInitializerParameter2$impl {
     
-    public DefaultedInitializerParameter2$impl() {
-        super();
-    }
-    
-    static .java.lang.String <init>$s(final long n) {
-        return "test";
+    public static final class DefaultedInitializerParameter2$impl {
+        
+        public DefaultedInitializerParameter2$impl() {
+            super();
+        }
+        
+        static .java.lang.String <init>$s(final long n) {
+            return "test";
+        }
     }
 }
 class DefaultedInitializerParameter3 {
     
     DefaultedInitializerParameter3(long n, long m) {
     }
-}
-public final class DefaultedInitializerParameter3$impl {
     
-    public DefaultedInitializerParameter3$impl() {
-        super();
-    }
-    
-    static long <init>$n() {
-        return 5L;
-    }
-    
-    static long <init>$m(final long n) {
-        return n;
+    public static final class DefaultedInitializerParameter3$impl {
+        
+        public DefaultedInitializerParameter3$impl() {
+            super();
+        }
+        
+        static long <init>$n() {
+            return 5L;
+        }
+        
+        static long <init>$m(final long n) {
+            return n;
+        }
     }
 }
 class DefaultedInitializerParameter4 {
     
     DefaultedInitializerParameter4(long n, long m) {
     }
-}
-public final class DefaultedInitializerParameter4$impl {
     
-    public DefaultedInitializerParameter4$impl() {
-        super();
-    }
-    
-    static long <init>$n() {
-        return 5L;
-    }
-    
-    static long <init>$m(final long n) {
-        return .ceylon.language.Integer.instance(n).plus(.ceylon.language.Integer.instance(1L)).longValue();
+    public static final class DefaultedInitializerParameter4$impl {
+        
+        public DefaultedInitializerParameter4$impl() {
+            super();
+        }
+        
+        static long <init>$n() {
+            return 5L;
+        }
+        
+        static long <init>$m(final long n) {
+            return .ceylon.language.Integer.instance(n).plus(.ceylon.language.Integer.instance(1L)).longValue();
+        }
     }
 }
