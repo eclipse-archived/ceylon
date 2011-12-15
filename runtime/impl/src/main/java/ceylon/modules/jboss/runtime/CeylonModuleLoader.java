@@ -26,6 +26,7 @@ import ceylon.language.descriptor.Import;
 import ceylon.language.descriptor.Module;
 import ceylon.modules.api.runtime.AbstractRuntime;
 import ceylon.modules.api.util.CeylonToJava;
+import ceylon.modules.api.util.JavaToCeylon;
 import ceylon.modules.jboss.repository.ResourceLoaderProvider;
 import com.redhat.ceylon.cmr.api.Repository;
 import org.jboss.modules.DependencySpec;
@@ -59,9 +60,12 @@ public class CeylonModuleLoader extends ModuleLoader {
     private static final ModuleIdentifier CMR;
     private static final ModuleIdentifier MODULES;
     private static final ModuleIdentifier RUNTIME;
+    private static final ModuleIdentifier DEFAULT;
 
     private static final String CEYLON_RUNTIME_PATH;
     private static final Set<ModuleIdentifier> BOOTSTRAP;
+
+    private static final Module DEFAULT_MODULE;
 
     static {
         final String defaultVersion = System.getProperty("ceylon.version", "0.1");
@@ -69,6 +73,7 @@ public class CeylonModuleLoader extends ModuleLoader {
         CMR = ModuleIdentifier.create("com.redhat.ceylon.cmr");
         MODULES = ModuleIdentifier.create("org.jboss.modules");
         RUNTIME = ModuleIdentifier.create("ceylon.runtime");
+        DEFAULT = ModuleIdentifier.create("default", Repository.NO_VERSION);
 
         CEYLON_RUNTIME_PATH = CeylonToJava.class.getPackage().getName().replace(".", "/");
 
@@ -77,6 +82,17 @@ public class CeylonModuleLoader extends ModuleLoader {
         BOOTSTRAP.add(CMR);
         BOOTSTRAP.add(MODULES);
         BOOTSTRAP.add(RUNTIME);
+
+        @SuppressWarnings("unchecked")
+        final ceylon.language.Iterable<? extends Import> imports = JavaToCeylon.toIterable();
+        DEFAULT_MODULE = new Module(
+                JavaToCeylon.toQuoted("default"),
+                JavaToCeylon.toQuoted(Repository.NO_VERSION),
+                "default.car",
+                JavaToCeylon.toIterable(JavaToCeylon.toString("Ceylon Team")),
+                JavaToCeylon.toQuoted("GPLv2"),
+                imports
+        );
     }
 
     private Repository repository;
@@ -172,7 +188,9 @@ public class CeylonModuleLoader extends ModuleLoader {
             if (moduleFile == null)
                 return null;
 
-            Module module = readModule(moduleIdentifier, moduleFile);
+            final boolean isDefault = DEFAULT.equals(moduleIdentifier);
+
+            Module module = isDefault ? DEFAULT_MODULE : readModule(moduleIdentifier, moduleFile);
             if (module == null)
                 throw new ModuleLoadException("No module descriptor in module: " + moduleFile);
 
@@ -194,6 +212,7 @@ public class CeylonModuleLoader extends ModuleLoader {
                 for (Import i : imports) {
                     if (i.getOptional()) {
                         String path = CeylonToJava.toString(i.getName());
+                        // TODO -- handle "default" differrently!
                         Node<Import> current = root;
                         String[] tokens = path.split("\\.");
                         for (String token : tokens) {
@@ -219,7 +238,9 @@ public class CeylonModuleLoader extends ModuleLoader {
                 }
             }
 
-            createModuleDependency(vertex, deps, builder, LANGUAGE);
+            createModuleDependency(vertex, deps, builder, LANGUAGE, false);
+            if (isDefault == false)
+                createModuleDependency(vertex, deps, builder, DEFAULT, true);
 
             // add runtime utils
             final DependencySpec sds = DependencySpec.createModuleDependencySpec(
@@ -227,10 +248,12 @@ public class CeylonModuleLoader extends ModuleLoader {
                     PathFilters.rejectAll(),
                     this,
                     RUNTIME,
-                    false
+                    true
             );
             builder.addDependency(sds);
             deps.add(sds);
+            Graph.Vertex<ModuleIdentifier, Boolean> sdsv = graph.createVertex(RUNTIME, RUNTIME);
+            Graph.Edge.create(false, vertex, sdsv);
 
             dependencies.put(moduleIdentifier, deps);
 
@@ -242,13 +265,13 @@ public class CeylonModuleLoader extends ModuleLoader {
         }
     }
 
-    protected void createModuleDependency(Graph.Vertex<ModuleIdentifier, Boolean> vertex, List<DependencySpec> deps, ModuleSpec.Builder builder, ModuleIdentifier mi) {
+    protected void createModuleDependency(Graph.Vertex<ModuleIdentifier, Boolean> vertex, List<DependencySpec> deps, ModuleSpec.Builder builder, ModuleIdentifier mi, boolean optional) {
         final DependencySpec dependency = DependencySpec.createModuleDependencySpec(
                 PathFilters.acceptAll(),
                 PathFilters.rejectAll(),
                 this,
                 mi,
-                false
+                optional
         );
         builder.addDependency(dependency);
         deps.add(dependency);
