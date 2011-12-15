@@ -13,7 +13,13 @@ while [ -h "$PRG" ]; do
 done
 
 DIR=$(dirname "$PRG")
-CEYLON_HOME="$DIR/.."
+
+# Only set CEYLON_HOME if not already set
+if test -z "$CEYLON_HOME"
+then
+    CEYLON_HOME="$DIR/.."
+fi
+
 LIB="$CEYLON_HOME/lib"
 RUNTIME_REPO="$CEYLON_HOME/runtime-repo"
 
