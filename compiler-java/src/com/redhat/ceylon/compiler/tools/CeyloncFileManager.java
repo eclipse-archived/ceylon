@@ -48,6 +48,7 @@ import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.compiler.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.JavacFileManager;
@@ -216,7 +217,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         // lazy loading
         List<String> repositoryNames = options.getMulti(OptionName.CEYLONREPO);
         if(repositoryNames.isEmpty())
-            repositoryNames = Arrays.asList("modules");
+            repositoryNames = Util.getDefaultRepositories();
         repositories = new ArrayList<File>(repositoryNames.size());
         for(String repository : repositoryNames)
             repositories.add(new File(repository));
