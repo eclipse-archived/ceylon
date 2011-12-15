@@ -136,6 +136,7 @@ public class JavacFileManager implements StandardJavaFileManager {
      *  If classOutDir = null, files are written into same directory as the sources
      *  they were generated from.
      */
+    // Ceylon: made protected
     protected File classOutDir = uninited;
 
     /** The output directory, used when generating sources while processing annotations.
