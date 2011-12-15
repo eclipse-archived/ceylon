@@ -247,7 +247,7 @@ public class LanguageCompiler extends JavaCompiler {
                 return gen.makeJCCompilationUnitPlaceholder(cu, filename, pkgName, phasedUnit);
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            log.error("ceylon", e.getMessage());
         }
 
         JCCompilationUnit result = make.TopLevel(List.<JCAnnotation> nil(), null, List.<JCTree> of(make.Erroneous()));
@@ -377,7 +377,7 @@ public class LanguageCompiler extends JavaCompiler {
         if (srcDirFile != null) {
             return srcDirFile;
         }
-        throw new RuntimeException("Failed to find source prefix for " + name);
+        throw new RuntimeException(name+ " is not in the current source path: "+((JavacFileManager)fileManager).getLocation(StandardLocation.SOURCE_PATH));
     }
 
     private String getPackage(JavaFileObject file){
