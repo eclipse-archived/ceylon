@@ -127,10 +127,9 @@ public class ClassDefinitionBuilder {
         defs.appendList(body);
         if (!concreteInterfaceMemberDefs.isEmpty()) {
             JCTree.JCClassDecl concreteInterfaceKlass = gen.make().ClassDef(
-                    gen.make().Modifiers(PUBLIC | FINAL | STATIC),
+                    gen.make().Modifiers(PUBLIC | FINAL | STATIC, gen.makeAtIgnore()),
                     gen.names().fromString(Util.getCompanionClassName(name)),
-                    // FIXME: type params probably have to get added to the method type params
-                    typeParams.toList(),
+                    List.<JCTree.JCTypeParameter>nil(),
                     (JCTree)null,
                     List.<JCTree.JCExpression>nil(),
                     concreteInterfaceMemberDefs.toList());
