@@ -86,7 +86,7 @@ public class IndexDoc extends CeylonDoc {
         }else if(decl instanceof Method
                 || decl instanceof Value
                 || decl instanceof Getter){
-            url = getObjectUrl(container) + "#" + name;
+            url = tool.getObjectUrl(module, container, false) + "#" + name;
             if(decl.isMember())
                 name = ((ClassOrInterface)container).getName() + "." + name;
         }else if(decl instanceof Setter

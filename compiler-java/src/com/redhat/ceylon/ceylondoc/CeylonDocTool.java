@@ -528,11 +528,16 @@ public class CeylonDocTool {
     }
     
     protected String getObjectUrl(Object from, Object to) throws IOException {
+        return getObjectUrl(from, to, true);
+    }
+    
+    protected String getObjectUrl(Object from, Object to, boolean withFragment) throws IOException {
         Module module = getModule(from);
         URI fromUrl = getAbsoluteObjectUrl(from);
         URI toUrl = getAbsoluteObjectUrl(to);
         String result = relativize(module, fromUrl, toUrl).toString();
-        if (to instanceof Package 
+        if (withFragment
+                && to instanceof Package 
                 && isRootPackage(module, (Package)to)) {
             result += "#section-package";
         }
