@@ -133,10 +133,9 @@
     <target name="generate-apidoc">
         <exec command="${dist.dir}/bin/ceylond" >
             <arg value="-out"/>
-            <arg value="${dist.dir}/doc/api"/>
+            <arg value="${dist.dir}/repo"/>
             <arg value="-src"/>
             <arg value="${ceylon.language.dir}/src/"/>
-            <env key="CEYLON_REPO" value="${dist.dir}/repo"/>
         </exec>
     </target>
 
