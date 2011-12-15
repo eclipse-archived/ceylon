@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/sh
 
 # resolve links - $0 may be a softlink
 PRG="$0"
@@ -12,7 +12,7 @@ while [ -h "$PRG" ]; do
     fi
 done
 
-source $(dirname "$PRG")/args.sh
+. $(dirname "$PRG")/args.sh
 
 # JAVA_CP are classes required by the tool to run
 JAVA_CP="$CEYLON_REPO/com/redhat/ceylon/compiler/$CEYLON_VERSION/com.redhat.ceylon.compiler-$CEYLON_VERSION.jar"

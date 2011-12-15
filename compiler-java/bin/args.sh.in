@@ -37,9 +37,9 @@ unset USER_CP
 unset ARGS
 unset BOOTSTRAP
 
-while (( $# > 0 ))
+while test "$#" -gt 0
 do
-    if [[ $1 == -cp ]] || [[ $1 == -classpath ]]
+    if test "$1" = -cp -o "$1" = -classpath
     then
         USER_CP=$2
         shift
@@ -47,7 +47,7 @@ do
         ARGS="$ARGS $1"
     fi
 
-    if [[ $1 == -Xbootstrapceylon ]]
+    if test "$1" = -Xbootstrapceylon
     then
         BOOTSTRAP=true
     fi
