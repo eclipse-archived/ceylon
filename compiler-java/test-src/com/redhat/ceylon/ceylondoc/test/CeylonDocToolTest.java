@@ -27,6 +27,8 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,12 +37,13 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.ceylondoc.CeylonDocTool;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 
 public class CeylonDocToolTest {
 
     private CeylonDocTool tool(String pathname, String testName)
             throws IOException {
-        CeylonDocTool tool = new CeylonDocTool(new File(pathname));
+        CeylonDocTool tool = new CeylonDocTool(new File(pathname), Collections.<String>emptyList());
         File dir = new File(System.getProperty("java.io.tmpdir"), "CeylonDocToolTest/" + testName);
         if (dir.exists()) {
             rm(dir);
@@ -144,10 +147,12 @@ public class CeylonDocToolTest {
         CeylonDocTool tool = tool(pathname, testName);
         tool.setShowPrivate(false);
         tool.setOmitSource(false);
-        tool.setSrcDir(pathname);
         tool.makeDoc();
         
-        File destDir = new File(tool.getDestDir());
+        Module module = new Module();
+        module.setName(Arrays.asList("a"));
+        module.setVersion("3.1.4");
+        File destDir = tool.getOutputFolder(module);
         assertDirectoryExists(destDir, ".resources");
         assertFileExists(destDir, ".resources/index.js");
         assertFileExists(destDir, "index.html");
@@ -185,10 +190,12 @@ public class CeylonDocToolTest {
         CeylonDocTool tool = tool(pathname, testName);
         tool.setShowPrivate(true);
         tool.setOmitSource(false);
-        tool.setSrcDir(pathname);
         tool.makeDoc();
         
-        File destDir = new File(tool.getDestDir());
+        Module module = new Module();
+        module.setName(Arrays.asList("a"));
+        module.setVersion("3.1.4");
+        File destDir = tool.getOutputFolder(module);
         assertDirectoryExists(destDir, ".resources");
         assertFileExists(destDir, ".resources/index.js");
         assertFileExists(destDir, "index.html");
