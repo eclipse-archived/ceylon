@@ -932,7 +932,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     containerName = ((Declaration)primaryDecl.getContainer()).getName();
                     // first append $this
                     ProducedType thisType = getThisType(primaryDecl);
-                    vars.append(makeVar(varBaseName + "$this$", makeJavaType(thisType, NO_PRIMITIVES), makeNull()));
+                    vars.append(makeVar(varBaseName + "$this$", makeJavaType(thisType, NO_PRIMITIVES), makeIdent(callVarName)));
                     needsThis = true;
                 } else {
                     containerName = primaryDecl.getName();
@@ -1013,7 +1013,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 containerName = ((Declaration)primaryDecl.getContainer()).getName();
                 // first append $this
                 ProducedType thisType = getThisType(primaryDecl);
-                vars.append(makeVar(varBaseName + "$this$", makeJavaType(thisType, NO_PRIMITIVES), makeNull()));
+                vars.append(makeVar(varBaseName + "$this$", makeJavaType(thisType, NO_PRIMITIVES), makeIdent(callVarName)));
                 needsThis = true;
             } else {
                 containerName = primaryDecl.getName();
