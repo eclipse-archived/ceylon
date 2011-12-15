@@ -27,8 +27,8 @@
                 <include name="NOTICE" />
             </zipfileset>
         </zip>        
-    </target>        
-    
+    </target>
+
     <target name="copy-compiler-binaries">
         <mkdir dir="${dist.dir}/bin"/>
         <copy todir="${dist.dir}/bin">
@@ -47,9 +47,9 @@
                 <include name="ceylond"/>
             </fileset>
         </chmod>
-    </target>       
-        
-    <target name="copy-compiler-libraries">
+    </target>
+
+	<target name="copy-compiler-libraries">
         <mkdir dir="${dist.dir}/lib"/>
         <copy todir="${dist.dir}/lib">
             <fileset dir="${ceylon-compiler.dir}/build/lib">
@@ -57,8 +57,8 @@
                 <include name="markdownj-*.jar"/>
             </fileset>
         </copy>
-    </target>       
-        
+    </target>
+
     <target name="install-compiler">
         <ant antfile="${ceylon-compiler.dir}/build.xml" target="dist" dir="${ceylon-compiler.dir}" inheritall="false">
         </ant>
@@ -66,8 +66,8 @@
             <fileset dir="${ceylon-compiler.dir}/build/dist">
             </fileset>
         </copy>
-    </target>       
-            
+    </target>
+
     <target name="install-typechecker">
         <ant antfile="${ceylon-spec.dir}/build.xml" target="dist" dir="${ceylon-spec.dir}" inheritall="false">
         </ant>
@@ -75,8 +75,8 @@
             <fileset dir="${ceylon-spec.dir}/build/dist">
             </fileset>
         </copy>
-    </target>       
-            
+    </target>
+
     <target name="install-language">
         <ant antfile="${ceylon.language.dir}/build.xml" target="dist" dir="${ceylon.language.dir}" inheritall="false">
         </ant>
@@ -84,8 +84,8 @@
             <fileset dir="${ceylon.language.dir}/build/dist">
             </fileset>
         </copy>
-    </target>       
-            
+    </target>
+
     <target name="generate-spec">
         <ant antfile="${ceylon-spec.dir}/build.xml" target="doc" dir="${ceylon-spec.dir}" inheritall="false">
         </ant>
@@ -94,8 +94,8 @@
                 <exclude name="dist,classes"/>
             </fileset>
         </copy>
-    </target>       
-            
+    </target>
+
     <target name="generate-apidoc">
         <exec command="${dist.dir}/bin/ceylond" >
             <arg value="-out"/>
@@ -105,7 +105,7 @@
             <env key="CEYLON_REPO" value="${dist.dir}/repo"/>
         </exec>
     </target>
-    
+
     <target name="clean">
         <delete dir="${dist.dir}"/>
     </target>
