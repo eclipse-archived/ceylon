@@ -1,13 +1,5 @@
 #! /bin/bash
 
-if [ $# -eq 0 ] ; then
-    echo 'Usage: ceylond <options>'
-    echo 'where possible options include:'
-    echo '  -src                       Specify where to find input source files'
-    echo '  -out                       Specify repository to store generated documentation in'
-    exit 0
-fi
-
 # resolve links - $0 may be a softlink
 PRG="$0"
 while [ -h "$PRG" ]; do
@@ -28,9 +20,13 @@ JAVA_CP="$JAVA_CP:$CEYLON_REPO/com/redhat/ceylon/typechecker/$CEYLON_VERSION/com
 JAVA_CP="$JAVA_CP:$CEYLON_HOME/lib/antlr-3.4-complete.jar"
 JAVA_CP="$JAVA_CP:$CEYLON_HOME/lib/markdownj-core-faf3bf83000.jar"
 
+if test -n "$USER_CP"
+then
+    JAVA_CP="$JAVA_CP:$USER_CP"
+fi
+
 java \
     -enableassertions \
     -classpath "$JAVA_CP" \
     com.redhat.ceylon.ceylondoc.Main \
-    -classpath "$USER_CP" \
     $ARGS

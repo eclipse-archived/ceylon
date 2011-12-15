@@ -14,13 +14,23 @@ while [ -h "$PRG" ]; do
   fi
 done
 
-# Set CEYLON_HOME
-CEYLON_HOME=$(dirname "$PRG)")/..
-
-# set CEYLON_REPO if not already set
+# Set CEYLON_HOME if not already set by the user
 if test -z "$CEYLON_REPO"
 then
-    CEYLON_REPO=$HOME/.ceylon/repo
+    CEYLON_HOME="$(dirname "$PRG)")/.."
+fi
+
+# Set CEYLON_REPO if not already set
+if test -z "$CEYLON_REPO"
+then
+    # Try the distribution repo
+    CEYLON_REPO="$CEYLON_HOME/repo"
+    # If it does not exist let's use the user repo
+    if test \! -d "$CEYLON_REPO"
+    then
+        echo "Could not find distribution repo, using $HOME/.ceylon/repo"
+        CEYLON_REPO="$HOME/.ceylon/repo"
+    fi
 fi
 
 unset USER_CP
