@@ -234,6 +234,7 @@ public class RefinementVisitor extends Visitor {
                                 rparam.getName() + " of refined member");
                     }
                 }
+                param.setDefaulted(rparam.isDefaulted());
             }
         }
     }
