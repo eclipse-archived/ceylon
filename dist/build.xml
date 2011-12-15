@@ -4,11 +4,13 @@
     <property file="build.properties"/>
     <property name="ceylon-compiler.dir" value="${basedir}/../ceylon-compiler"/>
     <property name="ceylon-spec.dir" value="${basedir}/../ceylon-spec"/>
-    <property name="ceylon.language.dir" value="${basedir}/../ceylon.language"/>    
+    <property name="ceylon.language.dir" value="${basedir}/../ceylon.language"/>
+    <property name="ceylon-module-resolver.dir" value="${basedir}/../ceylon-module-resolver"/>
+    <property name="ceylon-runtime.dir" value="${basedir}/../ceylon-runtime"/>
     <property name="dist.name" value="ceylon-${ceylon.version}"/>
     <property name="dist.dir" value="${basedir}/dist"/>
 
-    <target name="package" depends="install-compiler, copy-compiler-binaries, copy-compiler-libraries, install-typechecker, install-language, generate-spec, generate-apidoc">
+    <target name="package" depends="install-compiler, copy-compiler-binaries, copy-compiler-libraries, install-typechecker, install-language, install-runtime, generate-spec, generate-apidoc">
         <zip destfile="${basedir}/${dist.name}.zip">
             <zipfileset dir="${dist.dir}" prefix="${dist.name}">
                 <include name="bin/**" />
@@ -21,6 +23,7 @@
                 <include name="doc/**" />
                 <include name="lib/**" />
                 <include name="repo/**" />
+                <include name="runtime-repo/**" />
             </zipfileset>
             <zipfileset dir="${basedir}" prefix="${dist.name}">
                 <include name="LICENSE" />
@@ -84,6 +87,37 @@
             <fileset dir="${ceylon.language.dir}/build/dist">
             </fileset>
         </copy>
+    </target>
+
+    <target name="compile-module-resolver" depends="install-language">
+        <exec command="mvn" dir="${ceylon-module-resolver.dir}/">
+            <arg value="install"/>
+        </exec>
+    </target>
+
+    <target name="install-runtime" depends="compile-module-resolver">
+        <exec command="mvn" dir="${ceylon-module-resolver.dir}/">
+            <arg value="install:install-file"/>
+            <arg value="-Dfile=${dist.dir}/repo/ceylon/language/${ceylon.version}/ceylon.language-${ceylon.version}.car"/>
+            <arg value="-DgroupId=ceylon.language"/>
+            <arg value="-DartifactId=ceylon-language"/>
+            <arg value="-Dversion=${ceylon.version}"/>
+            <arg value="-Dpackaging=jar"/>
+            <arg value="-DgeneratePom=true"/>
+            <arg value="-DcreateChecksum=true"/>
+        </exec>
+        <exec command="mvn" dir="${ceylon-runtime.dir}/">
+            <arg value="install"/>
+        </exec>
+        <copy todir="${dist.dir}">
+            <fileset dir="${ceylon-runtime.dir}/dist">
+            </fileset>
+        </copy>
+        <chmod perm="0755">
+            <fileset dir="${dist.dir}/bin">
+                <include name="ceylon"/>
+            </fileset>
+        </chmod>
     </target>
 
     <target name="generate-spec">
