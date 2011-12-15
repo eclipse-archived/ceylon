@@ -330,6 +330,11 @@
         <pathelement location="${ceylon.compiler.lib}"/>
       </classpath>
     </taskdef>
+    <taskdef name="ceylon" classname="com.redhat.ceylon.compiler.ant.Ceylon" >
+      <classpath>
+        <pathelement location="${ceylon.compiler.lib}"/>
+      </classpath>
+    </taskdef>
   </target>
 	
   <path id="ceylon.tests.classpath">
@@ -353,11 +358,30 @@
     </ceylonc>
   </target>
 
-  <target name="api" depends="publish,ant-tasks">
+  <target name="api" depends="ant-tasks">
     <ceylond
       executable="${build.bin}/ceylond"
       src="../ceylon.language/src"
       out="${build.api}">
     </ceylond>
+  </target>
+	
+  <target name="test-tasks" depends="ant-tasks">
+    <ceylonc
+      executable="${build.bin}/ceylonc"
+      src="samples/helloworld/source"
+      out="${build.ceylon.cars}">
+       <include name="com/acme/helloworld/*.ceylon"/>
+    </ceylonc>
+    <ceylond
+      executable="${build.bin}/ceylond"
+      src="samples/helloworld/source"
+      out="${build.ceylon.cars}">
+    </ceylond>
+    <ceylon
+      executable="../ceylon-runtime/dist/bin/ceylon"
+      module="com.acme.helloworld/1.0.0">
+      <rep url="${build.ceylon.cars}"/>
+    </ceylon>
   </target>
 </project>
