@@ -240,7 +240,7 @@ public class Util {
         if (decl instanceof Method) {
             return decl.getName() + "$" + param.getName();
         } else if (decl instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) {
-            return "<init>$" + param.getName();
+            return "$init$" + param.getName();
         } else {
             // Should never happen (for now at least)
             return null;

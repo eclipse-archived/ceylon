@@ -3,11 +3,11 @@ package com.redhat.ceylon.compiler.test.expression.instantiation;
 class DefaultedParameterClassInstantiation {
     
     public final void test() {
-        final com.redhat.ceylon.compiler.test.expression.instantiation.DefaultedParameterClassInstantiation a = (let long $arg$0$0 = DefaultedParameterClassInstantiation.DefaultedParameterClassInstantiation$impl.<init>$m(),long $arg$0$1 = DefaultedParameterClassInstantiation.DefaultedParameterClassInstantiation$impl.<init>$n($arg$0$0) in new com.redhat.ceylon.compiler.test.expression.instantiation.DefaultedParameterClassInstantiation($arg$0$0, $arg$0$1));
-        final com.redhat.ceylon.compiler.test.expression.instantiation.DefaultedParameterClassInstantiation b = (let long $arg$1$0 = 6L,long $arg$1$1 = DefaultedParameterClassInstantiation.DefaultedParameterClassInstantiation$impl.<init>$n($arg$1$0) in new com.redhat.ceylon.compiler.test.expression.instantiation.DefaultedParameterClassInstantiation($arg$1$0, $arg$1$1));
+        final com.redhat.ceylon.compiler.test.expression.instantiation.DefaultedParameterClassInstantiation a = (let long $arg$0$0 = DefaultedParameterClassInstantiation.DefaultedParameterClassInstantiation$impl.$init$m(),long $arg$0$1 = DefaultedParameterClassInstantiation.DefaultedParameterClassInstantiation$impl.$init$n($arg$0$0) in new com.redhat.ceylon.compiler.test.expression.instantiation.DefaultedParameterClassInstantiation($arg$0$0, $arg$0$1));
+        final com.redhat.ceylon.compiler.test.expression.instantiation.DefaultedParameterClassInstantiation b = (let long $arg$1$0 = 6L,long $arg$1$1 = DefaultedParameterClassInstantiation.DefaultedParameterClassInstantiation$impl.$init$n($arg$1$0) in new com.redhat.ceylon.compiler.test.expression.instantiation.DefaultedParameterClassInstantiation($arg$1$0, $arg$1$1));
         final com.redhat.ceylon.compiler.test.expression.instantiation.DefaultedParameterClassInstantiation c = new com.redhat.ceylon.compiler.test.expression.instantiation.DefaultedParameterClassInstantiation(6L, 9L);
-        final com.redhat.ceylon.compiler.test.expression.instantiation.DefaultedParameterClassInstantiation d = (let long $arg$2$0 = DefaultedParameterClassInstantiation.DefaultedParameterClassInstantiation$impl.<init>$m(),long $arg$2$1 = DefaultedParameterClassInstantiation.DefaultedParameterClassInstantiation$impl.<init>$n($arg$2$0) in new com.redhat.ceylon.compiler.test.expression.instantiation.DefaultedParameterClassInstantiation($arg$2$0, $arg$2$1));
-        final com.redhat.ceylon.compiler.test.expression.instantiation.DefaultedParameterClassInstantiation e = (let long $arg$3$0 = 6L,long $arg$3$1 = DefaultedParameterClassInstantiation.DefaultedParameterClassInstantiation$impl.<init>$n($arg$3$0) in new com.redhat.ceylon.compiler.test.expression.instantiation.DefaultedParameterClassInstantiation($arg$3$0, $arg$3$1));
+        final com.redhat.ceylon.compiler.test.expression.instantiation.DefaultedParameterClassInstantiation d = (let long $arg$2$0 = DefaultedParameterClassInstantiation.DefaultedParameterClassInstantiation$impl.$init$m(),long $arg$2$1 = DefaultedParameterClassInstantiation.DefaultedParameterClassInstantiation$impl.$init$n($arg$2$0) in new com.redhat.ceylon.compiler.test.expression.instantiation.DefaultedParameterClassInstantiation($arg$2$0, $arg$2$1));
+        final com.redhat.ceylon.compiler.test.expression.instantiation.DefaultedParameterClassInstantiation e = (let long $arg$3$0 = 6L,long $arg$3$1 = DefaultedParameterClassInstantiation.DefaultedParameterClassInstantiation$impl.$init$n($arg$3$0) in new com.redhat.ceylon.compiler.test.expression.instantiation.DefaultedParameterClassInstantiation($arg$3$0, $arg$3$1));
         final com.redhat.ceylon.compiler.test.expression.instantiation.DefaultedParameterClassInstantiation f = (let long $arg$4$0 = 6L,long $arg$4$1 = 9L in new com.redhat.ceylon.compiler.test.expression.instantiation.DefaultedParameterClassInstantiation($arg$4$0, $arg$4$1));
     }
     
@@ -20,11 +20,11 @@ class DefaultedParameterClassInstantiation {
             super();
         }
         
-        static long <init>$m() {
+        static long $init$m() {
             return 1L;
         }
         
-        static long <init>$n(final long m) {
+        static long $init$n(final long m) {
             return .ceylon.language.Integer.instance(m).plus(.ceylon.language.Integer.instance(1L)).longValue();
         }
     }

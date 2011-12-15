@@ -11,7 +11,7 @@ class DefaultedInitializerParameter {
             super();
         }
         
-        static long <init>$n() {
+        static long $init$n() {
             return 5L;
         }
     }
@@ -27,7 +27,7 @@ class DefaultedInitializerParameter2 {
             super();
         }
         
-        static .java.lang.String <init>$s(final long n) {
+        static .java.lang.String $init$s(final long n) {
             return "test";
         }
     }
@@ -43,11 +43,11 @@ class DefaultedInitializerParameter3 {
             super();
         }
         
-        static long <init>$n() {
+        static long $init$n() {
             return 5L;
         }
         
-        static long <init>$m(final long n) {
+        static long $init$m(final long n) {
             return n;
         }
     }
@@ -63,11 +63,11 @@ class DefaultedInitializerParameter4 {
             super();
         }
         
-        static long <init>$n() {
+        static long $init$n() {
             return 5L;
         }
         
-        static long <init>$m(final long n) {
+        static long $init$m(final long n) {
             return .ceylon.language.Integer.instance(n).plus(.ceylon.language.Integer.instance(1L)).longValue();
         }
     }
