@@ -25,10 +25,11 @@
                             <target>
 
                                 <!-- Bootstrap -->
+                                <mkdir dir="../dist/lib"/>
                                 <copy file="${user.home}/.m2/repository/org/jboss/modules/jboss-modules/${version.org.jboss.modules}/jboss-modules-${version.org.jboss.modules}.jar"
-                                      tofile="../dist/bin/jboss-modules.jar"/>
+                                      tofile="../dist/lib/jboss-modules.jar"/>
                                 <copy file="../bootstrap/target/modules-bootstrap-${project.version}.jar"
-                                      tofile="../dist/bin/ceylon-runtime-bootstrap.jar"/>
+                                      tofile="../dist/lib/ceylon-runtime-bootstrap.jar"/>
 
                                 <!-- Language -->
                                 <copy file="${user.home}/.ceylon/repo/ceylon/language/${version.com.redhat.ceylon.language}/ceylon.language-${version.com.redhat.ceylon.language}.car"

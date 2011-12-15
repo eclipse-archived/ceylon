@@ -13,11 +13,13 @@ while [ -h "$PRG" ]; do
 done
 
 DIR=$(dirname "$PRG")
+LIB=$DIR/../lib
+RUNTIME_REPO=$DIR/../runtime-repo
 
 java -Dboot.module.loader=ceylon.modules.bootstrap.loader.DistributionModuleLoader \
- -cp $DIR/jboss-modules.jar:$DIR/ceylon-runtime-bootstrap.jar \
+ -cp $LIB/jboss-modules.jar:$LIB/ceylon-runtime-bootstrap.jar \
  org.jboss.modules.Main \
- -mp $DIR/../runtime-repo ceylon.runtime \
+ -mp $RUNTIME_REPO ceylon.runtime \
   -executable ceylon.modules.jboss.runtime.JBossRuntime \
   -repository ~/.ceylon/repo \
   -module $@
