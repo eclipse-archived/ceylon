@@ -23,11 +23,10 @@ fi
 LIB="$CEYLON_HOME/lib"
 RUNTIME_REPO="$CEYLON_HOME/runtime-repo"
 
-java -Dboot.module.loader=ceylon.modules.bootstrap.loader.DistributionModuleLoader \
+java \
  -cp $LIB/jboss-modules.jar:$LIB/ceylon-runtime-bootstrap.jar \
  "-Dcelon.home=$CEYLON_HOME" \
  org.jboss.modules.Main \
  -mp $RUNTIME_REPO ceylon.runtime \
-  -executable ceylon.modules.jboss.runtime.JBossRuntime \
-  -repository ~/.ceylon/repo \
-  -module $@
+  +executable ceylon.modules.jboss.runtime.JBossRuntime \
+  $@
