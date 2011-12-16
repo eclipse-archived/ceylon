@@ -436,7 +436,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression varIdent = makeIdent(varName);
         JCExpression test = at(op).Binary(JCTree.NE, varIdent, makeNull());
         JCExpression cond = make().Conditional(test , varIdent, right);
-        JCExpression typeExpr = makeJavaType(op.getLeftTerm().getTypeModel(), 0);
+        JCExpression typeExpr = makeJavaType(op.getTypeModel(), NO_PRIMITIVES);
         return makeLetExpr(varName, null, typeExpr, left, cond);
     }
 
