@@ -19,12 +19,14 @@
  */
 package com.redhat.ceylon.compiler.test.structure;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -39,7 +41,6 @@ import org.junit.Test;
 
 import com.redhat.ceylon.compiler.test.CompilerTest;
 import com.redhat.ceylon.compiler.tools.CeyloncTaskImpl;
-import com.redhat.ceylon.compiler.util.Util;
 
 public class StructureTest extends CompilerTest {
     
@@ -317,6 +318,43 @@ public class StructureTest extends CompilerTest {
     }
 
     //
+    // Attributes
+    
+    @Test
+    public void testAtrClassVariable(){
+        compareWithJavaSource("attribute/ClassVariable");
+    }
+    @Test
+    public void testAtrClassVariableWithInitializer(){
+        compareWithJavaSource("attribute/ClassVariableWithInitializer");
+    }
+    @Test
+    public void testAtrClassAttribute(){
+        // FIXME: this one should fail and we should make sure it fails for the right reason
+        compareWithJavaSource("attribute/ClassAttribute");
+    }
+    @Test
+    public void testAtrClassAttributeWithInitializer(){
+        compareWithJavaSource("attribute/ClassAttributeWithInitializer");
+    }
+    @Test
+    public void testAtrClassAttributeGetter(){
+        compareWithJavaSource("attribute/ClassAttributeGetter");
+    }
+    @Test
+    public void testAtrClassAttributeGetterSetter(){
+        compareWithJavaSource("attribute/ClassAttributeGetterSetter");
+    }
+    @Test
+    public void testAtrInnerAttributeGetter(){
+        compareWithJavaSource("attribute/InnerAttributeGetter");
+    }
+    @Test
+    public void testAtrInnerAttributeGetterSetter(){
+        compareWithJavaSource("attribute/InnerAttributeGetterSetter");
+    }
+
+    //
     // Classes
     
     @Test
@@ -449,43 +487,6 @@ public class StructureTest extends CompilerTest {
     public void testMthPublicMethod(){
         compareWithJavaSource("method/PublicMethod");
     }
-
-    //
-    // Attributes
-    
-    @Test
-    public void testAtrClassVariable(){
-        compareWithJavaSource("attribute/ClassVariable");
-    }
-    @Test
-    public void testAtrClassVariableWithInitializer(){
-        compareWithJavaSource("attribute/ClassVariableWithInitializer");
-    }
-    @Test
-    public void testAtrClassAttribute(){
-        // FIXME: this one should fail and we should make sure it fails for the right reason
-        compareWithJavaSource("attribute/ClassAttribute");
-    }
-    @Test
-    public void testAtrClassAttributeWithInitializer(){
-        compareWithJavaSource("attribute/ClassAttributeWithInitializer");
-    }
-    @Test
-    public void testAtrClassAttributeGetter(){
-        compareWithJavaSource("attribute/ClassAttributeGetter");
-    }
-    @Test
-    public void testAtrClassAttributeGetterSetter(){
-        compareWithJavaSource("attribute/ClassAttributeGetterSetter");
-    }
-    @Test
-    public void testAtrInnerAttributeGetter(){
-        compareWithJavaSource("attribute/InnerAttributeGetter");
-    }
-    @Test
-    public void testAtrInnerAttributeGetterSetter(){
-        compareWithJavaSource("attribute/InnerAttributeGetterSetter");
-    }
     
     //
     // Toplevel
@@ -499,32 +500,36 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("toplevel/ToplevelAttributeShared");
     }
     @Test
-    public void testTopToplevelVariable(){
-        compareWithJavaSource("toplevel/ToplevelVariable");
+    public void testTopToplevelMethods(){
+        compareWithJavaSource("toplevel/ToplevelMethods");
     }
     @Test
-    public void testTopToplevelVariableShared(){
-        compareWithJavaSource("toplevel/ToplevelVariableShared");
+    public void testTopToplevelMethodWithDefaultedParams(){
+        compareWithJavaSource("toplevel/ToplevelMethodWithDefaultedParams");
     }
     @Test
     public void testTopToplevelObject(){
         compareWithJavaSource("toplevel/ToplevelObject");
     }
     @Test
-    public void testTopToplevelObjectShared(){
-        compareWithJavaSource("toplevel/ToplevelObjectShared");
-    }
-    @Test
     public void testTopToplevelObjectWithMembers(){
         compareWithJavaSource("toplevel/ToplevelObjectWithMembers");
+    }
+    @Test
+    public void testTopToplevelObjectShared(){
+        compareWithJavaSource("toplevel/ToplevelObjectShared");
     }
     @Test
     public void testTopToplevelObjectWithSupertypes(){
         compareWithJavaSource("toplevel/ToplevelObjectWithSupertypes");
     }
     @Test
-    public void testTopToplevelMethods(){
-        compareWithJavaSource("toplevel/ToplevelMethods");
+    public void testTopToplevelVariable(){
+        compareWithJavaSource("toplevel/ToplevelVariable");
+    }
+    @Test
+    public void testTopToplevelVariableShared(){
+        compareWithJavaSource("toplevel/ToplevelVariableShared");
     }
     
     //

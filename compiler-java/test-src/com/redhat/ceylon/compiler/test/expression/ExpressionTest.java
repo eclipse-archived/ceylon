@@ -255,6 +255,11 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("invoke/ToplevelMethodInvocation");
     }
 
+    @Test
+    public void testInvToplevelMethodWithDefaultedParams(){
+        compareWithJavaSource("invoke/ToplevelMethodWithDefaultedParams");
+    }
+
     // Self references
     
     @Test

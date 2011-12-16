@@ -1,0 +1,131 @@
+package com.redhat.ceylon.compiler.test.expression.invoke;
+
+public final class f1 {
+    
+    private f1() {
+    }
+    
+    public static void f1(final long n) {
+    }
+    
+    public static final class f1$impl {
+        
+        public f1$impl() {
+            super();
+        }
+        
+        static long f1$n() {
+            return 5L;
+        }
+    }
+}
+public final class f2 {
+    
+    private f2() {
+    }
+    
+    public static void f2(final long n, final .java.lang.String s) {
+    }
+    
+    public static final class f2$impl {
+        
+        public f2$impl() {
+            super();
+        }
+        
+        static .java.lang.String f2$s(final long n) {
+            return "test";
+        }
+    }
+}
+public final class f3 {
+    
+    private f3() {
+    }
+    
+    public static void f3(final long n, final long m) {
+    }
+    
+    public static final class f3$impl {
+        
+        public f3$impl() {
+            super();
+        }
+        
+        static long f3$n() {
+            return 5L;
+        }
+        
+        static long f3$m(final long n) {
+            return n;
+        }
+    }
+}
+public final class f4 {
+    
+    private f4() {
+    }
+    
+    public static void f4(final long n, final long m) {
+    }
+    
+    public static final class f4$impl {
+        
+        public f4$impl() {
+            super();
+        }
+        
+        static long f4$n() {
+            return 5L;
+        }
+        
+        static long f4$m(final long n) {
+            return .ceylon.language.Integer.instance(n).plus(.ceylon.language.Integer.instance(1L)).longValue();
+        }
+    }
+}
+public final class f5 {
+    
+    private f5() {
+    }
+    
+    public static void f5(final long n, final ceylon.language.Iterable<? extends ceylon.language.Integer> seq) {
+    }
+    
+    public static final class f5$impl {
+        
+        public f5$impl() {
+            super();
+        }
+        
+        static long f5$n() {
+            return 5L;
+        }
+    }
+}
+final class test {
+    
+    private test() {
+    }
+    
+    static void test() {
+        (let long $arg$0$0 = f1.f1$impl.f1$n() in .com.redhat.ceylon.compiler.test.expression.invoke.f1.f1($arg$0$0); null);
+        .com.redhat.ceylon.compiler.test.expression.invoke.f1.f1(6L);
+        (let long $arg$1$0 = 6L,.java.lang.String $arg$1$1 = f2.f2$impl.f2$s($arg$1$0) in .com.redhat.ceylon.compiler.test.expression.invoke.f2.f2($arg$1$0, $arg$1$1); null);
+        .com.redhat.ceylon.compiler.test.expression.invoke.f2.f2(6L, "foo");
+        (let long $arg$2$0 = f3.f3$impl.f3$n(),long $arg$2$1 = f3.f3$impl.f3$m($arg$2$0) in .com.redhat.ceylon.compiler.test.expression.invoke.f3.f3($arg$2$0, $arg$2$1); null);
+        (let long $arg$3$0 = 6L,long $arg$3$1 = f3.f3$impl.f3$m($arg$3$0) in .com.redhat.ceylon.compiler.test.expression.invoke.f3.f3($arg$3$0, $arg$3$1); null);
+        .com.redhat.ceylon.compiler.test.expression.invoke.f3.f3(6L, 9L);
+        (let long $arg$4$0 = f4.f4$impl.f4$n(),long $arg$4$1 = f4.f4$impl.f4$m($arg$4$0) in .com.redhat.ceylon.compiler.test.expression.invoke.f4.f4($arg$4$0, $arg$4$1); null);
+        (let long $arg$5$0 = 6L,long $arg$5$1 = f4.f4$impl.f4$m($arg$5$0) in .com.redhat.ceylon.compiler.test.expression.invoke.f4.f4($arg$5$0, $arg$5$1); null);
+        .com.redhat.ceylon.compiler.test.expression.invoke.f4.f4(6L, 9L);
+        (let long $arg$6$0 = f5.f5$impl.f5$n(),ceylon.language.Iterable<? extends ceylon.language.Integer> $arg$6$1 = ceylon.language.$empty.getEmpty() in .com.redhat.ceylon.compiler.test.expression.invoke.f5.f5($arg$6$0, $arg$6$1); null);
+        .com.redhat.ceylon.compiler.test.expression.invoke.f5.f5(6L, ceylon.language.$empty.getEmpty());
+        .com.redhat.ceylon.compiler.test.expression.invoke.f5.f5(6L, new ceylon.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        test();
+    }
+}

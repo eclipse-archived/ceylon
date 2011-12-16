@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
 import com.redhat.ceylon.compiler.util.Decl;
 import com.redhat.ceylon.compiler.util.Util;
@@ -77,8 +78,18 @@ public class ClassTransformer extends AbstractTransformer {
     public List<JCTree> transform(final Tree.ClassOrInterface def) {
         String className = def.getIdentifier().getText();
         ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder
-                .klass(this, className)
-                .constructor(def);
+                .klass(this, className);
+
+        if (def instanceof Tree.AnyClass) {
+            ParameterList paramList = ((Tree.AnyClass)def).getParameterList();
+            for (Tree.Parameter param : paramList.getParameters()) {
+                classBuilder.parameter(param);
+                // Does the parameter have a default value?
+                if (param.getDefaultArgument() != null &&  param.getDefaultArgument().getSpecifierExpression() != null) {
+                    classBuilder.concreteInterfaceMemberDefs(transformDefaultedParameter(param, def, paramList));
+                }
+            }
+        }
         
         CeylonVisitor visitor = new CeylonVisitor(gen(), classBuilder);
         def.visitChildren(visitor);
@@ -262,7 +273,7 @@ public class ClassTransformer extends AbstractTransformer {
         String name = def.getIdentifier().getText();
         JCTree.JCIdent nameId = make().Ident(names().fromString(Util.quoteIfJavaKeyword(name)));
         ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, name, Decl.isShared(def));
-        builder.body(classGen().transform(def));
+        builder.body(classGen().transform(def, builder));
         if (Decl.withinMethod(def)) {
             // Inner method
             List<JCTree> result = builder.build();
@@ -283,12 +294,19 @@ public class ClassTransformer extends AbstractTransformer {
         }
     }
 
-    public JCMethodDecl transform(Tree.AnyMethod def) {
+    public JCMethodDecl transform(Tree.AnyMethod def, ClassDefinitionBuilder classBuilder) {
         String name = def.getIdentifier().getText();
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, def.getDeclarationModel().isClassOrInterfaceMember(), name);
         
         for (Tree.Parameter param : def.getParameterLists().get(0).getParameters()) {
+        }
+        ParameterList paramList = def.getParameterLists().get(0);
+        for (Tree.Parameter param : paramList.getParameters()) {
             methodBuilder.parameter(param);
+            // Does the parameter have a default value?
+            if (param.getDefaultArgument() != null &&  param.getDefaultArgument().getSpecifierExpression() != null) {
+                classBuilder.concreteInterfaceMemberDefs(transformDefaultedParameter(param, def, paramList));
+            }
         }
 
         if (def.getTypeParameterList() != null) {
@@ -352,11 +370,11 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     // Creates a method to retrieve the value for a defaulted parameter
-    public JCMethodDecl transformDefaultedParameter(Tree.Parameter param, Tree.Declaration container, Tree.ParameterList params) {
+    private JCMethodDecl transformDefaultedParameter(Tree.Parameter param, Tree.Declaration container, Tree.ParameterList params) {
         String name = Util.getDefaultedParamMethodName(container.getDeclarationModel(), param.getDeclarationModel());
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, true, name);
         
-        if (container instanceof Tree.AnyMethod) {
+        if (container instanceof Tree.AnyMethod && !container.getDeclarationModel().isToplevel()) {
             ProducedType thisType = getThisType(container);
             methodBuilder.parameter(0, "$this", makeJavaType(thisType), null);
         }
