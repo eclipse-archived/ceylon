@@ -22,12 +22,11 @@
 
 package org.jboss.ceylon.test.modules.examples.test;
 
-import ceylon.modules.spi.Constants;
+import java.util.Collections;
+
 import org.jboss.ceylon.test.modules.ModulesTest;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import java.util.Collections;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
@@ -36,18 +35,18 @@ public class ExamplesTestCase extends ModulesTest {
 
     @Test
     public void testHello() throws Throwable {
-        car("hello/1.0.0", Collections.<Constants, String>emptyMap());
+        car("hello/1.0.0", Collections.<String, String>emptyMap());
     }
 
     @Test
     public void testClient() throws Throwable {
-        car("client/1.0.0", Collections.<Constants, String>emptyMap());
+        car("client/1.0.0", Collections.<String, String>emptyMap());
     }
 
     @Test
     @Ignore // TODO
     public void testDefault() throws Throwable {
-        car("default", Collections.<Constants, String>emptyMap());
+        car("default", Collections.<String, String>emptyMap());
     }
 
 }

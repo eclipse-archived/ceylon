@@ -22,9 +22,8 @@
 
 package ceylon.modules.spi.runtime;
 
+import ceylon.modules.Configuration;
 import ceylon.modules.spi.Executable;
-
-import java.util.Map;
 
 /**
  * Ceylon Modules runtime spi.
@@ -37,9 +36,9 @@ public interface Runtime extends Executable {
      *
      * @param name    the module name
      * @param version the module version
-     * @param args    the command line arguments map
+     * @param conf    the runtime configuration
      * @return module classloader instance
      * @throws Exception for ay error
      */
-    ClassLoader createClassLoader(String name, String version, Map<String, String> args) throws Exception;
+    ClassLoader createClassLoader(String name, String version, Configuration conf) throws Exception;
 }

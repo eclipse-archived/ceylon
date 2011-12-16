@@ -22,19 +22,20 @@
 
 package ceylon.modules.jboss.runtime;
 
-import ceylon.modules.Main;
-import ceylon.modules.api.runtime.AbstractRuntime;
-import ceylon.modules.spi.Constants;
-import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.impl.RootRepositoryBuilder;
-import com.redhat.ceylon.cmr.spi.ContentTransformer;
-import com.redhat.ceylon.cmr.spi.MergeStrategy;
+import java.io.File;
+
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
 
-import java.io.File;
-import java.util.Map;
+import ceylon.modules.Configuration;
+import ceylon.modules.Main;
+import ceylon.modules.api.runtime.AbstractRuntime;
+
+import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.impl.RootRepositoryBuilder;
+import com.redhat.ceylon.cmr.spi.ContentTransformer;
+import com.redhat.ceylon.cmr.spi.MergeStrategy;
 
 /**
  * Abstract Ceylon JBoss Modules runtime.
@@ -43,8 +44,9 @@ import java.util.Map;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public abstract class AbstractJBossRuntime extends AbstractRuntime {
-    public ClassLoader createClassLoader(String name, String version, Map<String, String> args) throws Exception {
-        ModuleLoader moduleLoader = createModuleLoader(args);
+    @Override
+    public ClassLoader createClassLoader(String name, String version, Configuration conf) throws Exception {
+        ModuleLoader moduleLoader = createModuleLoader(conf);
         ModuleIdentifier moduleIdentifier = ModuleIdentifier.fromString(name + ":" + version);
         Module module = moduleLoader.loadModule(moduleIdentifier);
         return SecurityActions.getClassLoader(module);
@@ -56,9 +58,12 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
      * @param args the args
      * @return repository extension
      */
-    protected Repository createRepository(Map<String, String> args) {
+    protected Repository createRepository(Configuration conf) {
         RootRepositoryBuilder builder = null;
-        String root = Constants.getOpArgument(args, Constants.REPOSITORY);
+        String root = null;
+        // FIXME: support more than one repo
+        if(!conf.repositories.isEmpty())
+        	root = conf.repositories.get(0);
         if (root != null) {
             File rootDir = new File(root);
             if (rootDir.exists() && rootDir.isDirectory())
@@ -67,14 +72,14 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
         if (builder == null)
             builder = new RootRepositoryBuilder();
 
-        final MergeStrategy ms = getService(MergeStrategy.class, args);
+        final MergeStrategy ms = getService(MergeStrategy.class, conf);
         if (ms != null)
             builder.mergeStrategy(ms);
 
-        if (Boolean.TRUE.equals(Boolean.valueOf(Constants.getOpArgument(args, Constants.CACHE_CONTENT))))
+        if (conf.cacheContent)
             builder.cacheContent();
 
-        final ContentTransformer ct = getService(ContentTransformer.class, args);
+        final ContentTransformer ct = getService(ContentTransformer.class, conf);
         if (ct != null)
             builder.contentTransformer(ct);
 
@@ -88,9 +93,9 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
      * @param args        the args
      * @return service instance or null
      */
-    protected <T> T getService(Class<T> serviceType, Map<String, String> args) {
+    protected <T> T getService(Class<T> serviceType, Configuration conf) {
         try {
-            String impl = args.get(serviceType.getName());
+            String impl = conf.impl.get(serviceType.getName());
             return (impl != null) ? Main.instantiate(serviceType, impl) : null;
         } catch (Exception e) {
             throw new IllegalArgumentException("Cannot instantiate service: " + serviceType.getName(), e);
@@ -100,8 +105,8 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
     /**
      * Create module loader.
      *
-     * @param args the args
+     * @param conf the configuration
      * @return the module loader
      */
-    protected abstract ModuleLoader createModuleLoader(Map<String, String> args);
+    protected abstract ModuleLoader createModuleLoader(Configuration conf);
 }

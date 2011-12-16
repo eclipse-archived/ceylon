@@ -22,6 +22,7 @@
 
 package org.jboss.ceylon.test.modules.sources.test;
 
+import ceylon.modules.spi.Argument;
 import ceylon.modules.spi.Constants;
 import org.jboss.ceylon.test.modules.ModulesTest;
 import org.junit.Ignore;
@@ -49,18 +50,16 @@ public class SourcesTestCase extends ModulesTest {
 
     @Test
     public void testSimpleUsage() throws Throwable {
-        Map<Constants, String> extra = new HashMap<Constants, String>();
-        extra.put(Constants.SOURCES, "src/test/java");
-        extra.put(Constants.CLASSES, "target/test-classes-bak");
+        Map<String, String> extra = new HashMap<String, String>();
+        extra.put(Constants.CEYLON_ARGUMENT_PREFIX+Argument.SOURCE.toString(), "src/test/java");
 
         src("org.jboss.acme", getTestsuiteDir(), extra);
     }
 
     @Test
     public void testDependencyUsage() throws Throwable {
-        Map<Constants, String> extra = new HashMap<Constants, String>();
-        extra.put(Constants.SOURCES, "src/test/java");
-        extra.put(Constants.CLASSES, "target/test-classes-bak");
+        Map<String, String> extra = new HashMap<String, String>();
+        extra.put(Constants.CEYLON_ARGUMENT_PREFIX+Argument.SOURCE.toString(), "src/test/java");
 
         src("com.foobar.qwert", getTestsuiteDir(), extra);
     }

@@ -22,13 +22,13 @@
 
 package ceylon.modules;
 
-import ceylon.modules.spi.Constants;
-import ceylon.modules.spi.Executable;
-
 import java.security.AccessController;
 import java.security.PrivilegedExceptionAction;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.Arrays;
+
+import ceylon.modules.spi.ArgumentType;
+import ceylon.modules.spi.Constants;
+import ceylon.modules.spi.Executable;
 
 /**
  * Main Ceylon Modules entry point.
@@ -52,36 +52,35 @@ public class Main {
      * @throws Exception for any error
      */
     public static void execute(String[] args) throws Exception {
-        Map<String, String> argsMap = parseArgs(args);
-        String exe = Constants.getOpArgument(argsMap, Constants.EXECUTABLE);
+        Configuration conf = parseArgs(args);
+        String exe = conf.executable;
         if (exe == null)
-            throw new IllegalArgumentException("No executable present: " + argsMap);
+            throw new IllegalArgumentException("Missing -executable argument");
 
         Executable executable = createInstance(Executable.class, exe);
-        executable.execute(argsMap);
+        executable.execute(conf);
     }
 
-    private static Map<String, String> parseArgs(String[] args) {
-        final Map<String, String> map = new LinkedHashMap<String, String>();
-        boolean first = true; // filter out ModuleIdentifier
+    private static Configuration parseArgs(String[] args) {
+        Configuration conf = new Configuration();
         int n = args.length;
         for (int i = 0; i < n; i++) {
             final String arg = args[i];
-            // should not see any JBoss Modules args
-            if (arg.startsWith(Constants.OP.toString())) {
-                if (i == n - 1)
-                    throw new IllegalArgumentException("Missing argument value: " + arg);
-
-                map.put(arg, args[i + 1]);
-                i++;
+            boolean implArg = arg.startsWith(Constants.IMPL_ARGUMENT_PREFIX.toString());
+            boolean ceylonArg = arg.startsWith(Constants.CEYLON_ARGUMENT_PREFIX.toString());
+            if (implArg || ceylonArg) {
+                ArgumentType type = implArg ? ArgumentType.IMPL : ArgumentType.CEYLON; 
+                i = conf.setArgument(arg.substring(1), type, args, i); 
             } else {
-                if (first == false)
-                    map.put(arg, arg);
-                else
-                    first = false;
+                // first argument is the module spec
+                conf.module = arg;
+                // the rest are program arguments
+                conf.arguments = Arrays.copyOfRange(args, i+1, args.length);
+                // we're done processing arguments
+                break;
             }
         }
-        return map;
+        return conf;
     }
 
     private static <T> T createInstance(final Class<T> expectedType, final String defaultImpl) throws Exception {

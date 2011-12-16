@@ -22,15 +22,14 @@
 
 package ceylon.modules.api.runtime;
 
+import java.util.logging.Logger;
+
 import ceylon.language.descriptor.Module;
+import ceylon.modules.Configuration;
 import ceylon.modules.api.util.CeylonToJava;
 import ceylon.modules.spi.Constants;
-import com.redhat.ceylon.cmr.api.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
+import com.redhat.ceylon.cmr.api.Repository;
 
 /**
  * Abstract Ceylon Modules runtime.
@@ -76,10 +75,11 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         SecurityActions.invokeRun(runClass, args);
     }
 
-    public void execute(Map<String, String> args) throws Exception {
-        String exe = Constants.getOpArgument(args, Constants.MODULE);
+    public void execute(Configuration conf) throws Exception {
+        String exe = conf.module;
+        // FIXME: argument checks could be done earlier
         if (exe == null)
-            throw new IllegalArgumentException("No initial module defined: " + args);
+            throw new IllegalArgumentException("No initial module defined");
 
         int p = exe.indexOf("/");
         if (p == 0)
@@ -90,7 +90,7 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         String name = exe.substring(0, p > 0 ? p : exe.length());
         String mv = (p > 0 ? exe.substring(p + 1) : Repository.NO_VERSION);
 
-        ClassLoader cl = createClassLoader(name, mv, args);
+        ClassLoader cl = createClassLoader(name, mv, conf);
         Module runtimeModule = loadModule(cl, name);
         if (runtimeModule == null)
             throw new IllegalArgumentException("Something went very wrong, missing runtime module!"); // TODO -- dump some more useful msg
@@ -102,12 +102,6 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         if (mv.equals(version) == false && Constants.DEFAULT.toString().equals(name) == false)
             throw new IllegalArgumentException("Input module version doesn't match module's version: " + mv + " != " + version);
 
-        List<String> la = new ArrayList<String>();
-        for (Map.Entry<String, String> entry : args.entrySet()) {
-            final String key = entry.getKey();
-            if (key.startsWith(Constants.OP.toString()) == false)
-                la.add(key);
-        }
-        invokeRun(cl, name, la.toArray(new String[la.size()]));
+        invokeRun(cl, name, conf.arguments);
     }
 }

@@ -22,6 +22,7 @@
 
 package org.jboss.ceylon.test.modules;
 
+import ceylon.modules.spi.Argument;
 import ceylon.modules.spi.Constants;
 import com.redhat.ceylon.cmr.api.Repository;
 import org.jboss.modules.Main;
@@ -102,12 +103,11 @@ public abstract class ModulesTest {
             String name = fullName.substring(0, p);
             String version = fullName.substring(p + 1, fullName.lastIndexOf("."));
 
-            Map<Constants, String> args = new LinkedHashMap<Constants, String>();
-            args.put(Constants.EXECUTABLE, RUNTIME_IMPL);
-            args.put(Constants.MODULE, name + "/" + version);
-            args.put(Constants.REPOSITORY, tmpdir.toString());
+            Map<String, String> args = new LinkedHashMap<String, String>();
+            args.put(Constants.IMPL_ARGUMENT_PREFIX+Argument.EXECUTABLE.toString(), RUNTIME_IMPL);
+            args.put(Constants.CEYLON_ARGUMENT_PREFIX+Argument.REPOSITORY.toString(), tmpdir.toString());
 
-            execute(args);
+            execute(name + "/" + version, args);
         } finally {
             for (File file : files)
                 delete(file);
@@ -124,29 +124,25 @@ public abstract class ModulesTest {
     }
 
     protected void src(String module, String src) throws Throwable {
-        src(module, src, Collections.<Constants, String>emptyMap());
+        src(module, src, Collections.<String, String>emptyMap());
     }
 
-    protected void car(String module, Map<Constants, String> extra) throws Throwable {
-        Map<Constants, String> args = new LinkedHashMap<Constants, String>();
-        args.put(Constants.EXECUTABLE, RUNTIME_IMPL);
-        args.put(Constants.REPOSITORY, getRepo().getPath());
-        args.put(Constants.MODULE, module);
-        args.put(Constants.DEFAULT, "false");
+    protected void car(String module, Map<String, String> extra) throws Throwable {
+        Map<String, String> args = new LinkedHashMap<String, String>();
+        args.put(Constants.IMPL_ARGUMENT_PREFIX+Argument.EXECUTABLE.toString(), RUNTIME_IMPL);
+        args.put(Constants.CEYLON_ARGUMENT_PREFIX+Argument.REPOSITORY.toString(), getRepo().getPath());
         args.putAll(extra);
 
-        execute(args);
+        execute(module, args);
     }
 
-    protected void src(String module, String src, Map<Constants, String> extra) throws Throwable {
-        Map<Constants, String> args = new LinkedHashMap<Constants, String>();
-        args.put(Constants.EXECUTABLE, RUNTIME_IMPL);
-        args.put(Constants.MODULE, module);
-        args.put(Constants.SOURCE, src);
-        args.put(Constants.DEFAULT, "false");
+    protected void src(String module, String src, Map<String, String> extra) throws Throwable {
+        Map<String, String> args = new LinkedHashMap<String, String>();
+        args.put(Constants.IMPL_ARGUMENT_PREFIX+Argument.EXECUTABLE.toString(), RUNTIME_IMPL);
+        args.put(Constants.CEYLON_ARGUMENT_PREFIX+Argument.SOURCE.toString(), src);
         args.putAll(extra);
 
-        execute(args);
+        execute(module, args);
     }
 
     protected String getBootstrapModules() {
@@ -154,7 +150,7 @@ public abstract class ModulesTest {
         return projectHome + File.separator + "dist" + File.separator + "runtime-repo";
     }
 
-    protected void execute(Map<Constants, String> map) throws Throwable {
+    protected void execute(String module, Map<String, String> map) throws Throwable {
 
         List<String> args = new ArrayList<String>();
         // JBoss Modules args
@@ -162,10 +158,11 @@ public abstract class ModulesTest {
         args.add(getBootstrapModules());
         args.add(Constants.CEYLON_RUNTIME_MODULE.toString());
 
-        for (Map.Entry<Constants, String> entry : map.entrySet()) {
-            args.add(Constants.OP.toString() + entry.getKey());
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            args.add(entry.getKey());
             args.add(entry.getValue());
         }
+        args.add(module);
         Main.main(args.toArray(new String[args.size()]));
     }
 

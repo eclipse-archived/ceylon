@@ -22,20 +22,20 @@
 
 package ceylon.modules.spi;
 
-import java.util.Map;
+import ceylon.modules.Configuration;
 
 /**
  * Simple executable.
- * It takes arguments map and starts a new process.
+ * It takes configuration and starts a new process.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public interface Executable {
     /**
-     * Execute process with args.
+     * Execute process with configuration.
      *
-     * @param args the args
+     * @param conf the configuration
      * @throws Exception for any error
      */
-    void execute(Map<String, String> args) throws Exception;
+    void execute(Configuration conf) throws Exception;
 }
