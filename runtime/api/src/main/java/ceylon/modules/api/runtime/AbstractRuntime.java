@@ -62,8 +62,7 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         return SecurityActions.getModule(moduleClass);
     }
 
-    protected static void invokeRun(ClassLoader cl, String moduleName, final String[] args) throws Exception {
-        final String runClassName = moduleName + RUN_INFO_CLASS;
+    protected static void invokeRun(ClassLoader cl, String runClassName, final String[] args) throws Exception {
         final Class<?> runClass;
         try {
             runClass = cl.loadClass(runClassName);
@@ -102,6 +101,9 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         if (mv.equals(version) == false && Constants.DEFAULT.toString().equals(name) == false)
             throw new IllegalArgumentException("Input module version doesn't match module's version: " + mv + " != " + version);
 
-        invokeRun(cl, name, conf.arguments);
+        String runClassName = conf.run;
+        if(runClassName == null || runClassName.isEmpty())
+            runClassName = name + RUN_INFO_CLASS;
+        invokeRun(cl, runClassName, conf.arguments);
     }
 }
