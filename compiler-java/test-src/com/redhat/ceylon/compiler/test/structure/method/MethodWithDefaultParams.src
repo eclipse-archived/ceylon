@@ -22,6 +22,9 @@ class MethodWithDefaultParams {
     public final void f5(final long n) {
     }
     
+    public final void f6(final long n, final ceylon.language.Iterable<? extends ceylon.language.Integer> seq) {
+    }
+    
     MethodWithDefaultParams() {
         this.prop = 42L;
     }
@@ -64,6 +67,10 @@ class MethodWithDefaultParams {
         static long f5$n(com.redhat.ceylon.compiler.test.structure.method.MethodWithDefaultParams $this) {
             return $this.getProp();
         }
+        
+        static long f6$n(com.redhat.ceylon.compiler.test.structure.method.MethodWithDefaultParams $this) {
+            return $this.getProp();
+        }
     }
 }
 interface MethodWithDefaultParams2 {
@@ -79,6 +86,8 @@ interface MethodWithDefaultParams2 {
     public abstract void f4(final long n, final long m);
     
     public abstract void f5(final long n);
+    
+    public abstract void f6(final long n, final ceylon.language.Iterable<? extends ceylon.language.Integer> seq);
     
     public static final class MethodWithDefaultParams2$impl {
         
@@ -111,6 +120,10 @@ interface MethodWithDefaultParams2 {
         }
         
         static long f5$n(com.redhat.ceylon.compiler.test.structure.method.MethodWithDefaultParams2 $this) {
+            return $this.getProp();
+        }
+        
+        static long f6$n(com.redhat.ceylon.compiler.test.structure.method.MethodWithDefaultParams2 $this) {
             return $this.getProp();
         }
     }

@@ -72,3 +72,19 @@ class DefaultedInitializerParameter4 {
         }
     }
 }
+class DefaultedInitializerParameter5 {
+    
+    DefaultedInitializerParameter5(long n, ceylon.language.Iterable<? extends ceylon.language.Integer> seq) {
+    }
+    
+    public static final class DefaultedInitializerParameter5$impl {
+        
+        public DefaultedInitializerParameter5$impl() {
+            super();
+        }
+        
+        static long $init$n() {
+            return 5L;
+        }
+    }
+}

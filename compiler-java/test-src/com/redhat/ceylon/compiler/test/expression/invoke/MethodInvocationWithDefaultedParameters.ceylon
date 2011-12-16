@@ -30,7 +30,8 @@ class Fookls(Integer init) {
     shared void f6(Integer n = privProp) {}
     shared void f7(Integer n = this.prop) {}
     shared void f8(Integer n = init) {}
-    shared void f9(Integer n = init.successor) {}
+    shared void f9(Integer n = prop.successor) {}
+    shared void fa(Integer n = 5, Integer... seq) {}
 }
 @nomodel
 interface Barface {
@@ -41,6 +42,8 @@ interface Barface {
     shared formal void f4(Integer n = 5, Integer m = n + 1);
     shared formal void f5(Integer n = prop);
     shared formal void f7(Integer n = this.prop);
+    shared formal void f9(Integer n = prop.successor);
+    shared formal void fa(Integer n = 5, Integer... seq);
 }
 @nomodel
 class Barkls() satisfies Barface {
@@ -51,6 +54,8 @@ class Barkls() satisfies Barface {
     shared actual void f4(Integer n, Integer m) {}
     shared actual void f5(Integer n) {}
     shared actual void f7(Integer n) {}
+    shared actual void f9(Integer n) {}
+    shared actual void fa(Integer n, Integer... seq) {}
 }
 @nomodel
 void methodInvocationWithDefaultedParameters() {
@@ -71,6 +76,14 @@ void methodInvocationWithDefaultedParameters() {
     f.f6(6);
     f.f7();
     f.f7(6);
+    f.f8();
+    f.f8(6);
+    f.f9();
+    f.f9(6);
+    f.fa();
+    f.fa(6);
+    f.fa(6);
+    f.fa(6, 1, 2, 3);
     
     f.f1{};
     f.f1{n=6;};
@@ -88,6 +101,13 @@ void methodInvocationWithDefaultedParameters() {
     f.f6{n=6;};
     f.f7{};
     f.f7{n=6;};
+    f.f8{};
+    f.f8{n=6;};
+    f.f9{};
+    f.f9{n=6;};
+    f.fa{};
+    f.fa{n=6;};
+    f.fa{n=6; 1, 2, 3};
     
     Barface b = Barkls();
     b.f1();
@@ -104,4 +124,6 @@ void methodInvocationWithDefaultedParameters() {
     b.f5(6);
     f.f7();
     f.f7(6);
+    f.f9();
+    f.f9(6);
 }

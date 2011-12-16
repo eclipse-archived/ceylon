@@ -923,7 +923,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 vars.append(varDecl);
             } else if (lastDeclared != null 
                     && lastDeclared.isSequenced() 
-                    && !boundSequenced) {
+                    && !boundSequenced
+                    && numPassed >= (numDeclared -1)) {
                 int index = namedArguments.size();
                 String varName = varBaseName + "$" + index;
                 JCExpression typeExpr = makeJavaType(lastDeclared.getType(), AbstractTransformer.WANT_RAW_TYPE);
@@ -948,7 +949,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                     String varName = varBaseName + "$" + ii;
                     String methodName = Util.getDefaultedParamMethodName(primaryDecl, param);
                     List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, ii, needsThis);
-                    JCExpression argExpr = at(ce).Apply(null, makeIdentOrSelect(null, containerName, className, methodName), arglist);
+                    JCExpression argExpr;
+                    if (!param.isSequenced()) {
+                        argExpr = at(ce).Apply(null, makeIdentOrSelect(null, containerName, className, methodName), arglist);
+                    } else {
+                        argExpr = makeEmpty();
+                    }
                     BoxingStrategy boxType = Util.getBoxingStrategy(param);
                     ProducedType type = getTypeForParameter(param, isRaw, typeArgumentModels);
                     JCExpression typeExpr = makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? TYPE_ARGUMENT : 0);
@@ -1046,7 +1052,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                 String varName = varBaseName + "$" + ii;
                 String methodName = Util.getDefaultedParamMethodName(primaryDecl, param);
                 List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, ii, needsThis);
-                JCExpression argExpr = at(ce).Apply(null, makeIdentOrSelect(null, containerName, className, methodName), arglist);
+                JCExpression argExpr;
+                if (!param.isSequenced()) {
+                    argExpr = at(ce).Apply(null, makeIdentOrSelect(null, containerName, className, methodName), arglist);
+                } else {
+                    argExpr = makeEmpty();
+                }
                 BoxingStrategy boxType = Util.getBoxingStrategy(param);
                 ProducedType type = getTypeForParameter(param, isRaw, typeArgumentModels);
                 JCExpression typeExpr = makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? TYPE_ARGUMENT : 0);

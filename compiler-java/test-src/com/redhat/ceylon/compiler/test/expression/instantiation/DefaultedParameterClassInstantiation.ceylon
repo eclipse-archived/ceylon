@@ -18,13 +18,15 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class DefaultedParameterClassInstantiation(Integer m = 1, Integer n = m + 1){
+class DefaultedParameterClassInstantiation(Integer m = 1, Integer n = m + 1, Integer... seq){
     shared void test() {
         DefaultedParameterClassInstantiation a = DefaultedParameterClassInstantiation();
         DefaultedParameterClassInstantiation b = DefaultedParameterClassInstantiation(6);
         DefaultedParameterClassInstantiation c = DefaultedParameterClassInstantiation(6, 9);
-        DefaultedParameterClassInstantiation d = DefaultedParameterClassInstantiation{};
-        DefaultedParameterClassInstantiation e = DefaultedParameterClassInstantiation{m=6;};
-        DefaultedParameterClassInstantiation f = DefaultedParameterClassInstantiation{m=6; n=9;};
+        DefaultedParameterClassInstantiation d = DefaultedParameterClassInstantiation(6, 9, 1, 2, 3);
+        DefaultedParameterClassInstantiation e = DefaultedParameterClassInstantiation{};
+        DefaultedParameterClassInstantiation f = DefaultedParameterClassInstantiation{m=6;};
+        DefaultedParameterClassInstantiation g = DefaultedParameterClassInstantiation{m=6; n=9;};
+        DefaultedParameterClassInstantiation h = DefaultedParameterClassInstantiation{m=6; n=9; 1, 2, 3};
     }
 }
