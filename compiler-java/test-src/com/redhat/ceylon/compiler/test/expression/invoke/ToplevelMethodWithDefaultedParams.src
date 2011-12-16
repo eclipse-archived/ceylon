@@ -109,17 +109,17 @@ final class test {
     }
     
     static void test() {
-        (let long $arg$0$0 = f1.f1$impl.f1$n() in .com.redhat.ceylon.compiler.test.expression.invoke.f1.f1($arg$0$0); null);
+        (let long $arg$0$0 = com.redhat.ceylon.compiler.test.expression.invoke.f1.f1$impl.f1$n() in .com.redhat.ceylon.compiler.test.expression.invoke.f1.f1($arg$0$0); null);
         .com.redhat.ceylon.compiler.test.expression.invoke.f1.f1(6L);
-        (let long $arg$1$0 = 6L,.java.lang.String $arg$1$1 = f2.f2$impl.f2$s($arg$1$0) in .com.redhat.ceylon.compiler.test.expression.invoke.f2.f2($arg$1$0, $arg$1$1); null);
+        (let long $arg$1$0 = 6L,.java.lang.String $arg$1$1 = com.redhat.ceylon.compiler.test.expression.invoke.f2.f2$impl.f2$s($arg$1$0) in .com.redhat.ceylon.compiler.test.expression.invoke.f2.f2($arg$1$0, $arg$1$1); null);
         .com.redhat.ceylon.compiler.test.expression.invoke.f2.f2(6L, "foo");
-        (let long $arg$2$0 = f3.f3$impl.f3$n(),long $arg$2$1 = f3.f3$impl.f3$m($arg$2$0) in .com.redhat.ceylon.compiler.test.expression.invoke.f3.f3($arg$2$0, $arg$2$1); null);
-        (let long $arg$3$0 = 6L,long $arg$3$1 = f3.f3$impl.f3$m($arg$3$0) in .com.redhat.ceylon.compiler.test.expression.invoke.f3.f3($arg$3$0, $arg$3$1); null);
+        (let long $arg$2$0 = com.redhat.ceylon.compiler.test.expression.invoke.f3.f3$impl.f3$n(),long $arg$2$1 = com.redhat.ceylon.compiler.test.expression.invoke.f3.f3$impl.f3$m($arg$2$0) in .com.redhat.ceylon.compiler.test.expression.invoke.f3.f3($arg$2$0, $arg$2$1); null);
+        (let long $arg$3$0 = 6L,long $arg$3$1 = com.redhat.ceylon.compiler.test.expression.invoke.f3.f3$impl.f3$m($arg$3$0) in .com.redhat.ceylon.compiler.test.expression.invoke.f3.f3($arg$3$0, $arg$3$1); null);
         .com.redhat.ceylon.compiler.test.expression.invoke.f3.f3(6L, 9L);
-        (let long $arg$4$0 = f4.f4$impl.f4$n(),long $arg$4$1 = f4.f4$impl.f4$m($arg$4$0) in .com.redhat.ceylon.compiler.test.expression.invoke.f4.f4($arg$4$0, $arg$4$1); null);
-        (let long $arg$5$0 = 6L,long $arg$5$1 = f4.f4$impl.f4$m($arg$5$0) in .com.redhat.ceylon.compiler.test.expression.invoke.f4.f4($arg$5$0, $arg$5$1); null);
+        (let long $arg$4$0 = com.redhat.ceylon.compiler.test.expression.invoke.f4.f4$impl.f4$n(),long $arg$4$1 = com.redhat.ceylon.compiler.test.expression.invoke.f4.f4$impl.f4$m($arg$4$0) in .com.redhat.ceylon.compiler.test.expression.invoke.f4.f4($arg$4$0, $arg$4$1); null);
+        (let long $arg$5$0 = 6L,long $arg$5$1 = com.redhat.ceylon.compiler.test.expression.invoke.f4.f4$impl.f4$m($arg$5$0) in .com.redhat.ceylon.compiler.test.expression.invoke.f4.f4($arg$5$0, $arg$5$1); null);
         .com.redhat.ceylon.compiler.test.expression.invoke.f4.f4(6L, 9L);
-        (let long $arg$6$0 = f5.f5$impl.f5$n(),ceylon.language.Iterable<? extends ceylon.language.Integer> $arg$6$1 = ceylon.language.$empty.getEmpty() in .com.redhat.ceylon.compiler.test.expression.invoke.f5.f5($arg$6$0, $arg$6$1); null);
+        (let long $arg$6$0 = com.redhat.ceylon.compiler.test.expression.invoke.f5.f5$impl.f5$n(),ceylon.language.Iterable<? extends ceylon.language.Integer> $arg$6$1 = ceylon.language.$empty.getEmpty() in .com.redhat.ceylon.compiler.test.expression.invoke.f5.f5($arg$6$0, $arg$6$1); null);
         .com.redhat.ceylon.compiler.test.expression.invoke.f5.f5(6L, ceylon.language.$empty.getEmpty());
         .com.redhat.ceylon.compiler.test.expression.invoke.f5.f5(6L, new ceylon.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
     }

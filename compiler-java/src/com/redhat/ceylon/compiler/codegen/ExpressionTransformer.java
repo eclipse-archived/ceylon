@@ -932,17 +932,17 @@ public class ExpressionTransformer extends AbstractTransformer {
                 vars.append(varDecl);
             } else if (numPassed < numDeclared) {
                 boolean needsThis = false;
-                String containerName;
+                Declaration container;
                 if (Decl.withinClassOrInterface(primaryDecl)) {
-                    containerName = ((Declaration)primaryDecl.getContainer()).getName();
+                    container = (Declaration)primaryDecl.getContainer();
                     // first append $this
                     ProducedType thisType = getThisType(primaryDecl);
                     vars.append(makeVar(varBaseName + "$this$", makeJavaType(thisType, NO_PRIMITIVES), makeIdent(callVarName)));
                     needsThis = true;
                 } else {
-                    containerName = primaryDecl.getName();
+                    container = primaryDecl;
                 }
-                String className = Util.getCompanionClassName(containerName);
+                String className = Util.getCompanionClassName(container.getName());
                 // append any arguments for defaulted parameters
                 for (int ii = numPassed; ii < numDeclared; ii++) {
                     Parameter param = declaredParams.get(ii);
@@ -951,7 +951,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, ii, needsThis);
                     JCExpression argExpr;
                     if (!param.isSequenced()) {
-                        argExpr = at(ce).Apply(null, makeIdentOrSelect(null, containerName, className, methodName), arglist);
+                        argExpr = at(ce).Apply(null, makeIdentOrSelect(null, container.getQualifiedNameString(), className, methodName), arglist);
                     } else {
                         argExpr = makeEmpty();
                     }
@@ -1018,17 +1018,17 @@ public class ExpressionTransformer extends AbstractTransformer {
             String varBaseName = aliasName("arg");
             callVarName = varBaseName + "$callable$";
             boolean needsThis = false;
-            String containerName;
+            Declaration container;
             if (Decl.withinClassOrInterface(primaryDecl)) {
-                containerName = ((Declaration)primaryDecl.getContainer()).getName();
+                container = (Declaration)primaryDecl.getContainer();
                 // first append $this
                 ProducedType thisType = getThisType(primaryDecl);
                 vars.append(makeVar(varBaseName + "$this$", makeJavaType(thisType, NO_PRIMITIVES), makeIdent(callVarName)));
                 needsThis = true;
             } else {
-                containerName = primaryDecl.getName();
+                container = primaryDecl;
             }
-            String className = Util.getCompanionClassName(containerName);
+            String className = Util.getCompanionClassName(container.getName());
             // append the normal args
             for (Tree.PositionalArgument arg : positional.getPositionalArguments()) {
                 at(arg);
@@ -1054,7 +1054,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, ii, needsThis);
                 JCExpression argExpr;
                 if (!param.isSequenced()) {
-                    argExpr = at(ce).Apply(null, makeIdentOrSelect(null, containerName, className, methodName), arglist);
+                    argExpr = at(ce).Apply(null, makeIdentOrSelect(null, container.getQualifiedNameString(), className, methodName), arglist);
                 } else {
                     argExpr = makeEmpty();
                 }
