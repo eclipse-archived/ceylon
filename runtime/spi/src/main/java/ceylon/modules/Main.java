@@ -80,6 +80,7 @@ public class Main {
                 break;
             }
         }
+        conf.check();
         return conf;
     }
 

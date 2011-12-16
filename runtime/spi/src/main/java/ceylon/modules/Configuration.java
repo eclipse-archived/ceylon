@@ -88,4 +88,17 @@ public class Configuration {
                 );
         System.exit(1);
     }
+
+    public void check() {
+        if(executable == null
+                || executable.isEmpty()){
+            System.err.println("Missing +executable parameter\n");
+            printUsage();
+        }
+        if(module == null
+                || module.isEmpty()){
+            System.err.println("Missing module name\n");
+            printUsage();
+        }
+    }
 }
