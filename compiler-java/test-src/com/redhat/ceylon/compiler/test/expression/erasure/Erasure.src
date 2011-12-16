@@ -252,8 +252,8 @@ class Test {
         }
         boolean bSync;
         bSync = p1OrNothing != null;
-        final .java.lang.Object p2 = (let .java.lang.Object $ceylontmp9 = (ceylon.language.Boolean)p1OrNothing in $ceylontmp9 != null ? $ceylontmp9 : p1);
-        final long n = ((ceylon.language.Integer)(let .java.lang.Object $ceylontmp10 = (ceylon.language.Boolean)p1OrNothing in $ceylontmp10 != null ? $ceylontmp10 : p1)).longValue();
+        final .java.lang.Object p2 = (let .java.lang.Object $ceylontmp9 = p1OrNothing in $ceylontmp9 != null ? $ceylontmp9 : p1);
+        final long n = ((ceylon.language.Integer)(let .java.lang.Object $ceylontmp10 = p1OrNothing in $ceylontmp10 != null ? $ceylontmp10 : p1)).longValue();
     }
     
     private final void testArithmeticOperators(final .java.lang.Object p1, final .java.lang.Object erasedTest) {

@@ -34,6 +34,9 @@ shared class NullHandlingOperators() {
         nullSafeInvoke := intOrNothing?.plus{
             other = +1;
         };
+        
+        String[]? s1 = null;
+        String[] s2 = s1?{};
     }
     
     void testEmpty() {
