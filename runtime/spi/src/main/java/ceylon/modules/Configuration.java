@@ -70,8 +70,22 @@ public class Configuration {
         case SOURCE: src = values[arg]; break;
         case RUN: run = values[arg]; break;
         case REPOSITORY: repositories.add(values[arg]); break;
+        case HELP: printUsage(); break;
         }
 
         return i+argument.getRequiredValues();
+    }
+
+    public void printUsage() {
+        System.err.print("Usage: ceylon [options...] moduleName/version\n"
+                +"\n"
+                +" -run qualified-name: Name of a class or toplevel method to run\n"
+                +"                      (default: use the module descriptor)\n"
+                +" -rep path:           Module repository path (can be specified more than once)\n"
+                +"                      (default: ...)\n"
+                +" -src path:           Source path (default: source)\n"
+                +" moduleName/version:  Module name and version to run (required)\n"
+                );
+        System.exit(1);
     }
 }
