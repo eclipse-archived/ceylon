@@ -12,16 +12,19 @@ public enum Argument {
     IMPLEMENTATION("impl", ArgumentType.IMPL, 2),
     RUN("run", ArgumentType.CEYLON, 1),
     REPOSITORY("rep", ArgumentType.CEYLON, 1),
-    SOURCE("src", ArgumentType.CEYLON, 1);
+    SOURCE("src", ArgumentType.CEYLON, 1), 
+    HELP("help", ArgumentType.CEYLON, 0, "h", "-help");
 
     private String value;
     private int requiredValues = 0;
     private ArgumentType argumentType;
+    private String[] aliases;
 
-    Argument(String value, ArgumentType type, int requiredValues) {
+    Argument(String value, ArgumentType type, int requiredValues, String... aliases) {
         this.value = value;
         this.argumentType = type;
         this.requiredValues = requiredValues;
+        this.aliases = aliases;
     }
 
     public int getRequiredValues(){
@@ -29,9 +32,15 @@ public enum Argument {
     }
 
     public static Argument forArgumentName(String name, ArgumentType type){
-        for(Argument argument : Argument.values())
-            if(argument.value.equals(name) && argument.argumentType == type)
+        for(Argument argument : Argument.values()){
+            if(argument.argumentType != type)
+                continue;
+            if(argument.value.equals(name))
                 return argument;
+            for(String alias : argument.aliases)
+                if(alias.equals(name))
+                    return argument;
+        }
         return null;
     }
 
