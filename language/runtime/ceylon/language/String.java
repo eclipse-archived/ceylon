@@ -337,6 +337,7 @@ public final class String
     @TypeInfo("ceylon.language.String")
     public java.lang.String initial(@TypeInfo("ceylon.language.Integer") 
     @Name("length") long length) {
+    	if (length<=0) return "";
         return length>value.length() ? value : 
             value.substring(0, (int)length);
     }
@@ -344,6 +345,7 @@ public final class String
     @TypeInfo("ceylon.language.String")
     public java.lang.String terminal(@TypeInfo("ceylon.language.Integer") 
     @Name("length") long length) {
+    	if (length<=0) return "";
         return length>value.length() ? value : 
             value.substring(value.length()-(int) length, value.length());
     }
@@ -406,7 +408,7 @@ public final class String
             @TypeInfo("ceylon.language.Integer") 
             @Name("times") long times) {
         int len = value.length();
-        if (times==0 || len==0) return "";
+        if (times<=0 || len==0) return "";
         if (times==1) return value;
         java.lang.StringBuilder builder = new java.lang.StringBuilder(len*(int)times);
         for (int i=0; i<times; i++) {
