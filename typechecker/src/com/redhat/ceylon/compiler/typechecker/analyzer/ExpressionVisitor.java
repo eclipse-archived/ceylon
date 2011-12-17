@@ -1882,6 +1882,8 @@ public class ExpressionVisitor extends Visitor {
                     "operand expression must be a boolean value");
         }
         if ( rhst!=null ) {
+        	checkAssignable(rhst, unit.getObjectDeclaration().getType(), that.getRightTerm(),
+        			"operand expression may not be an optional type");
             that.setTypeModel(unit.getOptionalType(rhst));
         }
     }
