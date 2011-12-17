@@ -39,7 +39,8 @@ public enum Constants {
     MODULE_PATH("-mp"),
     CEYLON_RUNTIME_MODULE("ceylon.runtime"),
     MERGE_STRATEGY("com.redhat.ceylon.cmr.spi.MergeStrategy"),
-    CONTENT_TRANSFORMER("com.redhat.ceylon.cmr.spi.ContentTransformer");
+    CONTENT_TRANSFORMER("com.redhat.ceylon.cmr.spi.ContentTransformer"), 
+    CEYLON_VERSION("0.1 'Newton'");
     
     private String value;
 

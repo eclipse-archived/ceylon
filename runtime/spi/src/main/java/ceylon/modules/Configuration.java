@@ -7,6 +7,7 @@ import java.util.Map;
 
 import ceylon.modules.spi.Argument;
 import ceylon.modules.spi.ArgumentType;
+import ceylon.modules.spi.Constants;
 
 /**
  * Holds the configuration from the command-line arguments
@@ -71,9 +72,15 @@ public class Configuration {
         case RUN: run = values[arg]; break;
         case REPOSITORY: repositories.add(values[arg]); break;
         case HELP: printUsage(); break;
+        case VERSION: printVersion(); break;
         }
 
         return i+argument.getRequiredValues();
+    }
+
+    private void printVersion() {
+        System.out.println("Version: ceylon "+Constants.CEYLON_VERSION);
+        System.exit(0);
     }
 
     public void printUsage() {
@@ -84,6 +91,8 @@ public class Configuration {
                 +" -rep path:           Module repository path (can be specified more than once)\n"
                 +"                      (default: ...)\n"
                 +" -src path:           Source path (default: source)\n"
+                +" -help:               Prints help usage\n"
+                +" -version:            Prints version number\n"
                 +" moduleName/version:  Module name and version to run (required)\n"
                 );
         System.exit(1);

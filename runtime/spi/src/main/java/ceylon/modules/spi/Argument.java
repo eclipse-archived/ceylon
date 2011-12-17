@@ -13,7 +13,8 @@ public enum Argument {
     RUN("run", ArgumentType.CEYLON, 1),
     REPOSITORY("rep", ArgumentType.CEYLON, 1),
     SOURCE("src", ArgumentType.CEYLON, 1), 
-    HELP("help", ArgumentType.CEYLON, 0, "h", "-help");
+    HELP("help", ArgumentType.CEYLON, 0, "h", "-help"), 
+    VERSION("version", ArgumentType.CEYLON, 0, "v", "-version");
 
     private String value;
     private int requiredValues = 0;
