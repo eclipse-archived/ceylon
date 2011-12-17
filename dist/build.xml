@@ -39,6 +39,7 @@
             <fileset dir="${ceylon-compiler.dir}/build/bin">
                 <include name="args.sh"/>
                 <include name="args.bat"/>
+                <include name="java.bat"/>
                 <include name="ceylonc"/>
                 <include name="ceylonc.bat"/>
                 <include name="ceylond"/>
