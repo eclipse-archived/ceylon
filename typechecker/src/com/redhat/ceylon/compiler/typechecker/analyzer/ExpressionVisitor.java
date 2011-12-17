@@ -491,6 +491,9 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.SpecifierStatement that) {
         super.visit(that);
+        if (!(that.getBaseMemberExpression() instanceof Tree.BaseMemberExpression)) {
+        	that.getBaseMemberExpression().addError("illegal specification statement");
+        }
         checkType(that.getBaseMemberExpression().getTypeModel(), that.getSpecifierExpression());
     }
 

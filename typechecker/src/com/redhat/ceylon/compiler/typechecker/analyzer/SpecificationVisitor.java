@@ -227,30 +227,35 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.SpecifierStatement that) {
-        Tree.BaseMemberExpression m = that.getBaseMemberExpression();
-        Declaration member = getBaseDeclaration(m);
-        if (member==declaration) {
-            that.getSpecifierExpression().visit(this);
-            /*if (!declared) {
-                m.addError("not yet declared: " + 
-                        m.getIdentifier().getText());
-            }
-            else*/ if (isVariable()) {
-                that.addError("variable values must be assigned using \":=\": " +
-                        member.getName());
-            }
-            else if (cannotSpecify) {
-                that.addError("cannot specify value from here: " + 
-                        member.getName());
-            }
-            else if (specified.possibly) {
-                that.addError("not definitely unspecified: " + 
-                        member.getName());
-            }
-            else {
-                specify();
-                m.visit(this);
-            }
+        Tree.Term m = that.getBaseMemberExpression();
+        if (m instanceof Tree.BaseMemberExpression) {
+	        Declaration member = getBaseDeclaration((Tree.BaseMemberExpression)m);
+	        if (member==declaration) {
+	            that.getSpecifierExpression().visit(this);
+	            /*if (!declared) {
+	                m.addError("not yet declared: " + 
+	                        m.getIdentifier().getText());
+	            }
+	            else*/ if (isVariable()) {
+	                that.addError("variable values must be assigned using \":=\": " +
+	                        member.getName());
+	            }
+	            else if (cannotSpecify) {
+	                that.addError("cannot specify value from here: " + 
+	                        member.getName());
+	            }
+	            else if (specified.possibly) {
+	                that.addError("not definitely unspecified: " + 
+	                        member.getName());
+	            }
+	            else {
+	                specify();
+	                m.visit(this);
+	            }
+	        }
+	        else {
+	            super.visit(that);
+	        }
         }
         else {
             super.visit(that);

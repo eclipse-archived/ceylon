@@ -543,30 +543,24 @@ classBody returns [ClassBody classBody]
 attributeBody[StaticType type] returns [Node result]
       //options { memoize=true; }
     : 
-    {$type instanceof BaseType}?=>
-    (
       (namedArguments)
       => namedArguments //first try to match with no directives or control structures
       { SpecifierExpression specifier = new SpecifierExpression(null);
-        SimpleType t = (SimpleType) $type;
+        SimpleType t = $type instanceof SimpleType ? (SimpleType) $type : null;
         Expression e = new Expression(null);
         InvocationExpression ie = new InvocationExpression(null);
         BaseTypeExpression bme = new BaseTypeExpression(null);
-        bme.setIdentifier(t.getIdentifier());
+        if (t!=null) bme.setIdentifier(t.getIdentifier());
         bme.setTypeArguments(new InferredTypeArguments(null));
-        if (t.getTypeArgumentList()!=null)
+        if (t!=null && t.getTypeArgumentList()!=null)
             bme.setTypeArguments(t.getTypeArgumentList());
         ie.setPrimary(bme);
         ie.setNamedArgumentList($namedArguments.namedArgumentList);
         e.setTerm(ie);
         specifier.setExpression(e);
         $result=specifier; }
-    //-> ^(BLOCK ^(RETURN ^(EXPRESSION ^(INVOCATION_EXPRESSION ^(BASE_TYPE_EXPRESSION { ((CommonTree)$mt).getChild(0) } { ((CommonTree)$mt).getChild(1) } ) namedArguments))))
-      | b1=block //if there is a "return" directive or control structure, it must be a block
-      { $result=$b1.block; } 
-    )
-    | b2=block
-      { $result=$b2.block; }
+    | block //if there is a "return" directive or control structure, it must be a block
+      { $result=$block.block; } 
     ;
 
 //This rule accounts for the problem that we
@@ -576,19 +570,17 @@ attributeBody[StaticType type] returns [Node result]
 methodBody[StaticType type] returns [Block block]
       //options { memoize=true; }
     : 
-    {$type instanceof BaseType}?=>
-    (
       (namedArguments)
       => namedArguments //first try to match with no directives or control structures
       { $block = new Block(null);
-        SimpleType t = (SimpleType) $type;
+        SimpleType t = $type instanceof SimpleType ? (SimpleType) $type : null;
         Return r = new Return(null);
         Expression e = new Expression(null);
         InvocationExpression ie = new InvocationExpression(null);
         BaseTypeExpression bme = new BaseTypeExpression(null);
-        bme.setIdentifier(t.getIdentifier());
+        if (t!=null) bme.setIdentifier(t.getIdentifier());
         bme.setTypeArguments(new InferredTypeArguments(null));
-        if (t.getTypeArgumentList()!=null)
+        if (t!=null && t.getTypeArgumentList()!=null)
             bme.setTypeArguments(t.getTypeArgumentList());
         ie.setPrimary(bme);
         ie.setNamedArgumentList($namedArguments.namedArgumentList);
@@ -596,11 +588,8 @@ methodBody[StaticType type] returns [Block block]
         r.setExpression(e);
         $block.addStatement(r); }
     //-> ^(BLOCK ^(RETURN ^(EXPRESSION ^(INVOCATION_EXPRESSION ^(BASE_TYPE_EXPRESSION { ((CommonTree)$mt).getChild(0) } { ((CommonTree)$mt).getChild(1) } ) namedArguments))))
-      | b1=block //if there is a "return" directive or control structure, it must be a block
-      { $block=$b1.block; } 
-    )
-    | b2=block
-      { $block=$b2.block; }
+    | block //if there is a "return" directive or control structure, it must be a block
+      { $block=$block.block; } 
     ;
 
 extendedType returns [ExtendedType extendedType]
@@ -995,11 +984,10 @@ expressionOrSpecificationStatement returns [Statement statement]
             es.setExpression($expression.expression);
         $statement = es; }
       (
-        { $expression.expression!=null && 
-          $expression.expression.getTerm() instanceof BaseMemberExpression }?=>
         specifier
         { ss.setSpecifierExpression($specifier.specifierExpression);
-          ss.setBaseMemberExpression((BaseMemberExpression)$expression.expression.getTerm()); 
+          
+          ss.setBaseMemberExpression($expression.expression.getTerm()); 
           $statement = ss; }
       )?
       (
