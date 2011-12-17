@@ -82,8 +82,8 @@ shared class Range<Element>(Element first, Element last)
                 return current;
             }
             shared actual Iterator<Element>? tail {
-                return current==last then null
-                        else RangeIterator(x);
+                return current!=last then RangeIterator(x) 
+                        else null;
             }
         }
         return RangeIterator(first);
