@@ -1,32 +1,73 @@
 package ceylon.language.descriptor;
 
-import ceylon.language.Iterable;
-import ceylon.language.$empty;
-
+import com.redhat.ceylon.compiler.metadata.java.Ceylon;
 import com.redhat.ceylon.compiler.metadata.java.Defaulted;
 import com.redhat.ceylon.compiler.metadata.java.Ignore;
 import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.Sequenced;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
+@Ceylon
 public class Module {
-    private ceylon.language.Quoted name;
-    private ceylon.language.Quoted version;
-    private java.lang.String doc;
-    private Iterable<? extends ceylon.language.String> by;
-    private ceylon.language.Quoted license;
-    private Iterable<? extends ceylon.language.descriptor.Import> dependencies;
-
-    public Module(@Name("name") ceylon.language.Quoted name, 
-            @Name("version") ceylon.language.Quoted version, 
-            @Name("doc") @Defaulted java.lang.String doc, 
-            @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>") 
-            @Name("by") @Defaulted ceylon.language.Iterable<? extends ceylon.language.String> by, 
-            @TypeInfo("ceylon.language.Nothing|ceylon.language.Quoted") 
-            @Name("license") @Defaulted ceylon.language.Quoted license,
-            @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.descriptor.Import>") 
-            @Name("dependencies") @Sequenced 
-            ceylon.language.Iterable<? extends ceylon.language.descriptor.Import> dependencies){
+    private final ceylon.language.Quoted name;
+    private final ceylon.language.Quoted version;
+    
+    @TypeInfo("ceylon.language.Quoted")
+    public final ceylon.language.Quoted getName() {
+        return name;
+    }
+    
+    @TypeInfo("ceylon.language.Quoted")
+    public final ceylon.language.Quoted getVersion() {
+        return version;
+    }
+    private final java.lang.String doc;
+    
+    @TypeInfo("ceylon.language.String")
+    public final java.lang.String getDoc() {
+        return doc;
+    }
+    private final ceylon.language.Iterable<? extends ceylon.language.String> by;
+    
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
+    public final ceylon.language.Iterable<? extends ceylon.language.String> getBy() {
+        return by;
+    }
+    private final ceylon.language.Quoted license;
+    
+    @TypeInfo("ceylon.language.Nothing|ceylon.language.Quoted")
+    public final ceylon.language.Quoted getLicense() {
+        return license;
+    }
+    private final ceylon.language.Iterable<? extends Import> dependencies;
+    
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.descriptor.Import>")
+    public final ceylon.language.Iterable<? extends Import> getDependencies() {
+        return dependencies;
+    }
+    
+    @TypeInfo("ceylon.language.String")
+    public final java.lang.String toString() {
+        return new java.lang.StringBuilder().append("Module[").append(name.toString()).append("/").append(version.toString()).append("]").toString();
+    }
+    
+    public Module(@Name("name")
+    @TypeInfo("ceylon.language.Quoted")
+    ceylon.language.Quoted name, @Name("version")
+    @TypeInfo("ceylon.language.Quoted")
+    ceylon.language.Quoted version, @Name("doc")
+    @Defaulted
+    @TypeInfo("ceylon.language.String")
+    java.lang.String doc, @Name("by")
+    @Defaulted
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
+    ceylon.language.Iterable<? extends ceylon.language.String> by, @Name("license")
+    @Defaulted
+    @TypeInfo("ceylon.language.Nothing|ceylon.language.Quoted")
+    ceylon.language.Quoted license, @Name("dependencies")
+    @Sequenced
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.descriptor.Import>")
+    ceylon.language.Iterable<? extends Import> dependencies) {
         this.name = name;
         this.version = version;
         this.doc = doc;
@@ -34,47 +75,43 @@ public class Module {
         this.license = license;
         this.dependencies = dependencies;
     }
-
-    public ceylon.language.Quoted getName() {
-        return name;
-    }
-
-    public ceylon.language.Quoted getVersion() {
-        return version;
-    }
-
-    public java.lang.String getDoc() {
-        return doc;
-    }
-
-    public Iterable<? extends ceylon.language.String> getBy() {
-        return by;
-    }
-
-    public ceylon.language.Quoted getLicense() {
-        return license;
-    }
-
-    public Iterable<? extends ceylon.language.descriptor.Import> getDependencies() {
-        return dependencies;
-    }
     
     @Ignore
     public static final class Module$impl {
         
-        public Module$impl() {
-            super();
-        }
-        
-        static java.lang.String $init$doc(ceylon.language.descriptor.Module $this) {
+        @TypeInfo("ceylon.language.String")
+        public static java.lang.String $init$doc(@Name("name")
+        @TypeInfo("ceylon.language.Quoted")
+        final ceylon.language.Quoted name, @Name("version")
+        @TypeInfo("ceylon.language.Quoted")
+        final ceylon.language.Quoted version) {
             return "";
         }
         
-        static Iterable<? extends ceylon.language.String> $init$by(ceylon.language.descriptor.Module $this) {
-            return $empty.getEmpty();
+        @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
+        public static ceylon.language.Iterable<? extends ceylon.language.String> $init$by(@Name("name")
+        @TypeInfo("ceylon.language.Quoted")
+        final ceylon.language.Quoted name, @Name("version")
+        @TypeInfo("ceylon.language.Quoted")
+        final ceylon.language.Quoted version, @Name("doc")
+        @Defaulted
+        @TypeInfo("ceylon.language.String")
+        final java.lang.String doc) {
+            return ceylon.language.$empty.getEmpty();
         }
         
-        static ceylon.language.Quoted $init$license(ceylon.language.descriptor.Module $this) {
+        @TypeInfo("ceylon.language.Nothing|ceylon.language.Quoted")
+        public static ceylon.language.Quoted $init$license(@Name("name")
+        @TypeInfo("ceylon.language.Quoted")
+        final ceylon.language.Quoted name, @Name("version")
+        @TypeInfo("ceylon.language.Quoted")
+        final ceylon.language.Quoted version, @Name("doc")
+        @Defaulted
+        @TypeInfo("ceylon.language.String")
+        final java.lang.String doc, @Name("by")
+        @Defaulted
+        @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
+        final ceylon.language.Iterable<? extends ceylon.language.String> by) {
             return null;
         }
     }
