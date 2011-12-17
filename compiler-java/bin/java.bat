@@ -20,7 +20,8 @@ if "%ValueValue%" NEQ "" (
 )
 
 if "%JAVA_CURRENT%" == "" (
-    @echo "Java not found"
+    @echo "Java not found, you must install Java in order to compiler and run Ceylon programs"
+    @echo "Go to http://www.java.com/getjava/ to download the latest version of Java
     exit /b 0
 )
 
