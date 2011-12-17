@@ -26,6 +26,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Main {
+    private static final String CEYLOND_VERSION = "0.1 'Newton'";
+
     public static void main(String[] args) throws IOException {
         String destDir = null;
         String srcDir = null;
@@ -38,6 +40,10 @@ public class Main {
                     || "-help".equals(arg)
                     || "--help".equals(arg)) {
                 printUsage();
+            } else if ("-v".equals(arg)
+                        || "-version".equals(arg)
+                        || "--version".equals(arg)) {
+                printVersion();
             } else if ("-d".equals(arg)) {
                 System.err.println("-d: option not yet supported (though perhaps you meant -out?)");
                 System.exit(1);
@@ -84,10 +90,16 @@ public class Main {
         ceylonDocTool.makeDoc();
     }
 
+    private static void printVersion() {
+        System.out.println("Version: ceylond "+CEYLOND_VERSION);
+        System.exit(0);
+    }
+
     private static void printUsage() {
         List<String> defaultRepositories = com.redhat.ceylon.compiler.util.Util.getDefaultRepositories();
         System.err.print(
-                "Ceylond usage:\n"
+                "Usage: ceylon [options...]:\n"
+                +"\n"
                 +"-out <path>:  Output module repository (default: 'modules')\n"
                 +"-src <path>:  Source directory (default: 'source')\n"
                 +"-rep <path>:  Module repository\n"
@@ -100,6 +112,8 @@ public class Main {
                  "-private:     Document non-shared declarations\n"
                 +"-omit-source: Do not include the source code\n"
                 +"-d:           Not supported yet\n"
+                +"-help:        Prints help usage\n"
+                +"-version:     Prints version number\n"
         );
         System.exit(1);
     }
