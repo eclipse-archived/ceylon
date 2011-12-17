@@ -120,6 +120,10 @@ public class Main extends com.sun.tools.javac.main.Main {
             help();
         }
 
+        public void printJhelp() {
+            jhelp();
+        }
+
         public void printXhelp() {
             xhelp();
         }
@@ -170,9 +174,20 @@ public class Main extends com.sun.tools.javac.main.Main {
     void help() {
         Log.printLines(out, getLocalizedString("msg.usage.header", ownName));
         for (int i = 0; i < recognizedOptions.length; i++) {
+            recognizedOptions[i].chelp(out);
+        }
+        out.println();
+    }
+
+    /**
+     * Print a string that explains usage for Java options.
+     */
+    void jhelp() {
+        for (int i = 0; i < recognizedOptions.length; i++) {
             recognizedOptions[i].help(out);
         }
         out.println();
+        Log.printLines(out, getLocalizedString("msg.usage.nonstandard.footer"));
     }
 
     /**
@@ -366,7 +381,11 @@ public class Main extends com.sun.tools.javac.main.Main {
                 } else if (filenames.isEmpty() && fileObjects.isEmpty() && classnames.isEmpty()) {
                     // it is allowed to compile nothing if just asking for help
                     // or version info
-                    if (options.get("-help") != null || options.get("-X") != null || options.get("-version") != null || options.get("-fullversion") != null)
+                    if (options.get("-help") != null 
+                            || options.get("-jhelp") != null 
+                            || options.get("-X") != null 
+                            || options.get("-version") != null 
+                            || options.get("-fullversion") != null)
                         return EXIT_OK;
                     error("err.no.source.files");
                     return EXIT_CMDERR;

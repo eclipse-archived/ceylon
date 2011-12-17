@@ -30,6 +30,7 @@ import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.jvm.Target;
 import com.sun.tools.javac.main.JavacOption.HiddenOption;
 import com.sun.tools.javac.main.JavacOption.Option;
+import com.sun.tools.javac.main.JavacOption.COption;
 import com.sun.tools.javac.main.JavacOption.XOption;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -70,6 +71,8 @@ public class RecognizedOptions {
 
         void printHelp();
 
+        void printJhelp();
+
         void printXhelp();
 
         void addFile(File f);
@@ -97,6 +100,10 @@ public class RecognizedOptions {
         }
 
         public void printHelp() {
+            throw new IllegalArgumentException();
+        }
+
+        public void printJhelp() {
             throw new IllegalArgumentException();
         }
 
@@ -149,6 +156,7 @@ public class RecognizedOptions {
         VERSION,
         FULLVERSION,
         HELP,
+        JHELP,
         A,
         X,
         J,
@@ -326,7 +334,7 @@ public class RecognizedOptions {
                 return super.process(options, "-classpath", arg);
             }
         },
-        new Option(CEYLONREPO,             "opt.arg.path",      "opt.ceylonrepo"){
+        new COption(CEYLONREPO,             "opt.arg.path",      "opt.ceylonrepo"){
             @Override
             public boolean process(Options options, String option, String arg) {
                 if(options != null)
@@ -335,7 +343,7 @@ public class RecognizedOptions {
             }
         },
         new Option(SOURCEPATH,             "opt.arg.path",      "opt.sourcepath"),
-        new Option(CEYLONSOURCEPATH,       "opt.arg.path",      "opt.ceylonsourcepath"){
+        new COption(CEYLONSOURCEPATH,       "opt.arg.path",      "opt.ceylonsourcepath"){
             @Override
             public boolean process(Options options, String option, String arg) {
                 return super.process(options, "-sourcepath", arg);
@@ -387,7 +395,7 @@ public class RecognizedOptions {
         new Option(PROCESSOR,           "opt.arg.class.list",   "opt.processor"),
         new Option(PROCESSORPATH,       "opt.arg.path",         "opt.processorpath"),
         new Option(D,                   "opt.arg.directory",    "opt.d"),
-        new Option(CEYLONOUT,           "opt.arg.directory",    "opt.ceylonout"){
+        new COption(CEYLONOUT,           "opt.arg.directory",    "opt.ceylonout"){
             @Override
             public boolean process(Options options, String option, String arg) {
                 return super.process(options, "-d", arg);
@@ -426,7 +434,7 @@ public class RecognizedOptions {
                 return super.process(options, option, operand);
             }
         },
-        new Option(VERSION,                                     "opt.version") {
+        new COption(VERSION,                                     "opt.version") {
             public boolean process(Options options, String option) {
                 helper.printVersion();
                 return super.process(options, option);
@@ -438,9 +446,15 @@ public class RecognizedOptions {
                 return super.process(options, option);
             }
         },
-        new Option(HELP,                                        "opt.help") {
+        new COption(HELP,                                        "opt.help") {
             public boolean process(Options options, String option) {
                 helper.printHelp();
+                return super.process(options, option);
+            }
+        },
+        new COption(JHELP,                                       "opt.jhelp") {
+            public boolean process(Options options, String option) {
+                helper.printJhelp();
                 return super.process(options, option);
             }
         },

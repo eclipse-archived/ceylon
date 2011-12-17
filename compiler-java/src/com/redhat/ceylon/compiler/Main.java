@@ -46,7 +46,7 @@ public class Main extends com.sun.tools.javac.Main {
      *         the man page for details.
      */
     public static int compile(String[] args) {
-        com.sun.tools.javac.main.Main compiler = new com.redhat.ceylon.compiler.launcher.Main("javac");
+        com.sun.tools.javac.main.Main compiler = new com.redhat.ceylon.compiler.launcher.Main("ceylonc");
         return compiler.compile(args);
     }
 

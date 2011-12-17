@@ -60,6 +60,7 @@ public interface JavacOption {
     OptionName getName();
 
     enum OptionKind {
+        CEYLON,
         NORMAL,
         EXTENDED,
         HIDDEN,
@@ -128,6 +129,10 @@ public interface JavacOption {
                   Main.getLocalizedString(argsNameKey)));
         }
 
+        /** Print a line of documentation describing this option, if Ceylon.
+         */
+        public void chelp(PrintWriter out) {}
+
         /** Print a line of documentation describing this option, if non-standard.
          */
         public void xhelp(PrintWriter out) {}
@@ -154,6 +159,21 @@ public interface JavacOption {
         public OptionName getName() { return name; }
     };
 
+    /** A Ceylon option
+     */
+    static class COption extends Option {
+        COption(OptionName name, String argsNameKey, String descrKey) {
+            super(name, argsNameKey, descrKey);
+        }
+        COption(OptionName name, String descrKey) {
+            this(name, null, descrKey);
+        }
+        public void help(PrintWriter out) { }
+        public void chelp(PrintWriter out) { super.help(out); }
+        public void xhelp(PrintWriter out) { }
+        public OptionKind getKind() { return OptionKind.CEYLON; }
+    };
+
     /** A nonstandard or extended (-X) option
      */
     static class XOption extends Option {
@@ -164,6 +184,7 @@ public interface JavacOption {
             this(name, null, descrKey);
         }
         public void help(PrintWriter out) {}
+        public void chelp(PrintWriter out) {}
         public void xhelp(PrintWriter out) { super.help(out); }
         public OptionKind getKind() { return OptionKind.EXTENDED; }
     };
@@ -178,6 +199,7 @@ public interface JavacOption {
             super(name, argsNameKey, null);
         }
         public void help(PrintWriter out) {}
+        public void chelp(PrintWriter out) {}
         public void xhelp(PrintWriter out) {}
         public OptionKind getKind() { return OptionKind.HIDDEN; }
     };

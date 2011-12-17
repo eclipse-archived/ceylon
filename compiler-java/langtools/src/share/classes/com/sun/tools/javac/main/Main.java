@@ -94,6 +94,10 @@ public class Main {
             help();
         }
 
+        public void printJhelp() {
+            help();
+        }
+
         public void printXhelp() {
             xhelp();
         }
