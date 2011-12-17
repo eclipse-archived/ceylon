@@ -78,8 +78,14 @@ public abstract class TypeDeclaration extends Declaration
 
     public List<TypeDeclaration> getCaseTypeDeclarations() {
         List<TypeDeclaration> list = new ArrayList<TypeDeclaration>();
-        for (ProducedType pt: getCaseTypes()) {
-            list.add(pt.getDeclaration());
+        List<ProducedType> caseTypes = getCaseTypes();
+        if (caseTypes==null) {
+            return null;
+        }
+        else {
+            for (ProducedType pt: caseTypes) {
+                list.add(pt.getDeclaration());
+            }
         }
         return list;
     }
