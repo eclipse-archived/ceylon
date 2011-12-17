@@ -10,7 +10,7 @@
     <property name="dist.name" value="ceylon-${ceylon.version}"/>
     <property name="dist.dir" value="${basedir}/dist"/>
 
-    <target name="package" depends="install-compiler, copy-compiler-binaries, copy-compiler-libraries, install-typechecker, install-language, install-runtime, generate-spec, generate-apidoc">
+    <target name="package" depends="install-compiler, copy-compiler-binaries, copy-compiler-samples, copy-compiler-libraries, install-typechecker, install-language, install-runtime, generate-spec, generate-apidoc">
         <zip destfile="${basedir}/${dist.name}.zip">
             <zipfileset dir="${dist.dir}" prefix="${dist.name}">
                 <include name="bin/**" />
@@ -24,6 +24,7 @@
                 <include name="lib/**" />
                 <include name="repo/**" />
                 <include name="runtime-repo/**" />
+                <include name="samples/**" />
             </zipfileset>
             <zipfileset dir="${basedir}" prefix="${dist.name}">
                 <include name="LICENSE" />
@@ -62,7 +63,16 @@
         </copy>
     </target>
 
-    <target name="install-compiler">
+    <target name="copy-compiler-samples">
+        <mkdir dir="${dist.dir}/samples"/>
+        <copy todir="${dist.dir}/samples">
+            <fileset dir="${ceylon-compiler.dir}/samples">
+                <include name="helloworld/**"/>
+            </fileset>
+        </copy>
+    </target>
+
+	<target name="install-compiler">
         <ant antfile="${ceylon-compiler.dir}/build.xml" target="dist" dir="${ceylon-compiler.dir}" inheritall="false">
         </ant>
         <copy todir="${dist.dir}/repo">
