@@ -15,7 +15,7 @@ while [ -h "$PRG" ]; do
 done
 
 # Set CEYLON_HOME if not already set by the user
-if test -z "$CEYLON_REPO"
+if test -z "$CEYLON_HOME"
 then
     CEYLON_HOME="$(dirname "$PRG)")/.."
 fi
