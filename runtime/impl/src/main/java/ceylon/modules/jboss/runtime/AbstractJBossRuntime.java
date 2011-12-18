@@ -55,7 +55,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
     /**
      * Get repository extension.
      *
-     * @param args the args
+     * @param conf the configuration
      * @return repository extension
      */
     protected Repository createRepository(Configuration conf) {
@@ -90,7 +90,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
      * Get repository service.
      *
      * @param serviceType the service type
-     * @param args        the args
+     * @param conf the configuration
      * @return service instance or null
      */
     protected <T> T getService(Class<T> serviceType, Configuration conf) {

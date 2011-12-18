@@ -83,6 +83,10 @@ public abstract class ModulesTest {
     }
 
     protected void testArchive(Archive module, Archive... libs) throws Throwable {
+        testArchive(module, null, libs);
+    }
+
+    protected void testArchive(Archive module, String run, Archive... libs) throws Throwable {
         File tmpdir = AccessController.doPrivileged(new PrivilegedAction<File>() {
             public File run() {
                 return new File(System.getProperty("ceylon.repo", System.getProperty("java.io.tmpdir")));
@@ -95,17 +99,28 @@ public abstract class ModulesTest {
             for (Archive lib : libs)
                 files.add(createModuleFile(tmpdir, lib));
 
-            String fullName = module.getName();
-            int p = fullName.indexOf("-");
-            if (p < 0)
-                throw new IllegalArgumentException("No name and version split: " + fullName);
+            String name;
+            String version;
 
-            String name = fullName.substring(0, p);
-            String version = fullName.substring(p + 1, fullName.lastIndexOf("."));
+            String fullName = module.getName();
+            final boolean isDefault = (Constants.DEFAULT + ".car").equals(fullName);
+            if (isDefault) {
+                name = Constants.DEFAULT.toString();
+                version = Repository.NO_VERSION;
+            } else {
+                int p = fullName.indexOf("-");
+                if (p < 0)
+                    throw new IllegalArgumentException("No name and version split: " + fullName);
+
+                name = fullName.substring(0, p);
+                version = fullName.substring(p + 1, fullName.lastIndexOf("."));
+            }
 
             Map<String, String> args = new LinkedHashMap<String, String>();
-            args.put(Constants.IMPL_ARGUMENT_PREFIX+Argument.EXECUTABLE.toString(), RUNTIME_IMPL);
-            args.put(Constants.CEYLON_ARGUMENT_PREFIX+Argument.REPOSITORY.toString(), tmpdir.toString());
+            args.put(Constants.IMPL_ARGUMENT_PREFIX + Argument.EXECUTABLE.toString(), RUNTIME_IMPL);
+            args.put(Constants.CEYLON_ARGUMENT_PREFIX + Argument.REPOSITORY.toString(), tmpdir.toString());
+            if (run != null)
+                args.put(Constants.CEYLON_ARGUMENT_PREFIX + Argument.RUN.toString(), run);
 
             execute(name + "/" + version, args);
         } finally {
@@ -129,8 +144,8 @@ public abstract class ModulesTest {
 
     protected void car(String module, Map<String, String> extra) throws Throwable {
         Map<String, String> args = new LinkedHashMap<String, String>();
-        args.put(Constants.IMPL_ARGUMENT_PREFIX+Argument.EXECUTABLE.toString(), RUNTIME_IMPL);
-        args.put(Constants.CEYLON_ARGUMENT_PREFIX+Argument.REPOSITORY.toString(), getRepo().getPath());
+        args.put(Constants.IMPL_ARGUMENT_PREFIX + Argument.EXECUTABLE.toString(), RUNTIME_IMPL);
+        args.put(Constants.CEYLON_ARGUMENT_PREFIX + Argument.REPOSITORY.toString(), getRepo().getPath());
         args.putAll(extra);
 
         execute(module, args);
@@ -138,8 +153,8 @@ public abstract class ModulesTest {
 
     protected void src(String module, String src, Map<String, String> extra) throws Throwable {
         Map<String, String> args = new LinkedHashMap<String, String>();
-        args.put(Constants.IMPL_ARGUMENT_PREFIX+Argument.EXECUTABLE.toString(), RUNTIME_IMPL);
-        args.put(Constants.CEYLON_ARGUMENT_PREFIX+Argument.SOURCE.toString(), src);
+        args.put(Constants.IMPL_ARGUMENT_PREFIX + Argument.EXECUTABLE.toString(), RUNTIME_IMPL);
+        args.put(Constants.CEYLON_ARGUMENT_PREFIX + Argument.SOURCE.toString(), src);
         args.putAll(extra);
 
         execute(module, args);

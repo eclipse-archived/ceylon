@@ -4,6 +4,7 @@
 *.ipr
 api/target/
 dist/target/
+dist/lib/
 dist/bin/jboss-modules.jar
 dist/bin/ceylon-runtime-bootstrap.jar
 dist/runtime-repo/ceylon/language/0.1/ceylon.language-0.1.car

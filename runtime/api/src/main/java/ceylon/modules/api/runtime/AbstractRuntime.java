@@ -22,14 +22,13 @@
 
 package ceylon.modules.api.runtime;
 
-import java.util.logging.Logger;
-
 import ceylon.language.descriptor.Module;
 import ceylon.modules.Configuration;
 import ceylon.modules.api.util.CeylonToJava;
 import ceylon.modules.spi.Constants;
-
 import com.redhat.ceylon.cmr.api.Repository;
+
+import java.util.logging.Logger;
 
 /**
  * Abstract Ceylon Modules runtime.
@@ -91,18 +90,20 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
 
         ClassLoader cl = createClassLoader(name, mv, conf);
         Module runtimeModule = loadModule(cl, name);
-        if (runtimeModule == null)
-            throw new IllegalArgumentException("Something went very wrong, missing runtime module!"); // TODO -- dump some more useful msg
+        if (runtimeModule != null) {
+            final String mn = CeylonToJava.toString(runtimeModule.getName());
+            if (name.equals(mn) == false)
+                throw new IllegalArgumentException("Input module name doesn't match module's name: " + name + " != " + mn);
 
-        String mn = CeylonToJava.toString(runtimeModule.getName());
-        if (name.equals(mn) == false)
-            throw new IllegalArgumentException("Input module name doesn't match module's name: " + name + " != " + mn);
-        String version = CeylonToJava.toString(runtimeModule.getVersion());
-        if (mv.equals(version) == false && Constants.DEFAULT.toString().equals(name) == false)
-            throw new IllegalArgumentException("Input module version doesn't match module's version: " + mv + " != " + version);
+            final String version = CeylonToJava.toString(runtimeModule.getVersion());
+            if (mv.equals(version) == false && Constants.DEFAULT.toString().equals(name) == false)
+                throw new IllegalArgumentException("Input module version doesn't match module's version: " + mv + " != " + version);
+        } else if (Constants.DEFAULT.toString().equals(name) == false) {
+            throw new IllegalArgumentException("Missing module.class info: " + name); // TODO -- dump some more useful msg
+        }
 
         String runClassName = conf.run;
-        if(runClassName == null || runClassName.isEmpty())
+        if (runClassName == null || runClassName.isEmpty())
             runClassName = name + RUN_INFO_CLASS;
         invokeRun(cl, runClassName, conf.arguments);
     }
