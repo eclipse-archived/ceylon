@@ -204,4 +204,11 @@ shared void strings() {
     assert("hello".repeat(3)=="hellohellohello", "string repeat");
     
     assert("hello world".replace("hello","goodbye")=="goodbye world", "string replace");
+    
+    value nlb = StringBuilder();
+    nlb.appendNewline();
+    nlb.append("hello");
+    nlb.appendNewline();
+    assert(nlb.string.size==7, "string builder newline");
+    assert(nlb.string=="\nhello\n", "string builder newline");
 }

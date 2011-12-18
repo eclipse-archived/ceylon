@@ -3,4 +3,5 @@ shared class StringBuilder() {
     shared void append(String string) { throw; }
     shared void appendAll(String... strings) { throw; }
     shared void appendCharacter(Character character) { throw; }
+    shared void appendNewline() { appendCharacter(`\n`); }
 }

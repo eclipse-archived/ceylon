@@ -34,4 +34,8 @@ public class StringBuilder {
         builder.append(java.lang.Character.toChars(character));
     }
     
+    public void appendNewline() {
+    	builder.append('\n');
+    }
+    
 }
