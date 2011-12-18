@@ -238,8 +238,6 @@ public class CeylonModuleLoader extends ModuleLoader {
             }
 
             createModuleDependency(vertex, deps, builder, LANGUAGE, false);
-            if (isDefault == false)
-                createModuleDependency(vertex, deps, builder, DEFAULT, true);
 
             // add runtime utils
             final DependencySpec sds = DependencySpec.createModuleDependencySpec(

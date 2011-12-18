@@ -23,6 +23,7 @@
 package biz.wiz.quiz;
 
 import ceylon.language.Quoted;
+import ceylon.language.descriptor.Import;
 import ceylon.modules.api.util.JavaToCeylon;
 import ceylon.modules.api.util.ModuleVersion;
 
@@ -33,6 +34,8 @@ public class module {
     public static ceylon.language.descriptor.Module getModule() {
         Quoted name = JavaToCeylon.toQuoted("biz.wiz.quiz");
         Quoted version = JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "GA").toString());
-        return new ceylon.language.descriptor.Module(name, version, null, null, null, null);
+        Import i1 = new Import(JavaToCeylon.toQuoted("default"), JavaToCeylon.toQuoted("**NO_VERSION**"), false, false);
+        ceylon.language.Iterable<? extends Import> imports = JavaToCeylon.toIterable(i1);
+        return new ceylon.language.descriptor.Module(name, version, null, null, null, imports);
     }
 }
