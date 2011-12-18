@@ -38,4 +38,8 @@ public class StringBuilder {
     	builder.append('\n');
     }
     
+    public void appendSpace() {
+    	builder.append(' ');
+    }
+    
 }
