@@ -2,7 +2,7 @@ doc "Since sequences are immutable, this class is used for
      constructing a new sequence by incrementally appending 
      elements to the empty sequence. This class is mutable
      but threadsafe."
-see (SequenceAppender)
+see (SequenceAppender, join)
 shared class SequenceBuilder<Element>() satisfies Sized {
     doc "The resulting sequence. If no elements have been
          appended, the empty sequence."

@@ -1,10 +1,7 @@
-shared Element largest<Element>(Sequence<Element> sequence) 
+doc "Given two `Comparable` values, return largest of the
+     two.`
+see (Comparable, smallest, max)
+shared Element largest<Element>(Element x, Element y) 
         given Element satisfies Comparable<Element> {
-    variable Element max := sequence.first;
-    for (Element element in sequence) { 
-        if (element>max) { 
-            max:=element;
-        }
-    }
-    return max;
+    return x>y then x else y;
 }

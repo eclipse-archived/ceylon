@@ -1,10 +1,7 @@
-shared Element smallest<Element>(Sequence<Element> sequence) 
+doc "Given two `Comparable` values, return smallest of the
+     two.`
+see (Comparable, largest, min)
+shared Element smallest<Element>(Element x, Element y) 
         given Element satisfies Comparable<Element> {
-    variable Element min := sequence.first;
-    for (Element element in sequence) { 
-        if (element<min) { 
-            min:=element;
-        }
-    }
-    return min;
+    return x<y then x else y;
 }
