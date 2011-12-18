@@ -3077,12 +3077,20 @@ SequencedParam?
         <para>The type of the default argument expression must be assignable to the declared
         type of the parameter.</para>
         
+        <!--
         <para>If the declared type of the parameter is an optional type (a subtype of
         <literal>Nothing</literal>) then the default argument expression must be a value
         reference to <literal>null</literal>.</para>
+        -->
         
         <para>A parameter of a method or class annotated <literal>actual</literal> may not 
         specify a default argument.</para>
+        
+        <para>A parameter of a method or class annotated <literal>actual</literal> inherits 
+        the default argument, if any, if the corresponding parameter of the method it 
+        refines.</para>
+        
+        <para></para>
         
         </section>
         
