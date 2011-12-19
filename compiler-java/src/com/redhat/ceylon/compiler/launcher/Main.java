@@ -551,7 +551,7 @@ public class Main extends com.sun.tools.javac.main.Main {
         }
     }
 
-    private static final String javacBundleName = "com.sun.tools.javac.resources.javac";
+    private static final String javacBundleName = "com.sun.tools.javac.resources.ceylonc";
 
     private static Messages messages;
 }

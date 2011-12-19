@@ -495,7 +495,7 @@ public class Main {
     }
 
     private static final String javacBundleName =
-        "com.sun.tools.javac.resources.javac";
+        "com.sun.tools.javac.resources.ceylonc";
 
     private static Messages messages;
 }
