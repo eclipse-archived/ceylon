@@ -216,8 +216,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
             return repositories;
         // lazy loading
         List<String> repositoryNames = options.getMulti(OptionName.CEYLONREPO);
-        if(repositoryNames.isEmpty())
-            repositoryNames = Util.getDefaultRepositories();
+        repositoryNames = Util.addDefaultRepositories(repositoryNames);
         repositories = new ArrayList<File>(repositoryNames.size());
         for(String repository : repositoryNames)
             repositories.add(new File(repository));

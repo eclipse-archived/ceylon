@@ -22,6 +22,7 @@ package com.redhat.ceylon.ceylondoc;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -70,8 +71,7 @@ public class Main {
         if (destDir == null) {
             destDir = "modules";
         }
-        if(repositories.isEmpty())
-            repositories.addAll(com.redhat.ceylon.compiler.util.Util.getDefaultRepositories());
+        repositories = com.redhat.ceylon.compiler.util.Util.addDefaultRepositories(repositories);
 
         List<File> sourceFolders = new LinkedList<File>();
         if (sourceDirs.isEmpty()) {
@@ -125,7 +125,7 @@ public class Main {
     }
 
     private static void printUsage() {
-        List<String> defaultRepositories = com.redhat.ceylon.compiler.util.Util.getDefaultRepositories();
+        List<String> defaultRepositories = com.redhat.ceylon.compiler.util.Util.addDefaultRepositories(Collections.<String>emptyList());
         System.err.print(
                 "Usage: ceylon [options...] moduleName[/version]... :\n"
                 +"\n"
