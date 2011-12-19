@@ -34,17 +34,17 @@ import java.io.File;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class RootRepositoryBuilder {
+public class RepositoryBuilder {
 
     private RootRepository repository;
 
-    public RootRepositoryBuilder() {
+    public RepositoryBuilder() {
         repository = new RootRepository();
         init();
     }
 
-    public RootRepositoryBuilder(File rootDir) {
-        repository = new RootRepository(rootDir);
+    public RepositoryBuilder(File mainRepository) {
+        repository = new RootRepository(mainRepository);
         init();
     }
 
@@ -56,28 +56,23 @@ public class RootRepositoryBuilder {
         return repository.getRoot();
     }
 
-    public RootRepositoryBuilder mergeStrategy(MergeStrategy strategy) {
+    public RepositoryBuilder mergeStrategy(MergeStrategy strategy) {
         getRoot().addService(MergeStrategy.class, strategy);
         return this;
     }
 
-    public RootRepositoryBuilder contentTransformer(ContentTransformer transformer) {
+    public RepositoryBuilder contentTransformer(ContentTransformer transformer) {
         getRoot().addService(ContentTransformer.class, transformer);
         return this;
     }
 
-    public RootRepositoryBuilder cacheContent() {
+    public RepositoryBuilder cacheContent() {
         getRoot().addService(ContentTransformer.class, new CachingContentTransformer());
         return this;
     }
 
-    public RootRepositoryBuilder mergeNode(OpenNode node) {
-        getRoot().merge(node);
-        return this;
-    }
-
-    public RootRepositoryBuilder linkNode(OpenNode node) {
-        getRoot().link(node);
+    public RepositoryBuilder addExternalRoot(OpenNode externalRoot) {
+        repository.addExternalRoot(externalRoot);
         return this;
     }
 

@@ -24,6 +24,7 @@ package com.redhat.ceylon.test.smoke.support;
 
 import com.redhat.ceylon.cmr.impl.DefaultNode;
 import com.redhat.ceylon.cmr.impl.IOUtils;
+import com.redhat.ceylon.cmr.impl.RootNode;
 import com.redhat.ceylon.cmr.spi.*;
 
 import java.io.ByteArrayInputStream;
@@ -66,11 +67,8 @@ public class InMemoryContentStore implements ContentStore, StructureBuilder {
     }
 
     @Override
-    public OpenNode createRoot(String label) {
-        OpenNode node = new DefaultNode(label);
-        node.addService(ContentStore.class, this);
-        node.addService(StructureBuilder.class, this);
-        return node;
+    public OpenNode createRoot() {
+        return new RootNode(this, this);
     }
 
     @Override

@@ -74,8 +74,8 @@ public class RemoteContentStore implements ContentStore, StructureBuilder {
         return null; // cannot write
     }
 
-    public OpenNode createRoot(String label) {
-        final RemoteNode node = new RemoteNode(label);
+    public OpenNode createRoot() {
+        final RemoteNode node = new RemoteRootNode();
         node.addService(ContentStore.class, this);
         node.addService(StructureBuilder.class, this);
         node.setHandle(DefaultNode.HANDLE_MARKER);
@@ -145,6 +145,11 @@ public class RemoteContentStore implements ContentStore, StructureBuilder {
         return false;
     }
 
+    @Override
+    public String toString() {
+        return "RemoteContentStore: " + root;
+    }
+
     private class RemoteContentHandle implements ContentHandle {
         private final Node node;
 
@@ -175,6 +180,17 @@ public class RemoteContentStore implements ContentStore, StructureBuilder {
         @Override
         public <T extends Serializable> OpenNode addContent(String label, T content) throws IOException {
             return null; // cannot add content
+        }
+    }
+
+    private static class RemoteRootNode extends RemoteNode {
+        private RemoteRootNode() {
+            super("");
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return (obj == this);
         }
     }
 }

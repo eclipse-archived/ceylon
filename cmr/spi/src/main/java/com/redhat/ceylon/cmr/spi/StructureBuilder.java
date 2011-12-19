@@ -32,10 +32,9 @@ public interface StructureBuilder {
     /**
      * Get root node.
      *
-     * @param label the root label
      * @return root node
      */
-    OpenNode createRoot(String label);
+    OpenNode createRoot();
 
     /**
      * Find child from parent.

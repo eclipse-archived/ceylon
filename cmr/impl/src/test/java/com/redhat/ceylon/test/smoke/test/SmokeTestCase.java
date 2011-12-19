@@ -24,8 +24,8 @@ package com.redhat.ceylon.test.smoke.test;
 
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.impl.RemoteContentStore;
+import com.redhat.ceylon.cmr.impl.RepositoryBuilder;
 import com.redhat.ceylon.cmr.impl.RootRepository;
-import com.redhat.ceylon.cmr.impl.RootRepositoryBuilder;
 import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
 import org.junit.Assert;
 import org.junit.Test;
@@ -86,10 +86,10 @@ public class SmokeTestCase {
 
     @Test
     public void testExternalNodes() throws Exception {
-        RootRepositoryBuilder builder = new RootRepositoryBuilder(getRepositoryRoot());
+        RepositoryBuilder builder = new RepositoryBuilder(getRepositoryRoot());
 
         InMemoryContentStore imcs = new InMemoryContentStore();
-        Repository repo = builder.linkNode(imcs.createRoot("com")).buildRepository();
+        Repository repo = builder.addExternalRoot(imcs.createRoot()).buildRepository();
 
         ByteArrayInputStream baos = new ByteArrayInputStream("qwerty".getBytes());
         String name = "com.redhat.fizbiz";
@@ -113,9 +113,9 @@ public class SmokeTestCase {
             return; // probably not on the internet?
         }
         
-        RootRepositoryBuilder builder = new RootRepositoryBuilder(getRepositoryRoot());
+        RepositoryBuilder builder = new RepositoryBuilder(getRepositoryRoot());
         RemoteContentStore rcs = new RemoteContentStore(repoURL);
-        Repository repo = builder.linkNode(rcs.createRoot("com")).buildRepository();
+        Repository repo = builder.addExternalRoot(rcs.createRoot()).buildRepository();
 
         String name = "com.redhat.fizbiz";
         String version = "1.0.0.Beta1";

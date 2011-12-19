@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
@@ -42,7 +43,8 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
     protected static final String LOCAL = ".local";
     protected static final String CACHED = ".cached";
 
-    protected OpenNode root;
+    protected OpenNode root; // main local root
+    protected List<OpenNode> externals = new CopyOnWriteArrayList<OpenNode>(); // external roots 
 
     protected OpenNode getRoot() {
         if (root == null)
@@ -60,6 +62,14 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
         this.root = root;
     }
 
+    protected void addExternalRoot(OpenNode external) {
+        externals.add(external);
+    }
+    
+    protected void removeExternalRoot(OpenNode external) {
+        externals.remove(external);
+    }
+    
     protected String getArtifactName(ArtifactContext context) {
         return getArtifactName(context.getName(), context.getVersion(), context.getSuffix());
     }
@@ -85,7 +95,7 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
 
     public void putArtifact(ArtifactContext context, InputStream content) throws IOException {
         final List<String> tokens = getPath(context, false);
-        Node parent = getNode(tokens);
+        Node parent = getFromRootNode(tokens);
         if (parent == null) {
             OpenNode current = root;
             for (String path : tokens)
@@ -109,7 +119,7 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
     
     public void removeArtifact(ArtifactContext context) throws IOException {
         final List<String> tokens = getPath(context, false);
-        Node parent = getNode(tokens);
+        Node parent = getFromRootNode(tokens);
         if (parent != null) {
             final String label = getArtifactName(context);
             removeNode(parent, label);
@@ -128,7 +138,7 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
     }
     
     protected Node getLeafNode(ArtifactContext context) {
-        final Node node = getNode(getPath(context, true));
+        final Node node = getFromAllRoots(getPath(context, true));
         if (node == null) {
             if (context.isThrowErrorIfMissing())
                 throw new IllegalArgumentException("No such artifact: " + context);
@@ -171,14 +181,21 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
         return shaFromArtifact.equals(shaFromSha);
     }
 
-    protected Node getNode(Iterable<String> tokens) {
-        Node current = root;
-        for (String token : tokens) {
-            current = current.getChild(token);
-            if (current == null) {
-                return null;
-            }
+    protected Node getFromRootNode(final Iterable<String> tokens) {
+        return NodeUtils.getNode(root, tokens);
+    }
+
+    protected Node getFromAllRoots(final Iterable<String> tokens) {
+        Node node = getFromRootNode(tokens);
+        if (node != null)
+            return node;
+        
+        for (Node ext : externals) {
+            node = NodeUtils.getNode(ext, tokens);
+            if (node != null)
+                return node;
         }
-        return current;
+
+        return null; // not found
     }
 }

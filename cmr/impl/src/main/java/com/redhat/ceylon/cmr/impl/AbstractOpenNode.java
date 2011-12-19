@@ -189,9 +189,13 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
 
     @Override
     public void refresh() {
-        Iterator<String> iter = children.keySet().iterator();
+        Iterator<Map.Entry<String, OpenNode>> iter = children.entrySet().iterator();
         while (iter.hasNext()) {
-            if (iter.next().endsWith(NODE_MARKER))
+            final Map.Entry<String, OpenNode> entry = iter.next();
+            entry.getValue().refresh(); // recurse
+            // remove the markers
+            final String key = entry.getKey();
+            if (key.endsWith(NODE_MARKER))
                 iter.remove();
         }
     }

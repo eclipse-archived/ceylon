@@ -34,6 +34,24 @@ import java.io.File;
 public final class NodeUtils {
 
     /**
+     * Navigate to node.
+     *
+     * @param root the root
+     * @param tokens the tokens
+     * @return found node or null
+     */
+    public static Node getNode(Node root, Iterable<String> tokens) {
+        Node current = root;
+        for (String token : tokens) {
+            current = current.getChild(token);
+            if (current == null) {
+                return null;
+            }
+        }
+        return current;
+    }
+
+    /**
      * Get first parent.
      *
      * @param node the node
