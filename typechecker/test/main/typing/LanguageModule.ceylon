@@ -10,7 +10,7 @@ class LanguageModule() {
     @type["Integer"] plus<Integer, Integer, Integer>(1, 2);
     @type["Integer"] plus<Integer, Integer, Integer>(1, -2);
     @type["Float"] plus<Integer, Float, Float>(1, 2.0);
-    @error plus<Integer, Integer, Integer>(1, -2);
+    @error plus<Integer, Float, Integer>(1.0, -2);
     
     //Put these back in once we have enumerated type bounds
     //@error plus<Integer, Integer, Float>(1, -2);
