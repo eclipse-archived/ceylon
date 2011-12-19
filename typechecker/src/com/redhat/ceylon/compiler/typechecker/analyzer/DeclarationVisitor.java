@@ -258,6 +258,9 @@ public class DeclarationVisitor extends Visitor {
             that.addError("missing parameter list in class declaration: " + 
                     name(that.getIdentifier()) );
         }
+        if (c.isClassOrInterfaceMember()) {
+        	that.addWarning("nested classes are not yet supported");
+        }
     }
 
     @Override
