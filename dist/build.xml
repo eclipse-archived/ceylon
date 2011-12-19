@@ -69,6 +69,7 @@
         <copy todir="${dist.dir}/samples">
             <fileset dir="${ceylon-compiler.dir}/samples">
                 <include name="helloworld/**"/>
+                <include name="no-module/**"/>
             </fileset>
         </copy>
     </target>
