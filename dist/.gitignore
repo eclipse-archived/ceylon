@@ -1,0 +1,8 @@
+# build
+
+dist
+ceylon-*.zip
+
+# OS
+
+.DS_Store
