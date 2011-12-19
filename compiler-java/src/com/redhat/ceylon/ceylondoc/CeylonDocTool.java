@@ -160,7 +160,13 @@ public class CeylonDocTool {
 
     private File getFolder(Package pkg) {
         Module module = pkg.getModule();
-        List<String> unprefixedName = pkg.getName().subList(module.getName().size(), pkg.getName().size());
+        List<String> unprefixedName;
+        if(module.isDefault())
+            unprefixedName = pkg.getName();
+        else{
+            // remove the leading module name part
+            unprefixedName = pkg.getName().subList(module.getName().size(), pkg.getName().size());
+        }
         File dir = new File(getOutputFolder(module), join("/", unprefixedName));
         dir.mkdirs();
         return dir;
@@ -426,6 +432,8 @@ public class CeylonDocTool {
      * @return
      */
     boolean isRootPackage(Module module, Package pkg) {
+        if(module.isDefault())
+            return pkg.getNameAsString().isEmpty();
         return pkg.getNameAsString().equals(module.getNameAsString());
     }
 
@@ -621,7 +629,12 @@ public class CeylonDocTool {
             filename = "package.ceylon";
         } else if (modPkgOrDecl instanceof Module) {
             Module moduleDecl = (Module)modPkgOrDecl;
-            pkg = moduleDecl.getPackage(moduleDecl.getNameAsString());
+            String pkgName;
+            if(moduleDecl.isDefault())
+                pkgName = "";
+            else
+                pkgName = moduleDecl.getNameAsString();
+            pkg = moduleDecl.getPackage(pkgName);
             filename = "module.ceylon";
         } else {
             throw new RuntimeException("Unexpected: " + modPkgOrDecl);
