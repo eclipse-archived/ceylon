@@ -168,13 +168,17 @@ public class CeylonDocTool {
             unprefixedName = pkg.getName().subList(module.getName().size(), pkg.getName().size());
         }
         File dir = new File(getOutputFolder(module), join("/", unprefixedName));
-        dir.mkdirs();
+        if(shouldInclude(module))
+            dir.mkdirs();
         return dir;
     }
     
     public File getOutputFolder(Module module) {
-        return new File(com.redhat.ceylon.compiler.util.Util.getModulePath(destDir, module),
+        File folder = new File(com.redhat.ceylon.compiler.util.Util.getModulePath(destDir, module),
                 "module-doc");
+        if(shouldInclude(module))
+            folder.mkdirs();
+        return folder;
     }
 
     private File getFolder(ClassOrInterface klass) {
@@ -520,6 +524,10 @@ public class CeylonDocTool {
         return true; // TODO showPrivate || pkg.isShared();
     }
     
+    protected boolean shouldInclude(Module module){
+        return modules.contains(module);
+    }
+
     /**
      * Returns the absolute URI of the page for the given thing
      * @param obj (Module, Package, Declaration etc)
