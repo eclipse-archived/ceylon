@@ -33,6 +33,15 @@ then
     fi
 fi
 
+# Make sure we have java installed
+if hash java 2>&-
+then
+    true #nothing
+else
+    echo "Java not found, you must install Java in order to compiler and run Ceylon programs"
+    echo "Go to http://www.java.com/getjava/ to download the latest version of Java"
+fi
+
 unset USER_CP
 unset ARGS
 unset BOOTSTRAP
