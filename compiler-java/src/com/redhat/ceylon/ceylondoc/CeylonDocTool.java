@@ -670,6 +670,8 @@ public class CeylonDocTool {
      */
     int[] getDeclarationSrcLocation(Declaration decl) {
         Node node = this.sourceLocations.get(decl);
+        if(node == null)
+            return null;
         return new int[]{node.getToken().getLine(), node.getEndToken().getLine()};
     }
 }

@@ -124,9 +124,11 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             srcUrl = getSrcUrl(m.getContainer());
         }
         int[] lines = tool.getDeclarationSrcLocation(m);
-        open("div class='source-code member'");
-        around("a href='" + srcUrl + "#" + lines[0] + "," + lines[1] + "'", "Source Code");
-        close("div");
+        if(lines != null){
+            open("div class='source-code member'");
+            around("a href='" + srcUrl + "#" + lines[0] + "," + lines[1] + "'", "Source Code");
+            close("div");
+        }
     }
 
     protected void doc(MethodOrValue f) throws IOException {
