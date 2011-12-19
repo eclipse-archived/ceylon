@@ -14,10 +14,7 @@ Read more about Ceylon at <http://ceylon-lang.org>.
 
 ## Distribution layout
 
-- `bin`          - Unix/Windows commands:
-- `bin/ceylon`   - Run a Ceylon program
-- `bin/ceylonc`  - Compile a Ceylon program
-- `bin/ceylond`  - Document a Ceylon program
+- `bin`          - Unix/Windows commands
 - `doc`          - The Ceylon spec in HTML and PDF format
 - `lib`          - Required libraries for the Ceylon commands
 - `repo`         - Required bootstrap Ceylon modules (language, tools)
@@ -25,6 +22,12 @@ Read more about Ceylon at <http://ceylon-lang.org>.
 - `samples`      - Sample Ceylon modules
 - `LICENSE`      - The Ceylon license
 - `README.md`    - This file
+
+The command line tools are located in the `bin` directory.
+
+- `bin/ceylon`   - Run a Ceylon program
+- `bin/ceylonc`  - Compile a Ceylon program
+- `bin/ceylond`  - Document a Ceylon program
 
 Note that the `ceylon.language` API documentation may be found here:
 
