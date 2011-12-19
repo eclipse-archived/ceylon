@@ -52,6 +52,14 @@ To run a program defined in the default module, type:
     ../../bin/ceylond default
     ../../bin/ceylon default
 
+## Tool usage
+
+To see a list of command line options, type one of:
+
+    ../../bin/ceylonc -help
+    ../../bin/ceylond -help
+    ../../bin/ceylon -help
+
 ## License
 
 The Ceylon distribution is and contains work released
