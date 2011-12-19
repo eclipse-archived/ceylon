@@ -34,6 +34,7 @@ import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -69,7 +70,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
                 final RootBuilder rb = new RootBuilder(token);
                 builder.addExternalRoot(rb.buildRoot());
             } catch (Exception e) {
-                Logger.getLogger("ceylon.runtime").warning("Failed to add repository: " + token);
+                Logger.getLogger("ceylon.runtime").log(Level.WARNING, "Failed to add repository: " + token, e);
             }
         }
         // add remote module repo
