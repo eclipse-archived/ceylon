@@ -22,6 +22,7 @@ import com.redhat.ceylon.cmr.spi.ContentStore;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -37,6 +38,7 @@ public class DefaultNode extends AbstractOpenNode {
     private static final long serialVersionUID = 1L;
 
     private transient ContentHandle handle;
+    private boolean remote = false;
 
     public DefaultNode() {
         // serialization only
@@ -52,6 +54,14 @@ public class DefaultNode extends AbstractOpenNode {
 
     void setHandle(ContentHandle handle) {
         this.handle = handle;
+    }
+
+    public boolean isRemote() {
+        return remote;
+    }
+
+    void setRemote(boolean remote) {
+        this.remote = remote;
     }
 
     @Override
@@ -129,7 +139,8 @@ public class DefaultNode extends AbstractOpenNode {
                 return true;
         }
 
-        final ContentHandle ch = findService(ContentStore.class).popContent(this);
+        final ContentStore cs = findService(ContentStore.class);
+        final ContentHandle ch = cs.popContent(this);
 
         synchronized (this) {
             handle = (ch == null) ? HANDLE_MARKER : ch;
@@ -139,13 +150,39 @@ public class DefaultNode extends AbstractOpenNode {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    public <T> T getContent(Class<T> contentType) throws IOException {
+        if (File.class.equals(contentType)) {
+            synchronized (this) {
+                if (handle != null)
+                    return (T) handle.getContentAsFile();
+            }
+
+            final ContentStore cs = findService(ContentStore.class);
+            ContentHandle ch = cs.getContent(this);
+            if (ch == null) {
+                ch = HANDLE_MARKER;
+            }
+
+            synchronized (this) {
+                handle = ch;
+            }
+
+            return (T) ch.getContentAsFile();
+        } else {
+            return super.getContent(contentType);
+        }
+    }
+
+    @Override
     public InputStream getInputStream() throws IOException {
         synchronized (this) {
             if (handle != null)
                 return handle.getContent();
         }
 
-        ContentHandle ch = findService(ContentStore.class).getContent(this);
+        final ContentStore cs = findService(ContentStore.class);
+        ContentHandle ch = cs.getContent(this);
         if (ch == null) {
             ch = HANDLE_MARKER;
         }

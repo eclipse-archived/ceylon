@@ -54,11 +54,11 @@ public class RootRepository extends AbstractNodeRepository {
     public File getArtifact(ArtifactContext context) throws IOException {
         Node node = getLeafNode(context);
         if (node != null) {
-            File file = fileContentStore.getFile(node);
-            if (file.exists() == false) {
-                file = putContent(context, node, node.getInputStream());
+            if (node.isRemote()) {
+                return putContent(context, node, node.getInputStream());
+            } else {
+                return node.getContent(File.class);
             }
-            return file;
         } else {
             return null;
         }

@@ -22,10 +22,7 @@ import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.cmr.impl.RootNode;
 import com.redhat.ceylon.cmr.spi.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -90,6 +87,13 @@ public class InMemoryContentStore implements ContentStore, StructureBuilder {
         @Override
         public InputStream getContent() throws IOException {
             return new ByteArrayInputStream(bytes);
+        }
+
+        @Override
+        public File getContentAsFile() throws IOException {
+            final File temp = File.createTempFile("in-memory", ".car");
+            IOUtils.copyStream(getContent(), new FileOutputStream(temp));
+            return temp;
         }
 
         @Override

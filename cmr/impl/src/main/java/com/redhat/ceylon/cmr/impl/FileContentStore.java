@@ -172,7 +172,10 @@ public class FileContentStore implements ContentStore, StructureBuilder {
             return new FileInputStream(file);
         }
 
-        @Override
+        public File getContentAsFile() throws IOException {
+            return file;
+        }
+
         public void clean() {
             delete(file, owner);
         }

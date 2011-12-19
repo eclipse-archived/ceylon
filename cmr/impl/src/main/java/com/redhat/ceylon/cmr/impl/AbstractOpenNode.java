@@ -19,6 +19,7 @@ package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.spi.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -39,6 +40,10 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
 
     protected static ContentHandle HANDLE_MARKER = new ContentHandle() {
         public InputStream getContent() throws IOException {
+            return null;
+        }
+
+        public File getContentAsFile() throws IOException {
             return null;
         }
 
@@ -205,7 +210,7 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
         if (InputStream.class.equals(contentType)) {
             return (T) getInputStream();
         } else {
-            ContentTransformer ct = getService(ContentTransformer.class);
+            final ContentTransformer ct = findService(ContentTransformer.class);
             if (ct != null)
                 return ct.transform(contentType, new LazyInputStream());
             else

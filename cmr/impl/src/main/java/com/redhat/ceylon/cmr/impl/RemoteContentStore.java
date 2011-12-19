@@ -19,6 +19,7 @@ package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.spi.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -158,6 +159,10 @@ public class RemoteContentStore implements ContentStore, StructureBuilder {
             return url.openStream();
         }
 
+        public File getContentAsFile() throws IOException {
+            return null;  // unsupported
+        }
+
         public void clean() {
         }
     }
@@ -165,6 +170,10 @@ public class RemoteContentStore implements ContentStore, StructureBuilder {
     private static class RemoteNode extends DefaultNode {
         private RemoteNode(String label) {
             super(label);
+        }
+
+        public boolean isRemote() {
+            return true;
         }
 
         @Override

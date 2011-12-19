@@ -43,4 +43,6 @@ public interface Node {
     Node getParent(String label);
 
     Iterable<? extends Node> getParents();
+
+    boolean isRemote();
 }

@@ -17,6 +17,7 @@
 
 package com.redhat.ceylon.cmr.spi;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -26,7 +27,24 @@ import java.io.InputStream;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public interface ContentHandle {
+    /**
+     * Get node content as stream.
+     *
+     * @return the node's stream
+     * @throws IOException for any I/O error
+     */
     InputStream getContent() throws IOException;
 
+    /**
+     * Get node content as file.
+     *
+     * @return the node's stream
+     * @throws IOException for any I/O error
+     */
+    File getContentAsFile() throws IOException;
+
+    /**
+     * Cleanup content.
+     */
     void clean();
 }

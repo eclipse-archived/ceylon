@@ -75,4 +75,9 @@ public class MarkerNode extends AbstractOpenNode {
     public InputStream getInputStream() throws IOException {
         return null;
     }
+
+    @Override
+    public boolean isRemote() {
+        return false;
+    }
 }
