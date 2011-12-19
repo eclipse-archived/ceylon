@@ -22,20 +22,21 @@
 
 package ceylon.modules.jboss.runtime;
 
-import java.io.File;
-
+import ceylon.modules.Configuration;
+import ceylon.modules.Main;
+import ceylon.modules.api.runtime.AbstractRuntime;
+import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.impl.RepositoryBuilder;
+import com.redhat.ceylon.cmr.impl.RootBuilder;
+import com.redhat.ceylon.cmr.spi.ContentTransformer;
+import com.redhat.ceylon.cmr.spi.MergeStrategy;
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
 
-import ceylon.modules.Configuration;
-import ceylon.modules.Main;
-import ceylon.modules.api.runtime.AbstractRuntime;
-
-import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.impl.RootRepositoryBuilder;
-import com.redhat.ceylon.cmr.spi.ContentTransformer;
-import com.redhat.ceylon.cmr.spi.MergeStrategy;
+import java.io.File;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Abstract Ceylon JBoss Modules runtime.
@@ -59,18 +60,28 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
      * @return repository extension
      */
     protected Repository createRepository(Configuration conf) {
-        RootRepositoryBuilder builder = null;
+        RepositoryBuilder builder = null;
         String root = null;
-        // FIXME: support more than one repo
-        if(!conf.repositories.isEmpty())
-        	root = conf.repositories.get(0);
+        final List<String> repositories = conf.repositories;
+        if (repositories.isEmpty() == false)
+            root = repositories.get(0);
         if (root != null) {
             File rootDir = new File(root);
             if (rootDir.exists() && rootDir.isDirectory())
-                builder = new RootRepositoryBuilder(rootDir);
+                builder = new RepositoryBuilder(rootDir);
         }
         if (builder == null)
-            builder = new RootRepositoryBuilder();
+            builder = new RepositoryBuilder();
+
+        for (int i = 1; i < repositories.size(); i++) {
+            final String token = repositories.get(i);
+            try {
+                final RootBuilder rb = new RootBuilder(token);
+                builder.addExternalRoot(rb.buildRoot());
+            } catch (Exception e) {
+                Logger.getLogger("ceylon.runtime").warning("Failed to add repository: " + token);
+            }
+        }
 
         final MergeStrategy ms = getService(MergeStrategy.class, conf);
         if (ms != null)
@@ -90,7 +101,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
      * Get repository service.
      *
      * @param serviceType the service type
-     * @param conf the configuration
+     * @param conf        the configuration
      * @return service instance or null
      */
     protected <T> T getService(Class<T> serviceType, Configuration conf) {
