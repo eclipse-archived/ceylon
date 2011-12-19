@@ -990,115 +990,6 @@ shared interface ElementwiseEquality
         
     </section>
     
-    <section id="adaptedtypes">
-        <title>Introduction</title>
-        
-        <para>A toplevel interface may <emphasis>adapt</emphasis> a list of types, 
-        in which case it is called an <emphasis>introduction</emphasis>. The types 
-        are called <emphasis>adapted types</emphasis>.</para>
-        
-        <programlisting>AdaptedTypes: "adapts" Type ("&amp;" Type)*</programlisting>
-                
-        <para>The <literal>adapts</literal> clause may specify multiple types. If 
-        a satisfied type is a parameterized type, the <literal>satisfies</literal> 
-        clause must specify type arguments.</para>
-        
-        <programlisting>adapts Iterable&lt;Element&gt; &amp; Correspondence&lt;Integer,Element&gt;</programlisting>
-        
-        <para>Each adapted type must be class or interface. At most one adapted 
-        type may be a class.</para>
-        
-        <para>An introduction <emphasis>introduces</emphasis> new types to every 
-        type that is a subtype of all the adapted types in:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>any compilation unit that imports the introduction, and</para>
-            </listitem>
-            <listitem>
-                <para>the package to which the introduction belongs.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Specifically:</para>
-        
-        <itemizedlist>
-        <listitem>
-            <para>If a type <literal>X</literal> adapts a type <literal>Y</literal>, 
-            then <literal>Y</literal> is an invariant subtype of <literal>X</literal> 
-            in every compilation unit that imports <literal>X</literal> and in the 
-            package to which <literal>X</literal> belongs.</para>
-        </listitem>
-        <listitem>  
-            <para>If a parameterized type <literal>X&lt;T&gt;</literal> inherits a 
-            type <literal>Y</literal>, then <literal>Y</literal> is an invariant 
-            subtype of the produced type <literal>X&lt;B&gt;</literal> for any type 
-            <literal>B</literal> in every compilation unit that imports 
-            <literal>X</literal> and in the package to which <literal>X</literal> 
-            belongs.</para>
-        </listitem>
-        <listitem>  
-            <para>If a parameterized type <literal>X&lt;T&gt;</literal> inherits a 
-            produced type <literal>Y&lt;T&gt;</literal> that depends upon the type
-            parameter <literal>T</literal>, then the produced type <literal>Y&lt;B&gt;</literal> 
-            formed by substituting <literal>B</literal> for <literal>T</literal> is 
-            an invariant subtype of the produced type <literal>X&lt;B&gt;</literal> 
-            for any type <literal>B</literal> in every compilation unit that imports 
-            <literal>X</literal> and in the package to which <literal>X</literal> 
-            belongs.</para>
-        </listitem>
-        </itemizedlist>
-        
-             <para>An introduction may not:</para>
-             
-             <itemizedlist>
-                 <listitem>
-                     <para>declare or inherit a member that refines a member of any 
-                     adapted type, or</para>
-                 </listitem>
-                 <listitem>
-                     <para>declare or inherit a <literal>formal</literal> or 
-                     non-<literal>default</literal> <literal>actual</literal> member
-                     unless the member is inherited from an adapted type.</para>
-                 </listitem>
-             </itemizedlist>
-         
-            <para>If, in a certain compilation unit, multiple introductions of a certain
-            adapted type declare or inherit a member that refines a common member of a 
-            common supertype then either:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>there must be a unique member from the set of members, called the 
-                    <emphasis>most refined</emphasis> member, that refines all the other 
-                    members, or</para>
-                </listitem>
-                <listitem>
-                    <para>the adapted type must declare or inherit a member that refines all 
-                    the members.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <para>At runtime, an operation (method invocation, member class instantiation, or 
-            attribute evaluation) upon any type that is a subtype of all the adapted types is 
-            dispatched according to the following rule:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>If the runtime type of the instance of the adapted type declares 
-                    or inherits a member defining the operation, the operation is dispatched 
-                    to the runtime type of the instance.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>Otherwise, the operation is dispatched to the introduction that has 
-                    the most-refined member defining the operation.
-                    </para>
-                </listitem>
-            </itemizedlist>
-            
-    </section>
-    
     <section id="cases">
         <title>Cases</title>
         
@@ -1223,8 +1114,8 @@ Item item = comp;</programlisting>
     <section>
         <title>PROPOSAL: Generalized algebraic types</title>
         
-        <comment><para>NOTE: Support for generalized algebraic types is a 
-        proposed feature for a future version of the language.</para></comment>
+        <comment><para>NOTE: Generalized algebraic types are a proposed feature 
+        for a future version of the language.</para></comment>
         
         <itemizedlist>
             <listitem>
@@ -1388,6 +1279,118 @@ class StringExpression
         given Value of Number | Boolean { ... }]]></programlisting>
         </comment>
         
+    </section>
+    
+    <section id="adaptedtypes">
+        <title>PROPOSAL: Introduction</title>
+        
+        <comment><para>NOTE: Introductions are a proposed feature for a future 
+        version of the language.</para></comment>
+        
+        <para>A toplevel interface may <emphasis>adapt</emphasis> a list of types, 
+        in which case it is called an <emphasis>introduction</emphasis>. The types 
+        are called <emphasis>adapted types</emphasis>.</para>
+        
+        <programlisting>AdaptedTypes: "adapts" Type ("&amp;" Type)*</programlisting>
+                
+        <para>The <literal>adapts</literal> clause may specify multiple types. If 
+        a satisfied type is a parameterized type, the <literal>satisfies</literal> 
+        clause must specify type arguments.</para>
+        
+        <programlisting>adapts Iterable&lt;Element&gt; &amp; Correspondence&lt;Integer,Element&gt;</programlisting>
+        
+        <para>Each adapted type must be class or interface. At most one adapted 
+        type may be a class.</para>
+        
+        <para>An introduction <emphasis>introduces</emphasis> new types to every 
+        type that is a subtype of all the adapted types in:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>any compilation unit that imports the introduction, and</para>
+            </listitem>
+            <listitem>
+                <para>the package to which the introduction belongs.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Specifically:</para>
+        
+        <itemizedlist>
+        <listitem>
+            <para>If a type <literal>X</literal> adapts a type <literal>Y</literal>, 
+            then <literal>Y</literal> is an invariant subtype of <literal>X</literal> 
+            in every compilation unit that imports <literal>X</literal> and in the 
+            package to which <literal>X</literal> belongs.</para>
+        </listitem>
+        <listitem>  
+            <para>If a parameterized type <literal>X&lt;T&gt;</literal> inherits a 
+            type <literal>Y</literal>, then <literal>Y</literal> is an invariant 
+            subtype of the produced type <literal>X&lt;B&gt;</literal> for any type 
+            <literal>B</literal> in every compilation unit that imports 
+            <literal>X</literal> and in the package to which <literal>X</literal> 
+            belongs.</para>
+        </listitem>
+        <listitem>  
+            <para>If a parameterized type <literal>X&lt;T&gt;</literal> inherits a 
+            produced type <literal>Y&lt;T&gt;</literal> that depends upon the type
+            parameter <literal>T</literal>, then the produced type <literal>Y&lt;B&gt;</literal> 
+            formed by substituting <literal>B</literal> for <literal>T</literal> is 
+            an invariant subtype of the produced type <literal>X&lt;B&gt;</literal> 
+            for any type <literal>B</literal> in every compilation unit that imports 
+            <literal>X</literal> and in the package to which <literal>X</literal> 
+            belongs.</para>
+        </listitem>
+        </itemizedlist>
+        
+             <para>An introduction may not:</para>
+             
+             <itemizedlist>
+                 <listitem>
+                     <para>declare or inherit a member that refines a member of any 
+                     adapted type, or</para>
+                 </listitem>
+                 <listitem>
+                     <para>declare or inherit a <literal>formal</literal> or 
+                     non-<literal>default</literal> <literal>actual</literal> member
+                     unless the member is inherited from an adapted type.</para>
+                 </listitem>
+             </itemizedlist>
+         
+            <para>If, in a certain compilation unit, multiple introductions of a certain
+            adapted type declare or inherit a member that refines a common member of a 
+            common supertype then either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>there must be a unique member from the set of members, called the 
+                    <emphasis>most refined</emphasis> member, that refines all the other 
+                    members, or</para>
+                </listitem>
+                <listitem>
+                    <para>the adapted type must declare or inherit a member that refines all 
+                    the members.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>At runtime, an operation (method invocation, member class instantiation, or 
+            attribute evaluation) upon any type that is a subtype of all the adapted types is 
+            dispatched according to the following rule:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>If the runtime type of the instance of the adapted type declares 
+                    or inherits a member defining the operation, the operation is dispatched 
+                    to the runtime type of the instance.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>Otherwise, the operation is dispatched to the introduction that has 
+                    the most-refined member defining the operation.
+                    </para>
+                </listitem>
+            </itemizedlist>
+            
     </section>
     
     <section id="metatypes">
