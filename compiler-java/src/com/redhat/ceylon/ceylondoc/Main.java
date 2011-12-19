@@ -64,6 +64,9 @@ public class Main {
             
         }
         
+        if(modules.isEmpty()){
+            printUsage();
+        }
         if (destDir == null) {
             destDir = "modules";
         }
@@ -83,7 +86,6 @@ public class Main {
                     System.exit(1);
                 }
                 sourceFolders.add(src);
-                
             }
         }
 
@@ -125,10 +127,11 @@ public class Main {
     private static void printUsage() {
         List<String> defaultRepositories = com.redhat.ceylon.compiler.util.Util.getDefaultRepositories();
         System.err.print(
-                "Usage: ceylon [options...]:\n"
+                "Usage: ceylon [options...] moduleName[/version]... :\n"
                 +"\n"
                 +"-out <path>:  Output module repository (default: 'modules')\n"
-                +"-src <path>:  Source directory (default: 'source')\n"
+                +"-src <path>:  Source path (default: 'source')\n"
+                +"              You can set this option multiple times\n"
                 +"-rep <path>:  Module repository\n"
                 +"              You can set this option multiple times\n"
                 +"              Default:\n"
