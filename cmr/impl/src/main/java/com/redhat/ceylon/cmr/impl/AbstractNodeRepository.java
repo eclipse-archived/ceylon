@@ -44,7 +44,7 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
     protected static final String CACHED = ".cached";
 
     protected OpenNode root; // main local root
-    protected List<OpenNode> externals = new CopyOnWriteArrayList<OpenNode>(); // external roots 
+    protected List<OpenNode> roots = new CopyOnWriteArrayList<OpenNode>(); // lookup roots - order matters! 
 
     protected OpenNode getRoot() {
         if (root == null)
@@ -60,14 +60,19 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
             throw new IllegalArgumentException("Root already set!");
 
         this.root = root;
+        this.roots.add(root);
     }
 
-    protected void addExternalRoot(OpenNode external) {
-        externals.add(external);
+    protected void prependExternalRoot(OpenNode external) {
+        roots.add(0, external);        
+    }
+    
+    protected void appendExternalRoot(OpenNode external) {
+        roots.add(external);
     }
     
     protected void removeExternalRoot(OpenNode external) {
-        externals.remove(external);
+        roots.remove(external);
     }
     
     protected String getArtifactName(ArtifactContext context) {
@@ -176,8 +181,8 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
     }
 
     protected boolean checkSHA(Node artifact, InputStream shaStream) throws IOException {
-        final String shaFromArtifact = IOUtils.sha1(artifact.getInputStream());
         final String shaFromSha = IOUtils.readSha1(shaStream);
+        final String shaFromArtifact = IOUtils.sha1(artifact.getInputStream());
         return shaFromArtifact.equals(shaFromSha);
     }
 
@@ -186,12 +191,8 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
     }
 
     protected Node getFromAllRoots(final Iterable<String> tokens) {
-        Node node = getFromRootNode(tokens);
-        if (node != null)
-            return node;
-        
-        for (Node ext : externals) {
-            node = NodeUtils.getNode(ext, tokens);
+        for (Node ext : roots) {
+            Node node = NodeUtils.getNode(ext, tokens);
             if (node != null)
                 return node;
         }

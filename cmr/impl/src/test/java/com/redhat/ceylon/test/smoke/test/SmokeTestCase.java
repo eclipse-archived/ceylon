@@ -89,7 +89,7 @@ public class SmokeTestCase {
         RepositoryBuilder builder = new RepositoryBuilder(getRepositoryRoot());
 
         InMemoryContentStore imcs = new InMemoryContentStore();
-        Repository repo = builder.addExternalRoot(imcs.createRoot()).buildRepository();
+        Repository repo = builder.appendExternalRoot(imcs.createRoot()).buildRepository();
 
         ByteArrayInputStream baos = new ByteArrayInputStream("qwerty".getBytes());
         String name = "com.redhat.fizbiz";
@@ -115,7 +115,7 @@ public class SmokeTestCase {
         
         RepositoryBuilder builder = new RepositoryBuilder(getRepositoryRoot());
         RemoteContentStore rcs = new RemoteContentStore(repoURL);
-        Repository repo = builder.addExternalRoot(rcs.createRoot()).buildRepository();
+        Repository repo = builder.appendExternalRoot(rcs.createRoot()).buildRepository();
 
         String name = "com.redhat.fizbiz";
         String version = "1.0.0.Beta1";

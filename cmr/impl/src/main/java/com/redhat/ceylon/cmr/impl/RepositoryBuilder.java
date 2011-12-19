@@ -79,7 +79,7 @@ public class RepositoryBuilder {
         if (ceylonHome != null) {
             final File repo = new File(ceylonHome, "repo");
             if (repo.exists() && repo.isDirectory())
-                addExternalRoot(new FileContentStore(repo).createRoot());
+                prependExternalRoot(new FileContentStore(repo).createRoot());
             else
                 Logger.getLogger(RepositoryBuilder.class.getName()).warning("Invalid CEYLON_HOME/repo: " + repo);                
         }
@@ -89,7 +89,7 @@ public class RepositoryBuilder {
     public RepositoryBuilder addModules() {
         final File modules = new File("modules");
         if (modules.exists() && modules.isDirectory())
-            addExternalRoot(new FileContentStore(modules).createRoot());
+            appendExternalRoot(new FileContentStore(modules).createRoot());
         else
             Logger.getLogger(RepositoryBuilder.class.getName()).warning("No such ./modules directory: " + modules);
         return this;
@@ -100,7 +100,7 @@ public class RepositoryBuilder {
         try {
             final URL url = new URL(Repository.MODULES_CEYLON_LANG_ORG);
             is = url.openStream();
-            addExternalRoot(new RemoteContentStore(Repository.MODULES_CEYLON_LANG_ORG).createRoot());
+            appendExternalRoot(new RemoteContentStore(Repository.MODULES_CEYLON_LANG_ORG).createRoot());
         } catch (Exception ignored) {
             Logger.getLogger(RepositoryBuilder.class.getName()).info("Ceylon repository '" + Repository.MODULES_CEYLON_LANG_ORG + "' not yet available.");
         } finally {
@@ -109,8 +109,13 @@ public class RepositoryBuilder {
         return this;
     }
 
-    public RepositoryBuilder addExternalRoot(OpenNode externalRoot) {
-        repository.addExternalRoot(externalRoot);
+    public RepositoryBuilder prependExternalRoot(OpenNode externalRoot) {
+        repository.prependExternalRoot(externalRoot);
+        return this;
+    }
+
+    public RepositoryBuilder appendExternalRoot(OpenNode externalRoot) {
+        repository.appendExternalRoot(externalRoot);
         return this;
     }
 
