@@ -891,6 +891,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             callVarName = varBaseName + "$callable$";
             
             int numDeclared = declaredParams.size();
+            int numDeclaredFixed = (lastDeclared != null && lastDeclared.isSequenced()) ? numDeclared - 1 : numDeclared;
             int numPassed = namedArguments.size();
             for (Tree.NamedArgument namedArg : namedArguments) {
                 at(namedArg);
@@ -912,25 +913,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 vars.append(varDecl);
             }
             
-            Tree.SequencedArgument sequencedArgument = ce.getNamedArgumentList().getSequencedArgument();
-            if (sequencedArgument != null) {
-                at(sequencedArgument);
-                int index = namedArguments.size();
-                String varName = varBaseName + "$" + index;
-                JCExpression typeExpr = makeJavaType(lastDeclared.getType(), AbstractTransformer.WANT_RAW_TYPE);
-                JCExpression argExpr = makeSequenceRaw(sequencedArgument.getExpressionList().getExpressions());
-                JCVariableDecl varDecl = makeVar(varName, typeExpr, argExpr);
-                vars.append(varDecl);
-            } else if (lastDeclared != null 
-                    && lastDeclared.isSequenced() 
-                    && !boundSequenced
-                    && numPassed >= (numDeclared -1)) {
-                int index = namedArguments.size();
-                String varName = varBaseName + "$" + index;
-                JCExpression typeExpr = makeJavaType(lastDeclared.getType(), AbstractTransformer.WANT_RAW_TYPE);
-                JCVariableDecl varDecl = makeVar(varName, typeExpr, makeEmpty());
-                vars.append(varDecl);
-            } else if (numPassed < numDeclared) {
+            if (numPassed < numDeclaredFixed) {
                 boolean needsThis = false;
                 if (Decl.withinClassOrInterface(primaryDecl)) {
                     // first append $this
@@ -939,14 +922,20 @@ public class ExpressionTransformer extends AbstractTransformer {
                     needsThis = true;
                 }
                 // append any arguments for defaulted parameters
-                for (int ii = numPassed; ii < numDeclared; ii++) {
+                for (int ii = 0; ii < numDeclaredFixed; ii++) {
                     Parameter param = declaredParams.get(ii);
+                    if (containsParameter(namedArguments, param)) {
+                        continue;
+                    }
                     String varName = varBaseName + "$" + ii;
                     String methodName = Util.getDefaultedParamMethodName(primaryDecl, param);
                     List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, ii, needsThis);
                     JCExpression argExpr;
                     if (!param.isSequenced()) {
-                        Declaration container = (Declaration)(param.getDeclaration().getRefinedDeclaration()).getContainer();
+                        Declaration container = param.getDeclaration().getRefinedDeclaration();
+                        if (!container.isToplevel()) {
+                            container = (Declaration)container.getContainer();
+                        }
                         String className = Util.getCompanionClassName(container.getName());
                         argExpr = at(ce).Apply(null, makeIdentOrSelect(null, container.getQualifiedNameString(), className, methodName), arglist);
                     } else {
@@ -960,10 +949,37 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             }
             
+            Tree.SequencedArgument sequencedArgument = ce.getNamedArgumentList().getSequencedArgument();
+            if (sequencedArgument != null) {
+                at(sequencedArgument);
+                String varName = varBaseName + "$" + numDeclaredFixed;
+                JCExpression typeExpr = makeJavaType(lastDeclared.getType(), AbstractTransformer.WANT_RAW_TYPE);
+                JCExpression argExpr = makeSequenceRaw(sequencedArgument.getExpressionList().getExpressions());
+                JCVariableDecl varDecl = makeVar(varName, typeExpr, argExpr);
+                vars.append(varDecl);
+            } else if (lastDeclared != null 
+                    && lastDeclared.isSequenced() 
+                    && !boundSequenced) {
+                String varName = varBaseName + "$" + numDeclaredFixed;
+                JCExpression typeExpr = makeJavaType(lastDeclared.getType(), AbstractTransformer.WANT_RAW_TYPE);
+                JCVariableDecl varDecl = makeVar(varName, typeExpr, makeEmpty());
+                vars.append(varDecl);
+            }
+            
             args.appendList(makeVarRefArgumentList(varBaseName, numDeclared));
         }
 
         return makeInvocation(ce, vars, args, typeArgs, callVarName);
+    }
+    
+    private boolean containsParameter(java.util.List<Tree.NamedArgument> namedArguments, Parameter param) {
+        for (Tree.NamedArgument namedArg : namedArguments) {
+            Parameter declaredParam = namedArg.getParameter();
+            if (param == declaredParam) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // Positional invocation
@@ -1046,7 +1062,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                 List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, ii, needsThis);
                 JCExpression argExpr;
                 if (!param.isSequenced()) {
-                    Declaration container = (Declaration)(param.getDeclaration().getRefinedDeclaration()).getContainer();
+                    Declaration container = param.getDeclaration().getRefinedDeclaration();
+                    if (!container.isToplevel()) {
+                        container = (Declaration)container.getContainer();
+                    }
                     String className = Util.getCompanionClassName(container.getName());
                     argExpr = at(ce).Apply(null, makeIdentOrSelect(null, container.getQualifiedNameString(), className, methodName), arglist);
                 } else {
