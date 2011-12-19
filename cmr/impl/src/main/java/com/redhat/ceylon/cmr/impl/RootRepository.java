@@ -76,16 +76,19 @@ public class RootRepository extends AbstractNodeRepository {
         if (context.isIgnoreSHA() == false && node instanceof OpenNode) {
             OpenNode on = (OpenNode) node;
             String sha1 = IOUtils.sha1(new FileInputStream(file));
-            ByteArrayInputStream shaStream = new ByteArrayInputStream(sha1.getBytes("ASCII"));
-            Node sha = node.getChild(SHA1);
-            if (sha == null) {
-                // put it to ext node as well, if supported
-                on.addContent(SHA1, shaStream);
+            if (sha1 != null) {
+                ByteArrayInputStream shaStream = new ByteArrayInputStream(sha1.getBytes("ASCII"));
+                Node sha = node.getChild(SHA1);
+                if (sha == null) {
+                    // put it to ext node as well, if supported
+                    on.addContent(SHA1, shaStream);
+                    shaStream.reset(); // reset, for next read
+                }
+                // create empty marker node
+                OpenNode sl = on.addNode(SHA1 + LOCAL);
+                // put sha to local store as well
+                fileContentStore.putContent(sl, shaStream);
             }
-            // create empty marker node
-            OpenNode sl = on.addNode(SHA1 + LOCAL);
-            // put sha to local store as well
-            fileContentStore.putContent(sl, shaStream);
         }
         return file;
     }
