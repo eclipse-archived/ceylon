@@ -263,7 +263,11 @@ public abstract class CompilerTest {
 
 	protected void compileAndRun(String main, String... ceylon) {
 		compile(ceylon);
-		try{
+
+		ZipFileIndex.clearCache();
+        Assert.assertEquals(ZipFileIndex.getZipFileIndexes().size(), 0);
+
+        try{
 		    // make sure we load the stuff from the Car
 		    File car = new File(destCar);
 	        Assert.assertTrue(car.exists());
