@@ -35,7 +35,6 @@ public class Main {
         try {
             execute(args);
         } catch (Throwable t) {
-            System.err.println("Illegal args: " + t);
             throw new RuntimeException("Error using Ceylon Runtime.", t);
         }
     }
