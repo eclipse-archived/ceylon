@@ -203,7 +203,7 @@ setGreeting(greeting);</programlisting>
     
     <itemizedlist>
         <listitem>
-            <para><literal>Natural</literal> and <literal>Float</literal>,</para>
+            <para><literal>Integer</literal> and <literal>Float</literal>,</para>
         </listitem>
         <listitem>
             <para><literal>Character</literal>, and</para>
@@ -216,7 +216,7 @@ setGreeting(greeting);</programlisting>
         </listitem>
     </itemizedlist>
     
-    <para>The types <literal>Natural</literal>, <literal>Float</literal>, 
+    <para>The types <literal>Integer</literal>, <literal>Float</literal>, 
     <literal>Character</literal>, and <literal>String</literal> are defined in the 
     module <literal>ceylon.language</literal>.</para>
     
@@ -225,7 +225,7 @@ setGreeting(greeting);</programlisting>
     <literal>true</literal> and <literal>false</literal>. Likewise, <literal>null</literal> 
     is just the singleton value of an anonymous class.</para>
     
-    <programlisting>Literal: NaturalLiteral | FloatLiteral | CharacterLiteral | StringLiteral | QuotedLiteral</programlisting>
+    <programlisting>Literal: IntegerLiteral | FloatLiteral | CharacterLiteral | StringLiteral | QuotedLiteral</programlisting>
     
     <para>All literal values are instances of immutable types. The value of a literal 
     expression is an instance of the type. How this instance is produced is not specified 
@@ -278,7 +278,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <para>The attributes <literal>hours</literal>, <literal>minutes</literal>, <literal>seconds</literal>,
         <literal>years</literal>, <literal>months</literal>, <literal>days</literal>, <literal>weeks</literal>
-        of the <literal>Natural</literal> class let us construct durations.</para>
+        of the <literal>Integer</literal> class let us construct durations.</para>
         
         <programlisting>Duration&lt;Time&gt; duration = 12.hours + 34.minutes;</programlisting>
         <programlisting>Duration&lt;Date&gt; duration = 1.year + 2.months + 3.days;</programlisting>
@@ -297,12 +297,12 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         -->
         
     <section id="naturalnumber">
-        <title>Natural number literals</title>
+        <title>Integer number literals</title>
         
         <para>A natural number literal <literal>n</literal> is an 
-        expression of type <literal>Natural</literal>.</para>
+        expression of type <literal>Integer</literal>.</para>
         
-        <programlisting>Natural five = 5;</programlisting>
+        <programlisting>Integer five = 5;</programlisting>
                 
         <para><literal>Integer</literal> values can be produced 
         using the unary prefix <literal>+</literal> and 
@@ -891,7 +891,7 @@ sort(names, reverseAlpha);</programlisting>
         
         <para>This class has two callable parameters:</para>
         
-        <programlisting>shared class TextInput(Natural size=30, String onInit(), String onUpdate(String s)) { ... }</programlisting>
+        <programlisting>shared class TextInput(Integer size=30, String onInit(), String onUpdate(String s)) { ... }</programlisting>
  
         <para>This code instantiates the class, passing references to methods which set and
         get the attribute <literal>person.name</literal>:</para>
@@ -911,26 +911,26 @@ sort(names, reverseAlpha);</programlisting>
         with multiple parameter lists. The expression must be assignable to the callable 
         type of a method formed by eliminating the first parameter list of the method.</para>
         
-        <programlisting>Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
+        <programlisting>Comparison getOrder(Boolean reverse=false)(Integer x, Integer y) {
     if (reverse) {
-        Comparison reverse(Natural x, Natural y) { return y&lt;=&gt;x; }
+        Comparison reverse(Integer x, Integer y) { return y&lt;=&gt;x; }
         return reverse;
     }
     else {
-        Comparison natural(Natural x, Natural y) { return x&lt;=&gt;y; }
+        Comparison natural(Integer x, Integer y) { return x&lt;=&gt;y; }
         return natural;
     }
 }</programlisting>
 
         <para>This is slightly simpler using type inference:</para>
 
-        <programlisting>Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
+        <programlisting>Comparison getOrder(Boolean reverse=false)(Integer x, Integer y) {
     if (reverse) {
-        function reverse(Natural x, Natural y) { return y&lt;=&gt;x; }
+        function reverse(Integer x, Integer y) { return y&lt;=&gt;x; }
         return reverse;
     }
     else {
-        function natural(Natural x, Natural y) { return x&lt;=&gt;y; }
+        function natural(Integer x, Integer y) { return x&lt;=&gt;y; }
         return natural;
     }
 }</programlisting>
@@ -938,12 +938,12 @@ sort(names, reverseAlpha);</programlisting>
         <para>Calling a method with multiple parameter lists is called <emphasis>partial 
         application</emphasis> of the method.</para>
         
-        <programlisting>Comparison order(Natural x, Natural y) = getOrder();
+        <programlisting>Comparison order(Integer x, Integer y) = getOrder();
 Comparison comp = order(1,-1);</programlisting>
 
         <para>This is even simpler using type inference:</para>
 
-        <programlisting>function order(Natural x, Natural y) = getOrder();
+        <programlisting>function order(Integer x, Integer y) = getOrder();
 value comp = order(1,-1);</programlisting>
 
         <para>Or, if we don't need parameter names, we don't even need to explicitly declare the 
@@ -953,7 +953,7 @@ value comp = order(1,-1);</programlisting>
 value comp = order(1,-1);</programlisting>
 
         <para>In this case, <literal>order</literal> is actually not a method at all&mdash;it's
-        just a local of type <literal>Callable&lt;Comparison,Natural,Natural&gt;</literal>.</para>
+        just a local of type <literal>Callable&lt;Comparison,Integer,Integer&gt;</literal>.</para>
 
         <para>Of course, more than one argument list may be specified in a single expression:</para>
         
@@ -1409,9 +1409,9 @@ value comp = order(1,-1);</programlisting>
         
         <para>This class:</para>
         
-        <programlisting>shared class Counter(Natural initialCount=0) {
+        <programlisting>shared class Counter(Integer initialCount=0) {
     
-    variable Natural count := initialCount;
+    variable Integer count := initialCount;
     
     ...
     
@@ -1428,9 +1428,9 @@ value comp = order(1,-1);</programlisting>
         
             <programlisting>shared class Counter() {
     
-    variable Natural count := 0;
+    variable Integer count := 0;
     
-    shared void init(Natural initialCount=0) {
+    shared void init(Integer initialCount=0) {
         count:=initialCount;
     }
     
@@ -1518,7 +1518,7 @@ value comp = order(1,-1);</programlisting>
         intended invocation syntax? For example:</para>
         <programlisting>shared void assert(Gettable&lt;String&gt; message) Boolean that { ... }</programlisting>
         <programlisting>shared Value when&lt;Value&gt;(Boolean condition) Value then Value otherwise { ... }</programlisting>
-        <programlisting>shared void repeat(Natural repetitions) void times(Natural i) { ... }</programlisting>
+        <programlisting>shared void repeat(Integer repetitions) void times(Integer i) { ... }</programlisting>
         </comment>
         
         <comment><para>TODO: Since this is our solution for "anonymous methods" (lambda 
@@ -1700,7 +1700,7 @@ using() resource satisfies Usable {
             </listitem>
         </itemizedlist>
                 
-        <programlisting>Natural age = person.age;</programlisting>
+        <programlisting>Integer age = person.age;</programlisting>
         <programlisting>person.say("Hello!");</programlisting>
         <programlisting>Iterable&lt;String&gt; tokens = input.Tokens();</programlisting>
         <programlisting>return person.name;</programlisting>
@@ -2177,32 +2177,32 @@ String personName = nameAttribute(person);</programlisting>
         
 String result = sayMethod(person)();</programlisting>
 
-        <programlisting>MutableAttribute&lt;Counter, Natural&gt; countAttribute = Counter.count;
+        <programlisting>MutableAttribute&lt;Counter, Integer&gt; countAttribute = Counter.count;
 
 countAttribute(this)++;</programlisting>        
 
         <para>The metamodel object for a class, attribute or method supports registration 
         of a listener, which intercepts invocations.</para>
         
-        <programlisting>OpenMutableAttribute&lt;Counter, Natural&gt; countAttribute = Counter.count;
+        <programlisting>OpenMutableAttribute&lt;Counter, Integer&gt; countAttribute = Counter.count;
 
 countAttribute.intercept() 
-    onGet (Counter c, Natural proceed()) {
+    onGet (Counter c, Integer proceed()) {
         log.debug("getting");
         return proceed();
     };
     
 countAttribute.intercept() 
-    onSet (Counter c, void proceed(Natural n), Natural arg) {
+    onSet (Counter c, void proceed(Integer n), Integer arg) {
         log.debug("setting");
         proceed(arg);
     };</programlisting>
 
-        <programlisting>OpenMethod&lt;Order,Item,Product,Natural&gt; createItemMethod = Order.createItem;
+        <programlisting>OpenMethod&lt;Order,Item,Product,Integer&gt; createItemMethod = Order.createItem;
         
 createItemMethod.intercept()
-    onInvoke (Order o, Item proceed(Product p, Natural n),  
-              Product product, Natural quantity) {
+    onInvoke (Order o, Item proceed(Product p, Integer n),  
+              Product product, Integer quantity) {
         log.debug("invoking in transaction");
         try (Transaction()) {
             return proceed(product,quantity);
@@ -2243,13 +2243,13 @@ createItemMethod.intercept()
     
     <programlisting>List&lt;Item&gt; firstPage = list[0..20];</programlisting>
     
-    <programlisting>for (Natural n in 1..10) { ... }</programlisting>
+    <programlisting>for (Integer n in 1..10) { ... }</programlisting>
     
     <programlisting>if (char in `A`..`Z`) { ... }</programlisting>
     
     <programlisting>List&lt;Day&gt; nonworkDays = days[{0,7}];</programlisting>
     
-    <programlisting>Natural lastIndex = getLastIndex() ? sequence.lastIndex;</programlisting>
+    <programlisting>Integer lastIndex = getLastIndex() ? sequence.lastIndex;</programlisting>
     
     <programlisting>log.info("Hello " + $person + "!")</programlisting>
     
@@ -3323,7 +3323,7 @@ createItemMethod.intercept()
             <entry>lower range</entry>
             <entry><literal>lhs.range(0,y)</literal></entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
-            <entry><literal>Natural</literal></entry>
+            <entry><literal>Integer</literal></entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
         </row>
         -->
@@ -3370,7 +3370,7 @@ createItemMethod.intercept()
             <entry>left shift</entry>
             <entry><literal>lhs.shiftLeft(rhs)</literal></entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
-            <entry><literal>Natural</literal></entry>
+            <entry><literal>Integer</literal></entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
         </row>
         <row>
@@ -3378,7 +3378,7 @@ createItemMethod.intercept()
             <entry>right shift</entry>
             <entry><literal>lhs.shiftRight(rhs)</literal></entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
-            <entry><literal>Natural</literal></entry>
+            <entry><literal>Integer</literal></entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
         </row>
         
@@ -3746,7 +3746,7 @@ createItemMethod.intercept()
             <entry>multiply</entry>
             <entry><literal>lhs.times(rhs)</literal></entry>
             <entry><literal>Duration</literal></entry>
-            <entry><literal>Natural</literal></entry>
+            <entry><literal>Integer</literal></entry>
             <entry><literal>Duration</literal></entry>
         </row>
         
@@ -3755,7 +3755,7 @@ createItemMethod.intercept()
             <entry>divide</entry>
             <entry><literal>lhs.divide(rhs)</literal></entry>
             <entry><literal>Duration</literal></entry>
-            <entry><literal>Natural</literal></entry>
+            <entry><literal>Integer</literal></entry>
             <entry><literal>Duration</literal></entry>
         </row>
         -->
@@ -3770,7 +3770,7 @@ createItemMethod.intercept()
         
         <itemizedlist>
             <listitem>
-                <para><literal>Natural</literal> to <literal>Integer</literal>,
+                <para><literal>Integer</literal> to <literal>Integer</literal>,
                 <literal>Float</literal>, <literal>Whole</literal> and 
                 <literal>Decimal</literal></para>
             </listitem>

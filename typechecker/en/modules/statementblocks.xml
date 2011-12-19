@@ -1108,7 +1108,7 @@ if (reverseOrder()) {
     order = reverse;
 }
 else {
-    description = "Natural order";
+    description = "Integer order";
     order = natural;
 }</programlisting>
         -->
@@ -2049,11 +2049,11 @@ for (Integer i in -10..+10) {
     sum += x[i] ? 0.0;
 }</programlisting>
             
-            <programlisting>for (Natural month -> Float temp in monthlyTempsList) { 
+            <programlisting>for (Integer month -> Float temp in monthlyTempsList) { 
     plot(month,temp); 
 }</programlisting>
 
-            <programlisting>for (String word -> Natural freq in wordFrequencyMap) { 
+            <programlisting>for (String word -> Integer freq in wordFrequencyMap) { 
     log.info("The frequency of " word " is " freq "."); 
 }</programlisting>
             
@@ -2097,8 +2097,8 @@ else {
             
             <para>For example:</para>
             
-            <programlisting>variable Natural n:=0;
-OpenList&lt;Natural&gt; seq = ArrayList&lt;Natural&gt;();
+            <programlisting>variable Integer n:=0;
+OpenList&lt;Integer&gt; seq = ArrayList&lt;Integer&gt;();
 while (n&lt;=max) {
     seq.append(n);
     n+=step(n);
@@ -2241,7 +2241,7 @@ finally {
             calling <literal>begin()</literal> and <literal>end()</literal>/<literal>abort()</literal> 
             upon the resource instance.</para>
 
-            <programlisting>variable Natural retries := 0;
+            <programlisting>variable Integer retries := 0;
 try ( Transaction() ) {
     ...
 }

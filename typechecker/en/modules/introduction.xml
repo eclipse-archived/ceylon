@@ -337,7 +337,7 @@
     parameters.
     </para>
     
-    <programlisting>void addItem(Product product, Natural quantity=1) { ... }</programlisting>
+    <programlisting>void addItem(Product product, Integer quantity=1) { ... }</programlisting>
     
     <programlisting>String join(String... strings) { ... }</programlisting>
     

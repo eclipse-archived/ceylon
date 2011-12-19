@@ -712,7 +712,7 @@ catch (Exception e) {
         
     doc "The number of elements or entries belonging to the 
          container."
-    shared formal Natural size;
+    shared formal Integer size;
     
     shared actual default Boolean empty {
         return size==0;
@@ -784,7 +784,7 @@ catch (Exception e) {
     
     doc "Add the given objects to the category. Return the number of 
          objects which did not already belong to the category."
-    shared Natural add(X... objects);
+    shared Integer add(X... objects);
 
 }]]></programlisting>
 
@@ -904,7 +904,7 @@ while (exists local value = iter.head) {
     
 }]]></programlisting>
         <para>For example, a <literal>Sequence&lt;X&gt;</literal> would 
-        be an <literal>Indexed&lt;X, Natural&gt;</literal> and a 
+        be an <literal>Indexed&lt;X, Integer&gt;</literal> and a 
         <literal>LinkedList&lt;X&gt;</literal> would be an 
         <literal>Indexed&lt;X, Link&lt;X&gt;&gt;</literal>. The idiom
         would be:</para>
@@ -1245,9 +1245,9 @@ shared abstract class Comparison()
        satisfies Comparable<Bounded<M>> & Number 
        given M satisfies Dimension {
    
-    doc "The |Natural| representing this natural
+    doc "The |Integer| representing this natural
          number."
-    shared extension Natural natural { ... }
+    shared extension Integer natural { ... }
 
     shared actual Comparison compare(Bounded<M> other) {
         return natural.compare(other.natural);
@@ -1284,15 +1284,15 @@ shared BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
 
         <programlisting><![CDATA[shared interface Sequence<out X> 
         is EnumerableSequence<X>
-        satisfies Correspondence<Natural, X> & FiniteCategory<X> & Sized
+        satisfies Correspondence<Integer, X> & FiniteCategory<X> & Sized
         given X satisfies Equality<X> {
 
     doc "The index of the last element of the sequence,
          or |null| if the sequence has no elements."
-    shared formal Natural? lastIndex;
+    shared formal Integer? lastIndex;
     
     shared actual default Iterator<X> iterator {
-        class SequenceIterator(Natural from) 
+        class SequenceIterator(Integer from) 
                 satisfies Iterator<X> {
             shared actual X? head { 
                 return this[from];
@@ -1346,7 +1346,7 @@ shared BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
     doc "The last element of the sequence, or
          |null| if the sequence has no elements."
     shared default X? last {
-        if (exists Natural index = sequence.lastIndex) {
+        if (exists Integer index = sequence.lastIndex) {
             return this[index];
         }
         else {
@@ -1370,13 +1370,13 @@ shared BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
         of the sequence in a <literal>for</literal> loop.</para>
         
         <programlisting><![CDATA[shared extension class SequenceEntryIterable<X>(X[] this)
-        satisfies Iterable<Entry<Natural,X>> 
+        satisfies Iterable<Entry<Integer,X>> 
         given X satisfies Equality<X> {
         
-    shared actual Iterator<Entry<Natural,X>> iterator {
-        class EntryIterator(Natural from) 
-                satisfies Iterator<Entry<Natural,X>> {
-            shared actual Entry<Natural,X>? head {
+    shared actual Iterator<Entry<Integer,X>> iterator {
+        class EntryIterator(Integer from) 
+                satisfies Iterator<Entry<Integer,X>> {
+            shared actual Entry<Integer,X>? head {
                 if (exists X x = this[from]) {
                     return from->x;
                 }
@@ -1384,7 +1384,7 @@ shared BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
                     return null;
                 }
             }
-            shared actual Iterable<Entry<Natural,X>> tail {
+            shared actual Iterable<Entry<Integer,X>> tail {
                 return EntryIterator(from+1);
             }
         }
@@ -1394,7 +1394,7 @@ shared BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
 }]]></programlisting>
 
         <comment><para>TODO: or should we just directly make <literal>X[]</literal> 
-        assignable to <literal>Entry&lt;Natural,X&gt;[]</literal>?</para></comment>
+        assignable to <literal>Entry&lt;Integer,X&gt;[]</literal>?</para></comment>
         
         <para>The compiler is permitted to optimize away the call to these 
         extensions in a loop such as:</para>
@@ -1405,14 +1405,14 @@ shared BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
         
         <para>or even:</para>
         
-        <programlisting><![CDATA[for (Natural n -> local elem in sequence) {
+        <programlisting><![CDATA[for (Integer n -> local elem in sequence) {
     ...
 }]]></programlisting>
         
         <para>which are both equivalent to:</para>
         
-        <programlisting><![CDATA[if (exists Natural last=sequence.lastIndex) {
-    variable Natural n := 0;
+        <programlisting><![CDATA[if (exists Integer last=sequence.lastIndex) {
+    variable Integer n := 0;
     while (n<=last) { 
         local elem = sequence[n];
         ...
@@ -1434,10 +1434,10 @@ shared T[] join<T>(T[]... sequences)
         given T satisfies Equality<T> {
             
     object joinedSequence satisfies T[] {
-        shared actual Natural? lastIndex {
-            variable Natural? result := null;
+        shared actual Integer? lastIndex {
+            variable Integer? result := null;
             for (T[] s in sequences) {
-                if (exists Natural last = s.lastIndex) {
+                if (exists Integer last = s.lastIndex) {
                     if (exists result) {
                         result += last;
                     }
@@ -1448,11 +1448,11 @@ shared T[] join<T>(T[]... sequences)
             }
             return result;
         }
-        shared actual Gettable<T?> value(Natural index) {
+        shared actual Gettable<T?> value(Integer index) {
             T? value {
-                variable Natural i := index;
+                variable Integer i := index;
                 for (T[] s in sequences) {
-                    if (exists Natural last = s.lastIndex) {
+                    if (exists Integer last = s.lastIndex) {
                         if (i<=last) {
                             return s[i];
                         }
@@ -1476,12 +1476,12 @@ shared T[] join<T>(T[]... sequences)
      with the binary upper range |x[from...]| operator. 
      The returned sequence does not reflect changes 
      to the original sequence."
-shared T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
+shared T[] range<T>(T[] sequence, Integer from, Integer? to=sequence.lastIndex) 
         given T satisfies Equality<T> {
          
     object rangeSequence satisfies T[] {
-        shared actual Natural? lastIndex {
-            if (exists Natural last = sequence.lastIndex) {
+        shared actual Integer? lastIndex {
+            if (exists Integer last = sequence.lastIndex) {
                 if (exists to) {
                     if (to<last) {
                         return to-from;
@@ -1495,7 +1495,7 @@ shared T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
                 return null;
             }
         } 
-        shared actual Gettable<T?> value(Natural index) {
+        shared actual Gettable<T?> value(Integer index) {
             T? value {
                 if (exists to) {
                     if (index>to) {
@@ -1516,7 +1516,7 @@ shared T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
         an index.</para>
         
         <programlisting><![CDATA[shared interface OpenSequence<X>
-        satisfies X[] & OpenCorrespondence<Natural,X> 
+        satisfies X[] & OpenCorrespondence<Integer,X> 
         given X satisfies Equality<X> {}]]></programlisting>
 
         <para>A <literal>BoundedSequence</literal> adds a typesafe bound
@@ -1594,9 +1594,9 @@ shared object none {
             satisfies X[0] 
             given X satisfies Equality<X> {
         
-        shared actual Natural? lastIndex = null;
+        shared actual Integer? lastIndex = null;
         
-        shared actual Gettable<X?> value(Natural index) {
+        shared actual Gettable<X?> value(Integer index) {
             X? nullValue = null;
             return nullValue;
         }
@@ -1660,19 +1660,19 @@ shared object none {
          incrementing by a constant step size,
          until a value outside the range is
          reached."
-    shared X[] by(Natural stepSize) { 
-        return from (Natural index->X value in this) 
+    shared X[] by(Integer stepSize) { 
+        return from (Integer index->X value in this) 
                     where (index%stepSize == 0)
                     select (value);
     }
     
-    shared Natural? index(X x) {
+    shared Integer? index(X x) {
         if (x<first || x>last) {
             return null;
         }
         else {
             //optimize this for numbers!
-            variable Natural index:=0;
+            variable Integer index:=0;
             variable X value:=first;
             while (value<x) {
                 ++index;
@@ -1722,11 +1722,11 @@ shared object none {
         return x>first && x<last;
     }
     
-    shared actual Natural? lastIndex = index(last);
+    shared actual Integer? lastIndex = index(last);
     
-    shared actual Gettable<X?> value(Natural n) {
+    shared actual Gettable<X?> value(Integer n) {
         //optimize this for numbers!
-        variable Natural index:=0;
+        variable Integer index:=0;
         variable X? value:=first;
         while (index<n) {
             ++index;
@@ -1777,7 +1777,7 @@ while (i<=max) {
         
         <para>UTF-16 Unicode Characters are represented by the following class:</para>
 
-        <programlisting><![CDATA[shared class Character(small Natural utf16)
+        <programlisting><![CDATA[shared class Character(small Integer utf16)
         extends Object()
         satisfies Ordinal & Comparable<Character> & Matcher<Character> { 
     ... 
@@ -2027,12 +2027,12 @@ while (i<=max) {
                 represented as an |Integer|")
     shared formal Integer integer;
     
-    doc "The number, represented as a |Natural|,
+    doc "The number, represented as a |Integer|,
          after truncation of any fractional 
          part"
     throws (NegativeNumberException
             -> "if the number is negative")
-    shared formal Natural natural;
+    shared formal Integer natural;
     
     doc "The magnitude of the number"
     shared formal subtype magnitude;
@@ -2117,12 +2117,12 @@ while (i<=max) {
         
         <para>Five numeric types are built in:</para>
 
-        <para><literal>Natural</literal> represents 63 bit unsigned integers
+        <para><literal>Integer</literal> represents 63 bit unsigned integers
         (including zero).</para>
         
-        <programlisting><![CDATA[shared class Natural(Natural natural)
+        <programlisting><![CDATA[shared class Integer(Integer natural)
         extends Object() 
-        satisfies Integral<Natural> & Invertable<Integer> & Matcher<Integer> { 
+        satisfies Integral<Integer> & Invertable<Integer> & Matcher<Integer> { 
     ... 
     
     doc "Implicit type promotion to |Integer|"
@@ -2138,30 +2138,30 @@ while (i<=max) {
     shared actual extension Decimal decimal { return ... }
 
     doc "Shift bits left by the given number of places"
-    shared Natural leftShift(Natural digits) { return ... }
+    shared Integer leftShift(Integer digits) { return ... }
     
     doc "Shift bits right by the given number of places"
-    shared Natural rightShift(Natural digits) { return ... }
+    shared Integer rightShift(Integer digits) { return ... }
     
-    shared extension class StringToNatural(String this) {
+    shared extension class StringToInteger(String this) {
     
-        doc "Parse the string representation of a |Natural| in the given radix"
-        shared Natural parseNatural(small Natural radix=10) { return ... }
+        doc "Parse the string representation of a |Integer| in the given radix"
+        shared Integer parseInteger(small Integer radix=10) { return ... }
         
     }
 
 }]]></programlisting>
 
         <comment><para>TODO: the <literal>Numeric</literal> type is much more complicated
-        because of <literal>Natural</literal>. As an alternative approach, we could replace
-        <literal>Natural</literal> with a <literal>Binary</literal> type, and have 
-        <literal>Integer</literal> literals instead of <literal>Natural</literal> 
+        because of <literal>Integer</literal>. As an alternative approach, we could replace
+        <literal>Integer</literal> with a <literal>Binary</literal> type, and have 
+        <literal>Integer</literal> literals instead of <literal>Integer</literal> 
         literals. I don't love this, because natural numbers are especially common in real
         applications.</para></comment>
 
         <para><literal>Integer</literal> represents 64 bit signed integers.</para>
 
-        <programlisting><![CDATA[shared class Integer(Boolean sign, Natural natural)
+        <programlisting><![CDATA[shared class Integer(Boolean sign, Integer natural)
         extends Object() 
         satisfies Integral<Integer> & Invertable<Integer> & Matcher<Integer> {
     ...
@@ -2178,7 +2178,7 @@ while (i<=max) {
     shared extension class StringToInteger(String this) {
     
         doc "Parse the string representation of an |Integer| in the given radix"
-        shared Integer parseInteger(small Natural radix=10) { return ... }
+        shared Integer parseInteger(small Integer radix=10) { return ... }
         
     }
 
@@ -2187,12 +2187,12 @@ while (i<=max) {
         <para><literal>Whole</literal> represents arbitrary-precision
         signed integers.</para>
 
-        <programlisting><![CDATA[shared class Whole(Boolean sign, small Natural... digits)
+        <programlisting><![CDATA[shared class Whole(Boolean sign, small Integer... digits)
         extends Object() 
         satisfies Integral<Whole> & Invertable<Whole> {
     ...
     
-    shared small Natural precision = ...;
+    shared small Integer precision = ...;
     
     doc "Implicit type promotion to |Decimal|"
     shared actual extension Decimal decimal { return ... }
@@ -2200,7 +2200,7 @@ while (i<=max) {
     shared extension class StringToWhole(String this) {
     
         doc "Parse the string representation of a |Whole| in the given radix"
-        shared Whole parseWhole(small Natural radix=10) { return ... }
+        shared Whole parseWhole(small Integer radix=10) { return ... }
         
     }
 
@@ -2223,7 +2223,7 @@ while (i<=max) {
     shared extension class StringToFloat(String this) {
     
         doc "Parse the string representation of a |Float| in the given radix"
-        shared Float parseFloat(small Natural radix=10) { return ... }
+        shared Float parseFloat(small Integer radix=10) { return ... }
         
     }
 
@@ -2237,13 +2237,13 @@ while (i<=max) {
         satisfies Numeric<Decimal> & Invertable<Decimal> {
     ...
 
-    shared small Natural precision = ...;
+    shared small Integer precision = ...;
     shared small Integer scale = ...;
     
     shared extension class StringToDecimal(String this) {
     
         doc "Parse the string representation of a |Decimal| in the given radix"
-        shared Decimal parseDecimal(small Natural radix=10) { return ... }
+        shared Decimal parseDecimal(small Integer radix=10) { return ... }
         
     }
 
@@ -2368,7 +2368,7 @@ while (i<=max) {
         return this;
     }
     
-    shared actual Gettable<Boolean?> value(Natural key) {
+    shared actual Gettable<Boolean?> value(Integer key) {
         Boolean? result;
         if (key==0) {
             result = boolean;
@@ -2773,9 +2773,9 @@ shared object warn extends LogPriority("Warn", 300) {}
 shared object error extends LogPriority("Error", 400) {}
 
 doc "The severity of a log message."
-shared abstract class LogPriority(String string, Natural priority) {
+shared abstract class LogPriority(String string, Integer priority) {
     shared actual String string = string;
-    shared Natural priority = priority;
+    shared Integer priority = priority;
 }]]></programlisting>
 
         <para>The class <literal>LogMessage</literal> describes a log message:</para>
@@ -2820,23 +2820,23 @@ shared abstract class LogPriority(String string, Natural priority) {
     ...
 }]]></programlisting>
 
-        <programlisting><![CDATA[shared class Time(Natural hours, Natural minutes, 
-        Natural? seconds=null, Natural? milliseconds=null,
+        <programlisting><![CDATA[shared class Time(Integer hours, Integer minutes, 
+        Integer? seconds=null, Integer? milliseconds=null,
         Timezone? timezone=null) 
         extends Instant() {
-    shared Natural hours = hours;
-    shared Natural minutes = minutes;
-    shared Natural? seconds = seconds;
-    shared Natural? milliseconds = milliseconds;
+    shared Integer hours = hours;
+    shared Integer minutes = minutes;
+    shared Integer? seconds = seconds;
+    shared Integer? milliseconds = milliseconds;
     shared Timezone? timezone = timezone;
     ...
 }]]></programlisting>
         
-        <programlisting><![CDATA[shared class Date(Integer year, Natural month, Natural day) 
+        <programlisting><![CDATA[shared class Date(Integer year, Integer month, Integer day) 
         extends Instant() {
     shared Integer year = year;
-    shared Natural month = month;
-    shared Natural day = day;
+    shared Integer month = month;
+    shared Integer day = day;
     ...
 }]]></programlisting>
         
@@ -2855,10 +2855,10 @@ shared abstract class LogPriority(String string, Natural priority) {
     ...
 }]]></programlisting>
 
-        <programlisting><![CDATA[shared class Duration<X>(Map<Granularity<X>, Natural> magnitude) 
+        <programlisting><![CDATA[shared class Duration<X>(Map<Granularity<X>, Integer> magnitude) 
         given X satisfies Instant {
 
-    shared Map<Granularity<X>, Natural> magnitude = magnitude;
+    shared Map<Granularity<X>, Integer> magnitude = magnitude;
     
     shared X before(X instant) { ... }
     shared X after(X instant) { ... }
@@ -3064,8 +3064,8 @@ shared Y select<X,Y>(X selector,
         support for loops.</para>
         
         <programlisting><![CDATA[doc "Repeat the block the given number of times."
-shared void repeat(Natural repetitions, void times()) {
-    variable Natural n:=0; 
+shared void repeat(Integer repetitions, void times()) {
+    variable Integer n:=0; 
     while (n<repetitions) {
         times();
         n++;
@@ -3077,9 +3077,9 @@ shared void repeat(Natural repetitions, void times()) {
         
         <programlisting><![CDATA[doc "Count the elements for which the block 
      evaluates to true."
-shared Natural count<X>(iterated Iterable<X> elements,
+shared Integer count<X>(iterated Iterable<X> elements,
                         Boolean where(coordinated X x)) {
-    variable Natural count := 0;
+    variable Integer count := 0;
     for (X x in elements) {
         if ( where(x) ) {
             ++count;
@@ -3163,9 +3163,9 @@ shared List<Y> from<X,Y,C>(iterated Iterable<X> elements,
         <comment><para>TODO: rewrite <literal>from()</literal> to delegate to 
         <literal>list()</literal>.</para></comment>
 
-        <programlisting><![CDATA[shared List<X> tabulate(Natural length, X containing(Natural index)) {
+        <programlisting><![CDATA[shared List<X> tabulate(Integer length, X containing(Integer index)) {
     OpenList<X> list = ArrayList<X>();
-    for (Natural i in 0..length-1) {
+    for (Integer i in 0..length-1) {
         list.append(containing(i));
     }
     return list;
@@ -3188,11 +3188,11 @@ shared List<Y> from<X,Y,C>(iterated Iterable<X> elements,
 }]]></programlisting>
         -->
         
-        <programlisting><![CDATA[shared List<X> generate(Natural length, X first, X next(X previous)) {
+        <programlisting><![CDATA[shared List<X> generate(Integer length, X first, X next(X previous)) {
     OpenList<X> list = ArrayList<X>();
     list.append(first);
     variable X x := first;
-    for (Natural i in 0..length-1) {
+    for (Integer i in 0..length-1) {
         x := element(x);
         list.append(x);
     }
@@ -3268,11 +3268,11 @@ shared Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
         
     doc "Determine the number of times the given element
          appears in the collection."
-    shared Natural count(Object element);
+    shared Integer count(Object element);
     
     doc "Determine the number of elements or entries for
          which the given condition evaluates to |true|."
-    shared Natural count(Boolean where(X element));
+    shared Integer count(Boolean where(X element));
     
     doc "Determine if the given condition evaluates to |true|
          for at least one element or entry."
@@ -3339,12 +3339,12 @@ shared Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
     doc "Remove the given elements from the collection.
          Return the number of elements which belonged
          to the collection."
-    shared Natural remove(X... elements);
+    shared Integer remove(X... elements);
     
     doc "Remove all elements from the collection for which
          the given condition evaluates to |true|. Return 
          the number of elements which were removed."
-    shared Natural remove(Boolean where(X element));
+    shared Integer remove(Boolean where(X element));
     
 }]]></programlisting>
 
@@ -3440,12 +3440,12 @@ shared Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
     doc "The index of the first element of the list
          which satisfies the condition, or |null| if 
          no element satsfies the condition."
-    shared Natural? firstIndex(Boolean where(X element));
+    shared Integer? firstIndex(Boolean where(X element));
 
     doc "The index of the last element of the list
          which satisfies the condition, or |null| if 
          no element satsfies the condition."
-    shared Natural? lastIndex(Boolean where(X element));
+    shared Integer? lastIndex(Boolean where(X element));
     
     doc "The elements of the list for which the given condition 
          evaluates to |true|, as a |List| with the original 
@@ -3457,17 +3457,17 @@ shared Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
          index. The size of the returned sublist is one more than 
          the difference between the two indexes. The returned list 
          does reflect changes to the original list."
-    shared List<X> sublist(Natural from, Natural to=lastIndex);
+    shared List<X> sublist(Integer from, Integer to=lastIndex);
     
     doc "A sublist of the given length beginning with the 
          first element of the list. The returned list does 
          reflect changes to the original list."
-    shared List<X> leading(Natural length=1);
+    shared List<X> leading(Integer length=1);
     
     doc "A sublist of the given length ending with the 
          last element of the list. The returned list does 
          reflect changes to the original list."
-    shared List<X> trailing(Natural length=1);
+    shared List<X> trailing(Integer length=1);
     
     doc "Split the list into sublists, each beginning at an
          element for which the predicate returns true."
@@ -3517,7 +3517,7 @@ shared Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
     
     doc "A map from list index to element. The returned 
          map does reflect changes to the original list."
-    shared Map<Natural,X> map;
+    shared Map<Integer,X> map;
     
     doc "Produce a new list by applying an operation to
          every element of the list."
@@ -3581,7 +3581,7 @@ shared List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
          element."
     throws (UndefinedKeyException
             -> "if the index is not in the list")
-    shared X removeIndex(Natural at);
+    shared X removeIndex(Integer at);
     
     doc "Add the given elements at the end of the list."
     shared void append(X... elements);
@@ -3597,7 +3597,7 @@ shared List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
          of given elements."
     throws (UndefinedKeyException
             -> "if the index is not in the list")
-    shared void insert(Natural at, X... elements);
+    shared void insert(Integer at, X... elements);
     
     doc "Remove elements beginning with the first given index 
          up to and including the second given index,
@@ -3606,7 +3606,7 @@ shared List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
          difference between the two indexes."
     throws (UndefinedKeyException
             -> "if the index is not in the list")
-    shared void delete(Natural from, Natural to=lastIndex);
+    shared void delete(Integer from, Integer to=lastIndex);
     
     doc "Remove and return the first element, decrementing
          the index of every other element by one."
@@ -3626,11 +3626,11 @@ shared List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
          given comparison."
     shared void resort(Comparison by(X x, X y));
     
-    shared actual OpenList<X> leading(Natural length);
-    shared actual OpenList<X> trailing(Natural length);
-    shared actual OpenList<X> sublist(Natural from, Natural to);
+    shared actual OpenList<X> leading(Integer length);
+    shared actual OpenList<X> trailing(Integer length);
+    shared actual OpenList<X> sublist(Integer from, Integer to);
     shared actual OpenList<X> reversed;
-    shared actual OpenMap<Natural,X> map;
+    shared actual OpenMap<Integer,X> map;
     
 }]]></programlisting>
             
@@ -3733,7 +3733,7 @@ shared List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
     doc "A map from element to the number of occurrences of 
          the element. The returned map reflects changes to 
          the original bag."
-    shared Map<X,Natural> map;
+    shared Map<X,Integer> map;
     
     shared actual Partition<Bag<X>> partitioned(Boolean by(X element));
     
@@ -3755,7 +3755,7 @@ shared List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
         satisfies Bag<X> & OpenCollection<X> 
         given X satisfies Equality<X> {
         
-    shared actual OpenMap<X,Natural> map;
+    shared actual OpenMap<X,Integer> map;
     
 }]]></programlisting>
             

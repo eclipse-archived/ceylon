@@ -148,7 +148,7 @@
                </listitem>
                <listitem>
                    <para><literal>Integer</literal> and 
-                   <literal>Natural</literal> with
+                   <literal>Integer</literal> with
                    <literal>long</literal>,</para>
                </listitem>
                <listitem>
@@ -165,7 +165,7 @@
                </listitem>
                <listitem>
                    <para><literal>Integer?</literal> and 
-                   <literal>Natural?</literal> with
+                   <literal>Integer?</literal> with
                    <literal>java.lang.Long</literal>,</para>
                </listitem>
                <listitem>
@@ -336,7 +336,7 @@
                </listitem>
                <listitem>
                    <para><literal>short</literal>, <literal>int</literal> 
-                   and <literal>long</literal> with <literal>Natural</literal>,</para>
+                   and <literal>long</literal> with <literal>Integer</literal>,</para>
                </listitem>
                <listitem>
                    <para><literal>float</literal> and 

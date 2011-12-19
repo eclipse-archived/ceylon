@@ -612,18 +612,18 @@ TypeConstraints?
         
         <para>The body of a class may contain executable code.</para>
         
-        <programlisting>shared class Counter(Natural initialCount=0) {
+        <programlisting>shared class Counter(Integer initialCount=0) {
     
     log.info("Initial count: " initialCount "");
     
-    variable Natural n = initialCount;
+    variable Integer n = initialCount;
     
     shared void increment() {
         n++;
         log.info("Count: " n "");
     }
     
-    shared Natural count {
+    shared Integer count {
         return n;
     }
     
@@ -665,8 +665,8 @@ TypeConstraints?
     shared Lock lock = lock;
 }</programlisting>
         
-        <programlisting>shared class Counter(Natural initialCount=0) {
-    shared variable Natural count := initialCount;
+        <programlisting>shared class Counter(Integer initialCount=0) {
+    shared variable Integer count := initialCount;
     shared void increment() { count++; }
 }</programlisting>
         
@@ -1016,7 +1016,7 @@ TypeConstraints?
                     <emphasis>TODO: is this correct?</emphasis></para>
                 </listitem>
                 <listitem>
-                    <para>the built-in numeric types: <literal>Natural</literal>,
+                    <para>the built-in numeric types: <literal>Integer</literal>,
                     <literal>Integer</literal>, <literal>Float</literal>, <literal>Whole</literal>, 
                     and <literal>Decimal</literal>,</para>
                 </listitem>
@@ -1854,8 +1854,8 @@ else {
         first parameter list are not considered visible inside the body of the 
         method.</para>
         
-        <programlisting>Comparison getOrder()(Natural x, Natural y) {
-    Comparison order(Natural x, Natural y) { return x&lt;=&gt;y; }
+        <programlisting>Comparison getOrder()(Integer x, Integer y) {
+    Comparison order(Integer x, Integer y) { return x&lt;=&gt;y; }
     return order;
 }</programlisting>
 
@@ -1868,7 +1868,7 @@ else {
         
         <para>This method declaration:</para>
         
-        <programlisting>Comparison getOrder()(Natural x, Natural y) {
+        <programlisting>Comparison getOrder()(Integer x, Integer y) {
     return x&lt;=&gt;y;
 }</programlisting>
 
@@ -2210,13 +2210,13 @@ else {
 
         <para>Parameters of classes and methods are also considered to be locals.</para>
                  
-        <programlisting>variable Natural count := 0;</programlisting>
+        <programlisting>variable Integer count := 0;</programlisting>
         
         <programlisting>shared Integer max = +99;</programlisting>
 
         <programlisting>shared Decimal pi = calculatePi();</programlisting>
         
-        <programlisting>shared Natural[] evenDigits = {0,2,4,6,8};</programlisting>
+        <programlisting>shared Integer[] evenDigits = {0,2,4,6,8};</programlisting>
 
         <para>A simple attribute declared directly inside the body of a class represents state 
         associated with the instance of the class. Repeated evaluation of the attribute of a 
@@ -2663,13 +2663,13 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
         <itemizedlist>
             <listitem>
                 <para><literal>small</literal> specifies that a value of type
-                <literal>Natural</literal>, <literal>Integer</literal> or
+                <literal>Integer</literal>, <literal>Integer</literal> or
                 <literal>Float</literal> contains 32-bit values.</para>
             </listitem>
         </itemizedlist>
         
-        <para>By default, <literal>Natural</literal>, <literal>Integer</literal>
-        and <literal>Float</literal> are assumed to represent 64-bit values.</para>
+        <para>By default, <literal>Integer</literal> and <literal>Float</literal> 
+        are assumed to represent 64-bit values.</para>
         
         <!--
         <para>The annotation names in this section are treated as keywords by 

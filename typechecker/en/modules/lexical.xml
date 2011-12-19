@@ -124,7 +124,7 @@
         
         <para>A natural number literal has this form:</para>
         
-        <programlisting>NaturalLiteral: Digits Magnitude?</programlisting>
+        <programlisting>IntegerLiteral: Digits Magnitude?</programlisting>
         
         <para>A floating point number literal has this form:</para>
         
