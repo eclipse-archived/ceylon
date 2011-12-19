@@ -34,6 +34,11 @@
   <property name="ceylon.compiler.lib" location="${ceylon.repo.dir}/${ceylon.compiler.jar}"/>
   <property name="ceylon.compiler.repo" value="${ceylon.repo.dir}/${ceylon.compiler.dir}"/>
   <property name="ceylon.compiler.dist" value="${build.dist}/${ceylon.compiler.dir}"/>
+  <property name="ceylon.ant.dir" value="com/redhat/ceylon/ant/${module.com.redhat.ceylon.compiler.version}"/>
+  <property name="ceylon.ant.jar" value="${ceylon.ant.dir}/com.redhat.ceylon.ant-${module.com.redhat.ceylon.compiler.version}.jar"/>
+  <property name="ceylon.ant.lib" location="${ceylon.repo.dir}/${ceylon.ant.jar}"/>
+  <property name="ceylon.ant.repo" value="${ceylon.repo.dir}/${ceylon.ant.dir}"/>
+  <property name="ceylon.ant.dist" value="${build.dist}/${ceylon.ant.dir}"/>
   <property name="ceylon-tests.dir" location="${build.ceylon.cars}/com/redhat/ceylon/compiler/test/ceylon/${module.com.redhat.ceylon.compiler.version}"/>
   <property name="ceylon-tests.car" location="${ceylon-tests.dir}/com.redhat.ceylon.compiler.test.ceylon-${module.com.redhat.ceylon.compiler.version}.car"/>
 
@@ -106,6 +111,7 @@
       <fileset dir="${build.classes}">
         <exclude name="ceylon/**"/>
         <exclude name="com/redhat/ceylon/compiler/test/**"/>
+        <exclude name="com/redhat/ceylon/compiler/ant/**"/>
       </fileset>
       <fileset dir="${javac.src}">
         <include name="com/sun/tools/javac/resources/*.properties"/>
@@ -114,13 +120,24 @@
     <antcall target="sha1sum">
       <param name="file" value="${build.dist}/${ceylon.compiler.jar}" />
     </antcall>    
+    <zip destfile="${build.dist}/${ceylon.ant.jar}">
+      <fileset dir="${build.classes}">
+        <include name="com/redhat/ceylon/compiler/ant/**"/>
+      </fileset>
+    </zip>
+    <antcall target="sha1sum">
+      <param name="file" value="${build.dist}/${ceylon.ant.jar}" />
+    </antcall>    
   </target>
 
   <target name="publish"
-     depends="dist,clean.repo,init.repo"
-     description="Publish Ceylon compiler module to default repo">
-     <copy todir="${ceylon.compiler.repo}">
-        <fileset dir="${ceylon.compiler.dist}"/>
+    depends="dist,clean.repo,init.repo"
+    description="Publish Ceylon compiler module to default repo">
+    <copy todir="${ceylon.compiler.repo}">
+      <fileset dir="${ceylon.compiler.dist}"/>
+    </copy>
+    <copy todir="${ceylon.ant.repo}">
+       <fileset dir="${ceylon.ant.dist}"/>
     </copy>
   </target>
 
@@ -170,9 +187,15 @@
       <fileset dir="${build.classes}">
         <exclude name="ceylon/**"/>
         <exclude name="com/redhat/ceylon/compiler/test/**"/>
+        <exclude name="com/redhat/ceylon/compiler/ant/**"/>
       </fileset>
       <fileset dir="${javac.src}">
         <include name="com/sun/tools/javac/resources/*.properties"/>
+      </fileset>
+    </jar>
+    <jar destfile="${build.lib}/ant.jar">
+      <fileset dir="${build.classes}">
+        <include name="com/redhat/ceylon/compiler/ant/**"/>
       </fileset>
     </jar>
     <filter token="VERSION" value="${module.com.redhat.ceylon.compiler.version}"/>
@@ -320,21 +343,12 @@
   </target>
 
   <target name="ant-tasks" depends="publish">
-    <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc" >
-      <classpath>
-        <pathelement location="${ceylon.compiler.lib}"/>
-      </classpath>
-    </taskdef>
-    <taskdef name="ceylond" classname="com.redhat.ceylon.compiler.ant.Ceylond" >
-      <classpath>
-        <pathelement location="${ceylon.compiler.lib}"/>
-      </classpath>
-    </taskdef>
-    <taskdef name="ceylon" classname="com.redhat.ceylon.compiler.ant.Ceylon" >
-      <classpath>
-        <pathelement location="${ceylon.compiler.lib}"/>
-      </classpath>
-    </taskdef>
+    <path id="ant-tasks">
+      <pathelement location="${ceylon.ant.lib}"/>
+    </path>
+    <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc" classpathref="ant-tasks"/>
+    <taskdef name="ceylond" classname="com.redhat.ceylon.compiler.ant.Ceylond" classpathref="ant-tasks"/>
+    <taskdef name="ceylon" classname="com.redhat.ceylon.compiler.ant.Ceylon" classpathref="ant-tasks"/>
   </target>
 	
   <path id="ceylon.tests.classpath">
