@@ -51,6 +51,10 @@ public abstract class ModulesTest {
         return new File(getClass().getResource("/repo").toURI());
     }
 
+    protected File getAlternative() throws Throwable {
+        return new File(getClass().getResource("/alternative").toURI());
+    }
+
     protected File createModuleFile(File tmpdir, Archive module) throws Exception {
         String fullName = module.getName();
 
@@ -117,7 +121,6 @@ public abstract class ModulesTest {
             }
 
             Map<String, String> args = new LinkedHashMap<String, String>();
-            args.put(Constants.IMPL_ARGUMENT_PREFIX + Argument.EXECUTABLE.toString(), RUNTIME_IMPL);
             args.put(Constants.CEYLON_ARGUMENT_PREFIX + Argument.REPOSITORY.toString(), tmpdir.toString());
             if (run != null)
                 args.put(Constants.CEYLON_ARGUMENT_PREFIX + Argument.RUN.toString(), run);
@@ -144,7 +147,6 @@ public abstract class ModulesTest {
 
     protected void car(String module, Map<String, String> extra) throws Throwable {
         Map<String, String> args = new LinkedHashMap<String, String>();
-        args.put(Constants.IMPL_ARGUMENT_PREFIX + Argument.EXECUTABLE.toString(), RUNTIME_IMPL);
         args.put(Constants.CEYLON_ARGUMENT_PREFIX + Argument.REPOSITORY.toString(), getRepo().getPath());
         args.putAll(extra);
 
@@ -153,7 +155,6 @@ public abstract class ModulesTest {
 
     protected void src(String module, String src, Map<String, String> extra) throws Throwable {
         Map<String, String> args = new LinkedHashMap<String, String>();
-        args.put(Constants.IMPL_ARGUMENT_PREFIX + Argument.EXECUTABLE.toString(), RUNTIME_IMPL);
         args.put(Constants.CEYLON_ARGUMENT_PREFIX + Argument.SOURCE.toString(), src);
         args.putAll(extra);
 
@@ -165,22 +166,6 @@ public abstract class ModulesTest {
         return projectHome + File.separator + "dist" + File.separator + "runtime-repo";
     }
 
-    protected void execute(String module, Map<String, String> map) throws Throwable {
-
-        List<String> args = new ArrayList<String>();
-        // JBoss Modules args
-        args.add(Constants.MODULE_PATH.toString());
-        args.add(getBootstrapModules());
-        args.add(Constants.CEYLON_RUNTIME_MODULE.toString());
-
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            args.add(entry.getKey());
-            args.add(entry.getValue());
-        }
-        args.add(module);
-        Main.main(args.toArray(new String[args.size()]));
-    }
-
     protected static String toPathString(String name, String version) {
         final StringBuilder builder = new StringBuilder();
         builder.append(name.replace('.', File.separatorChar));
@@ -188,6 +173,32 @@ public abstract class ModulesTest {
             builder.append(File.separatorChar).append(version);
         builder.append(File.separatorChar);
         return builder.toString();
+    }
+
+    protected void execute(String module, Map<String, String> map) throws Throwable {
+        List<String> args = new ArrayList<String>();
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            args.add(entry.getKey());
+            args.add(entry.getValue());
+        }
+        execute(module, args);
+    }
+
+    protected void execute(String module, List<String> extra) throws Throwable {
+        List<String> args = new ArrayList<String>();
+        // JBoss Modules args
+        args.add(Constants.MODULE_PATH.toString());
+        args.add(getBootstrapModules());
+        args.add(Constants.CEYLON_RUNTIME_MODULE.toString());
+        // default Ceylon runtime args
+        args.add(Constants.IMPL_ARGUMENT_PREFIX + Argument.EXECUTABLE.toString());
+        args.add(RUNTIME_IMPL);
+        // extra args
+        args.addAll(extra);
+        // module args
+        args.add(module);
+        // run JBoss Modules
+        Main.main(args.toArray(new String[args.size()]));
     }
 }
 
