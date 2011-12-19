@@ -340,7 +340,7 @@
         <programlisting>modules</programlisting>
         <programlisting>/usr/bin/ceylon/modules</programlisting>
         <programlisting>http://jboss.org/ceylon/modules</programlisting>
-        <programlisting>https://gavin:secret@modules.ceylon.org</programlisting>
+        <programlisting>https://gavin:secret@modules.ceylon-lang.org</programlisting>
         
         <para>A module repository contains module archives, legacy archives, 
         and source archives. The address of an archive belonging to the 
@@ -692,7 +692,7 @@ shared class Import(
         </itemizedlist>
         
         <para>The default module repositories are <literal>modules</literal>
-        and <literal>http://modules.ceylon.org</literal>,
+        and <literal>http://modules.ceylon-lang.org</literal>,
         and the default source directory is <literal>source</literal>.</para>
         
         <programlisting>ceylon org.hibernate.test/3.0.0.beta \
@@ -772,7 +772,7 @@ shared class Import(
         </itemizedlist>
         
         <para>The default module repositories are <literal>modules</literal>
-        and <literal>http://modules.ceylon.org</literal>,
+        and <literal>http://modules.ceylon-lang.org</literal>,
         and the default source directory is <literal>source</literal>.
         The default output module repository is <literal>modules</literal>.</para>
         
@@ -839,7 +839,7 @@ shared class Import(
         </itemizedlist>
         
         <para>The default module repositories are <literal>modules</literal>
-        and <literal>http://modules.ceylon.org</literal>,
+        and <literal>http://modules.ceylon-lang.org</literal>,
         and the default source directory is <literal>source</literal>.</para>
         
         <programlisting>ceylonp org.hibernate/3.0.0.beta
@@ -904,7 +904,7 @@ shared class Import(
         </itemizedlist>
         
         <para>The default module repositories are <literal>modules</literal>
-        and <literal>http://modules.ceylon.org</literal>,
+        and <literal>http://modules.ceylon-lang.org</literal>,
         and the default source directory is <literal>source</literal>.
         The default output module repository is <literal>modules</literal>.</para>
         
@@ -951,7 +951,7 @@ shared class Import(
         modules in remote repositories, or to publish modules to a remote 
         repository.</para>
         
-        <para>To publish a module to <literal>http://modules.ceylon.org</literal>,
+        <para>To publish a module to <literal>http://modules.ceylon-lang.org</literal>,
         a module developer may use the repository replicator to submit the
         module via WebDAV.</para>
         
@@ -982,7 +982,7 @@ shared class Import(
         </itemizedlist>
         
         <para>The default module repositories are <literal>modules</literal>
-        and <literal>http://modules.ceylon.org</literal>. The default output
+        and <literal>http://modules.ceylon-lang.org</literal>. The default output
         module repository is <literal>modules</literal>.</para>
         
         <programlisting>ceylonr org.hibernate/3.0.0.beta org.hibernate.test/3.0.0.beta org.hibernate.example/3.0.0.beta \
@@ -990,7 +990,7 @@ shared class Import(
         
         <programlisting>ceylonr org.hibernate/3.0.0.beta \
         -rep modules \
-        -out https://gavin:secret@modules.ceylon.org</programlisting>
+        -out https://gavin:secret@modules.ceylon-lang.org</programlisting>
         
         <para>The repository replicator searches for directories containing
         the specified modules in the specified module repositories and, if 
@@ -1025,7 +1025,7 @@ shared class Import(
         </itemizedlist>
         
         <para>The default module repositories are <literal>modules</literal>
-        and <literal>http://modules.ceylon.org</literal>. The default output 
+        and <literal>http://modules.ceylon-lang.org</literal>. The default output 
         source directory is <literal>source</literal>.</para>
         
         <programlisting>ceylonf org.hibernate.example/3.0.0.beta \
