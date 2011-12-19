@@ -498,6 +498,10 @@ public class DeclarationVisitor extends Visitor {
             	se.addError("parameter of actual declaration may not define default value: parameter " +
             			name(that.getIdentifier()) + " of " + declaration.getName());
             }
+            if (!declaration.isClassOrInterfaceMember() && 
+            		!declaration.isToplevel()) {
+            	se.addWarning("default arguments for parameters of inner methods not yet supported");
+            }
             /*else {
                 se.addWarning("parameter default values are not yet supported");
             }*/
