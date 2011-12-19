@@ -34,6 +34,8 @@ public class Main {
     public static void main(String[] args) {
         try {
             execute(args);
+        } catch (CeylonRuntimeException x) {
+            System.err.println("Error: "+x.getMessage());
         } catch (Throwable t) {
             throw new RuntimeException("Error using Ceylon Runtime.", t);
         }
@@ -49,7 +51,7 @@ public class Main {
         Configuration conf = parseArgs(args);
         String exe = conf.executable;
         if (exe == null)
-            throw new IllegalArgumentException("Missing -executable argument");
+            throw new CeylonRuntimeException("Missing -executable argument");
 
         Executable executable = createInstance(Executable.class, exe);
         executable.execute(conf);
@@ -80,9 +82,9 @@ public class Main {
 
     private static <T> T createInstance(final Class<T> expectedType, final String defaultImpl) throws Exception {
         if (expectedType == null)
-            throw new IllegalArgumentException("Null expected type");
+            throw new CeylonRuntimeException("Null expected type");
         if (defaultImpl == null)
-            throw new IllegalArgumentException("Null default impl");
+            throw new CeylonRuntimeException("Null default impl");
 
         final SecurityManager sm = System.getSecurityManager();
         if (sm == null) {

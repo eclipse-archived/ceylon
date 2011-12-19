@@ -17,9 +17,12 @@
 
 package ceylon.modules.jboss.runtime;
 
+import ceylon.modules.CeylonRuntimeException;
 import ceylon.modules.Configuration;
 import ceylon.modules.Main;
 import ceylon.modules.api.runtime.AbstractRuntime;
+import ceylon.modules.spi.Constants;
+
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.impl.RepositoryBuilder;
 import com.redhat.ceylon.cmr.impl.RootBuilder;
@@ -28,6 +31,7 @@ import com.redhat.ceylon.cmr.spi.MergeStrategy;
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
+import org.jboss.modules.ModuleNotFoundException;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,8 +47,19 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
     public ClassLoader createClassLoader(String name, String version, Configuration conf) throws Exception {
         ModuleLoader moduleLoader = createModuleLoader(conf);
         ModuleIdentifier moduleIdentifier = ModuleIdentifier.fromString(name + ":" + version);
-        Module module = moduleLoader.loadModule(moduleIdentifier);
-        return SecurityActions.getClassLoader(module);
+        try{
+            Module module = moduleLoader.loadModule(moduleIdentifier);
+            return SecurityActions.getClassLoader(module);
+        }catch(ModuleNotFoundException x){
+            String spec = name;
+            String hint = "";
+            if(!Repository.NO_VERSION.equals(version)){
+                spec += "/" + version;
+                hint = " (invalid version?)";
+            }else if(!Constants.DEFAULT.toString().equals(name))
+                hint = " (missing required version, try " + spec+"/version)";
+            throw new CeylonRuntimeException("Could not find module: "+spec+hint);
+        }
     }
 
     /**

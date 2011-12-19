@@ -18,6 +18,7 @@
 package ceylon.modules.api.runtime;
 
 import ceylon.language.descriptor.Module;
+import ceylon.modules.CeylonRuntimeException;
 import ceylon.modules.Configuration;
 import ceylon.modules.api.util.CeylonToJava;
 import ceylon.modules.spi.Constants;
@@ -61,7 +62,7 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         try {
             runClass = cl.loadClass(runClassName);
         } catch (ClassNotFoundException ignored) {
-            Logger.getLogger("ceylon.runtime").warning("No " + runClassName + " available, nothing to run!");
+            Logger.getLogger("ceylon.runtime").severe("Could not find class or method '" + runClassName + "'");
             return; // looks like no such run class is available
         }
 
@@ -72,13 +73,13 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         String exe = conf.module;
         // FIXME: argument checks could be done earlier
         if (exe == null)
-            throw new IllegalArgumentException("No initial module defined");
+            throw new CeylonRuntimeException("No initial module defined");
 
         int p = exe.indexOf("/");
         if (p == 0)
-            throw new IllegalArgumentException("Missing runnable info: " + exe);
+            throw new CeylonRuntimeException("Missing runnable info: " + exe);
         if (p == exe.length() - 1)
-            throw new IllegalArgumentException("Missing version info: " + exe);
+            throw new CeylonRuntimeException("Missing version info: " + exe);
 
         String name = exe.substring(0, p > 0 ? p : exe.length());
         String mv = (p > 0 ? exe.substring(p + 1) : Repository.NO_VERSION);
@@ -88,13 +89,13 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         if (runtimeModule != null) {
             final String mn = CeylonToJava.toString(runtimeModule.getName());
             if (name.equals(mn) == false)
-                throw new IllegalArgumentException("Input module name doesn't match module's name: " + name + " != " + mn);
+                throw new CeylonRuntimeException("Input module name doesn't match module's name: " + name + " != " + mn);
 
             final String version = CeylonToJava.toString(runtimeModule.getVersion());
             if (mv.equals(version) == false && Constants.DEFAULT.toString().equals(name) == false)
-                throw new IllegalArgumentException("Input module version doesn't match module's version: " + mv + " != " + version);
+                throw new CeylonRuntimeException("Input module version doesn't match module's version: " + mv + " != " + version);
         } else if (Constants.DEFAULT.toString().equals(name) == false) {
-            throw new IllegalArgumentException("Missing module.class info: " + name); // TODO -- dump some more useful msg
+            throw new CeylonRuntimeException("Missing module.class info: " + name); // TODO -- dump some more useful msg
         }
 
         String runClassName = conf.run;

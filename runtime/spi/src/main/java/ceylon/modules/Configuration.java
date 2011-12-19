@@ -72,10 +72,10 @@ public class Configuration {
     public int setArgument(String name, ArgumentType type, String[] values, int i) {
         Argument argument = Argument.forArgumentName(name, type);
         if (argument == null)
-            throw new IllegalArgumentException("Unknown argument: " + name);
+            throw new CeylonRuntimeException("Unknown argument: " + name);
 
         if (i + argument.getRequiredValues() >= values.length)
-            throw new IllegalArgumentException("Missing argument value: " + name);
+            throw new CeylonRuntimeException("Missing argument value: " + name);
 
         int arg = i + 1;
         switch (argument) {
