@@ -225,36 +225,6 @@
     </copy>    
   </target>
 
-  <!-- FIXME: Historical rule -->
-  <!-- Rule to run the parser regression tests -->
-  <target name="test.parser" depends="publish">
-    <mkdir dir="${parser.test.dst}"/>
-    <apply executable="java">
-      <arg value="-ea"/>
-      <arg value="-cp"/>
-      <arg value="${ceylon.compiler.lib}:${antlr.lib}"/>
-      <arg value="com.redhat.ceylon.compiler.launcher.CeylonCompiler"/>
-      <arg value="-d"/>
-      <arg value="${parser.test.dst}"/>
-      <fileset dir="${parser.test.src}">
-  <include name="*.ceylon"/>
-      </fileset>
-    </apply>
-    <apply executable="diff" failonerror="true">
-      <arg value="-w"/>
-      <arg value="${parser.test.dst}"/>
-      <fileset dir="${parser.test.src}">
-        <include name="*.ceylon.out"/>
-      </fileset>
-    </apply>
-  </target>
-
-  <!-- FIXME: Historical rule -->
-  <!-- Rule to run the compiler regression tests -->
-  <target name="test.compiler" depends="publish">
-    <exec executable="bin/compilertest" failonerror="true"/>
-  </target>
-
   <!-- Runs the JUnit tests -->
   <target name="test" depends="publish,test.classes,ceylon-tests.car" description="Runs the JUnit tests">
     <mkdir dir="${test.reports}"/>
