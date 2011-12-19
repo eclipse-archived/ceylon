@@ -422,7 +422,7 @@ public class Main extends com.sun.tools.javac.main.Main {
                 for (JavaFileObject fo : otherFiles)
                     fileObjects = fileObjects.prepend(fo);
             }
-            if(filenames.isEmpty()){
+            if(fileObjects.isEmpty()){
                 error("err.no.source.files");
                 return EXIT_CMDERR;
             }
