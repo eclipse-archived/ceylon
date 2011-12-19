@@ -92,7 +92,8 @@
   <!-- Rule to clean everything up -->
   <target name="clean">
     <delete dir="${build}"/>
-    <delete dir="${antlr.dst}"/>
+    <delete dir="samples/helloworld/modules"/>
+    <delete dir="samples/no-module/modules"/>
   </target>
 
   <!-- Repository targets -->
