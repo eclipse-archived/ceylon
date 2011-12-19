@@ -1,6 +1,7 @@
 # Ceylon distribution
 
-This is version 0.1 "Newton" Milestone 1 of Ceylon. This is a pre-release version.
+This is the Milestone 1 "Newton" release of the Ceylon command line tools (version 
+0.1). This is a pre-release version of the platform for review by the community.
 
 Ceylon is a programming language for writing large programs in a team environment. 
 The language is elegant, highly readable, extremely typesafe, and makes it easy to 
@@ -66,7 +67,7 @@ documented in the `NOTICE` file that accompanied this code.
 
 ### Repository
 
-The content of this code repository (available [here on github][ceylon-dist]) 
+The content of this code repository, [available here on GitHub][ceylon-dist], 
 is released under the ASL v2.0 as provided in the `LICENSE` file that accompanied 
 this code.
 
