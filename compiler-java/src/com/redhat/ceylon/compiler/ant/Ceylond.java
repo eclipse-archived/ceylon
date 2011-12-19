@@ -46,6 +46,7 @@ public class Ceylond extends Task {
     private Path src;   
     private File out;
     private List<Rep> repositories = new LinkedList<Rep>();
+    private List<Module> modules = new LinkedList<Module>();
     private File executable;
     private boolean omitSource;
     private boolean includePrivate;
@@ -82,6 +83,14 @@ public class Ceylond extends Task {
      */
     public void addRep(Rep rep){
         repositories.add(rep);
+    }
+    
+    /**
+     * Adds a module to compile
+     * @param module the module name to compile
+     */
+    public void addModule(Module module){
+        modules.add(module);
     }
     
     /**
@@ -148,6 +157,11 @@ public class Ceylond extends Task {
             cmd.createArgument().setValue("-omit-source");
         if(includePrivate)
             cmd.createArgument().setValue("-private");
+        // modules to document
+        for (Module module : modules) {
+            log("Adding module: "+module, Project.MSG_VERBOSE);
+            cmd.createArgument().setValue(module.toSpec());
+        }
 
         try {
             Execute exe = new Execute(new LogStreamHandler(this, Project.MSG_INFO, Project.MSG_WARN));

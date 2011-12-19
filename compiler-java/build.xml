@@ -347,20 +347,30 @@
       executable="${build.bin}/ceylond"
       src="../ceylon.language/src"
       out="${build.api}">
+      <module name="ceylon.language"/>
     </ceylond>
   </target>
 	
   <target name="test-tasks" depends="ant-tasks">
+  	<!-- by file name -->
     <ceylonc
       executable="${build.bin}/ceylonc"
       src="samples/helloworld/source"
       out="${build.ceylon.cars}">
        <include name="com/acme/helloworld/*.ceylon"/>
     </ceylonc>
+  	<!-- by module name -->
+    <ceylonc
+      executable="${build.bin}/ceylonc"
+      src="samples/helloworld/source"
+      out="${build.ceylon.cars}">
+       <module name="com.acme.helloworld"/>
+    </ceylonc>
     <ceylond
       executable="${build.bin}/ceylond"
       src="samples/helloworld/source"
       out="${build.ceylon.cars}">
+    	<module name="com.acme.helloworld"/>
     </ceylond>
     <ceylon
       executable="../ceylon-runtime/dist/bin/ceylon"

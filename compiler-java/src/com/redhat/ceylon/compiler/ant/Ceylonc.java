@@ -53,6 +53,7 @@ public class Ceylonc extends MatchingTask {
     private Path classpath;
     private List<Rep> repositories = new LinkedList<Rep>();
     private File executable;
+    private List<Module> modules = new LinkedList<Module>();
 
     /**
      * Sets the classpath
@@ -104,6 +105,14 @@ public class Ceylonc extends MatchingTask {
     }
     
     /**
+     * Adds a module to compile
+     * @param module the module name to compile
+     */
+    public void addModule(Module module){
+        modules.add(module);
+    }
+    
+    /**
      * Set the destination directory into which the Java source files should be
      * compiled.
      * @param out the destination director
@@ -120,6 +129,12 @@ public class Ceylonc extends MatchingTask {
         checkParameters();
         resetFileLists();
         
+        // exclude anything from modules
+        for(int i=0;i<modules.size();i++){
+            String exclude = modules.get(i).name.replaceAll("\\.", "/")+"/*.ceylon";
+            log("Adding exclude: "+exclude, Project.MSG_VERBOSE);
+            createExclude().setName(exclude);
+        }
         String[] list = src.list();
         for (int i = 0; i < list.length; i++) {
             File srcDir = getProject().resolveFile(list[i]);
@@ -203,8 +218,10 @@ public class Ceylonc extends MatchingTask {
      * Perform the compilation.
      */
     private void compile() {
-        if (compileList.length == 0)
+        if (compileList.length == 0 && modules.size() == 0){
+            log("Nothing to compile");
             return;
+        }
 
         Commandline cmd = new Commandline();
         cmd.setExecutable(getCompiler());
@@ -230,8 +247,15 @@ public class Ceylonc extends MatchingTask {
             cmd.createArgument().setValue("-classpath");
             cmd.createArgument().setValue(Util.quoteParameter(path));
         }
+        // files to compile
         for (int i = 0; i < compileList.length; i++) {
+            log("Adding source file: "+compileList[i].getAbsolutePath(), Project.MSG_VERBOSE);
             cmd.createArgument().setValue(compileList[i].getAbsolutePath());
+        }
+        // modules to compile
+        for (Module module : modules) {
+            log("Adding module: "+module, Project.MSG_VERBOSE);
+            cmd.createArgument().setValue(module.toSpec());
         }
 
         try {
