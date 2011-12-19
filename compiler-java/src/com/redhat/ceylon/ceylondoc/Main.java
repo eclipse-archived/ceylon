@@ -51,7 +51,7 @@ public class Main {
             } else if ("-out".equals(arg)) {
                 destDir = args[++i];
             } else if ("-src".equals(arg)) {
-                sourceDirs.add(args[++i]);
+                sourceDirs.addAll(readPath(args[++i]));
             } else if ("-rep".equals(arg)) {
                 repositories.add(args[++i]);
             } else if ("-private".equals(arg)) {
@@ -98,6 +98,23 @@ public class Main {
             x.printStackTrace();
             System.exit(1);
         }
+    }
+
+    private static List<String> readPath(String path) {
+        List<String> ret = new LinkedList<String>();
+        int start = 0;
+        int sep;
+        while((sep = path.indexOf(File.pathSeparatorChar, start)) != -1){
+            String part = path.substring(start, sep);
+            if(!part.isEmpty())
+                ret.add(part);
+            start = sep + 1;
+        }
+        // rest
+        String part = path.substring(start);
+        if(!part.isEmpty())
+            ret.add(part);
+        return ret;
     }
 
     private static void printVersion() {
