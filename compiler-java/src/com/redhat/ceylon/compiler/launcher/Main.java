@@ -465,7 +465,8 @@ public class Main extends com.sun.tools.javac.main.Main {
 
     private List<File> addModuleSources(List<File> filenames) throws IOException {
         for(String moduleName : classnames){
-            Iterable<JavaFileObject> files = fileManager.list(StandardLocation.SOURCE_PATH, moduleName, EnumSet.of(Kind.SOURCE), true);
+            String path = moduleName.equals("default") ? "" : moduleName;
+            Iterable<JavaFileObject> files = fileManager.list(StandardLocation.SOURCE_PATH, path, EnumSet.of(Kind.SOURCE), true);
             for(JavaFileObject file : files){
                 File f = new File(file.toUri().getPath());
                 filenames = filenames.prepend(f);

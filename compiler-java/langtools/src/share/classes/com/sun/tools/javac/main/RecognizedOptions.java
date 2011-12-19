@@ -644,6 +644,7 @@ public class RecognizedOptions {
                 this.s = s;
                 return s.endsWith(".java")  // Java source file
                     || s.endsWith(".ceylon") // FIXME: Should be a FileManager query
+                    || "default".equals(s) // FIX for ceylon because default is not a valid name for Java
                     || SourceVersion.isName(s);   // Legal type name
             }
             public boolean process(Options options, String option) {
