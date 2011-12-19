@@ -4,7 +4,7 @@ doc "Since strings are immutable, this class is used for
      but threadsafe."
 shared class StringBuilder() {
     doc "The resulting string. If no characters have been
-         appended, the empty string.
+         appended, the empty string."
     shared actual String string { 
         throw; 
     }
