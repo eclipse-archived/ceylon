@@ -22,16 +22,29 @@ class Fookls(Integer init) {
     shared Integer prop = 42;
     Integer privProp = 24;
     Integer init = init;
-    shared void f1(Integer n = 5) {}
-    shared void f2(Integer n, String s = "test") {}
-    shared void f3(Integer n = 5, Integer m = n) {}
-    shared void f4(Integer n = 5, Integer m = n + 1) {}
-    shared void f5(Integer n = prop) {}
-    shared void f6(Integer n = privProp) {}
-    shared void f7(Integer n = this.prop) {}
-    shared void f8(Integer n = init) {}
-    shared void f9(Integer n = prop.successor) {}
-    shared void fa(Integer n = 5, Integer... seq) {}
+    shared default void f1(Integer n = 5) {}
+    shared default void f2(Integer n, String s = "test") {}
+    shared default void f3(Integer n = 5, Integer m = n) {}
+    shared default void f4(Integer n = 5, Integer m = n + 1) {}
+    shared default void f5(Integer n = prop) {}
+    shared default void f6(Integer n = privProp) {}
+    shared default void f7(Integer n = this.prop) {}
+    shared default void f8(Integer n = init) {}
+    shared default void f9(Integer n = prop.successor) {}
+    shared default void fa(Integer n = 5, Integer... seq) {}
+}
+@nomodel
+class Foosubkls(Integer init) extends Fookls(init) {
+    shared actual void f1(Integer n) {}
+    shared actual void f2(Integer n, String s) {}
+    shared actual void f3(Integer n, Integer m) {}
+    shared actual void f4(Integer n, Integer m) {}
+    shared actual void f5(Integer n) {}
+    shared actual void f6(Integer n) {}
+    shared actual void f7(Integer n) {}
+    shared actual void f8(Integer n) {}
+    shared actual void f9(Integer n) {}
+    shared actual void fa(Integer n, Integer... seq) {}
 }
 @nomodel
 interface Barface {
@@ -109,6 +122,56 @@ void methodInvocationWithDefaultedParameters() {
     f.fa{n=6;};
     f.fa{n=6; 1, 2, 3};
     
+    Foosubkls f2 = Foosubkls(88);
+    f2.f1();
+    f2.f1(6);
+    f2.f2(1);
+    f2.f2(1, "foo");
+    f2.f3();
+    f2.f3(6);
+    f2.f3(6, 9);
+    f2.f4();
+    f2.f4(6);
+    f2.f4(6, 9);
+    f2.f5();
+    f2.f5(6);
+    f2.f6();
+    f2.f6(6);
+    f2.f7();
+    f2.f7(6);
+    f2.f8();
+    f2.f8(6);
+    f2.f9();
+    f2.f9(6);
+    f2.fa();
+    f2.fa(6);
+    f2.fa(6);
+    f2.fa(6, 1, 2, 3);
+    
+    f2.f1{};
+    f2.f1{n=6;};
+    f2.f2{n=1;};
+    f2.f2{n=1; s="foo";};
+    f2.f3{};
+    f2.f3{n=6;};
+    f2.f3{m=9; n=6;};
+    f2.f4{};
+    f2.f4{n=6;};
+    f2.f4{m=9; n=6;};
+    f2.f5{};
+    f2.f5{n=6;};
+    f2.f6{};
+    f2.f6{n=6;};
+    f2.f7{};
+    f2.f7{n=6;};
+    f2.f8{};
+    f2.f8{n=6;};
+    f2.f9{};
+    f2.f9{n=6;};
+    f2.fa{};
+    f2.fa{n=6;};
+    f2.fa{n=6; 1, 2, 3};
+    
     Barface b = Barkls();
     b.f1();
     b.f1(6);
@@ -122,8 +185,72 @@ void methodInvocationWithDefaultedParameters() {
     b.f4(6, 9);
     b.f5();
     b.f5(6);
-    f.f7();
-    f.f7(6);
-    f.f9();
-    f.f9(6);
+    b.f7();
+    b.f7(6);
+    b.f9();
+    b.f9(6);
+    b.fa(6);
+    b.fa(6);
+    b.fa(6, 1, 2, 3);
+    
+    b.f1{};
+    b.f1{n=6;};
+    b.f2{n=1;};
+    b.f2{n=1; s="foo";};
+    b.f3{};
+    b.f3{n=6;};
+    b.f3{m=9; n=6;};
+    b.f4{};
+    b.f4{n=6;};
+    b.f4{m=9; n=6;};
+    b.f5{};
+    b.f5{n=6;};
+    b.f7{};
+    b.f7{n=6;};
+    b.f9{};
+    b.f9{n=6;};
+    b.fa{};
+    b.fa{n=6;};
+    b.fa{n=6; 1, 2, 3};
+    
+    Barkls b2 = Barkls();
+    b2.f1();
+    b2.f1(6);
+    b2.f2(1);
+    b2.f2(1, "foo");
+    b2.f3();
+    b2.f3(6);
+    b2.f3(6, 9);
+    b2.f4();
+    b2.f4(6);
+    b2.f4(6, 9);
+    b2.f5();
+    b2.f5(6);
+    b2.f7();
+    b2.f7(6);
+    b2.f9();
+    b2.f9(6);
+    b2.fa(6);
+    b2.fa(6);
+    b2.fa(6, 1, 2, 3);
+    
+    b2.f1{};
+    b2.f1{n=6;};
+    b2.f2{n=1;};
+    b2.f2{n=1; s="foo";};
+    b2.f3{};
+    b2.f3{n=6;};
+    b2.f3{m=9; n=6;};
+    b2.f4{};
+    b2.f4{n=6;};
+    b2.f4{m=9; n=6;};
+    b2.f5{};
+    b2.f5{n=6;};
+    b2.f7{};
+    b2.f7{n=6;};
+    b2.f9{};
+    b2.f9{n=6;};
+    b2.fa{};
+    b2.fa{n=6;};
+    b2.fa{n=6; 1, 2, 3};
 }
