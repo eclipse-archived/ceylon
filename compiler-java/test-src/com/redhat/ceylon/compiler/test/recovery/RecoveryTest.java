@@ -41,6 +41,11 @@ public class RecoveryTest extends CompilerTest {
         compile(2, "DuplicateDeclaration1.ceylon", "DuplicateDeclaration2.ceylon");
     }
 
+    @Test
+    public void testRcvM2Features(){
+        compile(1, "M2Features.ceylon");
+    }
+
     private void compile(int expectedErrors, String... ceylon){
         DiagnosticCollector<JavaFileObject> errorCollector = new DiagnosticCollector<JavaFileObject>();
         Boolean success = getCompilerTask(defaultOptions, errorCollector , ceylon).call();
