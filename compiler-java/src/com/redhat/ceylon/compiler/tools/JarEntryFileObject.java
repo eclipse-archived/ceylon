@@ -59,7 +59,6 @@ public class JarEntryFileObject implements JavaFileObject {
             // we override the close() method to automagically close the current entry
             @Override
             public void close() throws IOException {
-                jarFile.closeEntry();
             }
         };
     }
