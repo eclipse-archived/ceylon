@@ -6,5 +6,5 @@ shared Integer identityHash(IdentifiableObject x) {
     //this implementation is nonsense, of course, 
     //since actually the real implementation is
     //in Java
-    return +0;
+    return 0;
 }
