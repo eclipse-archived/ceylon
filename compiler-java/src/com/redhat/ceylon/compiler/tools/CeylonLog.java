@@ -50,6 +50,16 @@ public class CeylonLog extends Log {
     }
     
     @Override
+    public void note(JavaFileObject file, String key, Object... args) {
+        // Ignore lint warnings
+    }
+
+    @Override
+    public void mandatoryNote(JavaFileObject file, String key, Object... args) {
+        // Ignore lint warnings
+    }
+
+    @Override
     public void warning(String key, Object... args) {
         // limit the number of warnings for Java 7 classes
         if("big.major.version".equals(key)){
