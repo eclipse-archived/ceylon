@@ -1,0 +1,19 @@
+Source: ceylon-0.1
+Section: unknown
+Priority: extra
+Maintainer: Stephane Epardaud <stephane@lunatech.com>
+Build-Depends: debhelper (>= 7), ant
+Standards-Version: 3.8.3
+Homepage: http://ceylon-lang.org
+
+Package: ceylon-0.1
+Architecture: all
+Depends: ${misc:Depends}, java-runtime
+Description: Ceylon language
+ This is the Ceylon language packaged for Debian.
+ .
+ Ceylon is a programming language for writing large programs in a team environment. 
+ The language is elegant, highly readable, extremely typesafe, and makes it easy to get things done. 
+ And it's easy to learn for programmers who are familiar with mainstream languages used in business computing. 
+ Ceylon has a full-featured Eclipse-based development environment, allowing developers to take best advantage of 
+ the powerful static type system. Programs written in Ceylon execute on any JVM.

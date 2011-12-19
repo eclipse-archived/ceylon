@@ -1,0 +1,34 @@
+#!/usr/bin/make -f
+#-*- makefile -*-
+# Made with the aid of dh_make, by Craig Small
+# Sample debian/rules that uses debhelper. GNU copyright 1997 by Joey Hess.
+# Some lines taken from debmake, by Christoph Lameter.
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+VERSION=0.1
+
+DEB_PATH=debian/ceylon-$(VERSION)
+INSTALL_PATH=/usr/share/ceylon/$(VERSION)
+DOC_PATH=/usr/share/doc/ceylon-$(VERSION)
+
+API=repo/ceylon/language/$(VERSION)/module-doc
+
+%:
+	dh  $@
+
+override_dh_auto_build: 
+	ant package
+
+override_dh_auto_clean: 
+	cd framework; \
+	ant clean
+
+override_dh_auto_install: 
+	install -d $(DEB_PATH)$(INSTALL_PATH) $(DEB_PATH)$(DOC_PATH)
+	rsync --exclude doc --exclude samples --exclude $(API) -r dist/* $(DEB_PATH)$(INSTALL_PATH)
+	rsync -r dist/doc dist/samples $(DEB_PATH)$(DOC_PATH)
+	rsync -r dist/$(API) LICENSE NOTICE README.md $(DEB_PATH)$(DOC_PATH)/doc/
+	mv $(DEB_PATH)$(DOC_PATH)/doc/module-doc $(DEB_PATH)$(DOC_PATH)/doc/api
+	ln -s $(DOC_PATH)/doc/api $(DEB_PATH)$(INSTALL_PATH)/repo/ceylon/language/0.1/module-doc
