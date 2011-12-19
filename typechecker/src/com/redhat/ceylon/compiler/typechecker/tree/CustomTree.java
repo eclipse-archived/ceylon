@@ -6,21 +6,21 @@ public class CustomTree extends Tree {
     
     public static class FunctionArgument 
             extends Tree.FunctionArgument {
-    	public FunctionArgument(Token token) {
-    		super(token);
-    	}
-    	@Override
-    	public void visitChildren(Visitor visitor) {
-    		if (getType()!=null)
-    			getType().visit(visitor);
-    		for (ParameterList pl: getParameterLists())
-    			pl.visit(visitor);
-    		if (getExpression()!=null)
-    			getExpression().visit(visitor);
-    	}
-    	@Override public String getNodeType() {
-    		return FunctionArgument.class.getSimpleName();
-    	}
+        public FunctionArgument(Token token) {
+            super(token);
+        }
+        @Override
+        public void visitChildren(Visitor visitor) {
+            if (getType()!=null)
+                getType().visit(visitor);
+            for (ParameterList pl: getParameterLists())
+                pl.visit(visitor);
+            if (getExpression()!=null)
+                getExpression().visit(visitor);
+        }
+        @Override public String getNodeType() {
+            return FunctionArgument.class.getSimpleName();
+        }
     }
 
     public static class AttributeDeclaration 
@@ -177,7 +177,7 @@ public class CustomTree extends Tree {
             }
             else {
                 if (getDefaultArgument()!=null)
-                	getDefaultArgument().visit(visitor);
+                    getDefaultArgument().visit(visitor);
                 super.visit(visitor);
             }
         }
@@ -207,7 +207,7 @@ public class CustomTree extends Tree {
             }
             else {
                 if (getDefaultArgument()!=null)
-                	getDefaultArgument().visit(visitor);
+                    getDefaultArgument().visit(visitor);
                 super.visit(visitor);
             }
         }
@@ -263,10 +263,10 @@ public class CustomTree extends Tree {
                         }
                     }
                     if (trimIndent) {
-                    	result.append(line.substring(start));
+                        result.append(line.substring(start));
                     }
                     else {
-                    	result.append(line);
+                        result.append(line);
                     }
                 }
                 result.append("\n");
@@ -277,4 +277,43 @@ public class CustomTree extends Tree {
         
     }
     
+    public static class NaturalLiteral
+            extends Tree.NaturalLiteral {
+        public NaturalLiteral(Token token) {
+            super(token);
+        }
+        @Override
+        public String getText() {
+            return super.getText().replace("_", "")
+                    .replace("k", "000")
+                    .replace("M", "000000")
+                    .replace("G", "000000000")
+                    .replace("T", "000000000000")
+                    .replace("P", "000000000000000");
+        }
+        
+    }
+
+    public static class FloatLiteral
+            extends Tree.FloatLiteral {
+        public FloatLiteral(Token token) {
+            super(token);
+        }
+        @Override
+        public String getText() {
+            return super.getText().replace("_", "")
+                    .replace("k", "e+3")
+                    .replace("M", "e+6")
+                    .replace("G", "e+9")
+                    .replace("T", "e+12")
+                    .replace("P", "e+15")
+                    .replace("m", "e-3")
+                    .replace("u", "e-6")
+                    .replace("n", "e-9")
+                    .replace("p", "e-12")
+                    .replace("f", "e-15");
+        }
+
+    }
+
 }
