@@ -41,9 +41,11 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 
 public class CeylonDocToolTest {
 
-    private CeylonDocTool tool(String pathname, String testName)
+    private CeylonDocTool tool(String pathname, String testName, String moduleName)
             throws IOException {
-        CeylonDocTool tool = new CeylonDocTool(new File(pathname), Collections.<String>emptyList());
+        CeylonDocTool tool = new CeylonDocTool(Arrays.asList(new File(pathname)), 
+                Collections.<String>emptyList(), 
+                Arrays.asList(moduleName));
         File dir = new File(System.getProperty("java.io.tmpdir"), "CeylonDocToolTest/" + testName);
         if (dir.exists()) {
             rm(dir);
@@ -144,7 +146,7 @@ public class CeylonDocToolTest {
     public void moduleA() throws IOException {
         String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules";
         String testName = "moduleA";
-        CeylonDocTool tool = tool(pathname, testName);
+        CeylonDocTool tool = tool(pathname, testName, "a");
         tool.setShowPrivate(false);
         tool.setOmitSource(false);
         tool.makeDoc();
@@ -187,7 +189,7 @@ public class CeylonDocToolTest {
     public void moduleAWithPrivate() throws IOException {
         String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules";
         String testName = "moduleAWithPrivate";
-        CeylonDocTool tool = tool(pathname, testName);
+        CeylonDocTool tool = tool(pathname, testName, "a");
         tool.setShowPrivate(true);
         tool.setOmitSource(false);
         tool.makeDoc();
