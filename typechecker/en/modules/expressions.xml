@@ -299,24 +299,17 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     <section id="naturalnumber">
         <title>Integer number literals</title>
         
-        <para>A natural number literal <literal>n</literal> is an 
+        <para>An integer literal <literal>n</literal> is an 
         expression of type <literal>Integer</literal>.</para>
         
         <programlisting>Integer five = 5;</programlisting>
                 
-        <para><literal>Integer</literal> values can be produced 
-        using the unary prefix <literal>+</literal> and 
-        <literal>-</literal> operators:</para>
-        
-        <programlisting>Integer zero = +0;</programlisting>
-        <programlisting>Integer i = -1;</programlisting>
-        
     </section>
     
     <section id="floatnumber">
         <title>Floating point number literals</title>
         
-        <para>A floating point number literal is an expression of 
+        <para>A floating point literal is an expression of 
         type <literal>Float</literal>.</para>
         
         <programlisting>shared Float pi = 3.14159;</programlisting>
