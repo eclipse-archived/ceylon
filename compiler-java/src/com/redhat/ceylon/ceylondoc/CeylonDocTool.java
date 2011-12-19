@@ -387,6 +387,10 @@ public class CeylonDocTool {
             ModuleDoc moduleDoc = new ModuleDoc(this, rootWriter, module);
             moduleDoc.generate();
             for (Package pkg : module.getPackages()) {
+                if(pkg.getMembers().isEmpty()){
+                    continue;
+                }
+                // document the package
                 if (isRootPackage(module, pkg)) {
                     new PackageDoc(this, rootWriter, pkg).generate();
                 } else {
