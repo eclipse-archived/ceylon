@@ -1,3 +1,6 @@
+doc "A sequence with no elements. The type of the expression
+     `{}`."
+see (Sequence)
 shared interface Empty
            satisfies Correspondence<Integer, Bottom> & 
                      Sized & Ordered<Bottom> & 
