@@ -422,6 +422,10 @@ public class Main extends com.sun.tools.javac.main.Main {
                 for (JavaFileObject fo : otherFiles)
                     fileObjects = fileObjects.prepend(fo);
             }
+            if(filenames.isEmpty()){
+                error("err.no.source.files");
+                return EXIT_CMDERR;
+            }
             comp.compile(fileObjects, classnames.toList(), processors);
 
             if (comp.errorCount() != 0)
@@ -467,9 +471,14 @@ public class Main extends com.sun.tools.javac.main.Main {
         for(String moduleName : classnames){
             String path = moduleName.equals("default") ? "" : moduleName;
             Iterable<JavaFileObject> files = fileManager.list(StandardLocation.SOURCE_PATH, path, EnumSet.of(Kind.SOURCE), true);
+            boolean gotOne = false;
             for(JavaFileObject file : files){
                 File f = new File(file.toUri().getPath());
                 filenames = filenames.prepend(f);
+                gotOne = true;
+            }
+            if(!gotOne){
+                warning("ceylon", "Could not find source files for module: "+moduleName);
             }
         }
         classnames.clear();
