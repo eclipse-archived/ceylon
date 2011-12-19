@@ -1,5 +1,7 @@
 # Ceylon distribution
 
+This is version 0.1 "Newton" Milestone 1 of Ceylon. This is a pre-release version.
+
 Ceylon is a programming language for writing large programs in a team environment. 
 The language is elegant, highly readable, extremely typesafe, and makes it easy to get things done. 
 And it's easy to learn for programmers who are familiar with mainstream languages used in business computing. 
