@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.test.structure.klass;
 
-class DefaultedInitializerParameter {
+public class DefaultedInitializerParameter {
     
-    DefaultedInitializerParameter(long n) {
+    public DefaultedInitializerParameter(long n) {
     }
     
     public static final class DefaultedInitializerParameter$impl {
@@ -11,7 +11,7 @@ class DefaultedInitializerParameter {
             super();
         }
         
-        static long $init$n() {
+        public static long $init$n() {
             return 5L;
         }
     }
@@ -21,9 +21,9 @@ class DefaultedInitializerParameter2 {
     DefaultedInitializerParameter2(long n, .java.lang.String s) {
     }
     
-    public static final class DefaultedInitializerParameter2$impl {
+    static final class DefaultedInitializerParameter2$impl {
         
-        public DefaultedInitializerParameter2$impl() {
+        DefaultedInitializerParameter2$impl() {
             super();
         }
         
@@ -37,9 +37,9 @@ class DefaultedInitializerParameter3 {
     DefaultedInitializerParameter3(long n, long m) {
     }
     
-    public static final class DefaultedInitializerParameter3$impl {
+    static final class DefaultedInitializerParameter3$impl {
         
-        public DefaultedInitializerParameter3$impl() {
+        DefaultedInitializerParameter3$impl() {
             super();
         }
         
@@ -57,9 +57,9 @@ class DefaultedInitializerParameter4 {
     DefaultedInitializerParameter4(long n, long m) {
     }
     
-    public static final class DefaultedInitializerParameter4$impl {
+    static final class DefaultedInitializerParameter4$impl {
         
-        public DefaultedInitializerParameter4$impl() {
+        DefaultedInitializerParameter4$impl() {
             super();
         }
         
@@ -77,9 +77,9 @@ class DefaultedInitializerParameter5 {
     DefaultedInitializerParameter5(long n, ceylon.language.Iterable<? extends ceylon.language.Integer> seq) {
     }
     
-    public static final class DefaultedInitializerParameter5$impl {
+    static final class DefaultedInitializerParameter5$impl {
         
-        public DefaultedInitializerParameter5$impl() {
+        DefaultedInitializerParameter5$impl() {
             super();
         }
         

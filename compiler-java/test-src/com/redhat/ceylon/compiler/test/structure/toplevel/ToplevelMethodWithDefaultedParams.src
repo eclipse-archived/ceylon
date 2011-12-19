@@ -14,7 +14,7 @@ public final class f1 {
             super();
         }
         
-        static long f1$n() {
+        public static long f1$n() {
             return 5L;
         }
     }
@@ -33,7 +33,7 @@ public final class f2 {
             super();
         }
         
-        static .java.lang.String f2$s(final long n) {
+        public static .java.lang.String f2$s(final long n) {
             return "test";
         }
     }
@@ -52,11 +52,11 @@ public final class f3 {
             super();
         }
         
-        static long f3$n() {
+        public static long f3$n() {
             return 5L;
         }
         
-        static long f3$m(final long n) {
+        public static long f3$m(final long n) {
             return n;
         }
     }
@@ -75,11 +75,11 @@ public final class f4 {
             super();
         }
         
-        static long f4$n() {
+        public static long f4$n() {
             return 5L;
         }
         
-        static long f4$m(final long n) {
+        public static long f4$m(final long n) {
             return .ceylon.language.Integer.instance(n).plus(.ceylon.language.Integer.instance(1L)).longValue();
         }
     }
@@ -98,7 +98,7 @@ public final class f5 {
             super();
         }
         
-        static long f5$n() {
+        public static long f5$n() {
             return 5L;
         }
     }

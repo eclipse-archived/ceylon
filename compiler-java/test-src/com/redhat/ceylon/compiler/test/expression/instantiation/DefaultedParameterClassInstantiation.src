@@ -16,9 +16,9 @@ class DefaultedParameterClassInstantiation {
     DefaultedParameterClassInstantiation(long m, long n, ceylon.language.Iterable<? extends ceylon.language.Integer> seq) {
     }
     
-    public static final class DefaultedParameterClassInstantiation$impl {
+    static final class DefaultedParameterClassInstantiation$impl {
         
-        public DefaultedParameterClassInstantiation$impl() {
+        DefaultedParameterClassInstantiation$impl() {
             super();
         }
         

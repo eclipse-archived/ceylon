@@ -374,6 +374,11 @@ public class ClassTransformer extends AbstractTransformer {
         String name = Util.getDefaultedParamMethodName(container.getDeclarationModel(), param.getDeclarationModel());
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, true, name);
         
+        int modifiers = STATIC;
+        if (container.getDeclarationModel().isShared()) {
+            modifiers |= PUBLIC;
+        }
+        
         if (container instanceof Tree.AnyMethod && !container.getDeclarationModel().isToplevel()) {
             ProducedType thisType = getThisType(container);
             methodBuilder.parameter(0, "$this", makeJavaType(thisType), null);
@@ -394,9 +399,9 @@ public class ClassTransformer extends AbstractTransformer {
         JCExpression expr = expressionGen().transform(param);
         JCBlock body = at(param).Block(0, List.<JCStatement> of(at(param).Return(expr)));
         methodBuilder.block(body);
-        
+
         return methodBuilder
-            .modifiers(STATIC)
+            .modifiers(modifiers)
             .build();
     }
 

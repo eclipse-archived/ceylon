@@ -18,12 +18,22 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-shared class DefaultedInitializerParameter(Integer n = 5) {}
-@nomodel
-class DefaultedInitializerParameter2(Integer n, String s = "test") {}
-@nomodel
-class DefaultedInitializerParameter3(Integer n = 5, Integer m = n) {}
-@nomodel
-class DefaultedInitializerParameter4(Integer n = 5, Integer m = n + 1) {}
-@nomodel
-class DefaultedInitializerParameter5(Integer n = 5, Integer... seq) {}
+class InnerMethodWithDefaultedParams(Integer init) {
+    shared Integer prop = 42;
+    Integer privProp = 24;
+    Integer init = init;
+    shared void test(Integer param) {
+        void f1(Integer n = 5) {}
+        void f2(Integer n, String s = "test") {}
+        void f3(Integer n = 5, Integer m = n) {}
+        void f4(Integer n = 5, Integer m = n + 1) {}
+        void f5(Integer n = prop) {}
+        void f6(Integer n = privProp) {}
+        void f7(Integer n = this.prop) {}
+        void f8(Integer n = init) {}
+        void f9(Integer n = prop.successor) {}
+        void fa(Integer n = 5, Integer... seq) {}
+        
+        
+    }
+}
