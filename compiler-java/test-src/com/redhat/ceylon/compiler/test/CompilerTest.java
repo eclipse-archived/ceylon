@@ -86,8 +86,12 @@ public abstract class CompilerTest {
 
 	@Before
 	public void cleanCars() {
-        File destFile = new File(destDir);
-        List<String> extensionsToDelete = Arrays.asList(".jar", ".car", ".src", ".sha1");
+	    cleanCars(destDir);
+	}
+	
+    public void cleanCars(String repo) {
+        File destFile = new File(repo);
+        List<String> extensionsToDelete = Arrays.asList("");
         new RepositoryLister(extensionsToDelete).list(destFile, new RepositoryLister.Actions() {
             @Override
             public void doWithFile(File path) {
@@ -100,8 +104,8 @@ public abstract class CompilerTest {
                 }
             }
         });
-	}
-	
+    }
+    
 	protected void compareWithJavaSourceWithPositions(String name) {
         // make a compiler task
         // FIXME: runFileManager.setSourcePath(dir);
@@ -262,6 +266,7 @@ public abstract class CompilerTest {
 		try{
 		    // make sure we load the stuff from the Car
 		    File car = new File(destCar);
+	        Assert.assertTrue(car.exists());
 		    ClassLoader loader = URLClassLoader.newInstance(
 		            new URL[] { car.toURL() },
 		            getClass().getClassLoader()
