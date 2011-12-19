@@ -3,12 +3,13 @@
 This is version 0.1 "Newton" Milestone 1 of Ceylon. This is a pre-release version.
 
 Ceylon is a programming language for writing large programs in a team environment. 
-The language is elegant, highly readable, extremely typesafe, and makes it easy to get things done. 
-And it's easy to learn for programmers who are familiar with mainstream languages used in business computing. 
-Ceylon has a full-featured Eclipse-based development environment, allowing developers to take best advantage of 
-the powerful static type system. Programs written in Ceylon execute on any JVM.
+The language is elegant, highly readable, extremely typesafe, and makes it easy to 
+get things done. And it's easy to learn for programmers who are familiar with 
+mainstream languages used in business computing. Ceylon has a full-featured 
+Eclipse-based development environment, allowing developers to take best advantage 
+of the powerful static type system. Programs written in Ceylon execute on any JVM.
 
-Read more about ceylon at <http://ceylon-lang.org>.
+Read more about Ceylon at <http://ceylon-lang.org>.
 
 ## Distribution layout
 
@@ -24,44 +25,52 @@ Read more about ceylon at <http://ceylon-lang.org>.
 - LICENSE:      The Ceylon license
 - README.md:    This file
 
-Note that the `ceylon.language` API documentation is in <repo/ceylon/language/0.1/module-doc>.
+Note that the `ceylon.language` API documentation may be found here:
 
-## Running programs
+    repo/ceylon/language/0.1/module-doc
 
-### Here's everything you need to compile and run the samples:
+## Running the sample programs
 
-```
-cd samples/helloworld
-../../bin/ceylonc com.acme.helloworld
-../../bin/ceylond com.acme.helloworld
-../../bin/ceylon com.acme.helloworld/1.0.0 John Doe
-```
+To compile and run the samples, start from the distribution directory containing
+this file.
 
-```
-cd samples/no-module
-../../bin/ceylonc default
-../../bin/ceylond default
-../../bin/ceylon default
-```
+To run the "hello world" program, type:
+
+    cd samples/helloworld
+    ../../bin/ceylonc com.acme.helloworld
+    ../../bin/ceylond com.acme.helloworld
+    ../../bin/ceylon com.acme.helloworld/1.0.0 John Doe
+
+To run a program defined in the default module, type:
+
+    cd samples/no-module
+    ../../bin/ceylonc default
+    ../../bin/ceylond default
+    ../../bin/ceylon default
 
 ## License
 
 The Ceylon distribution is and contains work released
 
-- partly under the ASL v2.0 as provided in the LICENSE file that accompanied this code.
-- partly under the GPL v2 + Classpath Exception as available 
-  [in the ceylon-compiler repository](https://github.com/ceylon/ceylon-compiler/blob/master/LICENSE)
+- partly under the ASL v2.0 as provided in the `LICENSE` file that accompanied 
+  this code, and
+- partly under the GPL v2 + Classpath Exception as [available in the repository
+  `ceylon-compiler`][license].
+
+[license]: https://github.com/ceylon/ceylon-compiler/blob/master/LICENSE
 
 ### License terms for 3rd Party Works
 
 This software uses a number of other works, the license terms of which are 
-documented in the NOTICE file that accompanied this code.
+documented in the `NOTICE` file that accompanied this code.
 
 ### Repository
 
-The content of the ceylon-dit git repository 
-The content of this code repository (available [here on github](https://github.com/ceylon/ceylon-dist)) 
-is released under the ASL v2.0 as provided in the LICENSE file that accompanied this code.
+The content of this code repository (available [here on github][ceylon-dist]) 
+is released under the ASL v2.0 as provided in the `LICENSE` file that accompanied 
+this code.
+
+[ceylon-dist]: https://github.com/ceylon/ceylon-dist
 
 By submitting a "pull request" or otherwise contributing to this repository, you
 agree to license your contribution under the license mentioned above.
