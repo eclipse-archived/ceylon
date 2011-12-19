@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.codegen;
 
-import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
-import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -36,10 +34,9 @@ public class ErrorVisitor extends Visitor implements NaturalVisitor {
     }
 
     private boolean hasAnyError(Node that) {
-        // skip warnings
-        for(Message message : that.getErrors())
-            if(!(message instanceof AnalysisWarning))
-                return true;
+        // don't skip warnings
+        if(!that.getErrors().isEmpty())
+            return true;
         return false;
     }
 

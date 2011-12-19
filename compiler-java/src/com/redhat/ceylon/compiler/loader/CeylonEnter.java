@@ -278,7 +278,7 @@ public class CeylonEnter extends Enter {
                 }
                 @Override
                 protected void out(AnalysisWarning err) {
-                    logWarning(getPosition(err.getTreeNode()), err.getMessage());
+                    logError(getPosition(err.getTreeNode()), err.getMessage());
                 }
                 @Override
                 protected void out(Node that, String message) {
