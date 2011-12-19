@@ -34,8 +34,6 @@ import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
 
-import java.io.File;
-import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -60,21 +58,13 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
      * @return repository extension
      */
     protected Repository createRepository(Configuration conf) {
-        RepositoryBuilder builder = null;
-        String root = null;
-        final List<String> repositories = conf.repositories;
-        if (repositories.isEmpty() == false)
-            root = repositories.get(0);
-        if (root != null) {
-            File rootDir = new File(root);
-            if (rootDir.exists() && rootDir.isDirectory())
-                builder = new RepositoryBuilder(rootDir);
-        }
-        if (builder == null)
-            builder = new RepositoryBuilder();
+        final RepositoryBuilder builder = new RepositoryBuilder();
 
-        for (int i = 1; i < repositories.size(); i++) {
-            final String token = repositories.get(i);
+        // add default repos - if they exist
+        builder.addCeylonHome();
+        builder.addModules();
+        // any user defined repos
+        for (String token : conf.repositories) {
             try {
                 final RootBuilder rb = new RootBuilder(token);
                 builder.addExternalRoot(rb.buildRoot());
@@ -82,6 +72,8 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
                 Logger.getLogger("ceylon.runtime").warning("Failed to add repository: " + token);
             }
         }
+        // add remote module repo
+        builder.addModulesCeylonLangOrg();
 
         final MergeStrategy ms = getService(MergeStrategy.class, conf);
         if (ms != null)

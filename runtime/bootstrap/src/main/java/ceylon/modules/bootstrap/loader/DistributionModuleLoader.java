@@ -35,8 +35,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -103,11 +101,7 @@ public class DistributionModuleLoader extends BootstrapModuleLoader {
     }
 
     protected boolean forceBootstrapUpdate() {
-        return AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
-            public Boolean run() {
-                return Boolean.getBoolean("force.bootstrap.update");
-            }
-        });
+        return SecurityActions.getBoolean("force.bootstrap.update");
     }
 
     protected static void delete(File file) {

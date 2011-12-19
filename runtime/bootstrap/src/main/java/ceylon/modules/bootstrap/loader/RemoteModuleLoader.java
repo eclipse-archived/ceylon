@@ -35,8 +35,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.net.URL;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.List;
 
 /**
@@ -53,17 +51,7 @@ public class RemoteModuleLoader extends BootstrapModuleLoader {
     private static final Method findModule;
 
     static {
-        findModule = AccessController.doPrivileged(new PrivilegedAction<Method>() {
-            public Method run() {
-                try {
-                    final Method declaredMethod = ModuleLoader.class.getDeclaredMethod("findModule", ModuleIdentifier.class);
-                    declaredMethod.setAccessible(true);
-                    return declaredMethod;
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
+        findModule = SecurityActions.findModule();
     }
 
     private final ModuleLoader delegate;
@@ -80,8 +68,8 @@ public class RemoteModuleLoader extends BootstrapModuleLoader {
             throw new IllegalArgumentException("Null delegate");
 
         this.delegate = delegate;
-        this.rootURL = System.getProperty("modules.remote.root.url", "http://modules.ceylon.org/");
-        this.ceylonVersion = System.getProperty("ceylon.modules.version", DEFAULT_CEYLON_VERSION);
+        this.rootURL = SecurityActions.getProperty("modules.remote.root.url", "http://modules.ceylon-lang.org/");
+        this.ceylonVersion = SecurityActions.getProperty("ceylon.modules.version", DEFAULT_CEYLON_VERSION);
         this.repoRoot = new File(getCeylonRepository());
     }
 

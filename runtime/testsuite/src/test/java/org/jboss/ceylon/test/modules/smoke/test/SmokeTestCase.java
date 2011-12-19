@@ -23,6 +23,7 @@
 package org.jboss.ceylon.test.modules.smoke.test;
 
 import org.jboss.acme.module;
+import org.jboss.acme.run;
 import org.jboss.ceylon.test.modules.ModulesTest;
 import org.jboss.filtered.api.SomeAPI;
 import org.jboss.filtered.impl.SomeImpl;
@@ -38,7 +39,7 @@ public class SmokeTestCase extends ModulesTest {
     @Test
     public void singleModule() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "org.jboss.acme-1.0.0.CR1.car");
-        module.addClass(module.class);
+        module.addClasses(module.class, run.class);
         testArchive(module);
     }
 
@@ -48,7 +49,7 @@ public class SmokeTestCase extends ModulesTest {
         module.addClasses(com.foobar.qwert.module.class, com.foobar.qwert.run.class);
 
         JavaArchive lib = ShrinkWrap.create(JavaArchive.class, "org.jboss.acme-1.0.0.CR1.car");
-        lib.addClass(module.class);
+        lib.addClasses(module.class, run.class);
 
         testArchive(module, lib);
     }
