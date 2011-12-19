@@ -28,6 +28,9 @@ import com.redhat.ceylon.cmr.spi.MergeStrategy;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
 import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.logging.Logger;
 
 /**
  * Root repository builder.
@@ -68,6 +71,41 @@ public class RepositoryBuilder {
 
     public RepositoryBuilder cacheContent() {
         getRoot().addService(ContentTransformer.class, new CachingContentTransformer());
+        return this;
+    }
+
+    public RepositoryBuilder addCeylonHome() {
+        final String ceylonHome = SecurityActions.getProperty("ceylon.home");
+        if (ceylonHome != null) {
+            final File repo = new File(ceylonHome, "repo");
+            if (repo.exists() && repo.isDirectory())
+                addExternalRoot(new FileContentStore(repo).createRoot());
+            else
+                Logger.getLogger(RepositoryBuilder.class.getName()).warning("Invalid CEYLON_HOME/repo: " + repo);                
+        }
+        return this;
+    }
+
+    public RepositoryBuilder addModules() {
+        final File modules = new File("modules");
+        if (modules.exists() && modules.isDirectory())
+            addExternalRoot(new FileContentStore(modules).createRoot());
+        else
+            Logger.getLogger(RepositoryBuilder.class.getName()).warning("No such ./modules directory: " + modules);
+        return this;
+    }
+
+    public RepositoryBuilder addModulesCeylonLangOrg() {
+        InputStream is = null;
+        try {
+            final URL url = new URL(Repository.MODULES_CEYLON_LANG_ORG);
+            is = url.openStream();
+            addExternalRoot(new RemoteContentStore(Repository.MODULES_CEYLON_LANG_ORG).createRoot());
+        } catch (Exception ignored) {
+            Logger.getLogger(RepositoryBuilder.class.getName()).info("Ceylon repository '" + Repository.MODULES_CEYLON_LANG_ORG + "' not yet available.");
+        } finally {
+            IOUtils.safeClose(is);
+        }
         return this;
     }
 

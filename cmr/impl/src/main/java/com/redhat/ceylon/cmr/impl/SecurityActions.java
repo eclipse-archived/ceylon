@@ -20,29 +20,32 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package com.redhat.ceylon.cmr.api;
+package com.redhat.ceylon.cmr.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 /**
- * Repository API.
- *
+ * Security actions.
+ * 
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface Repository {
-    static final String MODULES_CEYLON_LANG_ORG = "http://modules.ceylon-lang.org";
-    static final String NO_VERSION = "**NO_VERSION**";
+final class SecurityActions {
+    
+    static String getProperty(final String key) {
+        return AccessController.doPrivileged(new PrivilegedAction<String>() {
+            public String run() {
+                return System.getProperty(key);
+            }
+        });
+    }
+    
+    static String getProperty(final String key, final String defaultValue) {
+        return AccessController.doPrivileged(new PrivilegedAction<String>() {
+            public String run() {
+                return System.getProperty(key, defaultValue);
+            }
+        });
+    }
 
-    File getArtifact(String name, String version) throws IOException;
-    File getArtifact(ArtifactContext context) throws IOException;
-
-    void putArtifact(String name, String version, InputStream content) throws IOException;
-    void putArtifact(String name, String version, File content) throws IOException;
-    void putArtifact(ArtifactContext context, InputStream content) throws IOException;
-    void putArtifact(ArtifactContext context, File content) throws IOException;
-
-    void removeArtifact(String name, String version) throws IOException;
-    void removeArtifact(ArtifactContext context) throws IOException;
 }

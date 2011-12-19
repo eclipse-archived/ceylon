@@ -38,10 +38,13 @@ public class RootRepository extends AbstractNodeRepository {
     private final FileContentStore fileContentStore;
 
     private static File getRootDir() {
-        String repo = System.getProperty("ceylon.repo");
+        String repo = SecurityActions.getProperty("ceylon.repo");
         if (repo == null)
-            repo = System.getProperty("user.home") + File.separator + ".ceylon" + File.separator + "repo" + File.separator;
-        return new File(repo);
+            repo = SecurityActions.getProperty("user.home") + File.separator + ".ceylon" + File.separator + "repo" + File.separator;
+        final File root = new File(repo);
+        if (root.exists() == false && root.mkdirs() == false)
+            throw new IllegalArgumentException("Cannot create Ceylon repo root directory: " + root);
+        return root;
     }
 
     public RootRepository() {

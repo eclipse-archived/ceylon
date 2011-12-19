@@ -27,8 +27,6 @@ import com.redhat.ceylon.cmr.spi.StructureBuilder;
 
 import java.io.File;
 import java.net.URI;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 
 /**
  * Root builder.
@@ -44,11 +42,7 @@ public class RootBuilder {
             throw new IllegalArgumentException("Null root token");
 
         final String key = (token.startsWith("${") ? token.substring(2, token.length() - 1) : token);
-        final String temp = AccessController.doPrivileged(new PrivilegedAction<String>() {
-            public String run() {
-                return System.getProperty(key);
-            }
-        });
+        final String temp = SecurityActions.getProperty(key);
         if (temp != null)
             token = temp;
         
