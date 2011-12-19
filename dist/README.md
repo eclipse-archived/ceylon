@@ -14,17 +14,17 @@ Read more about Ceylon at <http://ceylon-lang.org>.
 
 ## Distribution layout
 
-- bin:          Unix/Windows commands:
--- ceylon:      Run a Ceylon program
--- ceylonc:     Compile a Ceylon program
--- ceylond:     Document a Ceylon program
-- doc:          The Ceylon spec in HTML and PDF format
-- lib:          Required libraries for the Ceylon commands
-- repo:         Required bootstrap Ceylon modules (language, tools)
-- runtime-repo: Required runtime Ceylon modules (module system)
-- samples:      Sample Ceylon modules
-- LICENSE:      The Ceylon license
-- README.md:    This file
+- `bin`          - Unix/Windows commands:
+-- `ceylon`        - Run a Ceylon program
+-- `ceylonc`       - Compile a Ceylon program
+-- `ceylond`       - Document a Ceylon program
+- `doc`          - The Ceylon spec in HTML and PDF format
+- `lib`          - Required libraries for the Ceylon commands
+- `repo`         - Required bootstrap Ceylon modules (language, tools)
+- `runtime-repo` - Required runtime Ceylon modules (module system)
+- `samples`      - Sample Ceylon modules
+- `LICENSE`      - The Ceylon license
+- `README.md`    - This file
 
 Note that the `ceylon.language` API documentation may be found here:
 
