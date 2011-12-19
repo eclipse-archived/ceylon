@@ -31,6 +31,8 @@ public class CeylonLog extends Log {
         });
     }
 
+    private boolean majorVersionWarning = false;
+
     protected CeylonLog(Context context) {
         super(context);
     }
@@ -45,5 +47,17 @@ public class CeylonLog extends Log {
             }
         }
         super.report(diagnostic);
+    }
+    
+    @Override
+    public void warning(String key, Object... args) {
+        // limit the number of warnings for Java 7 classes
+        if("big.major.version".equals(key)){
+            if(!majorVersionWarning )
+                majorVersionWarning = true;
+            else // we already warned once
+                return;
+        }
+        super.warning(key, args);
     }
 }
