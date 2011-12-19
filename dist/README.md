@@ -29,9 +29,9 @@ The command line tools are located in the `bin` directory.
 - `bin/ceylonc`  - Compile a Ceylon program
 - `bin/ceylond`  - Document a Ceylon program
 
-Note that the `ceylon.language` API documentation may be found here:
+The API documentation for the language module `ceylon.language` may be found here:
 
-    repo/ceylon/language/0.1/module-doc
+- `repo/ceylon/language/0.1/module-doc`
 
 ## Running the sample programs
 
