@@ -32,8 +32,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
  * First phase of type analysis.
@@ -272,6 +272,9 @@ public class DeclarationVisitor extends Visitor {
         Scope o = enterScope(i);
         super.visit(that);
         exitScope(o);
+        if (!i.isToplevel()) {
+        	that.addWarning("nested interfaces are not yet supported");
+        }
     }
     
     @Override
