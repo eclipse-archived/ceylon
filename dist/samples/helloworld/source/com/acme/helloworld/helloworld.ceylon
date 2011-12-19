@@ -25,7 +25,7 @@ void hello(String name = "World") {
 doc "The runnable method of the module." 
 void run(){
     if (nonempty args=process.arguments) {
-        for (String arg in args) {
+        for (arg in args) {
             hello(arg);
         }
     }
