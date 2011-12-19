@@ -46,6 +46,10 @@
     <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/${module.com.redhat.ceylon.compiler.version}"/>
     <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler-${module.com.redhat.ceylon.compiler.version}.jar"/>
     <property name="ceylon.compiler.lib" location="${ceylon.repo.dir}/${ceylon.compiler.jar}"/>
+    <property name="ceylon.ant.loc" value="${basedir}/../ceylon-compiler"/>
+    <property name="ceylon.ant.dir" value="com/redhat/ceylon/ant/${module.com.redhat.ceylon.compiler.version}"/>
+    <property name="ceylon.ant.jar" value="${ceylon.ant.dir}/com.redhat.ceylon.ant-${module.com.redhat.ceylon.compiler.version}.jar"/>
+    <property name="ceylon.ant.lib" location="${ceylon.repo.dir}/${ceylon.ant.jar}"/>
 
     <property name="tests.car" value="${build.test}/default/default.car"/>
 
@@ -152,7 +156,7 @@
     <target name="ceylonc" depends="build">
         <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc" >
             <classpath>
-                <pathelement location="${ceylon.compiler.lib}"/>
+                <pathelement location="${ceylon.ant.lib}"/>
             </classpath>
         </taskdef>
     </target>
