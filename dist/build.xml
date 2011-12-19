@@ -10,7 +10,7 @@
     <property name="dist.name" value="ceylon-${ceylon.version}"/>
     <property name="dist.dir" value="${basedir}/dist"/>
 
-    <target name="package" depends="install-compiler, copy-compiler-binaries, copy-compiler-samples, copy-compiler-libraries, install-typechecker, install-language, install-runtime, generate-spec, generate-apidoc">
+    <target name="package" depends="install-compiler, copy-compiler-binaries, copy-samples, copy-compiler-libraries, install-typechecker, install-language, install-runtime, generate-spec, generate-apidoc">
         <zip destfile="${basedir}/${dist.name}.zip">
             <zipfileset dir="${dist.dir}" prefix="${dist.name}">
                 <include name="bin/**" />
@@ -65,10 +65,10 @@
         </copy>
     </target>
 
-    <target name="copy-compiler-samples">
+    <target name="copy-samples">
         <mkdir dir="${dist.dir}/samples"/>
         <copy todir="${dist.dir}/samples">
-            <fileset dir="${ceylon-compiler.dir}/samples">
+            <fileset dir="samples">
                 <include name="helloworld/**"/>
                 <include name="no-module/**"/>
             </fileset>
@@ -103,14 +103,14 @@
     </target>
 
     <target name="compile-module-resolver" depends="install-language">
-        <exec command="mvn" dir="${ceylon-module-resolver.dir}/">
+        <exec command="mvn" dir="${ceylon-module-resolver.dir}/" failonerror="yes">
             <arg value="clean"/>
             <arg value="install"/>
         </exec>
     </target>
 
     <target name="install-runtime" depends="compile-module-resolver">
-        <exec command="mvn" dir="${ceylon-module-resolver.dir}/">
+        <exec command="mvn" dir="${ceylon-module-resolver.dir}/" failonerror="yes">
             <arg value="install:install-file"/>
             <arg value="-Dfile=${dist.dir}/repo/ceylon/language/${ceylon.version}/ceylon.language-${ceylon.version}.car"/>
             <arg value="-DgroupId=ceylon.language"/>
@@ -120,7 +120,7 @@
             <arg value="-DgeneratePom=true"/>
             <arg value="-DcreateChecksum=true"/>
         </exec>
-        <exec command="mvn" dir="${ceylon-runtime.dir}/">
+        <exec command="mvn" dir="${ceylon-runtime.dir}/" failonerror="yes">
             <arg value="clean"/>
             <arg value="install"/>
         </exec>
@@ -145,7 +145,7 @@
     </target>
 
     <target name="generate-apidoc">
-        <exec command="${dist.dir}/bin/ceylond" >
+        <exec command="${dist.dir}/bin/ceylond" failonerror="yes">
             <arg value="-out"/>
             <arg value="${dist.dir}/repo"/>
             <arg value="-src"/>
