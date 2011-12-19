@@ -33,6 +33,7 @@ public class Main {
         String srcDir = null;
         boolean showPrivate = false;
         boolean omitSource = false;
+        List<String> modules = new LinkedList<String>();
         List<String> repositories = new LinkedList<String>();
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
@@ -58,8 +59,7 @@ public class Main {
             } else if ("-omit-source".equals(arg)) {
                 omitSource = true;
             } else {
-                System.err.println("Processing modules by name is not supported yet");
-                printUsage();
+                modules.add(arg);
             }
             
         }
@@ -83,11 +83,17 @@ public class Main {
                 System.exit(1);
         }
 
-        CeylonDocTool ceylonDocTool = new CeylonDocTool(file, repositories);
-        ceylonDocTool.setShowPrivate(showPrivate);
-        ceylonDocTool.setDestDir(destDir);
-        ceylonDocTool.setOmitSource(omitSource);
-        ceylonDocTool.makeDoc();
+        try{
+            CeylonDocTool ceylonDocTool = new CeylonDocTool(file, repositories, modules);
+            ceylonDocTool.setShowPrivate(showPrivate);
+            ceylonDocTool.setDestDir(destDir);
+            ceylonDocTool.setOmitSource(omitSource);
+            ceylonDocTool.makeDoc();
+        }catch(Exception x){
+            System.err.println("Error: "+x.getMessage());
+            x.printStackTrace();
+            System.exit(1);
+        }
     }
 
     private static void printVersion() {

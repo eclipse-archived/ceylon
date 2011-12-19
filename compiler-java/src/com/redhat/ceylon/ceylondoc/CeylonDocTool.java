@@ -68,7 +68,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Walker;
 public class CeylonDocTool {
 
     private List<PhasedUnit> phasedUnits;
-    private Modules modules;
+    private List<Module> modules;
     private File destDir;
     /**
      * The {@linkplain #shouldInclude(Declaration) visible} subclasses of the key
@@ -83,7 +83,7 @@ public class CeylonDocTool {
     private boolean omitSource;
     private Map<Declaration, Node> sourceLocations = new HashMap<Declaration, Node>();
 
-    public CeylonDocTool(File file, List<String> repositories) {
+    public CeylonDocTool(File file, List<String> repositories, List<String> moduleSpecs) {
         TypeCheckerBuilder builder = new TypeCheckerBuilder().addSrcDirectory(file);
         for(String repo : repositories){
             // FIXME: eventually this will need to go through the module system and support HTTP
@@ -93,8 +93,40 @@ public class CeylonDocTool {
         }
         TypeChecker typeChecker = builder.getTypeChecker();
         typeChecker.process();
-        this.phasedUnits = typeChecker.getPhasedUnits().getPhasedUnits();
-        this.modules = typeChecker.getContext().getModules();
+        this.modules = getModules(moduleSpecs, typeChecker.getContext().getModules());
+        // only for source code mapping
+        this.phasedUnits = getPhasedUnits(typeChecker.getPhasedUnits().getPhasedUnits());
+    }
+
+    private List<Module> getModules(List<String> moduleSpecs, Modules modules){
+        // find the required modules
+        List<Module> documentedModules = new LinkedList<Module>();
+        for(String moduleSpec : moduleSpecs){
+            int sep = moduleSpec.indexOf("/");
+            String name = sep != -1 ? moduleSpec.substring(0, sep) : moduleSpec;
+            String version = sep != -1 ? moduleSpec.substring(sep+1) : null;
+            Module foundModule = null;
+            for(Module module : modules.getListOfModules()){
+                if(module.getNameAsString().equals(name)){
+                    if(version == null || version.equals(module.getVersion()))
+                        foundModule = module;
+                }
+            }
+            if(foundModule != null)
+                documentedModules.add(foundModule);
+            else
+                throw new RuntimeException("Can't find module: "+moduleSpec);
+        }
+        return documentedModules;
+    }
+    
+    private List<PhasedUnit> getPhasedUnits(List<PhasedUnit> phasedUnits) {
+        List<PhasedUnit> documentedPhasedUnit = new LinkedList<PhasedUnit>();
+        for(PhasedUnit pu : phasedUnits){
+            if(modules.contains(pu.getUnit().getPackage().getModule()))
+                documentedPhasedUnit.add(pu);
+        }
+        return documentedPhasedUnit;
     }
 
     public void setDestDir(String destDir) {
@@ -182,61 +214,35 @@ public class CeylonDocTool {
     }
 
     public void makeDoc() throws IOException{
-
+        
         if (!omitSource) {
             buildSourceLocations();
             copySourceFiles();
         }
-        
-        for (PhasedUnit pu : phasedUnits) {
-            for (Declaration decl : pu.getUnit().getDeclarations()) {
-                if(!shouldInclude(decl)) {
-                    continue;
-                }
-                if (decl instanceof ClassOrInterface) {
-                    getObjectFile(decl);
-                    ClassOrInterface c = (ClassOrInterface) decl;            		 
-                    // subclasses map
-                    if (c instanceof Class) {
-                        ClassOrInterface superclass = c.getExtendedTypeDeclaration();            		 
-                        if (superclass != null) {
-                            if (subclasses.get(superclass) ==  null) {
-                                subclasses.put(superclass, new ArrayList<ClassOrInterface>());
-                            }
-                            subclasses.get(superclass).add(c);
-                        }
-                    }
 
-                    List<TypeDeclaration> satisfiedTypes = new ArrayList<TypeDeclaration>(c.getSatisfiedTypeDeclarations());            		 
-                    if (satisfiedTypes != null && satisfiedTypes.isEmpty() == false) {
-                        // satisfying classes or interfaces map
-                        for (TypeDeclaration satisfiedType : satisfiedTypes) {
-                            if (satisfyingClassesOrInterfaces.get(satisfiedType) ==  null) {
-                                satisfyingClassesOrInterfaces.put(satisfiedType, new ArrayList<ClassOrInterface>());
-                            }
-                            satisfyingClassesOrInterfaces.get(satisfiedType).add(c);
-                        }
-                    }
-                }
-            }
+        collectSubclasses();
+
+        // document every module
+        boolean documentedOne = false;
+        for(Module module : modules){
+            if(isEmpty(module))
+                System.err.println("Warning: module "+module.getNameAsString()+" has no declarations");
+            else
+                documentedOne = true;
+            documentModule(module);
         }
+        if(!documentedOne)
+            System.err.println("Warning: could not find any declaration to document");
+    }
 
-        Module module = null;
-        for (PhasedUnit pu : phasedUnits) {
-            if (module == null) {
-                module = pu.getPackage().getModule();
-                getObjectFile(module);
-                for (Package pkg : module.getPackages()) {
-                    getObjectFile(pkg);
-                }
-            } else if (pu.getPackage().getModule() != module) {
-                throw new RuntimeException("Documentation of multiple modules not supported yet");
-            }
-            for (Declaration decl : pu.getUnit().getDeclarations()) {
-                doc(decl);
-            }
-        }
+    private boolean isEmpty(Module module) {
+        for(Package pkg : module.getPackages())
+            if(!pkg.getMembers().isEmpty())
+                return false;
+        return true;
+    }
 
+    private void documentModule(Module module) throws IOException {
         doc(module);
         makeIndex(module);
         makeSearch(module);
@@ -253,6 +259,43 @@ public class CeylonDocTool {
         copyResource("resources/NOTICE.txt", new File(getOutputFolder(module), "NOTICE.txt"));
     }
 
+    private void collectSubclasses() throws IOException {
+        for (Module module : modules) {
+            for (Package pkg : module.getPackages()) {
+                for (Declaration decl : pkg.getMembers()) {
+                    if(!shouldInclude(decl)) {
+                        continue;
+                    }
+                    if (decl instanceof ClassOrInterface) {
+                        // FIXME: why this call?
+                        getObjectFile(decl);
+                        ClassOrInterface c = (ClassOrInterface) decl;                    
+                        // subclasses map
+                        if (c instanceof Class) {
+                            ClassOrInterface superclass = c.getExtendedTypeDeclaration();                    
+                            if (superclass != null) {
+                                if (subclasses.get(superclass) ==  null) {
+                                    subclasses.put(superclass, new ArrayList<ClassOrInterface>());
+                                }
+                                subclasses.get(superclass).add(c);
+                            }
+                        }
+
+                        List<TypeDeclaration> satisfiedTypes = new ArrayList<TypeDeclaration>(c.getSatisfiedTypeDeclarations());                     
+                        if (satisfiedTypes != null && satisfiedTypes.isEmpty() == false) {
+                            // satisfying classes or interfaces map
+                            for (TypeDeclaration satisfiedType : satisfiedTypes) {
+                                if (satisfyingClassesOrInterfaces.get(satisfiedType) ==  null) {
+                                    satisfyingClassesOrInterfaces.put(satisfiedType, new ArrayList<ClassOrInterface>());
+                                }
+                                satisfyingClassesOrInterfaces.get(satisfiedType).add(c);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     private Writer openWriter(File file) throws IOException {
         return new OutputStreamWriter(new FileOutputStream(file), "UTF-8"); 
     }
@@ -343,6 +386,10 @@ public class CeylonDocTool {
                     } finally {
                         packageWriter.close();
                     }
+                }
+                // document its members
+                for (Declaration decl : pkg.getMembers()) {
+                    doc(decl);
                 }
             }
             moduleDoc.complete();
