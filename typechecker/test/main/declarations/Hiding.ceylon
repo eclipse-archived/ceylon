@@ -4,7 +4,7 @@ interface Hiding {
 	
 	class Super1() {
 		shared class Hidden(String val) {}
-		shared Integer hidden(String val) { return +0; }
+		shared Integer hidden(String val) { return 0; }
 	}
 	
 	class Sub1() extends Super1() {
