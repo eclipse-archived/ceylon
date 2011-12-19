@@ -83,8 +83,10 @@ public class CeylonDocTool {
     private boolean omitSource;
     private Map<Declaration, Node> sourceLocations = new HashMap<Declaration, Node>();
 
-    public CeylonDocTool(File file, List<String> repositories, List<String> moduleSpecs) {
-        TypeCheckerBuilder builder = new TypeCheckerBuilder().addSrcDirectory(file);
+    public CeylonDocTool(List<File> sourceFolders, List<String> repositories, List<String> moduleSpecs) {
+        TypeCheckerBuilder builder = new TypeCheckerBuilder();
+        for(File src : sourceFolders)
+            builder.addSrcDirectory(src);
         for(String repo : repositories){
             // FIXME: eventually this will need to go through the module system and support HTTP
             File repoFile = new File(repo);

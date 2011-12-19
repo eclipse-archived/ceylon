@@ -30,7 +30,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         String destDir = null;
-        String srcDir = null;
+        List<String> sourceDirs = new LinkedList<String>();
         boolean showPrivate = false;
         boolean omitSource = false;
         List<String> modules = new LinkedList<String>();
@@ -51,7 +51,7 @@ public class Main {
             } else if ("-out".equals(arg)) {
                 destDir = args[++i];
             } else if ("-src".equals(arg)) {
-                srcDir = args[++i];
+                sourceDirs.add(args[++i]);
             } else if ("-rep".equals(arg)) {
                 repositories.add(args[++i]);
             } else if ("-private".equals(arg)) {
@@ -67,24 +67,28 @@ public class Main {
         if (destDir == null) {
             destDir = "modules";
         }
-        if (srcDir == null) {
-            srcDir = "source";
-        }
         if(repositories.isEmpty())
             repositories.addAll(com.redhat.ceylon.compiler.util.Util.getDefaultRepositories());
 
-        File file = new File(srcDir);
-        if (!file.isDirectory()) {
-            System.err.println("No such source directory: " + srcDir);
-            // if we were using the default source because no argument was given, be nice and helpful
-            if(args.length == 0)
-                printUsage();
-            else
-                System.exit(1);
+        List<File> sourceFolders = new LinkedList<File>();
+        if (sourceDirs.isEmpty()) {
+            File src = new File("source");
+            if(src.isDirectory())
+                sourceFolders.add(src);
+        }else{
+            for(String srcDir : sourceDirs){
+                File src = new File(srcDir);
+                if (!src.isDirectory()) {
+                    System.err.println("No such source directory: " + srcDir);
+                    System.exit(1);
+                }
+                sourceFolders.add(src);
+                
+            }
         }
 
         try{
-            CeylonDocTool ceylonDocTool = new CeylonDocTool(file, repositories, modules);
+            CeylonDocTool ceylonDocTool = new CeylonDocTool(sourceFolders, repositories, modules);
             ceylonDocTool.setShowPrivate(showPrivate);
             ceylonDocTool.setDestDir(destDir);
             ceylonDocTool.setOmitSource(omitSource);
