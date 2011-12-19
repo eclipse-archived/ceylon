@@ -29,6 +29,7 @@
             <zipfileset dir="${basedir}" prefix="${dist.name}">
                 <include name="LICENSE" />
                 <include name="NOTICE" />
+                <include name="README.md" />
             </zipfileset>
         </zip>        
     </target>
