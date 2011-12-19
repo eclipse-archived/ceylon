@@ -74,8 +74,8 @@
     </target>
 
 	<target name="install-compiler">
-        <ant antfile="${ceylon-compiler.dir}/build.xml" target="dist" dir="${ceylon-compiler.dir}" inheritall="false">
-        </ant>
+        <ant antfile="${ceylon-compiler.dir}/build.xml" target="clean" dir="${ceylon-compiler.dir}" inheritall="false"/>
+        <ant antfile="${ceylon-compiler.dir}/build.xml" target="dist" dir="${ceylon-compiler.dir}" inheritall="false"/>
         <copy todir="${dist.dir}/repo">
             <fileset dir="${ceylon-compiler.dir}/build/dist">
             </fileset>
@@ -83,8 +83,8 @@
     </target>
 
     <target name="install-typechecker">
-        <ant antfile="${ceylon-spec.dir}/build.xml" target="dist" dir="${ceylon-spec.dir}" inheritall="false">
-        </ant>
+        <ant antfile="${ceylon-spec.dir}/build.xml" target="clean" dir="${ceylon-spec.dir}" inheritall="false"/>
+        <ant antfile="${ceylon-spec.dir}/build.xml" target="dist" dir="${ceylon-spec.dir}" inheritall="false"/>
         <copy todir="${dist.dir}/repo">
             <fileset dir="${ceylon-spec.dir}/build/dist">
             </fileset>
@@ -92,8 +92,8 @@
     </target>
 
     <target name="install-language">
-        <ant antfile="${ceylon.language.dir}/build.xml" target="dist" dir="${ceylon.language.dir}" inheritall="false">
-        </ant>
+        <ant antfile="${ceylon.language.dir}/build.xml" target="clean" dir="${ceylon.language.dir}" inheritall="false"/>
+        <ant antfile="${ceylon.language.dir}/build.xml" target="dist" dir="${ceylon.language.dir}" inheritall="false"/>
         <copy todir="${dist.dir}/repo">
             <fileset dir="${ceylon.language.dir}/build/dist">
             </fileset>
@@ -102,6 +102,7 @@
 
     <target name="compile-module-resolver" depends="install-language">
         <exec command="mvn" dir="${ceylon-module-resolver.dir}/">
+            <arg value="clean"/>
             <arg value="install"/>
         </exec>
     </target>
@@ -118,6 +119,7 @@
             <arg value="-DcreateChecksum=true"/>
         </exec>
         <exec command="mvn" dir="${ceylon-runtime.dir}/">
+            <arg value="clean"/>
             <arg value="install"/>
         </exec>
         <copy todir="${dist.dir}">
@@ -132,8 +134,7 @@
     </target>
 
     <target name="generate-spec">
-        <ant antfile="${ceylon-spec.dir}/build.xml" target="doc" dir="${ceylon-spec.dir}" inheritall="false">
-        </ant>
+        <ant antfile="${ceylon-spec.dir}/build.xml" target="doc" dir="${ceylon-spec.dir}" inheritall="false"/>
         <copy todir="${dist.dir}/doc">
             <fileset dir="${ceylon-spec.dir}/build">
                 <exclude name="dist,classes"/>
