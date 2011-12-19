@@ -78,7 +78,7 @@ Range<Integer> range {
         fail("out of range element");
     }
     
-    variable value j:=+0;
+    variable value j:=0;
     for (i in range) {
         assert(i+3==j++, "range iteration");
     }
