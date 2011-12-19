@@ -18,19 +18,18 @@
  * MA  02110-1301, USA.
  */
 doc "The classic Hello World program"
-shared void helloworld() {
-    if (nonempty args=process.arguments) {
-        print("Hello ");
-        for (String arg in args) {
-            process.write(arg);
-            process.write(" ");
-        }
-        process.write("\n");
-    } else {
-        process.writeLine("Hello World");
-    }
+void hello(String name = "World") {
+    print("Hello, " name "!");
 }
 
-shared void run(){
-    helloworld();
+doc "The runnable method of the module." 
+void run(){
+    if (nonempty args=process.arguments) {
+        for (String arg in args) {
+            hello(arg);
+        }
+    }
+    else {
+        hello();
+    }
 }
