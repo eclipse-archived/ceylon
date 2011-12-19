@@ -1,3 +1,4 @@
+doc "A sequence with exactly one element."
 shared class Singleton<Element>(Element element)
         extends Object()
         satisfies Sequence<Element> {
