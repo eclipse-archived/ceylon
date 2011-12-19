@@ -44,7 +44,8 @@ public class TypeChecker {
         statsVisitor = new StatisticsVisitor();
         phasedUnits.parseUnits(srcDirectories);
         long time = System.nanoTime()-start;
-        System.out.println("Parsed in " + time/1000000 + " ms");
+        if(verbose)
+        	System.out.println("Parsed in " + time/1000000 + " ms");
     }
     
     TypeChecker(VFS vfs, List<VirtualFile> srcDirectories, List<VirtualFile> repositories, boolean verifyDependencies, 
@@ -59,7 +60,8 @@ public class TypeChecker {
         statsVisitor = new StatisticsVisitor();
         phasedUnits.parseUnits(srcDirectories);
         long time = System.nanoTime()-start;
-        System.out.println("Parsed in " + time/1000000 + " ms");
+        if(verbose)
+        	System.out.println("Parsed in " + time/1000000 + " ms");
     }
 
     public PhasedUnits getPhasedUnits() {
@@ -120,7 +122,8 @@ public class TypeChecker {
         long start = System.nanoTime();
         executePhases(phasedUnits, false);
         long time = System.nanoTime()-start;
-        System.out.println("Type checked in " + time/1000000 + " ms");
+        if(verbose)
+        	System.out.println("Type checked in " + time/1000000 + " ms");
     }
 
     private void executePhases(PhasedUnits phasedUnits, boolean forceSilence) {
@@ -166,8 +169,9 @@ public class TypeChecker {
                 pu.generateStatistics(statsVisitor);
                 pu.runAssertions(assertionVisitor);
             }
-            statsVisitor.print();
-            assertionVisitor.print();
+            if(verbose)
+            	statsVisitor.print();
+            assertionVisitor.print(verbose);
         }
         
     }

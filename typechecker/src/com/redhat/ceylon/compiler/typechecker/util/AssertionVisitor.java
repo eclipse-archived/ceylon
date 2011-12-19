@@ -210,7 +210,9 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         super.visitAny(that);
     }
     
-    public void print() {
+    public void print(boolean verbose) {
+    	if(!verbose && errors == 0 && warnings == 0)
+    		return;
         System.out.println(errors + " errors, " + warnings + " warnings");
     }
     
