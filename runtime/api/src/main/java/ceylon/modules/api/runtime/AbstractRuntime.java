@@ -34,7 +34,7 @@ import java.util.logging.Logger;
 public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runtime {
 
     public static final String MODULE_INFO_CLASS = ".module";
-    public static final String RUN_INFO_CLASS = ".run";
+    public static final String RUN_INFO_CLASS = "run";
 
     /**
      * Load module instance.
@@ -98,8 +98,13 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         }
 
         String runClassName = conf.run;
-        if (runClassName == null || runClassName.isEmpty())
-            runClassName = name + RUN_INFO_CLASS;
+        if (runClassName == null || runClassName.isEmpty()){
+            // "default" is not a package name
+            if(name.equals(Constants.DEFAULT.toString()))
+                runClassName = RUN_INFO_CLASS;
+            else
+                runClassName = name + "." + RUN_INFO_CLASS;
+        }
         invokeRun(cl, runClassName, conf.arguments);
     }
 }
