@@ -27,12 +27,16 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import junit.framework.Assert;
 
@@ -41,6 +45,7 @@ import org.junit.Test;
 
 import com.redhat.ceylon.compiler.test.CompilerTest;
 import com.redhat.ceylon.compiler.tools.CeyloncTaskImpl;
+import com.sun.tools.javac.zip.ZipFileIndex;
 
 public class StructureTest extends CompilerTest {
     
@@ -69,6 +74,9 @@ public class StructureTest extends CompilerTest {
     public void testMdlModuleFromCompiledModule() throws IOException{
         compile("module/single/module.ceylon");
         
+        ZipFileIndex.clearCache();
+        Assert.assertEquals(ZipFileIndex.getZipFileIndexes().size(), 0);
+        
         File carFile = getModuleArchive("com.redhat.ceylon.compiler.test.structure.module.single", "6.6.6");
         assertTrue(carFile.exists());
 
@@ -83,6 +91,9 @@ public class StructureTest extends CompilerTest {
 
         compile("module/single/subpackage/Subpackage.ceylon");
 
+        ZipFileIndex.clearCache();
+        Assert.assertEquals(ZipFileIndex.getZipFileIndexes().size(), 0);
+        
         // MUST reopen it
         car = new JarFile(carFile);
 
@@ -95,6 +106,9 @@ public class StructureTest extends CompilerTest {
         CeyloncTaskImpl compilerTask = getCompilerTask("module/single/module.ceylon", "module/single/Correct.ceylon", "module/single/Invalid.ceylon");
         Boolean success = compilerTask.call();
         assertFalse(success);
+        
+        ZipFileIndex.clearCache();
+        Assert.assertEquals(ZipFileIndex.getZipFileIndexes().size(), 0);
         
         File carFile = getModuleArchive("com.redhat.ceylon.compiler.test.structure.module.single", "6.6.6");
         assertTrue(carFile.exists());
@@ -191,10 +205,66 @@ public class StructureTest extends CompilerTest {
         Assert.assertTrue(success1 && success2);
     }
 
+    private void copy(File source, File dest) throws IOException {
+        InputStream inputStream = new FileInputStream(source);
+        OutputStream outputStream = new FileOutputStream(dest); 
+        byte[] buffer = new byte[4096];
+        int read;
+        while((read = inputStream.read(buffer)) != -1){
+            outputStream.write(buffer, 0, read);
+        }
+        inputStream.close();
+        outputStream.close();
+    }
+    
+    @Test
+    public void testMdlSuppressObsoleteClasses() throws IOException{
+        File sourceFile = new File(path, "module/single/SuppressClass.ceylon");
+
+        copy(new File(path, "module/single/SuppressClass_1.ceylon"), sourceFile);
+        CeyloncTaskImpl compilerTask = getCompilerTask("module/single/module.ceylon", "module/single/SuppressClass.ceylon");
+        Boolean success = compilerTask.call();
+        assertTrue(success);
+
+        ZipFileIndex.clearCache();
+        Assert.assertEquals(ZipFileIndex.getZipFileIndexes().size(), 0);
+        
+        File carFile = getModuleArchive("com.redhat.ceylon.compiler.test.structure.module.single", "6.6.6");
+        assertTrue(carFile.exists());
+        ZipFile car = new ZipFile(carFile);
+        ZipEntry oneClass = car.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/One.class");
+        assertNotNull(oneClass);
+        ZipEntry twoClass = car.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/Two.class");
+        assertNotNull(twoClass);
+        car.close();
+
+        copy(new File(path, "module/single/SuppressClass_2.ceylon"), sourceFile);
+        compilerTask = getCompilerTask("module/single/module.ceylon", "module/single/SuppressClass.ceylon");
+        success = compilerTask.call();
+        assertTrue(success);
+        
+        ZipFileIndex.clearCache();
+        Assert.assertEquals(ZipFileIndex.getZipFileIndexes().size(), 0);
+        
+        carFile = getModuleArchive("com.redhat.ceylon.compiler.test.structure.module.single", "6.6.6");
+        assertTrue(carFile.exists());
+        car = new ZipFile(carFile);
+        oneClass = car.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/One.class");
+        assertNotNull(oneClass);
+        twoClass = car.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/Two.class");
+        assertNull(twoClass);
+        car.close();
+        
+        sourceFile.delete();
+    }
 
     
     @Test
     public void testMdlMultipleRepos(){
+        cleanCars("build/ceylon-cars-a");
+        cleanCars("build/ceylon-cars-b");
+        cleanCars("build/ceylon-cars-c");
+        
         // Compile the first module in its own repo 
         File repoA = new File("build/ceylon-cars-a");
         repoA.mkdirs();
