@@ -88,16 +88,20 @@ public abstract class CompilerTest {
 
     protected CeyloncFileManager makeFileManager(CeyloncTool compiler, DiagnosticListener<? super FileObject> diagnosticListener){
         return (CeyloncFileManager)compiler.getStandardFileManager(diagnosticListener, null, null);
-    }
+	}
+	
+	protected void compareWithJavaSource(String name) {
+		compareWithJavaSource(name+".src", name+".ceylon");
+	}
 
-    protected void compareWithJavaSource(String name) {
-        compareWithJavaSource(name+".src", name+".ceylon");
-    }
-
-    @Before
-    public void cleanCars() {
-        File destFile = new File(destDir);
-        List<String> extensionsToDelete = Arrays.asList(".jar", ".car", ".src", ".sha1");
+	@Before
+	public void cleanCars() {
+	    cleanCars(destDir);
+	}
+	
+    public void cleanCars(String repo) {
+        File destFile = new File(repo);
+        List<String> extensionsToDelete = Arrays.asList("");
         new RepositoryLister(extensionsToDelete).list(destFile, new RepositoryLister.Actions() {
             @Override
             public void doWithFile(File path) {
