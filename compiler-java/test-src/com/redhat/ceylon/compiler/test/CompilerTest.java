@@ -291,6 +291,7 @@ public abstract class CompilerTest {
 	        String... sourcePaths){
         // make sure we get a fresh jar cache for each compiler run
 	    ZipFileIndex.clearCache();
+	    Assert.assertEquals(ZipFileIndex.getZipFileIndexes().size(), 0);
         java.util.List<File> sourceFiles = new ArrayList<File>(sourcePaths.length);
 	    for(String file : sourcePaths){
 	        sourceFiles.add(new File(path, file));
