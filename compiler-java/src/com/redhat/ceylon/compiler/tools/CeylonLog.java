@@ -53,6 +53,8 @@ public class CeylonLog extends Log {
     public void warning(String key, Object... args) {
         // limit the number of warnings for Java 7 classes
         if("big.major.version".equals(key)){
+            // change the key to a more helpful message
+            key = "ceylon.big.major.version";
             if(!majorVersionWarning )
                 majorVersionWarning = true;
             else // we already warned once
