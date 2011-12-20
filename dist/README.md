@@ -43,7 +43,7 @@ To run the "hello world" program, type:
     cd samples/helloworld
     ../../bin/ceylonc com.acme.helloworld
     ../../bin/ceylond com.acme.helloworld
-    ../../bin/ceylon com.acme.helloworld/1.0.0 John Doe
+    ../../bin/ceylon com.acme.helloworld/1.0.0 John
 
 To run a program defined in the default module, type:
 
