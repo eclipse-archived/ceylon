@@ -20,6 +20,7 @@ import ceylon.modules.spi.Argument;
 import ceylon.modules.spi.ArgumentType;
 import ceylon.modules.spi.Constants;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -117,13 +118,24 @@ public class Configuration {
     }
 
     public void printUsage() {
+        String distRepo = getDistRepo();
+        String homeRepo = getHomeRepo();
         System.err.print("Usage: ceylon [options...] moduleName/version [args...]\n"
                 + "\n"
                 + " -run qualified-name: Name of a class or toplevel method to run\n"
                 + "                      (default: use the module descriptor)\n"
                 + " -rep path:           Module repository path (can be specified more than once)\n"
-                + "                      (default: ...)\n"
-                + " -src path:           Source path (default: source)\n"
+                + "                      Default:\n");
+        if(distRepo != null)
+            System.err.print(
+                  "                      "+distRepo+"\n");
+        System.err.print(
+                  "                      ./modules\n");
+        if(homeRepo != null)
+            System.err.print(
+                  "                      "+homeRepo+"\n");
+        System.err.print(
+                  " -src path:           Source path (default: source)\n"
                 + " -help:               Prints help usage\n"
                 + " -version:            Prints version number\n"
                 + " moduleName/version:  Module name and version to run (required)\n"
@@ -131,15 +143,29 @@ public class Configuration {
         System.exit(1);
     }
 
+    private String getDistRepo() {
+        String ceylonHome = System.getProperty("ceylon.home");
+        if(ceylonHome != null)
+            return ceylonHome + File.separator + "repo";
+        return null;
+    }
+
+    private String getHomeRepo() {
+        String userHome = System.getProperty("user.home");
+        if(userHome != null)
+            return userHome + File.separator + ".ceylon" + File.separator + "repo";
+        return null;
+    }
+
     public void check() {
         if (executable == null
                 || executable.isEmpty()) {
-            System.err.println("Missing +executable parameter\n");
+            System.err.println("Error: Missing +executable parameter\n");
             printUsage();
         }
         if (module == null
                 || module.isEmpty()) {
-            System.err.println("Missing module name\n");
+            System.err.println("Error: Missing module name\n");
             printUsage();
         }
     }
