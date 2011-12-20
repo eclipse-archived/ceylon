@@ -14,20 +14,21 @@ Read more about Ceylon at <http://ceylon-lang.org>.
 
 ## Distribution layout
 
-- `bin`          - Unix/Windows commands
-- `doc`          - The Ceylon spec in HTML and PDF format
-- `lib`          - Required libraries for the Ceylon commands
-- `repo`         - Required bootstrap Ceylon modules (language, tools)
-- `runtime-repo` - Required runtime Ceylon modules (module system)
-- `samples`      - Sample Ceylon modules
-- `LICENSE`      - The Ceylon license
-- `README.md`    - This file
+- `bin`            - Unix/Windows commands
+- `doc`            - The Ceylon spec in HTML and PDF format
+- `lib`            - Required libraries for the Ceylon commands
+- `repo`           - Required bootstrap Ceylon modules (language, tools)
+- `runtime-repo`   - Required runtime Ceylon modules (module system)
+- `samples`        - Sample Ceylon modules
+- `LICENSE-ASL`    - The Ceylon ASL license
+- `LICENSE-GPL-CP` - The Ceylon GPL/CP license
+- `README.md`      - This file
 
 The command line tools are located in the `bin` directory.
 
-- `bin/ceylon`   - Run a Ceylon program
-- `bin/ceylonc`  - Compile a Ceylon program
-- `bin/ceylond`  - Document a Ceylon program
+- `bin/ceylon`     - Run a Ceylon program
+- `bin/ceylonc`    - Compile a Ceylon program
+- `bin/ceylond`    - Document a Ceylon program
 
 The API documentation for the language module `ceylon.language` may be found here:
 
@@ -97,12 +98,10 @@ is supported. However we have tested the following platforms to make sure it wor
 
 The Ceylon distribution is and contains work released
 
-- partly under the ASL v2.0 as provided in the `LICENSE` file that accompanied 
+- partly under the ASL v2.0 as provided in the `LICENSE-ASL` file that accompanied 
   this code, and
-- partly under the GPL v2 + Classpath Exception as [available in the repository
-  `ceylon-compiler`][license].
-
-[license]: https://github.com/ceylon/ceylon-compiler/blob/master/LICENSE
+- partly under the GPL v2 + Classpath Exception as provided in the `LICENSE-GPL-CP`
+  file that accompanied this code.
 
 ### License terms for 3rd Party Works
 
@@ -112,7 +111,7 @@ documented in the `NOTICE` file that accompanied this code.
 ### Repository
 
 The content of this code repository, [available here on GitHub][ceylon-dist], 
-is released under the ASL v2.0 as provided in the `LICENSE` file that accompanied 
+is released under the ASL v2.0 as provided in the `LICENSE-ASL` file that accompanied 
 this code.
 
 [ceylon-dist]: https://github.com/ceylon/ceylon-dist
