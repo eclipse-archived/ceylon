@@ -263,6 +263,9 @@ public class DeclarationVisitor extends Visitor {
                 c.getContainer() instanceof TypedDeclaration) {
             that.addWarning("nested classes of inner classes are not yet supported");
         }
+        if (c.isActual()) {
+        	that.addWarning("member class refinement not yet supported");
+        }
     }
 
     @Override
