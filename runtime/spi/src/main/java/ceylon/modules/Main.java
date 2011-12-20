@@ -17,6 +17,10 @@
 
 package ceylon.modules;
 
+import ceylon.modules.spi.ArgumentType;
+import ceylon.modules.spi.Constants;
+import ceylon.modules.spi.Executable;
+
 import java.security.AccessController;
 import java.security.PrivilegedExceptionAction;
 import java.util.Arrays;
@@ -24,31 +28,33 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
 
-import ceylon.modules.spi.ArgumentType;
-import ceylon.modules.spi.Constants;
-import ceylon.modules.spi.Executable;
-
 /**
  * Main Ceylon Modules entry point.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
+ * @author Stephane Epardaud
  */
 public class Main {
+    /**
+     * Ceylon Runtime main entry point.
+     *
+     * @param args the args
+     */
     public static void main(String[] args) {
         try {
-            for(Handler handler : Logger.getLogger("").getHandlers()){
-                // this is a hack, but at least it works. With a property file our log formatter has to be in the
-                // boot class path. This way it doesn't.
-                if(handler instanceof ConsoleHandler)
-                    handler.setFormatter(new CeylonLogFormatter());
+            for (Handler handler : Logger.getLogger("").getHandlers()) {
+                // This is a hack, but at least it works. With a property file our log
+                // formatter has to be in the boot class path. This way it doesn't.
+                if (handler instanceof ConsoleHandler)
+                    handler.setFormatter(CeylonLogFormatter.INSTANCE);
             }
         } catch (Throwable ex) {
-            System.err.println("Warning: log configuration failed");
+            System.err.println("Warning: log configuration failed: " + ex.getMessage());
         }
         try {
             execute(args);
-        } catch (CeylonRuntimeException x) {
-            System.err.println("Error: "+x.getMessage());
+        } catch (CeylonRuntimeException cre) {
+            System.err.println("Error: " + cre.getMessage());
         } catch (Throwable t) {
             throw new RuntimeException("Error using Ceylon Runtime.", t);
         }
