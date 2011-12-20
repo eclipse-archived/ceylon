@@ -60,6 +60,10 @@ To see a list of command line options, type one of:
     ../../bin/ceylond -help
     ../../bin/ceylon -help
 
+## Ant tasks for Ceylon
+
+We include support for Ceylon ant tasks which are documented in `README-ANT.md`.
+
 ## Source code
 
 Source code is available from GitHub:
