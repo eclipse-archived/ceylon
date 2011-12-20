@@ -69,6 +69,11 @@ public class RepositoryBuilder {
         return this;
     }
 
+    /**
+     * It prepends ${ceylon.home} directory to roots, if it exists.
+     *
+     * @return this
+     */
     public RepositoryBuilder addCeylonHome() {
         final String ceylonHome = SecurityActions.getProperty("ceylon.home");
         if (ceylonHome != null) {
@@ -81,15 +86,25 @@ public class RepositoryBuilder {
         return this;
     }
 
+    /**
+     * It prepends ./modules directory to roots, if it exists.
+     *
+     * @return this
+     */
     public RepositoryBuilder addModules() {
         final File modules = new File("modules");
         if (modules.exists() && modules.isDirectory())
-            appendExternalRoot(new FileContentStore(modules).createRoot());
+            prependExternalRoot(new FileContentStore(modules).createRoot());
         else
             Logger.getLogger(RepositoryBuilder.class.getName()).warning("No such ./modules directory: " + modules);
         return this;
     }
 
+    /**
+     * It appends http://modules.ceylon-lang.org to roots, if it exists.
+     *
+     * @return this
+     */
     public RepositoryBuilder addModulesCeylonLangOrg() {
         InputStream is = null;
         try {
