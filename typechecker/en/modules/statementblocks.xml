@@ -1818,11 +1818,11 @@ if (satisfies Comparable&lt;Element&gt; Element) {
             
             <programlisting>DefaultCaseItem: "else" Block</programlisting>
 
-            <para>The <literal>switch</literal> expression may be of any type. Each <literal>case</literal> 
-            value must be:</para> 
+            <para>The <literal>switch</literal> expression must be a type <literal>U</literal> 
+            with an enumerated list of cases. Each <literal>case</literal> must be:</para> 
             
             <itemizedlist>
-                <listitem>
+                <!--listitem>
                     <para>a list of expressions of type assignable to <literal>Matcher&lt;X&gt;</literal>, 
                     where <literal>X</literal> or <literal>X?</literal> is a subtype of the 
                     <literal>switch</literal> expression type, or</para>
@@ -1830,17 +1830,24 @@ if (satisfies Comparable&lt;Element&gt; Element) {
                 <listitem>
                     <para>if the <literal>switch</literal> expression is of type <literal>X?</literal>, 
                     for some type <literal>X</literal>, the expression <literal>null</literal>, or</para>
+                </listitem-->
+                <listitem>
+                    <para>a list of value references of form <literal>case (x, y, z)</literal> 
+                    where <literal>x</literal>, <literal>y</literal>, and <literal>z</literal> are 
+                    cases of the type <literal>U</literal>, or</para>
                 </listitem>
                 <listitem>
-                    <para>an assignability condition of form <literal>case (is ...)</literal>, or</para>
-                </listitem>
-                <listitem>
-                    <para>if the <literal>switch</literal> expression type is a subtype of 
-                    <literal>Type&lt;T&gt;</literal> for some type <literal>T</literal>, a subtype 
-                    condition of form <literal>case (satisfies ...)</literal>.</para>
+                    <para>an assignability condition of form <literal>case (is V)</literal> where
+                    <literal>V</literal> is a case of the type, or</para>
                 </listitem>
             </itemizedlist>
-
+            
+            <para>Alternatively, the <literal>switch</literal> expression type may be a subtype of 
+            <literal>Type&lt;U&gt;</literal> for some type <literal>U</literal> with an enumerated
+            list of cases. Then each <literal>case</literal> must be a subtype condition of form 
+            <literal>case (satisfies V)</literal> where <literal>V</literal> is a case of the type 
+            <literal>U</literal>.</para>
+            
             <programlisting>Case: Expression ("," Expression)* | "is" UnionType | "satisfies" Type</programlisting>
             
             <!--
@@ -1853,12 +1860,14 @@ if (satisfies Comparable&lt;Element&gt; Element) {
             block is specified, the <literal>switch</literal> must be exhaustive. Conversely, if the 
             <literal>switch</literal> is exhaustive, no <literal>else</literal> block may be specified.</para>
             
+            <!--  
             <para>When the construct is executed, the <literal>switch</literal> expression is 
             evaluated, and the resulting value is tested against the <literal>case</literal> values 
             using <literal>Matcher.matchesCase()</literal>. The <literal>case</literal> block for the 
             first <literal>case</literal> value that tests <literal>true</literal> is executed. If 
             no <literal>case</literal> value tests <literal>true</literal>, and an <literal>else</literal> 
             block is defined, the <literal>else</literal> block is executed.</para>
+            -->
                          
             <para>For an assignability condition <literal>case</literal>, if the <literal>switch</literal> 
             expression is a local, then the local will be treated by the compiler as having the 
