@@ -73,7 +73,7 @@ Supported attributes:
 - `module`: Module name and version (name/version): required
 - `run`: Name of toplevel method or class to run (default: `module.name.run`)
 - `src`: Source path (default: `./source`)
-- `executable`: Path to `ceylond` program (default: `${ceylon.home}/bin/ceylond`)
+- `executable`: Path to `ceylon` program (default: `${ceylon.home}/bin/ceylon`)
 
 Nested elements:
 
