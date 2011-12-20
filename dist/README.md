@@ -118,3 +118,13 @@ this code.
 
 By submitting a "pull request" or otherwise contributing to this repository, you
 agree to license your contribution under the license mentioned above.
+
+## Acknowledgement
+
+We're deeply indebted to the community volunteers who contributed a substantial part
+of the current Ceylon codebase, working often in their own spare time. The following 
+people have contributed to this release:
+
+Gavin King, Stephane Epardaud, Tako Schotanus, Gary Benson, Emmanuel Bernard, Andrew Haley, 
+Tom Bentley, Ales Justin, David Festal, Flavio Oliveri, Sergej Koshchejev, Max Rydahl Andersen, 
+Mladen Turk, James Cobb, Ben Keating, Michael Brackx, Ross Tate, Ivo Kasiuk, Gertjan Assies
