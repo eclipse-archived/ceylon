@@ -790,10 +790,10 @@ String? firstWord = words[0];</programlisting>
             <listitem>
                 <para>an interface may <emphasis>satisfy</emphasis> one or more other interfaces,</para>
             </listitem>
-            <listitem>
+            <!--listitem>
                 <para>an interface may <emphasis>adapt</emphasis> a class and/or one or more 
                 other interfaces,</para>
-            </listitem>
+            </listitem-->
             <!--
             <listitem>
                 <para>an interface may <emphasis>satisfy</emphasis> exactly one class,</para>
@@ -809,8 +809,8 @@ String? firstWord = words[0];</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>If a type declaration extends, satisfies, or adapts a type, we say it 
-        <emphasis>inherits</emphasis> the type. Inheritance results in a relationship
+        <para>If a type declaration extends or satisfies <!--or adapts --> a type, we say 
+        it <emphasis>inherits</emphasis> the type. Inheritance results in a relationship
         called <emphasis>invariant subtyping</emphasis> between produced types.</para>
         
         <itemizedlist>
