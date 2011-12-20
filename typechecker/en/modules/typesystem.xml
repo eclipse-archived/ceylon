@@ -611,16 +611,29 @@
             is always an error, since there can never be a receiving instance.</para>
             
             <para><literal>Bottom</literal> is considered to belong to the module
-            <literal>ceylon.language</literal>. However, it's definition is actually
+            <literal>ceylon.language</literal>. However, its definition is actually
             implemented directly in the compiler.</para>
+            
+            <para>Because of the restrictions imposed by Ceylon's mixin inheritance 
+            model:</para>
+            
+            <itemizedlist>
+            <listitem>
+                <para>If <literal>X</literal> and <literal>Y</literal> are classes, and
+                <literal>X</literal> is not a subclass of <literal>Y</literal>, and 
+                <literal>Y</literal> is not a subclass of <literal>X</literal>, then
+                the intersection type <literal>X&amp;Y</literal> is equivalent to 
+                <literal>Bottom</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>If <literal>X</literal> is an interface, the intersection type 
+                <literal>X&amp;Nothing</literal> is equivalent to <literal>Bottom</literal>.</para>
+            </listitem>
+            </itemizedlist>
             
             <comment><para>TODO: Should the name of this type be a keyword, perhaps
             <literal>bottom</literal>?</para></comment>
             
-            <comment><para>TODO: There are certain intersection types which are proveably 
-            empty, for example, <literal>String&amp;Integer</literal>. The compiler should 
-            reason that these types are equivalent to <literal>Bottom</literal>.</para></comment>
-                
         </section>
         
         <section id="typeofaprogramelement">
@@ -823,6 +836,37 @@ String? firstWord = words[0];</programlisting>
         choice between (union of) the types. An intersection is written as 
         <literal>X &amp; Y &amp; Z</literal>. A union is written as 
         <literal>X | Y | Z</literal>.</para>
+        
+        <section id="pii">
+            <title>Principal instantiation inheritance</title>
+            
+            <para>If a class or interface <literal>A</literal> is a subtype of the types
+            <literal>B&lt;X&gt;</literal> and <literal>B&lt;Y&gt;</literal> for some
+            parameterized type <literal>B&lt;T&gt;</literal>, and types <literal>X</literal> 
+            and <literal>Y</literal>, then <literal>A</literal> must also be a subtype of 
+            <literal>B&lt;Z&gt;</literal> for some subtype <literal>Z</literal> of 
+            <literal>X</literal> and <literal>Y</literal>.</para>
+            
+            <para>Or, equivalently, <literal>B&lt;T&gt;</literal> must not be invariant in 
+            <literal>T</literal> and <literal>A</literal> must also be a subtype of:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para><literal>B&lt;X&amp;Y&gt;</literal> if <literal>B&lt;T&gt;</literal>
+                    is covariant in <literal>T</literal>, or</para>
+                </listitem>
+                <listitem>
+                    <para><literal>B&lt;X|Y&gt;</literal> if <literal>B&lt;T&gt;</literal>
+                    is contravariant in <literal>T</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>It further follows that if <literal>X</literal> and <literal>Y</literal>
+            are distinct types, and <literal>B&lt;T&gt;</literal> is invariant in 
+            <literal>T</literal>, then the type <literal>B&lt;X&gt;&amp;B&lt;Y&gt;</literal>
+            is the empty type <literal>Bottom</literal>.</para>
+        
+        </section>
         
     <section id="extendedclass">
         <title>Extension</title>
@@ -1108,6 +1152,10 @@ Item item = comp;</programlisting>
         
         <para>Therefore, the <literal>of</literal> declaration is used to simulate 
         enumerated types and algebraic types.</para>
+        
+        <comment><para>TODO: We've decided to have the compiler restrict the 
+        inheritance hierarchy so that cases of a type are always disjoint. We
+        need to write down the exact rules!</para></comment>
         
     </section>
     
