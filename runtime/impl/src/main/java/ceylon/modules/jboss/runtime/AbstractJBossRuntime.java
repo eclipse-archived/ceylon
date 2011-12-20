@@ -22,7 +22,6 @@ import ceylon.modules.Configuration;
 import ceylon.modules.Main;
 import ceylon.modules.api.runtime.AbstractRuntime;
 import ceylon.modules.spi.Constants;
-
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.impl.RepositoryBuilder;
 import com.redhat.ceylon.cmr.impl.RootBuilder;
@@ -47,18 +46,18 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
     public ClassLoader createClassLoader(String name, String version, Configuration conf) throws Exception {
         ModuleLoader moduleLoader = createModuleLoader(conf);
         ModuleIdentifier moduleIdentifier = ModuleIdentifier.fromString(name + ":" + version);
-        try{
+        try {
             Module module = moduleLoader.loadModule(moduleIdentifier);
             return SecurityActions.getClassLoader(module);
-        }catch(ModuleNotFoundException x){
+        } catch (ModuleNotFoundException x) {
             String spec = name;
             String hint = "";
-            if(!Repository.NO_VERSION.equals(version)){
+            if (!Repository.NO_VERSION.equals(version)) {
                 spec += "/" + version;
                 hint = " (invalid version?)";
-            }else if(!Constants.DEFAULT.toString().equals(name))
-                hint = " (missing required version, try " + spec+"/version)";
-            throw new CeylonRuntimeException("Could not find module: "+spec+hint);
+            } else if (!Constants.DEFAULT.toString().equals(name))
+                hint = " (missing required version, try " + spec + "/version)";
+            throw new CeylonRuntimeException("Could not find module: " + spec + hint);
         }
     }
 
@@ -71,21 +70,23 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
     protected Repository createRepository(Configuration conf) {
         final RepositoryBuilder builder = new RepositoryBuilder();
 
-        // add default repos - if they exist
-        builder.addCeylonHome();
-        if (conf.repositories.isEmpty()) {
+        // add ./modules if no -rep
+        if (conf.repositories.isEmpty())
             builder.addModules();
-        } else {
-            // any user defined repos
-            for (String token : conf.repositories) {
-                try {
-                    final RootBuilder rb = new RootBuilder(token);
-                    builder.appendExternalRoot(rb.buildRoot());
-                } catch (Exception e) {
-                    Logger.getLogger("ceylon.runtime").log(Level.WARNING, "Failed to add repository: " + token, e);
-                }
+
+        // add ceylon.home
+        builder.addCeylonHome();
+
+        // any user defined repos
+        for (String token : conf.repositories) {
+            try {
+                final RootBuilder rb = new RootBuilder(token);
+                builder.appendExternalRoot(rb.buildRoot());
+            } catch (Exception e) {
+                Logger.getLogger("ceylon.runtime").log(Level.WARNING, "Failed to add repository: " + token, e);
             }
         }
+
         // add remote module repo
         builder.addModulesCeylonLangOrg();
 
