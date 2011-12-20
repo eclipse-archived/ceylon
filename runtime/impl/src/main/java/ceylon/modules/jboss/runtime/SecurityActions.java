@@ -35,10 +35,15 @@ class SecurityActions {
      * @return module's classloader
      */
     static ClassLoader getClassLoader(final Module module) {
-        return AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
-            public ClassLoader run() {
-                return module.getClassLoader();
-            }
-        });
+        final SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            return AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
+                public ClassLoader run() {
+                    return module.getClassLoader();
+                }
+            });
+        } else {
+            return module.getClassLoader();
+        }
     }
 }

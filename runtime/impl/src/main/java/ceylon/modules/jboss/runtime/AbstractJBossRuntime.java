@@ -115,7 +115,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
     protected <T> T getService(Class<T> serviceType, Configuration conf) {
         try {
             String impl = conf.impl.get(serviceType.getName());
-            return (impl != null) ? Main.instantiate(serviceType, impl) : null;
+            return (impl != null) ? Main.createInstance(serviceType, impl) : null;
         } catch (Exception e) {
             throw new IllegalArgumentException("Cannot instantiate service: " + serviceType.getName(), e);
         }

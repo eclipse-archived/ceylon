@@ -28,6 +28,7 @@ import java.util.Map;
 
 /**
  * @author Stephane Epardaud
+ * @author Ales Justin
  */
 public class Configuration {
 
@@ -114,7 +115,7 @@ public class Configuration {
 
     private void printVersion() {
         System.out.println("Version: ceylon " + Constants.CEYLON_VERSION);
-        System.exit(0);
+        SecurityActions.exit(0);
     }
 
     public void printUsage() {
@@ -126,33 +127,33 @@ public class Configuration {
                 + "                      (default: use the module descriptor)\n"
                 + " -rep path:           Module repository path (can be specified more than once)\n"
                 + "                      Default:\n");
-        if(distRepo != null)
+        if (distRepo != null)
             System.err.print(
-                  "                      "+distRepo+"\n");
+                    "                      " + distRepo + "\n");
         System.err.print(
-                  "                      ./modules\n");
-        if(homeRepo != null)
+                "                      ./modules\n");
+        if (homeRepo != null)
             System.err.print(
-                  "                      "+homeRepo+"\n");
+                    "                      " + homeRepo + "\n");
         System.err.print(
-                  " -src path:           Source path (default: source)\n"
-                + " -help:               Prints help usage\n"
-                + " -version:            Prints version number\n"
-                + " moduleName/version:  Module name and version to run (required)\n"
+                " -src path:           Source path (default: source)\n"
+                        + " -help:               Prints help usage\n"
+                        + " -version:            Prints version number\n"
+                        + " moduleName/version:  Module name and version to run (required)\n"
         );
-        System.exit(1);
+        SecurityActions.exit(1);
     }
 
     private String getDistRepo() {
-        String ceylonHome = System.getProperty("ceylon.home");
-        if(ceylonHome != null)
+        String ceylonHome = SecurityActions.getProperty("ceylon.home");
+        if (ceylonHome != null)
             return ceylonHome + File.separator + "repo";
         return null;
     }
 
     private String getHomeRepo() {
-        String userHome = System.getProperty("user.home");
-        if(userHome != null)
+        String userHome = SecurityActions.getProperty("user.home");
+        if (userHome != null)
             return userHome + File.separator + ".ceylon" + File.separator + "repo";
         return null;
     }

@@ -38,14 +38,22 @@ final class SecurityActions {
      * @throws Exception for any error
      */
     static Module getModule(final Class<?> moduleClass) throws Exception {
-        return AccessController.doPrivileged(new PrivilegedExceptionAction<Module>() {
-            @Override
-            public Module run() throws Exception {
-                final Method getModule = moduleClass.getDeclaredMethod("getModule");
-                getModule.setAccessible(true);
-                return (Module) getModule.invoke(null); // it should be a static method
-            }
-        });
+        final SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            return AccessController.doPrivileged(new PrivilegedExceptionAction<Module>() {
+                public Module run() throws Exception {
+                    return getModuleInternal(moduleClass);
+                }
+            });
+        } else {
+            return getModuleInternal(moduleClass);
+        }
+    }
+
+    private static Module getModuleInternal(final Class<?> moduleClass) throws Exception {
+        final Method getModule = moduleClass.getDeclaredMethod("getModule");
+        getModule.setAccessible(true);
+        return (Module) getModule.invoke(null); // it should be a static method
     }
 
     /**
@@ -56,16 +64,24 @@ final class SecurityActions {
      * @throws Exception for any error
      */
     static void invokeRun(final Class<?> runClass, final String[] args) throws Exception {
-        AccessController.doPrivileged(new PrivilegedExceptionAction<Object>() {
-            @SuppressWarnings("UnnecessaryLocalVariable")
-            @Override
-            public Object run() throws Exception {
-                final Method main = runClass.getDeclaredMethod("main", String[].class);
-                main.setAccessible(true);
-                final Object sfa = args;
-                main.invoke(null, sfa);
-                return null;
-            }
-        });
+        final SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            AccessController.doPrivileged(new PrivilegedExceptionAction<Object>() {
+                public Object run() throws Exception {
+                    invokeRunInternal(runClass, args);
+                    return null;
+                }
+            });
+        } else {
+            invokeRunInternal(runClass, args);
+        }
+    }
+
+    @SuppressWarnings("UnnecessaryLocalVariable")
+    private static void invokeRunInternal(final Class<?> runClass, final String[] args) throws Exception {
+        final Method main = runClass.getDeclaredMethod("main", String[].class);
+        main.setAccessible(true);
+        final Object sfa = args;
+        main.invoke(null, sfa);
     }
 }

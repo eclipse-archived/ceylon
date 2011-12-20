@@ -15,14 +15,11 @@
  * limitations under the License.
  */
 
-package ceylon.modules.bootstrap.loader;
+package ceylon.modules;
 
-import org.jboss.modules.ModuleIdentifier;
-import org.jboss.modules.ModuleLoader;
-
-import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.security.PrivilegedExceptionAction;
 
 /**
  * Security actions.
@@ -43,52 +40,38 @@ final class SecurityActions {
         }
     }
 
-    static String getProperty(final String key, final String defaultValue) {
+    static void exit(final int status) {
         final SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
-            return AccessController.doPrivileged(new PrivilegedAction<String>() {
-                public String run() {
-                    return System.getProperty(key, defaultValue);
+            AccessController.doPrivileged(new PrivilegedAction<Object>() {
+                public Object run() {
+                    System.exit(status);
+                    return null;
                 }
             });
         } else {
-            return System.getProperty(key, defaultValue);
+            System.exit(status);
         }
     }
 
-    static boolean getBoolean(final String key) {
+    static <T> T instantiate(final Class<T> expectedType, final String defaultImpl) throws Exception {
         final SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
-            return AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
-                public Boolean run() {
-                    return Boolean.getBoolean(key);
+            return AccessController.doPrivileged(new PrivilegedExceptionAction<T>() {
+                public T run() throws Exception {
+                    return instantiateInternal(expectedType, defaultImpl);
                 }
             });
         } else {
-            return Boolean.getBoolean(key);
+            return instantiateInternal(expectedType, defaultImpl);
         }
     }
 
-    static Method findModule() {
-        final SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            return AccessController.doPrivileged(new PrivilegedAction<Method>() {
-                public Method run() {
-                    return findModuleInternal();
-                }
-            });
-        } else {
-            return findModuleInternal();
-        }
-    }
-
-    private static Method findModuleInternal() throws RuntimeException {
-        try {
-            final Method declaredMethod = ModuleLoader.class.getDeclaredMethod("findModule", ModuleIdentifier.class);
-            declaredMethod.setAccessible(true);
-            return declaredMethod;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    private static <T> T instantiateInternal(final Class<T> expectedType, final String defaultImpl) throws Exception {
+        final String impl = System.getProperty(expectedType.getName(), defaultImpl);
+        final ClassLoader cl = expectedType.getClassLoader();
+        final Class<?> clazz = cl.loadClass(impl);
+        final Object result = clazz.newInstance();
+        return expectedType.cast(result);
     }
 }
