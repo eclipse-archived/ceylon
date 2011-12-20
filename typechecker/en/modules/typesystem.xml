@@ -94,13 +94,17 @@
             of both <literal>Persistent</literal> and <literal>Printable</literal>?</para>
         </listitem>
         <listitem>
+            <para>What is the type of a nonempty sequence of <literal>Integer</literal>s, 
+            <literal>Float</literal>s, and <literal>String</literal>s?</para>
+        </listitem>
+        <listitem>
             <para>What is the type that represents methods that accept two <literal>Float</literal>
             values?</para>
         </listitem>
-        <listitem>
+        <!--listitem>
             <para>What is the type of an expression that may be evaluated to produce
             a <literal>String</literal>?</para>
-        </listitem>
+        </listitem-->
         <!--
         <listitem>
             <para>What is the type of a sequence of natural numbers of length <literal>n+1</literal>?</para>
@@ -117,7 +121,7 @@
     <literal>Nothing|Element</literal>, <literal>String|String[]</literal>,
     <literal>Persistent&amp;Printable</literal>,
     <literal>Method&lt;Object,Void,Float,Float&gt;</literal>,
-    <literal>Gettable&lt;String&gt;</literal> and 
+    <literal>Sequence&lt;Integer|Float|String&gt;</literal> and 
     <literal>Class&lt;Renderer,Callable&lt;String,Object&gt;&gt;</literal>.</para>
     
     <!--itemizedlist>
@@ -135,13 +139,13 @@
         </listitem>
     </itemizedlist-->
     
-    <para>The ability to represent types like <literal>Method</literal>, <literal>Class</literal>,
-    and <literal>Callable</literal> within the type system, and to therefore write
-    code that operates on instances of these types in a typesafe way is what makes
-    Ceylon a <emphasis>higher order</emphasis> language.</para>
+    <para>It's important that there is always a unique "best" answer to questions
+    like this in Ceylon. The "best" answer is called the <emphasis>principal type
+    of an expression</emphasis>. Every other type to which the expression is 
+    assignable is a supertype of the principal type.</para>
     
-    <para>Every legal Ceylon expression has a unique, computable, well-defined type 
-    without reference to how the expression is used or to what type it is assigned.
+    <para>Thus, every legal Ceylon expression has a unique, computable, well-defined 
+    type without reference to how the expression is used or to what type it is assigned.
     This is the case even when type inference or type argument inference is used.</para>
     
     <para>Neither this specification nor the internal implementation of the Ceylon 
@@ -150,6 +154,11 @@
     language itself. Thus, the programmer is never exposed to confusing error 
     messages referring to mysterious types that are not part of the syntax of the 
     language.</para>
+    
+    <para>The ability to represent types like <literal>Method</literal>, <literal>Class</literal>,
+    and <literal>Callable</literal> within the type system, and to therefore write
+    code that operates on instances of these types in a typesafe way is what makes
+    Ceylon a <emphasis>higher order</emphasis> language.</para>
     
     <section id="identifiernaming">
         <title>Identifier naming</title>
@@ -188,7 +197,7 @@
     <section id="type">
         <title>Types</title>
     
-        <para>A <emphasis>type</emphasis> or <emphasis>type schema</emphasis> is name 
+        <para>A <emphasis>type</emphasis> or <emphasis>type schema</emphasis> is a name 
         (an initial uppercase identifier) and an optional list of type parameters, with 
         a set of:</para>
         
