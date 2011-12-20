@@ -27,7 +27,8 @@
                 <include name="samples/**" />
             </zipfileset>
             <zipfileset dir="${basedir}" prefix="${dist.name}">
-                <include name="LICENSE" />
+                <include name="LICENSE-ASL" />
+                <include name="LICENSE-GPL-CP" />
                 <include name="NOTICE" />
                 <include name="README.md" />
             </zipfileset>
