@@ -358,19 +358,28 @@ public class TypeVisitor extends Visitor {
 
     @Override 
     public void visit(Tree.InterfaceDefinition that) {
-        that.getDeclarationModel().setExtendedType(unit.getObjectDeclaration().getType());
+        Class od = unit.getObjectDeclaration();
+        if (od!=null) {
+		    that.getDeclarationModel().setExtendedType(od.getType());
+        }
         super.visit(that);
     }
 
     @Override
     public void visit(Tree.TypeParameterDeclaration that) {
-        that.getDeclarationModel().setExtendedType(unit.getVoidDeclaration().getType());
+        Class vd = unit.getVoidDeclaration();
+        if (vd!=null) {
+		    that.getDeclarationModel().setExtendedType(vd.getType());
+        }
         super.visit(that);
     }
     
     @Override
     public void visit(Tree.SequencedTypeParameterDeclaration that) {
-        that.getDeclarationModel().setExtendedType(unit.getVoidDeclaration().getType());
+        Class vd = unit.getVoidDeclaration();
+        if (vd!=null) {
+            that.getDeclarationModel().setExtendedType(vd.getType());
+        }
         super.visit(that);
     }
     
