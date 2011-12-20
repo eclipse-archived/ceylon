@@ -222,7 +222,7 @@
     
     </section>
     
-    <section id="lexicalmixin">
+    <!-- section id="lexicalmixin">
     <title>Introductions</title>
     
     <para>
@@ -252,7 +252,7 @@
     
     <programlisting>List&lt;Character&gt; chars = "Hello, World!";</programlisting>
     
-    </section>
+    </section-->
     
     <section id="initializationandinstantiation">
     <title>Class initialization and instantiation</title>
