@@ -70,6 +70,25 @@ Source code is available from GitHub:
 
 Bugs and suggestions may be reported in GitHub's issue tracker.
 
+## Systems where Ceylon is known to work
+
+Since Ceylon is running on the JVM it should work on every platform where the JVM
+is supported. However we have tested the following platforms to make sure it works:
+
+### Linux
+
+- Ubuntu "oneiric" 11.10 (64 bit) JDK 1.7.0_147-icedtea, 1.6.0_26
+- Fedora 16 JDK 1.6.0_22-icedtea
+
+### Windows
+
+- Windows 7 (64 bit) JDK 1.7, 1.6.0_30
+
+### OSX
+
+- OSX 10 Snow Leopard (10.6.8) JDK 1.7.0-b217, 1.6.0_29, 1.6.0_26
+- OSX 10 Lion (10.7.2) JDK 1.6.0_29
+
 ## License
 
 The Ceylon distribution is and contains work released
