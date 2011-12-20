@@ -52,11 +52,12 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
         } catch (ModuleNotFoundException x) {
             String spec = name;
             String hint = "";
-            if (!Repository.NO_VERSION.equals(version)) {
+            if (Repository.NO_VERSION.equals(version) == false) {
                 spec += "/" + version;
                 hint = " (invalid version?)";
-            } else if (!Constants.DEFAULT.toString().equals(name))
+            } else if (Constants.DEFAULT.toString().equals(name) == false) {
                 hint = " (missing required version, try " + spec + "/version)";
+            }
             throw new CeylonRuntimeException("Could not find module: " + spec + hint);
         }
     }
@@ -70,11 +71,11 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
     protected Repository createRepository(Configuration conf) {
         final RepositoryBuilder builder = new RepositoryBuilder();
 
-        // add ./modules if no -rep
+        // prepend ./modules if no -rep
         if (conf.repositories.isEmpty())
             builder.addModules();
 
-        // add ceylon.home
+        // prepend ceylon.home
         builder.addCeylonHome();
 
         // any user defined repos

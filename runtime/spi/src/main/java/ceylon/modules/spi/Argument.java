@@ -16,6 +16,9 @@
  */
 package ceylon.modules.spi;
 
+/**
+ * @author Stephane Epardaud
+ */
 public enum Argument {
 
     EXECUTABLE("executable", ArgumentType.IMPL, 1),

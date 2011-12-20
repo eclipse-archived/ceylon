@@ -25,6 +25,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Stephane Epardaud
+ */
 public class Configuration {
 
     /**
