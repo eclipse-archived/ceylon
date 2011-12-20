@@ -43,23 +43,23 @@ To run the "hello world" program, type:
 
     cd samples/helloworld
     ../../bin/ceylonc com.acme.helloworld
-    ../../bin/ceylond com.acme.helloworld
+    ../../bin/ceylond -private com.acme.helloworld
     ../../bin/ceylon com.acme.helloworld/1.0.0 John
 
 To run a program defined in the default module, type:
 
     cd samples/no-module
     ../../bin/ceylonc default
-    ../../bin/ceylond default
+    ../../bin/ceylond -private default
     ../../bin/ceylon default
 
 ## Tool usage
 
 To see a list of command line options, type one of:
 
-    ../../bin/ceylonc -help
-    ../../bin/ceylond -help
-    ../../bin/ceylon -help
+    ./bin/ceylonc -help
+    ./bin/ceylond -help
+    ./bin/ceylon -help
 
 ## Ant tasks for Ceylon
 
