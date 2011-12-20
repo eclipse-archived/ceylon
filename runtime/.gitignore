@@ -25,3 +25,6 @@ bootstrap/target/
 impl/target/
 spi/target/
 testsuite/target/
+mc/target/
+osgi/target/
+sdk/target/
