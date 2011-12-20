@@ -60,6 +60,16 @@ To see a list of command line options, type one of:
     ../../bin/ceylond -help
     ../../bin/ceylon -help
 
+## Source code
+
+Source code is available from GitHub:
+
+<http://github.com/ceylon>
+
+## Issues
+
+Bugs and suggestions may be reported in GitHub's issue tracker.
+
 ## License
 
 The Ceylon distribution is and contains work released
