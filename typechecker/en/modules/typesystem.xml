@@ -347,17 +347,17 @@
                 <para>Single root: all types are subtypes of the class <literal>Void</literal>
                 defined in the module <literal>ceylon.language</literal>.</para>
             </listitem>
-            <listitem>
+            <!--listitem>
                 <para>Generic consistency: If <literal>Y</literal> is a parameterized type, and 
                 a class or interface <literal>X</literal> is a subtype of both <literal>Y&lt;U&gt;</literal> 
                 and <literal>Y&lt;V&gt;</literal> then either <literal>Y&lt;U&gt;</literal> is a 
                 subtype of <literal>Y&lt;V&gt;</literal> or <literal>Y&lt;V&gt;</literal> is a 
                 subtype of <literal>Y&lt;U&gt;</literal>.</para>
-            </listitem>
+            </listitem-->
         </itemizedlist>
         
-        <comment><para>Note: intersections and <literal>Bottom</literal> don't satisfy the last of 
-        these rules.</para></comment>
+        <!--comment><para>Note: intersections and <literal>Bottom</literal> don't satisfy the last of 
+        these rules.</para></comment-->
         
         <para>Every interface type is a subtype of the class <literal>Object</literal> 
         defined in <literal>ceylon.language</literal>.</para>
