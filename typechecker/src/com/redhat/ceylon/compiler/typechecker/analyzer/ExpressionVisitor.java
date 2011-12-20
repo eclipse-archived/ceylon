@@ -67,6 +67,7 @@ public class ExpressionVisitor extends Visitor {
     private Tree.Type returnType;
     private Declaration returnDeclaration;
     private boolean defaultArgument;
+    private boolean withinAnnotation = false;
 
     private Unit unit;
     
@@ -1551,7 +1552,9 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.Annotation that) {
+    	withinAnnotation=true;
         super.visit(that);
+        withinAnnotation=false;
         Declaration dec = that.getPrimary().getDeclaration();
         if (dec!=null && !dec.isToplevel()) {
             that.getPrimary().addError("annotation must be a toplevel method reference");
@@ -2393,7 +2396,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 that.setTypeModel(t);
-                if (term instanceof Tree.MemberOrTypeExpression &&
+                if (!withinAnnotation && term instanceof Tree.MemberOrTypeExpression &&
                         ((Tree.MemberOrTypeExpression) term).getDeclaration() instanceof Functional) {
                     that.addWarning("callable references (first-class functions) not yet supported");
                 }
