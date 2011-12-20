@@ -1,5 +1,5 @@
 <chapter id="typesystem">
-    <title>Type system overview</title>
+    <title>Type system</title>
     
     <para>Every value in a Ceylon program is an instance of a type that can be expressed 
     within the Ceylon language as a <emphasis>class</emphasis>. The language does not 
