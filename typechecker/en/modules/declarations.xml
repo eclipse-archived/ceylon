@@ -128,6 +128,10 @@ TypeConstraints?
         <para>For a given package, there may be at most one <literal>import</literal>
         statement per compilation unit.</para>
         
+        <para>An <literal>import</literal> statement may not import from a non-shared
+        package unless the containing compilation unit belongs to the same module as
+        the package.</para>
+        
         <para>Each <literal>import</literal> statement imports one or more toplevel 
         declarations from the given package, specifying a list of <emphasis>import
         elements</emphasis>.</para>
