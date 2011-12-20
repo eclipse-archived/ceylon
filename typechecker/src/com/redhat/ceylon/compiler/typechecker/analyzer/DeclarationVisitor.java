@@ -27,6 +27,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
@@ -258,8 +259,9 @@ public class DeclarationVisitor extends Visitor {
             that.addError("missing parameter list in class declaration: " + 
                     name(that.getIdentifier()) );
         }
-        if (c.isClassOrInterfaceMember()) {
-        	that.addWarning("nested classes are not yet supported");
+        if (c.isClassOrInterfaceMember() && 
+                c.getContainer() instanceof TypedDeclaration) {
+            that.addWarning("nested classes of inner classes are not yet supported");
         }
     }
 
@@ -273,7 +275,7 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
         if (!i.isToplevel()) {
-        	that.addWarning("nested interfaces are not yet supported");
+            that.addWarning("inner interfaces are not yet supported");
         }
     }
     
@@ -497,16 +499,22 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.Parameter that) {
         super.visit(that);
         SpecifierExpression se = that.getDefaultArgument()==null ?
-        		null :
-        		that.getDefaultArgument().getSpecifierExpression();
+                null :
+                that.getDefaultArgument().getSpecifierExpression();
        if (se!=null) {
             if (declaration.isActual()) {
-            	se.addError("parameter of actual declaration may not define default value: parameter " +
-            			name(that.getIdentifier()) + " of " + declaration.getName());
+                se.addError("parameter of actual declaration may not define default value: parameter " +
+                        name(that.getIdentifier()) + " of " + declaration.getName());
             }
-            if (!declaration.isClassOrInterfaceMember() && 
-            		!declaration.isToplevel()) {
-            	se.addWarning("default arguments for parameters of inner methods not yet supported");
+            if (declaration instanceof Method &&
+                    !declaration.isToplevel() &&
+                    !(declaration.isClassOrInterfaceMember() && 
+                            ((Declaration) declaration.getContainer()).isToplevel())) {
+                se.addWarning("default arguments for parameters of inner methods not yet supported");
+            }
+            if (declaration instanceof Class && 
+                    !declaration.isToplevel()) {
+                se.addWarning("default arguments for parameters of inner classes not yet supported");
             }
             /*else {
                 se.addWarning("parameter default values are not yet supported");

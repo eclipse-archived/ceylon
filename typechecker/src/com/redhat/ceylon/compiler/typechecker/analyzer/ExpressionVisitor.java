@@ -2317,6 +2317,7 @@ public class ExpressionVisitor extends Visitor {
                     visitQualifiedTypeExpression(that, pt, type, ta, tal);
                     //otherwise infer type arguments later
                 }
+                that.addWarning("outer instantiation of inner classes not yet supported");
             }
             //TODO: this is temporary until we get metamodel reference expressions!
             if (that.getPrimary() instanceof Tree.BaseTypeExpression ||
