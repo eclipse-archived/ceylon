@@ -28,19 +28,29 @@ import java.security.PrivilegedAction;
 final class SecurityActions {
 
     static String getProperty(final String key) {
-        return AccessController.doPrivileged(new PrivilegedAction<String>() {
-            public String run() {
-                return System.getProperty(key);
-            }
-        });
+        final SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            return AccessController.doPrivileged(new PrivilegedAction<String>() {
+                public String run() {
+                    return System.getProperty(key);
+                }
+            });
+        } else {
+            return System.getProperty(key);
+        }
     }
 
     static String getProperty(final String key, final String defaultValue) {
-        return AccessController.doPrivileged(new PrivilegedAction<String>() {
-            public String run() {
-                return System.getProperty(key, defaultValue);
-            }
-        });
+        final SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            return AccessController.doPrivileged(new PrivilegedAction<String>() {
+                public String run() {
+                    return System.getProperty(key, defaultValue);
+                }
+            });
+        } else {
+            return System.getProperty(key, defaultValue);
+        }
     }
 
 }
