@@ -117,7 +117,7 @@ public class Configuration {
     }
 
     public void printUsage() {
-        System.err.print("Usage: ceylon [options...] moduleName/version\n"
+        System.err.print("Usage: ceylon [options...] moduleName/version [args...]\n"
                 + "\n"
                 + " -run qualified-name: Name of a class or toplevel method to run\n"
                 + "                      (default: use the module descriptor)\n"
