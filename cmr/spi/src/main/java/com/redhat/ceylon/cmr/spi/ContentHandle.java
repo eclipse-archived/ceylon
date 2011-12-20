@@ -33,7 +33,7 @@ public interface ContentHandle {
      * @return the node's stream
      * @throws IOException for any I/O error
      */
-    InputStream getContent() throws IOException;
+    InputStream getContentAsStream() throws IOException;
 
     /**
      * Get node content as file.

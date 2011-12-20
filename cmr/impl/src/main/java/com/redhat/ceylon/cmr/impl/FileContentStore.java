@@ -168,7 +168,7 @@ public class FileContentStore implements ContentStore, StructureBuilder {
             this.file = file;
         }
 
-        public InputStream getContent() throws IOException {
+        public InputStream getContentAsStream() throws IOException {
             return new FileInputStream(file);
         }
 

@@ -178,7 +178,7 @@ public class DefaultNode extends AbstractOpenNode {
     public InputStream getInputStream() throws IOException {
         synchronized (this) {
             if (handle != null)
-                return handle.getContent();
+                return handle.getContentAsStream();
         }
 
         final ContentStore cs = findService(ContentStore.class);
@@ -191,6 +191,6 @@ public class DefaultNode extends AbstractOpenNode {
             handle = ch;
         }
 
-        return ch.getContent();
+        return ch.getContentAsStream();
     }
 }

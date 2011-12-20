@@ -85,14 +85,14 @@ public class InMemoryContentStore implements ContentStore, StructureBuilder {
         }
 
         @Override
-        public InputStream getContent() throws IOException {
+        public InputStream getContentAsStream() throws IOException {
             return new ByteArrayInputStream(bytes);
         }
 
         @Override
         public File getContentAsFile() throws IOException {
             final File temp = File.createTempFile("in-memory-", ".car");
-            IOUtils.copyStream(getContent(), new FileOutputStream(temp));
+            IOUtils.copyStream(getContentAsStream(), new FileOutputStream(temp));
             temp.deleteOnExit();
             return temp;
         }

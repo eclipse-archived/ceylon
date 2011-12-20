@@ -153,7 +153,7 @@ public class RemoteContentStore implements ContentStore, StructureBuilder {
             this.node = node;
         }
 
-        public InputStream getContent() throws IOException {
+        public InputStream getContentAsStream() throws IOException {
             final URL url = getURL(NodeUtils.getFullPath(node, SEPARATOR));
             log.info("Fetching resource: " + url);
             return url.openStream();
