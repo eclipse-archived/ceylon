@@ -1574,7 +1574,7 @@ assignmentOperator returns [AssignmentOp operator]
     | COMPLEMENT_ASSIGN_OP { $operator = new ComplementAssignOp($COMPLEMENT_ASSIGN_OP); }
     | AND_ASSIGN_OP { $operator = new AndAssignOp($AND_ASSIGN_OP); }
     | OR_ASSIGN_OP { $operator = new OrAssignOp($OR_ASSIGN_OP); }
-    | DEFAULT_ASSIGN_OP { $operator = new DefaultAssignOp($DEFAULT_ASSIGN_OP); }
+    //| DEFAULT_ASSIGN_OP { $operator = new DefaultAssignOp($DEFAULT_ASSIGN_OP); }
     ;
 
 thenElseExpression returns [Term term]
@@ -3159,9 +3159,9 @@ REMAINDER_ASSIGN_OP
     :   '%='
     ;
 
-DEFAULT_ASSIGN_OP
+/*DEFAULT_ASSIGN_OP
     :   '?='
-    ;
+    ;*/
 
 AND_ASSIGN_OP
     :   '&&='
