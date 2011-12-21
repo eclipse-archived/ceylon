@@ -899,7 +899,8 @@ sort(names, reverseAlpha);</programlisting>
         
         <section id="callableobjectsasmethodreturnvalues">
             <title>Callable objects as method return values</title>
-            
+        
+        <!--  
         <para>An expression of type <literal>Callable</literal> may be returned by a method 
         with multiple parameter lists. The expression must be assignable to the callable 
         type of a method formed by eliminating the first parameter list of the method.</para>
@@ -927,7 +928,8 @@ sort(names, reverseAlpha);</programlisting>
         return natural;
     }
 }</programlisting>
-
+        -->
+        
         <para>Calling a method with multiple parameter lists is called <emphasis>partial 
         application</emphasis> of the method.</para>
         

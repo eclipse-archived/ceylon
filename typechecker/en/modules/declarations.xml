@@ -1838,8 +1838,11 @@ else {
             
         <para>A method may declare multiple lists of parameters. A method which 
         declares more than one parameter list returns instances of 
-        <literal>Callable</literal>, usually method references.</para>
+        <literal>Callable</literal>. The compiler infers a nested method whose
+        callable type is formed by taking the method with multiple parameter 
+        lists and eliminating the first parameter list.</para>
         
+        <!--
         <para>The type of the expression specified by the <literal>return</literal> 
         directive may be be assignable to either:</para>
         
@@ -1869,6 +1872,7 @@ else {
         automatically infers a series of nested methods, one for each parameter list of 
         the method. The declarations and statements in the method body form the body of 
         the most nested inferred method.</para>
+        -->
         
         <para>This method declaration:</para>
         
@@ -1876,8 +1880,12 @@ else {
     return x&lt;=&gt;y;
 }</programlisting>
 
-        <para>is equivalent to the previous example. The compiler infers a method with
-        the same signature and implementation as <literal>order()</literal> above.</para>
+        <para>is equivalent to the following:</para>
+
+        <programlisting>Calable&lt;Comparison,Integer,Integer> getOrder() {
+    Comparison order(Integer x, Integer y) { return x&lt;=&gt;y; }
+    return order;
+}</programlisting>
 
         <para>For a method with <literal>n</literal> parameter lists, there are 
         <literal>n</literal> inferred methods. The <literal>i</literal>th inferred 
@@ -1908,27 +1916,22 @@ else {
         
         <para>This method declaration:</para>
         
-        <programlisting>shared String fullName(String firstName)(String middleName)(String lastName) {
+        <programlisting>function fullName(String firstName)(String middleName)(String lastName) {
     return firstName + " " + middleName + " " lastName;
 }</programlisting>
         
         <para>Is equivalent to:</para>
         
-        <programlisting>shared String fullName(String firstName)(String middleName)(String lastName) {
-    String fullName2(String middleName)(String lastName) {
-        String fullName3(String lastName) {
+        <programlisting>function fullName(String firstName) {
+    function fullName2(String middleName) {
+        function fullName3(String lastName) {
             return firstName + " " + middleName + " " + lastName;
         }
         return fullName3;
     }
     return fullName2;
 }</programlisting>
-                
-        <comment><para>TODO: To be totally complete and regular with attribute getters,
-        I suppose we should let any method body return a method reference with the same 
-        signature as the method. But I'm not really sure how practically useful this
-        would be.</para></comment>
-                
+                        
         </section>
         
         <!--
