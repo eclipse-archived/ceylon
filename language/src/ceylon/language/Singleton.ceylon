@@ -18,12 +18,7 @@ shared class Singleton<Element>(Element element)
         return {};
     }
     shared actual Element? item(Integer index) {
-        if (index==0) {
-            return element;
-        }
-        else {
-            return null;
-        }
+        return index==0 then element else null;
     }
     shared actual Singleton<Element> clone {
         return this;
