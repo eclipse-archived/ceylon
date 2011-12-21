@@ -1,0 +1,69 @@
+#!/bin/sh
+#
+# Creates src distribution archive
+#
+# Note: Script presumes that branches are up-to-date
+# e.g you have run git-pull for each of them
+#
+tagname=$1
+if [ ".$tagname" = . ]
+then
+    echo 'Error: missing TAG name'
+    echo 'Usage buildsources <tagname>'
+    echo ''
+    exit 1
+fi
+
+distrepos="ceylon-compiler \
+    ceylon-dist \
+    ceylon.language \
+    ceylon-module-resolver \
+    ceylon-runtime \
+    ceylon-spec"
+
+distname=ceylon-$tagname-src
+workdir="`pwd`/$distname"
+rm -rf $distname 2>/dev/null || true
+mkdir $distname
+pushd ../..
+for i in $distrepos
+do
+    if [ -d $i ]
+    then
+        pushd $i
+        # git pull -u
+        x=`git tag -l | grep "$tagname" 2>/dev/null`
+        if [ ".$x" = . ]
+        then
+            echo "Cannot find TAG \`$tagname' inside $i.git"
+            exit 1
+        fi
+        echo "Using $i:$tagname"
+    else
+        echo "Fetching $i.git ..."
+        git clone git://github.com/ceylon/$i.git
+        test $? -ne 0 && exit 1        
+        pushd $i
+    fi
+    git archive --format=tar --output=$workdir/$i.tar $tagname
+    test $? -ne 0 && exit 1
+    popd
+done
+popd
+pushd "$workdir"
+for i in $distrepos
+do
+    mkdir $i
+    pushd $i
+    tar xf ../$i.tar
+    popd
+    rm $i.tar
+done
+popd
+# Create distribution artifacts
+tar cfz $distname.tar.gz $distname
+zip -9rqy $distname.zip $distname
+sha1sum -b $distname.tar.gz >$distname.tar.gz.sha1
+sha1sum -b $distname.zip >$distname.zip.sha1
+# Remove working directory
+rm -rf $distname 2>/dev/null || true
