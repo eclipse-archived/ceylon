@@ -512,16 +512,17 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         packagesByName.put(pkgName, pkg);
         // FIXME: some refactoring needed
         pkg.setName(pkgName == null ? Collections.<String>emptyList() : Arrays.asList(pkgName.split("\\.")));
-        
-        // only load package descriptors for new packages after a certain phase
-        if(packageDescriptorsNeedLoading)
-            loadPackageDescriptor(pkg);
 
         // only bind it if we already have a module
         if(module != null){
             pkg.setModule(module);
             module.getPackages().add(pkg);
         }
+        
+        // only load package descriptors for new packages after a certain phase
+        if(packageDescriptorsNeedLoading)
+            loadPackageDescriptor(pkg);
+        
         return pkg;
     }
 
