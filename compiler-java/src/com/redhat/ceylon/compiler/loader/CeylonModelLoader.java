@@ -159,9 +159,12 @@ public class CeylonModelLoader extends AbstractModelLoader {
 
     @Override
     public void loadPackage(String packageName, boolean loadDeclarations) {
-        // abort if we already loaded it
-        if(!loadedPackages.add(packageName))
+        // abort if we already loaded it, but only record that we loaded it if we want
+        // to load the declarations, because merely calling complete() on the package
+        // is OK
+        if(loadDeclarations && !loadedPackages.add(packageName)){
             return;
+        }
         PackageSymbol ceylonPkg = packageName.equals("") ? syms().unnamedPackage : reader.enterPackage(names.fromString(packageName));
         ceylonPkg.complete();
         if(loadDeclarations){
