@@ -18,10 +18,10 @@ class ZipFolderVirtualFile implements VirtualFile {
     private final String entryName;
     private final List<VirtualFile> children = new ArrayList<VirtualFile>();
 
-    public ZipFolderVirtualFile(ZipEntry entry, String rootPath) {
-        this.name = Helper.getSimpleName(entry);
-        this.entryName = entry.getName();
-        String tempPath = rootPath + "!/" + entry.getName();
+    public ZipFolderVirtualFile(String entryName, String rootPath) {
+        this.name = Helper.getSimpleName(entryName);
+        this.entryName = entryName;
+        String tempPath = rootPath + "!/" + entryName;
         this.path = tempPath.endsWith("/") ? tempPath.substring(0, tempPath.length() - 1 ) : tempPath;
     }
 
