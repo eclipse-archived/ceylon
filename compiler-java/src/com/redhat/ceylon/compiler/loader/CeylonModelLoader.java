@@ -186,8 +186,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
     protected ReflClass loadClass(String pkgName, String className) {
         ReflClass moduleClass = null;
         try{
-            PackageSymbol javaPkg = pkgName.equals("") ? syms().unnamedPackage : reader.enterPackage(names.fromString(pkgName));
-            javaPkg.complete();
+            loadPackage(pkgName, false);
             moduleClass = lookupClassSymbol(className);
         }catch(CompletionFailure x){
             logVerbose("[Failed to complete class "+className+"]");
