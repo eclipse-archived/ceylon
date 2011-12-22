@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 public class Annotation {
-    String name;
-    Map<String,String> namedArguments = new HashMap<String,String>();
-    List<String> positionalArguments = new ArrayList<String>();
+	private String name;
+	private Map<String,String> namedArguments = new HashMap<String,String>();
+	private List<String> positionalArguments = new ArrayList<String>();
     
     public String getName() {
         return name;

@@ -15,14 +15,14 @@ import java.util.List;
  */
 public abstract class Declaration extends Element {
 
-    String name;
-    boolean shared;
-    boolean formal;
-    boolean actual;
-    boolean def;
-    List<Annotation> annotations = new ArrayList<Annotation>();
-    Scope visibleScope;
-    Declaration refinedDeclaration = this;
+	private String name;
+	private boolean shared;
+	private boolean formal;
+	private boolean actual;
+	private boolean def;
+    private List<Annotation> annotations = new ArrayList<Annotation>();
+    private Scope visibleScope;
+    private Declaration refinedDeclaration = this;
 
     public Scope getVisibleScope() {
         return visibleScope;

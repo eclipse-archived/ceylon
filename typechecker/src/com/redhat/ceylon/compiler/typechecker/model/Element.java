@@ -10,9 +10,9 @@ import java.util.Map;
 
 public abstract class Element {
 
-    Scope container;
-    Unit unit;
-    List<Declaration> members = new ArrayList<Declaration>();
+	private Scope container;
+	protected Unit unit;
+	private List<Declaration> members = new ArrayList<Declaration>();
 
     public Unit getUnit() {
         return unit;

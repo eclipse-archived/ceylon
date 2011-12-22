@@ -8,9 +8,10 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
 
 public class Class extends ClassOrInterface implements Functional {
 
-    boolean abstr;
-    //boolean formal;    
-    ParameterList parameterList;
+    private boolean abstr;
+    //private boolean formal;    
+    private ParameterList parameterList;
+    private boolean overloaded;
 
     /*public boolean isFormal() {
          return formal;
@@ -59,6 +60,11 @@ public class Class extends ClassOrInterface implements Functional {
             }
         }
         return null;
+    }
+    
+    @Override
+    public boolean isOverloaded() {
+    	return overloaded;
     }
     
     @Override

@@ -9,8 +9,8 @@ import java.util.List;
  */
 public class Setter extends MethodOrValue implements Scope {
 
-    Getter getter;
-    ValueParameter parameter;
+	private Getter getter;
+	private ValueParameter parameter;
 
     public Getter getGetter() {
         return getter;

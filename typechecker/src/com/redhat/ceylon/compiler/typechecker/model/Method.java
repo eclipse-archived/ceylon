@@ -12,11 +12,11 @@ import java.util.List;
  */
 public class Method extends MethodOrValue implements Generic, Scope, Functional {
 
-    //boolean formal;
+    //private boolean formal;
 
-    List<TypeParameter> typeParameters = Collections.emptyList();
-    List<ParameterList> parameterLists = new ArrayList<ParameterList>();
-    List<Declaration> members = new ArrayList<Declaration>();
+    private List<TypeParameter> typeParameters = Collections.emptyList();
+    private List<ParameterList> parameterLists = new ArrayList<ParameterList>();
+    private boolean overloaded;
 
     /*public boolean isFormal() {
          return formal;
@@ -57,4 +57,9 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
         parameterLists.add(pl);
     }
 
+    @Override
+    public boolean isOverloaded() {
+    	return overloaded;
+    }
+    
 }

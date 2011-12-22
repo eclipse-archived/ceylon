@@ -8,9 +8,9 @@ package com.redhat.ceylon.compiler.typechecker.model;
  */
 public class Value extends MethodOrValue {
 
-    boolean variable;
-    //boolean formal;
-    boolean captured = false;
+    private boolean variable;
+    //private boolean formal;
+    private boolean captured = false;
 
     /*public boolean isFormal() {
          return formal;

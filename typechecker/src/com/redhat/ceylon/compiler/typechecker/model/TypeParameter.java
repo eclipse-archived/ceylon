@@ -44,6 +44,11 @@ public class TypeParameter extends TypeDeclaration implements Functional {
 		this.sequenced = sequenced;
 	}
     
+    @Override
+    public boolean isOverloaded() {
+    	return false;
+    }
+    
     public boolean isSelfType() {
         return selfTypedDeclaration!=null;
     }

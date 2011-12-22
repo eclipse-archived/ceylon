@@ -30,4 +30,9 @@ public class FunctionalParameter extends Parameter implements Scope, Functional 
         return Collections.emptyList();
     }
     
+    @Override
+    public boolean isOverloaded() {
+    	return false;
+    }
+    
 }

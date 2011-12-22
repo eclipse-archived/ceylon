@@ -25,5 +25,7 @@ public interface Functional {
     public String getName();
 
     public List<TypeParameter> getTypeParameters();
+    
+    public boolean isOverloaded();
 
 }

@@ -14,12 +14,12 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
 
 public class Unit {
 
-    Package pkg;
-    List<Import> imports = new ArrayList<Import>();
-    List<Declaration> declarations = new ArrayList<Declaration>();
-    String filename;
-    List<ImportList> importLists = new ArrayList<ImportList>();
-    Set<Identifier> unresolvedReferences = new HashSet<Identifier>();
+	private Package pkg;
+	private List<Import> imports = new ArrayList<Import>();
+	private List<Declaration> declarations = new ArrayList<Declaration>();
+	private String filename;
+	private List<ImportList> importLists = new ArrayList<ImportList>();
+	private Set<Identifier> unresolvedReferences = new HashSet<Identifier>();
     
     public List<Import> getImports() {
         return imports;

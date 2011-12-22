@@ -1347,7 +1347,7 @@ public class ExpressionVisitor extends Visitor {
                         dec.getName());
                 }
             }
-            else {
+            else if (!dec.isOverloaded()) { //we don't typecheck args of an overloaded declaration, we let javac do it!
                 ParameterList pl = pls.get(0);            
                 if ( that.getPositionalArgumentList()!=null ) {
                     checkPositionalArguments(pl, prf, that.getPositionalArgumentList());

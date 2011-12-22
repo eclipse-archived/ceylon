@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 public class Import {
-    String alias;
-    Declaration declaration;
+	private String alias;
+	private Declaration declaration;
 
     public Declaration getDeclaration() {
         return declaration;

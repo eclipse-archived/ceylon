@@ -8,7 +8,7 @@ package com.redhat.ceylon.compiler.typechecker.model;
  */
 public class Getter extends MethodOrValue implements Scope {
 
-    Setter setter;
+	private Setter setter;
 
     public Setter getSetter() {
         return setter;
