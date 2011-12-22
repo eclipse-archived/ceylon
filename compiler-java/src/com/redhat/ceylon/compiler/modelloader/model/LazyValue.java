@@ -18,22 +18,25 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.compiler.loader;
+package com.redhat.ceylon.compiler.modelloader.model;
 
+import com.redhat.ceylon.compiler.modelloader.ModelCompleter;
+import com.redhat.ceylon.compiler.modelloader.refl.ReflClass;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.util.Util;
-import com.sun.tools.javac.code.Symbol.ClassSymbol;
 
 public class LazyValue extends Value {
-    public ClassSymbol classSymbol;
+    public ReflClass classSymbol;
     private ModelCompleter completer;
     private boolean isLoaded = false;
 
-    public LazyValue(ClassSymbol classSymbol, ModelCompleter completer) {
+    public LazyValue(ReflClass classSymbol, ModelCompleter completer) {
         this.classSymbol = classSymbol;
         this.completer = completer;
-        setName(Util.strip(classSymbol.getSimpleName().toString()));
+        classSymbol.getSimpleName();
+        // FIXME: why doesn't that move to getSimpleName()?
+        setName(Util.strip(classSymbol.getSimpleName()));
     }
 
     private void load() {

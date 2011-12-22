@@ -18,12 +18,13 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.compiler.loader;
+package com.redhat.ceylon.compiler.modelloader.model;
 
 import java.util.List;
 
+import com.redhat.ceylon.compiler.modelloader.ModelCompleter;
+import com.redhat.ceylon.compiler.modelloader.refl.ReflClass;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
-import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -33,19 +34,18 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
-import com.sun.tools.javac.code.Symbol.ClassSymbol;
 
 public class LazyInterface extends Interface implements LazyElement {
 
-    public ClassSymbol classSymbol;
+    public ReflClass classSymbol;
     private ModelCompleter completer;
     private boolean isLoaded = false;
     private boolean isTypeParamsLoaded = false;
 
-    public LazyInterface(ClassSymbol classSymbol, ModelCompleter completer) {
+    public LazyInterface(ReflClass classSymbol, ModelCompleter completer) {
         this.classSymbol = classSymbol;
         this.completer = completer;
-        setName(classSymbol.getSimpleName().toString());
+        setName(classSymbol.getSimpleName());
     }
     
     private void load() {

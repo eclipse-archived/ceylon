@@ -18,35 +18,27 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.compiler.loader;
+package com.redhat.ceylon.compiler.modelloader.model;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.tools.JavaFileObject.Kind;
-
-import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
+import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
+import com.redhat.ceylon.compiler.modelloader.ModelLoader.DeclarationType;
+import com.redhat.ceylon.compiler.modelloader.refl.ReflClass;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.util.Util;
-import com.sun.tools.javac.code.Symbol.ClassSymbol;
-import com.sun.tools.javac.code.Symbol.PackageSymbol;
-import com.sun.tools.javac.jvm.ClassReader;
-import com.sun.tools.javac.util.Name.Table;
 
 public class LazyPackage extends Package {
     
-    private ClassReader reader;
-    private CeylonModelLoader modelLoader;
-    private Table names;
+    private AbstractModelLoader modelLoader;
     private List<Declaration> compiledDeclarations = new LinkedList<Declaration>();
     
-    LazyPackage(CeylonModelLoader modelLoader, ClassReader reader, Table names){
+    public LazyPackage(AbstractModelLoader modelLoader){
         this.modelLoader = modelLoader;
-        this.reader = reader;
-        this.names = names;
     }
     
     @Override
@@ -59,21 +51,14 @@ public class LazyPackage extends Package {
     @Override
     public Declaration getDirectMember(String name) {
         String pkgName = getQualifiedNameString();
+
         // we need its package ready first
-        
-        PackageSymbol javaPkg = null;
-        if (pkgName.equals("")) {
-            javaPkg = modelLoader.syms().unnamedPackage;
-        }
-        else {
-            javaPkg = reader.enterPackage(names.fromString(pkgName ));
-        }
-        
-        javaPkg.complete();
+        modelLoader.loadPackage(pkgName, false);
+
         String className = getQualifiedName(pkgName, name);
-        ClassSymbol classSymbol = modelLoader.lookupClassSymbol(className);
+        ReflClass classSymbol = modelLoader.lookupClassSymbol(className);
         // only get it from the classpath if we're not compiling it
-        if(classSymbol != null && classSymbol.classfile.getKind() != Kind.SOURCE)
+        if(classSymbol != null && !classSymbol.isLoadedFromSource())
             return modelLoader.convertToDeclaration(className, DeclarationType.VALUE);
         return getDirectMemberFromSource(name);
     }
@@ -100,7 +85,7 @@ public class LazyPackage extends Package {
     @Override
     public List<Declaration> getMembers() {
         // make sure the package is loaded
-        modelLoader.loadPackage(getQualifiedNameString());
+        modelLoader.loadPackage(getQualifiedNameString(), true);
         List<Declaration> sourceDeclarations = super.getMembers();
         LinkedList<Declaration> ret = new LinkedList<Declaration>();
         ret.addAll(sourceDeclarations);

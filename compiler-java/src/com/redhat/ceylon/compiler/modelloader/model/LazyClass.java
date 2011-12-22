@@ -18,43 +18,56 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.compiler.loader;
+package com.redhat.ceylon.compiler.modelloader.model;
 
 import java.util.List;
-import java.util.Map;
 
+import com.redhat.ceylon.compiler.modelloader.ModelCompleter;
+import com.redhat.ceylon.compiler.modelloader.refl.ReflClass;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.DeclarationKind;
-import com.redhat.ceylon.compiler.typechecker.model.DeclarationWithProximity;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
-import com.redhat.ceylon.compiler.util.Util;
-import com.sun.tools.javac.code.Symbol.ClassSymbol;
 
-public class LazyMethod extends Method {
-    public ClassSymbol classSymbol;
+public class LazyClass extends Class implements LazyElement {
+
+    public ReflClass classSymbol;
     private ModelCompleter completer;
     private boolean isLoaded = false;
+    private boolean isTypeParamsLoaded = false;
+    private boolean forTopLevelObject;
 
-    public LazyMethod(ClassSymbol classSymbol, ModelCompleter completer) {
+    public LazyClass(ReflClass classSymbol, ModelCompleter completer, boolean forTopLevelObject) {
         this.classSymbol = classSymbol;
         this.completer = completer;
-        setName(Util.strip(classSymbol.getSimpleName().toString()));
+        this.forTopLevelObject = forTopLevelObject;
+        setName(classSymbol.getSimpleName());
+        setAbstract(classSymbol.isAbstract());
     }
-
+    
+    public boolean isTopLevelObjectType(){
+        return forTopLevelObject;
+    }
+    
     private void load() {
         if(!isLoaded){
+            loadTypeParams();
             isLoaded = true;
             completer.complete(this);
+        }
+    }
+
+    private void loadTypeParams() {
+        if(!isTypeParamsLoaded){
+            isTypeParamsLoaded = true;
+            completer.completeTypeParameters(this);
         }
     }
     
@@ -67,9 +80,56 @@ public class LazyMethod extends Method {
     }
 
     @Override
-    public ProducedType getType() {
+    public ParameterList getParameterList() {
         load();
+        return super.getParameterList();
+    }
+
+    @Override
+    public Parameter getParameter(String name) {
+        load();
+        return super.getParameter(name);
+    }
+
+    @Override
+    public List<Declaration> getMembers() {
+        load();
+        return super.getMembers();
+    }
+
+    @Override
+    public ProducedType getType() {
+        loadTypeParams();
         return super.getType();
+    }
+
+    @Override
+    public ProducedType getExtendedType() {
+        load();
+        return super.getExtendedType();
+    }
+    
+    @Override
+    public List<TypeParameter> getTypeParameters() {
+        loadTypeParams();
+        return super.getTypeParameters();
+    }
+    
+    @Override
+    public List<ParameterList> getParameterLists() {
+        load();
+        return super.getParameterLists();
+    }
+
+    @Override
+    public boolean isMember() {
+        return super.isMember();
+    }
+
+    @Override
+    public ProducedType getDeclaringType(Declaration d) {
+        load();
+        return super.getDeclaringType(d);
     }
 
     @Override
@@ -79,69 +139,83 @@ public class LazyMethod extends Method {
     }
 
     @Override
-    public List<TypeParameter> getTypeParameters() {
+    public Class getExtendedTypeDeclaration() {
         load();
-        return super.getTypeParameters();
+        return super.getExtendedTypeDeclaration();
     }
 
     @Override
-    public List<ParameterList> getParameterLists() {
+    public List<TypeDeclaration> getSatisfiedTypeDeclarations() {
         load();
-        return super.getParameterLists();
+        return super.getSatisfiedTypeDeclarations();
     }
 
     @Override
-    public DeclarationKind getDeclarationKind() {
+    public List<ProducedType> getSatisfiedTypes() {
         load();
-        return super.getDeclarationKind();
+        return super.getSatisfiedTypes();
     }
 
     @Override
-    public TypeDeclaration getTypeDeclaration() {
+    public List<TypeDeclaration> getCaseTypeDeclarations() {
         load();
-        return super.getTypeDeclaration();
+        return super.getCaseTypeDeclarations();
     }
 
     @Override
-    public ProducedTypedReference getProducedTypedReference(ProducedType qualifyingType, List<ProducedType> typeArguments) {
+    public List<ProducedType> getCaseTypes() {
         load();
-        return super.getProducedTypedReference(qualifyingType, typeArguments);
+        return super.getCaseTypes();
     }
 
     @Override
-    public ProducedReference getProducedReference(ProducedType pt, List<ProducedType> typeArguments) {
-        load();
+    public ProducedReference getProducedReference(ProducedType pt,
+            List<ProducedType> typeArguments) {
+        loadTypeParams();
         return super.getProducedReference(pt, typeArguments);
     }
 
     @Override
-    public boolean isMember() {
-        load();
-        return super.isMember();
+    public ProducedType getProducedType(ProducedType outerType,
+            List<ProducedType> typeArguments) {
+        loadTypeParams();
+        return super.getProducedType(outerType, typeArguments);
     }
 
     @Override
-    public boolean isVariable() {
+    public List<Declaration> getInheritedMembers(String name) {
         load();
-        return super.isVariable();
+        return super.getInheritedMembers(name);
     }
 
     @Override
-    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
+    public Declaration getRefinedMember(String name) {
         load();
-        return super.getMatchingDeclarations(unit, startingWith, proximity);
+        return super.getRefinedMember(name);
+    }
+    
+    @Override
+    public Declaration getMember(String name) {
+        load();
+        return super.getMember(name);
     }
 
     @Override
-    public TypedDeclaration getOriginalDeclaration() {
+    public Declaration getMemberOrParameter(String name) {
         load();
-        return super.getOriginalDeclaration();
+        return super.getMemberOrParameter(name);
     }
 
     @Override
-    public boolean getUnboxed() {
+    public boolean isAlias() {
         load();
-        return super.getUnboxed();
+        return super.isAlias();
+    }
+
+    @Override
+    public ProducedType getSelfType() {
+        load();
+        return super.getSelfType();
     }
 
     @Override
@@ -163,6 +237,12 @@ public class LazyMethod extends Method {
     }
 
     @Override
+    public String getQualifiedNameString() {
+        load();
+        return super.getQualifiedNameString();
+    }
+
+    @Override
     public boolean isActual() {
         load();
         return super.isActual();
@@ -178,12 +258,6 @@ public class LazyMethod extends Method {
     public boolean isDefault() {
         load();
         return super.isDefault();
-    }
-
-    @Override
-    public Declaration getRefinedDeclaration() {
-        load();
-        return super.getRefinedDeclaration();
     }
 
     @Override
@@ -229,45 +303,20 @@ public class LazyMethod extends Method {
     }
 
     @Override
-    public boolean refines(Declaration other) {
-        load();
-        return super.refines(other);
-    }
-
-    @Override
     public Unit getUnit() {
-        load();
+        // this doesn't require to load the model
         return super.getUnit();
     }
 
     @Override
     public Scope getContainer() {
-        load();
         return super.getContainer();
-    }
-
-    @Override
-    public List<Declaration> getMembers() {
-        load();
-        return super.getMembers();
-    }
-
-    @Override
-    protected Declaration getMemberOrParameter(String name) {
-        load();
-        return super.getMemberOrParameter(name);
     }
 
     @Override
     public Declaration getDirectMemberOrParameter(String name) {
         load();
         return super.getDirectMemberOrParameter(name);
-    }
-
-    @Override
-    public Declaration getMember(String name) {
-        load();
-        return super.getMember(name);
     }
 
     @Override
@@ -283,27 +332,14 @@ public class LazyMethod extends Method {
     }
 
     @Override
-    public ProducedType getDeclaringType(Declaration d) {
-        load();
-        return super.getDeclaringType(d);
-    }
-
-    @Override
     public Declaration getMemberOrParameter(Unit unit, String name) {
         load();
         return super.getMemberOrParameter(unit, name);
     }
 
     @Override
-    public boolean isInherited(Declaration d) {
-        load();
-        return super.isInherited(d);
+    public void addMember(Declaration decl) {
+        // do this without lazy-loading
+        super.getMembers().add(decl);
     }
-
-    @Override
-    public TypeDeclaration getInheritingDeclaration(Declaration d) {
-        load();
-        return super.getInheritingDeclaration(d);
-    }
-
 }

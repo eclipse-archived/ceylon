@@ -18,30 +18,24 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.compiler.loader;
+package com.redhat.ceylon.compiler.modelloader;
 
-import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.modelloader.LazyModule;
-import com.sun.tools.javac.util.Context;
+import com.redhat.ceylon.compiler.modelloader.model.LazyClass;
+import com.redhat.ceylon.compiler.modelloader.model.LazyInterface;
+import com.redhat.ceylon.compiler.modelloader.model.LazyMethod;
+import com.redhat.ceylon.compiler.modelloader.model.LazyValue;
 
-public class CompilerModule extends LazyModule {
+public interface ModelCompleter {
 
-    private Context context;
-    private AbstractModelLoader modelLoader;
+    void complete(LazyClass lazyClass);
 
-    public CompilerModule(com.sun.tools.javac.util.Context context) {
-        this.context = context;
-    }
+    void completeTypeParameters(LazyClass lazyClass);
 
-    public CompilerModule(AbstractModelLoader modelLoader) {
-        this.modelLoader = modelLoader;
-    }
+    void complete(LazyInterface lazyInterface);
 
-    @Override
-    protected AbstractModelLoader getModelLoader() {
-        if(modelLoader == null){
-            modelLoader = CeylonModelLoader.instance(context);
-        }
-        return modelLoader;
-    }
+    void completeTypeParameters(LazyInterface lazyInterface);
+
+    void complete(LazyValue lazyValue);
+    
+    void complete(LazyMethod lazyMethod);
 }

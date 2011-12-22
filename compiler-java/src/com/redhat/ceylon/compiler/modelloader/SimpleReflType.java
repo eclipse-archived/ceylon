@@ -17,31 +17,48 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+package com.redhat.ceylon.compiler.modelloader;
 
-package com.redhat.ceylon.compiler.loader;
+import java.util.Collections;
+import java.util.List;
 
-import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.modelloader.LazyModule;
-import com.sun.tools.javac.util.Context;
+import javax.lang.model.type.TypeKind;
 
-public class CompilerModule extends LazyModule {
+import com.redhat.ceylon.compiler.modelloader.refl.ReflType;
 
-    private Context context;
-    private AbstractModelLoader modelLoader;
+public class SimpleReflType implements ReflType {
 
-    public CompilerModule(com.sun.tools.javac.util.Context context) {
-        this.context = context;
-    }
+    private String name;
+    private TypeKind kind;
 
-    public CompilerModule(AbstractModelLoader modelLoader) {
-        this.modelLoader = modelLoader;
+    public SimpleReflType(String name, TypeKind kind) {
+        this.name = name;
+        this.kind = kind;
     }
 
     @Override
-    protected AbstractModelLoader getModelLoader() {
-        if(modelLoader == null){
-            modelLoader = CeylonModelLoader.instance(context);
-        }
-        return modelLoader;
+    public String getQualifiedName() {
+        return name;
     }
+
+    @Override
+    public List<ReflType> getTypeArguments() {
+        return Collections.EMPTY_LIST;
+    }
+
+    @Override
+    public TypeKind getKind() {
+        return kind;
+    }
+
+    @Override
+    public ReflType getComponentType() {
+        return null;
+    }
+
+    @Override
+    public boolean isPrimitive() {
+        return kind.isPrimitive();
+    }
+
 }

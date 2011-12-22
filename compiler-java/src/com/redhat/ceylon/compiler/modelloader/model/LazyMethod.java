@@ -18,58 +18,45 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.compiler.loader;
+package com.redhat.ceylon.compiler.modelloader.model;
 
 import java.util.List;
+import java.util.Map;
 
+import com.redhat.ceylon.compiler.modelloader.ModelCompleter;
+import com.redhat.ceylon.compiler.modelloader.refl.ReflClass;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
-import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.DeclarationKind;
+import com.redhat.ceylon.compiler.typechecker.model.DeclarationWithProximity;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.util.Util;
-import com.sun.tools.javac.code.Flags;
-import com.sun.tools.javac.code.Symbol.ClassSymbol;
 
-public class LazyClass extends Class implements LazyElement {
-
-    public ClassSymbol classSymbol;
+public class LazyMethod extends Method {
+    public ReflClass classSymbol;
     private ModelCompleter completer;
     private boolean isLoaded = false;
-    private boolean isTypeParamsLoaded = false;
-    private boolean forTopLevelObject;
 
-    public LazyClass(ClassSymbol classSymbol, ModelCompleter completer, boolean forTopLevelObject) {
+    public LazyMethod(ReflClass classSymbol, ModelCompleter completer) {
         this.classSymbol = classSymbol;
         this.completer = completer;
-        this.forTopLevelObject = forTopLevelObject;
-        // FIXME Using flatName() instead of just getSimpleName() is for anonymous classes, but do we need them?
-        setName(Util.getSimpleName(classSymbol.flatName().toString()));
-        setAbstract((classSymbol.flags() & Flags.ABSTRACT) != 0);
-    }
-    
-    public boolean isTopLevelObjectType(){
-        return forTopLevelObject;
-    }
-    
-    private void load() {
-        if(!isLoaded){
-            loadTypeParams();
-            isLoaded = true;
-            completer.complete(this);
-        }
+        // FIXME: move strip to getSimpleName()
+        setName(Util.strip(classSymbol.getSimpleName()));
     }
 
-    private void loadTypeParams() {
-        if(!isTypeParamsLoaded){
-            isTypeParamsLoaded = true;
-            completer.completeTypeParameters(this);
+    private void load() {
+        if(!isLoaded){
+            isLoaded = true;
+            completer.complete(this);
         }
     }
     
@@ -82,56 +69,9 @@ public class LazyClass extends Class implements LazyElement {
     }
 
     @Override
-    public ParameterList getParameterList() {
-        load();
-        return super.getParameterList();
-    }
-
-    @Override
-    public Parameter getParameter(String name) {
-        load();
-        return super.getParameter(name);
-    }
-
-    @Override
-    public List<Declaration> getMembers() {
-        load();
-        return super.getMembers();
-    }
-
-    @Override
     public ProducedType getType() {
-        loadTypeParams();
+        load();
         return super.getType();
-    }
-
-    @Override
-    public ProducedType getExtendedType() {
-        load();
-        return super.getExtendedType();
-    }
-    
-    @Override
-    public List<TypeParameter> getTypeParameters() {
-        loadTypeParams();
-        return super.getTypeParameters();
-    }
-    
-    @Override
-    public List<ParameterList> getParameterLists() {
-        load();
-        return super.getParameterLists();
-    }
-
-    @Override
-    public boolean isMember() {
-        return super.isMember();
-    }
-
-    @Override
-    public ProducedType getDeclaringType(Declaration d) {
-        load();
-        return super.getDeclaringType(d);
     }
 
     @Override
@@ -141,83 +81,69 @@ public class LazyClass extends Class implements LazyElement {
     }
 
     @Override
-    public Class getExtendedTypeDeclaration() {
+    public List<TypeParameter> getTypeParameters() {
         load();
-        return super.getExtendedTypeDeclaration();
+        return super.getTypeParameters();
     }
 
     @Override
-    public List<TypeDeclaration> getSatisfiedTypeDeclarations() {
+    public List<ParameterList> getParameterLists() {
         load();
-        return super.getSatisfiedTypeDeclarations();
+        return super.getParameterLists();
     }
 
     @Override
-    public List<ProducedType> getSatisfiedTypes() {
+    public DeclarationKind getDeclarationKind() {
         load();
-        return super.getSatisfiedTypes();
+        return super.getDeclarationKind();
     }
 
     @Override
-    public List<TypeDeclaration> getCaseTypeDeclarations() {
+    public TypeDeclaration getTypeDeclaration() {
         load();
-        return super.getCaseTypeDeclarations();
+        return super.getTypeDeclaration();
     }
 
     @Override
-    public List<ProducedType> getCaseTypes() {
+    public ProducedTypedReference getProducedTypedReference(ProducedType qualifyingType, List<ProducedType> typeArguments) {
         load();
-        return super.getCaseTypes();
+        return super.getProducedTypedReference(qualifyingType, typeArguments);
     }
 
     @Override
-    public ProducedReference getProducedReference(ProducedType pt,
-            List<ProducedType> typeArguments) {
-        loadTypeParams();
+    public ProducedReference getProducedReference(ProducedType pt, List<ProducedType> typeArguments) {
+        load();
         return super.getProducedReference(pt, typeArguments);
     }
 
     @Override
-    public ProducedType getProducedType(ProducedType outerType,
-            List<ProducedType> typeArguments) {
-        loadTypeParams();
-        return super.getProducedType(outerType, typeArguments);
+    public boolean isMember() {
+        load();
+        return super.isMember();
     }
 
     @Override
-    public List<Declaration> getInheritedMembers(String name) {
+    public boolean isVariable() {
         load();
-        return super.getInheritedMembers(name);
+        return super.isVariable();
     }
 
     @Override
-    public Declaration getRefinedMember(String name) {
+    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
         load();
-        return super.getRefinedMember(name);
-    }
-    
-    @Override
-    public Declaration getMember(String name) {
-        load();
-        return super.getMember(name);
+        return super.getMatchingDeclarations(unit, startingWith, proximity);
     }
 
     @Override
-    public Declaration getMemberOrParameter(String name) {
+    public TypedDeclaration getOriginalDeclaration() {
         load();
-        return super.getMemberOrParameter(name);
+        return super.getOriginalDeclaration();
     }
 
     @Override
-    public boolean isAlias() {
+    public boolean getUnboxed() {
         load();
-        return super.isAlias();
-    }
-
-    @Override
-    public ProducedType getSelfType() {
-        load();
-        return super.getSelfType();
+        return super.getUnboxed();
     }
 
     @Override
@@ -239,12 +165,6 @@ public class LazyClass extends Class implements LazyElement {
     }
 
     @Override
-    public String getQualifiedNameString() {
-        load();
-        return super.getQualifiedNameString();
-    }
-
-    @Override
     public boolean isActual() {
         load();
         return super.isActual();
@@ -260,6 +180,12 @@ public class LazyClass extends Class implements LazyElement {
     public boolean isDefault() {
         load();
         return super.isDefault();
+    }
+
+    @Override
+    public Declaration getRefinedDeclaration() {
+        load();
+        return super.getRefinedDeclaration();
     }
 
     @Override
@@ -305,20 +231,45 @@ public class LazyClass extends Class implements LazyElement {
     }
 
     @Override
+    public boolean refines(Declaration other) {
+        load();
+        return super.refines(other);
+    }
+
+    @Override
     public Unit getUnit() {
-        // this doesn't require to load the model
+        load();
         return super.getUnit();
     }
 
     @Override
     public Scope getContainer() {
+        load();
         return super.getContainer();
+    }
+
+    @Override
+    public List<Declaration> getMembers() {
+        load();
+        return super.getMembers();
+    }
+
+    @Override
+    protected Declaration getMemberOrParameter(String name) {
+        load();
+        return super.getMemberOrParameter(name);
     }
 
     @Override
     public Declaration getDirectMemberOrParameter(String name) {
         load();
         return super.getDirectMemberOrParameter(name);
+    }
+
+    @Override
+    public Declaration getMember(String name) {
+        load();
+        return super.getMember(name);
     }
 
     @Override
@@ -334,14 +285,27 @@ public class LazyClass extends Class implements LazyElement {
     }
 
     @Override
+    public ProducedType getDeclaringType(Declaration d) {
+        load();
+        return super.getDeclaringType(d);
+    }
+
+    @Override
     public Declaration getMemberOrParameter(Unit unit, String name) {
         load();
         return super.getMemberOrParameter(unit, name);
     }
 
     @Override
-    public void addMember(Declaration decl) {
-        // do this without lazy-loading
-        super.getMembers().add(decl);
+    public boolean isInherited(Declaration d) {
+        load();
+        return super.isInherited(d);
     }
+
+    @Override
+    public TypeDeclaration getInheritingDeclaration(Declaration d) {
+        load();
+        return super.getInheritingDeclaration(d);
+    }
+
 }

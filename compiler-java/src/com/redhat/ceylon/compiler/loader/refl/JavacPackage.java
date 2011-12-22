@@ -17,31 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+package com.redhat.ceylon.compiler.loader.refl;
 
-package com.redhat.ceylon.compiler.loader;
+import com.redhat.ceylon.compiler.modelloader.refl.ReflPackage;
+import com.sun.tools.javac.code.Symbol.PackageSymbol;
 
-import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.modelloader.LazyModule;
-import com.sun.tools.javac.util.Context;
+public class JavacPackage implements ReflPackage {
 
-public class CompilerModule extends LazyModule {
+    private PackageSymbol pkgSymbol;
 
-    private Context context;
-    private AbstractModelLoader modelLoader;
-
-    public CompilerModule(com.sun.tools.javac.util.Context context) {
-        this.context = context;
+    public JavacPackage(PackageSymbol pkgSymbol) {
+        this.pkgSymbol = pkgSymbol;
     }
-
-    public CompilerModule(AbstractModelLoader modelLoader) {
-        this.modelLoader = modelLoader;
-    }
-
+    
     @Override
-    protected AbstractModelLoader getModelLoader() {
-        if(modelLoader == null){
-            modelLoader = CeylonModelLoader.instance(context);
-        }
-        return modelLoader;
+    public String getQualifiedName() {
+        return pkgSymbol.getQualifiedName().toString();
     }
 }

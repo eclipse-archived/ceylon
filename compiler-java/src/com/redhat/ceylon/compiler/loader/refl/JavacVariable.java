@@ -17,31 +17,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+package com.redhat.ceylon.compiler.loader.refl;
 
-package com.redhat.ceylon.compiler.loader;
+import com.redhat.ceylon.compiler.modelloader.refl.ReflAnnotation;
+import com.redhat.ceylon.compiler.modelloader.refl.ReflType;
+import com.redhat.ceylon.compiler.modelloader.refl.ReflVariable;
+import com.sun.tools.javac.code.Symbol.VarSymbol;
 
-import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.modelloader.LazyModule;
-import com.sun.tools.javac.util.Context;
+public class JavacVariable implements ReflVariable {
 
-public class CompilerModule extends LazyModule {
+    private VarSymbol varSymbol;
 
-    private Context context;
-    private AbstractModelLoader modelLoader;
-
-    public CompilerModule(com.sun.tools.javac.util.Context context) {
-        this.context = context;
-    }
-
-    public CompilerModule(AbstractModelLoader modelLoader) {
-        this.modelLoader = modelLoader;
+    public JavacVariable(VarSymbol varSymbol) {
+        this.varSymbol = varSymbol;
     }
 
     @Override
-    protected AbstractModelLoader getModelLoader() {
-        if(modelLoader == null){
-            modelLoader = CeylonModelLoader.instance(context);
-        }
-        return modelLoader;
+    public ReflAnnotation getAnnotation(String type) {
+        return JavacUtil.getAnnotation(varSymbol, type);
     }
+
+    @Override
+    public ReflType getType() {
+        return new JavacType(varSymbol.type);
+    }
+
+    @Override
+    public String getName() {
+        return varSymbol.name.toString();
+    }
+
 }

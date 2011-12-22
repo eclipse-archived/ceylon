@@ -17,31 +17,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+package com.redhat.ceylon.compiler.modelloader.refl;
 
-package com.redhat.ceylon.compiler.loader;
+import java.util.List;
 
-import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.modelloader.LazyModule;
-import com.sun.tools.javac.util.Context;
-
-public class CompilerModule extends LazyModule {
-
-    private Context context;
-    private AbstractModelLoader modelLoader;
-
-    public CompilerModule(com.sun.tools.javac.util.Context context) {
-        this.context = context;
-    }
-
-    public CompilerModule(AbstractModelLoader modelLoader) {
-        this.modelLoader = modelLoader;
-    }
-
-    @Override
-    protected AbstractModelLoader getModelLoader() {
-        if(modelLoader == null){
-            modelLoader = CeylonModelLoader.instance(context);
-        }
-        return modelLoader;
-    }
+public interface ReflClass extends ReflAnnotated {
+    boolean isPublic();
+    String getQualifiedName();
+    String getSimpleName();
+    ReflPackage getPackage();
+    boolean isInterface();
+    boolean isAbstract();
+    List<ReflMethod> getDirectMethods();
+    ReflType getSuperclass();
+    List<ReflType> getInterfaces();
+    List<ReflTypeParameter> getTypeParameters();
+    
+    boolean isCeylonToplevelAttribute();
+    boolean isCeylonToplevelObject();
+    boolean isCeylonToplevelMethod();
+    
+    boolean isLoadedFromSource();
 }

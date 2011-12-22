@@ -26,8 +26,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import com.redhat.ceylon.compiler.loader.ModelLoader;
-import com.redhat.ceylon.compiler.loader.TypeParser;
+import com.redhat.ceylon.compiler.modelloader.ModelLoader;
+import com.redhat.ceylon.compiler.modelloader.TypeParser;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;

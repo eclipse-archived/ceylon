@@ -28,8 +28,8 @@ import java.util.Map;
 import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.compiler.loader.CeylonModelLoader;
-import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.loader.TypeFactory;
+import com.redhat.ceylon.compiler.modelloader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.tools.CeylonLog;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;

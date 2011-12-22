@@ -18,56 +18,35 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.compiler.loader;
+package com.redhat.ceylon.compiler.modelloader;
 
 import java.util.Arrays;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.modelloader.LazyModuleManager;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 
-public class CompilerModuleManager extends LazyModuleManager {
+public abstract class LazyModuleManager extends ModuleManager {
 
     private com.sun.tools.javac.util.Context context;
-    private CeylonEnter ceylonEnter;
-    private AbstractModelLoader modelLoader;
 
-    public CompilerModuleManager(Context ceylonContext, com.sun.tools.javac.util.Context context) {
+    public LazyModuleManager(Context ceylonContext) {
         super(ceylonContext);
-        this.context = context;
-    }
-
-    @Override
-    protected Module createModule(List<String> moduleName) {
-        Module module = new CompilerModule(context);
-        module.setName(moduleName);
-        return module;
     }
 
     @Override
     public void resolveModule(Module module, VirtualFile artifact,
             List<PhasedUnits> phasedUnitsOfDependencies) {
-        
-        getCeylonEnter().addModuleToClassPath(module, true); // To be able to load it from the corresponding archive
-        super.resolveModule(module, artifact, phasedUnitsOfDependencies);
+        Module compiledModule = getModelLoader().loadCompiledModule(module.getNameAsString());
     }
 
-    public CeylonEnter getCeylonEnter() {
-        if (ceylonEnter == null) {
-            ceylonEnter = CeylonEnter.instance(context);
-        }
-        return ceylonEnter;
-    }
+    protected abstract AbstractModelLoader getModelLoader();
 
-    protected AbstractModelLoader getModelLoader() {
-        if (modelLoader == null) {
-            modelLoader = CeylonModelLoader.instance(context);
-        }
-        return modelLoader;
+    @Override
+    public Iterable<String> getSearchedArtifactExtensions() {
+        return Arrays.asList("car", "jar");
     }
 }

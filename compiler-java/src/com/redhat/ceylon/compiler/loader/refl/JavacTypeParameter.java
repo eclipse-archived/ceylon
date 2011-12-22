@@ -17,31 +17,37 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+package com.redhat.ceylon.compiler.loader.refl;
 
-package com.redhat.ceylon.compiler.loader;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.modelloader.LazyModule;
-import com.sun.tools.javac.util.Context;
+import com.redhat.ceylon.compiler.modelloader.refl.ReflType;
+import com.redhat.ceylon.compiler.modelloader.refl.ReflTypeParameter;
+import com.sun.tools.javac.code.Symbol.TypeSymbol;
+import com.sun.tools.javac.code.Type;
 
-public class CompilerModule extends LazyModule {
+public class JavacTypeParameter implements ReflTypeParameter {
 
-    private Context context;
-    private AbstractModelLoader modelLoader;
+    private TypeSymbol typeSymbol;
 
-    public CompilerModule(com.sun.tools.javac.util.Context context) {
-        this.context = context;
-    }
-
-    public CompilerModule(AbstractModelLoader modelLoader) {
-        this.modelLoader = modelLoader;
+    public JavacTypeParameter(TypeSymbol typeSymbol) {
+        this.typeSymbol = typeSymbol;
     }
 
     @Override
-    protected AbstractModelLoader getModelLoader() {
-        if(modelLoader == null){
-            modelLoader = CeylonModelLoader.instance(context);
-        }
-        return modelLoader;
+    public String getName() {
+        return typeSymbol.getQualifiedName().toString();
     }
+
+    @Override
+    public List<ReflType> getBounds() {
+        com.sun.tools.javac.util.List<Type> bounds = typeSymbol.getBounds();
+        List<ReflType> ret = new ArrayList<ReflType>(bounds.size());
+        for(Type type : bounds)
+            ret.add(new JavacType(type));
+        return ret;
+
+    }
+
 }

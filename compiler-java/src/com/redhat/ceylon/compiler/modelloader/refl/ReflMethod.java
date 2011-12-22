@@ -17,19 +17,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+package com.redhat.ceylon.compiler.modelloader.refl;
 
-package com.redhat.ceylon.compiler.loader;
+import java.util.List;
 
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
+public interface ReflMethod extends ReflAnnotated {
 
-public interface ModelLoader {
-    
-    enum DeclarationType {
-        TYPE, VALUE;
-    }
-    
-    public Declaration getDeclaration(String typeName, DeclarationType declarationType);
-    public ProducedType getType(String name, Scope scope);
+    String getName();
+
+    boolean isStatic();
+
+    boolean isPublic();
+
+    boolean isConstructor();
+
+    List<ReflVariable> getParameters();
+
+    boolean isAbstract();
+
+    boolean isFinal();
+
+    ReflType getReturnType();
+
+    List<ReflTypeParameter> getTypeParameters();
+
 }
