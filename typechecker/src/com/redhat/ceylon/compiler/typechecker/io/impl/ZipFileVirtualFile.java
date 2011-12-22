@@ -11,6 +11,7 @@ import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.SortedSet;
+import java.util.StringTokenizer;
 import java.util.TreeSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -42,28 +43,46 @@ public class ZipFileVirtualFile implements ClosableVirtualFile {
         final Enumeration<? extends ZipEntry> entries = zipFile.entries();
         SortedSet<String> entryNames = new TreeSet<String>();
         while ( entries.hasMoreElements() ) {
-            entryNames.add( entries.nextElement().getName() );
+            String entryName = entries.nextElement().getName();
+            // Also add the ancestor directories (for the case directories are not in the archive)
+            List<String> parentEntriesNames = getParentEntriesNames(entryName);
+            entryNames.add(entryName);
+            entryNames.addAll(parentEntriesNames);
         }
         List<VirtualFile> directChildren = new ArrayList<VirtualFile>();
         LinkedList<ZipFolderVirtualFile> directoryStack = new LinkedList<ZipFolderVirtualFile>();
         for ( String entryName : entryNames ) {
-            final ZipEntry entry = zipFile.getEntry(entryName);
-            if ( entry.isDirectory() ) {
+            if ( entryName.endsWith("/")) {
                 /*
-                entries are ordered,
+                entries are now ordered with directories,
                 if an entry is a child of the previous entry, add it as child
                 if an entry is not a child of the previous entry, move up till we find its parent
                  */
-                final ZipFolderVirtualFile folder = new ZipFolderVirtualFile(entry, path);
+                final ZipFolderVirtualFile folder = new ZipFolderVirtualFile(entryName, path);
                 addToParentfolder(directChildren, directoryStack, entryName, folder);
                 directoryStack.addLast(folder);
             }
             else {
+                final ZipEntry entry = zipFile.getEntry(entryName);
                 ZipEntryVirtualFile file = new ZipEntryVirtualFile(entry, zipFile);
                 addToParentfolder(directChildren, directoryStack, entryName, file);
             }
         }
         children = directChildren;
+    }
+
+    private List<String> getParentEntriesNames(String entryName) {
+        List<String> parentEntries = new ArrayList<String>();
+        String[] entrySegments = entryName.split("/");
+        if (entrySegments.length == 0) {
+            return parentEntries;
+        }
+        String ancestor = "";
+        for (int i=0; i<entrySegments.length - 1; i++) {
+            ancestor += entrySegments[i] + "/";
+            parentEntries.add(ancestor);
+        }
+        return parentEntries;
     }
 
     private void addToParentfolder(List<VirtualFile> directChildren, LinkedList<ZipFolderVirtualFile> directoryStack, String entryName, VirtualFile file) {
