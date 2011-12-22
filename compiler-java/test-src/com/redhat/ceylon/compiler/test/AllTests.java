@@ -24,6 +24,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import com.redhat.ceylon.compiler.test.expression.ExpressionTest;
+import com.redhat.ceylon.compiler.test.interop.InteropTest;
 import com.redhat.ceylon.compiler.test.issues.IssuesTest;
 import com.redhat.ceylon.compiler.test.issues.PackageIssuesTest;
 import com.redhat.ceylon.compiler.test.misc.MiscTest;
@@ -38,14 +39,15 @@ import com.redhat.ceylon.compiler.test.structure.StructureTest;
 @SuiteClasses({
     AnnotationsTest.class,
     ExpressionTest.class,
+    InteropTest.class,
     IssuesTest.class,
-    PackageIssuesTest.class,
 	MiscTest.class,
     ModelLoaderTest.class,
+    PackageIssuesTest.class,
+    RecoveryTest.class,
     StatementTest.class,
 	StructureTest.class,
-	TypeParserTest.class,
-	RecoveryTest.class
+	TypeParserTest.class
 })
 public class AllTests {
 }
