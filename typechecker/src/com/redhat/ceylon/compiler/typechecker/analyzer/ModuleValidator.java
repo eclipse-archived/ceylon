@@ -59,9 +59,7 @@ public class ModuleValidator {
             verifyModuleDependencyTree(module.getImports(), dependencyTree, new ArrayList<Module>());
             dependencyTree.pollLast();
         }
-        for (PhasedUnits units : phasedUnitsOfDependencies) {
-            executeExternalModulePhases(units);
-        }
+        executeExternalModulePhases();
     }
 
     private void verifyModuleDependencyTree(
@@ -138,6 +136,7 @@ public class ModuleValidator {
                     try {
                         //parse module units and build module dependency and carry on
                         moduleManager.resolveModule(module, artifact, phasedUnitsOfDependencies);
+                        break;
                     } finally {
                         if (artifact instanceof ClosableVirtualFile) {
                             ((ClosableVirtualFile)artifact).close();
@@ -190,18 +189,23 @@ public class ModuleValidator {
         return dupe.getVersion().equals(module.getVersion());
     }
 
-    private void executeExternalModulePhases(PhasedUnits phasedUnits) {
+    private void executeExternalModulePhases() {
         //moduleimport phase already done
         //Already called from within verifyModuleDependencyTree
-        final List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
-        for (PhasedUnit pu : listOfUnits) {
-            pu.scanDeclarations();
+        for (PhasedUnits units : phasedUnitsOfDependencies) {
+            for (PhasedUnit pu : units.getPhasedUnits()) {
+                pu.scanDeclarations();
+            }
         }
-        for (PhasedUnit pu : listOfUnits) {
-            pu.scanTypeDeclarations();
+        for (PhasedUnits units : phasedUnitsOfDependencies) {
+            for (PhasedUnit pu : units.getPhasedUnits()) {
+                pu.scanTypeDeclarations();
+            }
         }
-        for (PhasedUnit pu : listOfUnits) {
-            pu.validateRefinement(); //TODO: only needed for type hierarchy view in IDE!
+        for (PhasedUnits units : phasedUnitsOfDependencies) {
+            for (PhasedUnit pu : units.getPhasedUnits()) {
+                pu.validateRefinement(); //TODO: only needed for type hierarchy view in IDE!
+            }
         }
     }
 
