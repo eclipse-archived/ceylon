@@ -62,4 +62,8 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     	return overloaded;
     }
     
+    public void setOverloaded(boolean overloaded) {
+		this.overloaded = overloaded;
+	}
+    
 }

@@ -67,6 +67,10 @@ public class Class extends ClassOrInterface implements Functional {
     	return overloaded;
     }
     
+    public void setOverloaded(boolean overloaded) {
+		this.overloaded = overloaded;
+	}
+    
     @Override
     public Class getExtendedTypeDeclaration() {
         return (Class) super.getExtendedTypeDeclaration();
