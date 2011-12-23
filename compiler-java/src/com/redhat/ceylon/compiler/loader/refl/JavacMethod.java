@@ -22,6 +22,8 @@ package com.redhat.ceylon.compiler.loader.refl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.lang.model.element.ElementKind;
+
 import com.redhat.ceylon.compiler.modelloader.refl.ReflAnnotation;
 import com.redhat.ceylon.compiler.modelloader.refl.ReflMethod;
 import com.redhat.ceylon.compiler.modelloader.refl.ReflType;
@@ -63,6 +65,11 @@ public class JavacMethod implements ReflMethod {
     @Override
     public boolean isConstructor() {
         return methodSymbol.isConstructor();
+    }
+
+    @Override
+    public boolean isStaticInit() {
+        return methodSymbol.getKind() == ElementKind.STATIC_INIT;
     }
 
     @Override

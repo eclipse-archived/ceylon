@@ -31,6 +31,8 @@ public interface ReflMethod extends ReflAnnotated {
 
     boolean isConstructor();
 
+    boolean isStaticInit();
+
     List<ReflVariable> getParameters();
 
     boolean isAbstract();

@@ -625,6 +625,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // We skip members marked with @Ignore
             if(methodSymbol.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
                 continue;
+            if(methodSymbol.isStaticInit())
+                continue;
             // FIXME Should we allow static methods or not?
             if(isCeylon && methodSymbol.isStatic())
                 continue;
