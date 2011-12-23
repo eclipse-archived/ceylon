@@ -31,7 +31,7 @@ public final class entries {
             for (Iterator<? extends Element> iter=sequence.getIterator(); iter!=null; iter=iter.getTail()) {
                 list.add(new Entry<Integer,Element>(Integer.instance(i++), iter.getHead()));
             }
-            return new ArraySequence<Entry<? extends Integer,? extends Element>>(list.toArray(), 0);
+            return new ArraySequence<Entry<? extends Integer,? extends Element>>(list);
         }
     }
 }

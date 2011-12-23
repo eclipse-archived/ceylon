@@ -34,6 +34,6 @@ public final class zip {
 			keyIter=keyIter.getTail();
 			itemIter=itemIter.getTail();
 		}
-        return new ArraySequence<Entry<? extends Key,? extends Item>>(list.toArray(), 0);
+        return new ArraySequence<Entry<? extends Key,? extends Item>>(list);
     }
 }

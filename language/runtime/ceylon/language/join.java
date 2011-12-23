@@ -33,6 +33,6 @@ public final class join {
 				if (elem!=null) list.add(iter2.getHead());
 			}
 		}
-        return new ArraySequence<Element>(list.toArray(), 0);
+        return new ArraySequence<Element>(list);
     }
 }

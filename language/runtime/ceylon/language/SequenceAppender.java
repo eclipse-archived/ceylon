@@ -26,7 +26,7 @@ public class SequenceAppender<Element> extends SequenceBuilder<Element> {
     @Override
     @TypeInfo("ceylon.language.Sequence<Element>")
     public final synchronized Sequence<? extends Element> getSequence() {
-        return new ArraySequence<Element>(list.toArray(), 0l);
+        return new ArraySequence<Element>(list);
     }
     
 }

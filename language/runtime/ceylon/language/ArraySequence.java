@@ -1,6 +1,7 @@
 package ceylon.language;
 
 import java.util.Arrays;
+import java.util.List;
 
 import com.redhat.ceylon.compiler.metadata.java.Class;
 import com.redhat.ceylon.compiler.metadata.java.Ignore;
@@ -12,7 +13,7 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 @SatisfiedTypes("ceylon.language.Sequence<Element>")
 public class ArraySequence<Element> implements Sequence<Element> {
 
-    private final java.lang.Object[] array;
+    private final Element[] array;
     private final long first;
 
     public ArraySequence(Element... array) {
@@ -20,12 +21,20 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
     
     @Ignore
-    ArraySequence(java.lang.Object[] array, long first) {
+    ArraySequence(Element[] array, long first) {
     	if (array.length==0 || array.length<=first) {
     		throw new IllegalArgumentException("ArraySequence may not have zero elements");
     	}
         this.array = array;
         this.first = first;
+    }
+
+    ArraySequence(List<Element> list) {
+    	array = (Element[]) list.toArray();
+    	if (array.length==0) {
+    		throw new IllegalArgumentException("ArraySequence may not have zero elements");
+    	}
+        this.first = 0;
     }
 
     @Override
@@ -36,7 +45,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Override
     public Element getFirst() {
-        return (Element) array[(int) first];
+        return array[(int) first];
     }
 
     @Override
@@ -62,7 +71,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Override
     public Element getLast() {
-        return (Element) array[array.length - 1];
+        return array[array.length - 1];
     }
 
     @Override
@@ -99,8 +108,8 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     public Element item(Integer key) {
         long index = key.longValue()+first;
-        return (Element) (index<0 || index >= array.length ? 
-                null : array[(int) index]);
+        return index<0 || index >= array.length ? 
+                null : array[(int) index];
     }
 
     @Override

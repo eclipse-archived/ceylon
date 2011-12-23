@@ -26,7 +26,7 @@ public class SequenceBuilder<Element> implements Sized {
             return $empty.getEmpty();
         }
         else {
-            return new ArraySequence<Element>(list.toArray(), 0l);
+            return new ArraySequence<Element>(list);
         }
     }
     

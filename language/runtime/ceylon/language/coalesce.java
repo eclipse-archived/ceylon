@@ -27,6 +27,6 @@ public final class coalesce {
 			Element elem = iter.getHead();
 			if (elem!=null) list.add(elem);
 		}
-        return new ArraySequence<Element>(list.toArray(), 0);
+        return new ArraySequence<Element>(list);
     }
 }

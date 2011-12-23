@@ -290,7 +290,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     			elem = next(elem);
     		}
     	}
-    	return new ArraySequence<Element>(list.toArray(), 0);
+    	return new ArraySequence<Element>(list);
     }
 
 }
