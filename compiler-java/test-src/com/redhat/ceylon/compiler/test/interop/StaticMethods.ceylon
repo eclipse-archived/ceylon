@@ -25,3 +25,11 @@ void staticMethods() {
     File f2 = f1.createTempFile("", "");
     File f3 = f1.createTempFile("", "", f2);
 }
+
+@nomodel
+void staticMethodsNamed() {
+    // This is silly really, but we test it anyway
+    File f1 = File{arg0="file1";};
+    File f2 = f1.createTempFile{arg0=""; arg1="";};
+    File f3 = f1.createTempFile{arg0=""; arg1=""; arg2=f2;};
+}
