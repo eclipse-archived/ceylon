@@ -19,7 +19,13 @@
  */
 import java.io{...}
 
-void constructors() {
-    File f = File("parent");
-    print(f.canRead());
+@nomodel
+void methods() {
+    File f1 = File("file1");
+    File f2 = File("file2");
+    print(f1.canRead());
+    Integer cmp = f1.compareTo(f2);
+    //File f3 = f1.createTempFile("", ""); // Does not work
+    File f3 = f1.createTempFile("", "", f2);
+    f1.listFiles();
 }

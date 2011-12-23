@@ -26,6 +26,11 @@ import com.redhat.ceylon.compiler.test.CompilerTest;
 public class InteropTest extends CompilerTest {
 
     @Test
+    public void testIopArrays(){
+        compareWithJavaSource("Arrays");
+    }
+
+    @Test
     public void testIopConstructors(){
         compareWithJavaSource("Constructors");
     }
@@ -38,6 +43,16 @@ public class InteropTest extends CompilerTest {
     @Test
     public void testIopMethods(){
         compareWithJavaSource("Methods");
+    }
+
+    @Test
+    public void testIopSatisfies(){
+        compareWithJavaSource("Satisfies");
+    }
+
+    @Test
+    public void testIopStaticMethods(){
+        compareWithJavaSource("StaticMethods");
     }
 	
 }

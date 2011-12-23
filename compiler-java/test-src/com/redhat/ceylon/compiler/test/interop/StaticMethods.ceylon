@@ -20,8 +20,8 @@
 import java.io{...}
 
 @nomodel
-void constructors() {
-    File f1 = File("parent");
-    File f2 = File("parent", "test");
-    File f3 = File(f1, "test");
+void staticMethods() {
+    File f1 = File("file1");
+    File f2 = f1.createTempFile("", "");
+    File f3 = f1.createTempFile("", "", f2);
 }

@@ -20,8 +20,7 @@
 import java.io{...}
 
 @nomodel
-void constructors() {
-    File f1 = File("parent");
-    File f2 = File("parent", "test");
-    File f3 = File(f1, "test");
+void arrays() {
+    File f1 = File("file1");
+    value files = f1.listFiles();
 }
