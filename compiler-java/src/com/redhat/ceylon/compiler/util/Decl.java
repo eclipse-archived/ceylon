@@ -21,6 +21,7 @@
 package com.redhat.ceylon.compiler.util;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -149,5 +150,12 @@ public class Decl {
     
     public static boolean isClassAttribute(Declaration decl) {
         return (withinClassOrInterface(decl)) && (decl.isCaptured() || decl.isShared());
+    }
+
+    public static boolean isOverloaded(Declaration decl) {
+        if (decl instanceof Functional) {
+            return ((Functional)decl).isOverloaded();
+        }
+        return false;
     }
 }

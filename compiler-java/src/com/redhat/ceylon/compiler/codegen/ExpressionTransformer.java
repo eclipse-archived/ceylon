@@ -893,17 +893,28 @@ public class ExpressionTransformer extends AbstractTransformer {
             int numDeclared = declaredParams.size();
             int numDeclaredFixed = (lastDeclared != null && lastDeclared.isSequenced()) ? numDeclared - 1 : numDeclared;
             int numPassed = namedArguments.size();
+            int idx = 0;
             for (Tree.NamedArgument namedArg : namedArguments) {
                 at(namedArg);
-                Parameter declaredParam = namedArg.getParameter();
-                if (declaredParam.isSequenced()) {
-                    boundSequenced = true;
-                }
                 Tree.Expression expr = ((Tree.SpecifiedArgument)namedArg).getSpecifierExpression().getExpression();
-                int index = declaredParams.indexOf(declaredParam);
+                Parameter declaredParam = namedArg.getParameter();
+                int index;
+                BoxingStrategy boxType;
+                ProducedType type;
+                if (declaredParam != null) {
+                    if (declaredParam.isSequenced()) {
+                        boundSequenced = true;
+                    }
+                    index = declaredParams.indexOf(declaredParam);
+                    boxType = Util.getBoxingStrategy(declaredParam);
+                    type = getTypeForParameter(declaredParam, isRaw, typeArgumentModels);
+                } else {
+                    // Arguments of overloaded methods don't have a reference to parameter
+                    index = idx++;
+                    boxType = BoxingStrategy.UNBOXED;
+                    type = expr.getTypeModel();
+                }
                 String varName = varBaseName + "$" + index;
-                BoxingStrategy boxType = Util.getBoxingStrategy(declaredParam);
-                ProducedType type = getTypeForParameter(declaredParam, isRaw, typeArgumentModels);
                 // if we can't pick up on the type from the declaration, revert to the type of the expression
                 if(isTypeParameter(type))
                     type = expr.getTypeModel();
@@ -913,7 +924,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 vars.append(varDecl);
             }
             
-            if (numPassed < numDeclaredFixed) {
+            if (!Decl.isOverloaded(primaryDecl) && numPassed < numDeclaredFixed) {
                 boolean needsThis = false;
                 if (Decl.withinClassOrInterface(primaryDecl)) {
                     // first append $this
@@ -966,7 +977,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                 vars.append(varDecl);
             }
             
-            args.appendList(makeVarRefArgumentList(varBaseName, numDeclared));
+            if (!Decl.isOverloaded(primaryDecl)) {
+                args.appendList(makeVarRefArgumentList(varBaseName, numDeclared));
+            } else {
+                // For overloaded methods (and therefore Java interop) we just pass the arguments we have
+                args.appendList(makeVarRefArgumentList(varBaseName, numPassed));
+            }
         }
 
         return makeInvocation(ce, vars, args, typeArgs, callVarName);
@@ -1038,14 +1054,25 @@ public class ExpressionTransformer extends AbstractTransformer {
                 needsThis = true;
             }
             // append the normal args
+            int idx = 0;
             for (Tree.PositionalArgument arg : positional.getPositionalArguments()) {
                 at(arg);
-                Parameter declaredParam = arg.getParameter();
                 Tree.Expression expr = arg.getExpression();
-                int index = declaredParams.indexOf(declaredParam);
+                Parameter declaredParam = arg.getParameter();
+                int index;
+                BoxingStrategy boxType;
+                ProducedType type;
+                if (declaredParam != null) {
+                    index = declaredParams.indexOf(declaredParam);
+                    boxType = Util.getBoxingStrategy(declaredParam);
+                    type = getTypeForParameter(declaredParam, isRaw, typeArgumentModels);
+                } else {
+                    // Arguments of overloaded methods don't have a reference to parameter
+                    index = idx++;
+                    boxType = BoxingStrategy.UNBOXED;
+                    type = expr.getTypeModel();
+                }
                 String varName = varBaseName + "$" + index;
-                BoxingStrategy boxType = Util.getBoxingStrategy(declaredParam);
-                ProducedType type = getTypeForParameter(declaredParam, isRaw, typeArgumentModels);
                 // if we can't pick up on the type from the declaration, revert to the type of the expression
                 if(isTypeParameter(type))
                     type = expr.getTypeModel();
@@ -1054,30 +1081,35 @@ public class ExpressionTransformer extends AbstractTransformer {
                 JCVariableDecl varDecl = makeVar(varName, typeExpr, argExpr);
                 vars.append(varDecl);
             }
-            // append any arguments for defaulted parameters
-            for (int ii = numPassed; ii < numDeclared; ii++) {
-                Parameter param = declaredParams.get(ii);
-                String varName = varBaseName + "$" + ii;
-                String methodName = Util.getDefaultedParamMethodName(primaryDecl, param);
-                List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, ii, needsThis);
-                JCExpression argExpr;
-                if (!param.isSequenced()) {
-                    Declaration container = param.getDeclaration().getRefinedDeclaration();
-                    if (!container.isToplevel()) {
-                        container = (Declaration)container.getContainer();
+            if (!Decl.isOverloaded(primaryDecl)) {
+                // append any arguments for defaulted parameters
+                for (int ii = numPassed; ii < numDeclared; ii++) {
+                    Parameter param = declaredParams.get(ii);
+                    String varName = varBaseName + "$" + ii;
+                    String methodName = Util.getDefaultedParamMethodName(primaryDecl, param);
+                    List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, ii, needsThis);
+                    JCExpression argExpr;
+                    if (!param.isSequenced()) {
+                        Declaration container = param.getDeclaration().getRefinedDeclaration();
+                        if (!container.isToplevel()) {
+                            container = (Declaration)container.getContainer();
+                        }
+                        String className = Util.getCompanionClassName(container.getName());
+                        argExpr = at(ce).Apply(null, makeIdentOrSelect(null, container.getQualifiedNameString(), className, methodName), arglist);
+                    } else {
+                        argExpr = makeEmpty();
                     }
-                    String className = Util.getCompanionClassName(container.getName());
-                    argExpr = at(ce).Apply(null, makeIdentOrSelect(null, container.getQualifiedNameString(), className, methodName), arglist);
-                } else {
-                    argExpr = makeEmpty();
+                    BoxingStrategy boxType = Util.getBoxingStrategy(param);
+                    ProducedType type = getTypeForParameter(param, isRaw, typeArgumentModels);
+                    JCExpression typeExpr = makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? TYPE_ARGUMENT : 0);
+                    JCVariableDecl varDecl = makeVar(varName, typeExpr, argExpr);
+                    vars.append(varDecl);
                 }
-                BoxingStrategy boxType = Util.getBoxingStrategy(param);
-                ProducedType type = getTypeForParameter(param, isRaw, typeArgumentModels);
-                JCExpression typeExpr = makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? TYPE_ARGUMENT : 0);
-                JCVariableDecl varDecl = makeVar(varName, typeExpr, argExpr);
-                vars.append(varDecl);
+                args.appendList(makeVarRefArgumentList(varBaseName, numDeclared));
+            } else {
+                // For overloaded methods (and therefore Java interop) we just pass the arguments we have
+                args.appendList(makeVarRefArgumentList(varBaseName, numPassed));
             }
-            args.appendList(makeVarRefArgumentList(varBaseName, numDeclared));
         } else {
             // append the normal args
             for (Tree.PositionalArgument arg : positional.getPositionalArguments()) {
