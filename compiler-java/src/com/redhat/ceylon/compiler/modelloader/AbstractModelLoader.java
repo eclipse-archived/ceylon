@@ -30,6 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import javax.lang.model.type.TypeKind;
 
@@ -73,6 +74,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.util.Util;
 
 public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader {
+    private static final String CEYLON_CEYLON_ANNOTATION = "com.redhat.ceylon.compiler.metadata.java.Ceylon";
     private static final String CEYLON_MODULE_ANNOTATION = "com.redhat.ceylon.compiler.metadata.java.Module";
     private static final String CEYLON_PACKAGE_ANNOTATION = "com.redhat.ceylon.compiler.metadata.java.Package";
     private static final String CEYLON_IGNORE_ANNOTATION = "com.redhat.ceylon.compiler.metadata.java.Ignore";
@@ -614,43 +616,49 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         HashSet<String> variables = new HashSet<String>();
         String qualifiedName = classSymbol.getQualifiedName();
         boolean isJava = qualifiedName.startsWith("java.");
+        boolean isCeylon = (classSymbol.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null);
         
-        // FIXME: deal with toplevel methods and attributes
-        int constructorCount = 0;
-        // then its methods
+        // Turn a list of possibly overloaded methods into a map
+        // of lists that contain methods with the same name
+        Map<String, List<ReflMethod>> methods = new TreeMap<String, List<ReflMethod>>();
         for(ReflMethod methodSymbol : classSymbol.getDirectMethods()){
-
             // We skip members marked with @Ignore
             if(methodSymbol.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
                 continue;
-
-            // FIXME: deal with multiple constructors
+            // FIXME Should we allow static methods or not?
+            if(isCeylon && methodSymbol.isStatic())
+                continue;
+            // FIXME: temporary, because some private classes from the jdk are
+            // referenced in private methods but not available
+            if(isJava && !methodSymbol.isPublic())
+                continue;
             String methodName = methodSymbol.getName();
-
-            if(methodSymbol.isStatic())
-                continue;
-            // FIXME: temporary, because some private classes from the jdk are referenced in private methods but not
-            // available
-            if(isJava
-                    && !methodSymbol.isPublic())
-                continue;
-
-            if(methodSymbol.isConstructor()){
-                constructorCount++;
-                // ignore the non-first ones
-                if(constructorCount > 1){
-                    // only warn once
-                    if(constructorCount == 2)
-                        logWarning("Has multiple constructors: "+qualifiedName);
-                    continue;
-                }
-                if(!(klass instanceof LazyClass)
-                        || !((LazyClass)klass).isTopLevelObjectType())
-                    setParameters((Class)klass, methodSymbol);
-                continue;
+            List<ReflMethod> homonyms = methods.get(methodName);
+            if (homonyms == null) {
+                homonyms = new LinkedList<ReflMethod>();
+                methods.put(methodName, homonyms);
             }
-
-            if(isGetter(methodSymbol)) {
+            homonyms.add(methodSymbol);
+        }
+        
+        // FIXME: deal with toplevel methods and attributes
+        boolean hasConstructor = false;
+        // then its methods
+        for(List<ReflMethod> methodSymbols : methods.values()){
+            // There might be multiple overloaded methods
+            // but for now we just care about one, any will do
+            ReflMethod methodSymbol = methodSymbols.get(0);
+            boolean isOverloaded = methodSymbols.size() > 1;
+            String methodName = methodSymbol.getName();
+            
+            if(methodSymbol.isConstructor()){
+                hasConstructor = true;
+                ((Class)klass).setOverloaded(isOverloaded);
+                if(isOverloaded)
+                    logWarning("Has multiple constructors: "+qualifiedName);
+                if(!(klass instanceof LazyClass) || !((LazyClass)klass).isTopLevelObjectType())
+                    setParameters((Class)klass, methodSymbol);
+            } else if(isGetter(methodSymbol)) {
                 // simple attribute
                 addValue(klass, methodSymbol, getJavaAttributeName(methodName));
             } else if(isSetter(methodSymbol)) {
@@ -681,7 +689,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     setEqualsParameters(method, methodSymbol);
                 else
                     setParameters(method, methodSymbol);
-                method.setType(obtainType(methodSymbol.getReturnType(), methodSymbol, method));
+                
+                // and its return type
+                ProducedType type = getMethodReturnType(methodSymbols, method);
+                method.setType(type);
+                
                 markUnboxed(method, methodSymbol.getReturnType());
                 klass.getMembers().add(method);
             }
@@ -697,7 +709,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         }
         
-        if(klass instanceof Class && constructorCount == 0){
+        if(klass instanceof Class && !hasConstructor){
             // must be a default constructor
             ((Class)klass).setParameterList(new ParameterList());
         }
@@ -707,6 +719,24 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         fillRefinedDeclarations(klass);
     }
 
+    private ProducedType getMethodReturnType(List<ReflMethod> methodSymbols, Method method) {
+        if (methodSymbols.size() > 1) {
+            // Make a union of the method return types
+            UnionType unionType = new UnionType(typeFactory);
+            LinkedList<ProducedType> unionTypes = new LinkedList<ProducedType>();
+            for (ReflMethod methodSymbol : methodSymbols) {
+                ProducedType type = obtainType(methodSymbol.getReturnType(), methodSymbol, method);
+                com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion(unionTypes, type);
+            }
+            unionType.setCaseTypes(unionTypes);
+            return unionType.getType();
+        } else {
+            ReflMethod methodSymbol = methodSymbols.get(0);
+            ProducedType type = obtainType(methodSymbol.getReturnType(), methodSymbol, method);
+            return type;
+        }
+    }
+    
     private void fillRefinedDeclarations(ClassOrInterface klass) {
         for(Declaration member : klass.getMembers()){
             if(member.isActual()){
