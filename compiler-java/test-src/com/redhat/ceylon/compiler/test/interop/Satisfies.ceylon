@@ -25,3 +25,17 @@ class SatisfiesFileFilter() satisfies FileFilter {
         return true;
     }
 }
+
+@nomodel
+class SatisfiesFilenameFilter() satisfies FilenameFilter {
+    shared actual Boolean accept(File dir, String name) {
+        return true;
+    }
+}
+
+@nomodel
+void test() {
+    File f1 = File("file1");
+    f1.listFiles(SatisfiesFileFilter());
+    f1.listFiles(SatisfiesFilenameFilter());
+}
