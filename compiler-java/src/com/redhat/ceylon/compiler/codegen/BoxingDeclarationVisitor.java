@@ -112,7 +112,7 @@ public class BoxingDeclarationVisitor extends Visitor {
         // deal with invalid input
         if(declaration == null)
             return;
-        TypedDeclaration refinedDeclaration = Util.getTopmostRefinedDeclaration(declaration);
+        TypedDeclaration refinedDeclaration = (TypedDeclaration)Util.getTopmostRefinedDeclaration(declaration);
         // deal with invalid input
         if(refinedDeclaration == null)
             return;
@@ -133,7 +133,7 @@ public class BoxingDeclarationVisitor extends Visitor {
         // deal with invalid input
         if(declaration == null)
             return;
-        TypedDeclaration refinedDeclaration = Util.getTopmostRefinedDeclaration(declaration);
+        TypedDeclaration refinedDeclaration = (TypedDeclaration)Util.getTopmostRefinedDeclaration(declaration);
         // deal with invalid input
         if(refinedDeclaration == null)
             return;

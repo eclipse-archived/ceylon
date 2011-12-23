@@ -29,6 +29,7 @@ import javax.tools.StandardLocation;
 import com.redhat.ceylon.compiler.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -134,22 +135,23 @@ public class Util {
         return name.substring(name.lastIndexOf('.') + 1);
     }
 
-    public static TypedDeclaration getTopmostRefinedDeclaration(TypedDeclaration decl){
-        if(decl instanceof Parameter && decl.getContainer() instanceof Method){
-            // for some reason this isn't filled up properly for Parameter so we look up the method's refined decl
-            Method refinedMethod = (Method) getTopmostRefinedDeclaration((TypedDeclaration) decl.getContainer());
-            // shortcut if the method doesn't override anything
-            if(refinedMethod == decl.getContainer())
+    public static Declaration getTopmostRefinedDeclaration(Declaration decl){
+        if(decl instanceof Parameter && decl.getContainer() instanceof Functional){
+            // Parameters in a refined class, interface or method are not considered refinements themselves
+            // so we have to look up the corresponding parameter in the container's refined declaration
+            Functional func = (Functional)decl.getContainer();
+            Parameter param = (Parameter)decl;
+            Functional refinedFunc = (Functional) getTopmostRefinedDeclaration((Declaration)decl.getContainer());
+            // shortcut if the functional doesn't override anything
+            if(refinedFunc == decl.getContainer())
                 return decl;
-            if(refinedMethod.getParameterLists().size() != 1)
+            if(func.getParameterLists().size() != 1 || refinedFunc.getParameterLists().size() != 1)
                 throw new RuntimeException("Multiple parameter lists not supported");
-            for(Parameter param : refinedMethod.getParameterLists().get(0).getParameters()){
-                if(param.getName().equals(decl.getName()))
-                    return param;
-            }
-            throw new RuntimeException("Can't find refined parameter: "+decl);
+            // find the index of the parameter
+            int index = func.getParameterLists().get(0).getParameters().indexOf(param);
+            return refinedFunc.getParameterLists().get(0).getParameters().get(index);
         }
-        TypedDeclaration refinedDecl = (TypedDeclaration) decl.getRefinedDeclaration();
+        Declaration refinedDecl = decl.getRefinedDeclaration();
         if(refinedDecl != null && refinedDecl != decl)
             return getTopmostRefinedDeclaration(refinedDecl);
         return decl;

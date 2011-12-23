@@ -1001,7 +1001,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     protected boolean isGenericsImplementation(TypedDeclaration decl) {
-        return Util.getTopmostRefinedDeclaration(decl).getTypeDeclaration() instanceof TypeParameter;
+        return ((TypedDeclaration)Util.getTopmostRefinedDeclaration(decl)).getTypeDeclaration() instanceof TypeParameter;
     }
 
 
