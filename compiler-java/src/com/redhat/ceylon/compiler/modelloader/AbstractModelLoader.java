@@ -26,11 +26,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 import javax.lang.model.type.TypeKind;
 
@@ -620,7 +620,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         
         // Turn a list of possibly overloaded methods into a map
         // of lists that contain methods with the same name
-        Map<String, List<ReflMethod>> methods = new TreeMap<String, List<ReflMethod>>();
+        Map<String, List<ReflMethod>> methods = new LinkedHashMap<String, List<ReflMethod>>();
         for(ReflMethod methodSymbol : classSymbol.getDirectMethods()){
             // We skip members marked with @Ignore
             if(methodSymbol.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
