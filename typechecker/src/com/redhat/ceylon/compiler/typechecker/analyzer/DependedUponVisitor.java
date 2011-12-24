@@ -16,10 +16,12 @@ public class DependedUponVisitor extends Visitor {
     
     private final PhasedUnit phasedUnit;
     private final PhasedUnits phasedUnits;
+    private final List<PhasedUnits> phasedUnitsOfDependencies;
     
-    public DependedUponVisitor(PhasedUnit phasedUnit, PhasedUnits phasedUnits) {
+    public DependedUponVisitor(PhasedUnit phasedUnit, PhasedUnits phasedUnits, List<PhasedUnits> phasedUnitsOfDependencies) {
         this.phasedUnit = phasedUnit;
         this.phasedUnits = phasedUnits;
+        this.phasedUnitsOfDependencies = phasedUnitsOfDependencies;
     }
     
     private String getSrcFolderRelativePath(Unit u) {
@@ -57,7 +59,15 @@ public class DependedUponVisitor extends Visitor {
                 if (! dependedOnUnitName.equals(currentUnitName)) {
                     PhasedUnit dependedOnPhasedUnit = phasedUnits.getPhasedUnitFromRelativePath(dependedOnUnitName);
                     if (dependedOnPhasedUnit != null) {
-                        dependedOnPhasedUnit.getDependentsOf().add(phasedUnit);                    
+                        dependedOnPhasedUnit.getDependentsOf().add(phasedUnit);
+                    } else {
+                        for (PhasedUnits phasedUnitsOfDependency : phasedUnitsOfDependencies) {
+                            dependedOnPhasedUnit = phasedUnitsOfDependency.getPhasedUnitFromRelativePath(dependedOnUnitName);
+                            if (dependedOnPhasedUnit != null) {
+                                dependedOnPhasedUnit.getDependentsOf().add(phasedUnit);
+                                break;
+                            }
+                        }
                     }
                 }
             }

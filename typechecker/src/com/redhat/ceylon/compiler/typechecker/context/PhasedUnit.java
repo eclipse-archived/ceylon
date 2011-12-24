@@ -51,12 +51,18 @@ public class PhasedUnit {
     private List<CommonToken> tokens;
     private boolean fullyTyped;
     private ModuleVisitor moduleVisitor;
+    private VirtualFile srcDir;
+
+    public VirtualFile getSrcDir() {
+        return srcDir;
+    }
 
     public PhasedUnit(VirtualFile unitFile, VirtualFile srcDir, Tree.CompilationUnit cu, 
             Package p, ModuleManager moduleManager, Context context, List<CommonToken> tokenStream) {
         this.compilationUnit = cu;
         this.pkg = p;
         this.unitFile = unitFile;
+        this.srcDir = srcDir;
         this.fileName = unitFile.getName();
         this.pathRelativeToSrcDir = computeRelativePath(unitFile, srcDir);
         this.moduleManager = moduleManager;
@@ -128,9 +134,9 @@ public class PhasedUnit {
         fullyTyped = true;
     }
 
-    public void collectUnitDependencies(PhasedUnits phasedUnits) {
+    public void collectUnitDependencies(PhasedUnits phasedUnits, List<PhasedUnits> phasedUnitsOfDependencies) {
         //System.out.println("Run collecting unit dependencies phase for " + fileName);
-        compilationUnit.visit(new DependedUponVisitor(this, phasedUnits));
+        compilationUnit.visit(new DependedUponVisitor(this, phasedUnits, phasedUnitsOfDependencies));
     }
     
     public void analyseFlow() {
