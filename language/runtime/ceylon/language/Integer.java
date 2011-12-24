@@ -2,6 +2,7 @@ package ceylon.language;
 
 import com.redhat.ceylon.compiler.metadata.java.Ceylon;
 import com.redhat.ceylon.compiler.metadata.java.Class;
+import com.redhat.ceylon.compiler.metadata.java.Ignore;
 import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
@@ -49,22 +50,27 @@ public final class Integer
         return instance((long) Math.pow(value, op.value)); // FIXME: ugly
     }
     
+    @Ignore
     public Float plus(Float op) {
         return Float.instance(value + op.value);
     }
     
+    @Ignore
     public Float minus(Float op) {
         return Float.instance(value - op.value);
     }
     
+    @Ignore
     public Float times(Float op) {
         return Float.instance(value * op.value);
     }
     
+    @Ignore
     public Float divided(Float op) {
         return Float.instance(value / op.value);
     }
     
+    @Ignore
     public Float power(Float op) {
         return Float.instance(Math.pow(value, op.value)); // FIXME: ugly
     }
