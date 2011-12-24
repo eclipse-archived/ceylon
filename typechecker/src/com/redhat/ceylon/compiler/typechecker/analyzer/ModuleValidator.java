@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -80,7 +81,7 @@ public class ModuleValidator {
                 moduleManager.addErrorToModule( dependencyTree.getFirst(), error.toString() );
                 return;
             }
-            List<String> searchedArtifacts = new ArrayList<String>();
+            Set<String> searchedArtifacts = new HashSet<String>();
             Iterable<String> searchedArtifactExtensions = moduleManager.getSearchedArtifactExtensions();
             
             if ( ! module.isAvailable() ) {
@@ -88,10 +89,8 @@ public class ModuleValidator {
                 VirtualFile artifact = null;
                 List<ArtifactProvider> artifactProviders = context.getArtifactProviders();
                 for (final ArtifactProvider artifactProvider : artifactProviders) {
-                    for (String extension : searchedArtifactExtensions) {
-                        searchedArtifacts.add(artifactProvider.getArtifactName(module.getName(), 
-                                module.getVersion(), extension));
-                    }
+                    searchedArtifacts.add(artifactProvider.getArtifactName(module.getName(), 
+                            module.getVersion(), "*"));
                     artifact = artifactProvider.getArtifact(module.getName(), 
                             module.getVersion(), 
                             searchedArtifactExtensions);
@@ -102,10 +101,12 @@ public class ModuleValidator {
                 if (artifact == null) {
                     //not there => error
                     StringBuilder error = new StringBuilder("Cannot find module artifact(s) : ");
-                    if (searchedArtifacts.size() > 0) {
-                        error.append(searchedArtifacts.get(0));
+                    List<String> searchedArtifactList = new ArrayList<String>(searchedArtifacts.size());
+                    searchedArtifactList.addAll(searchedArtifacts);
+                    if (searchedArtifactList.size() > 0) {
+                        error.append(searchedArtifactList.get(0));
                     }
-                    for (String searchedArtifact : searchedArtifacts.subList(1, searchedArtifacts.size())) {
+                    for (String searchedArtifact : searchedArtifactList.subList(1, searchedArtifactList.size())) {
                         error.append(", ");
                         error.append("\n\t");
                         error.append(searchedArtifact);
