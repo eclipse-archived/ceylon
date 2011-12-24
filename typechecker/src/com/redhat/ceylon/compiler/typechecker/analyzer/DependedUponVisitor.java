@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -17,11 +19,13 @@ public class DependedUponVisitor extends Visitor {
     private final PhasedUnit phasedUnit;
     private final PhasedUnits phasedUnits;
     private final List<PhasedUnits> phasedUnitsOfDependencies;
+    private Set<Declaration> alreadyDone;
     
     public DependedUponVisitor(PhasedUnit phasedUnit, PhasedUnits phasedUnits, List<PhasedUnits> phasedUnitsOfDependencies) {
         this.phasedUnit = phasedUnit;
         this.phasedUnits = phasedUnits;
         this.phasedUnitsOfDependencies = phasedUnitsOfDependencies;
+        alreadyDone = new HashSet<Declaration>();
     }
     
     private String getSrcFolderRelativePath(Unit u) {
@@ -30,7 +34,8 @@ public class DependedUponVisitor extends Visitor {
     }
 
     private void storeDependency(Declaration d) {
-        if (d!=null) {
+        if (d!=null && !alreadyDone.contains(d)) {
+            alreadyDone.add(d);
             if (d instanceof TypeDeclaration) {
                 TypeDeclaration td = (TypeDeclaration) d;
                 storeDependency(td.getExtendedTypeDeclaration());
