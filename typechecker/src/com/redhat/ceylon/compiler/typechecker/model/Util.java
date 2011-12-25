@@ -103,14 +103,7 @@ public class Util {
      */
     static Map<TypeParameter,ProducedType> arguments(Declaration declaration, 
             ProducedType receivingType, List<ProducedType> typeArguments) {
-        Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
-        //make sure we collect all type arguments
-        //from the whole qualified type!
-        ProducedType dt = receivingType;
-        while (dt!=null) {
-            map.putAll(dt.getTypeArguments());
-            dt = dt.getQualifyingType();
-        }
+        Map<TypeParameter, ProducedType> map = getArgumentsOfOuterType(receivingType);
         //now turn the type argument tuple into a
         //map from type parameter to argument
         if (declaration instanceof Generic) {
@@ -123,6 +116,19 @@ public class Util {
         }
         return map;
     }
+
+	public static Map<TypeParameter, ProducedType> getArgumentsOfOuterType(
+			ProducedType receivingType) {
+		Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
+        //make sure we collect all type arguments
+        //from the whole qualified type!
+        ProducedType dt = receivingType;
+        while (dt!=null) {
+            map.putAll(dt.getTypeArguments());
+            dt = dt.getQualifyingType();
+        }
+		return map;
+	}
     
     static <T> List<T> list(List<T> list, T element) {
         List<T> result = new ArrayList<T>();
