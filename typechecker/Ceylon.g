@@ -59,8 +59,7 @@ importList returns [ImportList importList]
     ;
 
 importDeclaration returns [Import importDeclaration]
-    @init { ImportPath importPath=null; 
-            ImportMemberOrTypeList il=null; }
+    @init { ImportPath importPath=null; }
     : IMPORT 
       { $importDeclaration = new Import($IMPORT); } 
       ( 
@@ -83,9 +82,16 @@ importDeclaration returns [Import importDeclaration]
       | { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(LIDENTIFIER, input)); }
       )
+      importElementList
+      { $importDeclaration.setImportMemberOrTypeList($importElementList.importMemberOrTypeList); }
+      ;
+
+importElementList returns [ImportMemberOrTypeList importMemberOrTypeList]
+    @init { ImportMemberOrTypeList il=null; }
+    :
     LBRACE
     { il = new ImportMemberOrTypeList($LBRACE);
-      $importDeclaration.setImportMemberOrTypeList(il); }
+      $importMemberOrTypeList = il; }
     ( 
       ie1=importElement 
       { if ($ie1.importMemberOrType!=null)
@@ -126,6 +132,10 @@ importElement returns [ImportMemberOrType importMemberOrType]
         if ($typeAlias.alias!=null)
             $importMemberOrType.setAlias($typeAlias.alias);
         $importMemberOrType.setIdentifier($typeName.identifier); }
+        (
+          importElementList
+          { $importMemberOrType.setImportMemberOrTypeList($importElementList.importMemberOrTypeList); }
+        )?
     )
     { if ($importMemberOrType!=null)
         $importMemberOrType.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }

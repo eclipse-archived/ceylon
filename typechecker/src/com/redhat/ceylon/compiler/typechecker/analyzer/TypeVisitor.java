@@ -68,8 +68,7 @@ public class TypeVisitor extends Visitor {
             if (imtl!=null) {
                 for (Tree.ImportMemberOrType member: imtl
                         .getImportMemberOrTypes()) {
-                    String name = importMember(member, importedPackage, il);
-                    names.add(name);
+                    names.add(importMember(member, importedPackage, il));
                 }
                 if (imtl.getImportWildcard()!=null) {
                     importAllMembers(importedPackage, names, il);
@@ -161,9 +160,52 @@ public class TypeVisitor extends Visitor {
             unit.getImports().add(i);
             il.getImports().add(i);
         }
+        ImportMemberOrTypeList imtl = member.getImportMemberOrTypeList();
+        if (imtl!=null) {
+        	if (d instanceof TypeDeclaration) {
+        		for (Tree.ImportMemberOrType submember: imtl
+        				.getImportMemberOrTypes()) {
+        			importMember(submember, (TypeDeclaration) d);
+            	}
+            }
+        	else {
+        		imtl.addError("member alias list must follow a type");
+        	}
+        }
         return name;
     }
         
+    private void importMember(Tree.ImportMemberOrType member, TypeDeclaration d) {
+        Import i = new Import();
+        Tree.Alias alias = member.getAlias();
+        String name = name(member.getIdentifier());
+        if (alias==null) {
+            member.addError("must specify an alias");
+        }
+        else {
+            i.setAlias(name(alias.getIdentifier()));
+        }
+        i.setTypeDeclaration(d);
+        Declaration m = d.getMember(name);
+        if (m==null) {
+            member.getIdentifier().addError("imported declaration not found: " + 
+                    name + " of " + d.getName(), 100);
+        }
+        else {
+            if (!m.isShared()) {
+                member.getIdentifier().addError("imported declaration is not shared: " +
+                        name + " of " + d.getName(), 400);
+            }
+            i.setDeclaration(m);
+            member.setDeclarationModel(m);
+            unit.getImports().add(i);
+        }
+        if (member.getImportMemberOrTypeList()!=null) {
+        	member.getImportMemberOrTypeList()
+        	        .addError("member aliases of member aliases not supported");
+        }
+    }
+    
     @Override 
     public void visit(Tree.UnionType that) {
         super.visit(that);
@@ -229,7 +271,7 @@ public class TypeVisitor extends Visitor {
         ProducedType pt = that.getOuterType().getTypeModel();
         if (pt!=null) {
             TypeDeclaration d = pt.getDeclaration();
-			TypeDeclaration type = (TypeDeclaration) d.getMember(name(that.getIdentifier()));
+			TypeDeclaration type = (TypeDeclaration) d.getMember(name(that.getIdentifier()), unit);
             if (type==null) {
                 that.addError("member type declaration does not exist: " + 
                         name(that.getIdentifier()) +

@@ -329,6 +329,22 @@ public abstract class TypeDeclaration extends Declaration
             return getDirectMember(name);
         }
     }
+    
+    /**
+     * Get the most-refined member with the given name,
+     * searching this type first, taking aliases into
+     * account, followed by supertypes.
+     */
+    public Declaration getMember(String name, Unit unit) {
+    	//TODO: does not handle aliased members of supertypes
+    	Declaration d = unit.getImportedDeclaration(this, name);
+    	if (d==null) {
+    		return getMember(name);
+    	}
+    	else {
+    		return d;
+    	}
+    }
 
     /**
      * Get the most-refined member with the given name,

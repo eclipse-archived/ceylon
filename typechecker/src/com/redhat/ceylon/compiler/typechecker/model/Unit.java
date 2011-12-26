@@ -60,11 +60,27 @@ public class Unit {
 
     /**
      * Search the imports of a compilation unit
-     * for the declaration.
+     * for the namd toplevel declaration.
      */
     public Declaration getImportedDeclaration(String name) {
         for (Import i: getImports()) {
-            if (i.getAlias().equals(name)) {
+            if (i.getTypeDeclaration()==null && 
+            		i.getAlias().equals(name)) {
+                return i.getDeclaration();
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Search the imports of a compilation unit
+     * for the named member declaration.
+     */
+    public Declaration getImportedDeclaration(TypeDeclaration td, String name) {
+        for (Import i: getImports()) {
+            TypeDeclaration itd = i.getTypeDeclaration();
+			if (itd!=null && itd.equals(td) && 
+            		i.getAlias().equals(name)) {
                 return i.getDeclaration();
             }
         }

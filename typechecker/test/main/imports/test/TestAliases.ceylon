@@ -1,7 +1,7 @@
 import imports.package { 
     m=method, 
     a=attribute, 
-    C=Class, 
+    C=Class { i=count, In=Inner }, 
     I=Interface, 
     D=Dupe 
 }
@@ -11,6 +11,8 @@ class TestAliases() {
     C c = C("gavin");
     I i = c;
     String name = c.name;
+    c.i++;
+    C.In cin = c.In();
     D d = D();
     d.hello();
     String hello = a;
