@@ -1,10 +1,14 @@
 import imports.package { 
     m=method, 
     a=attribute, 
-    C=Class { i=count, In=Inner, m=method(String,Integer) }, 
+    C=Class { i=count, 
+              In=Inner, 
+              m=method(String,Integer), 
+              @error merr=method(String) }, 
     I=Interface, 
     D=Dupe,
-    o=op(Integer)
+    o=op(Integer),
+    @error oerr=op(Float)
 }
 
 class TestAliases() {
