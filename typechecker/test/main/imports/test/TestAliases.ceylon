@@ -1,9 +1,10 @@
 import imports.package { 
     m=method, 
     a=attribute, 
-    C=Class { i=count, In=Inner }, 
+    C=Class { i=count, In=Inner, m=method(String,Integer) }, 
     I=Interface, 
-    D=Dupe 
+    D=Dupe,
+    o=op(Integer)
 }
 
 class TestAliases() {
@@ -13,9 +14,11 @@ class TestAliases() {
     String name = c.name;
     c.i++;
     C.In cin = c.In();
+    c.m("hello",0);
     D d = D();
     d.hello();
     String hello = a;
     Dupe dupe = Dupe();
     dupe.goodbye();
+    o(1);
 }

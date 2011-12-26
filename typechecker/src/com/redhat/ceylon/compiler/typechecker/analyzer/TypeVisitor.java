@@ -66,8 +66,7 @@ public class TypeVisitor extends Visitor {
             Set<String> names = new HashSet<String>();
             ImportMemberOrTypeList imtl = that.getImportMemberOrTypeList();
             if (imtl!=null) {
-                for (Tree.ImportMemberOrType member: imtl
-                        .getImportMemberOrTypes()) {
+                for (Tree.ImportMemberOrType member: imtl.getImportMemberOrTypes()) {
                     names.add(importMember(member, importedPackage, il));
                 }
                 if (imtl.getImportWildcard()!=null) {
@@ -135,6 +134,15 @@ public class TypeVisitor extends Visitor {
         return sb.toString();
     }
     
+    private static List<String> erasureNames(Tree.Erasure erasure) {
+    	if (erasure==null) return null;
+    	List<String> result = new ArrayList<String>();
+    	for (Tree.Identifier id: erasure.getIdentifiers()) {
+    		result.add(id.getText());
+    	}
+    	return result;
+    }
+    
     private String importMember(Tree.ImportMemberOrType member, Package importedPackage, ImportList il) {
         Import i = new Import();
         Tree.Alias alias = member.getAlias();
@@ -145,7 +153,7 @@ public class TypeVisitor extends Visitor {
         else {
             i.setAlias(name(alias.getIdentifier()));
         }
-        Declaration d = importedPackage.getMember(name);
+        Declaration d = importedPackage.getImportedMember(name, erasureNames(member.getErasure()));
         if (d==null) {
             member.getIdentifier().addError("imported declaration not found: " + 
                     name, 100);
@@ -163,8 +171,7 @@ public class TypeVisitor extends Visitor {
         ImportMemberOrTypeList imtl = member.getImportMemberOrTypeList();
         if (imtl!=null) {
         	if (d instanceof TypeDeclaration) {
-        		for (Tree.ImportMemberOrType submember: imtl
-        				.getImportMemberOrTypes()) {
+        		for (Tree.ImportMemberOrType submember: imtl.getImportMemberOrTypes()) {
         			importMember(submember, (TypeDeclaration) d);
             	}
             }
@@ -186,7 +193,7 @@ public class TypeVisitor extends Visitor {
             i.setAlias(name(alias.getIdentifier()));
         }
         i.setTypeDeclaration(d);
-        Declaration m = d.getMember(name);
+        Declaration m = d.getImportedMember(name, erasureNames(member.getErasure()));
         if (m==null) {
             member.getIdentifier().addError("imported declaration not found: " + 
                     name + " of " + d.getName(), 100);

@@ -88,6 +88,30 @@ public class Util {
             d.getName().toLowerCase().startsWith(startingWith.toLowerCase());
     }
     
+    public static boolean erasureMatches(Declaration d, List<String> erasure) {
+    	if (erasure!=null) {
+    		if (d instanceof Functional) {
+        		List<ParameterList> pls = ((Functional) d).getParameterLists();
+        		if (pls==null || pls.isEmpty()) return false;
+				List<Parameter> params = pls.get(0).getParameters();
+        		if (params.size()!=erasure.size()) return false;
+				for (int i=0; i<params.size(); i++) {
+        			TypeDeclaration ptd = params.get(i).getTypeDeclaration();
+					if (!ptd.getName().equals(erasure.get(i))) {
+						return false;
+					}
+        		}
+				return true;
+    		}
+    		else {
+    			return false;
+    		}
+    	}
+    	else {
+    	    return true;
+    	}
+    }
+
     /**
      * Collect together type arguments given a list of 
      * type arguments to a declaration and the receiving 

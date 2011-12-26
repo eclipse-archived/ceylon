@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.erasureMatches;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
@@ -113,6 +114,17 @@ public class Package implements Scope {
         return null;
     }
 
+    public Declaration getImportedMember(String name, List<String> erasure) {
+        for (Declaration d: getMembers()) {
+            if (isResolvable(d) && /*d.isShared() &&*/ isNamed(name, d)) {
+                if (erasureMatches(d, erasure)) {
+                	return d;
+                }
+            }
+        }
+        return null;
+    }
+
     @Override
     public ProducedType getDeclaringType(Declaration d) {
         return null;
@@ -204,7 +216,7 @@ public class Package implements Scope {
     }
     
     public List<String> getAuthors() {
-		return authors;
-	}
+        return authors;
+    }
 
 }
