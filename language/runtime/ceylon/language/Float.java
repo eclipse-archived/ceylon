@@ -144,11 +144,6 @@ public final class Float
         return value;
     }
     
-    @Override
-    public java.lang.String getFormatted() {
-        return java.lang.Double.toString(value);
-    }
-    
     /*@Override
     public boolean largerThan(@Name("other") Float other) {
         return value > other.value;

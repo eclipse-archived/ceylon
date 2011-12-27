@@ -206,11 +206,6 @@ public final class Integer
     	return (int)(value ^ (value >>> 32));
     }
     
-    @Override
-    public java.lang.String getFormatted() {
-        return java.lang.Long.toString(value);
-    }
-    
     /*@Override
     public boolean largerThan(@Name("other") Integer other) {
         return value > other.value;

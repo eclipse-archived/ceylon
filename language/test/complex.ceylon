@@ -1,13 +1,13 @@
 class OrderedPair<out X,out Y>(X x, Y y) 
-        given X satisfies Format&Equality
-        given Y satisfies Format&Equality {
+        given X satisfies Equality
+        given Y satisfies Equality {
     shared X x = x;
     shared Y y = y;
     shared actual default String string {
         return "(" x ", " y ")";
     }
     shared actual Boolean equals(Equality other) {
-        if (is OrderedPair<Format&Equality,Format&Equality> other) {
+        if (is OrderedPair<Equality,Equality> other) {
             return x==other.x && y==other.y;
         }
         else {

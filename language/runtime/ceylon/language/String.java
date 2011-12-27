@@ -14,7 +14,6 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 @SatisfiedTypes({"ceylon.language.Comparable<ceylon.language.String>",
 	             "ceylon.language.Ordered<ceylon.language.Character>",
 	             "ceylon.language.Correspondence<ceylon.language.Integer,ceylon.language.Character>",
-	             "ceylon.language.Format",
 	             "ceylon.language.Sized",
 	             "ceylon.language.Summable<ceylon.language.String>",
                  "ceylon.language.Castable<ceylon.language.String>",
@@ -22,7 +21,7 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
                  "ceylon.language.Ranged<ceylon.language.Integer,ceylon.language.String>"})
 public final class String
     implements Comparable<String>, Ordered<Character>, 
-               Correspondence<Integer,Character>, Format,
+               Correspondence<Integer,Character>,
                Sized, Summable<String>, Castable<String>,
                Category, Ranged<Integer,String> {
 
@@ -83,11 +82,6 @@ public final class String
         int c = value.compareTo(other.value);
         return (c < 0) ? Comparison.SMALLER :
             ((c == 0) ? Comparison.EQUAL : Comparison.LARGER);
-    }
-
-    @Override
-    public java.lang.String getFormatted() {
-        return value;
     }
 
     /*@Override

@@ -5,9 +5,8 @@ import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 @Ceylon
-@SatisfiedTypes({"ceylon.language.Format", 
-	             "ceylon.language.Equality"})
-public interface Number extends Format {
+@SatisfiedTypes({"ceylon.language.Equality"})
+public interface Number {
     
     @TypeInfo(value="ceylon.language.Integer")
     public long getInteger();

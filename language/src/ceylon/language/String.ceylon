@@ -7,8 +7,7 @@ shared abstract class String()
         satisfies Correspondence<Integer,Character> & 
                   Ordered<Character> & Comparable<String> &
                   Sized & Ranged<Integer,String> & Category & 
-                  Summable<String> & Castable<String> & 
-                  Format {
+                  Summable<String> & Castable<String> {
     
     doc "The characters in this string."
     shared formal Character[] characters;
@@ -197,11 +196,6 @@ shared abstract class String()
     shared actual formal Boolean equals(Equality that);
     
     shared actual formal Integer hash;
-    
-    doc "Returns the string itself."
-    shared actual String formatted { 
-        return this; 
-    }
     
     doc "Returns the string itself."
     shared actual String string { 

@@ -5,7 +5,7 @@ doc "Abstraction of numbers. Numeric operations are provided
 see (Numeric)
 by "Gavin"
 shared interface Number 
-        satisfies Equality & Format {
+        satisfies Equality {
     
     doc "Determine if the number is positive."
     shared formal Boolean positive;

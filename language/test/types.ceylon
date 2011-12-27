@@ -2,6 +2,8 @@ class T() extends Object() {
     shared actual String string = "hello";
 }
 
+interface Format {}
+
 void types() {
     Void bool = true;
     Void entry = 1->2;
@@ -110,10 +112,10 @@ void types() {
     if (is Boolean|Character|T t) {} else { fail("union type"); }
     if (is Boolean|Character|T str) { fail("union type"); } else {}
     if (is Boolean|Character|T nothing) { fail("union type"); } else {}
-    if (is Equality&Format one) {} else { fail("intersection type"); }
-    if (is Equality&Format bool) { fail("intersection type"); } else {}
-    if (is Sized&Category&Format str) {} else { fail("intersection type"); }
-    if (is Sized&Category&Format t) { fail("intersection type"); } else {}
+    if (is Equality&Castable<Bottom> one) {} else { fail("intersection type"); }
+    if (is Equality&Castable<Bottom> bool) { fail("intersection type"); } else {}
+    if (is Sized&Category&Ordered<Void> str) {} else { fail("intersection type"); }
+    if (is Sized&Category&Ordered<Void> t) { fail("intersection type"); } else {}
     //if (is String[] empty) {} else { fail("sequence type"); }
     //if (is String[] seq) {} else { fail("sequence type"); }
     //if (is String[]? seq) {} else { fail("sequence type"); }
