@@ -105,9 +105,9 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.DefaultArgument that) {
-    	defaultArgument=true;
-    	super.visit(that);
-    	defaultArgument=false;
+        defaultArgument=true;
+        super.visit(that);
+        defaultArgument=false;
     }
     
     @Override public void visit(Tree.TypeDeclaration that) {
@@ -298,8 +298,41 @@ public class ExpressionVisitor extends Visitor {
                     checkReified(that, pt);
                 }
             }
-            else if (isGeneric(dec) || dec instanceof TypeParameter) {
-                that.addWarning("generic types in assignability conditions not yet supported (until we implement reified generics)");
+            else if (dec instanceof TypeParameter) {
+                that.addWarning("type parameter in assignability condition not yet supported (until we implement reified generics)");
+            }
+            else if (isGeneric(dec)) {
+                List<TypeParameter> params = dec.getTypeParameters();
+                List<ProducedType> args = type.getTypeArgumentList();
+                if (params.size()==args.size()) {
+                    for (int i=0; i<params.size(); i++) {
+                        TypeParameter tp = params.get(i);
+                        ProducedType ta = args.get(i);
+                        if (tp.isCovariant()) {
+                            List<ProducedType> list = new ArrayList<ProducedType>();
+                            addToIntersection(list, unit.getVoidDeclaration().getType(), unit);
+                            for (ProducedType st: tp.getSatisfiedTypes()) {
+                            	addToIntersection(list, st, unit);
+                            }
+                            IntersectionType ut = new IntersectionType(unit);
+                            ut.setSatisfiedTypes(list);
+                            if (!ta.isExactly(ut.getType())) {
+                                that.addWarning("type argument to covariant type parameter in assignability condition must be " +
+                                        ut.getType().getProducedTypeName() + " (until we implement reified generics)");
+                            }
+                        }
+                        else if (tp.isContravariant()) {
+                            if (!(ta.getDeclaration() instanceof BottomType)) {
+                                that.addWarning("type argument to contravariant type parameter in assignability condition must be Bottom (until we implement reified generics)");
+                            }
+                        }
+                        else {
+                            that.addWarning("type argument to invariant type parameter in assignability condition not yet supported (until we implement reified generics)");
+                        }
+                    }
+                }
+                //else there is another error, so don't bother
+                //with this check at all
             }
         }
     }
@@ -493,7 +526,7 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.SpecifierStatement that) {
         super.visit(that);
         if (!(that.getBaseMemberExpression() instanceof Tree.BaseMemberExpression)) {
-        	that.getBaseMemberExpression().addError("illegal specification statement");
+            that.getBaseMemberExpression().addError("illegal specification statement");
         }
         checkType(that.getBaseMemberExpression().getTypeModel(), that.getSpecifierExpression());
     }
@@ -501,9 +534,9 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.Parameter that) {
         super.visit(that);
         SpecifierExpression se = that.getDefaultArgument()==null ?
-        		null :
-        		that.getDefaultArgument().getSpecifierExpression();
-		if (that.getType()!=null) {
+                null :
+                that.getDefaultArgument().getSpecifierExpression();
+        if (that.getType()!=null) {
             checkType(that.getType().getTypeModel(), se);
         }
         if (se!=null) {
@@ -1552,7 +1585,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.Annotation that) {
-    	withinAnnotation=true;
+        withinAnnotation=true;
         super.visit(that);
         withinAnnotation=false;
         Declaration dec = that.getPrimary().getDeclaration();
@@ -1815,7 +1848,7 @@ public class ExpressionVisitor extends Visitor {
                             nt.getProducedTypeName());
                 }
                 checkAssignable(t, lhst, that, 
-                		"result type must be assignable to declared type");
+                        "result type must be assignable to declared type");
             }
         }
     }
@@ -1885,8 +1918,8 @@ public class ExpressionVisitor extends Visitor {
                     "operand expression must be a boolean value");
         }
         if ( rhst!=null ) {
-        	checkAssignable(rhst, unit.getObjectDeclaration().getType(), that.getRightTerm(),
-        			"operand expression may not be an optional type");
+            checkAssignable(rhst, unit.getObjectDeclaration().getType(), that.getRightTerm(),
+                    "operand expression may not be an optional type");
             that.setTypeModel(unit.getOptionalType(rhst));
         }
     }
@@ -2182,9 +2215,9 @@ public class ExpressionVisitor extends Visitor {
             }
             //otherwise infer type arguments later
             /*if (defaultArgument) {
-            	if (member.isClassOrInterfaceMember()) {
-            		that.addWarning("references to this from default argument expressions not yet supported");
-            	}
+                if (member.isClassOrInterfaceMember()) {
+                    that.addWarning("references to this from default argument expressions not yet supported");
+                }
             }*/
         }
     }
@@ -2413,7 +2446,7 @@ public class ExpressionVisitor extends Visitor {
             that.setTypeModel(ci);
         }
         if (defaultArgument) {
-        	that.addError("reference to outer from default argument expression");
+            that.addError("reference to outer from default argument expression");
         }
     }
 
@@ -2447,7 +2480,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         if (defaultArgument) {
-        	that.addError("reference to super from default argument expression");
+            that.addError("reference to super from default argument expression");
         }
     }
     
@@ -2460,7 +2493,7 @@ public class ExpressionVisitor extends Visitor {
             that.setTypeModel(ci.getType());
         }
         /*if (defaultArgument) {
-        	that.addWarning("references to this from default argument expressions not yet supported");
+            that.addWarning("references to this from default argument expressions not yet supported");
         }*/
     }
     
