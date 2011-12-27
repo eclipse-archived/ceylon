@@ -221,10 +221,10 @@ class Assignability() {
     for (@error X x in 46 ) {}
     
     for (Integer i in {}) {
-        print($i);
+        print(i.string);
     }
     for (Integer i in {-1,+2}) {
-        print($i);
+        print(i.string);
     }
     if ({} nonempty) {}
     @error if ({-2,+0,+1} nonempty) {}
@@ -259,29 +259,29 @@ class Assignability() {
     for (@error X x -> Y y in 12) {}
     
     for (Integer i->String s in entries<String>({"hello", "world", "!"}...)) {
-        print($i + ": " + s);
+        print(i.string + ": " + s);
     }
     
     for (Integer i->String s in entries<String>("hello", "world", "!")) {
-        print($i + ": " + s);
+        print(i.string + ": " + s);
     }
     
     for (i->s in entries({"hello", "world", "!"}...)) {
-        print($i + ": " + s);
+        print(i.string + ": " + s);
     }
     
     for (i->s in entries("hello", "world", "!")) {
-        print($i + ": " + s);
+        print(i.string + ": " + s);
     }
     
     for (Integer i in -10..+10) {
-        print($i);
+        print(i.string);
     }
     for (Integer n in 0..100k) {
-        print($n);
+        print(n.string);
     }
     for (@error Float i in -10..+10) {
-        print($i);
+        print(i.string);
     }
     
     //for (@error x -> y in 12) {}

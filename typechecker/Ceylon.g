@@ -1861,8 +1861,6 @@ unaryMinusOrComplementOperator returns [UnaryOperatorExpression operator]
       { $operator = new PositiveOp($SUM_OP); }
     | COMPLEMENT_OP
       { $operator = new FlipOp($COMPLEMENT_OP); }
-    | FORMAT_OP
-      { $operator = new FormatOp($FORMAT_OP); }
     ;
 
 exponentiationExpression returns [Term term]
@@ -2194,8 +2192,7 @@ interpolatedExpressionStart
     ;
 
 prefixOperatorStart
-    : FORMAT_OP 
-    | DIFFERENCE_OP
+    : DIFFERENCE_OP
     | INCREMENT_OP 
     | DECREMENT_OP 
     | COMPLEMENT_OP
@@ -3033,10 +3030,6 @@ COMMA
     
 SPECIFY
     :   '='
-    ;
-
-FORMAT_OP
-    :   '$'
     ;
 
 NOT_OP

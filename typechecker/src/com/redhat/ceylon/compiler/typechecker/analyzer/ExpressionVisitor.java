@@ -1950,17 +1950,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void visitFormatOperator(Tree.UnaryOperatorExpression that) {
-        //TODO: reenable once we have extensions:
-        /*ProducedType t = that.getTerm().getTypeModel();
-        if ( t!=null ) {
-            if ( !getLanguageType("Formattable").isSupertypeOf(t) ) {
-                that.getTerm().addError("must be of type: Formattable");
-            }
-        }*/
-        that.setTypeModel( unit.getStringDeclaration().getType() );
-    }
-    
     private void visitExistsOperator(Tree.Exists that) {
         checkOptional(type(that), that);
         that.setTypeModel(unit.getBooleanDeclaration().getType());
@@ -2145,11 +2134,6 @@ public class ExpressionVisitor extends Visitor {
         checkAssignability(that.getLeftTerm());
     }
         
-    @Override public void visit(Tree.FormatOp that) {
-        super.visit(that);
-        visitFormatOperator(that);
-    }
-    
     @Override public void visit(Tree.RangeOp that) {
         super.visit(that);
         visitRangeOperator(that);
@@ -2549,8 +2533,8 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.StringTemplate that) {
         super.visit(that);
         for (Tree.Expression e: that.getExpressions()) {
-            checkAssignable(e.getTypeModel(), unit.getFormatDeclaration().getType(), e, 
-                    "interpolated expression must be formattable");
+            checkAssignable(e.getTypeModel(), unit.getObjectDeclaration().getType(), e, 
+                    "interpolated expression must be assignable to Object");
         }
         setLiteralType(that, unit.getStringDeclaration());
     }

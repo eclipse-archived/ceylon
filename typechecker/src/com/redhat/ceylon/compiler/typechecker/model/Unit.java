@@ -249,10 +249,6 @@ public class Unit {
         return (TypeDeclaration) getLanguageModuleDeclaration("Quoted");
     }
         
-    public TypeDeclaration getFormatDeclaration() {
-        return (TypeDeclaration) getLanguageModuleDeclaration("Format");
-    }
-        
     public Interface getEqualityDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Equality");
     }

@@ -59,7 +59,7 @@ class Operators() {
     
     @error value x18 = "foo" === 12;
     
-    @type["String"] value x19 = $12.34;
+    @type["String"] value x19 = 12.34.string;
     
     X? nothing = null;
     
