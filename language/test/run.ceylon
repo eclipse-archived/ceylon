@@ -1,4 +1,6 @@
 shared void run() {
+    equality();
+    complex();
     booleans();
     numbers();
     sequences();
