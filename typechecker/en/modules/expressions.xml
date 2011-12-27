@@ -448,7 +448,7 @@ shared interface Color { ... }</programlisting>
         unary prefix <literal>+</literal> operator.</para>
         
         <para>Each interpolated expression contained in the string template must have 
-        a type assignable to the interface <literal>Format</literal> defined in 
+        a type assignable to <literal>Object</literal> defined in 
         <literal>ceylon.language</literal>.</para>
         
         <!--
@@ -2388,12 +2388,11 @@ createItemMethod.intercept()
                 <entry>Right</entry>
             </row>            
             <row>
-                <entry>Negation, slotwise complement, format:</entry>
+                <entry>Negation, slotwise complement:</entry>
                 <entry>
                 <literal>+</literal>,
                 <literal>-</literal>, 
-                <literal>~</literal>,
-                <literal>$</literal> 
+                <literal>~</literal> 
                 </entry>
                 <entry>Unary prefix</entry>
                 <entry>Right</entry>
@@ -2796,6 +2795,7 @@ createItemMethod.intercept()
             <entry><literal>X</literal></entry>
         </row>
         
+        <!--
         <row><entry namest="first" nameend="last"><emphasis>Format</emphasis></entry></row>
         
         <row>
@@ -2806,6 +2806,7 @@ createItemMethod.intercept()
             <entry><literal>Format</literal></entry>
             <entry><literal>String</literal></entry>
         </row>
+        -->
     
         <row><entry namest="first" nameend="last"><emphasis>Compound invocation assignment</emphasis></entry></row>
         
