@@ -17,7 +17,9 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.spi.*;
+import com.redhat.ceylon.cmr.spi.ContentHandle;
+import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.cmr.spi.OpenNode;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,37 +27,16 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.logging.Logger;
 
 /**
  * Remote content store.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class RemoteContentStore implements ContentStore, StructureBuilder {
-
-    private static final Logger log = Logger.getLogger(RemoteContentStore.class.getName());
-    private static final String SEPARATOR = "/";
-    private static final String CAR = ".car";
-    private static final String JAR = ".jar";
-    private static final String ZIP = ".zip";
-
-    private final String root;
-    private final Set<String> suffixes = new HashSet<String>();
+public class RemoteContentStore extends URLContentStore {
 
     public RemoteContentStore(String root) {
-        if (root == null)
-            throw new IllegalArgumentException("Null root url");
-        this.root = root;
-        addSuffix(CAR);
-        addSuffix(JAR);
-        addSuffix(ZIP);
-    }
-
-    public void addSuffix(String suffix) {
-        suffixes.add(suffix);
+        super(root);
     }
 
     public ContentHandle popContent(Node node) {
@@ -70,53 +51,16 @@ public class RemoteContentStore implements ContentStore, StructureBuilder {
         return null; // cannot write
     }
 
-    public OpenNode createRoot() {
-        final RemoteNode node = new RemoteRootNode();
-        node.addService(ContentStore.class, this);
-        node.addService(StructureBuilder.class, this);
-        node.setHandle(DefaultNode.HANDLE_MARKER);
-        return node;
+    protected UrlNode createNode(String label) {
+        return new RemoteNode(label);
     }
 
-    public OpenNode find(Node parent, String child) {
-        final String path = NodeUtils.getFullPath(parent, SEPARATOR) + "/" + child;
-        if (urlExists(path)) {
-            final RemoteNode node = new RemoteNode(child);
-            ContentHandle handle;
-            if (hasContent(child))
-                handle = new RemoteContentHandle(node);
-            else
-                handle = DefaultNode.HANDLE_MARKER;
-            node.setHandle(handle);
-            return node;
-        } else {
-            return null;
-        }
+    protected ContentHandle createContentHandle(Node parent, String child, String path, Node node) {
+        return new RemoteContentHandle(node);
     }
 
     public Iterable<? extends OpenNode> find(Node parent) {
         return Collections.emptyList(); // cannot find all children
-    }
-
-    protected URL getURL(Node node) {
-        return getURL(NodeUtils.getFullPath(node, SEPARATOR));
-    }
-
-    protected URL getURL(String path) {
-        try {
-            return new URL(root + path);
-        } catch (Exception e) {
-            log.warning("Cannot create URL: " + e);
-            return null;
-        }
-    }
-
-    protected boolean urlExists(String path) {
-        return urlExists(getURL(path));
-    }
-
-    protected boolean urlExists(Node node) {
-        return urlExists(getURL(node));
     }
 
     protected boolean urlExists(URL url) {
@@ -132,13 +76,6 @@ public class RemoteContentStore implements ContentStore, StructureBuilder {
         } finally {
             IOUtils.safeClose(is);
         }
-    }
-
-    protected boolean hasContent(String child) {
-        for (String suffix : suffixes)
-            if (child.endsWith(suffix))
-                return true;
-        return false;
     }
 
     @Override
@@ -167,13 +104,9 @@ public class RemoteContentStore implements ContentStore, StructureBuilder {
         }
     }
 
-    private static class RemoteNode extends DefaultNode {
+    private static class RemoteNode extends UrlNode {
         private RemoteNode(String label) {
             super(label);
-        }
-
-        public boolean isRemote() {
-            return true;
         }
 
         @Override
@@ -184,17 +117,6 @@ public class RemoteContentStore implements ContentStore, StructureBuilder {
         @Override
         public <T extends Serializable> OpenNode addContent(String label, T content) throws IOException {
             return null; // cannot add content
-        }
-    }
-
-    private static class RemoteRootNode extends RemoteNode {
-        private RemoteRootNode() {
-            super("");
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            return (obj == this);
         }
     }
 }

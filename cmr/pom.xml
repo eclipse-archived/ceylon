@@ -19,9 +19,11 @@
         <module>spi</module>
         <module>api</module>
         <module>impl</module>
+        <module>webdav</module>
     </modules>
 
     <properties>
+        <version.sardine.webdav>314</version.sardine.webdav>
         <version.junit>4.8.1</version.junit>
     </properties>
 
@@ -81,6 +83,14 @@
             </releases>
         </repository>
         <repository>
+            <id>sardine-google-svn-repo</id>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <name>Sardine maven repo at Google Code</name>
+            <url>http://sardine.googlecode.com/svn/maven/</url>
+        </repository>
+        <repository>
             <id>jboss-public-repository-group</id>
             <name>JBoss Public Maven Repository Group</name>
             <url>https://repository.jboss.org/nexus/content/groups/public</url>
@@ -124,6 +134,20 @@
                 <groupId>com.redhat.ceylon.cmr</groupId>
                 <artifactId>cmr-api</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.redhat.ceylon.cmr</groupId>
+                <artifactId>cmr-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- WebDAV -->
+
+            <dependency>
+                <groupId>com.googlecode.sardine</groupId>
+                <artifactId>sardine</artifactId>
+                <version>${version.sardine.webdav}</version>
             </dependency>
 
             <!-- Testing -->

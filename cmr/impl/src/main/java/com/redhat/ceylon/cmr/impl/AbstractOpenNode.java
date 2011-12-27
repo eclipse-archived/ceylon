@@ -38,7 +38,7 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
     private static final long serialVersionUID = 1L;
     private static final String NODE_MARKER = "#marker#";
 
-    protected static ContentHandle HANDLE_MARKER = new ContentHandle() {
+    protected static final ContentHandle HANDLE_MARKER = new ContentHandle() {
         public InputStream getContentAsStream() throws IOException {
             return null;
         }
