@@ -563,7 +563,6 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.TryCatchStatement that) {
         boolean d = beginDeclarationScope();
-        
         SpecificationState as = beginSpecificationScope();
         if( that.getTryClause()!=null ) {
             that.getTryClause().visit(this);
@@ -609,11 +608,34 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.SwitchStatement that) {
-        //TODO!!!
-        //if every case and the default case definitely
-        //assigns, then it is definitely assigned after
-        //the switch statement
-        super.visit(that);
+        if (that.getSwitchClause()!=null) {
+            that.getSwitchClause().visit(this);
+        }
+        boolean definitelyAssignedByEveryCaseClause = true;
+        boolean possiblyAssignedBySomeCaseClause = false;
+        
+        for (Tree.CaseClause cc: that.getSwitchCaseList().getCaseClauses()) {
+            boolean d = beginDeclarationScope();
+            SpecificationState as = beginSpecificationScope();
+            cc.visit(this);
+            definitelyAssignedByEveryCaseClause = definitelyAssignedByEveryCaseClause && (specified.definitely || specified.exited);
+            possiblyAssignedBySomeCaseClause = possiblyAssignedBySomeCaseClause || specified.possibly;
+            endDeclarationScope(d);
+            endSpecificationScope(as);
+        }
+        
+        if (that.getSwitchCaseList().getElseClause()!=null) {
+            boolean d = beginDeclarationScope();
+            SpecificationState as = beginSpecificationScope();
+            that.getSwitchCaseList().getElseClause().visit(this);
+            definitelyAssignedByEveryCaseClause = definitelyAssignedByEveryCaseClause && (specified.definitely || specified.exited);
+            possiblyAssignedBySomeCaseClause = possiblyAssignedBySomeCaseClause || specified.possibly;
+            endDeclarationScope(d);
+            endSpecificationScope(as);
+        }
+
+        specified.possibly = specified.possibly || possiblyAssignedBySomeCaseClause;
+        specified.definitely = specified.definitely || definitelyAssignedByEveryCaseClause;
     }
     
     @Override

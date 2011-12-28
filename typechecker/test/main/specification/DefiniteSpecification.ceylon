@@ -599,6 +599,73 @@ interface DefiniteSpecification {
         @error use(x);
     }
     
+    void switchCase0() {
+        Boolean b = true;
+        String s;
+        switch (b)
+        case (true) {
+            s = "hello";
+        }
+        case (false) {
+            s = "there";
+            print(s);
+        }
+        //TODO: remove
+        else {
+            s = "world";
+        }
+        print(s);
+    }
+    
+    void switchCase1() {
+        Boolean b = true;
+        String s;
+        switch (b)
+        case (true) {
+            s = "hello";
+        }
+        case (false) {
+            return;
+        }
+        //TODO: remove
+        else {
+            s = "world";
+        }
+        print(s);
+    }
+    
+    void switchCase2() {
+        Boolean b = true;
+        String s;
+        switch (b)
+        case (true) {
+            s = "hello";
+        }
+        case (false) {
+        }
+        //TODO: remove
+        else {
+            s = "world";
+        }
+        @error print(s);
+    }
+    
+    void switchCase3() {
+        Boolean b = true;
+        String s;
+        switch (b)
+        case (true) {
+            s = "hello";
+        }
+        case (false) {
+            s = "world";
+        }
+        //TODO: remove
+        else {
+        }
+        @error print(s);
+    }
+    
     class Super(String s) {}
     @error class Sub() extends Super(name) {
         String name = "gavin";
