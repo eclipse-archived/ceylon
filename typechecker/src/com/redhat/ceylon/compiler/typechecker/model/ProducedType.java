@@ -440,20 +440,26 @@ public class ProducedType extends ProducedReference {
                     selfType.getSupertypes(list);
                 }
             }
-            List<ProducedType> caseTypes = getCaseTypes();
-            if (caseTypes!=null /*&& !getDeclaration().getCaseTypes().isEmpty()*/) {
-                for (ProducedType t: caseTypes) {
-                    List<ProducedType> candidates = t.getSupertypes();
-                    for (ProducedType st: candidates) {
-                        boolean include = true;
-                        for (ProducedType ct: getDeclaration().getCaseTypes()) {
-                            if (!ct.isSubtypeOf(st)) {
-                                include = false;
-                                break;
+            if (getDeclaration() instanceof UnionType) {
+                //trying to infer supertypes of algebraic
+                //types from their cases was resulting in
+                //stack overflows and is not currently 
+                //required by the spec
+                List<ProducedType> caseTypes = getCaseTypes();
+                if (caseTypes!=null) {
+                    for (ProducedType t: caseTypes) {
+                        List<ProducedType> candidates = t.getSupertypes();
+                        for (ProducedType st: candidates) {
+                            boolean include = true;
+                            for (ProducedType ct: getDeclaration().getCaseTypes()) {
+                                if (!ct.isSubtypeOf(st)) {
+                                    include = false;
+                                    break;
+                                }
                             }
-                        }
-                        if (include) {
-                            Util.addToSupertypes(list, st);
+                            if (include) {
+                                Util.addToSupertypes(list, st);
+                            }
                         }
                     }
                 }
@@ -594,37 +600,43 @@ public class ProducedType extends ProducedReference {
                     }
                 }
             }
-            final List<ProducedType> caseTypes = getInternalCaseTypes();
-            if (caseTypes!=null && !caseTypes.isEmpty()) {
-                //first find a common superclass or superinterface 
-                //declaration that satisfies the criteria, ignoring
-                //type arguments for now
-                Criteria c2 = new Criteria() {
-                    @Override
-                    public boolean satisfies(TypeDeclaration type) {
-                        if ( c.satisfies(type) ) {
-                            for (ProducedType ct: caseTypes) {
-                                if (ct.getSupertype(type, ignoringSelfType)==null) {
-                                    return false;
+            if (getDeclaration() instanceof UnionType) {
+                //trying to infer supertypes of algebraic
+                //types from their cases was resulting in
+                //stack overflows and is not currently 
+                //required by the spec
+                final List<ProducedType> caseTypes = getInternalCaseTypes();
+                if (caseTypes!=null && !caseTypes.isEmpty()) {
+                    //first find a common superclass or superinterface 
+                    //declaration that satisfies the criteria, ignoring
+                    //type arguments for now
+                    Criteria c2 = new Criteria() {
+                        @Override
+                        public boolean satisfies(TypeDeclaration type) {
+                            if ( c.satisfies(type) ) {
+                                for (ProducedType ct: caseTypes) {
+                                    if (ct.getSupertype(type, ignoringSelfType)==null) {
+                                        return false;
+                                    }
                                 }
+                                return true;
                             }
-                            return true;
+                            else {
+                                return false;
+                            }
                         }
-                        else {
-                            return false;
+                    };
+                    ProducedType stc = caseTypes.get(0).getSupertype(c2, list, 
+                            ignoringSelfType);
+                    if (stc!=null) {
+                        //we found the declaration, now try to construct a 
+                        //produced type that is a true common supertype
+                        ProducedType candidateResult = getCommonSupertype(caseTypes, 
+                                stc.getDeclaration(), ignoringSelfType);
+                        if (candidateResult!=null && (result==null || 
+                                candidateResult.isSubtypeOf(result, ignoringSelfType))) {
+                            result = candidateResult;
                         }
-                    }
-                };
-                ProducedType stc = caseTypes.get(0).getSupertype(c2, list, 
-                                ignoringSelfType);
-                if (stc!=null) {
-                    //we found the declaration, now try to construct a 
-                    //produced type that is a true common supertype
-                    ProducedType candidateResult = getCommonSupertype(caseTypes, 
-                            stc.getDeclaration(), ignoringSelfType);
-                    if (candidateResult!=null && (result==null || 
-                            candidateResult.isSubtypeOf(result, ignoringSelfType))) {
-                        result = candidateResult;
                     }
                 }
             }
@@ -634,7 +646,7 @@ public class ProducedType extends ProducedReference {
             return null;
         }
     }
-
+    
     private ProducedType qualifiedByDeclaringType() {
         ProducedType qt = getQualifyingType();
         if (qt==null) {

@@ -605,24 +605,43 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.CaseTypes that) {
         super.visit(that);
         if (that.getTypes()!=null) {
+            TypeDeclaration td = (TypeDeclaration) that.getScope();
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            for (Tree.BaseMemberExpression bme: that.getBaseMemberExpressions()) {
+                //bmes have not yet been resolved!
+                TypedDeclaration od = getBaseDeclaration(bme);
+                if (od!=null) {
+                    list.add(od.getType());
+                }
+            }
             for (Tree.SimpleType st: that.getTypes()) {
-                ProducedType stt = st.getTypeModel();
-                if (stt!=null && stt.getDeclaration() instanceof TypeParameter) {
-                    TypeDeclaration td = (TypeDeclaration) that.getScope();
-                    if (!(td instanceof TypeParameter)) {
-                        TypeParameter tp = (TypeParameter) stt.getDeclaration();
-                        td.setSelfType(stt);
-                        if (tp.isSelfType()) {
-                            st.addError("type parameter may not act as self type for two different types");
+                ProducedType type = st.getTypeModel();
+                if (type!=null) {
+                    if (type.getDeclaration() instanceof TypeParameter) {
+                        if (!(td instanceof TypeParameter)) {
+                            TypeParameter tp = (TypeParameter) type.getDeclaration();
+                            td.setSelfType(type);
+                            if (tp.isSelfType()) {
+                                st.addError("type parameter may not act as self type for two different types");
+                            }
+                            else {
+                                tp.setSelfTypedDeclaration(td);
+                            }
+                            if (that.getTypes().size()>1) {
+                                st.addError("a type may not have more than one self type");
+                            }
                         }
                         else {
-                            tp.setSelfTypedDeclaration(td);
-                        }
-                        if (that.getTypes().size()>1) {
-                            st.addError("a type may not have more than one self type");
+                            //TODO: error?!
                         }
                     }
+                    else {
+                        list.add(type);
+                    }
                 }
+            }
+            if (!list.isEmpty()) {
+                td.setCaseTypes(list);
             }
         }
     }
