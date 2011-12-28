@@ -867,18 +867,6 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.TryCatchStatement that) {
-        super.visit(that);
-        //that.addWarning("try statements are not yet supported");
-    }
-
-    @Override
-    public void visit(Tree.SwitchStatement that) {
-        super.visit(that);
-        that.addWarning("switch statements are not yet supported");
-    }
-
-    @Override
     public void visit(Tree.SatisfiesCondition that) {
         super.visit(that);
         that.addWarning("satisfies conditions are not yet supported");
@@ -889,12 +877,6 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         that.addWarning("comprehensions are not yet supported");
     }
-
-    /*@Override
-    public void visit(Tree.CaseTypes that) {
-        super.visit(that);
-        that.addWarning("of clause not yet supported");
-    }*/
 
     @Override
     public void visit(Tree.AnnotationList that) {
