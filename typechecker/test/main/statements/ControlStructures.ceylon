@@ -173,21 +173,44 @@ class ControlStructures() {
     while (test2);*/
     
     Void v = null;
+    
     switch (v)
     case (is Object) {}
     case (is Nothing) {}
     
     switch (v)
     case (is Object) {}
+    case (nothing) {}
+    
+    switch (v)
+    case (is Object) {}
     else {}
+
+    switch (v)
+    case (is Object|Nothing) {}
+
+    @error switch (v)
+    case (is Object|Nothing) {}
+    case (nothing) {}
+
+    @error switch (v)
+    case (is Object|Nothing) {}
+    case (is Nothing) {}
+
+    switch (v)
+    case (is Void) {}
 
     @error switch (v)
     case (is Object) {}
     
     Boolean b = true;
+    
     switch (b)
     case (true) {}
     case (false) {}
+    
+    switch (b)
+    case (true, false) {}
     
     switch (b)
     case (true) {}
@@ -196,5 +219,33 @@ class ControlStructures() {
     @error switch (b)
     case (true) {}
     
+    switch (b)
+    case (is Boolean) {}
+    
+    String? s = null;
+    
+    switch (s)
+    case (is String) {}
+    case (is Nothing) {}
+    
+    @error switch (s)
+    case (is Object) {}
+    case (is Nothing) {}
+    
+    switch (s)
+    case (is String) {}
+    case (nothing) {}
+    
+    @error switch (s)
+    case (is Nothing) {}
+    case (is String) {}
+    case (nothing) {}
+    
+    switch (s)
+    case (is String) {}
+    else {}
+
+    @error switch (s)
+    case (is String) {}
 
 }

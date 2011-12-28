@@ -51,6 +51,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseItem;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifiedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -2614,19 +2615,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         Expression e = that.getSwitchClause().getExpression();
         if (e!=null) {
-            ProducedType switchType = e.getTypeModel();
-            if (!(switchType.getDeclaration() instanceof UnionType) &&
-                    switchType.getDeclaration().getCaseTypes()!=null) {
-                //build a union of all the cases
-                List<ProducedType> list = new ArrayList<ProducedType>();
-                for (ProducedType ct: switchType.getDeclaration().getCaseTypes()) {
-                    addToUnion(list, ct);
-                }
-                UnionType ut = new UnionType(unit);
-                ut.setCaseTypes(list);
-                switchType = ut.getType();
-            }
-            
+            ProducedType switchType = getUnionOfCases(e.getTypeModel());            
             for (CaseClause cc: that.getSwitchCaseList().getCaseClauses()) {
                 ProducedType ct = getType(cc);
                 if (ct!=null) {
@@ -2664,10 +2653,33 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    private ProducedType getUnionOfCases(ProducedType switchType) {
+        if (switchType.getDeclaration().getCaseTypes()==null) {
+            return switchType;
+        }
+        else {
+            //build a union of all the cases
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            for (ProducedType ct: switchType.getDeclaration().getCaseTypes()) {
+                addToUnion(list, getUnionOfCases(ct)); //note recursion
+            }
+            UnionType ut = new UnionType(unit);
+            ut.setCaseTypes(list);
+            ProducedType result = ut.getType();
+            return result;
+        }
+    }
+
     private ProducedType getType(Tree.CaseClause cc) {
         CaseItem ci = cc.getCaseItem();
         if (ci instanceof Tree.IsCase) {
-            return ((Tree.IsCase) ci).getType().getTypeModel();
+            Type t = ((Tree.IsCase) ci).getType();
+            if (t!=null) {
+                return getUnionOfCases(t.getTypeModel());
+            }
+            else {
+                return null;
+            }
         }
         else if (ci instanceof Tree.MatchCase) {
             List<ProducedType> list = new ArrayList<ProducedType>();
