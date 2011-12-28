@@ -253,7 +253,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // If erases to a Java primitive just call append, don't box it just to call format. 
                 builder = make().Apply(null, makeSelect(builder, "append"), List.<JCExpression>of(transformExpression(expression, BoxingStrategy.UNBOXED, null)));
             } else {
-                JCMethodInvocation formatted = make().Apply(null, makeSelect(transformExpression(expression), "getFormatted"), List.<JCExpression>nil());
+                JCMethodInvocation formatted = make().Apply(null, makeSelect(transformExpression(expression), "toString"), List.<JCExpression>nil());
                 builder = make().Apply(null, makeSelect(builder, "append"), List.<JCExpression>of(formatted));
             }
         }
@@ -305,8 +305,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         // Unary operators
         unaryOperators.put(Tree.PositiveOp.class, "positiveValue");
         unaryOperators.put(Tree.NegativeOp.class, "negativeValue");
-        // FIXME: this isn't tested but not sure the spec still wants it
-        unaryOperators.put(Tree.FormatOp.class, "formatted");
 
         // Binary operators
         binaryOperators.put(Tree.SumOp.class, "plus");

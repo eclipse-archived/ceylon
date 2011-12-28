@@ -40,7 +40,7 @@ class StringTemplate {
     }
     
     private final void m6(final com.redhat.ceylon.compiler.test.expression.stringtemp.F f) {
-        final .java.lang.String t = new java.lang.StringBuilder().append("Foo ").append(f.getFormatted()).append(" bar").toString();
+        final .java.lang.String t = new java.lang.StringBuilder().append("Foo ").append(f.toString()).append(" bar").toString();
     }
     
     StringTemplate() {
