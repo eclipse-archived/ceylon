@@ -301,7 +301,7 @@ public class ProducedType extends ProducedReference {
      */
     public ProducedType minus(ClassOrInterface ci) {
         if (getDeclaration().equals(ci)) {
-            return new BottomType(getDeclaration().getUnit()).getType();
+            return getDeclaration().getUnit().getBottomDeclaration().getType();
         }
         else if (getDeclaration() instanceof UnionType) {
             List<ProducedType> types = new ArrayList<ProducedType>();

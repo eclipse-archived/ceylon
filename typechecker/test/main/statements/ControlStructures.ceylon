@@ -171,5 +171,30 @@ class ControlStructures() {
         @error test2 = false;
     }
     while (test2);*/
+    
+    Void v = null;
+    switch (v)
+    case (is Object) {}
+    case (is Nothing) {}
+    
+    switch (v)
+    case (is Object) {}
+    else {}
+
+    @error switch (v)
+    case (is Object) {}
+    
+    Boolean b = true;
+    switch (b)
+    case (true) {}
+    case (false) {}
+    
+    switch (b)
+    case (true) {}
+    else {}
+
+    @error switch (b)
+    case (true) {}
+    
 
 }

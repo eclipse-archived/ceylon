@@ -248,7 +248,7 @@ public class Util {
                                     //the meet of invariant types with different 
                                     //arguments is empty i.e. Bottom
                                     list.clear();
-                                    list.add( new BottomType(unit).getType() );
+                                    list.add( unit.getBottomDeclaration().getType() );
                                     return;
                                 }
                                 else {
@@ -291,7 +291,7 @@ public class Util {
                             //the meet of two classes unrelated by inheritance, or
                             //of Nothing with an interface type is empty
                             list.clear();
-                            list.add( new BottomType(unit).getType() );
+                            list.add( unit.getBottomDeclaration().getType() );
                             return;
                         }
                     }

@@ -13,6 +13,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
+import static java.lang.Character.isUpperCase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,6 +46,9 @@ import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseItem;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifiedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedArgument;
@@ -91,7 +95,7 @@ public class ExpressionVisitor extends Visitor {
         returnType = t;
         if (returnType instanceof Tree.FunctionModifier || 
                 returnType instanceof Tree.ValueModifier) {
-            returnType.setTypeModel( new BottomType(unit).getType() );
+            returnType.setTypeModel( unit.getBottomDeclaration().getType() );
         }
         return ort;
     }
@@ -2570,6 +2574,115 @@ public class ExpressionVisitor extends Visitor {
     @Override
     public void visit(Tree.CompilerAnnotation that) {
         //don't visit the argument       
+    }
+    
+    @Override
+    public void visit(Tree.MatchCase that) {
+        super.visit(that);
+        for (Tree.Expression e: that.getExpressionList().getExpressions()) {
+            ProducedType t = e.getTypeModel();
+            if (t!=null) {
+                TypeDeclaration dec = t.getDeclaration();
+                if (!dec.isToplevel() || isUpperCase(dec.getName().charAt(0))) {
+                    e.addError("case must refer to a toplevel object declaration");
+                }
+            }
+        }
+    }
+    
+    @Override
+    public void visit(Tree.SatisfiesCase that) {
+        super.visit(that);
+        that.addWarning("satisfies cases are not yet supported");
+    }
+    
+    @Override
+    public void visit(Tree.IsCase that) {
+        //TODO: supposed to narrow type of switched variable!
+        super.visit(that);
+        ProducedType t = that.getType().getTypeModel();
+        if (t!=null) {
+            if (t.getDeclaration() instanceof Interface) {
+                that.addWarning("interface cases are not yet supported");
+            }
+            //TODO: and not even union-of-interface cases!
+        }
+    }
+    
+    @Override
+    public void visit(Tree.SwitchStatement that) {
+        super.visit(that);
+        Expression e = that.getSwitchClause().getExpression();
+        if (e!=null) {
+            ProducedType switchType = e.getTypeModel();
+            if (!(switchType.getDeclaration() instanceof UnionType) &&
+                    switchType.getDeclaration().getCaseTypes()!=null) {
+                //build a union of all the cases
+                List<ProducedType> list = new ArrayList<ProducedType>();
+                for (ProducedType ct: switchType.getDeclaration().getCaseTypes()) {
+                    addToUnion(list, ct);
+                }
+                UnionType ut = new UnionType(unit);
+                ut.setCaseTypes(list);
+                switchType = ut.getType();
+            }
+            
+            for (CaseClause cc: that.getSwitchCaseList().getCaseClauses()) {
+                ProducedType ct = getType(cc);
+                if (ct!=null) {
+                    checkAssignable(ct, switchType, cc, 
+                            "case type must be a case of the switch type");
+                    for (CaseClause occ: that.getSwitchCaseList().getCaseClauses()) {
+                        if (occ==cc) break;
+                        ProducedType oct = getType(occ);
+                        if (oct!=null) {
+                            //TODO: the following test doesn't work for cases of an interface!
+                            if (!intersectionType(ct, oct, unit)
+                                    .isExactly(unit.getBottomDeclaration().getType())) {
+                                cc.getCaseItem().addError("cases are not disjoint: " + 
+                                    ct.getProducedTypeName() + " and " + 
+                                        oct.getProducedTypeName());
+                            }
+                        }
+                    }
+                }
+            }
+            
+            if (that.getSwitchCaseList().getElseClause()==null) {
+                List<ProducedType> list = new ArrayList<ProducedType>();
+                for (CaseClause cc: that.getSwitchCaseList().getCaseClauses()) {
+                    ProducedType ct = getType(cc);
+                    if (ct!=null) {
+                        addToUnion(list, ct);
+                    }
+                }
+                UnionType ut = new UnionType(unit);
+                ut.setCaseTypes(list);
+                checkAssignable(switchType, ut.getType(), that, 
+                        "case types must cover all cases of the switch type or an else clause must appear");
+            }
+        }
+    }
+
+    private ProducedType getType(Tree.CaseClause cc) {
+        CaseItem ci = cc.getCaseItem();
+        if (ci instanceof Tree.IsCase) {
+            return ((Tree.IsCase) ci).getType().getTypeModel();
+        }
+        else if (ci instanceof Tree.MatchCase) {
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            for (Tree.Expression e: ((Tree.MatchCase) ci).getExpressionList().getExpressions()) {
+                if (e.getTypeModel()!=null) {
+                    addToUnion(list, e.getTypeModel());
+                }
+            }
+            UnionType ut = new UnionType(unit);
+            ut.setCaseTypes(list);
+            return ut.getType();
+        }
+        else {
+            return null;
+        }
     }
     
     @Override

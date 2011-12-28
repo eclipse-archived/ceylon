@@ -124,7 +124,7 @@ public class Unit {
         Module languageModule = getPackage().getModule().getLanguageModule();
         if ( languageModule != null && languageModule.isAvailable() ) {
             if ("Bottom".equals(name)) {
-                return new BottomType(this);
+                return getBottomDeclaration();
             }
             for (Package languageScope : languageModule.getPackages() ) {
                 Declaration d = languageScope.getMember(name);
@@ -457,6 +457,10 @@ public class Unit {
         else {
             return null;
         }
+    }
+    
+    public BottomType getBottomDeclaration() {
+        return new BottomType(this);
     }
     
 }
