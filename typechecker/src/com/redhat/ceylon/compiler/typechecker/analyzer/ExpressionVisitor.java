@@ -2661,7 +2661,7 @@ public class ExpressionVisitor extends Visitor {
             //build a union of all the cases
             List<ProducedType> list = new ArrayList<ProducedType>();
             for (ProducedType ct: switchType.getDeclaration().getCaseTypes()) {
-                addToUnion(list, getUnionOfCases(ct)); //note recursion
+                addToUnion(list, getUnionOfCases(ct.substitute(switchType.getTypeArguments()))); //note recursion
             }
             UnionType ut = new UnionType(unit);
             ut.setCaseTypes(list);
@@ -2821,7 +2821,8 @@ public class ExpressionVisitor extends Visitor {
         else {
             boolean empty = typeArguments.isEmpty();
             if (!empty) {
-                tal.addError("does not accept type arguments: " + member.getName());
+                tal.addError("does not accept type arguments: " + 
+                        member.getName());
             }
             return empty;
         }
@@ -2840,6 +2841,7 @@ public class ExpressionVisitor extends Visitor {
             if (type!=null) {
                 checkSelfTypes(et, td, type);
                 checkExtensionOfMemberType(et, td, type);
+                checkCaseOfSupertype(et, td, type);
             }
         }
     }
@@ -2853,6 +2855,48 @@ public class ExpressionVisitor extends Visitor {
             if (type!=null) {
                 checkSelfTypes(t, td, type);
                 checkExtensionOfMemberType(t, td, type);
+                if (!(td instanceof TypeParameter)) {
+                    checkCaseOfSupertype(t, td, type);
+                }
+            }
+        }
+    }
+
+    void checkCaseOfSupertype(Tree.StaticType t, TypeDeclaration td,
+            ProducedType type) {
+        if (type.getDeclaration().getCaseTypes()!=null) {
+            for (ProducedType ct: type.getDeclaration().getCaseTypes()) {
+                if (ct.substitute(type.getTypeArguments()).isExactly(td.getType())) {
+                    return;
+                }
+            }
+            t.addError("not a case of supertype: " + 
+                    type.getDeclaration().getName());
+        }
+    }
+
+    @Override 
+    public void visit(Tree.CaseTypes that) {
+        super.visit(that);
+        //TODO: this forces cases to be direct subtypes, whereas
+        //      all we really need is for every concrete subtype
+        //      to be a subtype
+        TypeDeclaration td = (TypeDeclaration) that.getScope();
+        if (!(td instanceof TypeParameter)) {
+            for (Tree.StaticType t: that.getTypes()) {
+                ProducedType type = t.getTypeModel();
+                if (!(type.getDeclaration() instanceof TypeParameter)) {
+                    //it's not a self type
+                    if (type!=null) {
+                        checkAssignable(type, td.getType(), t, "case object must be a subtype");
+                    }
+                }
+            }
+            for (Tree.BaseMemberExpression bme: that.getBaseMemberExpressions()) {
+                ProducedType type = bme.getTypeModel();
+                if (type!=null) {
+                    checkAssignable(type, td.getType(), bme, "case type must be a subtype");
+                }
             }
         }
     }

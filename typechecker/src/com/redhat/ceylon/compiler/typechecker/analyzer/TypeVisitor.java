@@ -7,6 +7,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersectio
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
+import static java.lang.Character.isUpperCase;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -608,10 +609,17 @@ public class TypeVisitor extends Visitor {
             TypeDeclaration td = (TypeDeclaration) that.getScope();
             List<ProducedType> list = new ArrayList<ProducedType>();
             for (Tree.BaseMemberExpression bme: that.getBaseMemberExpressions()) {
-                //bmes have not yet been resolved!
+                //bmes have not yet been resolved
                 TypedDeclaration od = getBaseDeclaration(bme);
                 if (od!=null) {
-                    list.add(od.getType());
+                    ProducedType type = od.getType();
+                    TypeDeclaration dec = type.getDeclaration();
+                    if (!dec.isToplevel() && isUpperCase(dec.getName().charAt(0))) {
+                        bme.addError("case must refer to a toplevel object declaration");
+                    }
+                    else {
+                        list.add(type);
+                    }
                 }
             }
             for (Tree.SimpleType st: that.getTypes()) {
