@@ -336,11 +336,24 @@ public class ControlFlowVisitor extends Visitor {
     @Override
     public void visit(Tree.SwitchStatement that) {
         checkExecutableStatementAllowed(that);
-        //TODO!
-        //if every case and the default case definitely
-        //returns, then it has definitely returned after
-        //the switch statement
-        super.visit(that);
+        boolean d = beginIndefiniteReturnScope();
+        
+        that.getSwitchClause().visit(this);
+        
+        boolean definitelyReturnsFromEveryCatch = true;
+        for (Tree.CaseClause cc: that.getSwitchCaseList().getCaseClauses()) {
+            cc.visit(this);
+            definitelyReturnsFromEveryCatch = definitelyReturnsFromEveryCatch && definitelyReturns;
+            endDefiniteReturnScope(d);            
+        }
+        
+        if (that.getSwitchCaseList().getElseClause()!=null) {
+            that.getSwitchCaseList().getElseClause().visit(this);
+            definitelyReturnsFromEveryCatch = definitelyReturnsFromEveryCatch && definitelyReturns;
+            endDefiniteReturnScope(d);
+        }
+        
+        definitelyReturns = d || definitelyReturnsFromEveryCatch;
     }
 
     @Override
@@ -348,7 +361,7 @@ public class ControlFlowVisitor extends Visitor {
         checkExecutableStatementAllowed(that);
         boolean d = beginIndefiniteReturnScope();
         
-        if( that.getTryClause()!=null ) {
+        if (that.getTryClause()!=null) {
             that.getTryClause().visit(this);
         }
         boolean definitelyReturnsFromTry = definitelyReturns;

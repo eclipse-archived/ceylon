@@ -1247,4 +1247,50 @@ interface DefiniteReturn {
         testSomething();
     }
     
+    void switchCase1() {
+        Boolean b = true;
+        switch (b)
+        case (true) {
+            return;
+        }
+        case (false) {
+            return;
+        }
+        //TODO: remove
+        else {
+            return;
+        }
+        @error testSomething();
+    }
+    
+    void switchCase2() {
+        Boolean b = true;
+        switch (b)
+        case (true) {
+            return;
+        }
+        case (false) {
+        }
+        //TODO: remove
+        else {
+            return;
+        }
+        testSomething();
+    }
+    
+    void switchCase3() {
+        Boolean b = true;
+        switch (b)
+        case (true) {
+            return;
+        }
+        case (false) {
+            return;
+        }
+        //TODO: remove
+        else {
+        }
+        testSomething();
+    }
+    
 }
