@@ -73,8 +73,14 @@ public class WebDAVContentStore extends URLContentStore {
 
     public ContentHandle putContent(Node node, InputStream stream) throws IOException {
         final String url = getUrlAsString(node);
-        getSardine().put(url, stream);
-        return new WebDAVContentHandle(url);
+        final Sardine s = getSardine();
+        final String token = s.lock(url);
+        try {
+            s.put(url, stream);
+            return new WebDAVContentHandle(url);
+        } finally {
+            s.unlock(url, token);
+        }
     }
 
     protected ContentHandle createContentHandle(Node parent, String child, String path, Node node) {
