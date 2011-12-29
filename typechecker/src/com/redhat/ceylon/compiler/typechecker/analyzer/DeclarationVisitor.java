@@ -239,14 +239,6 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.ClassOrInterface that) {
-        super.visit(that);
-        if ( that.getCaseTypes()!=null ) {
-            that.addWarning("types with enumerated cases not yet supported");
-        }
-    }
-    
-    @Override
     public void visit(Tree.AnyClass that) {
         Class c = that instanceof Tree.ClassDefinition ?
                 new Class() : new ClassAlias();
@@ -279,6 +271,9 @@ public class DeclarationVisitor extends Visitor {
         exitScope(o);
         if (!i.isToplevel()) {
             that.addWarning("inner interfaces are not yet supported");
+        }
+        if ( that.getCaseTypes()!=null ) {
+            that.addWarning("interfaces with enumerated cases not yet supported");
         }
     }
     
