@@ -2599,14 +2599,25 @@ public class ExpressionVisitor extends Visitor {
     
     @Override
     public void visit(Tree.IsCase that) {
-        //TODO: supposed to narrow type of switched variable!
-        super.visit(that);
-        ProducedType t = that.getType().getTypeModel();
+        Tree.Type t = that.getType();
         if (t!=null) {
-            if (t.getDeclaration() instanceof Interface) {
+            t.visit(this);
+            ProducedType pt = t.getTypeModel();
+            if (pt!=null && pt.getDeclaration() instanceof Interface) {
                 that.addWarning("interface cases are not yet supported");
             }
             //TODO: and not even union-of-interface cases!
+        }
+        Variable v = that.getVariable();
+        if (v!=null) {
+            v.visit(this);
+            if (t!=null) {
+                ProducedType pt = t.getTypeModel();
+                if (pt!=null) {
+                    v.getType().setTypeModel(pt);
+                    v.getDeclarationModel().setType(pt);
+                }
+            }
         }
     }
     

@@ -4,14 +4,20 @@ void printTree<T>(Tree<T> tree)
     case (is Branch<T>) {
         printTree(tree.left);
         printTree(tree.right);
+        @type["Branch<T>"] value v = tree;
     }
     case (is Leaf<T>) {
         print(tree.val);
+        @type["Leaf<T>"] value v = tree;
     }
 }
 
 void testTree() {
-    Tree<String> tree = Branch { left = Leaf("hello");
-                                 right = Leaf("world"); };
+    Branch<String> tree { 
+        left = Leaf("hello");
+        right = Leaf("world"); 
+    }
     printTree(tree);
+    printTree(tree.left);
+    printTree(tree.right);
 }

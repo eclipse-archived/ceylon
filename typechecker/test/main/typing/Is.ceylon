@@ -50,5 +50,18 @@ class Is() {
         for (String str in e) {} 
         @type["Correspondence<Integer,String>&Sized&Iterable<String>"] value ee = e;
     }
+    
+    String? s = null;
+    
+    switch (s)
+    case (is String) {
+        process.writeLine(s);
+    }
+    case (nothing) {}
 
+    switch (s)
+    case (is String) {
+        process.writeLine(s);
+    }
+    else {}
 }
