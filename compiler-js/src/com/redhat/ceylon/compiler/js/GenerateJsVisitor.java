@@ -66,6 +66,11 @@ public class GenerateJsVisitor extends Visitor
     
     private final Writer out;
     
+    @Override
+    public void handleException(Exception e, Node that) {
+        that.addUnexpectedError(that.getMessage(e, this));
+    }
+    
     public GenerateJsVisitor(Writer out) {
         this.out = out;
     }
