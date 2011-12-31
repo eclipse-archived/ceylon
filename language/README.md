@@ -16,7 +16,7 @@ Directory structure:
 * `languagesrc/` - the Ceylon implementation of the 
                    language module
 * `runtime/`      - the Java implementation
-* `test`          - the tests
+* `test/`         - the tests
 
 Repository
 ----------
