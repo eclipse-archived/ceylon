@@ -14,6 +14,12 @@ function Integer(value) {
     that.value = value;
     that.getString = function() { return value.toString() }
     that.plus = function(other) { return Integer(value+other.value) }
+    that.minus = function(other) { return Integer(value-other.value) }
+    that.times = function(other) { return Integer(value*other.value) }
+    that.divided = function(other) {
+        var exact = value/other.value;
+        return Integer((exact<0) ? Math.ceil(exact) : Math.floor(exact));
+    }
     return that;
 }
 
@@ -22,6 +28,9 @@ function Float(value) {
     that.value = value;
     that.getString = function() { return value.toString() }
     that.plus = function(other) { return Float(value+other.value) }
+    that.minus = function(other) { return Float(value-other.value) }
+    that.times = function(other) { return Float(value*other.value) }
+    that.divided = function(other) { return Float(value/other.value) }
     return that;
 }
 
@@ -31,6 +40,20 @@ function String(value) {
     that.getString = function() { return value }
     that.plus = function(other) { return String(value+other.value) }
     return that;
+}
+
+var $true = new CeylonObject();
+var trueString = String("true");
+$true.getString = function() { return trueString }
+function getTrue() { return $true; }
+
+var $false = new CeylonObject();
+var falseString = String("false");
+$false.getString = function() { return falseString }
+function getFalse() { return $false; }
+
+function Boolean(value) {
+    return value ? $true : $false;
 }
 
 function ArraySequence(value) {
@@ -44,6 +67,9 @@ exports.print=print;
 exports.Integer=Integer;
 exports.Float=Float;
 exports.String=String;
+exports.Boolean=Boolean;
+exports.getTrue=getTrue;
+exports.getFalse=getFalse;
 exports.ArraySequence=ArraySequence;
 
     });
