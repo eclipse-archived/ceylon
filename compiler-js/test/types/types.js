@@ -1,3 +1,4 @@
+var $ceylon$language=require('../../runtime/ceylon.language.js');
 
 //class Pair at types.ceylon (1:0-1:27)
 function Pair(x,y){

@@ -55,7 +55,7 @@ public class MainForJsTest {
                     if (!expected.equals(actual)) {
                         System.err.println("error at " + jsPath + ":" + i); 
                         System.err.println("expected: " + expected);
-                        System.err.println("actual: " + actual);
+                        System.err.println("  actual: " + actual);
                     }
                 }
             }

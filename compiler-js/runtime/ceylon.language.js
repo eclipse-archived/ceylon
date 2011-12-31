@@ -2,26 +2,34 @@
 function print(line) { console.log(line.toString()) }
 
 function Integer(value) {
-    this.value = value;
-    this.toString = function() { return value.toString() }
-    this.plus = function(other) { return new Integer(value+other.value) }
+    var that = {};
+    that.value = value;
+    that.toString = function() { return value.toString() }
+    that.plus = function(other) { return Integer(value+other.value) }
+    return that;
 }
 
 function Float(value) {
-    this.value = value;
-    this.toString = function() { return value.toString() }
-    this.plus = function(other) { return new Float(value+other.value) }
+    var that = {};
+    that.value = value;
+    that.toString = function() { return value.toString() }
+    that.plus = function(other) { return Float(value+other.value) }
+    return that;
 }
 
 function String(value) {
-    this.value = value;
-    this.toString = function() { return value }
-    this.plus = function(other) { return new String(value+other.value) }
+    var that = {};
+    that.value = value;
+    that.toString = function() { return value }
+    that.plus = function(other) { return String(value+other.value) }
+    return that;
 }
 
 function ArraySequence(value) {
-    this.value = value;
-    this.toString = function() { return value.toString() }
+    var that = {};
+    that.value = value;
+    that.toString = function() { return value.toString() }
+    return that;
 }
 
 this.print=print;

@@ -1,3 +1,5 @@
+import functions { ... }
+
 void invocations() {
     helloWorld();
     helloWorld{};

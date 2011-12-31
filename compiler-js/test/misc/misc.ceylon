@@ -1,10 +1,12 @@
-interface X {
+import members { ... }
+
+shared interface X {
     shared void helloWorld() {
        print("hello world");
     }
 }
 
-class Foo(String name) {
+shared class Foo(String name) {
     shared String name = name;
     variable value counter:=0;
     shared Integer count { return counter; }
@@ -15,7 +17,7 @@ class Foo(String name) {
     inc();
 }
 
-class Bar() extends Foo("Hello") satisfies X {
+shared class Bar() extends Foo("Hello") satisfies X {
     shared actual void printName() {
         print("bar name = " + name);
         super.printName();
@@ -43,7 +45,7 @@ object foob {
 
 void printAll(String... strings) {}
 
-void testit() {
+shared void testit() {
     value name = "hello";
     print(name);
     Foo foo = Foo("goodbye");
@@ -71,4 +73,8 @@ void testit() {
     print(b.count);
     printAll("hello", "world");
     printAll{"hello", "world"};
+    
+    Counter c = Counter(0);
+    c.inc(); c.inc();
+    print(c.count);
 }

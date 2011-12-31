@@ -40,9 +40,10 @@
         </javac>
     </target>
 
-    <target name="test"
+    <target name="srctest"
             depends="compile"
-            description="Run rudimentary tests">
+            description="Run generated source comparison tests">
+        <echo message="Running generated source comparison tests"/>
         <java classname="MainForJsTest">
             <classpath>
                 <fileset dir="${ceylon.typechecker.loc}/lib">
@@ -53,5 +54,18 @@
             </classpath>
         </java>
     </target>
+	
+	<target name="nodetest"
+		    depends="compile"
+		    description="Run tests on node.js (requires node)">
+      <echo message="Running tests on node.js (node must be installed)"/>
+	  <exec executable="node">
+	  	<arg value="test/run.js"/>
+	  </exec>
+	</target>
+	
+	<target name="test" 
+		    depends="srctest,nodetest"
+	        description="Run all tests (requires node)"/>
 
 </project>
