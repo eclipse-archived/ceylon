@@ -1,5 +1,5 @@
 var $ceylon$language=require('ceylon/language/ceylon.language');
-var $functions=require('functions/functions');
+var $functions=require('default/functions');
 
 //function invocations at invocations.ceylon (3:0-14:0)
 function invocations(){
@@ -39,6 +39,5 @@ function invocations(){
         $ceylon$language.print(i);
     }
     $functions.repeat($ceylon$language.Integer(10),p);
-    
 }
 this.invocations=invocations;

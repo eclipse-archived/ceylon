@@ -120,7 +120,7 @@ function printAll(strings){}
 //class alias F at misc.ceylon (48:0-48:26)
 var F=Foo;
 var $ceylon$language=require('ceylon/language/ceylon.language');
-var $members=require('members/members');
+var $members=require('default/members');
 
 //function testit at misc.ceylon (50:0-82:0)
 function testit(){

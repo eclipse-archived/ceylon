@@ -40,7 +40,7 @@ public class MainForJsTest {
                 if (writer==null) {
                     try {
                         File file = new File("build/test/node_modules/"+
-                                toPath(pkg));
+                                toOutputPath(pkg));
                         file.getParentFile().mkdirs();
                         if (file.exists()) file.delete();
                         file.createNewFile();
@@ -66,8 +66,8 @@ public class MainForJsTest {
         int count=0;
         for (PhasedUnit pu: typeChecker.getPhasedUnits().getPhasedUnits()) {
             Package pkg = pu.getPackage();
-            File generated = new File("build/test/node_modules/" + toPath(pkg));
-            File test = new File("test/"+ toPath(pkg));
+            File generated = new File("build/test/node_modules/" + toOutputPath(pkg));
+            File test = new File("test/"+ toTestPath(pkg));
             if (test.exists()) {
                 BufferedReader reader = new BufferedReader(new FileReader(test));
                 BufferedReader outputReader = new BufferedReader(new FileReader(generated));
@@ -89,7 +89,12 @@ public class MainForJsTest {
         System.out.println("ran " + count + " tests");
     }
     
-    private static String toPath(Package pkg) {
+    private static String toOutputPath(Package pkg) {
+        return pkg.getModule().getNameAsString().replace('.', '/') + "/" +
+                pkg.getNameAsString() + ".js";
+    }
+
+    private static String toTestPath(Package pkg) {
         return pkg.getNameAsString().replace('.', '/') + "/" +
                 pkg.getNameAsString() + ".js";
     }

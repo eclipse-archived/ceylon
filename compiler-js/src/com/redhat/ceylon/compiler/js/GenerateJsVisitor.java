@@ -9,6 +9,8 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -113,29 +115,41 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(CompilationUnit that) {
-        out("var $ceylon$language=require('ceylon/language/ceylon.language');");
-        endLine();
+        Module clm = that.getUnit().getPackage().getModule()
+                .getLanguageModule();
+        require(clm.getPackage(clm.getNameAsString()));
         super.visit(that);
-        try {
+        /*try {
             out.flush();
         }
         catch (IOException ioe) {
             ioe.printStackTrace();
-        }
+        }*/
     }
     
     @Override
     public void visit(Import that) {
-        out("var $");
-        String pkgName = that.getImportList().getImportedPackage()
-                .getNameAsString();
-        out(pkgName.replace('.', '$'));
+        require(that.getImportList().getImportedPackage());
+    }
+
+    void require(Package pkg) {
+        out("var ");
+        packageAlias(pkg);
         out("=require('");
-        out(pkgName.replace('.', '/'));
-        out("/");
-        out(pkgName);
+        scriptPath(pkg);
         out("');");
         endLine();
+    }
+    
+    void packageAlias(Package pkg) {
+        out("$");
+        out(pkg.getNameAsString().replace('.', '$'));
+    }
+
+    public void scriptPath(Package pkg) {
+        out(pkg.getModule().getNameAsString().replace('.', '/'));
+        out("/");
+        out(pkg.getNameAsString());
     }
     
     @Override
@@ -729,8 +743,7 @@ public class GenerateJsVisitor extends Visitor
 
     void qualify(Node that, Declaration d) {
         if (isImported(that, d)) {
-            out("$");
-            out(d.getUnit().getPackage().getNameAsString().replace('.', '$'));
+            packageAlias(d.getUnit().getPackage());
             out(".");
         }
         else if (qualifyBaseMember(that, d)) {
