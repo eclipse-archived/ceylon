@@ -1,4 +1,4 @@
-var $ceylon$language=require('ceylon/language/ceylon.language');
+var $ceylon$language=require('ceylon/language/0.1/ceylon.language');
 
 //value firstName at attributes.ceylon (1:0-1:26)
 var $firstName=$ceylon$language.String("Gavin");

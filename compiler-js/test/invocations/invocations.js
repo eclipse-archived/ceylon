@@ -1,4 +1,4 @@
-var $ceylon$language=require('ceylon/language/ceylon.language');
+var $ceylon$language=require('ceylon/language/0.1/ceylon.language');
 var $functions=require('default/functions');
 
 //function invocations at invocations.ceylon (3:0-14:0)

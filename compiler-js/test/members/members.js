@@ -1,4 +1,4 @@
-var $ceylon$language=require('ceylon/language/ceylon.language');
+var $ceylon$language=require('ceylon/language/0.1/ceylon.language');
 
 //class Counter at members.ceylon (1:0-9:0)
 function Counter(initialCount){

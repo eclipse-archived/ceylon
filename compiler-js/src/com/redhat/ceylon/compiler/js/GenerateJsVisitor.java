@@ -149,6 +149,10 @@ public class GenerateJsVisitor extends Visitor
     public void scriptPath(Package pkg) {
         out(pkg.getModule().getNameAsString().replace('.', '/'));
         out("/");
+        if (!pkg.getModule().isDefault()) {
+            out(pkg.getModule().getVersion());
+            out("/");
+        }
         out(pkg.getNameAsString());
     }
     

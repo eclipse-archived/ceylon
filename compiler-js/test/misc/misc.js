@@ -1,4 +1,4 @@
-var $ceylon$language=require('ceylon/language/ceylon.language');
+var $ceylon$language=require('ceylon/language/0.1/ceylon.language');
 
 //interface X at misc.ceylon (3:0-7:0)
 function X(){
@@ -119,7 +119,7 @@ function printAll(strings){}
 
 //class alias F at misc.ceylon (48:0-48:26)
 var F=Foo;
-var $ceylon$language=require('ceylon/language/ceylon.language');
+var $ceylon$language=require('ceylon/language/0.1/ceylon.language');
 var $members=require('default/members');
 
 //function testit at misc.ceylon (50:0-82:0)

@@ -90,7 +90,9 @@ public class MainForJsTest {
     }
     
     private static String toOutputPath(Package pkg) {
-        return pkg.getModule().getNameAsString().replace('.', '/') + "/" +
+        return pkg.getModule().getNameAsString().replace('.', '/') +
+                (pkg.getModule().isDefault() ? 
+                        "/" : "/" + pkg.getModule().getVersion() ) +
                 pkg.getNameAsString() + ".js";
     }
 
