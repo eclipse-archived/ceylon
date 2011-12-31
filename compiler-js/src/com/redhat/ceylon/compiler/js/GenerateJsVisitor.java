@@ -29,8 +29,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExecutableStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportPath;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Import;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
@@ -123,21 +122,15 @@ public class GenerateJsVisitor extends Visitor
     }
     
     @Override
-    public void visit(ImportPath that) {
-        out("var ");
-        for (Identifier id: that.getIdentifiers()) {
-            out("$");
-            out(id.getText());
-        }
+    public void visit(Import that) {
+        out("var $");
+        String pkgName = that.getImportList().getImportedPackage()
+                .getNameAsString();
+        out(pkgName.replace('.', '$'));
         out("=require('");
-        for (Identifier id: that.getIdentifiers()) {
-            out(id.getText());
-            out("/");
-        }
-        for (int i=0; i<that.getIdentifiers().size(); i++) {
-            out(that.getIdentifiers().get(i).getText());
-            if (i<that.getIdentifiers().size()-1) out(".");
-        }
+        out(pkgName.replace('.', '/'));
+        out("/");
+        out(pkgName);
         out("');");
         endLine();
     }

@@ -34,10 +34,13 @@ public class JsCompiler {
                     super.visitAny(that);
                 }
             });
-        }        
+        }
+        finish();
     }
     
     protected Writer getWriter(PhasedUnit pu) {
         return new OutputStreamWriter(System.out);
     }
+    
+    protected void finish() {}
 }

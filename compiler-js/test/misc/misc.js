@@ -1,5 +1,4 @@
 var $ceylon$language=require('ceylon/language/ceylon.language');
-var $members=require('members/members');
 
 //interface X at misc.ceylon (3:0-7:0)
 function X(){
@@ -118,18 +117,23 @@ function getFoob(){
 //function printAll at misc.ceylon (46:0-46:34)
 function printAll(strings){}
 
-//function testit at misc.ceylon (48:0-80:0)
+//class alias F at misc.ceylon (48:0-48:26)
+var F=Foo;
+var $ceylon$language=require('ceylon/language/ceylon.language');
+var $members=require('members/members');
+
+//function testit at misc.ceylon (50:0-82:0)
 function testit(){
     
-    //value name at misc.ceylon (49:4-49:24)
+    //value name at misc.ceylon (51:4-51:24)
     var $name=$ceylon$language.String("hello");
     function getName(){
         return $name;
     }
     $ceylon$language.print(getName());
     
-    //value foo at misc.ceylon (51:4-51:28)
-    var $foo=Foo($ceylon$language.String("goodbye"));
+    //value foo at misc.ceylon (53:4-53:24)
+    var $foo=F($ceylon$language.String("goodbye"));
     function getFoo(){
         return $foo;
     }
@@ -146,11 +150,11 @@ function testit(){
     doIt(Bar);
     $ceylon$language.print(getFoob().getName());
     
-    //object x at misc.ceylon (63:4-67:4)
+    //object x at misc.ceylon (65:4-69:4)
     var $x=function x(){
         var $thisx=new CeylonObject();
         
-        //function y at misc.ceylon (64:8-66:8)
+        //function y at misc.ceylon (66:8-68:8)
         function y(){
             $ceylon$language.print($ceylon$language.String("xy"));
         }
@@ -162,7 +166,7 @@ function testit(){
     }
     getX().y();
     
-    //value b at misc.ceylon (69:4-69:17)
+    //value b at misc.ceylon (71:4-71:17)
     var $b=Bar();
     function getB(){
         return $b;
@@ -174,7 +178,7 @@ function testit(){
     printAll($ceylon$language.ArraySequence([$ceylon$language.String("hello"),$ceylon$language.String("world")]));
     (function (){var $strings=$ceylon$language.ArraySequence([$ceylon$language.String("hello"),$ceylon$language.String("world")]);return printAll($strings)}());
     
-    //value c at misc.ceylon (77:4-77:26)
+    //value c at misc.ceylon (79:4-79:26)
     var $c=$members.Counter($ceylon$language.Integer(0));
     function getC(){
         return $c;
