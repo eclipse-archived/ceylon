@@ -9,6 +9,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -22,6 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Block;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Body;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExecutableStatement;
@@ -29,6 +31,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportPath;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
@@ -186,6 +189,59 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
             endBlock();
+        }
+    }
+    
+    @Override
+    public void visit(ClassDeclaration that) {
+        endLine();
+        out("//class alias ");
+        out(that.getDeclarationModel().getName());
+        location(that);
+        endLine();
+        out("var ");
+        out(that.getDeclarationModel().getName());
+        out("=");
+        TypeDeclaration dec = that.getTypeSpecifier().getType().getTypeModel()
+                .getDeclaration();
+        qualify(that,dec);
+        out(dec.getName());
+        out(";");
+        endLine();
+        if (that.getDeclarationModel().isShared()) {
+            outerSelf(that.getDeclarationModel());
+            out(".");
+            out(that.getDeclarationModel().getName());
+            out("=");
+            out(that.getDeclarationModel().getName());
+            out(";");
+            endLine();
+        }
+    }
+    
+    @Override
+    public void visit(InterfaceDeclaration that) {
+        endLine();
+        out("//interface alias ");
+        out(that.getDeclarationModel().getName());
+        location(that);
+        endLine();
+        out("var ");
+        out(that.getDeclarationModel().getName());
+        out("=");
+        TypeDeclaration dec = that.getTypeSpecifier().getType().getTypeModel()
+                .getDeclaration();
+        qualify(that,dec);
+        out(";");
+        endLine();
+        if (that.getDeclarationModel().isShared()) {
+            outerSelf(that.getDeclarationModel());
+            out(".");
+            out(that.getDeclarationModel().getName());
+            out("=");
+            out(that.getDeclarationModel().getName());
+            out(";");
+            endLine();
         }
     }
     
