@@ -1,0 +1,57 @@
+<project name="Ceylon JS compiler" default="test" basedir=".">
+    <property file="build.properties"/>
+
+    <!-- Set build directories for all formats. -->
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="build.classes" location="${build.dir}/classes"/>
+    <property name="build.dist" location="${build.dir}/dist"/>
+    <property name="build.lib" location="${build.dir}/lib"/>
+    <property name="build.test" location="${build.dir}/test"/>
+
+    <property name="test.src" location="test"/>
+    <property name="src" location="src"/>
+
+    <tstamp/>
+
+    <!-- Local repository -->
+    <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
+    
+	<!-- module archives -->
+    <property name="ceylon.typechecker.loc" value="${basedir}/../ceylon-spec"/>
+    <property name="ceylon.typechecker.dir" value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}"/>
+    <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
+    <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}"/>
+
+    <!-- Rule to clean everything up -->
+    <target name="clean" description="Clean up everything">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <!-- project compilation -->
+    <target name="compile" description="compile the js compiler">
+        <mkdir dir="${build.classes}"/>
+    	<echo message="${ceylon.typechecker.lib}"/>
+        <javac
+                srcdir="${src}"
+                destdir="${build.classes}"
+                debug="true"
+                classpath="${ceylon.typechecker.lib}">
+            <include name="**/*.java"/>
+        </javac>
+    </target>
+
+    <target name="test"
+            depends="compile"
+            description="Run rudimentary tests">
+        <java classname="MainForJsTest">
+            <classpath>
+                <fileset dir="${ceylon.typechecker.loc}/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <pathelement location="${ceylon.typechecker.lib}"/>
+                <pathelement location="${build.classes}"/>
+            </classpath>
+        </java>
+    </target>
+
+</project>
