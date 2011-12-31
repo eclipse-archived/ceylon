@@ -22,16 +22,26 @@ package com.redhat.ceylon.compiler.codegen;
 
 import static com.sun.tools.javac.code.Flags.FINAL;
 
+import com.redhat.ceylon.compiler.metadata.java.TypeSystemException;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseItem;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CatchClause;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ElseClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FinallyClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForIterator;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCase;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.MatchCase;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SatisfiesCase;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SwitchCaseList;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SwitchClause;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SwitchStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Throw;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TryCatchStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TryClause;
@@ -450,5 +460,102 @@ public class StatementTransformer extends AbstractTransformer {
         result |= cdecl.getDeclarationModel().isVariable() ? 0 : FINAL;
 
         return result;
+    }
+    
+    /**
+     * Transforms a Ceylon switch to a Java {@code if/else if} chain.
+     * @param stmt The Ceylon switch
+     * @return The Java tree
+     */
+    JCStatement transform(SwitchStatement stmt) {
+
+        SwitchClause switchClause = stmt.getSwitchClause();
+        JCExpression selectorExpr = expressionGen().transformExpression(switchClause.getExpression(), BoxingStrategy.UNBOXED, switchClause.getExpression().getTypeModel());
+        String selectorAlias = aliasName("sel");
+        JCVariableDecl selector = makeVar(selectorAlias, make().Type(syms().objectType), selectorExpr);
+        SwitchCaseList caseList = stmt.getSwitchCaseList();
+
+        JCStatement last = null;
+        ElseClause elseClause = caseList.getElseClause();
+        if (elseClause != null) {
+            last = transform(elseClause.getBlock());
+        } else {
+            // To avoid possible javac warnings about uninitialized vars we
+            // need to have an 'else' clause, even if the ceylon code doesn't
+            // require one. 
+            // This exception could be thrown for example if an enumerated 
+            // type is recompiled after having a subclass added, but the 
+            // switch is not recompiled.
+            last = make().Throw(
+                        make().NewClass(null, List.<JCExpression>nil(), 
+                                makeIdent(TypeSystemException.class.getName()), 
+                                List.<JCExpression>of(make().Literal(
+                                        "Supposedly exhaustive switch was not exhaustive")), null));
+        }
+
+        java.util.List<CaseClause> caseClauses = caseList.getCaseClauses();
+        for (int ii = caseClauses.size() - 1; ii >= 0; ii--) {// reverse order
+            CaseClause caseClause = caseClauses.get(ii);
+            CaseItem caseItem = caseClause.getCaseItem();
+            if (caseItem instanceof IsCase) {
+                last = transformCaseIs(selectorAlias, caseClause, (IsCase)caseItem, last);
+            } else if (caseItem instanceof SatisfiesCase) {
+                // TODO Support for 'case (satisfies ...)' is not implemented yet
+                return make().Exec(make().Erroneous());
+            } else if (caseItem instanceof MatchCase) {
+                // TODO Support for 'case (...)' is not implemented yet");
+                return make().Exec(make().Erroneous());
+            } else {
+                return make().Exec(make().Erroneous());
+            }
+        }
+        return at(stmt).Block(0, List.of(selector, last));
+    }
+
+    /**
+     * Transform a "case(is ...)"
+     * @param selectorAlias
+     * @param caseClause
+     * @param isCase
+     * @param last
+     * @return
+     */
+    private JCStatement transformCaseIs(String selectorAlias,
+            CaseClause caseClause, IsCase isCase, JCStatement last) {
+        at(isCase);
+        ProducedType type = isCase.getType().getTypeModel();
+        JCExpression cond = makeTypeTest(makeIdent(selectorAlias), type);
+        
+        JCExpression toTypeExpr = makeJavaType(type);
+        String name = isCase.getVariable().getIdentifier().getText();
+
+        String tmpVarName = selectorAlias;
+        Name origVarName = names().fromString(name);
+        Name substVarName = names().fromString(aliasName(name));
+
+        // Want raw type for instanceof since it can't be used with generic types
+        JCExpression rawToTypeExpr = makeJavaType(type, NO_PRIMITIVES | WANT_RAW_TYPE);
+
+        // Substitute variable with the correct type to use in the rest of the code block
+        JCExpression tmpVarExpr = makeIdent(tmpVarName);
+
+        tmpVarExpr = unboxType(at(isCase).TypeCast(rawToTypeExpr, tmpVarExpr), type);
+        
+        // The variable holding the result for the code inside the code block
+        JCVariableDecl decl2 = at(isCase).VarDef(make().Modifiers(FINAL), substVarName, toTypeExpr, tmpVarExpr);
+
+        // Prepare for variable substitution in the following code block
+        String prevSubst = addVariableSubst(origVarName.toString(), substVarName.toString());
+
+        JCBlock block = transform(caseClause.getBlock());
+        List<JCStatement> stats = List.<JCStatement> of(decl2);
+        stats = stats.appendList(block.getStatements());
+        block = at(isCase).Block(0, stats);
+
+        // Deactivate the above variable substitution
+        removeVariableSubst(origVarName.toString(), prevSubst);
+
+        last = make().If(cond, block, last);
+        return last;
     }
 }

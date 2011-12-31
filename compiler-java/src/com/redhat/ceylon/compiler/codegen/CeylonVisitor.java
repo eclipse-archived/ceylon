@@ -447,6 +447,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         append(gen.statementGen().transform(t));
     }
     
+    public void visit(Tree.SwitchStatement switch_) {
+        append(gen.statementGen().transform(switch_));
+    }
+    
     /**
      * Gets all the results which were appended during the visit
      * @return The results

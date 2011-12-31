@@ -280,4 +280,20 @@ public class StatementTest extends CompilerTest {
     public void testTryReplaceExceptionAtJavaCallSite(){
         compareWithJavaSource("trycatch/WrapExceptionAtJavaCallSite");
     }
+    
+    @Test
+    public void testSwitchIsExhaustive(){
+        compareWithJavaSource("swtch/SwitchIsExhaustive");
+    }
+    
+    @Test
+    public void testSwitchIsNonExhaustive(){
+        compareWithJavaSource("swtch/SwitchIsNonExhaustive");
+    }
+    
+    @Test
+    public void testSwitchIsVarSubst(){
+        compareWithJavaSource("swtch/SwitchIsVarSubst");
+    }
+    
 }
