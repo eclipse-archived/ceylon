@@ -6,13 +6,21 @@ Compiling and running
 
 The ceylon-spec project must be located at `../ceylon-spec`.
 
-Compile and publish the typechecker by typing:
+First, compile and publish the typechecker by typing:
 
     ant publish
 
-From the `ceylon-spec/` directory. 
+in the `ceylon-spec/` directory. 
 
-To run the tests, in the root directory type:
+Now, to compile the tests, type:
+
+    ant srctest
+
+The generated code may be found in the `build/test/node_modules`
+directory.
+
+To run the tests, you first need to install `node.js`, Then, 
+in the root directory, type:
 
     ant
 
@@ -23,8 +31,9 @@ To compile the compiler, type:
 Directory structure:
 --------------------
 
-* `src/`   - the Java implementation of the Ceylon JS compiler
-* `test/`  - the tests
+* `src/`     - the Java implementation of the Ceylon JS compiler
+* `runtime/` - the JS implementation of the Ceylon language module
+* `test/`    - the tests
 
 License
 -------
