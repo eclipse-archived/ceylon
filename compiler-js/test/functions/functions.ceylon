@@ -15,3 +15,7 @@ shared String toString(Object obj) {
 shared Float add(Float x, Float y) {
     return x+y;
 }
+
+shared void repeat(Integer times, void f(Integer iter)) {
+    f(0);
+}

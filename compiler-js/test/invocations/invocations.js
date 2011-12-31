@@ -34,5 +34,11 @@ function invocations(){
         return $f2;
     }
     
+    //function p at invocations.ceylon (15:0-17:0)
+    function p(i){
+        $ceylon$language.print(i);
+    }
+    $functions.repeat($ceylon$language.Integer(10),p);
+    
 }
 this.invocations=invocations;

@@ -27,3 +27,9 @@ function add(x,y){
     return x.plus(y);
 }
 this.add=add;
+
+//function repeat at functions.ceylon (15:0-17:0)
+function repeat(times,f){
+    f($ceylon$language.Integer(0));
+}
+this.repeat=repeat;
