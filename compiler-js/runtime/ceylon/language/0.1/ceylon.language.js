@@ -20,6 +20,8 @@ function Integer(value) {
         var exact = value/other.value;
         return Integer((exact<0) ? Math.ceil(exact) : Math.floor(exact));
     }
+    that.negativeValue = function() { return Integer(-value) }
+    that.positiveValue = function() { return that }
     return that;
 }
 
@@ -31,6 +33,8 @@ function Float(value) {
     that.minus = function(other) { return Float(value-other.value) }
     that.times = function(other) { return Float(value*other.value) }
     that.divided = function(other) { return Float(value/other.value) }
+    that.negativeValue = function() { return Float(-value) }
+    that.positiveValue = function() { return that }
     return that;
 }
 
