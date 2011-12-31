@@ -108,8 +108,12 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(CompilationUnit that) {
+        out("var $ceylon$language=require('");
+        for (int i=0; i<that.getUnit().getPackage().getName().size(); i++) {
+            out("../");
+        }
         //TODO fix hardcoded path!
-        out("var $ceylon$language=require('../../runtime/ceylon.language.js');");
+        out("../runtime/ceylon.language.js');");
         endLine();
         super.visit(that);
         try {
