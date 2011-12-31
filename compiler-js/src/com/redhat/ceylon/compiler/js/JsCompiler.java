@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.js;
 
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
@@ -12,6 +13,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class JsCompiler {
     
+    private final OutputStreamWriter systemOut = new OutputStreamWriter(System.out);
     private final TypeChecker tc;
     
     public JsCompiler(TypeChecker tc) {
@@ -39,8 +41,16 @@ public class JsCompiler {
     }
     
     protected Writer getWriter(PhasedUnit pu) {
-        return new OutputStreamWriter(System.out);
+        return systemOut;
     }
     
-    protected void finish() {}
+    protected void finish() {
+        try {
+            systemOut.flush();
+            systemOut.close();
+        }
+        catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
 }
