@@ -1,12 +1,3 @@
-<!--
-   To build the reference docs for a particular language only, use "ant -Dlang=en", for
-   example, and call either lang.all, lang.docpdf, lang.dochtml, or lang.dochtmlsingle
-   for the target of your choice.
-
-   You can also call lang.section-check to track down missing identifiers in a particular
-   language, or you can call lang.revdiff to get a difference report for a particular
-   language, compared with the English reference.
--->
 <project name="Ceylon Language module" default="publish" basedir=".">
     <property file="build.properties"/>
 
