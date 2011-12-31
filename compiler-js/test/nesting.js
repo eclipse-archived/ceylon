@@ -13,7 +13,6 @@ function Outer(name){
         }
         return $thisInner;
     }
-    $thisOuter.Inner=Inner;
     
     //value inner at nesting.ceylon (7:4-7:25)
     var $inner=Inner();

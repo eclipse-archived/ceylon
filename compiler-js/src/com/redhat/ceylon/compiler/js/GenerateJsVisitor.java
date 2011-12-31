@@ -203,6 +203,15 @@ public class GenerateJsVisitor extends Visitor
         out(self(that.getDeclarationModel()));
         out(";");
         endBlock();
+        if (that.getDeclarationModel().isShared()) {
+            out(outerSelf(that.getDeclarationModel()));
+            out(".");
+            out(that.getDeclarationModel().getName());
+            out("=");
+            out(that.getDeclarationModel().getName());
+            out(";");
+            endLine();
+        }
     }
     
     @Override
@@ -254,7 +263,7 @@ public class GenerateJsVisitor extends Visitor
         out(self(that.getDeclarationModel()));
         out(";");
         endBlock();
-        if (that.getDeclarationModel().isClassOrInterfaceMember()) {
+        if (that.getDeclarationModel().isShared()) {
             out(outerSelf(that.getDeclarationModel()));
             out(".");
             out(that.getDeclarationModel().getName());
@@ -312,8 +321,7 @@ public class GenerateJsVisitor extends Visitor
         endLine();
         out("}();");
         endLine();
-        if (that.getDeclarationModel().isClassOrInterfaceMember() &&
-                that.getDeclarationModel().isShared()) {
+        if (that.getDeclarationModel().isShared()) {
             out(outerSelf(that.getDeclarationModel()));
             out(".");
             out(getter(that.getDeclarationModel()));
@@ -344,8 +352,7 @@ public class GenerateJsVisitor extends Visitor
         //TODO: if there are multiple parameter lists
         //      do the inner function declarations
         super.visit(that);
-        if (that.getDeclarationModel().isClassOrInterfaceMember() &&
-                that.getDeclarationModel().isShared()) {
+        if (that.getDeclarationModel().isShared()) {
             out(outerSelf(that.getDeclarationModel()));
             out(".");
             out(that.getDeclarationModel().getName());
@@ -367,8 +374,7 @@ public class GenerateJsVisitor extends Visitor
         out(getter(that.getDeclarationModel()));
         out("()");
         super.visit(that);
-        if (that.getDeclarationModel().isClassOrInterfaceMember() &&
-                that.getDeclarationModel().isShared()) {
+        if (that.getDeclarationModel().isShared()) {
             out(outerSelf(that.getDeclarationModel()));
             out(".");
             out(getter(that.getDeclarationModel()));
@@ -392,8 +398,7 @@ public class GenerateJsVisitor extends Visitor
         out(that.getDeclarationModel().getName());
         out(")");
         super.visit(that);
-        if (that.getDeclarationModel().isClassOrInterfaceMember() &&
-                that.getDeclarationModel().isShared()) {
+        if (that.getDeclarationModel().isShared()) {
             out(outerSelf(that.getDeclarationModel()));
             out(".");
             out(setter(that.getDeclarationModel()));
@@ -428,8 +433,7 @@ public class GenerateJsVisitor extends Visitor
             out(that.getDeclarationModel().getName());
             out(";");
             endBlock();
-            if (that.getDeclarationModel().isClassOrInterfaceMember() &&
-                    that.getDeclarationModel().isShared()) {
+            if (that.getDeclarationModel().isShared()) {
                 out(outerSelf(that.getDeclarationModel()));
                 out(".");
                 out(getter(that.getDeclarationModel()));
@@ -451,8 +455,7 @@ public class GenerateJsVisitor extends Visitor
                 out(that.getDeclarationModel().getName());
                 out(";");
                 endBlock();
-                if (that.getDeclarationModel().isClassOrInterfaceMember() &&
-                        that.getDeclarationModel().isShared()) {
+                if (that.getDeclarationModel().isShared()) {
                     out(outerSelf(that.getDeclarationModel()));
                     out(".");
                     out(setter(that.getDeclarationModel()));
@@ -697,7 +700,12 @@ public class GenerateJsVisitor extends Visitor
     private String outerSelf(Declaration d) {
         //TODO: this is broken, since the container
         //      might not be the class
-        return "$this" + ((Declaration) d.getContainer()).getName();
+        if (d.isToplevel()) {
+            return "this";
+        }
+        else {
+            return "$this" + ((Declaration) d.getContainer()).getName();
+        }
     }
     
     private String setter(Declaration d) {
