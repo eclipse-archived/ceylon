@@ -23,13 +23,13 @@ function invocations(){
     }
     
     //value f1 at invocations.ceylon (12:4-12:29)
-    var $f1=$functions.add($ceylon$language.Float(1.0),$ceylon$language.Float(1.0));
+    var $f1=$functions.add($ceylon$language.Float(1.0),$ceylon$language.Float(1.0).negativeValue());
     function getF1(){
         return $f1;
     }
     
     //value f2 at invocations.ceylon (13:4-13:37)
-    var $f2=(function (){var $x=$ceylon$language.Float(1.0);var $y=$ceylon$language.Float(1.0);return $functions.add($x,$y)}());
+    var $f2=(function (){var $x=$ceylon$language.Float(1.0);var $y=$ceylon$language.Float(1.0).negativeValue();return $functions.add($x,$y)}());
     function getF2(){
         return $f2;
     }
