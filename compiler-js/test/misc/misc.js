@@ -1,5 +1,5 @@
-var $ceylon$language=require('../../runtime/ceylon.language');
-var $members=require('./../members/members');
+var $ceylon$language=require('ceylon/language/ceylon.language');
+var $members=require('members/members');
 
 //interface X at misc.ceylon (3:0-7:0)
 function X(){

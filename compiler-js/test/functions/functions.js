@@ -1,4 +1,4 @@
-var $ceylon$language=require('../../runtime/ceylon.language');
+var $ceylon$language=require('ceylon/language/ceylon.language');
 
 //function helloWorld at functions.ceylon (1:0-3:0)
 function helloWorld(){

@@ -1,3 +1,6 @@
+(function (define) {
+    define('ceylon.language', function (require, exports) {
+
 //the Ceylon language module
 function print(line) { console.log(line.getString()) }
 
@@ -37,8 +40,18 @@ function ArraySequence(value) {
     return that;
 }
 
-this.print=print;
-this.Integer=Integer;
-this.Float=Float;
-this.String=String;
-this.ArraySequence=ArraySequence;
+exports.print=print;
+exports.Integer=Integer;
+exports.Float=Float;
+exports.String=String;
+exports.ArraySequence=ArraySequence;
+
+    });
+}(typeof define==='function' && define.amd ? 
+    define : function (id, factory) {
+    if (typeof exports!=='undefined') {
+        factory(require, exports);
+    } else {
+        throw "no module loader";
+    }
+}));

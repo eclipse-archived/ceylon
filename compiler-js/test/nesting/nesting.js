@@ -1,4 +1,4 @@
-var $ceylon$language=require('../../runtime/ceylon.language');
+var $ceylon$language=require('ceylon/language/ceylon.language');
 
 //class Outer at nesting.ceylon (1:0-8:0)
 function Outer(name){
