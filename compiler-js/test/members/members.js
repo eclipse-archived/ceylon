@@ -2,7 +2,7 @@ var $ceylon$language=require('../../runtime/ceylon.language.js');
 
 //class Counter at members.ceylon (1:0-9:0)
 function Counter(initialCount){
-    var $thisCounter={};
+    var $thisCounter=new CeylonObject();
     
     //value currentCount at members.ceylon (2:4-2:45)
     var $currentCount=initialCount;

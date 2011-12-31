@@ -35,3 +35,4 @@ function invocations(){
     }
     
 }
+this.invocations=invocations;

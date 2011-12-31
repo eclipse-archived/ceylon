@@ -3,7 +3,7 @@ var $members=require('./../members/members.js');
 
 //interface X at misc.ceylon (3:0-7:0)
 function X(){
-    var $thisX={};
+    var $thisX=new CeylonObject();
     
     //function helloWorld at misc.ceylon (4:4-6:4)
     function helloWorld(){
@@ -16,7 +16,7 @@ this.X=X;
 
 //class Foo at misc.ceylon (9:0-18:0)
 function Foo(name){
-    var $thisFoo={};
+    var $thisFoo=new CeylonObject();
     
     //value name at misc.ceylon (10:4-10:29)
     var $name=name;
@@ -58,7 +58,7 @@ this.Foo=Foo;
 
 //class Bar at misc.ceylon (20:0-32:0)
 function Bar(){
-    var $thisBar={};
+    var $thisBar=new CeylonObject();
     var $super=Foo($ceylon$language.String("Hello"));
     for(var $m in $super){$thisBar[$m]=$super[$m]}
     var $superX=X();
@@ -73,7 +73,7 @@ function Bar(){
     
     //class Inner at misc.ceylon (25:4-31:4)
     function Inner(){
-        var $thisInner={};
+        var $thisInner=new CeylonObject();
         $ceylon$language.print($ceylon$language.String("creating inner class of :").plus($thisBar.getName()));
         
         //function incOuter at misc.ceylon (28:8-30:8)
@@ -101,7 +101,7 @@ function doIt(f){
 
 //object foob at misc.ceylon (42:0-44:0)
 var $foob=function foob(){
-    var $thisfoob={};
+    var $thisfoob=new CeylonObject();
     
     //value name at misc.ceylon (43:4-43:30)
     var $name=$ceylon$language.String("Gavin");
@@ -148,7 +148,7 @@ function testit(){
     
     //object x at misc.ceylon (63:4-67:4)
     var $x=function x(){
-        var $thisx={};
+        var $thisx=new CeylonObject();
         
         //function y at misc.ceylon (64:8-66:8)
         function y(){

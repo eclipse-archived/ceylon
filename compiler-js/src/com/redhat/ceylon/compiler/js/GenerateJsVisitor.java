@@ -206,7 +206,7 @@ public class GenerateJsVisitor extends Visitor
         beginBlock();
         out("var ");
         self(that.getDeclarationModel());
-        out("={};");
+        out("=new CeylonObject();");
         endLine();
         if (that.getSatisfiedTypes()!=null)
         for (Tree.SimpleType st: that.getSatisfiedTypes().getTypes()) {
@@ -254,7 +254,7 @@ public class GenerateJsVisitor extends Visitor
         beginBlock();
         out("var "); 
         self(that.getDeclarationModel());
-        out("={};");
+        out("=new CeylonObject();");
         endLine();
         if (that.getExtendedType()!=null) {
             out("var $super=");
@@ -318,7 +318,7 @@ public class GenerateJsVisitor extends Visitor
         beginBlock();
         out("var ");
         self(that.getDeclarationModel());
-        out("={};");
+        out("=new CeylonObject();");
         endLine();
         if (that.getExtendedType()!=null) {
             out("var $super=");

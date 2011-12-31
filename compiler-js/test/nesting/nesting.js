@@ -2,11 +2,11 @@ var $ceylon$language=require('../../runtime/ceylon.language.js');
 
 //class Outer at nesting.ceylon (1:0-8:0)
 function Outer(name){
-    var $thisOuter={};
+    var $thisOuter=new CeylonObject();
     
     //class Inner at nesting.ceylon (2:4-6:4)
     function Inner(){
-        var $thisInner={};
+        var $thisInner=new CeylonObject();
         
         //function printName at nesting.ceylon (3:8-5:8)
         function printName(){

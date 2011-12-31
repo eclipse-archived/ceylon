@@ -1,34 +1,39 @@
 //the Ceylon language module
-function print(line) { console.log(line.toString()) }
+function print(line) { console.log(line.getString()) }
+
+CeylonObject=function CeylonObject() {}
+
+CeylonObject.prototype.getString=Object.prototype.toString;
+CeylonObject.prototype.toString=CeylonObject.prototype.getString;
 
 function Integer(value) {
-    var that = {};
+    var that = new CeylonObject();
     that.value = value;
-    that.toString = function() { return value.toString() }
+    that.getString = function() { return value.toString() }
     that.plus = function(other) { return Integer(value+other.value) }
     return that;
 }
 
 function Float(value) {
-    var that = {};
+    var that = new CeylonObject();
     that.value = value;
-    that.toString = function() { return value.toString() }
+    that.getString = function() { return value.toString() }
     that.plus = function(other) { return Float(value+other.value) }
     return that;
 }
 
 function String(value) {
-    var that = {};
+    var that = new CeylonObject();
     that.value = value;
-    that.toString = function() { return value }
+    that.getString = function() { return value }
     that.plus = function(other) { return String(value+other.value) }
     return that;
 }
 
 function ArraySequence(value) {
-    var that = {};
+    var that = new CeylonObject();
     that.value = value;
-    that.toString = function() { return value.toString() }
+    that.getString = function() { return value.toString() }
     return that;
 }
 
