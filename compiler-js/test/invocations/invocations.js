@@ -1,5 +1,5 @@
-var $ceylon$language=require('../../runtime/ceylon.language.js');
-var $functions=require('./../functions/functions.js');
+var $ceylon$language=require('../../runtime/ceylon.language');
+var $functions=require('./../functions/functions');
 
 //function invocations at invocations.ceylon (3:0-14:0)
 function invocations(){

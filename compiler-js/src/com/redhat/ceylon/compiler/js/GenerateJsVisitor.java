@@ -113,7 +113,7 @@ public class GenerateJsVisitor extends Visitor
             out("../");
         }
         //TODO fix hardcoded path!
-        out("../runtime/ceylon.language.js');");
+        out("../runtime/ceylon.language');");
         endLine();
         super.visit(that);
         try {
@@ -139,11 +139,11 @@ public class GenerateJsVisitor extends Visitor
             out(id.getText());
             out("/");
         }
-        for (Identifier id: that.getIdentifiers()) {
-            out(id.getText());
-            out(".");
+        for (int i=0; i<that.getIdentifiers().size(); i++) {
+            out(that.getIdentifiers().get(i).getText());
+            if (i<that.getIdentifiers().size()-1) out(".");
         }
-        out("js');");
+        out("');");
         endLine();
     }
     

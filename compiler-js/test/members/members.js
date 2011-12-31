@@ -1,4 +1,4 @@
-var $ceylon$language=require('../../runtime/ceylon.language.js');
+var $ceylon$language=require('../../runtime/ceylon.language');
 
 //class Counter at members.ceylon (1:0-9:0)
 function Counter(initialCount){
