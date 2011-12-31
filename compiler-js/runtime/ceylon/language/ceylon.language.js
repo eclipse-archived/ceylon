@@ -33,6 +33,20 @@ function String(value) {
     return that;
 }
 
+var $true = new CeylonObject();
+var trueString = String("true");
+$true.getString = function() { return trueString }
+function getTrue() { return $true; }
+
+var $false = new CeylonObject();
+var falseString = String("false");
+$false.getString = function() { return falseString }
+function getFalse() { return $false; }
+
+function Boolean(value) {
+    return value ? $true : $false;
+}
+
 function ArraySequence(value) {
     var that = new CeylonObject();
     that.value = value;
@@ -44,6 +58,9 @@ exports.print=print;
 exports.Integer=Integer;
 exports.Float=Float;
 exports.String=String;
+exports.Boolean=Boolean;
+exports.getTrue=getTrue;
+exports.getFalse=getFalse;
 exports.ArraySequence=ArraySequence;
 
     });
