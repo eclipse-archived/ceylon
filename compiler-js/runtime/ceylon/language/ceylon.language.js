@@ -14,6 +14,12 @@ function Integer(value) {
     that.value = value;
     that.getString = function() { return value.toString() }
     that.plus = function(other) { return Integer(value+other.value) }
+    that.minus = function(other) { return Integer(value-other.value) }
+    that.times = function(other) { return Integer(value*other.value) }
+    that.divided = function(other) {
+        var exact = value/other.value;
+        return Integer((exact<0) ? Math.ceil(exact) : Math.floor(exact));
+    }
     return that;
 }
 
@@ -22,6 +28,9 @@ function Float(value) {
     that.value = value;
     that.getString = function() { return value.toString() }
     that.plus = function(other) { return Float(value+other.value) }
+    that.minus = function(other) { return Float(value-other.value) }
+    that.times = function(other) { return Float(value*other.value) }
+    that.divided = function(other) { return Float(value/other.value) }
     return that;
 }
 

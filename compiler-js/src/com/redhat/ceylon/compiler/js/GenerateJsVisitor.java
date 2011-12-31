@@ -24,6 +24,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Body;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.DifferenceOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExecutableStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
@@ -42,8 +43,10 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ProductOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.QuotientOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
@@ -747,6 +750,30 @@ public class GenerateJsVisitor extends Visitor
     public void visit(SumOp that) {
         that.getLeftTerm().visit(this);
         out(".plus(");
+        that.getRightTerm().visit(this);
+        out(")");
+    }
+    
+    @Override
+    public void visit(DifferenceOp that) {
+        that.getLeftTerm().visit(this);
+        out(".minus(");
+        that.getRightTerm().visit(this);
+        out(")");
+    }
+    
+    @Override
+    public void visit(ProductOp that) {
+        that.getLeftTerm().visit(this);
+        out(".times(");
+        that.getRightTerm().visit(this);
+        out(")");
+    }
+    
+    @Override
+    public void visit(QuotientOp that) {
+        that.getLeftTerm().visit(this);
+        out(".divided(");
         that.getRightTerm().visit(this);
         out(")");
     }
