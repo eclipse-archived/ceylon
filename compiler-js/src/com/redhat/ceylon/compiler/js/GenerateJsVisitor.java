@@ -29,6 +29,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DifferenceOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.EqualOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExecutableStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
@@ -42,6 +43,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NegativeOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.NotEqualOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.NotOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ObjectDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Outer;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter;
@@ -859,6 +862,25 @@ public class GenerateJsVisitor extends Visitor
     @Override public void visit(PositiveOp that) {
         that.getTerm().visit(this);
         out(".positiveValue()");
+    }
+    
+    @Override public void visit(EqualOp that) {
+        that.getLeftTerm().visit(this);
+        out(".equals(");
+        that.getRightTerm().visit(this);
+        out(")");
+    }
+    
+    @Override public void visit(NotEqualOp that) {
+        that.getLeftTerm().visit(this);
+        out(".equals(");
+        that.getRightTerm().visit(this);
+        out(").equals($ceylon$language.getFalse())");
+    }
+    
+    @Override public void visit(NotOp that) {
+        that.getTerm().visit(this);
+        out(".equals($ceylon$language.getFalse())");
     }
     
 }

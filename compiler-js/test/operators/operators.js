@@ -1,9 +1,9 @@
 var $ceylon$language=require('ceylon/language/0.1/ceylon.language');
 
-//function testIntegerOperators at test.ceylon (1:0-17:0)
+//function testIntegerOperators at operators.ceylon (1:0-17:0)
 function testIntegerOperators(){
     
-    //value i1 at test.ceylon (3:4-3:29)
+    //value i1 at operators.ceylon (3:4-3:29)
     var $i1=$ceylon$language.Integer(4).negativeValue();
     function getI1(){
         return $i1;
@@ -16,7 +16,7 @@ function testIntegerOperators(){
     setI1($ceylon$language.Integer(0).positiveValue());
     setI1($ceylon$language.Integer(0).negativeValue());
     
-    //value i2 at test.ceylon (9:4-9:36)
+    //value i2 at operators.ceylon (9:4-9:36)
     var $i2=$ceylon$language.Integer(123).plus($ceylon$language.Integer(456));
     function getI2(){
         return $i2;
@@ -32,10 +32,10 @@ function testIntegerOperators(){
     setI1(getI2().times($ceylon$language.Integer(516)).divided(getI1().negativeValue()));
 }
 
-//function testFloatOperators at test.ceylon (19:0-36:0)
+//function testFloatOperators at operators.ceylon (19:0-35:0)
 function testFloatOperators(){
     
-    //value f1 at test.ceylon (21:4-21:29)
+    //value f1 at operators.ceylon (21:4-21:29)
     var $f1=$ceylon$language.Float(4.2).negativeValue();
     function getF1(){
         return $f1;
@@ -48,7 +48,7 @@ function testFloatOperators(){
     setF1($ceylon$language.Float(0.0).positiveValue());
     setF1($ceylon$language.Float(0.0).negativeValue());
     
-    //value f2 at test.ceylon (27:4-27:43)
+    //value f2 at operators.ceylon (27:4-27:43)
     var $f2=$ceylon$language.Float(3.14159265).plus($ceylon$language.Float(456.0));
     function getF2(){
         return $f2;
@@ -62,4 +62,27 @@ function testFloatOperators(){
     setF2(getF1().times($ceylon$language.Float(2.0e13)));
     setF2($ceylon$language.Float(17.1).divided($ceylon$language.Float(4.0E-18)));
     setF1(getF2().times($ceylon$language.Float(51.6e2)).divided(getF1().negativeValue()));
+}
+
+//function testBooleanOperators at operators.ceylon (37:0-41:0)
+function testBooleanOperators(){
+    
+    //value b1 at operators.ceylon (38:4-38:23)
+    var $b1=$ceylon$language.Integer(1).equals($ceylon$language.Integer(2));
+    function getB1(){
+        return $b1;
+    }
+    
+    //value b2 at operators.ceylon (39:4-39:23)
+    var $b2=$ceylon$language.Integer(1).equals($ceylon$language.Integer(2)).equals($ceylon$language.getFalse());
+    function getB2(){
+        return $b2;
+    }
+    
+    //value b3 at operators.ceylon (40:4-40:20)
+    var $b3=getB2().equals($ceylon$language.getFalse());
+    function getB3(){
+        return $b3;
+    }
+    
 }

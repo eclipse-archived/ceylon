@@ -22,6 +22,7 @@ function Integer(value) {
     }
     that.negativeValue = function() { return Integer(-value) }
     that.positiveValue = function() { return that }
+    that.equals = function(other) { return Boolean(other.value===value) }
     return that;
 }
 
@@ -35,6 +36,7 @@ function Float(value) {
     that.divided = function(other) { return Float(value/other.value) }
     that.negativeValue = function() { return Float(-value) }
     that.positiveValue = function() { return that }
+    that.equals = function(other) { return Boolean(other.value===value) }
     return that;
 }
 
@@ -43,17 +45,20 @@ function String(value) {
     that.value = value;
     that.getString = function() { return value }
     that.plus = function(other) { return String(value+other.value) }
+    that.equals = function(other) { return Boolean(other.value===value) }
     return that;
 }
 
 var $true = new CeylonObject();
 var trueString = String("true");
 $true.getString = function() { return trueString }
+$true.equals = function(other) { return other===$true ? $true:$false }
 function getTrue() { return $true; }
 
 var $false = new CeylonObject();
 var falseString = String("false");
 $false.getString = function() { return falseString }
+$false.equals = function(other) { return other===$false ? $true:$false }
 function getFalse() { return $false; }
 
 function Boolean(value) {

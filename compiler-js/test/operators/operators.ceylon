@@ -32,5 +32,10 @@ void testFloatOperators() {
     f2 := f1 * 2.0e13;
     f2 := 17.1 / 4.0E-18;
     f1 := f2 * 51.6e2 / -f1;
-    
+}
+
+void testBooleanOperators() {
+    Boolean b1 = 1 == 2;
+    Boolean b2 = 1 != 2;
+    Boolean b3 = !b2;
 }
