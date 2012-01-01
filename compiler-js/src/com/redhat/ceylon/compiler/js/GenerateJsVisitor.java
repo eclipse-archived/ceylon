@@ -6,12 +6,18 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.Getter;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -32,6 +38,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.DifferenceOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.EqualOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExecutableStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExtendedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Import;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDeclaration;
@@ -57,6 +64,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpressio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QuotientOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SatisfiedTypes;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
@@ -216,226 +224,187 @@ public class GenerateJsVisitor extends Visitor
         }
     }
     
-    @Override
-    public void visit(ClassDeclaration that) {
+    private void comment(com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration that) {
         endLine();
-        out("//class alias ");
+        out("//");
+        out(that.getNodeType());
+        out(" ");
         out(that.getDeclarationModel().getName());
         location(that);
         endLine();
+    }
+    
+    private void var(Declaration d) {
         out("var ");
-        out(that.getDeclarationModel().getName());
+        out(d.getName());
         out("=");
+    }
+
+    private void selfVar(Declaration d) {
+        out("var ");
+        self(d);
+        out("=");
+    }
+
+    private void share(Declaration d) {
+        if (d.isShared()) {
+            outerSelf(d);
+            out(".");
+            out(d.getName());
+            out("=");
+            out(d.getName());
+            out(";");
+            endLine();
+        }
+    }
+    
+    @Override
+    public void visit(ClassDeclaration that) {
+        Class d = that.getDeclarationModel();
+        comment(that);
+        var(d);
         TypeDeclaration dec = that.getTypeSpecifier().getType().getTypeModel()
                 .getDeclaration();
         qualify(that,dec);
         out(dec.getName());
         out(";");
         endLine();
-        if (that.getDeclarationModel().isShared()) {
-            outerSelf(that.getDeclarationModel());
-            out(".");
-            out(that.getDeclarationModel().getName());
-            out("=");
-            out(that.getDeclarationModel().getName());
-            out(";");
-            endLine();
-        }
+        share(d);
     }
-    
+
     @Override
     public void visit(InterfaceDeclaration that) {
-        endLine();
-        out("//interface alias ");
-        out(that.getDeclarationModel().getName());
-        location(that);
-        endLine();
-        out("var ");
-        out(that.getDeclarationModel().getName());
-        out("=");
+        Interface d = that.getDeclarationModel();
+        comment(that);
+        var(d);
         TypeDeclaration dec = that.getTypeSpecifier().getType().getTypeModel()
                 .getDeclaration();
         qualify(that,dec);
         out(";");
-        endLine();
-        if (that.getDeclarationModel().isShared()) {
-            outerSelf(that.getDeclarationModel());
-            out(".");
-            out(that.getDeclarationModel().getName());
-            out("=");
-            out(that.getDeclarationModel().getName());
-            out(";");
-            endLine();
-        }
+        share(d);
     }
     
+    private void newObject() {
+        out("new CeylonObject();");
+    }
+    
+    private void function() {
+        out("function ");
+    }
+
     @Override
     public void visit(InterfaceDefinition that) {
-        endLine();
-        out("//interface ");
-        out(that.getDeclarationModel().getName());
-        location(that);
-        endLine();
-        out("function ");
-        out(that.getDeclarationModel().getName());
+        Interface d = that.getDeclarationModel();
+        comment(that);
+        function();
+        out(d.getName());
         out("()");
         beginBlock();
-        out("var ");
-        self(that.getDeclarationModel());
-        out("=new CeylonObject();");
-        endLine();
-        if (that.getSatisfiedTypes()!=null)
-        for (Tree.SimpleType st: that.getSatisfiedTypes().getTypes()) {
-            out("var $super");
-            out(st.getDeclarationModel().getName());
-            out("=");
-            out(st.getDeclarationModel().getName());
-            out("();");
-            endLine();
-            out("for(var $m in $super");
-            out(st.getDeclarationModel().getName());
-            out("){");
-            self(that.getDeclarationModel());
-            out("[$m]=$super");
-            out(st.getDeclarationModel().getName());
-            out("[$m]}");
-            endLine();
-        }
+        declareSelf(d);
+        interfaces(that.getSatisfiedTypes(), d);
         that.getInterfaceBody().visit(this);
-        out("return ");
-        self(that.getDeclarationModel());
-        out(";");
+        returnSelf(d);
         endBlock();
-        if (that.getDeclarationModel().isShared()) {
-            outerSelf(that.getDeclarationModel());
-            out(".");
-            out(that.getDeclarationModel().getName());
-            out("=");
-            out(that.getDeclarationModel().getName());
-            out(";");
-            endLine();
-        }
+        share(d);
     }
-    
+
     @Override
     public void visit(ClassDefinition that) {
-        endLine();
-        out("//class ");
-        out(that.getDeclarationModel().getName());
-        location(that);
-        endLine();
-        out("function ");
-        out(that.getDeclarationModel().getName());
+        Class d = that.getDeclarationModel();
+        comment(that);
+        function();
+        out(d.getName());
         that.getParameterList().visit(this);
         beginBlock();
-        out("var "); 
-        self(that.getDeclarationModel());
-        out("=new CeylonObject();");
+        declareSelf(d);
+        superclass(that.getExtendedType(), d);
+        interfaces(that.getSatisfiedTypes(), d);
+        that.getClassBody().visit(this);
+        returnSelf(d);
+        endBlock();
+        share(d);
+    }
+
+    private void declareSelf(Declaration d) {
+        selfVar(d);
+        newObject();
         endLine();
-        if (that.getExtendedType()!=null) {
+    }
+
+    private void returnSelf(Declaration d) {
+        out("return ");
+        self(d);
+        out(";");
+    }
+
+    private void superclass(ExtendedType that, Declaration d) {
+        if (that!=null) {
             out("var $super=");
-            out(that.getExtendedType().getType()
+            out(that.getType()
                     .getDeclarationModel().getName());
-            that.getExtendedType().getInvocationExpression().visit(this);
+            that.getInvocationExpression().visit(this);
             out(";");
             endLine();
             out("for(var $m in $super){");
-            self(that.getDeclarationModel());
+            self(d);
             out("[$m]=$super[$m]}");
             endLine();
         }
-        if (that.getSatisfiedTypes()!=null)
-        for (Tree.SimpleType st: that.getSatisfiedTypes().getTypes()) {
+    }
+
+    private void interfaces(SatisfiedTypes that, Declaration d) {
+        if (that!=null)
+        for (Tree.SimpleType st: that.getTypes()) {
+            String name = st.getDeclarationModel().getName();
             out("var $super");
-            out(st.getDeclarationModel().getName());
+            out(name);
             out("=");
-            out(st.getDeclarationModel().getName());
+            out(name);
             out("();");
             endLine();
             out("for(var $m in $super");
-            out(st.getDeclarationModel().getName());
+            out(name);
             out("){");
-            self(that.getDeclarationModel());
+            self(d);
             out("[$m]=$super");
-            out(st.getDeclarationModel().getName());
+            out(name);
             out("[$m]}");
-            endLine();
-        }
-        that.getClassBody().visit(this);
-        out("return ");
-        self(that.getDeclarationModel());
-        out(";");
-        endBlock();
-        if (that.getDeclarationModel().isShared()) {
-            outerSelf(that.getDeclarationModel());
-            out(".");
-            out(that.getDeclarationModel().getName());
-            out("=");
-            out(that.getDeclarationModel().getName());
-            out(";");
             endLine();
         }
     }
     
     @Override
     public void visit(ObjectDefinition that) {
-        //TODO: fix copy/paste from ClassDefinition
-        endLine();
-        out("//object ");
-        out(that.getDeclarationModel().getName());
-        location(that);
-        endLine();
+        Value d = that.getDeclarationModel();
+        comment(that);
         out("var $");
-        out(that.getDeclarationModel().getName());
+        out(d.getName());
         out("=");
-        out("function ");
-        out(that.getDeclarationModel().getName());
+        function();
+        out(d.getName());
         out("()");
         beginBlock();
-        out("var ");
-        self(that.getDeclarationModel());
-        out("=new CeylonObject();");
-        endLine();
-        if (that.getExtendedType()!=null) {
-            out("var $super=");
-            out(that.getExtendedType().getType()
-                    .getDeclarationModel().getName());
-            that.getExtendedType().getInvocationExpression().visit(this);
-            out(";");
-            endLine();
-            out("for(var $m in $super){");
-            self(that.getDeclarationModel());
-            out("[$m]=$super[$m]}");
-            endLine();
-        }
-        if (that.getSatisfiedTypes()!=null)
-        for (Tree.SimpleType st: that.getSatisfiedTypes().getTypes()) {
-            out(st.getDeclarationModel().getName());
-            out("(");
-            self(that.getDeclarationModel());
-            out(");");
-            endLine();
-        }
+        declareSelf(d);
+        superclass(that.getExtendedType(), d);
+        interfaces(that.getSatisfiedTypes(), d);
         that.getClassBody().visit(this);
-        out("return ");
-        self(that.getDeclarationModel());
-        out(";");         
+        returnSelf(d);       
         indentLevel--;
         endLine();
         out("}();");
         endLine();
-        if (that.getDeclarationModel().isShared()) {
-            outerSelf(that.getDeclarationModel());
+        if (d.isShared()) {
+            outerSelf(d);
             out(".");
-            out(getter(that.getDeclarationModel()));
+            out(getter(d));
             out("=");
         }
-        out("function ");
-        out(getter(that.getDeclarationModel()));
+        function();
+        out(getter(d));
         out("()");
         beginBlock();
         out("return $");
-        out(that.getDeclarationModel().getName());
+        out(d.getName());
         out(";");
         endBlock();
     }
@@ -445,44 +414,34 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(MethodDefinition that) {
-        endLine();
-        out("//function ");
-        out(that.getDeclarationModel().getName());
-        location(that);
-        endLine();
-        out("function ");
-        out(that.getDeclarationModel().getName());
+        Method d = that.getDeclarationModel();
+        comment(that);
+        function();
+        out(d.getName());
         //TODO: if there are multiple parameter lists
         //      do the inner function declarations
         super.visit(that);
-        if (that.getDeclarationModel().isShared()) {
-            outerSelf(that.getDeclarationModel());
-            out(".");
-            out(that.getDeclarationModel().getName());
-            out("=");
-            out(that.getDeclarationModel().getName());
-            out(";");
-            endLine();
-        }
+        share(d);
     }
     
     @Override
     public void visit(AttributeGetterDefinition that) {
-        endLine();
-        out("//value ");
-        out(that.getDeclarationModel().getName());
-        location(that);
-        endLine();
-        out("function ");
-        out(getter(that.getDeclarationModel()));
+        Getter d = that.getDeclarationModel();
+        comment(that);
+        function();
+        out(getter(d));
         out("()");
         super.visit(that);
-        if (that.getDeclarationModel().isShared()) {
-            outerSelf(that.getDeclarationModel());
+        shareGetter(d);
+    }
+
+    private void shareGetter(MethodOrValue d) {
+        if (d.isShared()) {
+            outerSelf(d);
             out(".");
-            out(getter(that.getDeclarationModel()));
+            out(getter(d));
             out("=");
-            out(getter(that.getDeclarationModel()));
+            out(getter(d));
             out(";");
             endLine();
         }
@@ -490,23 +449,24 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(AttributeSetterDefinition that) {
-        endLine();
-        out("//assign ");
-        out(that.getDeclarationModel().getName());
-        location(that);
-        endLine();
-        out("function ");
-        out(setter(that.getDeclarationModel()));
+        Setter d = that.getDeclarationModel();
+        comment(that);
+        function();
+        out(setter(d));
         out("(");
-        out(that.getDeclarationModel().getName());
+        out(d.getName());
         out(")");
         super.visit(that);
-        if (that.getDeclarationModel().isShared()) {
-            outerSelf(that.getDeclarationModel());
+        shareSetter(d);
+    }
+
+    private void shareSetter(MethodOrValue d) {
+        if (d.isShared()) {
+            outerSelf(d);
             out(".");
-            out(setter(that.getDeclarationModel()));
+            out(setter(d));
             out("=");
-            out(setter(that.getDeclarationModel()));
+            out(setter(d));
             out(";");
             endLine();
         }
@@ -514,59 +474,40 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(AttributeDeclaration that) {
-        endLine();
-        out("//value ");
-        out(that.getDeclarationModel().getName());
-        location(that);
-        endLine();
-        if (!that.getDeclarationModel().isFormal()) {
+        Value d = that.getDeclarationModel();
+        comment(that);
+        if (!d.isFormal()) {
             out("var $");
-            out(that.getDeclarationModel().getName());
+            out(d.getName());
             if (that.getSpecifierOrInitializerExpression()!=null) {
                 out("=");
             }
             super.visit(that);
             out(";");
             endLine();
-            out("function ");
-            out(getter(that.getDeclarationModel()));
+            function();
+            out(getter(d));
             out("()");
             beginBlock();
             out("return $");
-            out(that.getDeclarationModel().getName());
+            out(d.getName());
             out(";");
             endBlock();
-            if (that.getDeclarationModel().isShared()) {
-                outerSelf(that.getDeclarationModel());
-                out(".");
-                out(getter(that.getDeclarationModel()));
-                out("=");
-                out(getter(that.getDeclarationModel()));
-                out(";");
-                endLine();
-            }
-            if (that.getDeclarationModel().isVariable()) {
-                out("function ");
-                out(setter(that.getDeclarationModel()));
+            shareGetter(d);
+            if (d.isVariable()) {
+                function();
+                out(setter(d));
                 out("(");
-                out(that.getDeclarationModel().getName());
+                out(d.getName());
                 out(")");
                 beginBlock();
                 out("$");
-                out(that.getDeclarationModel().getName());
+                out(d.getName());
                 out("=");
-                out(that.getDeclarationModel().getName());
+                out(d.getName());
                 out(";");
                 endBlock();
-                if (that.getDeclarationModel().isShared()) {
-                    outerSelf(that.getDeclarationModel());
-                    out(".");
-                    out(setter(that.getDeclarationModel()));
-                    out("=");
-                    out(setter(that.getDeclarationModel()));
-                    out(";");
-                    endLine();
-                }
+                shareSetter(d);
             }
         }
     }
