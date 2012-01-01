@@ -160,8 +160,12 @@ public class GenerateJsVisitor extends Visitor
     }
     
     void packageAlias(Package pkg) {
-        out("$");
-        out(pkg.getNameAsString().replace('.', '$'));
+        out("$$");
+        //out(pkg.getNameAsString().replace('.', '$'));
+        for (String s: pkg.getName()) {
+            out(s.substring(0,1));
+        }
+        out(Integer.toString(pkg.getQualifiedNameString().length()));
     }
 
     public void scriptPath(Package pkg) {
@@ -512,30 +516,38 @@ public class GenerateJsVisitor extends Visitor
         }
     }
     
+    private void clAlias() {
+        out("$$cl15");
+    }
+    
     @Override
     public void visit(CharLiteral that) {
-        out("$ceylon$language.Character(");
+        clAlias();
+        out(".Character(");
         out(that.getText().replace('`', '"'));
         out(")");
     }
     
     @Override
     public void visit(StringLiteral that) {
-        out("$ceylon$language.String(");
+        clAlias();
+        out(".String(");
         out(that.getText());
         out(")");
     }
     
     @Override
     public void visit(FloatLiteral that) {
-        out("$ceylon$language.Float(");
+        clAlias();
+        out(".Float(");
         out(that.getText());
         out(")");
     }
     
     @Override
     public void visit(NaturalLiteral that) {
-        out("$ceylon$language.Integer(");
+        clAlias();
+        out(".Integer(");
         out(that.getText());
         out(")");
     }
@@ -632,7 +644,8 @@ public class GenerateJsVisitor extends Visitor
             if (!first) out(",");
             if (!sequenced && arg.getParameter().isSequenced()) {
                 sequenced=true;
-                out("$ceylon$language.ArraySequence([");
+                clAlias();
+                out(".ArraySequence([");
             }
             arg.visit(this);
             first = false;
@@ -664,7 +677,8 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(SequencedArgument that) {
-        out("$ceylon$language.ArraySequence([");
+        clAlias();
+        out(".ArraySequence([");
         boolean first=true;
         for (Expression arg: that.getExpressionList().getExpressions()) {
             if (!first) out(",");
@@ -816,12 +830,16 @@ public class GenerateJsVisitor extends Visitor
         that.getLeftTerm().visit(this);
         out(".equals(");
         that.getRightTerm().visit(this);
-        out(").equals($ceylon$language.getFalse())");
+        out(").equals(");
+        clAlias();
+        out(".getFalse())");
     }
     
     @Override public void visit(NotOp that) {
         that.getTerm().visit(this);
-        out(".equals($ceylon$language.getFalse())");
+        out(".equals(");
+        clAlias();
+        out(".getFalse())");
     }
     
 }

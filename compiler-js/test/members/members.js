@@ -1,4 +1,4 @@
-var $ceylon$language=require('ceylon/language/0.1/ceylon.language');
+var $$cl15=require('ceylon/language/0.1/ceylon.language');
 
 //class Counter at members.ceylon (1:0-9:0)
 function Counter(initialCount){
@@ -21,7 +21,7 @@ function Counter(initialCount){
     
     //function inc at members.ceylon (6:4-8:4)
     function inc(){
-        setCurrentCount(getCurrentCount().plus($ceylon$language.Integer(1)));
+        setCurrentCount(getCurrentCount().plus($$cl15.Integer(1)));
     }
     $thisCounter.inc=inc;
     return $thisCounter;

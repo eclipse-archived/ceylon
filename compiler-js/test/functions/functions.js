@@ -1,14 +1,14 @@
-var $ceylon$language=require('ceylon/language/0.1/ceylon.language');
+var $$cl15=require('ceylon/language/0.1/ceylon.language');
 
 //function helloWorld at functions.ceylon (1:0-3:0)
 function helloWorld(){
-    $ceylon$language.print($ceylon$language.String("hello world"));
+    $$cl15.print($$cl15.String("hello world"));
 }
 this.helloWorld=helloWorld;
 
 //function hello at functions.ceylon (5:0-7:0)
 function hello(name){
-    $ceylon$language.print($ceylon$language.String("hello").plus(name));
+    $$cl15.print($$cl15.String("hello").plus(name));
 }
 this.hello=hello;
 
@@ -30,6 +30,6 @@ this.add=add;
 
 //function repeat at functions.ceylon (15:0-17:0)
 function repeat(times,f){
-    f($ceylon$language.Integer(0));
+    f($$cl15.Integer(0));
 }
 this.repeat=repeat;

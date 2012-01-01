@@ -1,4 +1,4 @@
-var $ceylon$language=require('ceylon/language/0.1/ceylon.language');
+var $$cl15=require('ceylon/language/0.1/ceylon.language');
 
 //class Outer at nesting.ceylon (1:0-8:0)
 function Outer(name){
@@ -10,7 +10,7 @@ function Outer(name){
         
         //function printName at nesting.ceylon (3:8-5:8)
         function printName(){
-            $ceylon$language.print(name);
+            $$cl15.print(name);
         }
         return $thisInner;
     }
