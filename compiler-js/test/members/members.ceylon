@@ -4,6 +4,9 @@ shared class Counter(Integer initialCount=0) {
         return currentCount;
     }
     shared void inc() {
-       currentCount:=currentCount+1; 
+        currentCount:=currentCount+1; 
+    }
+    shared Integer initialCount {
+        return initialCount;
     }
 }

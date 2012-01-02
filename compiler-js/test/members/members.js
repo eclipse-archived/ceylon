@@ -24,6 +24,12 @@ function Counter(initialCount){
         setCurrentCount(getCurrentCount().plus($$cl15.Integer(1)));
     }
     $thisCounter.inc=inc;
+    
+    //AttributeGetterDefinition initialCount at members.ceylon (9:4-11:4)
+    function getInitialCount(){
+        return initialCount;
+    }
+    $thisCounter.getInitialCount=getInitialCount;
     return $thisCounter;
 }
 this.Counter=Counter;
