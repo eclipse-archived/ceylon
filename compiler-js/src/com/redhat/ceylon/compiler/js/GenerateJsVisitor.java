@@ -33,6 +33,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Body;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompareOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DifferenceOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.EqualOp;
@@ -853,6 +854,13 @@ public class GenerateJsVisitor extends Visitor
         out(".getTrue():");
         clAlias();
         out(".getFalse())");
+    }
+    
+    @Override public void visit(CompareOp that) {
+    	that.getLeftTerm().visit(this);
+    	out(".compare(");
+    	that.getRightTerm().visit(this);
+    	out(")");
     }
     
 }

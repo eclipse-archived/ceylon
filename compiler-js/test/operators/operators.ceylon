@@ -48,3 +48,12 @@ void testBooleanOperators() {
     b2 := 1 != 2;
     Boolean b3 = !b2;
 }
+
+void testComparisonOperators() {
+    Comparison c1 = "str1" <=> "str2";
+    Comparison c2 = "str2" <=> "str1";
+    Comparison c3 = "str1" <=> "str1";
+    Comparison c4 = "" <=> "";
+    Comparison c5 = "str1" <=> "";
+    Comparison c6 = "" <=> "str2";
+}
