@@ -41,18 +41,22 @@
         </javac>
     </target>
 
-    <target name="srctest"
+    <path id="testcp">
+        <fileset dir="${ceylon.typechecker.loc}/lib">
+            <include name="**/*.jar"/>
+        </fileset>
+        <pathelement location="${ceylon.typechecker.lib}"/>
+        <pathelement location="${build.classes}"/>
+    </path>
+
+	<target name="srctest"
             depends="compile"
             description="Run generated source comparison tests">
         <echo message="Running generated source comparison tests"/>
-        <java classname="MainForJsTest">
-            <classpath>
-                <fileset dir="${ceylon.typechecker.loc}/lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <pathelement location="${ceylon.typechecker.lib}"/>
-                <pathelement location="${build.classes}"/>
-            </classpath>
+        <java classname="MainForJsTest" classpathref="testcp">
+        	<arg value="optimize"/>
+        </java>
+        <java classname="MainForJsTest" classpathref="testcp">
         </java>
     </target>
 	

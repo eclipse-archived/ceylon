@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,10 +21,56 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
 public class MainForJsTest {
-    /**
-     * Files that are not under a proper module structure are placed under a <nomodule> module.
-     */
+    
+    private static final class JsModuleCompiler extends JsCompiler {
+        private final Map<Package, PrintWriter> output;
+
+        private JsModuleCompiler(TypeChecker tc, boolean optimize,
+                Map<Package, PrintWriter> output) {
+            super(tc, optimize);
+            this.output = output;
+        }
+
+        @Override
+        protected Writer getWriter(PhasedUnit pu) {
+            Package pkg = pu.getPackage();
+            PrintWriter writer = output.get(pkg);
+            if (writer==null) {
+                try {
+                    File file = new File("build/test/node_modules/"+
+                            toOutputPath(pkg));
+                    file.getParentFile().mkdirs();
+                    if (file.exists()) file.delete();
+                    file.createNewFile();
+                    FileWriter fileWriter = new FileWriter(file);
+                    writer = new PrintWriter(fileWriter);
+                    output.put(pkg, writer);
+                }
+                catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+            }
+            return writer;
+        }
+
+        @Override
+        protected void finish() {
+            for (PrintWriter writer: output.values()) {
+                writer.flush();
+                writer.close();
+            }
+        }
+    }
+
+    static boolean opt = false;
+
     public static void main(String[] args) throws Exception {
+        for (String arg: args) { 
+            if (arg.equals("optimize")) {
+                System.out.println("performance optimized code");
+                opt=true; 
+            }
+        }
         
         final Map<Package,PrintWriter> output = new HashMap<Package, PrintWriter>();
 
@@ -32,37 +79,12 @@ public class MainForJsTest {
                 .addSrcDirectory(new File("test"))
                 .getTypeChecker();
         typeChecker.process();
-        new JsCompiler(typeChecker, true) { 
-            @Override
-            protected Writer getWriter(PhasedUnit pu) {
-                Package pkg = pu.getPackage();
-                PrintWriter writer = output.get(pkg);
-                if (writer==null) {
-                    try {
-                        File file = new File("build/test/node_modules/"+
-                                toOutputPath(pkg));
-                        file.getParentFile().mkdirs();
-                        if (file.exists()) file.delete();
-                        file.createNewFile();
-                        FileWriter fileWriter = new FileWriter(file);
-                        writer = new PrintWriter(fileWriter);
-                        output.put(pkg, writer);
-                    }
-                    catch (IOException ioe) {
-                        ioe.printStackTrace();
-                    }
-                }
-                return writer;
-            }
-            @Override
-            protected void finish() {
-                for (PrintWriter writer: output.values()) {
-                    writer.flush();
-                    writer.close();
-                }
-            }
-        }.generate();
-        
+        new JsModuleCompiler(typeChecker, opt, output).generate();
+        validateOutput(typeChecker);
+    }
+
+    static void validateOutput(TypeChecker typeChecker)
+            throws FileNotFoundException, IOException {
         int count=0;
         for (PhasedUnit pu: typeChecker.getPhasedUnits().getPhasedUnits()) {
             Package pkg = pu.getPackage();
@@ -83,8 +105,8 @@ public class MainForJsTest {
                         break;
                     }
                 }
+                count++;
             }
-            count++;
         }
         System.out.println("ran " + count + " tests");
     }
@@ -98,6 +120,6 @@ public class MainForJsTest {
 
     private static String toTestPath(Package pkg) {
         return pkg.getNameAsString().replace('.', '/') + "/" +
-                pkg.getNameAsString() + ".js";
+                pkg.getNameAsString() + (opt? ".jsopt" : "") + ".js";
     }
 }
