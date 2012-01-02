@@ -21,6 +21,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AndOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
@@ -58,6 +59,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.NegativeOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NotEqualOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NotOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ObjectDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.OrOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Outer;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
@@ -894,18 +896,27 @@ public class GenerateJsVisitor extends Visitor
         out(")");
     }
     
+    private void clTrue() {
+        clAlias();
+        out(".getTrue()");
+    }
+    
+    private void clFalse() {
+        clAlias();
+        out(".getFalse()");
+    }
+    
     private void equalsFalse() {
         out(".equals(");
-        clAlias();
-        out(".getFalse())");    
+        clFalse();
+        out(")");    
     }
     
     private void thenTrueElseFalse() {
     	out("?");
-        clAlias();
-        out(".getTrue():");
-        clAlias();
-        out(".getFalse()");
+    	clTrue();
+        out(":");
+        clFalse();
     }
     
    private void leftCompareRight(BinaryOperatorExpression that) {
@@ -914,5 +925,29 @@ public class GenerateJsVisitor extends Visitor
     	that.getRightTerm().visit(this);
     	out(")");    	
     }
+   
+   @Override public void visit(AndOp that) {
+	   out("(");
+	   that.getLeftTerm().visit(this);
+	   out("===");
+	   clTrue();
+	   out("?");
+	   that.getRightTerm().visit(this);
+	   out(":");
+	   clFalse();
+	   out(")");
+   }
+   
+   @Override public void visit(OrOp that) {
+	   out("(");
+	   that.getLeftTerm().visit(this);
+	   out("===");
+	   clTrue();
+	   out("?");
+	   clTrue();
+	   out(":");
+	   that.getRightTerm().visit(this);
+	   out(")");
+   }
     
 }

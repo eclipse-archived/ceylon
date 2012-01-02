@@ -46,7 +46,14 @@ void testBooleanOperators() {
     b2 := o1 == o1;    
     b1 := 1 == 2;
     b2 := 1 != 2;
-    Boolean b3 = !b2;
+    variable Boolean b3 := !b2;
+    
+    b1 := true && false;
+    b2 := b1 && true;
+    b3 := true && true;
+    b1 := true || false;
+    b2 := false || b1;
+    b3 := false || false;
 }
 
 void testComparisonOperators() {
