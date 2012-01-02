@@ -21,7 +21,7 @@ package com.redhat.ceylon.compiler.test.ceylon;
 
 import org.junit.Assert;
 
-import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 public class Test {
     public void fail(){

@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.test.structure.klass;
 
-@.com.redhat.ceylon.compiler.metadata.java.Ceylon
-@.com.redhat.ceylon.compiler.metadata.java.Object
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Object
 public final class foo extends com.redhat.ceylon.compiler.test.structure.klass.CaseTypes {
     
     private foo() {
@@ -9,13 +9,13 @@ public final class foo extends com.redhat.ceylon.compiler.test.structure.klass.C
     }
     private static final foo value = new foo();
     
-    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("com.redhat.ceylon.compiler.test.structure.klass.foo")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.test.structure.klass.foo")
     public static foo getFoo() {
         return value;
     }
 }
-@.com.redhat.ceylon.compiler.metadata.java.Ceylon
-@.com.redhat.ceylon.compiler.metadata.java.Object
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Object
 public final class bar extends com.redhat.ceylon.compiler.test.structure.klass.CaseTypes {
     
     private bar() {
@@ -23,17 +23,17 @@ public final class bar extends com.redhat.ceylon.compiler.test.structure.klass.C
     }
     private static final bar value = new bar();
     
-    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("com.redhat.ceylon.compiler.test.structure.klass.bar")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.test.structure.klass.bar")
     public static bar getBar() {
         return value;
     }
 }
-@.com.redhat.ceylon.compiler.metadata.java.Ceylon
-@.com.redhat.ceylon.compiler.metadata.java.Of({"com.redhat.ceylon.compiler.metadata.java.foo", "com.redhat.ceylon.compiler.metadata.java.bar"})
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Of({"com.redhat.ceylon.compiler.java.metadata.foo", "com.redhat.ceylon.compiler.java.metadata.bar"})
 public abstract class CaseTypes extends ceylon.language.Case {
     
-    public CaseTypes(@.com.redhat.ceylon.compiler.metadata.java.Name("name")
-    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("java.lang.String")
+    public CaseTypes(@.com.redhat.ceylon.compiler.java.metadata.Name("name")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang.String")
     java.lang.String name) {
         super(name);
     }

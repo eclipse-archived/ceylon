@@ -54,8 +54,8 @@ public class EqualityAndComparisonOperators {
         sync = (let .java.lang.Object $ceylontmp2 = foo in false);
         sync = (let .java.lang.Object $ceylontmp3 = foo in true);
         sync = foo != null;
-        sync = .com.redhat.ceylon.compiler.metadata.java.Util.isEquality(foo);
-        sync = .com.redhat.ceylon.compiler.metadata.java.Util.isIdentifiableObject(foo);
+        sync = .com.redhat.ceylon.compiler.java.metadata.Util.isEquality(foo);
+        sync = .com.redhat.ceylon.compiler.java.metadata.Util.isIdentifiableObject(foo);
         sync = foo instanceof .java.lang.Throwable;
     }
     

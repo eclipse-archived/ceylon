@@ -1,15 +1,15 @@
 package com.redhat.ceylon.compiler.test.model.annotations;
 
-@.com.redhat.ceylon.compiler.metadata.java.Ceylon
-@.com.redhat.ceylon.compiler.metadata.java.Method
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Method
 final class method {
     
     private method() {
     }
     
-    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
-    static long method(@.com.redhat.ceylon.compiler.metadata.java.Name("i")
-    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+    static long method(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
     final long i) {
         return 1L;
     }

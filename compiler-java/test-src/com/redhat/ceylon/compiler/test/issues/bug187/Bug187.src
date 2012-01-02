@@ -1,7 +1,7 @@
 package bug187;
 
-@.com.redhat.ceylon.compiler.metadata.java.Ceylon
-@.com.redhat.ceylon.compiler.metadata.java.Method
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Method
 final class bar {
     
     private bar() {
@@ -11,7 +11,7 @@ final class bar {
         .bug187.main.main();
     }
     
-    @.com.redhat.ceylon.compiler.metadata.java.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
         bar();

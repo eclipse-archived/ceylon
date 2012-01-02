@@ -6,7 +6,7 @@ class SwitchIsNonExhaustive {
         final .java.lang.String name;
         {
             .java.lang.Object $sel$0 = b;
-            if (.com.redhat.ceylon.compiler.metadata.java.Util.isIdentifiableObject($sel$0)) {
+            if (.com.redhat.ceylon.compiler.java.metadata.Util.isIdentifiableObject($sel$0)) {
                 final .java.lang.Object $b$1 = (.java.lang.Object)$sel$0;
                 name = "IdentifiableObject";
             } else {

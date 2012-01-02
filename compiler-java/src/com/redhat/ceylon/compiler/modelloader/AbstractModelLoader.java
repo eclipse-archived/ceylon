@@ -74,20 +74,20 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.util.Util;
 
 public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader {
-    private static final String CEYLON_CEYLON_ANNOTATION = "com.redhat.ceylon.compiler.metadata.java.Ceylon";
-    private static final String CEYLON_MODULE_ANNOTATION = "com.redhat.ceylon.compiler.metadata.java.Module";
-    private static final String CEYLON_PACKAGE_ANNOTATION = "com.redhat.ceylon.compiler.metadata.java.Package";
-    private static final String CEYLON_IGNORE_ANNOTATION = "com.redhat.ceylon.compiler.metadata.java.Ignore";
-    private static final String CEYLON_CLASS_ANNOTATION = "com.redhat.ceylon.compiler.metadata.java.Class";
-    private static final String CEYLON_NAME_ANNOTATION = "com.redhat.ceylon.compiler.metadata.java.Name";
-    private static final String CEYLON_SEQUENCED_ANNOTATION = "com.redhat.ceylon.compiler.metadata.java.Sequenced";
-    private static final String CEYLON_DEFAULTED_ANNOTATION = "com.redhat.ceylon.compiler.metadata.java.Defaulted";
-    private static final String CEYLON_SATISFIED_TYPES_ANNOTATION = "com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes";
-    private static final String CEYLON_TYPE_PARAMETERS = "com.redhat.ceylon.compiler.metadata.java.TypeParameters";
-    private static final String CEYLON_TYPE_INFO_ANNOTATION = "com.redhat.ceylon.compiler.metadata.java.TypeInfo";
-    public static final String CEYLON_ATTRIBUTE_ANNOTATION = "com.redhat.ceylon.compiler.metadata.java.Attribute";
-    public static final String CEYLON_OBJECT_ANNOTATION = "com.redhat.ceylon.compiler.metadata.java.Object";
-    public static final String CEYLON_METHOD_ANNOTATION = "com.redhat.ceylon.compiler.metadata.java.Method";
+    private static final String CEYLON_CEYLON_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Ceylon";
+    private static final String CEYLON_MODULE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Module";
+    private static final String CEYLON_PACKAGE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Package";
+    private static final String CEYLON_IGNORE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Ignore";
+    private static final String CEYLON_CLASS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Class";
+    private static final String CEYLON_NAME_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Name";
+    private static final String CEYLON_SEQUENCED_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Sequenced";
+    private static final String CEYLON_DEFAULTED_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Defaulted";
+    private static final String CEYLON_SATISFIED_TYPES_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes";
+    private static final String CEYLON_TYPE_PARAMETERS = "com.redhat.ceylon.compiler.java.metadata.TypeParameters";
+    private static final String CEYLON_TYPE_INFO_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.TypeInfo";
+    public static final String CEYLON_ATTRIBUTE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Attribute";
+    public static final String CEYLON_OBJECT_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Object";
+    public static final String CEYLON_METHOD_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Method";
 
     private static final ReflType OBJECT_TYPE = simpleObjectType("java.lang.Object");
     private static final ReflType CEYLON_OBJECT_TYPE = simpleObjectType("ceylon.language.Object");

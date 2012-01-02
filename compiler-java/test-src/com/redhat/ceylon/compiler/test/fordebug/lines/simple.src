@@ -1,22 +1,22 @@
 package com.redhat.ceylon.compiler.test.fordebug.lines; // line 1
  // line 2
-@.com.redhat.ceylon.compiler.metadata.java.Ceylon // line 1
-@.com.redhat.ceylon.compiler.metadata.java.Method // line 1
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon // line 1
+@.com.redhat.ceylon.compiler.java.metadata.Method // line 1
 final class name {
      // line 2
     private name() { // line 2
     }
      // line 2
-    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.String") // line 2
-    static .java.lang.String name(@.com.redhat.ceylon.compiler.metadata.java.Name("firstName") // line 1
-    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.String") // line 1
-    final .java.lang.String firstName, @.com.redhat.ceylon.compiler.metadata.java.Name("lastName") // line 1
-    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.String") // line 1
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.String") // line 2
+    static .java.lang.String name(@.com.redhat.ceylon.compiler.java.metadata.Name("firstName") // line 1
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.String") // line 1
+    final .java.lang.String firstName, @.com.redhat.ceylon.compiler.java.metadata.Name("lastName") // line 1
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.String") // line 1
     final .java.lang.String lastName) { // line 1, 2
         return new java.lang.StringBuilder().append("My name is ").append(firstName).append(" ").append(lastName).append(". Hello !").toString(); // line 2
     }
 }
-@.com.redhat.ceylon.compiler.metadata.java.Ceylon // line 2
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon // line 2
 public class Main2 {
     
     public Main2() {

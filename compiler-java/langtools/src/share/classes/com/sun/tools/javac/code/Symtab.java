@@ -500,25 +500,25 @@ public class Symtab {
             loadCeylonSymbols();
         }
         
-        ceylonAtCeylonType = enterClass("com.redhat.ceylon.compiler.metadata.java.Ceylon");
-        ceylonAtImportType = enterClass("com.redhat.ceylon.compiler.metadata.java.Import");
-        ceylonAtModuleType = enterClass("com.redhat.ceylon.compiler.metadata.java.Module");
-        ceylonAtPackageType = enterClass("com.redhat.ceylon.compiler.metadata.java.Package");
-        ceylonAtNameType = enterClass("com.redhat.ceylon.compiler.metadata.java.Name");
-        ceylonAtSequencedType = enterClass("com.redhat.ceylon.compiler.metadata.java.Sequenced");
-        ceylonAtDefaultedType = enterClass("com.redhat.ceylon.compiler.metadata.java.Defaulted");
-        ceylonAtTypeInfoType = enterClass("com.redhat.ceylon.compiler.metadata.java.TypeInfo");
-        ceylonAtAttributeType = enterClass("com.redhat.ceylon.compiler.metadata.java.Attribute");
-        ceylonAtMethodType = enterClass("com.redhat.ceylon.compiler.metadata.java.Method");
-        ceylonAtObjectType = enterClass("com.redhat.ceylon.compiler.metadata.java.Object");
-        ceylonAtClassType = enterClass("com.redhat.ceylon.compiler.metadata.java.Class");
-        ceylonAtSatisfiedTypes = enterClass("com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes");
-        ceylonAtIgnore = enterClass("com.redhat.ceylon.compiler.metadata.java.Ignore");
-        ceylonVarianceType = enterClass("com.redhat.ceylon.compiler.metadata.java.Variance");
-        ceylonAtTypeParameter = enterClass("com.redhat.ceylon.compiler.metadata.java.TypeParameter");
-        ceylonAtTypeParameters = enterClass("com.redhat.ceylon.compiler.metadata.java.TypeParameters");
+        ceylonAtCeylonType = enterClass("com.redhat.ceylon.compiler.java.metadata.Ceylon");
+        ceylonAtImportType = enterClass("com.redhat.ceylon.compiler.java.metadata.Import");
+        ceylonAtModuleType = enterClass("com.redhat.ceylon.compiler.java.metadata.Module");
+        ceylonAtPackageType = enterClass("com.redhat.ceylon.compiler.java.metadata.Package");
+        ceylonAtNameType = enterClass("com.redhat.ceylon.compiler.java.metadata.Name");
+        ceylonAtSequencedType = enterClass("com.redhat.ceylon.compiler.java.metadata.Sequenced");
+        ceylonAtDefaultedType = enterClass("com.redhat.ceylon.compiler.java.metadata.Defaulted");
+        ceylonAtTypeInfoType = enterClass("com.redhat.ceylon.compiler.java.metadata.TypeInfo");
+        ceylonAtAttributeType = enterClass("com.redhat.ceylon.compiler.java.metadata.Attribute");
+        ceylonAtMethodType = enterClass("com.redhat.ceylon.compiler.java.metadata.Method");
+        ceylonAtObjectType = enterClass("com.redhat.ceylon.compiler.java.metadata.Object");
+        ceylonAtClassType = enterClass("com.redhat.ceylon.compiler.java.metadata.Class");
+        ceylonAtSatisfiedTypes = enterClass("com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes");
+        ceylonAtIgnore = enterClass("com.redhat.ceylon.compiler.java.metadata.Ignore");
+        ceylonVarianceType = enterClass("com.redhat.ceylon.compiler.java.metadata.Variance");
+        ceylonAtTypeParameter = enterClass("com.redhat.ceylon.compiler.java.metadata.TypeParameter");
+        ceylonAtTypeParameters = enterClass("com.redhat.ceylon.compiler.java.metadata.TypeParameters");
 
-        ceylonUtilType = enterClass("com.redhat.ceylon.compiler.metadata.java.Util");
+        ceylonUtilType = enterClass("com.redhat.ceylon.compiler.java.metadata.Util");
 
         synthesizeEmptyInterfaceIfMissing(cloneableType);
         synthesizeEmptyInterfaceIfMissing(serializableType);
@@ -740,6 +740,6 @@ public class Symtab {
         ceylonContainerType = enterClass("ceylon.language.Container");
         ceylonNamedArgumentCall = enterClass("ceylon.language.NamedArgumentCall");
         ceylonExceptionType = enterClass("ceylon.language.Exception");
-        ceylonTypeSystemExceptionType = enterClass("com.redhat.ceylon.compiler.metadata.java.TypeSystemException");
+        ceylonTypeSystemExceptionType = enterClass("com.redhat.ceylon.compiler.java.metadata.TypeSystemException");
     }
 }
