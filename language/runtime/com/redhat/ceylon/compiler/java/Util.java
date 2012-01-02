@@ -1,7 +1,11 @@
-package com.redhat.ceylon.compiler.java.metadata;
+package com.redhat.ceylon.compiler.java;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 
 /**
  * Helper class for generated Ceylon code that needs to call implementation logic.
