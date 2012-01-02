@@ -22,6 +22,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AndOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
@@ -59,17 +60,20 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.NegativeOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NotEqualOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NotOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ObjectDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.OrOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Outer;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositiveOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PowerOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ProductOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QuotientOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.RemainderOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SatisfiedTypes;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
@@ -1114,6 +1118,20 @@ public class GenerateJsVisitor extends Visitor
         out(")");
     }
     
+    @Override public void visit(RemainderOp that) {
+    	that.getLeftTerm().visit(this);
+    	out(".remainder(");
+    	that.getRightTerm().visit(this);
+    	out(")");
+    }
+    
+    @Override public void visit(PowerOp that) {
+    	that.getLeftTerm().visit(this);
+    	out(".power(");
+    	that.getRightTerm().visit(this);
+    	out(")");
+    }
+    
     @Override public void visit(NegativeOp that) {
         that.getTerm().visit(this);
         out(".negativeValue()");
@@ -1192,18 +1210,27 @@ public class GenerateJsVisitor extends Visitor
         out(")");
     }
     
+    private void clTrue() {
+        clAlias();
+        out(".getTrue()");
+    }
+    
+    private void clFalse() {
+        clAlias();
+        out(".getFalse()");
+    }
+    
     private void equalsFalse() {
         out(".equals(");
-        clAlias();
-        out(".getFalse())");    
+        clFalse();
+        out(")");    
     }
     
     private void thenTrueElseFalse() {
     	out("?");
-        clAlias();
-        out(".getTrue():");
-        clAlias();
-        out(".getFalse()");
+    	clTrue();
+        out(":");
+        clFalse();
     }
     
    private void leftCompareRight(BinaryOperatorExpression that) {
@@ -1212,5 +1239,29 @@ public class GenerateJsVisitor extends Visitor
     	that.getRightTerm().visit(this);
     	out(")");    	
     }
+   
+   @Override public void visit(AndOp that) {
+	   out("(");
+	   that.getLeftTerm().visit(this);
+	   out("===");
+	   clTrue();
+	   out("?");
+	   that.getRightTerm().visit(this);
+	   out(":");
+	   clFalse();
+	   out(")");
+   }
+   
+   @Override public void visit(OrOp that) {
+	   out("(");
+	   that.getLeftTerm().visit(this);
+	   out("===");
+	   clTrue();
+	   out("?");
+	   clTrue();
+	   out(":");
+	   that.getRightTerm().visit(this);
+	   out(")");
+   }
     
 }

@@ -30,6 +30,10 @@ function testIntegerOperators(){
     setI2(getI1().times($$$cl15.Integer(2)));
     setI2($$$cl15.Integer(17).divided($$$cl15.Integer(4)));
     setI1(getI2().times($$$cl15.Integer(516)).divided(getI1().negativeValue()));
+    setI1($$$cl15.Integer(15).remainder($$$cl15.Integer(4)));
+    setI2($$$cl15.Integer(312).remainder($$$cl15.Integer(12)));
+    setI1($$$cl15.Integer(2).power($$$cl15.Integer(10)));
+    setI2($$$cl15.Integer(100).power($$$cl15.Integer(6)));
 }
 
 //MethodDefinition testFloatOperators at operators.ceylon (19:0-35:0)
@@ -62,6 +66,7 @@ function testFloatOperators(){
     setF2(getF1().times($$$cl15.Float(2.0e13)));
     setF2($$$cl15.Float(17.1).divided($$$cl15.Float(4.0E-18)));
     setF1(getF2().times($$$cl15.Float(51.6e2)).divided(getF1().negativeValue()));
+    setF1($$$cl15.Float(150.0).power($$$cl15.Float(0.5)));
 }
 
 //ClassDefinition OpTest1 at operators.ceylon (37:0-37:17)
@@ -113,7 +118,15 @@ function testBooleanOperators(){
     function getB3(){
         return $b3;
     }
-    
+    function setB3(b3){
+        $b3=b3;
+    }
+    setB1(($$$cl15.getTrue()===$$$cl15.getTrue()?$$$cl15.getFalse():$$$cl15.getFalse()));
+    setB2((getB1()===$$$cl15.getTrue()?$$$cl15.getTrue():$$$cl15.getFalse()));
+    setB3(($$$cl15.getTrue()===$$$cl15.getTrue()?$$$cl15.getTrue():$$$cl15.getFalse()));
+    setB1(($$$cl15.getTrue()===$$$cl15.getTrue()?$$$cl15.getTrue():$$$cl15.getFalse()));
+    setB2(($$$cl15.getFalse()===$$$cl15.getTrue()?$$$cl15.getTrue():getB1()));
+    setB3(($$$cl15.getFalse()===$$$cl15.getTrue()?$$$cl15.getTrue():$$$cl15.getFalse()));
 }
 
 //MethodDefinition testComparisonOperators at operators.ceylon (52:0-68:0)
