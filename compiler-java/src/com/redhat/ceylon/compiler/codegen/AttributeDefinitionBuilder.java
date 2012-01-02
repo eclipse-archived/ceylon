@@ -80,10 +80,12 @@ public class AttributeDefinitionBuilder {
         getterBuilder = MethodDefinitionBuilder
             .systemMethod(owner, Util.getGetterName(attrName))
             .block(generateDefaultGetterBlock())
+            .isActual(attrType.isActual())
             .resultType(type, attrType);
         setterBuilder = MethodDefinitionBuilder
             .systemMethod(owner, Util.getSetterName(attrName))
             .block(generateDefaultSetterBlock())
+            .isActual(attrType.isActual())
             .parameter(0, attrName, attrType);
     }
 
