@@ -14,7 +14,7 @@ in the `ceylon-spec/` directory.
 
 Now, to compile the tests, type:
 
-    ant srctest
+    ant test
 
 The generated code may be found in the `build/test/node_modules`
 directory.
@@ -22,7 +22,7 @@ directory.
 To run the tests, you first need to install `node.js`, Then, 
 in the root directory, type:
 
-    ant
+    ant nodetest
 
 To compile the compiler, type:
 

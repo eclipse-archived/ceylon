@@ -49,19 +49,23 @@
         <pathelement location="${build.classes}"/>
     </path>
 
-	<target name="srctest"
-            depends="compile"
-            description="Run generated source comparison tests">
-        <echo message="Running generated source comparison tests"/>
+	<target name="compiletest" depends="compile">
         <java classname="MainForJsTest" classpathref="testcp">
-        	<arg value="optimize"/>
         </java>
+	</target>
+	
+    <target name="compileopttest" depends="compile">
         <java classname="MainForJsTest" classpathref="testcp">
+            <arg value="optimize"/>
         </java>
     </target>
 	
+	<target name="test"
+            depends="compiletest,compileopttest"
+            description="Run generated source comparison tests"/>
+	
 	<target name="nodetest"
-		    depends="compile,srctest"
+		    depends="compiletest"
 		    description="Run tests on node.js (requires node)">
       <echo message="Running tests on node.js (node must be installed)"/>
 	  <copy todir="${build.test}/node_modules">
@@ -75,8 +79,19 @@
 	  </exec>
 	</target>
 	
-	<target name="test" 
-		    depends="srctest,nodetest"
-	        description="Run all tests (requires node)"/>
-
+    <target name="nodeopttest"
+            depends="compileopttest"
+            description="Run tests on node.js (requires node)">
+      <echo message="Running tests on node.js (node must be installed)"/>
+      <copy todir="${build.test}/node_modules">
+        <fileset dir="${runtime}">
+            <include name="**/*.js"/>
+        </fileset>
+      </copy>
+      <copy todir="${build.test}" file="${test.src}/run.js"/>
+      <exec executable="node">
+        <arg value="${build.test}/run.js"/>
+      </exec>
+    </target>
+	
 </project>
