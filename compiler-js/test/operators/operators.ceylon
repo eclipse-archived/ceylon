@@ -56,4 +56,13 @@ void testComparisonOperators() {
     Comparison c4 = "" <=> "";
     Comparison c5 = "str1" <=> "";
     Comparison c6 = "" <=> "str2";
+    
+    variable Boolean b1 := "str1" < "str2";
+    variable Boolean b2 := "str1" > "str2";
+    variable Boolean b3 := "str1" <= "str2";
+    variable Boolean b4 := "str1" >= "str2";
+    b1 := "str1" < "str1";
+    b2 := "str1" > "str1";
+    b3 := "str1" <= "str1";
+    b4 := "str1" >= "str1";
 }
