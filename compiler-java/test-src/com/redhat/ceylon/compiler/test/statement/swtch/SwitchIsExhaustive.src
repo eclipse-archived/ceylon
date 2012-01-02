@@ -18,7 +18,7 @@ class SwitchIsExhaustive {
             } else if ($sel$0 instanceof .java.lang.Throwable) {
                 final .java.lang.Throwable $b$1 = (.java.lang.Throwable)$sel$0;
                 name = "Exception";
-            } else throw new com.redhat.ceylon.compiler.metadata.java.TypeSystemException("Supposedly exhaustive switch was not exhaustive");
+            } else throw new .com.redhat.ceylon.compiler.metadata.java.TypeSystemException("Supposedly exhaustive switch was not exhaustive");
         }
         return name;
     }

@@ -22,7 +22,6 @@ package com.redhat.ceylon.compiler.codegen;
 
 import static com.sun.tools.javac.code.Flags.FINAL;
 
-import com.redhat.ceylon.compiler.metadata.java.TypeSystemException;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -488,7 +487,7 @@ public class StatementTransformer extends AbstractTransformer {
             // switch is not recompiled.
             last = make().Throw(
                         make().NewClass(null, List.<JCExpression>nil(), 
-                                makeIdent(TypeSystemException.class.getName()), 
+                                makeIdent(syms().ceylonTypeSystemExceptionType), 
                                 List.<JCExpression>of(make().Literal(
                                         "Supposedly exhaustive switch was not exhaustive")), null));
         }
