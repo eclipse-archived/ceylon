@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.metadata;
+package com.redhat.ceylon.compiler.java.language;
 
 /**
  * Indicates the occurance of an 'impossible' situation which breaks Ceylon's
