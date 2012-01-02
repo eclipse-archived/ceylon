@@ -14,6 +14,12 @@ void testIntegerOperators() {
     i2 := i1 * 2;
     i2 := 17 / 4;
     i1 := i2 * 516 / -i1;
+    
+    i1 := 15 % 4;
+    i2 := 312 % 12;
+
+    i1 := 2 ** 10;
+    i2 := 100 ** 6;
 }
 
 void testFloatOperators() {
@@ -32,6 +38,8 @@ void testFloatOperators() {
     f2 := f1 * 2.0e13;
     f2 := 17.1 / 4.0E-18;
     f1 := f2 * 51.6e2 / -f1;
+    
+    f1 := 150.0 ** 0.5;
 }
 
 class OpTest1() {}

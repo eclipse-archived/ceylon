@@ -23,6 +23,11 @@ function Integer(value) {
         var exact = value/other.value;
         return Integer((exact<0) ? Math.ceil(exact) : Math.floor(exact));
     }
+    that.remainder = function(other) { return Integer(value%other.value) }
+    that.power = function(other) {
+        var exact = Math.pow(value, other.value);
+        return Integer((exact<0) ? Math.ceil(exact) : Math.floor(exact));
+    }
     that.negativeValue = function() { return Integer(-value) }
     that.positiveValue = function() { return that }
     that.equals = function(other) { return Boolean(other.value===value) }
@@ -41,6 +46,7 @@ function Float(value) {
     that.minus = function(other) { return Float(value-other.value) }
     that.times = function(other) { return Float(value*other.value) }
     that.divided = function(other) { return Float(value/other.value) }
+    that.power = function(other) { return Integer(Math.pow(value,other.value)) }
     that.negativeValue = function() { return Float(-value) }
     that.positiveValue = function() { return that }
     that.equals = function(other) { return Boolean(other.value===value) }
@@ -98,7 +104,7 @@ exports.Integer=Integer;
 exports.Float=Float;
 exports.String=String;
 exports.Boolean=Boolean;
-exports.Case=Case
+exports.Case=Case;
 exports.getTrue=getTrue;
 exports.getFalse=getFalse;
 exports.getLarger=getLarger;

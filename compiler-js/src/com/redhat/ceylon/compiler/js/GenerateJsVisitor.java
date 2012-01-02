@@ -66,10 +66,12 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositiveOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PowerOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ProductOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QuotientOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.RemainderOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SatisfiedTypes;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
@@ -816,6 +818,20 @@ public class GenerateJsVisitor extends Visitor
         out(".divided(");
         that.getRightTerm().visit(this);
         out(")");
+    }
+    
+    @Override public void visit(RemainderOp that) {
+    	that.getLeftTerm().visit(this);
+    	out(".remainder(");
+    	that.getRightTerm().visit(this);
+    	out(")");
+    }
+    
+    @Override public void visit(PowerOp that) {
+    	that.getLeftTerm().visit(this);
+    	out(".power(");
+    	that.getRightTerm().visit(this);
+    	out(")");
     }
     
     @Override public void visit(NegativeOp that) {
