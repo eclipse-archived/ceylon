@@ -1,8 +1,8 @@
-var $$cl15=require('ceylon/language/0.1/ceylon.language');
+var $$$cl15=require('ceylon/language/0.1/ceylon.language');
 
 //class Counter at members.ceylon (1:0-9:0)
 function Counter(initialCount){
-    var $thisCounter=new CeylonObject();
+    var $$counter=new CeylonObject;
     
     //value currentCount at members.ceylon (2:4-2:45)
     var $currentCount=initialCount;
@@ -17,19 +17,19 @@ function Counter(initialCount){
     function getCount(){
         return getCurrentCount();
     }
-    $thisCounter.getCount=getCount;
+    $$counter.getCount=getCount;
     
     //function inc at members.ceylon (6:4-8:4)
     function inc(){
-        setCurrentCount(getCurrentCount().plus($$cl15.Integer(1)));
+        setCurrentCount(getCurrentCount().plus($$$cl15.Integer(1)));
     }
-    $thisCounter.inc=inc;
+    $$counter.inc=inc;
     
     //AttributeGetterDefinition initialCount at members.ceylon (9:4-11:4)
     function getInitialCount(){
         return initialCount;
     }
-    $thisCounter.getInitialCount=getInitialCount;
-    return $thisCounter;
+    $$counter.getInitialCount=getInitialCount;
+    return $$counter;
 }
 this.Counter=Counter;

@@ -1,29 +1,29 @@
-var $$cl15=require('ceylon/language/0.1/ceylon.language');
+var $$$cl15=require('ceylon/language/0.1/ceylon.language');
 
 //class Pair at types.ceylon (1:0-1:27)
 function Pair(x,y){
-    var $thisPair=new CeylonObject();
-    return $thisPair;
+    var $$pair=new CeylonObject;
+    return $$pair;
 }
 
 //class Complex at types.ceylon (3:0-4:41)
 function Complex(x,y){
-    var $thisComplex=new CeylonObject();
-    var $super=Pair(x,y);
-    for(var $m in $super){$thisComplex[$m]=$super[$m]}
-    return $thisComplex;
+    var $$complex=new CeylonObject;
+    var super=Pair(x,y);
+    for(var $ in super){if(super.hasOwnProperty($))$$complex[$]=super[$]}
+    return $$complex;
 }
 
 //interface List at types.ceylon (6:0-6:19)
 function List(){
-    var $thisList=new CeylonObject();
-    return $thisList;
+    var $$list=new CeylonObject;
+    return $$list;
 }
 
 //class ConcreteList at types.ceylon (8:0-9:27)
 function ConcreteList(xs){
-    var $thisConcreteList=new CeylonObject();
+    var $$concreteList=new CeylonObject;
     var $superList=List();
-    for(var $m in $superList){$thisConcreteList[$m]=$superList[$m]}
-    return $thisConcreteList;
+    for(var $ in $superList){if($superList.hasOwnProperty($))$$concreteList[$]=$superList[$]}
+    return $$concreteList;
 }
