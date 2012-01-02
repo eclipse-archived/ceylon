@@ -28,10 +28,12 @@ import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
@@ -259,11 +261,23 @@ public class ClassTransformer extends AbstractTransformer {
 
     private List<JCTree> makeSetter(Tree.AttributeDeclaration decl) {
         at(decl);
-        String atrrName = decl.getIdentifier().getText();
+        String attrName = decl.getIdentifier().getText();
+        Value declModel = decl.getDeclarationModel();
+        Declaration parentDecl = declModel.getRefinedDeclaration();
+        boolean actual;
+        // If a variable attr is refining a non-variable one then the
+        // setter is not overriding anything
+        if (parentDecl != null && 
+                parentDecl instanceof Value) {
+            Value parentValue = (Value)parentDecl;
+            actual = parentValue.isVariable() && Decl.isActual(decl);
+        } else {
+            actual = Decl.isActual(decl);
+        }
         return AttributeDefinitionBuilder
-            .setter(this, atrrName, decl.getDeclarationModel())
+            .setter(this, attrName, declModel)
             .modifiers(transformAttributeGetSetDeclFlags(decl))
-            .isActual(Decl.isActual(decl))
+            .isActual(actual)
             .isFormal(Decl.isFormal(decl))
             .build();
     }
