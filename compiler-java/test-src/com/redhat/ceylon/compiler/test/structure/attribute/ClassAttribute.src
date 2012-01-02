@@ -25,3 +25,21 @@ abstract class ClassAttribute {
         capturedvar = "";
     }
 }
+class SubClassAttribute extends com.redhat.ceylon.compiler.test.structure.attribute.ClassAttribute {
+    private final .java.lang.String formalvar;
+    
+    @.java.lang.Override
+    public final .java.lang.String getFormalvar() {
+        return formalvar;
+    }
+    
+    SubClassAttribute() {
+        super();
+        this.formalvar = "";
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new SubClassAttribute();
+    }
+}

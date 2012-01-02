@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class ClassAttributeGetterSetter(){
+abstract class ClassAttributeGetterSetter(){
     String f {
         return "";
     }
@@ -28,5 +28,26 @@ class ClassAttributeGetterSetter(){
         return "";
     }
     assign f2 {
+    }
+    shared default String f3 {
+        return "";
+    }
+    shared default String f4 {
+        return "";
+    }
+    assign f4 {
+    }
+}
+@nomodel
+class SubClassAttributeGetterSetter() extends ClassAttributeGetterSetter() {
+    shared actual String f3 {
+        return "";
+    }
+    assign f3 {
+    }
+    shared actual String f4 {
+        return "";
+    }
+    assign f4 {
     }
 }

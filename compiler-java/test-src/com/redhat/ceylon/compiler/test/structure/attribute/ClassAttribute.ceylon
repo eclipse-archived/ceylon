@@ -31,3 +31,7 @@ abstract class ClassAttribute(){
         return capturedvar;
     }
 }
+@nomodel
+class SubClassAttribute() extends ClassAttribute() {
+    shared actual String formalvar = "";
+}

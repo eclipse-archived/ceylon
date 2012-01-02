@@ -29,3 +29,9 @@ abstract class ClassAttributeGetter(){
         return "";
     }
 }
+@nomodel
+class SubClassAttributeGetter() extends ClassAttributeGetter() {
+    shared actual String f3 {
+        return "";
+    }
+}

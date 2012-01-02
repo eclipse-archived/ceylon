@@ -321,16 +321,7 @@ public class StructureTest extends CompilerTest {
     // Attributes
     
     @Test
-    public void testAtrClassVariable(){
-        compareWithJavaSource("attribute/ClassVariable");
-    }
-    @Test
-    public void testAtrClassVariableWithInitializer(){
-        compareWithJavaSource("attribute/ClassVariableWithInitializer");
-    }
-    @Test
     public void testAtrClassAttribute(){
-        // FIXME: this one should fail and we should make sure it fails for the right reason
         compareWithJavaSource("attribute/ClassAttribute");
     }
     @Test
@@ -344,6 +335,14 @@ public class StructureTest extends CompilerTest {
     @Test
     public void testAtrClassAttributeGetterSetter(){
         compareWithJavaSource("attribute/ClassAttributeGetterSetter");
+    }
+    @Test
+    public void testAtrClassVariable(){
+        compareWithJavaSource("attribute/ClassVariable");
+    }
+    @Test
+    public void testAtrClassVariableWithInitializer(){
+        compareWithJavaSource("attribute/ClassVariableWithInitializer");
     }
     @Test
     public void testAtrInnerAttributeGetter(){
