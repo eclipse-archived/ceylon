@@ -740,6 +740,6 @@ public class Symtab {
         ceylonContainerType = enterClass("ceylon.language.Container");
         ceylonNamedArgumentCall = enterClass("ceylon.language.NamedArgumentCall");
         ceylonExceptionType = enterClass("ceylon.language.Exception");
-        ceylonTypeSystemExceptionType = enterClass("com.redhat.ceylon.compiler.java.metadata.TypeSystemException");
+        ceylonTypeSystemExceptionType = enterClass("com.redhat.ceylon.compiler.java.language.TypeSystemException");
     }
 }
