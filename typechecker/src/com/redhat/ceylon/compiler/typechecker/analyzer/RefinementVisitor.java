@@ -20,6 +20,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -78,7 +79,9 @@ public class RefinementVisitor extends Visitor {
             }
             
             if (member) {
-                checkMember(that, dec);
+                if (!(dec instanceof Setter)) {
+                    checkMember(that, dec);
+                }
                 ClassOrInterface declaringType = (ClassOrInterface) dec.getContainer();
                 Declaration refined = declaringType.getRefinedMember(dec.getName());
                 dec.setRefinedDeclaration(refined);
