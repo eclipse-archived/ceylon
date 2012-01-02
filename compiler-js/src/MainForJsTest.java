@@ -32,7 +32,7 @@ public class MainForJsTest {
                 .addSrcDirectory(new File("test"))
                 .getTypeChecker();
         typeChecker.process();
-        new JsCompiler(typeChecker) { 
+        new JsCompiler(typeChecker, true) { 
             @Override
             protected Writer getWriter(PhasedUnit pu) {
                 Package pkg = pu.getPackage();

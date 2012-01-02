@@ -35,7 +35,7 @@ public class MainForJs {
                 .addSrcDirectory(new File(path))
                 .getTypeChecker();
         typeChecker.process();
-        new JsCompiler(typeChecker).generate();
+        new JsCompiler(typeChecker, true).generate();
         //getting the type checker does process all types in the source directory
     }
 }

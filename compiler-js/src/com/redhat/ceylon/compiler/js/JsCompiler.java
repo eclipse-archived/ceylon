@@ -15,14 +15,16 @@ public class JsCompiler {
     
     private final OutputStreamWriter systemOut = new OutputStreamWriter(System.out);
     private final TypeChecker tc;
+    private final boolean optimize;
     
-    public JsCompiler(TypeChecker tc) {
+    public JsCompiler(TypeChecker tc, boolean optimize) {
         this.tc = tc;
+        this.optimize = optimize;
     }
 
     public void generate() {
         for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
-            pu.getCompilationUnit().visit(new GenerateJsVisitor(getWriter(pu)));
+            pu.getCompilationUnit().visit(new GenerateJsVisitor(getWriter(pu),optimize));
             pu.getCompilationUnit().visit(new Visitor() {
                 @Override
                 public void visitAny(Node that) {
