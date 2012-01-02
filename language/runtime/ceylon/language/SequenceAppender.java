@@ -2,12 +2,12 @@ package ceylon.language;
 
 import java.util.ArrayList;
 
-import com.redhat.ceylon.compiler.metadata.java.Ceylon;
-import com.redhat.ceylon.compiler.metadata.java.Class;
-import com.redhat.ceylon.compiler.metadata.java.Name;
-import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
-import com.redhat.ceylon.compiler.metadata.java.TypeParameter;
-import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon
 @Class(extendsType="ceylon.language.SequenceBuilder<Element>")

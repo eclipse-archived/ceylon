@@ -1,10 +1,10 @@
 package ceylon.language.descriptor;
 
-import com.redhat.ceylon.compiler.metadata.java.Ceylon;
-import com.redhat.ceylon.compiler.metadata.java.Defaulted;
-import com.redhat.ceylon.compiler.metadata.java.Ignore;
-import com.redhat.ceylon.compiler.metadata.java.Name;
-import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Defaulted;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon
 public class Import {

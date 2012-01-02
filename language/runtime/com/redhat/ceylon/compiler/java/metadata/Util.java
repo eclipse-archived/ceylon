@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.metadata.java;
+package com.redhat.ceylon.compiler.java.metadata;
 
 import java.util.HashSet;
 import java.util.Set;

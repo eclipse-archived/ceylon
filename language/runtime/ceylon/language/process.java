@@ -2,10 +2,10 @@ package ceylon.language;
 
 import java.io.IOException;
 
-import com.redhat.ceylon.compiler.metadata.java.Ceylon;
-import com.redhat.ceylon.compiler.metadata.java.Name;
-import com.redhat.ceylon.compiler.metadata.java.Object;
-import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.Object;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon @Object //TODO: extendedType=Object
 public class process extends ceylon.language.Object {
