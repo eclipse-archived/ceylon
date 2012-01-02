@@ -105,6 +105,9 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
         }
         if (node instanceof Tree.Declaration) {
             Declaration d = ((Tree.Declaration) node).getDeclarationModel();
+            if (d.isCaptured()) {
+                print("[captured]");
+            }
             if (d!=null) {
                 print(" => " + d);
             }
