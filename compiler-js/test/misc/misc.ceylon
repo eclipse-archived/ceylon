@@ -27,6 +27,8 @@ shared class Bar() extends Foo("Hello") satisfies X {
             inc();
         }
     }
+    //this.printName();
+    //super.printName();
 }
 
 void printBoth(String x, String y) {

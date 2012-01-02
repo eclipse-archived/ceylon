@@ -34,8 +34,35 @@ void testFloatOperators() {
     f1 := f2 * 51.6e2 / -f1;
 }
 
+class OpTest1() {}
+
 void testBooleanOperators() {
-    Boolean b1 = 1 == 2;
-    Boolean b2 = 1 != 2;
+    value o1 = OpTest1();
+    value o2 = OpTest1();
+    variable Boolean b1 := o1 === o2;
+    variable Boolean b2 := o1 === o1;
+
+    b1 := o1 == o2;
+    b2 := o1 == o1;    
+    b1 := 1 == 2;
+    b2 := 1 != 2;
     Boolean b3 = !b2;
+}
+
+void testComparisonOperators() {
+    Comparison c1 = "str1" <=> "str2";
+    Comparison c2 = "str2" <=> "str1";
+    Comparison c3 = "str1" <=> "str1";
+    Comparison c4 = "" <=> "";
+    Comparison c5 = "str1" <=> "";
+    Comparison c6 = "" <=> "str2";
+    
+    variable Boolean b1 := "str1" < "str2";
+    variable Boolean b2 := "str1" > "str2";
+    variable Boolean b3 := "str1" <= "str2";
+    variable Boolean b4 := "str1" >= "str2";
+    b1 := "str1" < "str1";
+    b2 := "str1" > "str1";
+    b3 := "str1" <= "str1";
+    b4 := "str1" >= "str1";
 }

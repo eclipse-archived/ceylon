@@ -9,6 +9,9 @@ CeylonObject=function CeylonObject() {}
 CeylonObject.prototype.getString=Object.prototype.toString;
 CeylonObject.prototype.toString=CeylonObject.prototype.getString;
 
+//TODO: we need to distinguish between Objects and IdentifiableObjects
+CeylonObject.prototype.equals = function(other) { return Boolean(this===other) }
+
 function Integer(value) {
     var that = new CeylonObject();
     that.value = value;
@@ -23,6 +26,10 @@ function Integer(value) {
     that.negativeValue = function() { return Integer(-value) }
     that.positiveValue = function() { return that }
     that.equals = function(other) { return Boolean(other.value===value) }
+    that.compare = function(other) {
+        return value===other.value ? equal
+                                   : (value<other.value ? smaller:larger);
+    }
     return that;
 }
 
@@ -37,6 +44,10 @@ function Float(value) {
     that.negativeValue = function() { return Float(-value) }
     that.positiveValue = function() { return that }
     that.equals = function(other) { return Boolean(other.value===value) }
+    that.compare = function(other) {
+        return value===other.value ? equal
+                                   : (value<other.value ? smaller:larger);
+    }
     return that;
 }
 
@@ -46,24 +57,34 @@ function String(value) {
     that.getString = function() { return value }
     that.plus = function(other) { return String(value+other.value) }
     that.equals = function(other) { return Boolean(other.value===value) }
+    that.compare = function(other) {
+        return value===other.value ? equal
+                                   : (value<other.value ? smaller:larger);
+    }
     return that;
 }
 
-var $true = new CeylonObject();
-var trueString = String("true");
-$true.getString = function() { return trueString }
-$true.equals = function(other) { return other===$true ? $true:$false }
+function Case(caseName) {
+    var that = new CeylonObject();
+    var string = String(caseName);
+    that.getString = function() { return string }
+    return that;
+}
+
+var $true = Case("true");
 function getTrue() { return $true; }
-
-var $false = new CeylonObject();
-var falseString = String("false");
-$false.getString = function() { return falseString }
-$false.equals = function(other) { return other===$false ? $true:$false }
+var $false = Case("false");
 function getFalse() { return $false; }
-
 function Boolean(value) {
     return value ? $true : $false;
 }
+
+var larger = Case("larger");
+function getLarger() { return larger }
+var smaller = Case("smaller");
+function getSmaller() { return smaller }
+var equal = Case("equal");
+function getEqual() { return equal }
 
 function ArraySequence(value) {
     var that = new CeylonObject();
@@ -77,8 +98,12 @@ exports.Integer=Integer;
 exports.Float=Float;
 exports.String=String;
 exports.Boolean=Boolean;
+exports.Case=Case
 exports.getTrue=getTrue;
 exports.getFalse=getFalse;
+exports.getLarger=getLarger;
+exports.getSmaller=getSmaller;
+exports.getEqual=getEqual;
 exports.ArraySequence=ArraySequence;
 
     });

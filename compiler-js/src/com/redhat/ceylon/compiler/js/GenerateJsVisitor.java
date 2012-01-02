@@ -29,11 +29,13 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinitio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseTypeExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BinaryOperatorExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Block;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Body;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompareOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DifferenceOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.EqualOp;
@@ -41,10 +43,13 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExecutableStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExtendedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.IdenticalOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Import;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.LargeAsOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.LargerOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
@@ -69,6 +74,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SatisfiedTypes;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SimpleType;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SmallAsOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SmallerOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
@@ -1093,26 +1100,92 @@ public class GenerateJsVisitor extends Visitor
     }
     
     @Override public void visit(EqualOp that) {
+    	leftEqualsRight(that);
+    }
+    
+    @Override public void visit(NotEqualOp that) {
+    	leftEqualsRight(that);
+        equalsFalse();
+    }
+    
+    @Override public void visit(NotOp that) {
+        that.getTerm().visit(this);
+        equalsFalse();
+    }
+    
+    @Override public void visit(IdenticalOp that) {
+        out("(");
         that.getLeftTerm().visit(this);
+        out("===");
+        that.getRightTerm().visit(this);
+        thenTrueElseFalse();
+        out(")");
+    }
+    
+    @Override public void visit(CompareOp that) {
+    	leftCompareRight(that);
+    }
+    
+    @Override public void visit(SmallerOp that) {
+    	leftCompareRight(that);
+    	out(".equals(");
+    	clAlias();
+    	out(".getSmaller())");
+    }
+    
+    @Override public void visit(LargerOp that) {
+    	leftCompareRight(that);
+    	out(".equals(");
+    	clAlias();
+    	out(".getLarger())");
+    }
+    
+    @Override public void visit(SmallAsOp that) {
+    	out("(");
+    	leftCompareRight(that);
+    	out("!==");
+    	clAlias();
+    	out(".getLarger()");
+    	thenTrueElseFalse();
+    	out(")");
+    }
+    
+    @Override public void visit(LargeAsOp that) {
+    	out("(");
+    	leftCompareRight(that);
+    	out("!==");
+    	clAlias();
+    	out(".getSmaller()");
+    	thenTrueElseFalse();
+    	out(")");
+    }
+    
+    private void leftEqualsRight(BinaryOperatorExpression that) {
+    	that.getLeftTerm().visit(this);
         out(".equals(");
         that.getRightTerm().visit(this);
         out(")");
     }
     
-    @Override public void visit(NotEqualOp that) {
-        that.getLeftTerm().visit(this);
+    private void equalsFalse() {
         out(".equals(");
-        that.getRightTerm().visit(this);
-        out(").equals(");
         clAlias();
-        out(".getFalse())");
+        out(".getFalse())");    
     }
     
-    @Override public void visit(NotOp that) {
-        that.getTerm().visit(this);
-        out(".equals(");
+    private void thenTrueElseFalse() {
+    	out("?");
         clAlias();
-        out(".getFalse())");
+        out(".getTrue():");
+        clAlias();
+        out(".getFalse()");
+    }
+    
+   private void leftCompareRight(BinaryOperatorExpression that) {
+    	that.getLeftTerm().visit(this);
+    	out(".compare(");
+    	that.getRightTerm().visit(this);
+    	out(")");    	
     }
     
 }
