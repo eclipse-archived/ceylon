@@ -58,15 +58,22 @@ this.Foo=Foo;
 //class Bar at misc.ceylon (20:0-32:0)
 function Bar(){
     var $$bar=new CeylonObject;
-    var super=Foo($$$cl15.String("Hello"));
-    for(var $ in super){if(super.hasOwnProperty($))$$bar[$]=super[$]}
+    var $superFoo=Foo($$$cl15.String("Hello"));
+    $$bar.name=$superFoo.name;
+    $$bar.getName=$superFoo.getName;
+    $$bar.counter=$superFoo.counter;
+    $$bar.getCounter=$superFoo.getCounter;
+    $$bar.setCounter=$superFoo.setCounter;
+    $$bar.getCount=$superFoo.getCount;
+    $$bar.inc=$superFoo.inc;
+    $$bar.printName=$superFoo.printName;
     var $superX=X();
-    for(var $ in $superX){if($superX.hasOwnProperty($))$$bar[$]=$superX[$]}
+    $$bar.helloWorld=$superX.helloWorld;
     
     //function printName at misc.ceylon (21:4-24:4)
     function printName(){
         $$$cl15.print($$$cl15.String("bar name = ").plus($$bar.getName()));
-        super.printName();
+        $superFoo.printName();
     }
     $$bar.printName=printName;
     

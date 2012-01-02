@@ -12,8 +12,7 @@ function $Complex(){}
 for(var $ in $Pair.prototype){$Complex.prototype[$]=$Pair.prototype[$]}
 function Complex(x,y){
     var $$complex=new $Complex;
-    $$complex.super=Pair($$complex.x,$$complex.y);
-    for(var $ in $$complex.super){if($$complex.super.hasOwnProperty($))$$complex[$]=$$complex.super[$]}
+    $$complex.$superPair=Pair($$complex.x,$$complex.y);
     return $$complex;
 }
 
@@ -30,6 +29,5 @@ for(var $ in $List.prototype){$ConcreteList.prototype[$]=$List.prototype[$]}
 function ConcreteList(xs){
     var $$concreteList=new $ConcreteList;
     var $superList=List();
-    for(var $ in $superList){if($superList.hasOwnProperty($))$$concreteList[$]=$superList[$]}
     return $$concreteList;
 }

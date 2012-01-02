@@ -9,8 +9,7 @@ function Pair(x,y){
 //class Complex at types.ceylon (3:0-4:41)
 function Complex(x,y){
     var $$complex=new CeylonObject;
-    var super=Pair(x,y);
-    for(var $ in super){if(super.hasOwnProperty($))$$complex[$]=super[$]}
+    var $superPair=Pair(x,y);
     return $$complex;
 }
 
@@ -24,6 +23,5 @@ function List(){
 function ConcreteList(xs){
     var $$concreteList=new CeylonObject;
     var $superList=List();
-    for(var $ in $superList){if($superList.hasOwnProperty($))$$concreteList[$]=$superList[$]}
     return $$concreteList;
 }

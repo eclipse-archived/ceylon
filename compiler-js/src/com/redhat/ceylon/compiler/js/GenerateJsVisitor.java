@@ -395,7 +395,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private void declareSelf(Declaration d) {
+    private void declareSelf(ClassOrInterface d) {
         selfVar(d);
         if (prototypeStyle) {
             out("new $");
@@ -408,81 +408,110 @@ public class GenerateJsVisitor extends Visitor
         endLine();
     }
 
-    private void returnSelf(Declaration d) {
+    private void returnSelf(ClassOrInterface d) {
         out("return ");
         self(d);
         out(";");
     }
 
-    void copyMembers(Declaration d) {
-        out("for(var $ in ");
-        zuper(d);
-        out("){if(");
-        zuper(d);
-        out(".hasOwnProperty($))");
-        self(d);
-        out("[$]=");
-        zuper(d);
-        out("[$]}");
-        endLine();
+    private void copyMembers(ClassOrInterface to, ClassOrInterface from) {
+        for (Declaration m: from.getMembers()) {
+            copyMember(to, from, m);
+        }
     }
 
-    private void copyMembers(Declaration d, String name) {
-        out("for(var $ in ");
-        out("$super");
-        out(name);
-        out("){if(");
-        out("$super");
-        out(name);
-        out(".hasOwnProperty($))");
-        self(d);
-        out("[$]=");
-        out("$super");
-        out(name);
-        out("[$]}");
-        endLine();
+    private void copyMember(Declaration to, ClassOrInterface from, 
+            Declaration m) {
+        if (m instanceof Value) {
+            self(to);
+            out(".");
+            out(m.getName());
+            out("=");
+            if (prototypeStyle) {
+                self(to);
+                out(".");
+            }
+            out("$super");
+            out(from.getName());
+            out(".");
+            out(m.getName());
+            out(";");
+            endLine();
+        }
+        if (!prototypeStyle) {
+            if (m instanceof Method) {
+                self(to);
+                out(".");
+                out(m.getName());
+                out("=$super");
+                out(from.getName());
+                out(".");
+                out(m.getName());
+                out(";");
+                endLine();
+            }
+            if (m instanceof Getter || m instanceof Value) {
+                self(to);
+                out(".");
+                out(getter(m));
+                out("=$super");
+                out(from.getName());
+                out(".");
+                out(getter(m));
+                out(";");
+                endLine();
+            }
+            if (m instanceof Setter || m instanceof Value 
+                    && ((Value)m).isVariable()) {
+                self(to);
+                out(".");
+                out(setter(m));
+                out("=$super");
+                out(from.getName());
+                out(".");
+                out(setter(m));
+                out(";");
+                endLine();
+            }
+        }
     }
     
-    void zuper(Declaration d) {
+    private void copySuperclassMembers(ExtendedType that, Class d) {
+        if (that!=null) {
+            declareSuper(d, that);
+            copyMembers(d, d.getExtendedTypeDeclaration());
+        }
+    }
+
+    private void copyInterfaceMembers(SatisfiedTypes that, ClassOrInterface d) {
+        if (that!=null)
+        for (Tree.SimpleType st: that.getTypes()) {
+            Interface i = (Interface)st.getDeclarationModel();
+            declareSuperInterface(i);
+            copyMembers(d, i);
+        }
+    }
+
+    private void declareSuper(Class d, ExtendedType that) {
+        if (!prototypeStyle) out("var ");
         if (prototypeStyle) {
             self(d);
             out(".");
         }
-        out("super");
-    }
-
-    private void copySuperclassMembers(ExtendedType that, Declaration d) {
-        if (that!=null) {
-            declareSuper(that, d);
-            copyMembers(d);
-        }
-    }
-
-    private void declareSuper(ExtendedType that, Declaration d) {
-        String name = that.getType().getDeclarationModel().getName();
-        if (!prototypeStyle) out("var ");
-        zuper(d);
+        out("$super");
+        out(d.getExtendedTypeDeclaration().getName());
         out("=");
-        out(name);
+        out(d.getExtendedTypeDeclaration().getName());
         that.getInvocationExpression().visit(this);
         out(";");
         endLine();
     }
 
-    private void copyInterfaceMembers(SatisfiedTypes that, Declaration d) {
-        if (that!=null)
-        for (Tree.SimpleType st: that.getTypes()) {
-            String name = st.getDeclarationModel().getName();
-            declareSuperInterface(name);
-            copyMembers(d, name);
-        }
-    }
-
-    private void declareSuperInterface(String name) {
+    private void declareSuperInterface(Interface i) {
         out("var $super");
-        out(name);
+        out(i.getName());
         out("=");
-        out(name);
+        out(i.getName());
         out("();");
         endLine();
     }
@@ -529,11 +558,11 @@ public class GenerateJsVisitor extends Visitor
         out(d.getName());
         out("()");
         beginBlock();
-        declareSelf(d);
-        copySuperclassMembers(that.getExtendedType(), d);
-        copyInterfaceMembers(that.getSatisfiedTypes(), d);
+        declareSelf(c);
+        copySuperclassMembers(that.getExtendedType(), c);
+        copyInterfaceMembers(that.getSatisfiedTypes(), c);
         that.getClassBody().visit(this);
-        returnSelf(d);       
+        returnSelf(c);       
         indentLevel--;
         endLine();
         out("}();");
@@ -825,11 +854,10 @@ public class GenerateJsVisitor extends Visitor
             else {
                 out("this");
             }
-            out(".super");
+            out(".");
         }
-        else {
-            zuper(d);
-        }
+        out("$super");
+        out(d.getName());
     }
     
     @Override
