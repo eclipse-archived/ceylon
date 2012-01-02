@@ -425,15 +425,15 @@ public class GenerateJsVisitor extends Visitor
 
     private void copyMembers(Declaration d, String name) {
         out("for(var $ in ");
-        out("super");
+        out("$super");
         out(name);
         out("){if(");
-        out("super");
+        out("$super");
         out(name);
         out(".hasOwnProperty($))");
         self(d);
         out("[$]=");
-        out("super");
+        out("$super");
         out(name);
         out("[$]}");
         endLine();
@@ -474,8 +474,8 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    void declareSuperInterface(String name) {
-        out("var super");
+    private void declareSuperInterface(String name) {
+        out("var $super");
         out(name);
         out("=");
         out(name);
