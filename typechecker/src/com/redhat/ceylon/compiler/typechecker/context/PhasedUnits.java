@@ -12,6 +12,7 @@ import org.antlr.runtime.CommonTokenStream;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
@@ -52,7 +53,11 @@ public class PhasedUnits {
     }
 
     public void removePhasedUnitForRelativePath(String relativePath) {
-	PhasedUnit phasedUnit = this.phasedUnitPerRelativePath.get(relativePath);
+        PhasedUnit phasedUnit = this.phasedUnitPerRelativePath.get(relativePath);
+        Unit unit = phasedUnit.getUnit();
+        if (unit != null) {
+            unit.getPackage().getUnits().remove(unit);
+        }
         this.phasedUnitPerRelativePath.remove(relativePath);
         this.phasedUnitPerFile.remove(phasedUnit.getUnitFile());
     }
