@@ -9,6 +9,11 @@ CeylonObject=function CeylonObject() {}
 CeylonObject.prototype.getString=Object.prototype.toString;
 CeylonObject.prototype.toString=CeylonObject.prototype.getString;
 
+//TODO: we need to distinguish between Objects and IdentifiableObjects
+CeylonObject.prototype.equals = function(other) {
+    return this===other ? $true : $false
+}
+
 function Integer(value) {
     var that = new CeylonObject();
     that.value = value;

@@ -40,6 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExecutableStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExtendedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.IdenticalOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Import;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDefinition;
@@ -838,6 +839,18 @@ public class GenerateJsVisitor extends Visitor
     @Override public void visit(NotOp that) {
         that.getTerm().visit(this);
         out(".equals(");
+        clAlias();
+        out(".getFalse())");
+    }
+    
+    @Override public void visit(IdenticalOp that) {
+        out("(");
+        that.getLeftTerm().visit(this);
+        out("===");
+        that.getRightTerm().visit(this);
+        out("?");
+        clAlias();
+        out(".getTrue():");
         clAlias();
         out(".getFalse())");
     }
