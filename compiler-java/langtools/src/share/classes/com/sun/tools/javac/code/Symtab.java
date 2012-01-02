@@ -518,7 +518,7 @@ public class Symtab {
         ceylonAtTypeParameter = enterClass("com.redhat.ceylon.compiler.java.metadata.TypeParameter");
         ceylonAtTypeParameters = enterClass("com.redhat.ceylon.compiler.java.metadata.TypeParameters");
 
-        ceylonUtilType = enterClass("com.redhat.ceylon.compiler.java.metadata.Util");
+        ceylonUtilType = enterClass("com.redhat.ceylon.compiler.java.Util");
 
         synthesizeEmptyInterfaceIfMissing(cloneableType);
         synthesizeEmptyInterfaceIfMissing(serializableType);
