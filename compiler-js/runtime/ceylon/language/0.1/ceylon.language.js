@@ -91,12 +91,61 @@ var smaller = Case("smaller");
 function getSmaller() { return smaller }
 var equal = Case("equal");
 function getEqual() { return equal }
+function largest(x, y) { return x.compare(y) === larger ? x : y }
+function smallest(x, y) { return x.compare(y) === smaller ? x : y }
+function min(values) {
+    var min = values[0];
+    if (values.length > 1) {
+        for (i = 1; i < values.length; i++) {
+            min = smallest(min, values[i]);
+        }
+    }
+    return min;
+}
+function max(values) {
+    var max = values[0];
+    if (values.length > 1) {
+        for (i = 1; i < values.length; i++) {
+            max = largest(min, values[i]);
+        }
+    }
+    return max;
+}
+function join(seqs) {
+    var builder = [];
+    for (i = 0; i < seqs.length; i++) {
+        builder = builder.concat(seqs[i])
+    }
+    return builder;
+}
 
 function ArraySequence(value) {
     var that = new CeylonObject();
     that.value = value;
     that.getString = function() { return value.toString() }
     return that;
+}
+
+function Entry(key, item) {
+    var that = new CeylonObject;
+    that.key = key;
+    that.item = item;
+    that.getString = function() { return key.toString() + "->" + item.toString() }
+    that.getKey = function() { return key; }
+    that.getItem = function() { return item; }
+    that.equals = function(other) {
+        return Boolean(other && key.equals(other.getKey()) && item.equals(other.getItem()));
+    }
+    that.getHash = function() { key.getHash()/2 + item.getHash()/2 }
+    return that;
+}
+
+function zip(keys, items) {
+    var entries = []
+    for (i = 0; i < smallest(Integer(keys.length), Integer(items.length)); i++) {
+        entries[i] = Entry(keys[i], items[i]);
+    }
+    return entries;
 }
 
 exports.print=print;
@@ -111,6 +160,13 @@ exports.getLarger=getLarger;
 exports.getSmaller=getSmaller;
 exports.getEqual=getEqual;
 exports.ArraySequence=ArraySequence;
+exports.Entry=Entry;
+exports.largest=largest;
+exports.smallest=smallest;
+exports.min=min;
+exports.max=max;
+exports.join=join;
+exports.zip=zip;
 
     });
 }(typeof define==='function' && define.amd ? 
