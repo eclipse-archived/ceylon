@@ -2,7 +2,7 @@
     define('ceylon.language', function (require, exports) {
 
 //the Ceylon language module
-function print(line) { console.log(line.getString()) }
+function print(line) { console.log(line.getString().value) }
 
 CeylonObject=function CeylonObject() {}
 
@@ -15,7 +15,7 @@ CeylonObject.prototype.equals = function(other) { return Boolean(this===other) }
 function Integer(value) {
     var that = new CeylonObject;
     that.value = value;
-    that.getString = function() { return value.toString() }
+    that.getString = function() { return String(value.toString()) }
     that.plus = function(other) { return Integer(value+other.value) }
     that.minus = function(other) { return Integer(value-other.value) }
     that.times = function(other) { return Integer(value*other.value) }
@@ -41,7 +41,7 @@ function Integer(value) {
 function Float(value) {
     var that = new CeylonObject;
     that.value = value;
-    that.getString = function() { return value.toString() }
+    that.getString = function() { return String(value.toString()) }
     that.plus = function(other) { return Float(value+other.value) }
     that.minus = function(other) { return Float(value-other.value) }
     that.times = function(other) { return Float(value*other.value) }
@@ -60,7 +60,8 @@ function Float(value) {
 function String(value) {
     var that = new CeylonObject;
     that.value = value;
-    that.getString = function() { return value }
+    that.getString = function() { return that }
+    that.toString = function() { return value }
     that.plus = function(other) { return String(value+other.value) }
     that.equals = function(other) { return Boolean(other.value===value) }
     that.compare = function(other) {
@@ -98,7 +99,7 @@ function smallest(x, y) { return x.compare(y) === smaller ? x : y }
 function ArraySequence(value) {
     var that = new CeylonObject;
     that.value = value;
-    that.getString = function() { return value.toString() }
+    that.getString = function() { return String(value.toString()) }
     return that;
 }
 
@@ -106,7 +107,7 @@ function Entry(key, item) {
     var that = new CeylonObject;
     that.key = key;
     that.item = item;
-    that.getString = function() { return String(key.getString() + "->" + item.getString()) }
+    that.getString = function() { return String(key.getString().value + "->" + item.getString().value) }
     that.getKey = function() { return key; }
     that.getItem = function() { return item; }
     that.equals = function(other) {
@@ -147,7 +148,8 @@ function join(seqs) {
 //receives ArraySequences, returns ArraySequence
 function zip(keys, items) {
     var entries = []
-    for (i = 0; i < smallest(Integer(keys.value.length), Integer(items.value.length)).value; i++) {
+    var numEntries = Math.min(keys.value.length, items.value.length);
+    for (i = 0; i < numEntries; i++) {
         entries[i] = Entry(keys.value[i], items.value[i]);
     }
     return ArraySequence(entries);
