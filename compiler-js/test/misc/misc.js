@@ -1,30 +1,32 @@
 var $$$cl15=require('ceylon/language/0.1/ceylon.language');
 
-//interface X at misc.ceylon (3:0-7:0)
-function X(){
-    var $$x=new CeylonObject;
+//InterfaceDefinition X at misc.ceylon (1:0-5:0)
+function X($$){
+    if ($$===undefined)$$=new CeylonObject;
+    var $$x=$$;
     
-    //function helloWorld at misc.ceylon (4:4-6:4)
+    //MethodDefinition helloWorld at misc.ceylon (2:4-4:4)
     function helloWorld(){
         $$$cl15.print($$$cl15.String("hello world"));
     }
-    $$x.helloWorld=helloWorld;
-    return $$x;
+    $$.helloWorld=helloWorld;
+    return $$;
 }
 this.X=X;
 
-//class Foo at misc.ceylon (9:0-18:0)
-function Foo(name){
-    var $$foo=new CeylonObject;
+//ClassDefinition Foo at misc.ceylon (7:0-16:0)
+function Foo(name, $$){
+    if ($$===undefined)$$=new CeylonObject;
+    var $$foo=$$;
     
-    //value name at misc.ceylon (10:4-10:29)
+    //AttributeDeclaration name at misc.ceylon (8:4-8:29)
     var $name=name;
     function getName(){
         return $name;
     }
-    $$foo.getName=getName;
+    $$.getName=getName;
     
-    //value counter at misc.ceylon (11:4-11:29)
+    //AttributeDeclaration counter at misc.ceylon (9:4-9:29)
     var $counter=$$$cl15.Integer(0);
     function getCounter(){
         return $counter;
@@ -33,113 +35,107 @@ function Foo(name){
         $counter=counter;
     }
     
-    //value count at misc.ceylon (12:4-12:43)
+    //AttributeGetterDefinition count at misc.ceylon (10:4-10:43)
     function getCount(){
         return getCounter();
     }
-    $$foo.getCount=getCount;
+    $$.getCount=getCount;
     
-    //function inc at misc.ceylon (13:4-13:44)
+    //MethodDefinition inc at misc.ceylon (11:4-11:44)
     function inc(){
         setCounter(getCounter().plus($$$cl15.Integer(1)));
     }
-    $$foo.inc=inc;
+    $$.inc=inc;
     
-    //function printName at misc.ceylon (14:4-16:4)
+    //MethodDefinition printName at misc.ceylon (12:4-14:4)
     function printName(){
         $$$cl15.print($$$cl15.String("foo name = ").plus(name));
     }
-    $$foo.printName=printName;
-    inc();
-    return $$foo;
+    $$.printName=printName;
+    $$.inc();
+    return $$;
 }
 this.Foo=Foo;
 
-//class Bar at misc.ceylon (20:0-32:0)
-function Bar(){
-    var $$bar=new CeylonObject;
-    var $$foo=Foo($$$cl15.String("Hello"));
-    $$bar.name=$$foo.name;
-    $$bar.getName=$$foo.getName;
-    $$bar.counter=$$foo.counter;
-    $$bar.getCounter=$$foo.getCounter;
-    $$bar.setCounter=$$foo.setCounter;
-    $$bar.getCount=$$foo.getCount;
-    $$bar.inc=$$foo.inc;
-    $$bar.printName=$$foo.printName;
-    var $$x=X();
-    $$bar.helloWorld=$$x.helloWorld;
+//ClassDefinition Bar at misc.ceylon (18:0-32:0)
+function Bar($$){
+    if ($$===undefined)$$=new CeylonObject;
+    var $$bar=$$;
+    Foo($$$cl15.String("Hello"),$$);
+    X($$);
     
-    //function printName at misc.ceylon (21:4-24:4)
+    //MethodDefinition printName at misc.ceylon (19:4-22:4)
     function printName(){
         $$$cl15.print($$$cl15.String("bar name = ").plus($$bar.getName()));
-        $$foo.printName();
+        $$.printName$();
     }
-    $$bar.printName=printName;
+    $$.printName$=$$.printName;
+    $$.printName=printName;
     
-    //class Inner at misc.ceylon (25:4-31:4)
-    function Inner(){
-        var $$inner=new CeylonObject;
+    //ClassDefinition Inner at misc.ceylon (23:4-29:4)
+    function Inner($$){
+        if ($$===undefined)$$=new CeylonObject;
+        var $$inner=$$;
         $$$cl15.print($$$cl15.String("creating inner class of :").plus($$bar.getName()));
         
-        //function incOuter at misc.ceylon (28:8-30:8)
+        //MethodDefinition incOuter at misc.ceylon (26:8-28:8)
         function incOuter(){
             $$bar.inc();
         }
-        $$inner.incOuter=incOuter;
-        return $$inner;
+        $$.incOuter=incOuter;
+        return $$;
     }
-    $$bar.Inner=Inner;
-    return $$bar;
+    $$.Inner=Inner;
+    return $$;
 }
 this.Bar=Bar;
 
-//function printBoth at misc.ceylon (34:0-36:0)
+//MethodDefinition printBoth at misc.ceylon (34:0-36:0)
 function printBoth(x,y){
     $$$cl15.print(x.plus($$$cl15.String(", ")).plus(y));
 }
 
-//function doIt at misc.ceylon (38:0-40:0)
+//MethodDefinition doIt at misc.ceylon (38:0-40:0)
 function doIt(f){
     f();
     f();
 }
 
-//object foob at misc.ceylon (42:0-44:0)
+//ObjectDefinition foob at misc.ceylon (42:0-44:0)
 var $foob=function foob(){
-    var $$foob=new CeylonObject;
+    var $$=new CeylonObject;
     
-    //value name at misc.ceylon (43:4-43:30)
+    //AttributeDeclaration name at misc.ceylon (43:4-43:30)
     var $name=$$$cl15.String("Gavin");
     function getName(){
         return $name;
     }
-    $$foob.getName=getName;
-    return $$foob;
+    $$.getName=getName;
+    return $$;
 }();
 function getFoob(){
     return $foob;
 }
 
-//function printAll at misc.ceylon (46:0-46:34)
+//MethodDefinition printAll at misc.ceylon (46:0-46:34)
 function printAll(strings){}
 
-//class alias F at misc.ceylon (48:0-48:26)
+//ClassDeclaration F at misc.ceylon (48:0-48:26)
 var F=Foo;
 var $$$cl15=require('ceylon/language/0.1/ceylon.language');
 var $$$m7=require('default/members');
 
-//function testit at misc.ceylon (50:0-82:0)
+//MethodDefinition testit at testit.ceylon (3:0-35:0)
 function testit(){
     
-    //value name at misc.ceylon (51:4-51:24)
+    //AttributeDeclaration name at testit.ceylon (4:4-4:24)
     var $name=$$$cl15.String("hello");
     function getName(){
         return $name;
     }
     $$$cl15.print(getName());
     
-    //value foo at misc.ceylon (53:4-53:24)
+    //AttributeDeclaration foo at testit.ceylon (6:4-6:24)
     var $foo=F($$$cl15.String("goodbye"));
     function getFoo(){
         return $foo;
@@ -157,23 +153,23 @@ function testit(){
     doIt(Bar);
     $$$cl15.print(getFoob().getName());
     
-    //object x at misc.ceylon (65:4-69:4)
+    //ObjectDefinition x at testit.ceylon (18:4-22:4)
     var $x=function x(){
-        var $$x=new CeylonObject;
+        var $$=new CeylonObject;
         
-        //function y at misc.ceylon (66:8-68:8)
+        //MethodDefinition y at testit.ceylon (19:8-21:8)
         function y(){
             $$$cl15.print($$$cl15.String("xy"));
         }
-        $$x.y=y;
-        return $$x;
+        $$.y=y;
+        return $$;
     }();
     function getX(){
         return $x;
     }
     getX().y();
     
-    //value b at misc.ceylon (71:4-71:17)
+    //AttributeDeclaration b at testit.ceylon (24:4-24:17)
     var $b=Bar();
     function getB(){
         return $b;
@@ -185,7 +181,7 @@ function testit(){
     printAll($$$cl15.ArraySequence([$$$cl15.String("hello"),$$$cl15.String("world")]));
     (function (){var $strings=$$$cl15.ArraySequence([$$$cl15.String("hello"),$$$cl15.String("world")]);return printAll($strings)}());
     
-    //value c at misc.ceylon (79:4-79:26)
+    //AttributeDeclaration c at testit.ceylon (32:4-32:26)
     var $c=$$$m7.Counter($$$cl15.Integer(0));
     function getC(){
         return $c;

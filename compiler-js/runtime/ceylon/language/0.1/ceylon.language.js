@@ -35,6 +35,8 @@ function Integer(value) {
         return value===other.value ? equal
                                    : (value<other.value ? smaller:larger);
     }
+    that.getFloat = function() { return Float(value) }
+    that.getInteger = function() { return that }
     return that;
 }
 
@@ -54,6 +56,7 @@ function Float(value) {
         return value===other.value ? equal
                                    : (value<other.value ? smaller:larger);
     }
+    that.getFloat = function() { return that }
     return that;
 }
 

@@ -7,15 +7,17 @@ function $X(){}
 $X.prototype.helloWorld=function helloWorld(){
     $$$cl15.print($$$cl15.String("hello world"));
 }
-function X(){
-    var $$x=new $X;
-    return $$x;
+function X($$){
+    if ($$===undefined)$$=new $X;
+    var $$x=$$;
+    return $$;
 }
 this.X=X;
 
 //ClassDefinition Foo at misc.ceylon (7:0-16:0)
 function $Foo(){}
 for(var $ in CeylonObject.prototype){$Foo.prototype[$]=CeylonObject.prototype[$]}
+for(var $ in CeylonObject.prototype){$Foo.prototype[$+'$']=CeylonObject.prototype[$]}
 
 //AttributeDeclaration name at misc.ceylon (8:4-8:29)
 $Foo.prototype.getName=function getName(){
@@ -44,52 +46,56 @@ $Foo.prototype.inc=function inc(){
 $Foo.prototype.printName=function printName(){
     $$$cl15.print($$$cl15.String("foo name = ").plus(this.name));
 }
-function Foo(name){
-    var $$foo=new $Foo;
-    $$foo.name=name;
+function Foo(name, $$){
+    if ($$===undefined)$$=new $Foo;
+    var $$foo=$$;
+    $$.name=name;
     
     //AttributeDeclaration name at misc.ceylon (8:4-8:29)
-    $$foo.name=name;
+    $$.name=$$.name;
     
     //AttributeDeclaration counter at misc.ceylon (9:4-9:29)
-    $$foo.counter=$$$cl15.Integer(0);
-    $$foo.inc();
-    return $$foo;
+    $$.counter=$$$cl15.Integer(0);
+    $$.inc();
+    return $$;
 }
 this.Foo=Foo;
 
 //ClassDefinition Bar at misc.ceylon (18:0-32:0)
 function $Bar(){}
 for(var $ in $Foo.prototype){$Bar.prototype[$]=$Foo.prototype[$]}
+for(var $ in $Foo.prototype){$Bar.prototype[$+'$']=$Foo.prototype[$]}
 for(var $ in $X.prototype){$Bar.prototype[$]=$X.prototype[$]}
+for(var $ in $X.prototype){$Bar.prototype[$+'$']=$X.prototype[$]}
 
 //MethodDefinition printName at misc.ceylon (19:4-22:4)
 $Bar.prototype.printName=function printName(){
     $$$cl15.print($$$cl15.String("bar name = ").plus(this.getName()));
-    this.$$foo.printName();
+    this.printName$();
 }
-function Bar(){
-    var $$bar=new $Bar;
-    $$bar.$$foo=Foo($$$cl15.String("Hello"));
-    $$bar.name=$$bar.$$foo.name;
-    $$bar.counter=$$bar.$$foo.counter;
-    var $$x=X();
+function Bar($$){
+    if ($$===undefined)$$=new $Bar;
+    var $$bar=$$;
+    Foo($$$cl15.String("Hello"),$$);
+    X($$);
     
     //ClassDefinition Inner at misc.ceylon (23:4-29:4)
     function $Inner(){}
     for(var $ in CeylonObject.prototype){$Inner.prototype[$]=CeylonObject.prototype[$]}
+    for(var $ in CeylonObject.prototype){$Inner.prototype[$+'$']=CeylonObject.prototype[$]}
     
     //MethodDefinition incOuter at misc.ceylon (26:8-28:8)
     $Inner.prototype.incOuter=function incOuter(){
         $$bar.inc();
     }
-    function Inner(){
-        var $$inner=new $Inner;
+    function Inner($$){
+        if ($$===undefined)$$=new $Inner;
+        var $$inner=$$;
         $$$cl15.print($$$cl15.String("creating inner class of :").plus($$bar.getName()));
-        return $$inner;
+        return $$;
     }
-    $$bar.Inner=Inner;
-    return $$bar;
+    $$.Inner=Inner;
+    return $$;
 }
 this.Bar=Bar;
 
@@ -107,17 +113,18 @@ function doIt(f){
 //ObjectDefinition foob at misc.ceylon (42:0-44:0)
 function $foob(){}
 for(var $ in CeylonObject.prototype){$foob.prototype[$]=CeylonObject.prototype[$]}
+for(var $ in CeylonObject.prototype){$foob.prototype[$+'$']=CeylonObject.prototype[$]}
 
 //AttributeDeclaration name at misc.ceylon (43:4-43:30)
 $foob.prototype.getName=function getName(){
     return this.name;
 }
 var $foob=function foob(){
-    var $$foob=new $foob;
+    var $$=new $foob;
     
     //AttributeDeclaration name at misc.ceylon (43:4-43:30)
-    $$foob.name=$$$cl15.String("Gavin");
-    return $$foob;
+    $$.name=$$$cl15.String("Gavin");
+    return $$;
 }();
 function getFoob(){
     return $foob;
@@ -162,14 +169,15 @@ function testit(){
     //ObjectDefinition x at testit.ceylon (18:4-22:4)
     function $x(){}
     for(var $ in CeylonObject.prototype){$x.prototype[$]=CeylonObject.prototype[$]}
+    for(var $ in CeylonObject.prototype){$x.prototype[$+'$']=CeylonObject.prototype[$]}
     
     //MethodDefinition y at testit.ceylon (19:8-21:8)
     $x.prototype.y=function y(){
         $$$cl15.print($$$cl15.String("xy"));
     }
     var $x=function x(){
-        var $$x=new $x;
-        return $$x;
+        var $$=new $x;
+        return $$;
     }();
     function getX(){
         return $x;

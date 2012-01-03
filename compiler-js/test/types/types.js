@@ -1,48 +1,53 @@
 var $$$cl15=require('ceylon/language/0.1/ceylon.language');
 
-//class Pair at types.ceylon (1:0-1:27)
-function Pair(x,y){
-    var $$pair=new CeylonObject;
-    return $$pair;
+//ClassDefinition Pair at types.ceylon (1:0-1:27)
+function Pair(x, y, $$){
+    if ($$===undefined)$$=new CeylonObject;
+    var $$pair=$$;
+    return $$;
 }
 
-//class Complex at types.ceylon (3:0-4:41)
-function Complex(x,y){
-    var $$complex=new CeylonObject;
-    var $$pair=Pair(x,y);
-    return $$complex;
+//ClassDefinition Complex at types.ceylon (3:0-4:41)
+function Complex(x, y, $$){
+    if ($$===undefined)$$=new CeylonObject;
+    var $$complex=$$;
+    Pair(x,y,$$);
+    return $$;
 }
 
-//interface List at types.ceylon (6:0-6:19)
-function List(){
-    var $$list=new CeylonObject;
-    return $$list;
+//InterfaceDefinition List at types.ceylon (6:0-6:23)
+function List($$){
+    if ($$===undefined)$$=new CeylonObject;
+    var $$list=$$;
+    return $$;
 }
 
-//class ConcreteList at types.ceylon (8:0-9:27)
-function ConcreteList(xs){
-    var $$concreteList=new CeylonObject;
-    var $$list=List();
-    return $$concreteList;
+//ClassDefinition ConcreteList at types.ceylon (8:0-9:27)
+function ConcreteList(xs, $$){
+    if ($$===undefined)$$=new CeylonObject;
+    var $$concreteList=$$;
+    List($$);
+    return $$;
 }
 
 //ClassDefinition Couple at types.ceylon (11:0-15:0)
-function Couple(x,y){
-    var $$couple=new CeylonObject;
-    var $$pair=Pair(x,y);
+function Couple(x, y, $$){
+    if ($$===undefined)$$=new CeylonObject;
+    var $$couple=$$;
+    Pair(x,y,$$);
     
     //AttributeDeclaration x at types.ceylon (13:4-13:18)
     var $x=x;
     function getX(){
         return $x;
     }
-    $$couple.getX=getX;
+    $$.getX=getX;
     
     //AttributeDeclaration y at types.ceylon (14:4-14:18)
     var $y=y;
     function getY(){
         return $y;
     }
-    $$couple.getY=getY;
-    return $$couple;
+    $$.getY=getY;
+    return $$;
 }

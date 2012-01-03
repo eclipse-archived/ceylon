@@ -1,8 +1,9 @@
 var $$$cl15=require('ceylon/language/0.1/ceylon.language');
 
-//ClassDefinition Counter at members.ceylon (1:0-12:0)
+//ClassDefinition Counter at members.ceylon (1:0-15:0)
 function $Counter(){}
 for(var $ in CeylonObject.prototype){$Counter.prototype[$]=CeylonObject.prototype[$]}
+for(var $ in CeylonObject.prototype){$Counter.prototype[$+'$']=CeylonObject.prototype[$]}
 
 //AttributeDeclaration currentCount at members.ceylon (2:4-2:45)
 $Counter.prototype.getCurrentCount=function getCurrentCount(){
@@ -26,12 +27,18 @@ $Counter.prototype.inc=function inc(){
 $Counter.prototype.getInitialCount=function getInitialCount(){
     return this.initialCount;
 }
-function Counter(initialCount){
-    var $$counter=new $Counter;
-    $$counter.initialCount=initialCount;
+
+//AttributeGetterDefinition string at members.ceylon (12:4-14:4)
+$Counter.prototype.getString=function getString(){
+    return $$$cl15.String("Counter[").plus(this.getCount().getString()).plus($$$cl15.String("]"));
+}
+function Counter(initialCount, $$){
+    if ($$===undefined)$$=new $Counter;
+    var $$counter=$$;
+    $$.initialCount=initialCount;
     
     //AttributeDeclaration currentCount at members.ceylon (2:4-2:45)
-    $$counter.currentCount=initialCount;
-    return $$counter;
+    $$.currentCount=$$.initialCount;
+    return $$;
 }
 this.Counter=Counter;

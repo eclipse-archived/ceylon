@@ -70,9 +70,10 @@ function testFloatOperators(){
 }
 
 //ClassDefinition OpTest1 at operators.ceylon (45:0-45:17)
-function OpTest1(){
-    var $$opTest1=new CeylonObject;
-    return $$opTest1;
+function OpTest1($$){
+    if ($$===undefined)$$=new CeylonObject;
+    var $$opTest1=$$;
+    return $$;
 }
 
 //MethodDefinition testBooleanOperators at operators.ceylon (47:0-65:0)
