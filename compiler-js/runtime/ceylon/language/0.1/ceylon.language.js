@@ -77,6 +77,7 @@ function Case(caseName) {
     return that;
 }
 
+function getNull() { return null }
 var $true = Case("true");
 function getTrue() { return $true; }
 var $false = Case("false");
@@ -93,34 +94,9 @@ var equal = Case("equal");
 function getEqual() { return equal }
 function largest(x, y) { return x.compare(y) === larger ? x : y }
 function smallest(x, y) { return x.compare(y) === smaller ? x : y }
-function min(values) {
-    var min = values[0];
-    if (values.length > 1) {
-        for (i = 1; i < values.length; i++) {
-            min = smallest(min, values[i]);
-        }
-    }
-    return min;
-}
-function max(values) {
-    var max = values[0];
-    if (values.length > 1) {
-        for (i = 1; i < values.length; i++) {
-            max = largest(min, values[i]);
-        }
-    }
-    return max;
-}
-function join(seqs) {
-    var builder = [];
-    for (i = 0; i < seqs.length; i++) {
-        builder = builder.concat(seqs[i])
-    }
-    return builder;
-}
 
 function ArraySequence(value) {
-    var that = new CeylonObject();
+    var that = new CeylonObject;
     that.value = value;
     that.getString = function() { return value.toString() }
     return that;
@@ -130,7 +106,7 @@ function Entry(key, item) {
     var that = new CeylonObject;
     that.key = key;
     that.item = item;
-    that.getString = function() { return key.toString() + "->" + item.toString() }
+    that.getString = function() { return String(key.getString() + "->" + item.getString()) }
     that.getKey = function() { return key; }
     that.getItem = function() { return item; }
     that.equals = function(other) {
@@ -140,12 +116,56 @@ function Entry(key, item) {
     return that;
 }
 
+//receives ArraySequence, returns element
+function min(seq) {
+    var v = seq.value[0];
+    if (seq.value.length > 1) {
+        for (i = 1; i < seq.value.length; i++) {
+            v = smallest(v, seq.value[i]);
+        }
+    }
+    return v;
+}
+//receives ArraySequence, returns element 
+function max(seq) {
+    var v = seq.value[0];
+    if (seq.value.length > 1) {
+        for (i = 1; i < seq.value.length; i++) {
+            v = largest(v, seq.value[i]);
+        }
+    }
+    return v;
+}
+//receives ArraySequence of ArraySequences, returns flat ArraySequence
+function join(seqs) {
+    var builder = [];
+    for (i = 0; i < seqs.value.length; i++) {
+        builder = builder.concat(seqs.value[i].value);
+    }
+    return ArraySequence(builder);
+}
+//receives ArraySequences, returns ArraySequence
 function zip(keys, items) {
     var entries = []
-    for (i = 0; i < smallest(Integer(keys.length), Integer(items.length)); i++) {
-        entries[i] = Entry(keys[i], items[i]);
+    for (i = 0; i < smallest(Integer(keys.value.length), Integer(items.value.length)).value; i++) {
+        entries[i] = Entry(keys.value[i], items.value[i]);
     }
-    return entries;
+    return ArraySequence(entries);
+}
+//receives and returns ArraySequence
+function coalesce(seq) {
+    var newseq = [];
+    for (i = 0; i < seq.value.length; i++) {
+        if (seq.value[i]) {
+            newseq = newseq.concat(seq.value[i]);
+        }
+    }
+    return ArraySequence(newseq);
+}
+
+//receives ArraySequence and CeylonObject, returns new ArraySequence
+function append(seq, elem) {
+    return ArraySequence(seq.value.concat(elem));
 }
 
 exports.print=print;
@@ -153,6 +173,7 @@ exports.Integer=Integer;
 exports.Float=Float;
 exports.String=String;
 exports.Boolean=Boolean;
+exports.getNull=getNull;
 exports.Case=Case;
 exports.getTrue=getTrue;
 exports.getFalse=getFalse;
@@ -167,6 +188,8 @@ exports.min=min;
 exports.max=max;
 exports.join=join;
 exports.zip=zip;
+exports.coalesce=coalesce;
+exports.append=append;
 
     });
 }(typeof define==='function' && define.amd ? 

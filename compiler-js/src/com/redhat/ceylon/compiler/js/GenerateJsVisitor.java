@@ -77,6 +77,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.RemainderOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SatisfiedTypes;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequenceEnumeration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SimpleType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SmallAsOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SmallerOp;
@@ -985,6 +986,19 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(SequencedArgument that) {
+        clAlias();
+        out(".ArraySequence([");
+        boolean first=true;
+        for (Expression arg: that.getExpressionList().getExpressions()) {
+            if (!first) out(",");
+            arg.visit(this);
+            first = false;
+        }
+        out("])");
+    }
+    
+    @Override
+    public void visit(SequenceEnumeration that) {
         clAlias();
         out(".ArraySequence([");
         boolean first=true;
