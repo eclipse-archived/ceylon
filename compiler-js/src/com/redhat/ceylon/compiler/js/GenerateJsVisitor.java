@@ -1328,12 +1328,8 @@ public class GenerateJsVisitor extends Visitor
        out(")");
    }
    
-   @Override public void visit(IndexOp that) {
-	   out(".item");
-   }
-   
    @Override public void visit(Element that) {
-	   out("(");
+	   out(".item(");
 	   that.getExpression().visit(this);
 	   out(")");
    }
