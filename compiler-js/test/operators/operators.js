@@ -208,3 +208,84 @@ function testComparisonOperators(){
     setB3(($$$cl15.String("str1").compare($$$cl15.String("str1"))!==$$$cl15.getLarger()?$$$cl15.getTrue():$$$cl15.getFalse()));
     setB4(($$$cl15.String("str1").compare($$$cl15.String("str1"))!==$$$cl15.getSmaller()?$$$cl15.getTrue():$$$cl15.getFalse()));
 }
+
+//MethodDefinition testOtherOperators at operators.ceylon (85:0-91:0)
+function testOtherOperators(){
+    
+    //AttributeDeclaration entry at operators.ceylon (86:4-86:42)
+    var $entry=$$$cl15.Entry($$$cl15.Integer(47),$$$cl15.String("hi there"));
+    function getEntry(){
+        return $entry;
+    }
+    
+    //AttributeDeclaration entry2 at operators.ceylon (87:4-87:30)
+    var $entry2=$$$cl15.Entry($$$cl15.getTrue(),getEntry());
+    function getEntry2(){
+        return $entry2;
+    }
+    
+    //AttributeDeclaration s1 at operators.ceylon (89:4-89:41)
+    var $s1=function($){return $!==null?$:$$$cl15.String("noo")}(($$$cl15.getTrue()===$$$cl15.getTrue()?$$$cl15.String("ok"):null));
+    function getS1(){
+        return $s1;
+    }
+    
+    //AttributeDeclaration s2 at operators.ceylon (90:4-90:47)
+    var $s2=function($){return $!==null?$:$$$cl15.String("great")}(($$$cl15.getFalse()===$$$cl15.getTrue()?$$$cl15.String("what?"):null));
+    function getS2(){
+        return $s2;
+    }
+    
+}
+
+//MethodDefinition testCollectionOperators at operators.ceylon (93:0-98:0)
+function testCollectionOperators(){
+    
+    //AttributeDeclaration seq1 at operators.ceylon (94:4-94:33)
+    var $seq1=$$$cl15.ArraySequence([$$$cl15.String("one"),$$$cl15.String("two")]);
+    function getSeq1(){
+        return $seq1;
+    }
+    
+    //AttributeDeclaration s1 at operators.ceylon (95:4-95:24)
+    var $s1=getSeq1().item($$$cl15.Integer(0));
+    function getS1(){
+        return $s1;
+    }
+    
+    //AttributeDeclaration s2 at operators.ceylon (96:4-96:24)
+    var $s2=getSeq1().item($$$cl15.Integer(2));
+    function getS2(){
+        return $s2;
+    }
+    
+    //AttributeDeclaration s3 at operators.ceylon (97:4-97:25)
+    var $s3=getSeq1().item($$$cl15.Integer(1).negativeValue());
+    function getS3(){
+        return $s3;
+    }
+    
+}
+
+//MethodDefinition testNullsafeOperators at operators.ceylon (100:0-104:0)
+function testNullsafeOperators(){
+    
+    //AttributeDeclaration seq at operators.ceylon (101:4-101:27)
+    var $seq=$$$cl15.ArraySequence([$$$cl15.String("hi")]);
+    function getSeq(){
+        return $seq;
+    }
+    
+    //AttributeDeclaration s1 at operators.ceylon (102:4-102:29)
+    var $s1=function($){return $!==null?$:$$$cl15.String("null")}(getSeq().item($$$cl15.Integer(0)));
+    function getS1(){
+        return $s1;
+    }
+    
+    //AttributeDeclaration s2 at operators.ceylon (103:4-103:29)
+    var $s2=function($){return $!==null?$:$$$cl15.String("null")}(getSeq().item($$$cl15.Integer(1)));
+    function getS2(){
+        return $s2;
+    }
+    
+}
