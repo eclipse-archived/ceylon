@@ -18,6 +18,6 @@ shared void test() {
     value c = Counter(0);
     print(c.count);
     c.inc(); c.inc();
-    print(c.count)
+    print(c.count);
     print(c);
 }
