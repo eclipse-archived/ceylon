@@ -487,7 +487,7 @@ public class StatementTransformer extends AbstractTransformer {
             // switch is not recompiled.
             last = make().Throw(
                         make().NewClass(null, List.<JCExpression>nil(), 
-                                makeIdent(syms().ceylonTypeSystemExceptionType), 
+                                makeIdent(syms().ceylonTypeSystemErrorType), 
                                 List.<JCExpression>of(make().Literal(
                                         "Supposedly exhaustive switch was not exhaustive")), null));
         }
