@@ -7,10 +7,12 @@ class SatisfiesErasure {
         return false;
     }
     
+    @.java.lang.Override
     public final int hashCode() {
         return (int)0L;
     }
     
+    @.java.lang.Override
     public final .java.lang.String toString() {
         return "An SatisfiesErasure object";
     }

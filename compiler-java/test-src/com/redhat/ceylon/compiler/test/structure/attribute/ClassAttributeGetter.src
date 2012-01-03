@@ -19,6 +19,7 @@ abstract class ClassAttributeGetter {
 }
 class SubClassAttributeGetter extends com.redhat.ceylon.compiler.test.structure.attribute.ClassAttributeGetter {
     
+    @.java.lang.Override
     public final .java.lang.String getF3() {
         return "";
     }

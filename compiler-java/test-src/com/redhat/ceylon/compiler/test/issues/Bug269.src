@@ -26,11 +26,13 @@ class Bug269 {
 }
 class Bug269_2 {
     
+    @.java.lang.Override
     public final .java.lang.String toString() {
         .ceylon.language.print.print(.ceylon.language.String.instance(this.toString()));
         return "";
     }
     
+    @.java.lang.Override
     public final int hashCode() {
         .ceylon.language.print.print(.ceylon.language.Integer.instance(this.hashCode()));
         return (int)0L;

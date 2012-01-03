@@ -2,10 +2,12 @@ package com.redhat.ceylon.compiler.test.structure.method;
 
 class MethodErasure {
     
+    @.java.lang.Override
     public final .java.lang.String toString() {
         return "foo";
     }
     
+    @.java.lang.Override
     public final int hashCode() {
         return (int)0L;
     }

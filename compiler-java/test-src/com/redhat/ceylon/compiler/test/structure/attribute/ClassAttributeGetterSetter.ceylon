@@ -37,6 +37,7 @@ abstract class ClassAttributeGetterSetter(){
     }
     assign f4 {
     }
+    shared default String f5 = "";
 }
 @nomodel
 class SubClassAttributeGetterSetter() extends ClassAttributeGetterSetter() {
@@ -49,5 +50,10 @@ class SubClassAttributeGetterSetter() extends ClassAttributeGetterSetter() {
         return "";
     }
     assign f4 {
+    }
+    shared actual String f5 {
+        return "";
+    }
+    assign f5 {
     }
 }
