@@ -137,7 +137,6 @@ public class ModuleValidator {
                     try {
                         //parse module units and build module dependency and carry on
                         moduleManager.resolveModule(module, artifact, phasedUnitsOfDependencies);
-                        break;
                     } finally {
                         if (artifact instanceof ClosableVirtualFile) {
                             ((ClosableVirtualFile)artifact).close();
