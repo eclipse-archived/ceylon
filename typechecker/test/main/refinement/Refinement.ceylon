@@ -154,6 +154,10 @@ class Refinement() {
 class RefinedAsVariableSetterBase() {
     shared default String attr = "";
     shared variable default String vattr := "";
+    shared default String bar {
+        return "";
+    }
+    assign bar {}
 }
 
 class RefinedAsVariableSetterSub() extends RefinedAsVariableSetterBase() {
@@ -161,5 +165,22 @@ class RefinedAsVariableSetterSub() extends RefinedAsVariableSetterBase() {
     assign attr {}
     shared actual String vattr {return "";}
     assign vattr {}
-    
+    shared actual String bar {
+        return "";
+    }
+    assign bar {}    
+}
+
+abstract class AbstractRefined(){
+    shared default String bar {
+        return "";
+    }
+    assign bar {}
+}
+
+class ConcreteRefinement() extends AbstractRefined() {
+    shared actual String bar {
+        return "";
+    }
+    assign bar {}
 }
