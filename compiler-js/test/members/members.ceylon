@@ -9,4 +9,7 @@ shared class Counter(Integer initialCount=0) {
     shared Integer initialCount {
         return initialCount;
     }
+    shared actual String string {
+        return "Counter[" + count.string + "]";
+    }
 }
