@@ -29,6 +29,7 @@ import static com.sun.tools.javac.code.Flags.STATIC;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
@@ -172,9 +173,12 @@ public class ClassTransformer extends AbstractTransformer {
         return AttributeDefinitionBuilder
             .setter(this, name, decl.getDeclarationModel().getParameter())
             .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel()))
+            .isActual(isActual(decl))
             .setterBlock(body)
             .build();
     }
+
+
 
     public List<JCTree> transform(AttributeGetterDefinition decl) {
         String name = decl.getIdentifier().getText();
@@ -182,6 +186,7 @@ public class ClassTransformer extends AbstractTransformer {
         return AttributeDefinitionBuilder
             .getter(this, name, decl.getDeclarationModel())
             .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel()))
+            .isActual(Decl.isActual(decl))
             .getterBlock(body)
             .build();
     }
@@ -271,25 +276,37 @@ public class ClassTransformer extends AbstractTransformer {
         at(decl);
         String attrName = decl.getIdentifier().getText();
         Value declModel = decl.getDeclarationModel();
-        Declaration parentDecl = declModel.getRefinedDeclaration();
-        boolean actual;
-        // If a variable attr is refining a non-variable one then the
-        // setter is not overriding anything
-        if (parentDecl != null && 
-                parentDecl instanceof Value) {
-            Value parentValue = (Value)parentDecl;
-            actual = parentValue.isVariable() && Decl.isActual(decl);
-        } else {
-            actual = Decl.isActual(decl);
-        }
         return AttributeDefinitionBuilder
             .setter(this, attrName, declModel)
-            .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel()))
-            .isActual(actual)
+            .modifiers(transformAttributeGetSetDeclFlags(declModel))
+            .isActual(isActual(decl))
             .isFormal(Decl.isFormal(decl))
             .build();
     }
 
+    private boolean isActual(Tree.TypedDeclaration decl) {
+        boolean actual;
+        Declaration refinedDecl = decl.getDeclarationModel().getRefinedDeclaration();
+        if (refinedDecl != null && 
+                refinedDecl instanceof Value) {
+            // If a variable attr is refining a non-variable one then the
+            // setter is not overriding anything: We mustn't add an @Override
+            Value refinedValue = (Value)refinedDecl;
+            actual = refinedValue.isVariable() && Decl.isActual(decl);
+        } else if (decl instanceof AttributeSetterDefinition
+                && refinedDecl != null 
+                && refinedDecl instanceof Getter) {            
+            AttributeSetterDefinition setterDecl = (AttributeSetterDefinition)decl;
+            Getter refinedGetter = (Getter)refinedDecl;
+            actual = refinedGetter.getSetter() != null // The setter might not be refined even if the getter is 
+                    && refinedGetter.isDefault() // The setter metadata comes from the getter
+                    && setterDecl.getDeclarationModel().getGetter().isActual();
+        } else {
+            actual = Decl.isActual(decl);
+        }
+        return actual;
+    }
+    
     public List<JCTree> transformWrappedMethod(Tree.MethodDefinition def) {
         // Generate a wrapper class for the method
         String name = def.getIdentifier().getText();
