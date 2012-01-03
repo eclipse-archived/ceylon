@@ -207,3 +207,20 @@ function testComparisonOperators(){
     setB3(($$$cl15.String("str1").compare($$$cl15.String("str1"))!==$$$cl15.getLarger()?$$$cl15.getTrue():$$$cl15.getFalse()));
     setB4(($$$cl15.String("str1").compare($$$cl15.String("str1"))!==$$$cl15.getSmaller()?$$$cl15.getTrue():$$$cl15.getFalse()));
 }
+
+//MethodDefinition testOtherOperators at operators.ceylon (85:0-88:0)
+function testOtherOperators(){
+    
+    //AttributeDeclaration entry at operators.ceylon (86:4-86:42)
+    var $entry=$$$cl15.Entry($$$cl15.Integer(47),$$$cl15.String("hi there"));
+    function getEntry(){
+        return $entry;
+    }
+    
+    //AttributeDeclaration entry2 at operators.ceylon (87:4-87:30)
+    var $entry2=$$$cl15.Entry($$$cl15.getTrue(),getEntry());
+    function getEntry2(){
+        return $entry2;
+    }
+    
+}

@@ -39,6 +39,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompareOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DifferenceOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.EntryOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.EqualOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExecutableStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
@@ -1314,6 +1315,15 @@ public class GenerateJsVisitor extends Visitor
 	   out(":");
 	   that.getRightTerm().visit(this);
 	   out(")");
+   }
+   
+   @Override public void visit(EntryOp that) {
+       clAlias();
+       out(".Entry(");
+       that.getLeftTerm().visit(this);
+       out(",");
+       that.getRightTerm().visit(this);
+       out(")");
    }
     
 }

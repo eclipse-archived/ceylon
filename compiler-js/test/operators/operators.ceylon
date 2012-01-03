@@ -81,3 +81,8 @@ void testComparisonOperators() {
     b3 := "str1" <= "str1";
     b4 := "str1" >= "str1";
 }
+
+void testOtherOperators() {
+    Integer->String entry = 47->"hi there";
+    value entry2 = true->entry;    
+}
