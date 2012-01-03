@@ -100,6 +100,10 @@ function ArraySequence(value) {
     var that = new CeylonObject;
     that.value = value;
     that.getString = function() { return String(value.toString()) }
+    that.item = function(index) {
+        var result = value[index];
+        return result!==undefined ? result:null;
+    }
     return that;
 }
 

@@ -86,3 +86,10 @@ void testOtherOperators() {
     Integer->String entry = 47->"hi there";
     value entry2 = true->entry;    
 }
+
+void testCollectionOperators() {
+    value seq1 = { "one", "two" };
+    String? s1 = seq1[0];
+    String? s2 = seq1[2];
+    String? s3 = seq1[-1];            
+}

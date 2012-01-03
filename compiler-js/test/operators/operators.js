@@ -224,3 +224,32 @@ function testOtherOperators(){
     }
     
 }
+
+//MethodDefinition testCollectionOperators at operators.ceylon (90:0-95:0)
+function testCollectionOperators(){
+    
+    //AttributeDeclaration seq1 at operators.ceylon (91:4-91:33)
+    var $seq1=$$$cl15.ArraySequence([$$$cl15.String("one"),$$$cl15.String("two")]);
+    function getSeq1(){
+        return $seq1;
+    }
+    
+    //AttributeDeclaration s1 at operators.ceylon (92:4-92:24)
+    var $s1=getSeq1().item($$$cl15.Integer(0));
+    function getS1(){
+        return $s1;
+    }
+    
+    //AttributeDeclaration s2 at operators.ceylon (93:4-93:24)
+    var $s2=getSeq1().item($$$cl15.Integer(2));
+    function getS2(){
+        return $s2;
+    }
+    
+    //AttributeDeclaration s3 at operators.ceylon (94:4-94:25)
+    var $s3=getSeq1().item($$$cl15.Integer(1).negativeValue());
+    function getS3(){
+        return $s3;
+    }
+    
+}

@@ -39,6 +39,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompareOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DifferenceOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Element;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.EntryOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.EqualOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExecutableStatement;
@@ -47,6 +48,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExtendedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IdenticalOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Import;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.IndexOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
@@ -1324,6 +1326,16 @@ public class GenerateJsVisitor extends Visitor
        out(",");
        that.getRightTerm().visit(this);
        out(")");
+   }
+   
+   @Override public void visit(IndexOp that) {
+	   out(".item");
+   }
+   
+   @Override public void visit(Element that) {
+	   out("(");
+	   that.getExpression().visit(this);
+	   out(")");
    }
     
 }
