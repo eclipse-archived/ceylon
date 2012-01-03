@@ -154,12 +154,6 @@ public class GenerateJsVisitor extends Visitor
                 .getLanguageModule();
         require(clm.getPackage(clm.getNameAsString()));
         super.visit(that);
-        /*try {
-            out.flush();
-        }
-        catch (IOException ioe) {
-            ioe.printStackTrace();
-        }*/
     }
     
     @Override
@@ -261,12 +255,6 @@ public class GenerateJsVisitor extends Visitor
         out("=");
     }
 
-    /*private void selfVar(Declaration d) {
-        out("var ");
-        self(d);
-        out("=");
-    }*/
-
     private void share(Declaration d) {
         if (d.isShared() || 
                 prototypeStyle && d.isCaptured()) {
@@ -291,6 +279,7 @@ public class GenerateJsVisitor extends Visitor
         out(dec.getName());
         out(";");
         endLine();
+        superRef(d);
         share(d);
     }
 
@@ -479,108 +468,6 @@ public class GenerateJsVisitor extends Visitor
         out(";");
     }
 
-    /*private void copyMembers(ClassOrInterface to, ClassOrInterface from) {
-        for (Declaration m: from.getMembers()) {
-            copyMember(to, from, m);
-        }
-    }
-
-    private void copyMember(Declaration to, ClassOrInterface from, 
-            Declaration m) {
-        if (m instanceof Value) {
-            self(to);
-            out(".");
-            out(m.getName());
-            out("=");
-            if (prototypeStyle) {
-                self(to);
-                out(".");
-            }
-            self(from);
-            out(".");
-            out(m.getName());
-            out(";");
-            endLine();
-        }
-        if (!prototypeStyle) {
-            if (m instanceof Method) {
-                self(to);
-                out(".");
-                out(m.getName());
-                out("=");
-                self(from);
-                out(".");
-                out(m.getName());
-                out(";");
-                endLine();
-            }
-            if (m instanceof Getter || m instanceof Value) {
-                self(to);
-                out(".");
-                out(getter(m));
-                out("=");
-                self(from);
-                out(".");
-                out(getter(m));
-                out(";");
-                endLine();
-            }
-            if (m instanceof Setter || m instanceof Value 
-                    && ((Value)m).isVariable()) {
-                self(to);
-                out(".");
-                out(setter(m));
-                out("=");
-                self(from);
-                out(".");
-                out(setter(m));
-                out(";");
-                endLine();
-            }
-        }
-    }
-    
-    private void copySuperclassMembers(ExtendedType that, Class d) {
-        if (that!=null) {
-            declareSuper(d, that);
-            copyMembers(d, d.getExtendedTypeDeclaration());
-        }
-    }
-
-    private void copyInterfaceMembers(SatisfiedTypes that, ClassOrInterface d) {
-        if (that!=null)
-        for (Tree.SimpleType st: that.getTypes()) {
-            Interface i = (Interface)st.getDeclarationModel();
-            declareSuperInterface(i);
-            copyMembers(d, i);
-        }
-    }*/
-
-    private void declareSuper(Class d, ExtendedType that) {
-        if (prototypeStyle) {
-            self(d);
-            out(".");
-        }
-        else {
-            out("var ");
-        }
-        self(d.getExtendedTypeDeclaration());
-        out("=");
-        out(d.getExtendedTypeDeclaration().getName());
-        that.getInvocationExpression().visit(this);
-        out(";");
-        endLine();
-    }
-
-    private void declareSuperInterface(Interface i) {
-        out("var ");
-        self(i);
-        out("=");
-        out(i.getName());
-        out("();");
-        endLine();
-    }
-    
     private void copyMembersToPrototype(SimpleType that, Declaration d) {
         copyMembersToPrototype("$"+that.getDeclarationModel().getName(), d);
     }
@@ -667,7 +554,7 @@ public class GenerateJsVisitor extends Visitor
         endBlock();
     }
     
-    private void superRef(Method d) {
+    private void superRef(Declaration d) {
         if (d.isActual()) {
             outerSelf(d);
             out(".");
@@ -676,6 +563,34 @@ public class GenerateJsVisitor extends Visitor
             outerSelf(d);
             out(".");
             out(d.getName());
+            out(";");
+            endLine();
+        }
+    }
+
+    private void superGetterRef(Declaration d) {
+        if (d.isActual()) {
+            outerSelf(d);
+            out(".");
+            out(getter(d));
+            out("$=");
+            outerSelf(d);
+            out(".");
+            out(getter(d));
+            out(";");
+            endLine();
+        }
+    }
+
+    private void superSetterRef(Declaration d) {
+        if (d.isActual()) {
+            outerSelf(d);
+            out(".");
+            out(setter(d));
+            out("$=");
+            outerSelf(d);
+            out(".");
+            out(setter(d));
             out(";");
             endLine();
         }
@@ -724,6 +639,7 @@ public class GenerateJsVisitor extends Visitor
         out(getter(d));
         out("()");
         super.visit(that);
+        superGetterRef(d);
         shareGetter(d);
     }
 
@@ -767,6 +683,7 @@ public class GenerateJsVisitor extends Visitor
         out(d.getName());
         out(")");
         super.visit(that);
+        superSetterRef(d);
         shareSetter(d);
     }
 
@@ -834,6 +751,7 @@ public class GenerateJsVisitor extends Visitor
                 out(d.getName());
                 out(";");
                 endBlock();
+                superGetterRef(d);
                 shareGetter(d);
                 if (d.isVariable()) {
                     function();
@@ -848,6 +766,7 @@ public class GenerateJsVisitor extends Visitor
                     out(d.getName());
                     out(";");
                     endBlock();
+                    superSetterRef(d);
                     shareSetter(d);
                 }
             }
@@ -933,7 +852,6 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(This that) { //TODO: not quite correct cos of control structures!
-        //TypeDeclaration d = that.getTypeModel().getDeclaration();
         if (prototypeStyle && 
                 !(that.getScope() instanceof ClassOrInterface)) {
             out("this");
@@ -945,7 +863,6 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(Super that) {
-        //TypeDeclaration d = that.getTypeModel().getDeclaration();
         if (prototypeStyle &&
                 !(that.getScope() instanceof ClassOrInterface)) { //TODO: not quite correct cos of control structures!
             out("this");
@@ -1129,8 +1046,7 @@ public class GenerateJsVisitor extends Visitor
         else if (prototypeStyle) {
             if (d.isClassOrInterfaceMember() && 
                     !(d instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter &&
-                            !d.isCaptured())
-                    ) {
+                            !d.isCaptured())) {
                 TypeDeclaration id = that.getScope().getInheritingDeclaration(d);
                 if (d.getContainer().equals(prototypeOwner)) {
                     out("this");
@@ -1147,13 +1063,8 @@ public class GenerateJsVisitor extends Visitor
                 out(".");             
             }
         }
-        //else if (qualifyBaseMember(that, d)) {
         else if (d.isShared() && d.isClassOrInterfaceMember()) {
             TypeDeclaration id = that.getScope().getInheritingDeclaration(d);
-            /*if (prototypeStyle && id.equals(that.getScope().getContainer())) {
-                out("this");
-            }
-            else {*/
             if (id==null) {
                 self();
             }
@@ -1162,24 +1073,6 @@ public class GenerateJsVisitor extends Visitor
             }
             out(".");
         }
-        /*else if (prototypeStyle && d.isClassOrInterfaceMember()
-                && d.isCaptured()) {
-            if (!isParameterOfContainingScope(that, d)) {
-                out("this");
-                out(".");
-            }
-        }
-        else if (prototypeStyle && d.isClassOrInterfaceMember() &&
-                !(d instanceof Value) && 
-                !(d instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter)) {
-            outerSelf(d);
-            out(".");
-        }*/
-    }
-
-    private boolean isParameterOfContainingScope(Node that, Declaration d) {
-        return d instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter &&
-                that.getScope().equals(((com.redhat.ceylon.compiler.typechecker.model.Parameter)d).getDeclaration());
     }
 
     private boolean isImported(Node that, Declaration d) {
@@ -1187,13 +1080,6 @@ public class GenerateJsVisitor extends Visitor
                 .equals(that.getUnit().getPackage());
     }
 
-    private boolean qualifyBaseMember(Node that, Declaration d) {
-        return !d.isDefinedInScope(that.getScope());
-        /*return d.isClassOrInterfaceMember() &&
-                d.isShared() &&
-                that.getScope().isInherited(d);*/
-    }
-    
     @Override
     public void visit(ExecutableStatement that) {
         super.visit(that);
@@ -1241,10 +1127,6 @@ public class GenerateJsVisitor extends Visitor
             out("this");
         }
         else {
-            //TODO: this is broken, since the container
-            //      might not be the class ... we need
-            //      to search up through the containers
-            //self((Declaration) d.getContainer());
             self();
         }
     }
