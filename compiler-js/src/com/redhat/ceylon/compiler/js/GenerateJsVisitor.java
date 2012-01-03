@@ -256,6 +256,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void share(Declaration d) {
+        if (d.isClassOrInterfaceMember()||d.isToplevel())
         if (d.isShared() || 
                 prototypeStyle && d.isCaptured()) {
             outerSelf(d);
@@ -660,6 +661,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void shareGetter(MethodOrValue d) {
+        if (d.isClassOrInterfaceMember()||d.isToplevel())
         if (d.isShared() || 
                 prototypeStyle && d.isCaptured()) {
             outerSelf(d);
@@ -706,6 +708,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void shareSetter(MethodOrValue d) {
+        if (d.isClassOrInterfaceMember()||d.isToplevel())
         if (d.isShared() || 
                 prototypeStyle && d.isCaptured()) {
             outerSelf(d);

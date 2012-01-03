@@ -28,3 +28,8 @@ shared void outr(String name) {
     String result = inr();
     String uresult = uinr;
 }
+
+shared void test() {
+    outr("Hello");
+    //Outer("Hello");
+}

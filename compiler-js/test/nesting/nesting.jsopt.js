@@ -56,7 +56,7 @@ function Outer(name, $$){
     }
     
     //AttributeDeclaration inner at nesting.ceylon (15:4-15:25)
-    $$.inner=$$.Inner();
+    $$.inner=Inner();
     $$$cl15.print($$.getInner().getInt());
     $$$cl15.print($$.getInner().getFloat());
     return $$;
@@ -71,7 +71,6 @@ function outr(name){
     function getUname(){
         return $uname;
     }
-    $$.getUname=getUname;
     
     //MethodDefinition inr at nesting.ceylon (22:4-24:4)
     function inr(){

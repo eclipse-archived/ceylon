@@ -71,6 +71,8 @@ function String(value) {
         return value===other.value ? equal
                                    : (value<other.value ? smaller:larger);
     }
+    that.getUppercased = function() { return value.toUpperCase() }
+    that.getLowercased = function() { return value.toLowerCase() }
     return that;
 }
 

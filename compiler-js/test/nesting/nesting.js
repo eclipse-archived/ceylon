@@ -10,6 +10,7 @@ function Outer(name, $$){
     function getInt(){
         return $int;
     }
+    $$.getInt=getInt;
     
     //AttributeDeclaration float at nesting.ceylon (3:4-3:34)
     var $float=getInt().getFloat();
