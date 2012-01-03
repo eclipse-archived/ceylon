@@ -27,6 +27,8 @@ shared void outr(String name) {
     }
     String result = inr();
     String uresult = uinr;
+    print(result);
+    print(uresult);
 }
 
 shared class Holder(Object o) {
