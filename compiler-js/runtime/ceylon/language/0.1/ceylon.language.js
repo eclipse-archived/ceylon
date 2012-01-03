@@ -101,8 +101,18 @@ function ArraySequence(value) {
     that.value = value;
     that.getString = function() { return String(value.toString()) }
     that.item = function(index) {
-        var result = value[index];
+        var result = value[index.value];
         return result!==undefined ? result:null;
+    }
+    return that;
+}
+
+function Singleton(elem) {
+    var that = new CeylonObject;
+    that.value = [elem];
+    that.getString = function() { return String(elem.toString()) }
+    that.item = function(index) {
+        return index.value === 0 ? elem : null;
     }
     return that;
 }
@@ -187,6 +197,7 @@ exports.getLarger=getLarger;
 exports.getSmaller=getSmaller;
 exports.getEqual=getEqual;
 exports.ArraySequence=ArraySequence;
+exports.Singleton=Singleton;
 exports.Entry=Entry;
 exports.largest=largest;
 exports.smallest=smallest;

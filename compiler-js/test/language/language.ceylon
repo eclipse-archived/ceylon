@@ -35,10 +35,18 @@ shared void test_zip() {
 shared void test_coalesce() {
     value nulls = { "one", null, "two", null, "three", null, "no nulls..." };
     print(coalesce(nulls));
+    print(nulls.item(1)?"item 1 is null");
+    print(coalesce(nulls).item(1)?"WTF coalesced item 1 is null");
 }
 
 shared void test_append() {
     print(append({"one", "two" , "three"}, "four"));
+}
+
+shared void test_singleton() {
+    value theone = Singleton("the one and only singleton");
+    print(theone.item(0)?"WTF Singleton must have one element!");
+    print(exists theone.item(1) then "WTF Singleton must ONLY have one element!" else "OK, Singleton has only 1 element");
 }
 
 shared void test_language() {
@@ -50,4 +58,5 @@ shared void test_language() {
     test_zip();
     test_coalesce();
     test_append();
+    test_singleton();
 }
