@@ -29,7 +29,56 @@ shared void outr(String name) {
     String uresult = uinr;
 }
 
+shared class Holder(Object o) {
+    shared Object get() {
+        return o;
+    }
+    shared actual String string {
+        return o.string;
+    }
+}
+
+shared class Wrapper() {
+    Object o = 100;
+    shared Object get() {
+        return o;
+    }
+    shared actual String string {
+        return o.string;
+    }
+}
+
+shared class Unwrapper() {
+    shared Object o = 23.56;
+    shared Object get() {
+        return o;
+    }
+    shared actual String string {
+        return o.string;
+    }
+}
+
+Callable<Object> producer() {
+    Object o = 123;
+    function produce() { return o; }
+    return produce;
+}
+    
+Callable<Object> returner(Object o) {
+    function produce() { return o; }
+    return produce;
+}
+    
 shared void test() {
     outr("Hello");
+    print(Holder("ok").get());
+    print(Holder("ok"));
+    print(Wrapper().get());
+    print(Wrapper());
+    print(Unwrapper().get());
+    print(Unwrapper().o);
+    print(Unwrapper());
+    print(producer()());
+    print(returner("something")());
     //Outer("Hello");
 }
