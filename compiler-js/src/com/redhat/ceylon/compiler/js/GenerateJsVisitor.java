@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompareOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DifferenceOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Element;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.EntryOp;
@@ -48,7 +49,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExtendedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IdenticalOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Import;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.IndexOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
@@ -89,6 +89,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SumOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ThenOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.This;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -1332,6 +1333,24 @@ public class GenerateJsVisitor extends Visitor
 	   out(".item(");
 	   that.getExpression().visit(this);
 	   out(")");
+   }
+   
+   @Override public void visit(DefaultOp that) {
+	   out("function($){return $!==null?$:");
+	   that.getRightTerm().visit(this);
+	   out("}(");
+	   that.getLeftTerm().visit(this);
+	   out(")");
+   }
+   
+   @Override public void visit(ThenOp that) {
+       out("(");
+       that.getLeftTerm().visit(this);
+       out("===");
+       clTrue();
+       out("?");
+       that.getRightTerm().visit(this);
+       out(":null)");
    }
     
 }

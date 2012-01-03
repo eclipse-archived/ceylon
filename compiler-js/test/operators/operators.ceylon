@@ -84,7 +84,10 @@ void testComparisonOperators() {
 
 void testOtherOperators() {
     Integer->String entry = 47->"hi there";
-    value entry2 = true->entry;    
+    value entry2 = true->entry;
+    
+    String s1 = true then "ok" else "noo"; 
+    String s2 = false then "what?" else "great"; 
 }
 
 void testCollectionOperators() {
@@ -92,4 +95,10 @@ void testCollectionOperators() {
     String? s1 = seq1[0];
     String? s2 = seq1[2];
     String? s3 = seq1[-1];            
+}
+
+void testNullsafeOperators() {
+    String[] seq = { "hi" };
+    String s1 = seq[0]?"null";
+    String s2 = seq[1]?"null";
 }
