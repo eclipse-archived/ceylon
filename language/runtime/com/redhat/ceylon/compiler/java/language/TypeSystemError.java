@@ -6,9 +6,9 @@ package com.redhat.ceylon.compiler.java.language;
  * subclass being added to an enumerated type.
  * @author tom
  */
-public class TypeSystemException extends RuntimeException {
+public class TypeSystemError extends Error {
 
-    public TypeSystemException(String message) {
+    public TypeSystemError(String message) {
         super(message);
     }
 
