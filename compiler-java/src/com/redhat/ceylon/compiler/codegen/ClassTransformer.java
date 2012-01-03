@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -170,7 +171,7 @@ public class ClassTransformer extends AbstractTransformer {
         String name = decl.getIdentifier().getText();
         return AttributeDefinitionBuilder
             .setter(this, name, decl.getDeclarationModel().getParameter())
-            .modifiers(transformAttributeGetSetDeclFlags(decl))
+            .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel()))
             .setterBlock(body)
             .build();
     }
@@ -180,7 +181,7 @@ public class ClassTransformer extends AbstractTransformer {
         JCBlock body = statementGen().transform(decl.getBlock());
         return AttributeDefinitionBuilder
             .getter(this, name, decl.getDeclarationModel())
-            .modifiers(transformAttributeGetSetDeclFlags(decl))
+            .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel()))
             .getterBlock(body)
             .build();
     }
@@ -229,12 +230,19 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
 
-    private int transformAttributeGetSetDeclFlags(Tree.TypedDeclaration cdecl) {
+    private int transformAttributeGetSetDeclFlags(TypedDeclaration cdecl) {
+        if (cdecl instanceof Setter) {
+            // Spec says: A setter may not be annotated shared, default or 
+            // actual. The visibility and refinement modifiers of an attribute 
+            // with a setter are specified by annotating the matching getter.
+            cdecl = ((Setter)cdecl).getGetter();
+        }
+        
         int result = 0;
 
-        result |= Decl.isShared(cdecl) ? PUBLIC : PRIVATE;
-        result |= (Decl.isFormal(cdecl) && !Decl.isDefault(cdecl)) ? ABSTRACT : 0;
-        result |= !(Decl.isFormal(cdecl) || Decl.isDefault(cdecl)) ? FINAL : 0;
+        result |= cdecl.isShared() ? PUBLIC : PRIVATE;
+        result |= (cdecl.isFormal() && !cdecl.isDefault()) ? ABSTRACT : 0;
+        result |= !(cdecl.isFormal() || cdecl.isDefault()) ? FINAL : 0;
 
         return result;
     }
@@ -253,7 +261,7 @@ public class ClassTransformer extends AbstractTransformer {
         String atrrName = decl.getIdentifier().getText();
         return AttributeDefinitionBuilder
             .getter(this, atrrName, decl.getDeclarationModel())
-            .modifiers(transformAttributeGetSetDeclFlags(decl))
+            .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel()))
             .isActual(Decl.isActual(decl))
             .isFormal(Decl.isFormal(decl))
             .build();
@@ -276,7 +284,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         return AttributeDefinitionBuilder
             .setter(this, attrName, declModel)
-            .modifiers(transformAttributeGetSetDeclFlags(decl))
+            .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel()))
             .isActual(actual)
             .isFormal(Decl.isFormal(decl))
             .build();
@@ -452,7 +460,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (visible) {
                 result = result.appendList(AttributeDefinitionBuilder
                     .getter(this, name, def.getDeclarationModel())
-                    .modifiers(transformAttributeGetSetDeclFlags(def))
+                    .modifiers(transformAttributeGetSetDeclFlags(def.getDeclarationModel()))
                     .isActual(Decl.isActual(def))
                     .build());
             }
