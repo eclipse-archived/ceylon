@@ -1,12 +1,12 @@
 package ceylon.language;
 
-import com.redhat.ceylon.compiler.metadata.java.Attribute;
-import com.redhat.ceylon.compiler.metadata.java.Ceylon;
-import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.Attribute;
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon
 @Attribute
-@com.redhat.ceylon.compiler.metadata.java.Module(name = "ceylon.language", version = "0.1", dependencies = {})
+@com.redhat.ceylon.compiler.java.metadata.Module(name = "ceylon.language", version = "0.1", dependencies = {})
 final class module {
     
     @TypeInfo("ceylon.language.descriptor.Module")

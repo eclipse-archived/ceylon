@@ -1,10 +1,10 @@
 package ceylon.language;
 
-import com.redhat.ceylon.compiler.metadata.java.Ceylon;
-import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
-import com.redhat.ceylon.compiler.metadata.java.TypeParameter;
-import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
-import com.redhat.ceylon.compiler.metadata.java.Variance;
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
+import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon
 @TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT))

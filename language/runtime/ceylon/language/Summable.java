@@ -1,9 +1,9 @@
 package ceylon.language;
 
-import com.redhat.ceylon.compiler.metadata.java.Ceylon;
-import com.redhat.ceylon.compiler.metadata.java.Name;
-import com.redhat.ceylon.compiler.metadata.java.TypeParameter;
-import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon
 @TypeParameters(@TypeParameter(value = "Other",

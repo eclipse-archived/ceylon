@@ -1,12 +1,12 @@
 package ceylon.language;
 
-import com.redhat.ceylon.compiler.metadata.java.Attribute;
-import com.redhat.ceylon.compiler.metadata.java.Ceylon;
-import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.Attribute;
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon
 @Attribute
-@com.redhat.ceylon.compiler.metadata.java.Package(name = "ceylon.language", shared = true)
+@com.redhat.ceylon.compiler.java.metadata.Package(name = "ceylon.language", shared = true)
 final class $package {
     
     @TypeInfo("ceylon.language.descriptor.Package")

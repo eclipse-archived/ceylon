@@ -3,10 +3,10 @@ package ceylon.language;
 import java.util.Arrays;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.metadata.java.Class;
-import com.redhat.ceylon.compiler.metadata.java.Ignore;
-import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
-import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ignore
 @Class(extendsType="ceylon.language.Object")

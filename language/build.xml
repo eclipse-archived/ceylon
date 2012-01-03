@@ -131,7 +131,7 @@
         <jar destfile="${runtime.jar}">
             <fileset dir="${build.classes}">
                 <include name="ceylon/**"/>
-                <include name="com/redhat/ceylon/compiler/metadata/**"/>
+                <include name="com/redhat/ceylon/compiler/java/**"/>
             </fileset>
         </jar>
     </target>
