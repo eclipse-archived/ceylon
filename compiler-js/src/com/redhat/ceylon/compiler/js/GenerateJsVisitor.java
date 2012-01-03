@@ -515,28 +515,38 @@ public class GenerateJsVisitor extends Visitor
         out("();");
         endLine();
     }
-
+    
     private void copyMembersToPrototype(SimpleType that, Declaration d) {
-        out("for(var $ in $");
-        out(that.getDeclarationModel().getName());
+        copyMembersToPrototype("$"+that.getDeclarationModel().getName(), d);
+    }
+
+    private void copyMembersToPrototype(String from, Declaration d) {
+        out("for(var $ in ");
+        out(from);
         out(".prototype){$");
         out(d.getName());
-        out(".prototype[$]=$");
-        out(that.getDeclarationModel().getName());
+        out(".prototype[$]=");
+        out(from);
         out(".prototype[$]}");
         endLine();
     }
 
     private void copySuperclassPrototype(ExtendedType that, Declaration d) {
-        if (prototypeStyle&&that!=null) {
-            copyMembersToPrototype(that.getType(), d);
+        if (prototypeStyle) {
+            if (that==null) {
+                copyMembersToPrototype("CeylonObject", d);
+            }
+            else {
+                copyMembersToPrototype(that.getType(), d);
+            }
         }
     }
 
     private void copyInterfacePrototypes(SatisfiedTypes that, Declaration d) {
-        if (prototypeStyle&&that!=null)
-        for (Tree.SimpleType st: that.getTypes()) {
-            copyMembersToPrototype(st, d);
+        if (prototypeStyle && that!=null) {
+            for (Tree.SimpleType st: that.getTypes()) {
+                copyMembersToPrototype(st, d);
+            }
         }
     }
 

@@ -15,6 +15,7 @@ this.X=X;
 
 //ClassDefinition Foo at misc.ceylon (7:0-16:0)
 function $Foo(){}
+for(var $ in CeylonObject.prototype){$Foo.prototype[$]=CeylonObject.prototype[$]}
 
 //AttributeDeclaration name at misc.ceylon (8:4-8:29)
 $Foo.prototype.getName=function getName(){
@@ -76,6 +77,7 @@ function Bar(){
     
     //ClassDefinition Inner at misc.ceylon (23:4-29:4)
     function $Inner(){}
+    for(var $ in CeylonObject.prototype){$Inner.prototype[$]=CeylonObject.prototype[$]}
     
     //MethodDefinition incOuter at misc.ceylon (26:8-28:8)
     $Inner.prototype.incOuter=function incOuter(){
@@ -104,6 +106,7 @@ function doIt(f){
 
 //ObjectDefinition foob at misc.ceylon (42:0-44:0)
 function $foob(){}
+for(var $ in CeylonObject.prototype){$foob.prototype[$]=CeylonObject.prototype[$]}
 
 //AttributeDeclaration name at misc.ceylon (43:4-43:30)
 $foob.prototype.getName=function getName(){
@@ -158,6 +161,7 @@ function testit(){
     
     //ObjectDefinition x at testit.ceylon (18:4-22:4)
     function $x(){}
+    for(var $ in CeylonObject.prototype){$x.prototype[$]=CeylonObject.prototype[$]}
     
     //MethodDefinition y at testit.ceylon (19:8-21:8)
     $x.prototype.y=function y(){

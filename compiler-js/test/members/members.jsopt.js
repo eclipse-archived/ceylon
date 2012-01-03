@@ -2,6 +2,7 @@ var $$$cl15=require('ceylon/language/0.1/ceylon.language');
 
 //ClassDefinition Counter at members.ceylon (1:0-12:0)
 function $Counter(){}
+for(var $ in CeylonObject.prototype){$Counter.prototype[$]=CeylonObject.prototype[$]}
 
 //AttributeDeclaration currentCount at members.ceylon (2:4-2:45)
 $Counter.prototype.getCurrentCount=function getCurrentCount(){

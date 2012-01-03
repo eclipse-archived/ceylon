@@ -71,6 +71,7 @@ function testFloatOperators(){
 
 //ClassDefinition OpTest1 at operators.ceylon (37:0-37:17)
 function $OpTest1(){}
+for(var $ in CeylonObject.prototype){$OpTest1.prototype[$]=CeylonObject.prototype[$]}
 function OpTest1(){
     var $$opTest1=new $OpTest1;
     return $$opTest1;

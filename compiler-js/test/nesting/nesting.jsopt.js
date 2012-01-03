@@ -2,6 +2,7 @@ var $$$cl15=require('ceylon/language/0.1/ceylon.language');
 
 //ClassDefinition Outer at nesting.ceylon (1:0-8:0)
 function $Outer(){}
+for(var $ in CeylonObject.prototype){$Outer.prototype[$]=CeylonObject.prototype[$]}
 
 //AttributeDeclaration inner at nesting.ceylon (7:4-7:25)
 $Outer.prototype.getInner=function getInner(){
@@ -13,6 +14,7 @@ function Outer(name){
     
     //ClassDefinition Inner at nesting.ceylon (2:4-6:4)
     function $Inner(){}
+    for(var $ in CeylonObject.prototype){$Inner.prototype[$]=CeylonObject.prototype[$]}
     
     //MethodDefinition printName at nesting.ceylon (3:8-5:8)
     $Inner.prototype.printName=function printName(){

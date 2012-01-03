@@ -6,14 +6,14 @@ function print(line) { console.log(line.getString()) }
 
 CeylonObject=function CeylonObject() {}
 
-CeylonObject.prototype.getString=Object.prototype.toString;
-CeylonObject.prototype.toString=CeylonObject.prototype.getString;
+CeylonObject.prototype.getString=function() { String(Object.prototype.toString.apply(this)) };
+CeylonObject.prototype.toString=function() { return this.getString().value };
 
 //TODO: we need to distinguish between Objects and IdentifiableObjects
 CeylonObject.prototype.equals = function(other) { return Boolean(this===other) }
 
 function Integer(value) {
-    var that = new CeylonObject();
+    var that = new CeylonObject;
     that.value = value;
     that.getString = function() { return value.toString() }
     that.plus = function(other) { return Integer(value+other.value) }
@@ -39,7 +39,7 @@ function Integer(value) {
 }
 
 function Float(value) {
-    var that = new CeylonObject();
+    var that = new CeylonObject;
     that.value = value;
     that.getString = function() { return value.toString() }
     that.plus = function(other) { return Float(value+other.value) }
@@ -58,7 +58,7 @@ function Float(value) {
 }
 
 function String(value) {
-    var that = new CeylonObject();
+    var that = new CeylonObject;
     that.value = value;
     that.getString = function() { return value }
     that.plus = function(other) { return String(value+other.value) }
@@ -71,7 +71,7 @@ function String(value) {
 }
 
 function Case(caseName) {
-    var that = new CeylonObject();
+    var that = new CeylonObject;
     var string = String(caseName);
     that.getString = function() { return string }
     return that;

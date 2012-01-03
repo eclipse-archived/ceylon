@@ -2,6 +2,7 @@ var $$$cl15=require('ceylon/language/0.1/ceylon.language');
 
 //ClassDefinition Pair at types.ceylon (1:0-1:27)
 function $Pair(){}
+for(var $ in CeylonObject.prototype){$Pair.prototype[$]=CeylonObject.prototype[$]}
 function Pair(x,y){
     var $$pair=new $Pair;
     return $$pair;
@@ -25,6 +26,7 @@ function List(){
 
 //ClassDefinition ConcreteList at types.ceylon (8:0-9:27)
 function $ConcreteList(){}
+for(var $ in CeylonObject.prototype){$ConcreteList.prototype[$]=CeylonObject.prototype[$]}
 for(var $ in $List.prototype){$ConcreteList.prototype[$]=$List.prototype[$]}
 function ConcreteList(xs){
     var $$concreteList=new $ConcreteList;
