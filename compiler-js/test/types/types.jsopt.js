@@ -13,7 +13,7 @@ function $Complex(){}
 for(var $ in $Pair.prototype){$Complex.prototype[$]=$Pair.prototype[$]}
 function Complex(x,y){
     var $$complex=new $Complex;
-    $$complex.$superPair=Pair($$complex.x,$$complex.y);
+    $$complex.$$pair=Pair(x,y);
     return $$complex;
 }
 
@@ -30,6 +30,31 @@ for(var $ in CeylonObject.prototype){$ConcreteList.prototype[$]=CeylonObject.pro
 for(var $ in $List.prototype){$ConcreteList.prototype[$]=$List.prototype[$]}
 function ConcreteList(xs){
     var $$concreteList=new $ConcreteList;
-    var $superList=List();
+    var $$list=List();
     return $$concreteList;
+}
+
+//ClassDefinition Couple at types.ceylon (11:0-15:0)
+function $Couple(){}
+for(var $ in $Pair.prototype){$Couple.prototype[$]=$Pair.prototype[$]}
+
+//AttributeDeclaration x at types.ceylon (13:4-13:18)
+$Couple.prototype.getX=function getX(){
+    return this.x;
+}
+
+//AttributeDeclaration y at types.ceylon (14:4-14:18)
+$Couple.prototype.getY=function getY(){
+    return this.y;
+}
+function Couple(x,y){
+    var $$couple=new $Couple;
+    $$couple.$$pair=Pair(x,y);
+    
+    //AttributeDeclaration x at types.ceylon (13:4-13:18)
+    $$couple.x=x;
+    
+    //AttributeDeclaration y at types.ceylon (14:4-14:18)
+    $$couple.y=y;
+    return $$couple;
 }

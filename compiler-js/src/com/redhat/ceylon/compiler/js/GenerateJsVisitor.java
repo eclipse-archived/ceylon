@@ -432,8 +432,7 @@ public class GenerateJsVisitor extends Visitor
                 self(to);
                 out(".");
             }
-            out("$super");
-            out(from.getName());
+            self(from);
             out(".");
             out(m.getName());
             out(";");
@@ -444,8 +443,8 @@ public class GenerateJsVisitor extends Visitor
                 self(to);
                 out(".");
                 out(m.getName());
-                out("=$super");
-                out(from.getName());
+                out("=");
+                self(from);
                 out(".");
                 out(m.getName());
                 out(";");
@@ -455,8 +454,8 @@ public class GenerateJsVisitor extends Visitor
                 self(to);
                 out(".");
                 out(getter(m));
-                out("=$super");
-                out(from.getName());
+                out("=");
+                self(from);
                 out(".");
                 out(getter(m));
                 out(";");
@@ -467,8 +466,8 @@ public class GenerateJsVisitor extends Visitor
                 self(to);
                 out(".");
                 out(setter(m));
-                out("=$super");
-                out(from.getName());
+                out("=");
+                self(from);
                 out(".");
                 out(setter(m));
                 out(";");
@@ -494,13 +493,14 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void declareSuper(Class d, ExtendedType that) {
-        if (!prototypeStyle) out("var ");
         if (prototypeStyle) {
             self(d);
             out(".");
         }
-        out("$super");
-        out(d.getExtendedTypeDeclaration().getName());
+        else {
+            out("var ");
+        }
+        self(d.getExtendedTypeDeclaration());
         out("=");
         out(d.getExtendedTypeDeclaration().getName());
         that.getInvocationExpression().visit(this);
@@ -509,8 +509,8 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void declareSuperInterface(Interface i) {
-        out("var $super");
-        out(i.getName());
+        out("var ");
+        self(i);
         out("=");
         out(i.getName());
         out("();");
@@ -867,8 +867,7 @@ public class GenerateJsVisitor extends Visitor
             }
             out(".");
         }
-        out("$super");
-        out(d.getName());
+        self(d);
     }
     
     @Override
@@ -1055,7 +1054,8 @@ public class GenerateJsVisitor extends Visitor
             }
         }
         else if (prototypeStyle && d.isClassOrInterfaceMember() &&
-                !(d instanceof Value)) {
+                !(d instanceof Value) && 
+                !(d instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter)) {
             outerSelf(d);
             out(".");
         }

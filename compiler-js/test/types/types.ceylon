@@ -8,3 +8,8 @@ interface List<out X> {}
 class ConcreteList<out X>(X... xs) 
         satisfies List<X> {}
 
+class Couple<X>(X x, X y) 
+        extends Pair<X,X>(x,y) {
+    shared X x = x;
+    shared X y = y;
+}

@@ -66,14 +66,14 @@ for(var $ in $X.prototype){$Bar.prototype[$]=$X.prototype[$]}
 //MethodDefinition printName at misc.ceylon (19:4-22:4)
 $Bar.prototype.printName=function printName(){
     $$$cl15.print($$$cl15.String("bar name = ").plus(this.getName()));
-    this.$superFoo.printName();
+    this.$$foo.printName();
 }
 function Bar(){
     var $$bar=new $Bar;
-    $$bar.$superFoo=Foo($$$cl15.String("Hello"));
-    $$bar.name=$$bar.$superFoo.name;
-    $$bar.counter=$$bar.$superFoo.counter;
-    var $superX=X();
+    $$bar.$$foo=Foo($$$cl15.String("Hello"));
+    $$bar.name=$$bar.$$foo.name;
+    $$bar.counter=$$bar.$$foo.counter;
+    var $$x=X();
     
     //ClassDefinition Inner at misc.ceylon (23:4-29:4)
     function $Inner(){}
