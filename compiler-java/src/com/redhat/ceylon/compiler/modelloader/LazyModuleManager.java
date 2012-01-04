@@ -31,8 +31,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 
 public abstract class LazyModuleManager extends ModuleManager {
 
-    private com.sun.tools.javac.util.Context context;
-
     public LazyModuleManager(Context ceylonContext) {
         super(ceylonContext);
     }
