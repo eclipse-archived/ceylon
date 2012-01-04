@@ -99,6 +99,8 @@ public class CeylonDocTool {
         builder.moduleManager(moduleManager);
         TypeChecker typeChecker = builder.getTypeChecker();
         typeChecker.process();
+        if(typeChecker.getErrors() > 0)
+            throw new RuntimeException("Parsing failed with "+typeChecker.getErrors()+" error(s)");
         this.modules = getModules(moduleSpecs, typeChecker.getContext().getModules());
         // only for source code mapping
         this.phasedUnits = getPhasedUnits(typeChecker.getPhasedUnits().getPhasedUnits());
