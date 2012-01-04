@@ -70,6 +70,29 @@ Callable<Object> returner(Object o) {
     function produce() { return o; }
     return produce;
 }
+
+class A() {
+    String foo = "foo";
+    shared class B() {
+        String qux = "qux";
+        shared class C() {
+            shared String foobar() {
+                return foo;
+            }
+            shared String quxx() {
+                return qux;
+            }
+        }
+    }
+    shared String baz() {
+        class Baz() {
+            shared String get() {
+                return foo;
+            }
+        }
+        return Baz().get();
+    }
+}
     
 shared void test() {
     outr("Hello");
@@ -82,5 +105,8 @@ shared void test() {
     print(Unwrapper());
     print(producer()());
     print(returner("something")());
+    print(A().B().C().foobar());
+    print(A().B().C().quxx());
+    print(A().baz());
     //Outer("Hello");
 }

@@ -231,6 +231,16 @@ public class GenerateJsVisitor extends Visitor
         }
         else {
             beginBlock();
+            if (prototypeOwner!=null) {
+                out("var ");
+                self();
+                out("=this;");
+                endLine();
+                out("var ");
+                self(prototypeOwner);
+                out("=this;");
+                endLine();
+            }
             for (int i=0; i<stmnts.size(); i++) {
                 Statement s = stmnts.get(i);
                 s.visit(this);
@@ -1055,30 +1065,37 @@ public class GenerateJsVisitor extends Visitor
                     !(d instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter &&
                             !d.isCaptured())) {
                 TypeDeclaration id = that.getScope().getInheritingDeclaration(d);
-                if (d.getContainer().equals(prototypeOwner)) {
+                /*if (d.getContainer().equals(prototypeOwner)) {
                     out("this");
                 }
-                else if (id==null) {
-                    self();
-                }
-                else if (id.equals(prototypeOwner)) {
-                    out("this");
+                else*/
+                if (id==null) {
+                    //a local declaration of some kind,
+                    //perhaps in an outer scope
+                    self((TypeDeclaration)d.getContainer());
                 }
                 else {
+                    //an inherited declaration that might be
+                    //inherited by an outer scope
                     self(id);
                 }
                 out(".");             
             }
         }
-        else if (d.isShared() && d.isClassOrInterfaceMember()) {
-            TypeDeclaration id = that.getScope().getInheritingDeclaration(d);
-            if (id==null) {
-                self();
+        else {
+            if (d.isShared() && d.isClassOrInterfaceMember()) {
+                TypeDeclaration id = that.getScope().getInheritingDeclaration(d);
+                if (id==null) {
+                    //a shared local declaration
+                    self();
+                }
+                else {
+                    //an inherited declaration that might be
+                    //inherited by an outer scope
+                    self(id);
+                }
+                out(".");
             }
-            else {
-                self(id);
-            }
-            out(".");
         }
     }
 
