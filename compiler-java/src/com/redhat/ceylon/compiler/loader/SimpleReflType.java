@@ -48,7 +48,7 @@ public class SimpleReflType implements TypeMirror {
 
     @Override
     public List<TypeMirror> getTypeArguments() {
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
     @Override

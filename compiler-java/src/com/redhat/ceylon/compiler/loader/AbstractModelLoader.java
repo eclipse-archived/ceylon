@@ -601,10 +601,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     //
     // Utils for loading type info from the model
     
+    @SuppressWarnings("unchecked")
     private <T> List<T> getAnnotationArrayValue(AnnotatedMirror symbol, String type, String field) {
         return (List<T>) getAnnotationValue(symbol, type, field);
     }
 
+    @SuppressWarnings("unchecked")
     private <T> List<T> getAnnotationArrayValue(AnnotatedMirror symbol, String type) {
         return (List<T>) getAnnotationValue(symbol, type);
     }
@@ -1047,11 +1049,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     //
     // Type parameters loading
 
+    @SuppressWarnings("unchecked")
     private List<AnnotationMirror> getTypeParametersFromAnnotations(AnnotatedMirror symbol) {
         return (List<AnnotationMirror>) getAnnotationValue(symbol, CEYLON_TYPE_PARAMETERS);
     }
 
     // from our annotation
+    @SuppressWarnings("deprecation")
     private void setTypeParametersFromAnnotations(Scope scope, List<TypeParameter> params, List<AnnotationMirror> typeParameters) {
         // We must first add every type param, before we resolve the bounds, which can
         // refer to type params.
@@ -1079,6 +1083,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         Iterator<TypeParameter> paramsIterator = params.iterator();
         for(AnnotationMirror typeParam : typeParameters){
             TypeParameter param = paramsIterator.next();
+            @SuppressWarnings("unchecked")
             List<String> satisfiesAttribute = (List<String>)typeParam.getValue("satisfies");
             if(satisfiesAttribute != null){
                 for (String satisfy : satisfiesAttribute) {
@@ -1090,6 +1095,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     // from java type info
+    @SuppressWarnings("deprecation")
     private void setTypeParameters(Scope scope, List<TypeParameter> params, List<TypeParameterMirror> typeParameters) {
         // We must first add every type param, before we resolve the bounds, which can
         // refer to type params.
