@@ -45,14 +45,6 @@ public class CompilerModuleManager extends LazyModuleManager {
         return module;
     }
 
-    @Override
-    public void resolveModule(Module module, VirtualFile artifact,
-            List<PhasedUnits> phasedUnitsOfDependencies) {
-        
-        getCeylonEnter().addModuleToClassPath(module, true); // To be able to load it from the corresponding archive
-        super.resolveModule(module, artifact, phasedUnitsOfDependencies);
-    }
-
     public CeylonEnter getCeylonEnter() {
         if (ceylonEnter == null) {
             ceylonEnter = CeylonEnter.instance(context);

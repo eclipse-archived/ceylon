@@ -40,6 +40,7 @@ public abstract class LazyModuleManager extends ModuleManager {
     @Override
     public void resolveModule(Module module, VirtualFile artifact,
             List<PhasedUnits> phasedUnitsOfDependencies) {
+        getModelLoader().addModuleToClassPath(module, artifact); // To be able to load it from the corresponding archive
         Module compiledModule = getModelLoader().loadCompiledModule(module.getNameAsString());
     }
 
