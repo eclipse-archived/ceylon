@@ -439,8 +439,8 @@ public abstract class TypeDeclaration extends Declaration
     }
 
     /**
-     * Get the containing type which inherits
-     * the given declaration.
+     * Get the containing type which inherits the given declaration.
+     * Returns null if the declaration is not inherited!!
      */
     @Override
     public TypeDeclaration getInheritingDeclaration(Declaration d) {
