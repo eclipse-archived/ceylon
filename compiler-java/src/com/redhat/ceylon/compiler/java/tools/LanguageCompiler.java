@@ -65,6 +65,7 @@ import com.redhat.ceylon.compiler.typechecker.parser.LexError;
 import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
+import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 import com.sun.tools.javac.code.Symbol.CompletionFailure;
 import com.sun.tools.javac.comp.AttrContext;
 import com.sun.tools.javac.comp.Env;
@@ -106,15 +107,17 @@ public class LanguageCompiler extends JavaCompiler {
     private Options options;
 
     /** Get the PhasedUnits instance for this context. */
-    public static PhasedUnits getPhasedUnitsInstance(Context context) {
+    public static PhasedUnits getPhasedUnitsInstance(final Context context) {
         PhasedUnits phasedUnits = context.get(phasedUnitsKey);
         if (phasedUnits == null) {
             com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext = getCeylonContextInstance(context);
-            CompilerModuleManager moduleManager = new CompilerModuleManager(ceylonContext, context);
-            phasedUnits = new PhasedUnits(ceylonContext, moduleManager);
+            phasedUnits = new PhasedUnits(ceylonContext, new ModuleManagerFactory(){
+                @Override
+                public ModuleManager createModuleManager(com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext) {
+                    return new CompilerModuleManager(ceylonContext, context);
+                }
+            });
             context.put(phasedUnitsKey, phasedUnits);
-            // we must call it here because we use the PhasedUnits constructor that doesn't call it
-            moduleManager.initCoreModules();
         }
         return phasedUnits;
     }

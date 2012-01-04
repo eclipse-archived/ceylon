@@ -26,6 +26,7 @@ import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.modelloader.model.LazyModuleManager;
 import com.redhat.ceylon.compiler.reflectionmodelloader.ReflectionModelLoader;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
+import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -34,6 +35,10 @@ import com.redhat.ceylon.compiler.typechecker.model.Modules;
 public class ReflectionModuleManager extends LazyModuleManager {
 
     private AbstractModelLoader modelLoader;
+
+    public ReflectionModuleManager(Context context) {
+        super(context);
+    }
 
     @Override
     public void initCoreModules() {

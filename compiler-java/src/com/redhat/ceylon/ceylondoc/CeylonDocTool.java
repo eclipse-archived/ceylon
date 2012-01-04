@@ -44,6 +44,8 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.reflectionmodelloader.mirror.ReflectionModuleManager;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
+import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -65,6 +67,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Walker;
+import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 
 public class CeylonDocTool {
 
@@ -95,8 +98,12 @@ public class CeylonDocTool {
                 builder.addRepository(repoFile);
         }
         // we need to plug in the module manager which can load from .cars
-        ReflectionModuleManager moduleManager = new ReflectionModuleManager();
-        builder.moduleManager(moduleManager);
+        builder.moduleManagerFactory(new ModuleManagerFactory(){
+            @Override
+            public ModuleManager createModuleManager(Context context) {
+                return new ReflectionModuleManager(context);
+            }
+        });
         TypeChecker typeChecker = builder.getTypeChecker();
         typeChecker.process();
         if(typeChecker.getErrors() > 0)
