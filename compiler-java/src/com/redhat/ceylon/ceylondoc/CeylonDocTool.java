@@ -87,7 +87,8 @@ public class CeylonDocTool {
     private boolean omitSource;
     private Map<Declaration, Node> sourceLocations = new HashMap<Declaration, Node>();
 
-    public CeylonDocTool(List<File> sourceFolders, List<String> repositories, List<String> moduleSpecs) {
+    public CeylonDocTool(List<File> sourceFolders, List<String> repositories, List<String> moduleSpecs,
+            boolean haltOnError) {
         TypeCheckerBuilder builder = new TypeCheckerBuilder();
         for(File src : sourceFolders)
             builder.addSrcDirectory(src);
@@ -107,7 +108,7 @@ public class CeylonDocTool {
         });
         TypeChecker typeChecker = builder.getTypeChecker();
         typeChecker.process();
-        if(typeChecker.getErrors() > 0)
+        if(haltOnError && typeChecker.getErrors() > 0)
             throw new RuntimeException("Parsing failed with "+typeChecker.getErrors()+" error(s)");
         this.modules = getModules(modules, typeChecker.getContext().getModules());
         // only for source code mapping

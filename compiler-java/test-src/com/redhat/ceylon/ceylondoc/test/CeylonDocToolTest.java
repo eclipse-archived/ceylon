@@ -47,7 +47,8 @@ public class CeylonDocToolTest {
             throws IOException {
         CeylonDocTool tool = new CeylonDocTool(Arrays.asList(new File(pathname)), 
                 Arrays.asList(repositories), 
-                Arrays.asList(moduleName));
+                Arrays.asList(moduleName),
+                true/* throw on error */);
         File dir = new File(System.getProperty("java.io.tmpdir"), "CeylonDocToolTest/" + testName);
         if (dir.exists()) {
             rm(dir);

@@ -90,7 +90,7 @@ public class Main {
         }
 
         try{
-            CeylonDocTool ceylonDocTool = new CeylonDocTool(sourceFolders, repositories, modules);
+            CeylonDocTool ceylonDocTool = new CeylonDocTool(sourceFolders, repositories, modules, false);
             ceylonDocTool.setShowPrivate(showPrivate);
             ceylonDocTool.setDestDir(destDir);
             ceylonDocTool.setOmitSource(omitSource);
