@@ -68,13 +68,6 @@ public class ReflectionModuleManager extends LazyModuleManager {
     }
 
     @Override
-    public void resolveModule(Module module, VirtualFile artifact, List<PhasedUnits> phasedUnitsOfDependencies) {
-        // FIXME: implement
-        System.err.println("Resolve module: "+module);
-        super.resolveModule(module, artifact, phasedUnitsOfDependencies);
-    }
-
-    @Override
     public void prepareForTypeChecking() {
         getModelLoader().loadStandardModules();
         getModelLoader().loadPackageDescriptors();
