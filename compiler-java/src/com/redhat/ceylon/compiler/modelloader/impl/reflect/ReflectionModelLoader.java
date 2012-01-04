@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.compiler.reflectionmodelloader;
+package com.redhat.ceylon.compiler.modelloader.impl.reflect;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -27,11 +27,11 @@ import java.net.URLClassLoader;
 
 import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.modelloader.TypeParser;
+import com.redhat.ceylon.compiler.modelloader.impl.reflect.mirror.ReflectionClass;
+import com.redhat.ceylon.compiler.modelloader.impl.reflect.mirror.ReflectionMethod;
+import com.redhat.ceylon.compiler.modelloader.impl.reflect.mirror.ReflectionModule;
 import com.redhat.ceylon.compiler.modelloader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.modelloader.mirror.MethodMirror;
-import com.redhat.ceylon.compiler.reflectionmodelloader.mirror.ReflectionClass;
-import com.redhat.ceylon.compiler.reflectionmodelloader.mirror.ReflectionMethod;
-import com.redhat.ceylon.compiler.reflectionmodelloader.mirror.ReflectionModule;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;

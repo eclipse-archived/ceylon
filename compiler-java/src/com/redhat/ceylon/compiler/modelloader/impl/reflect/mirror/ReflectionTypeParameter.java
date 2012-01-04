@@ -18,22 +18,36 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.compiler.reflectionmodelloader.mirror;
+package com.redhat.ceylon.compiler.modelloader.impl.reflect.mirror;
 
-import com.redhat.ceylon.compiler.modelloader.mirror.PackageMirror;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ReflectionPackage implements PackageMirror {
+import com.redhat.ceylon.compiler.modelloader.mirror.TypeMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.TypeParameterMirror;
 
-    private Package pkg;
+public class ReflectionTypeParameter implements TypeParameterMirror {
 
-    public ReflectionPackage(Package pkg) {
-        this.pkg = pkg;
+    private TypeVariable<?> type;
+
+    public ReflectionTypeParameter(Type type) {
+        this.type = (TypeVariable<?>) type;
     }
 
     @Override
-    public String getQualifiedName() {
-        // primitives and arrays don't have a package, so we pretend they come from java.lang
-        return pkg == null ? "java.lang" : pkg.getName();
+    public String getName() {
+        return type.getName();
+    }
+
+    @Override
+    public List<TypeMirror> getBounds() {
+        Type[] javaBounds = type.getBounds();
+        List<TypeMirror> bounds = new ArrayList<TypeMirror>(javaBounds.length);
+        for(Type bound : javaBounds)
+            bounds.add(new ReflectionType(bound));
+        return bounds;
     }
 
 }

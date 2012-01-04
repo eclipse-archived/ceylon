@@ -18,36 +18,42 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.compiler.reflectionmodelloader.mirror;
+package com.redhat.ceylon.compiler.modelloader.impl.reflect.mirror;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
-import java.util.ArrayList;
-import java.util.List;
 
+import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.modelloader.mirror.AnnotationMirror;
 import com.redhat.ceylon.compiler.modelloader.mirror.TypeMirror;
-import com.redhat.ceylon.compiler.modelloader.mirror.TypeParameterMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.VariableMirror;
 
-public class ReflectionTypeParameter implements TypeParameterMirror {
+public class ReflectionVariable implements VariableMirror {
 
-    private TypeVariable<?> type;
+    private Type type;
+    private Annotation[] annotations;
 
-    public ReflectionTypeParameter(Type type) {
-        this.type = (TypeVariable<?>) type;
+    public ReflectionVariable(Type type, Annotation[] annotations) {
+        this.type = type;
+        this.annotations = annotations;
+    }
+
+    @Override
+    public AnnotationMirror getAnnotation(String type) {
+        return ReflectionUtils.getAnnotation(annotations, type);
+    }
+
+    @Override
+    public TypeMirror getType() {
+        return new ReflectionType(type);
     }
 
     @Override
     public String getName() {
-        return type.getName();
-    }
-
-    @Override
-    public List<TypeMirror> getBounds() {
-        Type[] javaBounds = type.getBounds();
-        List<TypeMirror> bounds = new ArrayList<TypeMirror>(javaBounds.length);
-        for(Type bound : javaBounds)
-            bounds.add(new ReflectionType(bound));
-        return bounds;
+        AnnotationMirror name = getAnnotation(Name.class.getName());
+        if(name == null)
+            return "unknown";
+        return (String) name.getValue();
     }
 
 }

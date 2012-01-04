@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.compiler.reflectionmodelloader.mirror;
+package com.redhat.ceylon.compiler.modelloader.impl.reflect.mirror;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;

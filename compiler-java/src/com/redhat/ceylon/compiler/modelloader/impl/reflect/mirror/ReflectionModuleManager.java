@@ -18,13 +18,13 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.compiler.reflectionmodelloader.mirror;
+package com.redhat.ceylon.compiler.modelloader.impl.reflect.mirror;
 
 import java.util.List;
 
 import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
+import com.redhat.ceylon.compiler.modelloader.impl.reflect.ReflectionModelLoader;
 import com.redhat.ceylon.compiler.modelloader.model.LazyModuleManager;
-import com.redhat.ceylon.compiler.reflectionmodelloader.ReflectionModelLoader;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
