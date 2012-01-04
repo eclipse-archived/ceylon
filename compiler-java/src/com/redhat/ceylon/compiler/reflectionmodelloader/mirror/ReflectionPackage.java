@@ -32,7 +32,8 @@ public class ReflectionPackage implements PackageMirror {
 
     @Override
     public String getQualifiedName() {
-        return pkg.getName();
+        // primitives and arrays don't have a package, so we pretend they come from java.lang
+        return pkg == null ? "java.lang" : pkg.getName();
     }
 
 }
