@@ -33,16 +33,16 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
  */
 public class LazyValue extends Value {
     
-    public ClassMirror classSymbol;
+    public ClassMirror classMirror;
     private ModelCompleter completer;
     private boolean isLoaded = false;
 
-    public LazyValue(ClassMirror classSymbol, ModelCompleter completer) {
-        this.classSymbol = classSymbol;
+    public LazyValue(ClassMirror classMirror, ModelCompleter completer) {
+        this.classMirror = classMirror;
         this.completer = completer;
-        classSymbol.getSimpleName();
+        classMirror.getSimpleName();
         // FIXME: why doesn't that move to getSimpleName()?
-        setName(Util.strip(classSymbol.getSimpleName()));
+        setName(Util.strip(classMirror.getSimpleName()));
     }
 
     private void load() {

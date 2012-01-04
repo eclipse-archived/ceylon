@@ -48,15 +48,15 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
  */
 public class LazyMethod extends Method {
 
-    public ClassMirror classSymbol;
+    public ClassMirror classMirror;
     private ModelCompleter completer;
     private boolean isLoaded = false;
 
-    public LazyMethod(ClassMirror classSymbol, ModelCompleter completer) {
-        this.classSymbol = classSymbol;
+    public LazyMethod(ClassMirror classMirror, ModelCompleter completer) {
+        this.classMirror = classMirror;
         this.completer = completer;
         // FIXME: move strip to getSimpleName()
-        setName(Util.strip(classSymbol.getSimpleName()));
+        setName(Util.strip(classMirror.getSimpleName()));
     }
 
     private void load() {

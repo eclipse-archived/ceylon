@@ -116,7 +116,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
                         // this happens when we have already registered a source file for this decl, so let's
                         // print out a helpful message
                         // see https://github.com/ceylon/ceylon-compiler/issues/250
-                        ClassMirror previousClass = lookupClassSymbol(fqn);
+                        ClassMirror previousClass = lookupClassMirror(fqn);
                         log.error("ceylon", "Duplicate declaration error: "+fqn+" is declared twice: once in "
                                 +tree.getSourceFile()+" and again in: "+
                                 (previousClass != null ? ((JavacClass)previousClass).classSymbol.classfile : "another file"));
@@ -179,7 +179,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
                     return;
                 ClassSymbol enclosingClass = getEnclosing((ClassSymbol) m);
                 if(enclosingClass.classfile.getKind() != Kind.SOURCE)
-                    convertToDeclaration(lookupClassSymbol(m.getQualifiedName().toString()), DeclarationType.VALUE);
+                    convertToDeclaration(lookupClassMirror(m.getQualifiedName().toString()), DeclarationType.VALUE);
             }
         }
     }
@@ -199,7 +199,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
     }
 
     @Override
-    public ClassMirror lookupClassSymbol(String name) {
+    public ClassMirror lookupClassMirror(String name) {
         ClassSymbol classSymbol;
 
         String outerName = name;

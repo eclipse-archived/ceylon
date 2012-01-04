@@ -42,15 +42,15 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
  */
 public class LazyInterface extends Interface implements LazyElement {
 
-    public ClassMirror classSymbol;
+    public ClassMirror classMirror;
     private ModelCompleter completer;
     private boolean isLoaded = false;
     private boolean isTypeParamsLoaded = false;
 
-    public LazyInterface(ClassMirror classSymbol, ModelCompleter completer) {
-        this.classSymbol = classSymbol;
+    public LazyInterface(ClassMirror classMirror, ModelCompleter completer) {
+        this.classMirror = classMirror;
         this.completer = completer;
-        setName(classSymbol.getSimpleName());
+        setName(classMirror.getSimpleName());
     }
     
     private void load() {

@@ -43,18 +43,18 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
  */
 public class LazyClass extends Class implements LazyElement {
 
-    public ClassMirror classSymbol;
+    public ClassMirror classMirror;
     private ModelCompleter completer;
     private boolean isLoaded = false;
     private boolean isTypeParamsLoaded = false;
     private boolean forTopLevelObject;
 
-    public LazyClass(ClassMirror classSymbol, ModelCompleter completer, boolean forTopLevelObject) {
-        this.classSymbol = classSymbol;
+    public LazyClass(ClassMirror classMirror, ModelCompleter completer, boolean forTopLevelObject) {
+        this.classMirror = classMirror;
         this.completer = completer;
         this.forTopLevelObject = forTopLevelObject;
-        setName(classSymbol.getSimpleName());
-        setAbstract(classSymbol.isAbstract());
+        setName(classMirror.getSimpleName());
+        setAbstract(classMirror.isAbstract());
     }
     
     public boolean isTopLevelObjectType(){

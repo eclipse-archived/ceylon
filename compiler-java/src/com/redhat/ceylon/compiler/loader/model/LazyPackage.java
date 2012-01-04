@@ -67,7 +67,7 @@ public class LazyPackage extends Package {
         modelLoader.loadPackage(pkgName, false);
 
         String className = getQualifiedName(pkgName, name);
-        ClassMirror classSymbol = modelLoader.lookupClassSymbol(className);
+        ClassMirror classSymbol = modelLoader.lookupClassMirror(className);
         // only get it from the classpath if we're not compiling it
         if(classSymbol != null && !classSymbol.isLoadedFromSource())
             return modelLoader.convertToDeclaration(className, DeclarationType.VALUE);

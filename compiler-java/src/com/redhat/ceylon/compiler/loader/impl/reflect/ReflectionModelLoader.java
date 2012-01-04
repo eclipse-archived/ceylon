@@ -67,7 +67,7 @@ public class ReflectionModelLoader extends AbstractModelLoader {
     }
 
     @Override
-    public ClassMirror lookupClassSymbol(String name) {
+    public ClassMirror lookupClassMirror(String name) {
         Class<?> klass = null;
         // try in every module
         // FIXME: surely we can do faster by checking the module name
