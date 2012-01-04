@@ -42,6 +42,12 @@ public class LazyPackage extends Package {
     }
     
     @Override
+    public Declaration getImportedMember(String name, List<String> erasure) {
+        // FIXME: what use is this method in the type checker?
+        return getDirectMember(name);
+    }
+    
+    @Override
     public Declaration getDirectMemberOrParameter(String name) {
         // FIXME: what's the difference?
         return getDirectMember(name);
