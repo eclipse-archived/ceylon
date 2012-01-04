@@ -184,6 +184,15 @@ function append(seq, elem) {
     return ArraySequence(seq.value.concat(elem));
 }
 
+//Receives ArraySequence, returns ArraySequence (with Entries)
+function entries(seq) {
+    var e = [];
+    for (i = 0; i < seq.value.length; i++) {
+        e.push(Entry(Integer(i), seq.value[i]));
+    }
+    return ArraySequence(e);
+}
+
 exports.print=print;
 exports.Integer=Integer;
 exports.Float=Float;
@@ -207,6 +216,7 @@ exports.join=join;
 exports.zip=zip;
 exports.coalesce=coalesce;
 exports.append=append;
+exports.entries=entries;
 
     });
 }(typeof define==='function' && define.amd ? 
