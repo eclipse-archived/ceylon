@@ -67,7 +67,8 @@ public class CeyloncTool extends JavacTool implements JavaCompiler {
                 option.getClass(); // null check
         if (classes != null) {
             for (String cls : classes)
-                if (!SourceVersion.isName(cls)) // implicit null check
+                if (!SourceVersion.isName(cls) // implicit null check
+                        && !"default".equals(cls)) // FIX for ceylon because default is not a valid name for Java
                     throw new IllegalArgumentException("Not a valid class name: " + cls);
         }
         if (compilationUnits != null) {
@@ -94,7 +95,7 @@ public class CeyloncTool extends JavacTool implements JavaCompiler {
 
         context.put(JavaFileManager.class, fileManager);
         processOptions(context, fileManager, options);
-        Main compiler = new Main("javacTask", context.get(Log.outKey));
+        Main compiler = new Main("ceyloncTask", context.get(Log.outKey));
         return new CeyloncTaskImpl(this, compiler, options, context, classes, compilationUnits);
     }
 }
