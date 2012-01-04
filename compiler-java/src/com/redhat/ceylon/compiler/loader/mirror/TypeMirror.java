@@ -17,32 +17,42 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+package com.redhat.ceylon.compiler.loader.mirror;
 
-package com.redhat.ceylon.compiler.java.loader.model;
+import java.util.List;
 
-import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
-import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.loader.model.LazyModule;
-import com.sun.tools.javac.util.Context;
+import javax.lang.model.type.TypeKind;
 
-public class CompilerModule extends LazyModule {
+/**
+ * Represents a generic type.
+ *
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
+public interface TypeMirror {
 
-    private Context context;
-    private AbstractModelLoader modelLoader;
+    /**
+     * Returns the fully-qualified name of this type with no type argument.
+     */
+    String getQualifiedName();
 
-    public CompilerModule(com.sun.tools.javac.util.Context context) {
-        this.context = context;
-    }
+    /**
+     * Returns the list of type arguments for this type
+     */
+    List<TypeMirror> getTypeArguments();
 
-    public CompilerModule(AbstractModelLoader modelLoader) {
-        this.modelLoader = modelLoader;
-    }
+    /**
+     * Returns the kind of type this is 
+     */
+    TypeKind getKind();
 
-    @Override
-    protected AbstractModelLoader getModelLoader() {
-        if(modelLoader == null){
-            modelLoader = CeylonModelLoader.instance(context);
-        }
-        return modelLoader;
-    }
+    /**
+     * Returns the component type of this type, if this is an array type. Returns null otherwise.
+     */
+    // for arrays
+    TypeMirror getComponentType();
+
+    /**
+     * Returns true if this type represents a Java primitive
+     */
+    boolean isPrimitive();
 }

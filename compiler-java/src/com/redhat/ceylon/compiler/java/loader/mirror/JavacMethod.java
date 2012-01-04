@@ -24,11 +24,11 @@ import java.util.List;
 
 import javax.lang.model.element.ElementKind;
 
-import com.redhat.ceylon.compiler.modelloader.mirror.AnnotationMirror;
-import com.redhat.ceylon.compiler.modelloader.mirror.MethodMirror;
-import com.redhat.ceylon.compiler.modelloader.mirror.TypeMirror;
-import com.redhat.ceylon.compiler.modelloader.mirror.TypeParameterMirror;
-import com.redhat.ceylon.compiler.modelloader.mirror.VariableMirror;
+import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
+import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
+import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
+import com.redhat.ceylon.compiler.loader.mirror.TypeParameterMirror;
+import com.redhat.ceylon.compiler.loader.mirror.VariableMirror;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.Symbol.MethodSymbol;
 import com.sun.tools.javac.code.Symbol.VarSymbol;

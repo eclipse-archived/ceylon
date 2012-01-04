@@ -17,34 +17,43 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.java.loader.mirror;
 
+package com.redhat.ceylon.compiler.loader.impl.reflect.mirror;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+
+import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
 import com.redhat.ceylon.compiler.loader.mirror.VariableMirror;
-import com.sun.tools.javac.code.Symbol.VarSymbol;
 
-public class JavacVariable implements VariableMirror {
+public class ReflectionVariable implements VariableMirror {
 
-    private VarSymbol varSymbol;
+    private Type type;
+    private Annotation[] annotations;
 
-    public JavacVariable(VarSymbol varSymbol) {
-        this.varSymbol = varSymbol;
+    public ReflectionVariable(Type type, Annotation[] annotations) {
+        this.type = type;
+        this.annotations = annotations;
     }
 
     @Override
     public AnnotationMirror getAnnotation(String type) {
-        return JavacUtil.getAnnotation(varSymbol, type);
+        return ReflectionUtils.getAnnotation(annotations, type);
     }
 
     @Override
     public TypeMirror getType() {
-        return new JavacType(varSymbol.type);
+        return new ReflectionType(type);
     }
 
     @Override
     public String getName() {
-        return varSymbol.name.toString();
+        AnnotationMirror name = getAnnotation(Name.class.getName());
+        if(name == null)
+            return "unknown";
+        return (String) name.getValue();
     }
 
 }

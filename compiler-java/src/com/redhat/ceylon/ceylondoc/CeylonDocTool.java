@@ -41,7 +41,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.redhat.ceylon.compiler.modelloader.impl.reflect.mirror.ReflectionModuleManager;
+import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionModuleManager;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;

@@ -18,31 +18,36 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.compiler.java.loader.model;
+package com.redhat.ceylon.compiler.loader.impl.reflect.mirror;
 
-import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
-import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.loader.model.LazyModule;
-import com.sun.tools.javac.util.Context;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.util.ArrayList;
+import java.util.List;
 
-public class CompilerModule extends LazyModule {
+import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
+import com.redhat.ceylon.compiler.loader.mirror.TypeParameterMirror;
 
-    private Context context;
-    private AbstractModelLoader modelLoader;
+public class ReflectionTypeParameter implements TypeParameterMirror {
 
-    public CompilerModule(com.sun.tools.javac.util.Context context) {
-        this.context = context;
-    }
+    private TypeVariable<?> type;
 
-    public CompilerModule(AbstractModelLoader modelLoader) {
-        this.modelLoader = modelLoader;
+    public ReflectionTypeParameter(Type type) {
+        this.type = (TypeVariable<?>) type;
     }
 
     @Override
-    protected AbstractModelLoader getModelLoader() {
-        if(modelLoader == null){
-            modelLoader = CeylonModelLoader.instance(context);
-        }
-        return modelLoader;
+    public String getName() {
+        return type.getName();
     }
+
+    @Override
+    public List<TypeMirror> getBounds() {
+        Type[] javaBounds = type.getBounds();
+        List<TypeMirror> bounds = new ArrayList<TypeMirror>(javaBounds.length);
+        for(Type bound : javaBounds)
+            bounds.add(new ReflectionType(bound));
+        return bounds;
+    }
+
 }

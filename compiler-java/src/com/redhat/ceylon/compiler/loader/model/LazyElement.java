@@ -18,31 +18,15 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.compiler.java.loader.model;
+package com.redhat.ceylon.compiler.loader.model;
 
-import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
-import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.loader.model.LazyModule;
-import com.sun.tools.javac.util.Context;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 
-public class CompilerModule extends LazyModule {
-
-    private Context context;
-    private AbstractModelLoader modelLoader;
-
-    public CompilerModule(com.sun.tools.javac.util.Context context) {
-        this.context = context;
-    }
-
-    public CompilerModule(AbstractModelLoader modelLoader) {
-        this.modelLoader = modelLoader;
-    }
-
-    @Override
-    protected AbstractModelLoader getModelLoader() {
-        if(modelLoader == null){
-            modelLoader = CeylonModelLoader.instance(context);
-        }
-        return modelLoader;
-    }
+/**
+ * Represents a lazy declaration.
+ *
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
+public interface LazyElement {
+    public void addMember(Declaration decl);
 }

@@ -18,31 +18,36 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.compiler.java.loader.model;
+package com.redhat.ceylon.compiler.loader.impl.reflect.mirror;
 
-import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
+import java.net.URLClassLoader;
+
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.model.LazyModule;
-import com.sun.tools.javac.util.Context;
 
-public class CompilerModule extends LazyModule {
+public class ReflectionModule extends LazyModule {
 
-    private Context context;
-    private AbstractModelLoader modelLoader;
+    private ReflectionModuleManager modelManager;
+    private ClassLoader classLoader;
 
-    public CompilerModule(com.sun.tools.javac.util.Context context) {
-        this.context = context;
-    }
-
-    public CompilerModule(AbstractModelLoader modelLoader) {
-        this.modelLoader = modelLoader;
+    public ReflectionModule(ReflectionModuleManager reflectionModuleManager) {
+        this.modelManager = reflectionModuleManager;
     }
 
     @Override
     protected AbstractModelLoader getModelLoader() {
-        if(modelLoader == null){
-            modelLoader = CeylonModelLoader.instance(context);
-        }
-        return modelLoader;
+        return modelManager.getModelLoader();
     }
+
+    public void setClassLoader(URLClassLoader cl) {
+        if(this.classLoader != null){
+            throw new RuntimeException("Module already has a classloader: "+getNameAsString());
+        }
+        this.classLoader = cl;
+    }
+    
+    public ClassLoader getClassLoader(){
+        return classLoader;
+    }
+
 }

@@ -17,32 +17,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+package com.redhat.ceylon.compiler.loader.mirror;
 
-package com.redhat.ceylon.compiler.java.loader.model;
+import java.util.List;
 
-import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
-import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.loader.model.LazyModule;
-import com.sun.tools.javac.util.Context;
+/**
+ * Represents a type parameter.
+ *
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
+public interface TypeParameterMirror {
 
-public class CompilerModule extends LazyModule {
+    /**
+     * Returns the name of the type parameter.
+     */
+    String getName();
 
-    private Context context;
-    private AbstractModelLoader modelLoader;
+    /**
+     * Returns the list of bounds for this type parameter.
+     */
+    List<TypeMirror> getBounds();
 
-    public CompilerModule(com.sun.tools.javac.util.Context context) {
-        this.context = context;
-    }
-
-    public CompilerModule(AbstractModelLoader modelLoader) {
-        this.modelLoader = modelLoader;
-    }
-
-    @Override
-    protected AbstractModelLoader getModelLoader() {
-        if(modelLoader == null){
-            modelLoader = CeylonModelLoader.instance(context);
-        }
-        return modelLoader;
-    }
 }

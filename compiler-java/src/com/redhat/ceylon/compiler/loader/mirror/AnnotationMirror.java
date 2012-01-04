@@ -17,32 +17,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+package com.redhat.ceylon.compiler.loader.mirror;
 
-package com.redhat.ceylon.compiler.java.loader.model;
+/**
+ * Represents an annotation
+ *
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
+public interface AnnotationMirror {
 
-import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
-import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.loader.model.LazyModule;
-import com.sun.tools.javac.util.Context;
+    /**
+     * Returns the annotation value of the given annotation field. The value should be wrapped as such:
+     * 
+     * - String for a string value
+     * - boxed value for a primitive value (Integer, Character…)
+     * - TypeMirror for a class value
+     * - AnnotationMirror for an annotation value
+     * - List for an array (the array elements must be wrapped using the same rules)
+     */
+    Object getValue(String fieldName);
 
-public class CompilerModule extends LazyModule {
+    /**
+     * Returns the value of the "value" field
+     */
+    Object getValue();
 
-    private Context context;
-    private AbstractModelLoader modelLoader;
-
-    public CompilerModule(com.sun.tools.javac.util.Context context) {
-        this.context = context;
-    }
-
-    public CompilerModule(AbstractModelLoader modelLoader) {
-        this.modelLoader = modelLoader;
-    }
-
-    @Override
-    protected AbstractModelLoader getModelLoader() {
-        if(modelLoader == null){
-            modelLoader = CeylonModelLoader.instance(context);
-        }
-        return modelLoader;
-    }
 }

@@ -18,31 +18,22 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.compiler.java.loader.model;
+package com.redhat.ceylon.compiler.loader.impl.reflect.mirror;
 
-import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
-import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.loader.model.LazyModule;
-import com.sun.tools.javac.util.Context;
+import com.redhat.ceylon.compiler.loader.mirror.PackageMirror;
 
-public class CompilerModule extends LazyModule {
+public class ReflectionPackage implements PackageMirror {
 
-    private Context context;
-    private AbstractModelLoader modelLoader;
+    private Package pkg;
 
-    public CompilerModule(com.sun.tools.javac.util.Context context) {
-        this.context = context;
-    }
-
-    public CompilerModule(AbstractModelLoader modelLoader) {
-        this.modelLoader = modelLoader;
+    public ReflectionPackage(Package pkg) {
+        this.pkg = pkg;
     }
 
     @Override
-    protected AbstractModelLoader getModelLoader() {
-        if(modelLoader == null){
-            modelLoader = CeylonModelLoader.instance(context);
-        }
-        return modelLoader;
+    public String getQualifiedName() {
+        // primitives and arrays don't have a package, so we pretend they come from java.lang
+        return pkg == null ? "java.lang" : pkg.getName();
     }
+
 }

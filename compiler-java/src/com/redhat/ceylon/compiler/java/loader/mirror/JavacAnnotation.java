@@ -22,7 +22,7 @@ package com.redhat.ceylon.compiler.java.loader.mirror;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.modelloader.mirror.AnnotationMirror;
+import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
 import com.sun.tools.javac.code.Attribute;
 import com.sun.tools.javac.code.Attribute.Compound;
 import com.sun.tools.javac.code.Symbol.MethodSymbol;

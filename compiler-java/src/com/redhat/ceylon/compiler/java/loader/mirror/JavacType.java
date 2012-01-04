@@ -24,7 +24,7 @@ import java.util.List;
 
 import javax.lang.model.type.TypeKind;
 
-import com.redhat.ceylon.compiler.modelloader.mirror.TypeMirror;
+import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Type.ArrayType;
 
