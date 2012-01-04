@@ -4,3 +4,4 @@ require('default/language').test_language();
 require('default/nesting').test();
 require('default/members').test();
 require('default/types').test();
+require('default/operators').test();
