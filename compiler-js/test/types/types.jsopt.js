@@ -35,7 +35,7 @@ $Complex.prototype.getString=function getString(){
 $Complex.prototype.getPairString=function getPairString(){
     var $$=this;
     var $$complex=this;
-    return this.getString$();
+    return $$.getString$();
 }
 function Complex(x, y, $$){
     if ($$===undefined)$$=new $Complex;

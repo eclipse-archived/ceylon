@@ -868,24 +868,12 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(This that) { //TODO: not quite correct cos of control structures!
-        if (prototypeStyle && 
-                !(that.getScope() instanceof ClassOrInterface)) {
-            out("this");
-        }
-        else {
-            self();
-        }
+        self();
     }
     
     @Override
     public void visit(Super that) {
-        if (prototypeStyle &&
-                !(that.getScope() instanceof ClassOrInterface)) { //TODO: not quite correct cos of control structures!
-            out("this");
-        }
-        else {
-            self();
-        }
+        self();
     }
     
     @Override

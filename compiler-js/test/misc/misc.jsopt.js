@@ -81,7 +81,7 @@ $Bar.prototype.printName=function printName(){
     var $$=this;
     var $$bar=this;
     $$$cl15.print($$$cl15.String("bar name = ").plus($$bar.getName()));
-    this.printName$();
+    $$.printName$();
 }
 function Bar($$){
     if ($$===undefined)$$=new $Bar;
