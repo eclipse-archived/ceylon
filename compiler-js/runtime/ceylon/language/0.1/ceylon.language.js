@@ -87,6 +87,10 @@ function Boolean(value) {
     return value ? $true : $false;
 }
 
+//These are operators for handling nulls
+function exists(value) { return value === getNull() ? getFalse() : getTrue(); }
+function nonempty(value) { return value && value.value && value.value.length > 0 ? getTrue() : getFalse(); }
+
 var larger = Case("larger");
 function getLarger() { return larger }
 var smaller = Case("smaller");
@@ -217,6 +221,8 @@ exports.zip=zip;
 exports.coalesce=coalesce;
 exports.append=append;
 exports.entries=entries;
+exports.exists=exists;
+exports.nonempty=nonempty;
 
     });
 }(typeof define==='function' && define.amd ? 

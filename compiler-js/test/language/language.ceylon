@@ -55,6 +55,22 @@ void test_entries() {
     print(e.item(0)?"you should NOT be reading this");
 }
 
+//This is actually a test for the compiler. "exists" doesn't work yet.
+void test_exists_nonempty() {
+    String? yes = "yes";
+    String? no = null;
+    variable Integer[]? empties := Singleton(1);
+    print(exists yes then "yes exists" else "WTF you should NOT be reading this");
+    print(exists no then "WTF" else "no doesn't exist");
+    print(nonempty empties then "nonempty works" else "nonempty broken");
+    print(nonempty Empty then "nonempty is broken" else "like I said, nonempty works");
+}
+
+//Another test for the compiler.
+void test_interpolate() {
+    //print("String part " 1 " interpolation " 2 " works");
+}
+
 shared void test_language() {
     test_largest();
     test_smallest();
@@ -66,4 +82,6 @@ shared void test_language() {
     test_append();
     test_singleton();
     test_entries();
+    test_exists_nonempty();
+    test_interpolate();
 }

@@ -44,6 +44,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Element;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.EntryOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.EqualOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExecutableStatement;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Exists;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExtendedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
@@ -60,6 +61,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NegativeOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Nonempty;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NotEqualOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NotOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ObjectDefinition;
@@ -1352,5 +1354,17 @@ public class GenerateJsVisitor extends Visitor
        that.getRightTerm().visit(this);
        out(":null)");
    }
-    
+
+   @Override public void visit(Exists that) {
+       clAlias();
+       out(".exists(");
+       that.getTerm().visit(this);
+       out(")");
+   }
+   @Override public void visit(Nonempty that) {
+       clAlias();
+       out(".nonempty(");
+       that.getTerm().visit(this);
+       out(")");
+   }
 }
