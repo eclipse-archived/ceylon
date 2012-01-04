@@ -1,31 +1,29 @@
 var $$$cl15=require('ceylon/language/0.1/ceylon.language');
 
 //ClassDefinition Outer at nesting.ceylon (1:0-25:0)
-function Outer(name, $$){
-    if ($$===undefined)$$=new CeylonObject;
-    var $$outer=$$;
+function Outer(name, $$outer){
+    if ($$outer===undefined)$$outer=new CeylonObject;
     
     //AttributeDeclaration int at nesting.ceylon (2:4-2:18)
     var $int=$$$cl15.Integer(10);
     function getInt(){
         return $int;
     }
-    $$.getInt=getInt;
+    $$outer.getInt=getInt;
     
     //AttributeDeclaration float at nesting.ceylon (3:4-3:34)
     var $float=getInt().getFloat();
     function getFloat(){
         return $float;
     }
-    $$.getFloat=getFloat;
+    $$outer.getFloat=getFloat;
     
     //MethodDefinition noop at nesting.ceylon (4:4-4:17)
     function noop(){}
     
     //ClassDefinition Inner at nesting.ceylon (5:4-18:4)
-    function Inner($$){
-        if ($$===undefined)$$=new CeylonObject;
-        var $$inner=$$;
+    function Inner($$inner){
+        if ($$inner===undefined)$$inner=new CeylonObject;
         
         //MethodDefinition printName at nesting.ceylon (6:8-8:8)
         function printName(){
@@ -36,19 +34,19 @@ function Outer(name, $$){
         function getInt(){
             return $$outer.getInt();
         }
-        $$.getInt=getInt;
+        $$inner.getInt=getInt;
         
         //AttributeGetterDefinition float at nesting.ceylon (12:8-14:8)
         function getFloat(){
             return $$outer.getFloat();
         }
-        $$.getFloat=getFloat;
+        $$inner.getFloat=getFloat;
         
         //MethodDefinition noop at nesting.ceylon (15:8-17:8)
         function noop(){
             $$outer.noop();
         }
-        return $$;
+        return $$inner;
     }
     
     //AttributeDeclaration inner at nesting.ceylon (19:4-19:25)
@@ -58,7 +56,7 @@ function Outer(name, $$){
     }
     $$$cl15.print(getInner().getInt());
     $$$cl15.print(getInner().getFloat());
-    return $$;
+    return $$outer;
 }
 this.Outer=Outer;
 
@@ -98,79 +96,73 @@ function outr(name){
 this.outr=outr;
 
 //ClassDefinition Holder at nesting.ceylon (41:0-48:0)
-function Holder(o, $$){
-    if ($$===undefined)$$=new CeylonObject;
-    var $$holder=$$;
+function Holder(o, $$holder){
+    if ($$holder===undefined)$$holder=new CeylonObject;
     
     //MethodDefinition get at nesting.ceylon (42:4-44:4)
     function get(){
         return o;
     }
-    $$.get=get;
+    $$holder.get=get;
     
     //AttributeGetterDefinition string at nesting.ceylon (45:4-47:4)
     function getString(){
         return o.getString();
     }
-    $$.getString$=$$.getString;
-    $$.getString=getString;
-    return $$;
+    $$holder.getString=getString;
+    return $$holder;
 }
 this.Holder=Holder;
 
 //ClassDefinition Wrapper at nesting.ceylon (50:0-58:0)
-function Wrapper($$){
-    if ($$===undefined)$$=new CeylonObject;
-    var $$wrapper=$$;
+function Wrapper($$wrapper){
+    if ($$wrapper===undefined)$$wrapper=new CeylonObject;
     
     //AttributeDeclaration o at nesting.ceylon (51:4-51:18)
     var $o=$$$cl15.Integer(100);
     function getO(){
         return $o;
     }
-    $$.getO=getO;
+    $$wrapper.getO=getO;
     
     //MethodDefinition get at nesting.ceylon (52:4-54:4)
     function get(){
         return getO();
     }
-    $$.get=get;
+    $$wrapper.get=get;
     
     //AttributeGetterDefinition string at nesting.ceylon (55:4-57:4)
     function getString(){
         return getO().getString();
     }
-    $$.getString$=$$.getString;
-    $$.getString=getString;
-    return $$;
+    $$wrapper.getString=getString;
+    return $$wrapper;
 }
 this.Wrapper=Wrapper;
 
 //ClassDefinition Unwrapper at nesting.ceylon (60:0-68:0)
-function Unwrapper($$){
-    if ($$===undefined)$$=new CeylonObject;
-    var $$unwrapper=$$;
+function Unwrapper($$unwrapper){
+    if ($$unwrapper===undefined)$$unwrapper=new CeylonObject;
     
     //AttributeDeclaration o at nesting.ceylon (61:4-61:27)
     var $o=$$$cl15.Float(23.56);
     function getO(){
         return $o;
     }
-    $$.getO=getO;
+    $$unwrapper.getO=getO;
     
     //MethodDefinition get at nesting.ceylon (62:4-64:4)
     function get(){
-        return $$.getO();
+        return $$unwrapper.getO();
     }
-    $$.get=get;
+    $$unwrapper.get=get;
     
     //AttributeGetterDefinition string at nesting.ceylon (65:4-67:4)
     function getString(){
-        return $$.getO().getString();
+        return $$unwrapper.getO().getString();
     }
-    $$.getString$=$$.getString;
-    $$.getString=getString;
-    return $$;
+    $$unwrapper.getString=getString;
+    return $$unwrapper;
 }
 this.Unwrapper=Unwrapper;
 
@@ -201,71 +193,67 @@ function returner(o){
 }
 
 //ClassDefinition A at nesting.ceylon (81:0-102:0)
-function A($$){
-    if ($$===undefined)$$=new CeylonObject;
-    var $$a=$$;
+function A($$a){
+    if ($$a===undefined)$$a=new CeylonObject;
     
     //AttributeDeclaration foo at nesting.ceylon (82:4-82:22)
     var $foo=$$$cl15.String("foo");
     function getFoo(){
         return $foo;
     }
-    $$.getFoo=getFoo;
+    $$a.getFoo=getFoo;
     
     //ClassDefinition B at nesting.ceylon (83:4-93:4)
-    function B($$){
-        if ($$===undefined)$$=new CeylonObject;
-        var $$b=$$;
+    function B($$b){
+        if ($$b===undefined)$$b=new CeylonObject;
         
         //AttributeDeclaration qux at nesting.ceylon (84:8-84:26)
         var $qux=$$$cl15.String("qux");
         function getQux(){
             return $qux;
         }
-        $$.getQux=getQux;
+        $$b.getQux=getQux;
         
         //ClassDefinition C at nesting.ceylon (85:8-92:8)
-        function C($$){
-            if ($$===undefined)$$=new CeylonObject;
-            var $$c=$$;
+        function C($$c){
+            if ($$c===undefined)$$c=new CeylonObject;
             
             //MethodDefinition foobar at nesting.ceylon (86:12-88:12)
             function foobar(){
                 return getFoo();
             }
-            $$.foobar=foobar;
+            $$c.foobar=foobar;
             
             //MethodDefinition quxx at nesting.ceylon (89:12-91:12)
             function quxx(){
                 return getQux();
             }
-            $$.quxx=quxx;
-            return $$;
+            $$c.quxx=quxx;
+            return $$c;
         }
-        $$.C=C;
-        return $$;
+        $$b.C=C;
+        return $$b;
     }
-    $$.B=B;
+    $$a.B=B;
     
     //MethodDefinition baz at nesting.ceylon (94:4-101:4)
     function baz(){
         
         //ClassDefinition Baz at nesting.ceylon (95:8-99:8)
-        function Baz($$){
-            if ($$===undefined)$$=new CeylonObject;
-            var $$baz=$$;
+        function Baz($$baz){
+            if ($$baz===undefined)$$baz=new CeylonObject;
             
             //MethodDefinition get at nesting.ceylon (96:12-98:12)
             function get(){
                 return getFoo();
             }
-            $$.get=get;
-            return $$;
+            $$baz.get=get;
+            return $$baz;
         }
         return Baz().get();
     }
-    $$.baz=baz;
-    return $$;
+    $$a.baz=baz;
+    return $$a;
 }
 
 //MethodDefinition test at nesting.ceylon (104:0-119:0)

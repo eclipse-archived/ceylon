@@ -1,94 +1,90 @@
 var $$$cl15=require('ceylon/language/0.1/ceylon.language');
 
 //InterfaceDefinition X at misc.ceylon (1:0-5:0)
-function X($$){
-    if ($$===undefined)$$=new CeylonObject;
-    var $$x=$$;
+function X($$x){
+    if ($$x===undefined)$$x=new CeylonObject;
     
     //MethodDefinition helloWorld at misc.ceylon (2:4-4:4)
     function helloWorld(){
         $$$cl15.print($$$cl15.String("hello world"));
     }
-    $$.helloWorld=helloWorld;
-    return $$;
+    $$x.helloWorld=helloWorld;
+    return $$x;
 }
 this.X=X;
 
 //ClassDefinition Foo at misc.ceylon (7:0-16:0)
-function Foo(name, $$){
-    if ($$===undefined)$$=new CeylonObject;
-    var $$foo=$$;
+function Foo(name, $$foo){
+    if ($$foo===undefined)$$foo=new CeylonObject;
     
     //AttributeDeclaration name at misc.ceylon (8:4-8:29)
     var $name=name;
     function getName(){
         return $name;
     }
-    $$.getName=getName;
+    $$foo.getName=getName;
     
     //AttributeDeclaration counter at misc.ceylon (9:4-9:29)
     var $counter=$$$cl15.Integer(0);
     function getCounter(){
         return $counter;
     }
-    $$.getCounter=getCounter;
+    $$foo.getCounter=getCounter;
     function setCounter(counter){
         $counter=counter;
     }
-    $$.setCounter=setCounter;
+    $$foo.setCounter=setCounter;
     
     //AttributeGetterDefinition count at misc.ceylon (10:4-10:43)
     function getCount(){
         return getCounter();
     }
-    $$.getCount=getCount;
+    $$foo.getCount=getCount;
     
     //MethodDefinition inc at misc.ceylon (11:4-11:44)
     function inc(){
         setCounter(getCounter().plus($$$cl15.Integer(1)));
     }
-    $$.inc=inc;
+    $$foo.inc=inc;
     
     //MethodDefinition printName at misc.ceylon (12:4-14:4)
     function printName(){
         $$$cl15.print($$$cl15.String("foo name = ").plus(name));
     }
-    $$.printName=printName;
-    $$.inc();
-    return $$;
+    $$foo.printName=printName;
+    $$foo.inc();
+    return $$foo;
 }
 this.Foo=Foo;
 
 //ClassDefinition Bar at misc.ceylon (18:0-32:0)
-function Bar($$){
-    if ($$===undefined)$$=new CeylonObject;
-    var $$bar=$$;
-    Foo($$$cl15.String("Hello"),$$);
-    X($$);
+function Bar($$bar){
+    if ($$bar===undefined)$$bar=new CeylonObject;
+    Foo($$$cl15.String("Hello"),$$bar);
+    $$bar.printName$=$$bar.printName;
+    X($$bar);
     
     //MethodDefinition printName at misc.ceylon (19:4-22:4)
     function printName(){
         $$$cl15.print($$$cl15.String("bar name = ").plus($$bar.getName()));
-        $$.printName$();
+        $$bar.printName$();
     }
-    $$.printName$=$$.printName;
-    $$.printName=printName;
+    $$bar.printName=printName;
     
     //ClassDefinition Inner at misc.ceylon (23:4-29:4)
-    function Inner($$){
-        if ($$===undefined)$$=new CeylonObject;
-        var $$inner=$$;
+    function Inner($$inner){
+        if ($$inner===undefined)$$inner=new CeylonObject;
         $$$cl15.print($$$cl15.String("creating inner class of :").plus($$bar.getName()));
         
         //MethodDefinition incOuter at misc.ceylon (26:8-28:8)
         function incOuter(){
             $$bar.inc();
         }
-        $$.incOuter=incOuter;
-        return $$;
+        $$inner.incOuter=incOuter;
+        return $$inner;
     }
-    $$.Inner=Inner;
-    return $$;
+    $$bar.Inner=Inner;
+    return $$bar;
 }
 this.Bar=Bar;
 
@@ -105,15 +101,15 @@ function doIt(f){
 
 //ObjectDefinition foob at misc.ceylon (42:0-44:0)
 var $foob=function foob(){
-    var $$=new CeylonObject;
+    var $$foob=new CeylonObject;
     
     //AttributeDeclaration name at misc.ceylon (43:4-43:30)
     var $name=$$$cl15.String("Gavin");
     function getName(){
         return $name;
     }
-    $$.getName=getName;
-    return $$;
+    $$foob.getName=getName;
+    return $$foob;
 }();
 function getFoob(){
     return $foob;
@@ -157,14 +153,14 @@ function testit(){
     
     //ObjectDefinition x at testit.ceylon (18:4-22:4)
     var $x=function x(){
-        var $$=new CeylonObject;
+        var $$x=new CeylonObject;
         
         //MethodDefinition y at testit.ceylon (19:8-21:8)
         function y(){
             $$$cl15.print($$$cl15.String("xy"));
         }
-        $$.y=y;
-        return $$;
+        $$x.y=y;
+        return $$x;
     }();
     function getX(){
         return $x;

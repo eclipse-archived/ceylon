@@ -22,16 +22,15 @@ $Outer.prototype.noop=function noop(){}
 $Outer.prototype.getInner=function getInner(){
     return this.inner;
 }
-function Outer(name, $$){
-    if ($$===undefined)$$=new $Outer;
-    var $$outer=$$;
-    $$.name=name;
+function Outer(name, $$outer){
+    if ($$outer===undefined)$$outer=new $Outer;
+    $$outer.name=name;
     
     //AttributeDeclaration int at nesting.ceylon (2:4-2:18)
-    $$.int=$$$cl15.Integer(10);
+    $$outer.int=$$$cl15.Integer(10);
     
     //AttributeDeclaration float at nesting.ceylon (3:4-3:34)
-    $$.float=$$outer.getInt().getFloat();
+    $$outer.float=$$outer.getInt().getFloat();
     
     //ClassDefinition Inner at nesting.ceylon (5:4-18:4)
     function $Inner(){}
@@ -40,42 +39,37 @@ function Outer(name, $$){
     
     //MethodDefinition printName at nesting.ceylon (6:8-8:8)
     $Inner.prototype.printName=function printName(){
-        var $$=this;
         var $$inner=this;
         $$$cl15.print($$outer.name);
     }
     
     //AttributeGetterDefinition int at nesting.ceylon (9:8-11:8)
     $Inner.prototype.getInt=function getInt(){
-        var $$=this;
         var $$inner=this;
         return $$outer.getInt();
     }
     
     //AttributeGetterDefinition float at nesting.ceylon (12:8-14:8)
     $Inner.prototype.getFloat=function getFloat(){
-        var $$=this;
         var $$inner=this;
         return $$outer.getFloat();
     }
     
     //MethodDefinition noop at nesting.ceylon (15:8-17:8)
     $Inner.prototype.noop=function noop(){
-        var $$=this;
         var $$inner=this;
         $$outer.noop();
     }
-    function Inner($$){
-        if ($$===undefined)$$=new $Inner;
-        var $$inner=$$;
-        return $$;
+    function Inner($$inner){
+        if ($$inner===undefined)$$inner=new $Inner;
+        return $$inner;
     }
     
     //AttributeDeclaration inner at nesting.ceylon (19:4-19:25)
-    $$.inner=Inner();
+    $$outer.inner=Inner();
     $$$cl15.print($$outer.getInner().getInt());
     $$$cl15.print($$outer.getInner().getFloat());
-    return $$;
+    return $$outer;
 }
 this.Outer=Outer;
 
@@ -121,22 +115,19 @@ for(var $ in CeylonObject.prototype){$Holder.prototype[$+'$']=CeylonObject.proto
 
 //MethodDefinition get at nesting.ceylon (42:4-44:4)
 $Holder.prototype.get=function get(){
-    var $$=this;
     var $$holder=this;
     return $$holder.o;
 }
 
 //AttributeGetterDefinition string at nesting.ceylon (45:4-47:4)
 $Holder.prototype.getString=function getString(){
-    var $$=this;
     var $$holder=this;
     return $$holder.o.getString();
 }
-function Holder(o, $$){
-    if ($$===undefined)$$=new $Holder;
-    var $$holder=$$;
-    $$.o=o;
-    return $$;
+function Holder(o, $$holder){
+    if ($$holder===undefined)$$holder=new $Holder;
+    $$holder.o=o;
+    return $$holder;
 }
 this.Holder=Holder;
 
@@ -152,24 +143,21 @@ $Wrapper.prototype.getO=function getO(){
 
 //MethodDefinition get at nesting.ceylon (52:4-54:4)
 $Wrapper.prototype.get=function get(){
-    var $$=this;
     var $$wrapper=this;
     return $$wrapper.getO();
 }
 
 //AttributeGetterDefinition string at nesting.ceylon (55:4-57:4)
 $Wrapper.prototype.getString=function getString(){
-    var $$=this;
     var $$wrapper=this;
     return $$wrapper.getO().getString();
 }
-function Wrapper($$){
-    if ($$===undefined)$$=new $Wrapper;
-    var $$wrapper=$$;
+function Wrapper($$wrapper){
+    if ($$wrapper===undefined)$$wrapper=new $Wrapper;
     
     //AttributeDeclaration o at nesting.ceylon (51:4-51:18)
-    $$.o=$$$cl15.Integer(100);
-    return $$;
+    $$wrapper.o=$$$cl15.Integer(100);
+    return $$wrapper;
 }
 this.Wrapper=Wrapper;
 
@@ -185,24 +173,21 @@ $Unwrapper.prototype.getO=function getO(){
 
 //MethodDefinition get at nesting.ceylon (62:4-64:4)
 $Unwrapper.prototype.get=function get(){
-    var $$=this;
     var $$unwrapper=this;
     return $$unwrapper.getO();
 }
 
 //AttributeGetterDefinition string at nesting.ceylon (65:4-67:4)
 $Unwrapper.prototype.getString=function getString(){
-    var $$=this;
     var $$unwrapper=this;
     return $$unwrapper.getO().getString();
 }
-function Unwrapper($$){
-    if ($$===undefined)$$=new $Unwrapper;
-    var $$unwrapper=$$;
+function Unwrapper($$unwrapper){
+    if ($$unwrapper===undefined)$$unwrapper=new $Unwrapper;
     
     //AttributeDeclaration o at nesting.ceylon (61:4-61:27)
-    $$.o=$$$cl15.Float(23.56);
-    return $$;
+    $$unwrapper.o=$$$cl15.Float(23.56);
+    return $$unwrapper;
 }
 this.Unwrapper=Unwrapper;
 
@@ -244,7 +229,6 @@ $A.prototype.getFoo=function getFoo(){
 
 //MethodDefinition baz at nesting.ceylon (94:4-101:4)
 $A.prototype.baz=function baz(){
-    var $$=this;
     var $$a=this;
     
     //ClassDefinition Baz at nesting.ceylon (95:8-99:8)
@@ -254,23 +238,20 @@ $A.prototype.baz=function baz(){
     
     //MethodDefinition get at nesting.ceylon (96:12-98:12)
     $Baz.prototype.get=function get(){
-        var $$=this;
         var $$baz=this;
         return $$a.getFoo();
     }
-    function Baz($$){
-        if ($$===undefined)$$=new $Baz;
-        var $$baz=$$;
-        return $$;
+    function Baz($$baz){
+        if ($$baz===undefined)$$baz=new $Baz;
+        return $$baz;
     }
     return Baz().get();
 }
-function A($$){
-    if ($$===undefined)$$=new $A;
-    var $$a=$$;
+function A($$a){
+    if ($$a===undefined)$$a=new $A;
     
     //AttributeDeclaration foo at nesting.ceylon (82:4-82:22)
-    $$.foo=$$$cl15.String("foo");
+    $$a.foo=$$$cl15.String("foo");
     
     //ClassDefinition B at nesting.ceylon (83:4-93:4)
     function $B(){}
@@ -281,12 +262,11 @@ function A($$){
     $B.prototype.getQux=function getQux(){
         return this.qux;
     }
-    function B($$){
-        if ($$===undefined)$$=new $B;
-        var $$b=$$;
+    function B($$b){
+        if ($$b===undefined)$$b=new $B;
         
         //AttributeDeclaration qux at nesting.ceylon (84:8-84:26)
-        $$.qux=$$$cl15.String("qux");
+        $$b.qux=$$$cl15.String("qux");
         
         //ClassDefinition C at nesting.ceylon (85:8-92:8)
         function $C(){}
@@ -295,27 +275,24 @@ function A($$){
         
         //MethodDefinition foobar at nesting.ceylon (86:12-88:12)
         $C.prototype.foobar=function foobar(){
-            var $$=this;
             var $$c=this;
             return $$a.getFoo();
         }
         
         //MethodDefinition quxx at nesting.ceylon (89:12-91:12)
         $C.prototype.quxx=function quxx(){
-            var $$=this;
             var $$c=this;
             return $$b.getQux();
         }
-        function C($$){
-            if ($$===undefined)$$=new $C;
-            var $$c=$$;
-            return $$;
+        function C($$c){
+            if ($$c===undefined)$$c=new $C;
+            return $$c;
         }
-        $$.C=C;
-        return $$;
+        $$b.C=C;
+        return $$b;
     }
-    $$.B=B;
-    return $$;
+    $$a.B=B;
+    return $$a;
 }
 
 //MethodDefinition test at nesting.ceylon (104:0-119:0)

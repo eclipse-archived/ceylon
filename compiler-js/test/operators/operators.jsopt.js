@@ -73,10 +73,9 @@ function testFloatOperators(){
 function $OpTest1(){}
 for(var $ in CeylonObject.prototype){$OpTest1.prototype[$]=CeylonObject.prototype[$]}
 for(var $ in CeylonObject.prototype){$OpTest1.prototype[$+'$']=CeylonObject.prototype[$]}
-function OpTest1($$){
-    if ($$===undefined)$$=new $OpTest1;
-    var $$opTest1=$$;
-    return $$;
+function OpTest1($$opTest1){
+    if ($$opTest1===undefined)$$opTest1=new $OpTest1;
+    return $$opTest1;
 }
 
 //MethodDefinition testBooleanOperators at operators.ceylon (47:0-65:0)

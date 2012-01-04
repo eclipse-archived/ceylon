@@ -15,39 +15,34 @@ $Counter.prototype.setCurrentCount=function setCurrentCount(currentCount){
 
 //AttributeGetterDefinition count at members.ceylon (3:4-5:4)
 $Counter.prototype.getCount=function getCount(){
-    var $$=this;
     var $$counter=this;
     return $$counter.getCurrentCount();
 }
 
 //MethodDefinition inc at members.ceylon (6:4-8:4)
 $Counter.prototype.inc=function inc(){
-    var $$=this;
     var $$counter=this;
     $$counter.setCurrentCount($$counter.getCurrentCount().plus($$$cl15.Integer(1)));
 }
 
 //AttributeGetterDefinition initialCount at members.ceylon (9:4-11:4)
 $Counter.prototype.getInitialCount=function getInitialCount(){
-    var $$=this;
     var $$counter=this;
     return $$counter.initialCount;
 }
 
 //AttributeGetterDefinition string at members.ceylon (12:4-14:4)
 $Counter.prototype.getString=function getString(){
-    var $$=this;
     var $$counter=this;
     return $$$cl15.String("Counter[").plus($$counter.getCount().getString()).plus($$$cl15.String("]"));
 }
-function Counter(initialCount, $$){
-    if ($$===undefined)$$=new $Counter;
-    var $$counter=$$;
-    $$.initialCount=initialCount;
+function Counter(initialCount, $$counter){
+    if ($$counter===undefined)$$counter=new $Counter;
+    $$counter.initialCount=initialCount;
     
     //AttributeDeclaration currentCount at members.ceylon (2:4-2:45)
-    $$.currentCount=$$counter.initialCount;
-    return $$;
+    $$counter.currentCount=$$counter.initialCount;
+    return $$counter;
 }
 this.Counter=Counter;
 

@@ -5,14 +5,12 @@ function $X(){}
 
 //MethodDefinition helloWorld at misc.ceylon (2:4-4:4)
 $X.prototype.helloWorld=function helloWorld(){
-    var $$=this;
     var $$x=this;
     $$$cl15.print($$$cl15.String("hello world"));
 }
-function X($$){
-    if ($$===undefined)$$=new $X;
-    var $$x=$$;
-    return $$;
+function X($$x){
+    if ($$x===undefined)$$x=new $X;
+    return $$x;
 }
 this.X=X;
 
@@ -36,36 +34,32 @@ $Foo.prototype.setCounter=function setCounter(counter){
 
 //AttributeGetterDefinition count at misc.ceylon (10:4-10:43)
 $Foo.prototype.getCount=function getCount(){
-    var $$=this;
     var $$foo=this;
     return $$foo.getCounter();
 }
 
 //MethodDefinition inc at misc.ceylon (11:4-11:44)
 $Foo.prototype.inc=function inc(){
-    var $$=this;
     var $$foo=this;
     $$foo.setCounter($$foo.getCounter().plus($$$cl15.Integer(1)));
 }
 
 //MethodDefinition printName at misc.ceylon (12:4-14:4)
 $Foo.prototype.printName=function printName(){
-    var $$=this;
     var $$foo=this;
     $$$cl15.print($$$cl15.String("foo name = ").plus($$foo.name));
 }
-function Foo(name, $$){
-    if ($$===undefined)$$=new $Foo;
-    var $$foo=$$;
-    $$.name=name;
+function Foo(name, $$foo){
+    if ($$foo===undefined)$$foo=new $Foo;
+    $$foo.name=name;
     
     //AttributeDeclaration name at misc.ceylon (8:4-8:29)
-    $$.name=$$foo.name;
+    $$foo.name=$$foo.name;
     
     //AttributeDeclaration counter at misc.ceylon (9:4-9:29)
-    $$.counter=$$$cl15.Integer(0);
+    $$foo.counter=$$$cl15.Integer(0);
     $$foo.inc();
-    return $$;
+    return $$foo;
 }
 this.Foo=Foo;
 
@@ -78,16 +72,14 @@ for(var $ in $X.prototype){$Bar.prototype[$+'$']=$X.prototype[$]}
 
 //MethodDefinition printName at misc.ceylon (19:4-22:4)
 $Bar.prototype.printName=function printName(){
-    var $$=this;
     var $$bar=this;
     $$$cl15.print($$$cl15.String("bar name = ").plus($$bar.getName()));
-    $$.printName$();
+    $$bar.printName$();
 }
-function Bar($$){
-    if ($$===undefined)$$=new $Bar;
-    var $$bar=$$;
-    Foo($$$cl15.String("Hello"),$$);
-    X($$);
+function Bar($$bar){
+    if ($$bar===undefined)$$bar=new $Bar;
+    Foo($$$cl15.String("Hello"),$$bar);
+    X($$bar);
     
     //ClassDefinition Inner at misc.ceylon (23:4-29:4)
     function $Inner(){}
@@ -96,18 +88,16 @@ function Bar($$){
     
     //MethodDefinition incOuter at misc.ceylon (26:8-28:8)
     $Inner.prototype.incOuter=function incOuter(){
-        var $$=this;
         var $$inner=this;
         $$bar.inc();
     }
-    function Inner($$){
-        if ($$===undefined)$$=new $Inner;
-        var $$inner=$$;
+    function Inner($$inner){
+        if ($$inner===undefined)$$inner=new $Inner;
         $$$cl15.print($$$cl15.String("creating inner class of :").plus($$bar.getName()));
-        return $$;
+        return $$inner;
     }
-    $$.Inner=Inner;
-    return $$;
+    $$bar.Inner=Inner;
+    return $$bar;
 }
 this.Bar=Bar;
 
@@ -132,11 +122,11 @@ $foob.prototype.getName=function getName(){
     return this.name;
 }
 var $foob=function foob(){
-    var $$=new $foob;
+    var $$foob=new $foob;
     
     //AttributeDeclaration name at misc.ceylon (43:4-43:30)
-    $$.name=$$$cl15.String("Gavin");
-    return $$;
+    $$foob.name=$$$cl15.String("Gavin");
+    return $$foob;
 }();
 function getFoob(){
     return $foob;
@@ -185,13 +175,12 @@ function testit(){
     
     //MethodDefinition y at testit.ceylon (19:8-21:8)
     $x.prototype.y=function y(){
-        var $$=this;
         var $$x=this;
         $$$cl15.print($$$cl15.String("xy"));
     }
     var $x=function x(){
-        var $$=new $x;
-        return $$;
+        var $$x=new $x;
+        return $$x;
     }();
     function getX(){
         return $x;
