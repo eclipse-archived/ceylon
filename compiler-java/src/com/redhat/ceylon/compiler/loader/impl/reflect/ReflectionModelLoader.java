@@ -29,7 +29,7 @@ import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.TypeParser;
 import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionClass;
 import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionMethod;
-import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionModule;
+import com.redhat.ceylon.compiler.loader.impl.reflect.model.ReflectionModule;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;

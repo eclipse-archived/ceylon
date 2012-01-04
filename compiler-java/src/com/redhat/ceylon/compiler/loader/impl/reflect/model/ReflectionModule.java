@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.compiler.loader.impl.reflect.mirror;
+package com.redhat.ceylon.compiler.loader.impl.reflect.model;
 
 import java.net.URLClassLoader;
 
