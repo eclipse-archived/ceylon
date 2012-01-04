@@ -1,13 +1,13 @@
 package com.redhat.ceylon.compiler.typechecker;
 
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
-import com.redhat.ceylon.compiler.typechecker.io.VFS;
-import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
-import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.redhat.ceylon.compiler.typechecker.io.VFS;
+import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
+import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
+import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 
 /**
  * Build a TypeChecker using the builder pattern
@@ -31,7 +31,7 @@ public class TypeCheckerBuilder {
             return false;
         }
     };
-    private ModuleManager moduleManager;
+    private ModuleManagerFactory moduleManagerFactory;
 
     public TypeCheckerBuilder() {
     }
@@ -98,16 +98,16 @@ public class TypeCheckerBuilder {
         return this;
     }
     
-    public TypeCheckerBuilder moduleManager(ModuleManager moduleManager){
-    	this.moduleManager = moduleManager;
+    public TypeCheckerBuilder moduleManagerFactory(ModuleManagerFactory moduleManagerFactory){
+    	this.moduleManagerFactory = moduleManagerFactory;
     	return this;
     }
 
     public TypeChecker getTypeChecker() {
         if (repositories.isEmpty()) {
-            return new TypeChecker(vfs, srcDirectories, verifyDependencies, assertionVisitor, moduleManager, verbose);
+            return new TypeChecker(vfs, srcDirectories, verifyDependencies, assertionVisitor, moduleManagerFactory, verbose);
         } else {
-            return new TypeChecker(vfs, srcDirectories, repositories, verifyDependencies, assertionVisitor, moduleManager, verbose);
+            return new TypeChecker(vfs, srcDirectories, repositories, verifyDependencies, assertionVisitor, moduleManagerFactory, verbose);
         }
         
     }

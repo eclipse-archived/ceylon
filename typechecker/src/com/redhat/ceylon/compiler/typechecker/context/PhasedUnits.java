@@ -17,6 +17,7 @@ import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
 import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 
 /**
  * Contains phased units
@@ -35,11 +36,10 @@ public class PhasedUnits {
         this.moduleManager.initCoreModules();
     }
 
-    public PhasedUnits(Context context, ModuleManager moduleManager) {
+    public PhasedUnits(Context context, ModuleManagerFactory moduleManagerFactory) {
         this.context = context;
-        if(moduleManager != null){
-            this.moduleManager = moduleManager;
-            this.moduleManager.setContext(context);
+        if(moduleManagerFactory != null){
+            this.moduleManager = moduleManagerFactory.createModuleManager(context);
         }else{
             this.moduleManager = new ModuleManager(context);
         }
