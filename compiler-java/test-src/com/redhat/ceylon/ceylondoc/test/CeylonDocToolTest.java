@@ -28,7 +28,7 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 import java.nio.charset.Charset;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,14 +37,16 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.ceylondoc.CeylonDocTool;
+import com.redhat.ceylon.compiler.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.sun.source.util.JavacTask;
 
 public class CeylonDocToolTest {
 
-    private CeylonDocTool tool(String pathname, String testName, String moduleName)
+    private CeylonDocTool tool(String pathname, String testName, String moduleName, String... repositories)
             throws IOException {
         CeylonDocTool tool = new CeylonDocTool(Arrays.asList(new File(pathname)), 
-                Collections.<String>emptyList(), 
+                Arrays.asList(repositories), 
                 Arrays.asList(moduleName));
         File dir = new File(System.getProperty("java.io.tmpdir"), "CeylonDocToolTest/" + testName);
         if (dir.exists()) {
@@ -228,4 +230,23 @@ public class CeylonDocToolTest {
                 Pattern.compile("<.*? id='privateMethod'.*?>"));
     }
     
+    @Test
+    public void dependentOnBinaryModule() throws IOException {
+        String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules";
+        String testName = "dependentOnBinaryModule";
+        
+        // compile the b module
+        compile(pathname, "b");
+        
+        CeylonDocTool tool = tool(pathname+"/dependency", testName, "c", "build/ceylon-cars");
+        tool.makeDoc();
+    }
+
+    private void compile(String pathname, String string) throws IOException {
+        CeyloncTool compiler = new CeyloncTool();
+        List<String> options = Arrays.asList("-src", pathname, "-out", "build/ceylon-cars");
+        JavacTask task = compiler.getTask(null, null, null, options, Arrays.asList("b"), null);
+        Boolean ret = task.call();
+        Assert.assertEquals("Compilation failed", Boolean.TRUE, ret);
+    }
 }
