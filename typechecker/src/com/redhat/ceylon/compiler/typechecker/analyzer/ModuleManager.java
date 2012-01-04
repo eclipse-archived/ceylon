@@ -29,7 +29,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 public class ModuleManager {
     public static final String MODULE_FILE = "module.ceylon";
     public static final String PACKAGE_FILE = "package.ceylon";
-    private Context context;
+    private final Context context;
     private final LinkedList<Package> packageStack = new LinkedList<Package>();
     private Module currentModule;
     private Modules modules;
@@ -311,10 +311,6 @@ public class ModuleManager {
 
     public Context getContext(){
         return context;
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
     }
 
     public void prepareForTypeChecking() {
