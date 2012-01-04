@@ -1257,4 +1257,39 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         throw new RuntimeException("Failed to look up given type in language module while bootstrapping: "+name);
     }
 
+    protected static abstract class SourceDeclarationVisitor extends Visitor{
+        
+        abstract public void loadFromSource(Tree.Declaration decl);
+        
+        @Override
+        public void visit(Tree.ClassDefinition that) {
+            loadFromSource(that);
+        }
+        
+        @Override
+        public void visit(Tree.InterfaceDefinition that) {
+            loadFromSource(that);
+        }
+        
+        @Override
+        public void visit(Tree.ObjectDefinition that) {
+            loadFromSource(that);
+        }
+
+        @Override
+        public void visit(Tree.MethodDefinition that) {
+            loadFromSource(that);
+        }
+
+        @Override
+        public void visit(Tree.AttributeDeclaration that) {
+            loadFromSource(that);
+        }
+
+        @Override
+        public void visit(Tree.AttributeGetterDefinition that) {
+            loadFromSource(that);
+        }
+    }
+
 }

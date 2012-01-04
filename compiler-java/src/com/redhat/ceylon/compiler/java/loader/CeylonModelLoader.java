@@ -105,10 +105,9 @@ public class CeylonModelLoader extends AbstractModelLoader {
         for(final JCCompilationUnit tree : trees){
             CompilationUnit ceylonTree = ((CeylonCompilationUnit)tree).ceylonTree;
             final String pkgName = tree.getPackageName() != null ? tree.getPackageName().toString() : "";
-            
-            ceylonTree.visit(new Visitor(){
-                
-                void loadFromSource(Tree.Declaration decl) {
+            ceylonTree.visit(new SourceDeclarationVisitor(){
+                @Override
+                public void loadFromSource(Declaration decl) {
                     String name = Util.quoteIfJavaKeyword(decl.getIdentifier().getText());
                     String fqn = pkgName.isEmpty() ? name : pkgName+"."+name;
                     try{
@@ -123,43 +122,13 @@ public class CeylonModelLoader extends AbstractModelLoader {
                                 (previousClass != null ? ((JavacClass)previousClass).classSymbol.classfile : "another file"));
                     }
                 }
-                
-                @Override
-                public void visit(Tree.ClassDefinition that) {
-                    loadFromSource(that);
-                }
-                
-                @Override
-                public void visit(Tree.InterfaceDefinition that) {
-                    loadFromSource(that);
-                }
-                
-                @Override
-                public void visit(Tree.ObjectDefinition that) {
-                    loadFromSource(that);
-                }
-
-                @Override
-                public void visit(Tree.MethodDefinition that) {
-                    loadFromSource(that);
-                }
-
-                @Override
-                public void visit(Tree.AttributeDeclaration that) {
-                    loadFromSource(that);
-                }
-
-                @Override
-                public void visit(Tree.AttributeGetterDefinition that) {
-                    loadFromSource(that);
-                }
             });
         }
         // If we're bootstrapping the Ceylon language now load the symbols from the source CU
         if(isBootstrap)
             symtab.loadCeylonSymbols();
     }
-
+    
     @Override
     public void loadPackage(String packageName, boolean loadDeclarations) {
         // abort if we already loaded it, but only record that we loaded it if we want
