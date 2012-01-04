@@ -75,6 +75,7 @@ public class ReflectionType implements TypeMirror {
         primitives.put(Long.TYPE, TypeKind.LONG);
         primitives.put(Float.TYPE, TypeKind.FLOAT);
         primitives.put(Double.TYPE, TypeKind.DOUBLE);
+        primitives.put(Void.TYPE, TypeKind.VOID);
     }
     
     @Override
