@@ -34,7 +34,8 @@ class ConcreteList<out X>(X... xs)
 }
 
 class Couple<X>(X x, X y) 
-        extends Pair<X,X>(x,y) {
+        extends Pair<X,X>(x,y) 
+        given X satisfies Object {
     shared X x = x;
     shared X y = y;
 }
