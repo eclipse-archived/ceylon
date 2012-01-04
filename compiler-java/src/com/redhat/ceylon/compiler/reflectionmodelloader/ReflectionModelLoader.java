@@ -9,6 +9,9 @@ import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.modelloader.TypeParser;
 import com.redhat.ceylon.compiler.modelloader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.modelloader.mirror.MethodMirror;
+import com.redhat.ceylon.compiler.reflectionmodelloader.mirror.ReflectionClass;
+import com.redhat.ceylon.compiler.reflectionmodelloader.mirror.ReflectionMethod;
+import com.redhat.ceylon.compiler.reflectionmodelloader.mirror.ReflectionModule;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -17,7 +20,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
 public class ReflectionModelLoader extends AbstractModelLoader {
 
-    ReflectionModelLoader(ModuleManager moduleManager, Modules modules){
+    public ReflectionModelLoader(ModuleManager moduleManager, Modules modules){
         this.moduleManager = moduleManager;
         this.modules = modules;
         this.typeFactory = new Unit();

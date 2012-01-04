@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.reflectionmodelloader;
+package com.redhat.ceylon.compiler.reflectionmodelloader.mirror;
 
 import com.redhat.ceylon.compiler.modelloader.mirror.PackageMirror;
 

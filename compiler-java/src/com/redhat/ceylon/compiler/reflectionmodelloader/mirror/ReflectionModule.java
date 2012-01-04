@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.reflectionmodelloader;
+package com.redhat.ceylon.compiler.reflectionmodelloader.mirror;
 
 import java.net.URLClassLoader;
 
