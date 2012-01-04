@@ -9,9 +9,9 @@ We include support for Ceylon ant tasks in
     <path id="ant-tasks">
       <pathelement location="${ceylon.home}/repo/com/redhat/ceylon/ant/0.1/com.redhat.ceylon.ant-0.1.jar"/>
     </path>
-    <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc" classpathref="ant-tasks"/>
-    <taskdef name="ceylond" classname="com.redhat.ceylon.compiler.ant.Ceylond" classpathref="ant-tasks"/>
-    <taskdef name="ceylon" classname="com.redhat.ceylon.compiler.ant.Ceylon" classpathref="ant-tasks"/> 
+    <taskdef name="ceylonc" classname="com.redhat.ceylon.ant.Ceylonc" classpathref="ant-tasks"/>
+    <taskdef name="ceylond" classname="com.redhat.ceylon.ant.Ceylond" classpathref="ant-tasks"/>
+    <taskdef name="ceylon" classname="com.redhat.ceylon.ant.Ceylon" classpathref="ant-tasks"/> 
 
 ### Ceylonc ant task
 
