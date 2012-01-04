@@ -50,7 +50,7 @@ import com.redhat.ceylon.compiler.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.loader.CeylonEnter;
 import com.redhat.ceylon.compiler.loader.CeylonModelLoader;
-import com.redhat.ceylon.compiler.loader.CompilerModuleManager;
+import com.redhat.ceylon.compiler.loader.model.CompilerModuleManager;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;

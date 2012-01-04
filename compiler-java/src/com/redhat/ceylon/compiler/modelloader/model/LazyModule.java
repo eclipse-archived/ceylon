@@ -18,8 +18,9 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.compiler.modelloader;
+package com.redhat.ceylon.compiler.modelloader.model;
 
+import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;

@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.reflectionmodelloader;
 import java.net.URLClassLoader;
 
 import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.modelloader.LazyModule;
+import com.redhat.ceylon.compiler.modelloader.model.LazyModule;
 
 public class ReflectionModule extends LazyModule {
 

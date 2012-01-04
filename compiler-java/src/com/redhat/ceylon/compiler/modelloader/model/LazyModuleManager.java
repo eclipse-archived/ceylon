@@ -18,11 +18,12 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.compiler.modelloader;
+package com.redhat.ceylon.compiler.modelloader.model;
 
 import java.util.Arrays;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;

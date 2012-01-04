@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.modelloader.model.LazyClass;
 import com.redhat.ceylon.compiler.modelloader.model.LazyElement;
 import com.redhat.ceylon.compiler.modelloader.model.LazyInterface;
 import com.redhat.ceylon.compiler.modelloader.model.LazyMethod;
+import com.redhat.ceylon.compiler.modelloader.model.LazyModule;
 import com.redhat.ceylon.compiler.modelloader.model.LazyPackage;
 import com.redhat.ceylon.compiler.modelloader.model.LazyValue;
 import com.redhat.ceylon.compiler.modelloader.refl.ReflAnnotated;
@@ -141,7 +142,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public abstract void loadPackage(String packageName, boolean loadDeclarations);
     public abstract ReflClass lookupClassSymbol(String name);
 
-    protected abstract void addModuleToClassPath(Module module, VirtualFile artifact);
+    public abstract void addModuleToClassPath(Module module, VirtualFile artifact);
     protected abstract void logWarning(String message);
     protected abstract void logVerbose(String message);
     protected abstract ReflClass loadClass(String pkgName, String className);

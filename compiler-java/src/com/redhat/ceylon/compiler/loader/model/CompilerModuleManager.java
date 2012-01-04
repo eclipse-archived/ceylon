@@ -18,28 +18,44 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.compiler.loader;
+package com.redhat.ceylon.compiler.loader.model;
 
+import java.util.List;
+
+import com.redhat.ceylon.compiler.loader.CeylonEnter;
+import com.redhat.ceylon.compiler.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.modelloader.LazyModule;
-import com.sun.tools.javac.util.Context;
+import com.redhat.ceylon.compiler.modelloader.model.LazyModuleManager;
+import com.redhat.ceylon.compiler.typechecker.context.Context;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 
-public class CompilerModule extends LazyModule {
+public class CompilerModuleManager extends LazyModuleManager {
 
-    private Context context;
+    private com.sun.tools.javac.util.Context context;
+    private CeylonEnter ceylonEnter;
     private AbstractModelLoader modelLoader;
 
-    public CompilerModule(com.sun.tools.javac.util.Context context) {
+    public CompilerModuleManager(Context ceylonContext, com.sun.tools.javac.util.Context context) {
+        super(ceylonContext);
         this.context = context;
     }
 
-    public CompilerModule(AbstractModelLoader modelLoader) {
-        this.modelLoader = modelLoader;
+    @Override
+    protected Module createModule(List<String> moduleName) {
+        Module module = new CompilerModule(context);
+        module.setName(moduleName);
+        return module;
     }
 
-    @Override
+    public CeylonEnter getCeylonEnter() {
+        if (ceylonEnter == null) {
+            ceylonEnter = CeylonEnter.instance(context);
+        }
+        return ceylonEnter;
+    }
+
     protected AbstractModelLoader getModelLoader() {
-        if(modelLoader == null){
+        if (modelLoader == null) {
             modelLoader = CeylonModelLoader.instance(context);
         }
         return modelLoader;

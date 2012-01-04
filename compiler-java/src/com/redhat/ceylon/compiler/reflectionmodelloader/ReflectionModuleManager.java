@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.reflectionmodelloader;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.modelloader.LazyModuleManager;
+import com.redhat.ceylon.compiler.modelloader.model.LazyModuleManager;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;

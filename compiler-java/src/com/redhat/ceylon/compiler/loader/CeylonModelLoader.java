@@ -23,6 +23,7 @@ package com.redhat.ceylon.compiler.loader;
 import javax.tools.JavaFileObject.Kind;
 
 import com.redhat.ceylon.compiler.codegen.CeylonCompilationUnit;
+import com.redhat.ceylon.compiler.loader.model.CompilerModuleManager;
 import com.redhat.ceylon.compiler.loader.refl.JavacClass;
 import com.redhat.ceylon.compiler.loader.refl.JavacMethod;
 import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
@@ -95,7 +96,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
     }
 
     @Override
-    protected void addModuleToClassPath(Module module, VirtualFile artifact){
+    public void addModuleToClassPath(Module module, VirtualFile artifact){
         ((CompilerModuleManager)phasedUnits.getModuleManager()).getCeylonEnter().addModuleToClassPath(module, true);
     }
 

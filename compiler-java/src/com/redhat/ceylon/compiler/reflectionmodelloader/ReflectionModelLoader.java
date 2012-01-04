@@ -56,7 +56,7 @@ public class ReflectionModelLoader extends AbstractModelLoader {
     }
 
     @Override
-    protected void addModuleToClassPath(Module module, VirtualFile artifact) {
+    public void addModuleToClassPath(Module module, VirtualFile artifact) {
         if(artifact == null)
             return;
         try {
