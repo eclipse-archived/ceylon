@@ -31,9 +31,11 @@ function Foo(name, $$){
     function getCounter(){
         return $counter;
     }
+    $$.getCounter=getCounter;
     function setCounter(counter){
         $counter=counter;
     }
+    $$.setCounter=setCounter;
     
     //AttributeGetterDefinition count at misc.ceylon (10:4-10:43)
     function getCount(){

@@ -5,6 +5,8 @@ function $X(){}
 
 //MethodDefinition helloWorld at misc.ceylon (2:4-4:4)
 $X.prototype.helloWorld=function helloWorld(){
+    var $$=this;
+    var $$x=this;
     $$$cl15.print($$$cl15.String("hello world"));
 }
 function X($$){
@@ -34,17 +36,23 @@ $Foo.prototype.setCounter=function setCounter(counter){
 
 //AttributeGetterDefinition count at misc.ceylon (10:4-10:43)
 $Foo.prototype.getCount=function getCount(){
-    return this.getCounter();
+    var $$=this;
+    var $$foo=this;
+    return $$foo.getCounter();
 }
 
 //MethodDefinition inc at misc.ceylon (11:4-11:44)
 $Foo.prototype.inc=function inc(){
-    this.setCounter(this.getCounter().plus($$$cl15.Integer(1)));
+    var $$=this;
+    var $$foo=this;
+    $$foo.setCounter($$foo.getCounter().plus($$$cl15.Integer(1)));
 }
 
 //MethodDefinition printName at misc.ceylon (12:4-14:4)
 $Foo.prototype.printName=function printName(){
-    $$$cl15.print($$$cl15.String("foo name = ").plus(this.name));
+    var $$=this;
+    var $$foo=this;
+    $$$cl15.print($$$cl15.String("foo name = ").plus($$foo.name));
 }
 function Foo(name, $$){
     if ($$===undefined)$$=new $Foo;
@@ -52,11 +60,11 @@ function Foo(name, $$){
     $$.name=name;
     
     //AttributeDeclaration name at misc.ceylon (8:4-8:29)
-    $$.name=$$.name;
+    $$.name=$$foo.name;
     
     //AttributeDeclaration counter at misc.ceylon (9:4-9:29)
     $$.counter=$$$cl15.Integer(0);
-    $$.inc();
+    $$foo.inc();
     return $$;
 }
 this.Foo=Foo;
@@ -70,7 +78,9 @@ for(var $ in $X.prototype){$Bar.prototype[$+'$']=$X.prototype[$]}
 
 //MethodDefinition printName at misc.ceylon (19:4-22:4)
 $Bar.prototype.printName=function printName(){
-    $$$cl15.print($$$cl15.String("bar name = ").plus(this.getName()));
+    var $$=this;
+    var $$bar=this;
+    $$$cl15.print($$$cl15.String("bar name = ").plus($$bar.getName()));
     this.printName$();
 }
 function Bar($$){
@@ -86,6 +96,8 @@ function Bar($$){
     
     //MethodDefinition incOuter at misc.ceylon (26:8-28:8)
     $Inner.prototype.incOuter=function incOuter(){
+        var $$=this;
+        var $$inner=this;
         $$bar.inc();
     }
     function Inner($$){
@@ -173,6 +185,8 @@ function testit(){
     
     //MethodDefinition y at testit.ceylon (19:8-21:8)
     $x.prototype.y=function y(){
+        var $$=this;
+        var $$x=this;
         $$$cl15.print($$$cl15.String("xy"));
     }
     var $x=function x(){

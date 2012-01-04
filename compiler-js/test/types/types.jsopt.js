@@ -7,7 +7,9 @@ for(var $ in CeylonObject.prototype){$Pair.prototype[$+'$']=CeylonObject.prototy
 
 //AttributeGetterDefinition string at types.ceylon (4:4-6:4)
 $Pair.prototype.getString=function getString(){
-    return $$$cl15.String("(").plus(this.x.getString()).plus($$$cl15.String(", ")).plus(this.y.getString()).plus($$$cl15.String(")"));
+    var $$=this;
+    var $$pair=this;
+    return $$$cl15.String("(").plus($$pair.x.getString()).plus($$$cl15.String(", ")).plus($$pair.y.getString()).plus($$$cl15.String(")"));
 }
 function Pair(x, y, $$){
     if ($$===undefined)$$=new $Pair;
@@ -24,17 +26,21 @@ for(var $ in $Pair.prototype){$Complex.prototype[$+'$']=$Pair.prototype[$]}
 
 //AttributeGetterDefinition string at types.ceylon (11:4-13:4)
 $Complex.prototype.getString=function getString(){
-    return this.x.getString().plus($$$cl15.String("+")).plus(this.y.getString()).plus($$$cl15.String("i"));
+    var $$=this;
+    var $$complex=this;
+    return $$complex.x.getString().plus($$$cl15.String("+")).plus($$complex.y.getString()).plus($$$cl15.String("i"));
 }
 
 //AttributeGetterDefinition pairString at types.ceylon (14:4-16:4)
 $Complex.prototype.getPairString=function getPairString(){
+    var $$=this;
+    var $$complex=this;
     return this.getString$();
 }
 function Complex(x, y, $$){
     if ($$===undefined)$$=new $Complex;
     var $$complex=$$;
-    Pair($$.x,$$.y,$$);
+    Pair($$complex.x,$$complex.y,$$);
     $$.x=x;
     $$.y=y;
     return $$;
@@ -45,7 +51,9 @@ function $List(){}
 
 //AttributeGetterDefinition empty at types.ceylon (21:4-23:4)
 $List.prototype.getEmpty=function getEmpty(){
-    return this.getSize().equals($$$cl15.Integer(0));
+    var $$=this;
+    var $$list=this;
+    return $$list.getSize().equals($$$cl15.Integer(0));
 }
 function List($$){
     if ($$===undefined)$$=new $List;
@@ -62,11 +70,15 @@ for(var $ in $List.prototype){$ConcreteList.prototype[$+'$']=$List.prototype[$]}
 
 //AttributeGetterDefinition size at types.ceylon (28:4-30:4)
 $ConcreteList.prototype.getSize=function getSize(){
+    var $$=this;
+    var $$concreteList=this;
     return $$$cl15.Integer(0);
 }
 
 //AttributeGetterDefinition empty at types.ceylon (31:4-33:4)
 $ConcreteList.prototype.getEmpty=function getEmpty(){
+    var $$=this;
+    var $$concreteList=this;
     return $$$cl15.getTrue();
 }
 function ConcreteList(xs, $$){

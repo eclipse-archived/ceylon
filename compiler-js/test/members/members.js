@@ -10,9 +10,11 @@ function Counter(initialCount, $$){
     function getCurrentCount(){
         return $currentCount;
     }
+    $$.getCurrentCount=getCurrentCount;
     function setCurrentCount(currentCount){
         $currentCount=currentCount;
     }
+    $$.setCurrentCount=setCurrentCount;
     
     //AttributeGetterDefinition count at members.ceylon (3:4-5:4)
     function getCount(){
@@ -41,3 +43,19 @@ function Counter(initialCount, $$){
     return $$;
 }
 this.Counter=Counter;
+
+//MethodDefinition test at members.ceylon (17:0-23:0)
+function test(){
+    
+    //AttributeDeclaration c at members.ceylon (18:4-18:24)
+    var $c=Counter($$$cl15.Integer(0));
+    function getC(){
+        return $c;
+    }
+    $$$cl15.print(getC().getCount());
+    getC().inc();
+    getC().inc();
+    $$$cl15.print(getC().getCount());
+    $$$cl15.print(getC());
+}
+this.test=test;
