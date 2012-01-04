@@ -1,8 +1,0 @@
-package com.redhat.ceylon.compiler.test.expression.attribute;
-
-class InitializerParamAccessInInitializer {
-    
-    InitializerParamAccessInInitializer(boolean b) {
-        final boolean b2 = b;
-    }
-}

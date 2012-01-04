@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.expression.stringtemp;
+
+class StringTemplate {
+    
+    private final void m1(final .java.lang.String s) {
+        final .java.lang.String t = new java.lang.StringBuilder().append("Foo ").append(s).append(" bar").toString();
+    }
+    
+    private final void m2(final .java.lang.String s) {
+        final .java.lang.String t = new java.lang.StringBuilder().append("Foo ").append(s).toString();
+    }
+    
+    private final void m3(final long n) {
+        final .java.lang.String t = new java.lang.StringBuilder().append("Foo ").append(n).append(" bar").toString();
+    }
+    
+    private final void m4() {
+        final .java.lang.String t = new java.lang.StringBuilder().append("Foo ").append("").append(" bar").toString();
+    }
+    
+    private final void m5() {
+        final .java.lang.String t = new java.lang.StringBuilder().append("Foo ").append(4L).append(" bar").toString();
+    }
+    
+    StringTemplate() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new StringTemplate();
+    }
+}

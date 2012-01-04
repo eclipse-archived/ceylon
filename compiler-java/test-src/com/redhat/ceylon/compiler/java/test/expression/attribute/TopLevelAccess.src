@@ -1,0 +1,63 @@
+package com.redhat.ceylon.compiler.java.test.expression.attribute;
+
+final class b1 {
+    private static final boolean value;
+    static {
+        value = true;
+    }
+    
+    static boolean getB1() {
+        return value;
+    }
+    
+    private b1() {
+    }
+}
+public final class b2 {
+    private static final boolean value;
+    static {
+        value = true;
+    }
+    
+    public static boolean getB2() {
+        return value;
+    }
+    
+    private b2() {
+    }
+}
+class TopLevelAccess {
+    
+    private final void m() {
+        final boolean bb1 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b1.getB1();
+        final boolean bb2 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b2.getB2();
+        final boolean bb3 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b3.getB3();
+        final boolean bb4 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b4.getB4();
+    }
+    
+    TopLevelAccess() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new TopLevelAccess();
+    }
+}
+final class b3 {
+    
+    static boolean getB3() {
+        return true;
+    }
+    
+    private b3() {
+    }
+}
+public final class b4 {
+    
+    public static boolean getB4() {
+        return true;
+    }
+    
+    private b4() {
+    }
+}

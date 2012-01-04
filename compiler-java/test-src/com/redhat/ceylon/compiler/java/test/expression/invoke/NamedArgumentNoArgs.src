@@ -1,0 +1,16 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class namedArgumentNoArgs {
+    
+    private namedArgumentNoArgs() {
+    }
+    
+    static void namedArgumentNoArgs() {
+        (let  in .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentNoArgs.namedArgumentNoArgs(); null);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        namedArgumentNoArgs();
+    }
+}

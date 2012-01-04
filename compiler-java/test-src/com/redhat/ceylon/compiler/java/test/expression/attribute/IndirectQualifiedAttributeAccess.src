@@ -1,0 +1,28 @@
+package com.redhat.ceylon.compiler.java.test.expression.attribute;
+
+class IndirectQualifiedAttributeAccess {
+    private final boolean b;
+    
+    private final boolean getB() {
+        return b;
+    }
+    private final com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess q;
+    
+    private final com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess getQ() {
+        return q;
+    }
+    
+    private final boolean test() {
+        return getQ().getB();
+    }
+    
+    IndirectQualifiedAttributeAccess() {
+        this.b = true;
+        this.q = new com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new IndirectQualifiedAttributeAccess();
+    }
+}

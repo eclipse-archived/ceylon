@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIf {
+    
+    public final long m() {
+        if (true) {
+            return 1L;
+        }
+        return 0L;
+    }
+    
+    MethodIf() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new MethodIf();
+    }
+}

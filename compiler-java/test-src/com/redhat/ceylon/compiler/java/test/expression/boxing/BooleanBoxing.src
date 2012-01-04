@@ -1,0 +1,43 @@
+package com.redhat.ceylon.compiler.java.test.expression.boxing;
+
+class BooleanBoxing {
+    
+    private final void m() {
+        final boolean b1 = true;
+        final boolean b2 = !b1;
+        final boolean b3 = negate(b2);
+        final ceylon.language.Boolean b4 = negate2(.ceylon.language.Boolean.instance(b3));
+        final boolean b5 = negate3(b4);
+    }
+    
+    private final boolean negate(final boolean b) {
+        return !b;
+    }
+    
+    private final ceylon.language.Boolean negate2(final ceylon.language.Boolean b) {
+        ceylon.language.Boolean $b$0;
+        if (($b$0 = b) != null) {
+            final boolean $b$1 = $b$0.booleanValue();
+            return .ceylon.language.Boolean.instance(!$b$1);
+        }
+        return b;
+    }
+    
+    private final boolean negate3(final ceylon.language.Boolean b) {
+        ceylon.language.Boolean $b$2;
+        if (($b$2 = b) != null) {
+            final boolean $b$3 = $b$2.booleanValue();
+            return !$b$3;
+        } else {
+            return false;
+        }
+    }
+    
+    BooleanBoxing() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new BooleanBoxing();
+    }
+}

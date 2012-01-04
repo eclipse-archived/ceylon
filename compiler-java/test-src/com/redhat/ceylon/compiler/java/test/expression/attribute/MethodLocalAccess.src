@@ -1,0 +1,51 @@
+package com.redhat.ceylon.compiler.java.test.expression.attribute;
+
+class MethodLocalAccess {
+    
+    private final long m1() {
+        final long n1 = 1L;
+        return n1;
+    }
+    
+    private final long m2() {
+        
+        final class n2$getter {
+            
+            long getN2() {
+                return 1L;
+            }
+            
+            private n2$getter() {
+            }
+        }
+        final n2$getter n2$getter = new n2$getter();
+        return n2$getter.getN2();
+    }
+    
+    private final long m3() {
+        
+        final class selfref$getter {
+            
+            long getSelfref() {
+                if (.ceylon.language.Integer.instance(getSelfref()).compare(.ceylon.language.Integer.instance(0L)).largerThan()) {
+                    return 1L;
+                } else {
+                    return 0L;
+                }
+            }
+            
+            private selfref$getter() {
+            }
+        }
+        final selfref$getter selfref$getter = new selfref$getter();
+        return selfref$getter.getSelfref();
+    }
+    
+    MethodLocalAccess() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new MethodLocalAccess();
+    }
+}

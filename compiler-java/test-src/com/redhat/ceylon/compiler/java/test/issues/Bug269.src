@@ -1,0 +1,130 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+class Bug269 {
+    private final .java.lang.String string;
+    
+    @.java.lang.Override
+    public final .java.lang.String toString() {
+        return string;
+    }
+    private final long hash;
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)hash;
+    }
+    
+    Bug269() {
+        this.string = "";
+        this.hash = 0L;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new Bug269();
+    }
+}
+class Bug269_2 {
+    
+    @.java.lang.Override
+    public final .java.lang.String toString() {
+        .ceylon.language.print.print(.ceylon.language.String.instance(this.toString()));
+        return "";
+    }
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        .ceylon.language.print.print(.ceylon.language.Integer.instance(this.hashCode()));
+        return (int)0L;
+    }
+    
+    Bug269_2() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new Bug269_2();
+    }
+}
+final class string {
+    
+    private string() {
+    }
+    
+    static void string() {
+        .com.redhat.ceylon.compiler.java.test.issues.string.string();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        string();
+    }
+}
+final class hash {
+    
+    private hash() {
+    }
+    
+    static void hash() {
+        .com.redhat.ceylon.compiler.java.test.issues.hash.hash();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        hash();
+    }
+}
+final class bug269 {
+    
+    private bug269() {
+    }
+    
+    static void bug269() {
+        final .java.lang.String string = "hello";
+        final long hash = 0L;
+        .ceylon.language.print.print(.ceylon.language.String.instance(string));
+        .ceylon.language.print.print(.ceylon.language.Integer.instance(hash));
+        .ceylon.language.print.print(.ceylon.language.String.instance(new com.redhat.ceylon.compiler.java.test.issues.Bug269().toString()));
+        .ceylon.language.print.print(.ceylon.language.Integer.instance(new com.redhat.ceylon.compiler.java.test.issues.Bug269().hashCode()));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        bug269();
+    }
+}
+final class bug269_2 {
+    
+    private bug269_2() {
+    }
+    
+    static void bug269_2() {
+        
+        final class string {
+            
+            private string() {
+            }
+            
+            void string() {
+            }
+        }
+        final string string = new string();
+        
+        final class hash {
+            
+            private hash() {
+            }
+            
+            void hash() {
+            }
+        }
+        final hash hash = new hash();
+        string.string();
+        hash.hash();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        bug269_2();
+    }
+}

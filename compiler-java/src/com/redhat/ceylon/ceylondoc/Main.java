@@ -71,7 +71,7 @@ public class Main {
         if (destDir == null) {
             destDir = "modules";
         }
-        repositories = com.redhat.ceylon.compiler.util.Util.addDefaultRepositories(repositories);
+        repositories = com.redhat.ceylon.compiler.java.util.Util.addDefaultRepositories(repositories);
 
         List<File> sourceFolders = new LinkedList<File>();
         if (sourceDirs.isEmpty()) {
@@ -125,7 +125,7 @@ public class Main {
     }
 
     private static void printUsage() {
-        List<String> defaultRepositories = com.redhat.ceylon.compiler.util.Util.addDefaultRepositories(Collections.<String>emptyList());
+        List<String> defaultRepositories = com.redhat.ceylon.compiler.java.util.Util.addDefaultRepositories(Collections.<String>emptyList());
         System.err.print(
                 "Usage: ceylon [options...] moduleName[/version]... :\n"
                 +"\n"

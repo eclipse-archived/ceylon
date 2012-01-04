@@ -1,0 +1,16 @@
+package com.redhat.ceylon.compiler.java.test.statement.trycatch;
+
+class ThrowExceptionNamedArgs {
+    
+    private final void t() {
+        throw (let ceylon.language.String $arg$0$0 = .ceylon.language.String.instance("Bang!"),.java.lang.Throwable $arg$0$1 = null in new .ceylon.language.Exception($arg$0$0, $arg$0$1));
+    }
+    
+    ThrowExceptionNamedArgs() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new ThrowExceptionNamedArgs();
+    }
+}

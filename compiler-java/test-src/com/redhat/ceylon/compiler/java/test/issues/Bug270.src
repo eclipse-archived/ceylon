@@ -1,0 +1,84 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+final class bug270 {
+    private static final ceylon.language.Entry<? extends ceylon.language.Integer, ? extends ceylon.language.String> value;
+    static {
+        value = (let ceylon.language.String $arg$0$1 = .ceylon.language.String.instance("hello"),ceylon.language.Integer $arg$0$0 = .ceylon.language.Integer.instance(1L) in new ceylon.language.Entry<ceylon.language.Integer, ceylon.language.String>($arg$0$0, $arg$0$1));
+    }
+    
+    static ceylon.language.Entry<? extends ceylon.language.Integer, ? extends ceylon.language.String> getBug270() {
+        return value;
+    }
+    
+    private bug270() {
+    }
+}
+final class bug270Variable {
+    private static ceylon.language.Entry<? extends ceylon.language.Integer, ? extends ceylon.language.String> value;
+    static {
+        value = (let ceylon.language.String $arg$1$1 = .ceylon.language.String.instance("hello"),ceylon.language.Integer $arg$1$0 = .ceylon.language.Integer.instance(1L) in new ceylon.language.Entry<ceylon.language.Integer, ceylon.language.String>($arg$1$0, $arg$1$1));
+    }
+    
+    static ceylon.language.Entry<? extends ceylon.language.Integer, ? extends ceylon.language.String> getBug270Variable() {
+        return value;
+    }
+    
+    static void setBug270Variable(ceylon.language.Entry<? extends ceylon.language.Integer, ? extends ceylon.language.String> bug270Variable) {
+        value = bug270Variable;
+    }
+    
+    private bug270Variable() {
+    }
+}
+final class bug270_eatEntry {
+    
+    private bug270_eatEntry() {
+    }
+    
+    static <T>T bug270_eatEntry(final T entry) {
+        return entry;
+    }
+}
+final class bug270_2 {
+    private static final ceylon.language.Entry<? extends ceylon.language.Entry<? extends ceylon.language.Integer, ? extends ceylon.language.String>, ? extends ceylon.language.String> value;
+    static {
+        value = .com.redhat.ceylon.compiler.java.test.issues.bug270_eatEntry.<ceylon.language.Entry<? extends ceylon.language.Entry<? extends ceylon.language.Integer, ? extends ceylon.language.String>, ? extends ceylon.language.String>>bug270_eatEntry((let ceylon.language.String $arg$2$1 = .ceylon.language.String.instance("hello"),ceylon.language.Entry<? extends ceylon.language.Integer, ? extends ceylon.language.String> $arg$2$0 = (let ceylon.language.String $arg$3$1 = .ceylon.language.String.instance("hello"),ceylon.language.Integer $arg$3$0 = .ceylon.language.Integer.instance(1L) in new ceylon.language.Entry<ceylon.language.Integer, ceylon.language.String>($arg$3$0, $arg$3$1)) in new ceylon.language.Entry<ceylon.language.Entry<? extends ceylon.language.Integer, ? extends ceylon.language.String>, ceylon.language.String>($arg$2$0, $arg$2$1)));
+    }
+    
+    static ceylon.language.Entry<? extends ceylon.language.Entry<? extends ceylon.language.Integer, ? extends ceylon.language.String>, ? extends ceylon.language.String> getBug270_2() {
+        return value;
+    }
+    
+    private bug270_2() {
+    }
+}
+class Bug270 {
+    private final ceylon.language.Entry<? extends ceylon.language.Integer, ? extends ceylon.language.String> bug270;
+    
+    private final ceylon.language.Entry<? extends ceylon.language.Integer, ? extends ceylon.language.String> getBug270() {
+        return bug270;
+    }
+    
+    private final void forceFieldGenerationByCapture() {
+        this.getBug270().equals(.ceylon.language.Integer.instance(1L));
+    }
+    
+    private final void method() {
+        final ceylon.language.Entry<? extends ceylon.language.Integer, ? extends ceylon.language.String> bug270 = (let ceylon.language.String $arg$7$1 = .ceylon.language.String.instance("hello"),ceylon.language.Integer $arg$7$0 = .ceylon.language.Integer.instance(1L) in new ceylon.language.Entry<ceylon.language.Integer, ceylon.language.String>($arg$7$0, $arg$7$1));
+        ceylon.language.Entry<? extends ceylon.language.Integer, ? extends ceylon.language.String> bug270Variable = (let ceylon.language.String $arg$8$1 = .ceylon.language.String.instance("hello"),ceylon.language.Integer $arg$8$0 = .ceylon.language.Integer.instance(1L) in new ceylon.language.Entry<ceylon.language.Integer, ceylon.language.String>($arg$8$0, $arg$8$1));
+        if (true) {
+            final ceylon.language.Entry<? extends ceylon.language.Integer, ? extends ceylon.language.String> bug270_2 = (let ceylon.language.String $arg$9$1 = .ceylon.language.String.instance("hello"),ceylon.language.Integer $arg$9$0 = .ceylon.language.Integer.instance(1L) in new ceylon.language.Entry<ceylon.language.Integer, ceylon.language.String>($arg$9$0, $arg$9$1));
+        }
+        .com.redhat.ceylon.compiler.java.test.issues.bug270_eatEntry.<ceylon.language.Entry<? extends ceylon.language.Integer, ? extends ceylon.language.String>>bug270_eatEntry((let ceylon.language.String $arg$10$1 = .ceylon.language.String.instance("hello"),ceylon.language.Integer $arg$10$0 = .ceylon.language.Integer.instance(1L) in new ceylon.language.Entry<ceylon.language.Integer, ceylon.language.String>($arg$10$0, $arg$10$1)));
+    }
+    
+    Bug270() {
+        this.bug270 = (let ceylon.language.String $arg$4$1 = .ceylon.language.String.instance("hello"),ceylon.language.Integer $arg$4$0 = .ceylon.language.Integer.instance(1L) in new ceylon.language.Entry<ceylon.language.Integer, ceylon.language.String>($arg$4$0, $arg$4$1));
+        final ceylon.language.Entry<? extends ceylon.language.Entry<? extends ceylon.language.Integer, ? extends ceylon.language.String>, ? extends ceylon.language.String> bug270_2 = .com.redhat.ceylon.compiler.java.test.issues.bug270_eatEntry.<ceylon.language.Entry<? extends ceylon.language.Entry<? extends ceylon.language.Integer, ? extends ceylon.language.String>, ? extends ceylon.language.String>>bug270_eatEntry((let ceylon.language.String $arg$5$1 = .ceylon.language.String.instance("hello"),ceylon.language.Entry<? extends ceylon.language.Integer, ? extends ceylon.language.String> $arg$5$0 = (let ceylon.language.String $arg$6$1 = .ceylon.language.String.instance("hello"),ceylon.language.Integer $arg$6$0 = .ceylon.language.Integer.instance(1L) in new ceylon.language.Entry<ceylon.language.Integer, ceylon.language.String>($arg$6$0, $arg$6$1)) in new ceylon.language.Entry<ceylon.language.Entry<? extends ceylon.language.Integer, ? extends ceylon.language.String>, ceylon.language.String>($arg$5$0, $arg$5$1)));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new Bug270();
+    }
+}

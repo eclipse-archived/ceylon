@@ -1,0 +1,27 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+final class x {
+    
+    private x() {
+    }
+    
+    static <X extends ceylon.language.Sized>void x(final X x) {
+        .ceylon.language.print.print(.ceylon.language.Integer.instance(x.getSize()));
+    }
+}
+final class bug193 {
+    
+    private bug193() {
+    }
+    
+    static void bug193() {
+        final ceylon.language.Iterable<? extends ceylon.language.String> arr = new ceylon.language.ArraySequence<ceylon.language.String>(.ceylon.language.String.instance("hello"));
+        .com.redhat.ceylon.compiler.java.test.issues.x.x((ceylon.language.Sized)arr);
+        .ceylon.language.print.print(.ceylon.language.Integer.instance(((ceylon.language.Sized)arr).getSize()));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        bug193();
+    }
+}

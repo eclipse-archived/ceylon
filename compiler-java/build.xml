@@ -29,8 +29,8 @@
   <property name="markdown.lib" location="${base.path}/markdownj-core-faf3bf83000.jar"/>
 
   <!-- Jarfiles everything ends up in -->
-  <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/${module.com.redhat.ceylon.compiler.version}"/>
-  <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler-${module.com.redhat.ceylon.compiler.version}.jar"/>
+  <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}"/>
+  <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar"/>
   <property name="ceylon.compiler.lib" location="${ceylon.repo.dir}/${ceylon.compiler.jar}"/>
   <property name="ceylon.compiler.repo" value="${ceylon.repo.dir}/${ceylon.compiler.dir}"/>
   <property name="ceylon.compiler.dist" value="${build.dist}/${ceylon.compiler.dir}"/>
@@ -39,8 +39,8 @@
   <property name="ceylon.ant.lib" location="${ceylon.repo.dir}/${ceylon.ant.jar}"/>
   <property name="ceylon.ant.repo" value="${ceylon.repo.dir}/${ceylon.ant.dir}"/>
   <property name="ceylon.ant.dist" value="${build.dist}/${ceylon.ant.dir}"/>
-  <property name="ceylon-tests.dir" location="${build.ceylon.cars}/com/redhat/ceylon/compiler/test/ceylon/${module.com.redhat.ceylon.compiler.version}"/>
-  <property name="ceylon-tests.car" location="${ceylon-tests.dir}/com.redhat.ceylon.compiler.test.ceylon-${module.com.redhat.ceylon.compiler.version}.car"/>
+  <property name="ceylon-tests.dir" location="${build.ceylon.cars}/com/redhat/ceylon/compiler/java/test/ceylon/${module.com.redhat.ceylon.compiler.version}"/>
+  <property name="ceylon-tests.car" location="${ceylon-tests.dir}/com.redhat.ceylon.compiler.java.test.ceylon-${module.com.redhat.ceylon.compiler.version}.car"/>
 
   <!-- The directory that parser tests live in, and
        the directory test results get written into -->
@@ -49,13 +49,13 @@
 
   <path id="compiler.classpath">
     <pathelement path="${ceylon.typechecker.lib}"/>
+    <pathelement path="${ceylon.runtime.lib}"/>
     <pathelement path="${antlr.lib}"/>
     <pathelement path="${markdown.lib}"/>
   </path>
 
   <path id="test.compile.classpath">
     <path refid="compiler.classpath"/>
-    <pathelement path="${ceylon.runtime.lib}"/>
     <pathelement path="${build.classes}"/>
     <pathelement path="${junit.lib}"/>
   </path>
@@ -111,8 +111,8 @@
     <zip destfile="${build.dist}/${ceylon.compiler.jar}">
       <fileset dir="${build.classes}">
         <exclude name="ceylon/**"/>
-        <exclude name="com/redhat/ceylon/compiler/test/**"/>
-        <exclude name="com/redhat/ceylon/compiler/ant/**"/>
+        <exclude name="com/redhat/ceylon/compiler/java/test/**"/>
+        <exclude name="com/redhat/ceylon/ant/**"/>
       </fileset>
       <fileset dir="${javac.src}">
         <include name="com/sun/tools/javac/resources/*.properties"/>
@@ -123,7 +123,7 @@
     </antcall>    
     <zip destfile="${build.dist}/${ceylon.ant.jar}">
       <fileset dir="${build.classes}">
-        <include name="com/redhat/ceylon/compiler/ant/**"/>
+        <include name="com/redhat/ceylon/ant/**"/>
       </fileset>
     </zip>
     <antcall target="sha1sum">
@@ -174,7 +174,7 @@
        debug="true"
        classpathref="test.compile.classpath"
        includeantruntime="false">
-      <include name="com/redhat/ceylon/compiler/test/**"/>
+      <include name="com/redhat/ceylon/compiler/java/test/**"/>
     </javac>
   </target>
 
@@ -187,8 +187,8 @@
     <jar destfile="${build.lib}/compiler.jar">
       <fileset dir="${build.classes}">
         <exclude name="ceylon/**"/>
-        <exclude name="com/redhat/ceylon/compiler/test/**"/>
-        <exclude name="com/redhat/ceylon/compiler/ant/**"/>
+        <exclude name="com/redhat/ceylon/compiler/java/test/**"/>
+        <exclude name="com/redhat/ceylon/ant/**"/>
       </fileset>
       <fileset dir="${javac.src}">
         <include name="com/sun/tools/javac/resources/*.properties"/>
@@ -196,7 +196,7 @@
     </jar>
     <jar destfile="${build.lib}/ant.jar">
       <fileset dir="${build.classes}">
-        <include name="com/redhat/ceylon/compiler/ant/**"/>
+        <include name="com/redhat/ceylon/ant/**"/>
       </fileset>
     </jar>
     <filter token="VERSION" value="${module.com.redhat.ceylon.compiler.version}"/>
@@ -239,12 +239,12 @@
       <batchtest fork="yes" todir="${test.reports}">
         <fileset dir="${test.src}">
           <include name="**/*Test.java"/>
-          <exclude name="com/redhat/ceylon/compiler/test/CompilerTest.java"/>
-          <exclude name="com/redhat/ceylon/compiler/test/ceylon/**"/>
+          <exclude name="com/redhat/ceylon/compiler/java/test/CompilerTest.java"/>
+          <exclude name="com/redhat/ceylon/compiler/java/test/ceylon/**"/>
         </fileset>
         <zipfileset src="${ceylon-tests.car}">
-          <include name="com/redhat/ceylon/compiler/test/ceylon/**/*Test.class"/>
-          <exclude name="com/redhat/ceylon/compiler/test/ceylon/Test.class"/>
+          <include name="com/redhat/ceylon/compiler/java/test/ceylon/**/*Test.class"/>
+          <exclude name="com/redhat/ceylon/compiler/java/test/ceylon/Test.class"/>
         </zipfileset>
       </batchtest>
     </junit>
@@ -271,8 +271,8 @@
       <batchtest fork="yes" todir="${test.reports}">
         <fileset dir="${test.src}">
           <include name="**/*Test.java"/>
-          <exclude name="com/redhat/ceylon/compiler/test/CompilerTest.java"/>
-          <exclude name="com/redhat/ceylon/compiler/test/ceylon/**"/>
+          <exclude name="com/redhat/ceylon/compiler/java/test/CompilerTest.java"/>
+          <exclude name="com/redhat/ceylon/compiler/java/test/ceylon/**"/>
         </fileset>
       </batchtest>
     </junit>
@@ -299,8 +299,8 @@
       <batchtest fork="yes" todir="${test.reports}">
 
         <zipfileset src="${ceylon-tests.car}">
-          <include name="com/redhat/ceylon/compiler/test/ceylon/**/*Test.class"/>
-          <exclude name="com/redhat/ceylon/compiler/test/ceylon/Test.class"/>
+          <include name="com/redhat/ceylon/compiler/java/test/ceylon/**/*Test.class"/>
+          <exclude name="com/redhat/ceylon/compiler/java/test/ceylon/Test.class"/>
         </zipfileset>
       </batchtest>
     </junit>
@@ -317,9 +317,9 @@
     <path id="ant-tasks">
       <pathelement location="${ceylon.ant.lib}"/>
     </path>
-    <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc" classpathref="ant-tasks"/>
-    <taskdef name="ceylond" classname="com.redhat.ceylon.compiler.ant.Ceylond" classpathref="ant-tasks"/>
-    <taskdef name="ceylon" classname="com.redhat.ceylon.compiler.ant.Ceylon" classpathref="ant-tasks"/>
+    <taskdef name="ceylonc" classname="com.redhat.ceylon.ant.Ceylonc" classpathref="ant-tasks"/>
+    <taskdef name="ceylond" classname="com.redhat.ceylon.ant.Ceylond" classpathref="ant-tasks"/>
+    <taskdef name="ceylon" classname="com.redhat.ceylon.ant.Ceylon" classpathref="ant-tasks"/>
   </target>
 	
   <path id="ceylon.tests.classpath">
@@ -331,7 +331,7 @@
     <mkdir dir="${ceylon-tests.dir}"/>
     <jar destfile="${ceylon-tests.car}">
       <fileset dir="${build.classes}">
-        <include name="com/redhat/ceylon/compiler/test/ceylon/**"/>
+        <include name="com/redhat/ceylon/compiler/java/test/ceylon/**"/>
       </fileset>
     </jar>
     <ceylonc
@@ -339,7 +339,7 @@
       executable="${build.bin}/ceylonc"
       src="${test.src}"
       out="${build.ceylon.cars}">
-       <include name="com/redhat/ceylon/compiler/test/ceylon/*.ceylon"/>
+       <include name="com/redhat/ceylon/compiler/java/test/ceylon/*.ceylon"/>
     </ceylonc>
   </target>
 

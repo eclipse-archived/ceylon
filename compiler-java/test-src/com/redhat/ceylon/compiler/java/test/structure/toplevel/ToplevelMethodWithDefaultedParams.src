@@ -1,0 +1,105 @@
+package com.redhat.ceylon.compiler.java.test.structure.toplevel;
+
+public final class f1 {
+    
+    private f1() {
+    }
+    
+    public static void f1(final long n) {
+    }
+    
+    public static final class f1$impl {
+        
+        public f1$impl() {
+            super();
+        }
+        
+        public static long f1$n() {
+            return 5L;
+        }
+    }
+}
+public final class f2 {
+    
+    private f2() {
+    }
+    
+    public static void f2(final long n, final .java.lang.String s) {
+    }
+    
+    public static final class f2$impl {
+        
+        public f2$impl() {
+            super();
+        }
+        
+        public static .java.lang.String f2$s(final long n) {
+            return "test";
+        }
+    }
+}
+public final class f3 {
+    
+    private f3() {
+    }
+    
+    public static void f3(final long n, final long m) {
+    }
+    
+    public static final class f3$impl {
+        
+        public f3$impl() {
+            super();
+        }
+        
+        public static long f3$n() {
+            return 5L;
+        }
+        
+        public static long f3$m(final long n) {
+            return n;
+        }
+    }
+}
+public final class f4 {
+    
+    private f4() {
+    }
+    
+    public static void f4(final long n, final long m) {
+    }
+    
+    public static final class f4$impl {
+        
+        public f4$impl() {
+            super();
+        }
+        
+        public static long f4$n() {
+            return 5L;
+        }
+        
+        public static long f4$m(final long n) {
+            return .ceylon.language.Integer.instance(n).plus(.ceylon.language.Integer.instance(1L)).longValue();
+        }
+    }
+}
+public final class f5 {
+    
+    private f5() {
+    }
+    
+    public static void f5(final long n, final ceylon.language.Iterable<? extends ceylon.language.Integer> seq) {
+    }
+    
+    public static final class f5$impl {
+        
+        public f5$impl() {
+            super();
+        }
+        
+        public static long f5$n() {
+            return 5L;
+        }
+    }
+}

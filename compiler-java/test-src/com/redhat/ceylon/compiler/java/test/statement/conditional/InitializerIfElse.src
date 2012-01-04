@@ -1,0 +1,18 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class InitializerIfElse {
+    
+    InitializerIfElse() {
+        boolean b;
+        if (true) {
+            b = true;
+        } else {
+            b = false;
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new InitializerIfElse();
+    }
+}

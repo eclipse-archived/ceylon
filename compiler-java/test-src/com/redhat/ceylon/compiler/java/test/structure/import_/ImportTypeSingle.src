@@ -1,0 +1,16 @@
+package com.redhat.ceylon.compiler.java.test.structure.import_;
+
+class ImportTypeSingle {
+    
+    private final void m() {
+        new com.redhat.ceylon.compiler.java.test.structure.import_.pkg.C1();
+    }
+    
+    ImportTypeSingle() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new ImportTypeSingle();
+    }
+}

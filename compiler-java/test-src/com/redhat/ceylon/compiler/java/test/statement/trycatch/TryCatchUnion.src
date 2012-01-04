@@ -1,0 +1,40 @@
+package com.redhat.ceylon.compiler.java.test.statement.trycatch;
+
+class E1 extends .ceylon.language.Exception {
+    
+    E1(ceylon.language.String description, .java.lang.Throwable cause) {
+        super(description, cause);
+    }
+}
+class E2 extends .ceylon.language.Exception {
+    
+    E2(ceylon.language.String description, .java.lang.Throwable cause) {
+        super(description, cause);
+    }
+}
+class TryCatchUnion {
+    
+    private final void t() {
+    }
+    
+    private final void c(final .java.lang.Throwable e) {
+    }
+    
+    private final void m() {
+        try {
+            t();
+        } catch (final com.redhat.ceylon.compiler.java.test.statement.trycatch.E1 e) {
+            c((.java.lang.Throwable)e);
+        } catch (final com.redhat.ceylon.compiler.java.test.statement.trycatch.E2 e) {
+            c((.java.lang.Throwable)e);
+        }
+    }
+    
+    TryCatchUnion() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new TryCatchUnion();
+    }
+}

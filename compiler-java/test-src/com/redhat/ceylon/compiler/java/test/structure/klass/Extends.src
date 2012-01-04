@@ -1,0 +1,23 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class Extends {
+    
+    Extends() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new Extends();
+    }
+}
+class ExtendsB extends com.redhat.ceylon.compiler.java.test.structure.klass.Extends {
+    
+    ExtendsB() {
+        super();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new ExtendsB();
+    }
+}

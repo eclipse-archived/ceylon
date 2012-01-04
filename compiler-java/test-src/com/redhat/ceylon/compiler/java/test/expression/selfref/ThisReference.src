@@ -1,0 +1,20 @@
+package com.redhat.ceylon.compiler.java.test.expression.selfref;
+
+class ThisReference {
+    
+    public final com.redhat.ceylon.compiler.java.test.expression.selfref.ThisReference m() {
+        return this;
+    }
+    
+    public final void test() {
+        this.test();
+    }
+    
+    ThisReference() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new ThisReference();
+    }
+}

@@ -1,0 +1,15 @@
+package com.redhat.ceylon.compiler.java.test.structure.toplevel;
+
+public final class i {
+    private static final long value;
+    static {
+        value = 0L;
+    }
+    
+    public static long getI() {
+        return value;
+    }
+    
+    private i() {
+    }
+}

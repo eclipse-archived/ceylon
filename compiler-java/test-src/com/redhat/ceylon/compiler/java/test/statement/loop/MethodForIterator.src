@@ -1,0 +1,36 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop;
+
+class MethodForIterator {
+    
+    public final void m(final ceylon.language.Sequence<? extends ceylon.language.String> seq) {
+        for (ceylon.language.Iterator<? extends ceylon.language.String> $s$iter$0 = seq.getIterator(); $s$iter$0 != null; $s$iter$0 = $s$iter$0.getTail()) {
+            final .java.lang.String s = $s$iter$0.getHead().toString();
+        }
+    }
+    
+    public final void m2() {
+        for (ceylon.language.Iterator<? extends ceylon.language.String> $s$iter$1 = new ceylon.language.ArraySequence<ceylon.language.String>(.ceylon.language.String.instance("aap"), .ceylon.language.String.instance("noot"), .ceylon.language.String.instance("mies")).getIterator(); $s$iter$1 != null; $s$iter$1 = $s$iter$1.getTail()) {
+            final .java.lang.String s = $s$iter$1.getHead().toString();
+        }
+        for (ceylon.language.Iterator<? extends ceylon.language.String> $s$iter$2 = new ceylon.language.ArraySequence<ceylon.language.String>(.ceylon.language.String.instance("aap"), null, .ceylon.language.String.instance("mies")).getIterator(); $s$iter$2 != null; $s$iter$2 = $s$iter$2.getTail()) {
+            final ceylon.language.String s = $s$iter$2.getHead();
+        }
+        for (ceylon.language.Iterator<? extends ceylon.language.Integer> $n$iter$3 = new ceylon.language.ArraySequence<ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).getIterator(); $n$iter$3 != null; $n$iter$3 = $n$iter$3.getTail()) {
+            final long n = $n$iter$3.getHead().longValue();
+        }
+        for (ceylon.language.Iterator<? extends ceylon.language.Integer> $n$iter$4 = new ceylon.language.ArraySequence<ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), null, .ceylon.language.Integer.instance(3L)).getIterator(); $n$iter$4 != null; $n$iter$4 = $n$iter$4.getTail()) {
+            final ceylon.language.Integer n = $n$iter$4.getHead();
+        }
+        for (ceylon.language.Iterator<? extends ceylon.language.Character> $c$iter$5 = .ceylon.language.String.instance("wim").getIterator(); $c$iter$5 != null; $c$iter$5 = $c$iter$5.getTail()) {
+            final int c = $c$iter$5.getHead().intValue();
+        }
+    }
+    
+    MethodForIterator() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new MethodForIterator();
+    }
+}

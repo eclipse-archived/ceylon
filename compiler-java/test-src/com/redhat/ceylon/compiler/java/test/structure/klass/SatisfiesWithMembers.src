@@ -1,0 +1,46 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+interface SatisfiesWithMembers {
+    
+    public abstract boolean getB();
+    
+    public abstract boolean getB2();
+    
+    public abstract void setB2(boolean b2);
+    
+    public abstract void m();
+}
+class SatisfiesWithMembersClass implements com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers {
+    private final boolean b;
+    
+    @.java.lang.Override
+    public final boolean getB() {
+        return b;
+    }
+    private boolean b2;
+    
+    @.java.lang.Override
+    public boolean getB2() {
+        return b2;
+    }
+    
+    @.java.lang.Override
+    public void setB2(boolean b2) {
+        this.b2 = b2;
+    }
+    
+    @.java.lang.Override
+    public final void m() {
+        return;
+    }
+    
+    SatisfiesWithMembersClass() {
+        this.b = true;
+        this.b2 = false;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new SatisfiesWithMembersClass();
+    }
+}

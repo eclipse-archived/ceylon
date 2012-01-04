@@ -182,7 +182,7 @@ public class CeylonDocTool {
     }
     
     public File getOutputFolder(Module module) {
-        File folder = new File(com.redhat.ceylon.compiler.util.Util.getModulePath(destDir, module),
+        File folder = new File(com.redhat.ceylon.compiler.java.util.Util.getModulePath(destDir, module),
                 "module-doc");
         if(shouldInclude(module))
             folder.mkdirs();

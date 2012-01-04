@@ -1,0 +1,30 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+public class Bug227 {
+    private long _num;
+    
+    private final long get_num() {
+        return _num;
+    }
+    
+    private final void set_num(long _num) {
+        this._num = _num;
+    }
+    
+    public final long getNum() {
+        return this.get_num();
+    }
+    
+    public final void setNum(long num) {
+        set_num(num);
+    }
+    
+    public Bug227() {
+        this._num = 1L;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new Bug227();
+    }
+}

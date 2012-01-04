@@ -1,0 +1,102 @@
+package com.redhat.ceylon.compiler.java.test.misc.keyword;
+
+class Method {
+    
+    private final void $abstract() {
+    }
+    
+    private final void $assert() {
+    }
+    
+    private final void $boolean() {
+    }
+    
+    private final void $byte() {
+    }
+    
+    private final void $char() {
+    }
+    
+    private final void $const() {
+    }
+    
+    private final void $default() {
+    }
+    
+    private final void $do() {
+    }
+    
+    private final void $double() {
+    }
+    
+    private final void $enum() {
+    }
+    
+    private final void $final() {
+    }
+    
+    private final void $float() {
+    }
+    
+    private final void $goto() {
+    }
+    
+    private final void $implements() {
+    }
+    
+    private final void $instanceof() {
+    }
+    
+    private final void $int() {
+    }
+    
+    private final void $long() {
+    }
+    
+    private final void $native() {
+    }
+    
+    private final void $new() {
+    }
+    
+    private final void $package() {
+    }
+    
+    private final void $private() {
+    }
+    
+    private final void $protected() {
+    }
+    
+    private final void $public() {
+    }
+    
+    private final void $short() {
+    }
+    
+    private final void $static() {
+    }
+    
+    private final void $strictfp() {
+    }
+    
+    private final void $synchronized() {
+    }
+    
+    private final void $throws() {
+    }
+    
+    private final void $transient() {
+    }
+    
+    private final void $volatile() {
+    }
+    
+    Method() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new Method();
+    }
+}

@@ -1,0 +1,24 @@
+package com.redhat.ceylon.compiler.java.test.structure.toplevel;
+
+final class toplevelMethod {
+    
+    private toplevelMethod() {
+    }
+    
+    static void toplevelMethod() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        toplevelMethod();
+    }
+}
+final class anotherToplevelMethod {
+    
+    private anotherToplevelMethod() {
+    }
+    
+    static long anotherToplevelMethod(final long n) {
+        return 0L;
+    }
+}

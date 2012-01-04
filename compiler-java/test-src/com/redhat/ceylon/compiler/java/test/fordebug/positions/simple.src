@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.fordebug.positions;
+/* 2 : 5([Return - return]) */
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class name {
+    /* 2 : 5([Return - return]) */
+    /* 2 : 5([Return - return]) */private name() /* 2 : 5([Return - return]) */{
+    }
+    /* 2 : 5([Return - return]) */
+    /* 2 : 5([Return - return]) */@/* 2 : 5([Return - return]) */.com.redhat.ceylon.compiler.java.metadata.TypeInfo(/* 2 : 5([Return - return]) */"ceylon.language.String")
+    static /* 1 : 31([ValueParameterDeclaration - String]) */.java.lang.String name(/* 1 : 13([ValueParameterDeclaration - String]) */@/* 1 : 13([ValueParameterDeclaration - String]) */.com.redhat.ceylon.compiler.java.metadata.Name(/* 1 : 13([ValueParameterDeclaration - String]) */"firstName")
+    /* 1 : 13([ValueParameterDeclaration - String]) */@/* 1 : 13([ValueParameterDeclaration - String]) */.com.redhat.ceylon.compiler.java.metadata.TypeInfo(/* 1 : 13([ValueParameterDeclaration - String]) */"ceylon.language.String")
+    final /* 1 : 13([ValueParameterDeclaration - String]) */.java.lang.String firstName, /* 1 : 31([ValueParameterDeclaration - String]) */@/* 1 : 31([ValueParameterDeclaration - String]) */.com.redhat.ceylon.compiler.java.metadata.Name(/* 1 : 31([ValueParameterDeclaration - String]) */"lastName")
+    /* 1 : 31([ValueParameterDeclaration - String]) */@/* 1 : 31([ValueParameterDeclaration - String]) */.com.redhat.ceylon.compiler.java.metadata.TypeInfo(/* 1 : 31([ValueParameterDeclaration - String]) */"ceylon.language.String")
+    final /* 1 : 31([ValueParameterDeclaration - String]) */.java.lang.String lastName) /* 2 : 5([Return - return]) */{
+        /* 2 : 5([Return - return]) */return /* 2 : 49([StringLiteral - ". Hello !"]) *//* 2 : 40([Expression - lastName]) *//* 2 : 36([StringLiteral - " "]) *//* 2 : 26([Expression - firstName]) *//* 2 : 12([StringTemplate - "My name is ", StringLiteral - "My name is "]) */new /* 2 : 12([StringTemplate - "My name is ", StringLiteral - "My name is "]) */java.lang.StringBuilder().append(/* 2 : 12([StringTemplate - "My name is ", StringLiteral - "My name is "]) */"My name is ").append(/* 2 : 26([Expression - firstName]) */firstName).append(/* 2 : 36([StringLiteral - " "]) */" ").append(/* 2 : 40([Expression - lastName]) */lastName).append(/* 2 : 49([StringLiteral - ". Hello !"]) */". Hello !").toString();
+    }
+}
+/* 2 : 5([Return - return]) */@/* 2 : 5([Return - return]) */.com.redhat.ceylon.compiler.java.metadata.Ceylon
+public class Main2 {
+    
+    public Main2() {
+        /* 6 : 24([StringLiteral - "David"]) */final /* 6 : 24([StringLiteral - "David"]) */.java.lang.String firstName = /* 6 : 24([StringLiteral - "David"]) */"David";
+        /* 7 : 23([StringLiteral - "Festal"]) */final /* 7 : 23([StringLiteral - "Festal"]) */.java.lang.String lastName = /* 7 : 23([StringLiteral - "Festal"]) */"Festal";
+        /* 8 : 5([ExpressionStatement - process, InvocationExpression - process]) *//* 8 : 23([InvocationExpression - name]) */.ceylon.language.process.getProcess().writeLine(/* 8 : 23([InvocationExpression - name]) *//* 8 : 5([ExpressionStatement - process, InvocationExpression - process]) */com.redhat.ceylon.compiler.java.test.fordebug.positions.name.name(/* 8 : 5([ExpressionStatement - process, InvocationExpression - process]) */firstName, /* 8 : 5([ExpressionStatement - process, InvocationExpression - process]) */lastName));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new Main2();
+    }
+}

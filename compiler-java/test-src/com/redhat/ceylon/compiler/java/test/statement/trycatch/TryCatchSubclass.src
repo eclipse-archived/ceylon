@@ -1,0 +1,37 @@
+package com.redhat.ceylon.compiler.java.test.statement.trycatch;
+
+class E extends .ceylon.language.Exception {
+    
+    E(ceylon.language.String description, .java.lang.Throwable cause) {
+        super(description, cause);
+    }
+}
+class TryCatchSubclass {
+    
+    private final void t() {
+    }
+    
+    private final void ce(final com.redhat.ceylon.compiler.java.test.statement.trycatch.E e) {
+    }
+    
+    private final void cexception(final .java.lang.Throwable e) {
+    }
+    
+    private final void m() {
+        try {
+            t();
+        } catch (final com.redhat.ceylon.compiler.java.test.statement.trycatch.E e) {
+            ce(e);
+        } catch (final .java.lang.Exception e) {
+            cexception(e);
+        }
+    }
+    
+    TryCatchSubclass() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new TryCatchSubclass();
+    }
+}

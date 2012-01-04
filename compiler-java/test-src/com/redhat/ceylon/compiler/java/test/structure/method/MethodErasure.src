@@ -1,0 +1,30 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+class MethodErasure {
+    
+    @.java.lang.Override
+    public final .java.lang.String toString() {
+        return "foo";
+    }
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)0L;
+    }
+    
+    private final .java.lang.String $hashCode() {
+        return "bar";
+    }
+    
+    private final long $toString() {
+        return 0L;
+    }
+    
+    MethodErasure() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new MethodErasure();
+    }
+}

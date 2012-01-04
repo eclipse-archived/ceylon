@@ -37,7 +37,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.ceylondoc.CeylonDocTool;
-import com.redhat.ceylon.compiler.tools.CeyloncTool;
+import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.source.util.JavacTask;
 

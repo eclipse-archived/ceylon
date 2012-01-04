@@ -23,6 +23,7 @@ package com.redhat.ceylon.compiler.modelloader.model;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.modelloader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.modelloader.mirror.ClassMirror;
@@ -30,7 +31,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
-import com.redhat.ceylon.compiler.util.Util;
 
 public class LazyPackage extends Package {
     

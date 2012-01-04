@@ -1,0 +1,30 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfExists {
+    
+    public final long m(final ceylon.language.Integer x) {
+        ceylon.language.Integer $x$0;
+        if (($x$0 = x) != null) {
+            final long $x$1 = $x$0.longValue();
+            return $x$1;
+        }
+        return 0L;
+    }
+    
+    public final long m2(final ceylon.language.Integer x) {
+        ceylon.language.Integer $y$2;
+        if (($y$2 = x) != null) {
+            final long $y$3 = $y$2.longValue();
+            return $y$3;
+        }
+        return 0L;
+    }
+    
+    MethodIfExists() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new MethodIfExists();
+    }
+}

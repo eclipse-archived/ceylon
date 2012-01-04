@@ -23,6 +23,7 @@ package com.redhat.ceylon.compiler.modelloader.model;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.modelloader.ModelCompleter;
 import com.redhat.ceylon.compiler.modelloader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
@@ -39,7 +40,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
-import com.redhat.ceylon.compiler.util.Util;
 
 public class LazyMethod extends Method {
     public ClassMirror classSymbol;

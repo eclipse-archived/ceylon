@@ -34,6 +34,7 @@ import java.util.Set;
 
 import javax.lang.model.type.TypeKind;
 
+import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.modelloader.mirror.AnnotatedMirror;
 import com.redhat.ceylon.compiler.modelloader.mirror.AnnotationMirror;
 import com.redhat.ceylon.compiler.modelloader.mirror.ClassMirror;
@@ -73,7 +74,6 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
-import com.redhat.ceylon.compiler.util.Util;
 
 public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader {
     private static final String CEYLON_CEYLON_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Ceylon";

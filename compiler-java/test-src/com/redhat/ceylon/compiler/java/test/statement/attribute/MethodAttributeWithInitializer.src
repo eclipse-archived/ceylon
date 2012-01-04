@@ -1,0 +1,16 @@
+package com.redhat.ceylon.compiler.java.test.statement.attribute;
+
+class MethodAttributeWithInitializer {
+    
+    public final void m() {
+        final .java.lang.String f = "";
+    }
+    
+    MethodAttributeWithInitializer() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new MethodAttributeWithInitializer();
+    }
+}

@@ -1,0 +1,18 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class OuterClass {
+    
+    class InnerClass {
+        
+        InnerClass() {
+        }
+    }
+    
+    OuterClass() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new OuterClass();
+    }
+}

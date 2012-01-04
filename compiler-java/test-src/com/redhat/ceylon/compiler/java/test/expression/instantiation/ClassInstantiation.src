@@ -1,0 +1,74 @@
+package com.redhat.ceylon.compiler.java.test.expression.instantiation;
+
+class ClassInstantiation {
+    
+    public final com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiation m() {
+        return new com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiation();
+    }
+    
+    ClassInstantiation() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new ClassInstantiation();
+    }
+}
+class ClassInstantiationWithParam {
+    
+    public final com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParam m() {
+        return new com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParam(2L);
+    }
+    
+    ClassInstantiationWithParam(long i) {
+    }
+}
+class ClassInstantiationWithParams {
+    
+    public final com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParams m() {
+        return new com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParams(2L, "");
+    }
+    
+    ClassInstantiationWithParams(long i, .java.lang.String j) {
+    }
+}
+class InnerClassInstantiation {
+    
+    class InnerClass {
+        
+        InnerClass() {
+        }
+    }
+    
+    private final void m() {
+        final com.redhat.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation.InnerClass x = new com.redhat.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation.InnerClass();
+    }
+    
+    InnerClassInstantiation() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new InnerClassInstantiation();
+    }
+}
+class LocalClassInstantiation {
+    
+    private final void m() {
+        
+        class LocalClass {
+            
+            LocalClass() {
+            }
+        }
+        final LocalClass x = new LocalClass();
+    }
+    
+    LocalClassInstantiation() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new LocalClassInstantiation();
+    }
+}

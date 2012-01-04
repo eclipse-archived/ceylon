@@ -1,0 +1,38 @@
+package com.redhat.ceylon.compiler.java.test.structure.attribute;
+
+abstract class ClassVariable {
+    private .java.lang.String publicvar;
+    
+    public final .java.lang.String getPublicvar() {
+        return publicvar;
+    }
+    
+    public final void setPublicvar(.java.lang.String publicvar) {
+        this.publicvar = publicvar;
+    }
+    private .java.lang.String capturedvar;
+    
+    private final .java.lang.String getCapturedvar() {
+        return capturedvar;
+    }
+    
+    private final void setCapturedvar(.java.lang.String capturedvar) {
+        this.capturedvar = capturedvar;
+    }
+    
+    public abstract .java.lang.String getFormalvar();
+    
+    public abstract void setFormalvar(.java.lang.String formalvar);
+    
+    private final void m() {
+        setCapturedvar("new value");
+    }
+    
+    ClassVariable() {
+        .java.lang.String uncapturedvar;
+        setPublicvar("");
+        uncapturedvar = "";
+        setCapturedvar("");
+        setFormalvar("");
+    }
+}

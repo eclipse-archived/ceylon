@@ -1,0 +1,74 @@
+package com.redhat.ceylon.compiler.java.test.structure.attribute;
+
+abstract class ClassAttributeGetterSetter {
+    
+    private final .java.lang.String getF() {
+        return "";
+    }
+    
+    private final void setF(.java.lang.String f) {
+    }
+    
+    public final .java.lang.String getF2() {
+        return "";
+    }
+    
+    public final void setF2(.java.lang.String f2) {
+    }
+    
+    public .java.lang.String getF3() {
+        return "";
+    }
+    
+    public .java.lang.String getF4() {
+        return "";
+    }
+    
+    public void setF4(.java.lang.String f4) {
+    }
+    private final .java.lang.String f5;
+    
+    public .java.lang.String getF5() {
+        return f5;
+    }
+    
+    ClassAttributeGetterSetter() {
+        this.f5 = "";
+    }
+}
+class SubClassAttributeGetterSetter extends com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeGetterSetter {
+    
+    @.java.lang.Override
+    public final .java.lang.String getF3() {
+        return "";
+    }
+    
+    public final void setF3(.java.lang.String f3) {
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String getF4() {
+        return "";
+    }
+    
+    @.java.lang.Override
+    public final void setF4(.java.lang.String f4) {
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String getF5() {
+        return "";
+    }
+    
+    public final void setF5(.java.lang.String f5) {
+    }
+    
+    SubClassAttributeGetterSetter() {
+        super();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new SubClassAttributeGetterSetter();
+    }
+}

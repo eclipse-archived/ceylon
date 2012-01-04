@@ -1,0 +1,42 @@
+package com.redhat.ceylon.compiler.java.test.expression.boxing;
+
+class IntegerBoxing {
+    
+    private final <T>T id(final T x) {
+        return x;
+    }
+    
+    private final void m() {
+        long localAttrInteger = 1L;
+        long localAttrOptionalInteger = 1L;
+        .java.lang.Object localAttrObject = .ceylon.language.Integer.instance(1L);
+        localAttrInteger = localAttrInteger;
+        localAttrOptionalInteger = localAttrInteger;
+        localAttrObject = .ceylon.language.Integer.instance(localAttrInteger);
+        localAttrInteger = <ceylon.language.Integer>id(.ceylon.language.Integer.instance(1L)).longValue();
+        localAttrOptionalInteger = <ceylon.language.Integer>id(.ceylon.language.Integer.instance(1L)).longValue();
+        localAttrObject = <ceylon.language.Integer>id(.ceylon.language.Integer.instance(1L));
+        final .java.lang.Object localAttrConstantObject = .ceylon.language.Integer.instance(localAttrInteger);
+        final long localAttrConstantInteger = localAttrInteger;
+        .java.lang.Object $localAttrConstantObject$0;
+        if (($localAttrConstantObject$0 = localAttrConstantObject) instanceof ceylon.language.Integer) {
+            final long $localAttrConstantObject$1 = ((ceylon.language.Integer)$localAttrConstantObject$0).longValue();
+            localAttrInteger = $localAttrConstantObject$1;
+        }
+        .java.lang.Object $localAttrConstantInteger$2;
+        if (($localAttrConstantInteger$2 = .ceylon.language.Integer.instance(localAttrConstantInteger)) instanceof ceylon.language.Integer) {
+            final long $localAttrConstantInteger$3 = ((ceylon.language.Integer)$localAttrConstantInteger$2).longValue();
+            localAttrInteger = $localAttrConstantInteger$3;
+        }
+        localAttrInteger = .ceylon.language.Integer.instance(localAttrInteger).plus(.ceylon.language.Integer.instance(2L)).longValue();
+        localAttrObject = .ceylon.language.Integer.instance(localAttrInteger).plus(.ceylon.language.Integer.instance(2L));
+    }
+    
+    IntegerBoxing() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new IntegerBoxing();
+    }
+}

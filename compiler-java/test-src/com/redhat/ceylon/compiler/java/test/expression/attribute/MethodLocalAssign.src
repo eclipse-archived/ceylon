@@ -1,0 +1,61 @@
+package com.redhat.ceylon.compiler.java.test.expression.attribute;
+
+class MethodLocalAssign {
+    
+    private final void m() {
+        boolean b = true;
+        b = false;
+        
+        final class b1 {
+            private boolean value;
+            {
+                value = true;
+            }
+            
+            boolean getB1() {
+                return value;
+            }
+            
+            void setB1(boolean b1) {
+                value = b1;
+            }
+            
+            private b1() {
+            }
+        }
+        final b1 b1 = new b1();
+        b1.setB1(false);
+        
+        final class b2$getter {
+            
+            boolean getB2() {
+                return b1.getB1();
+            }
+            
+            private b2$getter() {
+            }
+        }
+        final b2$getter b2$getter = new b2$getter();
+        
+        final class b2$setter {
+            private boolean value;
+            
+            void setB2(boolean b2) {
+                b1.setB1(b2);
+            }
+            
+            private b2$setter() {
+            }
+        }
+        final b2$setter b2$setter = new b2$setter();
+        b2$setter.setB2(true);
+    }
+    
+    MethodLocalAssign() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new MethodLocalAssign();
+    }
+}

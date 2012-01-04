@@ -1,0 +1,10 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class InitializerVarargs {
+    
+    InitializerVarargs(.java.lang.String f, ceylon.language.Iterable<? extends ceylon.language.String> fs) {
+        for (ceylon.language.Iterator<? extends ceylon.language.String> $ff$iter$0 = fs.getIterator(); $ff$iter$0 != null; $ff$iter$0 = $ff$iter$0.getTail()) {
+            final .java.lang.String ff = $ff$iter$0.getHead().toString();
+        }
+    }
+}

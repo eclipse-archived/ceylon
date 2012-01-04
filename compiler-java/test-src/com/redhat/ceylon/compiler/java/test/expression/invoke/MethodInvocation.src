@@ -1,0 +1,30 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+class MethodInvocation {
+    
+    public final void m() {
+        n();
+        o(1L);
+        p();
+    }
+    
+    private final void n() {
+        return;
+    }
+    
+    private final long o(final long oarg) {
+        return oarg;
+    }
+    
+    public final void p() {
+        return;
+    }
+    
+    MethodInvocation() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new MethodInvocation();
+    }
+}

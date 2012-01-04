@@ -1,0 +1,14 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+class Main {
+    
+    Main() {
+        .ceylon.language.print.print(.ceylon.language.String.instance("first"));
+        final .java.lang.String s = "second";
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new Main();
+    }
+}

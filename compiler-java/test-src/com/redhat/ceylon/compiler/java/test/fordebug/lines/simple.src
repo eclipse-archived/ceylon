@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.fordebug.lines; // line 1
+ // line 2
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon // line 1
+@.com.redhat.ceylon.compiler.java.metadata.Method // line 1
+final class name {
+     // line 2
+    private name() { // line 2
+    }
+     // line 2
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.String") // line 2
+    static .java.lang.String name(@.com.redhat.ceylon.compiler.java.metadata.Name("firstName") // line 1
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.String") // line 1
+    final .java.lang.String firstName, @.com.redhat.ceylon.compiler.java.metadata.Name("lastName") // line 1
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.String") // line 1
+    final .java.lang.String lastName) { // line 1, 2
+        return new java.lang.StringBuilder().append("My name is ").append(firstName).append(" ").append(lastName).append(". Hello !").toString(); // line 2
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon // line 2
+public class Main2 {
+    
+    public Main2() {
+        final .java.lang.String firstName = "David"; // line 6
+        final .java.lang.String lastName = "Festal"; // line 7
+        .ceylon.language.process.getProcess().writeLine(com.redhat.ceylon.compiler.java.test.fordebug.lines.name.name(firstName, lastName)); // line 8
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new Main2();
+    }
+}

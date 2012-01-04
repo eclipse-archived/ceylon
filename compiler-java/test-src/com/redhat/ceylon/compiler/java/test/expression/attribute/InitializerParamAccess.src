@@ -1,0 +1,13 @@
+package com.redhat.ceylon.compiler.java.test.expression.attribute;
+
+class InitializerParamAccess {
+    private final boolean b;
+    
+    private final boolean m() {
+        return b;
+    }
+    
+    InitializerParamAccess(boolean b) {
+        this.b = b;
+    }
+}

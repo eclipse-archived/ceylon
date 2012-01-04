@@ -1,0 +1,16 @@
+package com.redhat.ceylon.compiler.java.test.expression.instantiation;
+
+class EntryInstantiation {
+    
+    public final .java.lang.Object m() {
+        return new ceylon.language.Entry<ceylon.language.Integer, ceylon.language.String>(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"));
+    }
+    
+    EntryInstantiation() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new EntryInstantiation();
+    }
+}

@@ -1,0 +1,37 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop;
+
+class MethodForElse {
+    
+    public final long m(final ceylon.language.Sequence<? extends ceylon.language.String> seq) {
+        boolean $doforelse$0 = true;
+        for (ceylon.language.Iterator<? extends ceylon.language.String> $s$iter$1 = seq.getIterator(); $s$iter$1 != null; $s$iter$1 = $s$iter$1.getTail()) {
+            final .java.lang.String s = $s$iter$1.getHead().toString();
+            while ((let boolean $ceylontmp4 = true in $ceylontmp4)) {
+                boolean $doforelse$2 = true;
+                for (ceylon.language.Iterator<? extends ceylon.language.String> $t$iter$3 = seq.getIterator(); $t$iter$3 != null; $t$iter$3 = $t$iter$3.getTail()) {
+                    final .java.lang.String t = $t$iter$3.getHead().toString();
+                    $doforelse$2 = false;
+                    break;
+                }
+                if ($doforelse$2) {
+                    return 1L;
+                }
+                break;
+            }
+            $doforelse$0 = false;
+            break;
+        }
+        if ($doforelse$0) {
+            return 0L;
+        }
+        return 2L;
+    }
+    
+    MethodForElse() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new MethodForElse();
+    }
+}

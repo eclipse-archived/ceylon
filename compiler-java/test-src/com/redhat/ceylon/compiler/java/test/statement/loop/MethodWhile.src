@@ -1,0 +1,20 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop;
+
+class MethodWhile {
+    
+    public final long m() {
+        boolean cont = true;
+        while ((let boolean $ceylontmp0 = cont in $ceylontmp0)) {
+            cont = false;
+        }
+        return 0L;
+    }
+    
+    MethodWhile() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new MethodWhile();
+    }
+}

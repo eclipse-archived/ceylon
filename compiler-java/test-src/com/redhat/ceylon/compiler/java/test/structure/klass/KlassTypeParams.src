@@ -1,0 +1,39 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class KlassTypeParams<U, V> {
+    
+    private final U foo(final U u, final V v) {
+        return u;
+    }
+    private final U attr;
+    
+    private final U getAttr() {
+        return attr;
+    }
+    private V var;
+    
+    private final V getVar() {
+        return var;
+    }
+    
+    private final void setVar(V var) {
+        this.var = var;
+    }
+    
+    private final U getGetter() {
+        return getAttr();
+    }
+    
+    private final V getGetset() {
+        return getVar();
+    }
+    
+    private final void setGetset(V getset) {
+        setVar(getset);
+    }
+    
+    KlassTypeParams(U uu, V vv) {
+        this.attr = uu;
+        this.var = vv;
+    }
+}

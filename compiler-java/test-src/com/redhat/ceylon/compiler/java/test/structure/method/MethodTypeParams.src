@@ -1,0 +1,16 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+class MethodTypeParams {
+    
+    private final <U, V>U f(final U u, final V v) {
+        return u;
+    }
+    
+    MethodTypeParams() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new MethodTypeParams();
+    }
+}

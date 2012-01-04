@@ -1,0 +1,18 @@
+package com.redhat.ceylon.compiler.java.test.expression.attribute;
+
+class MethodLocalHidingAttribute {
+    
+    private final boolean m() {
+        final boolean b = false;
+        return b;
+    }
+    
+    MethodLocalHidingAttribute() {
+        final boolean b = true;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new MethodLocalHidingAttribute();
+    }
+}

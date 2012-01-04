@@ -1,0 +1,174 @@
+package com.redhat.ceylon.compiler.java.test.model.annotations;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+public class Foo {
+    
+    public Foo() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new Foo();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+public class Bar {
+    
+    public Bar() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new Bar();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+class UnionTypeInfo {
+    private final .java.lang.Object sharedAttr;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.model.annotations.Foo|com.redhat.ceylon.compiler.java.test.model.annotations.Bar")
+    public final .java.lang.Object getSharedAttr() {
+        return sharedAttr;
+    }
+    
+    private final .java.lang.Object getGetter() {
+        return new com.redhat.ceylon.compiler.java.test.model.annotations.Foo();
+    }
+    
+    private final void setGetter(.java.lang.Object getter) {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.model.annotations.Foo|com.redhat.ceylon.compiler.java.test.model.annotations.Bar")
+    public final .java.lang.Object getSharedGetter() {
+        return new com.redhat.ceylon.compiler.java.test.model.annotations.Foo();
+    }
+    
+    public final void setSharedGetter(@.com.redhat.ceylon.compiler.java.metadata.Name("sharedGetter")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.model.annotations.Foo|com.redhat.ceylon.compiler.java.test.model.annotations.Bar")
+    .java.lang.Object sharedGetter) {
+    }
+    
+    private final .java.lang.Object method(final .java.lang.Object methodParam) {
+        final .java.lang.Object val = new com.redhat.ceylon.compiler.java.test.model.annotations.Foo();
+        return val;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.model.annotations.Foo|com.redhat.ceylon.compiler.java.test.model.annotations.Bar")
+    public final .java.lang.Object sharedMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("methodParam")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.model.annotations.Foo|com.redhat.ceylon.compiler.java.test.model.annotations.Bar")
+    final .java.lang.Object methodParam) {
+        final .java.lang.Object val = new com.redhat.ceylon.compiler.java.test.model.annotations.Foo();
+        return val;
+    }
+    
+    UnionTypeInfo(@.com.redhat.ceylon.compiler.java.metadata.Name("param")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.model.annotations.Foo|com.redhat.ceylon.compiler.java.test.model.annotations.Bar")
+    .java.lang.Object param) {
+        final .java.lang.Object attr;
+        this.sharedAttr = new com.redhat.ceylon.compiler.java.test.model.annotations.Foo();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+public class SharedUnionTypeInfo {
+    
+    public SharedUnionTypeInfo(@.com.redhat.ceylon.compiler.java.metadata.Name("param")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.model.annotations.Foo|com.redhat.ceylon.compiler.java.test.model.annotations.Bar")
+    .java.lang.Object param) {
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+final class toplevelAttribute {
+    private static final .java.lang.Object value;
+    static {
+        value = new com.redhat.ceylon.compiler.java.test.model.annotations.Foo();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.model.annotations.Foo|com.redhat.ceylon.compiler.java.test.model.annotations.Bar")
+    static .java.lang.Object getToplevelAttribute() {
+        return value;
+    }
+    
+    private toplevelAttribute() {
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+public final class sharedToplevelAttribute {
+    private static final .java.lang.Object value;
+    static {
+        value = new com.redhat.ceylon.compiler.java.test.model.annotations.Bar();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.model.annotations.Foo|com.redhat.ceylon.compiler.java.test.model.annotations.Bar")
+    public static .java.lang.Object getSharedToplevelAttribute() {
+        return value;
+    }
+    
+    private sharedToplevelAttribute() {
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class toplevelMethod {
+    
+    private toplevelMethod() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.model.annotations.Foo|com.redhat.ceylon.compiler.java.test.model.annotations.Bar")
+    static .java.lang.Object toplevelMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("param")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.model.annotations.Foo|com.redhat.ceylon.compiler.java.test.model.annotations.Bar")
+    final .java.lang.Object param) {
+        return new com.redhat.ceylon.compiler.java.test.model.annotations.Foo();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class sharedToplevelMethod {
+    
+    private sharedToplevelMethod() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.model.annotations.Foo|com.redhat.ceylon.compiler.java.test.model.annotations.Bar")
+    public static .java.lang.Object sharedToplevelMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("param")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.model.annotations.Foo|com.redhat.ceylon.compiler.java.test.model.annotations.Bar")
+    final .java.lang.Object param) {
+        return new com.redhat.ceylon.compiler.java.test.model.annotations.Foo();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+final class toplevelGetter {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.model.annotations.Foo|com.redhat.ceylon.compiler.java.test.model.annotations.Bar")
+    static .java.lang.Object getToplevelGetter() {
+        return new com.redhat.ceylon.compiler.java.test.model.annotations.Foo();
+    }
+    
+    static void setToplevelGetter(@.com.redhat.ceylon.compiler.java.metadata.Name("toplevelGetter")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.model.annotations.Foo|com.redhat.ceylon.compiler.java.test.model.annotations.Bar")
+    .java.lang.Object toplevelGetter) {
+    }
+    
+    private toplevelGetter() {
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+public final class toplevelSharedGetter {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.model.annotations.Foo|com.redhat.ceylon.compiler.java.test.model.annotations.Bar")
+    public static .java.lang.Object getToplevelSharedGetter() {
+        return new com.redhat.ceylon.compiler.java.test.model.annotations.Foo();
+    }
+    
+    public static void setToplevelSharedGetter(@.com.redhat.ceylon.compiler.java.metadata.Name("toplevelSharedGetter")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.model.annotations.Foo|com.redhat.ceylon.compiler.java.test.model.annotations.Bar")
+    .java.lang.Object toplevelSharedGetter) {
+    }
+    
+    private toplevelSharedGetter() {
+    }
+}
