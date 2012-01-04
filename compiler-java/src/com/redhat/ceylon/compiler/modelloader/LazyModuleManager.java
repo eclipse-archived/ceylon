@@ -44,6 +44,9 @@ public abstract class LazyModuleManager extends ModuleManager {
         Module compiledModule = getModelLoader().loadCompiledModule(module.getNameAsString());
     }
 
+    @Override
+    protected abstract Module createModule(List<String> moduleName);
+    
     protected abstract AbstractModelLoader getModelLoader();
 
     @Override
