@@ -69,6 +69,8 @@ function Outer(name, $$outer){
     $$outer.inner=Inner();
     $$$cl15.print($$outer.getInner().getInt());
     $$$cl15.print($$outer.getInner().getFloat());
+    $$outer.getInner().noop();
+    $$outer.noop();
     return $$outer;
 }
 this.Outer=Outer;

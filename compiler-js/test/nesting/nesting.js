@@ -20,6 +20,7 @@ function Outer(name, $$outer){
     
     //MethodDefinition noop at nesting.ceylon (4:4-4:17)
     function noop(){}
+    $$outer.noop=noop;
     
     //ClassDefinition Inner at nesting.ceylon (5:4-18:4)
     function Inner($$inner){
@@ -46,6 +47,7 @@ function Outer(name, $$outer){
         function noop(){
             $$outer.noop();
         }
+        $$inner.noop=noop;
         return $$inner;
     }
     
@@ -56,6 +58,8 @@ function Outer(name, $$outer){
     }
     $$$cl15.print(getInner().getInt());
     $$$cl15.print(getInner().getFloat());
+    getInner().noop();
+    noop();
     return $$outer;
 }
 this.Outer=Outer;

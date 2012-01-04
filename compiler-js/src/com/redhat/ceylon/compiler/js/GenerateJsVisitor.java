@@ -120,8 +120,29 @@ public class GenerateJsVisitor extends Visitor
         }
     }
     
+    private final class OuterVisitor extends Visitor {
+        boolean found = false;
+        private Declaration dec;
+        
+        private OuterVisitor(Declaration dec) {
+            this.dec = dec;
+        }
+
+        @Override 
+        public void visit(QualifiedMemberOrTypeExpression qe) {
+            if (qe.getPrimary() instanceof Outer || 
+                    qe.getPrimary() instanceof This) {
+                if ( qe.getDeclaration().equals(dec) ) {
+                    found = true;
+                }
+            }
+            super.visit(qe);
+        }
+    }
+    
     private final Writer out;
-    boolean prototypeStyle;
+    private boolean prototypeStyle;
+    private CompilationUnit root;
     
     @Override
     public void handleException(Exception e, Node that) {
@@ -178,6 +199,7 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(CompilationUnit that) {
+        root = that;
         Module clm = that.getUnit().getPackage().getModule()
                 .getLanguageModule();
         require(clm.getPackage(clm.getNameAsString()));
@@ -294,10 +316,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void share(Declaration d) {
-        if (d.isClassOrInterfaceMember()||d.isToplevel())
-        //TODO: this is not quite right b/c the typechecker 
-        //      doesn't bother to mark methods as captured
-        if (d.isShared() || d.isCaptured()) { 
+        if (isCaptured(d)) {
             outerSelf(d);
             out(".");
             out(d.getName());
@@ -722,8 +741,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void shareGetter(MethodOrValue d) {
-        if (d.isClassOrInterfaceMember()||d.isToplevel())
-        if (d.isShared() || d.isCaptured()) {
+        if (isCaptured(d)) {
             outerSelf(d);
             out(".");
             out(getter(d));
@@ -765,10 +783,25 @@ public class GenerateJsVisitor extends Visitor
         out(")");
         super.visit(that);
     }
+    
+    private boolean isCaptured(Declaration d) {
+        if (d.isToplevel()||d.isClassOrInterfaceMember()) { //TODO: what about things nested inside control structures
+            if (d.isShared() || d.isCaptured() ) {
+                return true;
+            }
+            else {
+                OuterVisitor ov = new OuterVisitor(d);
+                ov.visit(root);
+                return ov.found;
+            }
+        }
+        else {
+            return false;
+        }
+    }
 
     private void shareSetter(MethodOrValue d) {
-        if (d.isClassOrInterfaceMember()||d.isToplevel())
-        if (d.isShared() || d.isCaptured()) {
+        if (isCaptured(d)) {
             outerSelf(d);
             out(".");
             out(setter(d));
@@ -910,7 +943,7 @@ public class GenerateJsVisitor extends Visitor
     }
     
     @Override
-    public void visit(This that) { //TODO: not quite correct cos of control structures!
+    public void visit(This that) {
         self(Util.getContainingClassOrInterface(that.getScope()));
     }
     

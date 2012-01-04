@@ -12,7 +12,7 @@ shared class Outer(String name) {
         shared Float float {
             return outer.float;
         }
-        void noop() {
+        shared void noop() {
             outer.noop();
         }
     }
@@ -21,7 +21,8 @@ shared class Outer(String name) {
     print(inner.float);
     //to fix, get typechecker to mark 
     //Outer.noop() as captured!
-    //inner.noop();
+    inner.noop();
+    noop();
 }
 
 shared void outr(String name) {
