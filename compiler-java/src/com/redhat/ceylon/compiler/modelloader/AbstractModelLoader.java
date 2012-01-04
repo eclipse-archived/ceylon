@@ -542,10 +542,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         modules.getListOfModules().add(module);
         Module languageModule = modules.getLanguageModule();
         module.setLanguageModule(languageModule);
-        ModuleImport moduleImport = moduleManager.findImport(module, languageModule);
-        if (moduleImport == null) {
-            moduleImport = new ModuleImport(languageModule, false, false);
-            module.getImports().add(moduleImport);
+        if(module != languageModule){
+            ModuleImport moduleImport = moduleManager.findImport(module, languageModule);
+            if (moduleImport == null) {
+                moduleImport = new ModuleImport(languageModule, false, false);
+                module.getImports().add(moduleImport);
+            }
         }
         
         return module;
