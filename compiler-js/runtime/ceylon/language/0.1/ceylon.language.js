@@ -113,6 +113,7 @@ function ArraySequence(value) {
         var result = value[index.value];
         return result!==undefined ? result:null;
     }
+    that.getSize = function() { return Integer(value.length); }
     return that;
 }
 
@@ -123,6 +124,7 @@ function Singleton(elem) {
     that.item = function(index) {
         return index.value === 0 ? elem : null;
     }
+    that.getSize = function() { return Integer(1); }
     return that;
 }
 
