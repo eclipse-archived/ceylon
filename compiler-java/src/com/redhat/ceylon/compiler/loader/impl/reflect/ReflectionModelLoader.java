@@ -102,11 +102,6 @@ public class ReflectionModelLoader extends AbstractModelLoader {
     }
 
     @Override
-    protected ClassMirror loadClass(String pkgName, String className) {
-        return lookupClassSymbol(className);
-    }
-
-    @Override
     protected boolean isOverridingMethod(MethodMirror methodSymbol) {
         return ((ReflectionMethod)methodSymbol).isOverridingMethod();
     }

@@ -170,9 +170,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      */
     public abstract void addModuleToClassPath(Module module, VirtualFile artifact);
 
-    // FIXME: remove?
-    protected abstract ClassMirror loadClass(String pkgName, String className);
-    
     /**
      * Returns true if the given method is overriding an inherited method (from super class or interfaces).
      */
@@ -218,6 +215,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         ATTRIBUTE, METHOD, OBJECT, CLASS, INTERFACE;
     }
     
+    private ClassMirror loadClass(String pkgName, String className) {
+        ClassMirror moduleClass = null;
+        try{
+            loadPackage(pkgName, false);
+            moduleClass = lookupClassMirror(className);
+        }catch(Exception x){
+            logVerbose("[Failed to complete class "+className+"]");
+        }
+        return moduleClass;
+    }
+
     private Declaration convertToDeclaration(TypeMirror type, Scope scope, DeclarationType declarationType) {
         String typeName;
         switch(type.getKind()){

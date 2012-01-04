@@ -184,18 +184,6 @@ public class CeylonModelLoader extends AbstractModelLoader {
         }
     }
 
-    @Override
-    protected ClassMirror loadClass(String pkgName, String className) {
-        ClassMirror moduleClass = null;
-        try{
-            loadPackage(pkgName, false);
-            moduleClass = lookupClassSymbol(className);
-        }catch(CompletionFailure x){
-            logVerbose("[Failed to complete class "+className+"]");
-        }
-        return moduleClass;
-    }
-
     private ClassSymbol getEnclosing(ClassSymbol c) {
         Symbol owner = c.owner;
         com.sun.tools.javac.util.List<Name> enclosing = Convert.enclosingCandidates(Convert.shortName(c.name));
