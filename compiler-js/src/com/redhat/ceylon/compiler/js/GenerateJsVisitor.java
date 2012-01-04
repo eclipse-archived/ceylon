@@ -271,8 +271,7 @@ public class GenerateJsVisitor extends Visitor
 
     private void share(Declaration d) {
         if (d.isClassOrInterfaceMember()||d.isToplevel())
-        if (d.isShared() || 
-                prototypeStyle && d.isCaptured()) {
+        if (d.isShared() || d.isCaptured()) {
             outerSelf(d);
             out(".");
             out(d.getName());
@@ -676,8 +675,7 @@ public class GenerateJsVisitor extends Visitor
 
     private void shareGetter(MethodOrValue d) {
         if (d.isClassOrInterfaceMember()||d.isToplevel())
-        if (d.isShared() || 
-                prototypeStyle && d.isCaptured()) {
+        if (d.isShared() || d.isCaptured()) {
             outerSelf(d);
             out(".");
             out(getter(d));
@@ -706,7 +704,7 @@ public class GenerateJsVisitor extends Visitor
     private void addSetterToPrototype(Declaration outer, 
             AttributeSetterDefinition that) {
         Setter d = that.getDeclarationModel();
-        if (!prototypeStyle||!d.isClassOrInterfaceMember()) return;
+        if (!prototypeStyle || !d.isClassOrInterfaceMember()) return;
         comment(that);
         out("$");
         out(outer.getName());
@@ -723,8 +721,7 @@ public class GenerateJsVisitor extends Visitor
 
     private void shareSetter(MethodOrValue d) {
         if (d.isClassOrInterfaceMember()||d.isToplevel())
-        if (d.isShared() || 
-                prototypeStyle && d.isCaptured()) {
+        if (d.isShared() || d.isCaptured()) {
             outerSelf(d);
             out(".");
             out(setter(d));
@@ -1072,7 +1069,15 @@ public class GenerateJsVisitor extends Visitor
                 if (id==null) {
                     //a local declaration of some kind,
                     //perhaps in an outer scope
-                    self((TypeDeclaration)d.getContainer());
+                    if (!(d instanceof TypeDeclaration)) {
+                        self((TypeDeclaration)d.getContainer());
+                    }
+                    else {
+                        //a local type declaration: for now, 
+                        //we don't flatten out nested types
+                        //onto the prototype
+                        return;
+                    }
                 }
                 else {
                     //an inherited declaration that might be

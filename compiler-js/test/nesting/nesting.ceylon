@@ -1,6 +1,7 @@
 shared class Outer(String name) {
     value int = 10;
     shared Float float = int.float;
+    void noop() {}
     class Inner() {
         void printName() {
             print(name);
@@ -11,10 +12,16 @@ shared class Outer(String name) {
         shared Float float {
             return outer.float;
         }
+        void noop() {
+            outer.noop();
+        }
     }
     value inner = Inner();
     print(inner.int);
     print(inner.float);
+    //to fix, get typechecker to mark 
+    //Outer.noop() as captured!
+    //inner.noop();
 }
 
 shared void outr(String name) {
@@ -108,5 +115,5 @@ shared void test() {
     print(A().B().C().foobar());
     print(A().B().C().quxx());
     print(A().baz());
-    //Outer("Hello");
+    Outer("Hello");
 }
