@@ -172,7 +172,7 @@ public class ClassTransformer extends AbstractTransformer {
         String name = decl.getIdentifier().getText();
         return AttributeDefinitionBuilder
             .setter(this, name, decl.getDeclarationModel().getParameter())
-            .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel()))
+            .modifiers(transformAttributeGetSetDeclFlags(decl))
             .isActual(isActual(decl))
             .setterBlock(body)
             .build();
@@ -185,7 +185,7 @@ public class ClassTransformer extends AbstractTransformer {
         JCBlock body = statementGen().transform(decl.getBlock());
         return AttributeDefinitionBuilder
             .getter(this, name, decl.getDeclarationModel())
-            .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel()))
+            .modifiers(transformAttributeGetSetDeclFlags(decl))
             .isActual(Decl.isActual(decl))
             .getterBlock(body)
             .build();
@@ -235,19 +235,20 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
 
-    private int transformAttributeGetSetDeclFlags(TypedDeclaration cdecl) {
-        if (cdecl instanceof Setter) {
+    private int transformAttributeGetSetDeclFlags(Tree.TypedDeclaration cdecl) {
+        TypedDeclaration tdecl = cdecl.getDeclarationModel();
+        if (tdecl instanceof Setter) {
             // Spec says: A setter may not be annotated shared, default or 
             // actual. The visibility and refinement modifiers of an attribute 
             // with a setter are specified by annotating the matching getter.
-            cdecl = ((Setter)cdecl).getGetter();
+            tdecl = ((Setter)tdecl).getGetter();
         }
         
         int result = 0;
 
-        result |= cdecl.isShared() ? PUBLIC : PRIVATE;
-        result |= (cdecl.isFormal() && !cdecl.isDefault()) ? ABSTRACT : 0;
-        result |= !(cdecl.isFormal() || cdecl.isDefault()) ? FINAL : 0;
+        result |= tdecl.isShared() ? PUBLIC : PRIVATE;
+        result |= (tdecl.isFormal() && !tdecl.isDefault()) ? ABSTRACT : 0;
+        result |= !(tdecl.isFormal() || tdecl.isDefault()) ? FINAL : 0;
 
         return result;
     }
@@ -266,7 +267,7 @@ public class ClassTransformer extends AbstractTransformer {
         String atrrName = decl.getIdentifier().getText();
         return AttributeDefinitionBuilder
             .getter(this, atrrName, decl.getDeclarationModel())
-            .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel()))
+            .modifiers(transformAttributeGetSetDeclFlags(decl))
             .isActual(Decl.isActual(decl))
             .isFormal(Decl.isFormal(decl))
             .build();
@@ -275,10 +276,9 @@ public class ClassTransformer extends AbstractTransformer {
     private List<JCTree> makeSetter(Tree.AttributeDeclaration decl) {
         at(decl);
         String attrName = decl.getIdentifier().getText();
-        Value declModel = decl.getDeclarationModel();
         return AttributeDefinitionBuilder
-            .setter(this, attrName, declModel)
-            .modifiers(transformAttributeGetSetDeclFlags(declModel))
+            .setter(this, attrName, decl.getDeclarationModel())
+            .modifiers(transformAttributeGetSetDeclFlags(decl))
             .isActual(isActual(decl))
             .isFormal(Decl.isFormal(decl))
             .build();
@@ -477,7 +477,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (visible) {
                 result = result.appendList(AttributeDefinitionBuilder
                     .getter(this, name, def.getDeclarationModel())
-                    .modifiers(transformAttributeGetSetDeclFlags(def.getDeclarationModel()))
+                    .modifiers(transformAttributeGetSetDeclFlags(def))
                     .isActual(Decl.isActual(def))
                     .build());
             }
