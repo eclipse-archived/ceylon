@@ -22,13 +22,12 @@ package com.redhat.ceylon.compiler.loader.impl.reflect.model;
 
 import java.util.List;
 
+import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.impl.reflect.ReflectionModelLoader;
 import com.redhat.ceylon.compiler.loader.model.LazyModuleManager;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
-import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
-import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 
@@ -62,14 +61,19 @@ public class ReflectionModuleManager extends LazyModuleManager {
 
     @Override
     protected Module createModule(List<String> moduleName) {
-        Module module = new ReflectionModule(this);
+        Module module;
+        if(isModuleLoadedFromSource(Util.getName(moduleName)))
+            module = new Module();
+        else
+            module = new ReflectionModule(this);
         module.setName(moduleName);
         return module;
     }
 
     @Override
     public void prepareForTypeChecking() {
-        getModelLoader().loadStandardModules();
+        if(!isModuleLoadedFromSource("ceylon.language"))
+            getModelLoader().loadStandardModules();
         getModelLoader().loadPackageDescriptors();
     }
 }

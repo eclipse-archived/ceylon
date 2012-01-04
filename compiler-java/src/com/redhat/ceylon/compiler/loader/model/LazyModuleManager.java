@@ -44,8 +44,12 @@ public abstract class LazyModuleManager extends ModuleManager {
     @Override
     public void resolveModule(Module module, VirtualFile artifact,
             List<PhasedUnits> phasedUnitsOfDependencies) {
-        getModelLoader().addModuleToClassPath(module, artifact); // To be able to load it from the corresponding archive
-        getModelLoader().loadCompiledModule(module.getNameAsString());
+        if(isModuleLoadedFromSource(module.getNameAsString())){
+            super.resolveModule(module, artifact, phasedUnitsOfDependencies);
+        }else{
+            getModelLoader().addModuleToClassPath(module, artifact); // To be able to load it from the corresponding archive
+            getModelLoader().loadCompiledModule(module.getNameAsString());
+        }
     }
 
     @Override
@@ -53,6 +57,15 @@ public abstract class LazyModuleManager extends ModuleManager {
     
     protected abstract AbstractModelLoader getModelLoader();
 
+    /**
+     * Return true if this module should be loaded from source we are compiling
+     * and not from its compiled artifact at all. Returns false by default, so
+     * modules will be laoded from their compiled artifact.
+     */
+    protected boolean isModuleLoadedFromSource(String moduleName){
+        return false;
+    }
+    
     @Override
     public Iterable<String> getSearchedArtifactExtensions() {
         return Arrays.asList("car", "jar");

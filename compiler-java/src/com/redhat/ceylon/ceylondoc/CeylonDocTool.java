@@ -41,7 +41,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.redhat.ceylon.compiler.loader.impl.reflect.model.ReflectionModuleManager;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
@@ -103,7 +102,7 @@ public class CeylonDocTool {
         builder.moduleManagerFactory(new ModuleManagerFactory(){
             @Override
             public ModuleManager createModuleManager(Context context) {
-                return new ReflectionModuleManager(context);
+                return new CeylonDocModuleManager(context, modules);
             }
         });
         TypeChecker typeChecker = builder.getTypeChecker();
