@@ -215,5 +215,17 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
     		return;
         System.out.println(errors + " errors, " + warnings + " warnings");
     }
+
+	public List<Message> getFoundErrors() {
+		return foundErrors;
+	}
+
+	public int getErrors() {
+		return errors;
+	}
+
+	public int getWarnings() {
+		return warnings;
+	}
     
 }

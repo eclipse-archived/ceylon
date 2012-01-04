@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
 
@@ -175,5 +176,17 @@ public class TypeChecker {
             assertionVisitor.print(verbose);
         }
         
+    }
+    
+    public int getErrors(){
+    	return assertionVisitor.getErrors();
+    }
+
+    public int getWarnings(){
+    	return assertionVisitor.getWarnings();
+    }
+    
+    public List<Message> getMessages(){
+    	return assertionVisitor.getFoundErrors();
     }
 }
