@@ -71,6 +71,8 @@ public class ReflectionModelLoader extends AbstractModelLoader {
                 ClassLoader classLoader = ((ReflectionModule)module).getClassLoader();
                 if(classLoader != null)
                     klass = classLoader.loadClass(name);
+                else
+                    klass = Class.forName(name);
             } catch (ClassNotFoundException e) {
                 // next
             }
