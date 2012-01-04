@@ -318,4 +318,8 @@ public class ModuleManager {
     public void setContext(Context context) {
         this.context = context;
     }
+
+    public void prepareForTypeChecking() {
+        // to be overridden by subclasses
+    }
 }

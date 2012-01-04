@@ -131,6 +131,7 @@ public class TypeChecker {
     private void executePhases(PhasedUnits phasedUnits, boolean forceSilence) {
         final List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
 
+        phasedUnits.getModuleManager().prepareForTypeChecking();
         phasedUnits.visitModules();
 
         //By now le language module version should be known (as local)
