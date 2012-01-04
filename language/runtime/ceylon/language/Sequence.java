@@ -1,6 +1,7 @@
  package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -92,4 +93,44 @@ public interface Sequence<Element>
     
     public java.lang.String toString();
 
+    @Ignore
+    public static final class Sequence$impl {
+        public static <Element> boolean getEmpty(Sequence<Element> $this){
+            return false;
+        }
+
+        public static <Element> long getSize(Sequence<Element> $this){
+            return $this.getLastIndex()+1;
+        }
+
+        public static <Element> Element getLast(Sequence<Element> $this){
+            Element x = $this.item(Integer.instance($this.getLastIndex()));
+            if (x != null) {
+                return x;
+            }
+            else {
+                return $this.getFirst(); //actually never occurs
+            } 
+        }
+
+        public static <Element> boolean defines(Sequence<Element> $this, Integer index){
+            return index.longValue() <= $this.getLastIndex();
+        }
+
+        public static <Element> Iterator<? extends Element> getIterator(Sequence<Element> $this){
+            return new Sequence.SequenceIterator<Element>($this, 0);
+        }
+        
+        public static <Element> java.lang.String toString(Sequence<Element> $this) {
+            java.lang.StringBuilder result = new java.lang.StringBuilder("{ ");
+            for (Iterator<? extends Element> iter=$this.getIterator(); iter!=null; iter=iter.getTail()) {
+                result.append(iter.getHead())
+                    .append(", ");
+            }
+            result.setLength(result.length()-2);
+            result.append(" }");
+            return result.toString();
+        }
+        
+    }    
 }
