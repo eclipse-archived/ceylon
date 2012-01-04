@@ -97,6 +97,7 @@ public class CeylonDocTool {
             if(repoFile.isDirectory())
                 builder.addRepository(repoFile);
         }
+        final List<ModuleSpec> modules = ModuleSpec.parse(moduleSpecs);
         // we need to plug in the module manager which can load from .cars
         builder.moduleManagerFactory(new ModuleManagerFactory(){
             @Override
@@ -108,22 +109,19 @@ public class CeylonDocTool {
         typeChecker.process();
         if(typeChecker.getErrors() > 0)
             throw new RuntimeException("Parsing failed with "+typeChecker.getErrors()+" error(s)");
-        this.modules = getModules(moduleSpecs, typeChecker.getContext().getModules());
+        this.modules = getModules(modules, typeChecker.getContext().getModules());
         // only for source code mapping
         this.phasedUnits = getPhasedUnits(typeChecker.getPhasedUnits().getPhasedUnits());
     }
 
-    private List<Module> getModules(List<String> moduleSpecs, Modules modules){
+    private List<Module> getModules(List<ModuleSpec> moduleSpecs, Modules modules){
         // find the required modules
         List<Module> documentedModules = new LinkedList<Module>();
-        for(String moduleSpec : moduleSpecs){
-            int sep = moduleSpec.indexOf("/");
-            String name = sep != -1 ? moduleSpec.substring(0, sep) : moduleSpec;
-            String version = sep != -1 ? moduleSpec.substring(sep+1) : null;
+        for(ModuleSpec moduleSpec : moduleSpecs){
             Module foundModule = null;
             for(Module module : modules.getListOfModules()){
-                if(module.getNameAsString().equals(name)){
-                    if(version == null || version.equals(module.getVersion()))
+                if(module.getNameAsString().equals(moduleSpec.name)){
+                    if(moduleSpec.version == null || moduleSpec.version.equals(module.getVersion()))
                         foundModule = module;
                 }
             }
