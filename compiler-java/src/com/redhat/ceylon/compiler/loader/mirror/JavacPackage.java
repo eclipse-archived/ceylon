@@ -17,9 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.modelloader.refl;
+package com.redhat.ceylon.compiler.loader.mirror;
 
-public interface ReflVariable extends ReflAnnotated {
-    ReflType getType();
-    String getName();
+import com.redhat.ceylon.compiler.modelloader.mirror.PackageMirror;
+import com.sun.tools.javac.code.Symbol.PackageSymbol;
+
+public class JavacPackage implements PackageMirror {
+
+    private PackageSymbol pkgSymbol;
+
+    public JavacPackage(PackageSymbol pkgSymbol) {
+        this.pkgSymbol = pkgSymbol;
+    }
+    
+    @Override
+    public String getQualifiedName() {
+        return pkgSymbol.getQualifiedName().toString();
+    }
 }

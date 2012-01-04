@@ -23,7 +23,7 @@ package com.redhat.ceylon.compiler.modelloader.model;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.modelloader.ModelCompleter;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflClass;
+import com.redhat.ceylon.compiler.modelloader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -38,13 +38,13 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
 public class LazyClass extends Class implements LazyElement {
 
-    public ReflClass classSymbol;
+    public ClassMirror classSymbol;
     private ModelCompleter completer;
     private boolean isLoaded = false;
     private boolean isTypeParamsLoaded = false;
     private boolean forTopLevelObject;
 
-    public LazyClass(ReflClass classSymbol, ModelCompleter completer, boolean forTopLevelObject) {
+    public LazyClass(ClassMirror classSymbol, ModelCompleter completer, boolean forTopLevelObject) {
         this.classSymbol = classSymbol;
         this.completer = completer;
         this.forTopLevelObject = forTopLevelObject;

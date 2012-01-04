@@ -13,9 +13,9 @@ import java.util.Map;
 
 import javax.lang.model.type.TypeKind;
 
-import com.redhat.ceylon.compiler.modelloader.refl.ReflType;
+import com.redhat.ceylon.compiler.modelloader.mirror.TypeMirror;
 
-public class ReflectionType implements ReflType {
+public class ReflectionType implements TypeMirror {
 
     private Type type;
 
@@ -34,10 +34,10 @@ public class ReflectionType implements ReflType {
     }
 
     @Override
-    public List<ReflType> getTypeArguments() {
+    public List<TypeMirror> getTypeArguments() {
         if(type instanceof ParameterizedType){
             Type[] javaTypeArguments = ((ParameterizedType)type).getActualTypeArguments();
-            List<ReflType> typeArguments = new ArrayList<ReflType>(javaTypeArguments.length);
+            List<TypeMirror> typeArguments = new ArrayList<TypeMirror>(javaTypeArguments.length);
             for(Type typeArgument : javaTypeArguments)
                 typeArguments.add(new ReflectionType(typeArgument));
             return typeArguments;
@@ -75,7 +75,7 @@ public class ReflectionType implements ReflType {
     }
 
     @Override
-    public ReflType getComponentType() {
+    public TypeMirror getComponentType() {
         Type componentType = ((GenericArrayType)type).getGenericComponentType();
         return new ReflectionType(componentType);
     }

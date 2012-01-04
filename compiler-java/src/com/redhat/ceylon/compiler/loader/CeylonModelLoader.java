@@ -23,13 +23,13 @@ package com.redhat.ceylon.compiler.loader;
 import javax.tools.JavaFileObject.Kind;
 
 import com.redhat.ceylon.compiler.codegen.CeylonCompilationUnit;
+import com.redhat.ceylon.compiler.loader.mirror.JavacClass;
+import com.redhat.ceylon.compiler.loader.mirror.JavacMethod;
 import com.redhat.ceylon.compiler.loader.model.CompilerModuleManager;
-import com.redhat.ceylon.compiler.loader.refl.JavacClass;
-import com.redhat.ceylon.compiler.loader.refl.JavacMethod;
 import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.modelloader.TypeParser;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflClass;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflMethod;
+import com.redhat.ceylon.compiler.modelloader.mirror.ClassMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.tools.CeylonLog;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -116,7 +116,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
                         // this happens when we have already registered a source file for this decl, so let's
                         // print out a helpful message
                         // see https://github.com/ceylon/ceylon-compiler/issues/250
-                        ReflClass previousClass = lookupClassSymbol(fqn);
+                        ClassMirror previousClass = lookupClassSymbol(fqn);
                         log.error("ceylon", "Duplicate declaration error: "+fqn+" is declared twice: once in "
                                 +tree.getSourceFile()+" and again in: "+
                                 (previousClass != null ? ((JavacClass)previousClass).classSymbol.classfile : "another file"));
@@ -185,8 +185,8 @@ public class CeylonModelLoader extends AbstractModelLoader {
     }
 
     @Override
-    protected ReflClass loadClass(String pkgName, String className) {
-        ReflClass moduleClass = null;
+    protected ClassMirror loadClass(String pkgName, String className) {
+        ClassMirror moduleClass = null;
         try{
             loadPackage(pkgName, false);
             moduleClass = lookupClassSymbol(className);
@@ -211,7 +211,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
     }
 
     @Override
-    public ReflClass lookupClassSymbol(String name) {
+    public ClassMirror lookupClassSymbol(String name) {
         ClassSymbol classSymbol;
 
         String outerName = name;
@@ -306,7 +306,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
     }
 
     @Override
-    protected boolean isOverridingMethod(ReflMethod methodSymbol) {
+    protected boolean isOverridingMethod(MethodMirror methodSymbol) {
         return getOverriddenMethod(((JavacMethod)methodSymbol).methodSymbol, types) != null;
     }
 }

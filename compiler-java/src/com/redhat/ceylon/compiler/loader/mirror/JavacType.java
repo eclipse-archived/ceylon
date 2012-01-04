@@ -17,18 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.loader.refl;
+package com.redhat.ceylon.compiler.loader.mirror;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.lang.model.type.TypeKind;
 
-import com.redhat.ceylon.compiler.modelloader.refl.ReflType;
+import com.redhat.ceylon.compiler.modelloader.mirror.TypeMirror;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Type.ArrayType;
 
-public class JavacType implements ReflType {
+public class JavacType implements TypeMirror {
 
     private Type type;
 
@@ -42,8 +42,8 @@ public class JavacType implements ReflType {
     }
 
     @Override
-    public List<ReflType> getTypeArguments() {
-        List<ReflType> args = new ArrayList<ReflType>(type.getTypeArguments().size());
+    public List<TypeMirror> getTypeArguments() {
+        List<TypeMirror> args = new ArrayList<TypeMirror>(type.getTypeArguments().size());
         for(Type typeArg : type.getTypeArguments()){
             args.add(new JavacType(typeArg));
         }
@@ -56,7 +56,7 @@ public class JavacType implements ReflType {
     }
 
     @Override
-    public ReflType getComponentType() {
+    public TypeMirror getComponentType() {
         Type componentType = ((ArrayType)type).getComponentType();
         return componentType != null ? new JavacType(componentType) : null;
     }

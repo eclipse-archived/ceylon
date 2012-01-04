@@ -24,9 +24,9 @@ import java.util.List;
 
 import javax.lang.model.type.TypeKind;
 
-import com.redhat.ceylon.compiler.modelloader.refl.ReflType;
+import com.redhat.ceylon.compiler.modelloader.mirror.TypeMirror;
 
-public class SimpleReflType implements ReflType {
+public class SimpleReflType implements TypeMirror {
 
     private String name;
     private TypeKind kind;
@@ -42,7 +42,7 @@ public class SimpleReflType implements ReflType {
     }
 
     @Override
-    public List<ReflType> getTypeArguments() {
+    public List<TypeMirror> getTypeArguments() {
         return Collections.EMPTY_LIST;
     }
 
@@ -52,7 +52,7 @@ public class SimpleReflType implements ReflType {
     }
 
     @Override
-    public ReflType getComponentType() {
+    public TypeMirror getComponentType() {
         return null;
     }
 

@@ -4,11 +4,11 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
 import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflAnnotation;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflType;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflVariable;
+import com.redhat.ceylon.compiler.modelloader.mirror.AnnotationMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.TypeMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.VariableMirror;
 
-public class ReflectionVariable implements ReflVariable {
+public class ReflectionVariable implements VariableMirror {
 
     private Type type;
     private Annotation[] annotations;
@@ -19,18 +19,18 @@ public class ReflectionVariable implements ReflVariable {
     }
 
     @Override
-    public ReflAnnotation getAnnotation(String type) {
+    public AnnotationMirror getAnnotation(String type) {
         return ReflectionUtils.getAnnotation(annotations, type);
     }
 
     @Override
-    public ReflType getType() {
+    public TypeMirror getType() {
         return new ReflectionType(type);
     }
 
     @Override
     public String getName() {
-        ReflAnnotation name = getAnnotation(Name.class.getName());
+        AnnotationMirror name = getAnnotation(Name.class.getName());
         if(name == null)
             return "unknown";
         return (String) name.getValue();

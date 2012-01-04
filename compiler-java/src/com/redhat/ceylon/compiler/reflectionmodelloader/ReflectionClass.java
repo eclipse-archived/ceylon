@@ -7,14 +7,14 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.modelloader.refl.ReflAnnotation;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflClass;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflMethod;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflPackage;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflType;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflTypeParameter;
+import com.redhat.ceylon.compiler.modelloader.mirror.AnnotationMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.ClassMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.MethodMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.PackageMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.TypeMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.TypeParameterMirror;
 
-public class ReflectionClass implements ReflClass {
+public class ReflectionClass implements ClassMirror {
 
     private Class<?> klass;
 
@@ -23,7 +23,7 @@ public class ReflectionClass implements ReflClass {
     }
 
     @Override
-    public ReflAnnotation getAnnotation(String type) {
+    public AnnotationMirror getAnnotation(String type) {
         return ReflectionUtils.getAnnotation(klass, type);
     }
 
@@ -43,7 +43,7 @@ public class ReflectionClass implements ReflClass {
     }
 
     @Override
-    public ReflPackage getPackage() {
+    public PackageMirror getPackage() {
         return new ReflectionPackage(klass.getPackage());
     }
 
@@ -58,10 +58,10 @@ public class ReflectionClass implements ReflClass {
     }
 
     @Override
-    public List<ReflMethod> getDirectMethods() {
+    public List<MethodMirror> getDirectMethods() {
         Method[] directMethods = klass.getDeclaredMethods();
         Constructor<?>[] directConstructors = klass.getDeclaredConstructors();
-        List<ReflMethod> methods = new ArrayList<ReflMethod>(directMethods.length + directConstructors.length);
+        List<MethodMirror> methods = new ArrayList<MethodMirror>(directMethods.length + directConstructors.length);
         for(Method directMethod : directMethods)
             methods.add(new ReflectionMethod(directMethod));
         for(Constructor<?> directConstructor : directConstructors)
@@ -70,22 +70,22 @@ public class ReflectionClass implements ReflClass {
     }
 
     @Override
-    public ReflType getSuperclass() {
+    public TypeMirror getSuperclass() {
         Type superclass = klass.getGenericSuperclass();
         return superclass != null ? new ReflectionType(superclass) : null;
     }
 
     @Override
-    public List<ReflType> getInterfaces() {
+    public List<TypeMirror> getInterfaces() {
         Type[] javaInterfaces = klass.getGenericInterfaces();
-        List<ReflType> interfaces = new ArrayList<ReflType>(javaInterfaces.length);
+        List<TypeMirror> interfaces = new ArrayList<TypeMirror>(javaInterfaces.length);
         for(Type javaInterface : javaInterfaces)
             interfaces.add(new ReflectionType(javaInterface));
         return interfaces;
     }
 
     @Override
-    public List<ReflTypeParameter> getTypeParameters() {
+    public List<TypeParameterMirror> getTypeParameters() {
         return ReflectionUtils.getTypeParameters(klass);
     }
 

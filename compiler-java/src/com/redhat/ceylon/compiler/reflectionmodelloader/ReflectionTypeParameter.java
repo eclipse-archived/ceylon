@@ -5,10 +5,10 @@ import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.modelloader.refl.ReflType;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflTypeParameter;
+import com.redhat.ceylon.compiler.modelloader.mirror.TypeMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.TypeParameterMirror;
 
-public class ReflectionTypeParameter implements ReflTypeParameter {
+public class ReflectionTypeParameter implements TypeParameterMirror {
 
     private TypeVariable<?> type;
 
@@ -22,9 +22,9 @@ public class ReflectionTypeParameter implements ReflTypeParameter {
     }
 
     @Override
-    public List<ReflType> getBounds() {
+    public List<TypeMirror> getBounds() {
         Type[] javaBounds = type.getBounds();
-        List<ReflType> bounds = new ArrayList<ReflType>(javaBounds.length);
+        List<TypeMirror> bounds = new ArrayList<TypeMirror>(javaBounds.length);
         for(Type bound : javaBounds)
             bounds.add(new ReflectionType(bound));
         return bounds;

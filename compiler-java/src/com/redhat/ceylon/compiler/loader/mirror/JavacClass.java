@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.loader.refl;
+package com.redhat.ceylon.compiler.loader.mirror;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -26,12 +26,12 @@ import java.util.List;
 import javax.tools.JavaFileObject.Kind;
 
 import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflAnnotation;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflClass;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflMethod;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflPackage;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflType;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflTypeParameter;
+import com.redhat.ceylon.compiler.modelloader.mirror.AnnotationMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.ClassMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.MethodMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.PackageMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.TypeMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.TypeParameterMirror;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.Symbol;
@@ -39,7 +39,7 @@ import com.sun.tools.javac.code.Symbol.ClassSymbol;
 import com.sun.tools.javac.code.Symbol.MethodSymbol;
 import com.sun.tools.javac.code.Type;
 
-public class JavacClass implements ReflClass {
+public class JavacClass implements ClassMirror {
 
     public ClassSymbol classSymbol;
 
@@ -62,7 +62,7 @@ public class JavacClass implements ReflClass {
     }
 
     @Override
-    public ReflPackage getPackage() {
+    public PackageMirror getPackage() {
         return new JavacPackage(classSymbol.packge());
     }
 
@@ -87,7 +87,7 @@ public class JavacClass implements ReflClass {
     }
 
     @Override
-    public ReflAnnotation getAnnotation(String type) {
+    public AnnotationMirror getAnnotation(String type) {
         return JavacUtil.getAnnotation(classSymbol, type);
     }
 
@@ -108,8 +108,8 @@ public class JavacClass implements ReflClass {
     }
 
     @Override
-    public List<ReflMethod> getDirectMethods() {
-        List<ReflMethod> methods = new LinkedList<ReflMethod>();
+    public List<MethodMirror> getDirectMethods() {
+        List<MethodMirror> methods = new LinkedList<MethodMirror>();
         for(Symbol sym : classSymbol.getEnclosedElements()){
             if(sym instanceof MethodSymbol){
                 methods.add(new JavacMethod((MethodSymbol)sym));
@@ -119,22 +119,22 @@ public class JavacClass implements ReflClass {
     }
 
     @Override
-    public ReflType getSuperclass() {
+    public TypeMirror getSuperclass() {
         Type superclass = classSymbol.getSuperclass();
         return superclass != null ? new JavacType(superclass) : null;
     }
 
     @Override
-    public List<ReflType> getInterfaces() {
+    public List<TypeMirror> getInterfaces() {
         com.sun.tools.javac.util.List<Type> interfaces = classSymbol.getInterfaces();
-        List<ReflType> ret = new ArrayList<ReflType>(interfaces.size());
+        List<TypeMirror> ret = new ArrayList<TypeMirror>(interfaces.size());
         for(Type interfce : interfaces)
             ret.add(new JavacType(interfce));
         return ret;
     }
 
     @Override
-    public List<ReflTypeParameter> getTypeParameters() {
+    public List<TypeParameterMirror> getTypeParameters() {
         return JavacUtil.getTypeParameters(classSymbol);
     }
 

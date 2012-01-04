@@ -7,8 +7,8 @@ import java.net.URLClassLoader;
 
 import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.modelloader.TypeParser;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflClass;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflMethod;
+import com.redhat.ceylon.compiler.modelloader.mirror.ClassMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -39,7 +39,7 @@ public class ReflectionModelLoader extends AbstractModelLoader {
     }
 
     @Override
-    public ReflClass lookupClassSymbol(String name) {
+    public ClassMirror lookupClassSymbol(String name) {
         Class<?> klass = null;
         // try in every module
         // FIXME: surely we can do faster by checking the module name
@@ -72,12 +72,12 @@ public class ReflectionModelLoader extends AbstractModelLoader {
     }
 
     @Override
-    protected ReflClass loadClass(String pkgName, String className) {
+    protected ClassMirror loadClass(String pkgName, String className) {
         return lookupClassSymbol(className);
     }
 
     @Override
-    protected boolean isOverridingMethod(ReflMethod methodSymbol) {
+    protected boolean isOverridingMethod(MethodMirror methodSymbol) {
         return ((ReflectionMethod)methodSymbol).isOverridingMethod();
     }
 

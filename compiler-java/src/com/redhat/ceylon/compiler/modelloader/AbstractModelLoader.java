@@ -34,6 +34,13 @@ import java.util.Set;
 
 import javax.lang.model.type.TypeKind;
 
+import com.redhat.ceylon.compiler.modelloader.mirror.AnnotatedMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.AnnotationMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.ClassMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.MethodMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.TypeMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.TypeParameterMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.VariableMirror;
 import com.redhat.ceylon.compiler.modelloader.model.LazyClass;
 import com.redhat.ceylon.compiler.modelloader.model.LazyElement;
 import com.redhat.ceylon.compiler.modelloader.model.LazyInterface;
@@ -41,13 +48,6 @@ import com.redhat.ceylon.compiler.modelloader.model.LazyMethod;
 import com.redhat.ceylon.compiler.modelloader.model.LazyModule;
 import com.redhat.ceylon.compiler.modelloader.model.LazyPackage;
 import com.redhat.ceylon.compiler.modelloader.model.LazyValue;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflAnnotated;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflAnnotation;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflClass;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflMethod;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflType;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflTypeParameter;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflVariable;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
@@ -91,40 +91,40 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public static final String CEYLON_OBJECT_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Object";
     public static final String CEYLON_METHOD_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Method";
 
-    private static final ReflType OBJECT_TYPE = simpleObjectType("java.lang.Object");
-    private static final ReflType CEYLON_OBJECT_TYPE = simpleObjectType("ceylon.language.Object");
-    private static final ReflType CEYLON_IDENTIFIABLE_OBJECT_TYPE = simpleObjectType("ceylon.language.IdentifiableObject");
-    private static final ReflType CEYLON_EQUALITY_TYPE = simpleObjectType("ceylon.language.Equality");
-    private static final ReflType CEYLON_EXCEPTION_TYPE = simpleObjectType("ceylon.language.Exception");;
+    private static final TypeMirror OBJECT_TYPE = simpleObjectType("java.lang.Object");
+    private static final TypeMirror CEYLON_OBJECT_TYPE = simpleObjectType("ceylon.language.Object");
+    private static final TypeMirror CEYLON_IDENTIFIABLE_OBJECT_TYPE = simpleObjectType("ceylon.language.IdentifiableObject");
+    private static final TypeMirror CEYLON_EQUALITY_TYPE = simpleObjectType("ceylon.language.Equality");
+    private static final TypeMirror CEYLON_EXCEPTION_TYPE = simpleObjectType("ceylon.language.Exception");;
     
-    private static final ReflType STRING_TYPE = simpleObjectType("java.lang.String");
-    private static final ReflType CEYLON_STRING_TYPE = simpleObjectType("ceylon.language.String");
+    private static final TypeMirror STRING_TYPE = simpleObjectType("java.lang.String");
+    private static final TypeMirror CEYLON_STRING_TYPE = simpleObjectType("ceylon.language.String");
     
-    private static final ReflType PRIM_BOOLEAN_TYPE = simpleObjectType("boolean", TypeKind.BOOLEAN);
-    private static final ReflType BOOLEAN_TYPE = simpleObjectType("java.lang.Boolean");
-    private static final ReflType CEYLON_BOOLEAN_TYPE = simpleObjectType("ceylon.language.Boolean");
+    private static final TypeMirror PRIM_BOOLEAN_TYPE = simpleObjectType("boolean", TypeKind.BOOLEAN);
+    private static final TypeMirror BOOLEAN_TYPE = simpleObjectType("java.lang.Boolean");
+    private static final TypeMirror CEYLON_BOOLEAN_TYPE = simpleObjectType("ceylon.language.Boolean");
     
-    private static final ReflType PRIM_INT_TYPE = simpleObjectType("int", TypeKind.INT);
-    private static final ReflType INTEGER_TYPE = simpleObjectType("java.lang.Integer");
-    private static final ReflType PRIM_LONG_TYPE = simpleObjectType("long", TypeKind.LONG);
-    private static final ReflType LONG_TYPE = simpleObjectType("java.lang.Long");
-    private static final ReflType CEYLON_INTEGER_TYPE = simpleObjectType("ceylon.language.Integer");
+    private static final TypeMirror PRIM_INT_TYPE = simpleObjectType("int", TypeKind.INT);
+    private static final TypeMirror INTEGER_TYPE = simpleObjectType("java.lang.Integer");
+    private static final TypeMirror PRIM_LONG_TYPE = simpleObjectType("long", TypeKind.LONG);
+    private static final TypeMirror LONG_TYPE = simpleObjectType("java.lang.Long");
+    private static final TypeMirror CEYLON_INTEGER_TYPE = simpleObjectType("ceylon.language.Integer");
     
-    private static final ReflType PRIM_FLOAT_TYPE = simpleObjectType("float", TypeKind.FLOAT);
-    private static final ReflType FLOAT_TYPE = simpleObjectType("java.lang.Float");
-    private static final ReflType PRIM_DOUBLE_TYPE = simpleObjectType("double", TypeKind.DOUBLE);
-    private static final ReflType DOUBLE_TYPE = simpleObjectType("java.lang.Double");
-    private static final ReflType CEYLON_FLOAT_TYPE = simpleObjectType("ceylon.language.Float");
+    private static final TypeMirror PRIM_FLOAT_TYPE = simpleObjectType("float", TypeKind.FLOAT);
+    private static final TypeMirror FLOAT_TYPE = simpleObjectType("java.lang.Float");
+    private static final TypeMirror PRIM_DOUBLE_TYPE = simpleObjectType("double", TypeKind.DOUBLE);
+    private static final TypeMirror DOUBLE_TYPE = simpleObjectType("java.lang.Double");
+    private static final TypeMirror CEYLON_FLOAT_TYPE = simpleObjectType("ceylon.language.Float");
     
-    private static final ReflType PRIM_CHAR_TYPE = simpleObjectType("char", TypeKind.CHAR);
-    private static final ReflType CHARACTER_TYPE = simpleObjectType("java.lang.Character");
-    private static final ReflType CEYLON_CHARACTER_TYPE = simpleObjectType("ceylon.language.Character");
+    private static final TypeMirror PRIM_CHAR_TYPE = simpleObjectType("char", TypeKind.CHAR);
+    private static final TypeMirror CHARACTER_TYPE = simpleObjectType("java.lang.Character");
+    private static final TypeMirror CEYLON_CHARACTER_TYPE = simpleObjectType("ceylon.language.Character");
     
-    private static ReflType simpleObjectType(String name) {
+    private static TypeMirror simpleObjectType(String name) {
         return new SimpleReflType(name, TypeKind.DECLARED);
     }
 
-    private static ReflType simpleObjectType(String name, TypeKind kind) {
+    private static TypeMirror simpleObjectType(String name, TypeKind kind) {
         return new SimpleReflType(name, TypeKind.DECLARED);
     }
 
@@ -140,13 +140,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected Modules modules;
 
     public abstract void loadPackage(String packageName, boolean loadDeclarations);
-    public abstract ReflClass lookupClassSymbol(String name);
+    public abstract ClassMirror lookupClassSymbol(String name);
 
     public abstract void addModuleToClassPath(Module module, VirtualFile artifact);
     protected abstract void logWarning(String message);
     protected abstract void logVerbose(String message);
-    protected abstract ReflClass loadClass(String pkgName, String className);
-    protected abstract boolean isOverridingMethod(ReflMethod methodSymbol);
+    protected abstract ClassMirror loadClass(String pkgName, String className);
+    protected abstract boolean isOverridingMethod(MethodMirror methodSymbol);
     protected abstract void logError(String message);
     
     public void loadStandardModules(){
@@ -174,7 +174,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         ATTRIBUTE, METHOD, OBJECT, CLASS, INTERFACE;
     }
     
-    private Declaration convertToDeclaration(ReflType type, Scope scope, DeclarationType declarationType) {
+    private Declaration convertToDeclaration(TypeMirror type, Scope scope, DeclarationType declarationType) {
         String typeName;
         switch(type.getKind()){
         case VOID:    typeName = "ceylon.language.Void"; break;
@@ -187,7 +187,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         case FLOAT:   typeName = "java.lang.Float"; break;
         case DOUBLE:  typeName = "java.lang.Double"; break;
         case ARRAY:
-            ReflType componentType = type.getComponentType();
+            TypeMirror componentType = type.getComponentType();
             //throw new RuntimeException("Array type not implemented");
             //UnionType[Empty|Sequence<Natural>] casetypes 
             // producedtypes.typearguments: typeparam[element]->type[natural]
@@ -216,7 +216,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return convertToDeclaration(typeName, declarationType);
     }
 
-    protected Declaration convertToDeclaration(ReflClass classSymbol, DeclarationType declarationType) {
+    protected Declaration convertToDeclaration(ClassMirror classSymbol, DeclarationType declarationType) {
         String className = classSymbol.getQualifiedName();
         ClassType type;
         String prefix;
@@ -304,17 +304,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return unit;
     }
 
-    private Declaration makeToplevelAttribute(ReflClass classSymbol) {
+    private Declaration makeToplevelAttribute(ClassMirror classSymbol) {
         Value value = new LazyValue(classSymbol, this);
         return value;
     }
 
-    private Declaration makeToplevelMethod(ReflClass classSymbol) {
+    private Declaration makeToplevelMethod(ClassMirror classSymbol) {
         LazyMethod method = new LazyMethod(classSymbol, this);
         return method;
     }
     
-    private ClassOrInterface makeLazyClassOrInterface(ReflClass classSymbol, boolean forTopLevelObject) {
+    private ClassOrInterface makeLazyClassOrInterface(ClassMirror classSymbol, boolean forTopLevelObject) {
         if(!classSymbol.isInterface()){
             return new LazyClass(classSymbol, this, forTopLevelObject);
         }else{
@@ -328,7 +328,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         } else if ("java.lang.Exception".equals(typeName)) {
             return convertToDeclaration("ceylon.language.Exception", declarationType);
         }
-        ReflClass classSymbol = lookupClassSymbol(typeName);
+        ClassMirror classSymbol = lookupClassSymbol(typeName);
         if (classSymbol == null) {
             throw new RuntimeException("Failed to resolve "+typeName);
         }
@@ -412,7 +412,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         String className = pkg.getQualifiedNameString() + ".$package";
         logVerbose("[Trying to look up package from "+className+"]");
-        ReflClass packageClass = loadClass(pkg.getQualifiedNameString(), className);
+        ClassMirror packageClass = loadClass(pkg.getQualifiedNameString(), className);
         if(packageClass == null){
             logVerbose("[Failed to complete "+className+"]");
             // missing: leave it private
@@ -428,7 +428,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         loadCompiledPackage(packageClass, pkg);
     }
 
-    private void loadCompiledPackage(ReflClass packageClass, Package pkg) {
+    private void loadCompiledPackage(ClassMirror packageClass, Package pkg) {
         String name = getAnnotationStringValue(packageClass, CEYLON_PACKAGE_ANNOTATION, "name");
         Boolean shared = getAnnotationBooleanValue(packageClass, CEYLON_PACKAGE_ANNOTATION, "shared");
         // FIXME: validate the name?
@@ -484,7 +484,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return null;
         String moduleClassName = pkgName + ".module";
         logVerbose("[Trying to look up module from "+moduleClassName+"]");
-        ReflClass moduleClass = loadClass(pkgName, moduleClassName);
+        ClassMirror moduleClass = loadClass(pkgName, moduleClassName);
         if(moduleClass != null){
             // load its module annotation
             Module module = loadCompiledModule(moduleClass, moduleClassName);
@@ -499,7 +499,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return loadCompiledModule(parentPackageName);
     }
 
-    private Module loadCompiledModule(ReflClass moduleClass, String moduleClassName) {
+    private Module loadCompiledModule(ClassMirror moduleClass, String moduleClassName) {
         String name = getAnnotationStringValue(moduleClass, CEYLON_MODULE_ANNOTATION, "name");
         String version = getAnnotationStringValue(moduleClass, CEYLON_MODULE_ANNOTATION, "version");
         // FIXME: validate the name?
@@ -513,8 +513,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         Module module = moduleManager.getOrCreateModule(Arrays.asList(name.split("\\.")), version);
 
-        List<ReflAnnotation> imports = getAnnotationArrayValue(moduleClass, CEYLON_MODULE_ANNOTATION, "dependencies");
-        for (ReflAnnotation importAttribute : imports) {
+        List<AnnotationMirror> imports = getAnnotationArrayValue(moduleClass, CEYLON_MODULE_ANNOTATION, "dependencies");
+        for (AnnotationMirror importAttribute : imports) {
             String dependencyName = (String) importAttribute.getValue("name");
             if (dependencyName != null) {
                 if (! dependencyName.equals("java")) {
@@ -557,32 +557,32 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     //
     // Utils for loading type info from the model
     
-    private <T> List<T> getAnnotationArrayValue(ReflAnnotated symbol, String type, String field) {
+    private <T> List<T> getAnnotationArrayValue(AnnotatedMirror symbol, String type, String field) {
         return (List<T>) getAnnotationValue(symbol, type, field);
     }
 
-    private <T> List<T> getAnnotationArrayValue(ReflAnnotated symbol, String type) {
+    private <T> List<T> getAnnotationArrayValue(AnnotatedMirror symbol, String type) {
         return (List<T>) getAnnotationValue(symbol, type);
     }
 
-    private String getAnnotationStringValue(ReflAnnotated symbol, String type) {
+    private String getAnnotationStringValue(AnnotatedMirror symbol, String type) {
         return getAnnotationStringValue(symbol, type, "value");
     }
     
-    private String getAnnotationStringValue(ReflAnnotated symbol, String type, String field) {
+    private String getAnnotationStringValue(AnnotatedMirror symbol, String type, String field) {
         return (String) getAnnotationValue(symbol, type, field);
     }
 
-    private Boolean getAnnotationBooleanValue(ReflAnnotated symbol, String type, String field) {
+    private Boolean getAnnotationBooleanValue(AnnotatedMirror symbol, String type, String field) {
         return (Boolean) getAnnotationValue(symbol, type, field);
     }
 
-    private Object getAnnotationValue(ReflAnnotated symbol, String type) {
+    private Object getAnnotationValue(AnnotatedMirror symbol, String type) {
         return getAnnotationValue(symbol, type, "value");
     }
     
-    private Object getAnnotationValue(ReflAnnotated symbol, String type, String fieldName) {
-        ReflAnnotation annotation = symbol.getAnnotation(type);
+    private Object getAnnotationValue(AnnotatedMirror symbol, String type, String fieldName) {
+        AnnotationMirror annotation = symbol.getAnnotation(type);
         if(annotation != null){
             return annotation.getValue(fieldName);
         }
@@ -612,11 +612,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         completeTypeParameters(klass, klass.classSymbol);
     }
 
-    private void completeTypeParameters(ClassOrInterface klass, ReflClass classSymbol) {
+    private void completeTypeParameters(ClassOrInterface klass, ClassMirror classSymbol) {
         setTypeParameters(klass, classSymbol);
     }
 
-    private void complete(ClassOrInterface klass, ReflClass classSymbol) {
+    private void complete(ClassOrInterface klass, ClassMirror classSymbol) {
         HashSet<String> variables = new HashSet<String>();
         String qualifiedName = classSymbol.getQualifiedName();
         boolean isJava = qualifiedName.startsWith("java.");
@@ -624,8 +624,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         
         // Turn a list of possibly overloaded methods into a map
         // of lists that contain methods with the same name
-        Map<String, List<ReflMethod>> methods = new LinkedHashMap<String, List<ReflMethod>>();
-        for(ReflMethod methodSymbol : classSymbol.getDirectMethods()){
+        Map<String, List<MethodMirror>> methods = new LinkedHashMap<String, List<MethodMirror>>();
+        for(MethodMirror methodSymbol : classSymbol.getDirectMethods()){
             // We skip members marked with @Ignore
             if(methodSymbol.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
                 continue;
@@ -639,9 +639,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(isJava && !methodSymbol.isPublic())
                 continue;
             String methodName = methodSymbol.getName();
-            List<ReflMethod> homonyms = methods.get(methodName);
+            List<MethodMirror> homonyms = methods.get(methodName);
             if (homonyms == null) {
-                homonyms = new LinkedList<ReflMethod>();
+                homonyms = new LinkedList<MethodMirror>();
                 methods.put(methodName, homonyms);
             }
             homonyms.add(methodSymbol);
@@ -650,10 +650,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // FIXME: deal with toplevel methods and attributes
         boolean hasConstructor = false;
         // then its methods
-        for(List<ReflMethod> methodSymbols : methods.values()){
+        for(List<MethodMirror> methodSymbols : methods.values()){
             // There might be multiple overloaded methods
             // but for now we just care about one, any will do
-            ReflMethod methodSymbol = methodSymbols.get(0);
+            MethodMirror methodSymbol = methodSymbols.get(0);
             boolean isOverloaded = methodSymbols.size() > 1;
             String methodName = methodSymbol.getName();
             
@@ -726,19 +726,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         fillRefinedDeclarations(klass);
     }
 
-    private ProducedType getMethodReturnType(List<ReflMethod> methodSymbols, Method method) {
+    private ProducedType getMethodReturnType(List<MethodMirror> methodSymbols, Method method) {
         if (methodSymbols.size() > 1) {
             // Make a union of the method return types
             UnionType unionType = new UnionType(typeFactory);
             LinkedList<ProducedType> unionTypes = new LinkedList<ProducedType>();
-            for (ReflMethod methodSymbol : methodSymbols) {
+            for (MethodMirror methodSymbol : methodSymbols) {
                 ProducedType type = obtainType(methodSymbol.getReturnType(), methodSymbol, method);
                 com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion(unionTypes, type);
             }
             unionType.setCaseTypes(unionTypes);
             return unionType.getType();
         } else {
-            ReflMethod methodSymbol = methodSymbols.get(0);
+            MethodMirror methodSymbol = methodSymbols.get(0);
             ProducedType type = obtainType(methodSymbol.getReturnType(), methodSymbol, method);
             return type;
         }
@@ -759,7 +759,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return refinedDeclaration;
     }
 
-    private boolean isGetter(ReflMethod methodSymbol) {
+    private boolean isGetter(MethodMirror methodSymbol) {
         String name = methodSymbol.getName();
         boolean matchesGet = name.length() > 3 && name.startsWith("get") && Character.isUpperCase(name.charAt(3));
         boolean matchesIs = name.length() > 2 && name.startsWith("is") && Character.isUpperCase(name.charAt(2));
@@ -768,7 +768,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return (matchesGet || matchesIs) && hasNoParams && hasNonVoidReturn;
     }
     
-    private boolean isSetter(ReflMethod methodSymbol) {
+    private boolean isSetter(MethodMirror methodSymbol) {
         String name = methodSymbol.getName();
         boolean matchesSet = name.length() > 3 && name.startsWith("set") && Character.isUpperCase(name.charAt(3));
         boolean hasOneParam = methodSymbol.getParameters().size() == 1;
@@ -776,30 +776,30 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return matchesSet && hasOneParam && hasVoidReturn;
     }
 
-    private boolean isHashAttribute(ReflMethod methodSymbol) {
+    private boolean isHashAttribute(MethodMirror methodSymbol) {
         String name = methodSymbol.getName();
         boolean matchesName = "hashCode".equals(name);
         boolean hasNoParams = methodSymbol.getParameters().size() == 0;
         return matchesName && hasNoParams;
     }
     
-    private boolean isStringAttribute(ReflMethod methodSymbol) {
+    private boolean isStringAttribute(MethodMirror methodSymbol) {
         String name = methodSymbol.getName();
         boolean matchesName = "toString".equals(name);
         boolean hasNoParams = methodSymbol.getParameters().size() == 0;
         return matchesName && hasNoParams;
     }
 
-    private boolean isEqualsMethod(ReflMethod methodSymbol) {
+    private boolean isEqualsMethod(MethodMirror methodSymbol) {
         String name = methodSymbol.getName();
         if(!"equals".equals(name)
                 || methodSymbol.getParameters().size() != 1)
             return false;
-        ReflVariable param = methodSymbol.getParameters().get(0);
+        VariableMirror param = methodSymbol.getParameters().get(0);
         return sameType(param.getType(), OBJECT_TYPE);
     }
 
-    private void setEqualsParameters(Method decl, ReflMethod methodSymbol) {
+    private void setEqualsParameters(Method decl, MethodMirror methodSymbol) {
         ParameterList parameters = new ParameterList();
         decl.addParameterList(parameters);
         ValueParameter parameter = new ValueParameter();
@@ -822,7 +822,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
     
-    private void addValue(ClassOrInterface klass, ReflMethod methodSymbol, String methodName) {
+    private void addValue(ClassOrInterface klass, MethodMirror methodSymbol, String methodName) {
         Value value = new Value();
         value.setContainer(klass);
         value.setName(methodName);
@@ -833,7 +833,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         klass.getMembers().add(value);
     }
 
-    private void setMethodOrValueFlags(ClassOrInterface klass, ReflMethod methodSymbol, MethodOrValue decl) {
+    private void setMethodOrValueFlags(ClassOrInterface klass, MethodMirror methodSymbol, MethodOrValue decl) {
         decl.setShared(methodSymbol.isPublic());
         if(methodSymbol.isAbstract() || klass instanceof Interface) {
             decl.setFormal(true);
@@ -847,9 +847,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
     
-    private void setExtendedType(ClassOrInterface klass, ReflClass classSymbol) {
+    private void setExtendedType(ClassOrInterface klass, ClassMirror classSymbol) {
         // look at its super type
-        ReflType superClass = classSymbol.getSuperclass();
+        TypeMirror superClass = classSymbol.getSuperclass();
         ProducedType extendedType;
         
         if(klass instanceof Interface){
@@ -891,10 +891,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             klass.setExtendedType(extendedType);
     }
 
-    private void setParameters(Functional decl, ReflMethod methodSymbol) {
+    private void setParameters(Functional decl, MethodMirror methodSymbol) {
         ParameterList parameters = new ParameterList();
         decl.addParameterList(parameters);
-        for(ReflVariable paramSymbol : methodSymbol.getParameters()){
+        for(VariableMirror paramSymbol : methodSymbol.getParameters()){
             ValueParameter parameter = new ValueParameter();
             parameter.setContainer((Scope) decl);
             parameter.setUnit(((Element)decl).getUnit());
@@ -917,15 +917,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    private void markUnboxed(TypedDeclaration decl, ReflType type) {
+    private void markUnboxed(TypedDeclaration decl, TypeMirror type) {
         if(type.isPrimitive() || sameType(type, STRING_TYPE))
             Util.markUnBoxed(decl);
     }
 
     @Override
     public void complete(LazyValue value) {
-        ReflMethod meth = null;
-        for (ReflMethod m : value.classSymbol.getDirectMethods()) {
+        MethodMirror meth = null;
+        for (MethodMirror m : value.classSymbol.getDirectMethods()) {
             // We skip members marked with @Ignore
             if(m.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
                 continue;
@@ -950,9 +950,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     @Override
     public void complete(LazyMethod method) {
-        ReflMethod meth = null;
+        MethodMirror meth = null;
         String lookupName = Util.quoteIfJavaKeyword(method.getName());
-        for(ReflMethod m : method.classSymbol.getDirectMethods()){
+        for(MethodMirror m : method.classSymbol.getDirectMethods()){
             // We skip members marked with @Ignore
             if(m.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
                 continue;
@@ -977,16 +977,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     //
     // Satisfied Types
     
-    private List<String> getSatisfiedTypesFromAnnotations(ReflAnnotated symbol) {
+    private List<String> getSatisfiedTypesFromAnnotations(AnnotatedMirror symbol) {
         return getAnnotationArrayValue(symbol, CEYLON_SATISFIED_TYPES_ANNOTATION);
     }
     
-    private void setSatisfiedTypes(ClassOrInterface klass, ReflClass classSymbol) {
+    private void setSatisfiedTypes(ClassOrInterface klass, ClassMirror classSymbol) {
         List<String> satisfiedTypes = getSatisfiedTypesFromAnnotations(classSymbol);
         if(satisfiedTypes != null){
             klass.getSatisfiedTypes().addAll(getSatisfiedTypes(satisfiedTypes, klass));
         }else{
-            for(ReflType iface : classSymbol.getInterfaces()){
+            for(TypeMirror iface : classSymbol.getInterfaces()){
                 klass.getSatisfiedTypes().add(getType(iface, klass));
             }
         }
@@ -1003,15 +1003,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     //
     // Type parameters loading
 
-    private List<ReflAnnotation> getTypeParametersFromAnnotations(ReflAnnotated symbol) {
-        return (List<ReflAnnotation>) getAnnotationValue(symbol, CEYLON_TYPE_PARAMETERS);
+    private List<AnnotationMirror> getTypeParametersFromAnnotations(AnnotatedMirror symbol) {
+        return (List<AnnotationMirror>) getAnnotationValue(symbol, CEYLON_TYPE_PARAMETERS);
     }
 
     // from our annotation
-    private void setTypeParametersFromAnnotations(Scope scope, List<TypeParameter> params, List<ReflAnnotation> typeParameters) {
+    private void setTypeParametersFromAnnotations(Scope scope, List<TypeParameter> params, List<AnnotationMirror> typeParameters) {
         // We must first add every type param, before we resolve the bounds, which can
         // refer to type params.
-        for(ReflAnnotation typeParam : typeParameters){
+        for(AnnotationMirror typeParam : typeParameters){
             TypeParameter param = new TypeParameter();
             param.setUnit(((Element)scope).getUnit());
             param.setContainer(scope);
@@ -1033,7 +1033,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         // Now all type params have been set, we can resolve the references parts
         Iterator<TypeParameter> paramsIterator = params.iterator();
-        for(ReflAnnotation typeParam : typeParameters){
+        for(AnnotationMirror typeParam : typeParameters){
             TypeParameter param = paramsIterator.next();
             List<String> satisfiesAttribute = (List<String>)typeParam.getValue("satisfies");
             if(satisfiesAttribute != null){
@@ -1046,10 +1046,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     // from java type info
-    private void setTypeParameters(Scope scope, List<TypeParameter> params, List<ReflTypeParameter> typeParameters) {
+    private void setTypeParameters(Scope scope, List<TypeParameter> params, List<TypeParameterMirror> typeParameters) {
         // We must first add every type param, before we resolve the bounds, which can
         // refer to type params.
-        for(ReflTypeParameter typeParam : typeParameters){
+        for(TypeParameterMirror typeParam : typeParameters){
             TypeParameter param = new TypeParameter();
             param.setUnit(((Element)scope).getUnit());
             param.setContainer(scope);
@@ -1063,10 +1063,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         // Now all type params have been set, we can resolve the references parts
         Iterator<TypeParameter> paramsIterator = params.iterator();
-        for(ReflTypeParameter typeParam : typeParameters){
+        for(TypeParameterMirror typeParam : typeParameters){
             TypeParameter param = paramsIterator.next();
-            List<ReflType> bounds = typeParam.getBounds();
-            for(ReflType bound : bounds){
+            List<TypeMirror> bounds = typeParam.getBounds();
+            for(TypeMirror bound : bounds){
                 ProducedType boundType;
                 // we turn java's default upper bound java.lang.Object into ceylon.language.Object
                 if(sameType(bound, OBJECT_TYPE)){
@@ -1082,10 +1082,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     // method
-    private void setTypeParameters(Method method, ReflMethod methodSymbol) {
+    private void setTypeParameters(Method method, MethodMirror methodSymbol) {
         List<TypeParameter> params = new LinkedList<TypeParameter>();
         method.setTypeParameters(params);
-        List<ReflAnnotation> typeParameters = getTypeParametersFromAnnotations(methodSymbol);
+        List<AnnotationMirror> typeParameters = getTypeParametersFromAnnotations(methodSymbol);
         if(typeParameters != null)
             setTypeParametersFromAnnotations(method, params, typeParameters);
         else
@@ -1093,10 +1093,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     // class
-    private void setTypeParameters(ClassOrInterface klass, ReflClass classSymbol) {
+    private void setTypeParameters(ClassOrInterface klass, ClassMirror classSymbol) {
         List<TypeParameter> params = new LinkedList<TypeParameter>();
         klass.setTypeParameters(params);
-        List<ReflAnnotation> typeParameters = getTypeParametersFromAnnotations(classSymbol);
+        List<AnnotationMirror> typeParameters = getTypeParametersFromAnnotations(classSymbol);
         if(typeParameters != null)
             setTypeParametersFromAnnotations(klass, params, typeParameters);
         else
@@ -1110,7 +1110,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return typeParser.decodeType(value, scope);
     }
     
-    private ProducedType obtainType(ReflType type, ReflAnnotated symbol, Scope scope) {
+    private ProducedType obtainType(TypeMirror type, AnnotatedMirror symbol, Scope scope) {
         String typeName = getAnnotationStringValue(symbol, CEYLON_TYPE_INFO_ANNOTATION);
         if (typeName != null) {
             return decodeType(typeName, scope);
@@ -1154,7 +1154,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
     
-    private boolean sameType(ReflType t1, ReflType t2) {
+    private boolean sameType(TypeMirror t1, TypeMirror t2) {
         return t1.getQualifiedName().equals(t2.getQualifiedName());
     }
     
@@ -1163,13 +1163,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return convertToDeclaration(typeName, declarationType);
     }
 
-    private ProducedType getType(ReflType type, Scope scope) {
+    private ProducedType getType(TypeMirror type, Scope scope) {
         Declaration decl = convertToDeclaration(type, scope, DeclarationType.TYPE);
         TypeDeclaration declaration = (TypeDeclaration) decl;
-        List<ReflType> javacTypeArguments = type.getTypeArguments();
+        List<TypeMirror> javacTypeArguments = type.getTypeArguments();
         if(!javacTypeArguments.isEmpty()){
             List<ProducedType> typeArguments = new ArrayList<ProducedType>(javacTypeArguments.size());
-            for(ReflType typeArgument : javacTypeArguments){
+            for(TypeMirror typeArgument : javacTypeArguments){
                 typeArguments.add((ProducedType) getType(typeArgument, scope));
             }
             return declaration.getProducedType(null, typeArguments);

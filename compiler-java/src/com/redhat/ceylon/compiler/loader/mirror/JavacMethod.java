@@ -17,24 +17,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.loader.refl;
+package com.redhat.ceylon.compiler.loader.mirror;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.lang.model.element.ElementKind;
 
-import com.redhat.ceylon.compiler.modelloader.refl.ReflAnnotation;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflMethod;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflType;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflTypeParameter;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflVariable;
+import com.redhat.ceylon.compiler.modelloader.mirror.AnnotationMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.MethodMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.TypeMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.TypeParameterMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.VariableMirror;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.Symbol.MethodSymbol;
 import com.sun.tools.javac.code.Symbol.VarSymbol;
 import com.sun.tools.javac.code.Type;
 
-public class JavacMethod implements ReflMethod {
+public class JavacMethod implements MethodMirror {
 
     public MethodSymbol methodSymbol;
 
@@ -43,7 +43,7 @@ public class JavacMethod implements ReflMethod {
     }
 
     @Override
-    public ReflAnnotation getAnnotation(String type) {
+    public AnnotationMirror getAnnotation(String type) {
         return JavacUtil.getAnnotation(methodSymbol, type);
     }
 
@@ -73,9 +73,9 @@ public class JavacMethod implements ReflMethod {
     }
 
     @Override
-    public List<ReflVariable> getParameters() {
+    public List<VariableMirror> getParameters() {
         com.sun.tools.javac.util.List<VarSymbol> typeParameters = methodSymbol.getParameters();
-        List<ReflVariable> ret = new ArrayList<ReflVariable>(typeParameters.size());
+        List<VariableMirror> ret = new ArrayList<VariableMirror>(typeParameters.size());
         for(VarSymbol typeParameter : typeParameters)
             ret.add(new JavacVariable(typeParameter));
         return ret;
@@ -92,13 +92,13 @@ public class JavacMethod implements ReflMethod {
     }
 
     @Override
-    public ReflType getReturnType() {
+    public TypeMirror getReturnType() {
         Type returnType = methodSymbol.getReturnType();
         return returnType != null ? new JavacType(returnType) : null;
     }
 
     @Override
-    public List<ReflTypeParameter> getTypeParameters() {
+    public List<TypeParameterMirror> getTypeParameters() {
         return JavacUtil.getTypeParameters(methodSymbol);
     }
     

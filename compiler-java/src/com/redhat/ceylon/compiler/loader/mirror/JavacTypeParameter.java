@@ -17,34 +17,37 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.loader.refl;
+package com.redhat.ceylon.compiler.loader.mirror;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.modelloader.refl.ReflAnnotation;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflTypeParameter;
-import com.sun.tools.javac.code.Attribute.Compound;
-import com.sun.tools.javac.code.Symbol;
+import com.redhat.ceylon.compiler.modelloader.mirror.TypeMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.TypeParameterMirror;
 import com.sun.tools.javac.code.Symbol.TypeSymbol;
+import com.sun.tools.javac.code.Type;
 
-public class JavacUtil {
+public class JavacTypeParameter implements TypeParameterMirror {
 
-    public static ReflAnnotation getAnnotation(Symbol symbol, String type) {
-        com.sun.tools.javac.util.List<Compound> annotations = symbol.getAnnotationMirrors();
-        for(Compound annotation : annotations){
-            if(annotation.type.tsym.getQualifiedName().toString().equals(type))
-                return new JavacAnnotation(annotation);
-        }
-        return null;
+    private TypeSymbol typeSymbol;
+
+    public JavacTypeParameter(TypeSymbol typeSymbol) {
+        this.typeSymbol = typeSymbol;
     }
 
-    public static List<ReflTypeParameter> getTypeParameters(Symbol symbol) {
-        com.sun.tools.javac.util.List<TypeSymbol> typeParameters = symbol.getTypeParameters();
-        List<ReflTypeParameter> ret = new ArrayList<ReflTypeParameter>(typeParameters.size());
-        for(TypeSymbol typeParameter : typeParameters)
-            ret.add(new JavacTypeParameter(typeParameter));
+    @Override
+    public String getName() {
+        return typeSymbol.getQualifiedName().toString();
+    }
+
+    @Override
+    public List<TypeMirror> getBounds() {
+        com.sun.tools.javac.util.List<Type> bounds = typeSymbol.getBounds();
+        List<TypeMirror> ret = new ArrayList<TypeMirror>(bounds.size());
+        for(Type type : bounds)
+            ret.add(new JavacType(type));
         return ret;
+
     }
 
 }

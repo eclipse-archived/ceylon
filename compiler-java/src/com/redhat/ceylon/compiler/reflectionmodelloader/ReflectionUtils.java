@@ -8,16 +8,16 @@ import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.modelloader.refl.ReflAnnotation;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflTypeParameter;
+import com.redhat.ceylon.compiler.modelloader.mirror.AnnotationMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.TypeParameterMirror;
 
 public class ReflectionUtils {
 
-    public static ReflAnnotation getAnnotation(AnnotatedElement annotated, String type) {
+    public static AnnotationMirror getAnnotation(AnnotatedElement annotated, String type) {
         return getAnnotation(annotated.getDeclaredAnnotations(), type);
     }
 
-    public static ReflAnnotation getAnnotation(Annotation[] annotations, String type) {
+    public static AnnotationMirror getAnnotation(Annotation[] annotations, String type) {
         for(Annotation annotation : annotations){
             if(annotation.annotationType().getName().equals(type))
                 return new ReflectionAnnotation(annotation);
@@ -25,9 +25,9 @@ public class ReflectionUtils {
         return null;
     }
 
-    public static List<ReflTypeParameter> getTypeParameters(GenericDeclaration decl) {
+    public static List<TypeParameterMirror> getTypeParameters(GenericDeclaration decl) {
         TypeVariable<?>[] javaTypeParameters = decl.getTypeParameters();
-        List<ReflTypeParameter> typeParameters = new ArrayList<ReflTypeParameter>(javaTypeParameters.length);
+        List<TypeParameterMirror> typeParameters = new ArrayList<TypeParameterMirror>(javaTypeParameters.length);
         for(Type javaTypeParameter : javaTypeParameters)
             typeParameters.add(new ReflectionTypeParameter(javaTypeParameter));
         return typeParameters;

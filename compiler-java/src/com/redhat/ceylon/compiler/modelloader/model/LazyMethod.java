@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.modelloader.ModelCompleter;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflClass;
+import com.redhat.ceylon.compiler.modelloader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.DeclarationKind;
@@ -42,11 +42,11 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.util.Util;
 
 public class LazyMethod extends Method {
-    public ReflClass classSymbol;
+    public ClassMirror classSymbol;
     private ModelCompleter completer;
     private boolean isLoaded = false;
 
-    public LazyMethod(ReflClass classSymbol, ModelCompleter completer) {
+    public LazyMethod(ClassMirror classSymbol, ModelCompleter completer) {
         this.classSymbol = classSymbol;
         this.completer = completer;
         // FIXME: move strip to getSimpleName()

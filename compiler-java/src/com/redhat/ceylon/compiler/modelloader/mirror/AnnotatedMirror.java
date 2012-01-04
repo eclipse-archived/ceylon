@@ -17,23 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.modelloader.refl;
+package com.redhat.ceylon.compiler.modelloader.mirror;
 
-import java.util.List;
-
-import javax.lang.model.type.TypeKind;
-
-public interface ReflType {
-
-    String getQualifiedName();
-
-    List<ReflType> getTypeArguments();
-
-    TypeKind getKind();
-
-    // for arrays
-    ReflType getComponentType();
-
-    boolean isPrimitive();
-
+public interface AnnotatedMirror {
+    AnnotationMirror getAnnotation(String type);
 }

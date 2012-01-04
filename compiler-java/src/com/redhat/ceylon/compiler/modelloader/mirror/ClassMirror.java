@@ -17,34 +17,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.loader.refl;
+package com.redhat.ceylon.compiler.modelloader.mirror;
 
-import com.redhat.ceylon.compiler.modelloader.refl.ReflAnnotation;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflType;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflVariable;
-import com.sun.tools.javac.code.Symbol.VarSymbol;
+import java.util.List;
 
-public class JavacVariable implements ReflVariable {
-
-    private VarSymbol varSymbol;
-
-    public JavacVariable(VarSymbol varSymbol) {
-        this.varSymbol = varSymbol;
-    }
-
-    @Override
-    public ReflAnnotation getAnnotation(String type) {
-        return JavacUtil.getAnnotation(varSymbol, type);
-    }
-
-    @Override
-    public ReflType getType() {
-        return new JavacType(varSymbol.type);
-    }
-
-    @Override
-    public String getName() {
-        return varSymbol.name.toString();
-    }
-
+public interface ClassMirror extends AnnotatedMirror {
+    boolean isPublic();
+    String getQualifiedName();
+    String getSimpleName();
+    PackageMirror getPackage();
+    boolean isInterface();
+    boolean isAbstract();
+    List<MethodMirror> getDirectMethods();
+    TypeMirror getSuperclass();
+    List<TypeMirror> getInterfaces();
+    List<TypeParameterMirror> getTypeParameters();
+    
+    boolean isCeylonToplevelAttribute();
+    boolean isCeylonToplevelObject();
+    boolean isCeylonToplevelMethod();
+    
+    boolean isLoadedFromSource();
 }

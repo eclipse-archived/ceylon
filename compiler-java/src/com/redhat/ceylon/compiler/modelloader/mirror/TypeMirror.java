@@ -17,37 +17,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.loader.refl;
+package com.redhat.ceylon.compiler.modelloader.mirror;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.modelloader.refl.ReflType;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflTypeParameter;
-import com.sun.tools.javac.code.Symbol.TypeSymbol;
-import com.sun.tools.javac.code.Type;
+import javax.lang.model.type.TypeKind;
 
-public class JavacTypeParameter implements ReflTypeParameter {
+public interface TypeMirror {
 
-    private TypeSymbol typeSymbol;
+    String getQualifiedName();
 
-    public JavacTypeParameter(TypeSymbol typeSymbol) {
-        this.typeSymbol = typeSymbol;
-    }
+    List<TypeMirror> getTypeArguments();
 
-    @Override
-    public String getName() {
-        return typeSymbol.getQualifiedName().toString();
-    }
+    TypeKind getKind();
 
-    @Override
-    public List<ReflType> getBounds() {
-        com.sun.tools.javac.util.List<Type> bounds = typeSymbol.getBounds();
-        List<ReflType> ret = new ArrayList<ReflType>(bounds.size());
-        for(Type type : bounds)
-            ret.add(new JavacType(type));
-        return ret;
+    // for arrays
+    TypeMirror getComponentType();
 
-    }
+    boolean isPrimitive();
 
 }

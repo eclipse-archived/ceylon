@@ -21,17 +21,17 @@
 package com.redhat.ceylon.compiler.modelloader.model;
 
 import com.redhat.ceylon.compiler.modelloader.ModelCompleter;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflClass;
+import com.redhat.ceylon.compiler.modelloader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.util.Util;
 
 public class LazyValue extends Value {
-    public ReflClass classSymbol;
+    public ClassMirror classSymbol;
     private ModelCompleter completer;
     private boolean isLoaded = false;
 
-    public LazyValue(ReflClass classSymbol, ModelCompleter completer) {
+    public LazyValue(ClassMirror classSymbol, ModelCompleter completer) {
         this.classSymbol = classSymbol;
         this.completer = completer;
         classSymbol.getSimpleName();

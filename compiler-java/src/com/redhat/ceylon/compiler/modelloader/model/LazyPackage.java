@@ -25,7 +25,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.modelloader.ModelLoader.DeclarationType;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflClass;
+import com.redhat.ceylon.compiler.modelloader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -62,7 +62,7 @@ public class LazyPackage extends Package {
         modelLoader.loadPackage(pkgName, false);
 
         String className = getQualifiedName(pkgName, name);
-        ReflClass classSymbol = modelLoader.lookupClassSymbol(className);
+        ClassMirror classSymbol = modelLoader.lookupClassSymbol(className);
         // only get it from the classpath if we're not compiling it
         if(classSymbol != null && !classSymbol.isLoadedFromSource())
             return modelLoader.convertToDeclaration(className, DeclarationType.VALUE);

@@ -17,14 +17,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.modelloader.refl;
+package com.redhat.ceylon.compiler.loader.mirror;
 
-import java.util.List;
+import com.redhat.ceylon.compiler.modelloader.mirror.AnnotationMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.TypeMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.VariableMirror;
+import com.sun.tools.javac.code.Symbol.VarSymbol;
 
-public interface ReflTypeParameter {
+public class JavacVariable implements VariableMirror {
 
-    String getName();
+    private VarSymbol varSymbol;
 
-    List<ReflType> getBounds();
+    public JavacVariable(VarSymbol varSymbol) {
+        this.varSymbol = varSymbol;
+    }
+
+    @Override
+    public AnnotationMirror getAnnotation(String type) {
+        return JavacUtil.getAnnotation(varSymbol, type);
+    }
+
+    @Override
+    public TypeMirror getType() {
+        return new JavacType(varSymbol.type);
+    }
+
+    @Override
+    public String getName() {
+        return varSymbol.name.toString();
+    }
 
 }

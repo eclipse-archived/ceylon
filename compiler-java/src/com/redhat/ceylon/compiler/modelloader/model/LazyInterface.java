@@ -23,7 +23,7 @@ package com.redhat.ceylon.compiler.modelloader.model;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.modelloader.ModelCompleter;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflClass;
+import com.redhat.ceylon.compiler.modelloader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -37,12 +37,12 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
 public class LazyInterface extends Interface implements LazyElement {
 
-    public ReflClass classSymbol;
+    public ClassMirror classSymbol;
     private ModelCompleter completer;
     private boolean isLoaded = false;
     private boolean isTypeParamsLoaded = false;
 
-    public LazyInterface(ReflClass classSymbol, ModelCompleter completer) {
+    public LazyInterface(ClassMirror classSymbol, ModelCompleter completer) {
         this.classSymbol = classSymbol;
         this.completer = completer;
         setName(classSymbol.getSimpleName());

@@ -17,8 +17,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.modelloader.refl;
+package com.redhat.ceylon.compiler.modelloader.mirror;
 
-public interface ReflPackage {
-    String getQualifiedName();
+import java.util.List;
+
+public interface MethodMirror extends AnnotatedMirror {
+
+    String getName();
+
+    boolean isStatic();
+
+    boolean isPublic();
+
+    boolean isConstructor();
+
+    boolean isStaticInit();
+
+    List<VariableMirror> getParameters();
+
+    boolean isAbstract();
+
+    boolean isFinal();
+
+    TypeMirror getReturnType();
+
+    List<TypeParameterMirror> getTypeParameters();
+
 }

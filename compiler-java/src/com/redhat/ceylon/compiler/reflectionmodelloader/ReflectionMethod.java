@@ -11,13 +11,13 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.modelloader.refl.ReflAnnotation;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflMethod;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflType;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflTypeParameter;
-import com.redhat.ceylon.compiler.modelloader.refl.ReflVariable;
+import com.redhat.ceylon.compiler.modelloader.mirror.AnnotationMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.MethodMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.TypeMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.TypeParameterMirror;
+import com.redhat.ceylon.compiler.modelloader.mirror.VariableMirror;
 
-public class ReflectionMethod implements ReflMethod {
+public class ReflectionMethod implements MethodMirror {
 
     private Member method;
 
@@ -26,7 +26,7 @@ public class ReflectionMethod implements ReflMethod {
     }
 
     @Override
-    public ReflAnnotation getAnnotation(String type) {
+    public AnnotationMirror getAnnotation(String type) {
         return ReflectionUtils.getAnnotation((AnnotatedElement)method, type);
     }
 
@@ -56,7 +56,7 @@ public class ReflectionMethod implements ReflMethod {
     }
 
     @Override
-    public List<ReflVariable> getParameters() {
+    public List<VariableMirror> getParameters() {
         Type[] javaParameters;
         Annotation[][] annotations;
         if(method instanceof Method){
@@ -66,7 +66,7 @@ public class ReflectionMethod implements ReflMethod {
             javaParameters = ((Constructor<?>)method).getGenericParameterTypes();
             annotations = ((Constructor<?>)method).getParameterAnnotations();
         }
-        List<ReflVariable> parameters = new ArrayList<ReflVariable>(javaParameters.length);
+        List<VariableMirror> parameters = new ArrayList<VariableMirror>(javaParameters.length);
         for(int i=0;i<javaParameters.length;i++)
             parameters.add(new ReflectionVariable(javaParameters[i], annotations[i]));
         return parameters;
@@ -83,12 +83,12 @@ public class ReflectionMethod implements ReflMethod {
     }
 
     @Override
-    public ReflType getReturnType() {
+    public TypeMirror getReturnType() {
         return new ReflectionType(((Method)method).getGenericReturnType());
     }
 
     @Override
-    public List<ReflTypeParameter> getTypeParameters() {
+    public List<TypeParameterMirror> getTypeParameters() {
         return ReflectionUtils.getTypeParameters((GenericDeclaration) method);
     }
 

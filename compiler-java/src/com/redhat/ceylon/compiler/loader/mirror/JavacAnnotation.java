@@ -17,18 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.loader.refl;
+package com.redhat.ceylon.compiler.loader.mirror;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.modelloader.refl.ReflAnnotation;
+import com.redhat.ceylon.compiler.modelloader.mirror.AnnotationMirror;
 import com.sun.tools.javac.code.Attribute;
 import com.sun.tools.javac.code.Attribute.Compound;
 import com.sun.tools.javac.code.Symbol.MethodSymbol;
 import com.sun.tools.javac.util.Pair;
 
-public class JavacAnnotation implements ReflAnnotation {
+public class JavacAnnotation implements AnnotationMirror {
 
     private Compound annotation;
 

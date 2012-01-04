@@ -5,9 +5,9 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.modelloader.refl.ReflAnnotation;
+import com.redhat.ceylon.compiler.modelloader.mirror.AnnotationMirror;
 
-public class ReflectionAnnotation implements ReflAnnotation {
+public class ReflectionAnnotation implements AnnotationMirror {
 
     private Annotation annotation;
 

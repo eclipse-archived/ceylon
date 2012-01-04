@@ -17,8 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.modelloader.refl;
+package com.redhat.ceylon.compiler.modelloader.mirror;
 
-public interface ReflAnnotated {
-    ReflAnnotation getAnnotation(String type);
+public interface AnnotationMirror {
+
+    Object getValue(String fieldName);
+
+    Object getValue();
+
 }

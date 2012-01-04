@@ -17,25 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.modelloader.refl;
+package com.redhat.ceylon.compiler.modelloader.mirror;
 
 import java.util.List;
 
-public interface ReflClass extends ReflAnnotated {
-    boolean isPublic();
-    String getQualifiedName();
-    String getSimpleName();
-    ReflPackage getPackage();
-    boolean isInterface();
-    boolean isAbstract();
-    List<ReflMethod> getDirectMethods();
-    ReflType getSuperclass();
-    List<ReflType> getInterfaces();
-    List<ReflTypeParameter> getTypeParameters();
-    
-    boolean isCeylonToplevelAttribute();
-    boolean isCeylonToplevelObject();
-    boolean isCeylonToplevelMethod();
-    
-    boolean isLoadedFromSource();
+public interface TypeParameterMirror {
+
+    String getName();
+
+    List<TypeMirror> getBounds();
+
 }
