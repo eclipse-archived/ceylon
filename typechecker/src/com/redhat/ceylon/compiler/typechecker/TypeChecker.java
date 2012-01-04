@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker;
 
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleValidator;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -33,12 +34,12 @@ public class TypeChecker {
 
     //package level
     TypeChecker(VFS vfs, List<VirtualFile> srcDirectories, boolean verifyDependencies, 
-            AssertionVisitor assertionVisitor, boolean verbose) {
+            AssertionVisitor assertionVisitor, ModuleManager moduleManager, boolean verbose) {
         long start = System.nanoTime();
         this.srcDirectories = srcDirectories;
         this.verbose = verbose;
         this.context = new Context(vfs);
-        this.phasedUnits = new PhasedUnits(context);
+        this.phasedUnits = new PhasedUnits(context, moduleManager);
         this.verifyDependencies = verifyDependencies;
         this.assertionVisitor = assertionVisitor;
         statsVisitor = new StatisticsVisitor();
@@ -49,12 +50,12 @@ public class TypeChecker {
     }
     
     TypeChecker(VFS vfs, List<VirtualFile> srcDirectories, List<VirtualFile> repositories, boolean verifyDependencies, 
-            AssertionVisitor assertionVisitor, boolean verbose) {
+            AssertionVisitor assertionVisitor, ModuleManager moduleManager, boolean verbose) {
         long start = System.nanoTime();
         this.srcDirectories = srcDirectories;
         this.verbose = verbose;
         this.context = new Context(repositories, vfs);
-        this.phasedUnits = new PhasedUnits(context);
+        this.phasedUnits = new PhasedUnits(context, moduleManager);
         this.verifyDependencies = verifyDependencies;
         this.assertionVisitor = assertionVisitor;
         statsVisitor = new StatisticsVisitor();

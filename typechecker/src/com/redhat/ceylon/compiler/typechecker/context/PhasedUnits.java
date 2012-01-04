@@ -37,7 +37,13 @@ public class PhasedUnits {
 
     public PhasedUnits(Context context, ModuleManager moduleManager) {
         this.context = context;
-        this.moduleManager = moduleManager;
+        if(moduleManager != null){
+            this.moduleManager = moduleManager;
+            this.moduleManager.setContext(context);
+        }else{
+            this.moduleManager = new ModuleManager(context);
+        }
+        this.moduleManager.initCoreModules();
     }
     
     public void addPhasedUnit(VirtualFile unitFile, PhasedUnit phasedUnit) {

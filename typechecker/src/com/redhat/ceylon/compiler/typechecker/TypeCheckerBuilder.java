@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker;
 
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
@@ -30,6 +31,7 @@ public class TypeCheckerBuilder {
             return false;
         }
     };
+    private ModuleManager moduleManager;
 
     public TypeCheckerBuilder() {
     }
@@ -95,12 +97,17 @@ public class TypeCheckerBuilder {
         this.verbose = isVerbose;
         return this;
     }
+    
+    public TypeCheckerBuilder moduleManager(ModuleManager moduleManager){
+    	this.moduleManager = moduleManager;
+    	return this;
+    }
 
     public TypeChecker getTypeChecker() {
         if (repositories.isEmpty()) {
-            return new TypeChecker(vfs, srcDirectories, verifyDependencies, assertionVisitor, verbose);
+            return new TypeChecker(vfs, srcDirectories, verifyDependencies, assertionVisitor, moduleManager, verbose);
         } else {
-            return new TypeChecker(vfs, srcDirectories, repositories, verifyDependencies, assertionVisitor, verbose);
+            return new TypeChecker(vfs, srcDirectories, repositories, verifyDependencies, assertionVisitor, moduleManager, verbose);
         }
         
     }
