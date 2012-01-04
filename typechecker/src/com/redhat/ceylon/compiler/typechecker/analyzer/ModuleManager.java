@@ -41,8 +41,6 @@ public class ModuleManager {
         this.context = context;
     }
     
-    public ModuleManager(){}
-
     public void initCoreModules() {
         modules = context.getModules();
         if ( modules == null ) {
