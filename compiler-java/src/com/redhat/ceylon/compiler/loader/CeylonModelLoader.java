@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.modelloader.refl.ReflMethod;
 import com.redhat.ceylon.compiler.tools.CeylonLog;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
+import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
@@ -94,7 +95,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
     }
 
     @Override
-    protected void addModuleToClassPath(Module module){
+    protected void addModuleToClassPath(Module module, VirtualFile artifact){
         ((CompilerModuleManager)phasedUnits.getModuleManager()).getCeylonEnter().addModuleToClassPath(module, false);
     }
 

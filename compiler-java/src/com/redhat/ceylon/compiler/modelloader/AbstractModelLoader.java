@@ -48,6 +48,7 @@ import com.redhat.ceylon.compiler.modelloader.refl.ReflType;
 import com.redhat.ceylon.compiler.modelloader.refl.ReflTypeParameter;
 import com.redhat.ceylon.compiler.modelloader.refl.ReflVariable;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
+import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -140,7 +141,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public abstract void loadPackage(String packageName, boolean loadDeclarations);
     public abstract ReflClass lookupClassSymbol(String name);
 
-    protected abstract void addModuleToClassPath(Module module);
+    protected abstract void addModuleToClassPath(Module module, VirtualFile artifact);
     protected abstract void logWarning(String message);
     protected abstract void logVerbose(String message);
     protected abstract ReflClass loadClass(String pkgName, String className);
@@ -150,7 +151,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public void loadStandardModules(){
         // set up the type factory
         Module languageModule = findOrCreateModule("ceylon.language");
-        addModuleToClassPath(languageModule);
+        addModuleToClassPath(languageModule, null);
         Package languagePackage = findOrCreatePackage(languageModule, "ceylon.language");
         typeFactory.setPackage(languagePackage);
         /*

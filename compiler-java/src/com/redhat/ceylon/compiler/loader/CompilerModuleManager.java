@@ -20,15 +20,11 @@
 
 package com.redhat.ceylon.compiler.loader;
 
-import java.util.Arrays;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.modelloader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.modelloader.LazyModuleManager;
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
-import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
-import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 
 public class CompilerModuleManager extends LazyModuleManager {
