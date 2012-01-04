@@ -96,7 +96,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
 
     @Override
     protected void addModuleToClassPath(Module module, VirtualFile artifact){
-        ((CompilerModuleManager)phasedUnits.getModuleManager()).getCeylonEnter().addModuleToClassPath(module, false);
+        ((CompilerModuleManager)phasedUnits.getModuleManager()).getCeylonEnter().addModuleToClassPath(module, true);
     }
 
     public void setupSourceFileObjects(com.sun.tools.javac.util.List<JCCompilationUnit> trees) {
