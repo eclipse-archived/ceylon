@@ -1,0 +1,88 @@
+package com.redhat.ceylon.compiler.reflectionmodelloader;
+
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.lang.reflect.WildcardType;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.lang.model.type.TypeKind;
+
+import com.redhat.ceylon.compiler.modelloader.refl.ReflType;
+
+public class ReflectionType implements ReflType {
+
+    private Type type;
+
+    public ReflectionType(Type type) {
+        this.type = type;
+    }
+
+    @Override
+    public String getQualifiedName() {
+        if(type instanceof ParameterizedType){
+            return ((Class<?>)((ParameterizedType)type).getRawType()).getName();
+        }
+        if(type instanceof TypeVariable)
+            return ((TypeVariable<?>)type).getName();
+        return ((Class<?>)type).getName();
+    }
+
+    @Override
+    public List<ReflType> getTypeArguments() {
+        if(type instanceof ParameterizedType){
+            Type[] javaTypeArguments = ((ParameterizedType)type).getActualTypeArguments();
+            List<ReflType> typeArguments = new ArrayList<ReflType>(javaTypeArguments.length);
+            for(Type typeArgument : javaTypeArguments)
+                typeArguments.add(new ReflectionType(typeArgument));
+            return typeArguments;
+        }
+        return Collections.emptyList();
+    }
+
+    private static final Map<Class<?>, TypeKind> primitives = new HashMap<Class<?>, TypeKind>();
+    static{
+        primitives.put(Boolean.TYPE, TypeKind.BOOLEAN);
+        primitives.put(Byte.TYPE, TypeKind.BYTE);
+        primitives.put(Character.TYPE, TypeKind.CHAR);
+        primitives.put(Short.TYPE, TypeKind.SHORT);
+        primitives.put(Integer.TYPE, TypeKind.INT);
+        primitives.put(Long.TYPE, TypeKind.LONG);
+        primitives.put(Float.TYPE, TypeKind.FLOAT);
+        primitives.put(Double.TYPE, TypeKind.DOUBLE);
+    }
+    
+    @Override
+    public TypeKind getKind() {
+        if(type instanceof ParameterizedType)
+            return TypeKind.DECLARED;
+        if(type instanceof GenericArrayType)
+            return TypeKind.ARRAY;
+        if(type instanceof TypeVariable)
+            return TypeKind.TYPEVAR;
+        if(type instanceof WildcardType)
+            return TypeKind.WILDCARD;
+        if(type instanceof Class){
+            TypeKind kind = primitives.get(type);
+            return kind != null ? kind : TypeKind.DECLARED;
+        }
+        throw new RuntimeException("Unknown type: "+type);
+    }
+
+    @Override
+    public ReflType getComponentType() {
+        Type componentType = ((GenericArrayType)type).getGenericComponentType();
+        return new ReflectionType(componentType);
+    }
+
+    @Override
+    public boolean isPrimitive() {
+        return primitives.containsKey(type);
+    }
+
+}
