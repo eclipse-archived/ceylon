@@ -41,7 +41,13 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
+/**
+ * Represents a lazy toplevel method declaration.
+ *
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
 public class LazyMethod extends Method {
+
     public ClassMirror classSymbol;
     private ModelCompleter completer;
     private boolean isLoaded = false;

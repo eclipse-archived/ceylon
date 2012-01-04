@@ -24,12 +24,43 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 
+/**
+ * Represents a ModelLoader's public API
+ *
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
 public interface ModelLoader {
     
+    /**
+     * The type of declaration we're looking for. This is useful for toplevel attributes and classes who
+     * can share the same name (in the case of singletons).
+     *
+     * @author Stéphane Épardaud <stef@epardaud.fr>
+     */
     enum DeclarationType {
-        TYPE, VALUE;
+        /**
+         * We're looking for a type
+         */
+        TYPE, 
+        /**
+         * We're looking for an attribute
+         */
+        VALUE;
     }
-    
+
+    /**
+     * Loads a declaration by name and type
+     * @param typeName the fully-qualified declaration name
+     * @param declarationType the declaration type
+     * @return the declaration, if found, or null.
+     */
     public Declaration getDeclaration(String typeName, DeclarationType declarationType);
+    
+    /**
+     * Returns the ProducedType of a name in a given scope
+     * @param name the name of the type
+     * @param scope the scope in which to find it
+     * @return the ProducedType found
+     */
     public ProducedType getType(String name, Scope scope);
 }

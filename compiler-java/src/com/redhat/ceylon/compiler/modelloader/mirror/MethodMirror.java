@@ -21,26 +21,60 @@ package com.redhat.ceylon.compiler.modelloader.mirror;
 
 import java.util.List;
 
+/**
+ * Represents a method.
+ *
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
 public interface MethodMirror extends AnnotatedMirror {
 
+    /**
+     * Returns the method name
+     */
     String getName();
 
+    /**
+     * Returns true if this method is statis
+     */
     boolean isStatic();
 
+    /**
+     * Returns true if this method is public
+     */
     boolean isPublic();
 
+    /**
+     * Returns true if this method is a constructor
+     */
     boolean isConstructor();
 
-    boolean isStaticInit();
-
-    List<VariableMirror> getParameters();
-
+    /**
+     * Returns true if this method is abstract
+     */
     boolean isAbstract();
-
+    
+    /**
+     * Returns true if this method is final
+     */
     boolean isFinal();
 
+    /**
+     * Returns true if this method is a static initialiser
+     */
+    boolean isStaticInit();
+
+    /**
+     * Returns the list of parameters
+     */
+    List<VariableMirror> getParameters();
+
+    /**
+     * Returns the return type for this method 
+     */
     TypeMirror getReturnType();
 
+    /**
+     * Returns the list of type parameters for this method
+     */
     List<TypeParameterMirror> getTypeParameters();
-
 }

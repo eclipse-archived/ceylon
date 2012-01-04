@@ -23,17 +23,36 @@ import java.util.List;
 
 import javax.lang.model.type.TypeKind;
 
+/**
+ * Represents a generic type.
+ *
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
 public interface TypeMirror {
 
+    /**
+     * Returns the fully-qualified name of this type with no type argument.
+     */
     String getQualifiedName();
 
+    /**
+     * Returns the list of type arguments for this type
+     */
     List<TypeMirror> getTypeArguments();
 
+    /**
+     * Returns the kind of type this is 
+     */
     TypeKind getKind();
 
+    /**
+     * Returns the component type of this type, if this is an array type. Returns null otherwise.
+     */
     // for arrays
     TypeMirror getComponentType();
 
+    /**
+     * Returns true if this type represents a Java primitive
+     */
     boolean isPrimitive();
-
 }

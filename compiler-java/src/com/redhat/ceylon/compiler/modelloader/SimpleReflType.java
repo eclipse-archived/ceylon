@@ -26,6 +26,11 @@ import javax.lang.model.type.TypeKind;
 
 import com.redhat.ceylon.compiler.modelloader.mirror.TypeMirror;
 
+/**
+ * Simple Type Mirror.
+ *
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
 public class SimpleReflType implements TypeMirror {
 
     private String name;

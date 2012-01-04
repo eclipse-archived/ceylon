@@ -38,6 +38,11 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
+/**
+ * A model loader which uses Java reflection.
+ *
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
 public class ReflectionModelLoader extends AbstractModelLoader {
 
     public ReflectionModelLoader(ModuleManager moduleManager, Modules modules){

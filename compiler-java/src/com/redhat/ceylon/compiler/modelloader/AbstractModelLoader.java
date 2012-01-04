@@ -75,7 +75,14 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 
+/**
+ * Abstract class of a model loader that can load a model from a compiled Java representation,
+ * while being agnostic of the reflection API used to load the compiled Java representation.
+ *
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
 public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader {
+
     private static final String CEYLON_CEYLON_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Ceylon";
     private static final String CEYLON_MODULE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Module";
     private static final String CEYLON_PACKAGE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Package";
@@ -139,14 +146,51 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected ModuleManager moduleManager;
     protected Modules modules;
 
+    /**
+     * Loads a given package, if required. This is mostly useful for the javac reflection impl.
+     * 
+     * @param packageName the package name to load
+     * @param loadDeclarations true to load all the declarations in this package.
+     */
     public abstract void loadPackage(String packageName, boolean loadDeclarations);
+    
+    /**
+     * Looks up a ClassMirror by name.
+     * 
+     * @param name the name of the Class to load
+     * @return a ClassMirror for the specified class, or null if not found.
+     */
     public abstract ClassMirror lookupClassSymbol(String name);
 
+    /**
+     * Adds the given module to the set of modules from which we can load classes.
+     * 
+     * @param module the module
+     * @param artifact the module's artifact, if any. Can be null. 
+     */
     public abstract void addModuleToClassPath(Module module, VirtualFile artifact);
-    protected abstract void logWarning(String message);
-    protected abstract void logVerbose(String message);
+
+    // FIXME: remove?
     protected abstract ClassMirror loadClass(String pkgName, String className);
+    
+    /**
+     * Returns true if the given method is overriding an inherited method (from super class or interfaces).
+     */
     protected abstract boolean isOverridingMethod(MethodMirror methodSymbol);
+
+    /**
+     * Logs a warning.
+     */
+    protected abstract void logWarning(String message);
+
+    /**
+     * Logs a debug message.
+     */
+    protected abstract void logVerbose(String message);
+    
+    /**
+     * Logs an error
+     */
     protected abstract void logError(String message);
     
     public void loadStandardModules(){

@@ -22,6 +22,11 @@ package com.redhat.ceylon.compiler.modelloader.model;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 
+/**
+ * Represents a lazy declaration.
+ *
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
 public interface LazyElement {
     public void addMember(Declaration decl);
 }

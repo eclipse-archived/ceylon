@@ -36,6 +36,11 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
+/**
+ * Represents a lazy Class declaration.
+ *
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
 public class LazyClass extends Class implements LazyElement {
 
     public ClassMirror classSymbol;

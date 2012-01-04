@@ -19,7 +19,20 @@
  */
 package com.redhat.ceylon.compiler.modelloader.mirror;
 
+/**
+ * Represents a method/constructor parameter.
+ *
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
 public interface VariableMirror extends AnnotatedMirror {
-    TypeMirror getType();
+
+    /**
+     * Returns this parameter's name
+     */
     String getName();
+    
+    /**
+     * Returns this parameter's type
+     */
+    TypeMirror getType();
 }

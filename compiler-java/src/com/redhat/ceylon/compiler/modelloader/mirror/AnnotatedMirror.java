@@ -19,6 +19,15 @@
  */
 package com.redhat.ceylon.compiler.modelloader.mirror;
 
+/**
+ * Represents an annotated program element (class, method, constructor, field, parameter)
+ * 
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
 public interface AnnotatedMirror {
+
+    /**
+     * Gets an annotation by annotation type name (fully qualified annotation class name)
+     */
     AnnotationMirror getAnnotation(String type);
 }

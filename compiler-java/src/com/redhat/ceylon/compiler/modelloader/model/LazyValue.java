@@ -26,7 +26,13 @@ import com.redhat.ceylon.compiler.modelloader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
+/**
+ * Represents a lazy toplevel attribute declaration.
+ *
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
 public class LazyValue extends Value {
+    
     public ClassMirror classSymbol;
     private ModelCompleter completer;
     private boolean isLoaded = false;

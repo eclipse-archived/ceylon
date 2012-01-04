@@ -21,21 +21,80 @@ package com.redhat.ceylon.compiler.modelloader.mirror;
 
 import java.util.List;
 
+/**
+ * Represents a Java Class definition.
+ *
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
 public interface ClassMirror extends AnnotatedMirror {
+    /**
+     * Returns true if the class is public
+     */
     boolean isPublic();
-    String getQualifiedName();
-    String getSimpleName();
-    PackageMirror getPackage();
+    
+    /**
+     * Returns true if this is an interface
+     */
     boolean isInterface();
+    
+    /**
+     * Returns true if this is an abstract class
+     */
     boolean isAbstract();
+
+    /**
+     * Returns the non-qualified class name
+     */
+    String getSimpleName();
+    
+    /**
+     * Returns the fully-qualified class name
+     */
+    String getQualifiedName();
+    
+    /**
+     * Returns this class's package
+     */
+    PackageMirror getPackage();
+    
+    /**
+     * Returns the list of methods and constructors defined by this class. Does not include inherited
+     * methods and constructors.
+     */
     List<MethodMirror> getDirectMethods();
-    TypeMirror getSuperclass();
-    List<TypeMirror> getInterfaces();
+    
+    /**
+     * Returns the list of type parameters for this class
+     */
     List<TypeParameterMirror> getTypeParameters();
     
+    /**
+     * Returns this class's superclass, or null if it doesn't have any
+     */
+    TypeMirror getSuperclass();
+    
+    /**
+     * Returns the list of interfaces implemented by this class
+     */
+    List<TypeMirror> getInterfaces();
+
+    /**
+     * Returns true if this class represents a toplevel attribute
+     */
     boolean isCeylonToplevelAttribute();
+
+    /**
+     * Returns true if this class represents a toplevel object
+     */
     boolean isCeylonToplevelObject();
+
+    /**
+     * Returns true if this class represents a toplevel method
+     */
     boolean isCeylonToplevelMethod();
     
+    /**
+     * Returns true if this class was loaded from source, false if it was loaded from a compiled form
+     */
     boolean isLoadedFromSource();
 }

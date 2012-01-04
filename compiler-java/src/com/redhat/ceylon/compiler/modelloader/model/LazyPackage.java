@@ -32,6 +32,11 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 
+/**
+ * Represents a lazy Package declaration.
+ *
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
 public class LazyPackage extends Package {
     
     private AbstractModelLoader modelLoader;

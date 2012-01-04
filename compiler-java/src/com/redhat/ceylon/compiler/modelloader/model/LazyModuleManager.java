@@ -30,6 +30,11 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 
+/**
+ * ModuleManager which can load artifacts from jars and cars.
+ *
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
 public abstract class LazyModuleManager extends ModuleManager {
 
     public LazyModuleManager(Context ceylonContext) {
@@ -40,7 +45,7 @@ public abstract class LazyModuleManager extends ModuleManager {
     public void resolveModule(Module module, VirtualFile artifact,
             List<PhasedUnits> phasedUnitsOfDependencies) {
         getModelLoader().addModuleToClassPath(module, artifact); // To be able to load it from the corresponding archive
-        Module compiledModule = getModelLoader().loadCompiledModule(module.getNameAsString());
+        getModelLoader().loadCompiledModule(module.getNameAsString());
     }
 
     @Override

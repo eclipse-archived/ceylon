@@ -25,6 +25,11 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 
+/**
+ * Represents a lazy Module declaration.
+ *
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
 public abstract class LazyModule extends Module {
 
     private boolean isJava = false;

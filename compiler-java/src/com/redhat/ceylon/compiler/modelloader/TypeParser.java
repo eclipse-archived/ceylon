@@ -29,7 +29,13 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
+/**
+ * Allows users to parse a type from a string representation.
+ *
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
 public class TypeParser {
+    
     private ModelLoader loader;
     private Unit unit;
     
