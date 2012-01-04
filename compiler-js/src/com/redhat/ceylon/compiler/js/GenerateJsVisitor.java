@@ -271,7 +271,9 @@ public class GenerateJsVisitor extends Visitor
 
     private void share(Declaration d) {
         if (d.isClassOrInterfaceMember()||d.isToplevel())
-        if (d.isShared() || d.isCaptured()) {
+        //TODO: this is not quite right b/c the typechecker 
+        //      doesn't bother to mark methods as captured
+        if (d.isShared() || d.isCaptured()) { 
             outerSelf(d);
             out(".");
             out(d.getName());
