@@ -34,6 +34,8 @@ public abstract class LazyModuleManager extends ModuleManager {
     public LazyModuleManager(Context ceylonContext) {
         super(ceylonContext);
     }
+    
+    public LazyModuleManager(){}
 
     @Override
     public void resolveModule(Module module, VirtualFile artifact,
