@@ -41,6 +41,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.reflectionmodelloader.ReflectionModuleManager;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -93,6 +94,9 @@ public class CeylonDocTool {
             if(repoFile.isDirectory())
                 builder.addRepository(repoFile);
         }
+        // we need to plug in the module manager which can load from .cars
+        ReflectionModuleManager moduleManager = new ReflectionModuleManager();
+        builder.moduleManager(moduleManager);
         TypeChecker typeChecker = builder.getTypeChecker();
         typeChecker.process();
         this.modules = getModules(moduleSpecs, typeChecker.getContext().getModules());
