@@ -853,7 +853,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         
         if(klass instanceof Interface){
             // interfaces need to have their superclass set to Object
-            if(superClass.getKind() == TypeKind.NONE)
+            if(superClass == null || superClass.getKind() == TypeKind.NONE)
                 extendedType = getType(CEYLON_OBJECT_TYPE, klass);
             else
                 extendedType = getType(superClass, klass);
