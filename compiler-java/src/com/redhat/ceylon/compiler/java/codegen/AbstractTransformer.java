@@ -60,6 +60,7 @@ import com.sun.tools.javac.tree.JCTree.Factory;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
+import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -172,18 +173,50 @@ public abstract class AbstractTransformer implements Transformation {
         return ClassTransformer.getInstance(context);
     }
     
+    /** 
+     * Makes an <strong>unquoted</strong> simple identifier
+     * @param ident The identifier
+     * @return The ident
+     */
     protected JCExpression makeUnquotedIdent(String ident) {
         return make().Ident(names().fromString(ident));
     }
 
-    protected JCExpression makeQuotedIdent(String ident) {
+    /** 
+     * Makes an <strong>quoted</strong> simple identifier
+     * @param ident The identifier
+     * @return The ident
+     */
+    protected JCIdent makeQuotedIdent(String ident) {
         return make().Ident(names().fromString(Util.quoteIfJavaKeyword(ident)));
     }
 
-    protected JCExpression makeQualIdentFromString(String nameAsString) {
-        return makeQualIdent(null, nameAsString.split("\\."));
+    /** 
+     * Makes an <strong>unquoted</strong> qualified (compound) identifier from 
+     * the given qualified name.
+     * @param qualifiedName The qualified name
+     * @see #makeQuotedQualIdentFromString(String)
+     */
+    protected JCExpression makeQualIdentFromString(String qualifiedName) {
+        return makeQualIdent(null, qualifiedName.split("\\."));
+    }
+    
+    /** 
+     * Makes a <strong>quoted</strong> qualified (compound) identifier from 
+     * the given qualified name. Each part of the name will be 
+     * quoted if it is a Java keyword.
+     * @param qualifiedName The qualified name 
+     */
+    protected JCExpression makeQuotedQualIdentFromString(String qualifiedName) {
+        return makeQualIdent(null, Util.quoteJavaKeywords(qualifiedName.split("\\.")));
     }
 
+    /** 
+     * Makes an <strong>unquoted</strong> qualified (compound) identifier 
+     * from the given qualified name components
+     * @param components The components of the name.
+     * @see #makeQuotedQualIdentFromString(String)
+     */
     protected JCExpression makeQualIdent(Iterable<String> components) {
         JCExpression type = null;
         for (String component : components) {
@@ -195,6 +228,13 @@ public abstract class AbstractTransformer implements Transformation {
         return type;
     }
 
+    /** 
+     * Makes an <strong>unquoted</strong> qualified (compound) identifier 
+     * from the given qualified name components
+     * @param expr A starting expression (may be null)
+     * @param names The components of the name (may be null)
+     * @see #makeQuotedQualIdentFromString(String)
+     */
     protected JCExpression makeQualIdent(JCExpression expr, String... names) {
         if (names != null) {
             for (String component : names) {
@@ -218,19 +258,38 @@ public abstract class AbstractTransformer implements Transformation {
         return make().QualIdent(type.tsym);
     }
 
+    /**
+     * Makes a <strong>unquoted</strong> field access
+     * @param s1 The base expression
+     * @param s2 The field to access
+     * @return The field access
+     */
     protected JCFieldAccess makeSelect(JCExpression s1, String s2) {
         return make().Select(s1, names().fromString(s2));
     }
 
+    /**
+     * Makes a <strong>unquoted</strong> field access
+     * @param s1 The base expression
+     * @param s2 The field to access
+     * @return The field access
+     */
     protected JCFieldAccess makeSelect(String s1, String s2) {
         return makeSelect(makeUnquotedIdent(s1), s2);
     }
 
+    /**
+     * Makes a sequence of <strong>unquoted</strong> field accesses
+     * @param s1 The base expression
+     * @param s2 The first field to access
+     * @param rest The remaining fields to access
+     * @return The field access
+     */
     protected JCFieldAccess makeSelect(String s1, String s2, String... rest) {
         return makeSelect(makeSelect(s1, s2), rest);
     }
 
-    protected JCFieldAccess makeSelect(JCFieldAccess s1, String[] rest) {
+    private JCFieldAccess makeSelect(JCFieldAccess s1, String[] rest) {
         JCFieldAccess acc = s1;
         for (String s : rest) {
             acc = makeSelect(acc, s);
