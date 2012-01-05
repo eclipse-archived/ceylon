@@ -7,6 +7,7 @@ class OuterClass {
     }
     
     private final void setI(long i) {
+        
         class LocalClass {
             
             LocalClass() {

@@ -315,11 +315,11 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("instantiation/MethodLocalInstantiation");
     }
     @Test
-    public void testInsGetterLocalInstantioation(){
+    public void testInsGetterLocalInstantiation(){
         compareWithJavaSource("instantiation/GetterLocalInstantiation");
     }
     @Test
-    public void testInsSetterLocalInstantioation(){
+    public void testInsSetterLocalInstantiation(){
         compareWithJavaSource("instantiation/SetterLocalInstantiation");
     }
     // Operators
