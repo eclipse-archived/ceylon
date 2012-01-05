@@ -589,32 +589,35 @@ public class ExpressionTransformer extends AbstractTransformer {
             // even unerasure
             result = at(op).Binary(JCTree.EQ, left, right);
         } else {
-            Class<? extends Tree.OperatorExpression> originalOperatorClass = operatorClass;
+            OperatorTranslation originalOperator = binaryOperators.get(operatorClass);
+            if (originalOperator == null) {
+                return make().Erroneous();
+            }
+
+            // optimise if we can
+            if(op.getUnboxed() && originalOperator.isOptimisable()){
+                return make().Binary(originalOperator.javacOperator, left, right);
+            }
+
             boolean loseComparison = 
                     operatorClass == Tree.SmallAsOp.class 
                     || operatorClass == Tree.SmallerOp.class 
                     || operatorClass == Tree.LargerOp.class
                     || operatorClass == Tree.LargeAsOp.class;
     
+            // for comparisons we need to invoke compare()
+            OperatorTranslation actualOperator = originalOperator;
             if (loseComparison) {
-                operatorClass = Tree.CompareOp.class;
-            }
-            
-            OperatorTranslation operator = binaryOperators.get(operatorClass);
-            if (operator == null) {
-                return make().Erroneous();
-            }
-            if(op.getUnboxed() && operator.isOptimisable()){
-                return make().Binary(operator.javacOperator, left, right);
-            }
-            result = at(op).Apply(null, makeSelect(left, operator.ceylonMethod), List.of(right));
-    
-            if (loseComparison) {
-                OperatorTranslation operator2 = binaryOperators.get(originalOperatorClass);
-                if (operator2 == null) {
+                actualOperator = binaryOperators.get(Tree.CompareOp.class);
+                if (actualOperator == null) {
                     return make().Erroneous();
                 }
-                result = at(op).Apply(null, makeSelect(result, operator2.ceylonMethod), List.<JCExpression> nil());
+            }
+
+            result = at(op).Apply(null, makeSelect(left, actualOperator.ceylonMethod), List.of(right));
+    
+            if (loseComparison) {
+                result = at(op).Apply(null, makeSelect(result, actualOperator.ceylonMethod), List.<JCExpression> nil());
             }
         }
 
