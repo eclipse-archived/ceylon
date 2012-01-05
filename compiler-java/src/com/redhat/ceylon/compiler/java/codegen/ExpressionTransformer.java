@@ -542,7 +542,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private JCExpression transformOverridableBinaryOperator(Tree.BinaryOperatorExpression op, ProducedType leftType, ProducedType rightType) {
-        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, leftType);
+        JCExpression left = transformExpression(op.getLeftTerm(), getBoxingStrategy(op), leftType);
         return transformOverridableBinaryOperator(op, op.getClass(), left, rightType);
     }
 
@@ -551,7 +551,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression left, ProducedType rightType) {
         JCExpression result = null;
         
-        JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, rightType);
+        JCExpression right = transformExpression(op.getRightTerm(), getBoxingStrategy(op), rightType);
         
         if (operatorClass == Tree.IdenticalOp.class) {
             result = at(op).Binary(JCTree.EQ, left, right);
@@ -570,6 +570,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             OperatorTranslation operator = binaryOperators.get(operatorClass);
             if (operator == null) {
                 return make().Erroneous();
+            }
+            if(op.getUnboxed() && operator.isOptimisable()){
+                return make().Binary(operator.javacOperator, left, right);
             }
             result = at(op).Apply(null, makeSelect(left, operator.ceylonMethod), List.of(right));
     
@@ -1740,5 +1743,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             s = s.getContainer();
         }
         return (s instanceof Declaration) && (s == decl);
+    }
+
+    private BoxingStrategy getBoxingStrategy(Tree.Term term) {
+        return term.getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
     }
 }

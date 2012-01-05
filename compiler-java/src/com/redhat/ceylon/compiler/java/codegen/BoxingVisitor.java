@@ -23,7 +23,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
@@ -44,6 +44,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.NegativeOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Nonempty;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NotOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositiveOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PowerOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
@@ -136,6 +137,18 @@ public class BoxingVisitor extends Visitor {
         super.visit(that);
         // we are unboxed if our term is
         propagateFromTerm(that, that.getTerm());
+    }
+
+    @Override
+    public void visit(ArithmeticOp that) {
+        super.visit(that);
+        // can't optimise the ** operator in Java
+        if(that instanceof PowerOp)
+            return;
+        // we are unboxed if both terms are
+        if(that.getLeftTerm().getUnboxed()
+                && that.getRightTerm().getUnboxed())
+            Util.markUnBoxed(that);
     }
 
     @Override
