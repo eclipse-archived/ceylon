@@ -1144,45 +1144,48 @@ public class ExpressionTransformer extends AbstractTransformer {
             final List<JCExpression> typeArgs,
             final String callVarName) {
         at(ce);
-        if (ce.getPrimary() instanceof Tree.BaseTypeExpression) {
-            ProducedType classType = (ProducedType)((Tree.BaseTypeExpression)ce.getPrimary()).getTarget();
-            JCExpression newExpr = make().NewClass(null, null, makeJavaType(classType, CLASS_NEW), args.toList(), null);
-            return (vars != null) ? make().LetExpr(vars.toList(), newExpr) : newExpr;
-        } else {
-            JCExpression result = transformPrimary(ce.getPrimary(), new TermTransformer() {
+        JCExpression result = transformPrimary(ce.getPrimary(), new TermTransformer() {
 
-                @Override
-                public JCExpression transform(JCExpression primaryExpr, String selector) {
-                    JCExpression tmpCallPrimExpr = null;
-                    if (vars != null && primaryExpr != null && selector != null) {
-                        // Prepare the first argument holding the primary for the call
-                        JCExpression callVarExpr = makeUnquotedIdent(callVarName);
-                        ProducedType type = ((Tree.QualifiedMemberExpression)ce.getPrimary()).getTarget().getQualifyingType();
-                        JCVariableDecl callVar = makeVar(callVarName, makeJavaType(type, NO_PRIMITIVES), primaryExpr);
-                        vars.prepend(callVar);
-                        tmpCallPrimExpr = makeQualIdent(callVarExpr, selector);
-                    } else {
-                        tmpCallPrimExpr = makeQualIdent(primaryExpr, selector);
-                    }
-                    JCExpression callExpr = make().Apply(typeArgs, tmpCallPrimExpr, args.toList());
-
-                    if (vars != null) {
-                        ProducedType returnType = ce.getTypeModel();
-                        if (isVoid(returnType)) {
-                            // void methods get wrapped like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1); null)
-                            return make().LetExpr(vars.toList(), List.<JCStatement>of(make().Exec(callExpr)), makeNull());
-                        } else {
-                            // all other methods like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1))
-                            return make().LetExpr(vars.toList(), callExpr);
-                        }
-                    } else {
-                        return callExpr;
-                    }
+            @Override
+            public JCExpression transform(JCExpression primaryExpr, String selector) {
+                JCExpression actualPrimExpr = null;
+                if (vars != null && primaryExpr != null && selector != null) {
+                    // Prepare the first argument holding the primary for the call
+                    JCExpression callVarExpr = makeUnquotedIdent(callVarName);
+                    ProducedType type = ((Tree.QualifiedMemberExpression)ce.getPrimary()).getTarget().getQualifyingType();
+                    JCVariableDecl callVar = makeVar(callVarName, makeJavaType(type, NO_PRIMITIVES), primaryExpr);
+                    vars.prepend(callVar);
+                    actualPrimExpr = callVarExpr;
+                } else {
+                    actualPrimExpr = primaryExpr;
                 }
                 
-            });
-            return result;
-        }
+                JCExpression resultExpr;
+                if (ce.getPrimary() instanceof Tree.BaseTypeExpression) {
+                    ProducedType classType = (ProducedType)((Tree.BaseTypeExpression)ce.getPrimary()).getTarget();
+                    resultExpr = make().NewClass(null, null, makeJavaType(classType, CLASS_NEW), args.toList(), null);
+                } else if (ce.getPrimary() instanceof Tree.QualifiedTypeExpression) {
+                    resultExpr = make().NewClass(actualPrimExpr, null, makeQuotedIdent(selector), args.toList(), null);
+                } else {
+                    resultExpr = make().Apply(typeArgs, makeQualIdent(actualPrimExpr, selector), args.toList());
+                }
+
+                if (vars != null) {
+                    ProducedType returnType = ce.getTypeModel();
+                    if (isVoid(returnType)) {
+                        // void methods get wrapped like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1); null)
+                        return make().LetExpr(vars.toList(), List.<JCStatement>of(make().Exec(resultExpr)), makeNull());
+                    } else {
+                        // all other methods like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1))
+                        return make().LetExpr(vars.toList(), resultExpr);
+                    }
+                } else {
+                    return resultExpr;
+                }
+            }
+            
+        });
+        return result;
     }
 
     // Invocation helper functions
@@ -1370,7 +1373,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 returnArray);
     }
 
-    private JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberExpression expr) {
+    private JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberOrTypeExpression expr) {
         if(expr.getTarget() == null)
             return at(expr).Erroneous(List.<JCTree>nil());
         return transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, 
@@ -1383,15 +1386,32 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transform(expr, null);
     }
 
-    private JCExpression transform(Tree.BaseMemberExpression expr, TermTransformer transformer) {
+    private JCExpression transform(Tree.BaseMemberOrTypeExpression expr, TermTransformer transformer) {
         return transformMemberExpression(expr, null, transformer);
     }
+    
+    // Type members
+    
+    public JCExpression transform(Tree.QualifiedTypeExpression expr) {
+        return transform(expr, null);
+    }
+    
+    private JCExpression transform(Tree.QualifiedTypeExpression expr, TermTransformer transformer) {
+        JCExpression primaryExpr = transformQualifiedMemberPrimary(expr);
+        return transformMemberExpression(expr, primaryExpr, transformer);
+    }
+    
+    // Generic code for all primaries
     
     private JCExpression transformPrimary(Tree.Primary primary, TermTransformer transformer) {
         if (primary instanceof Tree.QualifiedMemberExpression) {
             return transform((Tree.QualifiedMemberExpression)primary, transformer);
         } else if (primary instanceof Tree.BaseMemberExpression) {
             return transform((Tree.BaseMemberExpression)primary, transformer);
+        } else if (primary instanceof Tree.BaseTypeExpression) {
+            return transform((Tree.BaseTypeExpression)primary, transformer);
+        } else if (primary instanceof Tree.QualifiedTypeExpression) {
+            return transform((Tree.QualifiedTypeExpression)primary, transformer);
         } else {
             return makeUnquotedIdent(primary.getDeclaration().getName());
         }

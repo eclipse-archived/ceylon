@@ -281,6 +281,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         append(gen.expressionGen().transform(access));
     }
     
+    public void visit(Tree.QualifiedTypeExpression access) {
+        append(gen.expressionGen().transform(access));
+    }
+
     /*
      * Expression - Terms
      */
