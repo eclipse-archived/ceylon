@@ -21,8 +21,6 @@
 package com.redhat.ceylon.compiler.java.loader;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
 
 import javax.tools.JavaFileManager;
 import javax.tools.StandardLocation;
@@ -88,6 +86,7 @@ public class CeylonEnter extends Enter {
     private Paths paths;
     private CeyloncFileManager fileManager;
     private JavaCompiler compiler;
+    private boolean allowWarnings;
     
     protected CeylonEnter(Context context) {
         super(context);
@@ -107,6 +106,8 @@ public class CeylonEnter extends Enter {
         paths = Paths.instance(context);
         fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
         compiler = LanguageCompiler.instance(context);
+        allowWarnings = com.redhat.ceylon.compiler.Util.allowWarnings(context);
+        
         // now superclass init
         init(context);
     }
@@ -278,7 +279,11 @@ public class CeylonEnter extends Enter {
                 }
                 @Override
                 protected void out(AnalysisWarning err) {
-                    logError(getPosition(err.getTreeNode()), err.getMessage());
+                    if (allowWarnings) {
+                        logWarning(getPosition(err.getTreeNode()), err.getMessage());
+                    } else {
+                        logError(getPosition(err.getTreeNode()), err.getMessage());
+                    }
                 }
                 @Override
                 protected void out(Node that, String message) {
