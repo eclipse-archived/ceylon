@@ -51,6 +51,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExtendedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IdenticalOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Import;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDefinition;
@@ -1458,8 +1459,18 @@ public class GenerateJsVisitor extends Visitor
    @Override public void visit(Nonempty that) {
        clAlias();
        out(".nonempty(");
-       System.out.println("NONEMPTY!!!!!!! " + that.getTerm());
        that.getTerm().visit(this);
        out(")");
+   }
+
+   @Override public void visit(IfStatement that) {
+       out("if (");
+       that.getIfClause().getCondition().visit(this);
+       out(") ");
+       that.getIfClause().getBlock().visit(this);
+       if (that.getElseClause() != null) {
+           out("else ");
+           that.getElseClause().visit(this);
+       }
    }
 }
