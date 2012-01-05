@@ -42,6 +42,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BinaryOperatorExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
@@ -310,8 +311,21 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
+    private static class AssignmentOperatorTranslation {
+        int javacOperator;
+        Class<? extends BinaryOperatorExpression> binaryOperator;
+
+        AssignmentOperatorTranslation(Class<? extends Tree.BinaryOperatorExpression> binaryOperator,
+                int javacOperator) {
+            this.javacOperator = javacOperator;
+            this.binaryOperator = binaryOperator;
+        }
+        
+    }
+    
     private static Map<Class<? extends Tree.UnaryOperatorExpression>, OperatorTranslation> unaryOperators;
     private static Map<Class<? extends Tree.BinaryOperatorExpression>, OperatorTranslation> binaryOperators;
+    private static Map<Class<? extends Tree.AssignmentOp>, AssignmentOperatorTranslation> assignmentOperators;
 
     private static void addUnaryOperator(Class<? extends Tree.UnaryOperatorExpression> ceylonTreeType, String ceylonMethodName, int javacOperator) {
         unaryOperators.put(ceylonTreeType, new OperatorTranslation(ceylonMethodName, javacOperator));
@@ -325,9 +339,16 @@ public class ExpressionTransformer extends AbstractTransformer {
         binaryOperators.put(ceylonTreeType, new OperatorTranslation(ceylonMethodName));
     }
 
+    private static void addAssignmentOperator(Class<? extends Tree.AssignmentOp> ceylonTreeType,  
+            Class<? extends Tree.BinaryOperatorExpression> ceylonOperator,
+            int javacOperator) {
+        assignmentOperators.put(ceylonTreeType, new AssignmentOperatorTranslation(ceylonOperator, javacOperator));
+    }
+
     static {
         unaryOperators = new HashMap<Class<? extends Tree.UnaryOperatorExpression>, OperatorTranslation>();
         binaryOperators = new HashMap<Class<? extends Tree.BinaryOperatorExpression>, OperatorTranslation>();
+        assignmentOperators = new HashMap<Class<? extends Tree.AssignmentOp>, AssignmentOperatorTranslation>();
 
         // Unary operators
         addUnaryOperator(Tree.PositiveOp.class, "positiveValue", JCTree.POS);
@@ -355,6 +376,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         addBinaryOperator(Tree.SmallerOp.class, "smallerThan", JCTree.LT);
         addBinaryOperator(Tree.LargeAsOp.class, "asLargeAs", JCTree.GE);
         addBinaryOperator(Tree.SmallAsOp.class, "asSmallAs", JCTree.LE);
+        
+        // Assignment operators
+        addAssignmentOperator(Tree.AddAssignOp.class, Tree.SumOp.class, JCTree.PLUS_ASG);
+        addAssignmentOperator(Tree.SubtractAssignOp.class, Tree.DifferenceOp.class, JCTree.MINUS_ASG);
+        addAssignmentOperator(Tree.MultiplyAssignOp.class, Tree.ProductOp.class, JCTree.MUL_ASG);
+        addAssignmentOperator(Tree.DivideAssignOp.class, Tree.QuotientOp.class, JCTree.DIV_ASG);
+        addAssignmentOperator(Tree.RemainderAssignOp.class, Tree.RemainderOp.class, JCTree.MOD_ASG);
     }
 
     //
@@ -598,24 +626,26 @@ public class ExpressionTransformer extends AbstractTransformer {
     // Operator-Assignment expressions
 
     public JCExpression transform(final Tree.ArithmeticAssignmentOp op){
-        // desugar it
-        final Class<? extends Tree.OperatorExpression> infixOpClass;
-        Interface compoundType = op.getUnit().getNumericDeclaration();
-        if(op instanceof Tree.AddAssignOp){
-            infixOpClass = Tree.SumOp.class;
-            compoundType = op.getUnit().getSummableDeclaration();
-        }else if(op instanceof Tree.SubtractAssignOp){
-            infixOpClass = Tree.DifferenceOp.class;
-        }else if(op instanceof Tree.MultiplyAssignOp)
-            infixOpClass = Tree.ProductOp.class;
-        else if(op instanceof Tree.DivideAssignOp)
-            infixOpClass = Tree.QuotientOp.class;
-        else if(op instanceof Tree.RemainderAssignOp){
-            infixOpClass = Tree.RemainderOp.class;
-            compoundType = op.getUnit().getIntegralDeclaration();
-        }else{
+        final AssignmentOperatorTranslation operator = assignmentOperators.get(op.getClass());
+        if(operator == null){
             log.error("ceylon", "Not supported yet: "+op.getNodeType());
             return at(op).Erroneous(List.<JCTree>nil());
+        }
+
+        // see if we can optimise it
+        if(op.getUnboxed()){
+            // we don't care about their types since they're unboxed and we know it
+            JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.UNBOXED, null);
+            JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.UNBOXED, null);
+            return at(op).Assignop(operator.javacOperator, left, right);
+        }
+        
+        // find the proper type
+        Interface compoundType = op.getUnit().getNumericDeclaration();
+        if(op instanceof Tree.AddAssignOp){
+            compoundType = op.getUnit().getSummableDeclaration();
+        }else if(op instanceof Tree.RemainderAssignOp){
+            compoundType = op.getUnit().getIntegralDeclaration();
         }
         
         final ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType);
@@ -628,7 +658,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             @Override
             public JCExpression getNewValue(JCExpression previousValue) {
                 // make this call: previousValue OP RHS
-                return transformOverridableBinaryOperator(op, infixOpClass, previousValue, rightType);
+                return transformOverridableBinaryOperator(op, operator.binaryOperator, previousValue, rightType);
             }
         });
     }

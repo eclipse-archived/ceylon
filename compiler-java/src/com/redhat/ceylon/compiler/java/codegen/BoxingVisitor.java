@@ -25,6 +25,7 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticAssignmentOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
@@ -149,6 +150,15 @@ public class BoxingVisitor extends Visitor {
         // can't optimise the ** operator in Java
         if(that instanceof PowerOp)
             return;
+        // we are unboxed if both terms are
+        if(that.getLeftTerm().getUnboxed()
+                && that.getRightTerm().getUnboxed())
+            Util.markUnBoxed(that);
+    }
+
+    @Override
+    public void visit(ArithmeticAssignmentOp that) {
+        super.visit(that);
         // we are unboxed if both terms are
         if(that.getLeftTerm().getUnboxed()
                 && that.getRightTerm().getUnboxed())
