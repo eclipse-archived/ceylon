@@ -455,14 +455,13 @@ public class ExpressionTransformer extends AbstractTransformer {
     //
     // Binary operators
     
-    // FIXME: I'm pretty sure sugar is not supposed to be in there
     public JCExpression transform(Tree.NotEqualOp op) {
-        Tree.EqualOp newOp = new Tree.EqualOp(op.getToken());
-        newOp.setLeftTerm(op.getLeftTerm());
-        newOp.setRightTerm(op.getRightTerm());
-        Tree.NotOp newNotOp = new Tree.NotOp(op.getToken());
-        newNotOp.setTerm(newOp);
-        return transform(newNotOp);
+        // we want it boxed only if the operator itself is boxed, otherwise we're optimising it
+        // we don't care about the left erased type, since equals() is on Object
+        JCExpression left = transformExpression(op.getLeftTerm(), getBoxingStrategy(op), null);
+        // we don't care about the right erased type, since equals() is on Object
+        JCExpression expr = transformOverridableBinaryOperator(op, Tree.EqualOp.class, left, null);
+        return at(op).Unary(JCTree.NOT, expr);
     }
 
     public JCExpression transform(Tree.RangeOp op) {
