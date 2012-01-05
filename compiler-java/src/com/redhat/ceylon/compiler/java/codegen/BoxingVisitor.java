@@ -127,12 +127,14 @@ public class BoxingVisitor extends Visitor {
     @Override
     public void visit(PositiveOp that) {
         super.visit(that);
+        // we are unboxed if our term is
         propagateFromTerm(that, that.getTerm());
     }
 
     @Override
     public void visit(NegativeOp that) {
         super.visit(that);
+        // we are unboxed if our term is
         propagateFromTerm(that, that.getTerm());
     }
 

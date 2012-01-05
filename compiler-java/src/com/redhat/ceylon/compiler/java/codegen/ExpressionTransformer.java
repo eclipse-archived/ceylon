@@ -379,6 +379,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         Tree.Term term = op.getTerm();
         boolean isUnboxed = term.getUnboxed();
         if(isUnboxed){
+            // optimisation for unboxed types
             if (op instanceof Tree.NegativeOp) {
                 return make().Unary(JCTree.NEG, transformExpression(term, BoxingStrategy.UNBOXED, expectedType));
             } else if (op instanceof Tree.PositiveOp) {
