@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.tools.FileObject;
 import javax.tools.JavaFileManager;
@@ -137,10 +138,12 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
     }
 
     @Override
-    protected JavaFileObject getFileForOutput(Location location, final String fileName, FileObject sibling) throws IOException {
+    protected JavaFileObject getFileForOutput(Location location, String fileName, FileObject sibling) throws IOException {
         if (sibling instanceof CeylonFileObject) {
             sibling = ((CeylonFileObject) sibling).getFile();
         }
+        fileName = quoteKeywordsInFilename(fileName);
+        
         if(location == StandardLocation.CLASS_OUTPUT){
             File dir = getOutputFolder(sibling);
             File siblingFile = null;
@@ -150,6 +153,15 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
             return jarRepository.getFileObject(dir, currentModule, fileName, siblingFile);
         }else
             return super.getFileForOutput(location, fileName, sibling);
+    }
+
+    private String quoteKeywordsInFilename(String fileName) {
+        StringBuilder sb = new StringBuilder();
+        String[] parts = fileName.split("\\"+File.separatorChar);
+        for (String part : parts) {
+            sb.append(Util.quoteIfJavaKeyword(part)).append(File.separatorChar);
+        }
+        return sb.subSequence(0, sb.length() - 1).toString();
     }
 
     @Override
