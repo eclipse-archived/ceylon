@@ -127,19 +127,13 @@ public class BoxingVisitor extends Visitor {
     @Override
     public void visit(PositiveOp that) {
         super.visit(that);
-        // FIXME: when operator methods support better unboxing than this, reenable this:
-        //propagateFromTerm(that, that.getTerm());
-        if(that.getTerm() instanceof Tree.NaturalLiteral)
-            Util.markUnBoxed(that);
+        propagateFromTerm(that, that.getTerm());
     }
 
     @Override
     public void visit(NegativeOp that) {
         super.visit(that);
-        // FIXME: when operator methods support better unboxing than this, reenable this:
-        //propagateFromTerm(that, that.getTerm());
-        if(that.getTerm() instanceof Tree.NaturalLiteral)
-            Util.markUnBoxed(that);
+        propagateFromTerm(that, that.getTerm());
     }
 
     @Override

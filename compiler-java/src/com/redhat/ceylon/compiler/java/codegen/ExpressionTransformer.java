@@ -377,12 +377,13 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression transformOverridableUnaryOperator(Tree.UnaryOperatorExpression op, ProducedType expectedType) {
         at(op);
         Tree.Term term = op.getTerm();
-        if (term instanceof Tree.NaturalLiteral && op instanceof Tree.NegativeOp) {
-            Tree.NaturalLiteral lit = (Tree.NaturalLiteral) term;
-            return makeLong(-Long.parseLong(lit.getText()));
-        } else if (term instanceof Tree.NaturalLiteral && op instanceof Tree.PositiveOp) {
-            Tree.NaturalLiteral lit = (Tree.NaturalLiteral) term;
-            return makeLong(Long.parseLong(lit.getText()));
+        boolean isUnboxed = term.getUnboxed();
+        if(isUnboxed){
+            if (op instanceof Tree.NegativeOp) {
+                return make().Unary(JCTree.NEG, transformExpression(term, BoxingStrategy.UNBOXED, expectedType));
+            } else if (op instanceof Tree.PositiveOp) {
+                return make().Unary(JCTree.POS, transformExpression(term, BoxingStrategy.UNBOXED, expectedType));
+            }
         }
         
         String operatorMethodName = unaryOperators.get(op.getClass());
