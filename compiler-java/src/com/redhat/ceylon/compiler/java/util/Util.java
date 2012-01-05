@@ -72,6 +72,46 @@ public class Util {
         return name;
     }
     
+    /**
+     * Returns a copy of the given array of identifiers, 
+     * {@link #quoteIfJavaKeyword(String) quoting} keyword identifiers as 
+     * necessary 
+     * @param name The parts of a qualified name
+     * @return The parts of the qualified name, quoted if necessary
+     */
+    public static String[] quoteJavaKeywords(String[] name){
+        String[] result = new String[name.length];
+        for (int ii = 0; ii < name.length; ii++) {
+            result[ii] = quoteIfJavaKeyword(name[ii]);
+        }
+        return result;
+    }
+    
+    /**
+     * Returns a copy of the given qualified name, but with any
+     * keyword components in the name 
+     * {@link #quoteIfJavaKeyword(String) quoted} if necessary 
+     * @param qualifiedName
+     * @return
+     */
+    public static String quoteJavaKeywords(String qualifiedName){
+        return join(".", quoteJavaKeywords(qualifiedName.split("\\.")));
+    }
+    
+    /**
+     * Joins the given parts using the given separator
+     * @param sep The separator
+     * @param parts The parts
+     * @return The parts, joined with the separator
+     */
+    public static String join(String sep, String... parts) {
+        StringBuilder sb = new StringBuilder();
+        for (String part : parts) {
+            sb.append(part).append(sep);
+        }
+        return sb.subSequence(0, sb.length() - sep.length()).toString();
+    }
+    
     private static boolean isJavaKeyword(String name) {
         try{
             Token token = Token.valueOf(name.toUpperCase());
