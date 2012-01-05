@@ -148,15 +148,15 @@ public class ClassDefinitionBuilder {
                     MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(gen, true, member.getName());
                     Method method = (Method) member;
                     ListBuffer<JCTree.JCExpression> params = ListBuffer.lb();
-                    params.append(gen.makeIdent("this"));
+                    params.append(gen.makeUnquotedIdent("this"));
                     for(Parameter param : method.getParameterLists().get(0).getParameters()){
                         methodBuilder.parameter(param);
-                        params.append(gen.makeIdent(param.getName()));
+                        params.append(gen.makeUnquotedIdent(param.getName()));
                     }
                     
                     boolean isVoid = method.getType().getProducedTypeQualifiedName().equals("ceylon.language.Void");
                     JCMethodInvocation expr = gen.make().Apply(/*FIXME*/List.<JCTree.JCExpression>nil(), 
-                            gen.makeIdent(Util.getCompanionClassName(decl.getName())+"."+method.getName()), 
+                            gen.makeQualIdentFromString(Util.getCompanionClassName(decl.getName())+"."+method.getName()), 
                             params.toList());
                     JCTree.JCStatement body;
                     if (!isVoid) {

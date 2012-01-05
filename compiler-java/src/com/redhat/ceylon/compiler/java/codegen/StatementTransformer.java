@@ -163,7 +163,7 @@ public class StatementTransformer extends AbstractTransformer {
                 JCExpression rawToTypeExpr = makeJavaType(toType, NO_PRIMITIVES | WANT_RAW_TYPE);
     
                 // Substitute variable with the correct type to use in the rest of the code block
-                JCExpression tmpVarExpr = makeIdent(tmpVarName);
+                JCExpression tmpVarExpr = makeUnquotedIdent(tmpVarName);
                 if (cond instanceof Tree.ExistsCondition) {
                     tmpVarExpr = unboxType(tmpVarExpr, toType);
                     tmpVarTypeExpr = makeJavaType(tmpVarType);
@@ -194,7 +194,7 @@ public class StatementTransformer extends AbstractTransformer {
                 
                 at(cond);
                 // Assign the expression to test to the temporary variable
-                JCExpression testExpr = make().Assign(makeIdent(tmpVarName), expr);
+                JCExpression testExpr = make().Assign(makeUnquotedIdent(tmpVarName), expr);
                 // Use the assignment in the following condition
                 if (cond instanceof Tree.ExistsCondition) {
                     test = make().Binary(JCTree.NE, testExpr, makeNull());                
@@ -524,7 +524,7 @@ public class StatementTransformer extends AbstractTransformer {
             CaseClause caseClause, IsCase isCase, JCStatement last) {
         at(isCase);
         ProducedType type = isCase.getType().getTypeModel();
-        JCExpression cond = makeTypeTest(makeIdent(selectorAlias), type);
+        JCExpression cond = makeTypeTest(makeUnquotedIdent(selectorAlias), type);
         
         JCExpression toTypeExpr = makeJavaType(type);
         String name = isCase.getVariable().getIdentifier().getText();
@@ -537,7 +537,7 @@ public class StatementTransformer extends AbstractTransformer {
         JCExpression rawToTypeExpr = makeJavaType(type, NO_PRIMITIVES | WANT_RAW_TYPE);
 
         // Substitute variable with the correct type to use in the rest of the code block
-        JCExpression tmpVarExpr = makeIdent(tmpVarName);
+        JCExpression tmpVarExpr = makeUnquotedIdent(tmpVarName);
 
         tmpVarExpr = unboxType(at(isCase).TypeCast(rawToTypeExpr, tmpVarExpr), type);
         
