@@ -58,7 +58,7 @@ final class b3 {
     }
     
     static void setB3(boolean b3) {
-        throw new ceylon.language.Exception(null, null);
+        throw new .ceylon.language.Exception(null, null);
     }
     
     private b3() {
@@ -71,7 +71,7 @@ public final class b4 {
     }
     
     public static void setB4(boolean b4) {
-        throw new ceylon.language.Exception(null, null);
+        throw new .ceylon.language.Exception(null, null);
     }
     
     private b4() {

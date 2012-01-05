@@ -406,7 +406,8 @@ public class StatementTransformer extends AbstractTransformer {
         final JCExpression exception;
         if (expr == null) {// bare "throw;" stmt
             exception = make().NewClass(null, null,
-                    makeIdent("ceylon.language.Exception"), List.<JCExpression>of(makeNull(), makeNull()),
+                    makeIdent(syms().ceylonExceptionType),
+                    List.<JCExpression>of(makeNull(), makeNull()),
                     null);
         } else {
             // we must unerase the exception to Throwable
