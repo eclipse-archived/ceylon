@@ -29,10 +29,30 @@ void test_if() {
     } else if (2+2 == 4) {
         print("Chained if's without else OK");
     }
+    //More complex conditions
+    if (2>1 && 1<2) {
+        print("if && OK");
+    } else { print("if && FAIL"); }
+    if ((1>2 || 1>0) && 1<2) {
+        print("if (||)&& OK");
+    } else { print("if (||)&& FAIL"); }
+}
+
+void test_while() {
+    variable Integer i := 0;
+    while (i < 2) {
+        print("while OK");
+        i := i+1;
+    }
+    while (i >= 2 && i < 4) {
+        print("while OK");
+        i := i+1;
+    }
 }
 
 shared void test() {
     print("--- Start flow control tests ---");
     test_if();
+    test_while();
     print("--- End flow control tests ---");
 }
