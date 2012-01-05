@@ -40,6 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompareOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.DecrementOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DifferenceOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Element;
@@ -53,6 +54,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IdenticalOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Import;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.IncrementOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
@@ -94,6 +96,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SumOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ThenOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.This;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.WhileStatement;
@@ -1449,6 +1452,40 @@ public class GenerateJsVisitor extends Visitor
        out("?");
        that.getRightTerm().visit(this);
        out(":null)");
+   }
+   
+   @Override public void visit(IncrementOp that) {
+	   incrementOrDecrement(that.getTerm(), "getSuccessor");
+   }
+   
+   @Override public void visit(DecrementOp that) {
+	   incrementOrDecrement(that.getTerm(), "getPredecessor");
+   }
+   
+   private void incrementOrDecrement(Term term, String functionName) {
+	   if (term instanceof BaseMemberExpression) {
+		   BaseMemberExpression bme = (BaseMemberExpression) term;
+		   out("(");
+		   qualify(bme, bme.getDeclaration());
+		   out(setter(bme.getDeclaration()));
+		   out("(");
+		   qualify(bme, bme.getDeclaration());
+		   String bmeGetter = getter(bme.getDeclaration());
+		   out(bmeGetter);
+		   out("()." + functionName + "()),");
+		   qualify(bme, bme.getDeclaration());
+		   out(bmeGetter);
+		   out("())");
+	   } else if (term instanceof QualifiedMemberExpression) {
+		   QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
+		   out("function($){var x$=$.");
+		   out(getter(qme.getDeclaration()));
+		   out("()." + functionName + "();$.");
+		   out(setter(qme.getDeclaration()));
+		   out("(x$);return x$}(");
+		   qme.getPrimary().visit(this);
+		   out(")");
+	   }
    }
 
    @Override public void visit(Exists that) {

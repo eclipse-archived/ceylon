@@ -1,14 +1,20 @@
 var $$$cl15=require('ceylon/language/0.1/ceylon.language');
 
-//MethodDefinition expect at operators.ceylon (1:0-5:0)
+//MethodDefinition expect at operators.ceylon (1:0-8:0)
 function expect(actual,expected,text){
-    $$$cl15.print(text.plus($$$cl15.String(": actual='")).plus(actual.getString()).plus($$$cl15.String("', expected='")).plus(expected.getString()).plus($$$cl15.String("' => ")).plus(function($){return $!==null?$:$$$cl15.String("NOT OK")}((actual.equals(expected)===$$$cl15.getTrue()?$$$cl15.String("ok"):null))));
+    if ((actual.equals(expected))===$$$cl15.getTrue()){
+        $$$cl15.print($$$cl15.String("[ok] ").plus(text).plus($$$cl15.String(": '")).plus(actual.getString()).plus($$$cl15.String("'")));
+    }
+    else {
+        $$$cl15.print($$$cl15.String("[NOT OK] ").plus(text).plus($$$cl15.String(": actual='")).plus(actual.getString()).plus($$$cl15.String("', expected='")).plus(expected.getString()));
+    }
+    
 }
 
-//MethodDefinition testIntegerOperators at operators.ceylon (7:0-44:0)
+//MethodDefinition testIntegerOperators at operators.ceylon (10:0-47:0)
 function testIntegerOperators(){
     
-    //AttributeDeclaration i1 at operators.ceylon (9:4-9:29)
+    //AttributeDeclaration i1 at operators.ceylon (12:4-12:29)
     var $i1=$$$cl15.Integer(4).negativeValue();
     function getI1(){
         return $i1;
@@ -25,7 +31,7 @@ function testIntegerOperators(){
     setI1($$$cl15.Integer(0).negativeValue());
     expect(getI1(),$$$cl15.Integer(0),$$$cl15.String("+0=0"));
     
-    //AttributeDeclaration i2 at operators.ceylon (19:4-19:36)
+    //AttributeDeclaration i2 at operators.ceylon (22:4-22:36)
     var $i2=$$$cl15.Integer(123).plus($$$cl15.Integer(456));
     function getI2(){
         return $i2;
@@ -56,10 +62,10 @@ function testIntegerOperators(){
     expect(getI2(),$$$cl15.Integer(1000000000000),$$$cl15.String("power"));
 }
 
-//MethodDefinition testFloatOperators at operators.ceylon (46:0-76:0)
+//MethodDefinition testFloatOperators at operators.ceylon (49:0-79:0)
 function testFloatOperators(){
     
-    //AttributeDeclaration f1 at operators.ceylon (48:4-48:29)
+    //AttributeDeclaration f1 at operators.ceylon (51:4-51:29)
     var $f1=$$$cl15.Float(4.2).negativeValue();
     function getF1(){
         return $f1;
@@ -76,7 +82,7 @@ function testFloatOperators(){
     setF1($$$cl15.Float(0.0).negativeValue());
     expect(getF1(),$$$cl15.Float(0.0),$$$cl15.String("-0.0=0.0"));
     
-    //AttributeDeclaration f2 at operators.ceylon (58:4-58:43)
+    //AttributeDeclaration f2 at operators.ceylon (61:4-61:43)
     var $f2=$$$cl15.Float(3.14159265).plus($$$cl15.Float(456.0));
     function getF2(){
         return $f2;
@@ -101,28 +107,28 @@ function testFloatOperators(){
     expect(getF1(),$$$cl15.Float(12.24744871391589),$$$cl15.String("power"));
 }
 
-//ClassDefinition OpTest1 at operators.ceylon (78:0-78:17)
+//ClassDefinition OpTest1 at operators.ceylon (81:0-81:17)
 function OpTest1($$opTest1){
     if ($$opTest1===undefined)$$opTest1=new CeylonObject;
     return $$opTest1;
 }
 
-//MethodDefinition testBooleanOperators at operators.ceylon (80:0-111:0)
+//MethodDefinition testBooleanOperators at operators.ceylon (83:0-114:0)
 function testBooleanOperators(){
     
-    //AttributeDeclaration o1 at operators.ceylon (81:4-81:24)
+    //AttributeDeclaration o1 at operators.ceylon (84:4-84:24)
     var $o1=OpTest1();
     function getO1(){
         return $o1;
     }
     
-    //AttributeDeclaration o2 at operators.ceylon (82:4-82:24)
+    //AttributeDeclaration o2 at operators.ceylon (85:4-85:24)
     var $o2=OpTest1();
     function getO2(){
         return $o2;
     }
     
-    //AttributeDeclaration b1 at operators.ceylon (83:4-83:36)
+    //AttributeDeclaration b1 at operators.ceylon (86:4-86:36)
     var $b1=(getO1()===getO2()?$$$cl15.getTrue():$$$cl15.getFalse());
     function getB1(){
         return $b1;
@@ -132,7 +138,7 @@ function testBooleanOperators(){
     }
     expect(getB1(),$$$cl15.getFalse(),$$$cl15.String("identity"));
     
-    //AttributeDeclaration b2 at operators.ceylon (85:4-85:36)
+    //AttributeDeclaration b2 at operators.ceylon (88:4-88:36)
     var $b2=(getO1()===getO1()?$$$cl15.getTrue():$$$cl15.getFalse());
     function getB2(){
         return $b2;
@@ -150,7 +156,7 @@ function testBooleanOperators(){
     setB2($$$cl15.Integer(1).equals($$$cl15.Integer(2)).equals($$$cl15.getFalse()));
     expect(getB2(),$$$cl15.getTrue(),$$$cl15.String("not equal"));
     
-    //AttributeDeclaration b3 at operators.ceylon (96:4-96:30)
+    //AttributeDeclaration b3 at operators.ceylon (99:4-99:30)
     var $b3=getB2().equals($$$cl15.getFalse());
     function getB3(){
         return $b3;
@@ -173,52 +179,52 @@ function testBooleanOperators(){
     expect(getB3(),$$$cl15.getFalse(),$$$cl15.String("or"));
 }
 
-//MethodDefinition testComparisonOperators at operators.ceylon (113:0-143:0)
+//MethodDefinition testComparisonOperators at operators.ceylon (116:0-146:0)
 function testComparisonOperators(){
     
-    //AttributeDeclaration c1 at operators.ceylon (114:4-114:37)
+    //AttributeDeclaration c1 at operators.ceylon (117:4-117:37)
     var $c1=$$$cl15.String("str1").compare($$$cl15.String("str2"));
     function getC1(){
         return $c1;
     }
     expect(getC1(),$$$cl15.getSmaller(),$$$cl15.String("compare"));
     
-    //AttributeDeclaration c2 at operators.ceylon (116:4-116:37)
+    //AttributeDeclaration c2 at operators.ceylon (119:4-119:37)
     var $c2=$$$cl15.String("str2").compare($$$cl15.String("str1"));
     function getC2(){
         return $c2;
     }
     expect(getC2(),$$$cl15.getLarger(),$$$cl15.String("compare"));
     
-    //AttributeDeclaration c3 at operators.ceylon (118:4-118:37)
+    //AttributeDeclaration c3 at operators.ceylon (121:4-121:37)
     var $c3=$$$cl15.String("str1").compare($$$cl15.String("str1"));
     function getC3(){
         return $c3;
     }
     expect(getC3(),$$$cl15.getEqual(),$$$cl15.String("compare"));
     
-    //AttributeDeclaration c4 at operators.ceylon (120:4-120:29)
+    //AttributeDeclaration c4 at operators.ceylon (123:4-123:29)
     var $c4=$$$cl15.String("").compare($$$cl15.String(""));
     function getC4(){
         return $c4;
     }
     expect(getC4(),$$$cl15.getEqual(),$$$cl15.String("compare"));
     
-    //AttributeDeclaration c5 at operators.ceylon (122:4-122:33)
+    //AttributeDeclaration c5 at operators.ceylon (125:4-125:33)
     var $c5=$$$cl15.String("str1").compare($$$cl15.String(""));
     function getC5(){
         return $c5;
     }
     expect(getC5(),$$$cl15.getLarger(),$$$cl15.String("compare"));
     
-    //AttributeDeclaration c6 at operators.ceylon (124:4-124:33)
+    //AttributeDeclaration c6 at operators.ceylon (127:4-127:33)
     var $c6=$$$cl15.String("").compare($$$cl15.String("str2"));
     function getC6(){
         return $c6;
     }
     expect(getC6(),$$$cl15.getSmaller(),$$$cl15.String("compare"));
     
-    //AttributeDeclaration b1 at operators.ceylon (127:4-127:42)
+    //AttributeDeclaration b1 at operators.ceylon (130:4-130:42)
     var $b1=$$$cl15.String("str1").compare($$$cl15.String("str2")).equals($$$cl15.getSmaller());
     function getB1(){
         return $b1;
@@ -228,7 +234,7 @@ function testComparisonOperators(){
     }
     expect(getB1(),$$$cl15.getTrue(),$$$cl15.String("smaller"));
     
-    //AttributeDeclaration b2 at operators.ceylon (129:4-129:42)
+    //AttributeDeclaration b2 at operators.ceylon (132:4-132:42)
     var $b2=$$$cl15.String("str1").compare($$$cl15.String("str2")).equals($$$cl15.getLarger());
     function getB2(){
         return $b2;
@@ -238,7 +244,7 @@ function testComparisonOperators(){
     }
     expect(getB2(),$$$cl15.getFalse(),$$$cl15.String("larger"));
     
-    //AttributeDeclaration b3 at operators.ceylon (131:4-131:43)
+    //AttributeDeclaration b3 at operators.ceylon (134:4-134:43)
     var $b3=($$$cl15.String("str1").compare($$$cl15.String("str2"))!==$$$cl15.getLarger()?$$$cl15.getTrue():$$$cl15.getFalse());
     function getB3(){
         return $b3;
@@ -248,7 +254,7 @@ function testComparisonOperators(){
     }
     expect(getB3(),$$$cl15.getTrue(),$$$cl15.String("small as"));
     
-    //AttributeDeclaration b4 at operators.ceylon (133:4-133:43)
+    //AttributeDeclaration b4 at operators.ceylon (136:4-136:43)
     var $b4=($$$cl15.String("str1").compare($$$cl15.String("str2"))!==$$$cl15.getSmaller()?$$$cl15.getTrue():$$$cl15.getFalse());
     function getB4(){
         return $b4;
@@ -267,10 +273,10 @@ function testComparisonOperators(){
     expect(getB4(),$$$cl15.getTrue(),$$$cl15.String("large as"));
 }
 
-//MethodDefinition testOtherOperators at operators.ceylon (145:0-157:0)
+//MethodDefinition testOtherOperators at operators.ceylon (148:0-160:0)
 function testOtherOperators(){
     
-    //AttributeDeclaration entry at operators.ceylon (146:4-146:42)
+    //AttributeDeclaration entry at operators.ceylon (149:4-149:42)
     var $entry=$$$cl15.Entry($$$cl15.Integer(47),$$$cl15.String("hi there"));
     function getEntry(){
         return $entry;
@@ -278,7 +284,7 @@ function testOtherOperators(){
     expect(getEntry().getKey(),$$$cl15.Integer(47),$$$cl15.String("entry key"));
     expect(getEntry().getItem(),$$$cl15.String("hi there"),$$$cl15.String("entry item"));
     
-    //AttributeDeclaration entry2 at operators.ceylon (149:4-149:30)
+    //AttributeDeclaration entry2 at operators.ceylon (152:4-152:30)
     var $entry2=$$$cl15.Entry($$$cl15.getTrue(),getEntry());
     function getEntry2(){
         return $entry2;
@@ -286,14 +292,14 @@ function testOtherOperators(){
     expect(getEntry2().getKey(),$$$cl15.getTrue(),$$$cl15.String("entry key"));
     expect(getEntry2().getItem(),$$$cl15.Entry($$$cl15.Integer(47),$$$cl15.String("hi there")),$$$cl15.String("entry item"));
     
-    //AttributeDeclaration s1 at operators.ceylon (153:4-153:41)
+    //AttributeDeclaration s1 at operators.ceylon (156:4-156:41)
     var $s1=function($){return $!==null?$:$$$cl15.String("noo")}(($$$cl15.getTrue()===$$$cl15.getTrue()?$$$cl15.String("ok"):null));
     function getS1(){
         return $s1;
     }
     expect(getS1(),$$$cl15.String("ok"),$$$cl15.String("then/else"));
     
-    //AttributeDeclaration s2 at operators.ceylon (155:4-155:47)
+    //AttributeDeclaration s2 at operators.ceylon (158:4-158:47)
     var $s2=function($){return $!==null?$:$$$cl15.String("great")}(($$$cl15.getFalse()===$$$cl15.getTrue()?$$$cl15.String("what?"):null));
     function getS2(){
         return $s2;
@@ -301,30 +307,30 @@ function testOtherOperators(){
     expect(getS2(),$$$cl15.String("great"),$$$cl15.String("then/else"));
 }
 
-//MethodDefinition testCollectionOperators at operators.ceylon (159:0-167:0)
+//MethodDefinition testCollectionOperators at operators.ceylon (162:0-170:0)
 function testCollectionOperators(){
     
-    //AttributeDeclaration seq1 at operators.ceylon (160:4-160:33)
+    //AttributeDeclaration seq1 at operators.ceylon (163:4-163:33)
     var $seq1=$$$cl15.ArraySequence([$$$cl15.String("one"),$$$cl15.String("two")]);
     function getSeq1(){
         return $seq1;
     }
     
-    //AttributeDeclaration s1 at operators.ceylon (161:4-161:30)
+    //AttributeDeclaration s1 at operators.ceylon (164:4-164:30)
     var $s1=function($){return $!==null?$:$$$cl15.String("null")}(getSeq1().item($$$cl15.Integer(0)));
     function getS1(){
         return $s1;
     }
     expect(getS1(),$$$cl15.String("one"),$$$cl15.String("lookup"));
     
-    //AttributeDeclaration s2 at operators.ceylon (163:4-163:30)
+    //AttributeDeclaration s2 at operators.ceylon (166:4-166:30)
     var $s2=function($){return $!==null?$:$$$cl15.String("null")}(getSeq1().item($$$cl15.Integer(2)));
     function getS2(){
         return $s2;
     }
     expect(getS2(),$$$cl15.String("null"),$$$cl15.String("lookup"));
     
-    //AttributeDeclaration s3 at operators.ceylon (165:4-165:31)
+    //AttributeDeclaration s3 at operators.ceylon (168:4-168:31)
     var $s3=function($){return $!==null?$:$$$cl15.String("null")}(getSeq1().item($$$cl15.Integer(1).negativeValue()));
     function getS3(){
         return $s3;
@@ -332,23 +338,23 @@ function testCollectionOperators(){
     expect(getS3(),$$$cl15.String("null"),$$$cl15.String("lookup"));
 }
 
-//MethodDefinition testNullsafeOperators at operators.ceylon (169:0-175:0)
+//MethodDefinition testNullsafeOperators at operators.ceylon (172:0-178:0)
 function testNullsafeOperators(){
     
-    //AttributeDeclaration seq at operators.ceylon (170:4-170:27)
+    //AttributeDeclaration seq at operators.ceylon (173:4-173:27)
     var $seq=$$$cl15.ArraySequence([$$$cl15.String("hi")]);
     function getSeq(){
         return $seq;
     }
     
-    //AttributeDeclaration s1 at operators.ceylon (171:4-171:29)
+    //AttributeDeclaration s1 at operators.ceylon (174:4-174:29)
     var $s1=function($){return $!==null?$:$$$cl15.String("null")}(getSeq().item($$$cl15.Integer(0)));
     function getS1(){
         return $s1;
     }
     expect(getS1(),$$$cl15.String("hi"),$$$cl15.String("default"));
     
-    //AttributeDeclaration s2 at operators.ceylon (173:4-173:29)
+    //AttributeDeclaration s2 at operators.ceylon (176:4-176:29)
     var $s2=function($){return $!==null?$:$$$cl15.String("null")}(getSeq().item($$$cl15.Integer(1)));
     function getS2(){
         return $s2;
@@ -356,7 +362,102 @@ function testNullsafeOperators(){
     expect(getS2(),$$$cl15.String("null"),$$$cl15.String("default"));
 }
 
-//MethodDefinition test at operators.ceylon (177:0-187:0)
+//MethodDefinition testIncDecOperators at operators.ceylon (180:0-212:0)
+function testIncDecOperators(){
+    
+    //AttributeDeclaration i1 at operators.ceylon (181:4-181:28)
+    var $i1=$$$cl15.Integer(1);
+    function getI1(){
+        return $i1;
+    }
+    function setI1(i1){
+        $i1=i1;
+    }
+    
+    //MethodDefinition f1 at operators.ceylon (182:4-186:4)
+    function f1(){
+        
+        //AttributeDeclaration i2 at operators.ceylon (183:8-183:25)
+        var $i2=(setI1(getI1().getSuccessor()),getI1());
+        function getI2(){
+            return $i2;
+        }
+        expect(getI1(),$$$cl15.Integer(2),$$$cl15.String("prefix increment"));
+        expect(getI2(),$$$cl15.Integer(2),$$$cl15.String("prefix increment"));
+    }
+    f1();
+    
+    //ClassDefinition C1 at operators.ceylon (189:4-189:49)
+    function C1($$c1){
+        if ($$c1===undefined)$$c1=new CeylonObject;
+        
+        //AttributeDeclaration i at operators.ceylon (189:17-189:47)
+        var $i=$$$cl15.Integer(1);
+        function getI(){
+            return $i;
+        }
+        $$c1.getI=getI;
+        function setI(i){
+            $i=i;
+        }
+        $$c1.setI=setI;
+        return $$c1;
+    }
+    
+    //AttributeDeclaration c1 at operators.ceylon (190:4-190:16)
+    var $c1=C1();
+    function getC1(){
+        return $c1;
+    }
+    
+    //AttributeDeclaration i3 at operators.ceylon (191:4-191:28)
+    var $i3=$$$cl15.Integer(0);
+    function getI3(){
+        return $i3;
+    }
+    function setI3(i3){
+        $i3=i3;
+    }
+    
+    //MethodDefinition f2 at operators.ceylon (192:4-195:4)
+    function f2(){
+        (setI3(getI3().getSuccessor()),getI3());
+        return getC1();
+    }
+    
+    //AttributeDeclaration i4 at operators.ceylon (196:4-196:25)
+    var $i4=function($){var x$=$.getI().getSuccessor();$.setI(x$);return x$}(f2());
+    function getI4(){
+        return $i4;
+    }
+    expect(getI4(),$$$cl15.Integer(2),$$$cl15.String("prefix increment"));
+    expect(getC1().getI(),$$$cl15.Integer(2),$$$cl15.String("prefix increment"));
+    expect(getI3(),$$$cl15.Integer(1),$$$cl15.String("prefix increment"));
+    
+    //MethodDefinition f3 at operators.ceylon (201:4-205:4)
+    function f3(){
+        
+        //AttributeDeclaration i2 at operators.ceylon (202:8-202:25)
+        var $i2=(setI1(getI1().getPredecessor()),getI1());
+        function getI2(){
+            return $i2;
+        }
+        expect(getI1(),$$$cl15.Integer(1),$$$cl15.String("prefix decrement"));
+        expect(getI2(),$$$cl15.Integer(1),$$$cl15.String("prefix decrement"));
+    }
+    f3();
+    
+    //AttributeDeclaration i5 at operators.ceylon (208:4-208:25)
+    var $i5=function($){var x$=$.getI().getPredecessor();$.setI(x$);return x$}(f2());
+    function getI5(){
+        return $i5;
+    }
+    expect(getI5(),$$$cl15.Integer(1),$$$cl15.String("prefix decrement"));
+    expect(getC1().getI(),$$$cl15.Integer(1),$$$cl15.String("prefix decrement"));
+    expect(getI3(),$$$cl15.Integer(2),$$$cl15.String("prefix decrement"));
+}
+
+//MethodDefinition test at operators.ceylon (214:0-225:0)
 function test(){
     $$$cl15.print($$$cl15.String("--- Start Operator Tests ---"));
     testIntegerOperators();
@@ -366,6 +467,7 @@ function test(){
     testOtherOperators();
     testCollectionOperators();
     testNullsafeOperators();
+    testIncDecOperators();
     $$$cl15.print($$$cl15.String("--- End Operator Tests ---"));
 }
 this.test=test;

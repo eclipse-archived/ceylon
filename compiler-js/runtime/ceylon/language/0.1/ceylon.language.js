@@ -37,6 +37,8 @@ function Integer(value) {
     }
     that.getFloat = function() { return Float(value) }
     that.getInteger = function() { return that }
+    that.getSuccessor = function() { return Integer(value+1) }
+    that.getPredecessor = function() { return Integer(value-1) }
     return that;
 }
 

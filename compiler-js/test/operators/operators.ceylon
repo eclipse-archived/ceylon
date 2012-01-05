@@ -1,7 +1,10 @@
 void expect(Equality actual, Equality expected, String text) {
-    print(text + ": actual='" + actual.string + "', expected='"
-            + expected.string + "' => "
-            + ((actual==expected) then "ok" else "NOT OK"));
+    if (actual == expected) {
+        print("[ok] " + text + ": '" + actual.string + "'");
+    } else {
+        print("[NOT OK] " + text + ": actual='" + actual.string + "', expected='"
+              + expected.string);
+    }
 }
 
 void testIntegerOperators() {
@@ -174,6 +177,40 @@ void testNullsafeOperators() {
     expect(s2, "null", "default");
 }
 
+void testIncDecOperators() {
+    variable Integer i1 := 1;
+    void f1() {
+        Integer i2 = ++i1;
+        expect(i1, 2, "prefix increment");
+        expect(i2, 2, "prefix increment");
+    }
+    f1();
+    
+    class C1() { shared variable Integer i := 1; }
+    C1 c1 = C1();
+    variable Integer i3 := 0;
+    C1 f2() {
+        ++i3;
+        return c1;
+    }
+    Integer i4 = ++f2().i;
+    expect(i4, 2, "prefix increment");
+    expect(c1.i, 2, "prefix increment");
+    expect(i3, 1, "prefix increment");
+    
+    void f3() {
+        Integer i2 = --i1;
+        expect(i1, 1, "prefix decrement");
+        expect(i2, 1, "prefix decrement");
+    }
+    f3();
+    
+    Integer i5 = --f2().i;
+    expect(i5, 1, "prefix decrement");
+    expect(c1.i, 1, "prefix decrement");
+    expect(i3, 2, "prefix decrement");
+}
+
 shared void test() {
     print("--- Start Operator Tests ---");
     testIntegerOperators();
@@ -183,5 +220,6 @@ shared void test() {
     testOtherOperators();
     testCollectionOperators();
     testNullsafeOperators();
+    testIncDecOperators();
     print("--- End Operator Tests ---");
 }
