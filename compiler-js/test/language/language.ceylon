@@ -86,7 +86,7 @@ void test_interpolate() {
     //print("String part " 1 " interpolation " 2 " works");
 }
 
-shared void test_language() {
+shared void test() {
     print("--- Start Language Module Tests ---");
     test_largest();
     test_smallest();
