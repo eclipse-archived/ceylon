@@ -20,9 +20,11 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
@@ -44,7 +46,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.NegativeOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Nonempty;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NotOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositiveOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PostfixOperatorExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PowerOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PrefixOperatorExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
@@ -149,6 +153,36 @@ public class BoxingVisitor extends Visitor {
         if(that.getLeftTerm().getUnboxed()
                 && that.getRightTerm().getUnboxed())
             Util.markUnBoxed(that);
+    }
+
+    @Override
+    public void visit(PostfixOperatorExpression that) {
+        super.visit(that);
+        // we can optimise this one if we're a local variable and the term is unboxed
+        if(that.getTerm().getUnboxed() && isLocalVariable(that.getTerm()))
+            Util.markUnBoxed(that);
+    }
+
+    @Override
+    public void visit(PrefixOperatorExpression that) {
+        super.visit(that);
+        // we can optimise this one if we're a local variable and the term is unboxed
+        if(that.getTerm().getUnboxed() && isLocalVariable(that.getTerm()))
+            Util.markUnBoxed(that);
+    }
+
+    private boolean isLocalVariable(Term term) {
+        if(!(term instanceof BaseMemberExpression))
+            return false;
+        Declaration decl = ((BaseMemberExpression)term).getDeclaration();
+        if(decl == null) // typechecker error
+            return false;
+        // make sure we don't try to optimise things which can't be optimised
+        return decl instanceof Value
+                && !decl.isToplevel()
+                && !decl.isClassOrInterfaceMember()
+                && !decl.isCaptured()
+                && !decl.isShared();
     }
 
     @Override

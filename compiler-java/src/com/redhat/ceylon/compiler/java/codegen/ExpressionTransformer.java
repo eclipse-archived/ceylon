@@ -332,7 +332,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         // Unary operators
         addUnaryOperator(Tree.PositiveOp.class, "positiveValue", JCTree.POS);
         addUnaryOperator(Tree.NegativeOp.class, "negativeValue", JCTree.NEG);
-
+        addUnaryOperator(Tree.PostfixIncrementOp.class, "getSuccessor", JCTree.POSTINC);
+        addUnaryOperator(Tree.PostfixDecrementOp.class, "getPredecessor", JCTree.POSTDEC);
+        addUnaryOperator(Tree.IncrementOp.class, "getSuccessor", JCTree.PREINC);
+        addUnaryOperator(Tree.DecrementOp.class, "getPredecessor", JCTree.PREDEC);
+        
         // Binary operators
         addBinaryOperator(Tree.SumOp.class, "plus", JCTree.PLUS);
         addBinaryOperator(Tree.DifferenceOp.class, "minus", JCTree.MINUS);
@@ -660,14 +664,15 @@ public class ExpressionTransformer extends AbstractTransformer {
     // Postfix operator
     
     public JCExpression transform(Tree.PostfixOperatorExpression expr) {
-        String methodName;
-        if (expr instanceof Tree.PostfixIncrementOp){
-            methodName = "getSuccessor";
-        }else if (expr instanceof Tree.PostfixDecrementOp){
-            methodName = "getPredecessor";
-        }else{
+        OperatorTranslation operator = unaryOperators.get(expr.getClass());
+        if(operator == null){
             log.error("ceylon", "Not supported yet: "+expr.getNodeType());
             return at(expr).Erroneous(List.<JCTree>nil());
+        }
+        
+        if(expr.getUnboxed() && operator.isOptimisable()){
+            JCExpression term = transformExpression(expr.getTerm(), BoxingStrategy.UNBOXED, expr.getTypeModel());
+            return at(expr).Unary(operator.javacOperator, term);
         }
         
         Interface compoundType = expr.getUnit().getOrdinalDeclaration();
@@ -693,7 +698,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
             // attr = $tmp.getSuccessor()
             JCExpression successor = make().Apply(null, 
-                                                  makeSelect(make().Ident(varName), methodName), 
+                                                  makeSelect(make().Ident(varName), operator.ceylonMethod), 
                                                   List.<JCExpression>nil());
             // make sure the result is boxed if necessary, the result of successor/predecessor is always boxed
             successor = boxUnboxIfNecessary(successor, true, term.getTypeModel(), Util.getBoxingStrategy(term));
@@ -732,7 +737,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             
             // $tmpE.attr = $tmpV.getSuccessor()
             JCExpression successor = make().Apply(null, 
-                                                  makeSelect(make().Ident(varVName), methodName), 
+                                                  makeSelect(make().Ident(varVName), operator.ceylonMethod), 
                                                   List.<JCExpression>nil());
             // make sure the result is boxed if necessary, the result of successor/predecessor is always boxed
             successor = boxUnboxIfNecessary(successor, true, term.getTypeModel(), Util.getBoxingStrategy(term));
@@ -759,16 +764,17 @@ public class ExpressionTransformer extends AbstractTransformer {
     // Prefix operator
     
     public JCExpression transform(Tree.PrefixOperatorExpression expr) {
-        final String methodName;
-        if (expr instanceof Tree.IncrementOp){
-            methodName = "getSuccessor";
-        }else if (expr instanceof Tree.DecrementOp){
-            methodName = "getPredecessor";
-        }else{
+        final OperatorTranslation operator = unaryOperators.get(expr.getClass());
+        if(operator == null){
             log.error("ceylon", "Not supported yet: "+expr.getNodeType());
             return at(expr).Erroneous(List.<JCTree>nil());
         }
         
+        if(expr.getUnboxed() && operator.isOptimisable()){
+            JCExpression term = transformExpression(expr.getTerm(), BoxingStrategy.UNBOXED, expr.getTypeModel());
+            return at(expr).Unary(operator.javacOperator, term);
+        }
+
         Interface compoundType = expr.getUnit().getOrdinalDeclaration();
         ProducedType valueType = getSupertype(expr.getTerm(), compoundType);
         ProducedType returnType = getTypeArgument(valueType, 0);
@@ -778,7 +784,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             @Override
             public JCExpression getNewValue(JCExpression previousValue) {
                 // make this call: previousValue.getSuccessor() or previousValue.getPredecessor()
-                return make().Apply(null, makeSelect(previousValue, methodName), List.<JCExpression>nil());
+                return make().Apply(null, makeSelect(previousValue, operator.ceylonMethod), List.<JCExpression>nil());
             }
         });
     }
