@@ -12,7 +12,7 @@ class SwitchIsVarSubst {
             } else if ($sel$0 instanceof .java.lang.Throwable) {
                 final .java.lang.Throwable $b$1 = (.java.lang.Throwable)$sel$0;
                 name = .ceylon.language.String.instance("Exception: ").plus(.ceylon.language.String.instance($b$1.getMessage())).toString();
-            } else throw new .com.redhat.ceylon.compiler.java.language.TypeSystemError("Supposedly exhaustive switch was not exhaustive");
+            } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
         return name;
     }

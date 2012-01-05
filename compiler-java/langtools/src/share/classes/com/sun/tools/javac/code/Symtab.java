@@ -177,7 +177,7 @@ public class Symtab {
     public  Type ceylonContainerType;
     public  Type ceylonNamedArgumentCall;
     public  Type ceylonExceptionType;
-    public  Type ceylonTypeSystemErrorType;
+    public  Type ceylonEnumeratedTypeErrorType;
 
     public final Type ceylonAtCeylonType;
     public final Type ceylonAtModuleType;
@@ -740,6 +740,6 @@ public class Symtab {
         ceylonContainerType = enterClass("ceylon.language.Container");
         ceylonNamedArgumentCall = enterClass("ceylon.language.NamedArgumentCall");
         ceylonExceptionType = enterClass("ceylon.language.Exception");
-        ceylonTypeSystemErrorType = enterClass("com.redhat.ceylon.compiler.java.language.TypeSystemError");
+        ceylonEnumeratedTypeErrorType = enterClass("com.redhat.ceylon.compiler.java.language.EnumeratedTypeError");
     }
 }
