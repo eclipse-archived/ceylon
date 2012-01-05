@@ -49,7 +49,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
@@ -104,7 +103,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (c.getParameterList().getParameters().isEmpty()) {
                 // Add a main() method
                 at(null);
-                JCTree.JCIdent nameId = make().Ident(names().fromString(Util.quoteIfJavaKeyword(className)));
+                JCExpression nameId = makeQuotedIdent(className);
                 JCNewClass expr = make().NewClass(null, null, nameId, List.<JCTree.JCExpression>nil(), null);
                 classBuilder.body(makeMainMethod(expr));
             }
@@ -310,7 +309,7 @@ public class ClassTransformer extends AbstractTransformer {
     public List<JCTree> transformWrappedMethod(Tree.MethodDefinition def) {
         // Generate a wrapper class for the method
         String name = def.getIdentifier().getText();
-        JCTree.JCIdent nameId = make().Ident(names().fromString(Util.quoteIfJavaKeyword(name)));
+        JCExpression nameId = makeQuotedIdent(name);
         ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, name, Decl.isShared(def));
         builder.body(classGen().transform(def, builder));
         if (Decl.withinMethod(def)) {
@@ -470,7 +469,7 @@ public class ClassTransformer extends AbstractTransformer {
         } else if (Decl.withinClassOrInterface(def)) {
             boolean visible = Decl.isCaptured(def);
             int modifiers = FINAL | ((visible) ? PRIVATE : 0);
-            JCTree.JCIdent type = make().Ident(names().fromString(name));
+            JCExpression type = makeUnquotedIdent(name);
             JCExpression initialValue = makeNewClass(name);
             containingClassBuilder.field(modifiers, name, type, initialValue, !visible);
             
@@ -505,7 +504,7 @@ public class ClassTransformer extends AbstractTransformer {
                 .main(this)
                 .annotations(makeAtIgnore());
         // Add call to process.setupArguments
-        JCIdent argsId = make().Ident(names().fromString("args"));
+        JCExpression argsId = makeUnquotedIdent("args");
         JCMethodInvocation processExpr = make().Apply(null, makeFQIdent("ceylon", "language", "process", "getProcess"), List.<JCTree.JCExpression>nil());
         methbuilder.body(make().Exec(make().Apply(null, makeSelect(processExpr, "setupArguments"), List.<JCTree.JCExpression>of(argsId))));
         // Add call to toplevel method

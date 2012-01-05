@@ -174,6 +174,10 @@ public abstract class AbstractTransformer implements Transformation {
         return make().Ident(names().fromString(ident));
     }
 
+    protected JCExpression makeQuotedIdent(String ident) {
+        return make().Ident(names().fromString(Util.quoteIfJavaKeyword(ident)));
+    }
+
     protected JCExpression makeQualIdentFromString(String nameAsString) {
         return makeQualIdent(null, nameAsString.split("\\."));
     }
@@ -182,7 +186,7 @@ public abstract class AbstractTransformer implements Transformation {
         JCExpression type = null;
         for (String component : components) {
             if (type == null)
-                type = make().Ident(names().fromString(component));
+                type = makeUnquotedIdent(component);
             else
                 type = makeSelect(type, component);
         }
@@ -194,7 +198,7 @@ public abstract class AbstractTransformer implements Transformation {
             for (String component : names) {
                 if (component != null) {
                     if (expr == null) {
-                        expr = make().Ident(names().fromString(component));
+                        expr = makeUnquotedIdent(component);
                     } else {
                         expr = makeSelect(expr, component);
                     }
@@ -217,7 +221,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     protected JCFieldAccess makeSelect(String s1, String s2) {
-        return makeSelect(make().Ident(names().fromString(s1)), s2);
+        return makeSelect(makeUnquotedIdent(s1), s2);
     }
 
     protected JCFieldAccess makeSelect(String s1, String s2, String... rest) {
@@ -256,7 +260,7 @@ public abstract class AbstractTransformer implements Transformation {
     
     // Creates a "foo foo = new foo();"
     protected JCTree.JCVariableDecl makeLocalIdentityInstance(String varName, boolean isShared) {
-        JCTree.JCIdent name = make().Ident(names().fromString(varName));
+        JCExpression name = makeUnquotedIdent(varName);
         
         JCExpression initValue = makeNewClass(varName);
         List<JCAnnotation> annots = List.<JCAnnotation>nil();
@@ -278,7 +282,7 @@ public abstract class AbstractTransformer implements Transformation {
     
     // Creates a "new foo(arg1, arg2, ...);"
     protected JCTree.JCNewClass makeNewClass(String className, List<JCTree.JCExpression> args) {
-        JCTree.JCIdent name = make().Ident(names().fromString(className));
+        JCExpression name = makeUnquotedIdent(className);
         return makeNewClass(name, args);
     }
     
@@ -313,7 +317,7 @@ public abstract class AbstractTransformer implements Transformation {
         
         JCExpression result;
         if (i == args.length) {
-            result = make().Ident(names().fromString(varName));
+            result = makeUnquotedIdent(varName);
         } else {
             result = args[i];
         }

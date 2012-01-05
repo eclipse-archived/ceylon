@@ -1122,7 +1122,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     private List<JCExpression> makeVarRefArgumentList(String varBaseName, int argCount) {
         List<JCExpression> names = List.<JCExpression> nil();
         for (int i = 0; i < argCount; i++) {
-            names = names.append(make().Ident(names().fromString(varBaseName + "$" + i)));
+            names = names.append(makeUnquotedIdent(varBaseName + "$" + i));
         }
         return names;
     }
@@ -1131,7 +1131,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     private List<JCExpression> makeThisVarRefArgumentList(String varBaseName, int argCount, boolean needsThis) {
         List<JCExpression> names = List.<JCExpression> nil();
         if (needsThis) {
-            names = names.append(make().Ident(names().fromString(varBaseName + "$this$")));
+            names = names.append(makeUnquotedIdent(varBaseName + "$this$"));
         }
         names = names.appendList(makeVarRefArgumentList(varBaseName, argCount));
         return names;
@@ -1156,7 +1156,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     JCExpression tmpCallPrimExpr = null;
                     if (vars != null && primaryExpr != null && selector != null) {
                         // Prepare the first argument holding the primary for the call
-                        JCExpression callVarExpr = make().Ident(names().fromString(callVarName));
+                        JCExpression callVarExpr = makeUnquotedIdent(callVarName);
                         ProducedType type = ((Tree.QualifiedMemberExpression)ce.getPrimary()).getTarget().getQualifyingType();
                         JCVariableDecl callVar = makeVar(callVarName, makeJavaType(type, NO_PRIMITIVES), primaryExpr);
                         vars.prepend(callVar);

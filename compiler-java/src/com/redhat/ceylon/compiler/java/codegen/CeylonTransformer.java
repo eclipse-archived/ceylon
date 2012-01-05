@@ -143,33 +143,20 @@ public class CeylonTransformer extends AbstractTransformer {
         return buf.toString();
     }
 
-    private JCExpression makeIdentFromIdentifiers(Iterable<Tree.Identifier> components) {
-
-        JCExpression type = null;
-        for (Tree.Identifier component : components) {
-            if (type == null)
-                type = make().Ident(names().fromString(component.getText()));
-            else
-                type = makeSelect(type, component.getText());
-        }
-
-        return type;
-    }
-
     // FIXME: port handleOverloadedToplevelClasses when I figure out what it
     // does
 
     private JCExpression getPackage(String fullname) {
-        String shortName = Convert.shortName(fullname);
-        String packagePart = Convert.packagePart(fullname);
-        if (packagePart == null || packagePart.length() == 0)
-            return make().Ident(names().fromString(shortName));
-        else
-            return make().Select(getPackage(packagePart), names().fromString(shortName));
+        return makeQualIdentFromString(fullname);
     }
 
     public JCImport transform(Tree.ImportPath that) {
-        return at(that).Import(makeIdentFromIdentifiers(that.getIdentifiers()), false);
+        String[] names = new String[that.getIdentifiers().size()];
+        int i = 0;
+        for (Tree.Identifier component : that.getIdentifiers()) {
+            names[i++] = component.getText();
+        }
+        return at(that).Import(makeQualIdent(null, names), false);
     }
     
     public List<JCTree> transform(AnyAttribute decl) {

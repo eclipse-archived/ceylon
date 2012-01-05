@@ -38,7 +38,7 @@ import com.sun.tools.javac.util.Name;
  */
 public class AttributeDefinitionBuilder {
     private boolean hasField = true;
-    private final Name fieldName;
+    private final String fieldName;
 
     private final JCTree.JCExpression attrType;
     private final String attrName;
@@ -75,7 +75,7 @@ public class AttributeDefinitionBuilder {
         this.owner = owner;
         this.className = className;
         this.attrName = attrName;
-        this.fieldName = owner.names().fromString(fieldName);
+        this.fieldName = fieldName;
         
         getterBuilder = MethodDefinitionBuilder
             .systemMethod(owner, Util.getGetterName(attrName))
@@ -160,7 +160,7 @@ public class AttributeDefinitionBuilder {
 
         return owner.make().VarDef(
                 owner.make().Modifiers(flags),
-                fieldName,
+                owner.names().fromString(Util.quoteIfJavaKeyword(fieldName)),
                 attrType,
                 null
         );
@@ -169,13 +169,13 @@ public class AttributeDefinitionBuilder {
     private JCTree generateFieldInit() {
         long flags = (modifiers & Flags.STATIC);
 
-        JCAssign init = owner.make().Assign(owner.make().Ident(fieldName), variableInit);
+        JCAssign init = owner.make().Assign(owner.makeUnquotedIdent(fieldName), variableInit);
         return owner.make().Block(flags, 
                 List.<JCTree.JCStatement>of(owner.make().Exec(init)));
     }
 
     public JCTree.JCBlock generateDefaultGetterBlock() {
-        JCExpression returnExpr = owner.make().Ident(fieldName);
+        JCExpression returnExpr = owner.makeUnquotedIdent(fieldName);
         if (isHashCode) {
             returnExpr = owner.make().TypeCast(owner.syms().intType, returnExpr);
         }
@@ -183,18 +183,17 @@ public class AttributeDefinitionBuilder {
     }
 
     public JCTree.JCBlock generateDefaultSetterBlock() {
-        Name paramName = owner.names().fromString(attrName);
         JCExpression fld;
-        if (fieldName.equals(paramName)) {
-            fld = owner.makeSelect("this", fieldName.toString());
+        if (fieldName.equals(attrName)) {
+            fld = owner.makeSelect("this", fieldName);
         } else {
-            fld = owner.make().Ident(fieldName);
+            fld = owner.makeUnquotedIdent(fieldName);
         }
         return owner.make().Block(0L, List.<JCTree.JCStatement>of(
                 owner.make().Exec(
                         owner.make().Assign(
                                 fld,
-                                owner.make().Ident(paramName)))));
+                                owner.makeUnquotedIdent(attrName)))));
     }
 
     /**
