@@ -310,7 +310,18 @@ public class ExpressionTest extends CompilerTest {
     public void testInsSequenceInstantiation(){
         compareWithJavaSource("instantiation/SequenceInstantiation");
     }
-    
+    @Test
+    public void testInsMethodLocalInstantiation(){
+        compareWithJavaSource("instantiation/MethodLocalInstantiation");
+    }
+    @Test
+    public void testInsGetterLocalInstantioation(){
+        compareWithJavaSource("instantiation/GetterLocalInstantiation");
+    }
+    @Test
+    public void testInsSetterLocalInstantioation(){
+        compareWithJavaSource("instantiation/SetterLocalInstantiation");
+    }
     // Operators
     
     @Test

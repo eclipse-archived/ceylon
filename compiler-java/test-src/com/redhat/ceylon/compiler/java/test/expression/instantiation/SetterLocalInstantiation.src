@@ -1,0 +1,25 @@
+package com.redhat.ceylon.compiler.java.test.expression.instantiation;
+
+class OuterClass {
+    
+    private final long getI() {
+        return 0L;
+    }
+    
+    private final void setI(long i) {
+        class LocalClass {
+            
+            LocalClass() {
+            }
+        }
+        final LocalClass l = new LocalClass();
+    }
+    
+    OuterClass() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new OuterClass();
+    }
+}
