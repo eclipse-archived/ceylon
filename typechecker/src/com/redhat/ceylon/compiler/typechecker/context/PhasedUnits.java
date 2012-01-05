@@ -56,7 +56,7 @@ public class PhasedUnits {
         PhasedUnit phasedUnit = this.phasedUnitPerRelativePath.get(relativePath);
         Unit unit = phasedUnit.getUnit();
         if (unit != null) {
-            unit.getPackage().getUnits().remove(unit);
+            unit.getPackage().removeUnit(unit);
         }
         this.phasedUnitPerRelativePath.remove(relativePath);
         this.phasedUnitPerFile.remove(phasedUnit.getUnitFile());
