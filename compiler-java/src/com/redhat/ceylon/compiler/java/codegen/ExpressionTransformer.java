@@ -43,6 +43,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BinaryOperatorExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.LogicalOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
@@ -383,6 +384,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         addAssignmentOperator(Tree.MultiplyAssignOp.class, Tree.ProductOp.class, JCTree.MUL_ASG);
         addAssignmentOperator(Tree.DivideAssignOp.class, Tree.QuotientOp.class, JCTree.DIV_ASG);
         addAssignmentOperator(Tree.RemainderAssignOp.class, Tree.RemainderOp.class, JCTree.MOD_ASG);
+        addAssignmentOperator(Tree.AndAssignOp.class, Tree.AndOp.class, JCTree.BITAND_ASG);
+        addAssignmentOperator(Tree.OrAssignOp.class, Tree.OrOp.class, JCTree.BITOR_ASG);
     }
 
     //
@@ -636,10 +639,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         // see if we can optimise it
         if(op.getUnboxed()){
-            // we don't care about their types since they're unboxed and we know it
-            JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.UNBOXED, null);
-            JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.UNBOXED, null);
-            return at(op).Assignop(operator.javacOperator, left, right);
+            return optimiseAssignmentOperator(op, operator);
         }
         
         // find the proper type
@@ -664,33 +664,43 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         });
     }
-    
+
     public JCExpression transform(Tree.BitwiseAssignmentOp op){
         log.error("ceylon", "Not supported yet: "+op.getNodeType());
         return at(op).Erroneous(List.<JCTree>nil());
     }
 
     public JCExpression transform(final Tree.LogicalAssignmentOp op){
-        // desugar it
-        final Class<? extends Tree.LogicalOp> operatorClass;
-        if(op instanceof Tree.AndAssignOp)
-            operatorClass = Tree.AndOp.class;
-        else if(op instanceof Tree.OrAssignOp)
-            operatorClass = Tree.OrOp.class;
-        else{
+        final AssignmentOperatorTranslation operator = assignmentOperators.get(op.getClass());
+        if(operator == null){
             log.error("ceylon", "Not supported yet: "+op.getNodeType());
             return at(op).Erroneous(List.<JCTree>nil());
         }
+        
+        // optimise if we can
+        if(op.getUnboxed()){
+            return optimiseAssignmentOperator(op, operator);
+        }
+        
         ProducedType valueType = op.getLeftTerm().getTypeModel();
         // we work on unboxed types
         return transformAssignAndReturnOperation(op, op.getLeftTerm(), false, 
                 valueType, valueType, new AssignAndReturnOperationFactory(){
+            @SuppressWarnings("unchecked")
             @Override
             public JCExpression getNewValue(JCExpression previousValue) {
                 // make this call: previousValue OP RHS
-                return transformLogicalOp(op, operatorClass, previousValue, op.getRightTerm());
+                return transformLogicalOp(op, (Class<? extends LogicalOp>) operator.binaryOperator, 
+                        previousValue, op.getRightTerm());
             }
         });
+    }
+
+    private JCExpression optimiseAssignmentOperator(final Tree.AssignmentOp op, final AssignmentOperatorTranslation operator) {
+        // we don't care about their types since they're unboxed and we know it
+        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.UNBOXED, null);
+        JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.UNBOXED, null);
+        return at(op).Assignop(operator.javacOperator, left, right);
     }
 
     // Postfix operator
