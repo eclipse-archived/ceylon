@@ -305,6 +305,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         append(gen.expressionGen().transform(expr));
     }
 
+    public void visit(Tree.IdenticalOp op) {
+        append(gen.expressionGen().transform(op));
+    }
+
     // FIXME: port dot operator?
     public void visit(Tree.NotEqualOp op) {
         append(gen.expressionGen().transform(op));

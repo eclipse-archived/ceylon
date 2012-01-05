@@ -541,6 +541,13 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     // Comparison operators
     
+    public JCExpression transform(Tree.IdenticalOp op){
+        // we don't care about their types and boxing
+        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.INDIFFERENT, null);
+        JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.INDIFFERENT, null);
+        return at(op).Binary(JCTree.EQ, left, right);
+    }
+    
     public JCExpression transform(Tree.ComparisonOp op) {
         return transformOverridableBinaryOperator(op, op.getUnit().getComparableDeclaration());
     }
@@ -587,41 +594,36 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         JCExpression right = transformExpression(op.getRightTerm(), getBoxingStrategy(op), rightType);
         
-        if (operatorClass == Tree.IdenticalOp.class) {
-            // FIXME: move this out of here no? It's not overridable and doesn't require boxing/unboxing or
-            // even unerasure
-            result = at(op).Binary(JCTree.EQ, left, right);
-        } else {
-            OperatorTranslation originalOperator = binaryOperators.get(operatorClass);
-            if (originalOperator == null) {
+        OperatorTranslation originalOperator = binaryOperators.get(operatorClass);
+        if (originalOperator == null) {
+            return make().Erroneous();
+        }
+
+        // optimise if we can
+        if(op.getUnboxed()
+                && originalOperator.isOptimisable(){
+            return make().Binary(originalOperator.javacOperator, left, right);
+        }
+
+        boolean loseComparison = 
+                operatorClass == Tree.SmallAsOp.class 
+                || operatorClass == Tree.SmallerOp.class 
+                || operatorClass == Tree.LargerOp.class
+                || operatorClass == Tree.LargeAsOp.class;
+
+        // for comparisons we need to invoke compare()
+        OperatorTranslation actualOperator = originalOperator;
+        if (loseComparison) {
+            actualOperator = binaryOperators.get(Tree.CompareOp.class);
+            if (actualOperator == null) {
                 return make().Erroneous();
             }
+        }
 
-            // optimise if we can
-            if(op.getUnboxed() && originalOperator.isOptimisable()){
-                return make().Binary(originalOperator.javacOperator, left, right);
-            }
+        result = at(op).Apply(null, makeSelect(left, actualOperator.ceylonMethod), List.of(right));
 
-            boolean loseComparison = 
-                    operatorClass == Tree.SmallAsOp.class 
-                    || operatorClass == Tree.SmallerOp.class 
-                    || operatorClass == Tree.LargerOp.class
-                    || operatorClass == Tree.LargeAsOp.class;
-    
-            // for comparisons we need to invoke compare()
-            OperatorTranslation actualOperator = originalOperator;
-            if (loseComparison) {
-                actualOperator = binaryOperators.get(Tree.CompareOp.class);
-                if (actualOperator == null) {
-                    return make().Erroneous();
-                }
-            }
-
-            result = at(op).Apply(null, makeSelect(left, actualOperator.ceylonMethod), List.of(right));
-    
-            if (loseComparison) {
-                result = at(op).Apply(null, makeSelect(result, actualOperator.ceylonMethod), List.<JCExpression> nil());
-            }
+        if (loseComparison) {
+            result = at(op).Apply(null, makeSelect(result, originalOperator.ceylonMethod), List.<JCExpression> nil());
         }
 
         return result;
