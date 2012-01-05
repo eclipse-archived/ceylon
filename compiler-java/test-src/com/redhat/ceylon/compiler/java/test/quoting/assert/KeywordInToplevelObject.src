@@ -1,0 +1,15 @@
+package com.redhat.ceylon.compiler.java.test.quoting;
+
+public final class $transient {
+    
+    private $transient() {
+    }
+    private static final com.redhat.ceylon.compiler.java.test.quoting.$transient value;
+    static {
+        value = new $transient();
+    }
+    
+    public static com.redhat.ceylon.compiler.java.test.quoting.$transient getTransient() {
+        return value;
+    }
+}

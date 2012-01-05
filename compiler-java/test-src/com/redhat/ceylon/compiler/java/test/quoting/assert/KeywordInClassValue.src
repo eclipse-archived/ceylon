@@ -1,0 +1,18 @@
+package com.redhat.ceylon.compiler.java.test.quoting;
+
+class KeywordInClassValue {
+    private final .java.lang.String assert;
+    
+    public final .java.lang.String getAssert() {
+        return assert;
+    }
+    
+    KeywordInClassValue() {
+        this.assert = "";
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new KeywordInClassValue();
+    }
+}

@@ -1,0 +1,16 @@
+package com.redhat.ceylon.compiler.java.test.quoting;
+
+public final class $package {
+    
+    private $package() {
+    }
+    
+    public static long $package() {
+        return 0L;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        $package();
+    }
+}

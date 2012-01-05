@@ -1,0 +1,15 @@
+package com.redhat.ceylon.compiler.java.test.quoting;
+
+public final class $assert {
+    private static final long value;
+    static {
+        value = 0L;
+    }
+    
+    public static long getAssert() {
+        return value;
+    }
+    
+    private $assert() {
+    }
+}

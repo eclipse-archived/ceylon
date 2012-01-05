@@ -1,0 +1,2 @@
+@nomodel
+shared object transient {}

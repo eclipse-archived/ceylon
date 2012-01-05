@@ -1,0 +1,4 @@
+@nomodel
+class TwoKeywordsInPackage() {
+
+}
