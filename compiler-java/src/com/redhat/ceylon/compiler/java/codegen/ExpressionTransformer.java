@@ -295,35 +295,62 @@ public class ExpressionTransformer extends AbstractTransformer {
     //
     // Unary and Binary operators that can be overridden
     
-    private static Map<Class<? extends Tree.UnaryOperatorExpression>, String> unaryOperators;
-    private static Map<Class<? extends Tree.BinaryOperatorExpression>, String> binaryOperators;
+    private static class OperatorTranslation {
+        String ceylonMethod;
+        int javacOperator;
+        OperatorTranslation(String ceylonMethod, int javacOperator) {
+            this.ceylonMethod = ceylonMethod;
+            this.javacOperator = javacOperator;
+        }
+        OperatorTranslation(String ceylonMethod) {
+            this(ceylonMethod, -1);
+        }
+        boolean isOptimisable(){
+            return javacOperator >= 0;
+        }
+    }
+    
+    private static Map<Class<? extends Tree.UnaryOperatorExpression>, OperatorTranslation> unaryOperators;
+    private static Map<Class<? extends Tree.BinaryOperatorExpression>, OperatorTranslation> binaryOperators;
+
+    private static void addUnaryOperator(Class<? extends Tree.UnaryOperatorExpression> ceylonTreeType, String ceylonMethodName, int javacOperator) {
+        unaryOperators.put(ceylonTreeType, new OperatorTranslation(ceylonMethodName, javacOperator));
+    }
+
+    private static void addBinaryOperator(Class<? extends Tree.BinaryOperatorExpression> ceylonTreeType, String ceylonMethodName, int javacOperator) {
+        binaryOperators.put(ceylonTreeType, new OperatorTranslation(ceylonMethodName, javacOperator));
+    }
+
+    private static void addBinaryOperator(Class<? extends Tree.BinaryOperatorExpression> ceylonTreeType, String ceylonMethodName) {
+        binaryOperators.put(ceylonTreeType, new OperatorTranslation(ceylonMethodName));
+    }
 
     static {
-        unaryOperators = new HashMap<Class<? extends Tree.UnaryOperatorExpression>, String>();
-        binaryOperators = new HashMap<Class<? extends Tree.BinaryOperatorExpression>, String>();
+        unaryOperators = new HashMap<Class<? extends Tree.UnaryOperatorExpression>, OperatorTranslation>();
+        binaryOperators = new HashMap<Class<? extends Tree.BinaryOperatorExpression>, OperatorTranslation>();
 
         // Unary operators
-        unaryOperators.put(Tree.PositiveOp.class, "positiveValue");
-        unaryOperators.put(Tree.NegativeOp.class, "negativeValue");
+        addUnaryOperator(Tree.PositiveOp.class, "positiveValue", JCTree.POS);
+        addUnaryOperator(Tree.NegativeOp.class, "negativeValue", JCTree.NEG);
 
         // Binary operators
-        binaryOperators.put(Tree.SumOp.class, "plus");
-        binaryOperators.put(Tree.DifferenceOp.class, "minus");
-        binaryOperators.put(Tree.ProductOp.class, "times");
-        binaryOperators.put(Tree.QuotientOp.class, "divided");
-        binaryOperators.put(Tree.PowerOp.class, "power");
-        binaryOperators.put(Tree.RemainderOp.class, "remainder");
-        binaryOperators.put(Tree.IntersectionOp.class, "and");
-        binaryOperators.put(Tree.UnionOp.class, "or");
-        binaryOperators.put(Tree.XorOp.class, "xor");
-        binaryOperators.put(Tree.EqualOp.class, "equals");
-        binaryOperators.put(Tree.CompareOp.class, "compare");
+        addBinaryOperator(Tree.SumOp.class, "plus", JCTree.PLUS);
+        addBinaryOperator(Tree.DifferenceOp.class, "minus", JCTree.MINUS);
+        addBinaryOperator(Tree.ProductOp.class, "times", JCTree.MUL);
+        addBinaryOperator(Tree.QuotientOp.class, "divided", JCTree.DIV);
+        addBinaryOperator(Tree.PowerOp.class, "power");
+        addBinaryOperator(Tree.RemainderOp.class, "remainder", JCTree.MOD);
+        addBinaryOperator(Tree.IntersectionOp.class, "and", JCTree.BITAND);
+        addBinaryOperator(Tree.UnionOp.class, "or", JCTree.BITOR);
+        addBinaryOperator(Tree.XorOp.class, "xor", JCTree.BITXOR);
+        addBinaryOperator(Tree.EqualOp.class, "equals", JCTree.EQ);
+        addBinaryOperator(Tree.CompareOp.class, "compare");
 
         // Binary operators that act on intermediary Comparison objects
-        binaryOperators.put(Tree.LargerOp.class, "largerThan");
-        binaryOperators.put(Tree.SmallerOp.class, "smallerThan");
-        binaryOperators.put(Tree.LargeAsOp.class, "asLargeAs");
-        binaryOperators.put(Tree.SmallAsOp.class, "asSmallAs");
+        addBinaryOperator(Tree.LargerOp.class, "largerThan", JCTree.GT);
+        addBinaryOperator(Tree.SmallerOp.class, "smallerThan", JCTree.LT);
+        addBinaryOperator(Tree.LargeAsOp.class, "asLargeAs", JCTree.GE);
+        addBinaryOperator(Tree.SmallAsOp.class, "asSmallAs", JCTree.LE);
     }
 
     //
@@ -377,23 +404,20 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression transformOverridableUnaryOperator(Tree.UnaryOperatorExpression op, ProducedType expectedType) {
         at(op);
         Tree.Term term = op.getTerm();
-        boolean isUnboxed = term.getUnboxed();
-        if(isUnboxed){
-            // optimisation for unboxed types
-            if (op instanceof Tree.NegativeOp) {
-                return make().Unary(JCTree.NEG, transformExpression(term, BoxingStrategy.UNBOXED, expectedType));
-            } else if (op instanceof Tree.PositiveOp) {
-                return make().Unary(JCTree.POS, transformExpression(term, BoxingStrategy.UNBOXED, expectedType));
-            }
-        }
-        
-        String operatorMethodName = unaryOperators.get(op.getClass());
-        if (operatorMethodName == null) {
+
+        OperatorTranslation operator = unaryOperators.get(op.getClass());
+        if (operator == null) {
             return make().Erroneous();
+        }
+
+        boolean isUnboxed = term.getUnboxed();
+        if(isUnboxed && operator.isOptimisable()){
+            // optimisation for unboxed types
+            return make().Unary(operator.javacOperator, transformExpression(term, BoxingStrategy.UNBOXED, expectedType));
         }
         
         return make().Apply(null, makeSelect(transformExpression(term, BoxingStrategy.BOXED, expectedType), 
-                Util.getGetterName(operatorMethodName)), List.<JCExpression> nil());
+                Util.getGetterName(operator.ceylonMethod)), List.<JCExpression> nil());
     }
 
     //
@@ -543,18 +567,18 @@ public class ExpressionTransformer extends AbstractTransformer {
                 operatorClass = Tree.CompareOp.class;
             }
             
-            String operatorMethodName = binaryOperators.get(operatorClass);
-            if (operatorMethodName == null) {
+            OperatorTranslation operator = binaryOperators.get(operatorClass);
+            if (operator == null) {
                 return make().Erroneous();
             }
-            result = at(op).Apply(null, makeSelect(left, operatorMethodName), List.of(right));
+            result = at(op).Apply(null, makeSelect(left, operator.ceylonMethod), List.of(right));
     
             if (loseComparison) {
-                String operatorMethodName2 = binaryOperators.get(originalOperatorClass);
-                if (operatorMethodName2 == null) {
+                OperatorTranslation operator2 = binaryOperators.get(originalOperatorClass);
+                if (operator2 == null) {
                     return make().Erroneous();
                 }
-                result = at(op).Apply(null, makeSelect(result, operatorMethodName2), List.<JCExpression> nil());
+                result = at(op).Apply(null, makeSelect(result, operator2.ceylonMethod), List.<JCExpression> nil());
             }
         }
 
