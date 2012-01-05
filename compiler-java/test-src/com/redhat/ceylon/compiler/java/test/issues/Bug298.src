@@ -1,1 +1,33 @@
 package com.redhat.ceylon.compiler.java.test.issues;
+
+class OuterClass {
+    
+    public class InnerClass {
+        
+        public InnerClass() {
+        }
+    }
+    
+    OuterClass() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new OuterClass();
+    }
+}
+final class m {
+    
+    private m() {
+    }
+    
+    static void m() {
+        final com.redhat.ceylon.compiler.java.test.issues.OuterClass o = new com.redhat.ceylon.compiler.java.test.issues.OuterClass();
+        final com.redhat.ceylon.compiler.java.test.issues.OuterClass.InnerClass i = o.new InnerClass();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        m();
+    }
+}
