@@ -21,3 +21,10 @@ void bug313() {
     String? name = "";
     String? name2 = name?.uppercased;
 }
+
+// duplicate but make sure anyways
+interface Bug310 { shared formal Integer i; }
+void bug310() {
+    Bug310? x = null;
+    Integer? j = x?.i;
+}

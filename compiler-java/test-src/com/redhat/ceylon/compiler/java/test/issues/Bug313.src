@@ -18,3 +18,27 @@ final class bug313 {
         bug313();
     }
 }
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+interface Bug310 {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+    public abstract long getI();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug310 {
+    
+    private bug310() {
+    }
+    
+    static void bug310() {
+        final com.redhat.ceylon.compiler.java.test.issues.Bug310 x = null;
+        final ceylon.language.Integer j = (let com.redhat.ceylon.compiler.java.test.issues.Bug310 $safe$1 = x in $safe$1 != null ? .ceylon.language.Integer.instance($safe$1.getI()) : null);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        bug310();
+    }
+}
