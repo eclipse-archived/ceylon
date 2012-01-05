@@ -78,7 +78,7 @@ void test_exists_nonempty() {
     print(exists yes then "yes exists" else "WTF you should NOT be reading this");
     print(exists no then "WTF" else "no doesn't exist");
     print(nonempty empties then "nonempty works" else "nonempty broken");
-    print(nonempty Empty then "nonempty is broken" else "like I said, nonempty works");
+    print(nonempty {} then "nonempty is broken" else "like I said, nonempty works");
 }
 
 //Another test for the compiler.

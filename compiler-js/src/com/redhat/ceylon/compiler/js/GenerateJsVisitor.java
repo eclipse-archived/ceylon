@@ -1088,10 +1088,12 @@ public class GenerateJsVisitor extends Visitor
         clAlias();
         out(".ArraySequence([");
         boolean first=true;
-        for (Expression arg: that.getExpressionList().getExpressions()) {
-            if (!first) out(",");
-            arg.visit(this);
-            first = false;
+        if (that.getExpressionList() != null) {
+            for (Expression arg: that.getExpressionList().getExpressions()) {
+                if (!first) out(",");
+                arg.visit(this);
+                first = false;
+            }
         }
         out("])");
     }
@@ -1456,6 +1458,7 @@ public class GenerateJsVisitor extends Visitor
    @Override public void visit(Nonempty that) {
        clAlias();
        out(".nonempty(");
+       System.out.println("NONEMPTY!!!!!!! " + that.getTerm());
        that.getTerm().visit(this);
        out(")");
    }
