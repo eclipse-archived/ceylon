@@ -1168,4 +1168,8 @@ public abstract class AbstractTransformer implements Transformation {
         return make().LetExpr(def, toReturn);
 
     }
+
+    public Context getContext() {
+        return context;
+    }
 }

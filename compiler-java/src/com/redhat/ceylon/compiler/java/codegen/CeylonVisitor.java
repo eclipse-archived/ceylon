@@ -82,7 +82,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     private boolean hasClassErrors(Tree.ClassOrInterface decl) {
-        ClassErrorVisitor errorVisitor = new ClassErrorVisitor();
+        ClassErrorVisitor errorVisitor = new ClassErrorVisitor(gen.getContext());
         return errorVisitor.hasErrors(decl);
     }
 
@@ -165,7 +165,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
     
     private boolean hasErrors(Node decl) {
-        ErrorVisitor errorVisitor = new ErrorVisitor();
+        ErrorVisitor errorVisitor = new ErrorVisitor(gen.getContext());
         return errorVisitor.hasErrors(decl);
     }
 

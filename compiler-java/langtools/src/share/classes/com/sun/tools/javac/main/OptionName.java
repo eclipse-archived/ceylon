@@ -96,7 +96,8 @@ public enum OptionName {
     XD("-XD"),
     SOURCEFILE("sourcefile"),
     SRC("-src"),
-    BOOTSTRAPCEYLON("-Xbootstrapceylon");
+    BOOTSTRAPCEYLON("-Xbootstrapceylon"),
+    CEYLONALLOWWARNINGS("-Xceylonallowwarnings");
 
     public final String optionName;
 

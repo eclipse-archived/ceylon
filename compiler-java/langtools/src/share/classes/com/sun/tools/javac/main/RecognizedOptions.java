@@ -179,7 +179,8 @@ public class RecognizedOptions {
         XD,
         SOURCEFILE,
         SRC,
-        BOOTSTRAPCEYLON);
+        BOOTSTRAPCEYLON,
+        CEYLONALLOWWARNINGS);
 
     static Set<OptionName> javacFileManagerOptions = EnumSet.of(
         CLASSPATH,
@@ -240,7 +241,8 @@ public class RecognizedOptions {
         O,
         XJCOV,
         XD,
-        BOOTSTRAPCEYLON);
+        BOOTSTRAPCEYLON,
+        CEYLONALLOWWARNINGS);
 
     public static Option[] getJavaCompilerOptions(OptionHelper helper) {
         return getOptions(helper, javacOptions);
@@ -559,6 +561,9 @@ public class RecognizedOptions {
 
         // allow us to compile ceylon.language
         new HiddenOption(BOOTSTRAPCEYLON),
+
+        // do not halt on typechecker warnings
+        new HiddenOption(CEYLONALLOWWARNINGS),
 
         // output shrouded class files
         // new Option("-scramble",                              "opt.scramble"),
