@@ -554,6 +554,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression right = transformExpression(op.getRightTerm(), getBoxingStrategy(op), rightType);
         
         if (operatorClass == Tree.IdenticalOp.class) {
+            // FIXME: move this out of here no? It's not overridable and doesn't require boxing/unboxing or
+            // even unerasure
             result = at(op).Binary(JCTree.EQ, left, right);
         } else {
             Class<? extends Tree.OperatorExpression> originalOperatorClass = operatorClass;
