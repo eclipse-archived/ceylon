@@ -1,0 +1,20 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug313 {
+    
+    private bug313() {
+    }
+    
+    static void bug313() {
+        final ceylon.language.String name = .ceylon.language.String.instance("");
+        final ceylon.language.String name2 = (let ceylon.language.String $safe$0 = name in $safe$0 != null ? .ceylon.language.String.instance($safe$0.getUppercased()) : null);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        bug313();
+    }
+}
