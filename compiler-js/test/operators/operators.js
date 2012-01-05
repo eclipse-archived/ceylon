@@ -362,7 +362,7 @@ function testNullsafeOperators(){
     expect(getS2(),$$$cl15.String("null"),$$$cl15.String("default"));
 }
 
-//MethodDefinition testIncDecOperators at operators.ceylon (180:0-212:0)
+//MethodDefinition testIncDecOperators at operators.ceylon (180:0-236:0)
 function testIncDecOperators(){
     
     //AttributeDeclaration i1 at operators.ceylon (181:4-181:28)
@@ -426,7 +426,7 @@ function testIncDecOperators(){
     }
     
     //AttributeDeclaration i4 at operators.ceylon (196:4-196:25)
-    var $i4=function($){var x$=$.getI().getSuccessor();$.setI(x$);return x$}(f2());
+    var $i4=function($){var $2=$.getI().getSuccessor();$.setI($2);return $2}(f2());
     function getI4(){
         return $i4;
     }
@@ -448,16 +448,60 @@ function testIncDecOperators(){
     f3();
     
     //AttributeDeclaration i5 at operators.ceylon (208:4-208:25)
-    var $i5=function($){var x$=$.getI().getPredecessor();$.setI(x$);return x$}(f2());
+    var $i5=function($){var $2=$.getI().getPredecessor();$.setI($2);return $2}(f2());
     function getI5(){
         return $i5;
     }
     expect(getI5(),$$$cl15.Integer(1),$$$cl15.String("prefix decrement"));
     expect(getC1().getI(),$$$cl15.Integer(1),$$$cl15.String("prefix decrement"));
     expect(getI3(),$$$cl15.Integer(2),$$$cl15.String("prefix decrement"));
+    
+    //MethodDefinition f4 at operators.ceylon (213:4-217:4)
+    function f4(){
+        
+        //AttributeDeclaration i2 at operators.ceylon (214:8-214:25)
+        var $i2=function($){setI1($.getSuccessor());return $}(getI1());
+        function getI2(){
+            return $i2;
+        }
+        expect(getI1(),$$$cl15.Integer(2),$$$cl15.String("postfix increment"));
+        expect(getI2(),$$$cl15.Integer(1),$$$cl15.String("postfix increment"));
+    }
+    f4();
+    
+    //AttributeDeclaration i6 at operators.ceylon (220:4-220:25)
+    var $i6=function($){var $2=$.getI();$.setI($2.getSuccessor());return $2}(f2());
+    function getI6(){
+        return $i6;
+    }
+    expect(getI6(),$$$cl15.Integer(1),$$$cl15.String("postfix increment"));
+    expect(getC1().getI(),$$$cl15.Integer(2),$$$cl15.String("postfix increment"));
+    expect(getI3(),$$$cl15.Integer(3),$$$cl15.String("postfix increment"));
+    
+    //MethodDefinition f5 at operators.ceylon (225:4-229:4)
+    function f5(){
+        
+        //AttributeDeclaration i2 at operators.ceylon (226:8-226:25)
+        var $i2=function($){setI1($.getPredecessor());return $}(getI1());
+        function getI2(){
+            return $i2;
+        }
+        expect(getI1(),$$$cl15.Integer(1),$$$cl15.String("postfix decrement"));
+        expect(getI2(),$$$cl15.Integer(2),$$$cl15.String("postfix decrement"));
+    }
+    f5();
+    
+    //AttributeDeclaration i7 at operators.ceylon (232:4-232:25)
+    var $i7=function($){var $2=$.getI();$.setI($2.getPredecessor());return $2}(f2());
+    function getI7(){
+        return $i7;
+    }
+    expect(getI7(),$$$cl15.Integer(2),$$$cl15.String("postfix decrement"));
+    expect(getC1().getI(),$$$cl15.Integer(1),$$$cl15.String("postfix decrement"));
+    expect(getI3(),$$$cl15.Integer(4),$$$cl15.String("postfix decrement"));
 }
 
-//MethodDefinition test at operators.ceylon (214:0-225:0)
+//MethodDefinition test at operators.ceylon (238:0-249:0)
 function test(){
     $$$cl15.print($$$cl15.String("--- Start Operator Tests ---"));
     testIntegerOperators();

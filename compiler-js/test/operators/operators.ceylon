@@ -209,6 +209,30 @@ void testIncDecOperators() {
     expect(i5, 1, "prefix decrement");
     expect(c1.i, 1, "prefix decrement");
     expect(i3, 2, "prefix decrement");
+    
+    void f4() {
+        Integer i2 = i1++;
+        expect(i1, 2, "postfix increment");
+        expect(i2, 1, "postfix increment");
+    }
+    f4();
+    
+    Integer i6 = f2().i++;
+    expect(i6, 1, "postfix increment");
+    expect(c1.i, 2, "postfix increment");
+    expect(i3, 3, "postfix increment");
+    
+    void f5() {
+        Integer i2 = i1--;
+        expect(i1, 1, "postfix decrement");
+        expect(i2, 2, "postfix decrement");
+    }
+    f5();
+    
+    Integer i7 = f2().i--;
+    expect(i7, 2, "postfix decrement");
+    expect(c1.i, 1, "postfix decrement");
+    expect(i3, 4, "postfix decrement");
 }
 
 shared void test() {

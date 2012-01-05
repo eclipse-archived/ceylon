@@ -77,7 +77,10 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositiveOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PostfixDecrementOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PostfixIncrementOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PowerOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ProductOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberOrTypeExpression;
@@ -226,12 +229,17 @@ public class GenerateJsVisitor extends Visitor
     }
     
     private void packageAlias(Package pkg) {
-        out("$$$");
+    	out(packageAliasString(pkg));
+    }
+    
+    private String packageAliasString(Package pkg) {
+        StringBuilder sb = new StringBuilder("$$$");
         //out(pkg.getNameAsString().replace('.', '$'));
         for (String s: pkg.getName()) {
-            out(s.substring(0,1));
+            sb.append(s.substring(0,1));
         }
-        out(Integer.toString(pkg.getQualifiedNameString().length()));
+        sb.append(pkg.getQualifiedNameString().length());
+        return sb.toString();
     }
 
     private void scriptPath(Package pkg) {
@@ -1126,9 +1134,16 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void qualify(Node that, Declaration d) {
+    	String path = qualifiedPath(that, d);
+    	out(path);
+    	if (path.length() > 0) {
+    		out(".");
+    	}
+    }
+    
+    private String qualifiedPath(Node that, Declaration d) {
         if (isImported(that, d)) {
-            packageAlias(d.getUnit().getPackage());
-            out(".");
+            return packageAliasString(d.getUnit().getPackage());
         }
         else if (prototypeStyle) {
             if (d.isClassOrInterfaceMember() && 
@@ -1143,21 +1158,20 @@ public class GenerateJsVisitor extends Visitor
                     //a local declaration of some kind,
                     //perhaps in an outer scope
                     if (!(d instanceof TypeDeclaration)) {
-                        self((TypeDeclaration)d.getContainer());
+                        return selfString((TypeDeclaration)d.getContainer());
                     }
                     else {
                         //a local type declaration: for now, 
                         //we don't flatten out nested types
                         //onto the prototype
-                        return;
+                        return "";
                     }
                 }
                 else {
                     //an inherited declaration that might be
                     //inherited by an outer scope
-                    self(id);
+                    return selfString(id);
                 }
-                out(".");             
             }
         }
         else {
@@ -1165,16 +1179,16 @@ public class GenerateJsVisitor extends Visitor
                 TypeDeclaration id = that.getScope().getInheritingDeclaration(d);
                 if (id==null) {
                     //a shared local declaration
-                    self((TypeDeclaration)d.getContainer());
+                    return selfString((TypeDeclaration)d.getContainer());
                 }
                 else {
                     //an inherited declaration that might be
                     //inherited by an outer scope
-                    self(id);
+                    return selfString(id);
                 }
-                out(".");
             }
         }
+        return "";
     }
 
     private boolean isImported(Node that, Declaration d) {
@@ -1215,9 +1229,12 @@ public class GenerateJsVisitor extends Visitor
     public void visit(AnnotationList that) {}
     
     private void self(TypeDeclaration d) {
-        out("$$"); 
-        out(d.getName().substring(0,1).toLowerCase());
-        out(d.getName().substring(1));
+    	out(selfString(d));
+    }
+    
+    private String selfString(TypeDeclaration d) {
+        return "$$" + d.getName().substring(0,1).toLowerCase()
+        		+ d.getName().substring(1);
     }
     
     /*private void self() {
@@ -1455,35 +1472,75 @@ public class GenerateJsVisitor extends Visitor
    }
    
    @Override public void visit(IncrementOp that) {
-	   incrementOrDecrement(that.getTerm(), "getSuccessor");
+	   prefixIncrementOrDecrement(that.getTerm(), "getSuccessor");
    }
    
    @Override public void visit(DecrementOp that) {
-	   incrementOrDecrement(that.getTerm(), "getPredecessor");
+	   prefixIncrementOrDecrement(that.getTerm(), "getPredecessor");
    }
    
-   private void incrementOrDecrement(Term term, String functionName) {
+   private void prefixIncrementOrDecrement(Term term, String functionName) {
 	   if (term instanceof BaseMemberExpression) {
 		   BaseMemberExpression bme = (BaseMemberExpression) term;
+		   String path = qualifiedPath(bme, bme.getDeclaration());
+		   if (path.length() > 0) {
+			   path += ".";
+		   }
+		   
 		   out("(");
-		   qualify(bme, bme.getDeclaration());
+		   out(path);
 		   out(setter(bme.getDeclaration()));
 		   out("(");
-		   qualify(bme, bme.getDeclaration());
+		   out(path);
 		   String bmeGetter = getter(bme.getDeclaration());
 		   out(bmeGetter);
 		   out("()." + functionName + "()),");
-		   qualify(bme, bme.getDeclaration());
+		   out(path);
 		   out(bmeGetter);
 		   out("())");
 	   } else if (term instanceof QualifiedMemberExpression) {
 		   QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
-		   out("function($){var x$=$.");
+		   out("function($){var $2=$.");
 		   out(getter(qme.getDeclaration()));
 		   out("()." + functionName + "();$.");
 		   out(setter(qme.getDeclaration()));
-		   out("(x$);return x$}(");
+		   out("($2);return $2}(");
 		   qme.getPrimary().visit(this);
+		   out(")");
+	   }
+   }
+   
+   @Override public void visit(PostfixIncrementOp that) {
+	   postfixIncrementOrDecrement(that.getTerm(), "getSuccessor");
+   }
+   
+   @Override public void visit(PostfixDecrementOp that) {
+	   postfixIncrementOrDecrement(that.getTerm(), "getPredecessor");
+   }
+   
+   private void postfixIncrementOrDecrement(Term term, String functionName) {
+	   if (term instanceof BaseMemberExpression) {
+		   BaseMemberExpression bme = (BaseMemberExpression) term;
+		   String path = qualifiedPath(bme, bme.getDeclaration());
+		   if (path.length() > 0) {
+			   path += ".";
+		   }
+		   
+		   out("function($){");
+		   out(path);
+		   out(setter(bme.getDeclaration()));
+		   out("($." + functionName + "());return $}(");
+		   out(path);
+		   out(getter(bme.getDeclaration()));
+		   out("())");
+	   } else if (term instanceof QualifiedMemberExpression) {
+		   QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
+		   out("function($){var $2=$.");
+		   out(getter(qme.getDeclaration()));
+		   out("();$.");
+		   out(setter(qme.getDeclaration()));
+		   out("($2." + functionName + "());return $2}(");
+		   qme.getPrimary().visit(this);			   
 		   out(")");
 	   }
    }
