@@ -96,6 +96,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.SumOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ThenOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.This;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.WhileStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class GenerateJsVisitor extends Visitor 
@@ -1464,13 +1465,25 @@ public class GenerateJsVisitor extends Visitor
    }
 
    @Override public void visit(IfStatement that) {
-       out("if (");
+       out("if ((");
        that.getIfClause().getCondition().visit(this);
-       out(") ");
+       out(")===");
+       clAlias();
+       out(".getTrue())");
        that.getIfClause().getBlock().visit(this);
        if (that.getElseClause() != null) {
            out("else ");
            that.getElseClause().visit(this);
        }
    }
+
+   @Override public void visit(WhileStatement that) {
+       out("while ((");
+       that.getWhileClause().getCondition().visit(this);
+       out(")===");
+       clAlias();
+       out(".getTrue())");
+       that.getWhileClause().getBlock().visit(this);
+   }
+
 }
