@@ -286,14 +286,12 @@ public class ClassTransformer extends AbstractTransformer {
     private boolean isActual(Tree.TypedDeclaration decl) {
         boolean actual;
         Declaration refinedDecl = decl.getDeclarationModel().getRefinedDeclaration();
-        if (refinedDecl != null && 
-                refinedDecl instanceof Value) {
+        if (refinedDecl instanceof Value) {
             // If a variable attr is refining a non-variable one then the
             // setter is not overriding anything: We mustn't add an @Override
             Value refinedValue = (Value)refinedDecl;
             actual = refinedValue.isVariable() && Decl.isActual(decl);
         } else if (decl instanceof AttributeSetterDefinition
-                && refinedDecl != null 
                 && refinedDecl instanceof Getter) {            
             AttributeSetterDefinition setterDecl = (AttributeSetterDefinition)decl;
             Getter refinedGetter = (Getter)refinedDecl;
