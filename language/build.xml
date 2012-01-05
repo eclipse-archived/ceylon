@@ -140,7 +140,7 @@
     <target name="build" depends="runtime.jar"/>
 	
     <target name="ceylonc" depends="build">
-        <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc" >
+        <taskdef name="ceylonc" classname="com.redhat.ceylon.ant.Ceylonc" >
             <classpath>
                 <pathelement location="${ceylon.ant.lib}"/>
             </classpath>
