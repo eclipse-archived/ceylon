@@ -1444,7 +1444,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if (primary instanceof Tree.QualifiedTypeExpression) {
             return transform((Tree.QualifiedTypeExpression)primary, transformer);
         } else {
-            return makeUnquotedIdent(primary.getDeclaration().getName());
+            return makeQuotedIdent(primary.getDeclaration().getName());
         }
     }
     

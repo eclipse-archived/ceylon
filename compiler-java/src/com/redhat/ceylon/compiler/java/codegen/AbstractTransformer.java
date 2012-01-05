@@ -343,7 +343,7 @@ public abstract class AbstractTransformer implements Transformation {
     
     // Creates a "new foo(arg1, arg2, ...);"
     protected JCTree.JCNewClass makeNewClass(String className, List<JCTree.JCExpression> args) {
-        JCExpression name = makeUnquotedIdent(className);
+        JCExpression name = makeQuotedIdent(className);
         return makeNewClass(name, args);
     }
     
@@ -706,17 +706,17 @@ public abstract class AbstractTransformer implements Transformation {
             }
 
             if (typeArgs != null && typeArgs.size() > 0) {
-                jt = make().TypeApply(makeQualIdentFromString(getDeclarationName(tdecl)), typeArgs.toList());
+                jt = make().TypeApply(makeQuotedQualIdentFromString(getDeclarationName(tdecl)), typeArgs.toList());
             } else {
-                jt = makeQualIdentFromString(getDeclarationName(tdecl));
+                jt = makeQuotedQualIdentFromString(getDeclarationName(tdecl));
             }
         } else {
             // For an ordinary class or interface type T:
             // - The Ceylon type T results in the Java type T
             if(tdecl instanceof TypeParameter)
-                jt = makeUnquotedIdent(tdecl.getName());
+                jt = makeQuotedIdent(tdecl.getName());
             else
-                jt = makeQualIdentFromString(getDeclarationName(tdecl));
+                jt = makeQuotedQualIdentFromString(getDeclarationName(tdecl));
         }
         
         return jt;
