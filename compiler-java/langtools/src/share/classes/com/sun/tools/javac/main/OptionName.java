@@ -46,6 +46,7 @@ public enum OptionName {
                  + "none}"),
     NOWARN("-nowarn"),
     VERBOSE("-verbose"),
+    VERBOSE_CUSTOM("-verbose:{loader,ast,code}"),
     DEPRECATION("-deprecation"),
     CLASSPATH("-classpath"),
     CP("-cp"),

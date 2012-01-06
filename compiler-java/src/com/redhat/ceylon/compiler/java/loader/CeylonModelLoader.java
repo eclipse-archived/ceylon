@@ -248,7 +248,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
 
     @Override
     protected void logVerbose(String message) {
-        if(options.get(OptionName.VERBOSE) != null){
+        if(options.get(OptionName.VERBOSE) != null || options.get(OptionName.VERBOSE + ":loader") != null){
             Log.printLines(log.noticeWriter, message);
         }
     }

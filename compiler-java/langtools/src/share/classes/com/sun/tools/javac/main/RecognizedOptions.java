@@ -129,6 +129,7 @@ public class RecognizedOptions {
         XLINT_CUSTOM,
         NOWARN,
         VERBOSE,
+        VERBOSE_CUSTOM,
         DEPRECATION,
         CLASSPATH,
         CP,
@@ -212,6 +213,7 @@ public class RecognizedOptions {
         XLINT_CUSTOM,
         NOWARN,
         VERBOSE,
+        VERBOSE_CUSTOM,
         DEPRECATION,
         PROC_CUSTOM,
         PROCESSOR,
@@ -321,6 +323,22 @@ public class RecognizedOptions {
             },
 
         new Option(VERBOSE,                                     "opt.verbose"),
+        new Option(VERBOSE_CUSTOM,                              "opt.verbose.suboptlist") {
+            public boolean matches(String s) {
+                return s.startsWith("-verbose:");
+            }
+            public boolean process(Options options, String option) {
+                String suboptions = option.substring(9);
+                options.put("-verbose:", suboptions);
+                // enter all the -verbose suboptions as "-verbose:suboption"
+                for (StringTokenizer t = new StringTokenizer(suboptions, ","); t.hasMoreTokens(); ) {
+                    String tok = t.nextToken();
+                    String opt = "-verbose:" + tok;
+                    options.put(opt, opt);
+                }
+                return false;
+            }
+        },
 
         // -deprecation is retained for command-line backward compatibility
         new Option(DEPRECATION,                                 "opt.deprecation") {
