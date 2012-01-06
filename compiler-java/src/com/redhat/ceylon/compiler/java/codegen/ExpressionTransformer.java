@@ -1491,7 +1491,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     result = makeBoolean(false);
                 } else {
                     // it's a toplevel attribute
-                    primaryExpr = makeQualIdent(makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()));
+                    primaryExpr = makeQualIdent(makeFQIdent(Util.quoteJavaKeywords(decl.getContainer().getQualifiedNameString())), Util.quoteIfJavaKeyword(decl.getName()));
                     selector = Util.getGetterName(decl.getName());
                 }
             } else if (Decl.isClassAttribute(decl)) {
