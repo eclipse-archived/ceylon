@@ -8,10 +8,10 @@ class SwitchIsVarSubst {
             .java.lang.Object $sel$0 = b;
             if ($sel$0 instanceof ceylon.language.String) {
                 final .java.lang.String $b$2 = ((ceylon.language.String)$sel$0).toString();
-                name = .ceylon.language.String.instance("String: ").plus(.ceylon.language.String.instance($b$2)).toString();
+                name = "String: " + $b$2;
             } else if ($sel$0 instanceof .java.lang.Throwable) {
                 final .java.lang.Throwable $b$1 = (.java.lang.Throwable)$sel$0;
-                name = .ceylon.language.String.instance("Exception: ").plus(.ceylon.language.String.instance($b$1.getMessage())).toString();
+                name = "Exception: " + $b$1.getMessage();
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
         return name;
