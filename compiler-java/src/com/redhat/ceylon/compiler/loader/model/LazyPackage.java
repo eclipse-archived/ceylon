@@ -86,7 +86,7 @@ public class LazyPackage extends Package {
     private String getQualifiedName(final String pkgName, String name) {
         // FIXME: some refactoring needed
         name = Util.quoteIfJavaKeyword(name);
-        String className = pkgName.isEmpty() ? name : pkgName + "." + name;
+        String className = pkgName.isEmpty() ? name : Util.quoteJavaKeywords(pkgName) + "." + name;
         return className;
     }
     

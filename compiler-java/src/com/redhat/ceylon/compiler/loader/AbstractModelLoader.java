@@ -453,13 +453,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return packagesByName.get(pkgName);
     }
 
-    public LazyPackage findOrCreatePackage(Module module, String pkgName) {
-        pkgName = Util.quoteJavaKeywords(pkgName);
-        LazyPackage pkg = packagesByName.get(pkgName);
+    public LazyPackage findOrCreatePackage(Module module, final String pkgName) {
+        String quotedPkgName = Util.quoteJavaKeywords(pkgName);
+        LazyPackage pkg = packagesByName.get(quotedPkgName);
         if(pkg != null)
             return pkg;
         pkg = new LazyPackage(this);
-        packagesByName.put(pkgName, pkg);
+        packagesByName.put(quotedPkgName, pkg);
         // FIXME: some refactoring needed
         pkg.setName(pkgName == null ? Collections.<String>emptyList() : Arrays.asList(pkgName.split("\\.")));
 
@@ -490,9 +490,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             pkg.setShared(true);
             return;
         }
-        String className = pkg.getQualifiedNameString() + ".$package";
+        String quotedQualifiedName = Util.quoteJavaKeywords(pkg.getQualifiedNameString());
+        String className = quotedQualifiedName + ".$package";
         logVerbose("[Trying to look up package from "+className+"]");
-        ClassMirror packageClass = loadClass(pkg.getQualifiedNameString(), className);
+        ClassMirror packageClass = loadClass(quotedQualifiedName, className);
         if(packageClass == null){
             logVerbose("[Failed to complete "+className+"]");
             // missing: leave it private
