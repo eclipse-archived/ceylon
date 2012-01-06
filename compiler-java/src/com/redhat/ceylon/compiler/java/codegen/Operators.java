@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignmentOp;
@@ -18,6 +19,28 @@ public class Operators {
     private static final PrimitiveType[] IntegerFloatString = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.FLOAT, PrimitiveType.STRING};
     private static final PrimitiveType[] NotString = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.FLOAT, PrimitiveType.BOOLEAN};
 
+    public enum OptimisationStrategy {
+        OPTIMISE(true, BoxingStrategy.UNBOXED),
+        OPTIMISE_BOXING(false, BoxingStrategy.INDIFFERENT),
+        NONE(false, BoxingStrategy.BOXED);
+        
+        private BoxingStrategy boxingStrategy;
+        private boolean useJavaOperator;
+
+        OptimisationStrategy(boolean useJavaOperator, BoxingStrategy boxingStrategy){
+            this.useJavaOperator = useJavaOperator;
+            this.boxingStrategy = boxingStrategy;
+        }
+        
+        public BoxingStrategy getBoxingStrategy(){
+            return boxingStrategy;
+        }
+        
+        public boolean useJavaOperator(){
+            return useJavaOperator;
+        }
+    }
+    
     //
     // Unary and binary operators
     
@@ -73,48 +96,52 @@ public class Operators {
             this(operatorClass, ceylonMethod, -1);
         }
         
-        public boolean isOptimisable(Tree.UnaryOperatorExpression t, AbstractTransformer gen){
+        public OptimisationStrategy getOptimisationStrategy(Tree.UnaryOperatorExpression t, AbstractTransformer gen){
             return isTermOptimisable(t.getTerm(), gen);
         }
-        public boolean isOptimisable(Tree.BinaryOperatorExpression t, AbstractTransformer gen){
-            return isTermOptimisable(t.getLeftTerm(), gen)
-                    && isTermOptimisable(t.getRightTerm(), gen);
+        public OptimisationStrategy getOptimisationStrategy(Tree.BinaryOperatorExpression t, AbstractTransformer gen){
+            OptimisationStrategy left = isTermOptimisable(t.getLeftTerm(), gen);
+            OptimisationStrategy right = isTermOptimisable(t.getRightTerm(), gen);
+            // it's from most permissive to less permissive, so return the one with the higher ordinal (less permissive)
+            if(left.ordinal() > right.ordinal())
+                return left;
+            return right;
         }
         
-        private boolean isTermOptimisable(Tree.Term t, AbstractTransformer gen){
+        private OptimisationStrategy isTermOptimisable(Tree.Term t, AbstractTransformer gen){
             if(javacOperator < 0 || !t.getUnboxed())
-                return false;
+                return OptimisationStrategy.NONE;
             ProducedType pt = t.getTypeModel();
             if(pt == null) // typechecker error?
-                return false;
+                return OptimisationStrategy.NONE;
             if(optimisableTypes == null)
-                return false;
+                return OptimisationStrategy.NONE;
             // see if it's a supported type
             for(PrimitiveType type : optimisableTypes){
                 switch(type){
                 case BOOLEAN:
                     if(gen.isCeylonBoolean(pt))
-                        return true;
+                        return OptimisationStrategy.OPTIMISE;
                     break;
                 case CHARACTER:
                     if(gen.isCeylonCharacter(pt))
-                        return true;
+                        return OptimisationStrategy.OPTIMISE;
                     break;
                 case FLOAT:
                     if(gen.isCeylonFloat(pt))
-                        return true;
+                        return OptimisationStrategy.OPTIMISE;
                     break;
                 case INTEGER:
                     if(gen.isCeylonInteger(pt))
-                        return true;
+                        return OptimisationStrategy.OPTIMISE;
                     break;
                 case STRING:
                     if(gen.isCeylonString(pt))
-                        return true;
+                        return OptimisationStrategy.OPTIMISE;
                     break;
                 }
             }
-            return false;
+            return OptimisationStrategy.NONE;
         }
     }
     
