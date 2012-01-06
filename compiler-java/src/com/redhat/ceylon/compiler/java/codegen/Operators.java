@@ -76,6 +76,9 @@ public class Operators {
         BINARY_EQUAL(Tree.EqualOp.class, "equals", JCTree.EQ, All){
             @Override
             public OptimisationStrategy getOptimisationStrategy(BinaryOperatorExpression t, AbstractTransformer gen) {
+                // no optimised operator returns a boxed type 
+                if(!t.getUnboxed())
+                    return OptimisationStrategy.NONE;
                 OptimisationStrategy left = isTermOptimisable(t.getLeftTerm(), gen);
                 OptimisationStrategy right = isTermOptimisable(t.getRightTerm(), gen);
                 if(left == OptimisationStrategy.OPTIMISE
@@ -123,9 +126,15 @@ public class Operators {
         }
         
         public OptimisationStrategy getOptimisationStrategy(Tree.UnaryOperatorExpression t, AbstractTransformer gen){
+            // no optimised operator returns a boxed type 
+            if(!t.getUnboxed())
+                return OptimisationStrategy.NONE;
             return isTermOptimisable(t.getTerm(), gen);
         }
         public OptimisationStrategy getOptimisationStrategy(Tree.BinaryOperatorExpression t, AbstractTransformer gen){
+            // no optimised operator returns a boxed type 
+            if(!t.getUnboxed())
+                return OptimisationStrategy.NONE;
             OptimisationStrategy left = isTermOptimisable(t.getLeftTerm(), gen);
             OptimisationStrategy right = isTermOptimisable(t.getRightTerm(), gen);
             return lessPermissive(left, right);
