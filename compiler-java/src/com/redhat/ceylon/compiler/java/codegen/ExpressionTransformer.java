@@ -551,6 +551,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             return optimiseAssignmentOperator(op, operator);
         }
         
+        // we can use unboxed types if both operands are unboxed
+        final boolean boxResult = !op.getUnboxed();
+        
         // find the proper type
         Interface compoundType = op.getUnit().getNumericDeclaration();
         if(op instanceof Tree.AddAssignOp){
@@ -563,13 +566,14 @@ public class ExpressionTransformer extends AbstractTransformer {
         final ProducedType rightType = getTypeArgument(leftType, 0);
 
         // we work on boxed types
-        return transformAssignAndReturnOperation(op, op.getLeftTerm(), true, 
+        return transformAssignAndReturnOperation(op, op.getLeftTerm(), boxResult, 
                 leftType, rightType, 
                 new AssignAndReturnOperationFactory(){
             @Override
             public JCExpression getNewValue(JCExpression previousValue) {
                 // make this call: previousValue OP RHS
-                return transformOverridableBinaryOperator(op, operator.binaryOperator, OptimisationStrategy.NONE, 
+                return transformOverridableBinaryOperator(op, operator.binaryOperator, 
+                        boxResult ? OptimisationStrategy.NONE : OptimisationStrategy.OPTIMISE, 
                         previousValue, rightType);
             }
         });
