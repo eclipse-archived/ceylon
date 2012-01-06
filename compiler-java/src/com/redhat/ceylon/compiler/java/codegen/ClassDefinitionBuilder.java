@@ -156,7 +156,7 @@ public class ClassDefinitionBuilder {
                     
                     boolean isVoid = method.getType().getProducedTypeQualifiedName().equals("ceylon.language.Void");
                     JCMethodInvocation expr = gen.make().Apply(/*FIXME*/List.<JCTree.JCExpression>nil(), 
-                            gen.makeQualIdentFromString(Util.getCompanionClassName(decl.getName())+"."+method.getName()), 
+                            gen.makeQuotedQualIdentFromString(Util.getCompanionClassName(decl.getName())+"."+method.getName()), 
                             params.toList());
                     JCTree.JCStatement body;
                     if (!isVoid) {

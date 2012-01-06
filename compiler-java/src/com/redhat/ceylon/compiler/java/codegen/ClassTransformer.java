@@ -467,7 +467,7 @@ public class ClassTransformer extends AbstractTransformer {
         } else if (Decl.withinClassOrInterface(def)) {
             boolean visible = Decl.isCaptured(def);
             int modifiers = FINAL | ((visible) ? PRIVATE : 0);
-            JCExpression type = makeUnquotedIdent(name);
+            JCExpression type = makeQuotedIdent(name);
             JCExpression initialValue = makeNewClass(name);
             containingClassBuilder.field(modifiers, name, type, initialValue, !visible);
             

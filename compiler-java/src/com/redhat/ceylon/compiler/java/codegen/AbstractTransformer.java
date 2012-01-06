@@ -227,6 +227,17 @@ public abstract class AbstractTransformer implements Transformation {
         }
         return type;
     }
+    
+    protected JCExpression makeQuotedQualIdent(Iterable<String> components) {
+        JCExpression type = null;
+        for (String component : components) {
+            if (type == null)
+                type = makeQuotedIdent(component);
+            else
+                type = makeSelect(type, Util.quoteIfJavaKeyword(component));
+        }
+        return type;
+    }
 
     /** 
      * Makes an <strong>unquoted</strong> qualified (compound) identifier 
@@ -243,6 +254,21 @@ public abstract class AbstractTransformer implements Transformation {
                         expr = makeUnquotedIdent(component);
                     } else {
                         expr = makeSelect(expr, component);
+                    }
+                }
+            }
+        }
+        return expr;
+    }
+    
+    protected JCExpression makeQuotedQualIdent(JCExpression expr, String... names) {
+        if (names != null) {
+            for (String component : names) {
+                if (component != null) {
+                    if (expr == null) {
+                        expr = makeQuotedIdent(component);
+                    } else {
+                        expr = makeSelect(expr, Util.quoteIfJavaKeyword(component));
                     }
                 }
             }
@@ -321,7 +347,7 @@ public abstract class AbstractTransformer implements Transformation {
     
     // Creates a "foo foo = new foo();"
     protected JCTree.JCVariableDecl makeLocalIdentityInstance(String varName, boolean isShared) {
-        JCExpression name = makeUnquotedIdent(varName);
+        JCExpression name = makeQuotedIdent(varName);
         
         JCExpression initValue = makeNewClass(varName);
         List<JCAnnotation> annots = List.<JCAnnotation>nil();

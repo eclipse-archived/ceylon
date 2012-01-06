@@ -295,7 +295,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCTree transform(Tree.Outer expr) {
         at(expr);
         ProducedType outerClass = com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface(expr.getScope());
-        return makeSelect(outerClass.getDeclaration().getName(), "this");
+        return makeSelect(makeQuotedIdent(outerClass.getDeclaration().getName()), "this");
     }
 
     //
@@ -977,7 +977,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                             container = (Declaration)container.getContainer();
                         }
                         String className = Util.getCompanionClassName(container.getName());
-                        argExpr = at(ce).Apply(null, makeQualIdent(makeQualIdentFromString(container.getQualifiedNameString()), className, methodName), arglist);
+                        argExpr = at(ce).Apply(null, makeQuotedQualIdent(makeQuotedQualIdentFromString(container.getQualifiedNameString()), className, methodName), arglist);
                     } else {
                         argExpr = makeEmpty();
                     }
@@ -1124,7 +1124,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                             container = (Declaration)container.getContainer();
                         }
                         String className = Util.getCompanionClassName(container.getName());
-                        argExpr = at(ce).Apply(null, makeQualIdent(makeQualIdentFromString(container.getQualifiedNameString()), className, methodName), arglist);
+                        argExpr = at(ce).Apply(null, makeQuotedQualIdent(makeQuotedQualIdentFromString(container.getQualifiedNameString()), className, methodName), arglist);
                     } else {
                         argExpr = makeEmpty();
                     }
@@ -1198,7 +1198,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 } else if (ce.getPrimary() instanceof Tree.QualifiedTypeExpression) {
                     resultExpr = make().NewClass(actualPrimExpr, null, makeQuotedIdent(selector), args.toList(), null);
                 } else {
-                    resultExpr = make().Apply(typeArgs, makeQualIdent(actualPrimExpr, selector), args.toList());
+                    resultExpr = make().Apply(typeArgs, makeQuotedQualIdent(actualPrimExpr, selector), args.toList());
                 }
 
                 if (vars != null && !vars.isEmpty()) {
@@ -1508,9 +1508,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (!isRecursiveReference(expr)) {
                     path.add(decl.getName());
                 }
-                path.add(Util.quoteIfJavaKeyword(decl.getName()));
+                path.add(decl.getName());
                 primaryExpr = null;
-                qualExpr = makeQualIdent(path);
+                qualExpr = makeQuotedQualIdent(path);
                 selector = null;
             } else if (decl.isToplevel()) {
                 java.util.List<String> path = new LinkedList<String>();
@@ -1690,7 +1690,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         String selector = Util.getSetterName(decl.getName());
         if (decl.isToplevel()) {
             // must use top level setter
-            lhs = makeQualIdent(makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()));
+            lhs = makeQualIdent(makeFQIdent(Util.quoteJavaKeywords(decl.getContainer().getQualifiedNameString())), Util.quoteIfJavaKeyword(decl.getName()));
         } else if ((decl instanceof Getter)) {
             // must use the setter
             if (Decl.withinMethod(decl)) {

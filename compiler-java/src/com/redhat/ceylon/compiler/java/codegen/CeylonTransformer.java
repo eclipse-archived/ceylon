@@ -153,7 +153,7 @@ public class CeylonTransformer extends AbstractTransformer {
         for (Tree.Identifier component : that.getIdentifiers()) {
             names[i++] = component.getText();
         }
-        return at(that).Import(makeQualIdent(null, names), false);
+        return at(that).Import(makeQuotedQualIdent(null, names), false);
     }
     
     public List<JCTree> transform(AnyAttribute decl) {
