@@ -76,7 +76,7 @@ class Fookls {
         }
         
         public static long f4$m(com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $this, final long n) {
-            return .ceylon.language.Integer.instance(n).plus(.ceylon.language.Integer.instance(1L)).longValue();
+            return n + 1L;
         }
         
         public static long f5$n(com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $this) {
@@ -197,7 +197,7 @@ interface Barface {
         }
         
         public static long f4$m(com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $this, final long n) {
-            return .ceylon.language.Integer.instance(n).plus(.ceylon.language.Integer.instance(1L)).longValue();
+            return n + 1L;
         }
         
         public static long f5$n(com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $this) {

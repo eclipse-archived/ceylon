@@ -61,7 +61,7 @@ class MethodWithDefaultParams {
         }
         
         public static long f4$m(com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams $this, final long n) {
-            return .ceylon.language.Integer.instance(n).plus(.ceylon.language.Integer.instance(1L)).longValue();
+            return n + 1L;
         }
         
         public static long f5$n(com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams $this) {
@@ -116,7 +116,7 @@ interface MethodWithDefaultParams2 {
         }
         
         public static long f4$m(com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this, final long n) {
-            return .ceylon.language.Integer.instance(n).plus(.ceylon.language.Integer.instance(1L)).longValue();
+            return n + 1L;
         }
         
         public static long f5$n(com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this) {

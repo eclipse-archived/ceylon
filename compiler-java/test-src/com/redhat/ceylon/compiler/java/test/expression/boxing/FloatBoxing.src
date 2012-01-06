@@ -7,15 +7,15 @@ class FloatBoxing {
     }
     
     private final void m() {
-        double localAttrFloat = .ceylon.language.Float.instance(1.0).getPositiveValue().doubleValue();
-        ceylon.language.Float localAttrOptionalFloat = .ceylon.language.Float.instance(1.0).getPositiveValue();
-        .java.lang.Object localAttrObject = .ceylon.language.Float.instance(1.0).getPositiveValue();
+        double localAttrFloat = 1.0;
+        ceylon.language.Float localAttrOptionalFloat = .ceylon.language.Float.instance(1.0);
+        .java.lang.Object localAttrObject = .ceylon.language.Float.instance(1.0);
         localAttrFloat = localAttrFloat;
         localAttrOptionalFloat = .ceylon.language.Float.instance(localAttrFloat);
         localAttrObject = .ceylon.language.Float.instance(localAttrFloat);
-        localAttrFloat = <ceylon.language.Float>id(.ceylon.language.Float.instance(1.0).getPositiveValue()).doubleValue();
-        localAttrOptionalFloat = <ceylon.language.Float>id(.ceylon.language.Float.instance(1.0).getPositiveValue());
-        localAttrObject = <ceylon.language.Float>id(.ceylon.language.Float.instance(1.0).getPositiveValue());
+        localAttrFloat = <ceylon.language.Float>id(.ceylon.language.Float.instance(1.0)).doubleValue();
+        localAttrOptionalFloat = <ceylon.language.Float>id(.ceylon.language.Float.instance(1.0));
+        localAttrObject = <ceylon.language.Float>id(.ceylon.language.Float.instance(1.0));
         final .java.lang.Object localAttrConstantObject = .ceylon.language.Float.instance(localAttrFloat);
         final double localAttrConstantFloat = localAttrFloat;
         .java.lang.Object $localAttrConstantObject$0;
@@ -28,8 +28,8 @@ class FloatBoxing {
             final double $localAttrConstantFloat$3 = ((ceylon.language.Float)$localAttrConstantFloat$2).doubleValue();
             localAttrFloat = $localAttrConstantFloat$3;
         }
-        localAttrFloat = .ceylon.language.Float.instance(localAttrFloat).plus(.ceylon.language.Float.instance(2.0).getPositiveValue()).doubleValue();
-        localAttrObject = .ceylon.language.Float.instance(localAttrFloat).plus(.ceylon.language.Float.instance(2.0).getPositiveValue());
+        localAttrFloat = localAttrFloat + 2.0;
+        localAttrObject = .ceylon.language.Float.instance(localAttrFloat + 2.0);
     }
     
     FloatBoxing() {

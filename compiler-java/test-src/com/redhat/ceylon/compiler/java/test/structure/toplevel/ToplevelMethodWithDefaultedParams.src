@@ -80,7 +80,7 @@ public final class f4 {
         }
         
         public static long f4$m(final long n) {
-            return .ceylon.language.Integer.instance(n).plus(.ceylon.language.Integer.instance(1L)).longValue();
+            return n + 1L;
         }
     }
 }

@@ -16,13 +16,13 @@ public class EqualityAndComparisonOperators {
         boolean sync = o1 == o2;
         long n1 = 0L;
         long n2 = 0L;
-        sync = .ceylon.language.Integer.instance(n1).equals(.ceylon.language.Integer.instance(n2));
-        sync = !.ceylon.language.Integer.instance(n1).equals(.ceylon.language.Integer.instance(n2));
+        sync = n1 == n2;
+        sync = !(n1 == n2);
         final ceylon.language.Comparison c = .ceylon.language.Integer.instance(n1).compare(.ceylon.language.Integer.instance(n2));
-        sync = .ceylon.language.Integer.instance(n1).compare(.ceylon.language.Integer.instance(n2)).smallerThan();
-        sync = .ceylon.language.Integer.instance(n1).compare(.ceylon.language.Integer.instance(n2)).largerThan();
-        sync = .ceylon.language.Integer.instance(n1).compare(.ceylon.language.Integer.instance(n2)).asSmallAs();
-        sync = .ceylon.language.Integer.instance(n1).compare(.ceylon.language.Integer.instance(n2)).asLargeAs();
+        sync = n1 < n2;
+        sync = n1 > n2;
+        sync = n1 <= n2;
+        sync = n1 >= n2;
     }
     
     private final void equalityAndComparisonBoxed(final .java.lang.Object o1, final .java.lang.Object o2, final com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger n1, final com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger n2) {

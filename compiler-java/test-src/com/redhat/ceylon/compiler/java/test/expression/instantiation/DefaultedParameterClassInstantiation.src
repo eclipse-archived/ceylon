@@ -27,7 +27,7 @@ class DefaultedParameterClassInstantiation {
         }
         
         static long $init$n(final long m) {
-            return .ceylon.language.Integer.instance(m).plus(.ceylon.language.Integer.instance(1L)).longValue();
+            return m + 1L;
         }
     }
 }

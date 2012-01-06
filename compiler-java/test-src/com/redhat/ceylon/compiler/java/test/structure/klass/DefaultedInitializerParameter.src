@@ -68,7 +68,7 @@ class DefaultedInitializerParameter4 {
         }
         
         static long $init$m(final long n) {
-            return .ceylon.language.Integer.instance(n).plus(.ceylon.language.Integer.instance(1L)).longValue();
+            return n + 1L;
         }
     }
 }
