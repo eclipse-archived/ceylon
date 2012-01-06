@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.test.quoting;
+package com.redhat.ceylon.compiler.java.test.quoting.$assert;
 
 class KeywordInClassValue {
     private final .java.lang.String assert;

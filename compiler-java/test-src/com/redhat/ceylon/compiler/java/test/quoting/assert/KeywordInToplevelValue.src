@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.test.quoting;
+package com.redhat.ceylon.compiler.java.test.quoting.$assert;
 
 public final class $assert {
     private static final long value;

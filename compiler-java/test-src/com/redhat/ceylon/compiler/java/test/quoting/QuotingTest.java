@@ -74,6 +74,31 @@ public class QuotingTest extends CompilerTest {
     }
     
     @Test
+    public void testKeywordInClassObject(){
+        compareWithJavaSource("assert/KeywordInClassObject");
+    }
+    
+    @Test
+    public void testKeywordInMethodObject(){
+        compareWithJavaSource("assert/KeywordInMethodObject");
+    }
+    
+    @Test
+    public void testKeywordInGetterObject(){
+        compareWithJavaSource("assert/KeywordInGetterObject");
+    }
+    
+    @Test
+    public void testKeywordInSetterObject(){
+        compareWithJavaSource("assert/KeywordInSetterObject");
+    }
+    
+    @Test
+    public void testKeywordInImport(){
+        compareWithJavaSource("assert/KeywordInImport");
+    }
+    
+    @Test
     public void testKeywordInInnerClassContainer(){
         // Temporary until #298 is fixed
         String prop = "ceylon.typechecker.warnings";
@@ -84,5 +109,10 @@ public class QuotingTest extends CompilerTest {
         } finally {
             System.setProperty(prop, orig);
         }
+    }
+    
+    @Test
+    public void testKeywordInToplevelAssignment(){
+        compareWithJavaSource("assert/KeywordInToplevelAssignment");
     }
 }

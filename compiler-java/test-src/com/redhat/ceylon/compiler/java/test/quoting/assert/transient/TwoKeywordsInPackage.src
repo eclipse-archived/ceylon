@@ -1,8 +1,8 @@
-package com.redhat.ceylon.compiler.java.test.quoting.$assert.$import;
+package com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient;
 
-class TwoKeywordsInPackage {
+public class TwoKeywordsInPackage {
     
-    TwoKeywordsInPackage() {
+    public TwoKeywordsInPackage() {
     }
     
     public static void main(.java.lang.String[] args) {

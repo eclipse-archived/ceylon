@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.test.issues;
+package com.redhat.ceylon.compiler.java.test.issues.$assert;
 
 public final class $assert {
     
@@ -9,6 +9,10 @@ public final class $assert {
     }
     
     public static final class assert$impl {
+        
+        public assert$impl() {
+            super();
+        }
         
         public static .java.lang.String assert$message(final boolean assertion) {
             return "";
@@ -21,7 +25,7 @@ final class m {
     }
     
     static void m() {
-        (let boolean $arg$0$0 = true,.java.lang.String $arg$0$1 = com.redhat.ceylon.compiler.java.test.issues.$assert.assert$impl.assert$message($arg$0$0) in .com.redhat.ceylon.compiler.java.test.issues.$assert.$assert($arg$0$0, $arg$0$1); null);
+        (let boolean $arg$0$0 = true,.java.lang.String $arg$0$1 = com.redhat.ceylon.compiler.java.test.issues.$assert.$assert.assert$impl.assert$message($arg$0$0) in .com.redhat.ceylon.compiler.java.test.issues.$assert.$assert.$assert($arg$0$0, $arg$0$1); null);
     }
     
     public static void main(.java.lang.String[] args) {

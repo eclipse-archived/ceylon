@@ -1,0 +1,33 @@
+package com.redhat.ceylon.compiler.java.test.quoting.$assert;
+
+final class $assert {
+    private static long value;
+    static {
+        value = 0L;
+    }
+    
+    static long getAssert() {
+        return value;
+    }
+    
+    static void setAssert(long assert) {
+        value = assert;
+    }
+    
+    private $assert() {
+    }
+}
+final class m {
+    
+    private m() {
+    }
+    
+    static void m() {
+        .com.redhat.ceylon.compiler.java.test.quoting.$assert.$assert.setAssert(1L);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        m();
+    }
+}

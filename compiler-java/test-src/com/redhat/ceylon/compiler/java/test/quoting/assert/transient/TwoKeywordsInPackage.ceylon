@@ -1,4 +1,4 @@
 @nomodel
-class TwoKeywordsInPackage() {
+shared class TwoKeywordsInPackage() {
 
 }

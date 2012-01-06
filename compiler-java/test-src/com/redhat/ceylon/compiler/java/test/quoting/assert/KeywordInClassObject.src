@@ -1,0 +1,28 @@
+package com.redhat.ceylon.compiler.java.test.quoting.$assert;
+
+class KeywordInClassObject {
+    private final $assert assert;
+    
+    final class $assert {
+        
+        private $assert() {
+        }
+    }
+    
+    private final com.redhat.ceylon.compiler.java.test.quoting.$assert.KeywordInClassObject.$assert getAssert() {
+        return assert;
+    }
+    
+    private final void m() {
+        final .java.lang.String s = getAssert().toString();
+    }
+    
+    KeywordInClassObject() {
+        this.assert = new $assert();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new KeywordInClassObject();
+    }
+}

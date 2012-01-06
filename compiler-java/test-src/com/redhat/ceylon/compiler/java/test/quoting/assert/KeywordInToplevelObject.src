@@ -1,15 +1,15 @@
-package com.redhat.ceylon.compiler.java.test.quoting;
+package com.redhat.ceylon.compiler.java.test.quoting.$assert;
 
 public final class $transient {
     
     private $transient() {
     }
-    private static final com.redhat.ceylon.compiler.java.test.quoting.$transient value;
+    private static final com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient value;
     static {
         value = new $transient();
     }
     
-    public static com.redhat.ceylon.compiler.java.test.quoting.$transient getTransient() {
+    public static com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient getTransient() {
         return value;
     }
 }

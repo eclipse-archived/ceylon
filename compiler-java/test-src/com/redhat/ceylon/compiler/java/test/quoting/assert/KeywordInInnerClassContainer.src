@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.test.quoting;
+package com.redhat.ceylon.compiler.java.test.quoting.$assert;
 
 final class $transient {
     
@@ -31,12 +31,12 @@ final class $transient {
     
     private $transient() {
     }
-    private static final com.redhat.ceylon.compiler.java.test.quoting.$transient value;
+    private static final com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient value;
     static {
         value = new $transient();
     }
     
-    static com.redhat.ceylon.compiler.java.test.quoting.$transient getTransient() {
+    static com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient getTransient() {
         return value;
     }
 }
@@ -46,9 +46,9 @@ final class m {
     }
     
     static void m() {
-        .com.redhat.ceylon.compiler.java.test.quoting.$transient.getTransient().new com.redhat.ceylon.compiler.java.test.quoting.$transient.InnerClass_0();
-        final long int = .com.redhat.ceylon.compiler.java.test.quoting.$transient.getTransient().getAssert();
-        .com.redhat.ceylon.compiler.java.test.quoting.$transient.getTransient().$strictfp();
+        .com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient.getTransient().new InnerClass_0();
+        final long int = .com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient.getTransient().getAssert();
+        .com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient.getTransient().$strictfp();
     }
     
     public static void main(.java.lang.String[] args) {
