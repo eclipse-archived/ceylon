@@ -42,8 +42,10 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BinaryOperatorExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.OperatorExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.UnaryOperatorExpression;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCConditional;
@@ -299,21 +301,66 @@ public class ExpressionTransformer extends AbstractTransformer {
         BOOLEAN, CHARACTER, INTEGER, FLOAT, STRING;
     }
     
-    private static class OperatorTranslation {
+    private enum OperatorTranslation {
+        
+        // Unary operators
+        UNARY_POSITIVE(OperatorArity.UNARY, Tree.PositiveOp.class, "positiveValue", JCTree.POS, IntegerFloat),
+        UNARY_NEGATIVE(OperatorArity.UNARY, Tree.NegativeOp.class, "negativeValue", JCTree.NEG, IntegerFloat),
+        
+        UNARY_POSTFIX_INCREMENT(OperatorArity.UNARY, Tree.PostfixIncrementOp.class, "getSuccessor", JCTree.POSTINC, PrimitiveType.INTEGER),
+        UNARY_POSTFIX_DECREMENT(OperatorArity.UNARY, Tree.PostfixDecrementOp.class, "getPredecessor", JCTree.POSTDEC, PrimitiveType.INTEGER),
+        UNARY_PREFIX_INCREMENT(OperatorArity.UNARY, Tree.IncrementOp.class, "getSuccessor", JCTree.PREINC, PrimitiveType.INTEGER),
+        UNARY_PREFIX_DECREMENT(OperatorArity.UNARY, Tree.DecrementOp.class, "getPredecessor", JCTree.PREDEC, PrimitiveType.INTEGER),
+
+        // Binary operators
+        BINARY_SUM(OperatorArity.BINARY, Tree.SumOp.class, "plus", JCTree.PLUS, IntegerFloatString),
+        BINARY_DIFFERENCE(OperatorArity.BINARY, Tree.DifferenceOp.class, "minus", JCTree.MINUS, IntegerFloat),
+        BINARY_PRODUCT(OperatorArity.BINARY, Tree.ProductOp.class, "times", JCTree.MUL, IntegerFloat),
+        BINARY_QUOTIENT(OperatorArity.BINARY, Tree.QuotientOp.class, "divided", JCTree.DIV, IntegerFloat),
+        BINARY_POWER(OperatorArity.BINARY, Tree.PowerOp.class, "power"),
+        BINARY_REMAINDER(OperatorArity.BINARY, Tree.RemainderOp.class, "remainder", JCTree.MOD, PrimitiveType.INTEGER),
+
+        BINARY_AND(OperatorArity.BINARY, Tree.AndOp.class, "<not-used>", JCTree.AND, PrimitiveType.BOOLEAN),
+        BINARY_OR(OperatorArity.BINARY, Tree.OrOp.class, "<not-used>", JCTree.OR, PrimitiveType.BOOLEAN),
+
+        BINARY_INTERSECTION(OperatorArity.BINARY, Tree.IntersectionOp.class, "and", JCTree.BITAND, PrimitiveType.BOOLEAN),
+        BINARY_UNION(OperatorArity.BINARY, Tree.UnionOp.class, "or", JCTree.BITOR, PrimitiveType.BOOLEAN),
+        BINARY_XOR(OperatorArity.BINARY, Tree.XorOp.class, "xor", JCTree.BITXOR, PrimitiveType.BOOLEAN),
+        
+        BINARY_EQUAL(OperatorArity.BINARY, Tree.EqualOp.class, "equals", JCTree.EQ, NotString),
+        BINARY_COMPARE(OperatorArity.BINARY, Tree.CompareOp.class, "compare"),
+
+        // Binary operators that act on intermediary Comparison objects
+        BINARY_LARGER(OperatorArity.BINARY, Tree.LargerOp.class, "largerThan", JCTree.GT, IntegerFloat),
+        BINARY_SMALLER(OperatorArity.BINARY, Tree.SmallerOp.class, "smallerThan", JCTree.LT, IntegerFloat),
+        BINARY_LARGE_AS(OperatorArity.BINARY, Tree.LargeAsOp.class, "asLargeAs", JCTree.GE, IntegerFloat),
+        BINARY_SMALL_AS(OperatorArity.BINARY, Tree.SmallAsOp.class, "asSmallAs", JCTree.LE, IntegerFloat),
+        ;
+
+        private enum OperatorArity {
+            UNARY, BINARY;
+        }
+
         Class<? extends Tree.OperatorExpression> operatorClass;
         String ceylonMethod;
         int javacOperator;
         PrimitiveType[] optimisableTypes;
         
-        OperatorTranslation(Class<? extends Tree.OperatorExpression> operatorClass, String ceylonMethod, 
+        @SuppressWarnings("unchecked")
+        OperatorTranslation(OperatorArity arity, 
+                Class<? extends Tree.OperatorExpression> operatorClass, String ceylonMethod, 
                 int javacOperator, PrimitiveType... optimisableTypes) {
             this.operatorClass = operatorClass;
             this.ceylonMethod = ceylonMethod;
             this.javacOperator = javacOperator;
             this.optimisableTypes = optimisableTypes;
+            if(arity == OperatorArity.BINARY)
+                binaryOperators.put((Class<? extends BinaryOperatorExpression>) operatorClass, this);
+            else
+                unaryOperators.put((Class<? extends UnaryOperatorExpression>) operatorClass, this);
         }
-        OperatorTranslation(Class<? extends Tree.BinaryOperatorExpression> operatorClass, String ceylonMethod) {
-            this(operatorClass, ceylonMethod, -1);
+        OperatorTranslation(OperatorArity arity, Class<? extends Tree.BinaryOperatorExpression> operatorClass, String ceylonMethod) {
+            this(arity, operatorClass, ceylonMethod, -1);
         }
         
         private boolean isOptimisable(Tree.UnaryOperatorExpression t, AbstractTransformer gen){
@@ -359,91 +406,40 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
-    private static class AssignmentOperatorTranslation {
+    private enum AssignmentOperatorTranslation {
+        // Assignment operators
+        ADD(Tree.AddAssignOp.class, OperatorTranslation.BINARY_SUM, JCTree.PLUS_ASG),
+        SUBSTRACT(Tree.SubtractAssignOp.class, OperatorTranslation.BINARY_DIFFERENCE, JCTree.MINUS_ASG),
+        MULTIPLY(Tree.MultiplyAssignOp.class, OperatorTranslation.BINARY_PRODUCT, JCTree.MUL_ASG),
+        DIVIDE(Tree.DivideAssignOp.class, OperatorTranslation.BINARY_QUOTIENT, JCTree.DIV_ASG),
+        REMAINDER(Tree.RemainderAssignOp.class, OperatorTranslation.BINARY_REMAINDER, JCTree.MOD_ASG),
+        AND(Tree.AndAssignOp.class, OperatorTranslation.BINARY_AND, JCTree.BITAND_ASG),
+        OR(Tree.OrAssignOp.class, OperatorTranslation.BINARY_OR, JCTree.BITOR_ASG)
+        ;
+        
         int javacOperator;
         OperatorTranslation binaryOperator;
 
-        AssignmentOperatorTranslation(OperatorTranslation binaryOperator,
+        AssignmentOperatorTranslation(Class<? extends Tree.AssignmentOp> operatorClass,
+                OperatorTranslation binaryOperator,
                 int javacOperator) {
             this.javacOperator = javacOperator;
             this.binaryOperator = binaryOperator;
+            assignmentOperators.put(operatorClass, this);
         }
-        
     }
     
-    private static Map<Class<? extends Tree.UnaryOperatorExpression>, OperatorTranslation> unaryOperators;
-    private static Map<Class<? extends Tree.BinaryOperatorExpression>, OperatorTranslation> binaryOperators;
-    private static Map<Class<? extends Tree.AssignmentOp>, AssignmentOperatorTranslation> assignmentOperators;
-
-    private static void addUnaryOperator(Class<? extends Tree.UnaryOperatorExpression> ceylonTreeType, String ceylonMethodName, 
-            int javacOperator, PrimitiveType... optimisableTypes) {
-        unaryOperators.put(ceylonTreeType, new OperatorTranslation(ceylonTreeType, ceylonMethodName, javacOperator, optimisableTypes));
-    }
-
-    private static void addBinaryOperator(Class<? extends Tree.BinaryOperatorExpression> ceylonTreeType, String ceylonMethodName, 
-            int javacOperator, PrimitiveType... optimisableTypes) {
-        binaryOperators.put(ceylonTreeType, new OperatorTranslation(ceylonTreeType, ceylonMethodName, javacOperator, optimisableTypes));
-    }
-
-    private static void addBinaryOperator(Class<? extends Tree.BinaryOperatorExpression> ceylonTreeType, String ceylonMethodName) {
-        binaryOperators.put(ceylonTreeType, new OperatorTranslation(ceylonTreeType, ceylonMethodName));
-    }
-
-    private static void addAssignmentOperator(Class<? extends Tree.AssignmentOp> ceylonTreeType,  
-            OperatorTranslation ceylonOperator,
-            int javacOperator) {
-        assignmentOperators.put(ceylonTreeType, new AssignmentOperatorTranslation(ceylonOperator, javacOperator));
-    }
+    private static final Map<Class<? extends Tree.UnaryOperatorExpression>, OperatorTranslation> unaryOperators;
+    private static final Map<Class<? extends Tree.BinaryOperatorExpression>, OperatorTranslation> binaryOperators;
+    private static final Map<Class<? extends Tree.AssignmentOp>, AssignmentOperatorTranslation> assignmentOperators;
+    private static final PrimitiveType[] IntegerFloat = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.FLOAT};
+    private static final PrimitiveType[] IntegerFloatString = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.FLOAT, PrimitiveType.STRING};
+    private static final PrimitiveType[] NotString = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.FLOAT, PrimitiveType.BOOLEAN};
 
     static {
         unaryOperators = new HashMap<Class<? extends Tree.UnaryOperatorExpression>, OperatorTranslation>();
         binaryOperators = new HashMap<Class<? extends Tree.BinaryOperatorExpression>, OperatorTranslation>();
         assignmentOperators = new HashMap<Class<? extends Tree.AssignmentOp>, AssignmentOperatorTranslation>();
-        
-        PrimitiveType[] IntegerFloat = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.FLOAT};
-        PrimitiveType[] IntegerFloatString = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.FLOAT, PrimitiveType.STRING};
-        PrimitiveType[] NotString = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.FLOAT, PrimitiveType.BOOLEAN};
-
-        // Unary operators
-        addUnaryOperator(Tree.PositiveOp.class, "positiveValue", JCTree.POS, IntegerFloat);
-        addUnaryOperator(Tree.NegativeOp.class, "negativeValue", JCTree.NEG, IntegerFloat);
-        addUnaryOperator(Tree.PostfixIncrementOp.class, "getSuccessor", JCTree.POSTINC, PrimitiveType.INTEGER);
-        addUnaryOperator(Tree.PostfixDecrementOp.class, "getPredecessor", JCTree.POSTDEC, PrimitiveType.INTEGER);
-        addUnaryOperator(Tree.IncrementOp.class, "getSuccessor", JCTree.PREINC, PrimitiveType.INTEGER);
-        addUnaryOperator(Tree.DecrementOp.class, "getPredecessor", JCTree.PREDEC, PrimitiveType.INTEGER);
-        
-        // Binary operators
-        addBinaryOperator(Tree.SumOp.class, "plus", JCTree.PLUS, IntegerFloatString);
-        addBinaryOperator(Tree.DifferenceOp.class, "minus", JCTree.MINUS, IntegerFloat);
-        addBinaryOperator(Tree.ProductOp.class, "times", JCTree.MUL, IntegerFloat);
-        addBinaryOperator(Tree.QuotientOp.class, "divided", JCTree.DIV, IntegerFloat);
-        addBinaryOperator(Tree.PowerOp.class, "power");
-        addBinaryOperator(Tree.RemainderOp.class, "remainder", JCTree.MOD, PrimitiveType.INTEGER);
-
-        addBinaryOperator(Tree.AndOp.class, "<not-used>", JCTree.AND, PrimitiveType.BOOLEAN);
-        addBinaryOperator(Tree.OrOp.class, "<not-used>", JCTree.OR, PrimitiveType.BOOLEAN);
-
-        addBinaryOperator(Tree.IntersectionOp.class, "and", JCTree.BITAND, PrimitiveType.BOOLEAN);
-        addBinaryOperator(Tree.UnionOp.class, "or", JCTree.BITOR, PrimitiveType.BOOLEAN);
-        addBinaryOperator(Tree.XorOp.class, "xor", JCTree.BITXOR, PrimitiveType.BOOLEAN);
-        
-        addBinaryOperator(Tree.EqualOp.class, "equals", JCTree.EQ, NotString);
-        addBinaryOperator(Tree.CompareOp.class, "compare");
-
-        // Binary operators that act on intermediary Comparison objects
-        addBinaryOperator(Tree.LargerOp.class, "largerThan", JCTree.GT, IntegerFloat);
-        addBinaryOperator(Tree.SmallerOp.class, "smallerThan", JCTree.LT, IntegerFloat);
-        addBinaryOperator(Tree.LargeAsOp.class, "asLargeAs", JCTree.GE, IntegerFloat);
-        addBinaryOperator(Tree.SmallAsOp.class, "asSmallAs", JCTree.LE, IntegerFloat);
-        
-        // Assignment operators
-        addAssignmentOperator(Tree.AddAssignOp.class, binaryOperators.get(Tree.SumOp.class), JCTree.PLUS_ASG);
-        addAssignmentOperator(Tree.SubtractAssignOp.class, binaryOperators.get(Tree.DifferenceOp.class), JCTree.MINUS_ASG);
-        addAssignmentOperator(Tree.MultiplyAssignOp.class, binaryOperators.get(Tree.ProductOp.class), JCTree.MUL_ASG);
-        addAssignmentOperator(Tree.DivideAssignOp.class, binaryOperators.get(Tree.QuotientOp.class), JCTree.DIV_ASG);
-        addAssignmentOperator(Tree.RemainderAssignOp.class, binaryOperators.get(Tree.RemainderOp.class), JCTree.MOD_ASG);
-        addAssignmentOperator(Tree.AndAssignOp.class, binaryOperators.get(Tree.AndOp.class), JCTree.BITAND_ASG);
-        addAssignmentOperator(Tree.OrAssignOp.class, binaryOperators.get(Tree.OrOp.class), JCTree.BITOR_ASG);
     }
 
     //
