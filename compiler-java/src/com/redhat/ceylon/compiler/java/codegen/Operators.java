@@ -78,13 +78,21 @@ public class Operators {
             public OptimisationStrategy getOptimisationStrategy(BinaryOperatorExpression t, AbstractTransformer gen) {
                 OptimisationStrategy left = isTermOptimisable(t.getLeftTerm(), gen);
                 OptimisationStrategy right = isTermOptimisable(t.getRightTerm(), gen);
-                // special case for String where we can't use == but don't need to box
                 if(left == OptimisationStrategy.OPTIMISE
-                        && right == OptimisationStrategy.OPTIMISE
-                        // these two previous checks ensure that the term is unboxed and has a type model
-                        && gen.isCeylonString(t.getLeftTerm().getTypeModel())
-                        && gen.isCeylonString(t.getRightTerm().getTypeModel())){
-                    return OptimisationStrategy.OPTIMISE_BOXING;
+                        && right == OptimisationStrategy.OPTIMISE){
+                    // these two previous checks ensure that the term is unboxed and has a type model
+                    ProducedType leftType = t.getLeftTerm().getTypeModel();
+                    ProducedType rightType = t.getRightTerm().getTypeModel();
+
+                    // make sure both types are the same, can't optimise otherwise
+                    if(!leftType.isExactly(rightType))
+                        return OptimisationStrategy.NONE;
+                    
+                    // special case for String where we can't use == but don't need to box
+                    if(gen.isCeylonString(leftType)
+                        && gen.isCeylonString(rightType)){
+                        return OptimisationStrategy.OPTIMISE_BOXING;
+                    }
                 }
                 return lessPermissive(left, right);
             }
