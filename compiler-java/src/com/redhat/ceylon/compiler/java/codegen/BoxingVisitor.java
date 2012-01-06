@@ -23,7 +23,6 @@ package com.redhat.ceylon.compiler.java.codegen;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticAssignmentOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
@@ -158,7 +157,7 @@ public class BoxingVisitor extends Visitor {
     @Override
     public void visit(ArithmeticAssignmentOp that) {
         super.visit(that);
-        // we are unboxed if both terms are
+        // we are unboxed if both terms are 
         if(that.getLeftTerm().getUnboxed()
                 && that.getRightTerm().getUnboxed())
             Util.markUnBoxed(that);
@@ -168,7 +167,7 @@ public class BoxingVisitor extends Visitor {
     public void visit(PostfixOperatorExpression that) {
         super.visit(that);
         // we can optimise this one if we're a local variable and the term is unboxed
-        if(that.getTerm().getUnboxed() && isLocalVariable(that.getTerm()))
+        if(that.getTerm().getUnboxed() && Util.isDirectAccessVariable(that.getTerm()))
             Util.markUnBoxed(that);
     }
 
@@ -176,22 +175,8 @@ public class BoxingVisitor extends Visitor {
     public void visit(PrefixOperatorExpression that) {
         super.visit(that);
         // we can optimise this one if we're a local variable and the term is unboxed
-        if(that.getTerm().getUnboxed() && isLocalVariable(that.getTerm()))
+        if(that.getTerm().getUnboxed() && Util.isDirectAccessVariable(that.getTerm()))
             Util.markUnBoxed(that);
-    }
-
-    private boolean isLocalVariable(Term term) {
-        if(!(term instanceof BaseMemberExpression))
-            return false;
-        Declaration decl = ((BaseMemberExpression)term).getDeclaration();
-        if(decl == null) // typechecker error
-            return false;
-        // make sure we don't try to optimise things which can't be optimised
-        return decl instanceof Value
-                && !decl.isToplevel()
-                && !decl.isClassOrInterfaceMember()
-                && !decl.isCaptured()
-                && !decl.isShared();
     }
 
     @Override

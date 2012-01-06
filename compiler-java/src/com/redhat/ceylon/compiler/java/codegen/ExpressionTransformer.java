@@ -547,7 +547,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
 
         // see if we can optimise it
-        if(op.getUnboxed()){
+        if(op.getUnboxed() && Util.isDirectAccessVariable(op.getLeftTerm())){
             return optimiseAssignmentOperator(op, operator);
         }
         

@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.parser.Token;
@@ -279,5 +280,19 @@ public class Util {
             }
         }
         return sb.toString();
+    }
+
+    public static boolean isDirectAccessVariable(Term term) {
+        if(!(term instanceof BaseMemberExpression))
+            return false;
+        Declaration decl = ((BaseMemberExpression)term).getDeclaration();
+        if(decl == null) // typechecker error
+            return false;
+        // make sure we don't try to optimise things which can't be optimised
+        return decl instanceof Value
+                && !decl.isToplevel()
+                && !decl.isClassOrInterfaceMember()
+                && !decl.isCaptured()
+                && !decl.isShared();
     }
 }
