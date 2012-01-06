@@ -17,6 +17,8 @@ public class Operators {
     }
 
     private static final PrimitiveType[] IntegerFloat = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.FLOAT};
+    private static final PrimitiveType[] IntegerCharacter = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.CHARACTER};
+    private static final PrimitiveType[] IntegerFloatCharacter = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.FLOAT, PrimitiveType.CHARACTER};
     private static final PrimitiveType[] IntegerFloatString = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.FLOAT, PrimitiveType.STRING};
     private static final PrimitiveType[] All = PrimitiveType.values();
 
@@ -51,10 +53,10 @@ public class Operators {
         UNARY_POSITIVE(Tree.PositiveOp.class, "positiveValue", JCTree.POS, IntegerFloat),
         UNARY_NEGATIVE(Tree.NegativeOp.class, "negativeValue", JCTree.NEG, IntegerFloat),
         
-        UNARY_POSTFIX_INCREMENT(Tree.PostfixIncrementOp.class, "getSuccessor", JCTree.POSTINC, PrimitiveType.INTEGER),
-        UNARY_POSTFIX_DECREMENT(Tree.PostfixDecrementOp.class, "getPredecessor", JCTree.POSTDEC, PrimitiveType.INTEGER),
-        UNARY_PREFIX_INCREMENT(Tree.IncrementOp.class, "getSuccessor", JCTree.PREINC, PrimitiveType.INTEGER),
-        UNARY_PREFIX_DECREMENT(Tree.DecrementOp.class, "getPredecessor", JCTree.PREDEC, PrimitiveType.INTEGER),
+        UNARY_POSTFIX_INCREMENT(Tree.PostfixIncrementOp.class, "getSuccessor", JCTree.POSTINC, IntegerCharacter),
+        UNARY_POSTFIX_DECREMENT(Tree.PostfixDecrementOp.class, "getPredecessor", JCTree.POSTDEC, IntegerCharacter),
+        UNARY_PREFIX_INCREMENT(Tree.IncrementOp.class, "getSuccessor", JCTree.PREINC, IntegerCharacter),
+        UNARY_PREFIX_DECREMENT(Tree.DecrementOp.class, "getPredecessor", JCTree.PREDEC, IntegerCharacter),
 
         // Binary operators
         BINARY_SUM(Tree.SumOp.class, "plus", JCTree.PLUS, IntegerFloatString),
@@ -90,10 +92,10 @@ public class Operators {
         BINARY_COMPARE(Tree.CompareOp.class, "compare"),
 
         // Binary operators that act on intermediary Comparison objects
-        BINARY_LARGER(Tree.LargerOp.class, "largerThan", JCTree.GT, IntegerFloat),
-        BINARY_SMALLER(Tree.SmallerOp.class, "smallerThan", JCTree.LT, IntegerFloat),
-        BINARY_LARGE_AS(Tree.LargeAsOp.class, "asLargeAs", JCTree.GE, IntegerFloat),
-        BINARY_SMALL_AS(Tree.SmallAsOp.class, "asSmallAs", JCTree.LE, IntegerFloat),
+        BINARY_LARGER(Tree.LargerOp.class, "largerThan", JCTree.GT, IntegerFloatCharacter),
+        BINARY_SMALLER(Tree.SmallerOp.class, "smallerThan", JCTree.LT, IntegerFloatCharacter),
+        BINARY_LARGE_AS(Tree.LargeAsOp.class, "asLargeAs", JCTree.GE, IntegerFloatCharacter),
+        BINARY_SMALL_AS(Tree.SmallAsOp.class, "asSmallAs", JCTree.LE, IntegerFloatCharacter),
         ;
 
         Class<? extends Tree.OperatorExpression> operatorClass;
