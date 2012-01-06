@@ -360,7 +360,11 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         if(operator.getOptimisationStrategy(op, this).useJavaOperator()){
             // optimisation for unboxed types
-            return make().Unary(operator.javacOperator, transformExpression(term, BoxingStrategy.UNBOXED, expectedType));
+            JCExpression expr = transformExpression(term, BoxingStrategy.UNBOXED, expectedType);
+            // unary + is essentially a NOOP
+            if(operator == OperatorTranslation.UNARY_POSITIVE)
+                return expr;
+            return make().Unary(operator.javacOperator, expr);
         }
         
         return make().Apply(null, makeSelect(transformExpression(term, BoxingStrategy.BOXED, expectedType), 
