@@ -7,6 +7,7 @@ import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrateg
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignmentOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BinaryOperatorExpression;
 import com.sun.tools.javac.tree.JCTree;
 
 public class Operators {
@@ -17,7 +18,7 @@ public class Operators {
 
     private static final PrimitiveType[] IntegerFloat = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.FLOAT};
     private static final PrimitiveType[] IntegerFloatString = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.FLOAT, PrimitiveType.STRING};
-    private static final PrimitiveType[] NotString = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.FLOAT, PrimitiveType.BOOLEAN};
+    private static final PrimitiveType[] All = PrimitiveType.values();
 
     public enum OptimisationStrategy {
         OPTIMISE(true, BoxingStrategy.UNBOXED),
@@ -70,7 +71,22 @@ public class Operators {
         BINARY_UNION(Tree.UnionOp.class, "or", JCTree.BITOR, PrimitiveType.BOOLEAN),
         BINARY_XOR(Tree.XorOp.class, "xor", JCTree.BITXOR, PrimitiveType.BOOLEAN),
         
-        BINARY_EQUAL(Tree.EqualOp.class, "equals", JCTree.EQ, NotString),
+        BINARY_EQUAL(Tree.EqualOp.class, "equals", JCTree.EQ, All){
+            @Override
+            public OptimisationStrategy getOptimisationStrategy(BinaryOperatorExpression t, AbstractTransformer gen) {
+                OptimisationStrategy left = isTermOptimisable(t.getLeftTerm(), gen);
+                OptimisationStrategy right = isTermOptimisable(t.getRightTerm(), gen);
+                // special case for String where we can't use == but don't need to box
+                if(left == OptimisationStrategy.OPTIMISE
+                        && right == OptimisationStrategy.OPTIMISE
+                        // these two previous checks ensure that the term is unboxed and has a type model
+                        && gen.isCeylonString(t.getLeftTerm().getTypeModel())
+                        && gen.isCeylonString(t.getRightTerm().getTypeModel())){
+                    return OptimisationStrategy.OPTIMISE_BOXING;
+                }
+                return lessPermissive(left, right);
+            }
+        },
         BINARY_COMPARE(Tree.CompareOp.class, "compare"),
 
         // Binary operators that act on intermediary Comparison objects
@@ -102,13 +118,16 @@ public class Operators {
         public OptimisationStrategy getOptimisationStrategy(Tree.BinaryOperatorExpression t, AbstractTransformer gen){
             OptimisationStrategy left = isTermOptimisable(t.getLeftTerm(), gen);
             OptimisationStrategy right = isTermOptimisable(t.getRightTerm(), gen);
+            return lessPermissive(left, right);
+        }
+        
+        protected OptimisationStrategy lessPermissive(OptimisationStrategy left, OptimisationStrategy right) {
             // it's from most permissive to less permissive, so return the one with the higher ordinal (less permissive)
             if(left.ordinal() > right.ordinal())
                 return left;
             return right;
         }
-        
-        private OptimisationStrategy isTermOptimisable(Tree.Term t, AbstractTransformer gen){
+        protected OptimisationStrategy isTermOptimisable(Tree.Term t, AbstractTransformer gen){
             if(javacOperator < 0 || !t.getUnboxed())
                 return OptimisationStrategy.NONE;
             ProducedType pt = t.getTypeModel();
