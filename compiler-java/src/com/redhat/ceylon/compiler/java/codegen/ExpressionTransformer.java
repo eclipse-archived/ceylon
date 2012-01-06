@@ -625,7 +625,11 @@ public class ExpressionTransformer extends AbstractTransformer {
             return at(expr).Erroneous(List.<JCTree>nil());
         }
         
-        if(operator.getOptimisationStrategy(expr, this).useJavaOperator()){
+        OptimisationStrategy optimisationStrategy = operator.getOptimisationStrategy(expr, this);
+        boolean canOptimise = optimisationStrategy.useJavaOperator();
+        
+        // only fully optimise if we don't have to access the getter/setter
+        if(canOptimise && Util.isDirectAccessVariable(expr.getTerm())){
             JCExpression term = transformExpression(expr.getTerm(), BoxingStrategy.UNBOXED, expr.getTypeModel());
             return at(expr).Unary(operator.javacOperator, term);
         }
@@ -641,22 +645,31 @@ public class ExpressionTransformer extends AbstractTransformer {
         // attr++
         // (let $tmp = attr; attr = $tmp.getSuccessor(); $tmp;)
         if(term instanceof Tree.BaseMemberExpression){
+            // we can optimise that case a bit sometimes
+            boolean boxResult = !canOptimise;
             JCExpression getter = transform((Tree.BaseMemberExpression)term, null);
             at(expr);
             // Type $tmp = attr
-            JCExpression exprType = makeJavaType(returnType, NO_PRIMITIVES);
+            JCExpression exprType = makeJavaType(returnType, boxResult ? NO_PRIMITIVES : 0);
             Name varName = names().fromString(tempName("op"));
             // make sure we box the results if necessary
-            getter = applyErasureAndBoxing(getter, term, BoxingStrategy.BOXED, returnType);
+            getter = applyErasureAndBoxing(getter, term, boxResult ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED, returnType);
             JCVariableDecl tmpVar = make().VarDef(make().Modifiers(0), varName, exprType, getter);
             decls = decls.prepend(tmpVar);
 
             // attr = $tmp.getSuccessor()
-            JCExpression successor = make().Apply(null, 
-                                                  makeSelect(make().Ident(varName), operator.ceylonMethod), 
-                                                  List.<JCExpression>nil());
-            // make sure the result is boxed if necessary, the result of successor/predecessor is always boxed
-            successor = boxUnboxIfNecessary(successor, true, term.getTypeModel(), Util.getBoxingStrategy(term));
+            JCExpression successor;
+            if(canOptimise){
+                // use +1/-1 if we can optimise a bit
+                successor = make().Binary(operator == OperatorTranslation.UNARY_POSTFIX_INCREMENT ? JCTree.PLUS : JCTree.MINUS, 
+                        make().Ident(varName), makeInteger(1));
+            }else{
+                successor = make().Apply(null, 
+                                         makeSelect(make().Ident(varName), operator.ceylonMethod), 
+                                         List.<JCExpression>nil());
+                // make sure the result is boxed if necessary, the result of successor/predecessor is always boxed
+                successor = boxUnboxIfNecessary(successor, true, term.getTypeModel(), Util.getBoxingStrategy(term));
+            }
             JCExpression assignment = transformAssignment(expr, term, successor);
             stats = stats.prepend(at(expr).Exec(assignment));
 
@@ -725,7 +738,11 @@ public class ExpressionTransformer extends AbstractTransformer {
             return at(expr).Erroneous(List.<JCTree>nil());
         }
         
-        if(operator.getOptimisationStrategy(expr, this).useJavaOperator()){
+        OptimisationStrategy optimisationStrategy = operator.getOptimisationStrategy(expr, this);
+        final boolean canOptimise = optimisationStrategy.useJavaOperator();
+        
+        // only fully optimise if we don't have to access the getter/setter
+        if(canOptimise && Util.isDirectAccessVariable(expr.getTerm())){
             JCExpression term = transformExpression(expr.getTerm(), BoxingStrategy.UNBOXED, expr.getTypeModel());
             return at(expr).Unary(operator.javacOperator, term);
         }
@@ -733,11 +750,17 @@ public class ExpressionTransformer extends AbstractTransformer {
         Interface compoundType = expr.getUnit().getOrdinalDeclaration();
         ProducedType valueType = getSupertype(expr.getTerm(), compoundType);
         ProducedType returnType = getTypeArgument(valueType, 0);
-        // we work on boxed types
-        return transformAssignAndReturnOperation(expr, expr.getTerm(), true, 
+        
+        // we work on boxed types unless we could have optimised
+        return transformAssignAndReturnOperation(expr, expr.getTerm(), !canOptimise, 
                 valueType, returnType, new AssignAndReturnOperationFactory(){
             @Override
             public JCExpression getNewValue(JCExpression previousValue) {
+                // use +1/-1 if we can optimise a bit
+                if(canOptimise){
+                    return make().Binary(operator == OperatorTranslation.UNARY_PREFIX_INCREMENT ? JCTree.PLUS : JCTree.MINUS, 
+                            previousValue, makeInteger(1));
+                }
                 // make this call: previousValue.getSuccessor() or previousValue.getPredecessor()
                 return make().Apply(null, makeSelect(previousValue, operator.ceylonMethod), List.<JCExpression>nil());
             }

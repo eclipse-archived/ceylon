@@ -166,17 +166,15 @@ public class BoxingVisitor extends Visitor {
     @Override
     public void visit(PostfixOperatorExpression that) {
         super.visit(that);
-        // we can optimise this one if we're a local variable and the term is unboxed
-        if(that.getTerm().getUnboxed() && Util.isDirectAccessVariable(that.getTerm()))
-            Util.markUnBoxed(that);
+        // we are unboxed if the term is
+        propagateFromTerm(that, that.getTerm());
     }
 
     @Override
     public void visit(PrefixOperatorExpression that) {
         super.visit(that);
-        // we can optimise this one if we're a local variable and the term is unboxed
-        if(that.getTerm().getUnboxed() && Util.isDirectAccessVariable(that.getTerm()))
-            Util.markUnBoxed(that);
+        // we are unboxed if the term is
+        propagateFromTerm(that, that.getTerm());
     }
 
     @Override
