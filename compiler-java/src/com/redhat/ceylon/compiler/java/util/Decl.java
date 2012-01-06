@@ -22,8 +22,10 @@ package com.redhat.ceylon.compiler.java.util;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 public class Decl {
@@ -56,6 +58,24 @@ public class Decl {
     public static boolean withinMethod(Tree.Declaration decl) {
         return withinMethod(decl.getDeclarationModel());
     }
+    
+    /**
+     * Determines whether the declaration's containing scope is a getter
+     * @param decl The declaration
+     * @return true if the declaration is within a getter
+     */
+    public static boolean withinGetter(Tree.Declaration decl) {
+        return withinGetter(decl.getDeclarationModel());
+    }
+    
+    /**
+     * Determines whether the declaration's containing scope is a setter
+     * @param decl The declaration
+     * @return true if the declaration is within a setter
+     */
+    public static boolean withinSetter(Tree.Declaration decl) {
+        return withinSetter(decl.getDeclarationModel());
+    }
 
     /**
      * Determines whether the declaration's containing scope is a method
@@ -64,6 +84,24 @@ public class Decl {
      */
     public static boolean withinMethod(Declaration decl) {
         return container(decl) instanceof Method;
+    }
+    
+    /**
+     * Determines whether the declaration's containing scope is a getter
+     * @param decl The declaration
+     * @return true if the declaration is within a getter
+     */
+    public static boolean withinGetter(Declaration decl) {
+        return container(decl) instanceof Getter;
+    }
+    
+    /**
+     * Determines whether the declaration's containing scope is a setter
+     * @param decl The declaration
+     * @return true if the declaration is within a setter
+     */
+    public static boolean withinSetter(Declaration decl) {
+        return container(decl) instanceof Setter;
     }
     
     /**
