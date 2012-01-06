@@ -447,9 +447,9 @@ public class ExpressionTransformer extends AbstractTransformer {
     // Comparison operators
     
     public JCExpression transform(Tree.IdenticalOp op){
-        // we don't care about their types and boxing
-        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.INDIFFERENT, null);
-        JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.INDIFFERENT, null);
+        // The only thing which might be unboxable is boolean, and we need to be able to say == on it
+        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.UNBOXED, null);
+        JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.UNBOXED, null);
         return at(op).Binary(JCTree.EQ, left, right);
     }
     
