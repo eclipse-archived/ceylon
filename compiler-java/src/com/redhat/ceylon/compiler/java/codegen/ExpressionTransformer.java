@@ -67,6 +67,12 @@ import com.sun.tools.javac.util.Name;
  */
 public class ExpressionTransformer extends AbstractTransformer {
 
+    static{
+        // only there to make sure this class is initialised before the enums defined in it, otherwise we
+        // get an initialisation error
+        Operators.init();
+    }
+    
     private boolean inStatement = false;
     private boolean needDollarThis = false;
     

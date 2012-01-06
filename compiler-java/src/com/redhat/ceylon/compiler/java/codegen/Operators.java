@@ -234,4 +234,8 @@ public class Operators {
     public static AssignmentOperatorTranslation getAssignmentOperator(Class<? extends Tree.AssignmentOp> operatorClass) {
         return assignmentOperators.get(operatorClass);
     }
+    
+    // only there to make sure this class is initialised before the enums defined in it, otherwise we
+    // get an initialisation error
+    public static void init(){}
 }
