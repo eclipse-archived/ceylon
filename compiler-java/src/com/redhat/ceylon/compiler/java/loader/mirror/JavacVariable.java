@@ -19,6 +19,8 @@
  */
 package com.redhat.ceylon.compiler.java.loader.mirror;
 
+import java.util.Map;
+
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
 import com.redhat.ceylon.compiler.loader.mirror.VariableMirror;
@@ -27,6 +29,9 @@ import com.sun.tools.javac.code.Symbol.VarSymbol;
 public class JavacVariable implements VariableMirror {
 
     private VarSymbol varSymbol;
+    
+    private TypeMirror type;
+    private Map<String, AnnotationMirror> annotations;
 
     public JavacVariable(VarSymbol varSymbol) {
         this.varSymbol = varSymbol;
@@ -34,12 +39,18 @@ public class JavacVariable implements VariableMirror {
 
     @Override
     public AnnotationMirror getAnnotation(String type) {
-        return JavacUtil.getAnnotation(varSymbol, type);
+        if (annotations == null) {
+            annotations = JavacUtil.getAnnotations(varSymbol);
+        }
+        return annotations.get(type);
     }
 
     @Override
     public TypeMirror getType() {
-        return new JavacType(varSymbol.type);
+        if (type == null) {
+            type = new JavacType(varSymbol.type);
+        }
+        return type;
     }
 
     @Override

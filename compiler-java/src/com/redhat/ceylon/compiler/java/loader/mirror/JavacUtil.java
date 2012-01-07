@@ -20,7 +20,9 @@
 package com.redhat.ceylon.compiler.java.loader.mirror;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeParameterMirror;
@@ -30,13 +32,13 @@ import com.sun.tools.javac.code.Symbol.TypeSymbol;
 
 public class JavacUtil {
 
-    public static AnnotationMirror getAnnotation(Symbol symbol, String type) {
+    public static Map<String, AnnotationMirror> getAnnotations(Symbol symbol) {
+        HashMap<String, AnnotationMirror> result = new HashMap<String, AnnotationMirror>();
         com.sun.tools.javac.util.List<Compound> annotations = symbol.getAnnotationMirrors();
         for(Compound annotation : annotations){
-            if(annotation.type.tsym.getQualifiedName().toString().equals(type))
-                return new JavacAnnotation(annotation);
+            result.put(annotation.type.tsym.getQualifiedName().toString(), new JavacAnnotation(annotation));
         }
-        return null;
+        return result;
     }
 
     public static List<TypeParameterMirror> getTypeParameters(Symbol symbol) {

@@ -20,6 +20,7 @@
 package com.redhat.ceylon.compiler.java.loader.mirror;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.lang.model.type.TypeKind;
@@ -31,6 +32,8 @@ import com.sun.tools.javac.code.Type.ArrayType;
 public class JavacType implements TypeMirror {
 
     private Type type;
+    private TypeMirror componentType;
+    private List<TypeMirror> typeArguments;
 
     public JavacType(Type type) {
         this.type = type;
@@ -43,11 +46,14 @@ public class JavacType implements TypeMirror {
 
     @Override
     public List<TypeMirror> getTypeArguments() {
-        List<TypeMirror> args = new ArrayList<TypeMirror>(type.getTypeArguments().size());
-        for(Type typeArg : type.getTypeArguments()){
-            args.add(new JavacType(typeArg));
+        if (typeArguments == null) {
+            List<TypeMirror> args = new ArrayList<TypeMirror>(type.getTypeArguments().size());
+            for(Type typeArg : type.getTypeArguments()){
+                args.add(new JavacType(typeArg));
+            }
+            typeArguments = Collections.unmodifiableList(args);
         }
-        return args;
+        return typeArguments;
     }
 
     @Override
@@ -57,8 +63,13 @@ public class JavacType implements TypeMirror {
 
     @Override
     public TypeMirror getComponentType() {
-        Type componentType = ((ArrayType)type).getComponentType();
-        return componentType != null ? new JavacType(componentType) : null;
+        if (type instanceof ArrayType) {
+            Type compType = ((ArrayType)type).getComponentType();
+            if (compType != null) {
+                componentType = new JavacType(compType);
+            }
+        }
+        return componentType;
     }
 
     @Override

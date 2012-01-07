@@ -20,8 +20,10 @@
 package com.redhat.ceylon.compiler.java.loader.mirror;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.tools.JavaFileObject.Kind;
 
@@ -43,6 +45,13 @@ public class JavacClass implements ClassMirror {
 
     public ClassSymbol classSymbol;
 
+    private PackageMirror pkg;
+    private TypeMirror superclass;
+    private List<MethodMirror> methods;
+    private List<TypeMirror> interfaces;
+    private Map<String, AnnotationMirror> annotations;
+    private List<TypeParameterMirror> typeParams;
+    
     public JavacClass(ClassSymbol classSymbol){
         this.classSymbol = classSymbol;
     }
@@ -63,7 +72,10 @@ public class JavacClass implements ClassMirror {
 
     @Override
     public PackageMirror getPackage() {
-        return new JavacPackage(classSymbol.packge());
+        if (pkg == null) {
+            pkg = new JavacPackage(classSymbol.packge());
+        }
+        return pkg;
     }
 
     @Override
@@ -88,7 +100,10 @@ public class JavacClass implements ClassMirror {
 
     @Override
     public AnnotationMirror getAnnotation(String type) {
-        return JavacUtil.getAnnotation(classSymbol, type);
+        if (annotations == null) {
+            annotations = JavacUtil.getAnnotations(classSymbol);
+        }
+        return annotations.get(type);
     }
 
     @Override
@@ -109,33 +124,46 @@ public class JavacClass implements ClassMirror {
 
     @Override
     public List<MethodMirror> getDirectMethods() {
-        List<MethodMirror> methods = new LinkedList<MethodMirror>();
-        for(Symbol sym : classSymbol.getEnclosedElements()){
-            if(sym instanceof MethodSymbol){
-                methods.add(new JavacMethod((MethodSymbol)sym));
+        if (methods == null) {
+            List<MethodMirror> ret = new LinkedList<MethodMirror>();
+            for(Symbol sym : classSymbol.getEnclosedElements()){
+                if(sym instanceof MethodSymbol){
+                    ret.add(new JavacMethod((MethodSymbol)sym));
+                }
             }
+            methods = Collections.unmodifiableList(ret);
         }
         return methods;
     }
 
     @Override
     public TypeMirror getSuperclass() {
-        Type superclass = classSymbol.getSuperclass();
-        return superclass != null ? new JavacType(superclass) : null;
+        Type supercls = classSymbol.getSuperclass();
+        if (supercls != null) {
+            if (superclass == null) {
+                superclass = new JavacType(supercls);
+            }
+        }
+        return superclass;
     }
 
     @Override
     public List<TypeMirror> getInterfaces() {
-        com.sun.tools.javac.util.List<Type> interfaces = classSymbol.getInterfaces();
-        List<TypeMirror> ret = new ArrayList<TypeMirror>(interfaces.size());
-        for(Type interfce : interfaces)
-            ret.add(new JavacType(interfce));
-        return ret;
+        if (interfaces == null) {
+            List<TypeMirror> ret = new ArrayList<TypeMirror>(classSymbol.getInterfaces().size());
+            for(Type interfce : classSymbol.getInterfaces())
+                ret.add(new JavacType(interfce));
+            interfaces = Collections.unmodifiableList(ret);
+        }
+        return interfaces;
     }
 
     @Override
     public List<TypeParameterMirror> getTypeParameters() {
-        return JavacUtil.getTypeParameters(classSymbol);
+        if (typeParams == null) {
+            typeParams = Collections.unmodifiableList(JavacUtil.getTypeParameters(classSymbol));
+        }
+        return typeParams;
     }
 
 }

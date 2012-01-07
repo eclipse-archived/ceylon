@@ -20,7 +20,9 @@
 package com.redhat.ceylon.compiler.java.loader.mirror;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
 import com.sun.tools.javac.code.Attribute;
@@ -32,14 +34,22 @@ public class JavacAnnotation implements AnnotationMirror {
 
     private Compound annotation;
 
+    private Map<String, Object> attributes;
+    
     public JavacAnnotation(Compound annotation) {
         this.annotation = annotation;
+        attributes = new HashMap<String, Object>();
     }
 
     @Override
     public Object getValue(String fieldName) {
-        Attribute attr = member(fieldName);
-        return attributeToRefl(attr);
+        Object result = attributes.get(fieldName);
+        if (result == null) {
+            Attribute attr = member(fieldName);
+            result = attributeToRefl(attr);
+            attributes.put(fieldName, result);
+        }
+        return result;
     }
 
     private Object attributeToRefl(Attribute attr) {

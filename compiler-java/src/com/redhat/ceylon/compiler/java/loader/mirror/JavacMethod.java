@@ -20,7 +20,9 @@
 package com.redhat.ceylon.compiler.java.loader.mirror;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.lang.model.element.ElementKind;
 
@@ -37,6 +39,11 @@ import com.sun.tools.javac.code.Type;
 public class JavacMethod implements MethodMirror {
 
     public MethodSymbol methodSymbol;
+    
+    private TypeMirror returnType;
+    private List<VariableMirror> parameters;
+    private Map<String, AnnotationMirror> annotations;
+    private List<TypeParameterMirror> typeParams;
 
     public JavacMethod(MethodSymbol sym) {
         this.methodSymbol = sym;
@@ -44,7 +51,10 @@ public class JavacMethod implements MethodMirror {
 
     @Override
     public AnnotationMirror getAnnotation(String type) {
-        return JavacUtil.getAnnotation(methodSymbol, type);
+        if (annotations == null) {
+            annotations = JavacUtil.getAnnotations(methodSymbol);
+        }
+        return annotations.get(type);
     }
 
     @Override
@@ -74,11 +84,14 @@ public class JavacMethod implements MethodMirror {
 
     @Override
     public List<VariableMirror> getParameters() {
-        com.sun.tools.javac.util.List<VarSymbol> typeParameters = methodSymbol.getParameters();
-        List<VariableMirror> ret = new ArrayList<VariableMirror>(typeParameters.size());
-        for(VarSymbol typeParameter : typeParameters)
-            ret.add(new JavacVariable(typeParameter));
-        return ret;
+        if (parameters == null) {
+            com.sun.tools.javac.util.List<VarSymbol> params = methodSymbol.getParameters();
+            List<VariableMirror> ret = new ArrayList<VariableMirror>(params.size());
+            for(VarSymbol parameter : params)
+                ret.add(new JavacVariable(parameter));
+            parameters = Collections.unmodifiableList(ret);
+        }
+        return parameters;
     }
 
     @Override
@@ -93,13 +106,19 @@ public class JavacMethod implements MethodMirror {
 
     @Override
     public TypeMirror getReturnType() {
-        Type returnType = methodSymbol.getReturnType();
-        return returnType != null ? new JavacType(returnType) : null;
+        Type retType = methodSymbol.getReturnType();
+        if (retType != null) {
+            returnType = new JavacType(retType);
+        }
+        return returnType;
     }
 
     @Override
     public List<TypeParameterMirror> getTypeParameters() {
-        return JavacUtil.getTypeParameters(methodSymbol);
+        if (typeParams == null) {
+            typeParams = Collections.unmodifiableList(JavacUtil.getTypeParameters(methodSymbol));
+        }
+        return typeParams;
     }
     
 }

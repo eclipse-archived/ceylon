@@ -20,6 +20,7 @@
 package com.redhat.ceylon.compiler.java.loader.mirror;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
@@ -30,6 +31,7 @@ import com.sun.tools.javac.code.Type;
 public class JavacTypeParameter implements TypeParameterMirror {
 
     private TypeSymbol typeSymbol;
+    private List<TypeMirror> bounds;
 
     public JavacTypeParameter(TypeSymbol typeSymbol) {
         this.typeSymbol = typeSymbol;
@@ -42,12 +44,14 @@ public class JavacTypeParameter implements TypeParameterMirror {
 
     @Override
     public List<TypeMirror> getBounds() {
-        com.sun.tools.javac.util.List<Type> bounds = typeSymbol.getBounds();
-        List<TypeMirror> ret = new ArrayList<TypeMirror>(bounds.size());
-        for(Type type : bounds)
-            ret.add(new JavacType(type));
-        return ret;
-
+        if (bounds == null) {
+            com.sun.tools.javac.util.List<Type> bnds = typeSymbol.getBounds();
+            List<TypeMirror> ret = new ArrayList<TypeMirror>(bnds.size());
+            for(Type type : bnds)
+                ret.add(new JavacType(type));
+            bounds = Collections.unmodifiableList(ret);
+        }
+        return bounds;
     }
 
 }
