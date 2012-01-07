@@ -338,7 +338,7 @@ function testCollectionOperators(){
     expect(getS3(),$$$cl15.String("null"),$$$cl15.String("lookup"));
 }
 
-//MethodDefinition testNullsafeOperators at operators.ceylon (172:0-178:0)
+//MethodDefinition testNullsafeOperators at operators.ceylon (172:0-185:0)
 function testNullsafeOperators(){
     
     //AttributeDeclaration seq at operators.ceylon (173:4-173:27)
@@ -360,12 +360,38 @@ function testNullsafeOperators(){
         return $s2;
     }
     expect(getS2(),$$$cl15.String("null"),$$$cl15.String("default"));
+    
+    //AttributeDeclaration s3 at operators.ceylon (179:4-179:21)
+    var $s3=$$$cl15.getNull();
+    function getS3(){
+        return $s3;
+    }
+    
+    //AttributeDeclaration s4 at operators.ceylon (180:4-180:23)
+    var $s4=$$$cl15.String("test");
+    function getS4(){
+        return $s4;
+    }
+    
+    //AttributeDeclaration s5 at operators.ceylon (181:4-181:39)
+    var $s5=function($){return $!==null?$:$$$cl15.String("null")}(function($){return $!==null?$.getUppercased():null}(getS3()));
+    function getS5(){
+        return $s5;
+    }
+    
+    //AttributeDeclaration s6 at operators.ceylon (182:4-182:39)
+    var $s6=function($){return $!==null?$:$$$cl15.String("null")}(function($){return $!==null?$.getUppercased():null}(getS4()));
+    function getS6(){
+        return $s6;
+    }
+    expect(getS5(),$$$cl15.String("null"),$$$cl15.String("nullsafe member"));
+    expect(getS6(),$$$cl15.String("TEST"),$$$cl15.String("nullsafe member"));
 }
 
-//MethodDefinition testIncDecOperators at operators.ceylon (180:0-236:0)
+//MethodDefinition testIncDecOperators at operators.ceylon (187:0-243:0)
 function testIncDecOperators(){
     
-    //AttributeDeclaration i1 at operators.ceylon (181:4-181:28)
+    //AttributeDeclaration i1 at operators.ceylon (188:4-188:28)
     var $i1=$$$cl15.Integer(1);
     function getI1(){
         return $i1;
@@ -374,10 +400,10 @@ function testIncDecOperators(){
         $i1=i1;
     }
     
-    //MethodDefinition f1 at operators.ceylon (182:4-186:4)
+    //MethodDefinition f1 at operators.ceylon (189:4-193:4)
     function f1(){
         
-        //AttributeDeclaration i2 at operators.ceylon (183:8-183:25)
+        //AttributeDeclaration i2 at operators.ceylon (190:8-190:25)
         var $i2=(setI1(getI1().getSuccessor()),getI1());
         function getI2(){
             return $i2;
@@ -387,11 +413,11 @@ function testIncDecOperators(){
     }
     f1();
     
-    //ClassDefinition C1 at operators.ceylon (189:4-189:49)
+    //ClassDefinition C1 at operators.ceylon (196:4-196:49)
     function C1($$c1){
         if ($$c1===undefined)$$c1=new CeylonObject;
         
-        //AttributeDeclaration i at operators.ceylon (189:17-189:47)
+        //AttributeDeclaration i at operators.ceylon (196:17-196:47)
         var $i=$$$cl15.Integer(1);
         function getI(){
             return $i;
@@ -404,13 +430,13 @@ function testIncDecOperators(){
         return $$c1;
     }
     
-    //AttributeDeclaration c1 at operators.ceylon (190:4-190:16)
+    //AttributeDeclaration c1 at operators.ceylon (197:4-197:16)
     var $c1=C1();
     function getC1(){
         return $c1;
     }
     
-    //AttributeDeclaration i3 at operators.ceylon (191:4-191:28)
+    //AttributeDeclaration i3 at operators.ceylon (198:4-198:28)
     var $i3=$$$cl15.Integer(0);
     function getI3(){
         return $i3;
@@ -419,13 +445,13 @@ function testIncDecOperators(){
         $i3=i3;
     }
     
-    //MethodDefinition f2 at operators.ceylon (192:4-195:4)
+    //MethodDefinition f2 at operators.ceylon (199:4-202:4)
     function f2(){
         (setI3(getI3().getSuccessor()),getI3());
         return getC1();
     }
     
-    //AttributeDeclaration i4 at operators.ceylon (196:4-196:25)
+    //AttributeDeclaration i4 at operators.ceylon (203:4-203:25)
     var $i4=function($){var $2=$.getI().getSuccessor();$.setI($2);return $2}(f2());
     function getI4(){
         return $i4;
@@ -434,10 +460,10 @@ function testIncDecOperators(){
     expect(getC1().getI(),$$$cl15.Integer(2),$$$cl15.String("prefix increment"));
     expect(getI3(),$$$cl15.Integer(1),$$$cl15.String("prefix increment"));
     
-    //MethodDefinition f3 at operators.ceylon (201:4-205:4)
+    //MethodDefinition f3 at operators.ceylon (208:4-212:4)
     function f3(){
         
-        //AttributeDeclaration i2 at operators.ceylon (202:8-202:25)
+        //AttributeDeclaration i2 at operators.ceylon (209:8-209:25)
         var $i2=(setI1(getI1().getPredecessor()),getI1());
         function getI2(){
             return $i2;
@@ -447,7 +473,7 @@ function testIncDecOperators(){
     }
     f3();
     
-    //AttributeDeclaration i5 at operators.ceylon (208:4-208:25)
+    //AttributeDeclaration i5 at operators.ceylon (215:4-215:25)
     var $i5=function($){var $2=$.getI().getPredecessor();$.setI($2);return $2}(f2());
     function getI5(){
         return $i5;
@@ -456,10 +482,10 @@ function testIncDecOperators(){
     expect(getC1().getI(),$$$cl15.Integer(1),$$$cl15.String("prefix decrement"));
     expect(getI3(),$$$cl15.Integer(2),$$$cl15.String("prefix decrement"));
     
-    //MethodDefinition f4 at operators.ceylon (213:4-217:4)
+    //MethodDefinition f4 at operators.ceylon (220:4-224:4)
     function f4(){
         
-        //AttributeDeclaration i2 at operators.ceylon (214:8-214:25)
+        //AttributeDeclaration i2 at operators.ceylon (221:8-221:25)
         var $i2=function($){setI1($.getSuccessor());return $}(getI1());
         function getI2(){
             return $i2;
@@ -469,7 +495,7 @@ function testIncDecOperators(){
     }
     f4();
     
-    //AttributeDeclaration i6 at operators.ceylon (220:4-220:25)
+    //AttributeDeclaration i6 at operators.ceylon (227:4-227:25)
     var $i6=function($){var $2=$.getI();$.setI($2.getSuccessor());return $2}(f2());
     function getI6(){
         return $i6;
@@ -478,10 +504,10 @@ function testIncDecOperators(){
     expect(getC1().getI(),$$$cl15.Integer(2),$$$cl15.String("postfix increment"));
     expect(getI3(),$$$cl15.Integer(3),$$$cl15.String("postfix increment"));
     
-    //MethodDefinition f5 at operators.ceylon (225:4-229:4)
+    //MethodDefinition f5 at operators.ceylon (232:4-236:4)
     function f5(){
         
-        //AttributeDeclaration i2 at operators.ceylon (226:8-226:25)
+        //AttributeDeclaration i2 at operators.ceylon (233:8-233:25)
         var $i2=function($){setI1($.getPredecessor());return $}(getI1());
         function getI2(){
             return $i2;
@@ -491,7 +517,7 @@ function testIncDecOperators(){
     }
     f5();
     
-    //AttributeDeclaration i7 at operators.ceylon (232:4-232:25)
+    //AttributeDeclaration i7 at operators.ceylon (239:4-239:25)
     var $i7=function($){var $2=$.getI();$.setI($2.getPredecessor());return $2}(f2());
     function getI7(){
         return $i7;
@@ -501,10 +527,10 @@ function testIncDecOperators(){
     expect(getI3(),$$$cl15.Integer(4),$$$cl15.String("postfix decrement"));
 }
 
-//MethodDefinition testArithmeticAssignOperators at operators.ceylon (238:0-275:0)
+//MethodDefinition testArithmeticAssignOperators at operators.ceylon (245:0-282:0)
 function testArithmeticAssignOperators(){
     
-    //AttributeDeclaration i1 at operators.ceylon (239:4-239:28)
+    //AttributeDeclaration i1 at operators.ceylon (246:4-246:28)
     var $i1=$$$cl15.Integer(1);
     function getI1(){
         return $i1;
@@ -515,7 +541,7 @@ function testArithmeticAssignOperators(){
     (setI1(getI1().plus($$$cl15.Integer(10))),getI1());
     expect(getI1(),$$$cl15.Integer(11),$$$cl15.String("+= operator"));
     
-    //AttributeDeclaration i2 at operators.ceylon (243:4-243:37)
+    //AttributeDeclaration i2 at operators.ceylon (250:4-250:37)
     var $i2=(setI1(getI1().plus($$$cl15.Integer(5).negativeValue())),getI1());
     function getI2(){
         return $i2;
@@ -526,11 +552,11 @@ function testArithmeticAssignOperators(){
     expect(getI2(),$$$cl15.Integer(6),$$$cl15.String("+= operator"));
     expect(getI1(),$$$cl15.Integer(6),$$$cl15.String("+= operator"));
     
-    //ClassDefinition C1 at operators.ceylon (247:4-247:49)
+    //ClassDefinition C1 at operators.ceylon (254:4-254:49)
     function C1($$c1){
         if ($$c1===undefined)$$c1=new CeylonObject;
         
-        //AttributeDeclaration i at operators.ceylon (247:17-247:47)
+        //AttributeDeclaration i at operators.ceylon (254:17-254:47)
         var $i=$$$cl15.Integer(1);
         function getI(){
             return $i;
@@ -543,13 +569,13 @@ function testArithmeticAssignOperators(){
         return $$c1;
     }
     
-    //AttributeDeclaration c1 at operators.ceylon (248:4-248:16)
+    //AttributeDeclaration c1 at operators.ceylon (255:4-255:16)
     var $c1=C1();
     function getC1(){
         return $c1;
     }
     
-    //AttributeDeclaration i3 at operators.ceylon (249:4-249:28)
+    //AttributeDeclaration i3 at operators.ceylon (256:4-256:28)
     var $i3=$$$cl15.Integer(0);
     function getI3(){
         return $i3;
@@ -558,7 +584,7 @@ function testArithmeticAssignOperators(){
         $i3=i3;
     }
     
-    //MethodDefinition f at operators.ceylon (250:4-253:4)
+    //MethodDefinition f at operators.ceylon (257:4-260:4)
     function f(){
         (setI3(getI3().getSuccessor()),getI3());
         return getC1();
@@ -581,7 +607,7 @@ function testArithmeticAssignOperators(){
     expect(getI2(),$$$cl15.Integer(1),$$$cl15.String("%= operator"));
 }
 
-//MethodDefinition test at operators.ceylon (277:0-289:0)
+//MethodDefinition test at operators.ceylon (284:0-296:0)
 function test(){
     $$$cl15.print($$$cl15.String("--- Start Operator Tests ---"));
     testIntegerOperators();

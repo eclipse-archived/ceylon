@@ -175,6 +175,13 @@ void testNullsafeOperators() {
     expect(s1, "hi", "default");
     String s2 = seq[1]?"null";
     expect(s2, "null", "default");
+    
+    String? s3 = null;
+    String? s4 = "test";
+    String s5 = s3?.uppercased ? "null";
+    String s6 = s4?.uppercased ? "null";
+    expect(s5, "null", "nullsafe member");
+    expect(s6, "TEST", "nullsafe member");
 }
 
 void testIncDecOperators() {

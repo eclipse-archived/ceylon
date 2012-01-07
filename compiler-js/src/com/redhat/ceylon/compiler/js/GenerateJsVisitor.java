@@ -92,6 +92,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.QuotientOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.RemainderAssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.RemainderOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SafeMemberOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SatisfiedTypes;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequenceEnumeration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
@@ -990,11 +991,23 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(QualifiedMemberExpression that) {
-        super.visit(that);
-        boolean sup = that.getPrimary() instanceof Super;
         //Big TODO: make sure the member is actually
         //          refined by the current class!
-        out(".");
+    	if (that.getMemberOperator() instanceof SafeMemberOp) {
+    		out("function($){return $!==null?$.");
+	        qualifiedMemberRHS(that);
+	        out(":null}(");
+	        super.visit(that);
+	        out(")");
+    	} else {
+	        super.visit(that);
+	        out(".");
+	        qualifiedMemberRHS(that);
+    	}
+    }
+    
+    private void qualifiedMemberRHS(QualifiedMemberExpression that) {
+    	boolean sup = that.getPrimary() instanceof Super;
         if (that.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter ||
                 that.getDeclaration() instanceof Method) {
             out(that.getDeclaration().getName());
