@@ -127,7 +127,7 @@ public class JavacClass implements ClassMirror {
         if (methods == null) {
             List<MethodMirror> ret = new LinkedList<MethodMirror>();
             for(Symbol sym : classSymbol.getEnclosedElements()){
-                if(sym instanceof MethodSymbol){
+                if(sym instanceof MethodSymbol && (sym.flags() & Flags.PRIVATE) == 0){
                     ret.add(new JavacMethod((MethodSymbol)sym));
                 }
             }
