@@ -12,78 +12,86 @@ CeylonObject.prototype.toString=function() { return this.getString().value };
 //TODO: we need to distinguish between Objects and IdentifiableObjects
 CeylonObject.prototype.equals = function(other) { return Boolean(this===other) }
 
+function $Integer() {}
 function Integer(value) {
-    var that = new CeylonObject;
+    var that = new $Integer;
     that.value = value;
-    that.getString = function() { return String(value.toString()) }
-    that.plus = function(other) { return Integer(value+other.value) }
-    that.minus = function(other) { return Integer(value-other.value) }
-    that.times = function(other) { return Integer(value*other.value) }
-    that.divided = function(other) {
-        var exact = value/other.value;
-        return Integer((exact<0) ? Math.ceil(exact) : Math.floor(exact));
-    }
-    that.remainder = function(other) { return Integer(value%other.value) }
-    that.power = function(other) {
-        var exact = Math.pow(value, other.value);
-        return Integer((exact<0) ? Math.ceil(exact) : Math.floor(exact));
-    }
-    that.negativeValue = function() { return Integer(-value) }
-    that.positiveValue = function() { return that }
-    that.equals = function(other) { return Boolean(other.value===value) }
-    that.compare = function(other) {
-        return value===other.value ? equal
-                                   : (value<other.value ? smaller:larger);
-    }
-    that.getFloat = function() { return Float(value) }
-    that.getInteger = function() { return that }
-    that.getSuccessor = function() { return Integer(value+1) }
-    that.getPredecessor = function() { return Integer(value-1) }
     return that;
 }
+for(var $ in CeylonObject.prototype){$Integer.prototype[$]=CeylonObject.prototype[$]}
+$Integer.prototype.getString = function() { return String(this.value.toString()) }
+$Integer.prototype.plus = function(other) { return Integer(this.value+other.value) }
+$Integer.prototype.minus = function(other) { return Integer(this.value-other.value) }
+$Integer.prototype.times = function(other) { return Integer(this.value*other.value) }
+$Integer.prototype.divided = function(other) {
+    var exact = this.value/other.value;
+    return Integer((exact<0) ? Math.ceil(exact) : Math.floor(exact));
+}
+$Integer.prototype.remainder = function(other) { return Integer(this.value%other.value) }
+$Integer.prototype.power = function(other) {
+    var exact = Math.pow(this.value, other.value);
+    return Integer((exact<0) ? Math.ceil(exact) : Math.floor(exact));
+}
+$Integer.prototype.negativeValue = function() { return Integer(-this.value) }
+$Integer.prototype.positiveValue = function() { return this }
+$Integer.prototype.equals = function(other) { return Boolean(other.value===this.value) }
+$Integer.prototype.compare = function(other) {
+    return this.value===other.value ? equal
+                                    : (this.value<other.value ? smaller:larger);
+}
+$Integer.prototype.getFloat = function() { return Float(this.value) }
+$Integer.prototype.getInteger = function() { return this }
+$Integer.prototype.getSuccessor = function() { return Integer(this.value+1) }
+$Integer.prototype.getPredecessor = function() { return Integer(this.value-1) }
 
+function $Float() {}
 function Float(value) {
-    var that = new CeylonObject;
+    var that = new $Float;
     that.value = value;
-    that.getString = function() { return String(value.toString()) }
-    that.plus = function(other) { return Float(value+other.value) }
-    that.minus = function(other) { return Float(value-other.value) }
-    that.times = function(other) { return Float(value*other.value) }
-    that.divided = function(other) { return Float(value/other.value) }
-    that.power = function(other) { return Integer(Math.pow(value,other.value)) }
-    that.negativeValue = function() { return Float(-value) }
-    that.positiveValue = function() { return that }
-    that.equals = function(other) { return Boolean(other.value===value) }
-    that.compare = function(other) {
-        return value===other.value ? equal
-                                   : (value<other.value ? smaller:larger);
-    }
-    that.getFloat = function() { return that }
     return that;
 }
+for(var $ in CeylonObject.prototype){$Float.prototype[$]=CeylonObject.prototype[$]}
+$Float.prototype.getString = function() { return String(this.value.toString()) }
+$Float.prototype.plus = function(other) { return Float(this.value+other.value) }
+$Float.prototype.minus = function(other) { return Float(this.value-other.value) }
+$Float.prototype.times = function(other) { return Float(this.value*other.value) }
+$Float.prototype.divided = function(other) { return Float(this.value/other.value) }
+$Float.prototype.power = function(other) { return Float(Math.pow(this.value, other.value)) }
+$Float.prototype.negativeValue = function() { return Float(-this.value) }
+$Float.prototype.positiveValue = function() { return this }
+$Float.prototype.equals = function(other) { return Boolean(other.value===this.value) }
+$Float.prototype.compare = function(other) {
+    return this.value===other.value ? equal
+                                    : (this.value<other.value ? smaller:larger);
+}
+$Float.prototype.getFloat = function() { return this }
 
+function $String() {}
 function String(value) {
-    var that = new CeylonObject;
+    var that = new $String;
     that.value = value;
-    that.getString = function() { return that }
-    that.toString = function() { return value }
-    that.plus = function(other) { return String(value+other.value) }
-    that.equals = function(other) { return Boolean(other.value===value) }
-    that.compare = function(other) {
-        return value===other.value ? equal
-                                   : (value<other.value ? smaller:larger);
-    }
-    that.getUppercased = function() { return String(value.toUpperCase()) }
-    that.getLowercased = function() { return String(value.toLowerCase()) }
     return that;
 }
+for(var $ in CeylonObject.prototype){$String.prototype[$]=CeylonObject.prototype[$]}
+$String.prototype.getString = function() { return this }
+$String.prototype.toString = function() { return this.value }
+$String.prototype.plus = function(other) { return String(this.value+other.value) }
+$String.prototype.equals = function(other) { return Boolean(other.value===this.value) }
+$String.prototype.compare = function(other) {
+    return this.value===other.value ? equal
+                                    : (this.value<other.value ? smaller:larger);
+}
+$String.prototype.getUppercased = function() { return String(this.value.toUpperCase()) }
+$String.prototype.getLowercased = function() { return String(this.value.toLowerCase()) }
 
+function $Case() {}
 function Case(caseName) {
-    var that = new CeylonObject;
-    var string = String(caseName);
-    that.getString = function() { return string }
+    var that = new $Case;
+    that.string = String(caseName);
     return that;
 }
+for(var $ in CeylonObject.prototype){$Case.prototype[$]=CeylonObject.prototype[$]}
+$Case.prototype.getString = function() { return this.string }
 
 function getNull() { return null }
 var $true = Case("true");
@@ -107,42 +115,50 @@ function getEqual() { return equal }
 function largest(x, y) { return x.compare(y) === larger ? x : y }
 function smallest(x, y) { return x.compare(y) === smaller ? x : y }
 
+function $ArraySequence() {}
 function ArraySequence(value) {
-    var that = new CeylonObject;
+    var that = new $ArraySequence;
     that.value = value;
-    that.getString = function() { return String(value.toString()) }
-    that.item = function(index) {
-        var result = value[index.value];
-        return result!==undefined ? result:null;
-    }
-    that.getSize = function() { return Integer(value.length); }
     return that;
 }
+for(var $ in CeylonObject.prototype){$ArraySequence.prototype[$]=CeylonObject.prototype[$]}
+$ArraySequence.prototype.getString = function() { return String(this.value.toString()) }
+$ArraySequence.prototype.item = function(index) {
+    var result = this.value[index.value];
+    return result!==undefined ? result:null;
+}
+$ArraySequence.prototype.getSize = function() { return Integer(this.value.length) }
 
+function $Singleton() {}
 function Singleton(elem) {
-    var that = new CeylonObject;
-    that.value = [elem];
-    that.getString = function() { return String(elem.toString()) }
-    that.item = function(index) {
-        return index.value === 0 ? elem : null;
-    }
-    that.getSize = function() { return Integer(1); }
+    var that = new $Singleton;
+    that.value = elem;
     return that;
 }
+for(var $ in CeylonObject.prototype){$Singleton.prototype[$]=CeylonObject.prototype[$]}
+$Singleton.prototype.getString = function() { return String(this.value.toString()) }
+$Singleton.prototype.item = function(index) {
+    return index.value===0 ? this.value : null;
+}
+$Singleton.prototype.getSize = function() { return Integer(1) }
 
+function $Entry() {}
 function Entry(key, item) {
-    var that = new CeylonObject;
+    var that = new $Entry;
     that.key = key;
     that.item = item;
-    that.getString = function() { return String(key.getString().value + "->" + item.getString().value) }
-    that.getKey = function() { return key; }
-    that.getItem = function() { return item; }
-    that.equals = function(other) {
-        return Boolean(other && key.equals(other.getKey()) && item.equals(other.getItem()));
-    }
-    that.getHash = function() { key.getHash()/2 + item.getHash()/2 }
     return that;
 }
+for(var $ in CeylonObject.prototype){$Entry.prototype[$]=CeylonObject.prototype[$]}
+$Entry.prototype.getString = function() {
+    return String(this.key.getString().value + "->" + this.item.getString().value)
+}
+$Entry.prototype.getKey = function() { return this.key }
+$Entry.prototype.getItem = function() { return this.item }
+$Entry.prototype.equals = function(other) {
+    return Boolean(other && this.key.equals(other.key) && this.item.equals(other.item));
+}
+$Entry.prototype.getHash = function() { Integer(this.key.getHash().value ^ this.item.getHash().value) }
 
 //receives ArraySequence, returns element
 function min(seq) {
