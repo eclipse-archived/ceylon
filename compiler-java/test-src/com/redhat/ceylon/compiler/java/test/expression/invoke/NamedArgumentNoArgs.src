@@ -6,7 +6,7 @@ final class namedArgumentNoArgs {
     }
     
     static void namedArgumentNoArgs() {
-        (let  in .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentNoArgs.namedArgumentNoArgs(); null);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentNoArgs.namedArgumentNoArgs();
     }
     
     public static void main(.java.lang.String[] args) {

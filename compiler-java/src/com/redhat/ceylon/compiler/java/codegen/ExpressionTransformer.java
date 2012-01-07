@@ -1174,7 +1174,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             @Override
             public JCExpression transform(JCExpression primaryExpr, String selector) {
                 JCExpression actualPrimExpr = null;
-                if (vars != null && primaryExpr != null && selector != null) {
+                if (vars != null && !vars.isEmpty() && primaryExpr != null && selector != null) {
                     // Prepare the first argument holding the primary for the call
                     JCExpression callVarExpr = makeUnquotedIdent(callVarName);
                     ProducedType type = ((Tree.QualifiedMemberExpression)ce.getPrimary()).getTarget().getQualifyingType();
@@ -1195,7 +1195,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     resultExpr = make().Apply(typeArgs, makeQualIdent(actualPrimExpr, selector), args.toList());
                 }
 
-                if (vars != null) {
+                if (vars != null && !vars.isEmpty()) {
                     ProducedType returnType = ce.getTypeModel();
                     if (isVoid(returnType)) {
                         // void methods get wrapped like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1); null)
