@@ -235,6 +235,45 @@ void testIncDecOperators() {
     expect(i3, 4, "postfix decrement");
 }
 
+void testArithmeticAssignOperators() {
+    variable Integer i1 := 1;
+    i1 += 10;
+    expect(i1, 11, "+= operator");
+    
+    variable Integer i2 := (i1 += -5);
+    expect(i2, 6, "+= operator");
+    expect(i1, 6, "+= operator");
+    
+    class C1() { shared variable Integer i := 1; }
+    C1 c1 = C1();
+    variable Integer i3 := 0;
+    C1 f() {
+        ++i3;
+        return c1;
+    }
+    
+    i2 := (f().i += 11);
+    expect(i2, 12, "+= operator");
+    expect(c1.i, 12, "+= operator");
+    expect(i3, 1, "+= operator");
+    
+    i2 := (i1 -= 14);
+    expect(i1, -8, "-= operator");
+    expect(i2, -8, "-= operator");
+    
+    i2 := (i1 *= -3);
+    expect(i1, 24, "*= operator");
+    expect(i2, 24, "*= operator");
+    
+    i2 := (i1 /= 5);
+    expect(i1, 4, "/= operator");
+    expect(i2, 4, "/= operator");
+    
+    i2 := (i1 %= 3);
+    expect(i1, 1, "%= operator");
+    expect(i2, 1, "%= operator");
+}
+
 shared void test() {
     print("--- Start Operator Tests ---");
     testIntegerOperators();
@@ -245,5 +284,6 @@ shared void test() {
     testCollectionOperators();
     testNullsafeOperators();
     testIncDecOperators();
+    testArithmeticAssignOperators();
     print("--- End Operator Tests ---");
 }

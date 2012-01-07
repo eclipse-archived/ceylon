@@ -501,7 +501,87 @@ function testIncDecOperators(){
     expect(getI3(),$$$cl15.Integer(4),$$$cl15.String("postfix decrement"));
 }
 
-//MethodDefinition test at operators.ceylon (238:0-249:0)
+//MethodDefinition testArithmeticAssignOperators at operators.ceylon (238:0-275:0)
+function testArithmeticAssignOperators(){
+    
+    //AttributeDeclaration i1 at operators.ceylon (239:4-239:28)
+    var $i1=$$$cl15.Integer(1);
+    function getI1(){
+        return $i1;
+    }
+    function setI1(i1){
+        $i1=i1;
+    }
+    (setI1(getI1().plus($$$cl15.Integer(10))),getI1());
+    expect(getI1(),$$$cl15.Integer(11),$$$cl15.String("+= operator"));
+    
+    //AttributeDeclaration i2 at operators.ceylon (243:4-243:37)
+    var $i2=(setI1(getI1().plus($$$cl15.Integer(5).negativeValue())),getI1());
+    function getI2(){
+        return $i2;
+    }
+    function setI2(i2){
+        $i2=i2;
+    }
+    expect(getI2(),$$$cl15.Integer(6),$$$cl15.String("+= operator"));
+    expect(getI1(),$$$cl15.Integer(6),$$$cl15.String("+= operator"));
+    
+    //ClassDefinition C1 at operators.ceylon (247:4-247:49)
+    function C1($$c1){
+        if ($$c1===undefined)$$c1=new CeylonObject;
+        
+        //AttributeDeclaration i at operators.ceylon (247:17-247:47)
+        var $i=$$$cl15.Integer(1);
+        function getI(){
+            return $i;
+        }
+        $$c1.getI=getI;
+        function setI(i){
+            $i=i;
+        }
+        $$c1.setI=setI;
+        return $$c1;
+    }
+    
+    //AttributeDeclaration c1 at operators.ceylon (248:4-248:16)
+    var $c1=C1();
+    function getC1(){
+        return $c1;
+    }
+    
+    //AttributeDeclaration i3 at operators.ceylon (249:4-249:28)
+    var $i3=$$$cl15.Integer(0);
+    function getI3(){
+        return $i3;
+    }
+    function setI3(i3){
+        $i3=i3;
+    }
+    
+    //MethodDefinition f at operators.ceylon (250:4-253:4)
+    function f(){
+        (setI3(getI3().getSuccessor()),getI3());
+        return getC1();
+    }
+    setI2(function($1,$2){var $=$1.getI().plus($2);$1.setI($);return $}(f(),$$$cl15.Integer(11)));
+    expect(getI2(),$$$cl15.Integer(12),$$$cl15.String("+= operator"));
+    expect(getC1().getI(),$$$cl15.Integer(12),$$$cl15.String("+= operator"));
+    expect(getI3(),$$$cl15.Integer(1),$$$cl15.String("+= operator"));
+    setI2((setI1(getI1().minus($$$cl15.Integer(14))),getI1()));
+    expect(getI1(),$$$cl15.Integer(8).negativeValue(),$$$cl15.String("-= operator"));
+    expect(getI2(),$$$cl15.Integer(8).negativeValue(),$$$cl15.String("-= operator"));
+    setI2((setI1(getI1().times($$$cl15.Integer(3).negativeValue())),getI1()));
+    expect(getI1(),$$$cl15.Integer(24),$$$cl15.String("*= operator"));
+    expect(getI2(),$$$cl15.Integer(24),$$$cl15.String("*= operator"));
+    setI2((setI1(getI1().divided($$$cl15.Integer(5))),getI1()));
+    expect(getI1(),$$$cl15.Integer(4),$$$cl15.String("/= operator"));
+    expect(getI2(),$$$cl15.Integer(4),$$$cl15.String("/= operator"));
+    setI2((setI1(getI1().remainder($$$cl15.Integer(3))),getI1()));
+    expect(getI1(),$$$cl15.Integer(1),$$$cl15.String("%= operator"));
+    expect(getI2(),$$$cl15.Integer(1),$$$cl15.String("%= operator"));
+}
+
+//MethodDefinition test at operators.ceylon (277:0-289:0)
 function test(){
     $$$cl15.print($$$cl15.String("--- Start Operator Tests ---"));
     testIntegerOperators();
@@ -512,6 +592,7 @@ function test(){
     testCollectionOperators();
     testNullsafeOperators();
     testIncDecOperators();
+    testArithmeticAssignOperators();
     $$$cl15.print($$$cl15.String("--- End Operator Tests ---"));
 }
 this.test=test;

@@ -24,8 +24,10 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AddAssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AndOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticAssignmentOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
@@ -43,6 +45,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DecrementOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DifferenceOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.DivideAssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Element;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.EntryOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.EqualOp;
@@ -62,6 +65,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.LargeAsOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LargerOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.MultiplyAssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
@@ -80,12 +84,12 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositiveOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PostfixDecrementOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PostfixIncrementOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PowerOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ProductOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QuotientOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.RemainderAssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.RemainderOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SatisfiedTypes;
@@ -97,6 +101,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.SmallerOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SubtractAssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SumOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
@@ -1306,6 +1311,63 @@ public class GenerateJsVisitor extends Visitor
     	out(")");
     }
     
+    @Override public void visit(AddAssignOp that) {
+    	arithmeticAssignOp(that, "plus");
+    }
+    
+    @Override public void visit(SubtractAssignOp that) {
+    	arithmeticAssignOp(that, "minus");
+    }
+    
+    @Override public void visit(MultiplyAssignOp that) {
+    	arithmeticAssignOp(that, "times");
+    }
+    
+    @Override public void visit(DivideAssignOp that) {
+    	arithmeticAssignOp(that, "divided");
+    }
+    
+    @Override public void visit(RemainderAssignOp that) {
+    	arithmeticAssignOp(that, "remainder");
+    }
+    
+    private void arithmeticAssignOp(ArithmeticAssignmentOp that,
+    		                        String functionName) {
+    	Term lhs = that.getLeftTerm();
+    	if (lhs instanceof BaseMemberExpression) {
+    		BaseMemberExpression lhsBME = (BaseMemberExpression) lhs;
+    		String lhsPath = qualifiedPath(lhsBME, lhsBME.getDeclaration());
+    		if (lhsPath.length() > 0) {
+    			lhsPath += '.';
+    		}
+    		
+    		out("(");
+    		out(lhsPath);
+    		out(setter(lhsBME.getDeclaration()));
+    		out("(");
+    		out(lhsPath);
+    		out(getter(lhsBME.getDeclaration()));
+    		out("()." + functionName + "(");
+    		that.getRightTerm().visit(this);
+    		out(")),");
+    		out(lhsPath);
+    		out(getter(lhsBME.getDeclaration()));
+    		out("())");
+    		
+    	} else if (lhs instanceof QualifiedMemberExpression) {
+    		QualifiedMemberExpression lhsQME = (QualifiedMemberExpression) lhs;
+    		out("function($1,$2){var $=$1.");
+    		out(getter(lhsQME.getDeclaration()));
+    		out("()." + functionName + "($2);$1.");
+    		out(setter(lhsQME.getDeclaration()));
+    		out("($);return $}(");
+    		lhsQME.getPrimary().visit(this);
+    		out(",");
+    		that.getRightTerm().visit(this);
+    		out(")");
+    	}
+    }
+    
     @Override public void visit(NegativeOp that) {
         that.getTerm().visit(this);
         out(".negativeValue()");
@@ -1484,7 +1546,7 @@ public class GenerateJsVisitor extends Visitor
 		   BaseMemberExpression bme = (BaseMemberExpression) term;
 		   String path = qualifiedPath(bme, bme.getDeclaration());
 		   if (path.length() > 0) {
-			   path += ".";
+			   path += '.';
 		   }
 		   
 		   out("(");
@@ -1523,7 +1585,7 @@ public class GenerateJsVisitor extends Visitor
 		   BaseMemberExpression bme = (BaseMemberExpression) term;
 		   String path = qualifiedPath(bme, bme.getDeclaration());
 		   if (path.length() > 0) {
-			   path += ".";
+			   path += '.';
 		   }
 		   
 		   out("function($){");
