@@ -309,7 +309,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             break;
         case OBJECT:
             // we first make a class
-            decl = makeLazyClassOrInterface(classMirror, true);
+            decl = makeLazyClass(classMirror, null, true);
             declarationsByName.put("C"+className, decl);
             decls.add(decl);
             // then we make a value for it
@@ -317,8 +317,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             key = "V"+className;
             break;
         case CLASS:
+            List<MethodMirror> constructors = getClassConstructors(classMirror);
+            if (!constructors.isEmpty()) {
+                for (MethodMirror constructor : constructors) {
+                    decl = makeLazyClass(classMirror, constructor, false);
+                }
+            } else {
+                decl = makeLazyClass(classMirror, null, false);
+            }
+            break;
         case INTERFACE:
-            decl = makeLazyClassOrInterface(classMirror, false);
+            decl = makeLazyInterface(classMirror);
             break;
         }
 
@@ -348,6 +357,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return decl;
     }
 
+    private List<MethodMirror> getClassConstructors(ClassMirror classMirror) {
+        LinkedList<MethodMirror> constructors = new LinkedList<MethodMirror>();
+        for(MethodMirror methodMirror : classMirror.getDirectMethods()){
+            // We skip members marked with @Ignore
+            if(methodMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
+                continue;
+            if(methodMirror.isConstructor()) {
+                constructors.add(methodMirror);
+            }
+        }
+        return constructors;
+    }
+
     private Unit getCompiledUnit(LazyPackage pkg) {
         Unit unit = unitsByPackage.get(pkg);
         if(unit == null){
@@ -368,12 +390,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return method;
     }
     
-    private ClassOrInterface makeLazyClassOrInterface(ClassMirror classMirror, boolean forTopLevelObject) {
-        if(!classMirror.isInterface()){
-            return new LazyClass(classMirror, this, forTopLevelObject);
-        }else{
-            return new LazyInterface(classMirror, this);
-        }
+    private Class makeLazyClass(ClassMirror classMirror, MethodMirror constructor, boolean forTopLevelObject) {
+        return new LazyClass(classMirror, this, constructor, forTopLevelObject);
+    }
+
+    private Interface makeLazyInterface(ClassMirror classMirror) {
+        return new LazyInterface(classMirror, this);
     }
 
     public Declaration convertToDeclaration(String typeName, DeclarationType declarationType) {
@@ -678,6 +700,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         boolean isJava = qualifiedName.startsWith("java.");
         boolean isCeylon = (classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null);
         
+        // Java classes with multiple constructors get turned into multiple Ceylon classes
+        // Here we get the specific constructor that was assigned to us (if any)
+        MethodMirror constructor = null;
+        if (klass instanceof LazyClass) {
+            constructor = ((LazyClass)klass).getConstructor();
+        }
+            
         // Turn a list of possibly overloaded methods into a map
         // of lists that contain methods with the same name
         Map<String, List<MethodMirror>> methods = new LinkedHashMap<String, List<MethodMirror>>();
@@ -704,61 +733,57 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         
         // FIXME: deal with toplevel methods and attributes
-        boolean hasConstructor = false;
         // then its methods
         for(List<MethodMirror> methodMirrors : methods.values()){
-            // There might be multiple overloaded methods
-            // but for now we just care about one, any will do
-            MethodMirror methodMirror = methodMirrors.get(0);
             boolean isOverloaded = methodMirrors.size() > 1;
-            String methodName = methodMirror.getName();
-            
-            if(methodMirror.isConstructor()){
-                hasConstructor = true;
-                ((Class)klass).setOverloaded(isOverloaded);
-                if(isOverloaded)
-                    logWarning("Has multiple constructors: "+qualifiedName);
-                if(!(klass instanceof LazyClass) || !((LazyClass)klass).isTopLevelObjectType())
-                    setParameters((Class)klass, methodMirror);
-            } else if(isGetter(methodMirror)) {
-                // simple attribute
-                addValue(klass, methodMirror, getJavaAttributeName(methodName));
-            } else if(isSetter(methodMirror)) {
-                // We skip setters for now and handle them later
-                variables.add(getJavaAttributeName(methodName));
-            } else if(isHashAttribute(methodMirror)) {
-                // ERASURE
-                // Un-erasing 'hash' attribute from 'hashCode' method
-                addValue(klass, methodMirror, "hash");
-            } else if(isStringAttribute(methodMirror)) {
-                // ERASURE
-                // Un-erasing 'string' attribute from 'toString' method
-                addValue(klass, methodMirror, "string");
-            } else {
-                // normal method
-                Method method = new Method();
-
-                method.setContainer(klass);
-                method.setName(methodName);
-                method.setUnit(klass.getUnit());
-                method.setOverloaded(isOverloaded);
-                setMethodOrValueFlags(klass, methodMirror, method);
-
-                // type params first
-                setTypeParameters(method, methodMirror);
-
-                // now its parameters
-                if(isEqualsMethod(methodMirror))
-                    setEqualsParameters(method, methodMirror);
-                else
-                    setParameters(method, methodMirror);
-                
-                // and its return type
-                ProducedType type = getMethodReturnType(methodMirrors, method);
-                method.setType(type);
-                
-                markUnboxed(method, methodMirror.getReturnType());
-                klass.getMembers().add(method);
+            for (MethodMirror methodMirror : methodMirrors) {
+                String methodName = methodMirror.getName();
+                if(methodMirror == constructor) {
+                    ((Class)klass).setOverloaded(isOverloaded);
+                    if(isOverloaded)
+                        logWarning("Has multiple constructors: "+qualifiedName);
+                    if(!(klass instanceof LazyClass) || !((LazyClass)klass).isTopLevelObjectType())
+                        setParameters((Class)klass, methodMirror);
+                } else if(isGetter(methodMirror)) {
+                    // simple attribute
+                    addValue(klass, methodMirror, getJavaAttributeName(methodName));
+                } else if(isSetter(methodMirror)) {
+                    // We skip setters for now and handle them later
+                    variables.add(getJavaAttributeName(methodName));
+                } else if(isHashAttribute(methodMirror)) {
+                    // ERASURE
+                    // Un-erasing 'hash' attribute from 'hashCode' method
+                    addValue(klass, methodMirror, "hash");
+                } else if(isStringAttribute(methodMirror)) {
+                    // ERASURE
+                    // Un-erasing 'string' attribute from 'toString' method
+                    addValue(klass, methodMirror, "string");
+                } else {
+                    // normal method
+                    Method method = new Method();
+    
+                    method.setContainer(klass);
+                    method.setName(methodName);
+                    method.setUnit(klass.getUnit());
+                    method.setOverloaded(isOverloaded);
+                    setMethodOrValueFlags(klass, methodMirror, method);
+    
+                    // type params first
+                    setTypeParameters(method, methodMirror);
+    
+                    // now its parameters
+                    if(isEqualsMethod(methodMirror))
+                        setEqualsParameters(method, methodMirror);
+                    else
+                        setParameters(method, methodMirror);
+                    
+                    // and its return type
+                    ProducedType type = getMethodReturnType(methodMirrors, method);
+                    method.setType(type);
+                    
+                    markUnboxed(method, methodMirror.getReturnType());
+                    klass.getMembers().add(method);
+                }
             }
         }
         
@@ -772,9 +797,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         }
         
-        if(klass instanceof Class && !hasConstructor){
-            // must be a default constructor
-            ((Class)klass).setParameterList(new ParameterList());
+        if(klass instanceof Class && constructor == null){
+            if(!(klass instanceof LazyClass) || !((LazyClass)klass).isTopLevelObjectType()) {
+                // must be a default constructor
+                ((Class)klass).setParameterList(new ParameterList());
+            }
         }
         
         setExtendedType(klass, classMirror);

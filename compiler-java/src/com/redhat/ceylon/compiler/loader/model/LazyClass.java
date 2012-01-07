@@ -24,6 +24,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.loader.ModelCompleter;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
+import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -45,16 +46,23 @@ public class LazyClass extends Class implements LazyElement {
 
     public ClassMirror classMirror;
     private ModelCompleter completer;
+    private MethodMirror constructor;
+    private boolean forTopLevelObject;
+    
     private boolean isLoaded = false;
     private boolean isTypeParamsLoaded = false;
-    private boolean forTopLevelObject;
 
-    public LazyClass(ClassMirror classMirror, ModelCompleter completer, boolean forTopLevelObject) {
+    public LazyClass(ClassMirror classMirror, ModelCompleter completer, MethodMirror constructor, boolean forTopLevelObject) {
         this.classMirror = classMirror;
         this.completer = completer;
+        this.constructor = constructor;
         this.forTopLevelObject = forTopLevelObject;
         setName(classMirror.getSimpleName());
         setAbstract(classMirror.isAbstract());
+    }
+
+    public MethodMirror getConstructor() {
+        return constructor;
     }
     
     public boolean isTopLevelObjectType(){
