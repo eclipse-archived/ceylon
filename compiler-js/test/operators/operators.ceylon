@@ -3,7 +3,7 @@ void expect(Equality actual, Equality expected, String text) {
         print("[ok] " + text + ": '" + actual.string + "'");
     } else {
         print("[NOT OK] " + text + ": actual='" + actual.string + "', expected='"
-              + expected.string);
+              + expected.string + "'");
     }
 }
 
