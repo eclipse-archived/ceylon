@@ -19,12 +19,12 @@ for(var $ in CeylonObject.prototype){$Pair.prototype[$+'$']=CeylonObject.prototy
 //AttributeGetterDefinition string at types.ceylon (13:4-15:4)
 $Pair.prototype.getString=function getString(){
     var $$pair=this;
-    return $$$cl15.String("(").plus($$pair.x.getString()).plus($$$cl15.String(", ")).plus($$pair.y.getString()).plus($$$cl15.String(")"));
+    return $$$cl15.String("(").plus($$pair.x$Pair.getString()).plus($$$cl15.String(", ")).plus($$pair.y$Pair.getString()).plus($$$cl15.String(")"));
 }
-function Pair(x, y, $$pair){
+function Pair(x$Pair, y$Pair, $$pair){
     if ($$pair===undefined)$$pair=new $Pair;
-    $$pair.x=x;
-    $$pair.y=y;
+    $$pair.x$Pair=x$Pair;
+    $$pair.y$Pair=y$Pair;
     return $$pair;
 }
 
@@ -36,7 +36,7 @@ for(var $ in $Pair.prototype){$Complex.prototype[$+'$']=$Pair.prototype[$]}
 //AttributeGetterDefinition string at types.ceylon (20:4-22:4)
 $Complex.prototype.getString=function getString(){
     var $$complex=this;
-    return $$complex.x.getString().plus($$$cl15.String("+")).plus($$complex.y.getString()).plus($$$cl15.String("i"));
+    return $$complex.x$Complex.getString().plus($$$cl15.String("+")).plus($$complex.y$Complex.getString()).plus($$$cl15.String("i"));
 }
 
 //AttributeGetterDefinition pairString at types.ceylon (23:4-25:4)
@@ -44,11 +44,11 @@ $Complex.prototype.getPairString=function getPairString(){
     var $$complex=this;
     return $$complex.getString$();
 }
-function Complex(x, y, $$complex){
+function Complex(x$Complex, y$Complex, $$complex){
     if ($$complex===undefined)$$complex=new $Complex;
-    Pair($$complex.x,$$complex.y,$$complex);
-    $$complex.x=x;
-    $$complex.y=y;
+    $$complex.x$Complex=x$Complex;
+    $$complex.y$Complex=y$Complex;
+    Pair($$complex.x$Complex,$$complex.y$Complex,$$complex);
     return $$complex;
 }
 
@@ -83,7 +83,7 @@ $ConcreteList.prototype.getEmpty=function getEmpty(){
     var $$concreteList=this;
     return $$$cl15.getTrue();
 }
-function ConcreteList(xs, $$concreteList){
+function ConcreteList(xs$ConcreteList, $$concreteList){
     if ($$concreteList===undefined)$$concreteList=new $ConcreteList;
     List($$concreteList);
     return $$concreteList;
@@ -103,15 +103,15 @@ $Couple.prototype.getX=function getX(){
 $Couple.prototype.getY=function getY(){
     return this.y;
 }
-function Couple(x, y, $$couple){
+function Couple(x$Couple, y$Couple, $$couple){
     if ($$couple===undefined)$$couple=new $Couple;
-    Pair(x,y,$$couple);
+    Pair(x$Couple,y$Couple,$$couple);
     
     //AttributeDeclaration x at types.ceylon (48:4-48:18)
-    $$couple.x=x;
+    $$couple.x=x$Couple;
     
     //AttributeDeclaration y at types.ceylon (49:4-49:18)
-    $$couple.y=y;
+    $$couple.y=y$Couple;
     return $$couple;
 }
 
@@ -136,22 +136,22 @@ for(var $ in $Issue9C1.prototype){$Issue9C2.prototype[$]=$Issue9C1.prototype[$]}
 for(var $ in $Issue9C1.prototype){$Issue9C2.prototype[$+'$']=$Issue9C1.prototype[$]}
 
 //AttributeDeclaration flag1 at types.ceylon (56:4-56:35)
-$Issue9C2.prototype.getFlag1=function getFlag1(){
-    return this.flag1;
+$Issue9C2.prototype.getFlag1$Issue9C2=function getFlag1$Issue9C2(){
+    return this.flag1$Issue9C2;
 }
-$Issue9C2.prototype.setFlag1=function setFlag1(flag1){
-    this.flag1=flag1;
+$Issue9C2.prototype.setFlag1$Issue9C2=function setFlag1$Issue9C2(flag1){
+    this.flag1$Issue9C2=flag1;
 }
 
 //MethodDefinition test at types.ceylon (57:4-63:4)
 $Issue9C2.prototype.test=function test(){
     var $$issue9C2=this;
-    if (($$issue9C2.getFlag1())===$$$cl15.getTrue()){
+    if (($$issue9C2.getFlag1$Issue9C2())===$$$cl15.getTrue()){
         var $$issue9C2=this;
         return $$$cl15.String("ERR1");
     }
     
-    $$issue9C2.setFlag1($$$cl15.getTrue());
+    $$issue9C2.setFlag1$Issue9C2($$$cl15.getTrue());
     return $$issue9C2.test$().plus($$$cl15.String("2"));
 }
 function Issue9C2($$issue9C2){
@@ -159,7 +159,7 @@ function Issue9C2($$issue9C2){
     Issue9C1($$issue9C2);
     
     //AttributeDeclaration flag1 at types.ceylon (56:4-56:35)
-    $$issue9C2.flag1=$$$cl15.getFalse();
+    $$issue9C2.flag1$Issue9C2=$$$cl15.getFalse();
     return $$issue9C2;
 }
 
@@ -169,22 +169,22 @@ for(var $ in $Issue9C2.prototype){$Issue9C3.prototype[$]=$Issue9C2.prototype[$]}
 for(var $ in $Issue9C2.prototype){$Issue9C3.prototype[$+'$']=$Issue9C2.prototype[$]}
 
 //AttributeDeclaration flag2 at types.ceylon (66:4-66:35)
-$Issue9C3.prototype.getFlag2=function getFlag2(){
-    return this.flag2;
+$Issue9C3.prototype.getFlag2$Issue9C3=function getFlag2$Issue9C3(){
+    return this.flag2$Issue9C3;
 }
-$Issue9C3.prototype.setFlag2=function setFlag2(flag2){
-    this.flag2=flag2;
+$Issue9C3.prototype.setFlag2$Issue9C3=function setFlag2$Issue9C3(flag2){
+    this.flag2$Issue9C3=flag2;
 }
 
 //MethodDefinition test at types.ceylon (67:4-73:4)
 $Issue9C3.prototype.test=function test(){
     var $$issue9C3=this;
-    if (($$issue9C3.getFlag2())===$$$cl15.getTrue()){
+    if (($$issue9C3.getFlag2$Issue9C3())===$$$cl15.getTrue()){
         var $$issue9C3=this;
         return $$$cl15.String("ERR2");
     }
     
-    $$issue9C3.setFlag2($$$cl15.getTrue());
+    $$issue9C3.setFlag2$Issue9C3($$$cl15.getTrue());
     return $$issue9C3.test$().plus($$$cl15.String("3"));
 }
 function Issue9C3($$issue9C3){
@@ -192,7 +192,7 @@ function Issue9C3($$issue9C3){
     Issue9C2($$issue9C3);
     
     //AttributeDeclaration flag2 at types.ceylon (66:4-66:35)
-    $$issue9C3.flag2=$$$cl15.getFalse();
+    $$issue9C3.flag2$Issue9C3=$$$cl15.getFalse();
     return $$issue9C3;
 }
 

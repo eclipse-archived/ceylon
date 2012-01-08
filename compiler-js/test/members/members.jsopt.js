@@ -17,29 +17,29 @@ for(var $ in CeylonObject.prototype){$Counter.prototype[$]=CeylonObject.prototyp
 for(var $ in CeylonObject.prototype){$Counter.prototype[$+'$']=CeylonObject.prototype[$]}
 
 //AttributeDeclaration currentCount at members.ceylon (11:4-11:45)
-$Counter.prototype.getCurrentCount=function getCurrentCount(){
-    return this.currentCount;
+$Counter.prototype.getCurrentCount$Counter=function getCurrentCount$Counter(){
+    return this.currentCount$Counter;
 }
-$Counter.prototype.setCurrentCount=function setCurrentCount(currentCount){
-    this.currentCount=currentCount;
+$Counter.prototype.setCurrentCount$Counter=function setCurrentCount$Counter(currentCount){
+    this.currentCount$Counter=currentCount;
 }
 
 //AttributeGetterDefinition count at members.ceylon (12:4-14:4)
 $Counter.prototype.getCount=function getCount(){
     var $$counter=this;
-    return $$counter.getCurrentCount();
+    return $$counter.getCurrentCount$Counter();
 }
 
 //MethodDefinition inc at members.ceylon (15:4-17:4)
 $Counter.prototype.inc=function inc(){
     var $$counter=this;
-    $$counter.setCurrentCount($$counter.getCurrentCount().plus($$$cl15.Integer(1)));
+    $$counter.setCurrentCount$Counter($$counter.getCurrentCount$Counter().plus($$$cl15.Integer(1)));
 }
 
 //AttributeGetterDefinition initialCount at members.ceylon (18:4-20:4)
 $Counter.prototype.getInitialCount=function getInitialCount(){
     var $$counter=this;
-    return $$counter.initialCount;
+    return $$counter.initialCount$Counter;
 }
 
 //AttributeGetterDefinition string at members.ceylon (21:4-23:4)
@@ -47,12 +47,12 @@ $Counter.prototype.getString=function getString(){
     var $$counter=this;
     return $$$cl15.String("Counter[").plus($$counter.getCount().getString()).plus($$$cl15.String("]"));
 }
-function Counter(initialCount, $$counter){
+function Counter(initialCount$Counter, $$counter){
     if ($$counter===undefined)$$counter=new $Counter;
-    $$counter.initialCount=initialCount;
+    $$counter.initialCount$Counter=initialCount$Counter;
     
     //AttributeDeclaration currentCount at members.ceylon (11:4-11:45)
-    $$counter.currentCount=$$counter.initialCount;
+    $$counter.currentCount$Counter=$$counter.initialCount$Counter;
     return $$counter;
 }
 this.Counter=Counter;
@@ -63,13 +63,13 @@ for(var $ in CeylonObject.prototype){$Issue10C1.prototype[$]=CeylonObject.protot
 for(var $ in CeylonObject.prototype){$Issue10C1.prototype[$+'$']=CeylonObject.prototype[$]}
 
 //AttributeDeclaration i1 at members.ceylon (27:4-27:18)
-$Issue10C1.prototype.getI1=function getI1(){
-    return this.i1;
+$Issue10C1.prototype.getI1$Issue10C1=function getI1$Issue10C1(){
+    return this.i1$Issue10C1;
 }
 
 //AttributeDeclaration i2 at members.ceylon (28:4-28:18)
-$Issue10C1.prototype.getI2=function getI2(){
-    return this.i2;
+$Issue10C1.prototype.getI2$Issue10C1=function getI2$Issue10C1(){
+    return this.i2$Issue10C1;
 }
 
 //AttributeDeclaration i3 at members.ceylon (29:4-29:33)
@@ -80,19 +80,19 @@ $Issue10C1.prototype.getI3=function getI3(){
 //MethodDefinition f1 at members.ceylon (30:4-30:39)
 $Issue10C1.prototype.f1=function f1(){
     var $$issue10C1=this;
-    return $$issue10C1.arg1;
+    return $$issue10C1.arg1$Issue10C1;
 }
 
 //MethodDefinition f2 at members.ceylon (31:4-31:37)
 $Issue10C1.prototype.f2=function f2(){
     var $$issue10C1=this;
-    return $$issue10C1.getI1();
+    return $$issue10C1.getI1$Issue10C1();
 }
 
 //MethodDefinition f3 at members.ceylon (32:4-32:37)
 $Issue10C1.prototype.f3=function f3(){
     var $$issue10C1=this;
-    return $$issue10C1.getI2();
+    return $$issue10C1.getI2$Issue10C1();
 }
 
 //MethodDefinition f4 at members.ceylon (33:4-33:37)
@@ -102,7 +102,7 @@ $Issue10C1.prototype.f4=function f4(){
 }
 
 //MethodDefinition f5 at members.ceylon (34:4-34:29)
-$Issue10C1.prototype.f5=function f5(){
+$Issue10C1.prototype.f5$Issue10C1=function f5$Issue10C1(){
     var $$issue10C1=this;
     return $$$cl15.Integer(9);
 }
@@ -110,11 +110,11 @@ $Issue10C1.prototype.f5=function f5(){
 //MethodDefinition f6 at members.ceylon (35:4-35:39)
 $Issue10C1.prototype.f6=function f6(){
     var $$issue10C1=this;
-    return $$issue10C1.f5();
+    return $$issue10C1.f5$Issue10C1();
 }
 
 //MethodDefinition f7 at members.ceylon (36:4-36:30)
-$Issue10C1.prototype.f7=function f7(){
+$Issue10C1.prototype.f7$Issue10C1=function f7$Issue10C1(){
     var $$issue10C1=this;
     return $$$cl15.Integer(11);
 }
@@ -122,7 +122,7 @@ $Issue10C1.prototype.f7=function f7(){
 //MethodDefinition f8 at members.ceylon (37:4-37:39)
 $Issue10C1.prototype.f8=function f8(){
     var $$issue10C1=this;
-    return $$issue10C1.f7();
+    return $$issue10C1.f7$Issue10C1();
 }
 
 //MethodDefinition f9 at members.ceylon (38:4-38:45)
@@ -136,15 +136,15 @@ $Issue10C1.prototype.f10=function f10(){
     var $$issue10C1=this;
     return $$issue10C1.f9();
 }
-function Issue10C1(arg1, $$issue10C1){
+function Issue10C1(arg1$Issue10C1, $$issue10C1){
     if ($$issue10C1===undefined)$$issue10C1=new $Issue10C1;
-    $$issue10C1.arg1=arg1;
+    $$issue10C1.arg1$Issue10C1=arg1$Issue10C1;
     
     //AttributeDeclaration i1 at members.ceylon (27:4-27:18)
-    $$issue10C1.i1=$$$cl15.Integer(3);
+    $$issue10C1.i1$Issue10C1=$$$cl15.Integer(3);
     
     //AttributeDeclaration i2 at members.ceylon (28:4-28:18)
-    $$issue10C1.i2=$$$cl15.Integer(5);
+    $$issue10C1.i2$Issue10C1=$$$cl15.Integer(5);
     
     //AttributeDeclaration i3 at members.ceylon (29:4-29:33)
     $$issue10C1.i3=$$$cl15.Integer(7);
@@ -157,8 +157,8 @@ for(var $ in $Issue10C1.prototype){$Issue10C2.prototype[$]=$Issue10C1.prototype[
 for(var $ in $Issue10C1.prototype){$Issue10C2.prototype[$+'$']=$Issue10C1.prototype[$]}
 
 //AttributeDeclaration i1 at members.ceylon (42:4-42:18)
-$Issue10C2.prototype.getI1=function getI1(){
-    return this.i1;
+$Issue10C2.prototype.getI1$Issue10C2=function getI1$Issue10C2(){
+    return this.i1$Issue10C2;
 }
 
 //AttributeDeclaration i2 at members.ceylon (43:4-43:25)
@@ -174,17 +174,17 @@ $Issue10C2.prototype.getI3=function getI3(){
 //MethodDefinition f11 at members.ceylon (45:4-45:40)
 $Issue10C2.prototype.f11=function f11(){
     var $$issue10C2=this;
-    return $$issue10C2.arg1;
+    return $$issue10C2.arg1$Issue10C2;
 }
 
 //MethodDefinition f12 at members.ceylon (46:4-46:38)
 $Issue10C2.prototype.f12=function f12(){
     var $$issue10C2=this;
-    return $$issue10C2.getI1();
+    return $$issue10C2.getI1$Issue10C2();
 }
 
 //MethodDefinition f5 at members.ceylon (47:4-47:30)
-$Issue10C2.prototype.f5=function f5(){
+$Issue10C2.prototype.f5$Issue10C2=function f5$Issue10C2(){
     var $$issue10C2=this;
     return $$$cl15.Integer(10);
 }
@@ -192,7 +192,7 @@ $Issue10C2.prototype.f5=function f5(){
 //MethodDefinition f13 at members.ceylon (48:4-48:40)
 $Issue10C2.prototype.f13=function f13(){
     var $$issue10C2=this;
-    return $$issue10C2.f5();
+    return $$issue10C2.f5$Issue10C2();
 }
 
 //MethodDefinition f7 at members.ceylon (49:4-49:37)
@@ -206,13 +206,13 @@ $Issue10C2.prototype.f9=function f9(){
     var $$issue10C2=this;
     return $$$cl15.Integer(14);
 }
-function Issue10C2(arg1, $$issue10C2){
+function Issue10C2(arg1$Issue10C2, $$issue10C2){
     if ($$issue10C2===undefined)$$issue10C2=new $Issue10C2;
+    $$issue10C2.arg1$Issue10C2=arg1$Issue10C2;
     Issue10C1($$$cl15.Integer(1),$$issue10C2);
-    $$issue10C2.arg1=arg1;
     
     //AttributeDeclaration i1 at members.ceylon (42:4-42:18)
-    $$issue10C2.i1=$$$cl15.Integer(4);
+    $$issue10C2.i1$Issue10C2=$$$cl15.Integer(4);
     
     //AttributeDeclaration i2 at members.ceylon (43:4-43:25)
     $$issue10C2.i2=$$$cl15.Integer(6);
