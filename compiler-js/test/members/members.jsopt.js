@@ -57,7 +57,7 @@ function Counter(initialCount, $$counter){
 }
 this.Counter=Counter;
 
-//ClassDefinition Issue10C1 at members.ceylon (26:0-34:0)
+//ClassDefinition Issue10C1 at members.ceylon (26:0-40:0)
 function $Issue10C1(){}
 for(var $ in CeylonObject.prototype){$Issue10C1.prototype[$]=CeylonObject.prototype[$]}
 for(var $ in CeylonObject.prototype){$Issue10C1.prototype[$+'$']=CeylonObject.prototype[$]}
@@ -100,6 +100,42 @@ $Issue10C1.prototype.f4=function f4(){
     var $$issue10C1=this;
     return $$issue10C1.getI3();
 }
+
+//MethodDefinition f5 at members.ceylon (34:4-34:29)
+$Issue10C1.prototype.f5=function f5(){
+    var $$issue10C1=this;
+    return $$$cl15.Integer(9);
+}
+
+//MethodDefinition f6 at members.ceylon (35:4-35:39)
+$Issue10C1.prototype.f6=function f6(){
+    var $$issue10C1=this;
+    return $$issue10C1.f5();
+}
+
+//MethodDefinition f7 at members.ceylon (36:4-36:30)
+$Issue10C1.prototype.f7=function f7(){
+    var $$issue10C1=this;
+    return $$$cl15.Integer(11);
+}
+
+//MethodDefinition f8 at members.ceylon (37:4-37:39)
+$Issue10C1.prototype.f8=function f8(){
+    var $$issue10C1=this;
+    return $$issue10C1.f7();
+}
+
+//MethodDefinition f9 at members.ceylon (38:4-38:45)
+$Issue10C1.prototype.f9=function f9(){
+    var $$issue10C1=this;
+    return $$$cl15.Integer(13);
+}
+
+//MethodDefinition f10 at members.ceylon (39:4-39:40)
+$Issue10C1.prototype.f10=function f10(){
+    var $$issue10C1=this;
+    return $$issue10C1.f9();
+}
 function Issue10C1(arg1, $$issue10C1){
     if ($$issue10C1===undefined)$$issue10C1=new $Issue10C1;
     $$issue10C1.arg1=arg1;
@@ -115,75 +151,105 @@ function Issue10C1(arg1, $$issue10C1){
     return $$issue10C1;
 }
 
-//ClassDefinition Issue10C2 at members.ceylon (35:0-41:0)
+//ClassDefinition Issue10C2 at members.ceylon (41:0-51:0)
 function $Issue10C2(){}
 for(var $ in $Issue10C1.prototype){$Issue10C2.prototype[$]=$Issue10C1.prototype[$]}
 for(var $ in $Issue10C1.prototype){$Issue10C2.prototype[$+'$']=$Issue10C1.prototype[$]}
 
-//AttributeDeclaration i1 at members.ceylon (36:4-36:18)
+//AttributeDeclaration i1 at members.ceylon (42:4-42:18)
 $Issue10C2.prototype.getI1=function getI1(){
     return this.i1;
 }
 
-//AttributeDeclaration i2 at members.ceylon (37:4-37:25)
+//AttributeDeclaration i2 at members.ceylon (43:4-43:25)
 $Issue10C2.prototype.getI2=function getI2(){
     return this.i2;
 }
 
-//AttributeDeclaration i3 at members.ceylon (38:4-38:32)
+//AttributeDeclaration i3 at members.ceylon (44:4-44:32)
 $Issue10C2.prototype.getI3=function getI3(){
     return this.i3;
 }
 
-//MethodDefinition f5 at members.ceylon (39:4-39:39)
-$Issue10C2.prototype.f5=function f5(){
+//MethodDefinition f11 at members.ceylon (45:4-45:40)
+$Issue10C2.prototype.f11=function f11(){
     var $$issue10C2=this;
     return $$issue10C2.arg1;
 }
 
-//MethodDefinition f6 at members.ceylon (40:4-40:37)
-$Issue10C2.prototype.f6=function f6(){
+//MethodDefinition f12 at members.ceylon (46:4-46:38)
+$Issue10C2.prototype.f12=function f12(){
     var $$issue10C2=this;
     return $$issue10C2.getI1();
+}
+
+//MethodDefinition f5 at members.ceylon (47:4-47:30)
+$Issue10C2.prototype.f5=function f5(){
+    var $$issue10C2=this;
+    return $$$cl15.Integer(10);
+}
+
+//MethodDefinition f13 at members.ceylon (48:4-48:40)
+$Issue10C2.prototype.f13=function f13(){
+    var $$issue10C2=this;
+    return $$issue10C2.f5();
+}
+
+//MethodDefinition f7 at members.ceylon (49:4-49:37)
+$Issue10C2.prototype.f7=function f7(){
+    var $$issue10C2=this;
+    return $$$cl15.Integer(12);
+}
+
+//MethodDefinition f9 at members.ceylon (50:4-50:44)
+$Issue10C2.prototype.f9=function f9(){
+    var $$issue10C2=this;
+    return $$$cl15.Integer(14);
 }
 function Issue10C2(arg1, $$issue10C2){
     if ($$issue10C2===undefined)$$issue10C2=new $Issue10C2;
     Issue10C1($$$cl15.Integer(1),$$issue10C2);
     $$issue10C2.arg1=arg1;
     
-    //AttributeDeclaration i1 at members.ceylon (36:4-36:18)
+    //AttributeDeclaration i1 at members.ceylon (42:4-42:18)
     $$issue10C2.i1=$$$cl15.Integer(4);
     
-    //AttributeDeclaration i2 at members.ceylon (37:4-37:25)
+    //AttributeDeclaration i2 at members.ceylon (43:4-43:25)
     $$issue10C2.i2=$$$cl15.Integer(6);
     
-    //AttributeDeclaration i3 at members.ceylon (38:4-38:32)
+    //AttributeDeclaration i3 at members.ceylon (44:4-44:32)
     $$issue10C2.i3=$$$cl15.Integer(8);
     return $$issue10C2;
 }
 
-//MethodDefinition testIssue10 at members.ceylon (43:0-53:0)
+//MethodDefinition testIssue10 at members.ceylon (53:0-69:0)
 function testIssue10(){
     
-    //AttributeDeclaration obj at members.ceylon (44:4-44:28)
+    //AttributeDeclaration obj at members.ceylon (54:4-54:28)
     var $obj=Issue10C2($$$cl15.Integer(2));
     function getObj(){
         return $obj;
     }
     expect(getObj().f1(),$$$cl15.Integer(1),$$$cl15.String("Issue #10 (parameter)"));
-    expect(getObj().f5(),$$$cl15.Integer(2),$$$cl15.String("Issue #10 (parameter)"));
+    expect(getObj().f11(),$$$cl15.Integer(2),$$$cl15.String("Issue #10 (parameter)"));
     expect(getObj().f2(),$$$cl15.Integer(3),$$$cl15.String("Issue #10 (non-shared attribute)"));
-    expect(getObj().f6(),$$$cl15.Integer(4),$$$cl15.String("Issue #10 (non-shared attribute)"));
+    expect(getObj().f12(),$$$cl15.Integer(4),$$$cl15.String("Issue #10 (non-shared attribute)"));
     expect(getObj().f3(),$$$cl15.Integer(5),$$$cl15.String("Issue #10 (non-shared attribute)"));
     expect(getObj().getI2(),$$$cl15.Integer(6),$$$cl15.String("Issue #10 (shared attribute)"));
     expect(getObj().f4(),$$$cl15.Integer(8),$$$cl15.String("Issue #10 (shared attribute)"));
     expect(getObj().getI3(),$$$cl15.Integer(8),$$$cl15.String("Issue #10 (shared attribute)"));
+    expect(getObj().f6(),$$$cl15.Integer(9),$$$cl15.String("Issue #10 (non-shared method)"));
+    expect(getObj().f13(),$$$cl15.Integer(10),$$$cl15.String("Issue #10 (non-shared method)"));
+    expect(getObj().f8(),$$$cl15.Integer(11),$$$cl15.String("Issue #10 (non-shared method)"));
+    expect(getObj().f7(),$$$cl15.Integer(12),$$$cl15.String("Issue #10 (shared method)"));
+    expect(getObj().f10(),$$$cl15.Integer(14),$$$cl15.String("Issue #10 (shared method)"));
+    expect(getObj().f9(),$$$cl15.Integer(14),$$$cl15.String("Issue #10 (shared method)"));
 }
 
-//MethodDefinition test at members.ceylon (55:0-63:0)
+//MethodDefinition test at members.ceylon (71:0-79:0)
 function test(){
     
-    //AttributeDeclaration c at members.ceylon (56:4-56:24)
+    //AttributeDeclaration c at members.ceylon (72:4-72:24)
     var $c=Counter($$$cl15.Integer(0));
     function getC(){
         return $c;
