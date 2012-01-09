@@ -797,13 +797,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         }
         
-        if(klass instanceof Class && constructor == null){
-            if(!(klass instanceof LazyClass) || !((LazyClass)klass).isTopLevelObjectType()) {
-                // must be a default constructor
-                ((Class)klass).setParameterList(new ParameterList());
-            }
-        }
-        
         setExtendedType(klass, classMirror);
         setSatisfiedTypes(klass, classMirror);
         fillRefinedDeclarations(klass);
