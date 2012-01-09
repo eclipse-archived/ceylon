@@ -144,7 +144,7 @@ public class CeylonTransformer extends AbstractTransformer {
     // does
 
     private JCExpression getPackage(String fullname) {
-        return makeQualIdentFromString(fullname);
+        return makeQuotedQualIdentFromString(fullname);
     }
 
     public JCImport transform(Tree.ImportPath that) {
