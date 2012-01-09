@@ -42,3 +42,21 @@ final class bug310 {
         bug310();
     }
 }
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug310_2 {
+    
+    private bug310_2() {
+    }
+    
+    static void bug310_2() {
+        final ceylon.language.String s1 = null;
+        final boolean b = (let ceylon.language.Boolean $ceylontmp3 = (let ceylon.language.String $safe$2 = s1 in $safe$2 != null ? .ceylon.language.Boolean.instance($safe$2.equals(.ceylon.language.String.instance(""))) : null) in $ceylontmp3 != null ? $ceylontmp3 : .ceylon.language.Boolean.instance(false)).booleanValue();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        bug310_2();
+    }
+}

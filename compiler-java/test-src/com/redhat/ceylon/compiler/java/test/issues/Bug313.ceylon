@@ -28,3 +28,8 @@ void bug310() {
     Bug310? x = null;
     Integer? j = x?.i;
 }
+
+void bug310_2() {
+    String? s1 = null;
+    Boolean b = s1?.equals("") ? false;
+}
