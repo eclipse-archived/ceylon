@@ -448,11 +448,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     //
     // Packages
     
-    public Package findPackage(final String pkgName) {
+    public Package findPackage(String pkgName) {
+        pkgName = Util.quoteJavaKeywords(pkgName);
         return packagesByName.get(pkgName);
     }
 
-    public LazyPackage findOrCreatePackage(Module module, final String pkgName) {
+    public LazyPackage findOrCreatePackage(Module module, String pkgName) {
+        pkgName = Util.quoteJavaKeywords(pkgName);
         LazyPackage pkg = packagesByName.get(pkgName);
         if(pkg != null)
             return pkg;
