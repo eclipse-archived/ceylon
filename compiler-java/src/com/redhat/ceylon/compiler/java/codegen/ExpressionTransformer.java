@@ -1522,11 +1522,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                     path.add("");
                 }
                 // class
-                path.add(Util.quoteIfJavaKeyword(decl.getName()));
+                path.add(decl.getName());
                 // method
-                path.add(Util.quoteIfJavaKeyword(decl.getName()));
+                path.add(decl.getName());
                 primaryExpr = null;
-                qualExpr = makeQualIdent(path);
+                qualExpr = makeQuotedQualIdent(path);
                 selector = null;
             } else {
                 // not toplevel, not within method, must be a class member
