@@ -132,13 +132,13 @@ $ArraySequence.prototype.getSize = function() { return Integer(this.value.length
 function $Singleton() {}
 function Singleton(elem) {
     var that = new $Singleton;
-    that.value = elem;
+    that.value = [elem];
     return that;
 }
 for(var $ in CeylonObject.prototype){$Singleton.prototype[$]=CeylonObject.prototype[$]}
 $Singleton.prototype.getString = function() { return String(this.value.toString()) }
 $Singleton.prototype.item = function(index) {
-    return index.value===0 ? this.value : null;
+    return index.value===0 ? this.value[0] : null;
 }
 $Singleton.prototype.getSize = function() { return Integer(1) }
 
