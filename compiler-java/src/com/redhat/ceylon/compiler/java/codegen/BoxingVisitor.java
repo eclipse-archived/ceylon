@@ -240,12 +240,6 @@ public class BoxingVisitor extends Visitor {
     }
 
     @Override
-    public void visit(DefaultOp that) {
-        super.visit(that);
-        propagateFromTerm(that, that.getLeftTerm());
-    }
-
-    @Override
     public void visit(Nonempty that) {
         super.visit(that);
         // this is not conditional
