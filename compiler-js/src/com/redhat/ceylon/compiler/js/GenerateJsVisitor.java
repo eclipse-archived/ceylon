@@ -448,23 +448,29 @@ public class GenerateJsVisitor extends Visitor
 
     private void copySuperMembers(ClassDefinition that, Class d) {
         if (!prototypeStyle) {
+            String parentName = "";
+            ExtendedType extType = that.getExtendedType();
+            if (extType != null) {
+            	parentName = extType.getType().getDeclarationModel().getName();
+            }
+            
             final List<Declaration> decs = new ArrayList<Declaration>();
             new SuperVisitor(decs).visit(that.getClassBody());
             for (Declaration dec: decs) {
                 if (dec instanceof Value) {
-                    superGetterRef(dec,d);
+                    superGetterRef(dec,d,parentName);
                     if (((Value) dec).isVariable()) {
-                        superSetterRef(dec,d);
+                        superSetterRef(dec,d,parentName);
                     }
                 }
                 else if (dec instanceof Getter) {
-                    superGetterRef(dec,d);
+                    superGetterRef(dec,d,parentName);
                     if (((Getter) dec).isVariable()) {
-                        superSetterRef(dec,d);
+                        superSetterRef(dec,d,parentName);
                     }
                 }
                 else {
-                    superRef(dec,d);
+                    superRef(dec,d,parentName);
                 }
             }
         }
@@ -576,23 +582,30 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void copyMembersToPrototype(String from, Declaration d) {
-        out("for(var $ in ");
-        out(from);
-        out(".prototype){$");
-        out(d.getName());
-        out(".prototype[$]=");
-        out(from);
-        out(".prototype[$]}");
+    	out("for(var $ in ");
+    	out(from);
+    	out(".prototype)");
+    	beginBlock();
+    	
+    	out("var $m=");
+    	out(from);
+    	out(".prototype[$];");
+    	endLine();
+    	
+    	out("$");
+    	out(d.getName());
+    	out(".prototype[$]=$m;");
         endLine();
         
-        out("for(var $ in ");
-        out(from);
-        out(".prototype){$");
-        out(d.getName());
-        out(".prototype[$+'$']=");
-        out(from);
-        out(".prototype[$]}");
-        endLine();
+        out("if($.charAt($.length-1)!=='$'){$");
+    	out(d.getName());
+    	out(".prototype[$+'");
+    	if (!from.startsWith("$")) {
+    		out("$");
+    	}
+    	out(from);
+    	out("$']=$m}");
+        endBlock();
     }
 
     private void copySuperclassPrototype(ExtendedType that, Declaration d) {
@@ -657,12 +670,14 @@ public class GenerateJsVisitor extends Visitor
         endBlock();
     }
     
-    private void superRef(Declaration d, Class sub) {
+    private void superRef(Declaration d, Class sub, String parent) {
         //if (d.isActual()) {
             self(sub);
             out(".");
             memberName(d);
-            out("$=");
+            out("$");
+            out(parent);
+            out("=");
             self(sub);
             out(".");
             memberName(d);
@@ -671,12 +686,14 @@ public class GenerateJsVisitor extends Visitor
         //}
     }
 
-    private void superGetterRef(Declaration d, Class sub) {
+    private void superGetterRef(Declaration d, Class sub, String parent) {
         //if (d.isActual()) {
             self(sub);
             out(".");
             out(getter(d));
-            out("$=");
+            out("$");
+            out(parent);
+            out("=");
             self(sub);
             out(".");
             out(getter(d));
@@ -685,12 +702,14 @@ public class GenerateJsVisitor extends Visitor
         //}
     }
 
-    private void superSetterRef(Declaration d, Class sub) {
+    private void superSetterRef(Declaration d, Class sub, String parent) {
         //if (d.isActual()) {
             self(sub);
             out(".");
             out(setter(d));
-            out("$=");
+            out("$");
+            out(parent);
+            out("=");
             self(sub);
             out(".");
             out(setter(d));
@@ -1009,14 +1028,25 @@ public class GenerateJsVisitor extends Visitor
     
     private void qualifiedMemberRHS(QualifiedMemberExpression that) {
     	boolean sup = that.getPrimary() instanceof Super;
+    	String postfix = "";
+    	if (sup) {
+    		 ClassOrInterface type = Util.getContainingClassOrInterface(that.getScope());
+    		 ClassOrInterface parentType = type.getExtendedTypeDeclaration();
+    		 if (parentType != null) {
+    			 postfix = '$' + parentType.getName();
+    			 if (prototypeStyle) {
+    				 postfix += '$';
+    			 }
+    		 }
+    	}
         if (that.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter ||
                 that.getDeclaration() instanceof Method) {
             memberName(that.getDeclaration());
-            if (sup) out("$");
+            out(postfix);
         }
         else {
             out(getter(that.getDeclaration()));
-            if (sup) out("$");
+            out(postfix);
             out("()");
         }
     }
@@ -1270,27 +1300,32 @@ public class GenerateJsVisitor extends Visitor
     }
     
     private String setter(Declaration d) {
-    	String name = memberNameString(d);
+    	String name = memberNameString(d, true);
         return "set" + toUpperCase(name.charAt(0)) + name.substring(1);
     }
     
     private String getter(Declaration d) {
-    	String name = memberNameString(d);
+    	String name = memberNameString(d, true);
         return "get" + toUpperCase(name.charAt(0)) + name.substring(1);
     }
     
     private void memberName(Declaration d) {
-    	out(memberNameString(d));
+    	out(memberNameString(d, false));
     }
     
-    private String memberNameString(Declaration d) {
+    private String memberNameString(Declaration d, Boolean forGetterSetter) {
+    	String name = d.getName();
     	Scope container = d.getContainer();
     	if (!d.isShared() && d.isMember() && (container != null)
     				&& (container instanceof ClassOrInterface)) {
     		ClassOrInterface parentType = (ClassOrInterface) container;
-    		return d.getName() + '$' + parentType.getName();
+    		name += '$' + parentType.getName();
+    		if (prototypeStyle && (forGetterSetter || (d instanceof Method))) {
+    			name += '$';
+    		}
+    		
     	}
-    	return d.getName();
+    	return name;
     }
     
     @Override

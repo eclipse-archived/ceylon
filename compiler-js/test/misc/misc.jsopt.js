@@ -31,8 +31,11 @@ function testit(){
     
     //ObjectDefinition x at testit.ceylon (18:4-22:4)
     function $x(){}
-    for(var $ in CeylonObject.prototype){$x.prototype[$]=CeylonObject.prototype[$]}
-    for(var $ in CeylonObject.prototype){$x.prototype[$+'$']=CeylonObject.prototype[$]}
+    for(var $ in CeylonObject.prototype){
+        var $m=CeylonObject.prototype[$];
+        $x.prototype[$]=$m;
+        if($.charAt($.length-1)!=='$'){$x.prototype[$+'$CeylonObject$']=$m}
+    }
     
     //MethodDefinition y at testit.ceylon (19:8-21:8)
     $x.prototype.y=function y(){
@@ -88,8 +91,11 @@ this.X=X;
 
 //ClassDefinition Foo at misc.ceylon (7:0-16:0)
 function $Foo(){}
-for(var $ in CeylonObject.prototype){$Foo.prototype[$]=CeylonObject.prototype[$]}
-for(var $ in CeylonObject.prototype){$Foo.prototype[$+'$']=CeylonObject.prototype[$]}
+for(var $ in CeylonObject.prototype){
+    var $m=CeylonObject.prototype[$];
+    $Foo.prototype[$]=$m;
+    if($.charAt($.length-1)!=='$'){$Foo.prototype[$+'$CeylonObject$']=$m}
+}
 
 //AttributeDeclaration name at misc.ceylon (8:4-8:29)
 $Foo.prototype.getName=function getName(){
@@ -97,23 +103,23 @@ $Foo.prototype.getName=function getName(){
 }
 
 //AttributeDeclaration counter at misc.ceylon (9:4-9:29)
-$Foo.prototype.getCounter$Foo=function getCounter$Foo(){
+$Foo.prototype.getCounter$Foo$=function getCounter$Foo$(){
     return this.counter$Foo;
 }
-$Foo.prototype.setCounter$Foo=function setCounter$Foo(counter){
+$Foo.prototype.setCounter$Foo$=function setCounter$Foo$(counter){
     this.counter$Foo=counter;
 }
 
 //AttributeGetterDefinition count at misc.ceylon (10:4-10:43)
 $Foo.prototype.getCount=function getCount(){
     var $$foo=this;
-    return $$foo.getCounter$Foo();
+    return $$foo.getCounter$Foo$();
 }
 
 //MethodDefinition inc at misc.ceylon (11:4-11:44)
 $Foo.prototype.inc=function inc(){
     var $$foo=this;
-    $$foo.setCounter$Foo($$foo.getCounter$Foo().plus($$$cl15.Integer(1)));
+    $$foo.setCounter$Foo$($$foo.getCounter$Foo$().plus($$$cl15.Integer(1)));
 }
 
 //MethodDefinition printName at misc.ceylon (12:4-14:4)
@@ -137,16 +143,22 @@ this.Foo=Foo;
 
 //ClassDefinition Bar at misc.ceylon (18:0-32:0)
 function $Bar(){}
-for(var $ in $Foo.prototype){$Bar.prototype[$]=$Foo.prototype[$]}
-for(var $ in $Foo.prototype){$Bar.prototype[$+'$']=$Foo.prototype[$]}
-for(var $ in $X.prototype){$Bar.prototype[$]=$X.prototype[$]}
-for(var $ in $X.prototype){$Bar.prototype[$+'$']=$X.prototype[$]}
+for(var $ in $Foo.prototype){
+    var $m=$Foo.prototype[$];
+    $Bar.prototype[$]=$m;
+    if($.charAt($.length-1)!=='$'){$Bar.prototype[$+'$Foo$']=$m}
+}
+for(var $ in $X.prototype){
+    var $m=$X.prototype[$];
+    $Bar.prototype[$]=$m;
+    if($.charAt($.length-1)!=='$'){$Bar.prototype[$+'$X$']=$m}
+}
 
 //MethodDefinition printName at misc.ceylon (19:4-22:4)
 $Bar.prototype.printName=function printName(){
     var $$bar=this;
     $$$cl15.print($$$cl15.String("bar name = ").plus($$bar.getName()));
-    $$bar.printName$();
+    $$bar.printName$Foo$();
 }
 function Bar($$bar){
     if ($$bar===undefined)$$bar=new $Bar;
@@ -155,8 +167,11 @@ function Bar($$bar){
     
     //ClassDefinition Inner at misc.ceylon (23:4-29:4)
     function $Inner(){}
-    for(var $ in CeylonObject.prototype){$Inner.prototype[$]=CeylonObject.prototype[$]}
-    for(var $ in CeylonObject.prototype){$Inner.prototype[$+'$']=CeylonObject.prototype[$]}
+    for(var $ in CeylonObject.prototype){
+        var $m=CeylonObject.prototype[$];
+        $Inner.prototype[$]=$m;
+        if($.charAt($.length-1)!=='$'){$Inner.prototype[$+'$CeylonObject$']=$m}
+    }
     
     //MethodDefinition incOuter at misc.ceylon (26:8-28:8)
     $Inner.prototype.incOuter=function incOuter(){
@@ -186,8 +201,11 @@ function doIt(f){
 
 //ObjectDefinition foob at misc.ceylon (42:0-44:0)
 function $foob(){}
-for(var $ in CeylonObject.prototype){$foob.prototype[$]=CeylonObject.prototype[$]}
-for(var $ in CeylonObject.prototype){$foob.prototype[$+'$']=CeylonObject.prototype[$]}
+for(var $ in CeylonObject.prototype){
+    var $m=CeylonObject.prototype[$];
+    $foob.prototype[$]=$m;
+    if($.charAt($.length-1)!=='$'){$foob.prototype[$+'$CeylonObject$']=$m}
+}
 
 //AttributeDeclaration name at misc.ceylon (43:4-43:30)
 $foob.prototype.getName=function getName(){

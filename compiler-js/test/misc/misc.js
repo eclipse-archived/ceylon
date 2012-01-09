@@ -130,13 +130,13 @@ this.Foo=Foo;
 function Bar($$bar){
     if ($$bar===undefined)$$bar=new CeylonObject;
     Foo($$$cl15.String("Hello"),$$bar);
-    $$bar.printName$=$$bar.printName;
+    $$bar.printName$Foo=$$bar.printName;
     X($$bar);
     
     //MethodDefinition printName at misc.ceylon (19:4-22:4)
     function printName(){
         $$$cl15.print($$$cl15.String("bar name = ").plus($$bar.getName()));
-        $$bar.printName$();
+        $$bar.printName$Foo();
     }
     $$bar.printName=printName;
     
