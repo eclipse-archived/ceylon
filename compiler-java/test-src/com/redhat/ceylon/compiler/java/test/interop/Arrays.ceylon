@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void m() {
+void arraysBoxed() {
     TypesJava java = TypesJava();
     Boolean[] b1 = java.array_boolean();
     Boolean[] b2 = java.array_Boolean();
@@ -34,4 +34,23 @@ void m() {
     Character[] c2 = java.array_Character();
     String[] s = java.array_String();
     Object[] o = java.array_Object();
+}
+
+@nomodel
+void arraysUnboxed() {
+    TypesJava java = TypesJava();
+    Array<Boolean> b1 = java.array_boolean();
+    Array<Boolean> b2 = java.array_Boolean();
+    Array<Integer> n1 = java.array_int();
+    Array<Integer> n2 = java.array_Integer();
+    Array<Integer> n3 = java.array_long();
+    Array<Integer> n4 = java.array_Long();
+    Array<Float> f1 = java.array_float();
+    Array<Float> f2 = java.array_Float();
+    Array<Float> f3 = java.array_double();
+    Array<Float> f4 = java.array_Double();
+    Array<Character> c1 = java.array_char();
+    Array<Character> c2 = java.array_Character();
+    Array<String> s = java.array_String();
+    Array<Object> o = java.array_Object();
 }
