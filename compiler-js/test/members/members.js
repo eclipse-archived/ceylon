@@ -12,35 +12,35 @@ function expect(actual,expected,text){
 }
 
 //ClassDefinition Counter at members.ceylon (10:0-24:0)
-function Counter(initialCount$Counter, $$counter){
+function Counter(initialCount, $$counter){
     if ($$counter===undefined)$$counter=new CeylonObject;
     
     //AttributeDeclaration currentCount at members.ceylon (11:4-11:45)
-    var $currentCount=initialCount$Counter;
-    function getCurrentCount$Counter(){
+    var $currentCount=initialCount;
+    function getCurrentCount(){
         return $currentCount;
     }
-    $$counter.getCurrentCount$Counter=getCurrentCount$Counter;
-    function setCurrentCount$Counter(currentCount){
+    $$counter.getCurrentCount=getCurrentCount;
+    function setCurrentCount(currentCount){
         $currentCount=currentCount;
     }
-    $$counter.setCurrentCount$Counter=setCurrentCount$Counter;
+    $$counter.setCurrentCount=setCurrentCount;
     
     //AttributeGetterDefinition count at members.ceylon (12:4-14:4)
     function getCount(){
-        return getCurrentCount$Counter();
+        return getCurrentCount();
     }
     $$counter.getCount=getCount;
     
     //MethodDefinition inc at members.ceylon (15:4-17:4)
     function inc(){
-        setCurrentCount$Counter(getCurrentCount$Counter().plus($$$cl15.Integer(1)));
+        setCurrentCount(getCurrentCount().plus($$$cl15.Integer(1)));
     }
     $$counter.inc=inc;
     
     //AttributeGetterDefinition initialCount at members.ceylon (18:4-20:4)
     function getInitialCount(){
-        return initialCount$Counter;
+        return initialCount;
     }
     $$counter.getInitialCount=getInitialCount;
     
@@ -54,22 +54,22 @@ function Counter(initialCount$Counter, $$counter){
 this.Counter=Counter;
 
 //ClassDefinition Issue10C1 at members.ceylon (26:0-40:0)
-function Issue10C1(arg1$Issue10C1, $$issue10C1){
+function Issue10C1(arg1, $$issue10C1){
     if ($$issue10C1===undefined)$$issue10C1=new CeylonObject;
     
     //AttributeDeclaration i1 at members.ceylon (27:4-27:18)
     var $i1=$$$cl15.Integer(3);
-    function getI1$Issue10C1(){
+    function getI1(){
         return $i1;
     }
-    $$issue10C1.getI1$Issue10C1=getI1$Issue10C1;
+    $$issue10C1.getI1=getI1;
     
     //AttributeDeclaration i2 at members.ceylon (28:4-28:18)
     var $i2=$$$cl15.Integer(5);
-    function getI2$Issue10C1(){
+    function getI2(){
         return $i2;
     }
-    $$issue10C1.getI2$Issue10C1=getI2$Issue10C1;
+    $$issue10C1.getI2=getI2;
     
     //AttributeDeclaration i3 at members.ceylon (29:4-29:33)
     var $i3=$$$cl15.Integer(7);
@@ -80,19 +80,19 @@ function Issue10C1(arg1$Issue10C1, $$issue10C1){
     
     //MethodDefinition f1 at members.ceylon (30:4-30:39)
     function f1(){
-        return arg1$Issue10C1;
+        return arg1;
     }
     $$issue10C1.f1=f1;
     
     //MethodDefinition f2 at members.ceylon (31:4-31:37)
     function f2(){
-        return getI1$Issue10C1();
+        return getI1();
     }
     $$issue10C1.f2=f2;
     
     //MethodDefinition f3 at members.ceylon (32:4-32:37)
     function f3(){
-        return getI2$Issue10C1();
+        return getI2();
     }
     $$issue10C1.f3=f3;
     
@@ -103,24 +103,24 @@ function Issue10C1(arg1$Issue10C1, $$issue10C1){
     $$issue10C1.f4=f4;
     
     //MethodDefinition f5 at members.ceylon (34:4-34:29)
-    function f5$Issue10C1(){
+    function f5(){
         return $$$cl15.Integer(9);
     }
     
     //MethodDefinition f6 at members.ceylon (35:4-35:39)
     function f6(){
-        return f5$Issue10C1();
+        return f5();
     }
     $$issue10C1.f6=f6;
     
     //MethodDefinition f7 at members.ceylon (36:4-36:30)
-    function f7$Issue10C1(){
+    function f7(){
         return $$$cl15.Integer(11);
     }
     
     //MethodDefinition f8 at members.ceylon (37:4-37:39)
     function f8(){
-        return f7$Issue10C1();
+        return f7();
     }
     $$issue10C1.f8=f8;
     
@@ -139,16 +139,16 @@ function Issue10C1(arg1$Issue10C1, $$issue10C1){
 }
 
 //ClassDefinition Issue10C2 at members.ceylon (41:0-51:0)
-function Issue10C2(arg1$Issue10C2, $$issue10C2){
+function Issue10C2(arg1, $$issue10C2){
     if ($$issue10C2===undefined)$$issue10C2=new CeylonObject;
     Issue10C1($$$cl15.Integer(1),$$issue10C2);
     
     //AttributeDeclaration i1 at members.ceylon (42:4-42:18)
     var $i1=$$$cl15.Integer(4);
-    function getI1$Issue10C2(){
+    function getI1(){
         return $i1;
     }
-    $$issue10C2.getI1$Issue10C2=getI1$Issue10C2;
+    $$issue10C2.getI1=getI1;
     
     //AttributeDeclaration i2 at members.ceylon (43:4-43:25)
     var $i2=$$$cl15.Integer(6);
@@ -166,24 +166,24 @@ function Issue10C2(arg1$Issue10C2, $$issue10C2){
     
     //MethodDefinition f11 at members.ceylon (45:4-45:40)
     function f11(){
-        return arg1$Issue10C2;
+        return arg1;
     }
     $$issue10C2.f11=f11;
     
     //MethodDefinition f12 at members.ceylon (46:4-46:38)
     function f12(){
-        return getI1$Issue10C2();
+        return getI1();
     }
     $$issue10C2.f12=f12;
     
     //MethodDefinition f5 at members.ceylon (47:4-47:30)
-    function f5$Issue10C2(){
+    function f5(){
         return $$$cl15.Integer(10);
     }
     
     //MethodDefinition f13 at members.ceylon (48:4-48:40)
     function f13(){
-        return f5$Issue10C2();
+        return f5();
     }
     $$issue10C2.f13=f13;
     

@@ -1324,7 +1324,7 @@ public class GenerateJsVisitor extends Visitor
     private String memberNameString(Declaration d, Boolean forGetterSetter) {
     	String name = d.getName();
     	Scope container = d.getContainer();
-    	if (!d.isShared() && d.isMember() && (container != null)
+    	if (prototypeStyle && !d.isShared() && d.isMember() && (container != null)
     				&& (container instanceof ClassOrInterface)) {
     		ClassOrInterface parentType = (ClassOrInterface) container;
     		name += '$' + parentType.getName();
