@@ -138,7 +138,7 @@ public class LanguageCompiler extends JavaCompiler {
             for (File repo : repos) {
                 virtualRepos.add(vfs.getFromFile(repo)); 
             }
-            ceylonContext = new com.redhat.ceylon.compiler.typechecker.context.Context(virtualRepos, new VFS());
+            ceylonContext = new com.redhat.ceylon.compiler.typechecker.context.Context(virtualRepos, vfs);
             context.put(ceylonContextKey, ceylonContext);
         }
         return ceylonContext;
