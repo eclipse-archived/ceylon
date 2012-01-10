@@ -19,6 +19,8 @@
  */
 @nomodel
 class FloatBoxing(){
+    variable Float attrFloat := 1.0;
+    
     T id<T>(T x){
         return x;
     }
@@ -52,7 +54,29 @@ class FloatBoxing(){
         localAttrFloat := localAttrFloat + 4;
         localAttrObject := localAttrFloat + 2.0;
         localAttrObject := localAttrFloat + 4;
+        attrFloat := attrFloat + 2.0;
+        attrFloat := attrFloat + 4;
+        this.attrFloat := this.attrFloat + 2.0;
+        this.attrFloat := this.attrFloat + 4;
+        
+        test(localAttrFloat + 2.0); 
+        test(localAttrFloat + 4);
+        test(localAttrFloat + 2.0);
+        test(localAttrFloat + 4);
+        test(attrFloat + 2.0);
+        test(attrFloat + 4);
+        test(this.attrFloat + 2.0);
+        test(this.attrFloat + 4);
         
         localAttrFloat := localAttrFloat.plus(3.0);
+        attrFloat := attrFloat.plus(3.0);
+        this.attrFloat := this.attrFloat.plus(3.0);
+        
+        test(localAttrFloat.plus(3.0));
+        test(attrFloat.plus(3.0));
+        test(this.attrFloat.plus(3.0));
+    }
+    
+    void test(Float f) {
     }
 }

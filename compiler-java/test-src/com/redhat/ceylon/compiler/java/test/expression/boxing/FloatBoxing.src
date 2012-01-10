@@ -1,6 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.expression.boxing;
 
 class FloatBoxing {
+    private double attrFloat;
+    
+    private final double getAttrFloat() {
+        return attrFloat;
+    }
+    
+    private final void setAttrFloat(double attrFloat) {
+        this.attrFloat = attrFloat;
+    }
     
     private final <T>T id(final T x) {
         return x;
@@ -32,10 +41,31 @@ class FloatBoxing {
         localAttrFloat = localAttrFloat + 4L;
         localAttrObject = .ceylon.language.Float.instance(localAttrFloat + 2.0);
         localAttrObject = .ceylon.language.Float.instance(localAttrFloat + 4L);
+        setAttrFloat(getAttrFloat() + 2.0);
+        setAttrFloat(getAttrFloat() + 4L);
+        this.setAttrFloat(this.getAttrFloat() + 2.0);
+        this.setAttrFloat(this.getAttrFloat() + 4L);
+        test(localAttrFloat + 2.0);
+        test(localAttrFloat + 4L);
+        test(localAttrFloat + 2.0);
+        test(localAttrFloat + 4L);
+        test(getAttrFloat() + 2.0);
+        test(getAttrFloat() + 4L);
+        test(this.getAttrFloat() + 2.0);
+        test(this.getAttrFloat() + 4L);
         localAttrFloat = .ceylon.language.Float.instance(localAttrFloat).plus(.ceylon.language.Float.instance(3.0)).doubleValue();
+        setAttrFloat(.ceylon.language.Float.instance(getAttrFloat()).plus(.ceylon.language.Float.instance(3.0)).doubleValue());
+        this.setAttrFloat(.ceylon.language.Float.instance(this.getAttrFloat()).plus(.ceylon.language.Float.instance(3.0)).doubleValue());
+        test(.ceylon.language.Float.instance(localAttrFloat).plus(.ceylon.language.Float.instance(3.0)).doubleValue());
+        test(.ceylon.language.Float.instance(getAttrFloat()).plus(.ceylon.language.Float.instance(3.0)).doubleValue());
+        test(.ceylon.language.Float.instance(this.getAttrFloat()).plus(.ceylon.language.Float.instance(3.0)).doubleValue());
+    }
+    
+    private final void test(final double f) {
     }
     
     FloatBoxing() {
+        this.attrFloat = 1.0;
     }
     
     public static void main(.java.lang.String[] args) {

@@ -19,23 +19,25 @@
  */
 @nomodel
 class IntegerBoxing(){
+    variable Integer attrInteger := 1;
+    
     T id<T>(T x){
         return x;
     }
     void m() {
         // decl
-        variable Integer localAttrInteger := +1;
-        variable Integer localAttrOptionalInteger := +1;
-        variable Object localAttrObject := +1;
+        variable Integer localAttrInteger := 1;
+        variable Integer localAttrOptionalInteger := 1;
+        variable Object localAttrObject := 1;
         
         // assign
         localAttrInteger := localAttrInteger;
         localAttrOptionalInteger := localAttrInteger;
         localAttrObject := localAttrInteger;
         
-        localAttrInteger := id(+1);
-        localAttrOptionalInteger := id(+1);
-        localAttrObject := id(+1);
+        localAttrInteger := id(1);
+        localAttrOptionalInteger := id(1);
+        localAttrObject := id(1);
         
         Object localAttrConstantObject = localAttrInteger;
         Integer localAttrConstantInteger = localAttrInteger;
@@ -48,9 +50,26 @@ class IntegerBoxing(){
             localAttrInteger := localAttrConstantInteger;
         }
         
-        localAttrInteger := localAttrInteger + +2; 
-        localAttrObject := localAttrInteger + +2; 
+        localAttrInteger := localAttrInteger + 2; 
+        localAttrObject := localAttrInteger + 2; 
         
-        localAttrInteger := localAttrInteger.plus(3); 
+        test(localAttrInteger + 2);
+        test(attrInteger + 2);
+        test(this.attrInteger + 2);
+        
+        test(localAttrInteger.plus(2));
+        test(attrInteger.plus(2));
+        test(this.attrInteger.plus(2));
+        
+        test(localAttrInteger++);
+        test(attrInteger++);
+        test(this.attrInteger++);
+        
+        test(localAttrInteger.successor);
+        test(attrInteger.successor);
+        test(this.attrInteger.successor);
+    }
+    
+    void test(Integer i) {
     }
 }
