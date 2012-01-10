@@ -101,7 +101,7 @@ public class BoxingDeclarationVisitor extends Visitor {
             // an error must have already been reported
             return false;
         }
-        return transformer.isCeylonBasicType(declaration.getType())
+        return (transformer.isCeylonBasicType(declaration.getType()) || transformer.isCeylonArray(declaration.getType()))
                 && !(refinedDeclaration.getTypeDeclaration() instanceof TypeParameter);
     }
 
