@@ -154,6 +154,7 @@ $Range.prototype.next = function(x) {
     return this.getDecreasing() === getTrue() ? x.getPredecessor() : x.getSuccessor();
 }
 $Range.prototype.getSize = function() { return this.size; }
+$Range.prototype.getLastIndex = function() { return Integer(this.size-1); }
 $Range.prototype.item = function(index) {
     var idx = 0;
     var x = this.first;
@@ -173,6 +174,26 @@ $Range.prototype.includes = function(x) {
     return rval ? getTrue() : getFalse();
 }
 $Range.prototype.contains = $Range.prototype.includes;
+$Range.prototype.getRest = function() {
+    var n = this.next(this.first);
+    return (n.equals(this.last) === getTrue()) ? ArraySequence([]) : Range(n, this.last);
+}
+$Range.prototype.by = function(step) {
+    if (step.compare(Integer(0)) !== larger) {
+        //throw
+    }
+    if (this.first.equals(this.last) === getTrue() || step.equals(Integer(1)) === getTrue()) {
+console.log("devolvemos mismo rango porque ", this.first.getString().value, this.last.getString().value, step.value);
+        return this;
+    }
+    var seq = [];
+    var x = this.first;
+    while (this.includes(x) === getTrue()) {
+        seq.push(x);
+        for (var i = 0; i < step.value; i++) { x = this.next(x); }
+    }
+    return ArraySequence(seq);
+}
 $Range.prototype.getString = function() { return String(this.first.getString().value + ".." + this.last.getString().value); }
 $Range.prototype.equals = function(other) {
     var eqf = this.first.equals(other.getFirst());
