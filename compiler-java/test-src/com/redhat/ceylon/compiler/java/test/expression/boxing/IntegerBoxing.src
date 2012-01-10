@@ -1,6 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.expression.boxing;
 
 class IntegerBoxing {
+    private long attrInteger;
+    
+    private final long getAttrInteger() {
+        return attrInteger;
+    }
+    
+    private final void setAttrInteger(long attrInteger) {
+        this.attrInteger = attrInteger;
+    }
     
     private final <T>T id(final T x) {
         return x;
@@ -30,10 +39,35 @@ class IntegerBoxing {
         }
         localAttrInteger = localAttrInteger + 2L;
         localAttrObject = .ceylon.language.Integer.instance(localAttrInteger + 2L);
-        localAttrInteger = .ceylon.language.Integer.instance(localAttrInteger).plus(.ceylon.language.Integer.instance(3L)).longValue();
+        setAttrInteger(getAttrInteger() + 2L);
+        test(localAttrInteger + 2L);
+        test(getAttrInteger() + 2L);
+        test(this.getAttrInteger() + 2L);
+        localAttrInteger = .ceylon.language.Integer.instance(localAttrInteger).plus(.ceylon.language.Integer.instance(2L)).longValue();
+        setAttrInteger(.ceylon.language.Integer.instance(getAttrInteger()).plus(.ceylon.language.Integer.instance(2L)).longValue());
+        this.setAttrInteger(.ceylon.language.Integer.instance(this.getAttrInteger()).plus(.ceylon.language.Integer.instance(2L)).longValue());
+        test(.ceylon.language.Integer.instance(localAttrInteger).plus(.ceylon.language.Integer.instance(2L)).longValue());
+        test(.ceylon.language.Integer.instance(getAttrInteger()).plus(.ceylon.language.Integer.instance(2L)).longValue());
+        test(.ceylon.language.Integer.instance(this.getAttrInteger()).plus(.ceylon.language.Integer.instance(2L)).longValue());
+        localAttrInteger = localAttrInteger++;
+        setAttrInteger((let long $ceylontmpop4 = getAttrInteger() in setAttrInteger($ceylontmpop4 + 1); $ceylontmpop4));
+        this.setAttrInteger((let com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing $ceylontmpopE5 = this,long $ceylontmpopV6 = $ceylontmpopE5.getAttrInteger() in $ceylontmpopE5.setAttrInteger($ceylontmpopV6 + 1); $ceylontmpopV6));
+        test(localAttrInteger++);
+        test((let long $ceylontmpop7 = getAttrInteger() in setAttrInteger($ceylontmpop7 + 1); $ceylontmpop7));
+        test((let com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing $ceylontmpopE8 = this,long $ceylontmpopV9 = $ceylontmpopE8.getAttrInteger() in $ceylontmpopE8.setAttrInteger($ceylontmpopV9 + 1); $ceylontmpopV9));
+        localAttrInteger = .ceylon.language.Integer.instance(localAttrInteger).getSuccessor().longValue();
+        setAttrInteger(.ceylon.language.Integer.instance(getAttrInteger()).getSuccessor().longValue());
+        this.setAttrInteger(.ceylon.language.Integer.instance(this.getAttrInteger()).getSuccessor().longValue());
+        test(.ceylon.language.Integer.instance(localAttrInteger).getSuccessor().longValue());
+        test(.ceylon.language.Integer.instance(getAttrInteger()).getSuccessor().longValue());
+        test(.ceylon.language.Integer.instance(this.getAttrInteger()).getSuccessor().longValue());
+    }
+    
+    private final void test(final long i) {
     }
     
     IntegerBoxing() {
+        this.attrInteger = 1L;
     }
     
     public static void main(.java.lang.String[] args) {

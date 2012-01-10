@@ -205,16 +205,20 @@ class Optim() extends OptimSuperclass<Integer,Float,Character,String,Boolean>(){
     void nonOptimisableArithmetic(){
         Integer localGetterInteger { return 0; } assign localGetterInteger{}
 
-        fieldInteger++;
-        fieldGetterInteger++;
-        localGetterInteger++;
-        optimToplevelInteger++;
-        ++fieldInteger;
-        ++fieldGetterInteger;
-        ++localGetterInteger;
-        ++optimToplevelInteger;
+        fieldInteger := fieldInteger++;
+        this.fieldInteger := this.fieldInteger++;
+        fieldGetterInteger := fieldGetterInteger++;
+        localGetterInteger := localGetterInteger++;
+        optimToplevelInteger := optimToplevelInteger++;
+        
+        fieldInteger := ++fieldInteger;
+        this.fieldInteger := ++this.fieldInteger;
+        fieldGetterInteger := ++fieldGetterInteger;
+        localGetterInteger := ++localGetterInteger;
+        optimToplevelInteger := ++optimToplevelInteger;
         
         fieldInteger := fieldInteger += fieldInteger;
+        this.fieldInteger := this.fieldInteger += this.fieldInteger;
         fieldGetterInteger := fieldGetterInteger += fieldGetterInteger;
         localGetterInteger := localGetterInteger += localGetterInteger;
         optimToplevelInteger := optimToplevelInteger += optimToplevelInteger;
