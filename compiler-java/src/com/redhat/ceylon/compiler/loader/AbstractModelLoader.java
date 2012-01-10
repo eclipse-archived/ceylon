@@ -129,7 +129,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror CHARACTER_TYPE = simpleObjectType("java.lang.Character");
     private static final TypeMirror CEYLON_CHARACTER_TYPE = simpleObjectType("ceylon.language.Character");
     
-    private static final TypeMirror CEYLON_ARRAY_TYPE = simpleObjectType("ceylon.language.JavaObjectArraySequence");
+    private static final TypeMirror CEYLON_ARRAY_TYPE = simpleObjectType("ceylon.language.Array");
     
     private static TypeMirror simpleObjectType(String name) {
         return new SimpleReflType(name, TypeKind.DECLARED);

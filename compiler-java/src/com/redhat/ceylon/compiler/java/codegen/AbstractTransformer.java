@@ -458,7 +458,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     protected boolean isCeylonArray(ProducedType type) {
-        return (sameType(syms().ceylonJavaObjectArraySequenceType, type.getDeclaration().getType()));
+        return (sameType(syms().ceylonArrayType, type.getDeclaration().getType()));
     }
     
     protected boolean isCeylonBasicType(ProducedType type) {
@@ -966,7 +966,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     private JCTree.JCMethodInvocation boxArray(JCExpression value) {
-        return makeBoxType(value, syms().ceylonJavaObjectArraySequenceType);
+        return makeBoxType(value, syms().ceylonArrayType);
     }
     
     private JCTree.JCMethodInvocation makeBoxType(JCExpression value, Type type) {
