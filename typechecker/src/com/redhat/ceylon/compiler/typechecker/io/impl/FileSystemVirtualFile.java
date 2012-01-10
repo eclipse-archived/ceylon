@@ -15,22 +15,10 @@ import java.util.List;
  */
 public class FileSystemVirtualFile implements VirtualFile {
     private final File file;
-    private final List<VirtualFile> files;
+    
 
     public FileSystemVirtualFile(File file) {
         this.file = file;
-        final File[] fsFiles = file.listFiles();
-        final List<VirtualFile> localFiles;
-        if (fsFiles == null) {
-            localFiles = new ArrayList<VirtualFile>(0);
-        }
-        else {
-            localFiles = new ArrayList<VirtualFile>(fsFiles.length);
-            for (File f : fsFiles) {
-                localFiles.add( new FileSystemVirtualFile(f) );
-            }
-        }
-        files = Collections.unmodifiableList(localFiles);
     }
 
     public File getFile() {
@@ -66,6 +54,20 @@ public class FileSystemVirtualFile implements VirtualFile {
 
     @Override
     public List<VirtualFile> getChildren() {
+        List<VirtualFile> files;
+        final File[] fsFiles = file.listFiles();
+        final List<VirtualFile> localFiles;
+        if (fsFiles == null) {
+            localFiles = new ArrayList<VirtualFile>(0);
+        }
+        else {
+            localFiles = new ArrayList<VirtualFile>(fsFiles.length);
+            for (File f : fsFiles) {
+                localFiles.add( new FileSystemVirtualFile(f) );
+            }
+        }
+        files = Collections.unmodifiableList(localFiles);
+    
         return files;
     }
 
