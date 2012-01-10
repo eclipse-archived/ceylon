@@ -100,15 +100,7 @@ public class QuotingTest extends CompilerTest {
     
     @Test
     public void testKeywordInInnerClassContainer(){
-        // Temporary until #298 is fixed
-        String prop = "ceylon.typechecker.warnings";
-        String orig = System.getProperty(prop);
-        try {
-            System.setProperty(prop, "warn");
-            compareWithJavaSource("assert/KeywordInInnerClassContainer");
-        } finally {
-            System.setProperty(prop, orig);
-        }
+        compareWithJavaSource("assert/KeywordInInnerClassContainer");
     }
     
     @Test
