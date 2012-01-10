@@ -81,6 +81,48 @@ void test_exists_nonempty() {
     print(nonempty {} then "nonempty is broken" else "like I said, nonempty works");
 }
 
+void test_foreach() {
+    value list = { 1 ,2 ,3 ,4 ,5 };
+    variable Integer sum := 0;
+    for (Integer i in list) {
+        sum += i;
+    }
+    expect(sum, 15, "simple foreach");
+    /*Boolean hasEvens(Sequence<Integer> l) {
+        variable Boolean found := false;
+        for (Integer i in l) {
+            if (i % 2 == 0) {
+                print("Found an even number");
+                found := true;
+                break;
+            }
+        } else {
+            print("No even numbers");
+        }
+        return found;
+    }*/
+    value odds = { 1, 3, 5 };
+    /*expect(hasEvens(list), true, "foreach with else");
+    expect(hasEvens(odds), false, "foreach with else");*/
+    //nested
+    sum := 0;
+    for (Integer i in odds) {
+      sum += i;
+      for (Integer j in { 2, 4, 6 }) {
+        sum += j;
+      }
+    }
+    expect(sum, 45, "nested foreach");
+    //key-value
+    sum := 0;
+    value _entries = { 1->10, 2->20, 3->30 };
+    for (Integer idx -> Integer elem in _entries) {
+      sum += idx;
+      sum += elem;
+    }
+    expect(sum, 66, "key-value foreach");
+}
+
 //Another test for the compiler.
 void test_interpolate() {
     //print("String part " 1 " interpolation " 2 " works");
@@ -99,6 +141,7 @@ shared void test() {
     test_singleton();
     test_entries();
     test_exists_nonempty();
-    test_interpolate();
+    test_foreach();
+    //test_interpolate();
     print("--- End Language Module Tests ---");
 }
