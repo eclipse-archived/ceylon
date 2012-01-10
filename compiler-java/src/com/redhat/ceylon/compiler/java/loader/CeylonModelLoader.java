@@ -36,14 +36,11 @@ import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.Scope.Entry;
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
-import com.sun.tools.javac.code.Symbol.CompletionFailure;
 import com.sun.tools.javac.code.Symbol.MethodSymbol;
 import com.sun.tools.javac.code.Symbol.PackageSymbol;
 import com.sun.tools.javac.code.Symbol.TypeSymbol;
@@ -103,6 +100,9 @@ public class CeylonModelLoader extends AbstractModelLoader {
 
     public void setupSourceFileObjects(com.sun.tools.javac.util.List<JCCompilationUnit> trees) {
         for(final JCCompilationUnit tree : trees){
+            if (!(tree instanceof CeylonCompilationUnit)) {
+                continue;
+            }
             CompilationUnit ceylonTree = ((CeylonCompilationUnit)tree).ceylonTree;
             final String pkgName = tree.getPackageName() != null ? tree.getPackageName().toString() : "";
             ceylonTree.visit(new SourceDeclarationVisitor(){
