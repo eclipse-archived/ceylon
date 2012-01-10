@@ -28,6 +28,7 @@ public class ArtifactContext implements Serializable {
     public static final String CAR = ".car";
     public static final String JAR = ".jar";
     public static final String ZIP = ".zip";
+    public static final String SRC = ".src";
 
     private String name;
     private String version;
