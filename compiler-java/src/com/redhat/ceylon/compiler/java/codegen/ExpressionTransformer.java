@@ -652,11 +652,12 @@ public class ExpressionTransformer extends AbstractTransformer {
         List<JCVariableDecl> decls = List.nil();
         List<JCStatement> stats = List.nil();
         JCExpression result = null;
+        // we can optimise that case a bit sometimes
+        boolean boxResult = !canOptimise;
+
         // attr++
         // (let $tmp = attr; attr = $tmp.getSuccessor(); $tmp;)
         if(term instanceof Tree.BaseMemberExpression){
-            // we can optimise that case a bit sometimes
-            boolean boxResult = !canOptimise;
             JCExpression getter = transform((Tree.BaseMemberExpression)term, null);
             at(expr);
             // Type $tmp = attr
@@ -684,7 +685,6 @@ public class ExpressionTransformer extends AbstractTransformer {
             stats = stats.prepend(at(expr).Exec(assignment));
 
             // $tmp
-            // always return boxed
             result = make().Ident(varName);
         }
         else if(term instanceof Tree.QualifiedMemberExpression){
@@ -702,11 +702,11 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCVariableDecl tmpEVar = make().VarDef(make().Modifiers(0), varEName, exprType, e);
 
             // Type $tmpV = $tmpE.attr
-            JCExpression attrType = makeJavaType(returnType, NO_PRIMITIVES);
+            JCExpression attrType = makeJavaType(returnType, boxResult ? NO_PRIMITIVES : 0);
             Name varVName = names().fromString(tempName("opV"));
             JCExpression getter = transformMemberExpression(qualified, make().Ident(varEName), null);
             // make sure we box the results if necessary
-            getter = applyErasureAndBoxing(getter, term, BoxingStrategy.BOXED, returnType);
+            getter = applyErasureAndBoxing(getter, term, boxResult ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED, returnType);
             JCVariableDecl tmpVVar = make().VarDef(make().Modifiers(0), varVName, attrType, getter);
 
             // define all the variables
@@ -714,16 +714,22 @@ public class ExpressionTransformer extends AbstractTransformer {
             decls = decls.prepend(tmpEVar);
             
             // $tmpE.attr = $tmpV.getSuccessor()
-            JCExpression successor = make().Apply(null, 
-                                                  makeSelect(make().Ident(varVName), operator.ceylonMethod), 
-                                                  List.<JCExpression>nil());
-            // make sure the result is boxed if necessary, the result of successor/predecessor is always boxed
-            successor = boxUnboxIfNecessary(successor, true, term.getTypeModel(), Util.getBoxingStrategy(term));
+            JCExpression successor;
+            if(canOptimise){
+                // use +1/-1 if we can optimise a bit
+                successor = make().Binary(operator == OperatorTranslation.UNARY_POSTFIX_INCREMENT ? JCTree.PLUS : JCTree.MINUS, 
+                        make().Ident(varVName), makeInteger(1));
+            }else{
+                successor = make().Apply(null, 
+                                         makeSelect(make().Ident(varVName), operator.ceylonMethod), 
+                                         List.<JCExpression>nil());
+                //  make sure the result is boxed if necessary, the result of successor/predecessor is always boxed
+                successor = boxUnboxIfNecessary(successor, true, term.getTypeModel(), Util.getBoxingStrategy(term));
+            }
             JCExpression assignment = transformAssignment(expr, term, make().Ident(varEName), successor);
             stats = stats.prepend(at(expr).Exec(assignment));
             
             // $tmpV
-            // always return boxed
             result = make().Ident(varVName);
         }else{
             log.error("ceylon", "Not supported yet");
