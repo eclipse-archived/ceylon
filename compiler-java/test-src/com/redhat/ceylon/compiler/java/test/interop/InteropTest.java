@@ -54,5 +54,10 @@ public class InteropTest extends CompilerTest {
     public void testIopStaticMethods(){
         compareWithJavaSource("StaticMethods");
     }
+
+    @Test
+    public void testIopTypes(){
+        compareWithJavaSource("Types");
+    }
 	
 }

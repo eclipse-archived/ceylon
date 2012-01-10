@@ -20,18 +20,18 @@
 @nomodel
 void m() {
     TypesJava java = TypesJava();
-    Boolean[] b1 = java.array_boolean();
-    Boolean[] b2 = java.array_Boolean();
-    Integer[] n1 = java.array_int();
-    Integer[] n2 = java.array_Integer();
-    Integer[] n3 = java.array_long();
-    Integer[] n4 = java.array_Long();
-    Float[] f1 = java.array_float();
-    Float[] f2 = java.array_Float();
-    Float[] f3 = java.array_double();
-    Float[] f4 = java.array_Double();
-    Character[] c1 = java.array_char();
-    Character[] c2 = java.array_Character();
-    String[] s = java.array_String();
-    Object[] o = java.array_Object();
+    Boolean b1 = java.return_boolean();
+    Boolean b2 = java.return_Boolean();
+    Integer n1 = java.return_int();
+    Integer n2 = java.return_Integer();
+    Integer n3 = java.return_long();
+    Integer n4 = java.return_Long();
+    Float f1 = java.return_float();
+    Float f2 = java.return_Float();
+    Float f3 = java.return_double();
+    Float f4 = java.return_Double();
+    Character c1 = java.return_char();
+    Character c2 = java.return_Character();
+    String s = java.return_String();
+    Object o = java.return_Object();
 }

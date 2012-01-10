@@ -1,0 +1,30 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class m {
+    
+    private m() {
+    }
+    
+    static void m() {
+        final com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new com.redhat.ceylon.compiler.java.test.interop.TypesJava();
+        final boolean b1 = java.return_boolean();
+        final boolean b2 = java.return_Boolean().booleanValue();
+        final long n1 = java.return_int();
+        final long n2 = java.return_Integer().longValue();
+        final long n3 = java.return_long();
+        final long n4 = java.return_Long().longValue();
+        final double f1 = java.return_float();
+        final double f2 = java.return_Float().doubleValue();
+        final double f3 = java.return_double();
+        final double f4 = java.return_Double().doubleValue();
+        final int c1 = java.return_char();
+        final int c2 = java.return_Character().charValue();
+        final .java.lang.String s = java.return_String();
+        final .java.lang.Object o = java.return_Object();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        m();
+    }
+}
