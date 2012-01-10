@@ -96,6 +96,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpressio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QuotientOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.RangeOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.RemainderAssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.RemainderOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
@@ -1718,6 +1719,15 @@ public class GenerateJsVisitor extends Visitor
    }
    @Override public void visit(Continue that) {
        out("continue;");
+   }
+
+   @Override public void visit(RangeOp that) {
+	   clAlias();
+	   out(".Range(");
+	   that.getLeftTerm().visit(this);
+	   out(",");
+	   that.getRightTerm().visit(this);
+	   out(")");
    }
 
    @Override public void visit(ForStatement that) {
