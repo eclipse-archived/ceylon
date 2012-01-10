@@ -35,7 +35,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -54,7 +53,6 @@ import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.JavacFileManager;
 import com.sun.tools.javac.util.ListBuffer;
-import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Options;
 
 public class CeyloncFileManager extends JavacFileManager implements StandardJavaFileManager {
