@@ -267,7 +267,7 @@ public final class String
             return value.indexOf(((String)element).value)>=0;
         }
         else if (element instanceof Character) {
-            return value.indexOf(((Character)element).intValue())>=0;
+            return value.indexOf(((Character)element).charValue())>=0;
         }
         else {
             return false;
