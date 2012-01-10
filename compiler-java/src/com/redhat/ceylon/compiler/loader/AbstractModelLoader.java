@@ -994,8 +994,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private void markUnboxed(TypedDeclaration decl, TypeMirror type) {
-        if(type.isPrimitive() || type.getKind() == TypeKind.ARRAY || sameType(type, STRING_TYPE))
+        if(type.isPrimitive() || type.getKind() == TypeKind.ARRAY
+                || sameType(type, BOOLEAN_TYPE)
+                || sameType(type, INTEGER_TYPE)
+                || sameType(type, LONG_TYPE)
+                || sameType(type, FLOAT_TYPE)
+                || sameType(type, DOUBLE_TYPE)
+                || sameType(type, CHARACTER_TYPE)
+                || sameType(type, STRING_TYPE)) {
             Util.markUnBoxed(decl);
+        }
     }
 
     @Override

@@ -22,7 +22,7 @@ class MethodForIterator {
             final ceylon.language.Integer n = $n$iter$4.getHead();
         }
         for (ceylon.language.Iterator<? extends ceylon.language.Character> $c$iter$5 = .ceylon.language.String.instance("wim").getIterator(); $c$iter$5 != null; $c$iter$5 = $c$iter$5.getTail()) {
-            final int c = $c$iter$5.getHead().charValue();
+            final int c = $c$iter$5.getHead().intValue();
         }
     }
     
