@@ -10,5 +10,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon.language"/>
 	<classpathentry kind="lib" path="lib/antlr-3.4-complete.jar"/>
+	<classpathentry kind="src" path="/ceylon-module-resolver"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
