@@ -34,8 +34,8 @@
     <property name="ceylon.language.repo" value="${ceylon.repo.dir}/${ceylon.language.dir}"/>
     <property name="ceylon.language.dist" value="${build.dist}/${ceylon.language.dir}"/>
     <property name="ceylon.compiler.loc" value="${basedir}/../ceylon-compiler"/>
-    <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/${module.com.redhat.ceylon.compiler.version}"/>
-    <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler-${module.com.redhat.ceylon.compiler.version}.jar"/>
+    <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}"/>
+    <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar"/>
     <property name="ceylon.compiler.lib" location="${ceylon.repo.dir}/${ceylon.compiler.jar}"/>
     <property name="ceylon.ant.dir" value="com/redhat/ceylon/ant/${module.com.redhat.ceylon.compiler.version}"/>
     <property name="ceylon.ant.jar" value="${ceylon.ant.dir}/com.redhat.ceylon.ant-${module.com.redhat.ceylon.compiler.version}.jar"/>
@@ -54,7 +54,7 @@
         <fail if="value"/>
         <basename file="${file}" property="filename"/>
         <checksum file="${file}" property="value" algorithm="sha1"/>
-        <echo file="${file}.sha1" message="${value}${checksum.binary-prefix}${filename}"/>
+        <echo file="${file}.sha1" message="${value}"/>
     </target>
 
     <!-- Rule to clean everything up -->
@@ -73,7 +73,6 @@
             <fileset dir="${module.language.runtime}">
                 <include name="**/*.java"/>
             </fileset>
-            
         </zip>
         <antcall target="sha1sum">
             <param name="file" value="${build.dist}/${ceylon.language.src}" />
