@@ -83,11 +83,11 @@ function X($$x){
 this.X=X;
 
 //ClassDefinition Foo at misc.ceylon (7:0-16:0)
-function Foo(name$Foo, $$foo){
+function Foo(name, $$foo){
     if ($$foo===undefined)$$foo=new CeylonObject;
     
     //AttributeDeclaration name at misc.ceylon (8:4-8:29)
-    var $name=name$Foo;
+    var $name=name;
     function getName(){
         return $name;
     }
@@ -95,30 +95,30 @@ function Foo(name$Foo, $$foo){
     
     //AttributeDeclaration counter at misc.ceylon (9:4-9:29)
     var $counter=$$$cl15.Integer(0);
-    function getCounter$Foo(){
+    function getCounter(){
         return $counter;
     }
-    $$foo.getCounter$Foo=getCounter$Foo;
-    function setCounter$Foo(counter){
+    $$foo.getCounter=getCounter;
+    function setCounter(counter){
         $counter=counter;
     }
-    $$foo.setCounter$Foo=setCounter$Foo;
+    $$foo.setCounter=setCounter;
     
     //AttributeGetterDefinition count at misc.ceylon (10:4-10:43)
     function getCount(){
-        return getCounter$Foo();
+        return getCounter();
     }
     $$foo.getCount=getCount;
     
     //MethodDefinition inc at misc.ceylon (11:4-11:44)
     function inc(){
-        setCounter$Foo(getCounter$Foo().plus($$$cl15.Integer(1)));
+        setCounter(getCounter().plus($$$cl15.Integer(1)));
     }
     $$foo.inc=inc;
     
     //MethodDefinition printName at misc.ceylon (12:4-14:4)
     function printName(){
-        $$$cl15.print($$$cl15.String("foo name = ").plus(name$Foo));
+        $$$cl15.print($$$cl15.String("foo name = ").plus(name));
     }
     $$foo.printName=printName;
     $$foo.inc();
