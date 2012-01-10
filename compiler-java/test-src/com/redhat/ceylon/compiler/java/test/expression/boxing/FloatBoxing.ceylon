@@ -24,18 +24,18 @@ class FloatBoxing(){
     }
     void m() {
         // decl
-        variable Float localAttrFloat := +1.0;
-        variable Float? localAttrOptionalFloat := +1.0;
-        variable Object localAttrObject := +1.0;
+        variable Float localAttrFloat := 1.0;
+        variable Float? localAttrOptionalFloat := 1.0;
+        variable Object localAttrObject := 1.0;
         
         // assign
         localAttrFloat := localAttrFloat;
         localAttrOptionalFloat := localAttrFloat;
         localAttrObject := localAttrFloat;
         
-        localAttrFloat := id(+1.0);
-        localAttrOptionalFloat := id(+1.0);
-        localAttrObject := id(+1.0);
+        localAttrFloat := id(1.0);
+        localAttrOptionalFloat := id(1.0);
+        localAttrObject := id(1.0);
         
         Object localAttrConstantObject = localAttrFloat;
         Float localAttrConstantFloat = localAttrFloat;
@@ -48,7 +48,11 @@ class FloatBoxing(){
             localAttrFloat := localAttrConstantFloat;
         }
         
-        localAttrFloat := localAttrFloat + +2.0; 
-        localAttrObject := localAttrFloat + +2.0; 
+        localAttrFloat := localAttrFloat + 2.0; 
+        localAttrFloat := localAttrFloat + 4;
+        localAttrObject := localAttrFloat + 2.0;
+        localAttrObject := localAttrFloat + 4;
+        
+        localAttrFloat := localAttrFloat.plus(3.0);
     }
 }

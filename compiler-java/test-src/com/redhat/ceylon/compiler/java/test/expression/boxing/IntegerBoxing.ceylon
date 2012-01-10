@@ -50,5 +50,7 @@ class IntegerBoxing(){
         
         localAttrInteger := localAttrInteger + +2; 
         localAttrObject := localAttrInteger + +2; 
+        
+        localAttrInteger := localAttrInteger.plus(3); 
     }
 }

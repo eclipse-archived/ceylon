@@ -29,7 +29,10 @@ class FloatBoxing {
             localAttrFloat = $localAttrConstantFloat$3;
         }
         localAttrFloat = localAttrFloat + 2.0;
+        localAttrFloat = localAttrFloat + 4L;
         localAttrObject = .ceylon.language.Float.instance(localAttrFloat + 2.0);
+        localAttrObject = .ceylon.language.Float.instance(localAttrFloat + 4L);
+        localAttrFloat = .ceylon.language.Float.instance(localAttrFloat).plus(.ceylon.language.Float.instance(3.0)).doubleValue();
     }
     
     FloatBoxing() {

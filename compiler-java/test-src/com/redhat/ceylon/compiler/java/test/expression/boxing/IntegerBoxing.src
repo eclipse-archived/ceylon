@@ -30,6 +30,7 @@ class IntegerBoxing {
         }
         localAttrInteger = localAttrInteger + 2L;
         localAttrObject = .ceylon.language.Integer.instance(localAttrInteger + 2L);
+        localAttrInteger = .ceylon.language.Integer.instance(localAttrInteger).plus(.ceylon.language.Integer.instance(3L)).longValue();
     }
     
     IntegerBoxing() {
