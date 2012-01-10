@@ -17,6 +17,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -57,6 +58,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Exists;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExtendedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForIterator;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IdenticalOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Import;
@@ -64,6 +67,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.IncrementOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LargeAsOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LargerOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
@@ -102,6 +106,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SimpleType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SmallAsOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SmallerOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
@@ -111,6 +116,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ThenOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.This;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.WhileStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -1712,6 +1718,87 @@ public class GenerateJsVisitor extends Visitor
    }
    @Override public void visit(Continue that) {
        out("continue;");
+   }
+
+   @Override public void visit(ForStatement that) {
+	   ForIterator foriter = that.getForClause().getForIterator();
+	   SpecifierExpression iterable = foriter.getSpecifierExpression();
+	   //Determine if it's a Sequence
+	   boolean isSeq = false;
+	   for (ProducedType stype : iterable.getExpression().getTypeModel().getSupertypes()) {
+		   isSeq |= stype.getProducedTypeQualifiedName().startsWith("ceylon.language.Sequence<");
+	   }
+	   if (isSeq) {
+		   //It's a Sequence, use the C-style loop
+		   //but first we need to enclose this inside an anonymous function,
+		   //to avoid problems with repeated iterator variables
+		   out("(function(){"); indentLevel++;
+		   endLine();
+		   //We store the sequence to iterate over in a local var, to avoid re-declaring seqs declared on-site
+		   out("var _localSequence=");
+		   iterable.visit(this);
+		   out(";");
+		   endLine();
+		   out("for (var i=0; i < _localSequence.getSize().value; i++)");
+		   List<Statement> stmnts = that.getForClause().getBlock().getStatements();
+		   if (stmnts.isEmpty()) {
+			   out("{}");
+			   endLine();
+		   } else {
+			   beginBlock();
+			   if (prototypeOwner!=null) {
+				   out("var ");
+				   self(prototypeOwner);
+				   out("=this;");
+				   endLine();
+			   }
+			   if (foriter instanceof ValueIterator) {
+				   Value model = ((ValueIterator)foriter).getVariable().getDeclarationModel();
+				   function();
+				   out(getter(model));
+				   out("(){ return _localSequence.item(");
+				   clAlias();
+				   out(".Integer(i)); }");
+			   } else if (foriter instanceof KeyValueIterator) {
+				   Value keyModel = ((KeyValueIterator)foriter).getKeyVariable().getDeclarationModel();
+				   Value valModel = ((KeyValueIterator)foriter).getValueVariable().getDeclarationModel();
+				   function();
+				   out(getter(keyModel));
+				   out("(){ return _localSequence.item(");
+				   clAlias();
+				   out(".Integer(i)).getKey(); }");
+				   endLine();
+				   function();
+				   out(getter(valModel));
+				   out("(){ return _localSequence.item(");
+				   clAlias();
+				   out(".Integer(i)).getItem(); }");
+			   }
+			   endLine();
+			   for (int i=0; i<stmnts.size(); i++) {
+				   Statement s = stmnts.get(i);
+				   s.visit(this);
+				   if (i<stmnts.size()-1 && s instanceof ExecutableStatement) {
+					   endLine();
+				   }
+			   }
+			   indentLevel--;
+			   endLine();
+			   out("}");
+			   indentLevel--;
+			   endLine();
+			   out("}());");
+			   endLine();
+		   }
+	   } else {
+		   //TODO It's an Iterable, use the next() method
+		   out("//HERE should be an Iterable");
+	   }
+	   if (that.getElseClause() != null) {
+		   //TODO this obviously doesn't translate directly to js
+		   //out("else ");
+		   //that.getElseClause().getBlock().visit(this);
+	   }
    }
 
 }
