@@ -970,7 +970,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     private JCTree.JCMethodInvocation unboxCharacter(JCExpression value) {
-        return makeUnboxType(value, "intValue");
+        return makeUnboxType(value, "charValue");
     }
     
     private JCTree.JCMethodInvocation unboxBoolean(JCExpression value) {
