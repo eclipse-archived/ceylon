@@ -123,6 +123,30 @@ void test_foreach() {
     expect(sum, 66, "key-value foreach");
 }
 
+void test_ranges() {
+    expect((1..10).string, "1..10", "range.string");
+    value r1= 1..5;
+    expect(r1.size, 5, "range.size");
+    value r2 = 7..4;
+    expect(r2.size, 4, "range.size");
+    value r3 = -10..-5;
+    expect(r3.size, 6, "range.size");
+    value r4 = 123..123;
+    expect(r4.size, 1, "range.size");
+    expect(r1.includes(3), true, "range.includes");
+    expect(r1.includes(6), false, "range.includes");
+    expect(r2.includes(5), true, "range.includes");
+    expect(r2.includes(3), false, "range.includes");
+    expect(r4.first, r4.last, "first == last");
+	expect(r1 == r2, false, "range.equals");
+	expect(r1 == 1..5, true, "range.equals");
+    variable Integer sum := 0;
+    for (Integer x in r1) {
+        sum += x;
+    }
+    expect(sum, 15, "range iteration");
+}
+
 //Another test for the compiler.
 void test_interpolate() {
     //print("String part " 1 " interpolation " 2 " works");
@@ -142,6 +166,7 @@ shared void test() {
     test_entries();
     test_exists_nonempty();
     test_foreach();
+    test_ranges();
     //test_interpolate();
     print("--- End Language Module Tests ---");
 }
