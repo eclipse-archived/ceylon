@@ -52,18 +52,31 @@ class IntegerBoxing(){
         
         localAttrInteger := localAttrInteger + 2; 
         localAttrObject := localAttrInteger + 2; 
+        attrInteger := attrInteger + 2; 
         
         test(localAttrInteger + 2);
         test(attrInteger + 2);
         test(this.attrInteger + 2);
         
+        localAttrInteger := localAttrInteger.plus(2);
+        attrInteger := attrInteger.plus(2);
+        this.attrInteger := this.attrInteger.plus(2);
+        
         test(localAttrInteger.plus(2));
         test(attrInteger.plus(2));
         test(this.attrInteger.plus(2));
         
+        localAttrInteger := localAttrInteger++;
+        attrInteger := attrInteger++;
+        this.attrInteger := this.attrInteger++;
+        
         test(localAttrInteger++);
         test(attrInteger++);
         test(this.attrInteger++);
+        
+        localAttrInteger := localAttrInteger.successor;
+        attrInteger := attrInteger.successor;
+        this.attrInteger := this.attrInteger.successor;
         
         test(localAttrInteger.successor);
         test(attrInteger.successor);
