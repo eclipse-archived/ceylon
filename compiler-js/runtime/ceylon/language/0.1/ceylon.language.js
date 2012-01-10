@@ -183,7 +183,6 @@ $Range.prototype.by = function(step) {
         //throw
     }
     if (this.first.equals(this.last) === getTrue() || step.equals(Integer(1)) === getTrue()) {
-console.log("devolvemos mismo rango porque ", this.first.getString().value, this.last.getString().value, step.value);
         return this;
     }
     var seq = [];
@@ -193,6 +192,18 @@ console.log("devolvemos mismo rango porque ", this.first.getString().value, this
         for (var i = 0; i < step.value; i++) { x = this.next(x); }
     }
     return ArraySequence(seq);
+}
+$Range.prototype.segment = function(from, len) {
+    if (len.equals(Integer(0)) === getTrue()) return ArraySequence([])
+    var x = this.first;
+    if (from.compare(Integer(0)) === larger) {
+        for (var i=0; i < from.value; i++) { x = this.next(x); }
+    }
+    //only positive length for now
+    var y = x;
+    for (var i=1; i < len.value; i++) { y = this.next(y); }
+    if (this.includes(y) === getFalse()) { y = this.last; }
+    return Range(x, y);
 }
 $Range.prototype.getString = function() { return String(this.first.getString().value + ".." + this.last.getString().value); }
 $Range.prototype.equals = function(other) {
