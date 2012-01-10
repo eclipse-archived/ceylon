@@ -129,6 +129,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror CHARACTER_TYPE = simpleObjectType("java.lang.Character");
     private static final TypeMirror CEYLON_CHARACTER_TYPE = simpleObjectType("ceylon.language.Character");
     
+    private static final TypeMirror CEYLON_ARRAY_TYPE = simpleObjectType("ceylon.language.JavaObjectArraySequence");
+    
     private static TypeMirror simpleObjectType(String name) {
         return new SimpleReflType(name, TypeKind.DECLARED);
     }
@@ -740,8 +742,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 String methodName = methodMirror.getName();
                 if(methodMirror == constructor) {
                     ((Class)klass).setOverloaded(isOverloaded);
-                    if(isOverloaded)
-                        logWarning("Has multiple constructors: "+qualifiedName);
                     if(!(klass instanceof LazyClass) || !((LazyClass)klass).isTopLevelObjectType())
                         setParameters((Class)klass, methodMirror);
                 } else if(isGetter(methodMirror)) {
@@ -994,7 +994,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private void markUnboxed(TypedDeclaration decl, TypeMirror type) {
-        if(type.isPrimitive() || sameType(type, STRING_TYPE))
+        if(type.isPrimitive() || type.getKind() == TypeKind.ARRAY || sameType(type, STRING_TYPE))
             Util.markUnBoxed(decl);
     }
 
@@ -1195,43 +1195,47 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if (typeName != null) {
             return decodeType(typeName, scope);
         } else {
-            // ERASURE
-            if (sameType(type, STRING_TYPE)) {
-                type = CEYLON_STRING_TYPE;
-            } else if (sameType(type, PRIM_BOOLEAN_TYPE)) {
-                type = CEYLON_BOOLEAN_TYPE;
-            } else if (sameType(type, BOOLEAN_TYPE)) {
-                type = CEYLON_BOOLEAN_TYPE;
-            } else if (sameType(type, PRIM_INT_TYPE)) {
-                // FIXME Really needs "small" annotation
-                type = CEYLON_INTEGER_TYPE;
-            } else if (sameType(type, INTEGER_TYPE)) {
-                // FIXME Really needs "small" annotation
-                type = CEYLON_INTEGER_TYPE;
-            } else if (sameType(type, PRIM_LONG_TYPE)) {
-                type = CEYLON_INTEGER_TYPE;
-            } else if (sameType(type, LONG_TYPE)) {
-                type = CEYLON_INTEGER_TYPE;
-            } else if (sameType(type, PRIM_FLOAT_TYPE)) {
-                // FIXME Really needs "small" annotation
-                type = CEYLON_FLOAT_TYPE;
-            } else if (sameType(type, FLOAT_TYPE)) {
-                // FIXME Really needs "small" annotation
-                type = CEYLON_FLOAT_TYPE;
-            } else if (sameType(type, PRIM_DOUBLE_TYPE)) {
-                type = CEYLON_FLOAT_TYPE;
-            } else if (sameType(type, DOUBLE_TYPE)) {
-                type = CEYLON_FLOAT_TYPE;
-            } else if (sameType(type, PRIM_CHAR_TYPE)) {
-                type = CEYLON_CHARACTER_TYPE;
-            } else if (sameType(type, CHARACTER_TYPE)) {
-                type = CEYLON_CHARACTER_TYPE;
-            } else if (sameType(type, OBJECT_TYPE)) {
-                type = CEYLON_IDENTIFIABLE_OBJECT_TYPE;
-            }
-            
-            return getType(type, scope);
+            return obtainType(type, scope);
         }
+    }
+    
+    private ProducedType obtainType(TypeMirror type, Scope scope) {
+        // ERASURE
+        if (sameType(type, STRING_TYPE)) {
+            type = CEYLON_STRING_TYPE;
+        } else if (sameType(type, PRIM_BOOLEAN_TYPE)) {
+            type = CEYLON_BOOLEAN_TYPE;
+        } else if (sameType(type, BOOLEAN_TYPE)) {
+            type = CEYLON_BOOLEAN_TYPE;
+        } else if (sameType(type, PRIM_INT_TYPE)) {
+            // FIXME Really needs "small" annotation
+            type = CEYLON_INTEGER_TYPE;
+        } else if (sameType(type, INTEGER_TYPE)) {
+            // FIXME Really needs "small" annotation
+            type = CEYLON_INTEGER_TYPE;
+        } else if (sameType(type, PRIM_LONG_TYPE)) {
+            type = CEYLON_INTEGER_TYPE;
+        } else if (sameType(type, LONG_TYPE)) {
+            type = CEYLON_INTEGER_TYPE;
+        } else if (sameType(type, PRIM_FLOAT_TYPE)) {
+            // FIXME Really needs "small" annotation
+            type = CEYLON_FLOAT_TYPE;
+        } else if (sameType(type, FLOAT_TYPE)) {
+            // FIXME Really needs "small" annotation
+            type = CEYLON_FLOAT_TYPE;
+        } else if (sameType(type, PRIM_DOUBLE_TYPE)) {
+            type = CEYLON_FLOAT_TYPE;
+        } else if (sameType(type, DOUBLE_TYPE)) {
+            type = CEYLON_FLOAT_TYPE;
+        } else if (sameType(type, PRIM_CHAR_TYPE)) {
+            type = CEYLON_CHARACTER_TYPE;
+        } else if (sameType(type, CHARACTER_TYPE)) {
+            type = CEYLON_CHARACTER_TYPE;
+        } else if (sameType(type, OBJECT_TYPE)) {
+            type = CEYLON_IDENTIFIABLE_OBJECT_TYPE;
+        }
+        
+        return getType(type, scope);
     }
     
     private boolean sameType(TypeMirror t1, TypeMirror t2) {
@@ -1244,17 +1248,25 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private ProducedType getType(TypeMirror type, Scope scope) {
-        Declaration decl = convertToDeclaration(type, scope, DeclarationType.TYPE);
-        TypeDeclaration declaration = (TypeDeclaration) decl;
-        List<TypeMirror> javacTypeArguments = type.getTypeArguments();
-        if(!javacTypeArguments.isEmpty()){
-            List<ProducedType> typeArguments = new ArrayList<ProducedType>(javacTypeArguments.size());
-            for(TypeMirror typeArgument : javacTypeArguments){
-                typeArguments.add((ProducedType) getType(typeArgument, scope));
-            }
+        if (type.getKind() == TypeKind.ARRAY) {
+            Declaration decl = convertToDeclaration(CEYLON_ARRAY_TYPE, scope, DeclarationType.TYPE);
+            TypeDeclaration declaration = (TypeDeclaration) decl;
+            List<ProducedType> typeArguments = new ArrayList<ProducedType>(1);
+            typeArguments.add((ProducedType) obtainType(type.getComponentType(), scope));
             return declaration.getProducedType(null, typeArguments);
+        } else {
+            Declaration decl = convertToDeclaration(type, scope, DeclarationType.TYPE);
+            TypeDeclaration declaration = (TypeDeclaration) decl;
+            List<TypeMirror> javacTypeArguments = type.getTypeArguments();
+            if(!javacTypeArguments.isEmpty()){
+                List<ProducedType> typeArguments = new ArrayList<ProducedType>(javacTypeArguments.size());
+                for(TypeMirror typeArgument : javacTypeArguments){
+                    typeArguments.add((ProducedType) getType(typeArgument, scope));
+                }
+                return declaration.getProducedType(null, typeArguments);
+            }
+            return declaration.getType();
         }
-        return declaration.getType();
     }
 
     @Override

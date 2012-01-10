@@ -457,6 +457,10 @@ public abstract class AbstractTransformer implements Transformation {
         return (sameType(syms().ceylonCharacterType, type));
     }
 
+    protected boolean isCeylonArray(ProducedType type) {
+        return (sameType(syms().ceylonJavaObjectArraySequenceType, type.getDeclaration().getType()));
+    }
+    
     protected boolean isCeylonBasicType(ProducedType type) {
         return (isCeylonString(type) || isCeylonBoolean(type) || isCeylonInteger(type) || isCeylonFloat(type) || isCeylonCharacter(type));
     }
@@ -484,7 +488,6 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     protected JCExpression makeJavaType(ProducedType type, int flags) {
-        
         if(type == null)
             return make().Erroneous();
         
@@ -534,14 +537,19 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             } else if (isCeylonCharacter(type)) {
                 return make().TypeIdent(TypeTags.INT);
+            } else if (isCeylonArray(type)) {
+                ProducedType simpleType = simplifyType(type);
+                TypeDeclaration tdecl = simpleType.getDeclaration();
+                java.util.List<ProducedType> tal = simpleType.getTypeArgumentList();
+                return make().TypeArray(makeJavaType(tal.get(0), 0));
             }
         }
         
         JCExpression jt;
-        type = simplifyType(type);
-        TypeDeclaration tdecl = type.getDeclaration();
-        java.util.List<ProducedType> tal = type.getTypeArgumentList();
-
+        ProducedType simpleType = simplifyType(type);
+        TypeDeclaration tdecl = simpleType.getDeclaration();
+        java.util.List<ProducedType> tal = simpleType.getTypeArgumentList();
+        
         if (((flags & WANT_RAW_TYPE) == 0) && tal != null && !tal.isEmpty()) {
             // GENERIC TYPES
 
@@ -914,6 +922,8 @@ public abstract class AbstractTransformer implements Transformation {
             expr = unboxCharacter(expr);
         } else if (isCeylonBoolean(targetType)) {
             expr = unboxBoolean(expr);
+        } else if (isCeylonArray(targetType)) {
+            expr = unboxArray(expr);
         }
         return expr;
     }
@@ -929,6 +939,8 @@ public abstract class AbstractTransformer implements Transformation {
             expr = boxCharacter(expr);
         } else if (isCeylonBoolean(exprType)) {
             expr = boxBoolean(expr);
+        } else if (isCeylonArray(exprType)) {
+            expr = boxArray(expr);
         }
         return expr;
     }
@@ -953,6 +965,10 @@ public abstract class AbstractTransformer implements Transformation {
         return makeBoxType(value, syms().ceylonBooleanType);
     }
     
+    private JCTree.JCMethodInvocation boxArray(JCExpression value) {
+        return makeBoxType(value, syms().ceylonJavaObjectArraySequenceType);
+    }
+    
     private JCTree.JCMethodInvocation makeBoxType(JCExpression value, Type type) {
         return make().Apply(null, makeSelect(makeIdent(type), "instance"), List.<JCExpression>of(value));
     }
@@ -975,6 +991,10 @@ public abstract class AbstractTransformer implements Transformation {
     
     private JCTree.JCMethodInvocation unboxBoolean(JCExpression value) {
         return makeUnboxType(value, "booleanValue");
+    }
+    
+    private JCTree.JCMethodInvocation unboxArray(JCExpression value) {
+        return makeUnboxType(value, "toArray");
     }
     
     private JCTree.JCMethodInvocation makeUnboxType(JCExpression value, String unboxMethodName) {
