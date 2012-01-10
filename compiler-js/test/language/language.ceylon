@@ -88,7 +88,7 @@ void test_foreach() {
         sum += i;
     }
     expect(sum, 15, "simple foreach");
-    /*Boolean hasEvens(Sequence<Integer> l) {
+    Boolean hasEvens(Sequence<Integer> l) {
         variable Boolean found := false;
         for (Integer i in l) {
             if (i % 2 == 0) {
@@ -100,10 +100,10 @@ void test_foreach() {
             print("No even numbers");
         }
         return found;
-    }*/
+    }
     value odds = { 1, 3, 5 };
-    /*expect(hasEvens(list), true, "foreach with else");
-    expect(hasEvens(odds), false, "foreach with else");*/
+    expect(hasEvens(list), true, "for/else");
+    expect(hasEvens(odds), false, "for/else");
     //nested
     sum := 0;
     for (Integer i in odds) {
