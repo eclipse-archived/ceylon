@@ -21,21 +21,21 @@
 package com.redhat.ceylon.compiler.java.loader;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.tools.JavaFileManager;
 import javax.tools.StandardLocation;
 
+import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.compiler.java.codegen.BoxingDeclarationVisitor;
 import com.redhat.ceylon.compiler.java.codegen.BoxingVisitor;
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.java.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.java.codegen.CodeGenError;
-import com.redhat.ceylon.compiler.java.tools.CeylonLocation;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeylonPhasedUnit;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
-import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
@@ -214,34 +214,20 @@ public class CeylonEnter extends Enter {
     public void addModuleToClassPath(Module module, boolean errorIfMissing) {
         Paths.Path classPath = paths.getPathForLocation(StandardLocation.CLASS_PATH);
         
-        Iterable<? extends File> outputLocation = fileManager.getLocation(StandardLocation.CLASS_OUTPUT);
-        if (outputLocation != null && outputLocation.iterator().hasNext()) {
-            File outputRepository = outputLocation.iterator().next();
-            if (addModuleFromRepository(module, outputRepository, classPath)) {
-                return;
-            }
+        Repository repository = fileManager.getRepository();
+        File artifact = null;
+        try {
+            artifact = repository.getArtifact(module.getNameAsString(), module.getVersion());
+        } catch (IOException e) {
+            // FIXME: error? warning?
+            e.printStackTrace();
         }
-        
-        Iterable<? extends File> repositories = fileManager.getLocation(CeylonLocation.REPOSITORY);
-        for(File repository : repositories){
-            if (addModuleFromRepository(module, repository, classPath)) {
-                return;
-            }
-        }
-        if(errorIfMissing)
+        if(artifact != null && artifact.exists())
+            classPath.add(artifact);
+        else if(errorIfMissing)
             log.error("ceylon", "Failed to find module "+module.getNameAsString()+"/"+module.getVersion()+" in repositories");
     }
 
-    private boolean addModuleFromRepository(Module module, File repository, Paths.Path classPath) {
-        File moduleDir = Util.getModulePath(repository, module);
-        File moduleJar = new File(moduleDir, Util.getModuleArchiveName(module));
-        if(moduleJar.exists()){
-            classPath.addFile(moduleJar, false);
-            return true;
-        }
-        return false;
-    }
-    
     private void typeCheck() {
         final java.util.List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
 

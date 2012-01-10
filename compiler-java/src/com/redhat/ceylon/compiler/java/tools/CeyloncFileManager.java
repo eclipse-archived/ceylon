@@ -38,6 +38,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.tools.FileObject;
 import javax.tools.JavaFileManager;
@@ -46,8 +48,10 @@ import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
 
+import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.impl.RepositoryBuilder;
+import com.redhat.ceylon.cmr.impl.RootBuilder;
 import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
-import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.util.Context;
@@ -60,7 +64,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
     private JarOutputRepositoryManager jarRepository;
     private Context context;
     private Options options;
-    private List<File> repositories;
+    private Repository repo;
 
     public CeyloncFileManager(Context context, boolean register, Charset charset) {
         super(context, register, charset);
@@ -148,7 +152,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
             if (sibling != null && sibling instanceof RegularFileObject) {
                 siblingFile = ((RegularFileObject)sibling).getUnderlyingFile();
             }
-            return jarRepository.getFileObject(dir, currentModule, fileName, siblingFile);
+            return jarRepository.getFileObject(getRepository(), currentModule, fileName, siblingFile);
         }else
             return super.getFileForOutput(location, fileName, sibling);
     }
@@ -213,24 +217,32 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         }
     }
     
-    @Override
-    public Iterable<? extends File> getLocation(Location location) {
-        if(location != CeylonLocation.REPOSITORY)
-            return super.getLocation(location);
-        return getRepositories();
-    }
-
-    private Iterable<? extends File> getRepositories() {
+    public Repository getRepository() {
         // caching
-        if(repositories != null)
-            return repositories;
+        if(repo != null)
+            return repo;
         // lazy loading
-        List<String> repositoryNames = options.getMulti(OptionName.CEYLONREPO);
-        repositoryNames = Util.addDefaultRepositories(repositoryNames);
-        repositories = new ArrayList<File>(repositoryNames.size());
-        for(String repository : repositoryNames)
-            repositories.add(new File(repository));
-        return repositories;
+        final RepositoryBuilder builder = new RepositoryBuilder();
+
+        builder.addModules();
+        builder.addCeylonHome();
+
+        // any user defined repos
+        List<String> userRepos = options.getMulti(OptionName.CEYLONREPO);
+        for (String token : userRepos) {
+            try {
+                final RootBuilder rb = new RootBuilder(token);
+                builder.appendExternalRoot(rb.buildRoot());
+            } catch (Exception e) {
+                Logger.getLogger("ceylon.runtime").log(Level.WARNING, "Failed to add repository: " + token, e);
+            }
+        }
+
+        // add remote module repo
+        builder.addModulesCeylonLangOrg();
+
+        repo = builder.buildRepository();
+        return repo;
     }
     
     @Override
