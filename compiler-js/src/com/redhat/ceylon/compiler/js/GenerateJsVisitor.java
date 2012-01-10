@@ -1728,12 +1728,17 @@ public class GenerateJsVisitor extends Visitor
 	   for (ProducedType stype : iterable.getExpression().getTypeModel().getSupertypes()) {
 		   isSeq |= stype.getProducedTypeQualifiedName().startsWith("ceylon.language.Sequence<");
 	   }
+	   boolean hasElse = that.getElseClause() != null && !that.getElseClause().getBlock().getStatements().isEmpty();
+	   //First we need to enclose this inside an anonymous function,
+	   //to avoid problems with repeated iterator variables
+	   out("(function(){"); indentLevel++;
+	   endLine();
+	   if (hasElse) {
+		   out("var _do_the_else_block = false;");
+		   endLine();
+	   }
 	   if (isSeq) {
 		   //It's a Sequence, use the C-style loop
-		   //but first we need to enclose this inside an anonymous function,
-		   //to avoid problems with repeated iterator variables
-		   out("(function(){"); indentLevel++;
-		   endLine();
 		   //We store the sequence to iterate over in a local var, to avoid re-declaring seqs declared on-site
 		   out("var _localSequence=");
 		   iterable.visit(this);
@@ -1782,23 +1787,27 @@ public class GenerateJsVisitor extends Visitor
 					   endLine();
 				   }
 			   }
-			   indentLevel--;
-			   endLine();
-			   out("}");
-			   indentLevel--;
-			   endLine();
-			   out("}());");
-			   endLine();
 		   }
 	   } else {
 		   //TODO It's an Iterable, use the next() method
 		   out("//HERE should be an Iterable");
 	   }
-	   if (that.getElseClause() != null) {
-		   //TODO this obviously doesn't translate directly to js
-		   //out("else ");
-		   //that.getElseClause().getBlock().visit(this);
+	   //If there's an else block, check for normal termination
+	   if (hasElse) {
+		   out("if (i === _localSequence.getSize().value-1) { _do_the_else_block = true; }");
 	   }
+	   indentLevel--;
+	   endLine();
+	   out("}");
+	   if (hasElse) {
+		   endLine();
+		   out("if (_do_the_else_block)");
+		   that.getElseClause().getBlock().visit(this);
+	   }
+	   indentLevel--;
+	   endLine();
+	   out("}());");
+	   endLine();
    }
 
 }
