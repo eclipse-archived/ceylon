@@ -29,6 +29,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
         this.first = first;
     }
 
+    @Ignore
     ArraySequence(List<Element> list) {
     	array = (Element[]) list.toArray();
     	if (array.length==0) {
@@ -93,8 +94,8 @@ public class ArraySequence<Element> implements Sequence<Element> {
         }
 
         @Override
-        public Iterator<Element> getTail() {
-            Iterable rest = getRest();
+        public Iterator<? extends Element> getTail() {
+            Iterable<? extends Element> rest = getRest();
             return rest.getEmpty() ? null : rest.getIterator();
         }
         
@@ -178,6 +179,10 @@ public class ArraySequence<Element> implements Sequence<Element> {
         return Sequence$impl.toString(this);
     }
 
+    public Element[] toArray() {
+        return array;
+    }
+    
     @Override
     public boolean equals(java.lang.Object obj) {
         if (this == obj)
@@ -186,11 +191,12 @@ public class ArraySequence<Element> implements Sequence<Element> {
             return false;
         if (!(obj instanceof Sequence))
             return false;
-        Sequence other = (Sequence) obj;
+        @SuppressWarnings("unchecked")
+        Sequence<? extends Element> other = (Sequence<? extends Element>) obj;
         if(getSize() != other.getSize())
             return false;
-        Iterator<Element> thisIterator = getIterator();
-        Iterator otherIterator = other.getIterator();
+        Iterator<? extends Element> thisIterator = getIterator();
+        Iterator<? extends Element> otherIterator = other.getIterator();
         while(thisIterator != null){
             // shouldn't happen
             if(otherIterator == null)
@@ -205,7 +211,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
                 if(!thisHead.equals(otherHead))
                     return false;
             }
-            thisIterator = (Iterator<Element>) thisIterator.getTail();
+            thisIterator = (Iterator<? extends Element>) thisIterator.getTail();
             otherIterator = otherIterator.getTail();
         }
         // shouldn't happen

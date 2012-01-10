@@ -68,7 +68,10 @@ public final class Character
         return java.lang.String.valueOf(java.lang.Character.toChars(codePoint));
     }
 
-    public int intValue() {
+    // We use the same name that Java uses to unbox its characters
+    // so we don't need to set up an entire system to distinguish
+    // between the unboxing of Java types and of Ceylon equivalents
+    public int charValue() {
         return codePoint;
     }
 
