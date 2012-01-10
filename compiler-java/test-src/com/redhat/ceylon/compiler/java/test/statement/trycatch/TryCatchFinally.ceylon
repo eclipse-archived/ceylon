@@ -19,23 +19,23 @@
  */
 @nomodel
 class TryCatchFinally() {
-	void t() {
-	}
+    void t() {
+    }
 
-	void c(Exception e) {
-	}
-	
-	void f() {
-	
-	}
+    void c(Exception e) {
+    }
+    
+    void f() {
+    
+    }
 
-	void m() {
-		try {
-			t();
-		} catch(Exception e) {
-		    c(e);
-		}finally {
-			f();
-		}
-	}
+    void m() {
+        try {
+            t();
+        } catch(Exception e) {
+            c(e);
+        }finally {
+            f();
+        }
+    }
 }

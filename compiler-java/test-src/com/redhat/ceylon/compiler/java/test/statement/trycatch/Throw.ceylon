@@ -19,7 +19,7 @@
  */
 @nomodel
 class Throw() {
-	void t() {
-		throw;
-	}
+    void t() {
+        throw;
+    }
 }

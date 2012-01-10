@@ -20,7 +20,7 @@
 @nomodel
 class NumericLiteral(){
     shared void m() {
-    	// make sure we test all the max/min limits
+        // make sure we test all the max/min limits
         Integer n1 = 9223372036854775807;
         Integer n2 = +2147483647;
         Integer n3 = -2147483648;

@@ -19,7 +19,7 @@
  */
 @nomodel
 class KlassMethodTypeParams() {
-	T m<T>(T t) {
-		return t;
-	}
+    T m<T>(T t) {
+        return t;
+    }
 }

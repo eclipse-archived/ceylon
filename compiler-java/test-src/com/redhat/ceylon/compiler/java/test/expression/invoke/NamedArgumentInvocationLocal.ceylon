@@ -21,7 +21,7 @@
 shared class NamedArgumentInvocationLocal() {
     shared void f() {
         Integer m(Integer n, String s) {
-    	    return n;
+            return n;
         }
         void v(Integer n, String s) {
         }

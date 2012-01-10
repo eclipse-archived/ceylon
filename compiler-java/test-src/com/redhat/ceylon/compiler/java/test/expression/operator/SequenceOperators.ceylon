@@ -41,7 +41,7 @@ shared class SequenceOperators() {
 //        Integer[] indices = {1, 2, 3};
 //        variable String[] seq1 := c1[indices];
 //        variable Iterable<String> it1 := c1[indices.iterator];
-		String[] sequence = {"foo", "bar"};
+        String[] sequence = {"foo", "bar"};
         variable String[] subrange;
         subrange := sequence[1..2];
         subrange := this.sequence[1..2];

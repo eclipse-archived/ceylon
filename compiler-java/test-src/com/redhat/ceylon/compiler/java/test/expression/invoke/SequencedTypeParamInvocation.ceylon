@@ -4,5 +4,5 @@ class SequencedTypeParamInvocation<T>() {
 }
 @nomodel
 void foo() {
-	SequencedTypeParamInvocation<String>().algo("x", "y");
+    SequencedTypeParamInvocation<String>().algo("x", "y");
 }

@@ -42,6 +42,6 @@ class KlassTypeParamsInstantiation(){
         return k.foo{u = "hello"; v = 1;};
     }
     shared void typeArgumentInference(){
-    	value s = Single(69);
+        value s = Single(69);
     }
 }
