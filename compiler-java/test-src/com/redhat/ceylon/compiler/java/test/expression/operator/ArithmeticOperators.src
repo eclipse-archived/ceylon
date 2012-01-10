@@ -178,9 +178,9 @@ class ArithmeticOperators {
     }
     
     private final void unboxedQualifiedAttributes() {
-        (let com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE16 = this,ceylon.language.Integer $ceylontmpopV17 = .ceylon.language.Integer.instance($ceylontmpopE16.getN1()) in $ceylontmpopE16.setN1($ceylontmpopV17.getSuccessor().longValue()); $ceylontmpopV17);
+        (let com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE16 = this,long $ceylontmpopV17 = $ceylontmpopE16.getN1() in $ceylontmpopE16.setN1($ceylontmpopV17 + 1); $ceylontmpopV17);
         (let com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE18 = this,long $ceylontmpopV19 = $ceylontmpopE18.getN1() + 1 in $ceylontmpopE18.setN1($ceylontmpopV19); $ceylontmpopV19);
-        (let com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE20 = this,ceylon.language.Integer $ceylontmpopV21 = .ceylon.language.Integer.instance($ceylontmpopE20.getN1()) in $ceylontmpopE20.setN1($ceylontmpopV21.getPredecessor().longValue()); $ceylontmpopV21);
+        (let com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE20 = this,long $ceylontmpopV21 = $ceylontmpopE20.getN1() in $ceylontmpopE20.setN1($ceylontmpopV21 - 1); $ceylontmpopV21);
         (let com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE22 = this,long $ceylontmpopV23 = $ceylontmpopE22.getN1() - 1 in $ceylontmpopE22.setN1($ceylontmpopV23); $ceylontmpopV23);
         this.setI1(this.getN1());
         this.setI1(-this.getN1());
@@ -197,9 +197,9 @@ class ArithmeticOperators {
     }
     
     private final void unboxedQualifiedGetterAttributes() {
-        (let com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE32 = this,ceylon.language.Integer $ceylontmpopV33 = .ceylon.language.Integer.instance($ceylontmpopE32.getGetterN1()) in $ceylontmpopE32.setGetterN1($ceylontmpopV33.getSuccessor().longValue()); $ceylontmpopV33);
+        (let com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE32 = this,long $ceylontmpopV33 = $ceylontmpopE32.getGetterN1() in $ceylontmpopE32.setGetterN1($ceylontmpopV33 + 1); $ceylontmpopV33);
         (let com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE34 = this,long $ceylontmpopV35 = $ceylontmpopE34.getGetterN1() + 1 in $ceylontmpopE34.setGetterN1($ceylontmpopV35); $ceylontmpopV35);
-        (let com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE36 = this,ceylon.language.Integer $ceylontmpopV37 = .ceylon.language.Integer.instance($ceylontmpopE36.getGetterN1()) in $ceylontmpopE36.setGetterN1($ceylontmpopV37.getPredecessor().longValue()); $ceylontmpopV37);
+        (let com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE36 = this,long $ceylontmpopV37 = $ceylontmpopE36.getGetterN1() in $ceylontmpopE36.setGetterN1($ceylontmpopV37 - 1); $ceylontmpopV37);
         (let com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE38 = this,long $ceylontmpopV39 = $ceylontmpopE38.getGetterN1() - 1 in $ceylontmpopE38.setGetterN1($ceylontmpopV39); $ceylontmpopV39);
         this.setGetterI1(this.getGetterN1());
         this.setGetterI1(-this.getGetterN1());
