@@ -54,39 +54,39 @@ import com.sun.tools.javac.zip.ZipFileIndex;
 
 public abstract class CompilerTest {
 
-	private final static String dir = "test-src";
-	protected final static String destDir = "build/ceylon-cars";
-	private final static String destCar = destDir + "/default/default.car";
-	protected final static List<String> defaultOptions = Arrays.asList("-out", destDir, "-rep", destDir);
-    
-	protected final String path;
+    private final static String dir = "test-src";
+    protected final static String destDir = "build/ceylon-cars";
+    private final static String destCar = destDir + "/default/default.car";
+    protected final static List<String> defaultOptions = Arrays.asList("-out", destDir, "-rep", destDir);
 
-	public CompilerTest() {
+    protected final String path;
+
+    public CompilerTest() {
         // for comparing with java source
         Package pakage = getClass().getPackage();
         String pkg = pakage == null ? "" : pakage.getName().replaceAll("\\.", Matcher.quoteReplacement(File.separator));
         path = dir + File.separator + pkg + File.separator;
-	}
-	
-	protected CeyloncTool makeCompiler(){
+    }
+
+    protected CeyloncTool makeCompiler(){
         try {
             return new CeyloncTool();
         } catch (VerifyError e) {
             System.err.println("ERROR: Cannot run tests! Did you maybe forget to configure the -Xbootclasspath/p: parameter?");
             throw e;
         }
-	}
+    }
 
-	protected CeyloncFileManager makeFileManager(CeyloncTool compiler, DiagnosticListener<? super FileObject> diagnosticListener){
+    protected CeyloncFileManager makeFileManager(CeyloncTool compiler, DiagnosticListener<? super FileObject> diagnosticListener){
         return (CeyloncFileManager)compiler.getStandardFileManager(diagnosticListener, null, null);
-	}
-	
-	protected void compareWithJavaSource(String name) {
-		compareWithJavaSource(name+".src", name+".ceylon");
-	}
+    }
 
-	@Before
-	public void cleanCars() {
+    protected void compareWithJavaSource(String name) {
+        compareWithJavaSource(name+".src", name+".ceylon");
+    }
+
+    @Before
+    public void cleanCars() {
         File destFile = new File(destDir);
         List<String> extensionsToDelete = Arrays.asList(".jar", ".car", ".src", ".sha1");
         new RepositoryLister(extensionsToDelete).list(destFile, new RepositoryLister.Actions() {
@@ -94,26 +94,26 @@ public abstract class CompilerTest {
             public void doWithFile(File path) {
                 path.delete();
             }
-            
+
             public void exitDirectory(File path) {
                 if (path.list().length == 0) {
                     path.delete();
                 }
             }
         });
-	}
-	
-	protected void compareWithJavaSourceWithPositions(String name) {
+    }
+
+    protected void compareWithJavaSourceWithPositions(String name) {
         // make a compiler task
         // FIXME: runFileManager.setSourcePath(dir);
         CeyloncTaskImpl task = getCompilerTask(new String[] {name+".ceylon"});
-        
+
         // grab the CU after we've completed it
         class Listener implements TaskListener{
             JCCompilationUnit compilationUnit;
             private String compilerSrc;
             private JavaPositionsRetriever javaPositionsRetriever = new JavaPositionsRetriever();
-            
+
             @Override
             public void started(TaskEvent e) {
                 AbstractTransformer.trackNodePositions(javaPositionsRetriever);
@@ -138,7 +138,7 @@ public abstract class CompilerTest {
 
         // now compile it all the way
         Boolean success = task.call();
-        
+
         Assert.assertTrue("Compilation failed", success);
 
         // now look at what we expected
@@ -146,18 +146,18 @@ public abstract class CompilerTest {
         String compiledSrc = listener.compilerSrc.trim();
         Assert.assertEquals("Source code differs", expectedSrc, compiledSrc);
     }
-    
+
     protected void compareWithJavaSourceWithLines(String name) {
         // make a compiler task
         // FIXME: runFileManager.setSourcePath(dir);
         CeyloncTaskImpl task = getCompilerTask(new String[] {name+".ceylon"});
-        
+
         // grab the CU after we've completed it
         class Listener implements TaskListener{
             JCCompilationUnit compilationUnit;
             private String compilerSrc;
             private JavaPositionsRetriever javaPositionsRetriever = new JavaPositionsRetriever();
-            
+
             @Override
             public void started(TaskEvent e) {
             }
@@ -181,7 +181,7 @@ public abstract class CompilerTest {
 
         // now compile it all the way
         Boolean success = task.call();
-        
+
         Assert.assertTrue("Compilation failed", success);
 
         // now look at what we expected
@@ -189,14 +189,14 @@ public abstract class CompilerTest {
         String compiledSrc = listener.compilerSrc.trim();
         Assert.assertEquals("Source code differs", expectedSrc, compiledSrc);
     }
-    
-	protected void compareWithJavaSource(String java, String... ceylon) {
-	    // make a compiler task
+
+    protected void compareWithJavaSource(String java, String... ceylon) {
+        // make a compiler task
         // FIXME: runFileManager.setSourcePath(dir);
-	    CeyloncTaskImpl task = getCompilerTask(ceylon);
-	    
-	    // grab the CU after we've completed it
-	    class Listener implements TaskListener{
+        CeyloncTaskImpl task = getCompilerTask(ceylon);
+
+        // grab the CU after we've completed it
+        class Listener implements TaskListener{
             JCCompilationUnit compilationUnit;
             private String compilerSrc;
             @Override
@@ -215,67 +215,67 @@ public abstract class CompilerTest {
                 }
             }
         }
-	    Listener listener = new Listener();
-	    task.setTaskListener(listener);
+        Listener listener = new Listener();
+        task.setTaskListener(listener);
 
-	    // now compile it all the way
-	    Boolean success = task.call();
-	    
-	    Assert.assertTrue("Compilation failed", success);
+        // now compile it all the way
+        Boolean success = task.call();
 
-		// now look at what we expected
-		String expectedSrc = normalizeLineEndings(readFile(new File(path, java))).trim();
+        Assert.assertTrue("Compilation failed", success);
+
+        // now look at what we expected
+        String expectedSrc = normalizeLineEndings(readFile(new File(path, java))).trim();
         String compiledSrc = listener.compilerSrc.trim();
-		Assert.assertEquals("Source code differs", expectedSrc, compiledSrc);
-	}
+        Assert.assertEquals("Source code differs", expectedSrc, compiledSrc);
+    }
 
-	private String readFile(File file) {
-		try{
-			Reader reader = new FileReader(file);
-			StringBuilder strbuf = new StringBuilder();
-			try{
-				char[] buf = new char[1024];
-				int read;
-				while((read = reader.read(buf)) > -1)
-					strbuf.append(buf, 0, read);
-			}finally{
-				reader.close();
-			}
-			return strbuf.toString();
-		}catch(IOException x){
-			throw new RuntimeException(x);
-		}
-	}
+    private String readFile(File file) {
+        try{
+            Reader reader = new FileReader(file);
+            StringBuilder strbuf = new StringBuilder();
+            try{
+                char[] buf = new char[1024];
+                int read;
+                while((read = reader.read(buf)) > -1)
+                    strbuf.append(buf, 0, read);
+            }finally{
+                reader.close();
+            }
+            return strbuf.toString();
+        }catch(IOException x){
+            throw new RuntimeException(x);
+        }
+    }
 
-	private String normalizeLineEndings(String txt) {
-		String result = txt.replaceAll("\r\n", "\n"); // Windows
-		result = result.replaceAll("\r", "\n"); // Mac (OS<=9)
-		return result;
-	}
+    private String normalizeLineEndings(String txt) {
+        String result = txt.replaceAll("\r\n", "\n"); // Windows
+        result = result.replaceAll("\r", "\n"); // Mac (OS<=9)
+        return result;
+    }
 
-	protected void compile(String... ceylon) {
-	    Boolean success = getCompilerTask(ceylon).call();
-	    Assert.assertTrue(success);
-	}
+    protected void compile(String... ceylon) {
+        Boolean success = getCompilerTask(ceylon).call();
+        Assert.assertTrue(success);
+    }
 
-	protected void compileAndRun(String main, String... ceylon) {
-		compile(ceylon);
-		try{
-		    // make sure we load the stuff from the Car
-		    File car = new File(destCar);
-		    @SuppressWarnings("deprecation")
+    protected void compileAndRun(String main, String... ceylon) {
+        compile(ceylon);
+        try{
+            // make sure we load the stuff from the Car
+            File car = new File(destCar);
+            @SuppressWarnings("deprecation")
             ClassLoader loader = URLClassLoader.newInstance(
-		            new URL[] { car.toURL() },
-		            getClass().getClassLoader()
-		            );
-			java.lang.Class<?> klass = java.lang.Class.forName(main, true, loader);
-			Method m = klass.getMethod(klass.getSimpleName());
-			m.invoke(null);
-		}catch(Exception x){
-			throw new RuntimeException(x);
-		}
-	}
-	
+                    new URL[] { car.toURL() },
+                    getClass().getClassLoader()
+                    );
+            java.lang.Class<?> klass = java.lang.Class.forName(main, true, loader);
+            Method m = klass.getMethod(klass.getSimpleName());
+            m.invoke(null);
+        }catch(Exception x){
+            throw new RuntimeException(x);
+        }
+    }
+
     protected CeyloncTaskImpl getCompilerTask(String... sourcePaths){
         return getCompilerTask(defaultOptions, null, sourcePaths);
     }
@@ -285,28 +285,28 @@ public abstract class CompilerTest {
     }
 
     protected CeyloncTaskImpl getCompilerTask(List<String> defaultOptions, DiagnosticListener<? super FileObject> diagnosticListener, 
-	        String... sourcePaths){
+            String... sourcePaths){
         // make sure we get a fresh jar cache for each compiler run
-	    ZipFileIndex.clearCache();
+        ZipFileIndex.clearCache();
         java.util.List<File> sourceFiles = new ArrayList<File>(sourcePaths.length);
-	    for(String file : sourcePaths){
-	        sourceFiles.add(new File(path, file));
-	    }
-	    
-	    CeyloncTool runCompiler = makeCompiler();
+        for(String file : sourcePaths){
+            sourceFiles.add(new File(path, file));
+        }
+
+        CeyloncTool runCompiler = makeCompiler();
         CeyloncFileManager runFileManager = makeFileManager(runCompiler, diagnosticListener);
-        
+
         // make sure the destination repo exists
         new File(destDir).mkdirs();
-        
+
         List<String> options = new LinkedList<String>();
         options.addAll(defaultOptions);
         options.addAll(Arrays.asList("-src", getSourcePath(), "-verbose:ast,code"));
         Iterable<? extends JavaFileObject> compilationUnits1 =
-            runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
+                runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
         return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, diagnosticListener, 
                 options, null, compilationUnits1);
-	}
+    }
 
     protected String getSourcePath() {
         return dir;
