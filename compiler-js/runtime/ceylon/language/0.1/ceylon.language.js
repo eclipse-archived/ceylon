@@ -129,6 +129,57 @@ $ArraySequence.prototype.item = function(index) {
 }
 $ArraySequence.prototype.getSize = function() { return Integer(this.value.length) }
 
+function $Range() {}
+function Range(first, last) {
+    var that = new $Range;
+    that.first = first;
+    that.last = last;
+    var index = 0;
+    var x = first;
+    var dec = first.compare(last) === larger;
+    while (x.equals(last) === getFalse()) { //some replicated code because we don't yet have the functions here
+        index++;
+        x = dec ? x.getPredecessor() : x.getSuccessor();
+    }
+    that.size = Integer(index+1);
+    return that;
+}
+for(var $ in CeylonObject.prototype){$Range.prototype[$]=CeylonObject.prototype[$]}
+$Range.prototype.getFirst = function() { return this.first; }
+$Range.prototype.getLast = function() { return this.last; }
+$Range.prototype.getDecreasing = function() {
+    return this.first.compare(this.last) === larger ? getTrue() : getFalse();
+}
+$Range.prototype.next = function(x) {
+    return this.getDecreasing() === getTrue() ? x.getPredecessor() : x.getSuccessor();
+}
+$Range.prototype.getSize = function() { return this.size; }
+$Range.prototype.item = function(index) {
+    var idx = 0;
+    var x = this.first;
+    while (idx < index.value) {
+        if (x.equals(this.last) === getTrue()) { return getNull(); }
+        else {
+            idx++;
+            x = this.next(x);
+        }
+    }
+    return x;
+}
+$Range.prototype.includes = function(x) {
+    var compf = x.compare(this.first);
+    var compl = x.compare(this.last);
+    var rval = this.getDecreasing() === getTrue() ? ((compf === equal || compf === smaller) && (compl === equal || compl === larger)) : ((compf === equal || compf === larger) && (compl === equal || compl === smaller));
+    return rval ? getTrue() : getFalse();
+}
+$Range.prototype.contains = $Range.prototype.includes;
+$Range.prototype.getString = function() { return String(this.first.getString().value + ".." + this.last.getString().value); }
+$Range.prototype.equals = function(other) {
+    var eqf = this.first.equals(other.getFirst());
+    var eql = this.last.equals(other.getLast());
+    return (eqf === getTrue() && eql === getTrue()) ? getTrue() : getFalse();
+}
+
 function $Singleton() {}
 function Singleton(elem) {
     var that = new $Singleton;
@@ -235,6 +286,7 @@ exports.getLarger=getLarger;
 exports.getSmaller=getSmaller;
 exports.getEqual=getEqual;
 exports.ArraySequence=ArraySequence;
+exports.Range=Range;
 exports.Singleton=Singleton;
 exports.Entry=Entry;
 exports.largest=largest;
