@@ -1,7 +1,7 @@
 void expect(Equality actual, Equality expected, String text) {
     print(text + ": actual='" + actual.string + "', expected='"
             + expected.string + "' => "
-            + ((actual==expected) then "ok" else "NOT OK"));
+            + ((actual==expected) then "ok" else "FAIL"));
 }
 
 void test_largest() {
@@ -138,8 +138,22 @@ void test_ranges() {
     expect(r2.includes(5), true, "range.includes");
     expect(r2.includes(3), false, "range.includes");
     expect(r4.first, r4.last, "first == last");
-	expect(r1 == r2, false, "range.equals");
-	expect(r1 == 1..5, true, "range.equals");
+    expect(r1 == r2, false, "range.equals");
+    expect(r1 == 1..5, true, "range.equals");
+    value r1r = r1.rest;
+    value r2r = r2.rest;
+    expect(r1r.size, r1.size-1, "range.rest");
+    expect(r2r.size, r2.size-1, "range.rest");
+    expect(r1r.first?0, r1.item(1)?1, "range.rest");
+    expect(r2r.first?0, r2.item(1)?1, "range.rest");
+    expect(nonempty r4.rest, false, "range.rest");
+    expect(r1.lastIndex, 4, "range.lastIndex");
+    expect(r2.lastIndex, 3, "range.lastIndex");
+    expect(r1.by(2).string, "1,3,5", "range.by");
+    expect(r1.by(3).string, "1,4", "range.by");
+    expect(r2.by(2).string, "7,5", "range.by");
+    expect(r2.by(3).string, "7,4", "range.by");
+    expect(r4.by(10).string, "123..123", "range.by");
     variable Integer sum := 0;
     for (Integer x in r1) {
         sum += x;
