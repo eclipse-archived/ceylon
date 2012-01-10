@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 import javax.tools.DiagnosticListener;
+import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
 
 import org.junit.Before;
@@ -76,7 +77,7 @@ public abstract class CompilerTest {
         }
 	}
 
-	protected CeyloncFileManager makeFileManager(CeyloncTool compiler, DiagnosticListener diagnosticListener){
+	protected CeyloncFileManager makeFileManager(CeyloncTool compiler, DiagnosticListener<? super FileObject> diagnosticListener){
         return (CeyloncFileManager)compiler.getStandardFileManager(diagnosticListener, null, null);
 	}
 	
@@ -262,7 +263,8 @@ public abstract class CompilerTest {
 		try{
 		    // make sure we load the stuff from the Car
 		    File car = new File(destCar);
-		    ClassLoader loader = URLClassLoader.newInstance(
+		    @SuppressWarnings("deprecation")
+            ClassLoader loader = URLClassLoader.newInstance(
 		            new URL[] { car.toURL() },
 		            getClass().getClassLoader()
 		            );
@@ -282,7 +284,7 @@ public abstract class CompilerTest {
         return getCompilerTask(defaultOptions, null, sourcePaths);
     }
 
-	protected CeyloncTaskImpl getCompilerTask(List<String> defaultOptions, DiagnosticListener diagnosticListener, 
+    protected CeyloncTaskImpl getCompilerTask(List<String> defaultOptions, DiagnosticListener<? super FileObject> diagnosticListener, 
 	        String... sourcePaths){
         // make sure we get a fresh jar cache for each compiler run
 	    ZipFileIndex.clearCache();
