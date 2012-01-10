@@ -90,7 +90,7 @@ void test_foreach() {
     expect(sum, 15, "simple foreach");
     Boolean hasEvens(Sequence<Integer> l) {
         variable Boolean found := false;
-        for (Integer i in l) {
+        for (i in l) {
             if (i % 2 == 0) {
                 print("Found an even number");
                 found := true;
@@ -106,7 +106,7 @@ void test_foreach() {
     expect(hasEvens(odds), false, "for/else");
     //nested
     sum := 0;
-    for (Integer i in odds) {
+    for (i in odds) {
       sum += i;
       for (Integer j in { 2, 4, 6 }) {
         sum += j;
@@ -116,7 +116,7 @@ void test_foreach() {
     //key-value
     sum := 0;
     value _entries = { 1->10, 2->20, 3->30 };
-    for (Integer idx -> Integer elem in _entries) {
+    for (idx -> elem in _entries) {
       sum += idx;
       sum += elem;
     }
@@ -154,6 +154,9 @@ void test_ranges() {
     expect(r2.by(2).string, "7,5", "range.by");
     expect(r2.by(3).string, "7,4", "range.by");
     expect(r4.by(10).string, "123..123", "range.by");
+    expect(r1.segment(2,2).string, "3..4", "range.segment");
+    expect(nonempty r1.segment(1,0), false, "range.segment");
+    expect(r1.segment(3,1).string, "4..4", "range.segment");
     variable Integer sum := 0;
     for (Integer x in r1) {
         sum += x;
