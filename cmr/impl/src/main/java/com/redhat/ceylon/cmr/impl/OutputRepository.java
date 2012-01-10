@@ -16,12 +16,13 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import com.redhat.ceylon.cmr.api.AbstractRepository;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.spi.Node;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Output repository.
@@ -29,9 +30,9 @@ import java.io.IOException;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class OutputRepository extends AbstractNodeRepository {
+public class OutputRepository extends AbstractRepository {
 
-    private final FileContentStore fileContentStore;
+    private final Repository output;
     private final Repository repository; // default root repository
 
     private static File getOutputDir() {
@@ -43,31 +44,38 @@ public class OutputRepository extends AbstractNodeRepository {
     }
 
     public OutputRepository(File outputDir, Repository repository) {
-        if (outputDir == null)
-            throw new IllegalArgumentException("Null output dir!");
-        if (outputDir.exists() == false)
-            throw new IllegalArgumentException("Output dir doesn't exist: " + outputDir);
-        if (outputDir.isDirectory() == false)
-            throw new IllegalArgumentException("Output dir is not a directory: " + outputDir);
+        this(new RootRepository(outputDir), repository);
+    }
+
+    public OutputRepository(Repository output, Repository repository) {
+        if (output == null)
+            throw new IllegalArgumentException("Output is null!");
         if (repository == null)
             throw new IllegalArgumentException("Repository is null!");
 
-        fileContentStore = new FileContentStore(outputDir);
-        setRoot(new RootNode(fileContentStore, fileContentStore));
+        this.output = output;
         this.repository = repository;
     }
 
     public File getArtifact(ArtifactContext context) throws IOException {
-        Node node = getLeafNode(context);
-        if (node != null) {
-            return node.getContent(File.class);
+        final File artifact = output.getArtifact(context);
+        if (artifact != null) {
+            return artifact;
         } else {
             return repository.getArtifact(context);
         }
     }
 
+    public void putArtifact(ArtifactContext context, InputStream content) throws IOException {
+        output.putArtifact(context, content);
+    }
+
+    public void removeArtifact(ArtifactContext context) throws IOException {
+        output.removeArtifact(context);
+    }
+
     @Override
     public String toString() {
-        return "OutputRepository: " + fileContentStore;
+        return "OutputRepository: " + output;
     }
 }
