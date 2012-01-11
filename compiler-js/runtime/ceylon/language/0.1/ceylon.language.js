@@ -85,19 +85,37 @@ $String.prototype.compare = function(other) {
 $String.prototype.getUppercased = function() { return String$(this.value.toUpperCase()) }
 $String.prototype.getLowercased = function() { return String$(this.value.toLowerCase()) }
 $String.prototype.getSize = function() {
-    if (this.codePoints !== undefined) {return Integer(this.codePoints)}
-    var count = 0;
-    for (var i=0; i<this.value.length; ++i) {
-        ++count;
-        if (this.value.charCodeAt(i)&0xfc00 === 0xd800) {++i}
+    if (this.codePoints===undefined) {
+        this.codePoints = countCodepoints(this.value);
     }
-    this.codePoints = count;
-    return Integer(count);
+    return Integer(this.codePoints);
 }
 $String.prototype.getEmpty = function() {
     return Boolean$(this.value.length===0);
 }
+$String.prototype.longerThan = function(length) {
+    if (this.codePoints!==undefined) {return Boolean$(this.codePoints>length.value)}
+    if (this.value.length <= length.value) {return $false}
+    if (this.value.length<<1 > length.value) {return $true}
+    this.codePoints = countCodepoints(this.value);
+    return Boolean$(this.codePoints>length.value);
+}
+$String.prototype.shorterThan = function(length) {
+    if (this.codePoints!==undefined) {return Boolean$(this.codePoints<length.value)}
+    if (this.value.length < length.value) {return $true}
+    if (this.value.length<<1 >= length.value) {return $false}
+    this.codePoints = countCodepoints(this.value);
+    return Boolean$(this.codePoints<length.value);
+}
 
+function countCodepoints(str) {
+    var count = 0;
+    for (var i=0; i<str.length; ++i) {
+        ++count;
+        if (str.charCodeAt(i)&0xfc00 === 0xd800) {++i}
+    }
+    return count;
+}
 function codepointToString(cp) {
     if (cp <= 0xffff) {
         return String.fromCharCode(cp);

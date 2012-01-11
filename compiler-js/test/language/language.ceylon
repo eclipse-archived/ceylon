@@ -224,6 +224,15 @@ void testString() {
     expect(s3.size, 5, "String.size");
     expect((s1+s2).size, 7, "String.size");
     expect((s1+s3).size, 8, "String.size");
+    
+    expect("".shorterThan(0), false, "String.shorterThan");
+    expect("".shorterThan(1), true, "String.shorterThan");
+    expect("abc".shorterThan(3), false, "String.shorterThan");
+    expect("abc".shorterThan(4), true, "String.shorterThan");
+    expect("".longerThan(0), false, "String.longerThan");
+    expect("x".longerThan(0), true, "String.longerThan");
+    expect("abc".longerThan(3), false, "String.longerThan");
+    expect("abc".longerThan(2), true, "String.longerThan");
 }
 
 shared void test() {
