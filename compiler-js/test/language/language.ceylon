@@ -194,6 +194,20 @@ void testCharacter() {
     expect(c3.string, "Ũ", "Character.string");
 }
 
+void testString() {
+    expect("".empty, true, "String.empty");
+    expect("x".empty, false, "String.empty");
+    expect("".size, 0, "String.size");
+    String s1 = "abc";
+    String s2 = "ä€Ũ\t";
+    String s3 = "A𝄞`ŨÖ";
+    expect(s1.size, 3, "String.size");
+    expect(s2.size, 4, "String.size");
+    expect(s3.size, 5, "String.size");
+    expect((s1+s2).size, 7, "String.size");
+    expect((s1+s3).size, 8, "String.size");
+}
+
 shared void test() {
     print("--- Start Language Module Tests ---");
     test_largest();
@@ -212,5 +226,6 @@ shared void test() {
 	test_arraysequence();
     //test_interpolate();
     testCharacter();
+    testString();
     print("--- End Language Module Tests ---");
 }

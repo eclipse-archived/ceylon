@@ -67,9 +67,10 @@ $Float.prototype.compare = function(other) {
 $Float.prototype.getFloat = function() { return this }
 
 function $String() {}
-function String$(value) {
+function String$(value,size) {
     var that = new $String;
     that.value = value;
+    that.codePoints = size;
     return that;
 }
 for(var $ in CeylonObject.prototype){$String.prototype[$]=CeylonObject.prototype[$]}
@@ -78,11 +79,24 @@ $String.prototype.toString = function() { return this.value }
 $String.prototype.plus = function(other) { return String$(this.value+other.value) }
 $String.prototype.equals = function(other) { return Boolean$(other.value===this.value) }
 $String.prototype.compare = function(other) {
-    return this.value===other.value ? equal
-                                    : (this.value<other.value ? smaller:larger);
+    var cmp = this.value.localeCompare(other.value);
+    return cmp===0 ? equal : (cmp<0 ? smaller:larger);
 }
 $String.prototype.getUppercased = function() { return String$(this.value.toUpperCase()) }
 $String.prototype.getLowercased = function() { return String$(this.value.toLowerCase()) }
+$String.prototype.getSize = function() {
+    if (this.codePoints !== undefined) {return Integer(this.codePoints)}
+    var count = 0;
+    for (var i=0; i<this.value.length; ++i) {
+        ++count;
+        if (this.value.charCodeAt(i)&0xfc00 === 0xd800) {++i}
+    }
+    this.codePoints = count;
+    return Integer(count);
+}
+$String.prototype.getEmpty = function() {
+    return Boolean$(this.value.length===0);
+}
 
 function $Character() {}
 function Character(value) {

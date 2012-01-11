@@ -974,6 +974,8 @@ public class GenerateJsVisitor extends Visitor
         out(".String(");
         out(that.getText());
         out(")");
+        //TODO: we should pre-calculate the size of the string (in codepoints) here
+        // at compile-time. But we have to take escape sequences into account. 
     }
     
     @Override
