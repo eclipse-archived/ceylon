@@ -346,6 +346,23 @@ $Range.prototype.span = function(from, to) {
     to = to === getNull() ? this.getLastIndex() : smallest(to, this.getLastIndex());
     return Range(this.item(from), this.item(to));
 }
+$Range.prototype.definesEvery = function(keys) {
+    for (var i = 0; i < keys.getSize().value; i++) {
+        if (this.defines(keys.item(Integer(i))) === getFalse()) {
+            return getFalse();
+        }
+    }
+    return getTrue();
+}
+$Range.prototype.definesAny = function(keys) {
+    for (var i = 0; i < keys.getSize().value; i++) {
+        if (this.defines(keys.item(Integer(i))) === getTrue()) {
+            return getTrue();
+        }
+    }
+    return getFalse();
+}
+$Range.prototype.defines = function(idx) { return Boolean$(idx.compare(this.getSize()) === smaller); }
 $Range.prototype.getString = function() { return String$(this.first.getString().value + ".." + this.last.getString().value); }
 $Range.prototype.equals = function(other) {
     if (!other) { return getFalse(); }
