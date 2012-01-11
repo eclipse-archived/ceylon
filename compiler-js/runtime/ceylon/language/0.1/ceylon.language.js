@@ -144,6 +144,24 @@ $ArraySequence.prototype.segment = function(from, len) {
     }
     return ArraySequence(seq);
 }
+$ArraySequence.prototype.span = function(from, to) {
+    var fromIndex = largest(Integer(0),from).value;
+    var toIndex = to === getNull() ? this.getLastIndex().value : smallest(to, this.getLastIndex()).value;
+    var seq = [];
+    if (fromIndex === toIndex) {
+        return Singleton(this.item(from));
+    } else if (toIndex > fromIndex) {
+        for (var i = fromIndex; i <= toIndex; i++) {
+            seq.push(this.item(Integer(i)));
+        }
+    } else {
+        //Negative span, reverse seq returned
+        for (var i = fromIndex; i >= toIndex; i--) {
+            seq.push(this.item(Integer(i)));
+        }
+    }
+    return ArraySequence(seq);
+}
 function $Range() {}
 function Range(first, last) {
     var that = new $Range;
@@ -211,14 +229,17 @@ $Range.prototype.by = function(step) {
 $Range.prototype.segment = function(from, len) {
     if (len.equals(Integer(0)) === getTrue()) return ArraySequence([])
     var x = this.first;
-    if (from.compare(Integer(0)) === larger) {
-        for (var i=0; i < from.value; i++) { x = this.next(x); }
-    }
+    for (var i=0; i < from.value; i++) { x = this.next(x); }
     //only positive length for now
     var y = x;
     for (var i=1; i < len.value; i++) { y = this.next(y); }
     if (this.includes(y) === getFalse()) { y = this.last; }
     return Range(x, y);
+}
+$Range.prototype.span = function(from, to) {
+    from = largest(Integer(0),from);
+    to = to === getNull() ? this.getLastIndex() : smallest(to, this.getLastIndex());
+    return Range(this.item(from), this.item(to));
 }
 $Range.prototype.getString = function() { return String(this.first.getString().value + ".." + this.last.getString().value); }
 $Range.prototype.equals = function(other) {

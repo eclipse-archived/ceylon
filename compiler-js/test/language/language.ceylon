@@ -157,6 +157,13 @@ void test_ranges() {
     expect(r1.segment(2,2).string, "3..4", "range.segment");
     expect(nonempty r1.segment(1,0), false, "range.segment");
     expect(r1.segment(3,1).string, "4..4", "range.segment");
+    expect(r1.segment(0,1).string, "1..1", "range.segment");
+    expect(r1.span(1, 3).string, "2..4", "range.span");
+    expect(r1.span(3, 1).string, "4..2", "range.span");
+    expect(r1.span(2, 2).string, "3..3", "range.span");
+    expect(r1.span(3, null).string, "4..5", "range.span");
+    expect(r1.span(3, 1000).string, "4..5", "range.span");
+    expect(r1.span(0,0).string, "1..1", "range.span");
     variable Integer sum := 0;
     for (Integer x in r1) {
         sum += x;
@@ -173,11 +180,18 @@ void test_arraysequence() {
 	expect(seq1.segment(2,2).string, "3,4", "seq.segment");
 	expect(nonempty seq1.segment(3,0), false, "seq.segment");
 	expect(seq1.segment(3,3).string, "4,5", "seq.segment");
+	expect(seq1.segment(0,1).string, "1", "seq.segment");
 	expect(seq1.empty, false, "seq.empty");
 	expect(seq1.segment(1,0).empty, true, "seq.empty");
 	expect(seq2.lastIndex, 4, "seq.lastIndex");
 	expect(seq2.defines(3), true, "seq.defines");
 	expect(seq2.defines(5), false, "seq.defines");
+	expect(seq1.span(1, 3).string, "2,3,4", "seq.span");
+	expect(seq1.span(3, 1).string, "4,3,2", "seq.span");
+	expect(seq1.span(2, 2).string, "3", "seq.span");
+	expect(seq1.span(3, null).string, "4,5", "seq.span");
+	expect(seq1.span(3, 1000).string, "4,5", "seq.span");
+	expect(seq1.span(0,0).string, "1", "seq.span");
 }
 
 //Another test for the compiler.
@@ -199,8 +213,8 @@ shared void test() {
     test_entries();
     test_exists_nonempty();
     test_foreach();
+    test_arraysequence();
     test_ranges();
-	test_arraysequence();
     //test_interpolate();
     print("--- End Language Module Tests ---");
 }
