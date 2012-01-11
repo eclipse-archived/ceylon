@@ -20,8 +20,6 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
-import static com.sun.tools.javac.code.Flags.FINAL;
-
 import java.util.Iterator;
 
 import javax.tools.JavaFileObject;
@@ -39,13 +37,11 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinitio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
-import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCImport;
 import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.Convert;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
@@ -109,6 +105,7 @@ public class CeylonTransformer extends AbstractTransformer {
     /**
      * This runs after _some_ typechecking has been done
      */
+    @SuppressWarnings("unchecked")
     public ListBuffer<JCTree> transformAfterTypeChecking(Tree.CompilationUnit t) {
         disableModelAnnotations = false;
         ToplevelAttributesDefinitionBuilder builder = new ToplevelAttributesDefinitionBuilder(this);
