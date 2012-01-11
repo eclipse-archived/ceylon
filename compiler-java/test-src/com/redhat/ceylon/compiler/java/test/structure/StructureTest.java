@@ -88,6 +88,8 @@ public class StructureTest extends CompilerTest {
 
         ZipEntry subpackageClass = car.getEntry("com/redhat/ceylon/compiler/java/test/structure/module/single/subpackage/Subpackage.class");
         assertNotNull(subpackageClass);
+
+        car.close();
     }
 
     @Test
@@ -259,6 +261,7 @@ public class StructureTest extends CompilerTest {
 
         ZipEntry subpackageClass = sourceArchive.getEntry("com/redhat/ceylon/compiler/java/test/structure/module/single/subpackage/Subpackage.ceylon");
         assertNotNull(subpackageClass);
+        sourceArchive.close();
     }
 
     private int countEntries(JarFile jar) {
