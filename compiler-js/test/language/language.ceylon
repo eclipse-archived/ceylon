@@ -172,26 +172,44 @@ void test_ranges() {
 }
 
 void test_arraysequence() {
-	value seq1 = { 1, 2, 3, 4, 5};
-	value seq2 = { "a", "b", "c", "d", "e" };
-	expect(seq1.size, 5, "seq.size");
-	expect(seq1.first, 1, "seq.first");
-	expect(seq2.last, "e", "seq.last");
-	expect(seq1.segment(2,2).string, "3,4", "seq.segment");
-	expect(nonempty seq1.segment(3,0), false, "seq.segment");
-	expect(seq1.segment(3,3).string, "4,5", "seq.segment");
-	expect(seq1.segment(0,1).string, "1", "seq.segment");
-	expect(seq1.empty, false, "seq.empty");
-	expect(seq1.segment(1,0).empty, true, "seq.empty");
-	expect(seq2.lastIndex, 4, "seq.lastIndex");
-	expect(seq2.defines(3), true, "seq.defines");
-	expect(seq2.defines(5), false, "seq.defines");
-	expect(seq1.span(1, 3).string, "2,3,4", "seq.span");
-	expect(seq1.span(3, 1).string, "4,3,2", "seq.span");
-	expect(seq1.span(2, 2).string, "3", "seq.span");
-	expect(seq1.span(3, null).string, "4,5", "seq.span");
-	expect(seq1.span(3, 1000).string, "4,5", "seq.span");
-	expect(seq1.span(0,0).string, "1", "seq.span");
+    value seq1 = { 1, 2, 3, 4, 5};
+    value seq2 = { "a", "b", "c", "d", "e" };
+    expect(seq1.size, 5, "seq.size");
+    expect(seq1.first, 1, "seq.first");
+    expect(seq2.last, "e", "seq.last");
+    //segment
+    expect(seq1.segment(2,2).string, "3,4", "seq.segment");
+    expect(nonempty seq1.segment(3,0), false, "seq.segment");
+    expect(seq1.segment(3,3).string, "4,5", "seq.segment");
+    expect(seq1.segment(0,1).string, "1", "seq.segment");
+    //empty
+    expect(seq1.empty, false, "seq.empty");
+    expect(seq1.segment(1,0).empty, true, "seq.empty");
+    expect(seq2.lastIndex, 4, "seq.lastIndex");
+    //defines
+    expect(seq2.defines(3), true, "seq.defines");
+    expect(seq2.defines(5), false, "seq.defines");
+    expect(seq1.defines(4), true, "seq.defines");
+    expect(seq1.definesEvery(1,2,3), true, "seq.definesEvery");
+    expect(seq1.definesEvery(4,5,6), false, "seq.definesEvery");
+    expect(seq1.definesAny(6,7,8), false, "seq.definesAny");
+    expect(seq1.definesAny(6,5,4), true, "seq.definesAny");
+    //span
+    expect(seq1.span(1, 3).string, "2,3,4", "seq.span");
+    expect(seq1.span(3, 1).string, "4,3,2", "seq.span");
+    expect(seq1.span(2, 2).string, "3", "seq.span");
+    expect(seq1.span(3, null).string, "4,5", "seq.span");
+    expect(seq1.span(3, 1000).string, "4,5", "seq.span");
+    expect(seq1.span(0,0).string, "1", "seq.span");
+    //rest
+    expect(seq1.rest.string, "2,3,4,5", "seq.rest");
+    expect({1}.rest.string, "", "seq.rest");
+    expect(nonempty {1}.rest, false, "seq.rest");
+    //items
+    expect(seq1.items(1,3,2).string, "2,4,3", "seq.items");
+    //equals
+    //expect(seq1 == seq2, false, "seq.equals");
+    //expect(seq1,{1,2,3,4,5}, "seq.equals");
 }
 
 //Another test for the compiler.
@@ -206,10 +224,10 @@ void testCharacter() {
     expect(c1.string, "A", "Character.string");
     //expect(c2.string, "𝄞", "Character.string");
     //expect(c3.string, "Ũ", "Character.string");
-    expect(`Ä`.lowercased, `ä`, "Character.lowercased");
-    expect(`x`.lowercased, `x`, "Character.lowercased");
-    expect(`ö`.uppercased, `Ö`, "Character.uppercased");
-    expect(`#`.uppercased, `#`, "Character.uppercased");
+    //expect(`Ä`.lowercased, `ä`, "Character.lowercased");
+    //expect(`x`.lowercased, `x`, "Character.lowercased");
+    //expect(`ö`.uppercased, `Ö`, "Character.uppercased");
+    //expect(`#`.uppercased, `#`, "Character.uppercased");
 }
 
 void testString() {
