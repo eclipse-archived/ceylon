@@ -6,11 +6,11 @@ function print(line) { console.log(line.getString().value) }
 
 CeylonObject=function CeylonObject() {}
 
-CeylonObject.prototype.getString=function() { String(Object.prototype.toString.apply(this)) };
+CeylonObject.prototype.getString=function() { String$(Object.prototype.toString.apply(this)) };
 CeylonObject.prototype.toString=function() { return this.getString().value };
 
 //TODO: we need to distinguish between Objects and IdentifiableObjects
-CeylonObject.prototype.equals = function(other) { return Boolean(this===other) }
+CeylonObject.prototype.equals = function(other) { return Boolean$(this===other) }
 
 function $Integer() {}
 function Integer(value) {
@@ -19,7 +19,7 @@ function Integer(value) {
     return that;
 }
 for(var $ in CeylonObject.prototype){$Integer.prototype[$]=CeylonObject.prototype[$]}
-$Integer.prototype.getString = function() { return String(this.value.toString()) }
+$Integer.prototype.getString = function() { return String$(this.value.toString()) }
 $Integer.prototype.plus = function(other) { return Integer(this.value+other.value) }
 $Integer.prototype.minus = function(other) { return Integer(this.value-other.value) }
 $Integer.prototype.times = function(other) { return Integer(this.value*other.value) }
@@ -34,7 +34,7 @@ $Integer.prototype.power = function(other) {
 }
 $Integer.prototype.negativeValue = function() { return Integer(-this.value) }
 $Integer.prototype.positiveValue = function() { return this }
-$Integer.prototype.equals = function(other) { return Boolean(other.value===this.value) }
+$Integer.prototype.equals = function(other) { return Boolean$(other.value===this.value) }
 $Integer.prototype.compare = function(other) {
     return this.value===other.value ? equal
                                     : (this.value<other.value ? smaller:larger);
@@ -51,7 +51,7 @@ function Float(value) {
     return that;
 }
 for(var $ in CeylonObject.prototype){$Float.prototype[$]=CeylonObject.prototype[$]}
-$Float.prototype.getString = function() { return String(this.value.toString()) }
+$Float.prototype.getString = function() { return String$(this.value.toString()) }
 $Float.prototype.plus = function(other) { return Float(this.value+other.value) }
 $Float.prototype.minus = function(other) { return Float(this.value-other.value) }
 $Float.prototype.times = function(other) { return Float(this.value*other.value) }
@@ -59,7 +59,7 @@ $Float.prototype.divided = function(other) { return Float(this.value/other.value
 $Float.prototype.power = function(other) { return Float(Math.pow(this.value, other.value)) }
 $Float.prototype.negativeValue = function() { return Float(-this.value) }
 $Float.prototype.positiveValue = function() { return this }
-$Float.prototype.equals = function(other) { return Boolean(other.value===this.value) }
+$Float.prototype.equals = function(other) { return Boolean$(other.value===this.value) }
 $Float.prototype.compare = function(other) {
     return this.value===other.value ? equal
                                     : (this.value<other.value ? smaller:larger);
@@ -67,7 +67,7 @@ $Float.prototype.compare = function(other) {
 $Float.prototype.getFloat = function() { return this }
 
 function $String() {}
-function String(value) {
+function String$(value) {
     var that = new $String;
     that.value = value;
     return that;
@@ -75,19 +75,38 @@ function String(value) {
 for(var $ in CeylonObject.prototype){$String.prototype[$]=CeylonObject.prototype[$]}
 $String.prototype.getString = function() { return this }
 $String.prototype.toString = function() { return this.value }
-$String.prototype.plus = function(other) { return String(this.value+other.value) }
-$String.prototype.equals = function(other) { return Boolean(other.value===this.value) }
+$String.prototype.plus = function(other) { return String$(this.value+other.value) }
+$String.prototype.equals = function(other) { return Boolean$(other.value===this.value) }
 $String.prototype.compare = function(other) {
     return this.value===other.value ? equal
                                     : (this.value<other.value ? smaller:larger);
 }
-$String.prototype.getUppercased = function() { return String(this.value.toUpperCase()) }
-$String.prototype.getLowercased = function() { return String(this.value.toLowerCase()) }
+$String.prototype.getUppercased = function() { return String$(this.value.toUpperCase()) }
+$String.prototype.getLowercased = function() { return String$(this.value.toLowerCase()) }
+
+function $Character() {}
+function Character(value) {
+    var that = new $Character;
+    that.value = value;
+    return that;
+}
+for(var $ in CeylonObject.prototype){$Character.prototype[$]=CeylonObject.prototype[$]}
+$Character.prototype.getString = function() {
+    if (this.value <= 0xffff) {
+        return String$(String.fromCharCode(this.value));
+    }
+    return String$(String.fromCharCode((this.value>>10)+0xd7c0, (this.value&0x3ff)+0xdc00));
+}
+$Character.prototype.equals = function(other) { return Boolean$(other.value===this.value) }
+$Character.prototype.compare = function(other) {
+    return this.value===other.value ? equal
+                                    : (this.value<other.value ? smaller:larger);
+}
 
 function $Case() {}
 function Case(caseName) {
     var that = new $Case;
-    that.string = String(caseName);
+    that.string = String$(caseName);
     return that;
 }
 for(var $ in CeylonObject.prototype){$Case.prototype[$]=CeylonObject.prototype[$]}
@@ -98,7 +117,7 @@ var $true = Case("true");
 function getTrue() { return $true; }
 var $false = Case("false");
 function getFalse() { return $false; }
-function Boolean(value) {
+function Boolean$(value) {
     return value ? $true : $false;
 }
 
@@ -122,7 +141,7 @@ function ArraySequence(value) {
     return that;
 }
 for(var $ in CeylonObject.prototype){$ArraySequence.prototype[$]=CeylonObject.prototype[$]}
-$ArraySequence.prototype.getString = function() { return String(this.value.toString()) }
+$ArraySequence.prototype.getString = function() { return String$(this.value.toString()) }
 $ArraySequence.prototype.item = function(index) {
     var result = this.value[index.value];
     return result!==undefined ? result:null;
@@ -241,7 +260,7 @@ $Range.prototype.span = function(from, to) {
     to = to === getNull() ? this.getLastIndex() : smallest(to, this.getLastIndex());
     return Range(this.item(from), this.item(to));
 }
-$Range.prototype.getString = function() { return String(this.first.getString().value + ".." + this.last.getString().value); }
+$Range.prototype.getString = function() { return String$(this.first.getString().value + ".." + this.last.getString().value); }
 $Range.prototype.equals = function(other) {
     var eqf = this.first.equals(other.getFirst());
     var eql = this.last.equals(other.getLast());
@@ -255,7 +274,7 @@ function Singleton(elem) {
     return that;
 }
 for(var $ in CeylonObject.prototype){$Singleton.prototype[$]=CeylonObject.prototype[$]}
-$Singleton.prototype.getString = function() { return String(this.value.toString()) }
+$Singleton.prototype.getString = function() { return String$(this.value.toString()) }
 $Singleton.prototype.item = function(index) {
     return index.value===0 ? this.value[0] : null;
 }
@@ -270,12 +289,12 @@ function Entry(key, item) {
 }
 for(var $ in CeylonObject.prototype){$Entry.prototype[$]=CeylonObject.prototype[$]}
 $Entry.prototype.getString = function() {
-    return String(this.key.getString().value + "->" + this.item.getString().value)
+    return String$(this.key.getString().value + "->" + this.item.getString().value)
 }
 $Entry.prototype.getKey = function() { return this.key }
 $Entry.prototype.getItem = function() { return this.item }
 $Entry.prototype.equals = function(other) {
-    return Boolean(other && this.key.equals(other.key) && this.item.equals(other.item));
+    return Boolean$(other && this.key.equals(other.key) && this.item.equals(other.item));
 }
 $Entry.prototype.getHash = function() { Integer(this.key.getHash().value ^ this.item.getHash().value) }
 
@@ -344,8 +363,9 @@ function entries(seq) {
 exports.print=print;
 exports.Integer=Integer;
 exports.Float=Float;
-exports.String=String;
-exports.Boolean=Boolean;
+exports.String=String$;
+exports.Boolean=Boolean$;
+exports.Character=Character;
 exports.getNull=getNull;
 exports.Case=Case;
 exports.getTrue=getTrue;
