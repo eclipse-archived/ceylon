@@ -164,6 +164,11 @@ void test_ranges() {
     expect(r1.span(3, null).string, "4..5", "range.span");
     expect(r1.span(3, 1000).string, "4..5", "range.span");
     expect(r1.span(0,0).string, "1..1", "range.span");
+    expect(r1.definesEvery(1,2,3), true, "range.definesEvery");
+    expect(r1.definesEvery(4,5,6,7), false, "range.definesEvery");
+    expect(r1.definesAny(1,2,3), true, "range.definesAny");
+    expect(r1.definesAny(7,6,5), false, "range.definesAny");
+    expect(r1.definesAny(6,5,4), true, "range.definesAny");
     variable Integer sum := 0;
     for (Integer x in r1) {
         sum += x;
