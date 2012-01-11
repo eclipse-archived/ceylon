@@ -10,9 +10,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT))
 public interface Iterator<Element> {
     
-    public Element getHead();
-    
-    @TypeInfo("ceylon.language.Nothing|ceylon.language.Iterator<Element>")
-    public Iterator<? extends Element> getTail();
+    @TypeInfo("Element|ceylon.language.Finished")
+    public java.lang.Object next();
     
 }

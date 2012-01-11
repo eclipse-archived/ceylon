@@ -27,12 +27,14 @@ public final class zip {
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item>")
     final ceylon.language.Iterable<? extends Item> items) {
 		List<Entry<? extends Key,? extends Item>> list = new ArrayList<Entry<? extends Key,? extends Item>>();
-		Iterator<? extends Key> keyIter=keys.getIterator();
-		Iterator<? extends Item> itemIter=items.getIterator();
-		while (keyIter!=null && itemIter!=null) {
-			list.add(new Entry<Key,Item>(keyIter.getHead(), itemIter.getHead()));
-			keyIter=keyIter.getTail();
-			itemIter=itemIter.getTail();
+		Iterator<? extends Key> keyIter = keys.getIterator();
+		Iterator<? extends Item> itemIter = items.getIterator();
+		Key key = (Key) keyIter.next();
+        Item item = (Item) itemIter.next();
+		while (key != $finished.getFinished() && item != $finished.getFinished()) {
+			list.add(new Entry<Key,Item>(key, item));
+	        key = (Key) keyIter.next();
+	        item = (Item) itemIter.next();
 		}
         return new ArraySequence<Entry<? extends Key,? extends Item>>(list);
     }

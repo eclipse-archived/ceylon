@@ -100,20 +100,23 @@ public class Singleton<Element>
 	}
 	@Override
 	public Iterator<Element> getIterator() {
-		return new Iterator<Element>() {
+		class SingletonIterator implements Iterator<Element> {
+		    java.lang.Object current;
+		    SingletonIterator() {
+		        current = element;
+		    }
 			@Override
-			public Element getHead() {
-				return element;
-			}
-			@Override
-			public Iterator<Element> getTail() {
-				return null;
+			public java.lang.Object next() {
+			    java.lang.Object result = current;
+			    current = $finished.getFinished();
+				return result;
 			}
 			@Override
 			public java.lang.String toString() {
-				return "Iterator for " + Singleton.this.toString();
+				return "SingletonIterator";
 			}
 		};
+		return new SingletonIterator();
 	}
 
     @Override

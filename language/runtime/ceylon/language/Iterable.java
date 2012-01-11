@@ -15,13 +15,13 @@ public interface Iterable<Element> extends Container {
 
     public boolean getEmpty();
     
-    @TypeInfo("ceylon.language.Nothing|ceylon.language.Iterator<Element>")
+    @TypeInfo("ceylon.language.Iterator<Element>")
     public Iterator<? extends Element> getIterator();
     
     @Ignore
     public static final class Iterable$impl {
         public static <Element> boolean getEmpty(Iterable<Element> $this){
-            return $this.getIterator() == null;
+            return $this.getIterator().next() == $finished.getFinished();
         }
     }
 }

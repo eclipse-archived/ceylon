@@ -24,11 +24,11 @@ public interface Ordered<Element> extends Iterable<Element> {
     @Ignore
     public static final class Ordered$impl {
         public static <Element> boolean getEmpty(Ordered<Element> $this){
-            return $this.getIterator() == null;
+            return $this.getIterator().next() == $finished.getFinished();
         }
 
         public static <Element> Element getFirst(Ordered<Element> $this){
-            return $this.getIterator().getHead();
+            return (Element) $this.getIterator().next();
         }
 
         /*public static <Element> Ordered<Element> segment(Ordered<Element> $this, long skipping, final long finishingAfter){

@@ -18,8 +18,9 @@ public class SequenceAppender<Element> extends SequenceBuilder<Element> {
     @TypeInfo("ceylon.language.Sequence<Element>")
     Sequence<? extends Element> elements) {
     	list = new ArrayList<Element>((int) elements.getSize()+2);
-    	for (Iterator<? extends Element> iter=elements.getIterator(); iter!=null; iter=iter.getTail()) {
-    		list.add(iter.getHead());
+        java.lang.Object elem;
+        for (Iterator<? extends Element> iter=elements.getIterator(); !((elem = iter.next()) instanceof Finished);) {
+    		list.add((Element) elem);
     	}
     }
     

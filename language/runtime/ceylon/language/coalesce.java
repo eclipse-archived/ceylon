@@ -23,8 +23,9 @@ public final class coalesce {
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Nothing|Element>")
     final ceylon.language.Iterable<? extends Element> sequence) {
 		List<Element> list = new ArrayList<Element>();
-		for (Iterator<? extends Element> iter=sequence.getIterator(); iter!=null; iter=iter.getTail()) {
-			Element elem = iter.getHead();
+		java.lang.Object $tmp;
+		for (Iterator<? extends Element> iter=sequence.getIterator(); !(($tmp = iter.next()) instanceof Finished);) {
+			Element elem = (Element)$tmp;
 			if (elem!=null) list.add(elem);
 		}
         return new ArraySequence<Element>(list);

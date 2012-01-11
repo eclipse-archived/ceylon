@@ -8,12 +8,11 @@ shared interface Ordered<out Element>
     doc "The first element. This should be the same value as
          `ordered.iterator.head`."
     shared default Element? first {
-        if (exists iterator) { 
-            return iterator.head;
+        Element|Finished elem = iterator.next();
+        if (is Element elem) {
+            return elem;
         }
-        else {
-            return null;
-        }
+        return null;
     }
 
 }

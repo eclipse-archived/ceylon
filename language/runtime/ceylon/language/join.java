@@ -25,12 +25,15 @@ public final class join {
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Empty|ceylon.language.Sequence<Element>>")
     final ceylon.language.Iterable<? extends ceylon.language.Iterable<? extends Element>> sequences) {
 		List<Element> list = new ArrayList<Element>();
+		java.lang.Object $tmp1;
 		for (Iterator<? extends Iterable<? extends Element>> iter=sequences.getIterator(); 
-				iter!=null; iter=iter.getTail()) {
-			Iterable<? extends Element> elem = iter.getHead();
+				!(($tmp1 = iter.next()) instanceof Finished);) {
+			Iterable<? extends Element> elem = (Iterable<? extends Element>) $tmp1;
+	        java.lang.Object $tmp2;
 			for (Iterator<? extends Element> iter2=elem.getIterator(); 
-					iter2!=null; iter2=iter2.getTail()) {
-				if (elem!=null) list.add(iter2.getHead());
+					!(($tmp2 = iter2.next()) instanceof Finished);) {
+	            Element elem2 = (Element) $tmp2;
+				if (elem2 != null) list.add(elem2);
 			}
 		}
         return new ArraySequence<Element>(list);

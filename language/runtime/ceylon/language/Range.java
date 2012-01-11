@@ -107,20 +107,25 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     @TypeInfo("ceylon.language.Iterator<Element>")
 	public Iterator<Element> getIterator() {
         class RangeIterator implements Iterator<Element> {
-        	Element x;
-            public RangeIterator(Element x) {
-            	this.x = x;
+        	java.lang.Object current;
+
+        	public RangeIterator() {
+            	this.current = first;
             }
-            public Element getHead() {
-                return x;
+            
+            @TypeInfo("Element|ceylon.language.Finished")
+        	public java.lang.Object next() {
+                java.lang.Object result = current;
+                if (!(current instanceof Finished) && !current.equals(getLast())) {
+                    current = Range.this.next((Element) current);
+                } else {
+                    current = $finished.getFinished();
+                }
+                return result;
             }
-            @TypeInfo("ceylon.language.Nothing|ceylon.language.Iterator<Element>")
-            public Iterator<Element> getTail() {
-                 return x.equals(last) ? 
-                		 null : new RangeIterator(next(x));
-             }
         }
-        return new RangeIterator(first);
+        
+        return new RangeIterator();
     }
 
     @Override

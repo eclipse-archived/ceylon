@@ -58,28 +58,6 @@ public interface Sequence<Element>
     @TypeInfo("ceylon.language.Iterator<Element>")
     public Iterator<? extends Element> getIterator();
     
-    class SequenceIterator<Element>
-            implements Iterator<Element> {
-        private long from;
-        private Sequence<Element> $this;
-        SequenceIterator(Sequence<Element> $this, long from){
-            this.from = from;
-            this.$this = $this;
-        }
-        @TypeInfo("ceylon.language.Nothing|Element")
-        public final Element getHead() { 
-            return $this.item(Integer.instance(from));
-        }
-        @TypeInfo("ceylon.language.Nothing|ceylon.language.Iterator<Element>")
-        public final Iterator<Element> getTail() {
-            return from<$this.getLastIndex() ? 
-            		new SequenceIterator<Element>($this, from+1) : null;
-        }
-        public final java.lang.String toString() {
-            return "SequenceIterator";
-        }
-    }
-    
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public Iterable<? extends Element> span(@Name("from") Integer from, 
@@ -117,15 +95,33 @@ public interface Sequence<Element>
             return index.longValue() <= $this.getLastIndex();
         }
 
-        public static <Element> Iterator<? extends Element> getIterator(Sequence<Element> $this){
-            return new Sequence.SequenceIterator<Element>($this, 0);
+        public static <Element> Iterator<? extends Element> getIterator(final Sequence<Element> $this){
+            class SequenceIterator<Element> implements Iterator<Element> {
+                private long from;
+                SequenceIterator(){
+                    this.from = from;
+                }
+                @TypeInfo("Element|ceylon.language.Finished")
+                public final java.lang.Object next() { 
+                    if (from <= $this.getLastIndex()) {
+                        return $this.item(Integer.instance(from++));
+                    } else {
+                        return $finished.getFinished();
+                    }
+                }
+                public final java.lang.String toString() {
+                    return "SequenceIterator";
+                }
+            }
+            
+            return new SequenceIterator<Element>();
         }
         
         public static <Element> java.lang.String toString(Sequence<Element> $this) {
             java.lang.StringBuilder result = new java.lang.StringBuilder("{ ");
-            for (Iterator<? extends Element> iter=$this.getIterator(); iter!=null; iter=iter.getTail()) {
-                result.append(iter.getHead())
-                    .append(", ");
+            java.lang.Object elem;
+            for (Iterator<? extends Element> iter=$this.getIterator(); !((elem = iter.next()) instanceof Finished);) {
+                result.append(elem).append(", ");
             }
             result.setLength(result.length()-2);
             result.append(" }");

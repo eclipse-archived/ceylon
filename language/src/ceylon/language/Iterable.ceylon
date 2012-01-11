@@ -8,15 +8,13 @@ by "Gavin"
 shared interface Iterable<out Element> 
         satisfies Container {
     
-    doc "An iterator for the elements belonging to the 
-         container, or null if the container has no 
-         elements."
-    shared formal Iterator<Element>? iterator;
+    doc "An iterator for the elements belonging to the container."
+    shared formal Iterator<Element> iterator;
     
     doc "Determines if the iterable object is empty, that is
          to say, if `iterable.iterator` is `null`."
     shared actual default Boolean empty {
-        return !exists iterator;
+        return (is Finished iterator.next());
     }
     
 }
