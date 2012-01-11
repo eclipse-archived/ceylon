@@ -5,6 +5,7 @@ import java.util.Locale;
 import javax.tools.Diagnostic;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.DiagnosticCollector;
+import javax.tools.DiagnosticListener;
 import javax.tools.JavaFileObject;
 
 import junit.framework.Assert;
@@ -48,7 +49,9 @@ public class RecoveryTest extends CompilerTest {
 
     private void compile(int expectedErrors, String... ceylon){
         DiagnosticCollector<JavaFileObject> errorCollector = new DiagnosticCollector<JavaFileObject>();
-        Boolean success = getCompilerTask(defaultOptions, errorCollector , ceylon).call();
+        // Stef: can't seem to be able to get this cast right no matter what I try
+        @SuppressWarnings({ "unchecked", "rawtypes" })
+        Boolean success = getCompilerTask(defaultOptions, (DiagnosticListener)errorCollector , ceylon).call();
         Assert.assertEquals(expectedErrors, getErrorCount(errorCollector));
         Assert.assertFalse(success);
     }
