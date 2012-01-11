@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-abstract class Super2() {
+abstract class KlassWithMethodsSuper2() {
  shared formal void formalMethod();
  shared formal void formalMethod2();
  shared default void defaultMethod(){}
 }
 
-abstract class Super1() extends Super2() {
+abstract class KlassWithMethodsSuper1() extends KlassWithMethodsSuper2() {
  // we implement a formal method
  shared actual void formalMethod(){}
  // we give a default impl to a formal method
@@ -32,7 +32,7 @@ abstract class Super1() extends Super2() {
  shared actual formal void defaultMethod();
 }
 
-class KlassWithMethods() extends Super1() {
+class KlassWithMethods() extends KlassWithMethodsSuper1() {
  void empty(){}
  shared void emptyPublic(){}
  Integer natural(){return 1;}

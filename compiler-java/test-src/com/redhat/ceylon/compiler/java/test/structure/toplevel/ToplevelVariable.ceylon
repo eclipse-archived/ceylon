@@ -18,4 +18,4 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-variable Integer i := 0;
+variable Integer topLevelVariable := 0;

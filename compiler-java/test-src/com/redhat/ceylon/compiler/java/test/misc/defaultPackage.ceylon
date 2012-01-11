@@ -18,5 +18,5 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-shared void defaultPackage(Process process) {
+shared void defaultPackage() {
 }

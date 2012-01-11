@@ -18,18 +18,18 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void foo(){
+void topLevelMethodInvocationMethod1(){
 }
 
 @nomodel
-Integer bar(Integer i, String j){
+Integer topLevelMethodInvocationMethod2(Integer i, String j){
     return 1;
 }
 
 @nomodel
 class ToplevelMethodInvocation(){
     Integer m() {
-        foo();
-        return bar(1, "");
+        topLevelMethodInvocationMethod1();
+        return topLevelMethodInvocationMethod2(1, "");
     }
 }

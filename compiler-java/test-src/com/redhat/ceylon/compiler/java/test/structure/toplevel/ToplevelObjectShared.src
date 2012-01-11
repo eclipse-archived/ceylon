@@ -1,33 +1,33 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
-public final class x {
+public final class topLevelObjectShared {
     
     public final void y() {
     }
     
-    private x() {
+    private topLevelObjectShared() {
     }
-    private static final com.redhat.ceylon.compiler.java.test.structure.toplevel.x value;
+    private static final com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared value;
     static {
-        value = new x();
+        value = new topLevelObjectShared();
     }
     
-    public static com.redhat.ceylon.compiler.java.test.structure.toplevel.x getX() {
+    public static com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared getTopLevelObjectShared() {
         return value;
     }
 }
-final class accessX {
+final class accessTopLevelObjectShared {
     
-    private accessX() {
+    private accessTopLevelObjectShared() {
     }
     
-    static void accessX() {
-        .com.redhat.ceylon.compiler.java.test.structure.toplevel.x.getX().y();
+    static void accessTopLevelObjectShared() {
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared.getTopLevelObjectShared().y();
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        accessX();
+        accessTopLevelObjectShared();
     }
 }
 

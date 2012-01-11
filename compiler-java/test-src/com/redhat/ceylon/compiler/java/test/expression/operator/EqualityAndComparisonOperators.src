@@ -4,9 +4,9 @@ interface BasicOperatorsA {
 }
 interface BasicOperatorsB {
 }
-public abstract class MyInteger extends .java.lang.Object implements ceylon.language.Castable, ceylon.language.Integral<com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> {
+public abstract class EqualityAndComparisonInteger extends .java.lang.Object implements ceylon.language.Castable, ceylon.language.Integral<com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> {
     
-    public MyInteger() {
+    public EqualityAndComparisonInteger() {
         super();
     }
 }
@@ -25,7 +25,7 @@ public class EqualityAndComparisonOperators {
         sync = n1 >= n2;
     }
     
-    private final void equalityAndComparisonBoxed(final .java.lang.Object o1, final .java.lang.Object o2, final com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger n1, final com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger n2) {
+    private final void equalityAndComparisonBoxed(final .java.lang.Object o1, final .java.lang.Object o2, final com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger n1, final com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger n2) {
         ceylon.language.Boolean sync = .ceylon.language.Boolean.instance(o1 == o2);
         sync = .ceylon.language.Boolean.instance(n1.equals(n2));
         sync = .ceylon.language.Boolean.instance(!n1.equals(n2));
@@ -40,8 +40,8 @@ public class EqualityAndComparisonOperators {
         final boolean b1 = (let ceylon.language.Integer $ceylontmp0 = .ceylon.language.Integer.instance(n1) in new ceylon.language.Range<ceylon.language.Integer>(.ceylon.language.Integer.instance(n1), .ceylon.language.Integer.instance(n2)).contains($ceylontmp0));
     }
     
-    private final void testInUnboxed(final com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger n1, final com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger n2) {
-        final ceylon.language.Boolean b1 = .ceylon.language.Boolean.instance((let com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmp1 = n1 in new ceylon.language.Range<com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(n1, n2).contains($ceylontmp1)));
+    private final void testInUnboxed(final com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger n1, final com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger n2) {
+        final ceylon.language.Boolean b1 = .ceylon.language.Boolean.instance((let com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger $ceylontmp1 = n1 in new ceylon.language.Range<com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(n1, n2).contains($ceylontmp1)));
     }
     
     private final void testIs() {

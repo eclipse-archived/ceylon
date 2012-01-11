@@ -25,7 +25,7 @@ class QualifiedAttributeAssign {
         return q;
     }
     
-    private final void m(final com.redhat.ceylon.compiler.java.test.expression.attribute.Foo f) {
+    private final void m(final com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssignFoo f) {
         this.setB(false);
         this.setB2(false);
         new com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign().setB(true);
@@ -45,7 +45,7 @@ class QualifiedAttributeAssign {
         new QualifiedAttributeAssign();
     }
 }
-class Foo {
+class QualifiedAttributeAssignFoo {
     private boolean b;
     
     public final boolean getB() {
@@ -56,12 +56,12 @@ class Foo {
         this.b = b;
     }
     
-    Foo() {
+    QualifiedAttributeAssignFoo() {
         this.b = true;
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new Foo();
+        new QualifiedAttributeAssignFoo();
     }
 }

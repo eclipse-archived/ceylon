@@ -27,7 +27,7 @@ interface I {
 }
 
 @nomodel
-shared object x extends C(2) satisfies I {
+shared object topLevelObjectWithSuperTypes extends C(2) satisfies I {
     shared actual Boolean id(Boolean x) {
         return x;
     }

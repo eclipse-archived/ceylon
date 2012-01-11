@@ -1,19 +1,19 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
-final class i {
+final class topLevelVariable {
     private static long value;
     static {
         value = 0L;
     }
     
-    static long getI() {
+    static long getTopLevelVariable() {
         return value;
     }
     
-    static void setI(long i) {
-        value = i;
+    static void setTopLevelVariable(long topLevelVariable) {
+        value = topLevelVariable;
     }
     
-    private i() {
+    private topLevelVariable() {
     }
 }

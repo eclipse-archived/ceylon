@@ -1,45 +1,45 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-public final class f {
+public final class namedArgumentInvocationTopLevelF {
     
-    private f() {
+    private namedArgumentInvocationTopLevelF() {
     }
     
-    public static long f(final long n, final .java.lang.String s) {
+    public static long namedArgumentInvocationTopLevelF(final long n, final .java.lang.String s) {
         return n;
     }
 }
-public final class v {
+public final class namedArgumentInvocationTopLevelV {
     
-    private v() {
+    private namedArgumentInvocationTopLevelV() {
     }
     
-    public static void v(final long n, final .java.lang.String s) {
+    public static void namedArgumentInvocationTopLevelV(final long n, final .java.lang.String s) {
     }
 }
-final class x {
+final class namedArgumentInvocationTopLevelX {
     private static final long value;
     static {
-        value = (let .java.lang.String $arg$0$1 = "abc",long $arg$0$0 = 123L in .com.redhat.ceylon.compiler.java.test.expression.invoke.f.f($arg$0$0, $arg$0$1));
+        value = (let .java.lang.String $arg$0$1 = "abc",long $arg$0$0 = 123L in .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelF.namedArgumentInvocationTopLevelF($arg$0$0, $arg$0$1));
     }
     
-    static long getX() {
+    static long getNamedArgumentInvocationTopLevelX() {
         return value;
     }
     
-    private x() {
+    private namedArgumentInvocationTopLevelX() {
     }
 }
-final class y {
+final class namedArgumentInvocationTopLevelY {
     private static final .java.lang.Object value;
     static {
-        value = (let .java.lang.String $arg$1$1 = "abc",long $arg$1$0 = 123L in .com.redhat.ceylon.compiler.java.test.expression.invoke.v.v($arg$1$0, $arg$1$1); null);
+        value = (let .java.lang.String $arg$1$1 = "abc",long $arg$1$0 = 123L in .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelV.namedArgumentInvocationTopLevelV($arg$1$0, $arg$1$1); null);
     }
     
-    static .java.lang.Object getY() {
+    static .java.lang.Object getNamedArgumentInvocationTopLevelY() {
         return value;
     }
     
-    private y() {
+    private namedArgumentInvocationTopLevelY() {
     }
 }

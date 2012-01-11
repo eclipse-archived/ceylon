@@ -23,7 +23,7 @@ class QualifiedAttributeAssign(){
    shared variable Boolean b2 := true;
    QualifiedAttributeAssign q = QualifiedAttributeAssign();
    
-   void m(Foo f){
+   void m(QualifiedAttributeAssignFoo f){
        this.b := false;
        this.b2 := false;
        QualifiedAttributeAssign().b := true;
@@ -33,6 +33,6 @@ class QualifiedAttributeAssign(){
    }
 }
 @nomodel
-class Foo() {
+class QualifiedAttributeAssignFoo() {
    shared variable Boolean b := true;
 }

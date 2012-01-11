@@ -1,46 +1,46 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
-final class b1 {
+final class topLevelAssignB1 {
     private static boolean value;
     static {
         value = true;
     }
     
-    static boolean getB1() {
+    static boolean getTopLevelAssignB1() {
         return value;
     }
     
-    static void setB1(boolean b1) {
-        value = b1;
+    static void setTopLevelAssignB1(boolean topLevelAssignB1) {
+        value = topLevelAssignB1;
     }
     
-    private b1() {
+    private topLevelAssignB1() {
     }
 }
-public final class b2 {
+public final class topLevelAssignB2 {
     private static boolean value;
     static {
         value = true;
     }
     
-    public static boolean getB2() {
+    public static boolean getTopLevelAssignB2() {
         return value;
     }
     
-    public static void setB2(boolean b2) {
-        value = b2;
+    public static void setTopLevelAssignB2(boolean topLevelAssignB2) {
+        value = topLevelAssignB2;
     }
     
-    private b2() {
+    private topLevelAssignB2() {
     }
 }
 class TopLevelAssign {
     
     private final void m() {
-        .com.redhat.ceylon.compiler.java.test.expression.attribute.b1.setB1(false);
-        .com.redhat.ceylon.compiler.java.test.expression.attribute.b2.setB2(false);
-        .com.redhat.ceylon.compiler.java.test.expression.attribute.b3.setB3(false);
-        .com.redhat.ceylon.compiler.java.test.expression.attribute.b4.setB4(false);
+        .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB1.setTopLevelAssignB1(false);
+        .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB2.setTopLevelAssignB2(false);
+        .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB3.setTopLevelAssignB3(false);
+        .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB4.setTopLevelAssignB4(false);
     }
     
     TopLevelAssign() {
@@ -51,29 +51,29 @@ class TopLevelAssign {
         new TopLevelAssign();
     }
 }
-final class b3 {
+final class topLevelAssignB3 {
     
-    static boolean getB3() {
+    static boolean getTopLevelAssignB3() {
         return true;
     }
     
-    static void setB3(boolean b3) {
+    static void setTopLevelAssignB3(boolean topLevelAssignB3) {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    private b3() {
+    private topLevelAssignB3() {
     }
 }
-public final class b4 {
+public final class topLevelAssignB4 {
     
-    public static boolean getB4() {
+    public static boolean getTopLevelAssignB4() {
         return true;
     }
     
-    public static void setB4(boolean b4) {
+    public static void setTopLevelAssignB4(boolean topLevelAssignB4) {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    private b4() {
+    private topLevelAssignB4() {
     }
 }

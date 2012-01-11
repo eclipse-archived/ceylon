@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-object x {
+object topLevelObjectWithMembers {
     Boolean val = true;
     shared Boolean valShared = true;
     Boolean valCaptured = true;

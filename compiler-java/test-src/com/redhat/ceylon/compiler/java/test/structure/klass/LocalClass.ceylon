@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class OuterClass() {
+class LocalClassOuterClass() {
 
     void m (){
         class LocalClass() {

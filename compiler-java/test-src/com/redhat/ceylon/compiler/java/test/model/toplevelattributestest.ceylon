@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-void m() {
+void topLevelAttributesTest() {
     Integer n1 = attrInteger;
     Integer n2 = attrIntegerPublic;
     Integer n3 = attrVarInteger;

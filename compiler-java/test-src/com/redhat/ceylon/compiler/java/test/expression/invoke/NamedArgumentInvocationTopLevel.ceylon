@@ -18,21 +18,21 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-shared Integer f(Integer n, String s) {
+shared Integer namedArgumentInvocationTopLevelF(Integer n, String s) {
     return n; 
 }
 
 @nomodel
-shared void v(Integer n, String s) {
+shared void namedArgumentInvocationTopLevelV(Integer n, String s) {
 }
 
 @nomodel
-Integer x = f{
+Integer namedArgumentInvocationTopLevelX = namedArgumentInvocationTopLevelF{
     s="abc";
     n=123;
 };
 @nomodel
-Void y = v{
+Void namedArgumentInvocationTopLevelY = namedArgumentInvocationTopLevelV{
     s="abc";
     n=123;
 };

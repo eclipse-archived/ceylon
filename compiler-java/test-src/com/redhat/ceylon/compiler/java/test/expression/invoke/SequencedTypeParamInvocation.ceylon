@@ -3,6 +3,6 @@ class SequencedTypeParamInvocation<T>() {
     shared void algo(T... strings) {}
 }
 @nomodel
-void foo() {
+void sequencedTypeParamInvocationMethod() {
     SequencedTypeParamInvocation<String>().algo("x", "y");
 }

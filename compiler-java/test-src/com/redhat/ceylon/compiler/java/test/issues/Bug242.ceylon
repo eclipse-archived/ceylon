@@ -1,4 +1,4 @@
 @nomodel
-shared void m<T>(T[] a, Integer i) {
+shared void bug242<T>(T[] a, Integer i) {
     T? t = a[i];
 }

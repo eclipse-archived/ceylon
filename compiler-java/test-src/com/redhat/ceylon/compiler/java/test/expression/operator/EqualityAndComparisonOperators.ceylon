@@ -23,10 +23,10 @@ interface BasicOperatorsA {}
 interface BasicOperatorsB {}
 
 @nomodel
-shared abstract class MyInteger()
+shared abstract class EqualityAndComparisonInteger()
         extends Object()
-        satisfies Castable<MyInteger|Integer|Float> &
-                  Integral<MyInteger> {}
+        satisfies Castable<EqualityAndComparisonInteger|Integer|Float> &
+                  Integral<EqualityAndComparisonInteger> {}
 
 @nomodel
 shared class EqualityAndComparisonOperators() {
@@ -48,7 +48,7 @@ shared class EqualityAndComparisonOperators() {
     }
 
     void equalityAndComparisonBoxed(IdentifiableObject o1, IdentifiableObject o2,
-                                    MyInteger n1, MyInteger n2) {
+                                    EqualityAndComparisonInteger n1, EqualityAndComparisonInteger n2) {
         variable Boolean? sync := o1 === o2;
         sync := n1 == n2;
         sync := n1 != n2;
@@ -63,7 +63,7 @@ shared class EqualityAndComparisonOperators() {
         Boolean b1 = n1 in n1..n2;
     }
 
-    void testInUnboxed(MyInteger n1, MyInteger n2){
+    void testInUnboxed(EqualityAndComparisonInteger n1, EqualityAndComparisonInteger n2){
         Boolean? b1 = n1 in n1..n2;
     }
 

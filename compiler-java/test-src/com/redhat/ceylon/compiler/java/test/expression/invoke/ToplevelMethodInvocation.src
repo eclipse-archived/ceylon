@@ -1,32 +1,32 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class foo {
+final class topLevelMethodInvocationMethod1 {
     
-    private foo() {
+    private topLevelMethodInvocationMethod1() {
     }
     
-    static void foo() {
+    static void topLevelMethodInvocationMethod1() {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        foo();
+        topLevelMethodInvocationMethod1();
     }
 }
-final class bar {
+final class topLevelMethodInvocationMethod2 {
     
-    private bar() {
+    private topLevelMethodInvocationMethod2() {
     }
     
-    static long bar(final long i, final .java.lang.String j) {
+    static long topLevelMethodInvocationMethod2(final long i, final .java.lang.String j) {
         return 1L;
     }
 }
 class ToplevelMethodInvocation {
     
     private final long m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.foo.foo();
-        return .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.bar(1L, "");
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.topLevelMethodInvocationMethod1.topLevelMethodInvocationMethod1();
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.topLevelMethodInvocationMethod2.topLevelMethodInvocationMethod2(1L, "");
     }
     
     ToplevelMethodInvocation() {

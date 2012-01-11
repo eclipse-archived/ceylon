@@ -1,32 +1,32 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
-final class x {
+final class topLevelObject {
     
     public final void y() {
     }
     
-    private x() {
+    private topLevelObject() {
     }
-    private static final com.redhat.ceylon.compiler.java.test.structure.toplevel.x value;
+    private static final com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject value;
     static {
-        value = new x();
+        value = new topLevelObject();
     }
     
-    static com.redhat.ceylon.compiler.java.test.structure.toplevel.x getX() {
+    static com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject getTopLevelObject() {
         return value;
     }
 }
-final class accessX {
+final class accessTopLevelObject {
     
-    private accessX() {
+    private accessTopLevelObject() {
     }
     
-    static void accessX() {
-        .com.redhat.ceylon.compiler.java.test.structure.toplevel.x.getX().y();
+    static void accessTopLevelObject() {
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject.getTopLevelObject().y();
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        accessX();
+        accessTopLevelObject();
     }
 }

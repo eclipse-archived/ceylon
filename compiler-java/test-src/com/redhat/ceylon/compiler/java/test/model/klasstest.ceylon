@@ -17,6 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-Klass k = Klass();
-KlassWithConstructor k2 = KlassWithConstructor(2);
+Klass klass = Klass();
+KlassWithConstructor klass2 = KlassWithConstructor(2);
 

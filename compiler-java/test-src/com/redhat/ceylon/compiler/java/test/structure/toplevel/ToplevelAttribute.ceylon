@@ -18,4 +18,4 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-Integer i = 0;
+Integer topLevelAttribute = 0;

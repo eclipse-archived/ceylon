@@ -18,12 +18,12 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-object x {
+object topLevelObject {
     shared void y() {
     }
 }
 
 @nomodel
-void accessX() {
-    x.y();
+void accessTopLevelObject() {
+    topLevelObject.y();
 }

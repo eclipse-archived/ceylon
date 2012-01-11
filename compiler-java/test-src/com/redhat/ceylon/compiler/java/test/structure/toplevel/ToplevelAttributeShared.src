@@ -1,15 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
-public final class i {
+public final class topLevelAttributeShared {
     private static final long value;
     static {
         value = 0L;
     }
     
-    public static long getI() {
+    public static long getTopLevelAttributeShared() {
         return value;
     }
     
-    private i() {
+    private topLevelAttributeShared() {
     }
 }

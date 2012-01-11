@@ -1,19 +1,19 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
-public final class i {
+public final class topLevelVariableShared {
     private static long value;
     static {
         value = 0L;
     }
     
-    public static long getI() {
+    public static long getTopLevelVariableShared() {
         return value;
     }
     
-    public static void setI(long i) {
-        value = i;
+    public static void setTopLevelVariableShared(long topLevelVariableShared) {
+        value = topLevelVariableShared;
     }
     
-    private i() {
+    private topLevelVariableShared() {
     }
 }

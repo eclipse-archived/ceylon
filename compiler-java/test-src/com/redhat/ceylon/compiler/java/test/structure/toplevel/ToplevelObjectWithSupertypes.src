@@ -9,22 +9,22 @@ interface I {
     
     public abstract boolean id(final boolean x);
 }
-public final class x extends com.redhat.ceylon.compiler.java.test.structure.toplevel.C implements com.redhat.ceylon.compiler.java.test.structure.toplevel.I {
+public final class topLevelObjectWithSuperTypes extends com.redhat.ceylon.compiler.java.test.structure.toplevel.C implements com.redhat.ceylon.compiler.java.test.structure.toplevel.I {
     
     @.java.lang.Override
     public final boolean id(final boolean x) {
         return x;
     }
     
-    private x() {
+    private topLevelObjectWithSuperTypes() {
         super(2L);
     }
-    private static final com.redhat.ceylon.compiler.java.test.structure.toplevel.x value;
+    private static final com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes value;
     static {
-        value = new x();
+        value = new topLevelObjectWithSuperTypes();
     }
     
-    public static com.redhat.ceylon.compiler.java.test.structure.toplevel.x getX() {
+    public static com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes getTopLevelObjectWithSuperTypes() {
         return value;
     }
 }

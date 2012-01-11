@@ -13,17 +13,17 @@ class SequencedTypeParamInvocation<T> {
         new SequencedTypeParamInvocation();
     }
 }
-final class foo {
+final class sequencedTypeParamInvocationMethod {
     
-    private foo() {
+    private sequencedTypeParamInvocationMethod() {
     }
     
-    static void foo() {
+    static void sequencedTypeParamInvocationMethod() {
         new com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedTypeParamInvocation<ceylon.language.String>().algo(new ceylon.language.ArraySequence(.ceylon.language.String.instance("x"), .ceylon.language.String.instance("y")));
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        foo();
+        sequencedTypeParamInvocationMethod();
     }
 }

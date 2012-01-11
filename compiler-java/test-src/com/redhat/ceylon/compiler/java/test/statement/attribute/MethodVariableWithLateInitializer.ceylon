@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class MethodVariableWithInitializer(){
+class MethodVariableWithLateInitializer(){
    shared void m(){
        variable String f;
        f := "";

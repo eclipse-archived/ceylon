@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
-final class x {
+final class topLevelObjectWithMembers {
     private final boolean valShared;
     
     public final boolean getValShared() {
@@ -38,7 +38,7 @@ final class x {
         return getVarCaptured();
     }
     
-    private x() {
+    private topLevelObjectWithMembers() {
         final boolean val = true;
         this.valShared = true;
         this.valCaptured = true;
@@ -46,12 +46,12 @@ final class x {
         this.varShared = false;
         this.varCaptured = false;
     }
-    private static final com.redhat.ceylon.compiler.java.test.structure.toplevel.x value;
+    private static final com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers value;
     static {
-        value = new x();
+        value = new topLevelObjectWithMembers();
     }
     
-    static com.redhat.ceylon.compiler.java.test.structure.toplevel.x getX() {
+    static com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers getTopLevelObjectWithMembers() {
         return value;
     }
 }
