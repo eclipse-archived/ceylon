@@ -1701,6 +1701,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if (variable && (decl.isCaptured() || decl.isShared())) {
             // must use the qualified setter
             lhs = makeQualIdent(lhs, decl.getName());
+        } else if (!variable && Decl.withinMethod(decl) && decl.isCaptured()) {
+            // this only happens for SpecifierStatement, when assigning a value to a final
+            // variable after it has been declared
+            result = at(op).Assign(makeSelect(decl.getName(), "value"), rhs);
         } else {
             result = at(op).Assign(makeQualIdent(lhs, decl.getName()), rhs);
         }

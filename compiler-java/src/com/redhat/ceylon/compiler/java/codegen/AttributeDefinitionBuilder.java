@@ -153,7 +153,8 @@ public class AttributeDefinitionBuilder {
 
     private JCTree generateField() {
         long flags = Flags.PRIVATE | (modifiers & Flags.STATIC);
-        if (!writable) {
+        // only make it final if we have an init, otherwise we still have to initialise it
+        if (!writable && variableInit != null) {
             flags |= Flags.FINAL;
         }
 
