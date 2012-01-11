@@ -3,8 +3,9 @@ package com.redhat.ceylon.compiler.java.test.statement.loop;
 class MethodForRange {
     
     public final void m() {
-        for (ceylon.language.Iterator<? extends ceylon.language.Integer> $i$iter$0 = new ceylon.language.Range<ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).getIterator(); $i$iter$0 != null; $i$iter$0 = $i$iter$0.getTail()) {
-            final long i = $i$iter$0.getHead().longValue();
+        .java.lang.Object $elem$0;
+        for (ceylon.language.Iterator<? extends ceylon.language.Integer> $i$iter$1 = new ceylon.language.Range<ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).getIterator(); !(($elem$0 = $i$iter$1.next()) instanceof .ceylon.language.Finished); ) {
+            final long i = ((ceylon.language.Integer)$elem$0).longValue();
         }
     }
     

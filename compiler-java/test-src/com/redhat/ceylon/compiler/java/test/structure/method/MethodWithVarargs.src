@@ -3,20 +3,23 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 class MethodWithVarargs {
     
     public final void f1(final ceylon.language.Iterable<? extends ceylon.language.Integer> ns) {
-        for (ceylon.language.Iterator<? extends ceylon.language.Integer> $n$iter$0 = ns.getIterator(); $n$iter$0 != null; $n$iter$0 = $n$iter$0.getTail()) {
-            final long n = $n$iter$0.getHead().longValue();
+        .java.lang.Object $elem$0;
+        for (ceylon.language.Iterator<? extends ceylon.language.Integer> $n$iter$1 = ns.getIterator(); !(($elem$0 = $n$iter$1.next()) instanceof .ceylon.language.Finished); ) {
+            final long n = ((ceylon.language.Integer)$elem$0).longValue();
         }
     }
     
     public final void f2(final long i, final ceylon.language.Iterable<? extends ceylon.language.Integer> ns) {
-        for (ceylon.language.Iterator<? extends ceylon.language.Integer> $n$iter$1 = ns.getIterator(); $n$iter$1 != null; $n$iter$1 = $n$iter$1.getTail()) {
-            final long n = $n$iter$1.getHead().longValue();
+        .java.lang.Object $elem$2;
+        for (ceylon.language.Iterator<? extends ceylon.language.Integer> $n$iter$3 = ns.getIterator(); !(($elem$2 = $n$iter$3.next()) instanceof .ceylon.language.Finished); ) {
+            final long n = ((ceylon.language.Integer)$elem$2).longValue();
         }
     }
     
     public final void f3(final ceylon.language.Iterable<? extends .java.lang.Object> os) {
-        for (ceylon.language.Iterator<? extends .java.lang.Object> $o$iter$2 = os.getIterator(); $o$iter$2 != null; $o$iter$2 = $o$iter$2.getTail()) {
-            final .java.lang.Object o = $o$iter$2.getHead();
+        .java.lang.Object $elem$4;
+        for (ceylon.language.Iterator<? extends .java.lang.Object> $o$iter$5 = os.getIterator(); !(($elem$4 = $o$iter$5.next()) instanceof .ceylon.language.Finished); ) {
+            final .java.lang.Object o = (.java.lang.Object)$elem$4;
         }
     }
     
