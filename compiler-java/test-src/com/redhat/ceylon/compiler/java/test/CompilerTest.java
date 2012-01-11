@@ -23,19 +23,28 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.jar.JarFile;
 import java.util.regex.Matcher;
+import java.util.zip.ZipEntry;
 
 import javax.tools.DiagnosticListener;
 import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
 
+import org.apache.tools.zip.ZipFile;
 import org.junit.Before;
 
 import junit.framework.Assert;
@@ -264,15 +273,50 @@ public abstract class CompilerTest {
             // make sure we load the stuff from the Car
             File car = new File(destCar);
             @SuppressWarnings("deprecation")
-            ClassLoader loader = URLClassLoader.newInstance(
-                    new URL[] { car.toURL() },
-                    getClass().getClassLoader()
-                    );
+            URL url = car.toURL();
+            
+            NonCachingURLClassLoader loader = new NonCachingURLClassLoader(new URL[] { url  });
             java.lang.Class<?> klass = java.lang.Class.forName(main, true, loader);
             Method m = klass.getMethod(klass.getSimpleName());
             m.invoke(null);
+            
+            loader.clearCache();
         }catch(Exception x){
             throw new RuntimeException(x);
+        }
+    }
+
+    public static class NonCachingURLClassLoader extends URLClassLoader {
+
+        public NonCachingURLClassLoader(URL[] urls) {
+            super(urls);
+        }
+
+        public void clearCache() {
+            try {
+                Class<?> klass = java.net.URLClassLoader.class;
+                Field ucp = klass.getDeclaredField("ucp");
+                ucp.setAccessible(true);
+                Object sunMiscURLClassPath = ucp.get(this);
+                Field loaders = sunMiscURLClassPath.getClass().getDeclaredField("loaders");
+                loaders.setAccessible(true);
+                Object collection = loaders.get(sunMiscURLClassPath);
+                for (Object sunMiscURLClassPathJarLoader : ((Collection<?>) collection).toArray()) {
+                    try {
+                        Field loader = sunMiscURLClassPathJarLoader.getClass().getDeclaredField("jar");
+                        loader.setAccessible(true);
+                        Object jarFile = loader.get(sunMiscURLClassPathJarLoader);
+                        ((JarFile) jarFile).close();
+                    } catch (Throwable t) {
+                        // not a JAR loader?
+                        t.printStackTrace();
+                    }
+                }
+            } catch (Throwable t) {
+                // Something's wrong
+                t.printStackTrace();
+            }
+            return;
         }
     }
 
