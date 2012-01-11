@@ -164,6 +164,22 @@ void test_ranges() {
     expect(sum, 15, "range iteration");
 }
 
+void test_arraysequence() {
+	value seq1 = { 1, 2, 3, 4, 5};
+	value seq2 = { "a", "b", "c", "d", "e" };
+	expect(seq1.size, 5, "seq.size");
+	expect(seq1.first, 1, "seq.first");
+	expect(seq2.last, "e", "seq.last");
+	expect(seq1.segment(2,2).string, "3,4", "seq.segment");
+	expect(nonempty seq1.segment(3,0), false, "seq.segment");
+	expect(seq1.segment(3,3).string, "4,5", "seq.segment");
+	expect(seq1.empty, false, "seq.empty");
+	expect(seq1.segment(1,0).empty, true, "seq.empty");
+	expect(seq2.lastIndex, 4, "seq.lastIndex");
+	expect(seq2.defines(3), true, "seq.defines");
+	expect(seq2.defines(5), false, "seq.defines");
+}
+
 //Another test for the compiler.
 void test_interpolate() {
     //print("String part " 1 " interpolation " 2 " works");
@@ -184,6 +200,7 @@ shared void test() {
     test_exists_nonempty();
     test_foreach();
     test_ranges();
+	test_arraysequence();
     //test_interpolate();
     print("--- End Language Module Tests ---");
 }

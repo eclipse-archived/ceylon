@@ -128,7 +128,22 @@ $ArraySequence.prototype.item = function(index) {
     return result!==undefined ? result:null;
 }
 $ArraySequence.prototype.getSize = function() { return Integer(this.value.length) }
-
+$ArraySequence.prototype.getEmpty = function() { return this.getSize().compare(Integer(0)) === larger ? getFalse() : getTrue(); }
+$ArraySequence.prototype.getLastIndex = function() { return this.getSize().getPredecessor(); }
+$ArraySequence.prototype.getFirst = function() { return this.item(Integer(0)); }
+$ArraySequence.prototype.getLast = function() { return this.item(this.getLastIndex()); }
+$ArraySequence.prototype.defines = function(idx) { return idx.compare(this.getLastIndex()) === smaller ? getTrue() : getFalse(); }
+$ArraySequence.prototype.segment = function(from, len) {
+    var seq = [];
+    if (len.equals(Integer(0)) === getFalse()) {
+        var stop = from.plus(len).value;
+        for (var i=from.value; i < stop; i++) {
+            var x = this.item(Integer(i));
+            if (x !== getNull()) { seq.push(x); }
+        }
+    }
+    return ArraySequence(seq);
+}
 function $Range() {}
 function Range(first, last) {
     var that = new $Range;
