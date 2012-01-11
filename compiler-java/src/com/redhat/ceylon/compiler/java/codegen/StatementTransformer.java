@@ -255,6 +255,11 @@ public class StatementTransformer extends AbstractTransformer {
             currentForFailVariable = null;
         }
 
+        // java.lang.Object $elem$X;
+        String elem_name = aliasName("elem");
+        JCVariableDecl elem_decl = make().VarDef(make().Modifiers(0), names().fromString(elem_name), make().Type(syms().objectType), null);
+        outer = outer.append(elem_decl);
+        
         ForIterator iterDecl = stmt.getForClause().getForIterator();
         Variable variable;
         Variable variable2;
@@ -280,57 +285,58 @@ public class StatementTransformer extends AbstractTransformer {
         }
         ProducedType iter_type = typeFact().getIteratorType(sequence_element_type);
         JCExpression iter_type_expr = makeJavaType(iter_type, CeylonTransformer.TYPE_ARGUMENT);
+        JCExpression cast_elem = at(stmt).TypeCast(makeJavaType(sequence_element_type, CeylonTransformer.NO_PRIMITIVES), makeUnquotedIdent(elem_name));
         List<JCAnnotation> annots = makeJavaTypeAnnotations(variable.getDeclarationModel());
 
         // ceylon.language.Iterator<T> $V$iter$X = ITERABLE.getIterator();
         // We don't need to unerase here as anything remotely a sequence will be erased to Iterable, which has getIterator()
         JCExpression containment = expressionGen().transformExpression(specifierExpression, BoxingStrategy.BOXED, null);
         JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(aliasName(loop_var_name + "$iter")), iter_type_expr, at(stmt).Apply(null, makeSelect(containment, "getIterator"), List.<JCExpression> nil()));
-        JCIdent iter_id = at(stmt).Ident(iter_decl.getName());
+        String iter_id = iter_decl.getName().toString();
         
-        // final U n = $V$iter$X.getHead();
+        // final U n = $elem$X;
         // or
-        // final U n = $V$iter$X.getHead().getKey();
-        JCExpression iter_head = at(stmt).Apply(null, makeSelect(iter_id, Util.getGetterName("head")), List.<JCExpression> nil());
+        // final U n = $elem$X.getKey();
         JCExpression loop_var_init;
         ProducedType loop_var_type;
         if (variable2 == null) {
-            loop_var_init = iter_head;
             loop_var_type = sequence_element_type;
+            loop_var_init = cast_elem;
         } else {
-            loop_var_init = at(stmt).Apply(null, makeSelect(iter_head, Util.getGetterName("key")), List.<JCExpression> nil());
             loop_var_type = actualType(variable);
+            loop_var_init = at(stmt).Apply(null, makeSelect(cast_elem, Util.getGetterName("key")), List.<JCExpression> nil());
         }
         JCVariableDecl item_decl = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(loop_var_name), makeJavaType(loop_var_type), unboxType(loop_var_init, loop_var_type));
         List<JCStatement> for_loop = List.<JCStatement> of(item_decl);
 
         if (variable2 != null) {
-            // final V n = $V$iter$X.getHead().getElement();
-            JCExpression loop_var_init2 = at(stmt).Apply(null, makeSelect(at(stmt).Apply(null, makeSelect(iter_id, Util.getGetterName("head")), List.<JCExpression> nil()), Util.getGetterName("item")), List.<JCExpression> nil());
-            String loop_var_name2 = variable2.getIdentifier().getText();
+            // final V n = $elem$X.getElement();
             ProducedType item_type2 = actualType(variable2);
             JCExpression item_type_expr2 = makeJavaType(item_type2);
+            JCExpression loop_var_init2 = at(stmt).Apply(null, makeSelect(cast_elem, Util.getGetterName("item")), List.<JCExpression> nil());
+            String loop_var_name2 = variable2.getIdentifier().getText();
             JCVariableDecl item_decl2 = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(loop_var_name2), item_type_expr2, unboxType(loop_var_init2, item_type2));
             for_loop = for_loop.append(item_decl2);
         }
 
         // The user-supplied contents of the loop
         for_loop = for_loop.appendList(transformStmts(stmt.getForClause().getBlock().getStatements()));
+        
+        // $elem$X = $V$iter$X.next()
+        JCExpression iter_elem = make().Apply(null, makeSelect(iter_id, "next"), List.<JCExpression> nil());
+        JCExpression elem_assign = make().Assign(makeUnquotedIdent(elem_name), iter_elem);
+        // !(($elem$X = $V$iter$X.next()) instanceof Finished)
+        JCExpression instof = make().TypeTest(elem_assign, make().Type(syms().ceylonFinishedType));
+        JCExpression cond = make().Unary(JCTree.NOT, instof);
 
-        // $V$iter$X = $V$iter$X.getTail();
-        JCExpression step = at(stmt).Assign(iter_id, at(stmt).Apply(null, makeSelect(iter_id, Util.getGetterName("tail")), List.<JCExpression> nil()));
+        // No step necessary
+        List<JCExpressionStatement> step = List.<JCExpressionStatement>nil();
         
-        // $i$iter$1 != null;
-        // Watch out that we can't reuse tree bits in different locations, otherwise we break javac, since
-        // it will later on tag each tree bit while walking it and expects each node to be unique
-        // See https://github.com/ceylon/ceylon-compiler/issues/151
-        JCExpression cond = at(stmt).Binary(JCTree.NE, iter_id, makeNull());
-        
-        // for (.ceylon.language.Iterator<T> $V$iter$X = ITERABLE.iterator(); $V$iter$X.getHead() != null; $V$iter$X = $V$iter$X.getTail()) {
+        // for (.ceylon.language.Iterator<T> $V$iter$X = ITERABLE.iterator(); !(($elem$X = $V$iter$X.next()) instanceof Finished); ) {
         outer = outer.append(at(stmt).ForLoop(
             List.<JCStatement>of(iter_decl), 
 	        cond, 
-	        List.<JCExpressionStatement>of(at(stmt).Exec(step)), 
+	        step, 
 	        at(stmt).Block(0, for_loop)));
 
         if (stmt.getElseClause() != null) {

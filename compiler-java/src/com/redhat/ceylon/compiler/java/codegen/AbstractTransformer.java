@@ -1069,6 +1069,13 @@ public abstract class AbstractTransformer implements Transformation {
                 List.<JCTree.JCExpression>nil());
     }
     
+    protected JCExpression makeFinished() {
+        return make().Apply(
+                List.<JCTree.JCExpression>nil(),
+                makeSelect("ceylon", "language", Util.quoteIfJavaKeyword("$finished"), Util.getGetterName("$finished")),
+                List.<JCTree.JCExpression>nil());
+    }
+    
     /*
      * Variable name substitution
      */
