@@ -182,12 +182,6 @@ public class StatementTest extends CompilerTest {
         compareWithJavaSource("loop/MethodWhile");
     }
     
-    @Test
-    @Ignore //Might be removed
-    public void testLopMethodDoWhile(){
-        compareWithJavaSource("loop/MethodDoWhile");
-    }
-    
     //
     // Locals (value / function)
     
