@@ -84,14 +84,33 @@ $String.prototype.compare = function(other) {
 $String.prototype.getUppercased = function() { return String$(this.value.toUpperCase()) }
 $String.prototype.getLowercased = function() { return String$(this.value.toLowerCase()) }
 
+function $Character() {}
+function Character(value) {
+    var that = new $Character;
+    that.value = value;
+    return that;
+}
+for(var $ in CeylonObject.prototype){$Character.prototype[$]=CeylonObject.prototype[$]}
+$Character.prototype.getString = function() {
+    if (this.value <= 0xffff) {
+        return String$(String.fromCharCode(this.value));
+    }
+    return String$(String.fromCharCode((this.value>>10)+0xd7c0, (this.value&0x3ff)+0xdc00));
+}
+$Character.prototype.equals = function(other) { return Boolean$(other.value===this.value) }
+$Character.prototype.compare = function(other) {
+    return this.value===other.value ? equal
+                                    : (this.value<other.value ? smaller:larger);
+}
+
 function $Case() {}
 function Case(caseName) {
     var that = new $Case;
-    that.String$ = String$(caseName);
+    that.string = String$(caseName);
     return that;
 }
 for(var $ in CeylonObject.prototype){$Case.prototype[$]=CeylonObject.prototype[$]}
-$Case.prototype.getString = function() { return this.String$ }
+$Case.prototype.getString = function() { return this.string }
 
 function getNull() { return null }
 var $true = Case("true");
@@ -325,6 +344,7 @@ exports.Integer=Integer;
 exports.Float=Float;
 exports.String=String$;
 exports.Boolean=Boolean$;
+exports.Character=Character;
 exports.getNull=getNull;
 exports.Case=Case;
 exports.getTrue=getTrue;

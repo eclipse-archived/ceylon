@@ -962,7 +962,9 @@ public class GenerateJsVisitor extends Visitor
     public void visit(CharLiteral that) {
         clAlias();
         out(".Character(");
-        out(that.getText().replace('`', '"'));
+        //out(that.getText().replace('`', '"'));
+        //TODO: what about escape sequences?
+        out(String.valueOf(that.getText().codePointAt(1)));
         out(")");
     }
     

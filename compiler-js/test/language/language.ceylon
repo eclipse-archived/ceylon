@@ -185,6 +185,15 @@ void test_interpolate() {
     //print("String part " 1 " interpolation " 2 " works");
 }
 
+void testCharacter() {
+    Character c1 = `A`;
+    //Character c2 = `𝄞`;
+    Character c3 = `Ũ`;
+    expect(c1.string, "A", "Character.string");
+    //expect(c2.string, "𝄞", "Character.string");
+    expect(c3.string, "Ũ", "Character.string");
+}
+
 shared void test() {
     print("--- Start Language Module Tests ---");
     test_largest();
@@ -202,5 +211,6 @@ shared void test() {
     test_ranges();
 	test_arraysequence();
     //test_interpolate();
+    testCharacter();
     print("--- End Language Module Tests ---");
 }
