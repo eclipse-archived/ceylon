@@ -355,6 +355,10 @@ public class StructureTest extends CompilerTest {
     public void testAtrInnerAttributeGetterSetter(){
         compareWithJavaSource("attribute/InnerAttributeGetterSetter");
     }
+    @Test
+    public void testAtrInnerAttributeGetterLateInitialisation(){
+        compareWithJavaSource("attribute/InnerAttributeGetterLateInitialisation");
+    }
 
     //
     // Classes
