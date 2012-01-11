@@ -34,7 +34,7 @@ $Integer.prototype.power = function(other) {
 }
 $Integer.prototype.negativeValue = function() { return Integer(-this.value) }
 $Integer.prototype.positiveValue = function() { return this }
-$Integer.prototype.equals = function(other) { return Boolean$(other.value===this.value) }
+$Integer.prototype.equals = function(other) { return Boolean$(other && other.value===this.value) }
 $Integer.prototype.compare = function(other) {
     return this.value===other.value ? equal
                                     : (this.value<other.value ? smaller:larger);
@@ -59,7 +59,7 @@ $Float.prototype.divided = function(other) { return Float(this.value/other.value
 $Float.prototype.power = function(other) { return Float(Math.pow(this.value, other.value)) }
 $Float.prototype.negativeValue = function() { return Float(-this.value) }
 $Float.prototype.positiveValue = function() { return this }
-$Float.prototype.equals = function(other) { return Boolean$(other.value===this.value) }
+$Float.prototype.equals = function(other) { return Boolean$(other && other.value===this.value) }
 $Float.prototype.compare = function(other) {
     return this.value===other.value ? equal
                                     : (this.value<other.value ? smaller:larger);
@@ -77,7 +77,7 @@ for(var $ in CeylonObject.prototype){$String.prototype[$]=CeylonObject.prototype
 $String.prototype.getString = function() { return this }
 $String.prototype.toString = function() { return this.value }
 $String.prototype.plus = function(other) { return String$(this.value+other.value) }
-$String.prototype.equals = function(other) { return Boolean$(other.value===this.value) }
+$String.prototype.equals = function(other) { return Boolean$(other && other.value===this.value) }
 $String.prototype.compare = function(other) {
     var cmp = this.value.localeCompare(other.value);
     return cmp===0 ? equal : (cmp<0 ? smaller:larger);
@@ -137,7 +137,7 @@ function Character(value) {
 }
 for(var $ in CeylonObject.prototype){$Character.prototype[$]=CeylonObject.prototype[$]}
 $Character.prototype.getString = function() { return String$(codepointToString(this.value)) }
-$Character.prototype.equals = function(other) { return Boolean$(other.value===this.value) }
+$Character.prototype.equals = function(other) { return Boolean$(other && other.value===this.value) }
 $Character.prototype.compare = function(other) {
     return this.value===other.value ? equal
                                     : (this.value<other.value ? smaller:larger);
@@ -171,7 +171,7 @@ function Boolean$(value) {
 
 //These are operators for handling nulls
 function exists(value) { return value === getNull() ? getFalse() : getTrue(); }
-function nonempty(value) { return value && value.value && value.value.length > 0 ? getTrue() : getFalse(); }
+function nonempty(value) { return Boolean$(value && value.value && value.value.length > 0); }
 
 var larger = Case("larger");
 function getLarger() { return larger }
@@ -195,11 +195,11 @@ $ArraySequence.prototype.item = function(index) {
     return result!==undefined ? result:null;
 }
 $ArraySequence.prototype.getSize = function() { return Integer(this.value.length) }
-$ArraySequence.prototype.getEmpty = function() { return this.getSize().compare(Integer(0)) === larger ? getFalse() : getTrue(); }
+$ArraySequence.prototype.getEmpty = function() { return this.value.length > 0 ? getFalse() : getTrue(); }
 $ArraySequence.prototype.getLastIndex = function() { return this.getSize().getPredecessor(); }
 $ArraySequence.prototype.getFirst = function() { return this.item(Integer(0)); }
 $ArraySequence.prototype.getLast = function() { return this.item(this.getLastIndex()); }
-$ArraySequence.prototype.defines = function(idx) { return idx.compare(this.getLastIndex()) === smaller ? getTrue() : getFalse(); }
+$ArraySequence.prototype.defines = function(idx) { return Boolean$(idx.compare(this.getSize()) === smaller); }
 $ArraySequence.prototype.segment = function(from, len) {
     var seq = [];
     if (len.equals(Integer(0)) === getFalse()) {
@@ -229,6 +229,44 @@ $ArraySequence.prototype.span = function(from, to) {
     }
     return ArraySequence(seq);
 }
+$ArraySequence.prototype.getRest = function() { return ArraySequence(this.value.slice(1)); }
+$ArraySequence.prototype.items = function(keys) {
+    var seq = [];
+    for (var i = 0; i < keys.getSize().value; i++) {
+        seq.push(this.item(keys.item(Integer(i))));
+    }
+    return ArraySequence(seq);
+}
+$ArraySequence.prototype.definesEvery = function(keys) {
+    for (var i = 0; i < keys.getSize().value; i++) {
+        if (this.defines(keys.item(Integer(i))) === getFalse()) {
+            return getFalse();
+        }
+    }
+    return getTrue();
+}
+$ArraySequence.prototype.definesAny = function(keys) {
+    for (var i = 0; i < keys.getSize().value; i++) {
+        if (this.defines(keys.item(Integer(i))) === getTrue()) {
+            return getTrue();
+        }
+    }
+    return getFalse();
+}
+$ArraySequence.prototype.equals = function(other) {
+    if (other && other.getSize().equals(this.getSize()) === getTrue()) {
+        for (var i = 0; i < this.getSize().value; i++) {
+            var mine = this.item(Integer(i));
+            var theirs = other.item(Integer(i));
+            if ((mine === null && theirs) || !(mine && mine.equals(theirs) === getTrue())) {
+                return getFalse();
+            }
+        }
+        return getTrue();
+    }
+    return getFalse();
+}
+
 function $Range() {}
 function Range(first, last) {
     var that = new $Range;
@@ -248,7 +286,7 @@ for(var $ in CeylonObject.prototype){$Range.prototype[$]=CeylonObject.prototype[
 $Range.prototype.getFirst = function() { return this.first; }
 $Range.prototype.getLast = function() { return this.last; }
 $Range.prototype.getDecreasing = function() {
-    return this.first.compare(this.last) === larger ? getTrue() : getFalse();
+    return Boolean$(this.first.compare(this.last) === larger);
 }
 $Range.prototype.next = function(x) {
     return this.getDecreasing() === getTrue() ? x.getPredecessor() : x.getSuccessor();
@@ -271,7 +309,7 @@ $Range.prototype.includes = function(x) {
     var compf = x.compare(this.first);
     var compl = x.compare(this.last);
     var rval = this.getDecreasing() === getTrue() ? ((compf === equal || compf === smaller) && (compl === equal || compl === larger)) : ((compf === equal || compf === larger) && (compl === equal || compl === smaller));
-    return rval ? getTrue() : getFalse();
+    return Boolean$(rval);
 }
 $Range.prototype.contains = $Range.prototype.includes;
 $Range.prototype.getRest = function() {
@@ -310,9 +348,10 @@ $Range.prototype.span = function(from, to) {
 }
 $Range.prototype.getString = function() { return String$(this.first.getString().value + ".." + this.last.getString().value); }
 $Range.prototype.equals = function(other) {
+    if (!other) { return getFalse(); }
     var eqf = this.first.equals(other.getFirst());
     var eql = this.last.equals(other.getLast());
-    return (eqf === getTrue() && eql === getTrue()) ? getTrue() : getFalse();
+    return Boolean$(eqf === getTrue() && eql === getTrue());
 }
 
 function $Singleton() {}
