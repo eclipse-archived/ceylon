@@ -107,19 +107,23 @@ public class ModuleValidator {
                     if (searchedArtifacts.size() > 0) {
                         error.append(searchedArtifacts.get(0));
                     }
-                    for (String searchedArtifact : searchedArtifacts.subList(1, searchedArtifacts.size())) {
-                        error.append(", ");
-                        error.append("\n\t");
-                        error.append(searchedArtifact);
+                    if (searchedArtifacts.size() > 1) {
+                        for (String searchedArtifact : searchedArtifacts.subList(1, searchedArtifacts.size())) {
+                            error.append(", ");
+                            error.append("\n\t");
+                            error.append(searchedArtifact);
+                        }
                     }
                     error.append("\n\t  in repositories : ");
                     if (artifactProviders.size() > 0) {
                         error.append(artifactProviders.get(0));
                     }
-                    for (ArtifactProvider searchedProvider : artifactProviders.subList(1, artifactProviders.size())) {
-                        error.append(", ");
-                        error.append("\n\t");
-                        error.append(searchedProvider);
+                    if (artifactProviders.size() > 1) {
+                        for (ArtifactProvider searchedProvider : artifactProviders.subList(1, artifactProviders.size())) {
+                            error.append(", ");
+                            error.append("\n\t");
+                            error.append(searchedProvider);
+                        }
                     }
                     error.append("\n\tDependency tree: ");
                     buildDependencyString(dependencyTree, module, error);
