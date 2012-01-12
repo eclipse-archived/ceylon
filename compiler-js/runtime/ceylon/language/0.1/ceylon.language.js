@@ -471,7 +471,7 @@ $Entry.prototype.getString = function() {
 $Entry.prototype.getKey = function() { return this.key }
 $Entry.prototype.getItem = function() { return this.item }
 $Entry.prototype.equals = function(other) {
-    return Boolean$(other && this.key.equals(other.key) && this.item.equals(other.item));
+    return Boolean$(other && this.key.equals(other.key) === getTrue() && this.item.equals(other.item) === getTrue());
 }
 $Entry.prototype.getHash = function() { Integer(this.key.getHash().value ^ this.item.getHash().value) }
 
