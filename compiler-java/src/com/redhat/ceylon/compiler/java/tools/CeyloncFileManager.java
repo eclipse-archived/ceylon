@@ -33,6 +33,8 @@ package com.redhat.ceylon.compiler.java.tools;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +50,12 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.impl.FileContentStore;
+import com.redhat.ceylon.cmr.impl.RemoteContentStore;
 import com.redhat.ceylon.cmr.impl.RepositoryBuilder;
 import com.redhat.ceylon.cmr.impl.RootBuilder;
+import com.redhat.ceylon.cmr.impl.SimpleRepository;
+import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -57,6 +63,7 @@ import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.JavacFileManager;
 import com.sun.tools.javac.util.ListBuffer;
+import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Options;
 
 public class CeyloncFileManager extends JavacFileManager implements StandardJavaFileManager {
@@ -217,12 +224,15 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         if(userRepos.isEmpty()){
             builder.addModules();
         }else{
-            for (String token : userRepos) {
+            // go in reverse order because we prepend
+            for (int i=userRepos.size()-1;i>=0;i--) {
+                String repo = userRepos.get(i);
                 try {
-                    final RootBuilder rb = new RootBuilder(token);
-                    builder.appendExternalRoot(rb.buildRoot());
+                    final RootBuilder rb = new RootBuilder(repo);
+                    // we need to prepend to bypass the caching repo
+                    builder.prependExternalRoot(rb.buildRoot());
                 } catch (Exception e) {
-                    Logger.getLogger("ceylon.runtime").log(Level.WARNING, "Failed to add repository: " + token, e);
+                    Logger.getLogger("ceylon.runtime").log(Level.WARNING, "Failed to add repository: " + repo, e);
                 }
             }
         }
