@@ -75,6 +75,8 @@ void test_entries() {
     print(e);
     expect((e.item(2)?_e).key, 2, "entries");
     expect((e.item(2)?_e).item, "c", "entries");
+    expect(1->"a", 1->"a", "entry.equals");
+    expect(1->"a" == 1->"b", false, "entry.equals");
 }
 
 //This is actually a test for the compiler. "exists" doesn't work yet.
@@ -128,6 +130,22 @@ void test_foreach() {
       sum += elem;
     }
     expect(sum, 66, "key-value foreach");
+    //with iterator
+    sum := 0;
+    variable Boolean did_else := false;
+    for (idx -> elem in entries(2,4,6)) {
+        sum += idx + elem;
+    } else {
+        did_else := true;
+    }
+    expect(sum, 15, "foreach with iterator");
+    expect(did_else, true, "for/else with iterator");
+    for (idx -> elem in entries(2,4,6)) {
+        if (idx == 0) { break; }
+    } else {
+        sum := 0;
+    }
+    expect(sum, 15, "for/else with iterator");
 }
 
 void test_ranges() {
