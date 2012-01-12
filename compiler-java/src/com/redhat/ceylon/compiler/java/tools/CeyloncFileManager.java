@@ -252,26 +252,44 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         if(outputRepo != null)
             return outputRepo;
         // lazy loading
-        final RepositoryBuilder builder = new RepositoryBuilder();
 
         // any user defined repos
-        String outRepo = options.get(OptionName.CEYLONOUT);
-        if(outRepo != null){
-            try {
-                final RootBuilder rb = new RootBuilder(outRepo);
-                builder.appendExternalRoot(rb.buildRoot());
-            } catch (Exception e) {
-                Logger.getLogger("ceylon.runtime").log(Level.WARNING, "Failed to add repository: " + outRepo, e);
-            }
-        }else{
-            // make sure the folder exists
-            // FIXME: we can do this more carefully
-            new File("modules").mkdir();
-            builder.addModules();
+        // we use D and not CEYLONOUT here since that's where the option is stored
+        String outRepo = options.get(OptionName.D);
+        if(outRepo == null){
+            outRepo = "modules";
         }
 
-        outputRepo = builder.buildRepository();
+        StructureBuilder structureBuilder;
+        if(!isHTTP(outRepo)){
+            File repoFolder = new File(outRepo);
+            if(repoFolder.exists()){
+                if(!repoFolder.isDirectory())
+                    log.error("ceylon", "Output repository is not a directory: "+outRepo);
+                else if(!repoFolder.canWrite())
+                    log.error("ceylon", "Output repository is not writable: "+outRepo);
+            }else if(!repoFolder.mkdirs())
+                log.error("ceylon", "Failed to create output repository: "+outRepo);
+            structureBuilder = new FileContentStore(repoFolder);
+        }else{
+            // HTTP
+            structureBuilder = new RemoteContentStore(outRepo);
+        }
+        outputRepo = new SimpleRepository(structureBuilder);
         return outputRepo;
+    }
+
+    private boolean isHTTP(String repo) {
+        try {
+            URL url = new URL(repo);
+            String protocol = url.getProtocol();
+            return "http".equals(protocol) || "https".equals(protocol);
+        } catch (MalformedURLException e) {
+            if(options.get(OptionName.VERBOSE) != null){
+                Log.printLines(log.noticeWriter, "[Invalid repo URL: "+repo+" (assuming file)]");
+            }
+            return false;
+        }
     }
 
     @Override
