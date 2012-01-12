@@ -76,6 +76,7 @@ import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
+import com.sun.tools.javac.tree.TreeInfo;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Context.SourceLanguage.Language;
 import com.sun.tools.javac.util.Convert;
@@ -263,53 +264,68 @@ public class LanguageCompiler extends JavaCompiler {
             throws IOException {
         List<JCCompilationUnit> trees = super.parseFiles(fileObjects);
         LinkedList<JCCompilationUnit> moduleTrees = new LinkedList<JCCompilationUnit>();
-        loadCompiledModules(moduleTrees);
+        loadCompiledModules(trees, moduleTrees);
         for (JCCompilationUnit moduleTree : moduleTrees) {
             trees = trees.append(moduleTree);
         }
         return trees;
     }
 
-    private void loadCompiledModules(LinkedList<JCCompilationUnit> moduleTrees) {
+    private void loadCompiledModules(List<JCCompilationUnit> trees, LinkedList<JCCompilationUnit> moduleTrees) {
         phasedUnits.visitModules();
         Modules modules = ceylonContext.getModules();
         // now make sure the phase units have their modules and packages set correctly
         for (PhasedUnit pu : phasedUnits.getPhasedUnits()) {
             Package pkg = pu.getPackage();
-            // skip it if we already resolved the package
-            if(pkg.getModule() != null)
+            loadModuleFromSource(pkg, modules, moduleTrees);
+        }
+        // also make sure we have packages and modules set up for every Java file we compile
+        for(JCCompilationUnit cu : trees){
+            // skip Ceylon CUs
+            if(cu instanceof CeylonCompilationUnit)
                 continue;
-            String pkgName = pkg.getQualifiedNameString();
-            Module module = null;
-            // do we have a module for this package?
-            // FIXME: is this true? what if we have a module.ceylon at toplevel?
-            if(pkgName.isEmpty())
-                module = modules.getDefaultModule();
-            else{
-                for(Module m : modules.getListOfModules()){
-                    if(pkgName.startsWith(m.getNameAsString())){
-                        module = m;
-                        break;
-                    }
-                }
-                if(module == null){
-                    module = loadModuleFromSource(pkgName, moduleTrees);
-                }
-                else if (! module.isAvailable()) {
-                    loadModuleFromSource(pkgName, moduleTrees);
-                }
+            String packageName = ""; 
+            if(cu.pid != null)
+                packageName = TreeInfo.fullName(cu.pid).toString();
+            Package pkg = modelLoader.findOrCreatePackage(null, packageName);
+            loadModuleFromSource(pkg, modules, moduleTrees);
+        }
+    }
 
-                if(module == null){
-                    // no declaration for it, must be the default module
-                    module = modules.getDefaultModule();
+    private void loadModuleFromSource(Package pkg, Modules modules, LinkedList<JCCompilationUnit> moduleTrees) {
+        // skip it if we already resolved the package
+        if(pkg.getModule() != null)
+            return;
+        String pkgName = pkg.getQualifiedNameString();
+        Module module = null;
+        // do we have a module for this package?
+        // FIXME: is this true? what if we have a module.ceylon at toplevel?
+        if(pkgName.isEmpty())
+            module = modules.getDefaultModule();
+        else{
+            for(Module m : modules.getListOfModules()){
+                if(pkgName.startsWith(m.getNameAsString())){
+                    module = m;
+                    break;
                 }
             }
-            // bind module and package together
-            pkg.setModule(module);
-            module.getPackages().add(pkg);
-            // automatically add this module's jar to the classpath if it exists
-            ceylonEnter.addModuleToClassPath(module, false);
+            if(module == null){
+                module = loadModuleFromSource(pkgName, moduleTrees);
+            }
+            else if (! module.isAvailable()) {
+                loadModuleFromSource(pkgName, moduleTrees);
+            }
+
+            if(module == null){
+                // no declaration for it, must be the default module
+                module = modules.getDefaultModule();
+            }
         }
+        // bind module and package together
+        pkg.setModule(module);
+        module.getPackages().add(pkg);
+        // automatically add this module's jar to the classpath if it exists
+        ceylonEnter.addModuleToClassPath(module, false);
     }
 
     private Module loadModuleFromSource(String pkgName, LinkedList<JCCompilationUnit> moduleTrees) {
