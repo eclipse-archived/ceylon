@@ -193,6 +193,11 @@ public abstract class ModulesTest {
         // module args
         args.add(module);
         // run JBoss Modules
+        System.err.print("Command line: ");
+        for(String arg : args){
+            System.err.print(arg+" ");
+        }
+        System.err.println("");
         Main.main(args.toArray(new String[args.size()]));
     }
 }
