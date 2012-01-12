@@ -17,20 +17,15 @@
 
 package biz.wiz.quiz;
 
-import ceylon.language.Quoted;
-import ceylon.language.descriptor.Import;
-import ceylon.modules.api.util.JavaToCeylon;
-import ceylon.modules.api.util.ModuleVersion;
+import com.redhat.ceylon.compiler.java.metadata.Module;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
+@Module(name = "biz.wiz.quiz",
+        version = "1.0.0.GA")
 public class module {
     public static ceylon.language.descriptor.Module getModule() {
-        Quoted name = JavaToCeylon.toQuoted("biz.wiz.quiz");
-        Quoted version = JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "GA").toString());
-        Import i1 = new Import(JavaToCeylon.toQuoted("default"), JavaToCeylon.toQuoted("**NO_VERSION**"), false, false);
-        ceylon.language.Iterable<? extends Import> imports = JavaToCeylon.toIterable(i1);
-        return new ceylon.language.descriptor.Module(name, version, null, null, null, imports);
+        return null;
     }
 }

@@ -17,23 +17,20 @@
 
 package com.foobar.qwert;
 
-import ceylon.language.Quoted;
-import ceylon.language.descriptor.Import;
-import ceylon.modules.api.util.JavaToCeylon;
-import ceylon.modules.api.util.ModuleVersion;
+import com.redhat.ceylon.compiler.java.metadata.Import;
+import com.redhat.ceylon.compiler.java.metadata.Module;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
+@Module(name = "com.foobar.qwert",
+        version = "1.0.0.GA",
+        dependencies = {
+        @Import(name = "org.jboss.acme",
+                version = "1.0.0.CR1")
+})
 public class module {
     public static ceylon.language.descriptor.Module getModule() {
-        Quoted name = JavaToCeylon.toQuoted("com.foobar.qwert");
-        Quoted version = JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "GA").toString());
-        Import im = new Import(
-                JavaToCeylon.toQuoted("org.jboss.acme"),
-                JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "CR1").toString()),
-                false,
-                false);
-        return new ceylon.language.descriptor.Module(name, version, null, null, null, JavaToCeylon.toIterable(im));
+        return null;
     }
 }

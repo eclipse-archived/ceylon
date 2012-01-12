@@ -17,18 +17,17 @@
 
 package org.jboss.acme;
 
-import ceylon.language.Quoted;
-import ceylon.modules.api.util.JavaToCeylon;
-import ceylon.modules.api.util.ModuleVersion;
+import com.redhat.ceylon.compiler.java.metadata.Module;
+
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
+@Module(name = "org.jboss.acme",
+        version = "1.0.0.CR1")
 public class module {
     public static ceylon.language.descriptor.Module getModule() {
-        Quoted name = JavaToCeylon.toQuoted("org.jboss.acme");
-        Quoted version = JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "CR1").toString());
-        return new ceylon.language.descriptor.Module(name, version, null, null, null, null);
+        return null;
     }
 
     public static void run() {

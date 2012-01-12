@@ -17,32 +17,20 @@
 
 package eu.cloud.clazz;
 
-import ceylon.language.Quoted;
-import ceylon.language.descriptor.Import;
-import ceylon.modules.api.util.JavaToCeylon;
-import ceylon.modules.api.util.ModuleVersion;
+import com.redhat.ceylon.compiler.java.metadata.Module;
+import com.redhat.ceylon.compiler.java.metadata.Import;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
+@Module(name = "eu.cloud.clazz",
+        version = "1.0.0.GA",
+        dependencies = {
+        @Import(name = "org.jboss.filtered",
+                version = "1.0.0.Alpha1")
+})
 public class module {
     public static ceylon.language.descriptor.Module getModule() {
-        Quoted name = JavaToCeylon.toQuoted("eu.cloud.clazz");
-        Quoted version = JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "GA").toString());
-        // TODO -- maybe used later on
-        /*
-        PathFilter imports = new PathFilter() {
-            public ceylon.language.Boolean accept(ceylon.language.String path) {
-                boolean contains = path.contains(JavaToCeylon.toString("spi"));
-                return JavaToCeylon.toBoolean(contains);
-            }
-        };
-        */
-        Import im = new Import(
-                JavaToCeylon.toQuoted("org.jboss.filtered"),
-                JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "Alpha1").toString()),
-                false,
-                false);
-        return new ceylon.language.descriptor.Module(name, version, null, null, null, JavaToCeylon.toIterable(im));
+        return null;
     }
 }

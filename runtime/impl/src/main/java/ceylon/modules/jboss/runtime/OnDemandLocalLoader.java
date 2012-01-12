@@ -17,13 +17,14 @@
 
 package ceylon.modules.jboss.runtime;
 
-import ceylon.language.descriptor.Import;
 import org.jboss.modules.DependencySpec;
 import org.jboss.modules.LocalLoader;
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoadException;
 import org.jboss.modules.Resource;
+
+import com.redhat.ceylon.compiler.java.metadata.Import;
 
 import java.util.Collections;
 import java.util.List;

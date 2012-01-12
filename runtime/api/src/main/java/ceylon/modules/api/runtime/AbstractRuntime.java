@@ -17,14 +17,14 @@
 
 package ceylon.modules.api.runtime;
 
-import ceylon.language.descriptor.Module;
+import java.util.logging.Logger;
+
 import ceylon.modules.CeylonRuntimeException;
 import ceylon.modules.Configuration;
-import ceylon.modules.api.util.CeylonToJava;
 import ceylon.modules.spi.Constants;
-import com.redhat.ceylon.cmr.api.Repository;
 
-import java.util.logging.Logger;
+import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.compiler.java.metadata.Module;
 
 /**
  * Abstract Ceylon Modules runtime.
@@ -47,14 +47,13 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
      */
     public static Module loadModule(ClassLoader cl, String moduleName) throws Exception {
         final String moduleClassName = moduleName + MODULE_INFO_CLASS;
-        final Class<?> moduleClass;
         try {
-            moduleClass = cl.loadClass(moduleClassName);
+            Class<?> klass = cl.loadClass(moduleClassName);
+            return klass.getAnnotation(Module.class);
         } catch (ClassNotFoundException ignored) {
             return null; // looks like no such module class is available
         }
 
-        return SecurityActions.getModule(moduleClass);
     }
 
     protected static void invokeRun(ClassLoader cl, String runClassName, final String[] args) throws Exception {
@@ -87,11 +86,11 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         ClassLoader cl = createClassLoader(name, mv, conf);
         Module runtimeModule = loadModule(cl, name);
         if (runtimeModule != null) {
-            final String mn = CeylonToJava.toString(runtimeModule.getName());
+            final String mn = runtimeModule.name();
             if (name.equals(mn) == false)
                 throw new CeylonRuntimeException("Input module name doesn't match module's name: " + name + " != " + mn);
 
-            final String version = CeylonToJava.toString(runtimeModule.getVersion());
+            final String version = runtimeModule.version();
             if (mv.equals(version) == false && Constants.DEFAULT.toString().equals(name) == false)
                 throw new CeylonRuntimeException("Input module version doesn't match module's version: " + mv + " != " + version);
         } else if (Constants.DEFAULT.toString().equals(name) == false) {
