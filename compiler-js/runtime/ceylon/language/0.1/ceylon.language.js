@@ -168,6 +168,8 @@ function getFalse() { return $false; }
 function Boolean$(value) {
     return value ? $true : $false;
 }
+var $finished = Case("Finished");
+function getFinished() { return $finished; }
 
 //These are operators for handling nulls
 function exists(value) { return value === getNull() ? getFalse() : getTrue(); }
@@ -266,6 +268,25 @@ $ArraySequence.prototype.equals = function(other) {
     }
     return getFalse();
 }
+$ArraySequence.prototype.getIterator = function() { return ArrayIterator(this); }
+
+function $ArrayIterator() {}
+function ArrayIterator(seq) {
+    var that = new $ArrayIterator;
+    that.seq = seq;
+    that.current = seq.getEmpty() === getTrue() ? getFinished() : seq.item(0);
+    that.idx = 0;
+    return that;
+}
+$ArrayIterator.prototype.next = function() {
+    if (this.current === getFinished()) {
+        return getFinished();
+    }
+    var idx = Integer(this.idx);
+    this.current = this.seq.defines(Integer(idx)) === getTrue() ? this.seq.item(Integer(idx)) : getFinished();
+    this.idx++;
+    return this.current;
+}
 
 function $Range() {}
 function Range(first, last) {
@@ -285,6 +306,7 @@ function Range(first, last) {
 for(var $ in CeylonObject.prototype){$Range.prototype[$]=CeylonObject.prototype[$]}
 $Range.prototype.getFirst = function() { return this.first; }
 $Range.prototype.getLast = function() { return this.last; }
+$Range.prototype.getEmpty = function() { return getFalse(); }
 $Range.prototype.getDecreasing = function() {
     return Boolean$(this.first.compare(this.last) === larger);
 }
@@ -370,11 +392,32 @@ $Range.prototype.equals = function(other) {
     var eql = this.last.equals(other.getLast());
     return Boolean$(eqf === getTrue() && eql === getTrue());
 }
+$Range.prototype.getIterator = function() { return RangeIterator(this); }
+
+function $RangeIterator() {}
+function RangeIterator(range) {
+    var that = new $RangeIterator;
+    that.range = range;
+    that.current = range.getFirst();
+    return that;
+}
+$RangeIterator.prototype.next = function() {
+    var rval = this.current;
+    if (rval.equals(getFinished()) === getTrue()) {
+        return rval;
+    } else if (rval.equals(this.range.getLast()) === getTrue()) {
+        this.current = getFinished();
+    } else {
+        this.current = this.range.next(this.current);
+    }
+    return rval;
+}
 
 function $Singleton() {}
 function Singleton(elem) {
     var that = new $Singleton;
     that.value = [elem];
+    that.elem = elem;
     return that;
 }
 for(var $ in CeylonObject.prototype){$Singleton.prototype[$]=CeylonObject.prototype[$]}
@@ -382,7 +425,27 @@ $Singleton.prototype.getString = function() { return String$(this.value.toString
 $Singleton.prototype.item = function(index) {
     return index.value===0 ? this.value[0] : null;
 }
-$Singleton.prototype.getSize = function() { return Integer(1) }
+$Singleton.prototype.getSize = function() { return Integer(1); }
+$Singleton.prototype.getLastIndex = function() { return Integer(0); }
+$Singleton.prototype.getFirst = function() { return elem; }
+$Singleton.prototype.getLast = function() { return elem; }
+$Singleton.prototype.defines = function(idx) { return idx.equals(Integer(0)); }
+$Singleton.prototype.getIterator = function() { return SingletonIterator(this.elem); }
+
+function $SingletonIterator() {}
+function SingletonIterator(elem) {
+    var that = new $SingletonIterator;
+    that.elem = elem;
+    that.done = false;
+    return that;
+}
+$SingletonIterator.prototype.next = function() {
+    if (this.done) {
+        return getFinished();
+    }
+    this.done = true;
+    return this.elem;
+}
 
 function $Entry() {}
 function Entry(key, item) {
@@ -477,6 +540,7 @@ exports.getFalse=getFalse;
 exports.getLarger=getLarger;
 exports.getSmaller=getSmaller;
 exports.getEqual=getEqual;
+exports.getFinished=getFinished;
 exports.ArraySequence=ArraySequence;
 exports.Range=Range;
 exports.Singleton=Singleton;
