@@ -217,6 +217,28 @@ void test_arraysequence() {
     //expect(seq1,{1,2,3,4,5}, "seq.equals");
 }
 
+void test_iterators() {
+    value seq = { 1, 2, 3, 4, 5 };
+    value range = 95..100;
+    value sing = Singleton(10);
+    value iter1 = seq.iterator;
+    value iter2 = range.iterator;
+    value iter3 = sing.iterator;
+    expect(iter1.next(), 1, "seq.iter");
+    iter1.next(); iter1.next(); iter1.next();
+    expect(iter1.next(), 5, "seq.iter");
+    expect(iter1.next(), finished, "seq.iter");
+    expect(iter1.next(), finished, "seq.iter");
+    expect(iter2.next(), 95, "range.iter");
+    iter2.next(); iter2.next(); iter2.next(); iter2.next();
+    expect(iter2.next(), 100, "range.iter");
+    expect(iter2.next(), finished, "range.iter");
+    expect(iter2.next(), finished, "range.iter");
+    expect(iter3.next(), 10, "singleton.iter");
+    expect(iter3.next(), finished, "singleton.iter");
+    expect(iter3.next(), finished, "singleton.iter");
+}
+
 //Another test for the compiler.
 void test_interpolate() {
     //print("String part " 1 " interpolation " 2 " works");
@@ -273,6 +295,7 @@ shared void test() {
     test_exists_nonempty();
     test_foreach();
     test_arraysequence();
+    test_iterators();
     test_ranges();
     //test_interpolate();
     testCharacter();
