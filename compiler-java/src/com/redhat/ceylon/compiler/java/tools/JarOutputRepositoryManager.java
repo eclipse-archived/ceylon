@@ -152,15 +152,16 @@ public class JarOutputRepositoryManager {
                 JarFile jarFile = null;
                 jarFile = new JarFile(originalJarFile);
                 try {
-                    Enumeration<JarEntry> entries = jarFile.entries();
                     JarEntry entry = jarFile.getJarEntry(MAPPING_FILE);
-                    InputStream inputStream = jarFile.getInputStream(entry);
-                    try {
-                        Properties previousMapping = new Properties();
-                        previousMapping.load(inputStream);
-                        return previousMapping;
-                    } finally {
-                        inputStream.close();
+                    if (entry != null) {
+                        InputStream inputStream = jarFile.getInputStream(entry);
+                        try {
+                            Properties previousMapping = new Properties();
+                            previousMapping.load(inputStream);
+                            return previousMapping;
+                        } finally {
+                            inputStream.close();
+                        }
                     }
                 } finally {
                     jarFile.close();
