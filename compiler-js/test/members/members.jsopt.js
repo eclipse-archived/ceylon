@@ -3,10 +3,10 @@ var $$$cl15=require('ceylon/language/0.1/ceylon.language');
 //MethodDefinition expect at members.ceylon (1:0-8:0)
 function expect(actual,expected,text){
     if ((actual.equals(expected))===$$$cl15.getTrue()){
-        $$$cl15.print($$$cl15.String("[ok] ").plus(text).plus($$$cl15.String(": '")).plus(actual.getString()).plus($$$cl15.String("'")));
+        $$$cl15.print($$$cl15.String("[ok] ",5).plus(text).plus($$$cl15.String(": '",3)).plus(actual.getString()).plus($$$cl15.String("'",1)));
     }
     else {
-        $$$cl15.print($$$cl15.String("[NOT OK] ").plus(text).plus($$$cl15.String(": actual='")).plus(actual.getString()).plus($$$cl15.String("', expected='")).plus(expected.getString()).plus($$$cl15.String("'")));
+        $$$cl15.print($$$cl15.String("[NOT OK] ",9).plus(text).plus($$$cl15.String(": actual='",10)).plus(actual.getString()).plus($$$cl15.String("', expected='",13)).plus(expected.getString()).plus($$$cl15.String("'",1)));
     }
     
 }
@@ -48,7 +48,7 @@ $Counter.prototype.getInitialCount=function getInitialCount(){
 //AttributeGetterDefinition string at members.ceylon (21:4-23:4)
 $Counter.prototype.getString=function getString(){
     var $$counter=this;
-    return $$$cl15.String("Counter[").plus($$counter.getCount().getString()).plus($$$cl15.String("]"));
+    return $$$cl15.String("Counter[",8).plus($$counter.getCount().getString()).plus($$$cl15.String("]",1));
 }
 function Counter(initialCount$Counter, $$counter){
     if ($$counter===undefined)$$counter=new $Counter;
@@ -239,20 +239,20 @@ function testIssue10(){
     function getObj(){
         return $obj;
     }
-    expect(getObj().f1(),$$$cl15.Integer(1),$$$cl15.String("Issue #10 (parameter)"));
-    expect(getObj().f11(),$$$cl15.Integer(2),$$$cl15.String("Issue #10 (parameter)"));
-    expect(getObj().f2(),$$$cl15.Integer(3),$$$cl15.String("Issue #10 (non-shared attribute)"));
-    expect(getObj().f12(),$$$cl15.Integer(4),$$$cl15.String("Issue #10 (non-shared attribute)"));
-    expect(getObj().f3(),$$$cl15.Integer(5),$$$cl15.String("Issue #10 (non-shared attribute)"));
-    expect(getObj().getI2(),$$$cl15.Integer(6),$$$cl15.String("Issue #10 (shared attribute)"));
-    expect(getObj().f4(),$$$cl15.Integer(8),$$$cl15.String("Issue #10 (shared attribute)"));
-    expect(getObj().getI3(),$$$cl15.Integer(8),$$$cl15.String("Issue #10 (shared attribute)"));
-    expect(getObj().f6(),$$$cl15.Integer(9),$$$cl15.String("Issue #10 (non-shared method)"));
-    expect(getObj().f13(),$$$cl15.Integer(10),$$$cl15.String("Issue #10 (non-shared method)"));
-    expect(getObj().f8(),$$$cl15.Integer(11),$$$cl15.String("Issue #10 (non-shared method)"));
-    expect(getObj().f7(),$$$cl15.Integer(12),$$$cl15.String("Issue #10 (shared method)"));
-    expect(getObj().f10(),$$$cl15.Integer(14),$$$cl15.String("Issue #10 (shared method)"));
-    expect(getObj().f9(),$$$cl15.Integer(14),$$$cl15.String("Issue #10 (shared method)"));
+    expect(getObj().f1(),$$$cl15.Integer(1),$$$cl15.String("Issue #10 (parameter)",21));
+    expect(getObj().f11(),$$$cl15.Integer(2),$$$cl15.String("Issue #10 (parameter)",21));
+    expect(getObj().f2(),$$$cl15.Integer(3),$$$cl15.String("Issue #10 (non-shared attribute)",32));
+    expect(getObj().f12(),$$$cl15.Integer(4),$$$cl15.String("Issue #10 (non-shared attribute)",32));
+    expect(getObj().f3(),$$$cl15.Integer(5),$$$cl15.String("Issue #10 (non-shared attribute)",32));
+    expect(getObj().getI2(),$$$cl15.Integer(6),$$$cl15.String("Issue #10 (shared attribute)",28));
+    expect(getObj().f4(),$$$cl15.Integer(8),$$$cl15.String("Issue #10 (shared attribute)",28));
+    expect(getObj().getI3(),$$$cl15.Integer(8),$$$cl15.String("Issue #10 (shared attribute)",28));
+    expect(getObj().f6(),$$$cl15.Integer(9),$$$cl15.String("Issue #10 (non-shared method)",29));
+    expect(getObj().f13(),$$$cl15.Integer(10),$$$cl15.String("Issue #10 (non-shared method)",29));
+    expect(getObj().f8(),$$$cl15.Integer(11),$$$cl15.String("Issue #10 (non-shared method)",29));
+    expect(getObj().f7(),$$$cl15.Integer(12),$$$cl15.String("Issue #10 (shared method)",25));
+    expect(getObj().f10(),$$$cl15.Integer(14),$$$cl15.String("Issue #10 (shared method)",25));
+    expect(getObj().f9(),$$$cl15.Integer(14),$$$cl15.String("Issue #10 (shared method)",25));
 }
 
 //MethodDefinition test at members.ceylon (71:0-79:0)

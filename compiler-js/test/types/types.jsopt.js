@@ -3,10 +3,10 @@ var $$$cl15=require('ceylon/language/0.1/ceylon.language');
 //MethodDefinition expect at types.ceylon (1:0-8:0)
 function expect(actual,expected,text){
     if ((actual.equals(expected))===$$$cl15.getTrue()){
-        $$$cl15.print($$$cl15.String("[ok] ").plus(text).plus($$$cl15.String(": '")).plus(actual.getString()).plus($$$cl15.String("'")));
+        $$$cl15.print($$$cl15.String("[ok] ",5).plus(text).plus($$$cl15.String(": '",3)).plus(actual.getString()).plus($$$cl15.String("'",1)));
     }
     else {
-        $$$cl15.print($$$cl15.String("[NOT OK] ").plus(text).plus($$$cl15.String(": actual='")).plus(actual.getString()).plus($$$cl15.String("', expected='")).plus(expected.getString()).plus($$$cl15.String("'")));
+        $$$cl15.print($$$cl15.String("[NOT OK] ",9).plus(text).plus($$$cl15.String(": actual='",10)).plus(actual.getString()).plus($$$cl15.String("', expected='",13)).plus(expected.getString()).plus($$$cl15.String("'",1)));
     }
     
 }
@@ -22,7 +22,7 @@ for(var $ in CeylonObject.prototype){
 //AttributeGetterDefinition string at types.ceylon (13:4-15:4)
 $Pair.prototype.getString=function getString(){
     var $$pair=this;
-    return $$$cl15.String("(").plus($$pair.x$Pair.getString()).plus($$$cl15.String(", ")).plus($$pair.y$Pair.getString()).plus($$$cl15.String(")"));
+    return $$$cl15.String("(",1).plus($$pair.x$Pair.getString()).plus($$$cl15.String(", ",2)).plus($$pair.y$Pair.getString()).plus($$$cl15.String(")",1));
 }
 function Pair(x$Pair, y$Pair, $$pair){
     if ($$pair===undefined)$$pair=new $Pair;
@@ -42,7 +42,7 @@ for(var $ in $Pair.prototype){
 //AttributeGetterDefinition string at types.ceylon (20:4-22:4)
 $Complex.prototype.getString=function getString(){
     var $$complex=this;
-    return $$complex.x$Complex.getString().plus($$$cl15.String("+")).plus($$complex.y$Complex.getString()).plus($$$cl15.String("i"));
+    return $$complex.x$Complex.getString().plus($$$cl15.String("+",1)).plus($$complex.y$Complex.getString()).plus($$$cl15.String("i",1));
 }
 
 //AttributeGetterDefinition pairString at types.ceylon (23:4-25:4)
@@ -141,7 +141,7 @@ for(var $ in CeylonObject.prototype){
 //MethodDefinition test at types.ceylon (53:4-53:47)
 $Issue9C1.prototype.test=function test(){
     var $$issue9C1=this;
-    return $$$cl15.String("1");
+    return $$$cl15.String("1",1);
 }
 function Issue9C1($$issue9C1){
     if ($$issue9C1===undefined)$$issue9C1=new $Issue9C1;
@@ -169,11 +169,11 @@ $Issue9C2.prototype.test=function test(){
     var $$issue9C2=this;
     if (($$issue9C2.getFlag1$Issue9C2$())===$$$cl15.getTrue()){
         var $$issue9C2=this;
-        return $$$cl15.String("ERR1");
+        return $$$cl15.String("ERR1",4);
     }
     
     $$issue9C2.setFlag1$Issue9C2$($$$cl15.getTrue());
-    return $$issue9C2.test$Issue9C1$().plus($$$cl15.String("2"));
+    return $$issue9C2.test$Issue9C1$().plus($$$cl15.String("2",1));
 }
 function Issue9C2($$issue9C2){
     if ($$issue9C2===undefined)$$issue9C2=new $Issue9C2;
@@ -205,11 +205,11 @@ $Issue9C3.prototype.test=function test(){
     var $$issue9C3=this;
     if (($$issue9C3.getFlag2$Issue9C3$())===$$$cl15.getTrue()){
         var $$issue9C3=this;
-        return $$$cl15.String("ERR2");
+        return $$$cl15.String("ERR2",4);
     }
     
     $$issue9C3.setFlag2$Issue9C3$($$$cl15.getTrue());
-    return $$issue9C3.test$Issue9C2$().plus($$$cl15.String("3"));
+    return $$issue9C3.test$Issue9C2$().plus($$$cl15.String("3",1));
 }
 function Issue9C3($$issue9C3){
     if ($$issue9C3===undefined)$$issue9C3=new $Issue9C3;
@@ -228,14 +228,14 @@ function testIssue9(){
     function getObj(){
         return $obj;
     }
-    expect(getObj().test(),$$$cl15.String("123"),$$$cl15.String("Issue #9"));
+    expect(getObj().test(),$$$cl15.String("123",3),$$$cl15.String("Issue #9",8));
 }
 
 //MethodDefinition test at types.ceylon (81:0-90:0)
 function test(){
     
     //AttributeDeclaration pair at types.ceylon (82:4-82:39)
-    var $pair=Pair($$$cl15.String("hello"),$$$cl15.String("world"));
+    var $pair=Pair($$$cl15.String("hello",5),$$$cl15.String("world",5));
     function getPair(){
         return $pair;
     }

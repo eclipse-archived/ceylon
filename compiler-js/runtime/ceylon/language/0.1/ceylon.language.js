@@ -107,12 +107,30 @@ $String.prototype.shorterThan = function(length) {
     this.codePoints = countCodepoints(this.value);
     return Boolean$(this.codePoints<length.value);
 }
+$String.prototype.getIterator = function() { return StringIterator(this.value) }
+
+function $StringIterator() {}
+function StringIterator(string) {
+    var that = new $StringIterator;
+    that.string = string;
+    that.index = 0;
+    return that;
+}
+for(var $ in CeylonObject.prototype){$StringIterator.prototype[$]=CeylonObject.prototype[$]}
+$StringIterator.prototype.next = function() {
+    if (this.index >= this.string.length) { return $finished }
+    var first = this.string.charCodeAt(this.index++);
+    if ((first&0xfc00) !== 0xd800 || this.index >= this.string.length) {
+        return Character(first);
+    }
+    return Character((first<<10) + this.string.charCodeAt(this.index++) - 0x35fdc00);
+}
 
 function countCodepoints(str) {
     var count = 0;
     for (var i=0; i<str.length; ++i) {
         ++count;
-        if (str.charCodeAt(i)&0xfc00 === 0xd800) {++i}
+        if ((str.charCodeAt(i)&0xfc00) === 0xd800) {++i}
     }
     return count;
 }
@@ -124,7 +142,7 @@ function codepointToString(cp) {
 }
 function codepointFromString(str, index) {
     var first = str.charCodeAt(index);
-    if (first&0xfc00 !== 0xd800) {return first}
+    if ((first&0xfc00) !== 0xd800) {return first}
     var second = str.charCodeAt(index+1);
     return isNaN(second) ? first : ((first<<10) + second - 0x35fdc00);
 }

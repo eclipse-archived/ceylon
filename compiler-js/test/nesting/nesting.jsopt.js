@@ -274,7 +274,7 @@ function A($$a){
     if ($$a===undefined)$$a=new $A;
     
     //AttributeDeclaration foo at nesting.ceylon (83:4-83:22)
-    $$a.foo$A=$$$cl15.String("foo");
+    $$a.foo$A=$$$cl15.String("foo",3);
     
     //ClassDefinition B at nesting.ceylon (84:4-94:4)
     function $B(){}
@@ -292,7 +292,7 @@ function A($$a){
         if ($$b===undefined)$$b=new $B;
         
         //AttributeDeclaration qux at nesting.ceylon (85:8-85:26)
-        $$b.qux$B=$$$cl15.String("qux");
+        $$b.qux$B=$$$cl15.String("qux",3);
         
         //ClassDefinition C at nesting.ceylon (86:8-93:8)
         function $C(){}
@@ -326,19 +326,19 @@ function A($$a){
 
 //MethodDefinition test at nesting.ceylon (105:0-120:0)
 function test(){
-    outr($$$cl15.String("Hello"));
-    $$$cl15.print(Holder($$$cl15.String("ok")).get());
-    $$$cl15.print(Holder($$$cl15.String("ok")));
+    outr($$$cl15.String("Hello",5));
+    $$$cl15.print(Holder($$$cl15.String("ok",2)).get());
+    $$$cl15.print(Holder($$$cl15.String("ok",2)));
     $$$cl15.print(Wrapper().get());
     $$$cl15.print(Wrapper());
     $$$cl15.print(Unwrapper().get());
     $$$cl15.print(Unwrapper().getO());
     $$$cl15.print(Unwrapper());
     $$$cl15.print(producer()());
-    $$$cl15.print(returner($$$cl15.String("something"))());
+    $$$cl15.print(returner($$$cl15.String("something",9))());
     $$$cl15.print(A().B().C().foobar());
     $$$cl15.print(A().B().C().quxx());
     $$$cl15.print(A().baz());
-    Outer($$$cl15.String("Hello"));
+    Outer($$$cl15.String("Hello",5));
 }
 this.test=test;

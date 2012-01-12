@@ -5,10 +5,10 @@ var $$$f9=require('default/functions');
 function invocations(){
     $$$f9.helloWorld();
     (function (){return $$$f9.helloWorld()}());
-    $$$f9.hello($$$cl15.String("world"));
-    (function (){var $name=$$$cl15.String("world");return $$$f9.hello($name)}());
-    $$$f9.helloAll($$$cl15.ArraySequence([$$$cl15.String("someone"),$$$cl15.String("someone else")]));
-    (function (){var $names=$$$cl15.ArraySequence([$$$cl15.String("someone"),$$$cl15.String("someone else")]);return $$$f9.helloAll($names)}());
+    $$$f9.hello($$$cl15.String("world",5));
+    (function (){var $name=$$$cl15.String("world",5);return $$$f9.hello($name)}());
+    $$$f9.helloAll($$$cl15.ArraySequence([$$$cl15.String("someone",7),$$$cl15.String("someone else",12)]));
+    (function (){var $names=$$$cl15.ArraySequence([$$$cl15.String("someone",7),$$$cl15.String("someone else",12)]);return $$$f9.helloAll($names)}());
     
     //AttributeDeclaration s1 at invocations.ceylon (10:4-10:28)
     var $s1=$$$f9.toString($$$cl15.Integer(99));

@@ -2,13 +2,13 @@ var $$$cl15=require('ceylon/language/0.1/ceylon.language');
 
 //MethodDefinition helloWorld at functions.ceylon (1:0-3:0)
 function helloWorld(){
-    $$$cl15.print($$$cl15.String("hello world"));
+    $$$cl15.print($$$cl15.String("hello world",11));
 }
 this.helloWorld=helloWorld;
 
 //MethodDefinition hello at functions.ceylon (5:0-7:0)
 function hello(name){
-    $$$cl15.print($$$cl15.String("hello").plus(name));
+    $$$cl15.print($$$cl15.String("hello",5).plus(name));
 }
 this.hello=hello;
 

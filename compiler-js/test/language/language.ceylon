@@ -303,6 +303,15 @@ void testString() {
     expect("x".longerThan(0), true, "String.longerThan");
     expect("abc".longerThan(3), false, "String.longerThan");
     expect("abc".longerThan(2), true, "String.longerThan");
+    
+    variable Integer cnt := 0;
+    variable String s4 := "";
+    for (c in s3) {
+        s4 := c.string + s4;
+        ++cnt;
+    }
+    expect(cnt, 5, "String.iterator");
+    expect(s4, "ÖŨ`𝄞A", "String.iterator");
 }
 
 shared void test() {

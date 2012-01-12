@@ -5,19 +5,19 @@ var $$$m7=require('default/members');
 function testit(){
     
     //AttributeDeclaration name at testit.ceylon (4:4-4:24)
-    var $name=$$$cl15.String("hello");
+    var $name=$$$cl15.String("hello",5);
     function getName(){
         return $name;
     }
     $$$cl15.print(getName());
     
     //AttributeDeclaration foo at testit.ceylon (6:4-6:24)
-    var $foo=F($$$cl15.String("goodbye"));
+    var $foo=F($$$cl15.String("goodbye",7));
     function getFoo(){
         return $foo;
     }
     printBoth(getName(),getFoo().getName());
-    (function (){var $y=$$$cl15.String("y");var $x=$$$cl15.String("x");return printBoth($x,$y)}());
+    (function (){var $y=$$$cl15.String("y",1);var $x=$$$cl15.String("x",1);return printBoth($x,$y)}());
     getFoo().inc();
     getFoo().inc();
     $$$cl15.print(getFoo().getCount());
@@ -35,7 +35,7 @@ function testit(){
         
         //MethodDefinition y at testit.ceylon (19:8-21:8)
         function y(){
-            $$$cl15.print($$$cl15.String("xy"));
+            $$$cl15.print($$$cl15.String("xy",2));
         }
         $$x.y=y;
         return $$x;
@@ -54,8 +54,8 @@ function testit(){
     getB().Inner().incOuter();
     getB().Inner().incOuter();
     $$$cl15.print(getB().getCount());
-    printAll($$$cl15.ArraySequence([$$$cl15.String("hello"),$$$cl15.String("world")]));
-    (function (){var $strings=$$$cl15.ArraySequence([$$$cl15.String("hello"),$$$cl15.String("world")]);return printAll($strings)}());
+    printAll($$$cl15.ArraySequence([$$$cl15.String("hello",5),$$$cl15.String("world",5)]));
+    (function (){var $strings=$$$cl15.ArraySequence([$$$cl15.String("hello",5),$$$cl15.String("world",5)]);return printAll($strings)}());
     
     //AttributeDeclaration c at testit.ceylon (32:4-32:26)
     var $c=$$$m7.Counter($$$cl15.Integer(0));
@@ -75,7 +75,7 @@ function X($$x){
     
     //MethodDefinition helloWorld at misc.ceylon (2:4-4:4)
     function helloWorld(){
-        $$$cl15.print($$$cl15.String("hello world"));
+        $$$cl15.print($$$cl15.String("hello world",11));
     }
     $$x.helloWorld=helloWorld;
     return $$x;
@@ -118,7 +118,7 @@ function Foo(name, $$foo){
     
     //MethodDefinition printName at misc.ceylon (12:4-14:4)
     function printName(){
-        $$$cl15.print($$$cl15.String("foo name = ").plus(name));
+        $$$cl15.print($$$cl15.String("foo name = ",11).plus(name));
     }
     $$foo.printName=printName;
     $$foo.inc();
@@ -129,13 +129,13 @@ this.Foo=Foo;
 //ClassDefinition Bar at misc.ceylon (18:0-32:0)
 function Bar($$bar){
     if ($$bar===undefined)$$bar=new CeylonObject;
-    Foo($$$cl15.String("Hello"),$$bar);
+    Foo($$$cl15.String("Hello",5),$$bar);
     $$bar.printName$Foo=$$bar.printName;
     X($$bar);
     
     //MethodDefinition printName at misc.ceylon (19:4-22:4)
     function printName(){
-        $$$cl15.print($$$cl15.String("bar name = ").plus($$bar.getName()));
+        $$$cl15.print($$$cl15.String("bar name = ",11).plus($$bar.getName()));
         $$bar.printName$Foo();
     }
     $$bar.printName=printName;
@@ -143,7 +143,7 @@ function Bar($$bar){
     //ClassDefinition Inner at misc.ceylon (23:4-29:4)
     function Inner($$inner){
         if ($$inner===undefined)$$inner=new CeylonObject;
-        $$$cl15.print($$$cl15.String("creating inner class of :").plus($$bar.getName()));
+        $$$cl15.print($$$cl15.String("creating inner class of :",25).plus($$bar.getName()));
         
         //MethodDefinition incOuter at misc.ceylon (26:8-28:8)
         function incOuter(){
@@ -159,7 +159,7 @@ this.Bar=Bar;
 
 //MethodDefinition printBoth at misc.ceylon (34:0-36:0)
 function printBoth(x,y){
-    $$$cl15.print(x.plus($$$cl15.String(", ")).plus(y));
+    $$$cl15.print(x.plus($$$cl15.String(", ",2)).plus(y));
 }
 
 //MethodDefinition doIt at misc.ceylon (38:0-40:0)
@@ -173,7 +173,7 @@ var $foob=function foob(){
     var $$foob=new CeylonObject;
     
     //AttributeDeclaration name at misc.ceylon (43:4-43:30)
-    var $name=$$$cl15.String("Gavin");
+    var $name=$$$cl15.String("Gavin",5);
     function getName(){
         return $name;
     }
