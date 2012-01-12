@@ -252,7 +252,7 @@ public class DeclarationVisitor extends Visitor {
         exitScope(o);
         if (that.getParameterList()==null) {
             that.addError("missing parameter list in class declaration: " + 
-                    name(that.getIdentifier()) );
+                    name(that.getIdentifier()), 1000 );
         }
         if (c.isClassOrInterfaceMember() && 
                 c.getContainer() instanceof TypedDeclaration) {
@@ -374,7 +374,7 @@ public class DeclarationVisitor extends Visitor {
     private static void checkMethodParameters(Tree.AnyMethod that) {
         if (that.getParameterLists().isEmpty()) {
             that.addError("missing parameter list in method declaration: " + 
-                    name(that.getIdentifier()) );
+                    name(that.getIdentifier()), 1000 );
         }
         if ( that.getParameterLists().size()>1 ) {
             that.addWarning("higher-order methods are not yet supported");
