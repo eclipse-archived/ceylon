@@ -972,10 +972,15 @@ public class GenerateJsVisitor extends Visitor
     public void visit(StringLiteral that) {
         clAlias();
         out(".String(");
-        out(that.getText());
+        String text = that.getText();
+        out(text);
+        // pre-calculate string length
+        // TODO: also for strings that contain escape sequences
+        if (text.indexOf('\\') < 0) {
+        	out(",");
+        	out(String.valueOf(text.codePointCount(0, text.length()) - 2));
+        }
         out(")");
-        //TODO: we should pre-calculate the size of the string (in codepoints) here
-        // at compile-time. But we have to take escape sequences into account. 
     }
     
     @Override
