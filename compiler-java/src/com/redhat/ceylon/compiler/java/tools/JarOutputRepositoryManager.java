@@ -269,6 +269,7 @@ public class JarOutputRepositoryManager {
             if(options.get(OptionName.VERBOSE) != null){
                 Log.printLines(log.noticeWriter, "[done writing to jar: "+outputFile.getPath()+"]");
             }
+            repo.removeArtifact(context);
             repo.putArtifact(context, outputFile);
         }
 
