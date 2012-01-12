@@ -49,7 +49,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
         try {
             Module module = moduleLoader.loadModule(moduleIdentifier);
             return SecurityActions.getClassLoader(module);
-        } catch (ModuleNotFoundException x) {
+        } catch (ModuleNotFoundException e) {
             String spec = name;
             String hint = "";
             if (Repository.NO_VERSION.equals(version) == false) {
@@ -58,7 +58,9 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
             } else if (Constants.DEFAULT.toString().equals(name) == false) {
                 hint = " (missing required version, try " + spec + "/version)";
             }
-            throw new CeylonRuntimeException("Could not find module: " + spec + hint);
+            final CeylonRuntimeException cre = new CeylonRuntimeException("Could not find module: " + spec + hint);
+            cre.initCause(e);
+            throw cre;
         }
     }
 
@@ -74,7 +76,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
         // prepend ./modules if no -rep
         if (conf.repositories.isEmpty())
             builder.addModules();
-        else{
+        else {
             // any user defined repos
             for (String token : conf.repositories) {
                 try {
@@ -85,7 +87,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
                 }
             }
         }
-        
+
         // add ceylon.home
         builder.addCeylonHome();
 

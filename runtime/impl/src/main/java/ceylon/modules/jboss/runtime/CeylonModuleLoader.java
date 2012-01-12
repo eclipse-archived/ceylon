@@ -23,7 +23,6 @@ import ceylon.modules.jboss.repository.ResourceLoaderProvider;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.compiler.java.metadata.Import;
 import com.redhat.ceylon.compiler.java.metadata.Module;
-
 import org.jboss.modules.DependencySpec;
 import org.jboss.modules.LocalLoader;
 import org.jboss.modules.ModuleIdentifier;
@@ -60,6 +59,10 @@ public class CeylonModuleLoader extends ModuleLoader {
     private static final String CEYLON_RUNTIME_PATH;
     private static final Set<ModuleIdentifier> BOOTSTRAP;
 
+    // TODO -- filter out java.* when available, add proper loaderPaths to this system dependency
+    private static final String JAVA = "java";
+    private static final Set<String> JAVA_SYSTEM_PATHS;
+
     static {
         final String defaultVersion = System.getProperty("ceylon.version", "0.1");
         LANGUAGE = ModuleIdentifier.create("ceylon.language", defaultVersion);
@@ -75,6 +78,10 @@ public class CeylonModuleLoader extends ModuleLoader {
         BOOTSTRAP.add(CMR);
         BOOTSTRAP.add(MODULES);
         BOOTSTRAP.add(RUNTIME);
+
+        JAVA_SYSTEM_PATHS = new HashSet<String>();
+        JAVA_SYSTEM_PATHS.add("java/lang");
+        JAVA_SYSTEM_PATHS.add("java/util");
     }
 
     private Repository repository;
@@ -173,7 +180,7 @@ public class CeylonModuleLoader extends ModuleLoader {
             final boolean isDefault = DEFAULT.equals(moduleIdentifier);
 
             Module module = null;
-            if(!isDefault){
+            if (!isDefault) {
                 module = readModule(moduleIdentifier, moduleFile);
                 if (module == null)
                     throw new ModuleLoadException("No module descriptor in module: " + moduleFile);
@@ -268,15 +275,19 @@ public class CeylonModuleLoader extends ModuleLoader {
      * @return new module dependency
      */
     DependencySpec createModuleDependency(Import i) {
-        final ModuleIdentifier mi = createModuleIdentifier(i);
-        final boolean export = i.export();
-        return DependencySpec.createModuleDependencySpec(
-                PathFilters.getDefaultImportFilterWithServices(), // import everything?
-                (export ? PathFilters.acceptAll() : PathFilters.rejectAll()),
-                this,
-                mi,
-                i.optional()
-        );
+        if (JAVA.equalsIgnoreCase(i.name())) {
+            return DependencySpec.createSystemDependencySpec(JAVA_SYSTEM_PATHS);
+        } else {
+            final ModuleIdentifier mi = createModuleIdentifier(i);
+            final boolean export = i.export();
+            return DependencySpec.createModuleDependencySpec(
+                    PathFilters.getDefaultImportFilterWithServices(), // import everything?
+                    (export ? PathFilters.acceptAll() : PathFilters.rejectAll()),
+                    this,
+                    mi,
+                    i.optional()
+            );
+        }
     }
 
     /**

@@ -34,6 +34,7 @@ public class ExamplesTestCase extends ModulesTest {
     }
 
     @Test
+    @Ignore // TODO -- provide a client-1.0.0.car which depends on hello-1.0.0 module
     public void testClient() throws Throwable {
         car("client/1.0.0", Collections.<String, String>emptyMap());
     }
