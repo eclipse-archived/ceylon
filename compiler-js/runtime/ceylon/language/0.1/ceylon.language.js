@@ -429,7 +429,17 @@ $Singleton.prototype.getSize = function() { return Integer(1); }
 $Singleton.prototype.getLastIndex = function() { return Integer(0); }
 $Singleton.prototype.getFirst = function() { return elem; }
 $Singleton.prototype.getLast = function() { return elem; }
+$Singleton.prototype.getEmpty = function() { return $false; }
 $Singleton.prototype.defines = function(idx) { return idx.equals(Integer(0)); }
+$Singleton.prototype.span = function(from, to) {
+    return (from.equals(Integer(0)) === getTrue() || to.equals(Integer(0)) === getTrue()) ? this : ArraySequence([])
+}
+$Singleton.prototype.segment = function(idx, len) {
+    if (idx.equals(Integer(0)) === getTrue() && len.equals(Integer(0)) === getFalse()) {
+        return this;
+    }
+    return ArraySequence([]);
+}
 $Singleton.prototype.getIterator = function() { return SingletonIterator(this.elem); }
 
 function $SingletonIterator() {}

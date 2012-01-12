@@ -58,8 +58,15 @@ void test_append() {
 void test_singleton() {
     value theone = Singleton("the one and only singleton");
     expect(theone.size, 1, "singleton");
-    expect(theone.item(0)?"null", "the one and only singleton", "singleton");
-    expect(theone.item(1)?"null", "null", "singleton");
+    expect(theone.lastIndex, 0, "singleton");
+    expect(exists theone.item(0), true, "singleton");
+    expect(exists theone.item(1), false, "singleton");
+    expect(theone.defines(0), true, "singleton");
+    expect(theone.defines(1), false, "singleton");
+    expect(theone.span(0, 10).empty, false, "singleton");
+    expect(theone.span(1, 1).empty, true, "singleton");
+    expect(theone.segment(0, 0).empty, true, "singleton");
+    expect(theone.segment(0, 1).empty, false, "singleton");
 }
 
 void test_entries() {
