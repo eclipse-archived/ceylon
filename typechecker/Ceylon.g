@@ -178,7 +178,8 @@ typeAlias returns [Alias alias]
 
 packageName returns [Identifier identifier]
     : LIDENTIFIER
-      { $identifier = new Identifier($LIDENTIFIER); }
+      { $identifier = new Identifier($LIDENTIFIER); 
+        $LIDENTIFIER.setType(PIDENTIFIER);}
     ;
 
 typeName returns [Identifier identifier]
@@ -188,7 +189,8 @@ typeName returns [Identifier identifier]
 
 annotationName returns [Identifier identifier]
     : LIDENTIFIER
-      { $identifier = new Identifier($LIDENTIFIER); }
+      { $identifier = new Identifier($LIDENTIFIER); 
+        $LIDENTIFIER.setType(AIDENTIFIER); }
     ;
 
 memberName returns [Identifier identifier]
@@ -2172,7 +2174,8 @@ literalArgument returns [PositionalArgument positionalArgument]
       { $positionalArgument = new PositionalArgument(null);
         Expression e = new Expression(null);
         e.setTerm($stringLiteral.stringLiteral);
-        $positionalArgument.setExpression(e); }
+        $positionalArgument.setExpression(e); 
+        $stringLiteral.stringLiteral.getToken().setType(ASTRING_LITERAL); }
     ;
 
 //special rule for syntactic predicate
@@ -2808,6 +2811,9 @@ QUOTED_LITERAL
     ;
 
 fragment
+ASTRING_LITERAL:;
+
+fragment
 QuotedLiteralPart
     : ~('\'')*
     ;
@@ -3221,6 +3227,10 @@ COMPILER_ANNOTATION
 
 fragment
 LIDENTIFIER :;
+fragment
+PIDENTIFIER :;
+fragment
+AIDENTIFIER :;
 
 UIDENTIFIER 
     :   IdentifierStart IdentifierPart*
