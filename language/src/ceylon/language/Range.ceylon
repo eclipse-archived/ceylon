@@ -76,17 +76,26 @@ shared class Range<Element>(Element first, Element last)
     
     doc "An iterator for the elements of the range."
     shared actual Iterator<Element> iterator {
-        class RangeIterator(Element current) 
+        class RangeIterator()
+                extends Object()
                 satisfies Iterator<Element> {
-            shared actual Element head { 
-                return current;
+            variable Element|Finished current := first;
+            shared actual Element|Finished next() {
+                Element|Finished result = current;
+                if (is Element curr = current) {
+                    if (curr == last) {
+                        current := finished;
+                    } else {
+                        current := outer.next(curr);
+                    }
+                }
+                return result;
             }
-            shared actual Iterator<Element>? tail {
-                return current!=last then RangeIterator(x) 
-                        else null;
+            shared actual String string {
+                return "RangeIterator";
             }
         }
-        return RangeIterator(first);
+        return RangeIterator();
     }
     
     doc "Determines if the range includes the given object."

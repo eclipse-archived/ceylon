@@ -43,8 +43,9 @@ public class SequenceBuilder<Element> implements Sized {
     	if (list==null) {
     	    list = new ArrayList<Element>( (int) ((Sized) elements).getSize() );
     	}
-    	for (Iterator<? extends Element> iter=elements.getIterator(); iter!=null; iter=iter.getTail()) {
-    	    list.add(iter.getHead());
+    	java.lang.Object elem;
+    	for (Iterator<? extends Element> iter=elements.getIterator(); !((elem = iter.next()) instanceof Finished);) {
+    	    list.add((Element) elem);
     	}
     }
     

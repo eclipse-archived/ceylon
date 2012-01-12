@@ -28,8 +28,9 @@ public final class entries {
         else {
         	long i=0;
             List<Entry<? extends Integer,? extends Element>> list = new ArrayList<Entry<? extends Integer,? extends Element>>();
-            for (Iterator<? extends Element> iter=sequence.getIterator(); iter!=null; iter=iter.getTail()) {
-                list.add(new Entry<Integer,Element>(Integer.instance(i++), iter.getHead()));
+            java.lang.Object elem;
+            for (Iterator<? extends Element> iter=sequence.getIterator(); !((elem = iter.next()) instanceof Finished);) {
+                list.add(new Entry<Integer,Element>(Integer.instance(i++), (Element) elem));
             }
             return new ArraySequence<Entry<? extends Integer,? extends Element>>(list);
         }

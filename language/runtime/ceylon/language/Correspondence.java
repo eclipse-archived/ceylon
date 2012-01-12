@@ -162,8 +162,9 @@ public interface Correspondence<Key,Item> {
         }
 
         public static <Key,Item> boolean definesEvery(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys){
-            for (ceylon.language.Iterator<? extends Key> $key$iter$0 = keys.getIterator(); $key$iter$0 != null; $key$iter$0 = $key$iter$0.getTail()) {
-                final Key key = $key$iter$0.getHead();
+            java.lang.Object elem;
+            for (ceylon.language.Iterator<? extends Key> $key$iter$0 = keys.getIterator(); !((elem = $key$iter$0.next()) instanceof Finished);) {
+                final Key key = (Key) elem;
                 if (!$this.defines(key)) {
                     return false;
                 }
@@ -172,8 +173,9 @@ public interface Correspondence<Key,Item> {
         }
 
         public static <Key,Item> boolean definesAny(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys) {
-            for (ceylon.language.Iterator<? extends Key> $key$iter$0 = keys.getIterator(); $key$iter$0 != null; $key$iter$0 = $key$iter$0.getTail()) {
-                final Key key = $key$iter$0.getHead();
+            java.lang.Object elem;
+            for (ceylon.language.Iterator<? extends Key> $key$iter$0 = keys.getIterator(); !((elem = $key$iter$0.next()) instanceof Finished);) {
+                final Key key = (Key) elem;
                 if ($this.defines(key)) {
                     return true;
                 }

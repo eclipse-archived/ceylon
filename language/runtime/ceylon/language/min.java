@@ -20,8 +20,9 @@ public final class min {
     @TypeInfo("ceylon.language.Sequence<Value>")
     final Sequence<? extends Value> values) {
         Value min = values.getFirst();
-        for (Iterator<? extends Value> $val$iter$0 = values.getRest().getIterator(); $val$iter$0 != null; $val$iter$0 = $val$iter$0.getTail()) {
-            final Value val = $val$iter$0.getHead();
+        java.lang.Object $tmp;
+        for (Iterator<? extends Value> $val$iter$0 = values.getRest().getIterator(); !(($tmp = $val$iter$0.next()) instanceof Finished);) {
+            final Value val = (Value) $tmp;
             if (val.compare(min).smallerThan()) {
                 min = val;
             }

@@ -50,20 +50,17 @@ shared Entry<Integer,Element>[] entries<Element>(Element... sequence)
                 class EntryIterator(Integer from) 
                         extends Object()
                         satisfies Iterator<Integer->Element> {
-                    shared actual Entry<Integer,Element> head {
-                        if (exists Element item = sequence[from]) {
-                            return from->item;
+                    variable Integer idx := from;
+                    shared actual Entry<Integer,Element>|Finished next() {
+                        if (exists Element item = sequence[idx]) {
+                            return idx++->item;
                         }
                         else {
-                            throw;
+                            return finished;
                         }
                     }
-                    shared actual Iterator<Integer->Element>? tail {
-                        return from<sequence.lastIndex 
-                                then EntryIterator(from+1);
-                    }
                     shared actual String string {
-                        return "" sequence.string " from " from "";
+                        return "EntryIterator";
                     }
                 }
                 return EntryIterator(0);

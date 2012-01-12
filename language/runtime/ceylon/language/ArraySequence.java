@@ -87,21 +87,20 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     public class ArraySequenceIterator implements Iterator<Element> {
-
-        @Override
-        public Element getHead() {
-            return getFirst();
-        }
-
-        @Override
-        public Iterator<? extends Element> getTail() {
-            Iterable<? extends Element> rest = getRest();
-            return rest.getEmpty() ? null : rest.getIterator();
-        }
+        private long idx = first;
         
         @Override
+        public java.lang.Object next() {
+            if (idx <= getLastIndex()) {
+                return array[(int) idx++];
+            } else {
+                return $finished.getFinished();
+            }
+        }
+
+        @Override
         public java.lang.String toString() {
-            return "SequenceIterator";
+            return "ArraySequenceIterator";
         }
 
     }
@@ -193,31 +192,21 @@ public class ArraySequence<Element> implements Sequence<Element> {
             return false;
         @SuppressWarnings("unchecked")
         Sequence<? extends Element> other = (Sequence<? extends Element>) obj;
-        if(getSize() != other.getSize())
+        if (getSize() != other.getSize()) {
             return false;
+        }
         Iterator<? extends Element> thisIterator = getIterator();
         Iterator<? extends Element> otherIterator = other.getIterator();
-        while(thisIterator != null){
-            // shouldn't happen
-            if(otherIterator == null)
+        java.lang.Object thisHead = thisIterator.next();
+        java.lang.Object otherHead = otherIterator.next();
+        while (thisHead != $finished.getFinished() && otherHead != $finished.getFinished()) {
+            if (!thisHead.equals(otherHead)) {
                 return false;
-            Element thisHead = thisIterator.getHead();
-            java.lang.Object otherHead = otherIterator.getHead();
-            if(thisHead == null && otherIterator != null)
-                return false;
-            if(thisHead != null){
-                if(otherIterator == null)
-                    return false;
-                if(!thisHead.equals(otherHead))
-                    return false;
             }
-            thisIterator = (Iterator<? extends Element>) thisIterator.getTail();
-            otherIterator = otherIterator.getTail();
+            thisHead = thisIterator.next();
+            otherHead = otherIterator.next();
         }
-        // shouldn't happen
-        if(otherIterator != null)
-            return false;
-        return true;
+        return (thisHead == $finished.getFinished() && otherHead == $finished.getFinished());
     }
     
 }

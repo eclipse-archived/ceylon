@@ -73,28 +73,22 @@ shared interface Sequence<out Element>
     */
     
     shared actual default Iterator<Element> iterator {
+        class SequenceIterator(Integer from)
+                extends Object()
+                satisfies Iterator<Element> {
+            variable Integer idx := from;
+            shared actual Element|Finished next() { 
+                if (idx < lastIndex) {
+                    return item(idx) ? finished;
+                } else {
+                    return finished;
+                }
+            }
+            shared actual String string {
+                return "SequenceIterator";
+            }
+        }
         return SequenceIterator(0);
-    }
-    
-    class SequenceIterator(Integer from)
-            extends Object()
-            satisfies Iterator<Element> {
-        shared actual Element head { 
-            if (is Element head = item(from)) {
-                return head;
-            }
-            else {
-                throw;
-            }
-        }
-        shared actual Iterator<Element>? tail {
-            return from<lastIndex
-                then SequenceIterator(from+1)
-                else null;
-        }
-        shared actual String string {
-            return "SequenceIterator";
-        }
     }
     
     /*doc "Reverse this sequence, returning a new nonempty 

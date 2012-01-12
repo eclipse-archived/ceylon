@@ -17,11 +17,9 @@ shared Entry<Key,Item>[] zip<Key,Item>(Key[] keys, Item[] items)
     value builder = SequenceBuilder<Key->Item>();
     variable value ki := keys.iterator;
     variable value ii := items.iterator;
-    while (exists eki=ki) {
-        if (exists eii = ii) {
-            builder.append(eki.head->eii.head);
-            ki:=eki.tail;
-            ii:=eii.tail;
+    while (is Key eki = ki.next()) {
+        if (is Item eii = ii.next()) {
+            builder.append(eki->eii);
         }
         else {
             break;

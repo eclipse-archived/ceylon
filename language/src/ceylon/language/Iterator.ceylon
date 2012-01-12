@@ -3,12 +3,10 @@ doc "Produces elements if an `Iterable` object. Classes that
 see (Iterable)
 by "Gavin"
 shared interface Iterator<out Element> {
-    
-    doc "The current element."
-    shared formal Element head;
-    
-    doc "An iterator for the remaining elements, or null if
+    doc "The next element, or `finished` if
          there are no more elements to be iterated."
-    shared formal Iterator<Element>? tail;
-    
+    shared formal Element|Finished next();
 }
+
+shared class Finished() /* of finished */ {}
+shared object finished extends Finished() {}
