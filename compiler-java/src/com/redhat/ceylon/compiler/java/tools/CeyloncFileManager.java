@@ -147,7 +147,6 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         fileName = quoteKeywordsInFilename(fileName);
         
         if(location == StandardLocation.CLASS_OUTPUT){
-            File dir = getOutputFolder(sibling);
             File siblingFile = null;
             if (sibling != null && sibling instanceof RegularFileObject) {
                 siblingFile = ((RegularFileObject)sibling).getUnderlyingFile();
