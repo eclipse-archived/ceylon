@@ -39,3 +39,13 @@ void test() {
     f1.listFiles(SatisfiesFileFilter());
     f1.listFiles(SatisfiesFilenameFilter());
 }
+
+@nomodel
+class JavaInterfaceImpl() satisfies JavaInterface<Boolean> {
+    shared actual Boolean booleanMethod(Boolean b){ return b; }
+    shared actual Boolean boxedBooleanMethod(Boolean b){ return b; }
+    shared actual Boolean ceylonBooleanMethod(Boolean b){ return b; }
+    shared actual Boolean classTypeParamMethod(Boolean b){ return b; }
+
+    shared actual M methodTypeParamMethod<M>(M b){ return b; }
+}

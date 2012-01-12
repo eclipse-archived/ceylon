@@ -47,6 +47,7 @@ public class InteropTest extends CompilerTest {
 
     @Test
     public void testIopSatisfies(){
+        compile("JavaInterface.java");
         compareWithJavaSource("Satisfies");
     }
 
