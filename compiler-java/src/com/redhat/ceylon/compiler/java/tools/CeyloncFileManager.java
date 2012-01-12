@@ -212,19 +212,23 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         // lazy loading
         final RepositoryBuilder builder = new RepositoryBuilder();
 
-        builder.addModules();
-        builder.addCeylonHome();
-
-        // any user defined repos
+        // any user defined repos first
         List<String> userRepos = options.getMulti(OptionName.CEYLONREPO);
-        for (String token : userRepos) {
-            try {
-                final RootBuilder rb = new RootBuilder(token);
-                builder.appendExternalRoot(rb.buildRoot());
-            } catch (Exception e) {
-                Logger.getLogger("ceylon.runtime").log(Level.WARNING, "Failed to add repository: " + token, e);
+        if(userRepos.isEmpty()){
+            builder.addModules();
+        }else{
+            for (String token : userRepos) {
+                try {
+                    final RootBuilder rb = new RootBuilder(token);
+                    builder.appendExternalRoot(rb.buildRoot());
+                } catch (Exception e) {
+                    Logger.getLogger("ceylon.runtime").log(Level.WARNING, "Failed to add repository: " + token, e);
+                }
             }
         }
+
+        // Caching repo
+        builder.addCeylonHome();
 
         // add remote module repo
         builder.addModulesCeylonLangOrg();
