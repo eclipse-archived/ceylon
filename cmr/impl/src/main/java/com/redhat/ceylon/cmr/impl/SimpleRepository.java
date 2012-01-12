@@ -17,7 +17,6 @@
 package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.spi.ContentStore;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 
@@ -31,23 +30,11 @@ import java.io.IOException;
  */
 public class SimpleRepository extends AbstractNodeRepository {
 
-    private static StructureBuilder toStructureBuilder(ContentStore contentStore) {
-        if (contentStore instanceof StructureBuilder == false)
-            throw new IllegalArgumentException("ContentStore is not StructureBuilder: " + contentStore);
-        return StructureBuilder.class.cast(contentStore);
-    }
-
-    public SimpleRepository(ContentStore contentStore) {
-        this(contentStore, toStructureBuilder(contentStore));
-    }
-
-    public SimpleRepository(ContentStore contentStore, StructureBuilder structureBuilder) {
-        if (contentStore == null)
-            throw new IllegalArgumentException("Null content store!");
+    public SimpleRepository(StructureBuilder structureBuilder) {
         if (structureBuilder == null)
             throw new IllegalArgumentException("Null structure builder!");
 
-        setRoot(new RootNode(contentStore, structureBuilder));
+        setRoot(structureBuilder.createRoot());
     }
 
     public File getArtifact(ArtifactContext context) throws IOException {
