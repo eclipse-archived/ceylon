@@ -7,6 +7,8 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -36,8 +38,24 @@ public class Package implements Scope {
         this.name = name;
     }
     
-    public List<Unit> getUnits() {
-        return units;
+    public Iterable<Unit> getUnits() {
+        synchronized (units) {
+            List<Unit> copiedList = new ArrayList<Unit>(units.size());
+            copiedList.addAll(units);
+            return copiedList;
+        }
+    }
+    
+    public void addUnit(Unit unit) {
+        synchronized (units) {
+            units.add(unit);
+        }
+    }
+    
+    public void removeUnit(Unit unit) {
+        synchronized (units) {
+            units.remove(unit);
+        }
     }
     
     public boolean isShared() {

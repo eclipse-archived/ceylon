@@ -175,14 +175,17 @@ public class DeclarationVisitor extends Visitor {
                 Declaration member = model.getContainer().getDirectMember( model.getName() );
                 if (member!=null) {
                     that.addError("duplicate declaration name: " + model.getName());
+                    model.getUnit().getDuplicateDeclarations().add(member);
                 }
             }
             else {
                 Scope s = model.getContainer();
                 boolean isControl;
                 do {
-                    if ( s.getDirectMemberOrParameter(model.getName())!=null ) {
+                    Declaration member = s.getDirectMemberOrParameter(model.getName());
+                    if ( member !=null ) {
                         that.addError("duplicate declaration name: " + model.getName());
+                        model.getUnit().getDuplicateDeclarations().add(member);
                     }
                     isControl = s instanceof ControlBlock;
                     s = s.getContainer();
@@ -210,8 +213,8 @@ public class DeclarationVisitor extends Visitor {
         //that.setModelNode(unit);
         unit.setPackage(pkg);
         unit.setFilename(filename);
-        pkg.getUnits().remove(unit);
-        pkg.getUnits().add(unit);
+        pkg.removeUnit(unit);
+        pkg.addUnit(unit);
         super.visit(that);
     }
     

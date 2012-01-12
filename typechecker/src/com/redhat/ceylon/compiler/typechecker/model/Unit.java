@@ -20,6 +20,7 @@ public class Unit {
 	private String filename;
 	private List<ImportList> importLists = new ArrayList<ImportList>();
 	private Set<Identifier> unresolvedReferences = new HashSet<Identifier>();
+	private Set<Declaration> duplicateDeclarations = new HashSet<Declaration>();
     
     public List<Import> getImports() {
         return imports;
@@ -31,6 +32,10 @@ public class Unit {
 
     public Set<Identifier> getUnresolvedReferences() {
         return unresolvedReferences;
+    }
+
+    public Set<Declaration> getDuplicateDeclarations() {
+        return duplicateDeclarations;
     }
 
     public Package getPackage() {

@@ -2,10 +2,10 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -59,9 +59,7 @@ public class ModuleValidator {
             verifyModuleDependencyTree(module.getImports(), dependencyTree, new ArrayList<Module>());
             dependencyTree.pollLast();
         }
-        for (PhasedUnits units : phasedUnitsOfDependencies) {
-            executeExternalModulePhases(units);
-        }
+        executeExternalModulePhases();
     }
 
     private void verifyModuleDependencyTree(
@@ -82,7 +80,7 @@ public class ModuleValidator {
                 moduleManager.addErrorToModule( dependencyTree.getFirst(), error.toString() );
                 return;
             }
-            List<String> searchedArtifacts = new ArrayList<String>();
+            Set<String> searchedArtifacts = new HashSet<String>();
             Iterable<String> searchedArtifactExtensions = moduleManager.getSearchedArtifactExtensions();
             
             if ( ! module.isAvailable() ) {
@@ -90,10 +88,8 @@ public class ModuleValidator {
                 VirtualFile artifact = null;
                 List<ArtifactProvider> artifactProviders = context.getArtifactProviders();
                 for (final ArtifactProvider artifactProvider : artifactProviders) {
-                    for (String extension : searchedArtifactExtensions) {
-                        searchedArtifacts.add(artifactProvider.getArtifactName(module.getName(), 
-                                module.getVersion(), extension));
-                    }
+                    searchedArtifacts.add(artifactProvider.getArtifactName(module.getName(), 
+                            module.getVersion(), "*"));
                     artifact = artifactProvider.getArtifact(module.getName(), 
                             module.getVersion(), 
                             searchedArtifactExtensions);
@@ -104,22 +100,28 @@ public class ModuleValidator {
                 if (artifact == null) {
                     //not there => error
                     StringBuilder error = new StringBuilder("Cannot find module artifact(s) : ");
-                    if (searchedArtifacts.size() > 0) {
-                        error.append(searchedArtifacts.get(0));
+                    List<String> searchedArtifactList = new ArrayList<String>(searchedArtifacts.size());
+                    searchedArtifactList.addAll(searchedArtifacts);
+                    if (searchedArtifactList.size() > 0) {
+                        error.append(searchedArtifactList.get(0));
                     }
-                    for (String searchedArtifact : searchedArtifacts.subList(1, searchedArtifacts.size())) {
-                        error.append(", ");
-                        error.append("\n\t");
-                        error.append(searchedArtifact);
+                    if (searchedArtifacts.size() > 1) {
+                        for (String searchedArtifact : searchedArtifactList.subList(1, searchedArtifactList.size())) {
+                            error.append(", ");
+                            error.append("\n\t");
+                            error.append(searchedArtifact);
+                        }
                     }
                     error.append("\n\t  in repositories : ");
                     if (artifactProviders.size() > 0) {
                         error.append(artifactProviders.get(0));
                     }
-                    for (ArtifactProvider searchedProvider : artifactProviders.subList(1, artifactProviders.size())) {
-                        error.append(", ");
-                        error.append("\n\t");
-                        error.append(searchedProvider);
+                    if (artifactProviders.size() > 1) {
+                        for (ArtifactProvider searchedProvider : artifactProviders.subList(1, artifactProviders.size())) {
+                            error.append(", ");
+                            error.append("\n\t");
+                            error.append(searchedProvider);
+                        }
                     }
                     error.append("\n\tDependency tree: ");
                     buildDependencyString(dependencyTree, module, error);
@@ -190,18 +192,23 @@ public class ModuleValidator {
         return dupe.getVersion().equals(module.getVersion());
     }
 
-    private void executeExternalModulePhases(PhasedUnits phasedUnits) {
+    private void executeExternalModulePhases() {
         //moduleimport phase already done
         //Already called from within verifyModuleDependencyTree
-        final List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
-        for (PhasedUnit pu : listOfUnits) {
-            pu.scanDeclarations();
+        for (PhasedUnits units : phasedUnitsOfDependencies) {
+            for (PhasedUnit pu : units.getPhasedUnits()) {
+                pu.scanDeclarations();
+            }
         }
-        for (PhasedUnit pu : listOfUnits) {
-            pu.scanTypeDeclarations();
+        for (PhasedUnits units : phasedUnitsOfDependencies) {
+            for (PhasedUnit pu : units.getPhasedUnits()) {
+                pu.scanTypeDeclarations();
+            }
         }
-        for (PhasedUnit pu : listOfUnits) {
-            pu.validateRefinement(); //TODO: only needed for type hierarchy view in IDE!
+        for (PhasedUnits units : phasedUnitsOfDependencies) {
+            for (PhasedUnit pu : units.getPhasedUnits()) {
+                pu.validateRefinement(); //TODO: only needed for type hierarchy view in IDE!
+            }
         }
     }
 

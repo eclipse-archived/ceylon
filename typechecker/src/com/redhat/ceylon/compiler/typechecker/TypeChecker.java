@@ -70,6 +70,10 @@ public class TypeChecker {
         return phasedUnits;
     }
     
+    public List<PhasedUnits> getPhasedUnitsOfDependencies() {
+        return phasedUnitsOfDependencies;
+    }
+    
     public Context getContext() {
         return context;
     }

@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import java.io.FilterInputStream;
 
 /**
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
@@ -47,7 +48,12 @@ class ZipEntryVirtualFile implements VirtualFile {
     @Override
     public InputStream getInputStream() {
         try {
-            return zipFile.getInputStream( entry );
+            return new FilterInputStream(zipFile.getInputStream( entry )) {
+                // Do nothing since the ZipInputStream will be closed by the ZipFile.close call
+                @Override
+                public void close() throws IOException {  
+                }
+            };
         }
         catch (IOException e) {
             throw new RuntimeException(e);
