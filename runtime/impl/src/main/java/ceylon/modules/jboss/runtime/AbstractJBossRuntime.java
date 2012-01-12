@@ -74,19 +74,20 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
         // prepend ./modules if no -rep
         if (conf.repositories.isEmpty())
             builder.addModules();
-
-        // prepend ceylon.home
-        builder.addCeylonHome();
-
-        // any user defined repos
-        for (String token : conf.repositories) {
-            try {
-                final RootBuilder rb = new RootBuilder(token);
-                builder.appendExternalRoot(rb.buildRoot());
-            } catch (Exception e) {
-                Logger.getLogger("ceylon.runtime").log(Level.WARNING, "Failed to add repository: " + token, e);
+        else{
+            // any user defined repos
+            for (String token : conf.repositories) {
+                try {
+                    final RootBuilder rb = new RootBuilder(token);
+                    builder.appendExternalRoot(rb.buildRoot());
+                } catch (Exception e) {
+                    Logger.getLogger("ceylon.runtime").log(Level.WARNING, "Failed to add repository: " + token, e);
+                }
             }
         }
+        
+        // add ceylon.home
+        builder.addCeylonHome();
 
         // add remote module repo
         builder.addModulesCeylonLangOrg();
