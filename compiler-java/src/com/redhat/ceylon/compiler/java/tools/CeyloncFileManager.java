@@ -65,6 +65,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
     private Context context;
     private Options options;
     private Repository repo;
+    private Repository outputRepo;
 
     public CeyloncFileManager(Context context, boolean register, Charset charset) {
         super(context, register, charset);
@@ -151,7 +152,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
             if (sibling != null && sibling instanceof RegularFileObject) {
                 siblingFile = ((RegularFileObject)sibling).getUnderlyingFile();
             }
-            return jarRepository.getFileObject(getRepository(), currentModule, fileName, siblingFile);
+            return jarRepository.getFileObject(getOutputRepository(), currentModule, fileName, siblingFile);
         }else
             return super.getFileForOutput(location, fileName, sibling);
     }
@@ -243,7 +244,34 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         repo = builder.buildRepository();
         return repo;
     }
-    
+
+    public Repository getOutputRepository() {
+        // caching
+        if(outputRepo != null)
+            return outputRepo;
+        // lazy loading
+        final RepositoryBuilder builder = new RepositoryBuilder();
+
+        // any user defined repos
+        String outRepo = options.get(OptionName.CEYLONOUT);
+        if(outRepo != null){
+            try {
+                final RootBuilder rb = new RootBuilder(outRepo);
+                builder.appendExternalRoot(rb.buildRoot());
+            } catch (Exception e) {
+                Logger.getLogger("ceylon.runtime").log(Level.WARNING, "Failed to add repository: " + outRepo, e);
+            }
+        }else{
+            // make sure the folder exists
+            // FIXME: we can do this more carefully
+            new File("modules").mkdir();
+            builder.addModules();
+        }
+
+        outputRepo = builder.buildRepository();
+        return outputRepo;
+    }
+
     @Override
     protected File getClassOutDir() {
         File outDir = super.getClassOutDir();
