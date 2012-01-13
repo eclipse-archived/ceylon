@@ -26,16 +26,25 @@ shared class AllOperators() {
     variable Integer i2 := +0;
     variable Float f1 := 0.0;
     variable Float f2 := 0.0;
-       
+    
     void slotwise() {
+        @error
         i1 := ~i2;
+        @error
         i1 := +4 | i2;
+        @error
         i1 := +4 & i2;
+        @error
         i1 := +4 & i2;
+        @error
         i1 := +4 ~ i2;
+        @error
         i1 |= i2;
+        @error
         i1 &= i2;
+        @error
         i1 ~= i2;
+        @error
         i1 ^= i2;
     }
 }

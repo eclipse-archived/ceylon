@@ -1,3 +1,4 @@
+@error
 class ClassWithBrokenMembers(){
     @error
     fuuu()();
@@ -24,9 +25,11 @@ class ClassWithBrokenMembers(){
 
     @error
     MissingType obj {
+        @error
         fu=bar;
     }
 }
+@error
 interface InterfaceWithBrokenMembers{
     @error
     fuuu()();
@@ -54,6 +57,7 @@ interface InterfaceWithBrokenMembers{
 
     @error
     MissingType obj {
+        @error
         fu=bar;
     }
 }
