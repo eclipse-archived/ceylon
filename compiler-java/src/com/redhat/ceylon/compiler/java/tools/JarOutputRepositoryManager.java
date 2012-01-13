@@ -270,6 +270,9 @@ public class JarOutputRepositoryManager {
             ArtifactContext sha1Context = context.getSha1Context();
             repo.removeArtifact(sha1Context);
             repo.putArtifact(sha1Context, sha1File);
+            // now cleanup
+            outputFile.delete();
+            sha1File.delete();
         }
 
         private void copy(InputStream inputStream, JarOutputStream outputStream) throws IOException {
