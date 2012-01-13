@@ -34,6 +34,11 @@ public class Context {
         }
     }
 
+    public Context(ArtifactProvider artifactProvider, VFS vfs) {
+        this.vfs = vfs;
+        this.artifactProviders = Arrays.<ArtifactProvider>asList(artifactProvider);
+    }
+
     public Modules getModules() {
         return modules;
     }
