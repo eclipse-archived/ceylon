@@ -56,7 +56,10 @@ public class VFSArtifactProvider implements ArtifactProvider {
             name.append(moduleRadix).append(".");
         }
         name.deleteCharAt( name.length() - 1 ); //remove trailing dot
-        name.append("-").append(version).append(".").append(extension);
+        // the default module doesn't have a name
+        if(!name.equals(Module.DEFAULT_MODULE_NAME))
+            name.append("-").append(version);
+        name.append(".").append(extension);
         return name.toString();
     }
 
