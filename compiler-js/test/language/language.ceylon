@@ -56,6 +56,19 @@ void testString() {
     expect(s4, "ÖŨ`𝄞A", "String.iterator");
 }
 
+void test_stringbuilder() {
+    value sb = StringBuilder();
+    expect(sb.string, "", "StringBuilder");
+    sb.append("H");
+    expect(sb.string, "H", "StringBuilder");
+    sb.appendCharacter(`E`);
+    expect(sb.string, "HE", "StringBuilder");
+    sb.appendAll("LL", "O", "!!!");
+    expect(sb.string, "HELLO!!!", "StringBuilder");
+    sb.appendSpace();
+    expect(sb.string, "HELLO!!! ", "StringBuilder");
+}
+
 shared void test() {
     print("--- Start Language Module Tests ---");
     test_largest();
@@ -74,6 +87,7 @@ shared void test() {
     test_iterators();
     test_ranges();
     test_interpolate();
+    test_stringbuilder();
     testCharacter();
     testString();
     print("--- End Language Module Tests ---");
