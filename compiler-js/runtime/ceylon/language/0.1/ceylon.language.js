@@ -222,7 +222,7 @@ $ArraySequence.prototype.getLast = function() { return this.item(this.getLastInd
 $ArraySequence.prototype.defines = function(idx) { return Boolean$(idx.compare(this.getSize()) === smaller); }
 $ArraySequence.prototype.segment = function(from, len) {
     var seq = [];
-    if (len.equals(Integer(0)) === getFalse()) {
+    if (len.compare(Integer(0)) === larger) {
         var stop = from.plus(len).value;
         for (var i=from.value; i < stop; i++) {
             var x = this.item(Integer(i));
@@ -371,7 +371,7 @@ $Range.prototype.by = function(step) {
     return ArraySequence(seq);
 }
 $Range.prototype.segment = function(from, len) {
-    if (len.equals(Integer(0)) === getTrue()) return ArraySequence([])
+    if (len.compare(Integer(0)) !== larger) return ArraySequence([])
     var x = this.first;
     for (var i=0; i < from.value; i++) { x = this.next(x); }
     //only positive length for now
@@ -452,7 +452,7 @@ $Singleton.prototype.span = function(from, to) {
     return (from.equals(Integer(0)) === getTrue() || to.equals(Integer(0)) === getTrue()) ? this : ArraySequence([])
 }
 $Singleton.prototype.segment = function(idx, len) {
-    if (idx.equals(Integer(0)) === getTrue() && len.equals(Integer(0)) === getFalse()) {
+    if (idx.equals(Integer(0)) === getTrue() && len.compare(Integer(0)) === larger) {
         return this;
     }
     return ArraySequence([]);
