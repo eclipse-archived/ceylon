@@ -265,10 +265,10 @@ public class JarOutputRepositoryManager {
                 Log.printLines(log.noticeWriter, "[done writing to jar: "+outputFile.getPath()+"]");
             }
             File sha1File = ShaSigner.sign(outputFile, log, options);
-            repo.removeArtifact(context);
+            context.setForceOperation(true);
             repo.putArtifact(context, outputFile);
             ArtifactContext sha1Context = context.getSha1Context();
-            repo.removeArtifact(sha1Context);
+            sha1Context.setForceOperation(true);
             repo.putArtifact(sha1Context, sha1File);
             // now cleanup
             outputFile.delete();
