@@ -9,7 +9,4 @@ public interface ArtifactProvider {
      * Must be closed when done with it
      */
     ClosableVirtualFile getArtifact(List<String> moduleName, String version, Iterable<String> extensions);
-
-    public abstract String getArtifactName(List<String> moduleName, String version, String extension);
-
 }

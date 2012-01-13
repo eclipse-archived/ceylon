@@ -89,7 +89,8 @@ public class ModuleValidator {
                 VirtualFile artifact = null;
                 List<ArtifactProvider> artifactProviders = context.getArtifactProviders();
                 for (final ArtifactProvider artifactProvider : artifactProviders) {
-                    searchedArtifacts.add(artifactProvider.getArtifactName(module.getName(), 
+                    // this really is just for error messages
+                    searchedArtifacts.add(VFSArtifactProvider.getArtifactName(module.getName(), 
                             module.getVersion(), "*"));
                     artifact = artifactProvider.getArtifact(module.getName(), 
                             module.getVersion(), 

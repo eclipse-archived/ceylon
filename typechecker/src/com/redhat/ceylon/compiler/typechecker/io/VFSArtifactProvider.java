@@ -49,8 +49,7 @@ public class VFSArtifactProvider implements ArtifactProvider {
     /**
      * f.q.module.name-version.extension
      */
-    @Override
-    public String getArtifactName(List<String> moduleName, String version, String extension) {
+    public static String getArtifactName(List<String> moduleName, String version, String extension) {
         StringBuilder name = new StringBuilder();
         for (String moduleRadix : moduleName) {
             name.append(moduleRadix).append(".");
