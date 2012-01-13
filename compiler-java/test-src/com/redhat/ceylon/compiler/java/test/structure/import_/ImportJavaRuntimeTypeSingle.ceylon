@@ -22,6 +22,7 @@ import java.lang{Throwable}
 @nomodel
 class ImportJavaRuntimeTypeSingle() {
     void m() {
+        @error
         Throwable();
     }
 }

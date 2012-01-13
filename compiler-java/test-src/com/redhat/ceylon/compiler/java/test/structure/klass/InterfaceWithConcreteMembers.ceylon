@@ -19,11 +19,13 @@
  */
 @nomodel
 interface InterfaceWithConcreteMembers {
+ @error
  shared default Integer foo(Boolean b){
   return 1;
  }
 }
 
 @nomodel
+@error
 class Impl () satisfies InterfaceWithConcreteMembers {
 }

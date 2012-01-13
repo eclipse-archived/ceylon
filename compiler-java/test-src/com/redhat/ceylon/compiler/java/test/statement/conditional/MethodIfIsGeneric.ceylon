@@ -32,15 +32,17 @@ interface B<T> satisfies Base<T> {
 
 @nomodel
 class MethodIfIsGeneric() {
+    
     shared void m(Object x) {
+        @error
         if (is Base<Integer> x) {
             x.baseMethod();
         }
-
+        @error
         if (is A<Integer>|B<Integer> x) {
             x.baseMethod();
         }
-
+        @error
         if (is A<Integer>&B<Integer> x) {
             x.baseMethod();
             x.aMethod();

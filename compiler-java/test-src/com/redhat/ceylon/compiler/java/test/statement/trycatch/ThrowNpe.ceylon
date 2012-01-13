@@ -26,7 +26,8 @@ void test() {
     }
     catch (Exception npe) {}
     try {
+        @error
         throw NullPointerException();
     }
-    catch (NullPointerException npe) {}
+    catch (@error NullPointerException npe) {}
 }

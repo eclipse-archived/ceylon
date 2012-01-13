@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+@error
 Module module {
     name = 'com.redhat.ceylon.compiler.java.test.structure.module.interdep.a';
     version = '6.6.6';
