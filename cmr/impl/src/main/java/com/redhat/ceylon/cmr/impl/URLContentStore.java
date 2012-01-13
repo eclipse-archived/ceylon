@@ -16,12 +16,12 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.spi.*;
 
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Logger;
 
 /**
  * URL based content store.
@@ -36,14 +36,15 @@ public abstract class URLContentStore implements ContentStore, StructureBuilder 
 
     protected static final String SEPARATOR = "/";
 
-    protected final Logger log = Logger.getLogger(getClass().getName());
     protected final String root;
     protected final Set<String> suffixes = new HashSet<String>();
+    protected Logger log;
 
-    protected URLContentStore(String root) {
+    protected URLContentStore(String root, Logger log) {
         if (root == null)
             throw new IllegalArgumentException("Null root url");
         this.root = root;
+        this.log = log;
         addSuffix(CAR);
         addSuffix(JAR);
         addSuffix(ZIP);

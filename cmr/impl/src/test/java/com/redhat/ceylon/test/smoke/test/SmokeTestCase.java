@@ -17,7 +17,9 @@
 
 package com.redhat.ceylon.test.smoke.test;
 
+import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.RemoteContentStore;
 import com.redhat.ceylon.cmr.impl.RepositoryBuilder;
 import com.redhat.ceylon.cmr.impl.RootRepository;
@@ -35,6 +37,8 @@ import java.net.URL;
  */
 public class SmokeTestCase {
 
+    Logger log = new JULLogger();
+    
     protected File getRepositoryRoot() throws URISyntaxException {
         URL url = getClass().getResource("/repo");
         Assert.assertNotNull(url);
@@ -43,7 +47,7 @@ public class SmokeTestCase {
 
     protected Repository getRepository() throws URISyntaxException {
         File root = getRepositoryRoot();
-        return new RootRepository(root);
+        return new RootRepository(root, log);
     }
 
     @Test
@@ -81,7 +85,7 @@ public class SmokeTestCase {
 
     @Test
     public void testExternalNodes() throws Exception {
-        RepositoryBuilder builder = new RepositoryBuilder(getRepositoryRoot());
+        RepositoryBuilder builder = new RepositoryBuilder(getRepositoryRoot(), log);
 
         InMemoryContentStore imcs = new InMemoryContentStore();
         Repository repo = builder.appendExternalRoot(imcs.createRoot()).buildRepository();
@@ -108,8 +112,8 @@ public class SmokeTestCase {
             return; // probably not on the internet?
         }
 
-        RepositoryBuilder builder = new RepositoryBuilder(getRepositoryRoot());
-        RemoteContentStore rcs = new RemoteContentStore(repoURL);
+        RepositoryBuilder builder = new RepositoryBuilder(getRepositoryRoot(), log);
+        RemoteContentStore rcs = new RemoteContentStore(repoURL, log);
         Repository repo = builder.appendExternalRoot(rcs.createRoot()).buildRepository();
 
         String name = "com.redhat.fizbiz";

@@ -17,6 +17,7 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 
@@ -32,7 +33,7 @@ public class RootBuilder {
 
     private StructureBuilder structureBuilder;
 
-    public RootBuilder(String token) throws Exception {
+    public RootBuilder(String token, Logger log) throws Exception {
         if (token == null)
             throw new IllegalArgumentException("Null root token");
 
@@ -42,7 +43,7 @@ public class RootBuilder {
             token = temp;
 
         if (token.startsWith("http")) {
-            structureBuilder = new RemoteContentStore(token);
+            structureBuilder = new RemoteContentStore(token, log);
         } else {
             final File file = (token.startsWith("file") ? new File(new URI(token)) : new File(token));
             if (file.exists() == false)

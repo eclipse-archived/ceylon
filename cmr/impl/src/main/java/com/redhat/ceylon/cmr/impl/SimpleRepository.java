@@ -17,6 +17,7 @@
 package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 
@@ -30,7 +31,8 @@ import java.io.IOException;
  */
 public class SimpleRepository extends AbstractNodeRepository {
 
-    public SimpleRepository(StructureBuilder structureBuilder) {
+    public SimpleRepository(StructureBuilder structureBuilder, Logger log) {
+        super(log);
         if (structureBuilder == null)
             throw new IllegalArgumentException("Null structure builder!");
 

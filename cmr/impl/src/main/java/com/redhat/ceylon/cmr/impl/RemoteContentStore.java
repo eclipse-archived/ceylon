@@ -17,6 +17,7 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
@@ -35,8 +36,8 @@ import java.util.Collections;
  */
 public class RemoteContentStore extends URLContentStore {
 
-    public RemoteContentStore(String root) {
-        super(root);
+    public RemoteContentStore(String root, Logger log) {
+        super(root, log);
     }
 
     public ContentHandle popContent(Node node) {

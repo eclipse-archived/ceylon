@@ -18,6 +18,7 @@
 package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
@@ -42,11 +43,12 @@ public class RootRepository extends AbstractNodeRepository {
         return root;
     }
 
-    public RootRepository() {
-        this(getRootDir());
+    public RootRepository(Logger log) {
+        this(getRootDir(), log);
     }
 
-    public RootRepository(File rootDir) {
+    public RootRepository(File rootDir, Logger log) {
+        super(log);
         fileContentStore = new FileContentStore(rootDir);
         setRoot(new RootNode(fileContentStore, fileContentStore));
     }
@@ -65,7 +67,7 @@ public class RootRepository extends AbstractNodeRepository {
     }
 
     protected File putContent(ArtifactContext context, Node node, InputStream stream) throws IOException {
-        log.fine("Creating local copy of external node: " + node);
+        log.debug("Creating local copy of external node: " + node);
         fileContentStore.putContent(node, stream);
         File file = fileContentStore.getFile(node); // re-get
         if (context.isIgnoreSHA() == false && node instanceof OpenNode) {

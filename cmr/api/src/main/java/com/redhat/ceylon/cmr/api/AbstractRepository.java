@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Logger;
 
 /**
  * Abstract repository.
@@ -30,8 +29,12 @@ import java.util.logging.Logger;
  */
 public abstract class AbstractRepository implements Repository {
 
-    protected Logger log = Logger.getLogger(getClass().getName());
+    protected Logger log;
 
+    public AbstractRepository(Logger log){
+        this.log = log;
+    }
+    
     public File getArtifact(String name, String version) throws IOException {
         ArtifactContext context = new ArtifactContext();
         context.setName(name);

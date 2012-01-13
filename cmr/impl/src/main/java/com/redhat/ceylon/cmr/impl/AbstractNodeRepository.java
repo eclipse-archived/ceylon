@@ -19,6 +19,7 @@ package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.AbstractRepository;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
@@ -40,6 +41,10 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
 
     protected OpenNode root; // main local root
     protected List<OpenNode> roots = new CopyOnWriteArrayList<OpenNode>(); // lookup roots - order matters! 
+
+    public AbstractNodeRepository(Logger log) {
+        super(log);
+    }
 
     protected OpenNode getRoot() {
         if (root == null)

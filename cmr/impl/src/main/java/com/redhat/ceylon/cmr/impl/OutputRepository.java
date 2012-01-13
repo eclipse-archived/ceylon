@@ -18,6 +18,7 @@ package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.AbstractRepository;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
 
 import java.io.File;
@@ -39,15 +40,16 @@ public class OutputRepository extends AbstractRepository {
         return new File("output"); // TODO
     }
 
-    public OutputRepository(Repository repository) {
-        this(getOutputDir(), repository);
+    public OutputRepository(Repository repository, Logger log) {
+        this(getOutputDir(), repository, log);
     }
 
-    public OutputRepository(File outputDir, Repository repository) {
-        this(new RootRepository(outputDir), repository);
+    public OutputRepository(File outputDir, Repository repository, Logger log) {
+        this(new RootRepository(outputDir, log), repository, log);
     }
 
-    public OutputRepository(Repository output, Repository repository) {
+    public OutputRepository(Repository output, Repository repository, Logger log) {
+        super(log);
         if (output == null)
             throw new IllegalArgumentException("Output is null!");
         if (repository == null)
