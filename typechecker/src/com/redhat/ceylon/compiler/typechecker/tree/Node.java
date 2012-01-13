@@ -82,6 +82,10 @@ public abstract class Node {
     	return getFirstChildToken();
     }
     
+    public Token getMainToken() {
+        return token;
+    }
+    
     public String getLocation() {
     	Token token = getToken();
     	Token endToken = getEndToken();
