@@ -22,7 +22,10 @@ import ceylon.modules.Configuration;
 import ceylon.modules.Main;
 import ceylon.modules.api.runtime.AbstractRuntime;
 import ceylon.modules.spi.Constants;
+
+import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.RepositoryBuilder;
 import com.redhat.ceylon.cmr.impl.RootBuilder;
 import com.redhat.ceylon.cmr.spi.ContentTransformer;
@@ -31,9 +34,6 @@ import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
 import org.jboss.modules.ModuleNotFoundException;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Abstract Ceylon JBoss Modules runtime.
@@ -71,7 +71,8 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
      * @return repository extension
      */
     protected Repository createRepository(Configuration conf) {
-        final RepositoryBuilder builder = new RepositoryBuilder();
+        Logger log = new JULLogger();
+        final RepositoryBuilder builder = new RepositoryBuilder(log);
 
         // prepend ./modules if no -rep
         if (conf.repositories.isEmpty())
@@ -80,10 +81,10 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
             // any user defined repos
             for (String token : conf.repositories) {
                 try {
-                    final RootBuilder rb = new RootBuilder(token);
+                    final RootBuilder rb = new RootBuilder(token, log);
                     builder.appendExternalRoot(rb.buildRoot());
                 } catch (Exception e) {
-                    Logger.getLogger("ceylon.runtime").log(Level.WARNING, "Failed to add repository: " + token, e);
+                    log.warning("Failed to add repository: " + token +": "+e.getMessage());
                 }
             }
         }
