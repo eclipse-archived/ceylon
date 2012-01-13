@@ -1,13 +1,14 @@
-MissingType brokenGetter {
-    fuuuuuu()();
+@error MissingType brokenGetter {
+    @error fuuuuuu()();
 }
 
-MissingType brokenAttribute = fuuuuuu()();
+@error MissingType brokenAttribute = fuuuuuu()();
 
 assign brokenGetter {
-    fuuuuuu()();
+    @error fuuuuuu()();
 }
 
+@error
 MissingType obj {
     fu=bar;
 }

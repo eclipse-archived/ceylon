@@ -1,7 +1,9 @@
 @nomodel
+@error
 variable Integer assert := 0;
 
 @nomodel
-void m() {
+void keywordInToplevelAssignment() {
+    @error
     assert := 1;
 }

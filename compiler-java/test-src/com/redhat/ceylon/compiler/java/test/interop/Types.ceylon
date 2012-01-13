@@ -18,7 +18,9 @@
  * MA  02110-1301, USA.
  */
 @nomodel
+@error
 void m() {
+    @error
     TypesJava java = TypesJava();
     Boolean b1 = java.return_boolean();
     Boolean b2 = java.return_Boolean();

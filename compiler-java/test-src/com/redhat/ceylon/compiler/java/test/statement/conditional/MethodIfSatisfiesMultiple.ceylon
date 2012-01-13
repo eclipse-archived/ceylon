@@ -20,6 +20,7 @@
 @nomodel
 class MethodIfSatisfiesMultiple() {
     shared Integer m() {
+        @error
         if (satisfies Object & Integer Object) {
             return 1;
         }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.quoting.$assert;
 
-class KeywordInMethodObject {
+class KeywordInSetterObject {
     
     private final long getI() {
         return 0L;
@@ -17,11 +17,11 @@ class KeywordInMethodObject {
         final .java.lang.String s = assert.toString();
     }
     
-    KeywordInMethodObject() {
+    KeywordInSetterObject() {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new KeywordInMethodObject();
+        new KeywordInSetterObject();
     }
 }

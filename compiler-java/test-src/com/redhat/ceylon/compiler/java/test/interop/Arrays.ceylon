@@ -18,7 +18,9 @@
  * MA  02110-1301, USA.
  */
 @nomodel
+@error
 void arraysBoxed() {
+    @error
     TypesJava java = TypesJava();
     Boolean[] b1 = java.array_boolean();
     Boolean[] b2 = java.array_Boolean();
@@ -37,7 +39,9 @@ void arraysBoxed() {
 }
 
 @nomodel
+@error
 void arraysUnboxed() {
+    @error
     TypesJava java = TypesJava();
     Array<Boolean> b1 = java.array_boolean();
     Array<Boolean> b2 = java.array_Boolean();

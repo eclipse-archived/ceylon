@@ -20,6 +20,7 @@
 @nomodel
 class MethodIfSatisfies() {
     shared Integer m() {
+        @error
         if (satisfies Integer Integer) {
             return 1;
         }

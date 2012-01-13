@@ -20,6 +20,7 @@
 @nomodel
 class ReplaceExceptionAtJavaCallSite() {
     @error void m() {
+        @error
         JavaThrower jt = JavaThrower();
         Boolean n = jt.throwException();
         Boolean m = jt.throwThrowable();

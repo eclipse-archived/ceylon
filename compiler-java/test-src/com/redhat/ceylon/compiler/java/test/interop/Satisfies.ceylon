@@ -20,23 +20,31 @@
 import java.io{...}
 
 @nomodel
+@error
 class SatisfiesFileFilter() satisfies FileFilter {
-    shared actual Boolean accept(File f) {
+    @error
+    shared actual Boolean accept(@error File f) {
         return true;
     }
 }
 
 @nomodel
+@error
 class SatisfiesFilenameFilter() satisfies FilenameFilter {
-    shared actual Boolean accept(File dir, String name) {
+    @error
+    shared actual Boolean accept(@error File dir, String name) {
         return true;
     }
 }
 
 @nomodel
+@error
 void test() {
+    @error
     File f1 = File("file1");
+    @error
     f1.listFiles(SatisfiesFileFilter());
+    @error
     f1.listFiles(SatisfiesFilenameFilter());
 }
 

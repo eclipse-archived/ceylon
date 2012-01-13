@@ -1,5 +1,5 @@
 @nomodel
-class KeywordInMethodObject() {
+class KeywordInSetterObject() {
     Integer i {
         return 0;
     }

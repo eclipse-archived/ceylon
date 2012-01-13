@@ -1,3 +1,3 @@
 void m2Features(){
-   print { String line { return "hello"; } };
+   print { @error String line { return "hello"; } };
 }

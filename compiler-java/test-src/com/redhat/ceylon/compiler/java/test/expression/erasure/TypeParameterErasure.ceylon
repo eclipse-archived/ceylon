@@ -19,14 +19,17 @@
  */
 @nomodel
 class TypeParameterErasure() {
+    @error
     interface Top {
         shared formal void top();
         shared formal Integer topAttribute;
     }
+    @error
     interface Left satisfies Top {
         shared formal void left();
         shared formal Integer leftAttribute;
     }
+    @error
     interface Right satisfies Top {
         shared formal void right();
         shared formal Integer rightAttribute;

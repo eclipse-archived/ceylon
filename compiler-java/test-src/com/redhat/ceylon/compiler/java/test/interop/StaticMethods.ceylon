@@ -20,16 +20,24 @@
 import java.io{...}
 
 @nomodel
+@error
 void staticMethods() {
+    @error
     File f1 = File("file1");
+    @error
     File f2 = f1.createTempFile("", "");
+    @error
     File f3 = f1.createTempFile("", "", f2);
 }
 
 @nomodel
+@error
 void staticMethodsNamed() {
     // This is silly really, but we test it anyway
+    @error
     File f1 = File{arg0="file1";};
+    @error
     File f2 = f1.createTempFile{arg0=""; arg1="";};
+    @error
     File f3 = f1.createTempFile{arg0=""; arg1=""; arg2=f2;};
 }

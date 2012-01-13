@@ -20,12 +20,18 @@
 import java.io{...}
 
 @nomodel
+@error
 void methods() {
+    @error
     File f1 = File("file1");
+    @error
     File f2 = File("file2");
+    @error
     print(f1.canRead());
     Integer cmp = f1.compareTo(f2);
     //File f3 = f1.createTempFile("", ""); // Does not work
+    @error
     File f3 = f1.createTempFile("", "", f2);
+    @error
     f1.listFiles();
 }

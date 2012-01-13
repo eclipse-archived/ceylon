@@ -1,5 +1,5 @@
 @nomodel
-class KeywordInMethodObject() {
+class KeywordInGetterObject() {
     Integer i {
         object assert {}
         String s = assert.string;

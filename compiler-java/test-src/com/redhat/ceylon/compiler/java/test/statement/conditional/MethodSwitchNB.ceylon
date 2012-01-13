@@ -20,6 +20,7 @@
 @nomodel
 class MethodSwitchNB() {
     shared Integer m(Integer n) {
+        @error
         switch(n)
         case (1) {
             return 1;
