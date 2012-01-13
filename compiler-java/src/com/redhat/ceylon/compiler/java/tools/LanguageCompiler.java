@@ -32,7 +32,6 @@ package com.redhat.ceylon.compiler.java.tools;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -54,6 +53,7 @@ import com.redhat.ceylon.compiler.java.loader.model.CompilerModuleManager;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
+import com.redhat.ceylon.compiler.typechecker.io.ArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -129,17 +129,8 @@ public class LanguageCompiler extends JavaCompiler {
         if (ceylonContext == null) {
             CeyloncFileManager fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
             VFS vfs = new VFS();
-            ArrayList<VirtualFile> virtualRepos = new ArrayList<VirtualFile>();
-            Iterable<? extends File> outputLocation = fileManager.getLocation(StandardLocation.CLASS_OUTPUT);
-            if (outputLocation != null && outputLocation.iterator().hasNext()) {
-                File outputRepository = outputLocation.iterator().next();
-                virtualRepos.add(vfs.getFromFile(outputRepository)); 
-            }
-            Iterable<? extends File> repos = fileManager.getLocation(CeylonLocation.REPOSITORY);
-            for (File repo : repos) {
-                virtualRepos.add(vfs.getFromFile(repo)); 
-            }
-            ceylonContext = new com.redhat.ceylon.compiler.typechecker.context.Context(virtualRepos, vfs);
+            ArtifactProvider artifactProvider = new RepositoryArtifactProvider(fileManager.getRepository(), vfs);
+            ceylonContext = new com.redhat.ceylon.compiler.typechecker.context.Context(artifactProvider , vfs);
             context.put(ceylonContextKey, ceylonContext);
         }
         return ceylonContext;
