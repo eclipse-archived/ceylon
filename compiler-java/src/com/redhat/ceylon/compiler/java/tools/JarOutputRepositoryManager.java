@@ -40,6 +40,7 @@ import javax.tools.JavaFileObject;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.compiler.java.util.ShaSigner;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.tools.javac.main.OptionName;
@@ -269,8 +270,12 @@ public class JarOutputRepositoryManager {
             if(options.get(OptionName.VERBOSE) != null){
                 Log.printLines(log.noticeWriter, "[done writing to jar: "+outputFile.getPath()+"]");
             }
+            File sha1File = ShaSigner.sign(outputFile, log, options);
             repo.removeArtifact(context);
             repo.putArtifact(context, outputFile);
+            ArtifactContext sha1Context = context.getSha1Context();
+            repo.removeArtifact(sha1Context);
+            repo.putArtifact(sha1Context, sha1File);
         }
 
         private void copy(InputStream inputStream, JarOutputStream outputStream) throws IOException {

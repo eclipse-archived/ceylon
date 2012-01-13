@@ -36,19 +36,20 @@ import com.sun.tools.javac.util.Options;
 
 public class ShaSigner {
     
-    public static void sign(File file, Log log, Options options){
+    public static File sign(File file, Log log, Options options){
         String sha1 = sha1(file, log);
         if(sha1 == null)
-            return;
+            return null;
         
-        String sha1Path = file.getPath()+".sha1";
+        File sha1File = new File(file.getPath()+".sha1");
         if(options.get(OptionName.VERBOSE) != null){
-            Log.printLines(log.noticeWriter, "[signing jar "+file.getPath()+" into: "+sha1Path+"]");
+            Log.printLines(log.noticeWriter, "[signing jar "+file.getPath()+" into: "+sha1File.getPath()+"]");
         }
-        writeSha1(sha1Path, sha1, log);
+        writeSha1(sha1File, sha1, log);
+        return sha1File;
     }
     
-    private static void writeSha1(String sha1Path, String sha1, Log log) {
+    private static void writeSha1(File sha1Path, String sha1, Log log) {
         OutputStream os;
         try {
             os = new FileOutputStream(sha1Path);
