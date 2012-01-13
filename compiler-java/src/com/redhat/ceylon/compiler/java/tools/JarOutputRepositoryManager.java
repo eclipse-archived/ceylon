@@ -112,14 +112,8 @@ public class JarOutputRepositoryManager {
             this.options = options;
             this.ceyloncFileManager = ceyloncFileManager;
             this.repo = repo;
-            this.carContext = new ArtifactContext();
-            carContext.setName(module.getNameAsString());
-            carContext.setVersion(module.getVersion());
-            carContext.setSuffix(ArtifactContext.CAR);
-            this.srcContext = new ArtifactContext();
-            srcContext.setName(module.getNameAsString());
-            srcContext.setVersion(module.getVersion());
-            srcContext.setSuffix(ArtifactContext.SRC);
+            this.carContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);
+            this.srcContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.SRC);
 
             setupJarOutput();
             setupSrcOutput();
