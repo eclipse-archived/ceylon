@@ -111,6 +111,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SubtractAssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SumOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
@@ -982,7 +983,27 @@ public class GenerateJsVisitor extends Visitor
         }
         out(")");
     }
-    
+
+    @Override
+    public void visit(StringTemplate that) {
+    	List<StringLiteral> literals = that.getStringLiterals();
+    	List<Expression> exprs = that.getExpressions();
+    	clAlias();
+    	out(".StringBuilder().appendAll(");
+    	clAlias();
+    	out(".ArraySequence([");
+    	for (int i = 0; i < literals.size(); i++) {
+    		literals.get(i).visit(this);
+    		if (i < exprs.size()) {
+    			out(",");
+    			exprs.get(i).visit(this);
+    			out(".getString()");
+    			out(",");
+    		}
+    	}
+    	out("])).getString()");
+    }
+
     @Override
     public void visit(FloatLiteral that) {
         clAlias();

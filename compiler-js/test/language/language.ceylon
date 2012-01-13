@@ -6,7 +6,9 @@ void expect(Equality actual, Equality expected, String text) {
 
 //Another test for the compiler.
 void test_interpolate() {
-    //print("String part " 1 " interpolation " 2 " works");
+    value s1 = "as it should";
+    value interp = "String part " 1 " interpolation " 2 " works" s1 "";
+    expect(interp, "String part 1 interpolation 2 worksas it should", "String Interpolation");
 }
 
 void testCharacter() {
@@ -71,7 +73,7 @@ shared void test() {
     test_arraysequence();
     test_iterators();
     test_ranges();
-    //test_interpolate();
+    test_interpolate();
     testCharacter();
     testString();
     print("--- End Language Module Tests ---");
