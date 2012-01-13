@@ -28,7 +28,7 @@ import java.io.InputStream;
  */
 public interface Repository {
     static final String MODULES_CEYLON_LANG_ORG = "http://modules.ceylon-lang.org";
-    static final String NO_VERSION = "**NO_VERSION**";
+    static final String DEFAULT_MODULE = "default";
 
     File getArtifact(String name, String version) throws IOException;
 

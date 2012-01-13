@@ -63,7 +63,7 @@ public class SmokeTestCase {
     public void testNoVersion() throws Exception {
         Repository repo = getRepository();
 
-        File def = repo.getArtifact("default", Repository.NO_VERSION);
+        File def = repo.getArtifact(Repository.DEFAULT_MODULE, null);
         Assert.assertNotNull(def);
     }
 

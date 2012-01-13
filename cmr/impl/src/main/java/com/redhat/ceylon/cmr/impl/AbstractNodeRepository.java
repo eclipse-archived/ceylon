@@ -80,7 +80,7 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
     }
 
     protected String getArtifactName(String name, String version, String suffix) {
-        if (NO_VERSION.equals(version))
+        if (DEFAULT_MODULE.equals(name))
             return name + suffix;
         else
             return name + "-" + version + suffix;
@@ -91,7 +91,7 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
         final List<String> tokens = new ArrayList<String>();
         tokens.addAll(Arrays.asList(name.split("\\.")));
         final String version = context.getVersion();
-        if (NO_VERSION.equals(version) == false)
+        if (!DEFAULT_MODULE.equals(name))
             tokens.add(version); // add version
         if (addLeaf)
             tokens.add(getArtifactName(context)); // add leaf name
