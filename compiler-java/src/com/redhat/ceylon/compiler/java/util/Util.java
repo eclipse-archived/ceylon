@@ -306,9 +306,13 @@ public class Util {
         else
             defaultRepositories.addAll(userRepos);
         // then HOME repo
-        defaultRepositories.add(System.getProperty("user.home")+File.separator
-                +".ceylon"+File.separator+"repo");
+        defaultRepositories.add(getHomeRepository());
         return defaultRepositories;
+    }
+
+    public static String getHomeRepository() {
+        return System.getProperty("user.home")+File.separator
+                +".ceylon"+File.separator+"repo";
     }
 
     public static String getName(List<String> parts){
