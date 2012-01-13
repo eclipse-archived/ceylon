@@ -146,7 +146,7 @@ public class RootRepository extends AbstractNodeRepository {
     @Override
     protected Boolean checkSHA(Node artifact) throws IOException {
         Boolean result = super.checkSHA(artifact);
-        if (result == null) {
+        if (result == null && artifact.isRemote() == false && NodeUtils.isAncestor(getRoot(), artifact)) {
             Node sha = artifact.getChild(SHA1 + LOCAL);
             if (sha != null) {
                 File shaFile = fileContentStore.getFile(sha);

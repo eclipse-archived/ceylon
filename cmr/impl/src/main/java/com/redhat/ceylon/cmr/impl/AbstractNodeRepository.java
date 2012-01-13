@@ -152,7 +152,7 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
 
         if (context.isIgnoreSHA() == false) {
             Boolean result = null;
-            Node shaResult = node.getChild(SHA1 + CACHED);
+            Node shaResult = (node instanceof OpenNode) ? (OpenNode.class.cast(node).peekChild(SHA1 + CACHED)) : node.getChild(SHA1 + CACHED);
             if (shaResult == null) {
                 try {
                     result = checkSHA(node);

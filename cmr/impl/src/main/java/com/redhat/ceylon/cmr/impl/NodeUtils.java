@@ -113,6 +113,23 @@ public final class NodeUtils {
         return paths;
     }
 
+    /**
+     * Is root ancestor from artifact.
+     *
+     * @param root     the root
+     * @param artifact the artifact
+     * @return true if ancestor, false otherwise
+     */
+    public static boolean isAncestor(Node root, Node artifact) {
+        Node current = artifact;
+        while (current != null) {
+            if (root == current)
+                return true;
+            current = firstParent(current);
+        }
+        return false;
+    }
+
     protected static void buildFullPath(Node node, StringBuilder path, String separator, boolean appendSeparator) {
         final Iterable<? extends Node> parents = node.getParents();
         //noinspection LoopStatementThatDoesntLoop
