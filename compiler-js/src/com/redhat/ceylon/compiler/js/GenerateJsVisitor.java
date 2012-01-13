@@ -1736,8 +1736,7 @@ public class GenerateJsVisitor extends Visitor
 		   Term existsVarRHS = existsVar.getSpecifierExpression().getExpression().getTerm();
 		   if (existsVarRHS instanceof BaseMemberExpression) {
 			   BaseMemberExpression bme = (BaseMemberExpression) existsVarRHS;
-			   String rhsIdentifier = bme.getDeclaration().getName();
-			   if (rhsIdentifier.equals(existsVarName)) {
+			   if (bme.getDeclaration().getName().equals(existsVarName)) {
 				   // the simple case: if (exists x)
 				   simpleCheck = true;
 			   }
@@ -1751,19 +1750,23 @@ public class GenerateJsVisitor extends Visitor
 			   
 		   } else {
 			   // if (exists x=...)
+			   
 			   out("var $ifex$=");
 			   existsVarRHS.visit(this);
 			   out(";");
 			   endLine();
+			   
 			   out("if($ifex$!==null)");
 			   if (ifBlock.getStatements().isEmpty()) {
 				   out("{}");
+				   
 			   } else {
 				   beginBlock();
 				   out("var $");
 				   out(existsVarName);
 				   out("=$ifex$;");
 				   endLine();
+				   
 				   function();
 				   out(getter(existsVar.getDeclarationModel()));
 				   out("(){");
@@ -1771,6 +1774,7 @@ public class GenerateJsVisitor extends Visitor
 				   out(existsVarName);
 				   out("}");
 				   endLine();
+				   
 				   visitStatements(ifBlock.getStatements(), false);
 				   endBlock();
 			   }
