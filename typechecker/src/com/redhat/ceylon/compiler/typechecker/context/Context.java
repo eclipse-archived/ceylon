@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.io.VFSArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.io.ArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
@@ -22,14 +23,14 @@ public class Context {
 
     public Context(VFS vfs) {
         this.vfs = vfs;
-        this.artifactProviders = Arrays.asList(new ArtifactProvider(vfs));
+        this.artifactProviders = Arrays.<ArtifactProvider>asList(new VFSArtifactProvider(vfs));
     }
 
     public Context(Iterable<VirtualFile> repos, VFS vfs) {
         this.vfs = vfs;
         this.artifactProviders = new ArrayList<ArtifactProvider>();
         for (VirtualFile repo : repos) {
-            artifactProviders.add(new ArtifactProvider(repo, vfs));
+            artifactProviders.add(new VFSArtifactProvider(repo, vfs));
         }
     }
 
