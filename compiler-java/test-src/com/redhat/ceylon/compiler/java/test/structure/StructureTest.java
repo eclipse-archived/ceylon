@@ -31,6 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
@@ -46,6 +47,7 @@ import org.junit.Test;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.sun.net.httpserver.HttpServer;
 
 public class StructureTest extends CompilerTest {
     
@@ -303,6 +305,41 @@ public class StructureTest extends CompilerTest {
 
         carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.structure.module.depend.c", "6.6.6", repoC.getPath());
         assertTrue(carFile.exists());
+    }
+
+    @Test
+    public void testMdlHTTPRepos() throws IOException{
+        // Compile the first module in its own repo 
+        File repoA = new File("build/ceylon-cars-a");
+        cleanCars(repoA.getPath());
+        repoA.mkdirs();
+        
+        Boolean result = getCompilerTask(Arrays.asList("-out", repoA.getPath()),
+                "module/depend/a/module.ceylon", "module/depend/a/package.ceylon", "module/depend/a/A.ceylon").call();
+        Assert.assertEquals(Boolean.TRUE, result);
+        
+        File carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.structure.module.depend.a", "6.6.6", repoA.getPath());
+        assertTrue(carFile.exists());
+
+        // now serve the first repo over HTTP
+        HttpServer server = HttpServer.create(new InetSocketAddress(8000), 1);
+        server.createContext("/repo", new RepoFileHandler(repoA.getPath()));
+        server.setExecutor(null); // creates a default executor
+        server.start();
+        
+        String repoAURL = "http://localhost:8000/repo";
+        
+        try{
+            // then try to compile only one module (the other being loaded from its car) 
+            result = getCompilerTask(Arrays.asList("-out", destDir, "-rep", repoAURL),
+                    "module/depend/b/module.ceylon", "module/depend/b/package.ceylon", "module/depend/b/a.ceylon", "module/depend/b/B.ceylon").call();
+            Assert.assertEquals(Boolean.TRUE, result);
+
+            carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.structure.module.depend.b", "6.6.6");
+            assertTrue(carFile.exists());
+        }finally{
+            server.stop(0);
+        }
     }
 
     @Test
