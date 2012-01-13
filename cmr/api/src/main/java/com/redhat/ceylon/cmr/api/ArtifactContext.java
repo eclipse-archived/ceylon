@@ -38,6 +38,23 @@ public class ArtifactContext implements Serializable {
     private boolean ignoreSHA;
     private boolean throwErrorIfMissing;
 
+    public ArtifactContext(String name, String version){
+        this.name = name;
+        this.version = version;
+    }
+
+    public ArtifactContext(String name, String version, String suffix){
+        this(name, version);
+        this.suffix = suffix;
+    }
+    
+    public ArtifactContext() {
+    }
+
+    public ArtifactContext getSha1Context(){
+        return new ArtifactContext(name, version, suffix+SHA1);
+    }
+
     public String getName() {
         return name;
     }
