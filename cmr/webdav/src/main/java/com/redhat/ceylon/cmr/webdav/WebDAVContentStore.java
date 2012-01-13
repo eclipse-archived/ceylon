@@ -19,6 +19,7 @@ package com.redhat.ceylon.cmr.webdav;
 import com.googlecode.sardine.DavResource;
 import com.googlecode.sardine.Sardine;
 import com.googlecode.sardine.SardineFactory;
+import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.impl.URLContentStore;
 import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.Node;
@@ -43,8 +44,8 @@ public class WebDAVContentStore extends URLContentStore {
     private String username;
     private String password;
 
-    public WebDAVContentStore(String root) {
-        super(root);
+    public WebDAVContentStore(String root, Logger log) {
+        super(root, log);
     }
 
     protected Sardine getSardine() {
@@ -103,7 +104,7 @@ public class WebDAVContentStore extends URLContentStore {
             }
             return nodes;
         } catch (IOException e) {
-            log.fine("Failed to list url: " + url);
+            log.debug("Failed to list url: " + url);
             return Collections.emptyList();
         }
     }
@@ -113,7 +114,7 @@ public class WebDAVContentStore extends URLContentStore {
         try {
             return getSardine().exists(getUrlAsString(path));
         } catch (IOException e) {
-            log.fine("Failed to check url: " + path);
+            log.debug("Failed to check url: " + path);
             return false;
         }
     }
@@ -122,7 +123,7 @@ public class WebDAVContentStore extends URLContentStore {
         try {
             return getSardine().exists(url.toExternalForm());
         } catch (IOException e) {
-            log.fine("Failed to check url: " + url);
+            log.debug("Failed to check url: " + url);
             return false;
         }
     }
