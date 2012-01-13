@@ -1744,130 +1744,64 @@ public class GenerateJsVisitor extends Visitor
    @Override public void visit(ForStatement that) {
 	   ForIterator foriter = that.getForClause().getForIterator();
 	   SpecifierExpression iterable = foriter.getSpecifierExpression();
-	   //Determine if it's a Sequence
-	   boolean isSeq = false;
-	   for (ProducedType stype : iterable.getExpression().getTypeModel().getSupertypes()) {
-		   isSeq |= stype.getProducedTypeQualifiedName().startsWith("ceylon.language.Sequence<");
-	   }
 	   boolean hasElse = that.getElseClause() != null && !that.getElseClause().getBlock().getStatements().isEmpty();
 	   //First we need to enclose this inside an anonymous function,
 	   //to avoid problems with repeated iterator variables
 	   out("(function(){"); indentLevel++;
 	   endLine();
-	   if (isSeq) {
-		   if (hasElse) {
-			   out("var _do_the_else_block = false;");
-			   endLine();
-		   }
-		   //It's a Sequence, use the C-style loop
-		   //We store the sequence to iterate over in a local var, to avoid re-declaring seqs declared on-site
-		   out("var _localSequence=");
-		   iterable.visit(this);
-		   out(";");
+	   out("var _iter = ");
+	   iterable.visit(this);
+	   out(".getIterator();");
+	   endLine();
+	   out("var _item;");
+	   endLine();
+	   out("while ((_item = _iter.next()).equals(");
+	   clAlias();
+	   out(".getFinished()) !== ");
+	   clAlias();
+	   out(".getTrue())");
+	   List<Statement> stmnts = that.getForClause().getBlock().getStatements();
+	   if (stmnts.isEmpty()) {
+		   out("{}");
 		   endLine();
-		   out("for (var i=0; i < _localSequence.getSize().value; i++)");
-		   List<Statement> stmnts = that.getForClause().getBlock().getStatements();
-		   if (stmnts.isEmpty()) {
-			   out("{}");
-			   endLine();
-		   } else {
-			   beginBlock();
-			   if (foriter instanceof ValueIterator) {
-				   Value model = ((ValueIterator)foriter).getVariable().getDeclarationModel();
-				   function();
-				   out(getter(model));
-				   out("(){ return _localSequence.item(");
-				   clAlias();
-				   out(".Integer(i)); }");
-			   } else if (foriter instanceof KeyValueIterator) {
-				   Value keyModel = ((KeyValueIterator)foriter).getKeyVariable().getDeclarationModel();
-				   Value valModel = ((KeyValueIterator)foriter).getValueVariable().getDeclarationModel();
-				   function();
-				   out(getter(keyModel));
-				   out("(){ return _localSequence.item(");
-				   clAlias();
-				   out(".Integer(i)).getKey(); }");
-				   endLine();
-				   function();
-				   out(getter(valModel));
-				   out("(){ return _localSequence.item(");
-				   clAlias();
-				   out(".Integer(i)).getItem(); }");
-			   }
-			   endLine();
-			   for (int i=0; i<stmnts.size(); i++) {
-				   Statement s = stmnts.get(i);
-				   s.visit(this);
-				   if (i<stmnts.size()-1 && s instanceof ExecutableStatement) {
-					   endLine();
-				   }
-			   }
-		   }
 	   } else {
-		   //Use an iterator
-		   out("var _iter = ");
-		   iterable.visit(this);
-		   out(".getIterator();");
-		   endLine();
-		   out("var _item;");
-		   endLine();
-		   out("while ((_item = _iter.next()).equals(");
-		   clAlias();
-		   out(".getFinished()) !== ");
-		   clAlias();
-		   out(".getTrue())");
-		   List<Statement> stmnts = that.getForClause().getBlock().getStatements();
-		   if (stmnts.isEmpty()) {
-			   out("{}");
+		   beginBlock();
+		   if (foriter instanceof ValueIterator) {
+			   Value model = ((ValueIterator)foriter).getVariable().getDeclarationModel();
+			   function();
+			   out(getter(model));
+			   out("(){ return _item; }");
+		   } else if (foriter instanceof KeyValueIterator) {
+			   Value keyModel = ((KeyValueIterator)foriter).getKeyVariable().getDeclarationModel();
+			   Value valModel = ((KeyValueIterator)foriter).getValueVariable().getDeclarationModel();
+			   function();
+			   out(getter(keyModel));
+			   out("(){ return _item.getKey(); }");
 			   endLine();
-		   } else {
-			   beginBlock();
-			   if (foriter instanceof ValueIterator) {
-				   Value model = ((ValueIterator)foriter).getVariable().getDeclarationModel();
-				   function();
-				   out(getter(model));
-				   out("(){ return _item; }");
-			   } else if (foriter instanceof KeyValueIterator) {
-				   Value keyModel = ((KeyValueIterator)foriter).getKeyVariable().getDeclarationModel();
-				   Value valModel = ((KeyValueIterator)foriter).getValueVariable().getDeclarationModel();
-				   function();
-				   out(getter(keyModel));
-				   out("(){ return _item.getKey(); }");
+			   function();
+			   out(getter(valModel));
+			   out("(){ return _item.getItem(); }");
+		   }
+		   endLine();
+		   for (int i=0; i<stmnts.size(); i++) {
+			   Statement s = stmnts.get(i);
+			   s.visit(this);
+			   if (i<stmnts.size()-1 && s instanceof ExecutableStatement) {
 				   endLine();
-				   function();
-				   out(getter(valModel));
-				   out("(){ return _item.getItem(); }");
-			   }
-			   endLine();
-			   for (int i=0; i<stmnts.size(); i++) {
-				   Statement s = stmnts.get(i);
-				   s.visit(this);
-				   if (i<stmnts.size()-1 && s instanceof ExecutableStatement) {
-					   endLine();
-				   }
 			   }
 		   }
 	   }
 	   //If there's an else block, check for normal termination
-	   if (hasElse) {
-		   if (isSeq) {
-			   out("if (i === _localSequence.getSize().value-1) { _do_the_else_block = true; }");
-		   }
-	   }
 	   indentLevel--;
 	   endLine();
 	   out("}");
 	   if (hasElse) {
 		   endLine();
-		   if (isSeq) {
-			   out("if (_do_the_else_block)");
-		   } else {
-			   out("if (_item.equals(");
-			   clAlias();
-			   out(".getFinished()) === ");
-			   clAlias();
-			   out(".getTrue())");
-		   }
+		   out("if (_item.equals(");
+		   clAlias();
+		   out(".getFinished()) === ");
+		   clAlias();
+		   out(".getTrue())");
 		   that.getElseClause().getBlock().visit(this);
 	   }
 	   indentLevel--;
