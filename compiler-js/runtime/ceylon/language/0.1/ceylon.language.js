@@ -169,6 +169,29 @@ $Character.prototype.getLowercased = function() {
     return Character(codepointFromString(lcstr, 0));
 }
 
+function $StringBuilder() {}
+function StringBuilder() {
+    var that = new $StringBuilder;
+    that.value = "";
+    return that;
+}
+for(var $ in CeylonObject.prototype){$StringBuilder.prototype[$]=CeylonObject.prototype[$]}
+$StringBuilder.prototype.getString = function() { return String$(this.value); }
+$StringBuilder.prototype.append = function(s) {
+    this.value = this.value + s.value;
+}
+$StringBuilder.prototype.appendAll = function(strings) {
+    for (var i = 0; i < strings.value.length; i++) {
+        this.value = this.value + strings.value[i].value;
+    }
+    return this; //strictly speaking, this method should return void, but then string interpolation would be a big mess
+}
+$StringBuilder.prototype.appendCharacter = function(c) {
+    this.append(c.getString());
+}
+$StringBuilder.prototype.appendNewline = function() { this.value = this.value + "\n"; }
+$StringBuilder.prototype.appendSpace = function() { this.value = this.value + " "; }
+
 function $Case() {}
 function Case(caseName) {
     var that = new $Case;
@@ -296,6 +319,7 @@ function ArrayIterator(arr) {
     that.idx = 0;
     return that;
 }
+for(var $ in CeylonObject.prototype){$ArrayIterator.prototype[$]=CeylonObject.prototype[$]}
 $ArrayIterator.prototype.next = function() {
     if (this.current === getFinished()) {
         return getFinished();
@@ -418,6 +442,7 @@ function RangeIterator(range) {
     that.current = range.getFirst();
     return that;
 }
+for(var $ in CeylonObject.prototype){$RangeIterator.prototype[$]=CeylonObject.prototype[$]}
 $RangeIterator.prototype.next = function() {
     var rval = this.current;
     if (rval.equals(getFinished()) === getTrue()) {
@@ -466,6 +491,7 @@ function SingletonIterator(elem) {
     that.done = false;
     return that;
 }
+for(var $ in CeylonObject.prototype){$SingletonIterator.prototype[$]=CeylonObject.prototype[$]}
 $SingletonIterator.prototype.next = function() {
     if (this.done) {
         return getFinished();
@@ -558,6 +584,7 @@ exports.print=print;
 exports.Integer=Integer;
 exports.Float=Float;
 exports.String=String$;
+exports.StringBuilder=StringBuilder;
 exports.Boolean=Boolean$;
 exports.Character=Character;
 exports.getNull=getNull;
