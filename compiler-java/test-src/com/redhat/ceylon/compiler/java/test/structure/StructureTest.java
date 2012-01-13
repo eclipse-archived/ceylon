@@ -45,6 +45,7 @@ import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
+import com.redhat.ceylon.compiler.java.util.Util;
 
 public class StructureTest extends CompilerTest {
     
@@ -69,6 +70,23 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("module/single/module");
     }
 
+    @Test
+    public void testMdlModuleOnlyInOutputRepo(){
+        File carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.structure.module.single", "6.6.6");
+        assertFalse(carFile.exists());
+
+        File carFileInHomeRepo = getModuleArchive("com.redhat.ceylon.compiler.java.test.structure.module.single", "6.6.6",
+                Util.getHomeRepository());
+        assertFalse(carFileInHomeRepo.exists());
+        
+        compile("module/single/module.ceylon");
+
+        // make sure it was created in the output repo
+        assertTrue(carFile.exists());
+        // make sure it wasn't created in the home repo
+        assertFalse(carFileInHomeRepo.exists());
+    }
+    
     @Test
     public void testMdlModuleFromCompiledModule() throws IOException{
         compile("module/single/module.ceylon");
