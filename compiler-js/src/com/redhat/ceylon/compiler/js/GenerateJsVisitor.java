@@ -23,9 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
-import com.redhat.ceylon.compiler.typechecker.tree.Node;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.*;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AddAssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AndOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
@@ -45,6 +43,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompareOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Continue;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DecrementOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultOp;
@@ -55,12 +54,14 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.EntryOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.EqualOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExecutableStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Exists;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExistsCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExtendedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IdenticalOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Import;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IncrementOp;
@@ -119,8 +120,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ThenOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.This;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.WhileStatement;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class GenerateJsVisitor extends Visitor 
         implements NaturalVisitor {
@@ -286,16 +287,20 @@ public class GenerateJsVisitor extends Visitor
         out(")");
     }
     
-    @Override
-    public void visit(Body that) {
-        List<Statement> stmnts = that.getStatements();
-        for (int i=0; i<stmnts.size(); i++) {
-            Statement s = stmnts.get(i);
+    private void visitStatements(List<Statement> statements, boolean endLastLine) {
+    	for (int i=0; i<statements.size(); i++) {
+            Statement s = statements.get(i);
             s.visit(this);
-            if (s instanceof ExecutableStatement) {
+            if ((endLastLine || (i<statements.size()-1)) && 
+                    	s instanceof ExecutableStatement) {
                 endLine();
             }
         }
+    }
+    
+    @Override
+    public void visit(Body that) {
+        visitStatements(that.getStatements(), true);
     }
     
     @Override
@@ -317,14 +322,7 @@ public class GenerateJsVisitor extends Visitor
                 out("=this;");
                 endLine();
             }
-            for (int i=0; i<stmnts.size(); i++) {
-                Statement s = stmnts.get(i);
-                s.visit(this);
-                if (i<stmnts.size()-1 && 
-                        s instanceof ExecutableStatement) {
-                    endLine();
-                }
-            }
+            visitStatements(stmnts, false);
             endBlock();
         }
     }
@@ -1723,14 +1721,72 @@ public class GenerateJsVisitor extends Visitor
    }
 
    @Override public void visit(IfStatement that) {
-       out("if ((");
-       that.getIfClause().getCondition().visit(this);
-       out(")===");
-       clAlias();
-       out(".getTrue())");
-       if (that.getIfClause().getBlock() != null) {
-           that.getIfClause().getBlock().visit(this);
-       }
+	   
+	   IfClause ifClause = that.getIfClause();
+	   Block ifBlock = ifClause.getBlock();
+	   Condition condition = ifClause.getCondition();
+	   if (condition instanceof ExistsCondition) {
+		   // if (exists ...)
+		   
+		   ExistsCondition existsCond = (ExistsCondition) condition;
+		   Variable existsVar = existsCond.getVariable();
+		   String existsVarName = existsVar.getDeclarationModel().getName();
+		   
+		   boolean simpleCheck = false;
+		   Term existsVarRHS = existsVar.getSpecifierExpression().getExpression().getTerm();
+		   if (existsVarRHS instanceof BaseMemberExpression) {
+			   BaseMemberExpression bme = (BaseMemberExpression) existsVarRHS;
+			   String rhsIdentifier = bme.getDeclaration().getName();
+			   if (rhsIdentifier.equals(existsVarName)) {
+				   // the simple case: if (exists x)
+				   simpleCheck = true;
+			   }
+		   }
+		   
+		   if (simpleCheck) {
+               out("if(");
+               existsVarRHS.visit(this);
+               out("!==null)");
+               ifBlock.visit(this);
+			   
+		   } else {
+			   // if (exists x=...)
+			   out("var $ifex$=");
+			   existsVarRHS.visit(this);
+			   out(";");
+			   endLine();
+			   out("if($ifex$!==null)");
+			   if (ifBlock.getStatements().isEmpty()) {
+				   out("{}");
+			   } else {
+				   beginBlock();
+				   out("var $");
+				   out(existsVarName);
+				   out("=$ifex$;");
+				   endLine();
+				   function();
+				   out(getter(existsVar.getDeclarationModel()));
+				   out("(){");
+				   out("return $");
+				   out(existsVarName);
+				   out("}");
+				   endLine();
+				   visitStatements(ifBlock.getStatements(), false);
+				   endBlock();
+			   }
+		   }
+		   
+	   } else {
+	       out("if ((");
+		   condition.visit(this);
+	       out(")===");
+	       clAlias();
+	       out(".getTrue())");
+	       if (ifBlock != null) {
+	    	   ifBlock.visit(this);
+	       }
+	   }
+	   
        if (that.getElseClause() != null) {
            out("else ");
            that.getElseClause().visit(this);
