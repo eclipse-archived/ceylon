@@ -81,7 +81,7 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
             throw new CeylonRuntimeException("Missing version info: " + exe);
 
         String name = exe.substring(0, p > 0 ? p : exe.length());
-        String mv = (p > 0 ? exe.substring(p + 1) : Repository.NO_VERSION);
+        String mv = (p > 0 ? exe.substring(p + 1) : null);
 
         ClassLoader cl = createClassLoader(name, mv, conf);
         Module runtimeModule = loadModule(cl, name);

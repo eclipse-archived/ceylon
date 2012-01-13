@@ -54,7 +54,6 @@ public class CeylonModuleLoader extends ModuleLoader {
     private static final ModuleIdentifier CMR;
     private static final ModuleIdentifier MODULES;
     private static final ModuleIdentifier RUNTIME;
-    private static final ModuleIdentifier DEFAULT;
 
     private static final String CEYLON_RUNTIME_PATH;
     private static final Set<ModuleIdentifier> BOOTSTRAP;
@@ -69,7 +68,6 @@ public class CeylonModuleLoader extends ModuleLoader {
         CMR = ModuleIdentifier.create("com.redhat.ceylon.cmr");
         MODULES = ModuleIdentifier.create("org.jboss.modules");
         RUNTIME = ModuleIdentifier.create("ceylon.runtime");
-        DEFAULT = ModuleIdentifier.create("default", Repository.NO_VERSION);
 
         CEYLON_RUNTIME_PATH = ModuleVersion.class.getPackage().getName().replace(".", "/");
 
@@ -177,7 +175,7 @@ public class CeylonModuleLoader extends ModuleLoader {
             if (moduleFile == null)
                 return null;
 
-            final boolean isDefault = DEFAULT.equals(moduleIdentifier);
+            final boolean isDefault = Repository.DEFAULT_MODULE.equals(moduleIdentifier.getName());
 
             Module module = null;
             if (!isDefault) {

@@ -21,7 +21,6 @@ import ceylon.modules.CeylonRuntimeException;
 import ceylon.modules.Configuration;
 import ceylon.modules.Main;
 import ceylon.modules.api.runtime.AbstractRuntime;
-import ceylon.modules.spi.Constants;
 
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
@@ -52,10 +51,13 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
         } catch (ModuleNotFoundException e) {
             String spec = name;
             String hint = "";
-            if (Repository.NO_VERSION.equals(version) == false) {
+            if (Repository.DEFAULT_MODULE.equals(name)) {
+                if(version != null)
+                    hint = " (default module should not have any version)";
+            }else if(version != null) {
                 spec += "/" + version;
                 hint = " (invalid version?)";
-            } else if (Constants.DEFAULT.toString().equals(name) == false) {
+            } else {
                 hint = " (missing required version, try " + spec + "/version)";
             }
             final CeylonRuntimeException cre = new CeylonRuntimeException("Could not find module: " + spec + hint);

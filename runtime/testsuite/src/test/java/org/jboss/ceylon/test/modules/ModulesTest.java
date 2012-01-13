@@ -60,7 +60,7 @@ public abstract class ModulesTest {
 
         if (isDefault) {
             name = Constants.DEFAULT.toString();
-            version = Repository.NO_VERSION;
+            version = null;
         } else {
             int p = fullName.indexOf("-");
             if (p < 0)
@@ -105,7 +105,7 @@ public abstract class ModulesTest {
             final boolean isDefault = (Constants.DEFAULT + ".car").equals(fullName);
             if (isDefault) {
                 name = Constants.DEFAULT.toString();
-                version = Repository.NO_VERSION;
+                version = null;
             } else {
                 int p = fullName.indexOf("-");
                 if (p < 0)
@@ -164,7 +164,7 @@ public abstract class ModulesTest {
     protected static String toPathString(String name, String version) {
         final StringBuilder builder = new StringBuilder();
         builder.append(name.replace('.', File.separatorChar));
-        if (Repository.NO_VERSION.equals(version) == false)
+        if (!Repository.DEFAULT_MODULE.equals(name))
             builder.append(File.separatorChar).append(version);
         builder.append(File.separatorChar);
         return builder.toString();
