@@ -79,7 +79,8 @@ public class StructureTest extends CompilerTest {
 
         File carFileInHomeRepo = getModuleArchive("com.redhat.ceylon.compiler.java.test.structure.module.single", "6.6.6",
                 Util.getHomeRepository());
-        assertFalse(carFileInHomeRepo.exists());
+        if(carFileInHomeRepo.exists())
+            carFileInHomeRepo.delete();
         
         compile("module/single/module.ceylon");
 
@@ -309,6 +310,13 @@ public class StructureTest extends CompilerTest {
 
     @Test
     public void testMdlHTTPRepos() throws IOException{
+        String moduleA = "com.redhat.ceylon.compiler.java.test.structure.module.depend.a";
+        
+        // Clean up any cached version
+        File carFileInHomeRepo = getModuleArchive(moduleA, "6.6.6", Util.getHomeRepository());
+        if(carFileInHomeRepo.exists())
+            carFileInHomeRepo.delete();
+
         // Compile the first module in its own repo 
         File repoA = new File("build/ceylon-cars-a");
         cleanCars(repoA.getPath());
@@ -318,7 +326,7 @@ public class StructureTest extends CompilerTest {
                 "module/depend/a/module.ceylon", "module/depend/a/package.ceylon", "module/depend/a/A.ceylon").call();
         Assert.assertEquals(Boolean.TRUE, result);
         
-        File carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.structure.module.depend.a", "6.6.6", repoA.getPath());
+        File carFile = getModuleArchive(moduleA, "6.6.6", repoA.getPath());
         assertTrue(carFile.exists());
 
         // now serve the first repo over HTTP
@@ -335,11 +343,18 @@ public class StructureTest extends CompilerTest {
                     "module/depend/b/module.ceylon", "module/depend/b/package.ceylon", "module/depend/b/a.ceylon", "module/depend/b/B.ceylon").call();
             Assert.assertEquals(Boolean.TRUE, result);
 
-            carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.structure.module.depend.b", "6.6.6");
-            assertTrue(carFile.exists());
         }finally{
             server.stop(0);
         }
+        carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.structure.module.depend.b", "6.6.6");
+        assertTrue(carFile.exists());
+        
+        // make sure it cached the module in the home repo
+        assertTrue(carFileInHomeRepo.exists());
+        
+        // make sure it didn't cache it in the output repo
+        carFile = getModuleArchive(moduleA, "6.6.6");
+        assertFalse(carFile.exists());
     }
 
     @Test
