@@ -58,6 +58,7 @@ public class RootRepository extends AbstractNodeRepository {
         Node node = getLeafNode(context);
         if (node != null) {
             if (node.isRemote()) {
+                context.setForceOperation(true); // just force the ops
                 return putContent(context, node, node.getInputStream());
             } else {
                 return node.getContent(File.class);
