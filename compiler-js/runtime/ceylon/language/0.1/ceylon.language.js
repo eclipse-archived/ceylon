@@ -286,13 +286,13 @@ $ArraySequence.prototype.equals = function(other) {
     }
     return getFalse();
 }
-$ArraySequence.prototype.getIterator = function() { return ArrayIterator(this); }
+$ArraySequence.prototype.getIterator = function() { return ArrayIterator(this.value); }
 
 function $ArrayIterator() {}
-function ArrayIterator(seq) {
+function ArrayIterator(arr) {
     var that = new $ArrayIterator;
-    that.seq = seq;
-    that.current = seq.getEmpty() === getTrue() ? getFinished() : seq.item(0);
+    that.array = arr;
+    that.current = arr && arr.length ? arr[0] : getFinished();
     that.idx = 0;
     return that;
 }
@@ -300,8 +300,7 @@ $ArrayIterator.prototype.next = function() {
     if (this.current === getFinished()) {
         return getFinished();
     }
-    var idx = Integer(this.idx);
-    this.current = this.seq.defines(Integer(idx)) === getTrue() ? this.seq.item(Integer(idx)) : getFinished();
+    this.current = this.idx < this.array.length ? this.array[this.idx] : getFinished();
     this.idx++;
     return this.current;
 }
