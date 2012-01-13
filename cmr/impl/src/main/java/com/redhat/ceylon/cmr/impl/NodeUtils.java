@@ -20,6 +20,8 @@ package com.redhat.ceylon.cmr.impl;
 import com.redhat.ceylon.cmr.spi.Node;
 
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Node utils.
@@ -95,6 +97,22 @@ public final class NodeUtils {
         return path.toString();
     }
 
+    /**
+     * Return path queue, with root being on top.
+     *
+     * @param node the node
+     * @return paths queue
+     */
+    public static List<String> toLabelPath(Node node) {
+        final LinkedList<String> paths = new LinkedList<String>();
+        Node current = node;
+        while (current != null) {
+            paths.addFirst(current.getLabel());
+            current = firstParent(current);
+        }
+        return paths;
+    }
+
     protected static void buildFullPath(Node node, StringBuilder path, String separator, boolean appendSeparator) {
         final Iterable<? extends Node> parents = node.getParents();
         //noinspection LoopStatementThatDoesntLoop
@@ -106,5 +124,4 @@ public final class NodeUtils {
         if (appendSeparator && node.hasContent() == false)
             path.append(separator);
     }
-
 }

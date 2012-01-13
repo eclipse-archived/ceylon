@@ -17,6 +17,7 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
@@ -52,12 +53,12 @@ public class MarkerNode extends AbstractOpenNode {
     }
 
     @Override
-    public OpenNode addContent(String label, InputStream content) throws IOException {
+    public OpenNode addContent(String label, InputStream content, ContentOptions options) throws IOException {
         throw new UnsupportedOperationException("Marker node doesn't add content: " + toString());
     }
 
     @Override
-    public <T extends Serializable> OpenNode addContent(String label, T content) throws IOException {
+    public <T extends Serializable> OpenNode addContent(String label, T content, ContentOptions options) throws IOException {
         throw new UnsupportedOperationException("Marker node doesn't add content: " + toString());
     }
 

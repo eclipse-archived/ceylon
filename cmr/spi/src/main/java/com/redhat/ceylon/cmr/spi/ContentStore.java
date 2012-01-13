@@ -33,7 +33,7 @@ public interface ContentStore {
      * @param node the node to check
      * @return content handle or null if content doesn't exist
      */
-    ContentHandle popContent(Node node);
+    ContentHandle peekContent(Node node);
 
     /**
      * Get the content handle.
@@ -48,11 +48,12 @@ public interface ContentStore {
     /**
      * Put content for node.
      *
-     * @param node   the node to put against
-     * @param stream the content stream
+     * @param node    the node to put against
+     * @param stream  the content stream
+     * @param options the options
      * @return content handle
      * @throws IOException for any I/O error
      */
-    ContentHandle putContent(Node node, InputStream stream) throws IOException;
+    ContentHandle putContent(Node node, InputStream stream, ContentOptions options) throws IOException;
 
 }

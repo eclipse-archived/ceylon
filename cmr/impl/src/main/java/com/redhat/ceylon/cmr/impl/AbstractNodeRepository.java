@@ -111,7 +111,7 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
         final String label = getArtifactName(context);
         if (parent instanceof OpenNode) {
             final OpenNode on = (OpenNode) parent;
-            if (on.addContent(label, content) == null)
+            if (on.addContent(label, content, context) == null)
                 addContent(context, parent, label, content);
         } else {
             addContent(context, parent, label, content);

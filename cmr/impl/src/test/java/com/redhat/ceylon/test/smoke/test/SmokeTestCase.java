@@ -18,6 +18,7 @@
 package com.redhat.ceylon.test.smoke.test;
 
 import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.RemoteContentStore;
@@ -37,7 +38,7 @@ import java.net.URL;
  */
 public class SmokeTestCase {
 
-    Logger log = new JULLogger();
+    private Logger log = new JULLogger();
     
     protected File getRepositoryRoot() throws URISyntaxException {
         URL url = getClass().getResource("/repo");
@@ -71,7 +72,7 @@ public class SmokeTestCase {
         Repository repo = getRepository();
 
         ByteArrayInputStream baos = new ByteArrayInputStream("qwerty".getBytes());
-        String name = "com.redhat.foobar";
+        String name = "com.redhat.foobar1";
         String version = "1.0.0.Alpha1";
         try {
             repo.putArtifact(name, version, baos);
@@ -84,6 +85,54 @@ public class SmokeTestCase {
     }
 
     @Test
+    public void testForcedPut() throws Exception {
+        Repository repo = getRepository();
+
+        ByteArrayInputStream baos = new ByteArrayInputStream("qwerty".getBytes());
+        String name = "com.redhat.foobar2";
+        String version = "1.0.0.Alpha1";
+        try {
+            ArtifactContext context = new ArtifactContext();
+            context.setName(name);
+            context.setVersion(version);
+            context.setForceOperation(true);
+
+            repo.putArtifact(context, baos);
+
+            File file = repo.getArtifact(name, version);
+            Assert.assertNotNull(file);
+
+            baos = new ByteArrayInputStream("ytrewq".getBytes());
+            repo.putArtifact(context, baos);
+
+            file = repo.getArtifact(name, version);
+            Assert.assertNotNull(file);
+        } finally {
+            repo.removeArtifact(name, version);
+        }
+    }
+
+    @Test
+    public void testRemove() throws Exception {
+        Repository repo = getRepository();
+
+        ByteArrayInputStream baos = new ByteArrayInputStream("qwerty".getBytes());
+        String name = "org.jboss.qwerty";
+        String version = "1.0.0.Alpha2";
+        File file = null;
+        try {
+            repo.putArtifact(name, version, baos);
+
+            file = repo.getArtifact(name, version);
+            Assert.assertNotNull(file);
+        } finally {
+            repo.removeArtifact(name, version);
+            if (file != null)
+                Assert.assertFalse(file.exists());
+        }
+    }
+
+    @Test
     public void testExternalNodes() throws Exception {
         RepositoryBuilder builder = new RepositoryBuilder(getRepositoryRoot(), log);
 
@@ -91,8 +140,8 @@ public class SmokeTestCase {
         Repository repo = builder.appendExternalRoot(imcs.createRoot()).buildRepository();
 
         ByteArrayInputStream baos = new ByteArrayInputStream("qwerty".getBytes());
-        String name = "com.redhat.fizbiz";
-        String version = "1.0.0.Beta1";
+        String name = "com.redhat.acme";
+        String version = "1.0.0.CR1";
         try {
             repo.putArtifact(name, version, baos);
 

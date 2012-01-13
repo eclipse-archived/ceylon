@@ -23,6 +23,7 @@ import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
 import java.io.*;
+import java.util.List;
 
 /**
  * Root node -- main entry point into Ceylon repositories.
@@ -68,8 +69,9 @@ public class RootRepository extends AbstractNodeRepository {
 
     protected File putContent(ArtifactContext context, Node node, InputStream stream) throws IOException {
         log.debug("Creating local copy of external node: " + node);
-        fileContentStore.putContent(node, stream);
+        fileContentStore.putContent(node, stream, context);
         File file = fileContentStore.getFile(node); // re-get
+
         if (context.isIgnoreSHA() == false && node instanceof OpenNode) {
             OpenNode on = (OpenNode) node;
             String sha1 = IOUtils.sha1(new FileInputStream(file));
@@ -78,15 +80,28 @@ public class RootRepository extends AbstractNodeRepository {
                 Node sha = node.getChild(SHA1);
                 if (sha == null) {
                     // put it to ext node as well, if supported
-                    on.addContent(SHA1, shaStream);
+                    on.addContent(SHA1, shaStream, context);
                     shaStream.reset(); // reset, for next read
                 }
                 // create empty marker node
                 OpenNode sl = on.addNode(SHA1 + LOCAL);
                 // put sha to local store as well
-                fileContentStore.putContent(sl, shaStream);
+                fileContentStore.putContent(sl, shaStream, context);
             }
         }
+
+        // refresh markers from root to this newly put node
+        final List<String> paths = NodeUtils.toLabelPath(node);
+        OpenNode current = getRoot();
+        for (String path : paths) {
+            if (current == null)
+                break;
+
+            current.refresh(false);
+            final Node tmp = current.peekChild(path);
+            current = (tmp instanceof OpenNode) ? OpenNode.class.cast(tmp) : null;
+        }
+
         return file;
     }
 
@@ -111,8 +126,9 @@ public class RootRepository extends AbstractNodeRepository {
         try {
             if (node != null) {
                 Node sl = node.getChild(SHA1 + LOCAL);
-                if (sl != null)
+                if (sl != null) {
                     fileContentStore.removeFile(sl);
+                }
             }
         } catch (Exception ignored) {
         }

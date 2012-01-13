@@ -33,6 +33,8 @@ public interface OpenNode extends Node {
 
     void link(OpenNode other);
 
+    OpenNode peekChild(String label);
+
     OpenNode addNode(String label);
 
     OpenNode addNode(String label, Object value);
@@ -42,14 +44,20 @@ public interface OpenNode extends Node {
      *
      * @param label   the node label
      * @param content the node content
+     * @param options the options
      * @return new node, or null if cannot add content
      * @throws IOException for any I/O error
      */
-    OpenNode addContent(String label, InputStream content) throws IOException;
+    OpenNode addContent(String label, InputStream content, ContentOptions options) throws IOException;
 
-    <T extends Serializable> OpenNode addContent(String label, T content) throws IOException;
+    <T extends Serializable> OpenNode addContent(String label, T content, ContentOptions options) throws IOException;
 
     Node removeNode(String label);
 
-    void refresh();
+    /**
+     * Refresh; remove markers.
+     *
+     * @param recurse do we recurse flag
+     */
+    void refresh(boolean recurse);
 }

@@ -17,6 +17,8 @@
 
 package com.redhat.ceylon.cmr.api;
 
+import com.redhat.ceylon.cmr.spi.ContentOptions;
+
 import java.io.Serializable;
 
 /**
@@ -24,7 +26,7 @@ import java.io.Serializable;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class ArtifactContext implements Serializable {
+public class ArtifactContext implements Serializable, ContentOptions {
     public static final String CAR = ".car";
     public static final String JAR = ".jar";
     public static final String ZIP = ".zip";
@@ -37,6 +39,7 @@ public class ArtifactContext implements Serializable {
     private boolean localOnly;
     private boolean ignoreSHA;
     private boolean throwErrorIfMissing;
+    private boolean forceOperation;
 
     public ArtifactContext(String name, String version){
         this.name = name;
@@ -103,8 +106,20 @@ public class ArtifactContext implements Serializable {
         this.throwErrorIfMissing = throwErrorIfMissing;
     }
 
+    public boolean isForceOperation() {
+        return forceOperation;
+    }
+
+    public void setForceOperation(boolean forceOperation) {
+        this.forceOperation = forceOperation;
+    }
+
     @Override
     public String toString() {
         return getName() + "-" + getVersion();
+    }
+
+    public boolean forceOperation() {
+        return isForceOperation();
     }
 }

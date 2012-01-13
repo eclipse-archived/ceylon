@@ -36,7 +36,7 @@ public class InMemoryContentStore implements ContentStore, StructureBuilder {
     private Map<Node, byte[]> store = new HashMap<Node, byte[]>();
 
     @Override
-    public ContentHandle popContent(Node node) {
+    public ContentHandle peekContent(Node node) {
         byte[] result = store.get(node);
         if (result == null || result == MARKER)
             return null;
@@ -46,11 +46,11 @@ public class InMemoryContentStore implements ContentStore, StructureBuilder {
 
     @Override
     public ContentHandle getContent(Node node) throws IOException {
-        return popContent(node);
+        return peekContent(node);
     }
 
     @Override
-    public ContentHandle putContent(Node node, InputStream stream) throws IOException {
+    public ContentHandle putContent(Node node, InputStream stream, ContentOptions options) throws IOException {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         IOUtils.copyStream(stream, baos);
         final byte[] bytes = baos.toByteArray();

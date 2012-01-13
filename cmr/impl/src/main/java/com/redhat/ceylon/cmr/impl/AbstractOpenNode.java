@@ -53,8 +53,8 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
 
     private String label;
     private Object value;
-    protected final ConcurrentMap<String, OpenNode> parents = new ConcurrentHashMap<String, OpenNode>();
-    protected final ConcurrentMap<String, OpenNode> children = new ConcurrentHashMap<String, OpenNode>();
+    private final ConcurrentMap<String, OpenNode> parents = new ConcurrentHashMap<String, OpenNode>();
+    private final ConcurrentMap<String, OpenNode> children = new ConcurrentHashMap<String, OpenNode>();
 
     private transient final Map<Class<?>, Object> services = new WeakHashMap<Class<?>, Object>();
 
@@ -101,6 +101,14 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
             services.remove(serviceType);
     }
 
+    protected OpenNode putChildIfAbsent(String label, OpenNode child) {
+        return children.putIfAbsent(label, child);
+    }
+
+    protected OpenNode putParentIfAbsent(String label, OpenNode parent) {
+        return parents.putIfAbsent(label, parent);
+    }
+
     @Override
     public void link(OpenNode child) {
         if (child == null)
@@ -124,6 +132,17 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
     }
 
     @Override
+    public Node removeNode(String label) {
+        // get node, so we actually have the right instance to fully remove
+        final Node node = getChild(label);
+        if (node != null) {
+            children.remove(label);
+            children.remove(label + NODE_MARKER);
+        }
+        return node;
+    }
+
+    @Override
     public String getLabel() {
         return label;
     }
@@ -134,6 +153,11 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
             throw new IllegalArgumentException("Null value type");
 
         return valueType.cast(value);
+    }
+
+    @Override
+    public OpenNode peekChild(String label) {
+        return children.get(label);
     }
 
     @Override
@@ -189,11 +213,12 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
     }
 
     @Override
-    public void refresh() {
+    public void refresh(boolean recurse) {
         Iterator<Map.Entry<String, OpenNode>> iter = children.entrySet().iterator();
         while (iter.hasNext()) {
             final Map.Entry<String, OpenNode> entry = iter.next();
-            entry.getValue().refresh(); // recurse
+            if (recurse)
+                entry.getValue().refresh(recurse); // recurse
             // remove the markers
             final String key = entry.getKey();
             if (key.endsWith(NODE_MARKER))

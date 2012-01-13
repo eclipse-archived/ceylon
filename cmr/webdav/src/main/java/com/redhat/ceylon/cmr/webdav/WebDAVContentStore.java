@@ -22,6 +22,7 @@ import com.googlecode.sardine.SardineFactory;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.impl.URLContentStore;
 import com.redhat.ceylon.cmr.spi.ContentHandle;
+import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
@@ -59,7 +60,7 @@ public class WebDAVContentStore extends URLContentStore {
         return sardine;
     }
 
-    public ContentHandle popContent(Node node) {
+    public ContentHandle peekContent(Node node) {
         try {
             final String url = getUrlAsString(node);
             return (sardine.exists(url) ? new WebDAVContentHandle(url) : null);
@@ -72,7 +73,7 @@ public class WebDAVContentStore extends URLContentStore {
         return new WebDAVContentHandle(getUrlAsString(node));
     }
 
-    public ContentHandle putContent(Node node, InputStream stream) throws IOException {
+    public ContentHandle putContent(Node node, InputStream stream, ContentOptions options) throws IOException {
         final String url = getUrlAsString(node);
         final Sardine s = getSardine();
         final String token = s.lock(url);

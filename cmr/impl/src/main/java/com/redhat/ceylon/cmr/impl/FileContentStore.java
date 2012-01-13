@@ -51,6 +51,9 @@ public class FileContentStore implements ContentStore, StructureBuilder {
     }
 
     File getFile(Node node) {
+        if (node == null)
+            throw new IllegalArgumentException("Null node!");
+
         File file = cache.get(node);
         if (file == null) {
             String path = NodeUtils.getFullPath(node);
@@ -62,15 +65,17 @@ public class FileContentStore implements ContentStore, StructureBuilder {
 
     void removeFile(Node node) {
         File file = cache.remove(node);
-        if (file != null)
-            delete(file, node);
+        if (file == null)
+            file = getFile(node);
+
+        delete(file, node);
     }
 
     void clear() {
         cache.clear();
     }
 
-    public ContentHandle popContent(Node node) {
+    public ContentHandle peekContent(Node node) {
         final File file = getFile(node);
         return (file.exists() && file.isFile()) ? new FileContentHandle(node, file) : null;
     }
@@ -85,12 +90,14 @@ public class FileContentStore implements ContentStore, StructureBuilder {
         return new FileContentHandle(node, file);
     }
 
-    public ContentHandle putContent(Node node, InputStream stream) throws IOException {
+    public ContentHandle putContent(Node node, InputStream stream, ContentOptions options) throws IOException {
         if (stream == null)
             throw new IllegalArgumentException("Null stream!");
+        if (options == null)
+            throw new IllegalArgumentException("Null options!");
 
         final File file = getFile(node);
-        if (file.exists())
+        if (file.exists() && options.forceOperation() == false)
             throw new IOException("Content already exists: " + file);
 
         final File parent = file.getParentFile();
@@ -152,7 +159,7 @@ public class FileContentStore implements ContentStore, StructureBuilder {
             return;
 
         File[] files = file.listFiles();
-        if ((files == null || files.length == 0) && file.delete()) {
+        if ((files == null || files.length == 0) && (file.exists() == false || file.delete())) {
             cache.remove(node); // remove from cache, since probably not used anymore
             delete(file.getParentFile(), NodeUtils.firstParent(node));
         }

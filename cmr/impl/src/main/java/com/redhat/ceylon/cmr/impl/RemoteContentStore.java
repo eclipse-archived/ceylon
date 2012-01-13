@@ -19,6 +19,7 @@ package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.spi.ContentHandle;
+import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
@@ -40,7 +41,7 @@ public class RemoteContentStore extends URLContentStore {
         super(root, log);
     }
 
-    public ContentHandle popContent(Node node) {
+    public ContentHandle peekContent(Node node) {
         return urlExists(node) ? new RemoteContentHandle(node) : null;
     }
 
@@ -48,7 +49,7 @@ public class RemoteContentStore extends URLContentStore {
         return new RemoteContentHandle(node);
     }
 
-    public ContentHandle putContent(Node node, InputStream stream) throws IOException {
+    public ContentHandle putContent(Node node, InputStream stream, ContentOptions options) throws IOException {
         return null; // cannot write
     }
 
@@ -111,12 +112,12 @@ public class RemoteContentStore extends URLContentStore {
         }
 
         @Override
-        public OpenNode addContent(String label, InputStream content) throws IOException {
+        public OpenNode addContent(String label, InputStream content, ContentOptions options) throws IOException {
             return null; // cannot add content
         }
 
         @Override
-        public <T extends Serializable> OpenNode addContent(String label, T content) throws IOException {
+        public <T extends Serializable> OpenNode addContent(String label, T content, ContentOptions options) throws IOException {
             return null; // cannot add content
         }
     }
