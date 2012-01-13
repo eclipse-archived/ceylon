@@ -73,11 +73,13 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
     private Options options;
     private Repository repo;
     private Repository outputRepo;
+    private com.redhat.ceylon.cmr.api.Logger cmrLogger;
 
     public CeyloncFileManager(Context context, boolean register, Charset charset) {
         super(context, register, charset);
         options = Options.instance(context);
         jarRepository = new JarOutputRepositoryManager(CeylonLog.instance(context), options, this);
+        cmrLogger = new JavacLogger(options, Log.instance(context));
     }
 
     public Context getContext() {
@@ -217,7 +219,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         if(repo != null)
             return repo;
         // lazy loading
-        final RepositoryBuilder builder = new RepositoryBuilder();
+        final RepositoryBuilder builder = new RepositoryBuilder(cmrLogger);
 
         // any user defined repos first
         List<String> userRepos = options.getMulti(OptionName.CEYLONREPO);
@@ -228,11 +230,11 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
             for (int i=userRepos.size()-1;i>=0;i--) {
                 String repo = userRepos.get(i);
                 try {
-                    final RootBuilder rb = new RootBuilder(repo);
+                    final RootBuilder rb = new RootBuilder(repo, cmrLogger);
                     // we need to prepend to bypass the caching repo
                     builder.prependExternalRoot(rb.buildRoot());
                 } catch (Exception e) {
-                    Logger.getLogger("ceylon.runtime").log(Level.WARNING, "Failed to add repository: " + repo, e);
+                    cmrLogger.warning("Failed to add repository: " + repo + ": "+e.getMessage());
                 }
             }
         }
@@ -273,9 +275,9 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
             structureBuilder = new FileContentStore(repoFolder);
         }else{
             // HTTP
-            structureBuilder = new RemoteContentStore(outRepo);
+            structureBuilder = new RemoteContentStore(outRepo, cmrLogger);
         }
-        outputRepo = new SimpleRepository(structureBuilder);
+        outputRepo = new SimpleRepository(structureBuilder, cmrLogger);
         return outputRepo;
     }
 
