@@ -76,7 +76,10 @@ function String$(value,size) {
 for(var $ in CeylonObject.prototype){$String.prototype[$]=CeylonObject.prototype[$]}
 $String.prototype.getString = function() { return this }
 $String.prototype.toString = function() { return this.value }
-$String.prototype.plus = function(other) { return String$(this.value+other.value) }
+$String.prototype.plus = function(other) {
+    var size = this.codePoints + other.codePoints;
+    return String$(this.value+other.value, isNaN(size)?undefined:size);
+}
 $String.prototype.equals = function(other) { return Boolean$(other && other.value===this.value) }
 $String.prototype.compare = function(other) {
     var cmp = this.value.localeCompare(other.value);
