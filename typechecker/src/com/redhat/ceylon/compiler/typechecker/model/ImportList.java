@@ -9,6 +9,7 @@ import java.util.Map;
 //autocompletion in the IDE
 public class ImportList implements Scope {
     
+    Package container;
     Package importedPackage;
     List<Import> imports = new ArrayList<Import>();
     
@@ -29,27 +30,27 @@ public class ImportList implements Scope {
     
     @Override
     public ProducedType getDeclaringType(Declaration d) {
-        throw new UnsupportedOperationException();
+        return null;
     }
     
     @Override
     public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature) {
-        throw new UnsupportedOperationException();
+        return getContainer().getMemberOrParameter(unit, name, signature);
     }
     
     @Override
     public Declaration getMember(String name, List<ProducedType> signature) {
-        throw new UnsupportedOperationException();
+        return getContainer().getMember(name, signature);
     }
     
     @Override
     public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature) {
-        throw new UnsupportedOperationException();
+        return getContainer().getDirectMemberOrParameter(name, signature);
     }
     
     @Override
     public Declaration getDirectMember(String name, List<ProducedType> signature) {
-        throw new UnsupportedOperationException();
+        return getContainer().getDirectMember(name, signature);
     }
     
     @Override
@@ -64,7 +65,11 @@ public class ImportList implements Scope {
     
     @Override
     public Scope getContainer() {
-        return null;
+        return container;
+    }
+    
+    public void setContainer(Package container) {
+        this.container = container;
     }
     
     @Override

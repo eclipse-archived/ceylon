@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkTypeBelongsToContainingScope;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getParameterTypes;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
@@ -63,6 +64,7 @@ public class TypeVisitor extends Visitor {
         if (importedPackage!=null) {
             ImportList il = (ImportList) that.getScope();
             il.setImportedPackage(importedPackage);
+            il.setContainer(that.getUnit().getPackage());
             that.setImportList(il);
             Set<String> names = new HashSet<String>();
             ImportMemberOrTypeList imtl = that.getImportMemberOrTypeList();
@@ -135,15 +137,6 @@ public class TypeVisitor extends Visitor {
         return sb.toString();
     }
     
-    private static List<String> erasureNames(Tree.Erasure erasure) {
-    	if (erasure==null) return null;
-    	List<String> result = new ArrayList<String>();
-    	for (Tree.Identifier id: erasure.getIdentifiers()) {
-    		result.add(id.getText());
-    	}
-    	return result;
-    }
-    
     private String importMember(Tree.ImportMemberOrType member, Package importedPackage, ImportList il) {
         Import i = new Import();
         Tree.Alias alias = member.getAlias();
@@ -154,7 +147,10 @@ public class TypeVisitor extends Visitor {
         else {
             i.setAlias(name(alias.getIdentifier()));
         }
-        Declaration d = importedPackage.getImportedMember(name, erasureNames(member.getErasure()));
+        if (member.getParameterTypes()!=null)
+            member.getParameterTypes().visit(this);
+        Declaration d = importedPackage.getImportedMember(name, 
+                getParameterTypes(member.getParameterTypes()));
         if (d==null) {
             member.getIdentifier().addError("imported declaration not found: " + 
                     name, 100);
@@ -194,7 +190,10 @@ public class TypeVisitor extends Visitor {
             i.setAlias(name(alias.getIdentifier()));
         }
         i.setTypeDeclaration(d);
-        Declaration m = d.getImportedMember(name, erasureNames(member.getErasure()));
+        if (member.getParameterTypes()!=null)
+            member.getParameterTypes().visit(this);
+        Declaration m = d.getImportedMember(name, 
+                getParameterTypes(member.getParameterTypes()));
         if (m==null) {
             member.getIdentifier().addError("imported declaration not found: " + 
                     name + " of " + d.getName(), 100);

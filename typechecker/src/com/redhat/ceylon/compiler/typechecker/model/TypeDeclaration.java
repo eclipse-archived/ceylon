@@ -1,9 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.erasureMatches;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
 
 import java.util.ArrayList;
@@ -368,7 +366,7 @@ public abstract class TypeDeclaration extends Declaration
         }
         else {
             //now look for inherited shared declarations
-            Declaration s = getSupertypeDeclaration(name);
+            Declaration s = getSupertypeDeclaration(name, signature);
             if (s!=null) {
                 return s;
             }
@@ -395,12 +393,13 @@ public abstract class TypeDeclaration extends Declaration
         }
         else {
             //now look for inherited shared declarations
-            return getSupertypeDeclaration(name);
+            return getSupertypeDeclaration(name, signature);
         }
     }
 
-    public Declaration getImportedMember(String name, List<String> erasure) {
-        if (erasure==null) {
+    public Declaration getImportedMember(String name, List<ProducedType> signature) {
+        return getMember(name, signature);
+        /*if (signature==null) {
             return getMember(name, null);
         }
         else {
@@ -408,14 +407,12 @@ public abstract class TypeDeclaration extends Declaration
                 if (isResolvable(d)
                         //&& d.isShared()
                         && !isParameter(d)  //don't return parameters
-                        && isNamed(name, null, d)) {
-                    if (erasureMatches(d, erasure)) {
-                    	return d;
-                    }
+                        && isNamed(name, signature, d)) {
+                    return d;
                 }
             }
             return null;
-        }
+        }*/
     }
 
     /**
@@ -478,12 +475,13 @@ public abstract class TypeDeclaration extends Declaration
     /**
      * Get the supertype which defines the most-refined
      * member with the given name. 
+     * @param signature 
      */
-    private Declaration getSupertypeDeclaration(final String name) {
+    private Declaration getSupertypeDeclaration(final String name, final List<ProducedType> signature) {
         class Criteria implements ProducedType.Criteria {
             @Override
             public boolean satisfies(TypeDeclaration type) {
-                Declaration d = type.getDirectMember(name, null);
+                Declaration d = type.getDirectMember(name, signature);
                 if (d!=null && d.isShared()) {
                     return true;
                 }

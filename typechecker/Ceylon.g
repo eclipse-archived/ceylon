@@ -127,13 +127,13 @@ importElement returns [ImportMemberOrType importMemberOrType]
         if ($memberAlias.alias!=null) 
             $importMemberOrType.setAlias($memberAlias.alias);
         $importMemberOrType.setIdentifier($memberName.identifier); }
-      (e1=erasure { $importMemberOrType.setErasure($e1.erasure); })?
+      (e1=parameterTypes { $importMemberOrType.setParameterTypes($e1.parameterTypes); })?
     | typeAlias? typeName
       { $importMemberOrType = new ImportType(null);
         if ($typeAlias.alias!=null)
             $importMemberOrType.setAlias($typeAlias.alias);
         $importMemberOrType.setIdentifier($typeName.identifier); }
-      (e2=erasure { $importMemberOrType.setErasure($e2.erasure); })?
+      (e2=parameterTypes { $importMemberOrType.setParameterTypes($e2.parameterTypes); })?
         (
           importElementList
           { $importMemberOrType.setImportMemberOrTypeList($importElementList.importMemberOrTypeList); }
@@ -146,22 +146,6 @@ importElement returns [ImportMemberOrType importMemberOrType]
 importWildcard returns [ImportWildcard importWildcard]
     : ELLIPSIS
       { $importWildcard = new ImportWildcard($ELLIPSIS); }
-    ;
-
-erasure returns [Erasure erasure]
-    : LPAREN
-      { $erasure = new Erasure($LPAREN); }
-      (
-        t1=typeName
-        { $erasure.addIdentifier($t1.identifier); }
-        (
-          COMMA 
-          t2=typeName
-          { $erasure.addIdentifier($t2.identifier); }
-        )*
-      )?
-      RPAREN
-      { $erasure.setEndToken($RPAREN); }
     ;
 
 memberAlias returns [Alias alias]
