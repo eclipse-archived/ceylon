@@ -168,21 +168,21 @@ public class LazyInterface extends Interface implements LazyContainer {
     }
 
     @Override
-    public Declaration getRefinedMember(String name) {
+    public Declaration getRefinedMember(String name, List<ProducedType> signature) {
         load();
-        return super.getRefinedMember(name);
+        return super.getRefinedMember(name, signature);
     }
 
     @Override
-    public Declaration getMember(String name) {
+    public Declaration getMember(String name, List<ProducedType> signature) {
         load();
-        return super.getMember(name);
+        return super.getMember(name, signature);
     }
 
     @Override
-    public Declaration getMemberOrParameter(String name) {
+    public Declaration getMemberOrParameter(String name, List<ProducedType> signature) {
         load();
-        return super.getMemberOrParameter(name);
+        return super.getMemberOrParameter(name, signature);
     }
 
     @Override
@@ -293,15 +293,15 @@ public class LazyInterface extends Interface implements LazyContainer {
     }
 
     @Override
-    public Declaration getDirectMemberOrParameter(String name) {
+    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature) {
         load();
-        return super.getDirectMemberOrParameter(name);
+        return super.getDirectMemberOrParameter(name, signature);
     }
 
     @Override
-    public Declaration getDirectMember(String name) {
+    public Declaration getDirectMember(String name, List<ProducedType> signature) {
         load();
-        return super.getDirectMember(name);
+        return super.getDirectMember(name, signature);
     }
 
     @Override
@@ -311,9 +311,9 @@ public class LazyInterface extends Interface implements LazyContainer {
     }
 
     @Override
-    public Declaration getMemberOrParameter(Unit unit, String name) {
+    public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature) {
         load();
-        return super.getMemberOrParameter(unit, name);
+        return super.getMemberOrParameter(unit, name, signature);
     }
 
     @Override

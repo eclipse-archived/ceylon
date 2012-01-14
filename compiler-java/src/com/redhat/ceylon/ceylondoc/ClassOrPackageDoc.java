@@ -74,7 +74,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     private TypeDeclaration resolveDeclaration(Scope decl, String target) {
         if(decl == null)
             return null;
-        TypeDeclaration member = (TypeDeclaration) decl.getMember(target);
+        TypeDeclaration member = (TypeDeclaration) decl.getMember(target, null);
         if (member != null)
             return member;
         return resolveDeclaration(decl.getContainer(), target);

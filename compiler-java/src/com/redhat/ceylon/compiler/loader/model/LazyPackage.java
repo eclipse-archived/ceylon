@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 
 /**
@@ -47,14 +48,14 @@ public class LazyPackage extends Package {
     }
     
     @Override
-    public Declaration getDirectMemberOrParameter(String name) {
+    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature) {
         // FIXME: what's the difference?
-        return getDirectMember(name);
+        return getDirectMember(name, signature);
     }
     
     // FIXME: redo this method better: https://github.com/ceylon/ceylon-spec/issues/90
     @Override
-    public Declaration getDirectMember(String name) {
+    public Declaration getDirectMember(String name, List<ProducedType> signature) {
         String pkgName = getQualifiedNameString();
 
         // we need its package ready first

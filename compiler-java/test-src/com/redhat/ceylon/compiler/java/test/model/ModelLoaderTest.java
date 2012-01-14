@@ -198,13 +198,13 @@ public class ModelLoaderTest extends CompilerTest {
         compareParameterLists(validDeclaration.getQualifiedNameString(), validDeclaration.getParameterLists(), modelDeclaration.getParameterLists());
         // make sure it has every member required
         for(Declaration validMember : validDeclaration.getMembers()){
-            Declaration modelMember = modelDeclaration.getMemberOrParameter(validMember.getName());
+            Declaration modelMember = modelDeclaration.getMemberOrParameter(validMember.getName(), null);
             Assert.assertNotNull(validMember.getQualifiedNameString()+" [member] not found in loaded model", modelMember);
             compareDeclarations(validMember, modelMember);
         }
         // and not more
         for(Declaration modelMember : modelDeclaration.getMembers()){
-            Declaration validMember = validDeclaration.getMemberOrParameter(modelMember.getName());
+            Declaration validMember = validDeclaration.getMemberOrParameter(modelMember.getName(), null);
             Assert.assertNotNull(modelMember.getQualifiedNameString()+" [extra member] encountered in loaded model", validMember);
         }
     }
