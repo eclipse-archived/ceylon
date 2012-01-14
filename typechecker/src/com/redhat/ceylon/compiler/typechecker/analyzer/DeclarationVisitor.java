@@ -150,7 +150,7 @@ public class DeclarationVisitor extends Visitor {
             if (model instanceof Setter) {
                 Setter setter = (Setter) model;
                 //a setter must have a matching getter
-                Declaration member = model.getContainer().getDirectMember( model.getName() );
+                Declaration member = model.getContainer().getDirectMember(model.getName(), null);
                 if (member==null) {
                     that.addError("setter with no matching getter: " + model.getName());
                 }
@@ -172,7 +172,7 @@ public class DeclarationVisitor extends Visitor {
                         && model.isClassMember()) {
                 //a getter or simple attribute is allowed to have the 
                 //same name as a class initialization parameter
-                Declaration member = model.getContainer().getDirectMember( model.getName() );
+                Declaration member = model.getContainer().getDirectMember(model.getName(), null);
                 if (member!=null) {
                     that.addError("duplicate declaration name: " + model.getName());
                     model.getUnit().getDuplicateDeclarations().add(member);
@@ -182,7 +182,7 @@ public class DeclarationVisitor extends Visitor {
                 Scope s = model.getContainer();
                 boolean isControl;
                 do {
-                    Declaration member = s.getDirectMemberOrParameter(model.getName());
+                    Declaration member = s.getDirectMemberOrParameter(model.getName(), null);
                     if ( member !=null ) {
                         that.addError("duplicate declaration name: " + model.getName());
                         model.getUnit().getDuplicateDeclarations().add(member);
@@ -838,7 +838,7 @@ public class DeclarationVisitor extends Visitor {
 
     @Override
     public void visit(Tree.TypeConstraint that) {
-        TypeParameter p = (TypeParameter) scope.getMemberOrParameter(unit, name(that.getIdentifier()));
+        TypeParameter p = (TypeParameter) scope.getMemberOrParameter(unit, name(that.getIdentifier()), null);
         that.setDeclarationModel(p);
         if (p==null) {
             that.addError("no matching type parameter for constraint: " + 

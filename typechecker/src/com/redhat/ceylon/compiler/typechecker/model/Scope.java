@@ -19,13 +19,13 @@ public interface Scope {
 
     ProducedType getDeclaringType(Declaration d);
 
-    Declaration getMemberOrParameter(Unit unit, String name);
+    Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature);
 
-    Declaration getMember(String name);
+    Declaration getMember(String name, List<ProducedType> signature);
 
-    Declaration getDirectMemberOrParameter(String name);
+    Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature);
 
-    Declaration getDirectMember(String name);
+    Declaration getDirectMember(String name, List<ProducedType> signature);
 
     boolean isInherited(Declaration d);
     public TypeDeclaration getInheritingDeclaration(Declaration d);

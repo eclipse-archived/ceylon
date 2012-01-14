@@ -1120,6 +1120,8 @@ base returns [Primary primary]
         bte.setTypeArguments( new InferredTypeArguments(null) );
         if ($typeReference.typeArgumentList!=null)
             bte.setTypeArguments($typeReference.typeArgumentList);
+        if ($typeReference.parameterTypes!=null)
+            bte.setParameterTypes($typeReference.parameterTypes);
         $primary=bte; }
     | memberReference
       { BaseMemberExpression bme = new BaseMemberExpression(null);
@@ -1127,6 +1129,8 @@ base returns [Primary primary]
         bme.setTypeArguments( new InferredTypeArguments(null) );
         if ($memberReference.typeArgumentList!=null)
             bme.setTypeArguments($memberReference.typeArgumentList);
+        if ($memberReference.parameterTypes!=null)
+            bme.setParameterTypes($memberReference.parameterTypes);
         $primary=bme; }
     | parExpression
       { $primary=$parExpression.expression; }
@@ -1150,6 +1154,8 @@ primary returns [Primary primary]
         qe.setTypeArguments( new InferredTypeArguments(null) );
         if ($qualifiedReference.typeArgumentList!=null)
             qe.setTypeArguments($qualifiedReference.typeArgumentList);
+        if ($qualifiedReference.parameterTypes!=null)
+            qe.setParameterTypes($qualifiedReference.parameterTypes);
         $primary=qe; }
       | indexExpression
         { IndexExpression xe = new IndexExpression(null);
@@ -1167,9 +1173,26 @@ primary returns [Primary primary]
           $primary=ie; }
     )*
     ;
+
+parameterTypes returns [ParameterTypes parameterTypes]
+    : LBRACKETS
+      { $parameterTypes = new ParameterTypes($LBRACKETS); }
+      ( 
+        qt1=qualifiedType
+        { $parameterTypes.getSimpleTypes().add($qt1.type); }
+        (
+          COMMA 
+          qt2=qualifiedType
+          { $parameterTypes.getSimpleTypes().add($qt2.type); }
+        )* 
+      )?
+      RBRACKETS
+      { $parameterTypes.setEndToken($RBRACKETS); }
+    ;
    
 qualifiedReference returns [Identifier identifier, MemberOperator operator, 
-                            TypeArgumentList typeArgumentList, boolean isMember]
+                            TypeArgumentList typeArgumentList, 
+                            ParameterTypes parameterTypes, boolean isMember]
     : memberSelectionOperator 
       { $operator = $memberSelectionOperator.operator;
         $identifier = new Identifier($operator.getToken());
@@ -1178,10 +1201,12 @@ qualifiedReference returns [Identifier identifier, MemberOperator operator,
       ( 
         memberReference
         { $identifier = $memberReference.identifier;
-          $typeArgumentList = $memberReference.typeArgumentList; }
+          $typeArgumentList = $memberReference.typeArgumentList; 
+          $parameterTypes = $memberReference.parameterTypes; }
       | typeReference
         { $identifier = $typeReference.identifier;
-          $typeArgumentList = $typeReference.typeArgumentList; 
+          $typeArgumentList = $typeReference.typeArgumentList;  
+          $parameterTypes = $memberReference.parameterTypes;
           $isMember=false; }
       | (~(LIDENTIFIER|UIDENTIFIER))=>
         { displayRecognitionError(getTokenNames(), 
@@ -1242,9 +1267,15 @@ expressions returns [ExpressionList expressionList]
       )*
     ;
 
-memberReference returns [Identifier identifier, TypeArgumentList typeArgumentList]
+memberReference returns [Identifier identifier, 
+        TypeArgumentList typeArgumentList, 
+        ParameterTypes parameterTypes]
     : memberName
       { $identifier = $memberName.identifier; }
+      (
+        pt=parameterTypes
+        { $parameterTypes = $pt.parameterTypes; }
+      )?
       (
         (typeArgumentsStart)
         => typeArguments
@@ -1252,9 +1283,15 @@ memberReference returns [Identifier identifier, TypeArgumentList typeArgumentLis
       )?
     ;
 
-typeReference returns [Identifier identifier, TypeArgumentList typeArgumentList]
+typeReference returns [Identifier identifier, 
+        TypeArgumentList typeArgumentList, 
+        ParameterTypes parameterTypes]
     : typeName 
       { $identifier = $typeName.identifier; }
+      (
+        pt=parameterTypes
+        { $parameterTypes = $pt.parameterTypes; }
+      )?
       (
         (typeArgumentsStart)
         => typeArguments
@@ -3047,6 +3084,14 @@ RBRACE
 
 RBRACKET
     :   ']'
+    ;
+
+LBRACKETS
+    :   '[['
+    ;
+
+RBRACKETS
+    :   ']]'
     ;
 
 SEMICOLON

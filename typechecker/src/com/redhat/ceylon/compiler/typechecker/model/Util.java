@@ -79,8 +79,28 @@ public class Util {
                     Character.isLowerCase(declaration.getName().charAt(0))); //don't return the type associated with an object dec 
     }
     
-    static boolean isNamed(String name, Declaration d) {
-        return d.getName()!=null && d.getName().equals(name);
+    static boolean isNamed(String name, List<ProducedType> signature, Declaration d) {
+        String dname = d.getName();
+        if (d instanceof Functional) {
+            Functional f = (Functional) d;
+            if (f.isOverloaded() || dname.toLowerCase().equals("foo_")) {
+                List<Parameter> params = f.getParameterLists().get(0).getParameters();
+                if (signature==null) {
+                    return false;
+                }
+                else if (signature.size()!=params.size()) {
+                    return false;
+                }
+                else {
+                    for (int i=0; i<params.size(); i++) {
+                        if (!params.get(i).getType().isExactly(signature.get(i))) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return dname!=null && dname.equals(name);
     }
     
     static boolean isNameMatching(String startingWith, Declaration d) {

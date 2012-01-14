@@ -2220,7 +2220,8 @@ public class ExpressionVisitor extends Visitor {
         if (pt!=null && that.getIdentifier()!=null && 
                 !that.getIdentifier().getText().equals("")) {
             TypeDeclaration d = unwrap(pt, that).getDeclaration();
-            TypedDeclaration member = (TypedDeclaration) d.getMember(name(that.getIdentifier()), unit);
+            TypedDeclaration member = (TypedDeclaration) d.getMember(name(that.getIdentifier()), 
+                    unit, Util.getParameterTypes(that.getParameterTypes()));
             if (member==null) {
                 that.addError("member method or attribute does not exist: " +
                         name(that.getIdentifier()) + 
@@ -2321,7 +2322,8 @@ public class ExpressionVisitor extends Visitor {
         }
         if (pt!=null) {
             TypeDeclaration d = unwrap(pt, that).getDeclaration();
-            TypeDeclaration type = (TypeDeclaration) d.getMember(name(that.getIdentifier()), unit);
+            TypeDeclaration type = (TypeDeclaration) d.getMember(name(that.getIdentifier()), 
+                    unit, Util.getParameterTypes(that.getParameterTypes()));
             if (type==null) {
                 that.addError("member type does not exist: " +
                         name(that.getIdentifier()) +
@@ -2947,7 +2949,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else {
                         //TODO: lots wrong here?
-                        TypeDeclaration mtd = (TypeDeclaration) td.getMember(std.getName());
+                        TypeDeclaration mtd = (TypeDeclaration) td.getMember(std.getName(), null);
                         at = mtd==null ? null : mtd.getType();
                     }
                     if (at!=null) {

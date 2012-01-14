@@ -279,7 +279,7 @@ public class TypeVisitor extends Visitor {
         ProducedType pt = that.getOuterType().getTypeModel();
         if (pt!=null) {
             TypeDeclaration d = pt.getDeclaration();
-			TypeDeclaration type = (TypeDeclaration) d.getMember(name(that.getIdentifier()), unit);
+			TypeDeclaration type = (TypeDeclaration) d.getMember(name(that.getIdentifier()), unit, null);
             if (type==null) {
                 that.addError("member type declaration does not exist: " + 
                         name(that.getIdentifier()) +

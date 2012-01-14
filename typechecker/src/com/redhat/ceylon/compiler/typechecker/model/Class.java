@@ -55,7 +55,7 @@ public class Class extends ClassOrInterface implements Functional {
 
     public Parameter getParameter(String name) {
         for (Declaration d : getMembers()) {
-            if (isParameter(d) && isNamed(name, d)) {
+            if (isParameter(d) && isNamed(name, null, d)) {
                 return (Parameter) d;
             }
         }

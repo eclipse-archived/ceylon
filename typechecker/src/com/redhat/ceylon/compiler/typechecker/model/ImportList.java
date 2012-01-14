@@ -33,22 +33,22 @@ public class ImportList implements Scope {
     }
     
     @Override
-    public Declaration getMemberOrParameter(Unit unit, String name) {
+    public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature) {
         throw new UnsupportedOperationException();
     }
     
     @Override
-    public Declaration getMember(String name) {
+    public Declaration getMember(String name, List<ProducedType> signature) {
         throw new UnsupportedOperationException();
     }
     
     @Override
-    public Declaration getDirectMemberOrParameter(String name) {
+    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature) {
         throw new UnsupportedOperationException();
     }
     
     @Override
-    public Declaration getDirectMember(String name) {
+    public Declaration getDirectMember(String name, List<ProducedType> signature) {
         throw new UnsupportedOperationException();
     }
     

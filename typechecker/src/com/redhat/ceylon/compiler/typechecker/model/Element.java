@@ -48,13 +48,13 @@ public abstract class Element {
      * without considering containing scopes or
      * imports.
      */
-    protected Declaration getMemberOrParameter(String name) {
-        return getDirectMemberOrParameter(name);
+    protected Declaration getMemberOrParameter(String name, List<ProducedType> signature) {
+        return getDirectMemberOrParameter(name, signature);
     }
 
-    public Declaration getDirectMemberOrParameter(String name) {
+    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature) {
         for (Declaration d: getMembers()) {
-            if (isResolvable(d) && isNamed(name, d)) {
+            if (isResolvable(d) && isNamed(name, signature, d)) {
                 return d;
             }
         }
@@ -66,16 +66,16 @@ public abstract class Element {
      * without considering containing scopes or
      * imports, and ignoring parameters.
      */
-    public Declaration getMember(String name) {
-        return getDirectMember(name);
+    public Declaration getMember(String name, List<ProducedType> signature) {
+        return getDirectMember(name, signature);
     }
 
-    public Declaration getDirectMember(String name) {
+    public Declaration getDirectMember(String name, List<ProducedType> signature) {
         for (Declaration d: getMembers()) {
             if (isResolvable(d)
                     //&& d.isShared()
                     && !isParameter(d)  //don't return parameters
-                    && isNamed(name, d)) {
+                    && isNamed(name, signature, d)) {
                 return d;
             }
         }
@@ -100,13 +100,13 @@ public abstract class Element {
      * Search in the given scope, taking into account
      * containing scopes and imports
      */
-    public Declaration getMemberOrParameter(Unit unit, String name) {
-        Declaration d = getMemberOrParameter(name);
+    public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature) {
+        Declaration d = getMemberOrParameter(name, signature);
         if (d!=null) {
             return d;
         }
         else if (getContainer()!=null) {
-            return getContainer().getMemberOrParameter(unit, name);
+            return getContainer().getMemberOrParameter(unit, name, signature);
         }
         else {
             //union type or bottom type 
