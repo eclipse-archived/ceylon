@@ -96,7 +96,9 @@ public class Util {
                 }
                 else {
                     for (int i=0; i<params.size(); i++) {
-                        if (!params.get(i).getType().isExactly(signature.get(i))) {
+                        TypeDeclaration paramType = params.get(i).getTypeDeclaration();
+                        TypeDeclaration sigType = signature.get(i).getDeclaration();
+                        if (!erase(paramType).equals(erase(sigType))) {
                             return false;
                         }
                     }
@@ -107,6 +109,20 @@ public class Util {
             return false;
         }
         return true;
+    }
+    
+    private static TypeDeclaration erase(TypeDeclaration paramType) {
+        if (paramType instanceof TypeParameter) {
+            if ( paramType.getSatisfiedTypes().isEmpty() ) {
+                return paramType.getExtendedTypeDeclaration();
+            }
+            else {
+                return paramType.getSatisfiedTypeDeclarations().get(0);
+            }
+        }
+        else {
+            return paramType;
+        }
     }
     
     static boolean isNameMatching(String startingWith, Declaration d) {
