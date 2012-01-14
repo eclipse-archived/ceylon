@@ -523,7 +523,8 @@
 
 "The receiver of a member reference or invocation expression."
 ^(abstract PRIMARY:TERM
-    Declaration declaration;)
+    Declaration declaration;
+    List<ProducedType> signature;)
 ^(abstract POSTFIX_EXPRESSION:PRIMARY
     PRIMARY(EXPRESSION INVOCATION_EXPRESSION INDEX_EXPRESSION
             QUALIFIED_TYPE_EXPRESSION QUALIFIED_MEMBER_EXPRESSION

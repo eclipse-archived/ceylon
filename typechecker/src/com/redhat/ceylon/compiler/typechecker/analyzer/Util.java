@@ -24,10 +24,10 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  */
 class Util extends Visitor {
     
-    static TypedDeclaration getBaseDeclaration(Tree.BaseMemberExpression bme) {
+    static TypedDeclaration getBaseDeclaration(Tree.BaseMemberExpression bme, 
+            List<ProducedType> signature) {
         Declaration result = bme.getScope().getMemberOrParameter(bme.getUnit(), 
-                name(bme.getIdentifier()), 
-                getParameterTypes(bme.getParameterTypes()));
+                name(bme.getIdentifier()), signature);
         if (result instanceof TypedDeclaration) {
         	return (TypedDeclaration) result;
         }
@@ -47,10 +47,10 @@ class Util extends Visitor {
         }
     }
     
-    static TypeDeclaration getBaseDeclaration(Tree.BaseTypeExpression bte) {
+    static TypeDeclaration getBaseDeclaration(Tree.BaseTypeExpression bte, 
+            List<ProducedType> signature) {
         Declaration result = bte.getScope().getMemberOrParameter(bte.getUnit(), 
-                name(bte.getIdentifier()), 
-                getParameterTypes(bte.getParameterTypes()));
+                name(bte.getIdentifier()), signature);
         if (result instanceof TypeDeclaration) {
         	return (TypeDeclaration) result;
         }
@@ -91,7 +91,7 @@ class Util extends Visitor {
         return typeArguments;
     }
     
-    static List<ProducedType> getParameterTypes(Tree.ParameterTypes pts) {
+    /*static List<ProducedType> getParameterTypes(Tree.ParameterTypes pts) {
         if (pts==null) return null;
         List<ProducedType> typeArguments = new ArrayList<ProducedType>();
         for (Tree.SimpleType st: pts.getSimpleTypes()) {
@@ -105,7 +105,7 @@ class Util extends Visitor {
             }
         }
         return typeArguments;
-    }
+    }*/
     
     static Tree.Statement getLastExecutableStatement(Tree.ClassBody that) {
         List<Tree.Statement> statements = that.getStatements();

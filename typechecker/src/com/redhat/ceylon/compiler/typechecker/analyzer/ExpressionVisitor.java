@@ -49,6 +49,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseItem;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifiedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
@@ -1073,9 +1074,24 @@ public class ExpressionVisitor extends Visitor {
             return pt;
         }
     }
-
+    
     @Override public void visit(Tree.InvocationExpression that) {
-        super.visit(that);
+        
+        //super.visit(that);
+        List<ProducedType> sig = null;
+        if (that.getPositionalArgumentList()!=null) {
+            that.getPositionalArgumentList().visit(this);
+            sig = new ArrayList<ProducedType>();
+            for (PositionalArgument pa: that.getPositionalArgumentList().getPositionalArguments()) {
+                sig.add(pa.getExpression().getTypeModel());
+            }
+            that.getPrimary().setSignature(sig);
+        }
+        if (that.getNamedArgumentList()!=null) {
+            that.getNamedArgumentList().visit(this);
+        }
+        that.getPrimary().visit(this);
+        
         Tree.Primary pr = that.getPrimary();
         if (pr==null) {
             that.addError("malformed invocation expression");
@@ -2188,7 +2204,7 @@ public class ExpressionVisitor extends Visitor {
         /*if (that.getTypeArgumentList()!=null)
             that.getTypeArgumentList().visit(this);*/
         super.visit(that);
-        TypedDeclaration member = getBaseDeclaration(that);
+        TypedDeclaration member = getBaseDeclaration(that, that.getSignature());
         if (member==null) {
             that.addError("method or attribute does not exist: " +
                     name(that.getIdentifier()), 100);
@@ -2221,7 +2237,7 @@ public class ExpressionVisitor extends Visitor {
                 !that.getIdentifier().getText().equals("")) {
             TypeDeclaration d = unwrap(pt, that).getDeclaration();
             TypedDeclaration member = (TypedDeclaration) d.getMember(name(that.getIdentifier()), 
-                    unit, Util.getParameterTypes(that.getParameterTypes()));
+                    unit, that.getSignature());
             if (member==null) {
                 that.addError("member method or attribute does not exist: " +
                         name(that.getIdentifier()) + 
@@ -2291,7 +2307,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         /*if (that.getTypeArgumentList()!=null)
             that.getTypeArgumentList().visit(this);*/
-        TypeDeclaration type = getBaseDeclaration(that);
+        TypeDeclaration type = getBaseDeclaration(that, that.getSignature());
         if (type==null) {
             that.addError("type does not exist: " + 
                     name(that.getIdentifier()), 100);
@@ -2323,7 +2339,7 @@ public class ExpressionVisitor extends Visitor {
         if (pt!=null) {
             TypeDeclaration d = unwrap(pt, that).getDeclaration();
             TypeDeclaration type = (TypeDeclaration) d.getMember(name(that.getIdentifier()), 
-                    unit, Util.getParameterTypes(that.getParameterTypes()));
+                    unit, that.getSignature());
             if (type==null) {
                 that.addError("member type does not exist: " +
                         name(that.getIdentifier()) +

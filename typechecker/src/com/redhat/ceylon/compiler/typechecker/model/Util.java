@@ -86,7 +86,7 @@ public class Util {
         }
         if (d instanceof Functional) {
             Functional f = (Functional) d;
-            if (f.isOverloaded() || signature!=null) {
+            if (f.isOverloaded()) {
                 List<Parameter> params = f.getParameterLists().get(0).getParameters();
                 if (signature==null) {
                     return false;
@@ -98,7 +98,9 @@ public class Util {
                     for (int i=0; i<params.size(); i++) {
                         TypeDeclaration paramType = params.get(i).getTypeDeclaration();
                         TypeDeclaration sigType = signature.get(i).getDeclaration();
-                        if (!erase(paramType).equals(erase(sigType))) {
+                        if (sigType==null || paramType==null) return false;
+                        if (sigType instanceof UnknownType || paramType instanceof UnknownType) return false;
+                        if (!erase(sigType).inherits(erase(paramType))) {
                             return false;
                         }
                     }

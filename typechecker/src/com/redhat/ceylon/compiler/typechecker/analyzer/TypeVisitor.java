@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkTypeBelongsToContainingScope;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getParameterTypes;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
@@ -149,8 +148,7 @@ public class TypeVisitor extends Visitor {
         }
         if (member.getParameterTypes()!=null)
             member.getParameterTypes().visit(this);
-        Declaration d = importedPackage.getImportedMember(name, 
-                getParameterTypes(member.getParameterTypes()));
+        Declaration d = importedPackage.getImportedMember(name, null);
         if (d==null) {
             member.getIdentifier().addError("imported declaration not found: " + 
                     name, 100);
@@ -192,8 +190,7 @@ public class TypeVisitor extends Visitor {
         i.setTypeDeclaration(d);
         if (member.getParameterTypes()!=null)
             member.getParameterTypes().visit(this);
-        Declaration m = d.getImportedMember(name, 
-                getParameterTypes(member.getParameterTypes()));
+        Declaration m = d.getImportedMember(name, null);
         if (m==null) {
             member.getIdentifier().addError("imported declaration not found: " + 
                     name + " of " + d.getName(), 100);
@@ -609,7 +606,7 @@ public class TypeVisitor extends Visitor {
             List<ProducedType> list = new ArrayList<ProducedType>();
             for (Tree.BaseMemberExpression bme: that.getBaseMemberExpressions()) {
                 //bmes have not yet been resolved
-                TypedDeclaration od = getBaseDeclaration(bme);
+                TypedDeclaration od = getBaseDeclaration(bme, null);
                 if (od!=null) {
                     ProducedType type = od.getType();
                     TypeDeclaration dec = type.getDeclaration();
