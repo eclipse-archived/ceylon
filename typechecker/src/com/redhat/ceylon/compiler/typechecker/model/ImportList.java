@@ -20,12 +20,12 @@ public class ImportList implements Scope {
     
     @Override
     public List<String> getQualifiedName() {
-        throw new UnsupportedOperationException();
+        return getContainer().getQualifiedName();
     }
     
     @Override
     public String getQualifiedNameString() {
-        throw new UnsupportedOperationException();
+        return getContainer().getQualifiedNameString();
     }
     
     @Override
@@ -55,12 +55,12 @@ public class ImportList implements Scope {
     
     @Override
     public boolean isInherited(Declaration d) {
-        throw new UnsupportedOperationException();
+        return false;
     }
     
     @Override
     public TypeDeclaration getInheritingDeclaration(Declaration d) {
-        throw new UnsupportedOperationException();
+        return null;
     }
     
     @Override

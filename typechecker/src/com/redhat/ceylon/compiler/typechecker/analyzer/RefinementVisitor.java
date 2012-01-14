@@ -83,7 +83,7 @@ public class RefinementVisitor extends Visitor {
                     checkMember(that, dec);
                 }
                 ClassOrInterface declaringType = (ClassOrInterface) dec.getContainer();
-                Declaration refined = declaringType.getRefinedMember(dec.getName());
+                Declaration refined = declaringType.getRefinedMember(dec.getName(), null);
                 dec.setRefinedDeclaration(refined);
             }
 

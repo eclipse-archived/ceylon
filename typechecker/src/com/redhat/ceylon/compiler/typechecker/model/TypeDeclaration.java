@@ -302,12 +302,13 @@ public abstract class TypeDeclaration extends Declaration
      * Return the least-refined (i.e. the non-actual member)
      * with the given name, by reversing the usual search
      * order and searching supertypes first.
+     * @param signature TODO
      */
-    public Declaration getRefinedMember(String name) {
-        return getRefinedMember(name, new ArrayList<TypeDeclaration>());
+    public Declaration getRefinedMember(String name, List<ProducedType> signature) {
+        return getRefinedMember(name, signature, new ArrayList<TypeDeclaration>());
     }
 
-    private Declaration getRefinedMember(String name, List<TypeDeclaration> visited) {
+    private Declaration getRefinedMember(String name, List<ProducedType> signature, List<TypeDeclaration> visited) {
         if (visited.contains(this)) {
             return null;
         }
@@ -315,13 +316,13 @@ public abstract class TypeDeclaration extends Declaration
             visited.add(this);
             TypeDeclaration et = getExtendedTypeDeclaration();
             if (et!=null) {
-                Declaration ed = et.getRefinedMember(name, visited);
+                Declaration ed = et.getRefinedMember(name, signature, visited);
                 if (ed!=null) {
                     return ed;
                 }
             }
             for (TypeDeclaration st: getSatisfiedTypeDeclarations()) {
-                Declaration sd = st.getRefinedMember(name, visited);
+                Declaration sd = st.getRefinedMember(name, signature, visited);
                 if (sd!=null) {
                     return sd;
                 }
