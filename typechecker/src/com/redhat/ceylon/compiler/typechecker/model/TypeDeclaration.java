@@ -327,7 +327,7 @@ public abstract class TypeDeclaration extends Declaration
                     return sd;
                 }
             }
-            return getDirectMember(name, null);
+            return getDirectMember(name, signature);
         }
     }
     
