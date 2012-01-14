@@ -495,7 +495,7 @@ public abstract class TypeDeclaration extends Declaration
         //that defines the member
         ProducedType st = getType().getSupertype(new Criteria());
         if (st!=null) {
-            return st.getDeclaration().getDirectMember(name, null);
+            return st.getDeclaration().getDirectMember(name, signature);
         }
         else {
             return null;
