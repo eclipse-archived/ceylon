@@ -94,10 +94,14 @@
         
         <para>The Ceylon lexer distinguishes identifiers which begin with an initial 
         uppercase character from identifiers which begin with an initial lowercase
-        character or underscore.</para>
+        character or underscore. Additionally, both identifier types may be qualified
+	explicitly using a prefix to disambiguate them from keywords or to specify an
+	identifier name not obeying ceylon's conventions.</para>
         
-        <programlisting>LIdentifier: LowercaseChar IdentifierChar*</programlisting>
-        <programlisting>UIdentifier: UppercaseChar IdentifierChar*</programlisting>
+        <programlisting>LIdentifier: LowercaseChar IdentifierChar* | LIdentifierPrefix IdentifierChar+</programlisting>
+        <programlisting>UIdentifier: UppercaseChar IdentifierChar* | UIdentifierPrefix IdentifierChar+</programlisting>
+	<programlisting>LIdentifierPrefix: "$"</programlisting>
+	<programlisting>UIdentifierPrefix: "$$"</programlisting>
 
         <para>The following examples are legal identifiers:</para>
         
@@ -106,12 +110,20 @@
         <programlisting>personName</programlisting>
         <programlisting>_id</programlisting>
         <programlisting>x2</programlisting>
+        <programlisting>$_id</programlisting>
+        <programlisting>$$object</programlisting>
+	<programlisting>$Object</programlisting>
+
+	<para>The prefix is not considered part of the identifier name. <literal>$person</literal>
+	is equal to <literal>person</literal>. However, while <literal>$$person</literal>
+	would also equal <literal>person</literal> and <literal>$person</literal>, it is considered an
+	<programlisting>UIdentifier</programlisting> and may not be lexed so it could compare.</para>
         
-        <para>Package and module names are built from all-lowercase identifiers.</para>
+        <para>Package and module names are built from all-lowercase identifier names.</para>
         
-        <programlisting>PIdentifier: LowercaseChar+</programlisting>
+        <programlisting>PIdentifier: LIdentifierPrefix? LowercaseChar+</programlisting>
         
-        <para>The following reserved words are not legal identifier names:</para>
+        <para>The following reserved words are not legal identifiers:</para>
         
         <para><literal>
         import
@@ -123,7 +135,13 @@
         this outer super
         is exists nonempty
         </literal></para>
-                
+
+	<para>However, they are legal identifier names which need to be qualified.
+	Example: <literal>$else</literal></para>
+
+        <para>The following are <emphasis>not</emphasis> legal identifiers:</para>
+	
+	<para><literal>$$$person $ $$ else el$e</literal></para> 
     </section>
     
     <section id="literals">
