@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.exceptions.LanguageModuleNotFoundException;
+import com.redhat.ceylon.compiler.typechecker.io.VFSArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.io.ArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
@@ -88,7 +89,8 @@ public class ModuleValidator {
                 VirtualFile artifact = null;
                 List<ArtifactProvider> artifactProviders = context.getArtifactProviders();
                 for (final ArtifactProvider artifactProvider : artifactProviders) {
-                    searchedArtifacts.add(artifactProvider.getArtifactName(module.getName(), 
+                    // this really is just for error messages
+                    searchedArtifacts.add(VFSArtifactProvider.getArtifactName(module.getName(), 
                             module.getVersion(), "*"));
                     artifact = artifactProvider.getArtifact(module.getName(), 
                             module.getVersion(), 
