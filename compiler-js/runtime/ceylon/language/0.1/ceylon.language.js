@@ -228,6 +228,16 @@ function getEqual() { return equal }
 function largest(x, y) { return x.compare(y) === larger ? x : y }
 function smallest(x, y) { return x.compare(y) === smaller ? x : y }
 
+function $Sequence() {}
+function Sequence($$sequence) {
+    // TODO: the following additional definition of getEmpty is necessary for closure style.
+    //       We need to find a better solution.
+    $$sequence.getEmpty = function() { return $false }
+    return $$sequence;
+}
+$Sequence.prototype.getEmpty = function() { return $false }
+$Sequence.prototype.getSize = function() { return Integer(this.getLastIndex()+1) }
+
 function $ArraySequence() {}
 function ArraySequence(value) {
     var that = new $ArraySequence;
@@ -235,6 +245,7 @@ function ArraySequence(value) {
     return that;
 }
 for(var $ in CeylonObject.prototype){$ArraySequence.prototype[$]=CeylonObject.prototype[$]}
+for(var $ in $Sequence.prototype){$ArraySequence.prototype[$]=$Sequence.prototype[$]}
 $ArraySequence.prototype.getString = function() { return String$(this.value.toString()) }
 $ArraySequence.prototype.item = function(index) {
     var result = this.value[index.value];
@@ -598,6 +609,8 @@ exports.getLarger=getLarger;
 exports.getSmaller=getSmaller;
 exports.getEqual=getEqual;
 exports.getFinished=getFinished;
+exports.Sequence=Sequence;
+exports.$Sequence=$Sequence;
 exports.ArraySequence=ArraySequence;
 exports.Range=Range;
 exports.Singleton=Singleton;
