@@ -160,11 +160,71 @@ void testWhileExists() {
     expect(i1, 1, "while (exists x=expr)");
 }
 
+class MySequence<out Element>(Sequence<Element> seq)
+            satisfies Sequence<Element> {
+    shared actual Integer lastIndex { return seq.lastIndex; }
+    shared actual Element first { return seq.first; }
+    shared actual Element[] rest { return seq.rest; }
+    shared actual Element? item(Integer index) { return seq[index]; }
+    shared actual Element[] span(Integer from, Integer? to) { return seq.span(from, to); }
+    shared actual Element[] segment(Integer from, Integer length) { return seq.segment(from, length); }
+    shared actual MySequence<Element> clone { return this; }
+    shared actual String string { return seq.string; }
+}
+
+void testIfNonempty() {
+    String[] s1 = {};
+    String[] s2 = { "abc" };
+    if (nonempty s1) {
+        fail("if (nonempty x)");
+    } else {
+        succeed("if (nonempty x)");
+    }
+    if (nonempty s2) {
+        succeed("if (nonempty x)");
+    } else {
+        fail("if (nonempty x)");
+    }
+    if (nonempty s3 = s1) {
+        fail("if (nonempty x=y)");
+    } else {
+        succeed("if (nonempty x=y)");
+    }
+    String[] s4 = { "hi" };
+    if (nonempty s3 = s4) {
+        expect(s3.first, "hi", "if (nonempty x=y)");
+    } else {
+        fail("if (nonempty x=y)");
+    }
+    if (nonempty s3 = s2) {
+        if (nonempty s5 = s4) {
+            expect(s3.first, "abc", "if (nonempty x=y) nested");
+            expect(s5.first, "hi", "if (nonempty x=y) nested");
+        } else {
+            fail("if (nonempty x=y) nested");
+        }
+    } else {
+        fail("if (nonempty x=y) nested");
+    }
+    if (nonempty s6 = s4.segment(0, 1)) {
+        expect(s6.first, "hi", "if (nonempty x=expr)");
+    } else {
+        fail("if (nonempty x=expr)");
+    }
+    String[] s = MySequence<String>({"hi"});
+    if (nonempty s) {
+        succeed("if (nonempty x) custom sequence");
+    } else {
+        fail("if (nonempty x) custom sequence");
+    }
+}
+
 shared void test() {
     print("--- Start flow control tests ---");
     test_if();
     test_while();
     testIfExists();
     testWhileExists();
+    testIfNonempty();
     print("--- End flow control tests ---");
 }

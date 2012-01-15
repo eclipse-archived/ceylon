@@ -388,6 +388,7 @@ public class GenerateJsVisitor extends Visitor
 
     private void callSuperclass(ExtendedType extendedType, Class d) {
         if (extendedType!=null) {
+            qualify(extendedType.getType(), extendedType.getType().getDeclarationModel());
             out(extendedType.getType().getDeclarationModel().getName());
             out("(");
             for (PositionalArgument arg: extendedType.getInvocationExpression()
@@ -405,6 +406,7 @@ public class GenerateJsVisitor extends Visitor
     private void callInterfaces(SatisfiedTypes satisfiedTypes, Class d) {
         if (satisfiedTypes!=null)
             for (SimpleType st: satisfiedTypes.getTypes()) {
+                qualify(st, st.getDeclarationModel());
                 out(st.getDeclarationModel().getName());
                 out("(");
                 self(d);
@@ -488,7 +490,11 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void copyMembersToPrototype(SimpleType that, Declaration d) {
-        copyMembersToPrototype("$"+that.getDeclarationModel().getName(), d);
+        String path = qualifiedPath(that, that.getDeclarationModel());
+        if (path.length() > 0) {
+            path += '.';
+        }
+        copyMembersToPrototype(path+"$"+that.getDeclarationModel().getName(), d);
     }
 
     private void copyMembersToPrototype(String from, Declaration d) {
@@ -1627,9 +1633,10 @@ public class GenerateJsVisitor extends Visitor
 	   IfClause ifClause = that.getIfClause();
 	   Block ifBlock = ifClause.getBlock();
 	   Condition condition = ifClause.getCondition();
-	   if (condition instanceof ExistsCondition) {
-		   // if (exists ...)		   
-		   existsConditionAndBlock((ExistsCondition) condition, ifBlock, "if");
+	   if (condition instanceof ExistsOrNonemptyCondition) {
+		   // if (exists/nonempty ...)		   
+	       existsOrNonemptyConditionAndBlock((ExistsOrNonemptyCondition) condition,
+	               ifBlock, "if");
 	   } else {
 	       out("if ((");
 		   condition.visit(this);
@@ -1650,10 +1657,10 @@ public class GenerateJsVisitor extends Visitor
    @Override public void visit(WhileStatement that) {
 	   WhileClause whileClause = that.getWhileClause();
 	   Condition condition = whileClause.getCondition();
-	   if (condition instanceof ExistsCondition) {
-		   // while (exists...)
-		   existsConditionAndBlock((ExistsCondition) condition,
-				                   whileClause.getBlock(), "while");
+	   if (condition instanceof ExistsOrNonemptyCondition) {
+		   // while (exists/nonempty...)
+	       existsOrNonemptyConditionAndBlock((ExistsOrNonemptyCondition) condition,
+	               whileClause.getBlock(), "while");
 	   } else {
 		   out("while ((");
 	       condition.visit(this);
@@ -1664,8 +1671,8 @@ public class GenerateJsVisitor extends Visitor
 	   }
    }
    
-   private void existsConditionAndBlock(ExistsCondition condition, Block block,
-		                                String keyword) {
+   private void existsOrNonemptyConditionAndBlock(ExistsOrNonemptyCondition condition,
+               Block block, String keyword) {
 	   Variable existsVar = condition.getVariable();
 	   String existsVarName = existsVar.getDeclarationModel().getName();
 	   
@@ -1674,7 +1681,7 @@ public class GenerateJsVisitor extends Visitor
 	   if (existsVarRHS instanceof BaseMemberExpression) {
 		   BaseMemberExpression bme = (BaseMemberExpression) existsVarRHS;
 		   if (bme.getDeclaration().getName().equals(existsVarName)) {
-			   // the simple case: if/while (exists x)
+			   // the simple case: if/while (exists/nonempty x)
 			   simpleCheck = true;
 		   }
 	   }
@@ -1683,11 +1690,12 @@ public class GenerateJsVisitor extends Visitor
 		   out(keyword);
            out("(");
            existsVarRHS.visit(this);
-           out("!==null)");
+           existsOrNonemptyCheck(condition);
+           out(")");
            block.visit(this);
 		   
 	   } else {
-		   // if/while (exists x=...)
+		   // if/while (exists/nonempty x=...)
 		   
 		   out("var $ex$;");
 		   endLine();
@@ -1695,7 +1703,10 @@ public class GenerateJsVisitor extends Visitor
 		   out(keyword);
 		   out("(($ex$=");
 		   existsVarRHS.visit(this);
-		   out(")!==null)");
+		   out(")");
+           existsOrNonemptyCheck(condition);
+           out(")");
+		   
 		   if (block.getStatements().isEmpty()) {
 			   out("{}");
 			   
@@ -1718,6 +1729,17 @@ public class GenerateJsVisitor extends Visitor
 			   endBlock();
 		   }
 	   }
+   }
+   
+   private void existsOrNonemptyCheck(ExistsOrNonemptyCondition condition) {
+       if (condition instanceof NonemptyCondition) {
+           out(".getEmpty()===");
+           clAlias();
+           out(".getFalse()");
+       } else {
+           out("!==null");
+       }
+
    }
 
    @Override public void visit(Break that) {
