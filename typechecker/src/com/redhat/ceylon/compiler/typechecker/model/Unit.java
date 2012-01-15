@@ -283,10 +283,11 @@ public class Unit {
     }
     
     ProducedType getCallableType(ProducedReference ref, ProducedType rt) {
-    	if (ref.getType().getDeclaration() instanceof UnknownType) {
+    	if (ref.getType()==null ||
+    	        ref.getType().getDeclaration() instanceof UnknownType) {
     		//special case for forward reference to member
     		//with inferred type TODO: something better
-    		return ref.getType();
+    		return new UnknownType(this).getType();
     	}
     	List<ProducedType> args = new ArrayList<ProducedType>();
     	args.add(rt);
