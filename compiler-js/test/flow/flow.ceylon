@@ -106,10 +106,65 @@ void testIfExists() {
     }
 }
 
+void testWhileExists() {
+    String? s1 = null;
+    String? s2 = "";
+    variable Integer i1 := 0;
+    while (exists s1) {
+        ++i1;
+        break;
+    }
+    expect(i1, 0, "while (exists x)");
+    i1 := 0;
+    while (exists s2) {
+        if (++i1 >= 2) {
+            break;
+        }
+    }
+    expect(i1, 2, "while (exists x)");
+    i1 := 0;
+    while (exists s3 = s1) {
+        ++i1;
+        break;
+    }
+    expect(i1, 0, "while (exists x=y)");
+    variable String? s4 := "hi";
+    i1 := 0;
+    while (exists s3 = s4) {
+        ++i1;
+        s4 := null;
+    }
+    expect(i1, 1, "while (exists x=y)");
+    i1 := 0;
+    while (exists s3 = s2) {
+        s4 := "hi";
+        variable Integer i2 := 0;
+        while (exists s5 = s4) {
+            if (++i2 == 2) {
+                s4 := null;
+            }
+            ++i1;
+        }
+        if (i1 >= 4) {
+            break;
+        }
+    } 
+    expect(i1, 4, "while (exists x=y) nested");
+    s4 := "hi";
+    i1 := 0;
+    while (exists len = s4?.size) {
+        expect(len, 2, "while (exists x=expr)");
+        s4 := null;
+        ++i1;
+    }
+    expect(i1, 1, "while (exists x=expr)");
+}
+
 shared void test() {
     print("--- Start flow control tests ---");
     test_if();
     test_while();
     testIfExists();
+    testWhileExists();
     print("--- End flow control tests ---");
 }

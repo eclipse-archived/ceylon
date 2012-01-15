@@ -24,104 +24,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.*;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AddAssignOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AndOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticAssignmentOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseTypeExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BinaryOperatorExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Block;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Body;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Break;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompareOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Continue;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.DecrementOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.DifferenceOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.DivideAssignOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Element;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.EntryOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.EqualOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExecutableStatement;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Exists;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExistsCondition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExtendedType;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForIterator;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForStatement;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.IdenticalOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfClause;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfStatement;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Import;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.IncrementOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.LargeAsOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.LargerOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MultiplyAssignOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgumentList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.NegativeOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Nonempty;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.NotEqualOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.NotOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ObjectDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.OrOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Outer;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositiveOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PostfixDecrementOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PostfixIncrementOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PowerOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ProductOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberOrTypeExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QuotientOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.RangeOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.RemainderAssignOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.RemainderOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SafeMemberOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SatisfiedTypes;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequenceEnumeration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SimpleType;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SmallAsOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SmallerOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SubtractAssignOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SumOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ThenOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.This;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.WhileStatement;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.*;
 
 public class GenerateJsVisitor extends Visitor 
         implements NaturalVisitor {
@@ -1726,60 +1629,8 @@ public class GenerateJsVisitor extends Visitor
 	   Block ifBlock = ifClause.getBlock();
 	   Condition condition = ifClause.getCondition();
 	   if (condition instanceof ExistsCondition) {
-		   // if (exists ...)
-		   
-		   ExistsCondition existsCond = (ExistsCondition) condition;
-		   Variable existsVar = existsCond.getVariable();
-		   String existsVarName = existsVar.getDeclarationModel().getName();
-		   
-		   boolean simpleCheck = false;
-		   Term existsVarRHS = existsVar.getSpecifierExpression().getExpression().getTerm();
-		   if (existsVarRHS instanceof BaseMemberExpression) {
-			   BaseMemberExpression bme = (BaseMemberExpression) existsVarRHS;
-			   if (bme.getDeclaration().getName().equals(existsVarName)) {
-				   // the simple case: if (exists x)
-				   simpleCheck = true;
-			   }
-		   }
-		   
-		   if (simpleCheck) {
-               out("if(");
-               existsVarRHS.visit(this);
-               out("!==null)");
-               ifBlock.visit(this);
-			   
-		   } else {
-			   // if (exists x=...)
-			   
-			   out("var $ifex$=");
-			   existsVarRHS.visit(this);
-			   out(";");
-			   endLine();
-			   
-			   out("if($ifex$!==null)");
-			   if (ifBlock.getStatements().isEmpty()) {
-				   out("{}");
-				   
-			   } else {
-				   beginBlock();
-				   out("var $");
-				   out(existsVarName);
-				   out("=$ifex$;");
-				   endLine();
-				   
-				   function();
-				   out(getter(existsVar.getDeclarationModel()));
-				   out("(){");
-				   out("return $");
-				   out(existsVarName);
-				   out("}");
-				   endLine();
-				   
-				   visitStatements(ifBlock.getStatements(), false);
-				   endBlock();
-			   }
-		   }
-		   
+		   // if (exists ...)		   
+		   existsConditionAndBlock((ExistsCondition) condition, ifBlock, "if");
 	   } else {
 	       out("if ((");
 		   condition.visit(this);
@@ -1798,12 +1649,76 @@ public class GenerateJsVisitor extends Visitor
    }
 
    @Override public void visit(WhileStatement that) {
-       out("while ((");
-       that.getWhileClause().getCondition().visit(this);
-       out(")===");
-       clAlias();
-       out(".getTrue())");
-       that.getWhileClause().getBlock().visit(this);
+	   WhileClause whileClause = that.getWhileClause();
+	   Condition condition = whileClause.getCondition();
+	   if (condition instanceof ExistsCondition) {
+		   // while (exists...)
+		   existsConditionAndBlock((ExistsCondition) condition,
+				                   whileClause.getBlock(), "while");
+	   } else {
+		   out("while ((");
+	       condition.visit(this);
+	       out(")===");
+	       clAlias();
+	       out(".getTrue())");
+	       whileClause.getBlock().visit(this);
+	   }
+   }
+   
+   private void existsConditionAndBlock(ExistsCondition condition, Block block,
+		                                String keyword) {
+	   Variable existsVar = condition.getVariable();
+	   String existsVarName = existsVar.getDeclarationModel().getName();
+	   
+	   boolean simpleCheck = false;
+	   Term existsVarRHS = existsVar.getSpecifierExpression().getExpression().getTerm();
+	   if (existsVarRHS instanceof BaseMemberExpression) {
+		   BaseMemberExpression bme = (BaseMemberExpression) existsVarRHS;
+		   if (bme.getDeclaration().getName().equals(existsVarName)) {
+			   // the simple case: if/while (exists x)
+			   simpleCheck = true;
+		   }
+	   }
+	   
+	   if (simpleCheck) {
+		   out(keyword);
+           out("(");
+           existsVarRHS.visit(this);
+           out("!==null)");
+           block.visit(this);
+		   
+	   } else {
+		   // if/while (exists x=...)
+		   
+		   out("var $ex$;");
+		   endLine();
+		   
+		   out(keyword);
+		   out("(($ex$=");
+		   existsVarRHS.visit(this);
+		   out(")!==null)");
+		   if (block.getStatements().isEmpty()) {
+			   out("{}");
+			   
+		   } else {
+			   beginBlock();
+			   out("var $");
+			   out(existsVarName);
+			   out("=$ex$;");
+			   endLine();
+			   
+			   function();
+			   out(getter(existsVar.getDeclarationModel()));
+			   out("(){");
+			   out("return $");
+			   out(existsVarName);
+			   out("}");
+			   endLine();
+			   
+			   visitStatements(block.getStatements(), false);
+			   endBlock();
+		   }
+	   }
    }
 
    @Override public void visit(Break that) {
