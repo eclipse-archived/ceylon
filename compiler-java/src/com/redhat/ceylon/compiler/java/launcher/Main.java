@@ -33,6 +33,8 @@ package com.redhat.ceylon.compiler.java.launcher;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.EnumSet;
 import java.util.MissingResourceException;
 
@@ -279,7 +281,7 @@ public class Main extends com.sun.tools.javac.main.Main {
             }
         }
 
-        if (!checkDirectory("-d"))
+        if (!checkDirectoryOrURL("-d"))
             return null;
         if (!checkDirectory("-s"))
             return null;
@@ -319,6 +321,32 @@ public class Main extends com.sun.tools.javac.main.Main {
         String value = options.get(optName);
         if (value == null)
             return true;
+        File file = new File(value);
+        if (!file.exists()) {
+            error("err.dir.not.found", value);
+            return false;
+        }
+        if (!file.isDirectory()) {
+            error("err.file.not.directory", value);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkDirectoryOrURL(String optName) {
+        String value = options.get(optName);
+        if (value == null)
+            return true;
+        try{
+            URL url = new URL(value);
+            String scheme = url.getProtocol();
+            if("http".equals(scheme) || "https".equals(scheme))
+                return true;
+            error("ceylon.err.output.repo.not.supported", value);
+            return false;
+        }catch(MalformedURLException x){
+            // not a URL, perhaps a file?
+        }
         File file = new File(value);
         if (!file.exists()) {
             error("err.dir.not.found", value);
