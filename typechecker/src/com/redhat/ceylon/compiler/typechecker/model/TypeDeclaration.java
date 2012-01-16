@@ -398,24 +398,6 @@ public abstract class TypeDeclaration extends Declaration
         }
     }
 
-    public Declaration getImportedMember(String name) {
-        return getMember(name, null);
-        /*if (signature==null) {
-            return getMember(name, null);
-        }
-        else {
-            for (Declaration d: getMembers()) {
-                if (isResolvable(d)
-                        //&& d.isShared()
-                        && !isParameter(d)  //don't return parameters
-                        && isNamed(name, signature, d)) {
-                    return d;
-                }
-            }
-            return null;
-        }*/
-    }
-
     /**
      * Is the given declaration inherited from
      * a supertype of this type or an outer
