@@ -152,6 +152,10 @@ public class StructureTest extends CompilerTest {
         return getArchiveName(moduleName, version, destDir, "src");
     }
     
+    private File getSourceArchive(String moduleName, String version, String destDir) {
+        return getArchiveName(moduleName, version, destDir, "src");
+    }
+
     private File getArchiveName(String moduleName, String version, String destDir, String extension) {
         String modulePath = moduleName.replace('.', File.separatorChar)+File.separatorChar+version+File.separator;
         File archiveFile = new File(destDir, modulePath+moduleName+"-"+version+"."+extension);
@@ -357,6 +361,44 @@ public class StructureTest extends CompilerTest {
         assertFalse(carFile.exists());
     }
 
+    @Test
+    public void testMdlHTTPOutputRepo() throws IOException{
+        // Compile the first module in its own repo 
+        File repoA = new File("build/ceylon-cars-a");
+        cleanCars(repoA.getPath());
+        repoA.mkdirs();
+
+        // now serve the first repo over HTTP
+        HttpServer server = HttpServer.create(new InetSocketAddress(8000), 1);
+        server.createContext("/repo", new RepoFileHandler(repoA.getPath()));
+        server.setExecutor(null); // creates a default executor
+        server.start();
+        
+        String repoAURL = "http://localhost:8000/repo";
+        
+        try{
+            // then try to compile our module by outputting to HTTP 
+            Boolean result = getCompilerTask(Arrays.asList("-out", repoAURL), "module/single/module.ceylon").call();
+            Assert.assertEquals(Boolean.TRUE, result);
+
+        }finally{
+            server.stop(0);
+        }
+        
+        File carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.structure.module.single", "6.6.6", repoA.getPath());
+        assertTrue(carFile.exists());
+
+        JarFile car = new JarFile(carFile);
+
+        // make sure it's not empty
+        ZipEntry moduleClass = car.getEntry("com/redhat/ceylon/compiler/java/test/structure/module/single/module.class");
+        assertNotNull(moduleClass);
+        car.close();
+
+        File srcFile = getSourceArchive("com.redhat.ceylon.compiler.java.test.structure.module.single", "6.6.6", repoA.getPath());
+        assertTrue(srcFile.exists());
+}
+    
     @Test
     public void testMdlSourceArchive() throws IOException{
         File sourceArchiveFile = getSourceArchive("com.redhat.ceylon.compiler.java.test.structure.module.single", "6.6.6");
