@@ -41,7 +41,7 @@ public class RepoFileHandler implements HttpHandler {
         String method = t.getRequestMethod();
         
         System.err.println("Serving URI "+method+" "+path);
-        
+
         // filter on our prefix
         if(path.startsWith("/repo/")){
             if("LOCK".equals(method)){
@@ -52,38 +52,38 @@ public class RepoFileHandler implements HttpHandler {
                 response.close();
                 return;
             }
-            
-           path = path.substring(6);
-           File file = new File(folder, path);
-           
-           if("PUT".equals(method)){
-               // make sure parents exist
-               file.getParentFile().mkdirs();
-               // save the file
-               FileOutputStream os = new FileOutputStream(file);
-               InputStream body = t.getRequestBody();
-               copy(body, os);
-               body.close();
-               os.close();
-               // OK
-               t.sendResponseHeaders(HttpURLConnection.HTTP_CREATED, 0);
-               t.getResponseBody().close();
-               return;
-           }
-           
-           if(file.exists()){
-               System.err.println("Serving file "+file.getPath());
-               t.sendResponseHeaders(HttpURLConnection.HTTP_OK, file.length());
-               OutputStream os = t.getResponseBody();
-               // only write the contents if it's not a directory, otherwise the CMR expects an empty 200 response
-               if(!file.isDirectory()){
-                   InputStream is = new FileInputStream(file);
-                   copy(is, os);
-               }
-               os.close();
-               return;
-           }else
-               System.err.println("File does not exist: "+file.getAbsolutePath());
+
+            path = path.substring(6);
+            File file = new File(folder, path);
+
+            if("PUT".equals(method)){
+                // make sure parents exist
+                file.getParentFile().mkdirs();
+                // save the file
+                FileOutputStream os = new FileOutputStream(file);
+                InputStream body = t.getRequestBody();
+                copy(body, os);
+                body.close();
+                os.close();
+                // OK
+                t.sendResponseHeaders(HttpURLConnection.HTTP_CREATED, 0);
+                t.getResponseBody().close();
+                return;
+            }
+
+            if(file.exists()){
+                System.err.println("Serving file "+file.getPath());
+                t.sendResponseHeaders(HttpURLConnection.HTTP_OK, file.length());
+                OutputStream os = t.getResponseBody();
+                // only write the contents if it's not a directory, otherwise the CMR expects an empty 200 response
+                if(!file.isDirectory()){
+                    InputStream is = new FileInputStream(file);
+                    copy(is, os);
+                }
+                os.close();
+                return;
+            }else
+                System.err.println("File does not exist: "+file.getAbsolutePath());
         }
         System.err.println("Returning 404");
         t.sendResponseHeaders(HttpURLConnection.HTTP_NOT_FOUND, 0);
