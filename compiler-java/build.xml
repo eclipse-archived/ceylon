@@ -11,6 +11,22 @@
   <property name="ceylon.runtime.car" value="${ceylon.runtime.dir}/ceylon.language-${module.ceylon.language.version}.car"/>
   <property name="ceylon.runtime.lib" location="${ceylon.repo.dir}/${ceylon.runtime.car}"/>
 
+  <!-- FIXME: https://github.com/ceylon/ceylon-module-resolver/issues/7 -->
+  <property name="ceylon.cmr.version" value="1.0.0-SNAPSHOT"/>
+  <property name="maven.repo.dir" location="${user.home}/.m2/repository"/>
+  <property name="ceylon.cmr-api.dir" value="com/redhat/ceylon/cmr/cmr-api/${ceylon.cmr.version}"/>
+  <property name="ceylon.cmr-api.jar" value="${ceylon.cmr-api.dir}/cmr-api-${ceylon.cmr.version}.jar"/>
+  <property name="ceylon.cmr-api.lib" location="${maven.repo.dir}/${ceylon.cmr-api.jar}"/>
+  <property name="ceylon.cmr-spi.dir" value="com/redhat/ceylon/cmr/cmr-spi/${ceylon.cmr.version}"/>
+  <property name="ceylon.cmr-spi.jar" value="${ceylon.cmr-spi.dir}/cmr-spi-${ceylon.cmr.version}.jar"/>
+  <property name="ceylon.cmr-spi.lib" location="${maven.repo.dir}/${ceylon.cmr-spi.jar}"/>
+  <property name="ceylon.cmr-impl.dir" value="com/redhat/ceylon/cmr/cmr-impl/${ceylon.cmr.version}"/>
+  <property name="ceylon.cmr-impl.jar" value="${ceylon.cmr-impl.dir}/cmr-impl-${ceylon.cmr.version}.jar"/>
+  <property name="ceylon.cmr-impl.lib" location="${maven.repo.dir}/${ceylon.cmr-impl.jar}"/>
+  <property name="ceylon.cmr-webdav.dir" value="com/redhat/ceylon/cmr/cmr-webdav/${ceylon.cmr.version}"/>
+  <property name="ceylon.cmr-webdav.jar" value="${ceylon.cmr-webdav.dir}/cmr-webdav-${ceylon.cmr.version}.jar"/>
+  <property name="ceylon.cmr-webdav.lib" location="${maven.repo.dir}/${ceylon.cmr-webdav.jar}"/>
+
   <!-- The Java source files for the compiler -->
   <property name="javac.src" location="langtools/src/share/classes"/>
   <property name="ceylonc.src" location="src"/>
@@ -50,6 +66,10 @@
   <path id="compiler.classpath">
     <pathelement path="${ceylon.typechecker.lib}"/>
     <pathelement path="${ceylon.runtime.lib}"/>
+    <pathelement path="${ceylon.cmr-api.lib}"/>
+    <pathelement path="${ceylon.cmr-spi.lib}"/>
+    <pathelement path="${ceylon.cmr-impl.lib}"/>
+    <pathelement path="${ceylon.cmr-webdav.lib}"/>
     <pathelement path="${antlr.lib}"/>
     <pathelement path="${markdown.lib}"/>
   </path>
