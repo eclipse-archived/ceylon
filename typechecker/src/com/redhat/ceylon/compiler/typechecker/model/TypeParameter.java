@@ -107,5 +107,10 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     public String getQualifiedNameString() {
     	return getName();
     }
+    
+    @Override
+    public boolean isAbstraction() {
+        return false;
+    }
 
 }

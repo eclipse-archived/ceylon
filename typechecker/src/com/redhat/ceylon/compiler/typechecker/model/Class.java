@@ -1,10 +1,10 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import java.util.Collections;
-import java.util.List;
-
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isParameter;
+
+import java.util.Collections;
+import java.util.List;
 
 
 public class Class extends ClassOrInterface implements Functional {
@@ -13,6 +13,7 @@ public class Class extends ClassOrInterface implements Functional {
     //private boolean formal;    
     private ParameterList parameterList;
     private boolean overloaded;
+    private boolean abstraction;
 
     /*public boolean isFormal() {
          return formal;
@@ -75,6 +76,15 @@ public class Class extends ClassOrInterface implements Functional {
     @Override
     public Class getExtendedTypeDeclaration() {
         return (Class) super.getExtendedTypeDeclaration();
+    }
+    
+    public void setAbstraction(boolean abstraction) {
+        this.abstraction = abstraction;
+    }
+    
+    @Override
+    public boolean isAbstraction() {
+        return abstraction;
     }
 
 }
