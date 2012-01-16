@@ -49,6 +49,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.comp.AttrContext;
@@ -351,6 +352,10 @@ public class CeylonEnter extends Enter {
             + node.getToken().getCharPositionInLine();
             log.useSource(cpu.getFileObject());
             return pos;
+        }
+        @Override
+        protected void initExpectingError(java.util.List<CompilerAnnotation> annotations) {
+            // don't act on @error
         }
     }
     
