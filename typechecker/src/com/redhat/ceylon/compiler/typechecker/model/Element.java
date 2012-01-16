@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.lookupMember;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,12 +53,7 @@ public abstract class Element {
     }
 
     public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature) {
-        for (Declaration d: getMembers()) {
-            if (isResolvable(d) && isNamed(name, signature, d)) {
-                return d;
-            }
-        }
-        return null;
+        return lookupMember(members, name, signature, true);
     }
 
     /**
@@ -71,20 +66,7 @@ public abstract class Element {
     }
 
     public Declaration getDirectMember(String name, List<ProducedType> signature) {
-        for (Declaration d: getMembers()) {
-            if (isResolvable(d)
-                    //&& d.isShared()
-                    && !isParameter(d)  //don't return parameters
-                    && isNamed(name, signature, d)) {
-                return d;
-            }
-        }
-        return null;
-    }
-
-    protected boolean isParameter(Declaration d) {
-        return d instanceof Parameter
-                || d instanceof TypeParameter;
+        return lookupMember(members, name, signature, false);
     }
 
     public ProducedType getDeclaringType(Declaration d) {

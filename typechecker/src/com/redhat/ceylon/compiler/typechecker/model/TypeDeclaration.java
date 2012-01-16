@@ -398,8 +398,8 @@ public abstract class TypeDeclaration extends Declaration
         }
     }
 
-    public Declaration getImportedMember(String name, List<ProducedType> signature) {
-        return getMember(name, signature);
+    public Declaration getImportedMember(String name) {
+        return getMember(name, null);
         /*if (signature==null) {
             return getMember(name, null);
         }

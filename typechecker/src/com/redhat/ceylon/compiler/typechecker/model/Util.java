@@ -79,19 +79,25 @@ public class Util {
                     Character.isLowerCase(declaration.getName().charAt(0))); //don't return the type associated with an object dec 
     }
     
-    static boolean isNamed(String name, List<ProducedType> signature, Declaration d) {
-        String dname = d.getName();
-        if (dname==null || !dname.equals(name)) {
+    static boolean isParameter(Declaration d) {
+        return d instanceof Parameter
+                || d instanceof TypeParameter;
+    }
+
+    static boolean notOverloaded(Declaration d) {
+        return !(d instanceof Functional) || !((Functional) d).isOverloaded();
+    }
+    
+    static boolean hasMatchingSignature(List<ProducedType> signature, Declaration d) {
+        if (d instanceof Class && ((Class) d).isAbstract()) {
             return false;
         }
         if (d instanceof Functional) {
             Functional f = (Functional) d;
-            if (f.isOverloaded()) {
-                List<Parameter> params = f.getParameterLists().get(0).getParameters();
-                if (signature==null) {
-                    return false;
-                }
-                else if (signature.size()!=params.size()) {
+            List<ParameterList> pls = f.getParameterLists();
+            if (pls!=null && !pls.isEmpty()) {
+                List<Parameter> params = pls.get(0).getParameters();
+                if (signature.size()!=params.size()) {
                     return false;
                 }
                 else {
@@ -104,13 +110,16 @@ public class Util {
                             return false;
                         }
                     }
+                    return true;
                 }
             }
         }
-        else if (signature!=null) {
-            return false;
-        }
-        return true;
+        return signature==null;
+    }
+    
+    static boolean isNamed(String name, Declaration d) {
+        String dname = d.getName();
+        return dname!=null && dname.equals(name);
     }
     
     private static TypeDeclaration erase(TypeDeclaration paramType) {
@@ -375,4 +384,59 @@ public class Util {
         return false;
     }
     
+    static Declaration lookupMember(List<Declaration> members, String name,
+            List<ProducedType> signature, boolean includeParameters) {
+        if (name.equals("s")) {
+            name.charAt(0);
+        }
+        List<Declaration> results = new ArrayList<Declaration>();
+        Declaration inexactMatch = null;
+        for (Declaration d: members) {
+            if (isResolvable(d) && isNamed(name, d) &&
+                    (includeParameters || !isParameter(d))) {
+                if (signature==null) {
+                    //no argument types: either a type 
+                    //declaration, an attribute, or a method 
+                    //reference - don't return overloaded
+                    //forms of the declaration
+                    if (notOverloaded(d)) {
+                        //by returning the first thing we
+                        //find, we implement the rule that
+                        //parameters hide attributes with
+                        //the same name in the body of a
+                        //class (a bit of a hack solution)
+                        return d;
+                    }
+                }
+                else {
+                    if (notOverloaded(d)) {
+                        //we have found either a non-overloaded
+                        //declaration, of one which represents
+                        //an "inexact" match on an overloaded
+                        //declaration
+                        inexactMatch = d;
+                    }
+                    if (hasMatchingSignature(signature, d)) {
+                        //we have found an exactly matching 
+                        //overloaded declaration
+                        results.add(d);
+                    }
+                }
+            }
+        }
+        switch (results.size()) {
+        case 0:
+            //no exact match, so return the non-overloaded
+            //or the "inexact" one
+            return inexactMatch;
+        case 1:
+            //exactly one exact match, so return it
+            return results.get(0);
+        default:
+            //more than one matching overloaded declaration,
+            //so return the "inexact" one
+            return inexactMatch;
+        }
+    }
+
 }

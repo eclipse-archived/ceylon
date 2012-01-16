@@ -135,7 +135,7 @@ public class SpecificationVisitor extends Visitor {
                 //you are allowed to refer to later 
                 //declarations in a class declaration
                 //section
-                if ( !inDeclarationSection() ) {
+                if (!inDeclarationSection()) {
                     that.addError("not yet declared: " + 
                             member.getName());
                 }

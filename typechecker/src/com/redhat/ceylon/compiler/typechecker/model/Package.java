@@ -4,6 +4,8 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.lookupMember;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.notOverloaded;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,12 +104,6 @@ public class Package implements Scope {
 
     @Override
     public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature) {
-        /*for ( Declaration d: getMembers() ) {
-            if ( isResolvable(d) && isNamed(name, d) ) {
-                return d;
-            }
-        }
-        return null;*/
         return getDirectMember(name, signature);
     }
 
@@ -121,17 +117,13 @@ public class Package implements Scope {
 
     @Override
     public Declaration getDirectMember(String name, List<ProducedType> signature) {
-        for (Declaration d: getMembers()) {
-            if (isResolvable(d) && /*d.isShared() &&*/ isNamed(name, signature, d)) {
-                return d;
-            }
-        }
-        return null;
+        return lookupMember(getMembers(), name, signature, false);
     }
 
-    public Declaration getImportedMember(String name, List<ProducedType> signature) {
+    public Declaration getImportedMember(String name) {
         for (Declaration d: getMembers()) {
-            if (isResolvable(d) && /*d.isShared() &&*/ isNamed(name, signature, d)) {
+            if (isResolvable(d) && /*d.isShared() &&*/ isNamed(name, d) && 
+                    notOverloaded(d)) {
                 return d;
             }
         }

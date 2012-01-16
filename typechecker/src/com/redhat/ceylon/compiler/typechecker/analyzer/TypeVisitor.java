@@ -148,7 +148,7 @@ public class TypeVisitor extends Visitor {
         }
         if (member.getParameterTypes()!=null)
             member.getParameterTypes().visit(this);
-        Declaration d = importedPackage.getImportedMember(name, null);
+        Declaration d = importedPackage.getImportedMember(name);
         if (d==null) {
             member.getIdentifier().addError("imported declaration not found: " + 
                     name, 100);
@@ -190,7 +190,7 @@ public class TypeVisitor extends Visitor {
         i.setTypeDeclaration(d);
         if (member.getParameterTypes()!=null)
             member.getParameterTypes().visit(this);
-        Declaration m = d.getImportedMember(name, null);
+        Declaration m = d.getImportedMember(name);
         if (m==null) {
             member.getIdentifier().addError("imported declaration not found: " + 
                     name + " of " + d.getName(), 100);

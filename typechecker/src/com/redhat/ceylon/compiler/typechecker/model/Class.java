@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isParameter;
 
 
 public class Class extends ClassOrInterface implements Functional {
@@ -55,7 +56,7 @@ public class Class extends ClassOrInterface implements Functional {
 
     public Parameter getParameter(String name) {
         for (Declaration d : getMembers()) {
-            if (isParameter(d) && isNamed(name, null, d)) {
+            if (isParameter(d) && isNamed(name, d)) {
                 return (Parameter) d;
             }
         }
