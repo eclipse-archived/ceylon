@@ -65,7 +65,7 @@ Running the compiler
 
 The compiler can be run as follows:
 
-    bin/ceylonc -src samples -out build/ceylon-cars samples/helloworld.ceylon 
+    build/bin/ceylonc -src samples -out build/ceylon-cars samples/helloworld.ceylon 
 
 The -src argument to the compiler is required in order for
 the compiler to figure out each class's full name.  It is
@@ -85,4 +85,4 @@ Generating the API documentation
 
 The ceylondoc tool can be run as follows:
 
-    bin/ceylond -out api-docs -src ../ceylon.language/languagesrc/current ceylon.language
+    build/bin/ceylond -out api-docs -src ../ceylon.language/languagesrc/current ceylon.language
