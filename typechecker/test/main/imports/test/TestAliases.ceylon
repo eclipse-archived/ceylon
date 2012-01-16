@@ -3,12 +3,10 @@ import imports.package {
     a=attribute, 
     C=Class { i=count, 
               In=Inner, 
-              m=method[[String,Integer]], 
-              @error merr=method[[String]] }, 
+              m=method }, 
     I=Interface, 
     D=Dupe,
-    o=op[[Integer]],
-    @error oerr=op[[Float]]
+    o=op
 }
 
 class TestAliases() {
