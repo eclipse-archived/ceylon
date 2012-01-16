@@ -28,7 +28,9 @@ Directory structure:
 Build the compiler and tools
 ----------------------------
 
-First you must make sure you have built the **ceylon.language** and **ceylon-spec** projects.
+First you must make sure you have built the **ceylon.language**, **ceylon-spec** and
+**ceylon-module-resolver** projects.
+
 Go into **ceylon.language** first and run
 
     ant clean publish
@@ -36,6 +38,10 @@ Go into **ceylon.language** first and run
 Then go into **ceylon-spec** and run
 
     ant clean publish
+
+Then go into **ceylon-module-resolver** and run
+
+    mvn clean install
     
 To build and test the compiler return to **ceylon-compiler** and run
 
@@ -65,20 +71,18 @@ The -src argument to the compiler is required in order for
 the compiler to figure out each class's full name.  It is
 a colon-separated path, much like javac's -sourcepath argument.
 
-You can add -rep arguments to add module repositories. Note that this is
-currently limited to local folders.
+You can add -rep arguments to add module repositories. These can either be local paths
+or HTTP URLs.
 
 Running your Ceylon program
 ---------------------------
 
-Right now the Ceylon runner doesn't support module repositories so you have to give it a
-valid classpath (this will be fixed soon):
-
-    bin/ceylon -cp build/ceylon-cars/unversioned/default_module-unversioned.car helloworld
+In order to run your Ceylon program you'll need the https://github.com/ceylon/ceylon-runtime
+project. Clone that repository and follow the README instructions.
 
 Generating the API documentation 
 --------------------------------
 
 The ceylondoc tool can be run as follows:
 
-    bin/ceylond -out api-docs -src ../ceylon.language/languagesrc/current  
+    bin/ceylond -out api-docs -src ../ceylon.language/languagesrc/current ceylon.language
