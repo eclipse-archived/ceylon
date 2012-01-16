@@ -1,9 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.erasureMatches;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
 
 import java.util.ArrayList;
@@ -397,26 +395,7 @@ public abstract class TypeDeclaration extends Declaration
             return getSupertypeDeclaration(name);
         }
     }
-
-    public Declaration getImportedMember(String name, List<String> erasure) {
-        if (erasure==null) {
-            return getMember(name);
-        }
-        else {
-            for (Declaration d: getMembers()) {
-                if (isResolvable(d)
-                        //&& d.isShared()
-                        && !isParameter(d)  //don't return parameters
-                        && isNamed(name, d)) {
-                    if (erasureMatches(d, erasure)) {
-                    	return d;
-                    }
-                }
-            }
-            return null;
-        }
-    }
-
+    
     /**
      * Is the given declaration inherited from
      * a supertype of this type or an outer

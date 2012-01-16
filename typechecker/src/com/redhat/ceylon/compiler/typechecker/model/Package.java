@@ -1,14 +1,11 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import static com.redhat.ceylon.compiler.typechecker.model.Util.erasureMatches;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -127,17 +124,6 @@ public class Package implements Scope {
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && /*d.isShared() &&*/ isNamed(name, d)) {
                 return d;
-            }
-        }
-        return null;
-    }
-
-    public Declaration getImportedMember(String name, List<String> erasure) {
-        for (Declaration d: getMembers()) {
-            if (isResolvable(d) && /*d.isShared() &&*/ isNamed(name, d)) {
-                if (erasureMatches(d, erasure)) {
-                	return d;
-                }
             }
         }
         return null;
