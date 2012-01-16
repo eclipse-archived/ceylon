@@ -192,7 +192,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         }
     }
     
-    private void initExpectingError(List<Tree.CompilerAnnotation> annotations) {
+    protected void initExpectingError(List<Tree.CompilerAnnotation> annotations) {
         for (Tree.CompilerAnnotation c: annotations) {
             if (c.getIdentifier().getText().equals("error")) {
                 expectingError = true;
