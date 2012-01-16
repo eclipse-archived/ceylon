@@ -54,6 +54,7 @@ import com.redhat.ceylon.cmr.impl.RepositoryBuilder;
 import com.redhat.ceylon.cmr.impl.RootBuilder;
 import com.redhat.ceylon.cmr.impl.SimpleRepository;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
+import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
 import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -273,7 +274,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
             structureBuilder = new FileContentStore(repoFolder);
         }else{
             // HTTP
-            structureBuilder = new RemoteContentStore(outRepo, cmrLogger);
+            structureBuilder = new WebDAVContentStore(outRepo, cmrLogger);
         }
         outputRepo = new SimpleRepository(structureBuilder, cmrLogger);
         return outputRepo;
