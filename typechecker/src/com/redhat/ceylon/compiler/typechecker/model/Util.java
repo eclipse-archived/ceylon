@@ -85,7 +85,9 @@ public class Util {
     }
 
     static boolean notOverloaded(Declaration d) {
-        return !(d instanceof Functional) || !((Functional) d).isOverloaded();
+        return !(d instanceof Functional) || 
+                !((Functional) d).isOverloaded() ||
+                ((Functional) d).isAbstraction();
     }
     
     static boolean hasMatchingSignature(List<ProducedType> signature, Declaration d) {
@@ -398,7 +400,8 @@ public class Util {
                     //no argument types: either a type 
                     //declaration, an attribute, or a method 
                     //reference - don't return overloaded
-                    //forms of the declaration
+                    //forms of the declaration (instead
+                    //return the "abstraction" of them)
                     if (notOverloaded(d)) {
                         //by returning the first thing we
                         //find, we implement the rule that
@@ -411,9 +414,9 @@ public class Util {
                 else {
                     if (notOverloaded(d)) {
                         //we have found either a non-overloaded
-                        //declaration, of one which represents
-                        //an "inexact" match on an overloaded
-                        //declaration
+                        //declaration, or the "abstraction" 
+                        //which of all the overloaded forms 
+                        //of the declaration
                         inexactMatch = d;
                     }
                     if (hasMatchingSignature(signature, d)) {
@@ -427,14 +430,16 @@ public class Util {
         switch (results.size()) {
         case 0:
             //no exact match, so return the non-overloaded
-            //or the "inexact" one
+            //declaration or the "abstraction" of the 
+            //overloaded declaration
             return inexactMatch;
         case 1:
             //exactly one exact match, so return it
             return results.get(0);
         default:
             //more than one matching overloaded declaration,
-            //so return the "inexact" one
+            //so return the "abstraction" of the overloaded
+            //declaration
             return inexactMatch;
         }
     }
