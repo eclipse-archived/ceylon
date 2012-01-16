@@ -226,6 +226,10 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Slots");
     }
         
+    public Interface getFixedSlotsDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("FixedSlots");
+    }
+        
     public TypeDeclaration getComparisonDeclaration() {
         return (TypeDeclaration) getLanguageModuleDeclaration("Comparison");
     }
