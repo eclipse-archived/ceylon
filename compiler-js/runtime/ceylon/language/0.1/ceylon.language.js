@@ -171,6 +171,24 @@ $Character.prototype.getLowercased = function() {
     var lcstr = codepointToString(this.value).toLowerCase();
     return Character(codepointFromString(lcstr, 0));
 }
+var $WS={}
+$WS[0x9]=true;
+$WS[0xa]=true;
+$WS[0xb]=true;
+$WS[0xc]=true;
+$WS[0xd]=true;
+$WS[0x20]=true;
+$WS[0x85]=true;
+$WS[0xa0]=true;
+$WS[0x1680]=true;
+$WS[0x180e]=true;
+for (var i=0x2000; i<=0x200a; i++) { $WS[i]=true }
+$WS[0x2028]=true;
+$WS[0x2029]=true;
+$WS[0x202f]=true;
+$WS[0x205f]=true;
+$WS[0x3000]=true;
+$Character.prototype.getWhitespace = function() { return Boolean$(this.value in $WS) }
 
 function $StringBuilder() {}
 function StringBuilder() {

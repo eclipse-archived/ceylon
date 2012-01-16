@@ -22,6 +22,11 @@ void testCharacter() {
     //expect(`x`.lowercased, `x`, "Character.lowercased");
     //expect(`ö`.uppercased, `Ö`, "Character.uppercased");
     //expect(`#`.uppercased, `#`, "Character.uppercased");
+    expect(`A`.whitespace, false, "Character.whitespace");
+    expect(` `.whitespace, true, "Character.whitespace");
+    for (c in "\t") {
+        expect(c.whitespace, true, "Character.whitespace");
+    }
 }
 
 void testString() {
