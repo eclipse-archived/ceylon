@@ -58,10 +58,7 @@ public class BoxingDeclarationVisitor extends Visitor {
         // deal with invalid input
         if(refinedMethod == null)
             return;
-        if(isPrimitive(method, refinedMethod)) {
-            Util.markUnBoxed(method);
-            Util.markUnBoxed(refinedMethod);
-        }
+        setBoxingState(method, refinedMethod);
         List<ParameterList> methodParameterLists = method.getParameterLists();
         List<ParameterList> refinedParameterLists = refinedMethod.getParameterLists();
         // deal with invalid input
@@ -71,10 +68,7 @@ public class BoxingDeclarationVisitor extends Visitor {
         Iterator<Parameter> parameters = methodParameterLists.get(0).getParameters().iterator();
         for(Parameter refinedParam : refinedParameterLists.get(0).getParameters()){
             Parameter param = parameters.next();
-            if(isPrimitive(param, refinedParam)) {
-                Util.markUnBoxed(param);
-                Util.markUnBoxed(refinedParam);
-            }
+            setBoxingState(param, refinedParam);
         }
     }
     
@@ -91,18 +85,25 @@ public class BoxingDeclarationVisitor extends Visitor {
             return;
         List<Parameter> parameters = parameterLists.get(0).getParameters();
         for(Parameter param : parameters){
-            if(isPrimitive(param, param))
-                Util.markUnBoxed(param);
+            setBoxingState(param, param);
         }
     }
     
-    private boolean isPrimitive(TypedDeclaration declaration, TypedDeclaration refinedDeclaration) {
+    private void setBoxingState(TypedDeclaration declaration, TypedDeclaration refinedDeclaration) {
         if(declaration.getType() == null){
             // an error must have already been reported
-            return false;
+            return;
         }
-        return (transformer.isCeylonBasicType(declaration.getType()) || transformer.isCeylonArray(declaration.getType()))
-                && !(refinedDeclaration.getTypeDeclaration() instanceof TypeParameter);
+        if((transformer.isCeylonBasicType(declaration.getType()) 
+            || transformer.isCeylonArray(declaration.getType()))
+           && !(refinedDeclaration.getTypeDeclaration() instanceof TypeParameter)){
+            // set the refined decl if it isn't already set (by the model loader for example)
+            if(refinedDeclaration.getUnboxed())
+                refinedDeclaration.setUnboxed(true);
+            // propagate to decl if needed
+            if(refinedDeclaration != declaration)
+                declaration.setUnboxed(refinedDeclaration.getUnboxed());
+        }
     }
 
     @Override
@@ -116,10 +117,7 @@ public class BoxingDeclarationVisitor extends Visitor {
         // deal with invalid input
         if(refinedDeclaration == null)
             return;
-        if(isPrimitive(declaration, refinedDeclaration)) {
-            Util.markUnBoxed(declaration);
-            Util.markUnBoxed(refinedDeclaration);
-        }
+        setBoxingState(declaration, refinedDeclaration);
     }
 
     @Override
@@ -137,10 +135,7 @@ public class BoxingDeclarationVisitor extends Visitor {
         // deal with invalid input
         if(refinedDeclaration == null)
             return;
-        if(isPrimitive(declaration, refinedDeclaration)) {
-            Util.markUnBoxed(declaration);
-            Util.markUnBoxed(refinedDeclaration);
-        }
+        setBoxingState(declaration, refinedDeclaration);
     }
 
     @Override
@@ -150,7 +145,6 @@ public class BoxingDeclarationVisitor extends Visitor {
         // deal with invalid input
         if(declaration == null)
             return;
-        if(isPrimitive(declaration, declaration))
-            Util.markUnBoxed(declaration);
+        setBoxingState(declaration, declaration);
     }
 }
