@@ -3,6 +3,12 @@ void expect(Equality actual, Equality expected, String text) {
             + expected.string + "' => "
             + ((actual==expected) then "ok" else "FAIL"));
 }
+void succeed(String text) {
+    print("[ok] " + text);
+}
+void fail(String text) {
+    print("[NOT OK] " + text);
+}
 
 //Another test for the compiler.
 void test_interpolate() {
@@ -69,6 +75,32 @@ void testString() {
     }
     expect(cnt, 5, "String.iterator");
     expect(s4, "ÖŨ`𝄞A", "String.iterator");
+    
+    if (exists c = s1[-1]) {
+        fail("String.item");
+    } else {
+        succeed("String.item");
+    }
+    if (exists c = s1[0]) {
+        expect(c, `a`, "String.item");
+    } else {
+        fail("String.item");
+    }
+    if (exists c = s1[2]) {
+        expect(c, `c`, "String.item");
+    } else {
+        fail("String.item");
+    }
+    if (exists c = s1[3]) {
+        fail("String.item");
+    } else {
+        succeed("String.item");
+    }
+    if (exists c = s3[4]) {
+        expect(c, `Ö`, "String.item");
+    } else {
+        fail("String.item");
+    }
 }
 
 void test_stringbuilder() {

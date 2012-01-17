@@ -111,6 +111,15 @@ $String.prototype.shorterThan = function(length) {
     return Boolean$(this.codePoints<length.value);
 }
 $String.prototype.getIterator = function() { return StringIterator(this.value) }
+$String.prototype.item = function(index) {
+    if (index<0 || index>=this.value.length) {return null}
+    var i = 0;
+    for (var count=0; count<index; count++) {
+        if ((this.value.charCodeAt(i)&0xfc00) === 0xd800) {++i}
+        if (++i >= this.value.length) {return null}
+    }
+    return Character(codepointFromString(this.value, i));
+}
 
 function $StringIterator() {}
 function StringIterator(string) {
