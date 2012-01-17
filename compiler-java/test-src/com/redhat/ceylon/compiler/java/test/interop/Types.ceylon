@@ -48,6 +48,11 @@ void returnTypes() {
 }
 
 @nomodel
+T box<T>(T t){
+    return t;
+}
+
+@nomodel
 @error
 void parameterTypes() {
     @error
@@ -65,7 +70,11 @@ void parameterTypes() {
     @error
     java.charParams(`a`, JCharacter(`a`), `a`);
     @error
+    java.charParams(box(`a`), JCharacter(box(`a`)), box(`a`));
+    @error
     java.stringParams("a", "a");
+    @error
+    java.stringParams(box("a"), box("a"));
     @error
     java.objectParams(java);
 }
