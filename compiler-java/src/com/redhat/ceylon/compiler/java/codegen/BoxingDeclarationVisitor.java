@@ -97,12 +97,11 @@ public class BoxingDeclarationVisitor extends Visitor {
         if((transformer.isCeylonBasicType(declaration.getType()) 
             || transformer.isCeylonArray(declaration.getType()))
            && !(refinedDeclaration.getTypeDeclaration() instanceof TypeParameter)){
-            // set the refined decl if it isn't already set (by the model loader for example)
-            if(refinedDeclaration.getUnboxed())
-                refinedDeclaration.setUnboxed(true);
             // propagate to decl if needed
             if(refinedDeclaration != declaration)
                 declaration.setUnboxed(refinedDeclaration.getUnboxed());
+            else
+                declaration.setUnboxed(true);
         }
     }
 
