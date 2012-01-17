@@ -18,7 +18,11 @@
  * MA  02110-1301, USA.
  */
 import java.io{...}
-import java.lang{JBoolean = Boolean, JLong = Long}
+import java.lang{
+    JBoolean = Boolean,
+    JInteger = Integer, 
+    JLong = Long
+}
 
 @nomodel
 @error
@@ -60,6 +64,9 @@ class JavaInterfaceImpl() satisfies JavaInterface<Boolean,Integer> {
     shared actual JLong boxedLongMethod(JLong i){ return i; }
     shared actual Integer ceylonIntegerMethod(Integer i){ return i; }
     shared actual Integer classTypeParamMethodI(Integer i){ return i; }
+
+    shared actual Integer intMethod(Integer i){ return i; }
+    shared actual JInteger boxedIntegerMethod(JInteger i){ return i; }
 
     shared actual M methodTypeParamMethod<M>(M b){ return b; }
 }

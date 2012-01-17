@@ -13,5 +13,8 @@ public interface JavaInterface<B,I> {
 
     I classTypeParamMethodI(I t);
 
+    int intMethod(int i);
+    Integer boxedIntegerMethod(Integer i);
+
     <M> M methodTypeParamMethod(M m); 
 }
