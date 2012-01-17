@@ -565,9 +565,12 @@ public abstract class AbstractTransformer implements Transformation {
     static final int SMALL_TYPE = 1 << 5;
     static final int CLASS_NEW = 1 << 6;
 
+    /**
+     * This function is used solely for method return types and parameters 
+     */
     protected JCExpression makeJavaType(TypedDeclaration typeDecl) {
         boolean isGenericsType = isGenericsImplementation(typeDecl);
-        return makeJavaType(typeDecl.getType(), isGenericsType ? AbstractTransformer.TYPE_ARGUMENT : 0);
+        return makeJavaType(typeDecl.getType(), isGenericsType ? AbstractTransformer.NO_PRIMITIVES : 0);
     }
 
     protected JCExpression makeJavaType(ProducedType producedType) {
