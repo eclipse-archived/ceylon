@@ -105,10 +105,12 @@
     </target>
 
     <target name="compile-module-resolver" depends="install-language">
-        <exec command="mvn" dir="${ceylon-module-resolver.dir}/" failonerror="yes">
-            <arg value="clean"/>
-            <arg value="install"/>
-        </exec>
+        <ant antfile="${ceylon-module-resolver.dir}/build.xml" target="clean" dir="${ceylon-module-resolver.dir}" inheritall="false"/>
+        <ant antfile="${ceylon-module-resolver.dir}/build.xml" target="dist" dir="${ceylon-module-resolver.dir}" inheritall="false"/>
+        <copy todir="${dist.dir}/repo">
+            <fileset dir="${ceylon-module-resolver.dir}/build/dist">
+            </fileset>
+        </copy>
     </target>
 
     <target name="install-runtime" depends="compile-module-resolver">
