@@ -133,7 +133,7 @@
         <javac debug="true"
             srcdir="${cmr-impl.src}"
             destdir="${build.classes}"
-        classpathref="compiler.classpath"
+            classpathref="compiler.classpath"
             includeantruntime="false"/>
         <javac debug="true"
             srcdir="${cmr-webdav.src}"
