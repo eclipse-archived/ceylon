@@ -17,9 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+import java.lang {
+    JBoolean = Boolean,
+    JInteger = Integer,
+    JLong = Long,
+    JFloat = Float,
+    JDouble = Double,
+    JCharacter = Character
+}
+ 
 @nomodel
 @error
-void m() {
+void returnTypes() {
     @error
     TypesJava java = TypesJava();
     Boolean b1 = java.return_boolean();
@@ -36,4 +45,27 @@ void m() {
     Character c2 = java.return_Character().charValue();
     String s = java.return_String();
     Object o = java.return_Object();
+}
+
+@nomodel
+@error
+void parameterTypes() {
+    @error
+    TypesJava java = TypesJava();
+    @error
+    java.booleanParams(true, JBoolean(true), true);
+    @error
+    java.intParams(1, JInteger(1));
+    @error
+    java.longParams(1, JLong(1), 1);
+    @error
+    java.floatParams(1.0, JFloat(1.0));
+    @error
+    java.doubleParams(1.0, JDouble(1.0), 1.0);
+    @error
+    java.charParams(`a`, JCharacter(`a`), `a`);
+    @error
+    java.stringParams("a", "a");
+    @error
+    java.objectParams(java);
 }

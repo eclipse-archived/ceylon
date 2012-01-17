@@ -16,6 +16,15 @@ public class TypesJava {
     String return_String() { return ""; };
     Object return_Object() { return ""; };
 
+    void booleanParams(boolean p, java.lang.Boolean j, ceylon.language.Boolean c){}
+    void intParams(int p, java.lang.Integer j){}
+    void longParams(long p, java.lang.Long j, ceylon.language.Integer c){}
+    void floatParams(float p, java.lang.Float j){}
+    void doubleParams(double p, java.lang.Double j, ceylon.language.Float c){}
+    void charParams(char p, java.lang.Character j, ceylon.language.Character c){}
+    void stringParams(java.lang.String j, ceylon.language.String c){}
+    void objectParams(java.lang.Object j){}
+    
     boolean[] array_boolean() { return new boolean[] { true }; };
     Boolean[] array_Boolean() { return new Boolean[] { true }; };
     int[] array_int() { return new int[] { 1 }; };

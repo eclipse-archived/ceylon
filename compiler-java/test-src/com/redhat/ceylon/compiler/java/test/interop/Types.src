@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
-final class m {
+final class returnTypes {
     
-    private m() {
+    private returnTypes() {
     }
     
-    static void m() {
+    static void returnTypes() {
         final com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         final boolean b1 = java.return_boolean();
         final boolean b2 = java.return_Boolean().booleanValue();
@@ -25,6 +25,6 @@ final class m {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        m();
+        returnTypes();
     }
 }
