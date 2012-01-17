@@ -31,7 +31,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Stack;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -133,36 +132,28 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
         if (parent instanceof OpenNode) {
             final OpenNode on = (OpenNode) parent;
             final OpenNode curent = on.createNode(label);
-            final Stack<File> files = new Stack<File>();
-            for (File f : folder.listFiles()) // ignore folder, it should match new root
-                putFiles(curent, f, context, files);
+            try {
+                for (File f : folder.listFiles()) // ignore folder, it should match new root
+                    putFiles(curent, f, context);
+            } catch (IOException e) {
+                removeArtifact(context);
+                throw e;
+            }
         } else {
             throw new IOException("Cannot put folder [" + folder + "] to non-open node: " + context);
         }
     }
 
-    protected void putFiles(OpenNode current, File file, ContentOptions options, Stack<File> files) throws IOException {
+    protected void putFiles(OpenNode current, File file, ContentOptions options) throws IOException {
         if (current == null)
             throw new IOException("Null current, could probably not create new node for file: " + file.getParent());
 
-        files.push(file);
-        try {
-            if (file.isDirectory()) {
-                current = current.createNode(file.getName());
-                for (File f : file.listFiles())
-                    putFiles(current, f, options, files);
-            } else {
-                current.addContent(file.getName(), new FileInputStream(file), options);
-            }
-        } catch (Exception e) {
-            while (files.isEmpty() == false) {
-                final File f = files.pop();
-                //noinspection ResultOfMethodCallIgnored
-                f.delete();
-            }
-            final IOException ioe = new IOException("Cannot put files: " + file);
-            ioe.initCause(e);
-            throw ioe;
+        if (file.isDirectory()) {
+            current = current.createNode(file.getName());
+            for (File f : file.listFiles())
+                putFiles(current, f, options);
+        } else {
+            current.addContent(file.getName(), new FileInputStream(file), options);
         }
     }
 

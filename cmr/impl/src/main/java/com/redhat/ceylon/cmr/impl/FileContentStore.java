@@ -52,12 +52,19 @@ public class FileContentStore implements ContentStore, StructureBuilder {
 
     File getFile(Node node) {
         if (node == null)
+            throw new IllegalArgumentException("Null node");
+
+        return getFileInternal(node);
+    }
+
+    private File getFileInternal(Node node) {
+        if (node == null)
             return root;
 
         File file = cache.get(node);
         if (file == null) {
-            String path = NodeUtils.getFullPath(node);
-            file = new File(root, path);
+            File parent = getFileInternal(NodeUtils.firstParent(node));
+            file = new File(parent, node.getLabel()); // bevare of concatinated names; e.g sha1.local
             cache.put(node, file);
         }
         return file;
