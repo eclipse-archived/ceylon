@@ -23,17 +23,17 @@ void m() {
     @error
     TypesJava java = TypesJava();
     Boolean b1 = java.return_boolean();
-    Boolean b2 = java.return_Boolean();
+    Boolean b2 = java.return_Boolean().booleanValue();
     Integer n1 = java.return_int();
-    Integer n2 = java.return_Integer();
+    Integer n2 = java.return_Integer().longValue();
     Integer n3 = java.return_long();
-    Integer n4 = java.return_Long();
+    Integer n4 = java.return_Long().longValue();
     Float f1 = java.return_float();
-    Float f2 = java.return_Float();
+    Float f2 = java.return_Float().doubleValue();
     Float f3 = java.return_double();
-    Float f4 = java.return_Double();
+    Float f4 = java.return_Double().doubleValue();
     Character c1 = java.return_char();
-    Character c2 = java.return_Character();
+    Character c2 = java.return_Character().charValue();
     String s = java.return_String();
     Object o = java.return_Object();
 }
