@@ -114,22 +114,10 @@
     </target>
 
     <target name="install-runtime" depends="compile-module-resolver">
-        <exec command="mvn" dir="${ceylon-module-resolver.dir}/" failonerror="yes">
-            <arg value="install:install-file"/>
-            <arg value="-Dfile=${dist.dir}/repo/ceylon/language/${ceylon.version}/ceylon.language-${ceylon.version}.car"/>
-            <arg value="-DgroupId=ceylon.language"/>
-            <arg value="-DartifactId=ceylon-language"/>
-            <arg value="-Dversion=${ceylon.version}"/>
-            <arg value="-Dpackaging=jar"/>
-            <arg value="-DgeneratePom=true"/>
-            <arg value="-DcreateChecksum=true"/>
-        </exec>
-        <exec command="mvn" dir="${ceylon-runtime.dir}/" failonerror="yes">
-            <arg value="clean"/>
-            <arg value="install"/>
-        </exec>
+        <ant antfile="${ceylon-runtime.dir}/build.xml" target="clean" dir="${ceylon-runtime.dir}" inheritall="false"/>
+        <ant antfile="${ceylon-runtime.dir}/build.xml" target="dist" dir="${ceylon-runtime.dir}" inheritall="false"/>
         <copy todir="${dist.dir}">
-            <fileset dir="${ceylon-runtime.dir}/dist">
+            <fileset dir="${ceylon-runtime.dir}/build/dist">
             </fileset>
         </copy>
         <chmod perm="0755">
