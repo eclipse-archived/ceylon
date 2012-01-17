@@ -569,8 +569,8 @@ public abstract class AbstractTransformer implements Transformation {
      * This function is used solely for method return types and parameters 
      */
     protected JCExpression makeJavaType(TypedDeclaration typeDecl) {
-        boolean isGenericsType = isGenericsImplementation(typeDecl);
-        return makeJavaType(typeDecl.getType(), isGenericsType ? AbstractTransformer.NO_PRIMITIVES : 0);
+        boolean usePrimitives = typeDecl.getUnboxed();
+        return makeJavaType(typeDecl.getType(), usePrimitives ? 0 : AbstractTransformer.NO_PRIMITIVES);
     }
 
     protected JCExpression makeJavaType(ProducedType producedType) {
