@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import java.io{...}
+import java.io{ File{createTempFile = createTempFile}, ...}
 
 @nomodel
 @error
@@ -32,6 +32,8 @@ void methods() {
     //File f3 = f1.createTempFile("", ""); // Does not work
     @error
     File f3 = f1.createTempFile("", "", f2);
+    @error
+    File f4 = createTempFile("","");
     @error
     f1.listFiles();
 }
