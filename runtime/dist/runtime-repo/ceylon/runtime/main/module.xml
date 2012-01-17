@@ -24,16 +24,14 @@
 
 <module xmlns="urn:jboss:module:1.0" name="ceylon.runtime">
     <resources>
-        <resource-root path="ceylon.modules.spi.jar"/>
-        <resource-root path="ceylon.modules.api.jar"/>
-        <resource-root path="ceylon.modules.jboss.jar"/>
+        <resource-root path="ceylon.runtime.jar"/>
     </resources>
 
     <main-class name="ceylon.modules.Main"/>
 
     <dependencies>
         <module name="ceylon.language" slot="0.1"/>
-        <module name="com.redhat.ceylon.cmr"/>
+        <module name="com.redhat.ceylon.module-resolver" slot="0.1"/>
         <module name="org.jboss.modules"/>
     </dependencies>
 </module>

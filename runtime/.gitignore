@@ -28,3 +28,4 @@ testsuite/target/
 mc/target/
 osgi/target/
 sdk/target/
+build/
