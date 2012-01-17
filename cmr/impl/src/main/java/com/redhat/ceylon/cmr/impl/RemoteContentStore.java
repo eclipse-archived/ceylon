@@ -57,6 +57,10 @@ public class RemoteContentStore extends URLContentStore {
         return new RemoteNode(label);
     }
 
+    public OpenNode create(Node parent, String child) {
+        return null;
+    }
+
     protected ContentHandle createContentHandle(Node parent, String child, String path, Node node) {
         return new RemoteContentHandle(node);
     }
@@ -92,7 +96,11 @@ public class RemoteContentStore extends URLContentStore {
             this.node = node;
         }
 
-        public InputStream getContentAsStream() throws IOException {
+        public boolean hasBinaries() {
+            return true; // we assume we have bins behind the url
+        }
+
+        public InputStream getBinariesAsStream() throws IOException {
             final URL url = getURL(NodeUtils.getFullPath(node, SEPARATOR));
             log.info("Fetching resource: " + url);
             return url.openStream();

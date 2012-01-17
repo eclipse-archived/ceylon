@@ -35,9 +35,36 @@ public interface OpenNode extends Node {
 
     OpenNode peekChild(String label);
 
+    /**
+     * Add simple new node.
+     * <p/>
+     * If there is no need for structure handling use this,
+     * otherwise use createNode.
+     *
+     * @param label the label
+     * @return new node
+     */
     OpenNode addNode(String label);
 
+    /**
+     * Add simple new node.
+     * <p/>
+     * If there is no need for structure handling use this,
+     * otherwise use createNode.
+     *
+     * @param label the label
+     * @param value the value
+     * @return new node
+     */
     OpenNode addNode(String label, Object value);
+
+    /**
+     * Use structure builder to create node.
+     *
+     * @param label the label
+     * @return new node, if it can be created from StructureBuilder
+     */
+    OpenNode createNode(String label);
 
     /**
      * Add content.

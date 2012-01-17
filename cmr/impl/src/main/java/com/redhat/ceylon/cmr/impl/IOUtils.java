@@ -33,12 +33,31 @@ public class IOUtils {
     private static final Logger log = Logger.getLogger(IOUtils.class.getName());
     private static final char[] Hexadecimal = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
-    static void safeClose(Closeable c) {
+    /**
+     * Safe close.
+     *
+     * @param c the closeable
+     */
+    public static void safeClose(Closeable c) {
         try {
             if (c != null)
                 c.close();
         } catch (IOException ignored) {
         }
+    }
+
+    /**
+     * Delete files recursively.
+     *
+     * @param file the current file or folder to delete
+     */
+    public static void deleteRecursively(File file) {
+        if (file.isDirectory()) {
+            for (File f : file.listFiles())
+                deleteRecursively(f);
+        }
+        //noinspection ResultOfMethodCallIgnored
+        file.delete();
     }
 
     /**

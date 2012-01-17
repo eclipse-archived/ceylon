@@ -39,7 +39,11 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
     private static final String NODE_MARKER = "#marker#";
 
     protected static final ContentHandle HANDLE_MARKER = new ContentHandle() {
-        public InputStream getContentAsStream() throws IOException {
+        public boolean hasBinaries() {
+            return false;
+        }
+
+        public InputStream getBinariesAsStream() throws IOException {
             return null;
         }
 
@@ -132,6 +136,11 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
     }
 
     @Override
+    public OpenNode createNode(String label) {
+        return getNode(label, true);
+    }
+
+    @Override
     public Node removeNode(String label) {
         // get node, so we actually have the right instance to fully remove
         final Node node = getChild(label);
@@ -167,13 +176,18 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
             final String markerLabel = label + NODE_MARKER;
             final OpenNode marker = children.get(markerLabel);
             if (marker == null) {
-                final StructureBuilder builder = findService(StructureBuilder.class);
-                child = builder.find(this, label);
-                if (child != null) {
-                    child = put(children, label, child);
-                }
+                child = getNode(label, false);
                 children.put(markerLabel, new MarkerNode(label, child));
             }
+        }
+        return child;
+    }
+
+    protected OpenNode getNode(String label, boolean create) {
+        final StructureBuilder builder = findService(StructureBuilder.class);
+        OpenNode child = create ? builder.create(this, label) : builder.find(this, label);
+        if (child != null) {
+            child = put(children, label, child);
         }
         return child;
     }

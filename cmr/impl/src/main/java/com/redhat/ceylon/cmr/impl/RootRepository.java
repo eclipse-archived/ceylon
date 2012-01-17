@@ -113,10 +113,15 @@ public class RootRepository extends AbstractNodeRepository {
 
     @Override
     protected void addContent(ArtifactContext context, Node parent, String label, InputStream content) throws IOException {
-        Node child = parent.getChild(label);
-        if (child == null && parent instanceof OpenNode) {
+        Node child;
+        if (parent instanceof OpenNode) {
             OpenNode on = (OpenNode) parent;
-            child = on.addNode(label);
+            child = on.peekChild(label);
+            if (child == null) {
+                child = on.addNode(label);
+            }
+        } else {
+            child = parent.getChild(label);
         }
         if (child != null) {
             putContent(context, child, content);

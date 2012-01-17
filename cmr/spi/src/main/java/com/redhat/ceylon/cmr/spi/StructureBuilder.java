@@ -32,6 +32,15 @@ public interface StructureBuilder {
     OpenNode createRoot();
 
     /**
+     * Create child from parent.
+     *
+     * @param parent the parent
+     * @param child  the child
+     * @return create child, or null if it cannot be created
+     */
+    OpenNode create(Node parent, String child);
+
+    /**
      * Find child from parent.
      *
      * @param parent the parent

@@ -28,12 +28,21 @@ import java.io.InputStream;
  */
 public interface ContentHandle {
     /**
+     * Do we have binaries behind this contant.
+     * e.g. it can be a folder, where we know how to get File, but no real content
+     *
+     * @return true if there is real content, false otherwise
+     */
+    boolean hasBinaries();
+
+    /**
      * Get node content as stream.
+     * Return null if there is no binaries.
      *
      * @return the node's stream
      * @throws IOException for any I/O error
      */
-    InputStream getContentAsStream() throws IOException;
+    InputStream getBinariesAsStream() throws IOException;
 
     /**
      * Get node content as file.

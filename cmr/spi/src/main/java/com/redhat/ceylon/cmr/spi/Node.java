@@ -34,7 +34,7 @@ public interface Node {
 
     Iterable<? extends Node> getChildren();
 
-    boolean hasContent();
+    boolean hasBinaries();
 
     InputStream getInputStream() throws IOException;
 

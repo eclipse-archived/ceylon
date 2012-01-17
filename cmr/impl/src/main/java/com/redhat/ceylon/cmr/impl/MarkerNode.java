@@ -53,6 +53,11 @@ public class MarkerNode extends AbstractOpenNode {
     }
 
     @Override
+    public OpenNode createNode(String label) {
+        throw new UnsupportedOperationException("Marker node cannot create node: " + toString());
+    }
+
+    @Override
     public OpenNode addContent(String label, InputStream content, ContentOptions options) throws IOException {
         throw new UnsupportedOperationException("Marker node doesn't add content: " + toString());
     }
@@ -68,7 +73,7 @@ public class MarkerNode extends AbstractOpenNode {
     }
 
     @Override
-    public boolean hasContent() {
+    public boolean hasBinaries() {
         return false;
     }
 

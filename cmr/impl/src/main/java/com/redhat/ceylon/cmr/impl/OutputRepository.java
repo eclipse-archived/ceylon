@@ -72,6 +72,10 @@ public class OutputRepository extends AbstractRepository {
         output.putArtifact(context, content);
     }
 
+    public void putArtifact(ArtifactContext context, File content) throws IOException {
+        output.putArtifact(context, content);
+    }
+
     public void removeArtifact(ArtifactContext context) throws IOException {
         output.removeArtifact(context);
     }

@@ -31,10 +31,10 @@ public abstract class AbstractRepository implements Repository {
 
     protected Logger log;
 
-    public AbstractRepository(Logger log){
+    public AbstractRepository(Logger log) {
         this.log = log;
     }
-    
+
     public File getArtifact(String name, String version) throws IOException {
         ArtifactContext context = new ArtifactContext();
         context.setName(name);
@@ -50,11 +50,24 @@ public abstract class AbstractRepository implements Repository {
     }
 
     public void putArtifact(String name, String version, File content) throws IOException {
-        putArtifact(name, version, new FileInputStream(content));
+        ArtifactContext context = new ArtifactContext();
+        context.setName(name);
+        context.setVersion(version);
+        putArtifact(context, content);
     }
 
     public void putArtifact(ArtifactContext context, File content) throws IOException {
-        putArtifact(context, new FileInputStream(content));
+        if (content == null)
+            throw new IllegalArgumentException("Null file!");
+
+        if (content.isDirectory())
+            putFolder(context, content);
+        else
+            putArtifact(context, new FileInputStream(content));
+    }
+
+    protected void putFolder(ArtifactContext context, File folder) throws IOException {
+        throw new IOException("Repository doesn't support folder [" + folder + "] put: " + context);
     }
 
     public void removeArtifact(String name, String version) throws IOException {

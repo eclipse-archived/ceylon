@@ -138,7 +138,7 @@ public final class NodeUtils {
             break; // just use the first one
         }
         path.append(node.getLabel());
-        if (appendSeparator && node.hasContent() == false)
+        if (appendSeparator && node.hasBinaries() == false)
             path.append(separator);
     }
 }

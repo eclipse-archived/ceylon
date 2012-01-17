@@ -17,8 +17,8 @@
 
 package com.redhat.ceylon.test.smoke.test;
 
-import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.RemoteContentStore;
@@ -39,9 +39,15 @@ import java.net.URL;
 public class SmokeTestCase {
 
     private Logger log = new JULLogger();
-    
+
     protected File getRepositoryRoot() throws URISyntaxException {
         URL url = getClass().getResource("/repo");
+        Assert.assertNotNull(url);
+        return new File(url.toURI());
+    }
+
+    protected File getFolders() throws URISyntaxException {
+        URL url = getClass().getResource("/folders");
         Assert.assertNotNull(url);
         return new File(url.toURI());
     }
@@ -149,6 +155,28 @@ public class SmokeTestCase {
             Assert.assertNotNull(file);
         } finally {
             repo.removeArtifact(name, version);
+        }
+    }
+
+    @Test
+    public void testFolderPut() throws Exception {
+        Repository repository = getRepository();
+        File docs = new File(getFolders(), "docs");
+        String name = "com.redhat.docs";
+        String version = "1.0.0.CR3";
+        ArtifactContext context = new ArtifactContext();
+        context.setName(name);
+        context.setVersion(version);
+        context.setSuffix(ArtifactContext.DOCS);
+        repository.putArtifact(context, docs);
+        try {
+            File copy = repository.getArtifact(context);
+            File x = new File(copy, "x.txt");
+            Assert.assertTrue(x.exists());
+            File y = new File(copy, "sub/y.txt");
+            Assert.assertTrue(y.exists());
+        } finally {
+            repository.removeArtifact(context);
         }
     }
 

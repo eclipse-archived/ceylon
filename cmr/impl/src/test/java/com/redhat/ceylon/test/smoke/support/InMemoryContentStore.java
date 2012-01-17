@@ -64,11 +64,16 @@ public class InMemoryContentStore implements ContentStore, StructureBuilder {
     }
 
     @Override
-    public OpenNode find(Node parent, String child) {
+    public OpenNode create(Node parent, String child) {
         // automagically build the tree
         DefaultNode node = new DefaultNode(child);
         store.put(node, MARKER);
         return node;
+    }
+
+    @Override
+    public OpenNode find(Node parent, String child) {
+        return create(parent, child);
     }
 
     @Override
@@ -85,14 +90,19 @@ public class InMemoryContentStore implements ContentStore, StructureBuilder {
         }
 
         @Override
-        public InputStream getContentAsStream() throws IOException {
+        public boolean hasBinaries() {
+            return true;
+        }
+
+        @Override
+        public InputStream getBinariesAsStream() throws IOException {
             return new ByteArrayInputStream(bytes);
         }
 
         @Override
         public File getContentAsFile() throws IOException {
             final File temp = File.createTempFile("in-memory-", ".car");
-            IOUtils.copyStream(getContentAsStream(), new FileOutputStream(temp));
+            IOUtils.copyStream(getBinariesAsStream(), new FileOutputStream(temp));
             temp.deleteOnExit();
             return temp;
         }

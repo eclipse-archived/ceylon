@@ -31,6 +31,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     public static final String JAR = ".jar";
     public static final String ZIP = ".zip";
     public static final String SRC = ".src";
+    public static final String DOCS = "-docs";
     public static final String SHA1 = ".sha1";
 
     private String name;
@@ -41,21 +42,21 @@ public class ArtifactContext implements Serializable, ContentOptions {
     private boolean throwErrorIfMissing;
     private boolean forceOperation;
 
-    public ArtifactContext(String name, String version){
+    public ArtifactContext(String name, String version) {
         this.name = name;
         this.version = version;
     }
 
-    public ArtifactContext(String name, String version, String suffix){
+    public ArtifactContext(String name, String version, String suffix) {
         this(name, version);
         this.suffix = suffix;
     }
-    
+
     public ArtifactContext() {
     }
 
-    public ArtifactContext getSha1Context(){
-        return new ArtifactContext(name, version, suffix+SHA1);
+    public ArtifactContext getSha1Context() {
+        return new ArtifactContext(name, version, suffix + SHA1);
     }
 
     public String getName() {

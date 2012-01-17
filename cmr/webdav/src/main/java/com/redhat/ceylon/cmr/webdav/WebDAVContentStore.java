@@ -20,6 +20,7 @@ import com.googlecode.sardine.DavResource;
 import com.googlecode.sardine.Sardine;
 import com.googlecode.sardine.SardineFactory;
 import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.impl.URLContentStore;
 import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
@@ -60,10 +61,20 @@ public class WebDAVContentStore extends URLContentStore {
         return sardine;
     }
 
+    public OpenNode create(Node parent, String child) {
+        final String path = NodeUtils.getFullPath(parent, SEPARATOR) + "/" + child;
+        try {
+            getSardine().createDirectory(path);
+            return createNode(child);
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
     public ContentHandle peekContent(Node node) {
         try {
             final String url = getUrlAsString(node);
-            return (sardine.exists(url) ? new WebDAVContentHandle(url) : null);
+            return (getSardine().exists(url) ? new WebDAVContentHandle(url) : null);
         } catch (IOException e) {
             return null;
         }
@@ -150,7 +161,11 @@ public class WebDAVContentStore extends URLContentStore {
             this.url = url;
         }
 
-        public InputStream getContentAsStream() throws IOException {
+        public boolean hasBinaries() {
+            return true;
+        }
+
+        public InputStream getBinariesAsStream() throws IOException {
             return getSardine().get(url);
         }
 

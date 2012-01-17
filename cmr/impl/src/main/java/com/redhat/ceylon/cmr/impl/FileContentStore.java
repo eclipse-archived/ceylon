@@ -52,7 +52,7 @@ public class FileContentStore implements ContentStore, StructureBuilder {
 
     File getFile(Node node) {
         if (node == null)
-            throw new IllegalArgumentException("Null node!");
+            return root;
 
         File file = cache.get(node);
         if (file == null) {
@@ -75,19 +75,21 @@ public class FileContentStore implements ContentStore, StructureBuilder {
         cache.clear();
     }
 
+    protected ContentHandle createContentHandle(Node owner, File file) {
+        return file.isDirectory() ? new FolderContentHandle(owner, file) : new FileContentHandle(owner, file);
+    }
+
     public ContentHandle peekContent(Node node) {
         final File file = getFile(node);
-        return (file.exists() && file.isFile()) ? new FileContentHandle(node, file) : null;
+        return file.exists() ? createContentHandle(node, file) : null;
     }
 
     public ContentHandle getContent(Node node) throws IOException {
         final File file = getFile(node);
         if (file.exists() == false)
             throw new IOException("Content doesn't exist: " + file);
-        else if (file.isDirectory())
-            throw new IOException("Content is directory: " + file);
 
-        return new FileContentHandle(node, file);
+        return createContentHandle(node, file);
     }
 
     public ContentHandle putContent(Node node, InputStream stream, ContentOptions options) throws IOException {
@@ -96,13 +98,17 @@ public class FileContentStore implements ContentStore, StructureBuilder {
         if (options == null)
             throw new IllegalArgumentException("Null options!");
 
-        final File file = getFile(node);
-        if (file.exists() && options.forceOperation() == false)
-            throw new IOException("Content already exists: " + file);
-
-        final File parent = file.getParentFile();
+        final File parent = getFile(NodeUtils.firstParent(node));
         if (parent.exists() == false && parent.mkdirs() == false)
-            throw new IOException("Cannot create dirs: " + file);
+            throw new IOException("Cannot create dirs: " + parent);
+
+        File file;
+        if (parent.isDirectory()) {
+            file = new File(parent, node.getLabel());
+        } else {
+            final String path = parent.getPath();
+            file = new File(path + node.getLabel()); // just concat paths
+        }
 
         IOUtils.writeToFile(file, stream);
         return new FileContentHandle(node, file);
@@ -112,21 +118,28 @@ public class FileContentStore implements ContentStore, StructureBuilder {
         return new RootNode(this, this);
     }
 
+    public OpenNode create(Node parent, String child) {
+        final File pf = getFile(parent);
+        final File file = new File(pf, child);
+        final DefaultNode node = new DefaultNode(child);
+        node.setHandle(new FolderContentHandle(node, file));
+        return node;
+    }
+
     public OpenNode find(Node parent, String child) {
         final File pf = getFile(parent);
 
         File file;
-        if (pf.isFile()) {
+        if (pf.isDirectory()) {
+            file = new File(pf, child);
+        } else {
             final String path = pf.getPath();
             file = new File(path + child); // just concat paths
-        } else {
-            file = new File(pf, child);
         }
 
         if (file.exists()) {
             final DefaultNode node = new DefaultNode(child);
-            if (file.isFile())
-                node.setHandle(new FileContentHandle(node, file));
+            node.setHandle(createContentHandle(node, file));
             return node;
         } else {
             return null;
@@ -139,8 +152,7 @@ public class FileContentStore implements ContentStore, StructureBuilder {
             List<OpenNode> nodes = new ArrayList<OpenNode>();
             for (File file : pf.listFiles()) {
                 DefaultNode node = new DefaultNode(file.getName());
-                if (file.isFile())
-                    node.setHandle(new FileContentHandle(node, file));
+                node.setHandle(createContentHandle(node, file));
                 nodes.add(node);
             }
             return nodes;
@@ -167,15 +179,19 @@ public class FileContentStore implements ContentStore, StructureBuilder {
 
     private class FileContentHandle implements ContentHandle {
 
-        private Node owner;
-        private File file;
+        protected Node owner;
+        protected File file;
 
         private FileContentHandle(Node owner, File file) {
             this.owner = owner;
             this.file = file;
         }
 
-        public InputStream getContentAsStream() throws IOException {
+        public boolean hasBinaries() {
+            return true;
+        }
+
+        public InputStream getBinariesAsStream() throws IOException {
             return new FileInputStream(file);
         }
 
@@ -185,6 +201,32 @@ public class FileContentStore implements ContentStore, StructureBuilder {
 
         public void clean() {
             delete(file, owner);
+        }
+    }
+
+    private class FolderContentHandle extends FileContentHandle {
+
+        private FolderContentHandle(Node owner, File file) {
+            super(owner, file);
+        }
+
+        @Override
+        public boolean hasBinaries() {
+            return false;
+        }
+
+        @Override
+        public InputStream getBinariesAsStream() throws IOException {
+            return null;
+        }
+
+        @Override
+        public void clean() {
+            try {
+                IOUtils.deleteRecursively(file);
+            } finally {
+                super.clean();
+            }
         }
     }
 }

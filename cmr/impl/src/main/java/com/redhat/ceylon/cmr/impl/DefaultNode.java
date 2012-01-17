@@ -137,12 +137,10 @@ public class DefaultNode extends AbstractOpenNode {
     }
 
     @Override
-    public boolean hasContent() {
+    public boolean hasBinaries() {
         synchronized (this) {
-            if (handle == HANDLE_MARKER)
-                return false;
             if (handle != null)
-                return true;
+                return handle.hasBinaries();
         }
 
         final ContentStore cs = findService(ContentStore.class);
@@ -152,7 +150,7 @@ public class DefaultNode extends AbstractOpenNode {
             handle = (ch == null) ? HANDLE_MARKER : ch;
         }
 
-        return (ch != null);
+        return (ch != null && ch.hasBinaries());
     }
 
     @Override
@@ -184,7 +182,7 @@ public class DefaultNode extends AbstractOpenNode {
     public InputStream getInputStream() throws IOException {
         synchronized (this) {
             if (handle != null)
-                return handle.getContentAsStream();
+                return handle.getBinariesAsStream();
         }
 
         final ContentStore cs = findService(ContentStore.class);
@@ -197,6 +195,6 @@ public class DefaultNode extends AbstractOpenNode {
             handle = ch;
         }
 
-        return ch.getContentAsStream();
+        return ch.getBinariesAsStream();
     }
 }
