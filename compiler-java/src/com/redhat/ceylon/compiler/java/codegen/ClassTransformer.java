@@ -334,8 +334,6 @@ public class ClassTransformer extends AbstractTransformer {
         String name = def.getIdentifier().getText();
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, def.getDeclarationModel().isClassOrInterfaceMember(), name);
         
-        for (Tree.Parameter param : def.getParameterLists().get(0).getParameters()) {
-        }
         ParameterList paramList = def.getParameterLists().get(0);
         for (Tree.Parameter param : paramList.getParameters()) {
             methodBuilder.parameter(param);
