@@ -189,6 +189,15 @@ $WS[0x202f]=true;
 $WS[0x205f]=true;
 $WS[0x3000]=true;
 $Character.prototype.getWhitespace = function() { return Boolean$(this.value in $WS) }
+$Character.prototype.getControl = function() { return Boolean$(this.value<32 || this.value===127) }
+$Character.prototype.getUppercase = function() {
+    var str = codepointToString(this.value);
+    return Boolean$(str.toLowerCase()!==str);
+}
+$Character.prototype.getLowercase = function() {
+    var str = codepointToString(this.value);
+    return Boolean$(str.toUpperCase()!==str);
+}
 
 function $StringBuilder() {}
 function StringBuilder() {

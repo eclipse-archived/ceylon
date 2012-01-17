@@ -27,6 +27,16 @@ void testCharacter() {
     for (c in "\t") {
         expect(c.whitespace, true, "Character.whitespace");
     }
+    expect(` `.control, false, "Character.control");
+    for (c in "\r") {
+        expect(c.control, true, "Character.control");
+    }
+    expect(`P`.uppercase, true, "Character.uppercase");
+    expect(`m`.uppercase, false, "Character.uppercase");
+    expect(`#`.uppercase, false, "Character.uppercase");
+    expect(`z`.lowercase, true, "Character.lowercase");
+    expect(`V`.lowercase, false, "Character.lowercase");
+    expect(`+`.lowercase, false, "Character.lowercase");
 }
 
 void testString() {
