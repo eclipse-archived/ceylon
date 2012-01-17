@@ -101,6 +101,11 @@ void testString() {
     } else {
         fail("String.item");
     }
+    if (exists c = ""[0]) {
+        fail("String.item");
+    } else {
+        succeed("String.item");
+    }
 }
 
 void test_stringbuilder() {
