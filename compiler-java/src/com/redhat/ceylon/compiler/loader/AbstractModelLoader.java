@@ -110,23 +110,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror CEYLON_STRING_TYPE = simpleObjectType("ceylon.language.String");
     
     private static final TypeMirror PRIM_BOOLEAN_TYPE = simpleObjectType("boolean", TypeKind.BOOLEAN);
-    private static final TypeMirror BOOLEAN_TYPE = simpleObjectType("java.lang.Boolean");
     private static final TypeMirror CEYLON_BOOLEAN_TYPE = simpleObjectType("ceylon.language.Boolean");
     
     private static final TypeMirror PRIM_INT_TYPE = simpleObjectType("int", TypeKind.INT);
-    private static final TypeMirror INTEGER_TYPE = simpleObjectType("java.lang.Integer");
     private static final TypeMirror PRIM_LONG_TYPE = simpleObjectType("long", TypeKind.LONG);
-    private static final TypeMirror LONG_TYPE = simpleObjectType("java.lang.Long");
     private static final TypeMirror CEYLON_INTEGER_TYPE = simpleObjectType("ceylon.language.Integer");
     
     private static final TypeMirror PRIM_FLOAT_TYPE = simpleObjectType("float", TypeKind.FLOAT);
-    private static final TypeMirror FLOAT_TYPE = simpleObjectType("java.lang.Float");
     private static final TypeMirror PRIM_DOUBLE_TYPE = simpleObjectType("double", TypeKind.DOUBLE);
-    private static final TypeMirror DOUBLE_TYPE = simpleObjectType("java.lang.Double");
     private static final TypeMirror CEYLON_FLOAT_TYPE = simpleObjectType("ceylon.language.Float");
     
     private static final TypeMirror PRIM_CHAR_TYPE = simpleObjectType("char", TypeKind.CHAR);
-    private static final TypeMirror CHARACTER_TYPE = simpleObjectType("java.lang.Character");
     private static final TypeMirror CEYLON_CHARACTER_TYPE = simpleObjectType("ceylon.language.Character");
     
     private static final TypeMirror CEYLON_ARRAY_TYPE = simpleObjectType("ceylon.language.Array");
@@ -997,13 +991,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private void markUnboxed(TypedDeclaration decl, TypeMirror type) {
-        if(type.isPrimitive() || type.getKind() == TypeKind.ARRAY
-                || sameType(type, BOOLEAN_TYPE)
-                || sameType(type, INTEGER_TYPE)
-                || sameType(type, LONG_TYPE)
-                || sameType(type, FLOAT_TYPE)
-                || sameType(type, DOUBLE_TYPE)
-                || sameType(type, CHARACTER_TYPE)
+        if(type.isPrimitive() 
+                || type.getKind() == TypeKind.ARRAY
                 || sameType(type, STRING_TYPE)) {
             Util.markUnBoxed(decl);
         }
@@ -1216,31 +1205,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             type = CEYLON_STRING_TYPE;
         } else if (sameType(type, PRIM_BOOLEAN_TYPE)) {
             type = CEYLON_BOOLEAN_TYPE;
-        } else if (sameType(type, BOOLEAN_TYPE)) {
-            type = CEYLON_BOOLEAN_TYPE;
         } else if (sameType(type, PRIM_INT_TYPE)) {
-            // FIXME Really needs "small" annotation
-            type = CEYLON_INTEGER_TYPE;
-        } else if (sameType(type, INTEGER_TYPE)) {
             // FIXME Really needs "small" annotation
             type = CEYLON_INTEGER_TYPE;
         } else if (sameType(type, PRIM_LONG_TYPE)) {
             type = CEYLON_INTEGER_TYPE;
-        } else if (sameType(type, LONG_TYPE)) {
-            type = CEYLON_INTEGER_TYPE;
         } else if (sameType(type, PRIM_FLOAT_TYPE)) {
-            // FIXME Really needs "small" annotation
-            type = CEYLON_FLOAT_TYPE;
-        } else if (sameType(type, FLOAT_TYPE)) {
             // FIXME Really needs "small" annotation
             type = CEYLON_FLOAT_TYPE;
         } else if (sameType(type, PRIM_DOUBLE_TYPE)) {
             type = CEYLON_FLOAT_TYPE;
-        } else if (sameType(type, DOUBLE_TYPE)) {
-            type = CEYLON_FLOAT_TYPE;
         } else if (sameType(type, PRIM_CHAR_TYPE)) {
-            type = CEYLON_CHARACTER_TYPE;
-        } else if (sameType(type, CHARACTER_TYPE)) {
             type = CEYLON_CHARACTER_TYPE;
         } else if (sameType(type, OBJECT_TYPE)) {
             type = CEYLON_IDENTIFIABLE_OBJECT_TYPE;
