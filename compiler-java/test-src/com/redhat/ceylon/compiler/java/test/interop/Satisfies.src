@@ -46,3 +46,38 @@ final class test {
         test();
     }
 }
+class JavaInterfaceImpl implements com.redhat.ceylon.compiler.java.test.interop.JavaInterface<ceylon.language.Boolean> {
+    
+    @.java.lang.Override
+    public final boolean booleanMethod(final boolean b) {
+        return b;
+    }
+    
+    @.java.lang.Override
+    public final java.lang.Boolean boxedBooleanMethod(final java.lang.Boolean b) {
+        return b;
+    }
+    
+    @.java.lang.Override
+    public final ceylon.language.Boolean ceylonBooleanMethod(final ceylon.language.Boolean b) {
+        return b;
+    }
+    
+    @.java.lang.Override
+    public final ceylon.language.Boolean classTypeParamMethod(final ceylon.language.Boolean b) {
+        return b;
+    }
+    
+    @.java.lang.Override
+    public final <M>M methodTypeParamMethod(final M b) {
+        return b;
+    }
+    
+    JavaInterfaceImpl() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new JavaInterfaceImpl();
+    }
+}

@@ -18,6 +18,7 @@
  * MA  02110-1301, USA.
  */
 import java.io{...}
+import java.lang{JBoolean = Boolean}
 
 @nomodel
 @error
@@ -51,7 +52,7 @@ void test() {
 @nomodel
 class JavaInterfaceImpl() satisfies JavaInterface<Boolean> {
     shared actual Boolean booleanMethod(Boolean b){ return b; }
-    shared actual Boolean boxedBooleanMethod(Boolean b){ return b; }
+    shared actual JBoolean boxedBooleanMethod(JBoolean b){ return b; }
     shared actual Boolean ceylonBooleanMethod(Boolean b){ return b; }
     shared actual Boolean classTypeParamMethod(Boolean b){ return b; }
 
