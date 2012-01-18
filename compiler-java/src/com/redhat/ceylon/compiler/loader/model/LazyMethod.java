@@ -285,12 +285,6 @@ public class LazyMethod extends Method implements LazyElement {
     }
 
     @Override
-    protected boolean isParameter(Declaration d) {
-        load();
-        return super.isParameter(d);
-    }
-
-    @Override
     public ProducedType getDeclaringType(Declaration d) {
         load();
         return super.getDeclaringType(d);

@@ -46,15 +46,17 @@ public class LazyClass extends Class implements LazyContainer {
 
     public ClassMirror classMirror;
     private ModelCompleter completer;
+    private Class superClass;
     private MethodMirror constructor;
     private boolean forTopLevelObject;
     
     private boolean isLoaded = false;
     private boolean isTypeParamsLoaded = false;
 
-    public LazyClass(ClassMirror classMirror, ModelCompleter completer, MethodMirror constructor, boolean forTopLevelObject) {
+    public LazyClass(ClassMirror classMirror, ModelCompleter completer, Class superClass, MethodMirror constructor, boolean forTopLevelObject) {
         this.classMirror = classMirror;
         this.completer = completer;
+        this.superClass = superClass;
         this.constructor = constructor;
         this.forTopLevelObject = forTopLevelObject;
         setName(classMirror.getSimpleName());
@@ -118,8 +120,12 @@ public class LazyClass extends Class implements LazyContainer {
 
     @Override
     public ProducedType getExtendedType() {
-        load();
-        return super.getExtendedType();
+        if (superClass == null) {
+            load();
+            return super.getExtendedType();
+        } else {
+            return superClass.getExtendedType();
+        }
     }
     
     @Override
@@ -336,12 +342,6 @@ public class LazyClass extends Class implements LazyContainer {
     public Declaration getDirectMember(String name, List<ProducedType> signature) {
         load();
         return super.getDirectMember(name, signature);
-    }
-
-    @Override
-    protected boolean isParameter(Declaration d) {
-        load();
-        return super.isParameter(d);
     }
 
     @Override

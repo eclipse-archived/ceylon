@@ -305,12 +305,6 @@ public class LazyInterface extends Interface implements LazyContainer {
     }
 
     @Override
-    protected boolean isParameter(Declaration d) {
-        load();
-        return super.isParameter(d);
-    }
-
-    @Override
     public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature) {
         load();
         return super.getMemberOrParameter(unit, name, signature);

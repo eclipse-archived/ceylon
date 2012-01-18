@@ -317,7 +317,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             break;
         case OBJECT:
             // we first make a class
-            Declaration objectClassDecl = makeLazyClass(classMirror, null, true);
+            Declaration objectClassDecl = makeLazyClass(classMirror, null, null, true);
             declarationsByName.put("C"+className, objectClassDecl);
             decls.add(objectClassDecl);
             // then we make a value for it
@@ -330,11 +330,23 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         case CLASS:
             List<MethodMirror> constructors = getClassConstructors(classMirror);
             if (!constructors.isEmpty()) {
-                for (MethodMirror constructor : constructors) {
-                    decl = makeLazyClass(classMirror, constructor, false);
+                if (constructors.size() > 1) {
+                    // If the class has multiple constructors we make a copy of the class
+                    // for each one (each with it's own single constructor) and make them
+                    // a subclass of the original
+                    Class supercls = makeLazyClass(classMirror, null, null, false);
+                    supercls.setAbstraction(true);
+                    for (MethodMirror constructor : constructors) {
+                        Declaration subdecl = makeLazyClass(classMirror, supercls, constructor, false);
+                        decls.add(subdecl);
+                    }
+                    decl = supercls;
+                } else {
+                    MethodMirror constructor = constructors.get(0);
+                    decl = makeLazyClass(classMirror, null, constructor, false);
                 }
             } else {
-                decl = makeLazyClass(classMirror, null, false);
+                decl = makeLazyClass(classMirror, null, null, false);
             }
             break;
         case INTERFACE:
@@ -404,8 +416,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return method;
     }
     
-    private Class makeLazyClass(ClassMirror classMirror, MethodMirror constructor, boolean forTopLevelObject) {
-        return new LazyClass(classMirror, this, constructor, forTopLevelObject);
+    private Class makeLazyClass(ClassMirror classMirror, Class superClass, MethodMirror constructor, boolean forTopLevelObject) {
+        return new LazyClass(classMirror, this, superClass, constructor, forTopLevelObject);
     }
 
     private Interface makeLazyInterface(ClassMirror classMirror) {
@@ -751,14 +763,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // Add the methods
         for(List<MethodMirror> methodMirrors : methods.values()){
             boolean isOverloaded = methodMirrors.size() > 1;
+            boolean first = true;
             for (MethodMirror methodMirror : methodMirrors) {
                 String methodName = methodMirror.getName();
-                if(methodMirror == constructor) {
-                    ((Class)klass).setOverloaded(isOverloaded);
-                    if(!(klass instanceof LazyClass) || !((LazyClass)klass).isTopLevelObjectType())
-                        setParameters((Class)klass, methodMirror, isCeylon);
-                } else if(methodMirror.isConstructor()) {
-                    // skip other constructors
+                if(methodMirror.isConstructor()) {
+                    if (methodMirror == constructor) {
+                        ((Class)klass).setOverloaded(isOverloaded);
+                        if(!(klass instanceof LazyClass) || !((LazyClass)klass).isTopLevelObjectType())
+                            setParameters((Class)klass, methodMirror);
+                    }
                 } else if(isGetter(methodMirror)) {
                     // simple attribute
                     addValue(klass, methodMirror, getJavaAttributeName(methodName));
@@ -774,6 +787,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     // Un-erasing 'string' attribute from 'toString' method
                     addValue(klass, methodMirror, "string");
                 } else {
+                    if (first && isOverloaded) {
+                        // We create an extra "abstraction" method for overloaded methods
+                        Method m = addMethod(klass, methodMirror, false);
+                        m.setType(getAbstractionMethodReturnType(methodMirrors, m));
+                        m.setAbstraction(true);
+                        first = false;
+                    }
                     // normal method
                     addMethod(klass, methodMirror, isCeylon, methodMirrors);
                 }
@@ -1008,6 +1028,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setType(obtainType(methodMirror.getReturnType(), methodMirror, klass));
         markUnboxed(value, methodMirror.getReturnType());
         klass.getMembers().add(value);
+        return value;
     }
 
     private void setMethodOrValueFlags(ClassOrInterface klass, MethodMirror methodMirror, MethodOrValue decl) {

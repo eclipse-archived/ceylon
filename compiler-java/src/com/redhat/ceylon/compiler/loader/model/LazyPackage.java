@@ -48,6 +48,12 @@ public class LazyPackage extends Package {
     }
     
     @Override
+    public Declaration getMember(String name, List<ProducedType> signature) {
+        // FIXME: what use is this method in the type checker?
+        return getDirectMember(name, signature);
+    }
+    
+    @Override
     public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature) {
         // FIXME: what's the difference?
         return getDirectMember(name, signature);
