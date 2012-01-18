@@ -115,19 +115,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror CEYLON_BOOLEAN_TYPE = simpleObjectType("ceylon.language.Boolean");
     
     private static final TypeMirror PRIM_INT_TYPE = simpleObjectType("int", TypeKind.INT);
-    private static final TypeMirror CEYLON_JAVA_INT_TYPE = simpleObjectType("ceylon.language.interop.java.JavaInt");
+    private static final TypeMirror CEYLON_JAVA_INT_TYPE = simpleObjectType("java.lang.Integer");
 
     private static final TypeMirror PRIM_LONG_TYPE = simpleObjectType("long", TypeKind.LONG);
     private static final TypeMirror CEYLON_INTEGER_TYPE = simpleObjectType("ceylon.language.Integer");
     
     private static final TypeMirror PRIM_FLOAT_TYPE = simpleObjectType("float", TypeKind.FLOAT);
-    private static final TypeMirror CEYLON_JAVA_FLOAT_TYPE = simpleObjectType("ceylon.language.interop.java.JavaFloat");
+    private static final TypeMirror CEYLON_JAVA_FLOAT_TYPE = simpleObjectType("java.lang.Float");
 
     private static final TypeMirror PRIM_DOUBLE_TYPE = simpleObjectType("double", TypeKind.DOUBLE);
     private static final TypeMirror CEYLON_FLOAT_TYPE = simpleObjectType("ceylon.language.Float");
     
     private static final TypeMirror PRIM_CHAR_TYPE = simpleObjectType("char", TypeKind.CHAR);
-    private static final TypeMirror CEYLON_JAVA_CHAR_TYPE = simpleObjectType("ceylon.language.interop.java.JavaChar");
+    private static final TypeMirror CEYLON_JAVA_CHAR_TYPE = simpleObjectType("java.lang.Character");
 
     private static final TypeMirror CEYLON_CHARACTER_TYPE = simpleObjectType("ceylon.language.Character");
     

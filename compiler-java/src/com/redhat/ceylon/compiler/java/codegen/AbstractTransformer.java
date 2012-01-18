@@ -553,18 +553,19 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     protected boolean isJavaInt(ProducedType type){
-        ProducedType javaIntType = typeFact.getJavaIntDeclaration().getType();
-        return javaIntType.isExactly(type);
+        return (sameType(syms().integerObjectType, type));
     }
 
     protected boolean isJavaFloat(ProducedType type){
-        ProducedType javaFloatType = typeFact.getJavaFloatDeclaration().getType();
-        return javaFloatType.isExactly(type);
+        return (sameType(syms().floatObjectType, type));
     }
 
     protected boolean isJavaChar(ProducedType type){
-        ProducedType javaCharType = typeFact.getJavaCharDeclaration().getType();
-        return javaCharType.isExactly(type);
+        return (sameType(syms().characterObjectType, type));
+    }
+
+    protected boolean isJavaBasicType(ProducedType type) {
+        return (isJavaInt(type) || isJavaFloat(type) || isJavaChar(type));
     }
 
     /*

@@ -893,41 +893,6 @@ public class ExpressionTransformer extends AbstractTransformer {
     // Invocations
     
     public JCExpression transform(Tree.InvocationExpression ce) {
-        // ((JavaInt)e).longValue()
-        if(ce.getPrimary() instanceof Tree.QualifiedMemberExpression){
-            Primary primary = ((Tree.QualifiedMemberExpression)ce.getPrimary()).getPrimary();
-            if(isJavaInt(primary.getTypeModel())){
-                JCExpression expr = transformExpression(primary);
-                return at(ce).TypeCast(make().Type(syms().longType), expr);
-            }
-            if(isJavaFloat(primary.getTypeModel())){
-                JCExpression expr = transformExpression(primary);
-                return at(ce).TypeCast(make().Type(syms().doubleType), expr);
-            }
-            if(isJavaChar(primary.getTypeModel())){
-                JCExpression expr = transformExpression(primary);
-                return at(ce).TypeCast(make().Type(syms().intType), expr);
-            }
-        }
-        // JavaInt(e)
-        if(ce.getPrimary() instanceof Tree.BaseTypeExpression){
-            ProducedType type = ((TypeDeclaration)ce.getPrimary().getDeclaration()).getType();
-            if(isJavaInt(type)){
-                Expression param = ce.getPositionalArgumentList().getPositionalArguments().get(0).getExpression();
-                JCExpression expr = transformExpression(param, BoxingStrategy.UNBOXED, typeFact().getIntegerDeclaration().getType());
-                return at(ce).TypeCast(make().Type(syms().intType), expr);
-            }
-            if(isJavaFloat(type)){
-                Expression param = ce.getPositionalArgumentList().getPositionalArguments().get(0).getExpression();
-                JCExpression expr = transformExpression(param, BoxingStrategy.UNBOXED, typeFact().getFloatDeclaration().getType());
-                return at(ce).TypeCast(make().Type(syms().floatType), expr);
-            }
-            if(isJavaChar(type)){
-                Expression param = ce.getPositionalArgumentList().getPositionalArguments().get(0).getExpression();
-                JCExpression expr = transformExpression(param, BoxingStrategy.UNBOXED, typeFact().getCharacterDeclaration().getType());
-                return at(ce).TypeCast(make().Type(syms().charType), expr);
-            }
-        }
         if (ce.getPositionalArgumentList() != null) {
             return transformPositionalInvocation(ce);
         } else if (ce.getNamedArgumentList() != null) {
