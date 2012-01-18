@@ -9,16 +9,16 @@ final class returnTypes {
         final com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         final boolean b1 = java.return_boolean();
         final boolean b2 = java.return_Boolean().booleanValue();
-        final long n1 = java.return_int();
-        final long n2 = java.return_Integer().longValue();
+        final long n1 = .ceylon.language.interop.java.fromJavaInt.fromJavaInt(java.return_int());
+        final long n2 = .ceylon.language.interop.java.fromJavaInt.fromJavaInt(java.return_Integer().intValue());
         final long n3 = java.return_long();
         final long n4 = java.return_Long().longValue();
-        final double f1 = java.return_float();
-        final double f2 = java.return_Float().doubleValue();
+        final double f1 = .ceylon.language.interop.java.fromJavaFloat.fromJavaFloat(java.return_float());
+        final double f2 = .ceylon.language.interop.java.fromJavaFloat.fromJavaFloat(java.return_Float().floatValue());
         final double f3 = java.return_double();
         final double f4 = java.return_Double().doubleValue();
-        final int c1 = java.return_char();
-        final int c2 = java.return_Character().charValue();
+        final int c1 = .ceylon.language.interop.java.fromJavaChar.fromJavaChar(java.return_char());
+        final int c2 = .ceylon.language.interop.java.fromJavaChar.fromJavaChar(java.return_Character().charValue());
         final .java.lang.String s = java.return_String();
         final .java.lang.Object o = java.return_Object();
     }
@@ -26,5 +26,55 @@ final class returnTypes {
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
         returnTypes();
+    }
+}
+final class box {
+    
+    private box() {
+    }
+    
+    static <T>T box(final T t) {
+        return t;
+    }
+}
+final class parameterTypes {
+    
+    private parameterTypes() {
+    }
+    
+    static void parameterTypes() {
+        final com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new com.redhat.ceylon.compiler.java.test.interop.TypesJava();
+        java.booleanParams(true, new java.lang.Boolean(true), .ceylon.language.Boolean.instance(true));
+        java.intParams(.ceylon.language.interop.java.toJavaInt.toJavaInt(1L), .java.lang.Integer.valueOf(.ceylon.language.interop.java.toJavaInt.toJavaInt(1L)));
+        java.longParams(1L, new java.lang.Long(1L), .ceylon.language.Integer.instance(1L));
+        java.floatParams(.ceylon.language.interop.java.toJavaFloat.toJavaFloat(1.0), .java.lang.Float.valueOf(.ceylon.language.interop.java.toJavaFloat.toJavaFloat(1.0)));
+        java.doubleParams(1.0, new java.lang.Double(1.0), .ceylon.language.Float.instance(1.0));
+        java.charParams(.ceylon.language.interop.java.toJavaChar.toJavaChar('a'), .java.lang.Character.valueOf(.ceylon.language.interop.java.toJavaChar.toJavaChar('a')), .ceylon.language.Character.instance('a'));
+        java.charParams(.ceylon.language.interop.java.toJavaChar.toJavaChar(.com.redhat.ceylon.compiler.java.test.interop.box.<ceylon.language.Character>box(.ceylon.language.Character.instance('a')).intValue()), .java.lang.Character.valueOf(.ceylon.language.interop.java.toJavaChar.toJavaChar(.com.redhat.ceylon.compiler.java.test.interop.box.<ceylon.language.Character>box(.ceylon.language.Character.instance('a')).intValue())), .com.redhat.ceylon.compiler.java.test.interop.box.<ceylon.language.Character>box(.ceylon.language.Character.instance('a')));
+        java.stringParams("a", .ceylon.language.String.instance("a"));
+        java.stringParams(.com.redhat.ceylon.compiler.java.test.interop.box.<ceylon.language.String>box(.ceylon.language.String.instance("a")).toString(), .com.redhat.ceylon.compiler.java.test.interop.box.<ceylon.language.String>box(.ceylon.language.String.instance("a")));
+        java.objectParams(java);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        parameterTypes();
+    }
+}
+final class juggle {
+    
+    private juggle() {
+    }
+    
+    static void juggle() {
+        final com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new com.redhat.ceylon.compiler.java.test.interop.TypesJava();
+        final int n1 = java.return_int();
+        java.intParams(n1, .java.lang.Integer.valueOf(n1));
+        final int n2 = .com.redhat.ceylon.compiler.java.test.interop.box.<java.lang.Integer>box(.java.lang.Integer.valueOf(n1)).intValue();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        juggle();
     }
 }

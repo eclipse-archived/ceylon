@@ -46,7 +46,7 @@ final class test {
         test();
     }
 }
-class JavaInterfaceImpl implements com.redhat.ceylon.compiler.java.test.interop.JavaInterface<ceylon.language.Boolean> {
+class JavaInterfaceImpl implements com.redhat.ceylon.compiler.java.test.interop.JavaInterface<ceylon.language.Boolean, ceylon.language.Integer> {
     
     @.java.lang.Override
     public final boolean booleanMethod(final boolean b) {
@@ -64,8 +64,38 @@ class JavaInterfaceImpl implements com.redhat.ceylon.compiler.java.test.interop.
     }
     
     @.java.lang.Override
-    public final ceylon.language.Boolean classTypeParamMethod(final ceylon.language.Boolean b) {
+    public final ceylon.language.Boolean classTypeParamMethodB(final ceylon.language.Boolean b) {
         return b;
+    }
+    
+    @.java.lang.Override
+    public final long longMethod(final long i) {
+        return i;
+    }
+    
+    @.java.lang.Override
+    public final java.lang.Long boxedLongMethod(final java.lang.Long i) {
+        return i;
+    }
+    
+    @.java.lang.Override
+    public final ceylon.language.Integer ceylonIntegerMethod(final ceylon.language.Integer i) {
+        return i;
+    }
+    
+    @.java.lang.Override
+    public final ceylon.language.Integer classTypeParamMethodI(final ceylon.language.Integer i) {
+        return i;
+    }
+    
+    @.java.lang.Override
+    public final int intMethod(final int i) {
+        return i;
+    }
+    
+    @.java.lang.Override
+    public final java.lang.Integer boxedIntegerMethod(final java.lang.Integer i) {
+        return i;
     }
     
     @.java.lang.Override

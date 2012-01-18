@@ -65,7 +65,7 @@ class JavaInterfaceImpl() satisfies JavaInterface<Boolean,Integer> {
     shared actual Integer ceylonIntegerMethod(Integer i){ return i; }
     shared actual Integer classTypeParamMethodI(Integer i){ return i; }
 
-    shared actual Integer intMethod(Integer i){ return i; }
+    shared actual JInteger intMethod(JInteger i){ return i; }
     shared actual JInteger boxedIntegerMethod(JInteger i){ return i; }
 
     shared actual M methodTypeParamMethod<M>(M b){ return b; }
