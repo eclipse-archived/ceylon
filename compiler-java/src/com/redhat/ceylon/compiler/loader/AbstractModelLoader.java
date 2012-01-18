@@ -733,8 +733,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             homonyms.add(methodMirror);
         }
         
-        // FIXME: deal with toplevel methods and attributes
-        // then its methods
+        // Add the methods
         for(List<MethodMirror> methodMirrors : methods.values()){
             boolean isOverloaded = methodMirrors.size() > 1;
             for (MethodMirror methodMirror : methodMirrors) {

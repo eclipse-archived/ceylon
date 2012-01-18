@@ -34,7 +34,7 @@ public interface MethodMirror extends AnnotatedMirror {
     String getName();
 
     /**
-     * Returns true if this method is statis
+     * Returns true if this method is static
      */
     boolean isStatic();
 
