@@ -223,6 +223,10 @@ public class Util {
                                 if (!pta.isExactly(ta)) {
                                     //the meet of invariant types with different 
                                     //arguments is empty i.e. Bottom
+                                    //TODO: that's not right! if one of the arguments
+                                    //      involves a type parameter somewhere, they
+                                    //      might actually be the same type at runtime
+                                    //      and therefore have a nonempty meet...
                                     list.clear();
                                     list.add( unit.getBottomDeclaration().getType() );
                                     return;
