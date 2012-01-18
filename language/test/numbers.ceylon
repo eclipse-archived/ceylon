@@ -147,6 +147,14 @@ shared void numbers() {
     assert(max({1, 5})==5, "max naturals");
     assert(max({-1, +5})==+5, "max integers");
     assert(max({-1.5, 5.2})==5.2, "max floats");
+    
+    //eZL
+    assert(smallest(1,2)==1,          "smallest naturals");
+    assert(smallest(-100, 100)==-100, "smallest integers");
+    assert(smallest(-1.5, 5.2)==-1.5, "smallest floats");
+    assert(largest(1,2)==2,           "largest naturals");
+    assert(largest(-100, 100)==100,   "largest integers");
+    assert(largest(-1.5, 5.2)==5.2,   "largest floats");
 
     variable value count := 0;
     count++;
