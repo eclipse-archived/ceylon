@@ -8,5 +8,4 @@ shared interface Iterator<out Element> {
     shared formal Element|Finished next();
 }
 
-shared class Finished() /* of finished */ {}
 shared object finished extends Finished() {}

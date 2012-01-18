@@ -12,8 +12,13 @@ shared interface Empty
     shared actual Boolean empty { 
         return true; 
     }
-    shared actual Nothing iterator {
-        return null;
+    shared actual Iterator<Bottom> iterator {
+        object emptyIterator satisfies Iterator<Bottom> {
+            shared actual Finished next() {
+                return finished;
+            }
+        }
+        return emptyIterator;
     }
     shared actual Nothing item(Integer key) {
         return null;
