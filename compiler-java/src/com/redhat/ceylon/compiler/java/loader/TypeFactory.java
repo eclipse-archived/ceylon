@@ -116,4 +116,16 @@ public class TypeFactory extends Unit {
     public ProducedType getNonemptyIterableType(ProducedType pt) {
         return pt.minus(getEmptyDeclaration()).getSupertype(getIterableDeclaration());
     }
+
+    public TypeDeclaration getJavaIntDeclaration() {
+        return (TypeDeclaration) getLanguageModuleDeclaration("JavaInt");
+    }
+
+    public TypeDeclaration getJavaCharDeclaration() {
+        return (TypeDeclaration) getLanguageModuleDeclaration("JavaChar");
+    }
+
+    public TypeDeclaration getJavaFloatDeclaration() {
+        return (TypeDeclaration) getLanguageModuleDeclaration("JavaFloat");
+    }
 }

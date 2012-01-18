@@ -115,14 +115,20 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror CEYLON_BOOLEAN_TYPE = simpleObjectType("ceylon.language.Boolean");
     
     private static final TypeMirror PRIM_INT_TYPE = simpleObjectType("int", TypeKind.INT);
+    private static final TypeMirror CEYLON_JAVA_INT_TYPE = simpleObjectType("ceylon.language.interop.java.JavaInt");
+
     private static final TypeMirror PRIM_LONG_TYPE = simpleObjectType("long", TypeKind.LONG);
     private static final TypeMirror CEYLON_INTEGER_TYPE = simpleObjectType("ceylon.language.Integer");
     
     private static final TypeMirror PRIM_FLOAT_TYPE = simpleObjectType("float", TypeKind.FLOAT);
+    private static final TypeMirror CEYLON_JAVA_FLOAT_TYPE = simpleObjectType("ceylon.language.interop.java.JavaFloat");
+
     private static final TypeMirror PRIM_DOUBLE_TYPE = simpleObjectType("double", TypeKind.DOUBLE);
     private static final TypeMirror CEYLON_FLOAT_TYPE = simpleObjectType("ceylon.language.Float");
     
     private static final TypeMirror PRIM_CHAR_TYPE = simpleObjectType("char", TypeKind.CHAR);
+    private static final TypeMirror CEYLON_JAVA_CHAR_TYPE = simpleObjectType("ceylon.language.interop.java.JavaChar");
+
     private static final TypeMirror CEYLON_CHARACTER_TYPE = simpleObjectType("ceylon.language.Character");
     
     private static final TypeMirror CEYLON_ARRAY_TYPE = simpleObjectType("ceylon.language.Array");
@@ -208,6 +214,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(!isBootstrap){
             loadPackage("ceylon.language", true);
             loadPackage("ceylon.language.descriptor", true);
+            loadPackage("ceylon.language.interop.java", true);
         }
     }
     
@@ -1238,17 +1245,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         } else if (sameType(type, PRIM_BOOLEAN_TYPE)) {
             type = CEYLON_BOOLEAN_TYPE;
         } else if (sameType(type, PRIM_INT_TYPE)) {
-            // FIXME Really needs "small" annotation
-            type = CEYLON_INTEGER_TYPE;
+            type = CEYLON_JAVA_INT_TYPE;
         } else if (sameType(type, PRIM_LONG_TYPE)) {
             type = CEYLON_INTEGER_TYPE;
         } else if (sameType(type, PRIM_FLOAT_TYPE)) {
-            // FIXME Really needs "small" annotation
-            type = CEYLON_FLOAT_TYPE;
+            type = CEYLON_JAVA_FLOAT_TYPE;
         } else if (sameType(type, PRIM_DOUBLE_TYPE)) {
             type = CEYLON_FLOAT_TYPE;
         } else if (sameType(type, PRIM_CHAR_TYPE)) {
-            type = CEYLON_CHARACTER_TYPE;
+            type = CEYLON_JAVA_CHAR_TYPE;
         } else if (sameType(type, OBJECT_TYPE)) {
             type = CEYLON_IDENTIFIABLE_OBJECT_TYPE;
         }

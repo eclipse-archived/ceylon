@@ -552,6 +552,21 @@ public abstract class AbstractTransformer implements Transformation {
         return (isCeylonString(type) || isCeylonBoolean(type) || isCeylonInteger(type) || isCeylonFloat(type) || isCeylonCharacter(type));
     }
 
+    protected boolean isJavaInt(ProducedType type){
+        ProducedType javaIntType = typeFact.getJavaIntDeclaration().getType();
+        return javaIntType.isExactly(type);
+    }
+
+    protected boolean isJavaFloat(ProducedType type){
+        ProducedType javaFloatType = typeFact.getJavaFloatDeclaration().getType();
+        return javaFloatType.isExactly(type);
+    }
+
+    protected boolean isJavaChar(ProducedType type){
+        ProducedType javaCharType = typeFact.getJavaCharDeclaration().getType();
+        return javaCharType.isExactly(type);
+    }
+
     /*
      * Java Type creation
      */
@@ -632,6 +647,12 @@ public abstract class AbstractTransformer implements Transformation {
                 TypeDeclaration tdecl = simpleType.getDeclaration();
                 java.util.List<ProducedType> tal = simpleType.getTypeArgumentList();
                 return make().TypeArray(makeJavaType(tal.get(0), 0));
+            } else if (isJavaInt(type)){
+                return make().TypeIdent(TypeTags.INT);
+            } else if (isJavaFloat(type)){
+                return make().TypeIdent(TypeTags.FLOAT);
+            } else if (isJavaChar(type)){
+                return make().TypeIdent(TypeTags.CHAR);
             }
         }
         

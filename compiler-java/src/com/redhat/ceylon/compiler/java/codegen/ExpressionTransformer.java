@@ -38,11 +38,15 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
@@ -889,6 +893,41 @@ public class ExpressionTransformer extends AbstractTransformer {
     // Invocations
     
     public JCExpression transform(Tree.InvocationExpression ce) {
+        // ((JavaInt)e).longValue()
+        if(ce.getPrimary() instanceof Tree.QualifiedMemberExpression){
+            Primary primary = ((Tree.QualifiedMemberExpression)ce.getPrimary()).getPrimary();
+            if(isJavaInt(primary.getTypeModel())){
+                JCExpression expr = transformExpression(primary);
+                return at(ce).TypeCast(make().Type(syms().longType), expr);
+            }
+            if(isJavaFloat(primary.getTypeModel())){
+                JCExpression expr = transformExpression(primary);
+                return at(ce).TypeCast(make().Type(syms().doubleType), expr);
+            }
+            if(isJavaChar(primary.getTypeModel())){
+                JCExpression expr = transformExpression(primary);
+                return at(ce).TypeCast(make().Type(syms().intType), expr);
+            }
+        }
+        // JavaInt(e)
+        if(ce.getPrimary() instanceof Tree.BaseTypeExpression){
+            ProducedType type = ((TypeDeclaration)ce.getPrimary().getDeclaration()).getType();
+            if(isJavaInt(type)){
+                Expression param = ce.getPositionalArgumentList().getPositionalArguments().get(0).getExpression();
+                JCExpression expr = transformExpression(param, BoxingStrategy.UNBOXED, typeFact().getIntegerDeclaration().getType());
+                return at(ce).TypeCast(make().Type(syms().intType), expr);
+            }
+            if(isJavaFloat(type)){
+                Expression param = ce.getPositionalArgumentList().getPositionalArguments().get(0).getExpression();
+                JCExpression expr = transformExpression(param, BoxingStrategy.UNBOXED, typeFact().getFloatDeclaration().getType());
+                return at(ce).TypeCast(make().Type(syms().floatType), expr);
+            }
+            if(isJavaChar(type)){
+                Expression param = ce.getPositionalArgumentList().getPositionalArguments().get(0).getExpression();
+                JCExpression expr = transformExpression(param, BoxingStrategy.UNBOXED, typeFact().getCharacterDeclaration().getType());
+                return at(ce).TypeCast(make().Type(syms().charType), expr);
+            }
+        }
         if (ce.getPositionalArgumentList() != null) {
             return transformPositionalInvocation(ce);
         } else if (ce.getNamedArgumentList() != null) {
