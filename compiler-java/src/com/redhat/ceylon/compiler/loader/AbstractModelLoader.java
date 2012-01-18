@@ -38,10 +38,12 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotatedMirror;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
+import com.redhat.ceylon.compiler.loader.mirror.FieldMirror;
 import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeParameterMirror;
 import com.redhat.ceylon.compiler.loader.mirror.VariableMirror;
+import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
 import com.redhat.ceylon.compiler.loader.model.LazyElement;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
@@ -783,6 +785,20 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 }
             }
         }
+
+        for(FieldMirror fieldMirror : classMirror.getDirectFields()){
+            // We skip members marked with @Ignore
+            if(fieldMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
+                continue;
+            // FIXME: Skip static fields for now
+            if(fieldMirror.isStatic())
+                continue;
+            String name = fieldMirror.getName();
+            // skip the field if "we've already got one"
+            if(klass.getDirectMember(name) != null)
+                continue;
+            addValue(klass, fieldMirror);
+        }
         
         // Now mark all Values for which Setters exist as variable
         for(String var : variables){
@@ -893,6 +909,23 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         } else {
             throw new RuntimeException("Illegal java getter/setter name");
         }
+    }
+
+    private void addValue(ClassOrInterface klass, FieldMirror fieldMirror) {
+        // make sure it's a FieldValue so we can figure it out in the backend
+        Value value = new FieldValue();
+        value.setContainer(klass);
+        value.setName(fieldMirror.getName());
+        value.setUnit(klass.getUnit());
+        value.setShared(fieldMirror.isPublic());
+        // field can't be abstract or interface, so not formal
+        // can we override fields? good question. Not really, but from an external point of view?
+        // FIXME: figure this out: (default)
+        // FIXME: for the same reason, can it be an overriding field? (actual)
+        value.setVariable(!fieldMirror.isFinal());
+        value.setType(obtainType(fieldMirror.getType(), fieldMirror, klass));
+        markUnboxed(value, fieldMirror.getType());
+        klass.getMembers().add(value);
     }
     
     private void addValue(ClassOrInterface klass, MethodMirror methodMirror, String methodName) {
