@@ -1495,8 +1495,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                     selector = Util.getGetterName(decl.getName());
                 }
             } else if (Decl.isClassAttribute(decl)) {
-                // invoke the getter
-                selector = Util.getGetterName(decl.getName());
+                if(Decl.isJavaField(decl)){
+                    selector = decl.getName();
+                }else{
+                    // invoke the getter
+                    selector = Util.getGetterName(decl.getName());
+                }
             } else if (decl.isCaptured() || decl.isShared()) {
                 // invoke the qualified getter
                 primaryExpr = makeQualIdent(primaryExpr, decl.getName());
@@ -1534,7 +1538,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         }
         if (result == null) {
-            boolean useGetter = !(decl instanceof Method);
+            boolean useGetter = !(decl instanceof Method) && !(Decl.isJavaField(decl));
             if (qualExpr == null && selector == null) {
                 useGetter = decl.isClassOrInterfaceMember() && Util.isErasedAttribute(decl.getName());
                 if (useGetter) {
@@ -1697,7 +1701,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 lhs = makeQualIdent(lhs, decl.getName() + "$setter");
             }
         } else if (variable && (Decl.isClassAttribute(decl))) {
-            // must use the setter, nothing to do
+            // must use the setter, nothing to do, unless it's a java field
+            if(Decl.isJavaField(decl))
+                result = at(op).Assign(makeQualIdent(lhs, decl.getName()), rhs);
         } else if (variable && (decl.isCaptured() || decl.isShared())) {
             // must use the qualified setter
             lhs = makeQualIdent(lhs, decl.getName());

@@ -20,6 +20,7 @@
 
 package com.redhat.ceylon.compiler.java.util;
 
+import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
@@ -195,5 +196,9 @@ public class Decl {
             return ((Functional)decl).isOverloaded();
         }
         return false;
+    }
+
+    public static boolean isJavaField(Declaration decl) {
+        return decl instanceof FieldValue;
     }
 }
