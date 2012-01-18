@@ -40,7 +40,12 @@ public interface Empty
             return true;
         }
         public static Iterator<java.lang.Object> getIterator(Empty $this){
-            return null;
+            return new Iterator<java.lang.Object>() {
+                @Override
+                public java.lang.Object next() {
+                    return $finished.getFinished();
+                }
+            };
         }
         public static java.lang.Object item(Empty $this, Integer key){
             return null;
