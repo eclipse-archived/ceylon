@@ -82,7 +82,7 @@ public class MainForJs {
                     .getTypeChecker();
         }
         typeChecker.process();
-        new JsCompiler(typeChecker, true).generate();
+        new JsCompiler(typeChecker).optimize(true).generate();
         //getting the type checker does process all types in the source directory
     }
 }
