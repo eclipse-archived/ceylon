@@ -940,8 +940,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setName(methodName);
         value.setUnit(klass.getUnit());
         setMethodOrValueFlags(klass, methodMirror, value);
-        value.setType(obtainType(methodMirror.getReturnType(), methodMirror, klass));
-        markUnboxed(value, methodMirror.getReturnType());
+        if("hash".equals(methodName)){
+            // return type is faked
+            value.setType(getType(CEYLON_INTEGER_TYPE, klass));
+            value.setUnboxed(true);
+        }else{
+            value.setType(obtainType(methodMirror.getReturnType(), methodMirror, klass));
+            markUnboxed(value, methodMirror.getReturnType());
+        }
         klass.getMembers().add(value);
     }
 
