@@ -219,37 +219,45 @@ public class Util {
                             TypeParameter tp = td.getTypeParameters().get(i);
                             ProducedType pta = pt.getTypeArguments().get(tp);
                             ProducedType ta = t.getTypeArguments().get(tp);
-                            if (tp.isInvariant()) {
-                                if (!pta.isExactly(ta)) {
-                                    //the meet of invariant types with different 
-                                    //arguments is empty i.e. Bottom
-                                    //TODO: that's not right! if one of the arguments
-                                    //      involves a type parameter somewhere, they
-                                    //      might actually be the same type at runtime
-                                    //      and therefore have a nonempty meet...
+                            if (tp.isContravariant()) {
+                                args.add(unionType(pta, ta, unit));
+                            }
+                            else if (tp.isCovariant()) {
+                                args.add(intersectionType(pta, ta, unit));
+                            }
+                            else {
+                                TypeDeclaration ptad = pta.getDeclaration();
+                                TypeDeclaration tad = ta.getDeclaration();
+                                if ( !(ptad instanceof TypeParameter) &&
+                                     !(tad instanceof TypeParameter) &&
+                                        !ptad.equals(tad) ) {
+                                    //if the two type arguments have provably 
+                                    //different types, then the meet of the
+                                    //two intersected invariant types is empty
+                                    //TODO: this is too weak, we should really
+                                    //      recursively search for type parameter
+                                    //      arguments and if we don't find any
+                                    //      we can reduce to Bottom
                                     list.clear();
-                                    list.add( unit.getBottomDeclaration().getType() );
+                                    args.add( new BottomType(unit).getType() );
                                     return;
                                 }
                                 else {
-                                    args.add(pta);
+                                    //TODO: this is not correct: the intersection
+                                    //      of two different instantiations of an
+                                    //      invariant type is actually Bottom
+                                    //      unless the type arguments are equivalent
+                                    //      or are type parameters that might 
+                                    //      represent equivalent types at runtime.
+                                    //      Therefore, a method T x(T y) of Inv<T> 
+                                    //      should have the signature:
+                                    //             Foo&Bar x(Foo|Bar y)
+                                    //      on the intersection Inv<Foo>&Inv<Bar>.
+                                    //      But this code gives it the more 
+                                    //      restrictive signature:
+                                    //             Foo&Bar x(Foo&Bar y)
+                                    args.add(intersectionType(pta, ta, unit));
                                 }
-                            }
-                            if (tp.isContravariant()) {
-                                List<ProducedType> ul = new ArrayList<ProducedType>();
-                                addToUnion(ul, ta);
-                                addToUnion(ul, pta);
-                                UnionType ut = new UnionType(unit);
-                                ut.setCaseTypes(ul);
-                                args.add(ut.getType());
-                            }
-                            if (tp.isCovariant()) {
-                                List<ProducedType> il = new ArrayList<ProducedType>();
-                                addToIntersection(il, ta, unit);
-                                addToIntersection(il, pta, unit);
-                                IntersectionType it = new IntersectionType(unit);
-                                it.setSatisfiedTypes(il);
-                                args.add(it.canonicalize().getType());
                             }
                         }
                         iter.remove();
