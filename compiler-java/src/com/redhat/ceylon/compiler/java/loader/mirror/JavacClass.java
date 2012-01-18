@@ -31,6 +31,7 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
+import com.redhat.ceylon.compiler.loader.mirror.FieldMirror;
 import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.loader.mirror.PackageMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
@@ -39,6 +40,7 @@ import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
 import com.sun.tools.javac.code.Symbol.MethodSymbol;
+import com.sun.tools.javac.code.Symbol.VarSymbol;
 import com.sun.tools.javac.code.Type;
 
 public class JavacClass implements ClassMirror {
@@ -51,6 +53,8 @@ public class JavacClass implements ClassMirror {
     private List<TypeMirror> interfaces;
     private Map<String, AnnotationMirror> annotations;
     private List<TypeParameterMirror> typeParams;
+
+    private List<FieldMirror> fields;
     
     public JavacClass(ClassSymbol classSymbol){
         this.classSymbol = classSymbol;
@@ -137,6 +141,20 @@ public class JavacClass implements ClassMirror {
     }
 
     @Override
+    public List<FieldMirror> getDirectFields() {
+        if(fields == null){
+            List<FieldMirror> ret = new LinkedList<FieldMirror>();
+            for(Symbol sym : classSymbol.getEnclosedElements()){
+                if(sym instanceof VarSymbol && (sym.flags() & Flags.PRIVATE) == 0){
+                    ret.add(new JavacField((VarSymbol)sym));
+                }
+            }
+            fields = Collections.unmodifiableList(ret);
+        }
+        return fields;
+    }
+
+    @Override
     public TypeMirror getSuperclass() {
         Type supercls = classSymbol.getSuperclass();
         if (supercls != null) {
@@ -165,5 +183,4 @@ public class JavacClass implements ClassMirror {
         }
         return typeParams;
     }
-
 }

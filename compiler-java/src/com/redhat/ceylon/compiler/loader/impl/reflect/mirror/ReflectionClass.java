@@ -21,6 +21,7 @@
 package com.redhat.ceylon.compiler.loader.impl.reflect.mirror;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
@@ -29,6 +30,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
+import com.redhat.ceylon.compiler.loader.mirror.FieldMirror;
 import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.loader.mirror.PackageMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
@@ -90,6 +92,15 @@ public class ReflectionClass implements ClassMirror {
     }
 
     @Override
+    public List<FieldMirror> getDirectFields() {
+        Field[] directFields = klass.getDeclaredFields();
+        List<FieldMirror> fields = new ArrayList<FieldMirror>(directFields.length);
+        for(Field field : directFields)
+            fields.add(new ReflectionField(field));
+        return fields;
+    }
+
+    @Override
     public TypeMirror getSuperclass() {
         Type superclass = klass.getGenericSuperclass();
         return superclass != null ? new ReflectionType(superclass) : null;
@@ -128,5 +139,4 @@ public class ReflectionClass implements ClassMirror {
     public boolean isLoadedFromSource() {
         return false;
     }
-
 }

@@ -62,7 +62,13 @@ public interface ClassMirror extends AnnotatedMirror {
      * methods and constructors.
      */
     List<MethodMirror> getDirectMethods();
-    
+
+    /**
+     * Returns the list of fields defined by this class. Does not include inherited
+     * fields.
+     */
+    List<FieldMirror> getDirectFields();
+
     /**
      * Returns the list of type parameters for this class
      */
