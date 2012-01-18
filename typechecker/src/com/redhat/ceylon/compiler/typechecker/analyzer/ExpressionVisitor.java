@@ -2313,7 +2313,7 @@ public class ExpressionVisitor extends Visitor {
             ProducedTypedReference pr = member.getProducedTypedReference(outerType, typeArgs);
             that.setTarget(pr);
             ProducedType t = pr.getFullType();
-            if (t==null) {
+            if (t==null || t.getDeclaration() instanceof UnknownType) {
                 that.addError("could not determine type of method or attribute reference: " +
                         name(that.getIdentifier()));
             }
