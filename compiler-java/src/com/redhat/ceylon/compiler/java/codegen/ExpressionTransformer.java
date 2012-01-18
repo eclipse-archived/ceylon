@@ -1497,10 +1497,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             } else if (Decl.isClassAttribute(decl)) {
                 // invoke the getter
                 selector = Util.getGetterName(decl.getName());
-             } else if (decl.isCaptured() || decl.isShared()) {
-                 // invoke the qualified getter
-                 primaryExpr = makeQualIdent(primaryExpr, decl.getName());
-                 selector = Util.getGetterName(decl.getName());
+            } else if (decl.isCaptured() || decl.isShared()) {
+                // invoke the qualified getter
+                primaryExpr = makeQualIdent(primaryExpr, decl.getName());
+                selector = Util.getGetterName(decl.getName());
             }
         } else if (decl instanceof Method) {
             if (Decl.withinMethod(decl)) {
