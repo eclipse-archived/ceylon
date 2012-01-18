@@ -1038,6 +1038,12 @@ public abstract class AbstractTransformer implements Transformation {
             expr = unboxBoolean(expr);
         } else if (isCeylonArray(targetType)) {
             expr = unboxArray(expr);
+        } else if (isJavaInt(targetType)) {
+            expr = unboxJavaInt(expr);
+        } else if (isJavaFloat(targetType)) {
+            expr = unboxJavaFloat(expr);
+        } else if (isJavaChar(targetType)) {
+            expr = unboxJavaChar(expr);
         }
         return expr;
     }
@@ -1055,6 +1061,12 @@ public abstract class AbstractTransformer implements Transformation {
             expr = boxBoolean(expr);
         } else if (isCeylonArray(exprType)) {
             expr = boxArray(expr);
+        } else if (isJavaInt(exprType)) {
+            expr = boxJavaInt(expr);
+        } else if (isJavaFloat(exprType)) {
+            expr = boxJavaFloat(expr);
+        } else if (isJavaChar(exprType)) {
+            expr = boxJavaChar(expr);
         }
         return expr;
     }
@@ -1083,10 +1095,26 @@ public abstract class AbstractTransformer implements Transformation {
         return makeBoxType(value, syms().ceylonArrayType);
     }
     
+    private JCTree.JCMethodInvocation boxJavaInt(JCExpression value) {
+        return makeJavaBoxType(value, syms().integerObjectType);
+    }
+
+    private JCTree.JCMethodInvocation boxJavaFloat(JCExpression value) {
+        return makeJavaBoxType(value, syms().floatObjectType);
+    }
+
+    private JCTree.JCMethodInvocation boxJavaChar(JCExpression value) {
+        return makeJavaBoxType(value, syms().characterObjectType);
+    }
+
     private JCTree.JCMethodInvocation makeBoxType(JCExpression value, Type type) {
         return make().Apply(null, makeSelect(makeIdent(type), "instance"), List.<JCExpression>of(value));
     }
     
+    private JCTree.JCMethodInvocation makeJavaBoxType(JCExpression value, Type type) {
+        return make().Apply(null, makeSelect(makeIdent(type), "valueOf"), List.<JCExpression>of(value));
+    }
+
     private JCTree.JCMethodInvocation unboxInteger(JCExpression value) {
         return makeUnboxType(value, "longValue");
     }
@@ -1109,6 +1137,18 @@ public abstract class AbstractTransformer implements Transformation {
     
     private JCTree.JCMethodInvocation unboxArray(JCExpression value) {
         return makeUnboxType(value, "toArray");
+    }
+    
+    private JCTree.JCMethodInvocation unboxJavaInt(JCExpression value) {
+        return makeUnboxType(value, "intValue");
+    }
+    
+    private JCTree.JCMethodInvocation unboxJavaFloat(JCExpression value) {
+        return makeUnboxType(value, "floatValue");
+    }
+    
+    private JCTree.JCMethodInvocation unboxJavaChar(JCExpression value) {
+        return makeUnboxType(value, "charValue");
     }
     
     private JCTree.JCMethodInvocation makeUnboxType(JCExpression value, String unboxMethodName) {
