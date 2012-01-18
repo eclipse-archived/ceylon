@@ -42,6 +42,7 @@ void fields() {
 @nomodel
 @error
 class CeylonFields() extends JavaFields() {
+    
     @error
     void f(){
         Integer i1 = readOnlyField;
