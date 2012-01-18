@@ -43,7 +43,7 @@ public interface Empty
             return new Iterator<java.lang.Object>() {
                 @Override
                 public java.lang.Object next() {
-                    return $finished.getFinished();
+                    return exhausted.getExhausted();
                 }
             };
         }

@@ -106,7 +106,7 @@ public interface Sequence<Element>
                     if (from <= $this.getLastIndex()) {
                         return $this.item(Integer.instance(from++));
                     } else {
-                        return $finished.getFinished();
+                        return exhausted.getExhausted();
                     }
                 }
                 public final java.lang.String toString() {

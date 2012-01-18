@@ -4,10 +4,10 @@ import com.redhat.ceylon.compiler.java.metadata.Attribute;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 
 @Ceylon @Attribute
-public class $finished {
+public class exhausted {
     private final static Finished value = new Finished(){};
     
-    public static Finished getFinished(){
+    public static Finished getExhausted(){
         return value;
     }
 }

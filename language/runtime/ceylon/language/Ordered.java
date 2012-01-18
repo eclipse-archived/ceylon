@@ -24,7 +24,7 @@ public interface Ordered<Element> extends Iterable<Element> {
     @Ignore
     public static final class Ordered$impl {
         public static <Element> boolean getEmpty(Ordered<Element> $this){
-            return $this.getIterator().next() == $finished.getFinished();
+            return $this.getIterator().next() == exhausted.getExhausted();
         }
 
         public static <Element> Element getFirst(Ordered<Element> $this){

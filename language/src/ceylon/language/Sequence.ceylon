@@ -79,9 +79,9 @@ shared interface Sequence<out Element>
             variable Integer idx := from;
             shared actual Element|Finished next() { 
                 if (idx < lastIndex) {
-                    return item(idx) ? finished;
+                    return item(idx) ? exhausted;
                 } else {
-                    return finished;
+                    return exhausted;
                 }
             }
             shared actual String string {

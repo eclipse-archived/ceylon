@@ -56,7 +56,7 @@ shared Entry<Integer,Element>[] entries<Element>(Element... sequence)
                             return idx++->item;
                         }
                         else {
-                            return finished;
+                            return exhausted;
                         }
                     }
                     shared actual String string {

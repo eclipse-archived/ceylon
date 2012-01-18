@@ -36,7 +36,7 @@ shared class Singleton<Element>(Element element)
             variable Element|Finished current := first;
             shared actual Element|Finished next() {
                 Element|Finished result = current;
-                current := finished;
+                current := exhausted;
                 return result;
             }
             shared actual String string {

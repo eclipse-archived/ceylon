@@ -15,7 +15,7 @@ shared interface Empty
     shared actual Iterator<Bottom> iterator {
         object emptyIterator satisfies Iterator<Bottom> {
             shared actual Finished next() {
-                return finished;
+                return exhausted;
             }
         }
         return emptyIterator;

@@ -108,7 +108,7 @@ public class Singleton<Element>
 			@Override
 			public java.lang.Object next() {
 			    java.lang.Object result = current;
-			    current = $finished.getFinished();
+			    current = exhausted.getExhausted();
 				return result;
 			}
 			@Override

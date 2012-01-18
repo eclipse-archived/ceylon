@@ -199,7 +199,7 @@ public final class String
                     result = Character.instance(codePoint);
                     offset += java.lang.Character.charCount(codePoint);
                 } else {
-                    result = $finished.getFinished();
+                    result = exhausted.getExhausted();
                 }
                 return result;
             }
@@ -343,7 +343,7 @@ public final class String
         java.lang.StringBuilder result = new java.lang.StringBuilder();
         Iterator<? extends String> it = strings.getIterator();
         java.lang.Object elem = it.next();
-        if (elem != $finished.getFinished()) {
+        if (elem != exhausted.getExhausted()) {
             result.append(elem);
             for (;!((elem = it.next()) instanceof Finished);) {
                 result.append(value).append(elem);
@@ -457,7 +457,7 @@ public final class String
                     if (tokens.hasMoreTokens()) {
                         result = String.instance(tokens.nextToken());
                     } else {
-                        result = $finished.getFinished();
+                        result = exhausted.getExhausted();
                     }
                     return result;
                 }
@@ -468,13 +468,13 @@ public final class String
 
         @Override
         public boolean getEmpty() {
-            return getIterator().next() != $finished.getFinished();
+            return getIterator().next() != exhausted.getExhausted();
         }
 
         @Override
         public String getFirst() {
             java.lang.Object result = getIterator().next();
-            return (String) ((result != $finished.getFinished()) ? result : null);
+            return (String) ((result != exhausted.getExhausted()) ? result : null);
         }
     }
 }

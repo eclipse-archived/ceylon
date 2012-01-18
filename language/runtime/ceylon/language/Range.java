@@ -119,7 +119,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
                 if (!(current instanceof Finished) && !current.equals(getLast())) {
                     current = Range.this.next((Element) current);
                 } else {
-                    current = $finished.getFinished();
+                    current = exhausted.getExhausted();
                 }
                 return result;
             }

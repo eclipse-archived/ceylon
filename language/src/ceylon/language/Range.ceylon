@@ -84,7 +84,7 @@ shared class Range<Element>(Element first, Element last)
                 Element|Finished result = current;
                 if (is Element curr = current) {
                     if (curr == last) {
-                        current := finished;
+                        current := exhausted;
                     } else {
                         current := outer.next(curr);
                     }

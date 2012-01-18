@@ -21,7 +21,7 @@ public interface Iterable<Element> extends Container {
     @Ignore
     public static final class Iterable$impl {
         public static <Element> boolean getEmpty(Iterable<Element> $this){
-            return $this.getIterator().next() == $finished.getFinished();
+            return $this.getIterator().next() == exhausted.getExhausted();
         }
     }
 }

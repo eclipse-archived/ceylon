@@ -94,7 +94,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
             if (idx <= getLastIndex()) {
                 return array[(int) idx++];
             } else {
-                return $finished.getFinished();
+                return exhausted.getExhausted();
             }
         }
 
@@ -199,14 +199,14 @@ public class ArraySequence<Element> implements Sequence<Element> {
         Iterator<? extends Element> otherIterator = other.getIterator();
         java.lang.Object thisHead = thisIterator.next();
         java.lang.Object otherHead = otherIterator.next();
-        while (thisHead != $finished.getFinished() && otherHead != $finished.getFinished()) {
+        while (thisHead != exhausted.getExhausted() && otherHead != exhausted.getExhausted()) {
             if (!thisHead.equals(otherHead)) {
                 return false;
             }
             thisHead = thisIterator.next();
             otherHead = otherIterator.next();
         }
-        return (thisHead == $finished.getFinished() && otherHead == $finished.getFinished());
+        return (thisHead == exhausted.getExhausted() && otherHead == exhausted.getExhausted());
     }
     
 }
