@@ -5,3 +5,5 @@ shared abstract class Float()
                   Numeric<Float> {
 
 }
+
+shared Float? parseFloat(String string) { throw; }

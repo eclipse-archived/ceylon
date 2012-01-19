@@ -6,3 +6,5 @@ shared abstract class Integer()
                   Numeric<Integer> {
 
 }
+
+shared Integer? parseInteger(String string) { throw; }
