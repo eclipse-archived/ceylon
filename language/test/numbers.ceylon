@@ -218,4 +218,7 @@ shared void numbers() {
     assert(0.000_000_000_001==1.0p && 1.0p==1.0e-12, "float literal");
     assert(0.000_000_000_000_001==1.0f && 1.0f==1.0e-15, "float literal");
     
+    assert(parseInteger("-123")?0==-123, "parse integer");
+    assert(parseFloat("12.34e3")?0.0==12.34e3, "parse float");
+    
 }
