@@ -54,9 +54,13 @@ public class ReflectionModuleManager extends LazyModuleManager {
     public AbstractModelLoader getModelLoader() {
         if(modelLoader == null){
             Modules modules = getContext().getModules();
-            modelLoader = new ReflectionModelLoader(this, modules);            
+            modelLoader = createModelLoader(modules);            
         }
         return modelLoader;
+    }
+
+    protected AbstractModelLoader createModelLoader(Modules modules) {
+        return new ReflectionModelLoader(this, modules);
     }
 
     @Override
