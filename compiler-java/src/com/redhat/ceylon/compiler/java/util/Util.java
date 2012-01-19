@@ -21,11 +21,21 @@
 package com.redhat.ceylon.compiler.java.util;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.tools.StandardLocation;
 
+import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.impl.FileContentStore;
+import com.redhat.ceylon.cmr.impl.RepositoryBuilder;
+import com.redhat.ceylon.cmr.impl.RootBuilder;
+import com.redhat.ceylon.cmr.impl.SimpleRepository;
+import com.redhat.ceylon.cmr.spi.StructureBuilder;
+import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -338,5 +348,68 @@ public class Util {
                 && !decl.isClassOrInterfaceMember()
                 && !decl.isCaptured()
                 && !decl.isShared();
+    }
+
+    public static Repository makeRepository(List<String> userRepos, Logger log) {
+        final RepositoryBuilder builder = new RepositoryBuilder(log);
+
+        // any user defined repos first
+        if(userRepos.isEmpty()){
+            builder.addModules();
+        }else{
+            // go in reverse order because we prepend
+            for (int i=userRepos.size()-1;i>=0;i--) {
+                String repo = userRepos.get(i);
+                try {
+                    final RootBuilder rb = new RootBuilder(repo, log);
+                    // we need to prepend to bypass the caching repo
+                    builder.prependExternalRoot(rb.buildRoot());
+                } catch (Exception e) {
+                    log.warning("Failed to add repository: " + repo + ": "+e.getMessage());
+                }
+            }
+        }
+
+        // Caching repo
+        builder.addCeylonHome();
+
+        // add remote module repo
+        builder.addModulesCeylonLangOrg();
+
+        return builder.buildRepository();
+    }
+
+    public static Repository makeOutputRepository(String outRepo, Logger log) {
+        if(outRepo == null){
+            outRepo = "modules";
+        }
+
+        StructureBuilder structureBuilder;
+        if(!isHTTP(outRepo, log)){
+            File repoFolder = new File(outRepo);
+            if(repoFolder.exists()){
+                if(!repoFolder.isDirectory())
+                    log.error("Output repository is not a directory: "+outRepo);
+                else if(!repoFolder.canWrite())
+                    log.error("Output repository is not writable: "+outRepo);
+            }else if(!repoFolder.mkdirs())
+                log.error("Failed to create output repository: "+outRepo);
+            structureBuilder = new FileContentStore(repoFolder);
+        }else{
+            // HTTP
+            structureBuilder = new WebDAVContentStore(outRepo, log);
+        }
+        return new SimpleRepository(structureBuilder, log);
+    }
+
+    private static boolean isHTTP(String repo, Logger log) {
+        try {
+            URL url = new URL(repo);
+            String protocol = url.getProtocol();
+            return "http".equals(protocol) || "https".equals(protocol);
+        } catch (MalformedURLException e) {
+            log.debug("[Invalid repo URL: "+repo+" (assuming file)]");
+            return false;
+        }
     }
 }

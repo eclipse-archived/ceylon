@@ -33,8 +33,6 @@ package com.redhat.ceylon.compiler.java.tools;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,13 +46,6 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.impl.FileContentStore;
-import com.redhat.ceylon.cmr.impl.RemoteContentStore;
-import com.redhat.ceylon.cmr.impl.RepositoryBuilder;
-import com.redhat.ceylon.cmr.impl.RootBuilder;
-import com.redhat.ceylon.cmr.impl.SimpleRepository;
-import com.redhat.ceylon.cmr.spi.StructureBuilder;
-import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
 import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -218,33 +209,8 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         if(repo != null)
             return repo;
         // lazy loading
-        final RepositoryBuilder builder = new RepositoryBuilder(cmrLogger);
-
-        // any user defined repos first
         List<String> userRepos = options.getMulti(OptionName.CEYLONREPO);
-        if(userRepos.isEmpty()){
-            builder.addModules();
-        }else{
-            // go in reverse order because we prepend
-            for (int i=userRepos.size()-1;i>=0;i--) {
-                String repo = userRepos.get(i);
-                try {
-                    final RootBuilder rb = new RootBuilder(repo, cmrLogger);
-                    // we need to prepend to bypass the caching repo
-                    builder.prependExternalRoot(rb.buildRoot());
-                } catch (Exception e) {
-                    cmrLogger.warning("Failed to add repository: " + repo + ": "+e.getMessage());
-                }
-            }
-        }
-
-        // Caching repo
-        builder.addCeylonHome();
-
-        // add remote module repo
-        builder.addModulesCeylonLangOrg();
-
-        repo = builder.buildRepository();
+        repo = Util.makeRepository(userRepos, cmrLogger);
         return repo;
     }
 
@@ -257,40 +223,9 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         // any user defined repos
         // we use D and not CEYLONOUT here since that's where the option is stored
         String outRepo = options.get(OptionName.D);
-        if(outRepo == null){
-            outRepo = "modules";
-        }
-
-        StructureBuilder structureBuilder;
-        if(!isHTTP(outRepo)){
-            File repoFolder = new File(outRepo);
-            if(repoFolder.exists()){
-                if(!repoFolder.isDirectory())
-                    log.error("ceylon", "Output repository is not a directory: "+outRepo);
-                else if(!repoFolder.canWrite())
-                    log.error("ceylon", "Output repository is not writable: "+outRepo);
-            }else if(!repoFolder.mkdirs())
-                log.error("ceylon", "Failed to create output repository: "+outRepo);
-            structureBuilder = new FileContentStore(repoFolder);
-        }else{
-            // HTTP
-            structureBuilder = new WebDAVContentStore(outRepo, cmrLogger);
-        }
-        outputRepo = new SimpleRepository(structureBuilder, cmrLogger);
+        
+        outputRepo = Util.makeOutputRepository(outRepo, cmrLogger);
         return outputRepo;
-    }
-
-    private boolean isHTTP(String repo) {
-        try {
-            URL url = new URL(repo);
-            String protocol = url.getProtocol();
-            return "http".equals(protocol) || "https".equals(protocol);
-        } catch (MalformedURLException e) {
-            if(options.get(OptionName.VERBOSE) != null){
-                Log.printLines(log.noticeWriter, "[Invalid repo URL: "+repo+" (assuming file)]");
-            }
-            return false;
-        }
     }
 
     @Override
