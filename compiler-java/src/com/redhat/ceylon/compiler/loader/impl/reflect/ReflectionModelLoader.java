@@ -72,6 +72,9 @@ public class ReflectionModelLoader extends AbstractModelLoader {
         // try in every module
         // FIXME: surely we can do faster by checking the module name
         for(Module module : modules.getListOfModules()){
+            // skip it if we loaded this module from source
+            if(!(module instanceof ReflectionModule))
+                continue;
             try {
                 ClassLoader classLoader = ((ReflectionModule)module).getClassLoader();
                 if(classLoader != null)
