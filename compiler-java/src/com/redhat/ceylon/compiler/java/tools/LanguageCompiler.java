@@ -32,6 +32,7 @@ package com.redhat.ceylon.compiler.java.tools;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -130,7 +131,7 @@ public class LanguageCompiler extends JavaCompiler {
             CeyloncFileManager fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
             VFS vfs = new VFS();
             ArtifactProvider artifactProvider = new RepositoryArtifactProvider(fileManager.getRepository(), vfs);
-            ceylonContext = new com.redhat.ceylon.compiler.typechecker.context.Context(artifactProvider , vfs);
+            ceylonContext = new com.redhat.ceylon.compiler.typechecker.context.Context(Arrays.asList(artifactProvider) , vfs);
             context.put(ceylonContextKey, ceylonContext);
         }
         return ceylonContext;
