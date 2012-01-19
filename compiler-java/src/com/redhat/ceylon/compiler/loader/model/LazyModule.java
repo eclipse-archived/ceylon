@@ -38,6 +38,11 @@ public abstract class LazyModule extends Module {
     }
 
     @Override
+    public Package getDirectPackage(String name) {
+        return findPackageInModule(this, name);
+    }
+    
+    @Override
     public Package getPackage(String name) {
         // try here first
         Package pkg = null;
