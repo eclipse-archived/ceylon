@@ -280,6 +280,7 @@ public class CeylonDocTool {
                 documentedOne = true;
             documentModule(module);
             ArtifactContext context = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
+            outputRepository.removeArtifact(context);
             outputRepository.putArtifact(context, getOutputFolder(module));
         }
         if(!documentedOne)
