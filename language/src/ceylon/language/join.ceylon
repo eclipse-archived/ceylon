@@ -9,5 +9,4 @@ shared Element[] join<Element>(Element[]... sequences) {
         builder.appendAll(sequence...);
     }
     return builder.sequence;
-
 }
