@@ -240,4 +240,14 @@ shared void sequences() {
         assert("X"+(nat+1).string==str, "entries iteration");
     }
         
+    assert(append({},"foo").string=="{ foo }", "append to empty");
+    assert(prepend({},"foo").string=="{ foo }", "prepend to empty");
+    assert(append({1, 2},"foo").string=="{ 1, 2, foo }", "append");
+    assert(prepend({1, 2},"foo").string=="{ foo, 1, 2 }", "prepend");
+        
+    assert(append({},"foo").size==1, "append to empty");
+    assert(prepend({},"foo").size==1, "prepend to empty");
+    assert(append({1, 2},"foo").size==3, "append");
+    assert(prepend({1, 2},"foo").size==3, "prepend");
+    
 }
