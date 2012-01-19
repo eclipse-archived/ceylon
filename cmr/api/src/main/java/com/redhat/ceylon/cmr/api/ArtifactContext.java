@@ -31,7 +31,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     public static final String JAR = ".jar";
     public static final String ZIP = ".zip";
     public static final String SRC = ".src";
-    public static final String DOCS = "-docs";
+    public static final String DOCS = "module-doc";
     public static final String SHA1 = ".sha1";
 
     private String name;
@@ -57,6 +57,10 @@ public class ArtifactContext implements Serializable, ContentOptions {
 
     public ArtifactContext getSha1Context() {
         return new ArtifactContext(name, version, suffix + SHA1);
+    }
+
+    public ArtifactContext getDocsContext() {
+        return new ArtifactContext(name, version, DOCS);
     }
 
     public String getName() {

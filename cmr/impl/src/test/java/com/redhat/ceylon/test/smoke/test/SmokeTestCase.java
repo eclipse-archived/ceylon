@@ -164,10 +164,10 @@ public class SmokeTestCase {
         File docs = new File(getFolders(), "docs");
         String name = "com.redhat.docs";
         String version = "1.0.0.CR3";
-        ArtifactContext context = new ArtifactContext();
-        context.setName(name);
-        context.setVersion(version);
-        context.setSuffix(ArtifactContext.DOCS);
+        ArtifactContext template = new ArtifactContext();
+        template.setName(name);
+        template.setVersion(version);
+        ArtifactContext context = template.getDocsContext();
         repository.putArtifact(context, docs);
         try {
             File copy = repository.getArtifact(context);

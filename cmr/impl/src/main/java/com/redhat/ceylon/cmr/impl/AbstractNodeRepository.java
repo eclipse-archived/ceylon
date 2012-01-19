@@ -83,8 +83,12 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
     }
 
     protected String getArtifactName(String name, String version, String suffix) {
-        if (DEFAULT_MODULE.equals(name))
+        if (ArtifactContext.DOCS.equals(suffix))
+            return ArtifactContext.DOCS;
+        else if (DEFAULT_MODULE.equals(name))
             return name + suffix;
+        else if (ArtifactContext.DOCS.equals(suffix))
+            return ArtifactContext.DOCS;
         else
             return name + "-" + version + suffix;
     }
