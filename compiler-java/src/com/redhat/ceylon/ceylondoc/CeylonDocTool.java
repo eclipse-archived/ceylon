@@ -110,7 +110,7 @@ public class CeylonDocTool {
         builder.moduleManagerFactory(new ModuleManagerFactory(){
             @Override
             public ModuleManager createModuleManager(Context context) {
-                return new CeylonDocModuleManager(context, modules);
+                return new CeylonDocModuleManager(context, modules, log);
             }
         });
         
@@ -275,7 +275,7 @@ public class CeylonDocTool {
         boolean documentedOne = false;
         for(Module module : modules){
             if(isEmpty(module))
-                System.err.println("Warning: module "+module.getNameAsString()+" has no declarations");
+                log.warning("Module "+module.getNameAsString()+" has no declarations");
             else
                 documentedOne = true;
             documentModule(module);
@@ -284,7 +284,7 @@ public class CeylonDocTool {
             outputRepository.putArtifact(context, getOutputFolder(module));
         }
         if(!documentedOne)
-            System.err.println("Warning: could not find any declaration to document");
+            log.warning("Could not find any declaration to document");
         
         Util.delete(tempDestDir);
     }
