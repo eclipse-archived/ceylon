@@ -866,6 +866,9 @@ public class ProducedType extends ProducedReference {
             }
         }
         else {
+            if (getQualifyingType()!=null) {
+                getQualifyingType().checkVariance(covariant, contravariant, declaration, errors);
+            }
             for (TypeParameter tp: getDeclaration().getTypeParameters()) {
                 ProducedType pt = getTypeArguments().get(tp);
                 if (pt!=null) {
