@@ -172,7 +172,7 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
             final String label = getArtifactName(context);
             removeNode(parent, label);
         } else {
-            log.info("No such artifact: " + context);
+            log.debug("No such artifact: " + context);
         }
     }
 

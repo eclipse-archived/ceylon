@@ -99,7 +99,7 @@ public class RepositoryBuilder {
         if (modules.exists() && modules.isDirectory())
             prependExternalRoot(new FileContentStore(modules).createRoot());
         else
-            log.warning("No such ./modules directory: " + modules);
+            log.debug("No such ./modules directory: " + modules);
         return this;
     }
 
