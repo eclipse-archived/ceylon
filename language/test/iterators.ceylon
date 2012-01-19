@@ -1,9 +1,11 @@
 class Pair(String one, String two) satisfies Iterable<String> {
     shared actual object iterator satisfies Iterator<String> {
-        shared actual String head = one;
-        shared actual object tail satisfies Iterator<String> {
-            shared actual String head = two;
-            shared actual Iterator<String>? tail = null;
+        variable Integer i:=0;
+        shared actual String|Finished next() {
+            i++;
+            if (i==1) { return one; }
+            if (i==2) { return two; }
+            return exhausted;
         }
     }
     shared actual Boolean empty = false;
