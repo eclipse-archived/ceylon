@@ -76,7 +76,7 @@ public class CeylonDocTool {
 
     private List<PhasedUnit> phasedUnits;
     private List<Module> modules;
-    private String destRepo;
+    private String outputRepository;
     /**
      * The {@linkplain #shouldInclude(Declaration) visible} subclasses of the key
      */
@@ -161,8 +161,12 @@ public class CeylonDocTool {
         return documentedPhasedUnit;
     }
 
-    public void setDestDir(String destRepo) {
-        this.destRepo = destRepo;
+    public void setOutputRepository(String outputRepository) {
+        this.outputRepository = outputRepository;
+    }
+
+    public String getOutputRepository() {
+        return outputRepository;
     }
 
     public void setShowPrivate(boolean showPrivate) {
@@ -265,7 +269,7 @@ public class CeylonDocTool {
         collectSubclasses();
 
         // make a destination repo
-        Repository outputRepository = com.redhat.ceylon.compiler.java.util.Util.makeOutputRepository(destRepo, log);
+        Repository outputRepository = com.redhat.ceylon.compiler.java.util.Util.makeOutputRepository(this.outputRepository, log);
 
         // document every module
         boolean documentedOne = false;

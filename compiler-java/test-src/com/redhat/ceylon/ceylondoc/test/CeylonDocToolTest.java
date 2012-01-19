@@ -53,7 +53,7 @@ public class CeylonDocToolTest {
         if (dir.exists()) {
             rm(dir);
         }
-        tool.setDestDir(dir.getAbsolutePath());
+        tool.setOutputRepository(dir.getAbsolutePath());
         return tool;
     }
 
@@ -157,7 +157,9 @@ public class CeylonDocToolTest {
         Module module = new Module();
         module.setName(Arrays.asList("a"));
         module.setVersion("3.1.4");
-        File destDir = tool.getOutputFolder(module);
+        
+        File destDir = getOutputDir(tool, module);
+        
         assertDirectoryExists(destDir, ".resources");
         assertFileExists(destDir, ".resources/index.js");
         assertFileExists(destDir, "index.html");
@@ -206,7 +208,9 @@ public class CeylonDocToolTest {
         Module module = new Module();
         module.setName(Arrays.asList("a"));
         module.setVersion("3.1.4");
-        File destDir = tool.getOutputFolder(module);
+
+        File destDir = getOutputDir(tool, module);
+        
         assertDirectoryExists(destDir, ".resources");
         assertFileExists(destDir, ".resources/index.js");
         assertFileExists(destDir, "index.html");
