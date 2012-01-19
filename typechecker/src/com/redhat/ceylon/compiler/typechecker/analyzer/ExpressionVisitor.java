@@ -2352,8 +2352,11 @@ public class ExpressionVisitor extends Visitor {
             //TODO: this is temporary until we get metamodel reference expressions!
             if (that.getPrimary() instanceof Tree.BaseTypeExpression ||
                     that.getPrimary() instanceof Tree.QualifiedTypeExpression) {
-                checkTypeBelongsToContainingScope(that.getTarget().getType(), 
-                        that.getScope(), that);
+                ProducedReference target = that.getTarget();
+                if (target!=null) {
+                    checkTypeBelongsToContainingScope(target.getType(), 
+                            that.getScope(), that);
+                }
             }
             if (!inExtendsClause && that.getPrimary() instanceof Tree.Super) {
                 if (type!=null && type.isFormal()) {

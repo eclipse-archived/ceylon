@@ -1,6 +1,7 @@
 import imports.package { 
     method, attribute,
-    Class, Interface, Dupe, Alias
+    Class, Interface, Dupe, Alias,
+    @error Class
 }
 
 class Test() {

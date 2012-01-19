@@ -63,6 +63,16 @@ public class Unit {
         return "Unit[" + filename + "]";
     }
 
+    public Import getImport(String name) {
+        for (Import i: getImports()) {
+            if (i.getTypeDeclaration()==null &&
+                    i.getAlias().equals(name)) {
+                return i;
+            }
+        }
+        return null;
+    }
+    
     /**
      * Search the imports of a compilation unit
      * for the namd toplevel declaration.
