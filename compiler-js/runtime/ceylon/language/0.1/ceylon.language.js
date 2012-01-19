@@ -136,6 +136,32 @@ $String.prototype.getTrimmed = function() {
     }
     return result;
 }
+$String.prototype.initial = function(length) {
+    if (length.value >= this.codePoints) {return this}
+    var count = 0;
+    var i = 0;
+    for (; i<this.value.length && count<length.value; ++i, ++count) {
+        if ((this.value.charCodeAt(i)&0xfc00) === 0xd800) {++i}
+    }
+    if (i >= this.value.length) {
+        this.codePoints = count;
+        return this;
+    }
+    return String$(this.value.substr(0, i), count);
+}
+$String.prototype.terminal = function(length) {
+    if (length.value >= this.codePoints) {return this}
+    var count = 0;
+    var i = this.value.length;
+    for (; i>0 && count<length.value; ++count) {
+        if ((this.value.charCodeAt(--i)&0xfc00) === 0xdc00) {--i}
+    }
+    if (i <= 0) {
+        this.codePoints = count;
+        return this;
+    }
+    return String$(this.value.substr(i), count);
+}
 
 function $StringIterator() {}
 function StringIterator(string) {

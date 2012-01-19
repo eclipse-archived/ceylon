@@ -112,6 +112,19 @@ void testString() {
     expect("  ".trimmed, "", "String.trimmed");
     expect(" \tx \t".trimmed, "x", "String.trimmed");
     expect(" \t𝄞\t".trimmed.size, 1, "String.trimmed.size");
+    
+    expect("".initial(1), "", "String.initial");
+    expect("abc".initial(0), "", "String.initial");
+    expect("abc".initial(3), "abc", "String.initial");
+    expect("abc".initial(1), "a", "String.initial");
+    expect("𝄞abc".initial(2), "𝄞a", "String.intitial");
+    expect("𝄞abc".initial(2).size, 2, "String.intitial().size");
+    expect("".terminal(1), "", "String.terminal");
+    expect("abc".terminal(0), "", "String.terminal");
+    expect("abc".terminal(3), "abc", "String.terminal");
+    expect("abc".terminal(1), "c", "String.terminal");
+    expect("abc𝄞".terminal(2), "c𝄞", "String.terminal");
+    expect("abc𝄞".terminal(2).size, 2, "String.terminal().size");
 }
 
 void test_stringbuilder() {
