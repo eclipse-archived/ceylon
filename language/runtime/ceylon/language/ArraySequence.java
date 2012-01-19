@@ -91,9 +91,10 @@ public class ArraySequence<Element> implements Sequence<Element> {
         
         @Override
         public java.lang.Object next() {
-            if (idx <= getLastIndex()) {
+            if (idx <= getLastIndex()+first) {
                 return array[(int) idx++];
-            } else {
+            } 
+            else {
                 return exhausted.getExhausted();
             }
         }
