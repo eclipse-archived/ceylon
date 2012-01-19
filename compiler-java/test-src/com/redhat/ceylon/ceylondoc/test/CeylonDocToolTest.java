@@ -147,7 +147,7 @@ public class CeylonDocToolTest {
     
     @Test
     public void moduleA() throws IOException {
-        String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules";
+        String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules/single";
         String testName = "moduleA";
         CeylonDocTool tool = tool(pathname, testName, "a");
         tool.setShowPrivate(false);
@@ -188,9 +188,15 @@ public class CeylonDocToolTest {
                 Pattern.compile("<.*? id='privateMethod'.*?>"));
     }
     
+    private File getOutputDir(CeylonDocTool tool, Module module) {
+        String outputRepo = tool.getOutputRepository();
+        return new File(com.redhat.ceylon.compiler.java.util.Util.getModulePath(new File(outputRepo), module),
+                "module-doc");
+    }
+
     @Test
     public void moduleAWithPrivate() throws IOException {
-        String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules";
+        String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules/single";
         String testName = "moduleAWithPrivate";
         CeylonDocTool tool = tool(pathname, testName, "a");
         tool.setShowPrivate(true);
@@ -233,20 +239,20 @@ public class CeylonDocToolTest {
     
     @Test
     public void dependentOnBinaryModule() throws IOException {
-        String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules";
+        String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules/dependency";
         String testName = "dependentOnBinaryModule";
         
         // compile the b module
-        compile(pathname, "b");
+        compile(pathname+"/b", "b");
         
-        CeylonDocTool tool = tool(pathname+"/dependency", testName, "c", "build/ceylon-cars");
+        CeylonDocTool tool = tool(pathname+"/c", testName, "c", "build/ceylon-cars");
         tool.makeDoc();
     }
 
-    private void compile(String pathname, String string) throws IOException {
+    private void compile(String pathname, String moduleName) throws IOException {
         CeyloncTool compiler = new CeyloncTool();
         List<String> options = Arrays.asList("-src", pathname, "-out", "build/ceylon-cars");
-        JavacTask task = compiler.getTask(null, null, null, options, Arrays.asList("b"), null);
+        JavacTask task = compiler.getTask(null, null, null, options, Arrays.asList(moduleName), null);
         Boolean ret = task.call();
         Assert.assertEquals("Compilation failed", Boolean.TRUE, ret);
     }
