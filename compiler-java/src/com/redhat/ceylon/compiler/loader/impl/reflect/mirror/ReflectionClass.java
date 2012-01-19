@@ -84,10 +84,14 @@ public class ReflectionClass implements ClassMirror {
         Method[] directMethods = klass.getDeclaredMethods();
         Constructor<?>[] directConstructors = klass.getDeclaredConstructors();
         List<MethodMirror> methods = new ArrayList<MethodMirror>(directMethods.length + directConstructors.length);
-        for(Method directMethod : directMethods)
-            methods.add(new ReflectionMethod(directMethod));
-        for(Constructor<?> directConstructor : directConstructors)
-            methods.add(new ReflectionMethod(directConstructor));
+        for(Method directMethod : directMethods){
+            if(!directMethod.isSynthetic())
+                methods.add(new ReflectionMethod(directMethod));
+        }
+        for(Constructor<?> directConstructor : directConstructors){
+            if(!directConstructor.isSynthetic())
+                methods.add(new ReflectionMethod(directConstructor));
+        }
         return methods;
     }
 
