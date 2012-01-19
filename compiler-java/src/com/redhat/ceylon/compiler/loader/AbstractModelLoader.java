@@ -749,6 +749,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     ((Class)klass).setOverloaded(isOverloaded);
                     if(!(klass instanceof LazyClass) || !((LazyClass)klass).isTopLevelObjectType())
                         setParameters((Class)klass, methodMirror);
+                } else if(methodMirror.isConstructor()) {
+                    // skip other constructors
                 } else if(isGetter(methodMirror)) {
                     // simple attribute
                     addValue(klass, methodMirror, getJavaAttributeName(methodName));
