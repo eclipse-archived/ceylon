@@ -56,4 +56,8 @@ public class ReflectionVariable implements VariableMirror {
         return (String) name.getValue();
     }
 
+    @Override
+    public String toString() {
+        return "[ReflectionVariable: "+type.toString()+"]";
+    }
 }

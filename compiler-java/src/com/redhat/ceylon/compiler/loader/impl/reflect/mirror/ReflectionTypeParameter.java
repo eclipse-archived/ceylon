@@ -50,4 +50,8 @@ public class ReflectionTypeParameter implements TypeParameterMirror {
         return bounds;
     }
 
+    @Override
+    public String toString() {
+        return "[ReflectionTypeParameter: "+type.toString()+"]";
+    }
 }

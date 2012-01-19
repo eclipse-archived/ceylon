@@ -143,4 +143,9 @@ public class ReflectionClass implements ClassMirror {
     public boolean isLoadedFromSource() {
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "[ReflectionClass: "+klass.toString()+"]";
+    }
 }

@@ -106,4 +106,8 @@ public class ReflectionType implements TypeMirror {
         return primitives.containsKey(type);
     }
 
+    @Override
+    public String toString() {
+        return "[ReflectionType: "+type.toString()+"]";
+    }
 }

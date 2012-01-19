@@ -64,4 +64,8 @@ public class ReflectionField implements FieldMirror {
         return new ReflectionType(field.getGenericType());
     }
 
+    @Override
+    public String toString() {
+        return "[ReflectionField: "+field.toString()+"]";
+    }
 }

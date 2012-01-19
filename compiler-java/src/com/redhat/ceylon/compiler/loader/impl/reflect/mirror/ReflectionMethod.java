@@ -145,4 +145,8 @@ public class ReflectionMethod implements MethodMirror {
         return false;
     }
 
+    @Override
+    public String toString() {
+        return "[ReflectionMethod: "+method.toString()+"]";
+    }
 }
