@@ -4,7 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.io.ArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
+import com.redhat.ceylon.compiler.typechecker.io.VFSArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
@@ -23,7 +25,7 @@ import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 public class TypeCheckerBuilder {
     private boolean verbose = false;
     private List<VirtualFile> srcDirectories = new ArrayList<VirtualFile>();
-    private List<VirtualFile> repositories = new ArrayList<VirtualFile>();
+    private List<ArtifactProvider> artifactProviders = new ArrayList<ArtifactProvider>();
     private final VFS vfs = new VFS();
     private boolean verifyDependencies = true;
     private AssertionVisitor assertionVisitor = new AssertionVisitor() { 
@@ -66,7 +68,15 @@ public class TypeCheckerBuilder {
      * Directories are better as the type checker can extract the context like module name, package etc
      */
     public TypeCheckerBuilder addRepository(VirtualFile repository) {
-        repositories.add( repository );
+        artifactProviders.add( new VFSArtifactProvider( repository, vfs ) );
+        return this;
+    }
+
+    /**
+     * Lets you add an artifact provider.
+     */
+    public TypeCheckerBuilder addArtifactProvider(ArtifactProvider artifactProvider) {
+        artifactProviders.add( artifactProvider );
         return this;
     }
 
@@ -103,13 +113,12 @@ public class TypeCheckerBuilder {
     	return this;
     }
 
+    public VFS getVFS(){
+        return vfs;
+    }
+    
     public TypeChecker getTypeChecker() {
-        if (repositories.isEmpty()) {
-            return new TypeChecker(vfs, srcDirectories, verifyDependencies, assertionVisitor, moduleManagerFactory, verbose);
-        } else {
-            return new TypeChecker(vfs, srcDirectories, repositories, verifyDependencies, assertionVisitor, moduleManagerFactory, verbose);
-        }
-        
+        return new TypeChecker(vfs, srcDirectories, artifactProviders, verifyDependencies, assertionVisitor, moduleManagerFactory, verbose);
     }
 
 }
