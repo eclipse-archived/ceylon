@@ -20,6 +20,7 @@
 
 package com.redhat.ceylon.ceylondoc;
 
+import java.io.File;
 import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -213,4 +214,12 @@ public class Util {
         return collection == null || collection.isEmpty();
     }
 
+    public static void delete(File f){
+        if (f.isDirectory()) {
+            for (File c : f.listFiles())
+                delete(c);
+        }
+        if (!f.delete())
+            throw new RuntimeException("Failed to delete file: " + f);
+    }
 }

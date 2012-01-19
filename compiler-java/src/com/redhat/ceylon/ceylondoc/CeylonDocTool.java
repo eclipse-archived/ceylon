@@ -41,11 +41,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.compiler.java.tools.RepositoryArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
+import com.redhat.ceylon.compiler.typechecker.io.ArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -72,7 +76,7 @@ public class CeylonDocTool {
 
     private List<PhasedUnit> phasedUnits;
     private List<Module> modules;
-    private File destDir;
+    private String destRepo;
     /**
      * The {@linkplain #shouldInclude(Declaration) visible} subclasses of the key
      */
@@ -85,33 +89,48 @@ public class CeylonDocTool {
     private boolean showPrivate;
     private boolean omitSource;
     private Map<Declaration, Node> sourceLocations = new HashMap<Declaration, Node>();
+    private File tempDestDir;
+    private CeylondLogger log;
 
     public CeylonDocTool(List<File> sourceFolders, List<String> repositories, List<String> moduleSpecs,
             boolean haltOnError) {
         TypeCheckerBuilder builder = new TypeCheckerBuilder();
-        for(File src : sourceFolders)
+        for(File src : sourceFolders){
             builder.addSrcDirectory(src);
-        for(String repo : repositories){
-            // FIXME: eventually this will need to go through the module system and support HTTP
-            File repoFile = new File(repo);
-            if(repoFile.isDirectory())
-                builder.addRepository(repoFile);
         }
-        final List<ModuleSpec> modules = ModuleSpec.parse(moduleSpecs);
+        this.log = new CeylondLogger();
+        
+        // set up the artifact repository
+        Repository repository = com.redhat.ceylon.compiler.java.util.Util.makeRepository(repositories, log );
+        ArtifactProvider artifactProvider = new RepositoryArtifactProvider(repository, builder.getVFS());
+        builder.addArtifactProvider(artifactProvider);
+        
         // we need to plug in the module manager which can load from .cars
+        final List<ModuleSpec> modules = ModuleSpec.parse(moduleSpecs);
         builder.moduleManagerFactory(new ModuleManagerFactory(){
             @Override
             public ModuleManager createModuleManager(Context context) {
                 return new CeylonDocModuleManager(context, modules);
             }
         });
+        
         TypeChecker typeChecker = builder.getTypeChecker();
         typeChecker.process();
         if(haltOnError && typeChecker.getErrors() > 0)
             throw new RuntimeException("Parsing failed with "+typeChecker.getErrors()+" error(s)");
+        
         this.modules = getModules(modules, typeChecker.getContext().getModules());
         // only for source code mapping
         this.phasedUnits = getPhasedUnits(typeChecker.getPhasedUnits().getPhasedUnits());
+
+        // make a temp dest folder
+        try {
+            this.tempDestDir = File.createTempFile("ceylond", "");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        tempDestDir.delete();
+        tempDestDir.mkdirs();
     }
 
     private List<Module> getModules(List<ModuleSpec> moduleSpecs, Modules modules){
@@ -142,8 +161,8 @@ public class CeylonDocTool {
         return documentedPhasedUnit;
     }
 
-    public void setDestDir(String destDir) {
-        this.destDir = new File(destDir);
+    public void setDestDir(String destRepo) {
+        this.destRepo = destRepo;
     }
 
     public void setShowPrivate(boolean showPrivate) {
@@ -187,7 +206,7 @@ public class CeylonDocTool {
     }
     
     public File getOutputFolder(Module module) {
-        File folder = new File(com.redhat.ceylon.compiler.java.util.Util.getModulePath(destDir, module),
+        File folder = new File(com.redhat.ceylon.compiler.java.util.Util.getModulePath(tempDestDir, module),
                 "module-doc");
         if(shouldInclude(module))
             folder.mkdirs();
@@ -245,6 +264,9 @@ public class CeylonDocTool {
 
         collectSubclasses();
 
+        // make a destination repo
+        Repository outputRepository = com.redhat.ceylon.compiler.java.util.Util.makeOutputRepository(destRepo, log);
+
         // document every module
         boolean documentedOne = false;
         for(Module module : modules){
@@ -253,9 +275,13 @@ public class CeylonDocTool {
             else
                 documentedOne = true;
             documentModule(module);
+            ArtifactContext context = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
+            outputRepository.putArtifact(context, getOutputFolder(module));
         }
         if(!documentedOne)
             System.err.println("Warning: could not find any declaration to document");
+        
+        Util.delete(tempDestDir);
     }
 
     private boolean isEmpty(Module module) {

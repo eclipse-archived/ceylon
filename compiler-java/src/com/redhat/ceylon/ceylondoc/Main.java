@@ -71,7 +71,6 @@ public class Main {
         if (destDir == null) {
             destDir = "modules";
         }
-        repositories = com.redhat.ceylon.compiler.java.util.Util.addDefaultRepositories(repositories);
 
         List<File> sourceFolders = new LinkedList<File>();
         if (sourceDirs.isEmpty()) {
