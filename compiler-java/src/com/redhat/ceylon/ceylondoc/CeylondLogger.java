@@ -28,7 +28,7 @@ public class CeylondLogger implements Logger {
 
     @Override
     public void debug(String str) {
-        System.err.println("Debug: "+str);
+        //System.err.println("Debug: "+str);
     }
 
 }
