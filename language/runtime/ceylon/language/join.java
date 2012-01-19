@@ -23,16 +23,16 @@ public final class join {
     @Name("sequences")
     @Sequenced
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Empty|ceylon.language.Sequence<Element>>")
-    final ceylon.language.Iterable<? extends ceylon.language.Iterable<? extends Element>> sequences) {
+    final Iterable<? extends Iterable<? extends Element>> sequences) {
 		List<Element> list = new ArrayList<Element>();
 		java.lang.Object $tmp1;
 		for (Iterator<? extends Iterable<? extends Element>> iter=sequences.getIterator(); 
 				!(($tmp1 = iter.next()) instanceof Finished);) {
-			Iterable<? extends Element> elem = (Iterable<? extends Element>) $tmp1;
+		    final Iterable<? extends Element> elem = (Iterable<? extends Element>) $tmp1;
 	        java.lang.Object $tmp2;
 			for (Iterator<? extends Element> iter2=elem.getIterator(); 
 					!(($tmp2 = iter2.next()) instanceof Finished);) {
-	            Element elem2 = (Element) $tmp2;
+			    final Element elem2 = (Element) $tmp2;
 				if (elem2 != null) list.add(elem2);
 			}
 		}
