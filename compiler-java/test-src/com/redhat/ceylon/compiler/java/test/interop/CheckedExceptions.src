@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class checkedExceptionsInMethod {
+    
+    private checkedExceptionsInMethod() {
+    }
+    
+    static void checkedExceptionsInMethod() {
+        final com.redhat.ceylon.compiler.java.test.interop.JavaCheckedExceptions x = new com.redhat.ceylon.compiler.java.test.interop.JavaCheckedExceptions();
+        x.m();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        checkedExceptionsInMethod();
+    }
+}
+class CheckedExceptions extends com.redhat.ceylon.compiler.java.test.interop.JavaCheckedExceptions {
+    
+    @.java.lang.Override
+    public final void m() {
+    }
+    
+    CheckedExceptions() {
+        super();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new CheckedExceptions();
+    }
+}

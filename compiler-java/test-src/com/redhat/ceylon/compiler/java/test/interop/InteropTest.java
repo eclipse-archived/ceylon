@@ -66,4 +66,10 @@ public class InteropTest extends CompilerTest {
         compareWithJavaSource("Types");
     }
 	
+    @Test
+    public void testIopCheckedExceptions(){
+        compile("JavaCheckedExceptions.java");
+        compareWithJavaSource("CheckedExceptions");
+    }
+
 }
