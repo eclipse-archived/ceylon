@@ -106,6 +106,12 @@ void testString() {
     } else {
         succeed("String.item");
     }
+    
+    expect("".trimmed, "", "String.trimmed");
+    expect("x".trimmed, "x", "String.trimmed");
+    expect("  ".trimmed, "", "String.trimmed");
+    expect(" \tx \t".trimmed, "x", "String.trimmed");
+    expect(" \t𝄞\t".trimmed.size, 1, "String.trimmed.size");
 }
 
 void test_stringbuilder() {

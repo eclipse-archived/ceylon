@@ -120,6 +120,22 @@ $String.prototype.item = function(index) {
     }
     return Character(codepointFromString(this.value, i));
 }
+$String.prototype.getTrimmed = function() {
+    // make use of the fact that all WS characters are single UTF-16 code units
+    var from = 0;
+    while (from<this.value.length && (this.value.charCodeAt(from) in $WS)) {++from}
+    var to = this.value.length;
+    if (from < to) {
+        do {--to} while (from<to && (this.value.charCodeAt(to) in $WS));
+        ++to;
+    }
+    if (from===0 && to===this.value.length) {return this}
+    var result = String$(this.value.substring(from, to));
+    if (this.codePoints !== undefined) {
+        result.codePoints = this.codePoints - from - this.value.length + to;
+    }
+    return result;
+}
 
 function $StringIterator() {}
 function StringIterator(string) {
@@ -249,7 +265,7 @@ function Boolean$(value) {
     return value ? $true : $false;
 }
 var $finished = Case("Finished");
-function getFinished() { return $finished; }
+function getExhausted() { return $finished; }
 
 //These are operators for handling nulls
 function exists(value) { return value === getNull() ? getFalse() : getTrue(); }
@@ -365,16 +381,16 @@ function $ArrayIterator() {}
 function ArrayIterator(arr) {
     var that = new $ArrayIterator;
     that.array = arr;
-    that.current = arr && arr.length ? arr[0] : getFinished();
+    that.current = arr && arr.length ? arr[0] : $finished;
     that.idx = 0;
     return that;
 }
 for(var $ in CeylonObject.prototype){$ArrayIterator.prototype[$]=CeylonObject.prototype[$]}
 $ArrayIterator.prototype.next = function() {
-    if (this.current === getFinished()) {
-        return getFinished();
+    if (this.current === $finished) {
+        return $finished;
     }
-    this.current = this.idx < this.array.length ? this.array[this.idx] : getFinished();
+    this.current = this.idx < this.array.length ? this.array[this.idx] : $finished;
     this.idx++;
     return this.current;
 }
@@ -495,10 +511,10 @@ function RangeIterator(range) {
 for(var $ in CeylonObject.prototype){$RangeIterator.prototype[$]=CeylonObject.prototype[$]}
 $RangeIterator.prototype.next = function() {
     var rval = this.current;
-    if (rval.equals(getFinished()) === getTrue()) {
+    if (rval.equals($finished) === getTrue()) {
         return rval;
     } else if (rval.equals(this.range.getLast()) === getTrue()) {
-        this.current = getFinished();
+        this.current = $finished;
     } else {
         this.current = this.range.next(this.current);
     }
@@ -544,7 +560,7 @@ function SingletonIterator(elem) {
 for(var $ in CeylonObject.prototype){$SingletonIterator.prototype[$]=CeylonObject.prototype[$]}
 $SingletonIterator.prototype.next = function() {
     if (this.done) {
-        return getFinished();
+        return $finished;
     }
     this.done = true;
     return this.elem;
@@ -644,7 +660,7 @@ exports.getFalse=getFalse;
 exports.getLarger=getLarger;
 exports.getSmaller=getSmaller;
 exports.getEqual=getEqual;
-exports.getFinished=getFinished;
+exports.getExhausted=getExhausted;
 exports.Sequence=Sequence;
 exports.$Sequence=$Sequence;
 exports.ArraySequence=ArraySequence;

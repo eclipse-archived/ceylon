@@ -177,14 +177,14 @@ void test_iterators() {
     expect(iter1.next(), 1, "seq.iter");
     iter1.next(); iter1.next(); iter1.next();
     expect(iter1.next(), 5, "seq.iter");
-    expect(iter1.next(), finished, "seq.iter");
-    expect(iter1.next(), finished, "seq.iter");
+    expect(iter1.next(), exhausted, "seq.iter");
+    expect(iter1.next(), exhausted, "seq.iter");
     expect(iter2.next(), 95, "range.iter");
     iter2.next(); iter2.next(); iter2.next(); iter2.next();
     expect(iter2.next(), 100, "range.iter");
-    expect(iter2.next(), finished, "range.iter");
-    expect(iter2.next(), finished, "range.iter");
+    expect(iter2.next(), exhausted, "range.iter");
+    expect(iter2.next(), exhausted, "range.iter");
     expect(iter3.next(), 10, "singleton.iter");
-    expect(iter3.next(), finished, "singleton.iter");
-    expect(iter3.next(), finished, "singleton.iter");
+    expect(iter3.next(), exhausted, "singleton.iter");
+    expect(iter3.next(), exhausted, "singleton.iter");
 }
