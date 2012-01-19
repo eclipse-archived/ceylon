@@ -1,97 +1,102 @@
 <project name="Ceylon JS compiler" default="test" basedir=".">
-    <property file="build.properties"/>
+    <property file="build.properties" />
 
     <!-- Set build directories for all formats. -->
-    <property name="build.dir" value="${basedir}/build"/>
-    <property name="build.classes" location="${build.dir}/classes"/>
-    <property name="build.dist" location="${build.dir}/dist"/>
-    <property name="build.lib" location="${build.dir}/lib"/>
-    <property name="build.test" location="${build.dir}/test"/>
+    <property name="build.dir" value="${basedir}/build" />
+    <property name="build.classes" location="${build.dir}/classes" />
+    <property name="build.dist" location="${build.dir}/dist" />
+    <property name="build.lib" location="${build.dir}/lib" />
+    <property name="build.test" location="${build.dir}/test" />
 
-    <property name="test.src" location="test"/>
-    <property name="src" location="src"/>
-    <property name="runtime" location="runtime"/>
+    <property name="test.src" location="test" />
+    <property name="src" location="src" />
+    <property name="runtime" location="runtime" />
 
-    <tstamp/>
+    <property name="jscompiler.jar" value="jscompiler-${module.jscompiler.version}.jar" />
+    <property name="jscompiler.lib" location="${build.lib}/${jscompiler.jar}" />
+	
+    <tstamp />
 
     <!-- Local repository -->
-    <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
-    
-	<!-- module archives -->
-    <property name="ceylon.typechecker.loc" value="${basedir}/../ceylon-spec"/>
-    <property name="ceylon.typechecker.dir" value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}"/>
-    <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
-    <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}"/>
+    <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo" />
+
+    <!-- module archives -->
+    <property name="ceylon.typechecker.loc" value="${basedir}/../ceylon-spec" />
+    <property name="ceylon.typechecker.dir" value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}" />
+    <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar" />
+    <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}" />
+
+    <path id="test.run.classpath">
+        <fileset dir="${ceylon.typechecker.loc}/lib">
+            <include name="**/*.jar" />
+        </fileset>
+        <pathelement location="${ceylon.typechecker.lib}" />
+        <pathelement location="${build.classes}" />
+    </path>
 
     <!-- Rule to clean everything up -->
     <target name="clean" description="Clean up everything">
-        <delete dir="${build.dir}"/>
+        <delete dir="${build.dir}" />
     </target>
 
     <!-- project compilation -->
     <target name="compile" description="compile the js compiler">
-        <mkdir dir="${build.classes}"/>
-    	<echo message="${ceylon.typechecker.lib}"/>
-        <javac
-                srcdir="${src}"
-                destdir="${build.classes}"
-                debug="true"
-                classpath="${ceylon.typechecker.lib}">
-            <include name="**/*.java"/>
+        <mkdir dir="${build.classes}" />
+        <echo message="${ceylon.typechecker.lib}" />
+        <javac srcdir="${src}" destdir="${build.classes}" debug="true" classpath="${ceylon.typechecker.lib}">
+            <include name="**/*.java" />
         </javac>
     </target>
 
-    <path id="testcp">
-        <fileset dir="${ceylon.typechecker.loc}/lib">
-            <include name="**/*.jar"/>
-        </fileset>
-        <pathelement location="${ceylon.typechecker.lib}"/>
-        <pathelement location="${build.classes}"/>
-    </path>
+    <!-- build jscompiler jar -->
+    <target name="jscompiler.jar" depends="compile">
+        <mkdir dir="${build.lib}"/>
+        <jar destfile="${jscompiler.lib}">
+            <fileset dir="${build.classes}">
+            </fileset>
+        </jar>
+    </target>
+	
+    <target name="build" depends="jscompiler.jar">
+    </target>
 
-	<target name="compiletest" depends="compile">
-        <java classname="MainForJsTest" classpathref="testcp">
-        </java>
-	</target>
-	
-    <target name="compileopttest" depends="compile">
-        <java classname="MainForJsTest" classpathref="testcp">
-            <arg value="optimize"/>
+    <target name="compiletest" depends="build">
+        <java classname="MainForJsTest" classpathref="test.run.classpath">
         </java>
     </target>
-	
-	<target name="test"
-            depends="compiletest,compileopttest"
-            description="Run generated source comparison tests"/>
-	
-	<target name="nodetest"
-		    depends="compiletest"
-		    description="Run tests on node.js (requires node)">
-      <echo message="Running tests on node.js (node must be installed)"/>
-	  <copy todir="${build.test}/node_modules">
-	  	<fileset dir="${runtime}">
-	  		<include name="**/*.js"/>
-	  	</fileset>
-	  </copy>
-	  <copy todir="${build.test}" file="${test.src}/run.js"/>
-	  <exec executable="node">
-	  	<arg value="${build.test}/run.js"/>
-	  </exec>
-	</target>
-	
-    <target name="nodeopttest"
-            depends="compileopttest"
-            description="Run tests on node.js (requires node)">
-      <echo message="Running tests on node.js (node must be installed)"/>
-      <copy todir="${build.test}/node_modules">
-        <fileset dir="${runtime}">
-            <include name="**/*.js"/>
-        </fileset>
-      </copy>
-      <copy todir="${build.test}" file="${test.src}/run.js"/>
-      <exec executable="node">
-        <arg value="${build.test}/run.js"/>
-      </exec>
+
+    <target name="compileopttest" depends="build">
+        <java classname="MainForJsTest" classpathref="test.run.classpath">
+            <arg value="optimize" />
+        </java>
     </target>
-	
+
+    <target name="test" depends="compiletest,compileopttest" description="Run generated source comparison tests" />
+
+    <target name="nodetest" depends="compiletest" description="Run tests on node.js (requires node)">
+        <echo message="Running tests on node.js (node must be installed)" />
+        <copy todir="${build.test}/node_modules">
+            <fileset dir="${runtime}">
+                <include name="**/*.js" />
+            </fileset>
+        </copy>
+        <copy todir="${build.test}" file="${test.src}/run.js" />
+        <exec executable="node">
+            <arg value="${build.test}/run.js" />
+        </exec>
+    </target>
+
+    <target name="nodeopttest" depends="compileopttest" description="Run tests on node.js (requires node)">
+        <echo message="Running tests on node.js (node must be installed)" />
+        <copy todir="${build.test}/node_modules">
+            <fileset dir="${runtime}">
+                <include name="**/*.js" />
+            </fileset>
+        </copy>
+        <copy todir="${build.test}" file="${test.src}/run.js" />
+        <exec executable="node">
+            <arg value="${build.test}/run.js" />
+        </exec>
+    </target>
+
 </project>

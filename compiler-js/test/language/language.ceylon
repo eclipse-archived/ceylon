@@ -3,6 +3,12 @@ void expect(Equality actual, Equality expected, String text) {
             + expected.string + "' => "
             + ((actual==expected) then "ok" else "FAIL"));
 }
+void succeed(String text) {
+    print("[ok] " + text);
+}
+void fail(String text) {
+    print("[NOT OK] " + text);
+}
 
 //Another test for the compiler.
 void test_interpolate() {
@@ -22,6 +28,21 @@ void testCharacter() {
     //expect(`x`.lowercased, `x`, "Character.lowercased");
     //expect(`ö`.uppercased, `Ö`, "Character.uppercased");
     //expect(`#`.uppercased, `#`, "Character.uppercased");
+    expect(`A`.whitespace, false, "Character.whitespace");
+    expect(` `.whitespace, true, "Character.whitespace");
+    for (c in "\t") {
+        expect(c.whitespace, true, "Character.whitespace");
+    }
+    expect(` `.control, false, "Character.control");
+    for (c in "\r") {
+        expect(c.control, true, "Character.control");
+    }
+    expect(`P`.uppercase, true, "Character.uppercase");
+    expect(`m`.uppercase, false, "Character.uppercase");
+    expect(`#`.uppercase, false, "Character.uppercase");
+    expect(`z`.lowercase, true, "Character.lowercase");
+    expect(`V`.lowercase, false, "Character.lowercase");
+    expect(`+`.lowercase, false, "Character.lowercase");
 }
 
 void testString() {
@@ -54,6 +75,56 @@ void testString() {
     }
     expect(cnt, 5, "String.iterator");
     expect(s4, "ÖŨ`𝄞A", "String.iterator");
+    
+    if (exists c = s1[-1]) {
+        fail("String.item");
+    } else {
+        succeed("String.item");
+    }
+    if (exists c = s1[0]) {
+        expect(c, `a`, "String.item");
+    } else {
+        fail("String.item");
+    }
+    if (exists c = s1[2]) {
+        expect(c, `c`, "String.item");
+    } else {
+        fail("String.item");
+    }
+    if (exists c = s1[3]) {
+        fail("String.item");
+    } else {
+        succeed("String.item");
+    }
+    if (exists c = s3[4]) {
+        expect(c, `Ö`, "String.item");
+    } else {
+        fail("String.item");
+    }
+    if (exists c = ""[0]) {
+        fail("String.item");
+    } else {
+        succeed("String.item");
+    }
+    
+    expect("".trimmed, "", "String.trimmed");
+    expect("x".trimmed, "x", "String.trimmed");
+    expect("  ".trimmed, "", "String.trimmed");
+    expect(" \tx \t".trimmed, "x", "String.trimmed");
+    expect(" \t𝄞\t".trimmed.size, 1, "String.trimmed.size");
+    
+    expect("".initial(1), "", "String.initial");
+    expect("abc".initial(0), "", "String.initial");
+    expect("abc".initial(3), "abc", "String.initial");
+    expect("abc".initial(1), "a", "String.initial");
+    expect("𝄞abc".initial(2), "𝄞a", "String.intitial");
+    expect("𝄞abc".initial(2).size, 2, "String.intitial().size");
+    expect("".terminal(1), "", "String.terminal");
+    expect("abc".terminal(0), "", "String.terminal");
+    expect("abc".terminal(3), "abc", "String.terminal");
+    expect("abc".terminal(1), "c", "String.terminal");
+    expect("abc𝄞".terminal(2), "c𝄞", "String.terminal");
+    expect("abc𝄞".terminal(2).size, 2, "String.terminal().size");
 }
 
 void test_stringbuilder() {

@@ -25,9 +25,8 @@ public class MainForJsTest {
     private static final class JsModuleCompiler extends JsCompiler {
         private final Map<Package, PrintWriter> output;
 
-        private JsModuleCompiler(TypeChecker tc, boolean optimize,
-                Map<Package, PrintWriter> output) {
-            super(tc, optimize);
+        private JsModuleCompiler(TypeChecker tc, Map<Package, PrintWriter> output) {
+            super(tc);
             this.output = output;
         }
 
@@ -79,7 +78,9 @@ public class MainForJsTest {
                 .addSrcDirectory(new File("test"))
                 .getTypeChecker();
         typeChecker.process();
-        new JsModuleCompiler(typeChecker, opt, output).generate();
+        new JsModuleCompiler(typeChecker, output)
+                .optimize(opt)
+                .generate();
         validateOutput(typeChecker);
     }
 

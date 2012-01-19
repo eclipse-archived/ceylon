@@ -1,8 +1,12 @@
 import java.io.File;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
+import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 
 /**
  * Entry point for the type checker
@@ -30,12 +34,55 @@ public class MainForJs {
         
         boolean noisy = "true".equals(System.getProperties().getProperty("verbose"));
 
-        final TypeChecker typeChecker = new TypeCheckerBuilder()
-                .verbose(noisy)
-                .addSrcDirectory(new File(path))
-                .getTypeChecker();
+        TypeChecker typeChecker;
+        if ("--".equals(path)) {
+            VirtualFile src = new VirtualFile() {
+                @Override
+                public boolean isFolder() {
+                    return false;
+                }
+                @Override
+                public String getName() {
+                    return "SCRIPT.ceylon";
+                }
+                @Override
+                public String getPath() {
+                    return getName();
+                }
+                @Override
+                public InputStream getInputStream() {
+                    return System.in;
+                }
+                @Override
+                public List<VirtualFile> getChildren() {
+                    return new ArrayList<VirtualFile>(0);
+                }
+                @Override
+                public int hashCode() {
+                    return getPath().hashCode();
+                }
+                @Override
+                public boolean equals(Object obj) {
+                    if (obj instanceof VirtualFile) {
+                        return ((VirtualFile) obj).getPath().equals(getPath());
+                    }
+                    else {
+                        return super.equals(obj);
+                    }
+                }
+            };
+            typeChecker = new TypeCheckerBuilder()
+                    .verbose(noisy)
+                    .addSrcDirectory(src)
+                    .getTypeChecker();
+        } else {
+            typeChecker = new TypeCheckerBuilder()
+                    .verbose(noisy)
+                    .addSrcDirectory(new File(path))
+                    .getTypeChecker();
+        }
         typeChecker.process();
-        new JsCompiler(typeChecker, true).generate();
+        new JsCompiler(typeChecker).optimize(true).generate();
         //getting the type checker does process all types in the source directory
     }
 }

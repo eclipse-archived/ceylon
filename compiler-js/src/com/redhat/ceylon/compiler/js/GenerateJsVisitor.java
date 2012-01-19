@@ -1774,7 +1774,7 @@ public class GenerateJsVisitor extends Visitor
 	   endLine();
 	   out("while ((_item = _iter.next()).equals(");
 	   clAlias();
-	   out(".getFinished()) !== ");
+	   out(".getExhausted()) !== ");
 	   clAlias();
 	   out(".getTrue())");
 	   List<Statement> stmnts = that.getForClause().getBlock().getStatements();
@@ -1816,7 +1816,7 @@ public class GenerateJsVisitor extends Visitor
 		   endLine();
 		   out("if (_item.equals(");
 		   clAlias();
-		   out(".getFinished()) === ");
+		   out(".getExhausted()) === ");
 		   clAlias();
 		   out(".getTrue())");
 		   that.getElseClause().getBlock().visit(this);
