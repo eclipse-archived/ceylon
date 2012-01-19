@@ -1411,7 +1411,10 @@ public class ExpressionVisitor extends Visitor {
                         pr.getDeclaration().getName());
             }
             else {
-                foundParameters.add(p);
+                if (!foundParameters.add(p)) {
+                    a.addError("duplicate argument for parameter: " +
+                            p.getName());
+                }
                 checkNamedArgument(a, pr, p);
             }
         }
@@ -1424,7 +1427,10 @@ public class ExpressionVisitor extends Visitor {
                          + pr.getDeclaration().getName());
             }
             else {
-                foundParameters.add(sp);
+                if (!foundParameters.add(sp)) {
+                    sa.addError("duplicate argument for parameter: " +
+                            sp.getName());
+                }
                 checkSequencedArgument(sa, pr, sp);
             }
         }

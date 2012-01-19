@@ -138,6 +138,8 @@ class Assignability() {
     hello{ greeting = "Hi"; name = "Gavin"; };
     hello{};
     
+    hello { name="Gavin"; @error name="Tom"; };
+    
     void hi(@error String greeting = 1, String name = "World", Integer times = 1) {}
     class Hi(@error String greeting = 23.0, String name = "World", @error Integer times = "X") {}
     
@@ -294,6 +296,7 @@ class Assignability() {
 
     printStrings { strings={"Hello", "World"}; };
 
+    printStrings { strings={"Hello", "World"}; @error "Hello", "World" };
 
     @error printStrings(1, 2);
 
