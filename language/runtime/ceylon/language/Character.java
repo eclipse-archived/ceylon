@@ -128,4 +128,9 @@ public final class Character
     	return new Character(codePoint+1);
     }
     
+    @TypeInfo("ceylon.language.Integer")
+    public long getInteger() {
+        return codePoint;
+    }
+    
 }

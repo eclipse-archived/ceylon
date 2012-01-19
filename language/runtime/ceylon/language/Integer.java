@@ -231,4 +231,9 @@ public final class Integer
         return (CastValue)this;
     }
     
+    @TypeInfo("ceylon.language.Character")
+    public int getCharacter() {
+        return (int) value;
+    }
+    
 }

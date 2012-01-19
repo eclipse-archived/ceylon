@@ -20,5 +20,9 @@ void characters() {
         i:=i+1;
         assert(x>=`a`&&x<=`z`, "character range");
     }
-    assert(i==26, "character range");    
+    assert(i==26, "character range");   
+    
+    assert(c.integer.character==c, "integer/character conversion");
+    assert(69.character.integer==69, "integer/character conversion");
+     
 }

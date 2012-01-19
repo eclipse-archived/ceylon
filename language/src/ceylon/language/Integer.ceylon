@@ -4,7 +4,7 @@ shared abstract class Integer()
         satisfies Castable<Integer|Float> &
                   Integral<Integer> &
                   Numeric<Integer> {
-
+    shared formal Character character;
 }
 
 shared Integer? parseInteger(String string) { throw; }

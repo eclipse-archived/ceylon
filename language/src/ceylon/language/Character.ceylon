@@ -48,5 +48,8 @@ shared abstract class Character()
 
     /*doc "The directionality of the character"
     shared formal CharacterDirectionality directionality;*/
+    
+    doc "The code point of the character"
+    shared formal Integer integer;
 
 }
