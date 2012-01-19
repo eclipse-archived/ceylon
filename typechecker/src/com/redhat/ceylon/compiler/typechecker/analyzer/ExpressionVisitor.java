@@ -1411,7 +1411,10 @@ public class ExpressionVisitor extends Visitor {
                         pr.getDeclaration().getName());
             }
             else {
-                foundParameters.add(p);
+                if (!foundParameters.add(p)) {
+                    a.addError("duplicate argument for parameter: " +
+                            p.getName());
+                }
                 checkNamedArgument(a, pr, p);
             }
         }
@@ -1424,7 +1427,10 @@ public class ExpressionVisitor extends Visitor {
                          + pr.getDeclaration().getName());
             }
             else {
-                foundParameters.add(sp);
+                if (!foundParameters.add(sp)) {
+                    sa.addError("duplicate argument for parameter: " +
+                            sp.getName());
+                }
                 checkSequencedArgument(sa, pr, sp);
             }
         }
@@ -2346,8 +2352,11 @@ public class ExpressionVisitor extends Visitor {
             //TODO: this is temporary until we get metamodel reference expressions!
             if (that.getPrimary() instanceof Tree.BaseTypeExpression ||
                     that.getPrimary() instanceof Tree.QualifiedTypeExpression) {
-                checkTypeBelongsToContainingScope(that.getTarget().getType(), 
-                        that.getScope(), that);
+                ProducedReference target = that.getTarget();
+                if (target!=null) {
+                    checkTypeBelongsToContainingScope(target.getType(), 
+                            that.getScope(), that);
+                }
             }
             if (!inExtendsClause && that.getPrimary() instanceof Tree.Super) {
                 if (type!=null && type.isFormal()) {

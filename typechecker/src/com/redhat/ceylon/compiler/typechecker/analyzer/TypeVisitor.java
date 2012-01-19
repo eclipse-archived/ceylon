@@ -83,9 +83,21 @@ public class TypeVisitor extends Visitor {
                 Import i = new Import();
                 i.setAlias(dec.getName());
                 i.setDeclaration(dec);
-                unit.getImports().add(i);
-                il.getImports().add(i);
+                i.setWildcardImport(true);
+                addWildcardImport(il, dec, i);
             }
+        }
+    }
+
+    private void addWildcardImport(ImportList il, Declaration dec, Import i) {
+        Import o = unit.getImport(dec.getName());
+        if (o==null) {
+            unit.getImports().add(i);
+            il.getImports().add(i);
+        }
+        else if (o.isWildcardImport()) {
+            unit.getImports().remove(o);
+            il.getImports().remove(o);
         }
     }
 
@@ -157,8 +169,7 @@ public class TypeVisitor extends Visitor {
             }
             i.setDeclaration(d);
             member.setDeclarationModel(d);
-            unit.getImports().add(i);
-            il.getImports().add(i);
+            addImport(member, il, i);
         }
         ImportMemberOrTypeList imtl = member.getImportMemberOrTypeList();
         if (imtl!=null) {
@@ -172,6 +183,24 @@ public class TypeVisitor extends Visitor {
         	}
         }
         return name;
+    }
+
+    private void addImport(Tree.ImportMemberOrType member, ImportList il,
+            Import i) {
+        Import o = unit.getImport(i.getAlias());
+        if (o==null) {
+            unit.getImports().add(i);
+            il.getImports().add(i);
+        }
+        else if (o.isWildcardImport()) {
+            unit.getImports().remove(o);
+            il.getImports().remove(o);
+            unit.getImports().add(i);
+            il.getImports().add(i);
+        }
+        else {
+            member.addError("duplicate import: " + i.getAlias());
+        }
     }
         
     private void importMember(Tree.ImportMemberOrType member, TypeDeclaration d) {
@@ -198,6 +227,7 @@ public class TypeVisitor extends Visitor {
             i.setDeclaration(m);
             member.setDeclarationModel(m);
             unit.getImports().add(i);
+            //TODO: check for dupe!!
         }
         if (member.getImportMemberOrTypeList()!=null) {
         	member.getImportMemberOrTypeList()

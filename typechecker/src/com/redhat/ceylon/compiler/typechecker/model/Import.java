@@ -5,6 +5,9 @@ public class Import {
 	private TypeDeclaration typeDeclaration;
 	private String alias;
 	private Declaration declaration;
+	private boolean wildcardImport;
+	
+	public Import() {}
 
     public Declaration getDeclaration() {
         return declaration;
@@ -33,6 +36,14 @@ public class Import {
     @Override
     public String toString() {
         return "Import[" + alias + "]";
+    }
+    
+    public boolean isWildcardImport() {
+        return wildcardImport;
+    }
+    
+    public void setWildcardImport(boolean wildcardImport) {
+        this.wildcardImport = wildcardImport;
     }
 
 }
