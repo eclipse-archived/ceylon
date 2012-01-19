@@ -37,6 +37,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.ceylondoc.CeylonDocTool;
+import com.redhat.ceylon.ceylondoc.Util;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.source.util.JavacTask;
@@ -51,25 +52,10 @@ public class CeylonDocToolTest {
                 true/* throw on error */);
         File dir = new File(System.getProperty("java.io.tmpdir"), "CeylonDocToolTest/" + testName);
         if (dir.exists()) {
-            rm(dir);
+            Util.delete(dir);
         }
         tool.setOutputRepository(dir.getAbsolutePath());
         return tool;
-    }
-
-    private void rm(File dir) throws IOException {
-        for (File child : dir.listFiles()) {
-            if (child.isDirectory()) {
-                rm(child);
-            } else {
-                if (!child.delete()) {
-                    throw new IOException("Couldn't delete " + child);
-                }
-            }
-        }
-        if (!dir.delete()) {
-            throw new IOException("Couldn't delete " + dir);
-        }
     }
 
     protected void assertFileExists(File destDir, String path) {
