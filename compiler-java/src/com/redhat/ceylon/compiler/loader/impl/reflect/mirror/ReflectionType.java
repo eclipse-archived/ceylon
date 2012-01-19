@@ -38,6 +38,8 @@ import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
 public class ReflectionType implements TypeMirror {
 
     private Type type;
+    private List<TypeMirror> typeArguments;
+    private ReflectionType componentType;
 
     public ReflectionType(Type type) {
         this.type = type;
@@ -55,14 +57,17 @@ public class ReflectionType implements TypeMirror {
 
     @Override
     public List<TypeMirror> getTypeArguments() {
+        if(typeArguments != null)
+            return typeArguments;
         if(type instanceof ParameterizedType){
             Type[] javaTypeArguments = ((ParameterizedType)type).getActualTypeArguments();
-            List<TypeMirror> typeArguments = new ArrayList<TypeMirror>(javaTypeArguments.length);
+            typeArguments = new ArrayList<TypeMirror>(javaTypeArguments.length);
             for(Type typeArgument : javaTypeArguments)
                 typeArguments.add(new ReflectionType(typeArgument));
             return typeArguments;
-        }
-        return Collections.emptyList();
+        }else
+            typeArguments = Collections.<TypeMirror>emptyList(); 
+        return typeArguments;
     }
 
     private static final Map<Class<?>, TypeKind> primitives = new HashMap<Class<?>, TypeKind>();
@@ -97,8 +102,11 @@ public class ReflectionType implements TypeMirror {
 
     @Override
     public TypeMirror getComponentType() {
-        Type componentType = ((GenericArrayType)type).getGenericComponentType();
-        return new ReflectionType(componentType);
+        if(componentType != null)
+            return componentType;
+        Type ct = ((GenericArrayType)type).getGenericComponentType();
+        componentType = new ReflectionType(ct);
+        return componentType;
     }
 
     @Override

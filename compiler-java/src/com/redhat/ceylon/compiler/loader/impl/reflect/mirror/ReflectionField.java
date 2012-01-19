@@ -29,6 +29,7 @@ import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
 public class ReflectionField implements FieldMirror {
 
     private Field field;
+    private ReflectionType type;
 
     public ReflectionField(Field field) {
         this.field = field;
@@ -61,7 +62,10 @@ public class ReflectionField implements FieldMirror {
 
     @Override
     public TypeMirror getType() {
-        return new ReflectionType(field.getGenericType());
+        if(type != null)
+            return type;
+        type = new ReflectionType(field.getGenericType());
+        return type;
     }
 
     @Override

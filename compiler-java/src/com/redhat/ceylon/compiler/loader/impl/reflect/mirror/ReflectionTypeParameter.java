@@ -31,6 +31,7 @@ import com.redhat.ceylon.compiler.loader.mirror.TypeParameterMirror;
 public class ReflectionTypeParameter implements TypeParameterMirror {
 
     private TypeVariable<?> type;
+    private ArrayList<TypeMirror> bounds;
 
     public ReflectionTypeParameter(Type type) {
         this.type = (TypeVariable<?>) type;
@@ -43,8 +44,10 @@ public class ReflectionTypeParameter implements TypeParameterMirror {
 
     @Override
     public List<TypeMirror> getBounds() {
+        if(bounds != null)
+            return bounds;
         Type[] javaBounds = type.getBounds();
-        List<TypeMirror> bounds = new ArrayList<TypeMirror>(javaBounds.length);
+        bounds = new ArrayList<TypeMirror>(javaBounds.length);
         for(Type bound : javaBounds)
             bounds.add(new ReflectionType(bound));
         return bounds;

@@ -39,6 +39,13 @@ import com.redhat.ceylon.compiler.loader.mirror.TypeParameterMirror;
 public class ReflectionClass implements ClassMirror {
 
     private Class<?> klass;
+    private ArrayList<FieldMirror> fields;
+    private ArrayList<MethodMirror> methods;
+    private ArrayList<TypeMirror> interfaces;
+    private List<TypeParameterMirror> typeParameters;
+    private ReflectionPackage pkg;
+    private boolean superClassSet;
+    private ReflectionType superClass;
 
     public ReflectionClass(Class<?> klass) {
         this.klass = klass;
@@ -66,7 +73,10 @@ public class ReflectionClass implements ClassMirror {
 
     @Override
     public PackageMirror getPackage() {
-        return new ReflectionPackage(klass.getPackage());
+        if(pkg != null)
+            return pkg;
+        pkg = new ReflectionPackage(klass.getPackage());
+        return pkg;
     }
 
     @Override
@@ -81,9 +91,11 @@ public class ReflectionClass implements ClassMirror {
 
     @Override
     public List<MethodMirror> getDirectMethods() {
+        if(methods != null)
+            return methods;
         Method[] directMethods = klass.getDeclaredMethods();
         Constructor<?>[] directConstructors = klass.getDeclaredConstructors();
-        List<MethodMirror> methods = new ArrayList<MethodMirror>(directMethods.length + directConstructors.length);
+        methods = new ArrayList<MethodMirror>(directMethods.length + directConstructors.length);
         for(Method directMethod : directMethods){
             if(!directMethod.isSynthetic())
                 methods.add(new ReflectionMethod(directMethod));
@@ -97,8 +109,10 @@ public class ReflectionClass implements ClassMirror {
 
     @Override
     public List<FieldMirror> getDirectFields() {
+        if(fields != null)
+            return fields;
         Field[] directFields = klass.getDeclaredFields();
-        List<FieldMirror> fields = new ArrayList<FieldMirror>(directFields.length);
+        fields = new ArrayList<FieldMirror>(directFields.length);
         for(Field field : directFields)
             fields.add(new ReflectionField(field));
         return fields;
@@ -106,14 +120,21 @@ public class ReflectionClass implements ClassMirror {
 
     @Override
     public TypeMirror getSuperclass() {
-        Type superclass = klass.getGenericSuperclass();
-        return superclass != null ? new ReflectionType(superclass) : null;
+        if(superClassSet)
+            return superClass;
+        Type sup = klass.getGenericSuperclass();
+        if(sup != null)
+            superClass = new ReflectionType(sup);
+        superClassSet = true;
+        return superClass;
     }
 
     @Override
     public List<TypeMirror> getInterfaces() {
+        if(interfaces != null)
+            return interfaces;
         Type[] javaInterfaces = klass.getGenericInterfaces();
-        List<TypeMirror> interfaces = new ArrayList<TypeMirror>(javaInterfaces.length);
+        interfaces = new ArrayList<TypeMirror>(javaInterfaces.length);
         for(Type javaInterface : javaInterfaces)
             interfaces.add(new ReflectionType(javaInterface));
         return interfaces;
@@ -121,7 +142,10 @@ public class ReflectionClass implements ClassMirror {
 
     @Override
     public List<TypeParameterMirror> getTypeParameters() {
-        return ReflectionUtils.getTypeParameters(klass);
+        if(typeParameters != null)
+            return typeParameters;
+        typeParameters = ReflectionUtils.getTypeParameters(klass);
+        return typeParameters;
     }
 
     @Override

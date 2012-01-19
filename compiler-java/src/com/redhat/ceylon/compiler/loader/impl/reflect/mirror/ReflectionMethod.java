@@ -40,6 +40,10 @@ import com.redhat.ceylon.compiler.loader.mirror.VariableMirror;
 public class ReflectionMethod implements MethodMirror {
 
     private Member method;
+    private ArrayList<VariableMirror> parameters;
+    private List<TypeParameterMirror> typeParameters;
+    private Boolean overridingMethod;
+    private ReflectionType returnType;
 
     public ReflectionMethod(Member method) {
         this.method = method;
@@ -77,6 +81,8 @@ public class ReflectionMethod implements MethodMirror {
 
     @Override
     public List<VariableMirror> getParameters() {
+        if(parameters != null)
+            return parameters;
         Type[] javaParameters;
         Annotation[][] annotations;
         if(method instanceof Method){
@@ -86,7 +92,7 @@ public class ReflectionMethod implements MethodMirror {
             javaParameters = ((Constructor<?>)method).getGenericParameterTypes();
             annotations = ((Constructor<?>)method).getParameterAnnotations();
         }
-        List<VariableMirror> parameters = new ArrayList<VariableMirror>(javaParameters.length);
+        parameters = new ArrayList<VariableMirror>(javaParameters.length);
         for(int i=0;i<javaParameters.length;i++)
             parameters.add(new ReflectionVariable(javaParameters[i], annotations[i]));
         return parameters;
@@ -104,15 +110,24 @@ public class ReflectionMethod implements MethodMirror {
 
     @Override
     public TypeMirror getReturnType() {
-        return new ReflectionType(((Method)method).getGenericReturnType());
+        if(returnType != null)
+            return returnType;
+        returnType = new ReflectionType(((Method)method).getGenericReturnType());
+        return returnType;
     }
 
     @Override
     public List<TypeParameterMirror> getTypeParameters() {
-        return ReflectionUtils.getTypeParameters((GenericDeclaration) method);
+        if(typeParameters != null)
+            return typeParameters;
+        typeParameters = ReflectionUtils.getTypeParameters((GenericDeclaration) method);
+        return typeParameters;
     }
 
     public boolean isOverridingMethod() {
+        if(overridingMethod != null)
+            return overridingMethod.booleanValue();
+        
         String name = method.getName();
         Class<?>[] parameterTypes;
         if(method instanceof Method)
@@ -126,6 +141,7 @@ public class ReflectionMethod implements MethodMirror {
             try {
                 superclass.getMethod(name, parameterTypes);
                 // present
+                overridingMethod = Boolean.TRUE;
                 return true;
             } catch (Exception e) {
                 // not present
@@ -136,12 +152,14 @@ public class ReflectionMethod implements MethodMirror {
             try {
                 interfce.getMethod(name, parameterTypes);
                 // present
+                overridingMethod = Boolean.TRUE;
                 return true;
             } catch (Exception e) {
                 // not present
             }
         }
         // not overriding anything
+        overridingMethod = Boolean.FALSE;
         return false;
     }
 

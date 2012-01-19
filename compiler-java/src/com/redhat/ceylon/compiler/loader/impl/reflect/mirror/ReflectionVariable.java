@@ -32,6 +32,7 @@ public class ReflectionVariable implements VariableMirror {
 
     private Type type;
     private Annotation[] annotations;
+    private ReflectionType varType;
 
     public ReflectionVariable(Type type, Annotation[] annotations) {
         this.type = type;
@@ -45,7 +46,10 @@ public class ReflectionVariable implements VariableMirror {
 
     @Override
     public TypeMirror getType() {
-        return new ReflectionType(type);
+        if(varType != null)
+            return varType;
+        varType = new ReflectionType(type);
+        return varType;
     }
 
     @Override
