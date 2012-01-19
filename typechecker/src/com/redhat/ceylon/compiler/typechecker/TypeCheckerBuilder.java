@@ -113,6 +113,10 @@ public class TypeCheckerBuilder {
     	return this;
     }
 
+    public VFS getVFS(){
+        return vfs;
+    }
+    
     public TypeChecker getTypeChecker() {
         return new TypeChecker(vfs, srcDirectories, artifactProviders, verifyDependencies, assertionVisitor, moduleManagerFactory, verbose);
     }
