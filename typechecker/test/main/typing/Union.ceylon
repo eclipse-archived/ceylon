@@ -219,4 +219,11 @@ class Union() {
     case (is Object) {}
     case (is Nothing) {}
     
+    switch (maybe)
+    case (is String|Nothing) {}
+    
+    @error switch (maybe)
+    case (is String) {}
+    case (is String|Nothing) {}
+    
 }

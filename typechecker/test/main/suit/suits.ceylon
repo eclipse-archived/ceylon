@@ -5,6 +5,8 @@ object spades extends Suit("Spades") {}
 
 @error object extra extends Suit("Extra") {}
 
+class BrokenCase() extends Broken() {}
+
 void test() {
     Suit s = hearts;
 
@@ -13,6 +15,15 @@ void test() {
     case (diamonds) {}
     case (clubs) {}
     case (spades) {}
+    
+    @error switch (s)
+    case (hearts) {}
+    case (hearts,diamonds) {}
+    case (clubs,spades) {}
+    
+    switch (s)
+    case (hearts,diamonds) {}
+    case (clubs,spades) {}
     
     switch (s)
     case (hearts) {}
