@@ -1,18 +1,22 @@
 package ceylon.language;
 
-import com.redhat.ceylon.compiler.java.metadata.Attribute;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Object;
 
-@Ceylon @Attribute
-public class $false {
-    private final static Boolean value = new Boolean("false"){
-			@Override
-			public boolean booleanValue() {
-				return false;
-			}
-		};
+@Ceylon @Object
+public class $false extends Boolean  {
     
-    public static Boolean getFalse(){
+    private final static $false value = new $false();
+
+    public $false() {
+        super("false");
+    }
+
+    public boolean booleanValue() {
+        return true;
+    }
+    
+    public static $false getFalse(){
         return value;
     }
 }
