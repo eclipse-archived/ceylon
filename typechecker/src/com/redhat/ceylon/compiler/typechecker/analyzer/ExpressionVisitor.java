@@ -174,7 +174,7 @@ public class ExpressionVisitor extends Visitor {
     @Override
     public void visit(Tree.AnyClass that) {
         super.visit(that);
-        TypeDeclaration td = that.getDeclarationModel();
+        Class td = that.getDeclarationModel();
         if (that.getParameterList()!=null) {
             for (Tree.Parameter tp: that.getParameterList().getParameters()) {
                 Parameter p = tp.getDeclarationModel();
@@ -711,6 +711,10 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         endReturnDeclaration(od);
         endReturnScope(rt, null);
+        Class c = that.getDeclarationModel();
+        if (!c.isAbstract()) {
+            validateEnumeratedSupertypes(that, c);
+        }
     }
 
     @Override public void visit(Tree.InterfaceDefinition that) {
@@ -727,6 +731,8 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         endReturnDeclaration(od);
         endReturnScope(rt, null);
+        Class c = (Class) that.getDeclarationModel().getTypeDeclaration();
+        validateEnumeratedSupertypes(that, c);
     }
 
     @Override public void visit(Tree.ObjectArgument that) {
@@ -735,6 +741,8 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         endReturnDeclaration(od);
         endReturnScope(rt, null);
+        Class c = (Class) that.getDeclarationModel().getTypeDeclaration();
+        validateEnumeratedSupertypes(that, c);
     }
 
     @Override public void visit(Tree.ClassDeclaration that) {
@@ -1083,7 +1091,7 @@ public class ExpressionVisitor extends Visitor {
         else if (pr instanceof Tree.StaticMemberOrTypeExpression) {
             Declaration dec = pr.getDeclaration();
             Tree.StaticMemberOrTypeExpression mte = (Tree.StaticMemberOrTypeExpression) pr;
-            if ( mte.getTarget()==null && dec!=null && 
+            if ( mte.getTarget()==null && dec instanceof Functional && 
                     mte.getTypeArguments() instanceof Tree.InferredTypeArguments ) {
                 List<ProducedType> typeArgs = getInferedTypeArguments(that, (Functional) dec);
                 mte.getTypeArguments().setTypeModels(typeArgs);
@@ -2964,6 +2972,36 @@ public class ExpressionVisitor extends Visitor {
                                 "type argument does not satisfy self type constraint on type parameter " + 
                                     param.getName() + " of " + type.getDeclaration().getName());
                     }
+                }
+            }
+        }
+    }
+
+    private void validateEnumeratedSupertypes(Node that, Class d) {
+        ProducedType type = d.getType();
+        List<ProducedType> supertypes = type.getSupertypes();
+        for (ProducedType supertype: supertypes) {
+            TypeDeclaration std = supertype.getDeclaration();
+            if (std.getCaseTypes()!=null) {
+                List<ProducedType> types=new ArrayList<ProducedType>();
+                for (ProducedType ct: std.getCaseTypes()) {
+                    ProducedType cst = type.getSupertype(ct.getDeclaration());
+                    if (cst!=null) {
+                        types.add(cst);
+                    }
+                }
+                if (types.isEmpty()) {
+                    that.addError("concrete type is not a subtype of any case of enumerated supertype: " + 
+                        d.getName() + " is a subtype of " + std.getName());
+                }
+                else if (types.size()>1) {
+                    StringBuilder sb = new StringBuilder();
+                    for (ProducedType pt: types) {
+                        sb.append(pt.getProducedTypeName()).append(" and ");
+                    }
+                    sb.setLength(sb.length()-5);
+                    that.addError("concrete type is a subtype of multiple cases of enumerated supertype: " + 
+                            d.getName() + " is a subtype of " + sb);
                 }
             }
         }
