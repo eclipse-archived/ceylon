@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="api/src/main/java"/>
+	<classpathentry kind="src" path="impl/src/test/resources"/>
 	<classpathentry kind="src" path="impl/src/main/java"/>
 	<classpathentry kind="src" path="impl/src/test/java"/>
 	<classpathentry kind="src" path="spi/src/main/java"/>

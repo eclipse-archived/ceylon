@@ -19,6 +19,7 @@
     <property name="module-resolver.jar" location="${build.lib}/module-resolver.jar"/>
 
     <property name="cmr-impl-test.src" location="${basedir}/impl/src/test/java"/>
+    <property name="cmr-impl-test.resources" location="${basedir}/impl/src/test/resources"/>
 
     <tstamp/>
 
@@ -48,6 +49,7 @@
     
     <path id="test.run.classpath">
         <path refid="test.build.classpath"/>
+        <pathelement path="${cmr-impl-test.resources}"/>
         <pathelement path="${build.test}"/>
         <pathelement path="${httpclient.lib}"/>
         <pathelement path="${httpcore.lib}"/>
@@ -72,6 +74,7 @@
     <!-- Rule to clean everything up -->
     <target name="clean" description="Clean up everything">
         <delete dir="${build.dir}"/>
+        <delete dir="${cmr-impl-test.resources}/repo/com"/>
     </target>
 
     <target name="dist"
