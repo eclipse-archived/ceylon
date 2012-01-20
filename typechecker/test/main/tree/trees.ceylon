@@ -12,6 +12,8 @@ void printTree<T>(Tree<T> tree)
     }
 }
 
+@error class Extra<T>() extends Tree<T>() {}
+
 void testTree() {
     Branch<String> tree { 
         left = Leaf("hello");
