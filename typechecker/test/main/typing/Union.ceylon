@@ -197,4 +197,26 @@ class Union() {
     Sorted<Integer>|Sorted<String> sorted = Sorted(+1,-1);
     @type["Empty|Sequence<Integer|String>"] value elems = sorted.elements;
     
+    switch (xy)
+    case (is X) {}
+    case (is Y) {}
+    
+    @error switch (h)
+    case (is X) {}
+    case (is Hello) {}
+    
+    Sized|Category sc = "hello";
+    @error switch (sc)
+    case (is Sized) {}
+    case (is Category) {}
+    
+    String? maybe = null;
+    switch (maybe)
+    case (is String) {}
+    case (is Nothing) {}
+
+    @error switch (maybe)
+    case (is Object) {}
+    case (is Nothing) {}
+    
 }
