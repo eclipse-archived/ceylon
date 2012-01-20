@@ -21,7 +21,6 @@ package com.redhat.ceylon.compiler.loader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1125,11 +1124,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private void setCaseTypes(ClassOrInterface klass, ClassMirror classMirror) {
         List<String> caseTypes = getCaseTypesFromAnnotations(classMirror);
         if(caseTypes != null){
-            klass.getCaseTypes().addAll(getTypesList(caseTypes, klass));
+            klass.setCaseTypes(getTypesList(caseTypes, klass));
         }
     }
 
-    private Collection<? extends ProducedType> getTypesList(List<String> caseTypes, Scope scope) {
+    private List<ProducedType> getTypesList(List<String> caseTypes, Scope scope) {
         List<ProducedType> producedTypes = new LinkedList<ProducedType>();
         for(String type : caseTypes){
             producedTypes.add(decodeType(type, scope));

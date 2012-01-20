@@ -24,6 +24,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
@@ -64,7 +65,7 @@ public class TypeParser {
                 if(i > nameStart){
                     // we're adding one simple type
                     typeName = new String(chars, nameStart, i-nameStart).trim();
-                    unify(types.peek(), loader.getType(typeName, scope), expectingUnion);
+                    unify(types.peek(), getType(typeName, scope), expectingUnion);
                 }// else it has already been added on the way down
                 nameStart = i+1;
             }
@@ -103,7 +104,7 @@ public class TypeParser {
         if(nameStart < chars.length){
             // we're adding one simple type
             String typeName = new String(chars, nameStart, chars.length - nameStart).trim();
-            unify(types.peek(), loader.getType(typeName, scope), expectingUnion);
+            unify(types.peek(), getType(typeName, scope), expectingUnion);
         }// else it has already been added on the way down 
 
         // we should have it done
@@ -137,5 +138,9 @@ public class TypeParser {
                 list.set(list.size()-1, unionType.getType());
             }
         }
+    }
+
+    private ProducedType getType(String typeName, Scope scope) {
+        return loader.getType(Util.quoteJavaKeywords(typeName), scope);
     }
 }
