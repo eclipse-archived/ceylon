@@ -26,12 +26,12 @@
 package com.sun.tools.javac.comp;
 
 import java.util.*;
-import java.util.Set;
 
 import com.sun.tools.javac.code.*;
 import com.sun.tools.javac.jvm.*;
 import com.sun.tools.javac.tree.*;
 import com.sun.tools.javac.util.*;
+import com.sun.tools.javac.util.Context.SourceLanguage;
 import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
 import com.sun.tools.javac.util.List;
 
@@ -266,6 +266,10 @@ public class Check {
      *  @param s             The scope.
      */
     void checkTransparentClass(DiagnosticPosition pos, ClassSymbol c, Scope s) {
+        // Ceylon allows inner classes to have the same name as outer classes
+        if(Context.isCeylon())
+            return;
+
         if (s.next != null) {
             for (Scope.Entry e = s.next.lookup(c.name);
                  e.scope != null && e.sym.owner == c.owner;
@@ -294,10 +298,13 @@ public class Check {
                 return false;
             }
         }
-        for (Symbol sym = s.owner; sym != null; sym = sym.owner) {
-            if (sym.kind == TYP && sym.name == name && sym.name != names.error) {
-                duplicateError(pos, sym);
-                return true;
+        // Ceylon allows inner classes to have the same name as outer classes
+        if(!Context.isCeylon()){
+            for (Symbol sym = s.owner; sym != null; sym = sym.owner) {
+                if (sym.kind == TYP && sym.name == name && sym.name != names.error) {
+                    duplicateError(pos, sym);
+                    return true;
+                }
             }
         }
         return true;
