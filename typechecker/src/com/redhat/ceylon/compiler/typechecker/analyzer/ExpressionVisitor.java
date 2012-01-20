@@ -2979,8 +2979,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void validateEnumeratedSupertypes(Node that, Class d) {
         ProducedType type = d.getType();
-        List<ProducedType> supertypes = type.getSupertypes();
-        for (ProducedType supertype: supertypes) {
+        for (ProducedType supertype: type.getSupertypes()) {
             TypeDeclaration std = supertype.getDeclaration();
             if (std.getCaseTypes()!=null) {
                 List<ProducedType> types=new ArrayList<ProducedType>();

@@ -198,6 +198,36 @@ public class Util {
             }
         }
         else {
+            //implement the rule that Foo&Bar==Bottom if 
+            //there exists some Baz of Foo | Bar
+            //i.e. the intersection of disjoint types is
+            //empty
+            for (ProducedType supertype: pt.getSupertypes()) {
+                List<TypeDeclaration> ctds = supertype.getDeclaration().getCaseTypeDeclarations();
+                if (ctds!=null) {
+                    TypeDeclaration ctd=null;
+                    for (TypeDeclaration ct: ctds) {
+                        if (pt.getSupertype(ct)!=null) {
+                            ctd = ct;
+                            break;
+                        }
+                    }
+                    if (ctd!=null) {
+                        for (TypeDeclaration ct: ctds) {
+                            if (ct!=ctd) {
+                                for (ProducedType t: list) {
+                                    if (t.getSupertype(ct)!=null) {
+                                        list.clear();
+                                        list.add( new BottomType(unit).getType() );
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
             Boolean included = pt.isWellDefined();
             if (included) {
                 for (Iterator<ProducedType> iter = list.iterator(); iter.hasNext();) {
