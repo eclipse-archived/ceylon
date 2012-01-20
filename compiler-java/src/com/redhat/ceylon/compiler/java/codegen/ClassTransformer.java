@@ -103,7 +103,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (c.getParameterList().getParameters().isEmpty()) {
                 // Add a main() method
                 at(null);
-                JCExpression nameId = makeQuotedIdent(className);
+                JCExpression nameId = makeQuotedFQIdent(c.getQualifiedNameString());
                 JCNewClass expr = make().NewClass(null, null, nameId, List.<JCTree.JCExpression>nil(), null);
                 classBuilder.body(makeMainMethod(expr));
             }
@@ -324,7 +324,10 @@ public class ClassTransformer extends AbstractTransformer {
             if (!def.getParameterLists().isEmpty() && def.getParameterLists().get(0).getParameters().isEmpty()) {
                 // Add a main() method
                 at(null);
-                builder.body(makeMainMethod(make().Apply(null, nameId, List.<JCTree.JCExpression>nil())));
+                String path = def.getDeclarationModel().getQualifiedNameString();
+                path += "." + name;
+                JCExpression qualifiedName = makeQuotedFQIdent(path);
+                builder.body(makeMainMethod(make().Apply(null, qualifiedName, List.<JCTree.JCExpression>nil())));
             }
             return builder.build();                
         }

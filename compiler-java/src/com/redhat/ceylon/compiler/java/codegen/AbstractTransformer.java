@@ -280,6 +280,14 @@ public abstract class AbstractTransformer implements Transformation {
         return makeQualIdent(makeUnquotedIdent(""), components);
     }
 
+    protected JCExpression makeQuotedFQIdent(String... components) {
+        return makeQuotedQualIdent(makeUnquotedIdent(""), components);
+    }
+
+    protected JCExpression makeQuotedFQIdent(String qualifiedName) {
+        return makeQuotedFQIdent(Util.quoteJavaKeywords(qualifiedName.split("\\.")));
+    }
+
     protected JCExpression makeIdent(Type type) {
         return make().QualIdent(type.tsym);
     }
