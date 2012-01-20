@@ -1,0 +1,27 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+class Bug324 {
+    
+    class Bug324 {
+        
+        Bug324() {
+        }
+    }
+    
+    private final void m() {
+        
+        class Bug324 {
+            
+            Bug324() {
+            }
+        }
+    }
+    
+    Bug324() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug324();
+    }
+}
