@@ -716,6 +716,11 @@ public class ExpressionVisitor extends Visitor {
             validateEnumeratedSupertypes(that, c);
         }
     }
+    
+    @Override public void visit(Tree.ClassOrInterface that) {
+        super.visit(that);
+        validateEnumeratedSupertypeArguments(that, that.getDeclarationModel());
+    }
 
     @Override public void visit(Tree.InterfaceDefinition that) {
         Tree.Type rt = beginReturnScope(null);
@@ -3002,6 +3007,54 @@ public class ExpressionVisitor extends Visitor {
                         sb.setLength(sb.length()-5);
                         that.addError("concrete type is a subtype of multiple cases of enumerated supertype: " + 
                                 d.getName() + " is a subtype of " + sb);
+                    }
+                }
+            }
+        }
+    }
+    
+    private void validateEnumeratedSupertypeArguments(Node that, ClassOrInterface d) {
+        for (ProducedType supertype: d.getType().getSupertypes()) {
+            List<TypeDeclaration> ctds = supertype.getDeclaration().getCaseTypeDeclarations();
+            if (ctds!=null) {
+                for (TypeDeclaration ct: ctds) {
+                    if (ct.equals(d)) {
+                        List<TypeParameter> params = supertype.getDeclaration().getTypeParameters();
+                        for (int i=0; i<params.size(); i++) {
+                            TypeParameter p = params.get(i);
+                            ProducedType arg = supertype.getTypeArguments().get(p);
+                            if (arg!=null) {
+                                TypeDeclaration td = arg.getDeclaration();
+                                if (td instanceof TypeParameter && ((TypeParameter) td).getDeclaration().equals(d)) {
+                                    if (p.isCovariant() && !((TypeParameter) td).isCovariant()) {
+                                        that.addError("argument to covariant type parameter of supertype must be covariant: " + 
+                                                p.getName() + " of "+ supertype.getDeclaration().getName());
+                                    }
+                                    if (p.isContravariant() && !((TypeParameter) td).isContravariant()) {
+                                        that.addError("argument to contravariant type parameter of supertype must be contravariant: " + 
+                                                p.getName() + " of "+ supertype.getDeclaration().getName());
+                                    }
+                                }
+                                else if (p.isCovariant()) {
+                                    if (!(td instanceof BottomType)) {
+                                        that.addError("argument to covariant type parameter of supertype must be a type parameter or Bottom: " + 
+                                                p.getName() + " of "+ supertype.getDeclaration().getName());
+                                    }
+                                }
+                                //TODO!!!!!
+                                /*else if (p.isContravariant()) {
+                                    if (!(arg.isExactly(intersection of p.getSatisfiedTypes())) {
+                                        that.addError("argument to covariant type parameter of supertype must be a type parameter or ..." + 
+                                                p.getName() + " of "+ supertype.getProducedTypeName());
+                                    }
+                                }*/
+                                else {
+                                    that.addError("argument to type parameter of supertype must be a type parameter: " + 
+                                            p.getName() + " of "+ supertype.getDeclaration().getName());
+                                }
+                            }
+                        }
+                        break;
                     }
                 }
             }
