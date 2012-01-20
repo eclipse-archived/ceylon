@@ -928,17 +928,25 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     protected List<JCAnnotation> makeAtSatisfiedTypes(java.util.List<ProducedType> satisfiedTypes) {
-        if(satisfiedTypes.isEmpty())
+        return makeTypesListAnnotation(syms().ceylonAtSatisfiedTypes, satisfiedTypes);
+    }
+
+    protected List<JCAnnotation> makeAtCaseTypes(java.util.List<ProducedType> caseTypes) {
+        return makeTypesListAnnotation(syms().ceylonAtCaseTypes, caseTypes);
+    }
+
+    private List<JCAnnotation> makeTypesListAnnotation(Type annotationType, java.util.List<ProducedType> types) {
+        if(types.isEmpty())
             return List.nil();
         ListBuffer<JCExpression> upperBounds = new ListBuffer<JCTree.JCExpression>();
-        for(ProducedType satisfiedType : satisfiedTypes){
-            String type = serialiseTypeSignature(satisfiedType);
-            upperBounds.append(make().Literal(type));
+        for(ProducedType type : types){
+            String typeSig = serialiseTypeSignature(type);
+            upperBounds.append(make().Literal(typeSig));
         }
-        JCExpression satisfiesAttribute = make().Assign(makeUnquotedIdent("value"), 
+        JCExpression caseAttribute = make().Assign(makeUnquotedIdent("value"), 
                 make().NewArray(null, null, upperBounds.toList()));
         
-        return makeModelAnnotation(syms().ceylonAtSatisfiedTypes, List.of(satisfiesAttribute));
+        return makeModelAnnotation(annotationType, List.of(caseAttribute));
     }
 
     protected List<JCAnnotation> makeAtIgnore() {

@@ -112,6 +112,7 @@ public class ClassTransformer extends AbstractTransformer {
         return classBuilder
             .modifiers(transformClassDeclFlags(def))
             .satisfies(def.getDeclarationModel().getSatisfiedTypes())
+            .caseTypes(def.getDeclarationModel().getCaseTypes())
             .init((List<JCStatement>)visitor.getResult().toList())
             .build();
     }

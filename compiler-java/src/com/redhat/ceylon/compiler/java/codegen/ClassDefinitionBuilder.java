@@ -71,6 +71,7 @@ public class ClassDefinitionBuilder {
     private JCStatement superCall;
     
     private final ListBuffer<JCExpression> satisfies = ListBuffer.lb();
+    private final ListBuffer<JCExpression> caseTypes = ListBuffer.lb();
     private final ListBuffer<JCTypeParameter> typeParams = ListBuffer.lb();
     private final ListBuffer<JCExpression> typeParamAnnotations = ListBuffer.lb();
     
@@ -195,19 +196,18 @@ public class ClassDefinitionBuilder {
         return superclass;
     }
 
-    private List<JCExpression> transformSatisfiedTypes(java.util.List<ProducedType> list) {
-        if (list == null) {
+    private List<JCExpression> transformTypesList(java.util.List<ProducedType> types) {
+        if (types == null) {
             return List.nil();
         }
-
-        ListBuffer<JCExpression> satisfies = new ListBuffer<JCExpression>();
-        for (ProducedType t : list) {
+        ListBuffer<JCExpression> typesList = new ListBuffer<JCExpression>();
+        for (ProducedType t : types) {
             JCExpression jt = gen.makeJavaType(t, CeylonTransformer.SATISFIES);
             if (jt != null) {
-                satisfies.append(jt);
+                typesList.append(jt);
             }
         }
-        return satisfies.toList();
+        return typesList.toList();
     }
 
     private JCMethodDecl createConstructor() {
@@ -289,9 +289,17 @@ public class ClassDefinitionBuilder {
     }
     
     public ClassDefinitionBuilder satisfies(java.util.List<ProducedType> satisfies) {
-        this.satisfies.addAll(transformSatisfiedTypes(satisfies));
+        this.satisfies.addAll(transformTypesList(satisfies));
         this.defs.addAll(appendConcreteInterfaceMembers(satisfies));
         annotations(gen.makeAtSatisfiedTypes(satisfies));
+        return this;
+    }
+
+    public ClassDefinitionBuilder caseTypes(java.util.List<ProducedType> caseTypes) {
+        if (caseTypes != null) {
+            this.caseTypes.addAll(transformTypesList(caseTypes));
+            annotations(gen.makeAtCaseTypes(caseTypes));
+        }
         return this;
     }
 

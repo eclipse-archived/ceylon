@@ -96,6 +96,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_SEQUENCED_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Sequenced";
     private static final String CEYLON_DEFAULTED_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Defaulted";
     private static final String CEYLON_SATISFIED_TYPES_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes";
+    private static final String CEYLON_CASE_TYPES_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.CaseTypes";
     private static final String CEYLON_TYPE_PARAMETERS = "com.redhat.ceylon.compiler.java.metadata.TypeParameters";
     private static final String CEYLON_TYPE_INFO_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.TypeInfo";
     public static final String CEYLON_ATTRIBUTE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Attribute";
@@ -819,6 +820,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         
         setExtendedType(klass, classMirror);
         setSatisfiedTypes(klass, classMirror);
+        setCaseTypes(klass, classMirror);
         fillRefinedDeclarations(klass);
     }
 
@@ -1105,7 +1107,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private void setSatisfiedTypes(ClassOrInterface klass, ClassMirror classMirror) {
         List<String> satisfiedTypes = getSatisfiedTypesFromAnnotations(classMirror);
         if(satisfiedTypes != null){
-            klass.getSatisfiedTypes().addAll(getSatisfiedTypes(satisfiedTypes, klass));
+            klass.getSatisfiedTypes().addAll(getTypesList(satisfiedTypes, klass));
         }else{
             for(TypeMirror iface : classMirror.getInterfaces()){
                 klass.getSatisfiedTypes().add(getType(iface, klass));
@@ -1113,9 +1115,23 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    private Collection<? extends ProducedType> getSatisfiedTypes(List<String> satisfiedTypes, Scope scope) {
+    //
+    // Case Types
+    
+    private List<String> getCaseTypesFromAnnotations(AnnotatedMirror symbol) {
+        return getAnnotationArrayValue(symbol, CEYLON_CASE_TYPES_ANNOTATION);
+    }
+    
+    private void setCaseTypes(ClassOrInterface klass, ClassMirror classMirror) {
+        List<String> caseTypes = getCaseTypesFromAnnotations(classMirror);
+        if(caseTypes != null){
+            klass.getCaseTypes().addAll(getTypesList(caseTypes, klass));
+        }
+    }
+
+    private Collection<? extends ProducedType> getTypesList(List<String> caseTypes, Scope scope) {
         List<ProducedType> producedTypes = new LinkedList<ProducedType>();
-        for(String type : satisfiedTypes){
+        for(String type : caseTypes){
             producedTypes.add(decodeType(type, scope));
         }
         return producedTypes;
