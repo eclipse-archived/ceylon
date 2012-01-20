@@ -111,6 +111,15 @@
             <fileset dir="${ceylon-module-resolver.dir}/build/dist">
             </fileset>
         </copy>
+        <copy todir="${dist.dir}/lib">
+            <fileset dir="${ceylon-module-resolver.dir}/lib">
+                <include name="sardine-*.jar"/>
+                <include name="httpclient-*.jar"/>
+                <include name="httpcore-*.jar"/>
+                <include name="commons-logging-*.jar"/>
+                <include name="slf4j-*.jar"/>
+            </fileset>
+        </copy>
     </target>
 
     <target name="install-runtime" depends="compile-module-resolver">
