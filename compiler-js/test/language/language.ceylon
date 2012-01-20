@@ -125,6 +125,21 @@ void testString() {
     expect("abc".terminal(1), "c", "String.terminal");
     expect("abc𝄞".terminal(2), "c𝄞", "String.terminal");
     expect("abc𝄞".terminal(2).size, 2, "String.terminal().size");
+    
+    expect("".startsWith("abc"), false, "String.startsWith");
+    expect("".startsWith(""), true, "String.startsWith");
+    expect("abc".startsWith(""), true, "String.startsWith");
+    expect("abc".startsWith("abc"), true, "String.startsWith");
+    expect("ab".startsWith("abc"), false, "String.startsWith");
+    expect("abc".startsWith("a"), true, "String.startsWith");
+    expect("abc".startsWith("b"), false, "String.startsWith");
+    expect("".endsWith("abc"), false, "String.endsWith");
+    expect("".endsWith(""), true, "String.endsWith");
+    expect("abc".endsWith(""), true, "String.endsWith");
+    expect("abc".endsWith("abc"), true, "String.endsWith");
+    expect("ab".endsWith("xab"), false, "String.endsWith");
+    expect("abc".endsWith("c"), true, "String.endsWith");
+    expect("abc".endsWith("b"), false, "String.endsWith");
 }
 
 void test_stringbuilder() {

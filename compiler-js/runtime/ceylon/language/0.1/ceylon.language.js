@@ -162,6 +162,21 @@ $String.prototype.terminal = function(length) {
     }
     return String$(this.value.substr(i), count);
 }
+function cmpSubString(str, subStr, offset) {
+    for (var i=0; i<subStr.length; ++i) {
+        if (str.charCodeAt(offset+i)!==subStr.charCodeAt(i)) {return $false}
+    }
+    return $true;
+}
+$String.prototype.startsWith = function(str) {
+    if (str.value.length > this.value.length) {return $false}
+    return cmpSubString(this.value, str.value, 0);
+}
+$String.prototype.endsWith = function(str) {
+    var start = this.value.length - str.value.length
+    if (start < 0) {return $false}
+    return cmpSubString(this.value, str.value, start);
+}
 
 function $StringIterator() {}
 function StringIterator(string) {
