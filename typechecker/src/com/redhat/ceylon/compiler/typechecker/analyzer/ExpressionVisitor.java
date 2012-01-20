@@ -2980,27 +2980,29 @@ public class ExpressionVisitor extends Visitor {
     private void validateEnumeratedSupertypes(Node that, Class d) {
         ProducedType type = d.getType();
         for (ProducedType supertype: type.getSupertypes()) {
-            TypeDeclaration std = supertype.getDeclaration();
-            if (std.getCaseTypes()!=null) {
-                List<ProducedType> types=new ArrayList<ProducedType>();
-                for (ProducedType ct: std.getCaseTypes()) {
-                    ProducedType cst = type.getSupertype(ct.getDeclaration());
-                    if (cst!=null) {
-                        types.add(cst);
+            if (!type.isExactly(supertype)) {
+                TypeDeclaration std = supertype.getDeclaration();
+                if (std.getCaseTypes()!=null) {
+                    List<ProducedType> types=new ArrayList<ProducedType>();
+                    for (ProducedType ct: std.getCaseTypes()) {
+                        ProducedType cst = type.getSupertype(ct.getDeclaration());
+                        if (cst!=null) {
+                            types.add(cst);
+                        }
                     }
-                }
-                if (types.isEmpty()) {
-                    that.addError("concrete type is not a subtype of any case of enumerated supertype: " + 
-                        d.getName() + " is a subtype of " + std.getName());
-                }
-                else if (types.size()>1) {
-                    StringBuilder sb = new StringBuilder();
-                    for (ProducedType pt: types) {
-                        sb.append(pt.getProducedTypeName()).append(" and ");
+                    if (types.isEmpty()) {
+                        that.addError("concrete type is not a subtype of any case of enumerated supertype: " + 
+                                d.getName() + " is a subtype of " + std.getName());
                     }
-                    sb.setLength(sb.length()-5);
-                    that.addError("concrete type is a subtype of multiple cases of enumerated supertype: " + 
-                            d.getName() + " is a subtype of " + sb);
+                    else if (types.size()>1) {
+                        StringBuilder sb = new StringBuilder();
+                        for (ProducedType pt: types) {
+                            sb.append(pt.getProducedTypeName()).append(" and ");
+                        }
+                        sb.setLength(sb.length()-5);
+                        that.addError("concrete type is a subtype of multiple cases of enumerated supertype: " + 
+                                d.getName() + " is a subtype of " + sb);
+                    }
                 }
             }
         }

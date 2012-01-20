@@ -665,6 +665,9 @@ public class TypeVisitor extends Visitor {
                         }
                     }
                     else {
+                        if (td instanceof ClassOrInterface && !((ClassOrInterface) td).isAbstract()) {
+                            st.addError("non-abstract class has enumerated subtype: " + td.getName(), 900);
+                        }
                         list.add(type);
                     }
                     /*if (type.getDeclaration() instanceof Interface) {
