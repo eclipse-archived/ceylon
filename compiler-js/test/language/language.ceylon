@@ -43,6 +43,9 @@ void testCharacter() {
     expect(`z`.lowercase, true, "Character.lowercase");
     expect(`V`.lowercase, false, "Character.lowercase");
     expect(`+`.lowercase, false, "Character.lowercase");
+    
+    expect(`A`.successor, `B`, "Character.successor");
+    expect(`w`.predecessor, `v`, "Character.predecessor");
 }
 
 void testString() {

@@ -264,6 +264,16 @@ $Character.prototype.getLowercase = function() {
     var str = codepointToString(this.value);
     return Boolean$(str.toUpperCase()!==str);
 }
+$Character.prototype.getSuccessor = function() {
+    var succ = this.value+1;
+    if ((succ&0xf800) === 0xd800) {return Character(0xe000)}
+    return Character((succ<=0x10ffff) ? succ:0);
+}
+$Character.prototype.getPredecessor = function() {
+    var succ = this.value-1;
+    if ((succ&0xf800) === 0xd800) {return Character(0xd7ff)}
+    return Character((succ>=0) ? succ:0x10ffff);
+}
 
 function $StringBuilder() {}
 function StringBuilder() {
