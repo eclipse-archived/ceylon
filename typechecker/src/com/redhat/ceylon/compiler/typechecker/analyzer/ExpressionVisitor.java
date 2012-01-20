@@ -2618,11 +2618,11 @@ public class ExpressionVisitor extends Visitor {
         Tree.Type t = that.getType();
         if (t!=null) {
             t.visit(this);
-            ProducedType pt = t.getTypeModel();
+            /*ProducedType pt = t.getTypeModel();
             if (pt!=null && pt.getDeclaration() instanceof Interface) {
                 that.addWarning("interface cases are not yet supported");
             }
-            //TODO: and not even union-of-interface cases!
+            //TODO: and not even union-of-interface cases!*/
         }
         Variable v = that.getVariable();
         if (v!=null) {
