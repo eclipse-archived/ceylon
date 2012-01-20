@@ -537,7 +537,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     protected boolean isCeylonBoolean(ProducedType type) {
-        return (sameType(syms().ceylonBooleanType, type));
+        return type.isSubtypeOf(typeFact.getBooleanDeclaration().getType());
     }
     
     protected boolean isCeylonInteger(ProducedType type) {
