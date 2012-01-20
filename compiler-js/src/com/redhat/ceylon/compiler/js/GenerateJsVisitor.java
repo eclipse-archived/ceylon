@@ -812,6 +812,8 @@ public class GenerateJsVisitor extends Visitor
                     out(d.getName());
                     out("=");
                     out(d.getName());
+                    out("; return ");
+                    out(d.getName());
                     out(";");
                     endBlock();
                     shareSetter(d);
@@ -854,6 +856,8 @@ public class GenerateJsVisitor extends Visitor
                 out("this.");
                 memberName(d);
                 out("=");
+                out(d.getName());
+                out("; return ");
                 out(d.getName());
                 out(";");
                 endBlock();
@@ -1116,13 +1120,21 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(AssignOp that) {
-        BaseMemberExpression bme = (Tree.BaseMemberExpression) that.getLeftTerm();
-        qualify(that, bme.getDeclaration());
-        out(setter(bme.getDeclaration()));
-        out("(");
+        boolean paren=false;
+        if (that.getLeftTerm() instanceof BaseMemberExpression) {
+            BaseMemberExpression bme = (BaseMemberExpression) that.getLeftTerm();
+            qualify(that, bme.getDeclaration());
+            out(setter(bme.getDeclaration()));
+            out("(");
+            paren = !(bme.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter);
+        } else if (that.getLeftTerm() instanceof QualifiedMemberExpression) {
+            QualifiedMemberExpression qme = (QualifiedMemberExpression)that.getLeftTerm();
+            out(setter(qme.getDeclaration()));
+            out("(");
+            paren = true;
+        }
         that.getRightTerm().visit(this);
-        if (bme.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter) {}
-        else {
+        if (paren) {
             out(")");
         }
     }
@@ -1364,7 +1376,7 @@ public class GenerateJsVisitor extends Visitor
     		
     	} else if (lhs instanceof QualifiedMemberExpression) {
     		QualifiedMemberExpression lhsQME = (QualifiedMemberExpression) lhs;
-    		out("function($1,$2){var $=$1.");
+    		out("(function($1,$2){var $=$1.");
     		out(getter(lhsQME.getDeclaration()));
     		out("()." + functionName + "($2);$1.");
     		out(setter(lhsQME.getDeclaration()));
@@ -1372,18 +1384,18 @@ public class GenerateJsVisitor extends Visitor
     		lhsQME.getPrimary().visit(this);
     		out(",");
     		that.getRightTerm().visit(this);
-    		out(")");
+    		out("))");
     	}
     }
     
     @Override public void visit(NegativeOp that) {
         that.getTerm().visit(this);
-        out(".negativeValue()");
+        out(".getNegativeValue()");
     }
     
     @Override public void visit(PositiveOp that) {
         that.getTerm().visit(this);
-        out(".positiveValue()");
+        out(".getPositiveValue()");
     }
     
     @Override public void visit(EqualOp that) {
@@ -1596,13 +1608,13 @@ public class GenerateJsVisitor extends Visitor
 			   path += '.';
 		   }
 		   
-		   out("function($){");
+		   out("(function($){");
 		   out(path);
 		   out(setter(bme.getDeclaration()));
 		   out("($." + functionName + "());return $}(");
 		   out(path);
 		   out(getter(bme.getDeclaration()));
-		   out("())");
+		   out("()))");
 	   } else if (term instanceof QualifiedMemberExpression) {
 		   QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
 		   out("function($){var $2=$.");
@@ -1826,5 +1838,45 @@ public class GenerateJsVisitor extends Visitor
 	   out("}());");
 	   endLine();
    }
+
+    public void visit(InOp that) {
+        that.getLeftTerm().visit(this);
+        out(".contains(");
+        that.getRightTerm().visit(this);
+        out(")");
+    }
+
+
+    private void visitIndex(IndexExpression that) {
+        that.getPrimary().visit(this);
+        ElementOrRange eor = that.getElementOrRange();
+        if (eor instanceof Element) {
+            out(".item(");
+            ((Element)eor).getExpression().visit(this);
+            out(")");
+        } else {//range, or spread?
+            out(".span(");
+            ((ElementRange)eor).getLowerBound().visit(this);
+            if (((ElementRange)eor).getUpperBound() != null) {
+                out(",");
+                ((ElementRange)eor).getUpperBound().visit(this);
+            }
+            out(")");
+        }
+    }
+
+    public void visit(IndexExpression that) {
+        IndexOperator op = that.getIndexOperator();
+        if (op instanceof SafeIndexOp) {
+			//TODO assign in tmp var to avoid 2 calls
+            out("exists(");
+            visitIndex(that);
+            out(")?");
+        }
+        visitIndex(that);
+        if (op instanceof SafeIndexOp) {
+            out(":null");
+        }
+    }
 
 }
