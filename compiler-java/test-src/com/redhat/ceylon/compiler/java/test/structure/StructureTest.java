@@ -530,33 +530,16 @@ public class StructureTest extends CompilerTest {
     // Classes
     
     @Test
-    public void testKlsClass(){
-        compareWithJavaSource("klass/Klass");
+    public void testKlsAbstractFormal(){
+        compareWithJavaSource("klass/AbstractFormal");
+    }
+    @Test
+    public void testKlsCaseTypes(){
+        compareWithJavaSource("klass/CaseTypes");
     }
     @Test
     public void testKlsDefaultedInitializerParameter(){
         compareWithJavaSource("klass/DefaultedInitializerParameter");
-    }
-    @Test
-    public void testKlsPublicClass(){
-        compareWithJavaSource("klass/PublicKlass");
-    }
-    @Test
-    public void testKlsInterface(){
-        compareWithJavaSource("klass/Interface");
-    }
-    @Test
-    public void testKlsInterfaceWithMembers(){
-        compareWithJavaSource("klass/InterfaceWithMembers");
-    }
-    @Ignore("M2")
-    @Test
-    public void testKlsInterfaceWithConcreteMembers(){
-        compareWithJavaSource("klass/InterfaceWithConcreteMembers");
-    }
-    @Test
-    public void testKlsInitializerParameter(){
-        compareWithJavaSource("klass/InitializerParameter");
     }
     @Test
     public void testKlsExtends(){
@@ -567,24 +550,33 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/ExtendsGeneric");
     }
     @Test
-    public void testKlsSatisfiesErasure(){
-        compareWithJavaSource("klass/SatisfiesErasure");
+    public void testKlsInitializerParameter(){
+        compareWithJavaSource("klass/InitializerParameter");
     }
     @Test
-    public void testKlsSatisfies(){
-        compareWithJavaSource("klass/Satisfies");
+    public void testKlsInitializerVarargs(){
+        compareWithJavaSource("klass/InitializerVarargs");
     }
     @Test
-    public void testKlsSatisfiesGeneric(){
-        compareWithJavaSource("klass/SatisfiesGeneric");
+    public void testKlsInnerClass(){
+        compareWithJavaSource("klass/InnerClass");
     }
     @Test
-    public void testKlsSatisfiesWithMembers(){
-        compareWithJavaSource("klass/SatisfiesWithMembers");
+    public void testKlsInterface(){
+        compareWithJavaSource("klass/Interface");
+    }
+    @Ignore("M2")
+    @Test
+    public void testKlsInterfaceWithConcreteMembers(){
+        compareWithJavaSource("klass/InterfaceWithConcreteMembers");
     }
     @Test
-    public void testKlsAbstractFormal(){
-        compareWithJavaSource("klass/AbstractFormal");
+    public void testKlsInterfaceWithMembers(){
+        compareWithJavaSource("klass/InterfaceWithMembers");
+    }
+    @Test
+    public void testKlsClass(){
+        compareWithJavaSource("klass/Klass");
     }
     @Test
     public void testKlsKlassMethodTypeParams(){
@@ -599,25 +591,32 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/KlassTypeParamsSatisfies");
     }
     @Test
-    public void testKlsInnerClass(){
-        compareWithJavaSource("klass/InnerClass");
+    public void testKlsKlassWithObjectMember(){
+        compareWithJavaSource("klass/KlassWithObjectMember");
     }
     @Test
     public void testKlsLocalClass(){
         compareWithJavaSource("klass/LocalClass");
     }
     @Test
-    public void testKlsInitializerVarargs(){
-        compareWithJavaSource("klass/InitializerVarargs");
+    public void testKlsPublicClass(){
+        compareWithJavaSource("klass/PublicKlass");
     }
     @Test
-    public void testKlsKlassWithObjectMember(){
-        compareWithJavaSource("klass/KlassWithObjectMember");
+    public void testKlsSatisfies(){
+        compareWithJavaSource("klass/Satisfies");
     }
-    @Ignore("M2")
     @Test
-    public void testKlsCaseTypes(){
-        compareWithJavaSource("klass/CaseTypes");
+    public void testKlsSatisfiesErasure(){
+        compareWithJavaSource("klass/SatisfiesErasure");
+    }
+    @Test
+    public void testKlsSatisfiesGeneric(){
+        compareWithJavaSource("klass/SatisfiesGeneric");
+    }
+    @Test
+    public void testKlsSatisfiesWithMembers(){
+        compareWithJavaSource("klass/SatisfiesWithMembers");
     }
     
     //

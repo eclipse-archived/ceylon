@@ -22,4 +22,19 @@ shared object bar extends CaseTypes("bar") {}
 
 shared abstract class CaseTypes(String name) 
         of foo | bar 
-        extends Case(name) {}
+        {}
+
+shared class Foo() extends CaseTypes2("Foo") {}
+shared class Bar() extends CaseTypes2("Bar") {}
+
+shared abstract class CaseTypes2(String name) 
+        of Foo | Bar 
+        {}
+
+shared interface IFoo satisfies ICaseTypes {}
+shared interface IBar satisfies ICaseTypes {}
+
+@error
+shared interface ICaseTypes
+        of IFoo | IBar 
+        {}
