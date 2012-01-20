@@ -40,7 +40,7 @@ class TopLevelAccess {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new TopLevelAccess();
+        new .com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAccess();
     }
 }
 final class b3 {

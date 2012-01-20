@@ -41,7 +41,7 @@ class IntBoxer implements com.redhat.ceylon.compiler.java.test.issues.Boxer<ceyl
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new IntBoxer();
+        new .com.redhat.ceylon.compiler.java.test.issues.IntBoxer();
     }
 }
 final class bug253 {
@@ -58,6 +58,6 @@ final class bug253 {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        bug253();
+        .com.redhat.ceylon.compiler.java.test.issues.bug253.bug253();
     }
 }

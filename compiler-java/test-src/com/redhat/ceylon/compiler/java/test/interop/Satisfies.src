@@ -12,7 +12,7 @@ class SatisfiesFileFilter implements java.io.FileFilter {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new SatisfiesFileFilter();
+        new .com.redhat.ceylon.compiler.java.test.interop.SatisfiesFileFilter();
     }
 }
 class SatisfiesFilenameFilter implements java.io.FilenameFilter {
@@ -27,7 +27,7 @@ class SatisfiesFilenameFilter implements java.io.FilenameFilter {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new SatisfiesFilenameFilter();
+        new .com.redhat.ceylon.compiler.java.test.interop.SatisfiesFilenameFilter();
     }
 }
 final class test {
@@ -43,7 +43,7 @@ final class test {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        test();
+        .com.redhat.ceylon.compiler.java.test.interop.test.test();
     }
 }
 class JavaInterfaceImpl implements com.redhat.ceylon.compiler.java.test.interop.JavaInterface<ceylon.language.Boolean, ceylon.language.Integer> {
@@ -108,6 +108,6 @@ class JavaInterfaceImpl implements com.redhat.ceylon.compiler.java.test.interop.
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new JavaInterfaceImpl();
+        new .com.redhat.ceylon.compiler.java.test.interop.JavaInterfaceImpl();
     }
 }

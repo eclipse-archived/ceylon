@@ -11,7 +11,7 @@ class ClassInstantiation {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new ClassInstantiation();
+        new .com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiation();
     }
 }
 class ClassInstantiationWithParam {
@@ -49,7 +49,7 @@ class InnerClassInstantiation {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new InnerClassInstantiation();
+        new .com.redhat.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation();
     }
 }
 class LocalClassInstantiation {
@@ -69,6 +69,6 @@ class LocalClassInstantiation {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new LocalClassInstantiation();
+        new .com.redhat.ceylon.compiler.java.test.expression.instantiation.LocalClassInstantiation();
     }
 }

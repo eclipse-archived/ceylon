@@ -42,7 +42,7 @@ class QualifiedAttributeAssign {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new QualifiedAttributeAssign();
+        new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign();
     }
 }
 class QualifiedAttributeAssignFoo {
@@ -62,6 +62,6 @@ class QualifiedAttributeAssignFoo {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new QualifiedAttributeAssignFoo();
+        new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssignFoo();
     }
 }

@@ -41,6 +41,6 @@ final class bug261 {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        bug261();
+        .com.redhat.ceylon.compiler.java.test.issues.bug261.bug261();
     }
 }

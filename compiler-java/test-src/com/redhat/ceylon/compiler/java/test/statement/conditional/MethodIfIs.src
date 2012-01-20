@@ -23,7 +23,7 @@ class Foo implements com.redhat.ceylon.compiler.java.test.statement.conditional.
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new Foo();
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo();
     }
 }
 class FooSub extends com.redhat.ceylon.compiler.java.test.statement.conditional.Foo {
@@ -37,7 +37,7 @@ class FooSub extends com.redhat.ceylon.compiler.java.test.statement.conditional.
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new FooSub();
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub();
     }
 }
 interface BarInterface {
@@ -59,7 +59,7 @@ class Bar implements com.redhat.ceylon.compiler.java.test.statement.conditional.
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new Bar();
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.Bar();
     }
 }
 class MethodIfIs {
@@ -112,6 +112,6 @@ class MethodIfIs {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new MethodIfIs();
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfIs();
     }
 }

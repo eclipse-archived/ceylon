@@ -8,7 +8,7 @@ final class bar {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        bar();
+        .bar.bar();
     }
 }
 public class Bug214 {
@@ -19,6 +19,6 @@ public class Bug214 {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new Bug214();
+        new .Bug214();
     }
 }

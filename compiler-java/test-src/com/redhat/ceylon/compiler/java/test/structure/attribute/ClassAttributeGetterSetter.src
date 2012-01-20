@@ -69,6 +69,6 @@ class SubClassAttributeGetterSetter extends com.redhat.ceylon.compiler.java.test
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new SubClassAttributeGetterSetter();
+        new .com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttributeGetterSetter();
     }
 }

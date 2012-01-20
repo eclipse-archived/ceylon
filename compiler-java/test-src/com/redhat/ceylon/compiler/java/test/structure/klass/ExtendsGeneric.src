@@ -13,7 +13,7 @@ class ExtendsGeneric<T> {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new ExtendsGeneric();
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric();
     }
 }
 class ExtendsGeneric2<T> {
@@ -23,7 +23,7 @@ class ExtendsGeneric2<T> {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new ExtendsGeneric2();
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric2();
     }
 }
 class ExtendsGeneric_FooSub extends com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric2<com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Foo<? super ceylon.language.Integer>> {
@@ -34,7 +34,7 @@ class ExtendsGeneric_FooSub extends com.redhat.ceylon.compiler.java.test.structu
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new ExtendsGeneric_FooSub();
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_FooSub();
     }
 }
 class ExtendsGeneric_BarSub extends com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric<com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Bar<? extends ceylon.language.Integer>> {
@@ -45,7 +45,7 @@ class ExtendsGeneric_BarSub extends com.redhat.ceylon.compiler.java.test.structu
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new ExtendsGeneric_BarSub();
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_BarSub();
     }
 }
 class ExtendsGeneric_BazSub extends com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric<com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Baz<ceylon.language.Integer>> {
@@ -56,6 +56,6 @@ class ExtendsGeneric_BazSub extends com.redhat.ceylon.compiler.java.test.structu
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new ExtendsGeneric_BazSub();
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_BazSub();
     }
 }

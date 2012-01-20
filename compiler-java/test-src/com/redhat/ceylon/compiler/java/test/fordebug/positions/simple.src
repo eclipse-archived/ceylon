@@ -27,6 +27,6 @@ public class Main2 {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new Main2();
+        new .com.redhat.ceylon.compiler.java.test.fordebug.positions.Main2();
     }
 }

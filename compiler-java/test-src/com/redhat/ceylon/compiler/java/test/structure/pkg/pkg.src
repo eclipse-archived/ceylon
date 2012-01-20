@@ -10,6 +10,6 @@ public final class pkg {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        pkg();
+        .com.redhat.ceylon.compiler.java.test.structure.pkg.pkg.pkg();
     }
 }

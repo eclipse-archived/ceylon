@@ -10,7 +10,7 @@ class Foo {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new Foo();
+        new .com.redhat.ceylon.compiler.java.test.structure.type.Foo();
     }
 }
 class Bar extends com.redhat.ceylon.compiler.java.test.structure.type.Foo {
@@ -24,7 +24,7 @@ class Bar extends com.redhat.ceylon.compiler.java.test.structure.type.Foo {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new Bar();
+        new .com.redhat.ceylon.compiler.java.test.structure.type.Bar();
     }
 }
 class Baz extends com.redhat.ceylon.compiler.java.test.structure.type.Foo {
@@ -38,7 +38,7 @@ class Baz extends com.redhat.ceylon.compiler.java.test.structure.type.Foo {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new Baz();
+        new .com.redhat.ceylon.compiler.java.test.structure.type.Baz();
     }
 }
 class GenInv<T> {
@@ -51,7 +51,7 @@ class GenInv<T> {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new GenInv();
+        new .com.redhat.ceylon.compiler.java.test.structure.type.GenInv();
     }
 }
 class GenCov<T> {
@@ -64,7 +64,7 @@ class GenCov<T> {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new GenCov();
+        new .com.redhat.ceylon.compiler.java.test.structure.type.GenCov();
     }
 }
 class GenCon<T> {
@@ -77,7 +77,7 @@ class GenCon<T> {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new GenCon();
+        new .com.redhat.ceylon.compiler.java.test.structure.type.GenCon();
     }
 }
 interface ISats {
@@ -94,7 +94,7 @@ class Sats<T extends com.redhat.ceylon.compiler.java.test.structure.type.ISats> 
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new Sats();
+        new .com.redhat.ceylon.compiler.java.test.structure.type.Sats();
     }
 }
 class BarSats extends com.redhat.ceylon.compiler.java.test.structure.type.Bar implements com.redhat.ceylon.compiler.java.test.structure.type.ISats {
@@ -109,7 +109,7 @@ class BarSats extends com.redhat.ceylon.compiler.java.test.structure.type.Bar im
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new BarSats();
+        new .com.redhat.ceylon.compiler.java.test.structure.type.BarSats();
     }
 }
 class ExtVoid extends com.redhat.ceylon.compiler.java.test.structure.type.GenInv<.java.lang.Object> {
@@ -120,7 +120,7 @@ class ExtVoid extends com.redhat.ceylon.compiler.java.test.structure.type.GenInv
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new ExtVoid();
+        new .com.redhat.ceylon.compiler.java.test.structure.type.ExtVoid();
     }
 }
 class ExtBottom extends com.redhat.ceylon.compiler.java.test.structure.type.GenInv {
@@ -131,7 +131,7 @@ class ExtBottom extends com.redhat.ceylon.compiler.java.test.structure.type.GenI
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new ExtBottom();
+        new .com.redhat.ceylon.compiler.java.test.structure.type.ExtBottom();
     }
 }
 class Conversions {
@@ -178,6 +178,6 @@ class Conversions {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new Conversions();
+        new .com.redhat.ceylon.compiler.java.test.structure.type.Conversions();
     }
 }

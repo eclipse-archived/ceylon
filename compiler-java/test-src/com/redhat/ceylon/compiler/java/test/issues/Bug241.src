@@ -7,7 +7,7 @@ class Bug241<T> {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new Bug241();
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug241();
     }
 }
 final class bug241 {
@@ -21,6 +21,6 @@ final class bug241 {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        bug241();
+        .com.redhat.ceylon.compiler.java.test.issues.bug241.bug241();
     }
 }

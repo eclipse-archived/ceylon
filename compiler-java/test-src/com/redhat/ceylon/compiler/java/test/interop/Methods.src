@@ -16,6 +16,6 @@ final class methods {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        methods();
+        .com.redhat.ceylon.compiler.java.test.interop.methods.methods();
     }
 }

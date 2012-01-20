@@ -25,7 +25,7 @@ final class returnTypes {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        returnTypes();
+        .com.redhat.ceylon.compiler.java.test.interop.returnTypes.returnTypes();
     }
 }
 final class box {
@@ -58,7 +58,7 @@ final class parameterTypes {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        parameterTypes();
+        .com.redhat.ceylon.compiler.java.test.interop.parameterTypes.parameterTypes();
     }
 }
 final class juggle {
@@ -75,6 +75,6 @@ final class juggle {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        juggle();
+        .com.redhat.ceylon.compiler.java.test.interop.juggle.juggle();
     }
 }

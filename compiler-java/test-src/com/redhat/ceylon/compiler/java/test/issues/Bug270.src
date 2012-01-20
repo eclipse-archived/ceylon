@@ -79,6 +79,6 @@ class Bug270 {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new Bug270();
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug270();
     }
 }

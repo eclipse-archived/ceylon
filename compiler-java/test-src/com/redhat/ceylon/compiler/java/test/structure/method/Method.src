@@ -10,6 +10,6 @@ class Method {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new Method();
+        new .com.redhat.ceylon.compiler.java.test.structure.method.Method();
     }
 }

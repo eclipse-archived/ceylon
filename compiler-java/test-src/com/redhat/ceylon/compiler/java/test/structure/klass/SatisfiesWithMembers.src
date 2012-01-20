@@ -41,6 +41,6 @@ class SatisfiesWithMembersClass implements com.redhat.ceylon.compiler.java.test.
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new SatisfiesWithMembersClass();
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembersClass();
     }
 }

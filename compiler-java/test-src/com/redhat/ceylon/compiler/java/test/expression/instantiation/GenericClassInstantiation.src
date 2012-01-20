@@ -39,6 +39,6 @@ class KlassTypeParamsInstantiation {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new KlassTypeParamsInstantiation();
+        new .com.redhat.ceylon.compiler.java.test.expression.instantiation.KlassTypeParamsInstantiation();
     }
 }

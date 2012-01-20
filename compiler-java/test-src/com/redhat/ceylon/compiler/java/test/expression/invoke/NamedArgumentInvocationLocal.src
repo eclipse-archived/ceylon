@@ -33,7 +33,7 @@ public class NamedArgumentInvocationLocal {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new NamedArgumentInvocationLocal();
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationLocal();
     }
 }
 class X {
@@ -61,6 +61,6 @@ class X {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new X();
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.X();
     }
 }

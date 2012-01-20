@@ -25,6 +25,6 @@ class MethodIfExists {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new MethodIfExists();
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfExists();
     }
 }

@@ -11,6 +11,6 @@ class KlassMethodTypeParams {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new KlassMethodTypeParams();
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassMethodTypeParams();
     }
 }

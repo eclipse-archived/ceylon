@@ -74,7 +74,7 @@ class CMiddle implements com.redhat.ceylon.compiler.java.test.expression.erasure
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new CMiddle();
+        new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
     }
 }
 class CLeft implements com.redhat.ceylon.compiler.java.test.expression.erasure.Left {
@@ -118,7 +118,7 @@ class CLeft implements com.redhat.ceylon.compiler.java.test.expression.erasure.L
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new CLeft();
+        new .com.redhat.ceylon.compiler.java.test.expression.erasure.CLeft();
     }
 }
 interface EmptyInterface {
@@ -392,6 +392,6 @@ class Test {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new Test();
+        new .com.redhat.ceylon.compiler.java.test.expression.erasure.Test();
     }
 }

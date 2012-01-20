@@ -263,7 +263,7 @@ class Barkls implements com.redhat.ceylon.compiler.java.test.expression.invoke.B
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new Barkls();
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls();
     }
 }
 final class methodInvocationWithDefaultedParameters {
@@ -454,6 +454,6 @@ final class methodInvocationWithDefaultedParameters {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        methodInvocationWithDefaultedParameters();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.methodInvocationWithDefaultedParameters.methodInvocationWithDefaultedParameters();
     }
 }

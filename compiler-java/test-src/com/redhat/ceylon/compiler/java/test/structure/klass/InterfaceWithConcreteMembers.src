@@ -25,6 +25,6 @@ class Impl implements com.redhat.ceylon.compiler.java.test.structure.klass.Inter
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new Impl();
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.Impl();
     }
 }

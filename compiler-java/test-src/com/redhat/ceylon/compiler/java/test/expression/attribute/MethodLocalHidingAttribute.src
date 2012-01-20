@@ -13,6 +13,6 @@ class MethodLocalHidingAttribute {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new MethodLocalHidingAttribute();
+        new .com.redhat.ceylon.compiler.java.test.expression.attribute.MethodLocalHidingAttribute();
     }
 }

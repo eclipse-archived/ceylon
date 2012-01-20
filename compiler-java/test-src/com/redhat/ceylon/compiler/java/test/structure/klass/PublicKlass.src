@@ -7,6 +7,6 @@ public class PublicKlass {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new PublicKlass();
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.PublicKlass();
     }
 }

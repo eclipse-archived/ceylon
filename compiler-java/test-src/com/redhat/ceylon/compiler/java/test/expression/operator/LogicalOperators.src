@@ -85,6 +85,6 @@ public class LogicalOperators extends com.redhat.ceylon.compiler.java.test.expre
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new LogicalOperators();
+        new .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators();
     }
 }

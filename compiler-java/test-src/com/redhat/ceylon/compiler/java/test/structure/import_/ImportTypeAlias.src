@@ -11,6 +11,6 @@ class ImportTypeAlias {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new ImportTypeAlias();
+        new .com.redhat.ceylon.compiler.java.test.structure.import_.ImportTypeAlias();
     }
 }

@@ -13,7 +13,7 @@ final class staticMethods {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        staticMethods();
+        .com.redhat.ceylon.compiler.java.test.interop.staticMethods.staticMethods();
     }
 }
 final class staticMethodsNamed {
@@ -29,6 +29,6 @@ final class staticMethodsNamed {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        staticMethodsNamed();
+        .com.redhat.ceylon.compiler.java.test.interop.staticMethodsNamed.staticMethodsNamed();
     }
 }

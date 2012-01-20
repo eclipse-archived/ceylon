@@ -40,6 +40,6 @@ class SubClassAttribute extends com.redhat.ceylon.compiler.java.test.structure.a
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new SubClassAttribute();
+        new .com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttribute();
     }
 }

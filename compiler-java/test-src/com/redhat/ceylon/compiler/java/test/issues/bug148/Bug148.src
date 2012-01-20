@@ -11,7 +11,7 @@ final class f {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        f();
+        .bug148.f.f();
     }
 }
 public final class bug148 {
@@ -25,6 +25,6 @@ public final class bug148 {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        bug148();
+        .bug148.bug148.bug148();
     }
 }

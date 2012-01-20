@@ -10,7 +10,7 @@ class NamedArgumentSequencedTypeParamInvocation<T> {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new NamedArgumentSequencedTypeParamInvocation();
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation();
     }
 }
 final class foo {
@@ -24,6 +24,6 @@ final class foo {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        foo();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.foo.foo();
     }
 }

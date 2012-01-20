@@ -37,6 +37,6 @@ class MethodWithLocalObject {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new MethodWithLocalObject();
+        new .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithLocalObject();
     }
 }

@@ -13,6 +13,6 @@ final class bug248 {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        bug248();
+        .com.redhat.ceylon.compiler.java.test.issues.bug248.bug248();
     }
 }

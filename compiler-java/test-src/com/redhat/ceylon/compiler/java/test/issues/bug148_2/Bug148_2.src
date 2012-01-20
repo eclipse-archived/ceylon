@@ -29,6 +29,6 @@ public final class bug148_2 {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        bug148_2();
+        .bug148_2.bug148_2.bug148_2();
     }
 }

@@ -12,6 +12,6 @@ class OptionalType {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new OptionalType();
+        new .com.redhat.ceylon.compiler.java.test.structure.type.OptionalType();
     }
 }

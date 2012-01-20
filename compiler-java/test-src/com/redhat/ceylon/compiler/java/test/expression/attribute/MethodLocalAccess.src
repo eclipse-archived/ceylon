@@ -46,6 +46,6 @@ class MethodLocalAccess {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new MethodLocalAccess();
+        new .com.redhat.ceylon.compiler.java.test.expression.attribute.MethodLocalAccess();
     }
 }

@@ -16,6 +16,6 @@ class MethodIfNonEmpty {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new MethodIfNonEmpty();
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfNonEmpty();
     }
 }

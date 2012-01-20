@@ -7,6 +7,6 @@ public class TwoKeywordsInPackage {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new TwoKeywordsInPackage();
+        new .com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient.TwoKeywordsInPackage();
     }
 }

@@ -53,6 +53,6 @@ public class SequenceOperators {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new SequenceOperators();
+        new .com.redhat.ceylon.compiler.java.test.expression.operator.SequenceOperators();
     }
 }

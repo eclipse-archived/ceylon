@@ -18,6 +18,6 @@ class KeywordInMethodObject {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new KeywordInMethodObject();
+        new .com.redhat.ceylon.compiler.java.test.quoting.$assert.KeywordInMethodObject();
     }
 }

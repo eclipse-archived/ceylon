@@ -19,7 +19,7 @@ final class fields {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        fields();
+        .com.redhat.ceylon.compiler.java.test.interop.fields.fields();
     }
 }
 class CeylonFields extends com.redhat.ceylon.compiler.java.test.interop.JavaFields {
@@ -40,6 +40,6 @@ class CeylonFields extends com.redhat.ceylon.compiler.java.test.interop.JavaFiel
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new CeylonFields();
+        new .com.redhat.ceylon.compiler.java.test.interop.CeylonFields();
     }
 }

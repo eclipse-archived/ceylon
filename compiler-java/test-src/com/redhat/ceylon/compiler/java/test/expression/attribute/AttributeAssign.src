@@ -50,6 +50,6 @@ class AttributeAssign {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new AttributeAssign();
+        new .com.redhat.ceylon.compiler.java.test.expression.attribute.AttributeAssign();
     }
 }

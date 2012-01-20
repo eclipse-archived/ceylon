@@ -21,7 +21,7 @@ class Bug269 {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new Bug269();
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug269();
     }
 }
 class Bug269_2 {
@@ -43,7 +43,7 @@ class Bug269_2 {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new Bug269_2();
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug269_2();
     }
 }
 final class string {
@@ -57,7 +57,7 @@ final class string {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        string();
+        .com.redhat.ceylon.compiler.java.test.issues.string.string();
     }
 }
 final class hash {
@@ -71,7 +71,7 @@ final class hash {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        hash();
+        .com.redhat.ceylon.compiler.java.test.issues.hash.hash();
     }
 }
 final class bug269 {
@@ -90,7 +90,7 @@ final class bug269 {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        bug269();
+        .com.redhat.ceylon.compiler.java.test.issues.bug269.bug269();
     }
 }
 final class bug269_2 {
@@ -125,6 +125,6 @@ final class bug269_2 {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        bug269_2();
+        .com.redhat.ceylon.compiler.java.test.issues.bug269_2.bug269_2();
     }
 }

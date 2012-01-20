@@ -17,6 +17,6 @@ class ValueKeyword {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new ValueKeyword();
+        new .com.redhat.ceylon.compiler.java.test.statement.local.ValueKeyword();
     }
 }

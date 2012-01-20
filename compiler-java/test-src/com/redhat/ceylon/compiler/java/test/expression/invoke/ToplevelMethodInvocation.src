@@ -10,7 +10,7 @@ final class topLevelMethodInvocationMethod1 {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        topLevelMethodInvocationMethod1();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.topLevelMethodInvocationMethod1.topLevelMethodInvocationMethod1();
     }
 }
 final class topLevelMethodInvocationMethod2 {
@@ -34,6 +34,6 @@ class ToplevelMethodInvocation {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new ToplevelMethodInvocation();
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.ToplevelMethodInvocation();
     }
 }

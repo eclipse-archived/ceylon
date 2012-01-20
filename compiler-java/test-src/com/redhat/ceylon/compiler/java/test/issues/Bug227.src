@@ -25,6 +25,6 @@ public class Bug227 {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new Bug227();
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug227();
     }
 }

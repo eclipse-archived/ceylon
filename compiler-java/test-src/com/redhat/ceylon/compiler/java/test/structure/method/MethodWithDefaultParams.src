@@ -31,7 +31,7 @@ class MethodWithDefaultParams {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new MethodWithDefaultParams();
+        new .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams();
     }
     
     static final class MethodWithDefaultParams$impl {
