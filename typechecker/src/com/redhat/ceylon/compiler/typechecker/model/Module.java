@@ -90,11 +90,23 @@ public class Module {
         return list;
     }
 
-    public Package getPackage(String name) {
-        for (Package pkg: getAllKnownPackages()) {
+    public Package getDirectPackage(String name) {
+        for (Package pkg: packages) {
             if ( pkg.getQualifiedNameString().equals(name) ) {
                 return pkg;
             }
+        }
+        return null;
+    }
+    
+    public Package getPackage(String name) {
+        Package pkg = getDirectPackage(name);
+        if(pkg != null)
+            return pkg;
+        for (ModuleImport mi: imports) {
+            pkg = mi.getModule().getDirectPackage(name);
+            if(pkg != null)
+                return pkg;
         }
         return null;
     }
