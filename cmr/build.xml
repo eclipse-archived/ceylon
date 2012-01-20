@@ -49,6 +49,10 @@
     <path id="test.run.classpath">
         <path refid="test.build.classpath"/>
         <pathelement path="${build.test}"/>
+        <pathelement path="${http-client.lib}"/>
+        <pathelement path="${http-core.lib}"/>
+        <pathelement path="${commons-logging.lib}"/>
+        <pathelement path="${slf4j.lib}"/>
     </path>
     
     <!-- ################################################################## -->
