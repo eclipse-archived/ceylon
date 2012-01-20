@@ -47,6 +47,7 @@ public class InteropTest extends CompilerTest {
 
     @Test
     public void testIopFields(){
+        compile("JavaFields.java");
         compareWithJavaSource("Fields");
     }
 
