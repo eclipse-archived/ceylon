@@ -53,6 +53,13 @@ void test() {
     case (spades) {}
     case (nothing) {}
     
+    /*switch (maybe)
+    case (hearts) {}
+    case (diamonds) {}
+    case (clubs) {}
+    case (spades) {}
+    case (null) {}*/
+    
     switch (maybe)
     case (hearts) {}
     case (diamonds) {}
