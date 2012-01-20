@@ -275,9 +275,9 @@ public class DeclarationVisitor extends Visitor {
         if (!i.isToplevel()) {
             that.addWarning("inner interfaces are not yet supported");
         }
-        if ( that.getCaseTypes()!=null ) {
+        /*if ( that.getCaseTypes()!=null ) {
             that.addWarning("interfaces with enumerated cases not yet supported");
-        }
+        }*/
     }
     
     @Override

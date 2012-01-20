@@ -667,12 +667,15 @@ public class TypeVisitor extends Visitor {
                     else {
                         list.add(type);
                     }
-                    if (type.getDeclaration() instanceof Interface) {
+                    /*if (type.getDeclaration() instanceof Interface) {
                         st.addWarning("interface cases are not yet supported");
-                    }
+                    }*/
                 }
             }
             if (!list.isEmpty()) {
+                if (td instanceof ClassOrInterface && !((ClassOrInterface) td).isAbstract()) {
+                    that.addError("non-abstract class has enumerated subtypes: " + td.getName(), 900);
+                }
                 td.setCaseTypes(list);
             }
         }
