@@ -76,6 +76,7 @@ public class MainForJsTest {
         TypeChecker typeChecker = new TypeCheckerBuilder()
                 .verbose(false)
                 .addSrcDirectory(new File("test"))
+                .addSrcDirectory(new File("../ceylon.language/test"))
                 .getTypeChecker();
         typeChecker.process();
         new JsModuleCompiler(typeChecker, output)
@@ -113,14 +114,18 @@ public class MainForJsTest {
     }
     
     private static String toOutputPath(Package pkg) {
-        return pkg.getModule().getNameAsString().replace('.', '/') +
+        String pkgName = pkg.getNameAsString();
+        if (pkgName.isEmpty()) pkgName = "default";
+        String modName = pkg.getModule().getNameAsString();
+        return modName.replace('.', '/') +
                 (pkg.getModule().isDefault() ? 
                         "/" : "/" + pkg.getModule().getVersion() ) +
-                pkg.getNameAsString() + ".js";
+                pkgName + ".js";
     }
 
     private static String toTestPath(Package pkg) {
-        return pkg.getNameAsString().replace('.', '/') + "/" +
-                pkg.getNameAsString() + (opt? ".jsopt" : "") + ".js";
+        String pkgName = pkg.getNameAsString();
+        if (pkgName.isEmpty()) pkgName = "default";
+        return pkgName.replace('.', '/') + "/" + pkgName + (opt? ".jsopt" : "") + ".js";
     }
 }

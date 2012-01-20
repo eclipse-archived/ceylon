@@ -32,8 +32,8 @@ $Integer.prototype.power = function(other) {
     var exact = Math.pow(this.value, other.value);
     return Integer((exact<0) ? Math.ceil(exact) : Math.floor(exact));
 }
-$Integer.prototype.negativeValue = function() { return Integer(-this.value) }
-$Integer.prototype.positiveValue = function() { return this }
+$Integer.prototype.getNegativeValue = function() { return Integer(-this.value) }
+$Integer.prototype.getPositiveValue = function() { return this }
 $Integer.prototype.equals = function(other) { return Boolean$(other && other.value===this.value) }
 $Integer.prototype.compare = function(other) {
     return this.value===other.value ? equal
@@ -43,6 +43,10 @@ $Integer.prototype.getFloat = function() { return Float(this.value) }
 $Integer.prototype.getInteger = function() { return this }
 $Integer.prototype.getSuccessor = function() { return Integer(this.value+1) }
 $Integer.prototype.getPredecessor = function() { return Integer(this.value-1) }
+$Integer.prototype.getUnit = function() { return Boolean$(this.value === 1) }
+$Integer.prototype.getZero = function() { return Boolean$(this.value === 0) }
+$Integer.prototype.getFractionalPart = function() { return Integer(0); }
+$Integer.prototype.getWholePart = function() { return this; }
 
 function $Float() {}
 function Float(value) {
@@ -57,8 +61,8 @@ $Float.prototype.minus = function(other) { return Float(this.value-other.value) 
 $Float.prototype.times = function(other) { return Float(this.value*other.value) }
 $Float.prototype.divided = function(other) { return Float(this.value/other.value) }
 $Float.prototype.power = function(other) { return Float(Math.pow(this.value, other.value)) }
-$Float.prototype.negativeValue = function() { return Float(-this.value) }
-$Float.prototype.positiveValue = function() { return this }
+$Float.prototype.getNegativeValue = function() { return Float(-this.value) }
+$Float.prototype.getPositiveValue = function() { return this }
 $Float.prototype.equals = function(other) { return Boolean$(other && other.value===this.value) }
 $Float.prototype.compare = function(other) {
     return this.value===other.value ? equal
