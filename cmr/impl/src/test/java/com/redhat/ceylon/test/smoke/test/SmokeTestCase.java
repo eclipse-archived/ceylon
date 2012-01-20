@@ -42,13 +42,13 @@ public class SmokeTestCase {
 
     protected File getRepositoryRoot() throws URISyntaxException {
         URL url = getClass().getResource("/repo");
-        Assert.assertNotNull(url);
+        Assert.assertNotNull("Repository root '/repo' not found", url);
         return new File(url.toURI());
     }
 
     protected File getFolders() throws URISyntaxException {
         URL url = getClass().getResource("/folders");
-        Assert.assertNotNull(url);
+        Assert.assertNotNull("Repository folder '/folders' not found", url);
         return new File(url.toURI());
     }
 
@@ -62,7 +62,7 @@ public class SmokeTestCase {
         Repository repo = getRepository();
 
         File acme = repo.getArtifact("org.jboss.acme", "1.0.0.Final");
-        Assert.assertNotNull(acme);
+        Assert.assertNotNull("Module 'org.jboss.acme-1.0.0.Final' not found", acme);
     }
 
     @Test
@@ -70,7 +70,7 @@ public class SmokeTestCase {
         Repository repo = getRepository();
 
         File def = repo.getArtifact(Repository.DEFAULT_MODULE, null);
-        Assert.assertNotNull(def);
+        Assert.assertNotNull("Default module not found", def);
     }
 
     @Test
@@ -84,7 +84,7 @@ public class SmokeTestCase {
             repo.putArtifact(name, version, baos);
 
             File file = repo.getArtifact(name, version);
-            Assert.assertNotNull(file);
+            Assert.assertNotNull("Failed to put or retrieve after put", file);
         } finally {
             repo.removeArtifact(name, version);
         }
@@ -106,13 +106,13 @@ public class SmokeTestCase {
             repo.putArtifact(context, baos);
 
             File file = repo.getArtifact(name, version);
-            Assert.assertNotNull(file);
+            Assert.assertNotNull("Failed to retrieve after put", file);
 
             baos = new ByteArrayInputStream("ytrewq".getBytes());
             repo.putArtifact(context, baos);
 
             file = repo.getArtifact(name, version);
-            Assert.assertNotNull(file);
+            Assert.assertNotNull("Failed to retrieve after forced put", file);
         } finally {
             repo.removeArtifact(name, version);
         }
@@ -130,11 +130,11 @@ public class SmokeTestCase {
             repo.putArtifact(name, version, baos);
 
             file = repo.getArtifact(name, version);
-            Assert.assertNotNull(file);
+            Assert.assertNotNull("Failed to retrieve after put", file);
         } finally {
             repo.removeArtifact(name, version);
             if (file != null)
-                Assert.assertFalse(file.exists());
+                Assert.assertFalse("Failed to remove module", file.exists());
         }
     }
 
@@ -152,7 +152,7 @@ public class SmokeTestCase {
             repo.putArtifact(name, version, baos);
 
             File file = repo.getArtifact(name, version);
-            Assert.assertNotNull(file);
+            Assert.assertNotNull("Failed to retrieve after put", file);
         } finally {
             repo.removeArtifact(name, version);
         }
