@@ -206,18 +206,18 @@ class ControlStructures() {
     Boolean b = true;
     
     switch (b)
-    case (true) {}
-    case (false) {}
+    case (truth) {}
+    case (falsity) {}
     
     switch (b)
-    case (true, false) {}
+    case (truth, falsity) {}
     
     switch (b)
-    case (true) {}
+    case (truth) {}
     else {}
 
     @error switch (b)
-    case (true) {}
+    case (truth) {}
     
     switch (b)
     case (is Boolean) {}
