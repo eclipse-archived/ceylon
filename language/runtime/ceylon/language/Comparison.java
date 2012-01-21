@@ -2,11 +2,12 @@ package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
-import com.redhat.ceylon.compiler.java.metadata.Name;
 
 @Ceylon
-@Class(extendsType = "ceylon.language.Case")
-public final class Comparison extends Case {
+@Class(extendsType = "ceylon.language.IdentifiableObject")
+public final class Comparison {
+    
+    private final java.lang.String name;
 	
     public static final Comparison LARGER = new Comparison("larger");
     public static final Comparison SMALLER = new Comparison("smaller");
@@ -36,8 +37,13 @@ public final class Comparison extends Case {
         return this != LARGER;
     }
 
-	private Comparison(@Name("name") java.lang.String name) {
-		super(name);
+	private Comparison(java.lang.String name) {
+		this.name=name;
 	}	
+	
+	@Override
+	public java.lang.String toString() {
+	    return name;
+	}
 
 }
