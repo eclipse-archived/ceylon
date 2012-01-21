@@ -1,3 +1,9 @@
+shared object truth extends Boolean() {
+    shared actual String string {
+        return "true";
+    }
+}
+
 doc "A value representing truth in Boolean logic."
 by "Gavin"
-shared object true extends Boolean("true") {}
+shared Boolean true = truth;

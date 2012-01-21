@@ -1,22 +1,13 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.metadata.Attribute;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.metadata.Object;
 
-@Ceylon @Object
-public class $true extends Boolean {
+@Ceylon @Attribute
+public class $true {
     
-    private final static $true value = new $true();
-
-    public $true() {
-        super("true");
-    }
-
-    public boolean booleanValue() {
-        return true;
+    public static Boolean getTrue(){
+        return truth.getTruth();
     }
     
-    public static $true getTrue(){
-        return value;
-    }
 }
