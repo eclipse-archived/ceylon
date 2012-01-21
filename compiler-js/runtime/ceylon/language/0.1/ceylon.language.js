@@ -75,12 +75,16 @@ $Float.prototype.compare = function(other) {
                                     : (this.value<other.value ? smaller:larger);
 }
 $Float.prototype.getFloat = function() { return this }
-$Float.prototype.getInteger = function() { return this.getWholePart(); }
-$Float.prototype.getWholePart = function() { return Integer(parseInt(this.value.toFixed(0))); }
+$Float.prototype.getInteger = function() { return Integer(parseInt(this.value.toFixed())); }
+$Float.prototype.getWholePart = function() {
+    var _p = this.value.toPrecision();
+    var dot = _p.indexOf('.');
+    return dot >= 0 ? Float(parseFloat(_p.slice(0, dot))) : this;
+}
 $Float.prototype.getFractionalPart = function() {
     var _p = this.value.toPrecision();
-    var _f = this.value.toFixed();
-    return Float(parseFloat(_p)-parseFloat(_f));
+    var dot = _p.indexOf('.');
+    return dot >= 0 ? Float(parseFloat(_p.slice(dot))) : Float(0.0);
 }
 $Float.prototype.getSign = function() { return this.value > 0 ? Integer(1) : this.value < 0 ? Integer(-1) : Integer(0); }
 $Float.prototype.getHash = function() { return String$(this.value.toPrecision()).getHash(); }
@@ -112,9 +116,10 @@ $String.prototype.getSize = function() {
     }
     return Integer(this.codePoints);
 }
-$String.prototype.getLastIndex = function() { return this.getSize().getPredecessor(); }
+$String.prototype.getLastIndex = function() { return this.getSize().equals(Integer(0)) === $true ? null : this.getSize().getPredecessor(); }
 $String.prototype.span = function(from, to) {
 	var lastIndex = this.getLastIndex();
+	if (!lastIndex) return this; //it's empty
     var fromIndex = largest(Integer(0),from).value;
     var toIndex = to === getNull() ? lastIndex.value : smallest(to, lastIndex).value;
     if (fromIndex === toIndex) {
@@ -426,7 +431,7 @@ function ArraySequence(value) {
 }
 for(var $ in CeylonObject.prototype){$ArraySequence.prototype[$]=CeylonObject.prototype[$]}
 for(var $ in $Sequence.prototype){$ArraySequence.prototype[$]=$Sequence.prototype[$]}
-$ArraySequence.prototype.getString = function() { return String$(this.value.toString()) }
+$ArraySequence.prototype.getString = function() { return String$("{" + this.value.toString() +"}") }
 $ArraySequence.prototype.item = function(index) {
     var result = this.value[index.value];
     return result!==undefined ? result:null;
@@ -455,12 +460,12 @@ $ArraySequence.prototype.span = function(from, to) {
     if (fromIndex === toIndex) {
         return Singleton(this.item(from));
     } else if (toIndex > fromIndex) {
-        for (var i = fromIndex; i <= toIndex; i++) {
+        for (var i = fromIndex; i <= toIndex && this.defines(Integer(i)) === $true; i++) {
             seq.push(this.item(Integer(i)));
         }
     } else {
         //Negative span, reverse seq returned
-        for (var i = fromIndex; i >= toIndex; i--) {
+        for (var i = fromIndex; i >= toIndex && this.defines(Integer(i)) === $true; i--) {
             seq.push(this.item(Integer(i)));
         }
     }
@@ -712,7 +717,7 @@ function Singleton(elem) {
     return that;
 }
 for(var $ in CeylonObject.prototype){$Singleton.prototype[$]=CeylonObject.prototype[$]}
-$Singleton.prototype.getString = function() { return String$(this.value.toString()) }
+$Singleton.prototype.getString = function() { return String$("{ " + this.elem.getString().value + " }") }
 $Singleton.prototype.item = function(index) {
     return index.value===0 ? this.value[0] : null;
 }
@@ -725,7 +730,7 @@ $Singleton.prototype.getRest = function() { return ArraySequence([]); }
 $Singleton.prototype.defines = function(idx) { return idx.equals(Integer(0)); }
 $Singleton.prototype.getKeys = function() { return IntCategory(this); }
 $Singleton.prototype.span = function(from, to) {
-	if (to === undefined || to === null) to = Integer(0);
+	if (to === undefined || to === null) to = from;
     return (from.equals(Integer(0)) === getTrue() || to.equals(Integer(0)) === getTrue()) ? this : ArraySequence([])
 }
 $Singleton.prototype.segment = function(idx, len) {
