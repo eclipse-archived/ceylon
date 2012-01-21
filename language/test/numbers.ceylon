@@ -97,21 +97,21 @@ shared void numbers() {
         return x*y;
     }
         
-    assert(add(1,2)==3, "");
-    assert(add(-1,+2)==+1, "");
-    assert(add(1.5,-2.5)==-1.0, "");
+    assert(add(1,2)==3, "add(1,2)==3");
+    assert(add(-1,+2)==+1, "add(-1,+2)==+1");
+    assert(add(1.5,-2.5)==-1.0, "add(1.5,-2.5)==-1.0");
     
-    assert(exp(1,2)==1, "");
-    assert(exp(-1,+2)==+1, "");
-    assert(exp(2.0,2.0)==4.0, "");
+    assert(exp(1,2)==1, "exp(1,2)==1");
+    assert(exp(-1,+2)==+1, "exp(-1,+2)==+1");
+    assert(exp(2.0,2.0)==4.0, "exp(2.0,2.0)==4.0");
     
-    assert(addIntegers(2, 4)==6, "");
-    assert(addIntegers(-2, -4)==-6, "");
-    assert(addFloats(-1.0, 1.0)==0.0, "");
+    assert(addIntegers(2, 4)==6, "addIntegers(2, 4)==6");
+    assert(addIntegers(-2, -4)==-6, "addIntegers(-2, -4)==-6");
+    assert(addFloats(-1.0, 1.0)==0.0, "addFloats(-1.0, 1.0)==0.0");
     
-    assert(multiplyIntegerByFloat(3, 1.5)==4.5, "");
-    assert(multiplyFloatByInteger(1.5, -1)==-1.5, "");                
-    assert(multiplyIntegerByInteger(1, -1)==-1, "");
+    assert(multiplyIntegerByFloat(3, 1.5)==4.5, "multiplyIntegerByFloat(3, 1.5)==4.5");
+    assert(multiplyFloatByInteger(1.5, -1)==-1.5, "multiplyFloatByInteger(1.5, -1)==-1.5");
+    assert(multiplyIntegerByInteger(1, -1)==-1, "multiplyIntegerByInteger(1, -1)==-1");
     
     assert(1.hash==(3-1)/2.hash, "natural hash");
     assert((+0).hash==(-1+(+1))*+100.hash, "integer hash");
