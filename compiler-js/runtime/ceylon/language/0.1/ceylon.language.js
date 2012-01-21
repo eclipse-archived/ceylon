@@ -384,10 +384,12 @@ function getNull() { return null }
 function $Boolean() {}
 for(var $ in CeylonObject.prototype){$Boolean.prototype[$]=CeylonObject.prototype[$]}
 var $true = new $Boolean;
-$true.getString = function() {return "true"}
+$true.string = String$("true");
+$true.getString = function() {return this.string}
 function getTrue() { return $true; }
 var $false = new $Boolean;
-$false.getString = function() {return "false"}
+$false.string = String$("false");
+$false.getString = function() {return this.string}
 function getFalse() { return $false; }
 function Boolean$(value) {
     return value ? $true : $false;
@@ -395,7 +397,8 @@ function Boolean$(value) {
 function $Finished() {}
 for(var $ in CeylonObject.prototype){$Finished.prototype[$]=CeylonObject.prototype[$]}
 var $finished = new $Finished;
-$finished.getString = function() {return "exhausted"}
+$finished.string = String$("exhausted");
+$finished.getString = function() {return this.string}
 function getExhausted() { return $finished; }
 
 //These are operators for handling nulls
