@@ -31,4 +31,12 @@ shared interface Empty
     
     //shared actual Empty rest { return this; }
     
+    shared actual Empty clone {
+        return this;
+    }
+    
+    shared actual Boolean contains(Equality element) {
+        return false;
+    }
+    
 }

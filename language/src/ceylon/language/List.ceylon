@@ -1,7 +1,7 @@
 shared interface List<out Element> 
         satisfies Collection<Element> & 
                   Correspondence<Integer, Element> &
-                  Ranged<Integer, List<Element>> &
+                  Ranged<Integer,List<Element>> &
                   Cloneable<List<Element>>
         /*given Element satisfies Equality?*/
         /*given Element of Nothing|Equality*/ {

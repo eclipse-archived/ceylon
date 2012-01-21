@@ -13,17 +13,15 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT))
 @SatisfiedTypes({
     "ceylon.language.List<Element>",
+    "ceylon.language.Some<Element>",
     "ceylon.language.Ranged<ceylon.language.Integer,ceylon.language.Empty|ceylon.language.Sequence<Element>>",
     "ceylon.language.Cloneable<ceylon.language.Sequence<Element>>"
 })
 public interface Sequence<Element> 
-        extends List<Element> {
+        extends List<Element>, Some<Element> {
     
     @TypeInfo("ceylon.language.Integer")
     public long getLastIndex();
-    
-    @TypeInfo("Element")
-    public Element getFirst();
     
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public Iterable<? extends Element> getRest();
