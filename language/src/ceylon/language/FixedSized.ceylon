@@ -13,4 +13,6 @@ shared interface FixedSized<out Element>
         }
     }
     
+    shared formal FixedSized<Element> rest;
+    
 }

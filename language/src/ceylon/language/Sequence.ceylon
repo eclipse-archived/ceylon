@@ -17,7 +17,7 @@ shared interface Sequence<out Element>
     
     doc "The rest of the sequence, without the first 
          element."
-    shared formal Element[] rest;
+    shared actual formal Element[] rest;
         
     doc "The number of elements in this sequence, always
          `sequence.lastIndex+1`."
