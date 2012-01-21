@@ -120,12 +120,7 @@ shared interface Correspondence<in Key, out Item>
         shared actual Sequence<Item?> clone {
             return this;
         }
-        
-        shared actual Boolean contains(Equality element) {
-            //TODO!
-            return bottom;
-        }
-        
+                
         shared actual Boolean equals(Equality that) {
             //TODO!
             return bottom;
