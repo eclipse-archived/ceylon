@@ -18,13 +18,7 @@ shared interface Sequence<out Element>
     doc "The rest of the sequence, without the first 
          element."
     shared formal Element[] rest;
-    
-    doc "Returns `false`, since every `Sequence` contains at 
-         least one element."
-    shared actual Boolean empty {
-        return false;
-    }
-    
+        
     doc "The number of elements in this sequence, always
          `sequence.lastIndex+1`."
     see (lastIndex)
