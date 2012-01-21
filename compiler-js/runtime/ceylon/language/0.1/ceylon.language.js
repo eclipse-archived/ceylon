@@ -195,6 +195,21 @@ $String.prototype.getHash = function() {
   }
   return Integer(this._hash);
 }
+function cmpSubString(str, subStr, offset) {
+    for (var i=0; i<subStr.length; ++i) {
+        if (str.charCodeAt(offset+i)!==subStr.charCodeAt(i)) {return $false}
+    }
+    return $true;
+}
+$String.prototype.startsWith = function(str) {
+    if (str.value.length > this.value.length) {return $false}
+    return cmpSubString(this.value, str.value, 0);
+}
+$String.prototype.endsWith = function(str) {
+    var start = this.value.length - str.value.length
+    if (start < 0) {return $false}
+    return cmpSubString(this.value, str.value, start);
+}
 
 function $StringIterator() {}
 function StringIterator(string) {
@@ -281,6 +296,16 @@ $Character.prototype.getUppercase = function() {
 $Character.prototype.getLowercase = function() {
     var str = codepointToString(this.value);
     return Boolean$(str.toUpperCase()!==str);
+}
+$Character.prototype.getSuccessor = function() {
+    var succ = this.value+1;
+    if ((succ&0xf800) === 0xd800) {return Character(0xe000)}
+    return Character((succ<=0x10ffff) ? succ:0);
+}
+$Character.prototype.getPredecessor = function() {
+    var succ = this.value-1;
+    if ((succ&0xf800) === 0xd800) {return Character(0xd7ff)}
+    return Character((succ>=0) ? succ:0x10ffff);
 }
 
 function $StringBuilder() {}
