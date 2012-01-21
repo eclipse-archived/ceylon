@@ -2896,9 +2896,14 @@ public class ExpressionVisitor extends Visitor {
 
     void checkCaseOfSupertype(Tree.StaticType t, TypeDeclaration td,
             ProducedType type) {
+        //TODO: I think this check might now be unnecessary
+        //      ... at the very least it seems too restrictive,
+        //      since it doesn't allow intermediate types between
+        //      the enumerated type and the case type
         if (type.getDeclaration().getCaseTypes()!=null) {
             for (ProducedType ct: type.getDeclaration().getCaseTypes()) {
-                if (ct.substitute(type.getTypeArguments()).isExactly(td.getType())) {
+                if (ct.substitute(type.getTypeArguments())
+                        .isExactly(td.getType())) {
                     return;
                 }
             }
@@ -2920,14 +2925,16 @@ public class ExpressionVisitor extends Visitor {
                 if (!(type.getDeclaration() instanceof TypeParameter)) {
                     //it's not a self type
                     if (type!=null) {
-                        checkAssignable(type, td.getType(), t, "case object must be a subtype");
+                        checkAssignable(type, td.getType(), t, 
+                                "case object must be a subtype");
                     }
                 }
             }
             for (Tree.BaseMemberExpression bme: that.getBaseMemberExpressions()) {
                 ProducedType type = bme.getTypeModel();
                 if (type!=null) {
-                    checkAssignable(type, td.getType(), bme, "case type must be a subtype");
+                    checkAssignable(type, td.getType(), bme, 
+                            "case type must be a subtype");
                 }
             }
         }
