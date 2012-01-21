@@ -41,12 +41,18 @@ $Integer.prototype.compare = function(other) {
 }
 $Integer.prototype.getFloat = function() { return Float(this.value) }
 $Integer.prototype.getInteger = function() { return this }
+$Integer.prototype.getCharacter = function() { return Character(this.value); }
 $Integer.prototype.getSuccessor = function() { return Integer(this.value+1) }
 $Integer.prototype.getPredecessor = function() { return Integer(this.value-1) }
 $Integer.prototype.getUnit = function() { return Boolean$(this.value === 1) }
 $Integer.prototype.getZero = function() { return Boolean$(this.value === 0) }
 $Integer.prototype.getFractionalPart = function() { return Integer(0); }
 $Integer.prototype.getWholePart = function() { return this; }
+$Integer.prototype.getSign = function() { return this.value > 0 ? Integer(1) : this.value < 0 ? Integer(-1) : Integer(0); }
+$Integer.prototype.getHash = function() { return this; }
+
+function $parseInteger(s) { return Integer(parseInt(s.value)); }
+function $parseFloat(s) { return Float(parseFloat(s.value)); }
 
 function $Float() {}
 function Float(value) {
@@ -69,6 +75,19 @@ $Float.prototype.compare = function(other) {
                                     : (this.value<other.value ? smaller:larger);
 }
 $Float.prototype.getFloat = function() { return this }
+$Float.prototype.getInteger = function() { return Integer(parseInt(this.value.toFixed())); }
+$Float.prototype.getWholePart = function() {
+    var _p = this.value.toPrecision();
+    var dot = _p.indexOf('.');
+    return dot >= 0 ? Float(parseFloat(_p.slice(0, dot))) : this;
+}
+$Float.prototype.getFractionalPart = function() {
+    var _p = this.value.toPrecision();
+    var dot = _p.indexOf('.');
+    return dot >= 0 ? Float(parseFloat(_p.slice(dot))) : Float(0.0);
+}
+$Float.prototype.getSign = function() { return this.value > 0 ? Integer(1) : this.value < 0 ? Integer(-1) : Integer(0); }
+$Float.prototype.getHash = function() { return String$(this.value.toPrecision()).getHash(); }
 
 function $String() {}
 function String$(value,size) {
@@ -96,6 +115,44 @@ $String.prototype.getSize = function() {
         this.codePoints = countCodepoints(this.value);
     }
     return Integer(this.codePoints);
+}
+$String.prototype.getLastIndex = function() { return this.getSize().equals(Integer(0)) === $true ? null : this.getSize().getPredecessor(); }
+$String.prototype.span = function(from, to) {
+	var lastIndex = this.getLastIndex();
+	if (!lastIndex) return this; //it's empty
+    var fromIndex = largest(Integer(0),from).value;
+    var toIndex = to === getNull() ? lastIndex.value : smallest(to, lastIndex).value;
+    if (fromIndex === toIndex) {
+		return this.item(from).getString();
+    } else if (toIndex > fromIndex) {
+		//TODO optimize this
+		var s = String$("");
+        for (var i = fromIndex; i <= toIndex; i++) {
+			s = s.plus(this.item(Integer(i)).getString());
+        }
+		return s;
+    } else {
+        //Negative span, reverse seq returned
+        //TODO optimize
+        var s = String$("");
+        for (var i = fromIndex; i >= toIndex; i--) {
+            var x = this.item(Integer(i));
+			if (x !== null) s = s.plus(x.getString());
+        }
+		return s;
+    }
+}
+$String.prototype.segment = function(from, len) {
+	//TODO optimize
+    var s = String$("");
+    if (len.compare(Integer(0)) === larger) {
+        var stop = from.plus(len).value;
+        for (var i=from.value; i < stop; i++) {
+            var x = this.item(Integer(i));
+            if (x !== getNull()) { s = s.plus(x.getString()); }
+        }
+    }
+    return s;
 }
 $String.prototype.getEmpty = function() {
     return Boolean$(this.value.length===0);
@@ -166,6 +223,21 @@ $String.prototype.terminal = function(length) {
     }
     return String$(this.value.substr(i), count);
 }
+$String.prototype.getHash = function() {
+    if (this._hash === undefined) {
+        for (var i = 0; i < this.value.length; i++) {
+          var c = this.value.charCodeAt(i);
+          this._hash += c + (this._hash << 10);
+          this._hash ^= this._hash >> 6;
+    }
+
+    this._hash += this._hash << 3;
+    this._hash ^= this._hash >> 11;
+    this._hash += this._hash << 15;
+    this._hash = this._hash & ((1 << 29) - 1);
+  }
+  return Integer(this._hash);
+}
 function cmpSubString(str, subStr, offset) {
     for (var i=0; i<subStr.length; ++i) {
         if (str.charCodeAt(offset+i)!==subStr.charCodeAt(i)) {return $false}
@@ -180,6 +252,10 @@ $String.prototype.endsWith = function(str) {
     var start = this.value.length - str.value.length
     if (start < 0) {return $false}
     return cmpSubString(this.value, str.value, start);
+}
+$String.prototype.contains = function(sub) {
+    //TODO does this work for unicode, etc?
+    return Boolean$(this.value.indexOf(sub.value) >= 0);
 }
 
 function $StringIterator() {}
@@ -260,6 +336,8 @@ $WS[0x205f]=true;
 $WS[0x3000]=true;
 $Character.prototype.getWhitespace = function() { return Boolean$(this.value in $WS) }
 $Character.prototype.getControl = function() { return Boolean$(this.value<32 || this.value===127) }
+$Character.prototype.getDigit = function() { return Boolean$(this.value>=48 && this.value<=57) }
+$Character.prototype.getInteger = function() { return Integer(this.value); }
 $Character.prototype.getUppercase = function() {
     var str = codepointToString(this.value);
     return Boolean$(str.toLowerCase()!==str);
@@ -353,7 +431,7 @@ function ArraySequence(value) {
 }
 for(var $ in CeylonObject.prototype){$ArraySequence.prototype[$]=CeylonObject.prototype[$]}
 for(var $ in $Sequence.prototype){$ArraySequence.prototype[$]=$Sequence.prototype[$]}
-$ArraySequence.prototype.getString = function() { return String$(this.value.toString()) }
+$ArraySequence.prototype.getString = function() { return String$("{" + this.value.toString() +"}") }
 $ArraySequence.prototype.item = function(index) {
     var result = this.value[index.value];
     return result!==undefined ? result:null;
@@ -382,12 +460,12 @@ $ArraySequence.prototype.span = function(from, to) {
     if (fromIndex === toIndex) {
         return Singleton(this.item(from));
     } else if (toIndex > fromIndex) {
-        for (var i = fromIndex; i <= toIndex; i++) {
+        for (var i = fromIndex; i <= toIndex && this.defines(Integer(i)) === $true; i++) {
             seq.push(this.item(Integer(i)));
         }
     } else {
         //Negative span, reverse seq returned
-        for (var i = fromIndex; i >= toIndex; i--) {
+        for (var i = fromIndex; i >= toIndex && this.defines(Integer(i)) === $true; i--) {
             seq.push(this.item(Integer(i)));
         }
     }
@@ -431,6 +509,33 @@ $ArraySequence.prototype.equals = function(other) {
     return getFalse();
 }
 $ArraySequence.prototype.getIterator = function() { return ArrayIterator(this.value); }
+$ArraySequence.prototype.getKeys = function() { return IntCategory(this); }
+
+function $IntCategory() {}
+function IntCategory(seq) {
+    var that = new $IntCategory;
+    that.seq = seq;
+    return that;
+}
+for(var $ in CeylonObject.prototype){$IntCategory.prototype[$]=CeylonObject.prototype[$]}
+$IntCategory.prototype.contains = function(k) {
+    return this.seq.defines(k);
+}
+$IntCategory.prototype.containsEvery = function(keys) {
+    var all = true;
+    for (var i = 0; i < this.seq.value.length; i++) {
+        all = all && this.seq.defines(keys.item(Integer(i))).value;
+    }
+    return Boolean$(all);
+}
+$IntCategory.prototype.containsAny = function(keys) {
+    for (var i = 0; i < this.seq.value.length; i++) {
+        if (this.seq.defines(keys.item(Integer(i))) == $true) {
+            return $true;
+        }
+    }
+    return $false;
+}
 
 function $ArrayIterator() {}
 function ArrayIterator(arr) {
@@ -449,6 +554,34 @@ $ArrayIterator.prototype.next = function() {
     this.idx++;
     return this.current;
 }
+
+function $SequenceBuilder() {}
+function SequenceBuilder() {
+    var that = new $SequenceBuilder;
+    that.seq = [];
+    return that;
+}
+for(var $ in CeylonObject.prototype){$SequenceBuilder.prototype[$]=CeylonObject.prototype[$]}
+$SequenceBuilder.prototype.getSequence = function() { return ArraySequence(this.seq); }
+$SequenceBuilder.prototype.append = function(e) { this.seq.push(e); }
+$SequenceBuilder.prototype.appendAll = function(arr) {
+	if (arr && arr.value && arr.value.length)
+    for (var i = 0; i < arr.value.length; i++) {
+        this.seq.push(arr.value[i]);
+    }
+}
+$SequenceBuilder.prototype.getSize = function() { return Integer(this.seq.length); }
+$SequenceBuilder.prototype.getEmpty = function() { return Boolean$(this.seq.length == 0); }
+
+function $SequenceAppender() {}
+function SequenceAppender(other) {
+	var that = new $SequenceAppender;
+	that.seq = [];
+	that.appendAll(other);
+	return that;
+}
+for(var $ in CeylonObject.prototype){$SequenceAppender.prototype[$]=CeylonObject.prototype[$]}
+for(var $ in $SequenceBuilder.prototype){$SequenceAppender.prototype[$]=$SequenceBuilder.prototype[$]}
 
 function $Range() {}
 function Range(first, last) {
@@ -584,17 +717,20 @@ function Singleton(elem) {
     return that;
 }
 for(var $ in CeylonObject.prototype){$Singleton.prototype[$]=CeylonObject.prototype[$]}
-$Singleton.prototype.getString = function() { return String$(this.value.toString()) }
+$Singleton.prototype.getString = function() { return String$("{ " + this.elem.getString().value + " }") }
 $Singleton.prototype.item = function(index) {
     return index.value===0 ? this.value[0] : null;
 }
 $Singleton.prototype.getSize = function() { return Integer(1); }
 $Singleton.prototype.getLastIndex = function() { return Integer(0); }
-$Singleton.prototype.getFirst = function() { return elem; }
-$Singleton.prototype.getLast = function() { return elem; }
+$Singleton.prototype.getFirst = function() { return this.elem; }
+$Singleton.prototype.getLast = function() { return this.elem; }
 $Singleton.prototype.getEmpty = function() { return $false; }
+$Singleton.prototype.getRest = function() { return ArraySequence([]); }
 $Singleton.prototype.defines = function(idx) { return idx.equals(Integer(0)); }
+$Singleton.prototype.getKeys = function() { return IntCategory(this); }
 $Singleton.prototype.span = function(from, to) {
+	if (to === undefined || to === null) to = from;
     return (from.equals(Integer(0)) === getTrue() || to.equals(Integer(0)) === getTrue()) ? this : ArraySequence([])
 }
 $Singleton.prototype.segment = function(idx, len) {
@@ -691,6 +827,16 @@ function coalesce(seq) {
 function append(seq, elem) {
     return ArraySequence(seq.value.concat(elem));
 }
+function prepend(seq, elem) {
+    if (seq.getEmpty() === $true) {
+        return Singleton(elem);
+    } else {
+        var sb = SequenceBuilder();
+        sb.append(elem);
+        sb.appendAll(seq);
+        return sb.getSequence();
+    }
+}
 
 //Receives ArraySequence, returns ArraySequence (with Entries)
 function entries(seq) {
@@ -719,6 +865,8 @@ exports.getExhausted=getExhausted;
 exports.Sequence=Sequence;
 exports.$Sequence=$Sequence;
 exports.ArraySequence=ArraySequence;
+exports.SequenceBuilder=SequenceBuilder;
+exports.SequenceAppender=SequenceAppender;
 exports.Range=Range;
 exports.Singleton=Singleton;
 exports.Entry=Entry;
@@ -730,9 +878,12 @@ exports.join=join;
 exports.zip=zip;
 exports.coalesce=coalesce;
 exports.append=append;
+exports.prepend=prepend;
 exports.entries=entries;
 exports.exists=exists;
 exports.nonempty=nonempty;
+exports.parseInteger=$parseInteger;
+exports.parseFloat=$parseFloat;
 
     });
 }(typeof define==='function' && define.amd ? 
