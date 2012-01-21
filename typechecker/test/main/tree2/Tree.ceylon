@@ -1,2 +1,2 @@
-interface Tree<T> of Branch<T> | Leaf<T> {}
+interface Tree<out T> of Branch<T> | Leaf<T> {}
         
