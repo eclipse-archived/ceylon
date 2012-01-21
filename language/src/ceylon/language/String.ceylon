@@ -5,7 +5,8 @@ by "Gavin"
 shared abstract class String()
         extends Object()
         satisfies List<Character> & Comparable<String> &
-                  Ranged<Integer,String> &
+                  Ranged<Integer,String> & 
+                  FixedSized<Character> &
                   Summable<String> & Castable<String> {
     
     doc "The characters in this string."
