@@ -139,7 +139,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    public Iterable<? extends Element> span(Integer from, Integer to) {
+    public ceylon.language.List<? extends Element> span(Integer from, Integer to) {
     	long fromIndex = from.longValue();
     	if (fromIndex<0) fromIndex=0;
     	long toIndex = to==null ? array.length-1 : to.longValue();
@@ -157,7 +157,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
     
     @Override
-    public Iterable<? extends Element> segment(Integer from, Integer length) {
+    public ceylon.language.List<? extends Element> segment(Integer from, Integer length) {
         long fromIndex = from.longValue();
     	if (fromIndex<0) fromIndex=0;
 		long resultLength = length.longValue();
@@ -208,6 +208,25 @@ public class ArraySequence<Element> implements Sequence<Element> {
             otherHead = otherIterator.next();
         }
         return (thisHead == exhausted.getExhausted() && otherHead == exhausted.getExhausted());
+    }
+
+    @Override
+    public boolean contains(java.lang.Object element) {
+        for (Element x: array) {
+            if (element.equals(x)) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean containsEvery(Iterable<?> elements) {
+        return false;
+    }
+
+    @Override
+    public boolean containsAny(Iterable<?> elements) {
+        // TODO Auto-generated method stub
+        return false;
     }
     
 }

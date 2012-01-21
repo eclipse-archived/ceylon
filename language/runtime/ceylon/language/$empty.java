@@ -31,6 +31,16 @@ public class $empty {
         public Iterable<? extends java.lang.Object> items(Iterable keys) {
             return Correspondence$impl.items(this, keys);
         }
+        
+        @Override
+        public boolean containsEvery(ceylon.language.Iterable<?> elements) {
+            return Category$impl.containsEvery(this, elements);
+        }
+
+        @Override
+        public boolean containsAny(ceylon.language.Iterable<?> elements) {
+            return Category$impl.containsAny(this, elements);
+        }
 
         @Override
         public long getSize() {
@@ -63,13 +73,23 @@ public class $empty {
         }
         
         @Override
-        public Empty segment(Integer from, Integer length) {
-        	return this;
+        public Empty segment(Comparable from, Comparable length) {
+            return Empty$impl.segment(this, from, length);
         }
         
         @Override
-        public Empty span(Integer from, Integer to) {
-        	return this;
+        public Empty span(Comparable from, Comparable to) {
+            return Empty$impl.span(this, from, to);
+        }
+
+        @Override
+        public boolean contains(java.lang.Object element) {
+            return Empty$impl.contains(this, element);
+        }
+
+        @Override
+        public Cloneable getClone() {
+            return Empty$impl.getClone(this);
         }
 
     };

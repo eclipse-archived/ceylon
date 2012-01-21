@@ -108,7 +108,7 @@ public interface Correspondence<Key,Item> {
             return Sequence$impl.getIterator(this);
         }
         @Override
-        public Iterable<? extends Item> segment(Integer from, Integer length) {
+        public List<? extends Item> segment(Integer from, Integer length) {
         	Iterable<? extends Key> keys = this.keys.segment(from, length);
         	if (keys.getEmpty()) {
         		return $empty.getEmpty();
@@ -118,7 +118,7 @@ public interface Correspondence<Key,Item> {
         	}
         }
         @Override
-        public Iterable<? extends Item> span(Integer from, Integer to) {
+        public List<? extends Item> span(Integer from, Integer to) {
         	Iterable<? extends Key> keys = this.keys.span(from, to);
         	if (keys.getEmpty()) {
         		return $empty.getEmpty();
@@ -126,6 +126,19 @@ public interface Correspondence<Key,Item> {
         	else {
         		return new Items<Key,Item>($this, (Sequence<? extends Key>)keys);
         	}
+        }
+        @Override
+        public boolean contains(java.lang.Object element) {
+            //TODO!!!!!!!!!!!!!!
+            return false;
+        }
+        @Override
+        public boolean containsEvery(Iterable<?> elements) {
+            return Category$impl.containsEvery(this, elements);
+        }
+        @Override
+        public boolean containsAny(Iterable<?> elements) {
+            return Category$impl.containsAny(this, elements);
         }
     }
     
@@ -183,10 +196,10 @@ public interface Correspondence<Key,Item> {
             return false;
         }
 
-        public static <Key,Item> Iterable<? extends Item> items(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys) {
+        public static <Key,Item> ceylon.language.List<? extends Item> items(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys) {
             if (keys instanceof Sequence) {
-                final ceylon.language.Sequence<? extends Key> $keys$1 = (ceylon.language.Sequence<? extends Key>)keys;
-                return new Correspondence.Items($this, $keys$1.getClone());
+                final ceylon.language.Sequence<? extends Key> $keys$1 = (Sequence<? extends Key>)keys;
+                return new Correspondence.Items($this, (Sequence<? extends Key>)$keys$1.getClone());
             }
             else {
                 return $empty.getEmpty();

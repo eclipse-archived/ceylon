@@ -12,16 +12,12 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @Ceylon
 @TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT))
 @SatisfiedTypes({
-    "ceylon.language.Correspondence<ceylon.language.Integer,Element>",
-    "ceylon.language.Ordered<Element>",
-    "ceylon.language.Sized",
-    "ceylon.language.Cloneable<ceylon.language.Sequence<Element>>",
-    "ceylon.language.Ranged<ceylon.language.Integer,ceylon.language.Empty|ceylon.language.Sequence<Element>>"
+    "ceylon.language.List<Element>",
+    "ceylon.language.Ranged<ceylon.language.Integer,ceylon.language.Empty|ceylon.language.Sequence<Element>>",
+    "ceylon.language.Cloneable<ceylon.language.Sequence<Element>>"
 })
 public interface Sequence<Element> 
-    extends Correspondence<Integer, Element>, Ordered<Element>, 
-        Sized, Cloneable<Sequence<Element>>, 
-        Ranged<Integer,Iterable<? extends Element>> {
+        extends List<Element> {
     
     @TypeInfo("ceylon.language.Integer")
     public long getLastIndex();
@@ -60,13 +56,13 @@ public interface Sequence<Element>
     
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> span(@Name("from") Integer from, 
+    public List<? extends Element> span(@Name("from") Integer from, 
     		@TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     		@Name("to") Integer to);
     
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> segment(@Name("from") Integer from, 
+    public List<? extends Element> segment(@Name("from") Integer from, 
     		@Name("length") Integer length);
     
     public java.lang.String toString();

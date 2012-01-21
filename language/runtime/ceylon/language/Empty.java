@@ -8,14 +8,12 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon
 @SatisfiedTypes({
-    "ceylon.language.Correspondence<ceylon.language.Integer,ceylon.language.Bottom>",
-    "ceylon.language.Ordered<ceylon.language.Bottom>",
+    "ceylon.language.List<ceylon.language.Bottom>",
     "ceylon.language.Ranged<ceylon.language.Integer,ceylon.language.Empty>",
-    "ceylon.language.Sized"
+    "ceylon.language.Cloneable<ceylon.language.Empty>"
 })
 public interface Empty 
-        extends Correspondence, Ordered, Sized, 
-                Ranged<Integer,Empty> {
+        extends List {
 	
     @TypeInfo("ceylon.language.Integer")
     public long getSize(); 
@@ -49,6 +47,18 @@ public interface Empty
         }
         public static java.lang.Object item(Empty $this, Integer key){
             return null;
+        }
+        public static Empty segment(Empty $this, Comparable from, Comparable length) {
+            return $this;
+        }
+        public static Empty span(Empty $this, Comparable from, Comparable to) {
+            return $this;
+        }
+        public static boolean contains(Empty $this, java.lang.Object element) {
+            return false;
+        }
+        public static Cloneable getClone(Empty $this) {
+            return $this;
         }
         public static java.lang.Object getFirst(Empty $this){
             return null;

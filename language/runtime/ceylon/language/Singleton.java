@@ -12,7 +12,8 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon
 @TypeParameters(@TypeParameter(value = "Element", 
-        variance = Variance.OUT))
+        variance = Variance.OUT, 
+        satisfies="ceylon.language.Equality"))
 @Class(extendsType="ceylon.language.Object")
 @SatisfiedTypes("ceylon.language.Sequence<Element>")
 public class Singleton<Element> 
@@ -121,7 +122,7 @@ public class Singleton<Element>
 
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> segment(@Name("from") Integer from, 
+    public List<? extends Element> segment(@Name("from") Integer from, 
     		@Name("length") Integer length) {
     	if (from.longValue()>0||length.longValue()==0) 
     		return $empty.getEmpty();
@@ -130,7 +131,7 @@ public class Singleton<Element>
     
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> span(@Name("from") Integer from, 
+    public List<? extends Element> span(@Name("from") Integer from, 
     		@TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     		@Name("to") Integer to) {
     	//if (to==null) to = Integer.instance(0);
@@ -143,5 +144,21 @@ public class Singleton<Element>
 	public java.lang.String toString() {
 		return Sequence$impl.toString(this);
 	}
+
+    @Override
+    public boolean contains(java.lang.Object element) {
+        return this.element.equals(element);
+    }
+
+    @Override
+    public boolean containsEvery(Iterable<?> elements) {
+        return Category$impl.containsEvery(this, elements);
+    }
+
+    @Override
+    public boolean containsAny(Iterable<?> elements) {
+        // TODO Auto-generated method stub
+        return Category$impl.containsAny(this, elements);
+    }
 	
 }

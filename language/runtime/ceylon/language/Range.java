@@ -234,7 +234,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
 
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> segment(
+    public ceylon.language.List<? extends Element> segment(
     		@Name("from") final Integer from, 
     		@Name("length") final Integer length) {
     	long fromIndex = from.longValue();
@@ -257,7 +257,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> span(
+    public ceylon.language.List<? extends Element> span(
     		@Name("from") final Integer from,
     		@TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     		@Name("to") final Integer to) {
