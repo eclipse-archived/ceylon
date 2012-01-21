@@ -2623,11 +2623,6 @@ public class ExpressionVisitor extends Visitor {
         Tree.Type t = that.getType();
         if (t!=null) {
             t.visit(this);
-            /*ProducedType pt = t.getTypeModel();
-            if (pt!=null && pt.getDeclaration() instanceof Interface) {
-                that.addWarning("interface cases are not yet supported");
-            }
-            //TODO: and not even union-of-interface cases!*/
         }
         Variable v = that.getVariable();
         if (v!=null) {
@@ -2873,7 +2868,7 @@ public class ExpressionVisitor extends Visitor {
             if (type!=null) {
                 checkSelfTypes(et, td, type);
                 checkExtensionOfMemberType(et, td, type);
-                checkCaseOfSupertype(et, td, type);
+                //checkCaseOfSupertype(et, td, type);
             }
         }
     }
@@ -2887,14 +2882,14 @@ public class ExpressionVisitor extends Visitor {
             if (type!=null) {
                 checkSelfTypes(t, td, type);
                 checkExtensionOfMemberType(t, td, type);
-                if (!(td instanceof TypeParameter)) {
+                /*if (!(td instanceof TypeParameter)) {
                     checkCaseOfSupertype(t, td, type);
-                }
+                }*/
             }
         }
     }
 
-    void checkCaseOfSupertype(Tree.StaticType t, TypeDeclaration td,
+    /*void checkCaseOfSupertype(Tree.StaticType t, TypeDeclaration td,
             ProducedType type) {
         //TODO: I think this check might now be unnecessary
         //      ... at the very least it seems too restrictive,
@@ -2910,14 +2905,15 @@ public class ExpressionVisitor extends Visitor {
             t.addError("not a case of supertype: " + 
                     type.getDeclaration().getName());
         }
-    }
+    }*/
 
     @Override 
     public void visit(Tree.CaseTypes that) {
         super.visit(that);
-        //TODO: this forces cases to be direct subtypes, whereas
-        //      all we really need is for every concrete subtype
-        //      to be a subtype
+        //TODO: this forces every case to be a subtype of the
+        //      enumerated type, whereas all we really need is 
+        //      for every concrete subtype every case to be a 
+        //      subtype of the enumerated type
         TypeDeclaration td = (TypeDeclaration) that.getScope();
         if (!(td instanceof TypeParameter)) {
             for (Tree.StaticType t: that.getTypes()) {
@@ -3019,49 +3015,52 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
-    
+
     private void validateEnumeratedSupertypeArguments(Node that, ClassOrInterface d) {
-        for (ProducedType supertype: d.getType().getSupertypes()) {
-            List<TypeDeclaration> ctds = supertype.getDeclaration().getCaseTypeDeclarations();
-            if (ctds!=null) {
-                for (TypeDeclaration ct: ctds) {
-                    if (ct.equals(d)) {
-                        List<TypeParameter> params = supertype.getDeclaration().getTypeParameters();
-                        for (int i=0; i<params.size(); i++) {
-                            TypeParameter p = params.get(i);
-                            ProducedType arg = supertype.getTypeArguments().get(p);
-                            if (arg!=null) {
-                                TypeDeclaration td = arg.getDeclaration();
-                                if (td instanceof TypeParameter && ((TypeParameter) td).getDeclaration().equals(d)) {
-                                    if (p.isCovariant() && !((TypeParameter) td).isCovariant()) {
-                                        that.addError("argument to covariant type parameter of supertype must be covariant: " + 
-                                                p.getName() + " of "+ supertype.getDeclaration().getName());
+        ProducedType type = d.getType();
+        for (ProducedType supertype: type.getSupertypes()) {
+            if (!type.isExactly(supertype)) {
+                List<TypeDeclaration> ctds = supertype.getDeclaration().getCaseTypeDeclarations();
+                if (ctds!=null) {
+                    for (TypeDeclaration ct: ctds) {
+                        if (ct.equals(d)) {
+                            List<TypeParameter> params = supertype.getDeclaration().getTypeParameters();
+                            for (int i=0; i<params.size(); i++) {
+                                TypeParameter p = params.get(i);
+                                ProducedType arg = supertype.getTypeArguments().get(p);
+                                if (arg!=null) {
+                                    TypeDeclaration td = arg.getDeclaration();
+                                    if (td instanceof TypeParameter && ((TypeParameter) td).getDeclaration().equals(d)) {
+                                        if (p.isCovariant() && !((TypeParameter) td).isCovariant()) {
+                                            that.addError("argument to covariant type parameter of supertype must be covariant: " + 
+                                                    p.getName() + " of "+ supertype.getDeclaration().getName());
+                                        }
+                                        if (p.isContravariant() && !((TypeParameter) td).isContravariant()) {
+                                            that.addError("argument to contravariant type parameter of supertype must be contravariant: " + 
+                                                    p.getName() + " of "+ supertype.getDeclaration().getName());
+                                        }
                                     }
-                                    if (p.isContravariant() && !((TypeParameter) td).isContravariant()) {
-                                        that.addError("argument to contravariant type parameter of supertype must be contravariant: " + 
-                                                p.getName() + " of "+ supertype.getDeclaration().getName());
+                                    else if (p.isCovariant()) {
+                                        if (!(td instanceof BottomType)) {
+                                            that.addError("argument to covariant type parameter of supertype must be a type parameter or Bottom: " + 
+                                                    p.getName() + " of "+ supertype.getDeclaration().getName());
+                                        }
                                     }
-                                }
-                                else if (p.isCovariant()) {
-                                    if (!(td instanceof BottomType)) {
-                                        that.addError("argument to covariant type parameter of supertype must be a type parameter or Bottom: " + 
-                                                p.getName() + " of "+ supertype.getDeclaration().getName());
-                                    }
-                                }
-                                //TODO!!!!!
-                                /*else if (p.isContravariant()) {
+                                    //TODO!!!!!
+                                    /*else if (p.isContravariant()) {
                                     if (!(arg.isExactly(intersection of p.getSatisfiedTypes())) {
                                         that.addError("argument to covariant type parameter of supertype must be a type parameter or ..." + 
                                                 p.getName() + " of "+ supertype.getProducedTypeName());
                                     }
                                 }*/
-                                else {
-                                    that.addError("argument to type parameter of supertype must be a type parameter: " + 
-                                            p.getName() + " of "+ supertype.getDeclaration().getName());
+                                    else {
+                                        that.addError("argument to type parameter of supertype must be a type parameter: " + 
+                                                p.getName() + " of "+ supertype.getDeclaration().getName());
+                                    }
                                 }
                             }
+                            break;
                         }
-                        break;
                     }
                 }
             }

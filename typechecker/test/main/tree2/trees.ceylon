@@ -18,18 +18,29 @@ class ConcreteBranch(Tree<String> left, Tree<String> right)
     shared actual Tree<String> right = right;
 }
 
+@error
+class BrokenBranch(Tree<String> left, Tree<String> right) 
+        satisfies AbstractBranch<String> {
+    shared actual Tree<String> left = left;
+    shared actual Tree<String> right = right;
+}
+
 class ConcreteLeaf(String s)
         satisfies Leaf<String> {
     shared actual String val { return s; }
 }
 
-@error 
+@error
 class BrokenLeafBranch(Tree<String> left, Tree<String> right, String s) 
         satisfies Branch<String> & Leaf<String> {
     shared actual Tree<String> left = left;
     shared actual Tree<String> right = right;
     shared actual String val { return s; }    
 }
+
+@error
+class BrokenTree() 
+        satisfies Tree<String> {}
 
 void testTree() {
     ConcreteBranch tree { 
