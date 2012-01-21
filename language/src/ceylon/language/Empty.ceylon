@@ -2,11 +2,19 @@ doc "A sequence with no elements. The type of the expression
      `{}`."
 see (Sequence)
 shared interface Empty
-           satisfies List<Bottom> & None<Bottom> {
+           satisfies List<Bottom> & 
+                     None<Bottom> {
+    
+    shared actual Integer size { return 0; }
+    
+    shared actual Iterator<Bottom> iterator {
+        return emptyIterator;
+    }
     
     shared actual Nothing item(Integer key) {
         return null;
     }
+    
     shared actual Empty segment(Integer from, Integer length) {
         return this;
     }
@@ -18,5 +26,8 @@ shared interface Empty
     shared actual String string {
         return "{}";
     }
+    shared actual Integer? lastIndex { return null; }
+    
+    shared actual Empty rest { return this; }
     
 }

@@ -96,12 +96,12 @@ shared abstract class String()
          this operation is potentially costly for long 
          strings, since the underlying representation of the 
          characters uses a UTF-16 encoding."
-    shared Integer? lastIndex {
+    shared actual Integer? lastIndex {
         if (size==0) {
             return null;
         }
         else {
-            return size.predecessor;
+            return size-1;
         }
     }
     
