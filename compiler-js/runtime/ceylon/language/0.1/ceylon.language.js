@@ -41,6 +41,7 @@ $Integer.prototype.compare = function(other) {
 }
 $Integer.prototype.getFloat = function() { return Float(this.value) }
 $Integer.prototype.getInteger = function() { return this }
+$Integer.prototype.getCharacter = function() { return Character(this.value); }
 $Integer.prototype.getSuccessor = function() { return Integer(this.value+1) }
 $Integer.prototype.getPredecessor = function() { return Integer(this.value-1) }
 $Integer.prototype.getUnit = function() { return Boolean$(this.value === 1) }
@@ -110,6 +111,43 @@ $String.prototype.getSize = function() {
         this.codePoints = countCodepoints(this.value);
     }
     return Integer(this.codePoints);
+}
+$String.prototype.getLastIndex = function() { return this.getSize().getPredecessor(); }
+$String.prototype.span = function(from, to) {
+	var lastIndex = this.getLastIndex();
+    var fromIndex = largest(Integer(0),from).value;
+    var toIndex = to === getNull() ? lastIndex.value : smallest(to, lastIndex).value;
+    if (fromIndex === toIndex) {
+		return this.item(from).getString();
+    } else if (toIndex > fromIndex) {
+		//TODO optimize this
+		var s = String$("");
+        for (var i = fromIndex; i <= toIndex; i++) {
+			s = s.plus(this.item(Integer(i)).getString());
+        }
+		return s;
+    } else {
+        //Negative span, reverse seq returned
+        //TODO optimize
+        var s = String$("");
+        for (var i = fromIndex; i >= toIndex; i--) {
+            var x = this.item(Integer(i));
+			if (x !== null) s = s.plus(x.getString());
+        }
+		return s;
+    }
+}
+$String.prototype.segment = function(from, len) {
+	//TODO optimize
+    var s = String$("");
+    if (len.compare(Integer(0)) === larger) {
+        var stop = from.plus(len).value;
+        for (var i=from.value; i < stop; i++) {
+            var x = this.item(Integer(i));
+            if (x !== getNull()) { s = s.plus(x.getString()); }
+        }
+    }
+    return s;
 }
 $String.prototype.getEmpty = function() {
     return Boolean$(this.value.length===0);
@@ -210,6 +248,10 @@ $String.prototype.endsWith = function(str) {
     if (start < 0) {return $false}
     return cmpSubString(this.value, str.value, start);
 }
+$String.prototype.contains = function(sub) {
+    //TODO does this work for unicode, etc?
+    return Boolean$(this.value.indexOf(sub.value) >= 0);
+}
 
 function $StringIterator() {}
 function StringIterator(string) {
@@ -289,6 +331,8 @@ $WS[0x205f]=true;
 $WS[0x3000]=true;
 $Character.prototype.getWhitespace = function() { return Boolean$(this.value in $WS) }
 $Character.prototype.getControl = function() { return Boolean$(this.value<32 || this.value===127) }
+$Character.prototype.getDigit = function() { return Boolean$(this.value>=48 && this.value<=57) }
+$Character.prototype.getInteger = function() { return Integer(this.value); }
 $Character.prototype.getUppercase = function() {
     var str = codepointToString(this.value);
     return Boolean$(str.toLowerCase()!==str);
