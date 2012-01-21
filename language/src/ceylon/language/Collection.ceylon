@@ -1,7 +1,7 @@
 shared interface Collection<out Element> 
-        satisfies Iterable<Element> & 
-                  Sized & Category & 
-                  Equality {
+        satisfies Iterable<Element> & Sized & 
+                  Category & Equality & 
+                  Cloneable<Collection<Element>> {
     
     shared actual default Boolean empty {
         return size==0;

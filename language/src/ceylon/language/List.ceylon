@@ -1,8 +1,10 @@
 shared interface List<out Element> 
         satisfies Collection<Element> & 
                   Correspondence<Integer, Element> &
-                  Ranged<Integer, List<Element>>
-        /*given Element satisfies Equality?*/ {
+                  Ranged<Integer, List<Element>> &
+                  Cloneable<List<Element>>
+        /*given Element satisfies Equality?*/
+        /*given Element of Nothing|Equality*/ {
     
     doc "The index of the last element of the list, or
          null if the list is empty."

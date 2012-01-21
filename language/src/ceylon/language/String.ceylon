@@ -7,7 +7,8 @@ shared abstract class String()
         satisfies List<Character> & Comparable<String> &
                   Ranged<Integer,String> & 
                   FixedSized<Character> &
-                  Summable<String> & Castable<String> {
+                  Summable<String> & Castable<String> &
+                  Cloneable<String> {
     
     doc "The characters in this string."
     shared formal Character[] characters;
