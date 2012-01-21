@@ -1,4 +1,4 @@
-shared object truth extends Boolean() {
+object truth extends Boolean() {
     shared actual String string {
         return "true";
     }
