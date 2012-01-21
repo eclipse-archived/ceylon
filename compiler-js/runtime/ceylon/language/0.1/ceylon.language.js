@@ -47,6 +47,11 @@ $Integer.prototype.getUnit = function() { return Boolean$(this.value === 1) }
 $Integer.prototype.getZero = function() { return Boolean$(this.value === 0) }
 $Integer.prototype.getFractionalPart = function() { return Integer(0); }
 $Integer.prototype.getWholePart = function() { return this; }
+$Integer.prototype.getSign = function() { return this.value > 0 ? Integer(1) : this.value < 0 ? Integer(-1) : Integer(0); }
+$Integer.prototype.getHash = function() { return this; }
+
+function $parseInteger(s) { return Integer(parseInt(s.value)); }
+function $parseFloat(s) { return Float(parseFloat(s.value)); }
 
 function $Float() {}
 function Float(value) {
@@ -69,6 +74,15 @@ $Float.prototype.compare = function(other) {
                                     : (this.value<other.value ? smaller:larger);
 }
 $Float.prototype.getFloat = function() { return this }
+$Float.prototype.getInteger = function() { return this.getWholePart(); }
+$Float.prototype.getWholePart = function() { return Integer(parseInt(this.value.toFixed(0))); }
+$Float.prototype.getFractionalPart = function() {
+    var _p = this.value.toPrecision();
+    var _f = this.value.toFixed();
+    return Float(parseFloat(_p)-parseFloat(_f));
+}
+$Float.prototype.getSign = function() { return this.value > 0 ? Integer(1) : this.value < 0 ? Integer(-1) : Integer(0); }
+$Float.prototype.getHash = function() { return String$(this.value.toPrecision()).getHash(); }
 
 function $String() {}
 function String$(value,size) {
@@ -165,6 +179,21 @@ $String.prototype.terminal = function(length) {
         return this;
     }
     return String$(this.value.substr(i), count);
+}
+$String.prototype.getHash = function() {
+    if (this._hash === undefined) {
+        for (var i = 0; i < this.value.length; i++) {
+          var c = this.value.charCodeAt(i);
+          this._hash += c + (this._hash << 10);
+          this._hash ^= this._hash >> 6;
+    }
+
+    this._hash += this._hash << 3;
+    this._hash ^= this._hash >> 11;
+    this._hash += this._hash << 15;
+    this._hash = this._hash & ((1 << 29) - 1);
+  }
+  return Integer(this._hash);
 }
 
 function $StringIterator() {}
@@ -406,6 +435,33 @@ $ArraySequence.prototype.equals = function(other) {
     return getFalse();
 }
 $ArraySequence.prototype.getIterator = function() { return ArrayIterator(this.value); }
+$ArraySequence.prototype.getKeys = function() { return IntCategory(this); }
+
+function $IntCategory() {}
+function IntCategory(seq) {
+    var that = new $IntCategory;
+    that.seq = seq;
+    return that;
+}
+for(var $ in CeylonObject.prototype){$IntCategory.prototype[$]=CeylonObject.prototype[$]}
+$IntCategory.prototype.contains = function(k) {
+    return this.seq.defines(k);
+}
+$IntCategory.prototype.containsEvery = function(keys) {
+    var all = true;
+    for (var i = 0; i < this.seq.value.length; i++) {
+        all = all && this.seq.defines(keys.item(Integer(i))).value;
+    }
+    return Boolean$(all);
+}
+$IntCategory.prototype.containsAny = function(keys) {
+    for (var i = 0; i < this.seq.value.length; i++) {
+        if (this.seq.defines(keys.item(Integer(i))) == $true) {
+            return $true;
+        }
+    }
+    return $false;
+}
 
 function $ArrayIterator() {}
 function ArrayIterator(arr) {
@@ -424,6 +480,34 @@ $ArrayIterator.prototype.next = function() {
     this.idx++;
     return this.current;
 }
+
+function $SequenceBuilder() {}
+function SequenceBuilder() {
+    var that = new $SequenceBuilder;
+    that.seq = [];
+    return that;
+}
+for(var $ in CeylonObject.prototype){$SequenceBuilder.prototype[$]=CeylonObject.prototype[$]}
+$SequenceBuilder.prototype.getSequence = function() { return ArraySequence(this.seq); }
+$SequenceBuilder.prototype.append = function(e) { this.seq.push(e); }
+$SequenceBuilder.prototype.appendAll = function(arr) {
+	if (arr && arr.value && arr.value.length)
+    for (var i = 0; i < arr.value.length; i++) {
+        this.seq.push(arr.value[i]);
+    }
+}
+$SequenceBuilder.prototype.getSize = function() { return Integer(this.seq.length); }
+$SequenceBuilder.prototype.getEmpty = function() { return Boolean$(this.seq.length == 0); }
+
+function $SequenceAppender() {}
+function SequenceAppender(other) {
+	var that = new $SequenceAppender;
+	that.seq = [];
+	that.appendAll(other);
+	return that;
+}
+for(var $ in CeylonObject.prototype){$SequenceAppender.prototype[$]=CeylonObject.prototype[$]}
+for(var $ in $SequenceBuilder.prototype){$SequenceAppender.prototype[$]=$SequenceBuilder.prototype[$]}
 
 function $Range() {}
 function Range(first, last) {
@@ -565,11 +649,14 @@ $Singleton.prototype.item = function(index) {
 }
 $Singleton.prototype.getSize = function() { return Integer(1); }
 $Singleton.prototype.getLastIndex = function() { return Integer(0); }
-$Singleton.prototype.getFirst = function() { return elem; }
-$Singleton.prototype.getLast = function() { return elem; }
+$Singleton.prototype.getFirst = function() { return this.elem; }
+$Singleton.prototype.getLast = function() { return this.elem; }
 $Singleton.prototype.getEmpty = function() { return $false; }
+$Singleton.prototype.getRest = function() { return ArraySequence([]); }
 $Singleton.prototype.defines = function(idx) { return idx.equals(Integer(0)); }
+$Singleton.prototype.getKeys = function() { return IntCategory(this); }
 $Singleton.prototype.span = function(from, to) {
+	if (to === undefined || to === null) to = Integer(0);
     return (from.equals(Integer(0)) === getTrue() || to.equals(Integer(0)) === getTrue()) ? this : ArraySequence([])
 }
 $Singleton.prototype.segment = function(idx, len) {
@@ -666,6 +753,16 @@ function coalesce(seq) {
 function append(seq, elem) {
     return ArraySequence(seq.value.concat(elem));
 }
+function prepend(seq, elem) {
+    if (seq.getEmpty() === $true) {
+        return Singleton(elem);
+    } else {
+        var sb = SequenceBuilder();
+        sb.append(elem);
+        sb.appendAll(seq);
+        return sb.getSequence();
+    }
+}
 
 //Receives ArraySequence, returns ArraySequence (with Entries)
 function entries(seq) {
@@ -694,6 +791,8 @@ exports.getExhausted=getExhausted;
 exports.Sequence=Sequence;
 exports.$Sequence=$Sequence;
 exports.ArraySequence=ArraySequence;
+exports.SequenceBuilder=SequenceBuilder;
+exports.SequenceAppender=SequenceAppender;
 exports.Range=Range;
 exports.Singleton=Singleton;
 exports.Entry=Entry;
@@ -705,9 +804,12 @@ exports.join=join;
 exports.zip=zip;
 exports.coalesce=coalesce;
 exports.append=append;
+exports.prepend=prepend;
 exports.entries=entries;
 exports.exists=exists;
 exports.nonempty=nonempty;
+exports.parseInteger=$parseInteger;
+exports.parseFloat=$parseFloat;
 
     });
 }(typeof define==='function' && define.amd ? 
