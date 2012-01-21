@@ -4,10 +4,10 @@ shared interface Collection<out Element>
                   Equality {
     
     shared actual default Boolean empty {
-        return size!=0;
+        return size==0;
     }
     
-    shared actual Boolean contains(Equality element) {
+    shared actual default Boolean contains(Equality element) {
         for (elem in this) {
             if (is Equality elem) {
                 if (elem==element) {
