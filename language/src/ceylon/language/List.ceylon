@@ -4,7 +4,8 @@ shared interface List<out Element>
                   Ranged<Integer, List<Element>>
         /*given Element satisfies Equality?*/ {
     
-    doc "The index of the last element of the sequence."
+    doc "The index of the last element of the list, or
+         null if the list is empty."
     see (size)
     shared formal Integer? lastIndex;
     

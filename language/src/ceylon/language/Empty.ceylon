@@ -28,6 +28,6 @@ shared interface Empty
     }
     shared actual Integer? lastIndex { return null; }
     
-    shared actual Empty rest { return this; }
+    //shared actual Empty rest { return this; }
     
 }

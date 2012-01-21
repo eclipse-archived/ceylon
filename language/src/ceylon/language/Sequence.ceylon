@@ -7,6 +7,8 @@ shared interface Sequence<out Element>
                   Cloneable<Sequence<Element>> &
                   Ranged<Integer, Element[]> {
     
+    doc "The index of the last element of the sequence."
+    see (size)
     shared actual formal Integer lastIndex;
     
     doc "The first element of the sequence, that is, the
