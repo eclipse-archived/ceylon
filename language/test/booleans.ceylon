@@ -41,4 +41,10 @@ shared void booleans() {
     }
     Object o=obj(true);
     Boolean b=bool(false);
+    
+    /*Boolean bt = true;
+    switch (bt)
+    case (true) {}
+    case (false) { fail("boolean switch"); }*/
+    
 }

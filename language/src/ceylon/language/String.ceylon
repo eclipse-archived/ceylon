@@ -4,9 +4,8 @@ doc "A string of characters. Each character in the string is
 by "Gavin"
 shared abstract class String()
         extends Object()
-        satisfies Correspondence<Integer,Character> & 
-                  Ordered<Character> & Comparable<String> &
-                  Sized & Ranged<Integer,String> & Category & 
+        satisfies List<Character> & Comparable<String> &
+                  Ranged<Integer,String> &
                   Summable<String> & Castable<String> {
     
     doc "The characters in this string."
@@ -22,7 +21,7 @@ shared abstract class String()
          separator characters. If no separator characters
          are given, split the string at any unicode 
          whitespace character."
-    shared formal Ordered<String> split(
+    shared formal Iterable<String> split(
             Iterable<Character>? separators=null,
             Boolean discardSeparators=false);
     
@@ -31,7 +30,7 @@ shared abstract class String()
     shared formal String join(String... strings);
     
     doc "Split the string into lines of text."
-    shared formal Ordered<String> lines;
+    shared formal Iterable<String> lines;
 
     doc "This string, after discarding whitespace from the 
          beginning and end of the string."
@@ -45,7 +44,7 @@ shared abstract class String()
     doc "This string, with the characters in reverse order."
     shared formal String reversed;
     
-    doc "Select the characters between the given indexes.
+    /*doc "Select the characters between the given indexes.
          If the start index is the same as the end index,
          return a string with a single character.
          If the start index larger than the end index, 
@@ -67,7 +66,7 @@ shared abstract class String()
          index is larger than the last index of the string,
          return the empty string."
     shared formal actual String segment(Integer from, 
-                                        Integer length);
+                                        Integer length);*/
     
     doc "Select the first characters of this string, 
          returning a string no longer than the given 

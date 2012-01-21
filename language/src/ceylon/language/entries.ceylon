@@ -66,6 +66,20 @@ shared Entry<Integer,Element>[] entries<Element>(Element... sequence)
                 return EntryIterator(0);
             }
             
+            shared actual Boolean contains(Equality element) {
+                //TODO!
+                return bottom;
+            }
+            
+            shared actual Boolean equals(Equality that) {
+                //TODO!
+                return bottom;
+            }
+            
+            shared actual Integer hash {
+                return sequence.hash;
+            }
+            
             /*shared actual Element? item(Integer index) {
                 return sequence[index];
             }

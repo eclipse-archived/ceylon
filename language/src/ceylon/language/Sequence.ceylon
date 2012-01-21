@@ -3,10 +3,9 @@ doc "A nonempty sequence of values. `Sequence` does not
      operation may be inefficient for some sequences."
 by "Gavin"
 shared interface Sequence<out Element> 
-        satisfies Correspondence<Integer,Element> &  
-                  Ordered<Element> & Sized & 
-                  Ranged<Integer,Element[]> &
-                  Cloneable<Sequence<Element>> {
+        satisfies List<Element> & Some<Element> &
+                  Cloneable<Sequence<Element>> &
+                  Ranged<Integer, Element[]> {
     
     doc "The index of the last element of the sequence."
     see (size)

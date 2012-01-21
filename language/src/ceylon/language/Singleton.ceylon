@@ -1,7 +1,8 @@
 doc "A sequence with exactly one element."
 shared class Singleton<Element>(Element element)
         extends Object()
-        satisfies Sequence<Element> {
+        satisfies Sequence<Element> 
+        given Element satisfies Equality {
     shared actual Integer lastIndex {
         return 0;
     }
@@ -50,9 +51,9 @@ shared class Singleton<Element>(Element element)
         if (is Object first) {
             return "{ " first.string " }";
         }
-        else if (is Nothing first) {
+        /*else if (is Nothing first) {
             return "{ null }";
-        }
+        }*/
         else {
             throw;
         }
@@ -64,5 +65,30 @@ shared class Singleton<Element>(Element element)
     
     shared actual Element[] span(Integer from, Integer? to) {
         return from>0 then {} else this;
+    }
+    
+    shared actual Boolean equals(Equality that) {
+        if (is List<Element> that) {
+            if (that.size!=1) {
+                return false;
+            }
+            else if (exists elem = that[0]) {
+                return elem==element;
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+    
+    shared actual Integer hash {
+        return element.hash;
+    }
+    
+    shared actual Boolean contains(Equality element) {
+        return this.element==element;
     }
 }
