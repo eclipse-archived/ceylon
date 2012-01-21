@@ -281,7 +281,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     		@TypeInfo("ceylon.language.Integer")
     		@Name("stepSize") long stepSize) {
     	if (stepSize==0) {
-    		throw new Exception(String.instance("step size must be nonzero"));
+    		throw new Exception(String.instance("step size must be nonzero"), null);
     	}
     	if (first.equals(last) || stepSize==1) {
     		return this;

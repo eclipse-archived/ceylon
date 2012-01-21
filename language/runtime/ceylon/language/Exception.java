@@ -2,6 +2,7 @@ package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -17,26 +18,16 @@ public class Exception extends RuntimeException {
     public Exception(
             @TypeInfo("ceylon.language.String|ceylon.language.Nothing")
             @Name("description")
+            @Defaulted
             String description,
             @TypeInfo("ceylon.language.Exception|ceylon.language.Nothing")
             @Name("cause")
-            java.lang.Throwable cause
-            
-            ) {
+            @Defaulted
+            java.lang.Throwable cause) {
         super(description==null ? null : description.toString(), cause);
         this.description = description;
     }
-    
-    @Ignore
-    public Exception(String description) {
-    	this (description, null);
-    }
-    
-    @Ignore
-    public Exception() {
-    	this (null, null);
-    }
-    
+        
     @TypeInfo("ceylon.language.Exception|ceylon.language.Nothing")
     public java.lang.Throwable getCause() {
         return super.getCause();
