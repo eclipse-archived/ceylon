@@ -179,7 +179,7 @@ public final class String
 
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Character>")
-    public Iterable<? extends Character> items(@Name("keys") 
+    public List<? extends Character> items(@Name("keys") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
         return Correspondence$impl.items(this, keys);

@@ -72,12 +72,13 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
 
     @Override
     @TypeInfo("ceylon.language.Integer")
-    public final long getLastIndex(){
-        return size - 1;
+    public final Integer getLastIndex(){
+        return Integer.instance(size - 1);
     }
 
     @Override
-    public Iterable<? extends Element> getRest() {
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    public FixedSized<? extends Element> getRest() {
     	if (first.equals(last)) {
     	    return $empty.getEmpty();
     	}
@@ -200,7 +201,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
 
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
-    public Iterable<? extends Element> items(@Sequenced @Name("keys") 
+    public ceylon.language.List<? extends Element> items(@Sequenced @Name("keys") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer")
     Iterable<? extends Integer> keys) {
         return Correspondence$impl.items(this, keys);
@@ -239,7 +240,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     		@Name("length") final Integer length) {
     	long fromIndex = from.longValue();
 		long resultLength = length.longValue();
-		if (fromIndex>getLastIndex()||resultLength==0) 
+		if (fromIndex>getLastIndex().longValue()||resultLength==0) 
     		return $empty.getEmpty();
     	long len = getSize();
 		if (fromIndex+resultLength>len) 
@@ -261,7 +262,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     		@Name("from") final Integer from,
     		@TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     		@Name("to") final Integer to) {
-		long lastIndex = getLastIndex();
+		long lastIndex = getLastIndex().longValue();
     	long fromIndex = from.longValue();
 		long toIndex = to==null ? lastIndex : to.longValue();
 		if (fromIndex>lastIndex||toIndex<fromIndex) 

@@ -28,7 +28,7 @@ public class $empty {
         }
 
         @Override
-        public Iterable<? extends java.lang.Object> items(Iterable keys) {
+        public List<? extends java.lang.Object> items(Iterable keys) {
             return Correspondence$impl.items(this, keys);
         }
         
@@ -90,6 +90,28 @@ public class $empty {
         @Override
         public Cloneable getClone() {
             return Empty$impl.getClone(this);
+        }
+
+        @Override
+        public Integer getLastIndex() {
+            return null;
+        }
+
+        @Override
+        public boolean defines(Integer index) {
+            return false;
+        }
+
+        @Override
+        public List span(Integer from, Integer to) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public List segment(Integer from, Integer length) {
+            // TODO Auto-generated method stub
+            return null;
         }
 
     };

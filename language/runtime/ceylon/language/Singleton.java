@@ -57,16 +57,16 @@ public class Singleton<Element>
 	
 	@Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
-	public Iterable<? extends Element> items(@Sequenced @Name("keys") 
+	public List<? extends Element> items(@Sequenced @Name("keys") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
 	Iterable<? extends Integer> keys) {
 		return Correspondence$impl.items(this, keys);
 	}
 	
 	@Override
-	@TypeInfo("ceylon.language.Integer")
-	public long getLastIndex() {
-		return 0;
+    @TypeInfo("ceylon.language.Integer")
+	public Integer getLastIndex() {
+		return Integer.instance(0);
 	}
 	
 	@Override

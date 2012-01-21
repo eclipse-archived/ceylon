@@ -33,7 +33,7 @@ public interface Correspondence<Key,Item> {
     Iterable<? extends Key> keys);
 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
-    public Iterable<? extends Item> items(@Sequenced @Name("keys") 
+    public List<? extends Item> items(@Sequenced @Name("keys") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
     Iterable<? extends Key> keys);
 
@@ -46,14 +46,14 @@ public interface Correspondence<Key,Item> {
             this.keys = keys;
             this.$this = $this;
         }
-        public final long getLastIndex() {
+        public final Integer getLastIndex() {
             return keys.getLastIndex();
         }
         public final Item getFirst() {
             return $this.item(keys.getFirst());
         }
-        public final Iterable<? extends Item> getRest() {
-            return $this.items(keys.getRest());
+        public final FixedSized<? extends Item> getRest() {
+            return (FixedSized) $this.items(keys.getRest());
         }
         public final Item item(Integer index) {
             Key key = keys.item(index);
@@ -84,7 +84,7 @@ public interface Correspondence<Key,Item> {
             return Correspondence$impl.definesAny(this, keys);
         }
         @Override
-        public Iterable<? extends Item> items(Iterable<? extends Integer> keys) {
+        public List<? extends Item> items(Iterable<? extends Integer> keys) {
             return Correspondence$impl.items(this, keys);
         }
         @Override

@@ -2,7 +2,6 @@
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
@@ -20,20 +19,15 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 public interface Sequence<Element> 
         extends List<Element>, Some<Element> {
     
+    @Override
     @TypeInfo("ceylon.language.Integer")
-    public long getLastIndex();
+    public Integer getLastIndex();
     
+    @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> getRest();
-    
-    public boolean getEmpty();
-    
-    @TypeInfo("ceylon.language.Integer")
-    public long getSize();
+    public FixedSized<? extends Element> getRest();
     
     public Element getLast();
-    
-    public boolean defines(@Name("index") Integer index);
     
     //this depends on efficient implementation of rest
     /*
@@ -49,20 +43,7 @@ public interface Sequence<Element>
     }
     */
     
-    @TypeInfo("ceylon.language.Iterator<Element>")
-    public Iterator<? extends Element> getIterator();
-    
     @Override
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public List<? extends Element> span(@Name("from") Integer from, 
-    		@TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
-    		@Name("to") Integer to);
-    
-    @Override
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public List<? extends Element> segment(@Name("from") Integer from, 
-    		@Name("length") Integer length);
-    
     public java.lang.String toString();
 
     @Ignore
@@ -72,11 +53,11 @@ public interface Sequence<Element>
         }
 
         public static <Element> long getSize(Sequence<Element> $this){
-            return $this.getLastIndex()+1;
+            return $this.getLastIndex().longValue()+1;
         }
 
         public static <Element> Element getLast(Sequence<Element> $this){
-            Element x = $this.item(Integer.instance($this.getLastIndex()));
+            Element x = $this.item(Integer.instance($this.getLastIndex().longValue()));
             if (x != null) {
                 return x;
             }
@@ -86,7 +67,7 @@ public interface Sequence<Element>
         }
 
         public static <Element> boolean defines(Sequence<Element> $this, Integer index){
-            return index.longValue() <= $this.getLastIndex();
+            return index.longValue() <= $this.getLastIndex().longValue();
         }
 
         public static <Element> Iterator<? extends Element> getIterator(final Sequence<Element> $this){
@@ -97,7 +78,7 @@ public interface Sequence<Element>
                 }
                 @TypeInfo("Element|ceylon.language.Finished")
                 public final java.lang.Object next() { 
-                    if (from <= $this.getLastIndex()) {
+                    if (from <= $this.getLastIndex().longValue()) {
                         return $this.item(Integer.instance(from++));
                     } else {
                         return exhausted.getExhausted();

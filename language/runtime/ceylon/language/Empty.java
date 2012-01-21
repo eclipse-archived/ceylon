@@ -16,17 +16,26 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 public interface Empty 
         extends List, None {
 	
+    @Override
+    @TypeInfo("ceylon.language.Nothing")
+    public Integer getLastIndex();
+    
+    @Override
     @TypeInfo("ceylon.language.Integer")
     public long getSize(); 
     
+    @Override
     public boolean getEmpty();
     
+    @Override
     @TypeInfo("ceylon.language.Nothing")
     public Iterator getIterator();
     
+    @Override
     @TypeInfo("ceylon.language.Nothing")
     public java.lang.Object item(@Name("key") java.lang.Object key);
     
+    @Override
     @TypeInfo("ceylon.language.Nothing")
     public java.lang.Object getFirst();
     

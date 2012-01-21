@@ -40,8 +40,8 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Override
     @TypeInfo("ceylon.language.Integer")
-    public long getLastIndex() {
-        return array.length - first - 1;
+    public Integer getLastIndex() {
+        return Integer.instance(array.length - first - 1);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    public Iterable<? extends Element> getRest() {
+    public FixedSized<? extends Element> getRest() {
         if (first+1==array.length) {
             return $empty.getEmpty();
         }
@@ -91,7 +91,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
         
         @Override
         public java.lang.Object next() {
-            if (idx <= getLastIndex()+first) {
+            if (idx <= getLastIndex().longValue()+first) {
                 return array[(int) idx++];
             } 
             else {
@@ -129,7 +129,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    public Iterable<? extends Element> items(Iterable<? extends Integer> keys) {
+    public ceylon.language.List<? extends Element> items(Iterable<? extends Integer> keys) {
         return Correspondence$impl.items(this, keys);
     }
 
@@ -143,7 +143,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     	long fromIndex = from.longValue();
     	if (fromIndex<0) fromIndex=0;
     	long toIndex = to==null ? array.length-1 : to.longValue();
-        long lastIndex = getLastIndex();
+        long lastIndex = getLastIndex().longValue();
 		if (fromIndex>lastIndex||toIndex<fromIndex) {
             return $empty.getEmpty();
         }
@@ -161,7 +161,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
         long fromIndex = from.longValue();
     	if (fromIndex<0) fromIndex=0;
 		long resultLength = length.longValue();
-		long lastIndex = getLastIndex();
+		long lastIndex = getLastIndex().longValue();
 		if (fromIndex>lastIndex||resultLength==0) {
             return $empty.getEmpty();
         }
