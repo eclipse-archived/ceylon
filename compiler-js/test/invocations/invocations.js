@@ -23,13 +23,13 @@ function invocations(){
     }
     
     //AttributeDeclaration f1 at invocations.ceylon (12:4-12:29)
-    var $f1=$$$f9.add($$$cl15.Float(1.0),$$$cl15.Float(1.0).negativeValue());
+    var $f1=$$$f9.add($$$cl15.Float(1.0),$$$cl15.Float(1.0).getNegativeValue());
     function getF1(){
         return $f1;
     }
     
     //AttributeDeclaration f2 at invocations.ceylon (13:4-13:37)
-    var $f2=(function (){var $x=$$$cl15.Float(1.0);var $y=$$$cl15.Float(1.0).negativeValue();return $$$f9.add($x,$y)}());
+    var $f2=(function (){var $x=$$$cl15.Float(1.0);var $y=$$$cl15.Float(1.0).getNegativeValue();return $$$f9.add($x,$y)}());
     function getF2(){
         return $f2;
     }

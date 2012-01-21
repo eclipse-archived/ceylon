@@ -22,7 +22,7 @@ function Counter(initialCount, $$counter){
     }
     $$counter.getCurrentCount=getCurrentCount;
     function setCurrentCount(currentCount){
-        $currentCount=currentCount;
+        $currentCount=currentCount; return currentCount;
     }
     $$counter.setCurrentCount=setCurrentCount;
     

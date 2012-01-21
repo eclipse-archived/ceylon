@@ -380,35 +380,42 @@ $StringBuilder.prototype.appendCharacter = function(c) {
 $StringBuilder.prototype.appendNewline = function() { this.value = this.value + "\n"; }
 $StringBuilder.prototype.appendSpace = function() { this.value = this.value + " "; }
 
-function $Case() {}
-function Case(caseName) {
-    var that = new $Case;
-    that.string = String$(caseName);
-    return that;
-}
-for(var $ in CeylonObject.prototype){$Case.prototype[$]=CeylonObject.prototype[$]}
-$Case.prototype.getString = function() { return this.string }
-
 function getNull() { return null }
-var $true = Case("true");
+function $Boolean() {}
+for(var $ in CeylonObject.prototype){$Boolean.prototype[$]=CeylonObject.prototype[$]}
+var $true = new $Boolean;
+$true.getString = function() {return "true"}
 function getTrue() { return $true; }
-var $false = Case("false");
+var $false = new $Boolean;
+$false.getString = function() {return "false"}
 function getFalse() { return $false; }
 function Boolean$(value) {
     return value ? $true : $false;
 }
-var $finished = Case("Finished");
+function $Finished() {}
+for(var $ in CeylonObject.prototype){$Finished.prototype[$]=CeylonObject.prototype[$]}
+var $finished = new $Finished;
+$finished.getString = function() {return "exhausted"}
 function getExhausted() { return $finished; }
 
 //These are operators for handling nulls
 function exists(value) { return value === getNull() ? getFalse() : getTrue(); }
 function nonempty(value) { return Boolean$(value && value.value && value.value.length > 0); }
 
-var larger = Case("larger");
+function $Comparison() {}
+function Comparison(name) {
+    var that = new $Comparison;
+    that.name = String$(name);
+    return that;
+}
+for(var $ in CeylonObject.prototype){$Comparison.prototype[$]=CeylonObject.prototype[$]}
+$Comparison.prototype.getString = function() { return this.name }
+
+var larger = Comparison("larger");
 function getLarger() { return larger }
-var smaller = Case("smaller");
+var smaller = Comparison("smaller");
 function getSmaller() { return smaller }
-var equal = Case("equal");
+var equal = Comparison("equal");
 function getEqual() { return equal }
 function largest(x, y) { return x.compare(y) === larger ? x : y }
 function smallest(x, y) { return x.compare(y) === smaller ? x : y }
@@ -854,8 +861,8 @@ exports.String=String$;
 exports.StringBuilder=StringBuilder;
 exports.Boolean=Boolean$;
 exports.Character=Character;
+exports.Comparison=Comparison;
 exports.getNull=getNull;
-exports.Case=Case;
 exports.getTrue=getTrue;
 exports.getFalse=getFalse;
 exports.getLarger=getLarger;

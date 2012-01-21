@@ -120,7 +120,7 @@ function Issue9C2($$issue9C2){
     }
     $$issue9C2.getFlag1=getFlag1;
     function setFlag1(flag1){
-        $flag1=flag1;
+        $flag1=flag1; return flag1;
     }
     $$issue9C2.setFlag1=setFlag1;
     
@@ -150,7 +150,7 @@ function Issue9C3($$issue9C3){
     }
     $$issue9C3.getFlag2=getFlag2;
     function setFlag2(flag2){
-        $flag2=flag2;
+        $flag2=flag2; return flag2;
     }
     $$issue9C3.setFlag2=setFlag2;
     
