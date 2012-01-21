@@ -27,7 +27,7 @@ shared interface Empty
     shared actual String string {
         return "{}";
     }
-    shared actual Integer? lastIndex { return null; }
+    shared actual Nothing lastIndex { return null; }
     
     //shared actual Empty rest { return this; }
     

@@ -11,7 +11,7 @@ shared interface None<out Element>
         return null;
     }
     
-    shared actual default Iterator<Bottom> iterator {
+    shared actual default Iterator<Element> iterator {
         return emptyIterator;
     }
     
