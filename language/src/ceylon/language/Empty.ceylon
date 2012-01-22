@@ -39,6 +39,10 @@ shared interface Empty
         return false;
     }
     
+    shared actual Integer count(Equality element) {
+        return 0;
+    }
+    
     shared actual Boolean defines(Integer index) {
         return false;
     }
