@@ -67,6 +67,9 @@ public interface Empty
         public static boolean contains(Empty $this, java.lang.Object element) {
             return false;
         }
+        public static boolean defines(Empty $this, Integer index) {
+            return false;
+        }
         public static Cloneable getClone(Empty $this) {
             return $this;
         }
@@ -75,6 +78,9 @@ public interface Empty
         }
         public static java.lang.String toString(Empty $this) {
             return "{}";
+        }
+        public static Integer getLastIndex(Empty $this){
+            return null;
         }
     }
 }

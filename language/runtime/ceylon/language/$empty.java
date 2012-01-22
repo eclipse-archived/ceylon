@@ -83,6 +83,16 @@ public class $empty {
         }
 
         @Override
+        public Empty span(Integer from, Integer to) {
+            return Empty$impl.span(this, from, to);
+        }
+
+        @Override
+        public Empty segment(Integer from, Integer length) {
+            return Empty$impl.segment(this, from, length);
+        }
+
+        @Override
         public boolean contains(java.lang.Object element) {
             return Empty$impl.contains(this, element);
         }
@@ -94,24 +104,12 @@ public class $empty {
 
         @Override
         public Integer getLastIndex() {
-            return null;
+            return Empty$impl.getLastIndex(this);
         }
 
         @Override
         public boolean defines(Integer index) {
-            return false;
-        }
-
-        @Override
-        public List span(Integer from, Integer to) {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public List segment(Integer from, Integer length) {
-            // TODO Auto-generated method stub
-            return null;
+            return Empty$impl.defines(this, index);
         }
 
     };
