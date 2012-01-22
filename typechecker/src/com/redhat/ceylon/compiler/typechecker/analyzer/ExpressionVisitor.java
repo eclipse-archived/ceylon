@@ -2681,19 +2681,42 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private ProducedType getUnionOfCases(ProducedType switchType) {
-        if (switchType.getDeclaration().getCaseTypes()==null) {
+        TypeDeclaration sdt = switchType.getDeclaration();
+        if (sdt instanceof IntersectionType) {
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            for (ProducedType st: sdt.getSatisfiedTypes()) {
+                addToIntersection(list, getUnionOfCases(st)
+                        .substitute(switchType.getTypeArguments()), unit); //argument substitution is unnecessary
+            }
+            IntersectionType it = new IntersectionType(unit);
+            it.setSatisfiedTypes(list);
+            return it.canonicalize().getType();
+        }
+        /*if (switchType.getDeclaration() instanceof UnionType) {
+            //this branch is not really necessary, because it
+            //does basically the same thing as the else clause
+            //but it's slightly simpler because there are no 
+            //type arguments to substitute
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            for (ProducedType st: switchType.getDeclaration().getCaseTypes()) {
+                addToUnion(list, getUnionOfCases(st));
+            }
+            UnionType ut = new UnionType(unit);
+            ut.setCaseTypes(list);
+            return ut.getType();
+        }*/
+        else if (sdt.getCaseTypes()==null) {
             return switchType;
         }
         else {
             //build a union of all the cases
             List<ProducedType> list = new ArrayList<ProducedType>();
-            for (ProducedType ct: switchType.getDeclaration().getCaseTypes()) {
+            for (ProducedType ct: sdt.getCaseTypes()) {
                 addToUnion(list, getUnionOfCases(ct.substitute(switchType.getTypeArguments()))); //note recursion
             }
             UnionType ut = new UnionType(unit);
             ut.setCaseTypes(list);
-            ProducedType result = ut.getType();
-            return result;
+            return ut.getType();
         }
     }
 
