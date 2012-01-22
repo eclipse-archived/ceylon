@@ -129,8 +129,7 @@ public interface Correspondence<Key,Item> {
         }
         @Override
         public boolean contains(java.lang.Object element) {
-            //TODO!!!!!!!!!!!!!!
-            return false;
+            return Collection$impl.contains(this, element);
         }
         @Override
         public boolean containsEvery(Iterable<?> elements) {

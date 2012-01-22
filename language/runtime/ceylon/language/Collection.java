@@ -17,7 +17,15 @@ public interface Collection<Element>
         public static <Element> boolean getEmpty(Collection<Element> $this){
             return $this.getSize() == 0;
         }
-
+        public static <Element> boolean contains(Collection<Element> $this, java.lang.Object element){
+            java.lang.Object elem;
+            for (ceylon.language.Iterator<?> $element$iter$1 = $this.getIterator(); !((elem = $element$iter$1.next()) instanceof Finished);) {
+                if (elem!=null && element.equals(elem)) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
 }
