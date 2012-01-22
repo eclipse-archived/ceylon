@@ -19,6 +19,25 @@ shared interface Map<out Key,out Item>
         }
     }
     
+    shared actual default Boolean equals(Equality that) {
+        if (is Map<Equality,Equality> that) {
+            if (that.size==size) {
+                for (entry in this) {
+                    if (exists item = that[entry.key]) {
+                        if (item==entry.item) {
+                            continue;
+                        }
+                    }
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
     actual shared default Set<Key> keys {
         object keySet satisfies Set<Key> {
             shared actual Set<Key> clone { 

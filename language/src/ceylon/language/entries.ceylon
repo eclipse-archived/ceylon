@@ -66,11 +66,6 @@ shared Entry<Integer,Element>[] entries<Element>(Element... sequence)
                 return EntryIterator(0);
             }
                         
-            shared actual Boolean equals(Equality that) {
-                //TODO!
-                return bottom;
-            }
-            
             shared actual Integer hash {
                 return sequence.hash;
             }

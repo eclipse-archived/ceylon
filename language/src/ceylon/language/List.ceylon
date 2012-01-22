@@ -82,4 +82,30 @@ shared interface List<out Element>
     shared actual formal Element[] segment(Integer from, 
                                            Integer length);
     
+    shared actual default Boolean equals(Equality that) {
+        if (is List<Object> that) {
+            if (that.size==size) {
+                for (i in 0..size-1) {
+                    value x = this[i];
+                    value y = that[i];
+                    if (!exists x && !exists y) {
+                        continue;
+                    }
+                    if (is Equality x) {
+                        if (is Equality y) {
+                            if (x==y) {
+                                continue;
+                            }
+                        }
+                    }
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
 }

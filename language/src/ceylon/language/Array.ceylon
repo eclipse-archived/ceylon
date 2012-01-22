@@ -3,7 +3,13 @@ abstract class Array<Element>()
                   FixedSized<Element> &
                   Cloneable<Array<Element>> &
                   Ranged<Integer, Array<Element>> {
+    
     shared formal void setItem(Integer index, Element element);
+    
+    shared actual Boolean equals(Equality that) {
+        return this==that; //TODO: this is inconsistent with defn in List
+    }
+    
 }
 
 Array<Element> array<Element>(Element... elements) { throw; }

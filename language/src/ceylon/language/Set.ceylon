@@ -30,4 +30,20 @@ shared interface Set<out Element>
         }
     }
     
+    shared actual default Boolean equals(Equality that) {
+        if (is Set<Equality> that) {
+            if (that.size==size) {
+                for (element in this) {
+                    if (!element in that) {
+                        return false;
+                    }
+                }
+                else {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
 }

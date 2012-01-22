@@ -71,5 +71,23 @@ public interface List<Element>
             return new ListIterator();
         }
         
+        public static <Element> boolean equals(final Sequence<Element> $this, java.lang.Object that) {
+        	if (that instanceof List) {
+        		List other = (List) that;
+        		if (other.getSize()==$this.getSize()) {
+        			for (int i=0; i<$this.getSize(); i++) {
+        				Element x = $this.item(Integer.instance(i));
+        				java.lang.Object y = ((List) that).item(Integer.instance(i));
+        				if (x==y || x!=null && y!=null && x.equals(y)) {
+        					continue;
+        				}
+        				return false;
+        			}
+        			return true;
+        		}
+        	}
+        	return false;
+        }
+        
     }    
 }

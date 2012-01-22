@@ -121,11 +121,6 @@ shared interface Correspondence<in Key, out Item>
             return this;
         }
                 
-        shared actual Boolean equals(Equality that) {
-            //TODO!
-            return bottom;
-        }
-        
         shared actual Integer hash {
             return keys.hash;
         }

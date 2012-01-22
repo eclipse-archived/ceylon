@@ -23,7 +23,8 @@ public interface Category {
     public static final class Category$impl {
         public static boolean containsEvery(Category $this, ceylon.language.Iterable<?> elements) {
             java.lang.Object element;
-            for (ceylon.language.Iterator<?> $element$iter$1 = elements.getIterator(); !((element = $element$iter$1.next()) instanceof Finished);) {
+            for (ceylon.language.Iterator<?> iter = elements.getIterator(); 
+            		!((element = iter.next()) instanceof Finished);) {
                 if (!$this.contains(element)) {
                     return false;
                 }
@@ -33,7 +34,8 @@ public interface Category {
 
         public static boolean containsAny(Category $this, ceylon.language.Iterable<?> elements) {
             java.lang.Object element;
-            for (ceylon.language.Iterator<?> $element$iter$1 = elements.getIterator(); !((element = $element$iter$1.next()) instanceof Finished);) {
+            for (ceylon.language.Iterator<?> iter = elements.getIterator(); 
+            		!((element = iter.next()) instanceof Finished);) {
                 if ($this.contains(element)) {
                     return true;
                 }
