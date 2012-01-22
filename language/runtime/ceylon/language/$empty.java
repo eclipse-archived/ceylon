@@ -98,6 +98,11 @@ public class $empty {
         }
 
         @Override
+        public long count(java.lang.Object element) {
+            return Empty$impl.count(this, element);
+        }
+
+        @Override
         public Cloneable getClone() {
             return Empty$impl.getClone(this);
         }

@@ -64,6 +64,9 @@ public interface Empty
         public static Empty span(Empty $this, Comparable from, Comparable to) {
             return $this;
         }
+        public static long count(Empty $this, java.lang.Object element) {
+            return 0;
+        }
         public static boolean contains(Empty $this, java.lang.Object element) {
             return false;
         }

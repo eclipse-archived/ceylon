@@ -142,6 +142,19 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     	}
     }
 
+    @Override
+    public final long count(@Name("element") 
+    @TypeInfo("ceylon.language.Equality") java.lang.Object value) {
+        // FIXME
+        try {
+            return value != null /*&& value instanceof Element*/ &&
+                 includes((Element) value) ? 1 : 0;
+        }
+        catch (ClassCastException cce) { //ugly hack
+            return 0;
+        }
+    }
+    
     public final boolean includes(@Name("x") Element x){
         if (getDecreasing()){
             return x.compare(first).asSmallAs() && 

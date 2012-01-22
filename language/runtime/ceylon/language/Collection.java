@@ -2,6 +2,8 @@ package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
@@ -11,7 +13,10 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 public interface Collection<Element> 
         extends Iterable<Element>, Sized, Category,
                 Equality, Cloneable<Collection<Element>> {
-
+    
+    //public boolean contains(@TypeInfo("ceylon.language.Equality") @Name("element") java.lang.Object element);
+    public long count(@TypeInfo("ceylon.language.Equality") @Name("element") java.lang.Object element);
+    
     @Ignore
     public static final class Collection$impl {
         public static <Element> boolean getEmpty(Collection<Element> $this){
@@ -25,6 +30,16 @@ public interface Collection<Element>
                 }
             }
             return false;
+        }
+        public static <Element> long count(Collection<Element> $this, java.lang.Object element){
+            long count=0;
+            java.lang.Object elem;
+            for (ceylon.language.Iterator<?> $element$iter$1 = $this.getIterator(); !((elem = $element$iter$1.next()) instanceof Finished);) {
+                if (elem!=null && element.equals(elem)) {
+                    count++;
+                }
+            }
+            return count;
         }
     }
 

@@ -147,7 +147,13 @@ public class Singleton<Element>
 
     @Override
     public boolean contains(java.lang.Object element) {
-        return this.element.equals(element);
+        return this.element!=null && 
+                this.element.equals(element);
+    }
+
+    @Override
+    public long count(java.lang.Object element) {
+        return contains(element) ? 1 : 0;
     }
 
     @Override

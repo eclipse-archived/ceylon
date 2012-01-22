@@ -132,6 +132,10 @@ public interface Correspondence<Key,Item> {
             return Collection$impl.contains(this, element);
         }
         @Override
+        public long count(java.lang.Object element) {
+            return Collection$impl.count(this, element);
+        }
+        @Override
         public boolean containsEvery(Iterable<?> elements) {
             return Category$impl.containsEvery(this, elements);
         }

@@ -213,9 +213,18 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     public boolean contains(java.lang.Object element) {
         for (Element x: array) {
-            if (element.equals(x)) return true;
+            if (x!=null && element.equals(x)) return true;
         }
         return false;
+    }
+
+    @Override
+    public long count(java.lang.Object element) {
+        int count=0;
+        for (Element x: array) {
+            if (x!=null && element.equals(x)) count++;
+        }
+        return count;
     }
 
     @Override

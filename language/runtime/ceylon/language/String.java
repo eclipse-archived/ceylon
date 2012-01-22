@@ -265,6 +265,13 @@ public final class String
         }
     }
     
+    @Override
+    public long count(@Name("element") 
+    @TypeInfo("ceylon.language.Equality") 
+    java.lang.Object element) {
+        throw new Exception(null, null); //TODO!!!!!
+    }
+    
     public boolean startsWith(@Name("substring") java.lang.String substring) {
         return value.startsWith(substring);
     }
