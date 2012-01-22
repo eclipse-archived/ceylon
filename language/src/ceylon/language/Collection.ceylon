@@ -20,4 +20,16 @@ shared interface Collection<out Element>
         }
     }
     
+    shared default Integer count(Equality element) {
+        variable value count:=0;
+        for (elem in this) {
+            if (is Equality elem) {
+                if (elem==element) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+    
 }
