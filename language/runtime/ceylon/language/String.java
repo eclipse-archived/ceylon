@@ -12,18 +12,16 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @Ceylon
 @Class(extendsType="ceylon.language.Object")
 @SatisfiedTypes({"ceylon.language.Comparable<ceylon.language.String>",
-	             "ceylon.language.Ordered<ceylon.language.Character>",
-	             "ceylon.language.Correspondence<ceylon.language.Integer,ceylon.language.Character>",
-	             "ceylon.language.Sized",
+	             "ceylon.language.List<ceylon.language.Character>",
+	             "ceylon.language.FixedSized<ceylon.language.Character>",
 	             "ceylon.language.Summable<ceylon.language.String>",
                  "ceylon.language.Castable<ceylon.language.String>",
-                 "ceylon.language.Category",
-                 "ceylon.language.Ranged<ceylon.language.Integer,ceylon.language.String>"})
+                 "ceylon.language.Ranged<ceylon.language.Integer,ceylon.language.String>",
+                 "ceylon.language.Cloneable<ceylon.language.String>"})
 public final class String
-    implements Comparable<String>, Ordered<Character>, 
-               Correspondence<Integer,Character>,
-               Sized, Summable<String>, Castable<String>,
-               Category, Ranged<Integer,String> {
+    implements Comparable<String>, List<Character>,
+               Summable<String>, Castable<String>,
+               FixedSized<Character> {
 
     public final java.lang.String value;
 
@@ -210,7 +208,7 @@ public final class String
 
     @Override
     public Character getFirst() {
-        return Ordered$impl.getFirst(this);
+        return FixedSized$impl.getFirst(this);
     }
 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Character>")
@@ -408,8 +406,8 @@ public final class String
         return value.replace(substring, replacement);
     }
     
-    @TypeInfo("ceylon.language.Ordered<ceylon.language.String>")
-    public Ordered<? extends String> split(
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.String>")
+    public Iterable<? extends String> split(
             @TypeInfo("ceylon.language.Nothing|ceylon.language.Iterable<ceylon.language.Character>")
             @Name("separator") Iterable<? extends Character> separators,
             @Name("discardSeparators") boolean discardSeparators) {
@@ -431,7 +429,7 @@ public final class String
         return new Tokens(value, delims, !discardSeparators);
     }
 
-    private static final class Tokens implements Ordered<String> {
+    private static final class Tokens implements Iterable<String> {
         private java.lang.String str;
         private java.lang.String delims;
         private boolean keepSeparators;
@@ -471,10 +469,15 @@ public final class String
             return getIterator().next() != exhausted.getExhausted();
         }
 
-        @Override
+        /*@Override
         public String getFirst() {
             java.lang.Object result = getIterator().next();
             return (String) ((result != exhausted.getExhausted()) ? result : null);
-        }
+        }*/
+    }
+
+    @Override
+    public String getClone() {
+        return this;
     }
 }
