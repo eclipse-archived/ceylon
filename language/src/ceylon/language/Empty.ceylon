@@ -39,4 +39,8 @@ shared interface Empty
         return false;
     }
     
+    shared actual Boolean defines(Integer index) {
+        return false;
+    }
+    
 }
