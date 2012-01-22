@@ -1,3 +1,10 @@
+void iterate<Element>(List<Element> list) 
+    given Element satisfies Equality {
+    for (element in list) {
+        assert(element in list);
+    }
+}
+
 shared void strings() {
     value hello = "hello";
     
@@ -211,4 +218,7 @@ shared void strings() {
     nlb.appendNewline();
     assert(nlb.string.size==7, "string builder newline");
     assert(nlb.string=="\nhello\n", "string builder newline");
+    
+    iterate(hello);
+    
 }
