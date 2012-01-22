@@ -33,13 +33,13 @@ shared interface List<out Element>
     shared actual formal Element? item(Integer index);
         
     shared actual default Iterator<Element> iterator {
-        class SequenceIterator(Integer from)
+        object listIterator
                 extends Object()
                 satisfies Iterator<Element> {
-            variable Integer idx := from;
+            variable Integer index := 0;
             shared actual Element|Finished next() { 
-                if (idx < lastIndex?-1) {
-                    if (is Element elem = item(idx)) {
+                if (index < lastIndex?-1) {
+                    if (is Element elem = item(index++)) {
                         return elem;
                     }
                     else {
@@ -51,10 +51,10 @@ shared interface List<out Element>
                 }
             }
             shared actual String string {
-                return "SequenceIterator";
+                return "listIterator";
             }
         }
-        return SequenceIterator(0);
+        return listIterator;
     }
     
     /*doc "Reverse this sequence, returning a new nonempty 
