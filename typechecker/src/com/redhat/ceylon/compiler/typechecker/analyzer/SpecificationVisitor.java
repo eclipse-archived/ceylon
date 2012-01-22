@@ -100,6 +100,12 @@ public class SpecificationVisitor extends Visitor {
     }
 
     @Override
+    public void visit(Tree.ExtendedTypeExpression that) {
+        super.visit(that);
+        visitReference(that);
+    }
+
+    @Override
     public void visit(Tree.BaseTypeExpression that) {
         super.visit(that);
         visitReference(that);
