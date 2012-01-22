@@ -35,9 +35,9 @@ public class ProducedType extends ProducedReference {
         if (getDeclaration() instanceof BottomType) {
             return type.getDeclaration() instanceof BottomType;
         }
-        else if (getDeclaration() instanceof UnionType) {
+        else if (getDeclaration().getCaseTypes()!=null) {
             List<ProducedType> cases = getCaseTypes();
-            if (type.getDeclaration() instanceof UnionType) {
+            if (type.getDeclaration().getCaseTypes()!=null) {
                 List<ProducedType> otherCases = type.getCaseTypes();
                 if (cases.size()!=otherCases.size()) {
                     return false;
@@ -97,7 +97,7 @@ public class ProducedType extends ProducedReference {
                 return false;
             }
         }
-        else if (type.getDeclaration() instanceof UnionType) {
+        else if (type.getDeclaration().getCaseTypes()!=null) {
             List<ProducedType> otherCases = type.getCaseTypes();
             if (otherCases.size()==1) {
                 ProducedType st = otherCases.get(0);
@@ -197,7 +197,7 @@ public class ProducedType extends ProducedReference {
         else if (type.getDeclaration() instanceof BottomType) {
             return false;
         }
-        else if (getDeclaration() instanceof UnionType) {
+        else if (getDeclaration().getCaseTypes()!=null) {
             for (ProducedType ct: getInternalCaseTypes()) {
                 if (ct==null || !ct.isSubtypeOf(type, selfTypeToIgnore)) {
                     return false;
@@ -205,13 +205,15 @@ public class ProducedType extends ProducedReference {
             }
             return true;
         }
-        else if (type.getDeclaration() instanceof UnionType) {
+        else if (type.getDeclaration().getCaseTypes()!=null) {
             for (ProducedType ct: type.getInternalCaseTypes()) {
                 if (ct!=null && isSubtypeOf(ct, selfTypeToIgnore)) {
                     return true;
                 }
             }
-            return false;
+            if (type.getDeclaration() instanceof UnionType) {
+                return false;
+            }
         }
         else if (type.getDeclaration() instanceof IntersectionType) {
             for (ProducedType ct: type.getInternalSatisfiedTypes()) {
@@ -229,7 +231,7 @@ public class ProducedType extends ProducedReference {
             }
             return false;
         }
-        else {
+        //else {
             ProducedType st = getSupertype(type.getDeclaration(), selfTypeToIgnore);
             if (st==null) {
                 return false;
@@ -288,7 +290,7 @@ public class ProducedType extends ProducedReference {
                 }
                 return true;
             }
-        }
+        //}
     }
 
     /**
