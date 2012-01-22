@@ -107,7 +107,7 @@ $Foo.prototype.getCounter$Foo$=function getCounter$Foo$(){
     return this.counter$Foo;
 }
 $Foo.prototype.setCounter$Foo$=function setCounter$Foo$(counter){
-    this.counter$Foo=counter;
+    this.counter$Foo=counter; return counter;
 }
 
 //AttributeGetterDefinition count at misc.ceylon (10:4-10:43)

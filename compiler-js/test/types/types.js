@@ -27,7 +27,7 @@ function Pair(x, y, $$pair){
 function Complex(x, y, $$complex){
     if ($$complex===undefined)$$complex=new CeylonObject;
     Pair(x,y,$$complex);
-    $$complex.getString$Pair=$$complex.getString;
+    $$complex.getString$Pair$=$$complex.getString;
     
     //AttributeGetterDefinition string at types.ceylon (20:4-22:4)
     function getString(){
@@ -37,7 +37,7 @@ function Complex(x, y, $$complex){
     
     //AttributeGetterDefinition pairString at types.ceylon (23:4-25:4)
     function getPairString(){
-        return $$complex.getString$Pair();
+        return $$complex.getString$Pair$();
     }
     $$complex.getPairString=getPairString;
     return $$complex;
@@ -111,7 +111,7 @@ function Issue9C1($$issue9C1){
 function Issue9C2($$issue9C2){
     if ($$issue9C2===undefined)$$issue9C2=new CeylonObject;
     Issue9C1($$issue9C2);
-    $$issue9C2.test$Issue9C1=$$issue9C2.test;
+    $$issue9C2.test$Issue9C1$=$$issue9C2.test;
     
     //AttributeDeclaration flag1 at types.ceylon (56:4-56:35)
     var $flag1=$$$cl15.getFalse();
@@ -131,7 +131,7 @@ function Issue9C2($$issue9C2){
         }
         
         setFlag1($$$cl15.getTrue());
-        return $$issue9C2.test$Issue9C1().plus($$$cl15.String("2",1));
+        return $$issue9C2.test$Issue9C1$().plus($$$cl15.String("2",1));
     }
     $$issue9C2.test=test;
     return $$issue9C2;
@@ -141,7 +141,7 @@ function Issue9C2($$issue9C2){
 function Issue9C3($$issue9C3){
     if ($$issue9C3===undefined)$$issue9C3=new CeylonObject;
     Issue9C2($$issue9C3);
-    $$issue9C3.test$Issue9C2=$$issue9C3.test;
+    $$issue9C3.test$Issue9C2$=$$issue9C3.test;
     
     //AttributeDeclaration flag2 at types.ceylon (66:4-66:35)
     var $flag2=$$$cl15.getFalse();
@@ -161,7 +161,7 @@ function Issue9C3($$issue9C3){
         }
         
         setFlag2($$$cl15.getTrue());
-        return $$issue9C3.test$Issue9C2().plus($$$cl15.String("3",1));
+        return $$issue9C3.test$Issue9C2$().plus($$$cl15.String("3",1));
     }
     $$issue9C3.test=test;
     return $$issue9C3;

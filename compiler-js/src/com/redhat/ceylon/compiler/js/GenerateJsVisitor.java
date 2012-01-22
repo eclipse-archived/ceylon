@@ -593,7 +593,7 @@ public class GenerateJsVisitor extends Visitor
             memberName(d);
             out("$");
             out(parent);
-            out("=");
+            out("$=");
             self(sub);
             out(".");
             memberName(d);
@@ -609,7 +609,7 @@ public class GenerateJsVisitor extends Visitor
             out(getter(d));
             out("$");
             out(parent);
-            out("=");
+            out("$=");
             self(sub);
             out(".");
             out(getter(d));
@@ -625,7 +625,7 @@ public class GenerateJsVisitor extends Visitor
             out(setter(d));
             out("$");
             out(parent);
-            out("=");
+            out("$=");
             self(sub);
             out(".");
             out(setter(d));
@@ -982,10 +982,7 @@ public class GenerateJsVisitor extends Visitor
     		 ClassOrInterface type = Util.getContainingClassOrInterface(that.getScope());
     		 ClassOrInterface parentType = type.getExtendedTypeDeclaration();
     		 if (parentType != null) {
-    			 postfix = '$' + parentType.getName();
-    			 if (prototypeStyle) {
-    				 postfix += '$';
-    			 }
+    			 postfix = '$' + parentType.getName() + '$';
     		 }
     	}
         if (that.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter ||
@@ -1277,7 +1274,7 @@ public class GenerateJsVisitor extends Visitor
     				&& (container instanceof ClassOrInterface)) {
     		ClassOrInterface parentType = (ClassOrInterface) container;
     		name += '$' + parentType.getName();
-    		if (prototypeStyle && (forGetterSetter || (d instanceof Method))) {
+    		if (forGetterSetter || (d instanceof Method)) {
     			name += '$';
     		}
     		

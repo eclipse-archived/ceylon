@@ -161,7 +161,7 @@ $Issue9C2.prototype.getFlag1$Issue9C2$=function getFlag1$Issue9C2$(){
     return this.flag1$Issue9C2;
 }
 $Issue9C2.prototype.setFlag1$Issue9C2$=function setFlag1$Issue9C2$(flag1){
-    this.flag1$Issue9C2=flag1;
+    this.flag1$Issue9C2=flag1; return flag1;
 }
 
 //MethodDefinition test at types.ceylon (57:4-63:4)
@@ -197,7 +197,7 @@ $Issue9C3.prototype.getFlag2$Issue9C3$=function getFlag2$Issue9C3$(){
     return this.flag2$Issue9C3;
 }
 $Issue9C3.prototype.setFlag2$Issue9C3$=function setFlag2$Issue9C3$(flag2){
-    this.flag2$Issue9C3=flag2;
+    this.flag2$Issue9C3=flag2; return flag2;
 }
 
 //MethodDefinition test at types.ceylon (67:4-73:4)

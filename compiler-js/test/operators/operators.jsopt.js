@@ -15,20 +15,20 @@ function expect(actual,expected,text){
 function testIntegerOperators(){
     
     //AttributeDeclaration i1 at operators.ceylon (12:4-12:29)
-    var $i1=$$$cl15.Integer(4).negativeValue();
+    var $i1=$$$cl15.Integer(4).getNegativeValue();
     function getI1(){
         return $i1;
     }
     function setI1(i1){
-        $i1=i1;
+        $i1=i1; return i1;
     }
-    setI1(getI1().negativeValue());
+    setI1(getI1().getNegativeValue());
     expect(getI1(),$$$cl15.Integer(4),$$$cl15.String("negation",8));
-    setI1($$$cl15.Integer(987654).negativeValue().positiveValue());
-    expect(getI1(),$$$cl15.Integer(987654).negativeValue(),$$$cl15.String("positive",8));
-    setI1($$$cl15.Integer(0).positiveValue());
+    setI1($$$cl15.Integer(987654).getNegativeValue().getPositiveValue());
+    expect(getI1(),$$$cl15.Integer(987654).getNegativeValue(),$$$cl15.String("positive",8));
+    setI1($$$cl15.Integer(0).getPositiveValue());
     expect(getI1(),$$$cl15.Integer(0),$$$cl15.String("+0=0",4));
-    setI1($$$cl15.Integer(0).negativeValue());
+    setI1($$$cl15.Integer(0).getNegativeValue());
     expect(getI1(),$$$cl15.Integer(0),$$$cl15.String("+0=0",4));
     
     //AttributeDeclaration i2 at operators.ceylon (22:4-22:36)
@@ -37,12 +37,12 @@ function testIntegerOperators(){
         return $i2;
     }
     function setI2(i2){
-        $i2=i2;
+        $i2=i2; return i2;
     }
     expect(getI2(),$$$cl15.Integer(579),$$$cl15.String("addition",8));
     setI1(getI2().minus($$$cl15.Integer(16)));
     expect(getI1(),$$$cl15.Integer(563),$$$cl15.String("subtraction",11));
-    setI2(getI1().negativeValue().plus(getI2()).minus($$$cl15.Integer(1)));
+    setI2(getI1().getNegativeValue().plus(getI2()).minus($$$cl15.Integer(1)));
     expect(getI2(),$$$cl15.Integer(15),$$$cl15.String("-i1+i2-1",8));
     setI1($$$cl15.Integer(3).times($$$cl15.Integer(7)));
     expect(getI1(),$$$cl15.Integer(21),$$$cl15.String("multiplication",14));
@@ -50,8 +50,8 @@ function testIntegerOperators(){
     expect(getI2(),$$$cl15.Integer(42),$$$cl15.String("multiplication",14));
     setI2($$$cl15.Integer(17).divided($$$cl15.Integer(4)));
     expect(getI2(),$$$cl15.Integer(4),$$$cl15.String("integer division",16));
-    setI1(getI2().times($$$cl15.Integer(516)).divided(getI1().negativeValue()));
-    expect(getI1(),$$$cl15.Integer(98).negativeValue(),$$$cl15.String("i2*516/-i1",10));
+    setI1(getI2().times($$$cl15.Integer(516)).divided(getI1().getNegativeValue()));
+    expect(getI1(),$$$cl15.Integer(98).getNegativeValue(),$$$cl15.String("i2*516/-i1",10));
     setI1($$$cl15.Integer(15).remainder($$$cl15.Integer(4)));
     expect(getI1(),$$$cl15.Integer(3),$$$cl15.String("modulo",6));
     setI2($$$cl15.Integer(312).remainder($$$cl15.Integer(12)));
@@ -66,20 +66,20 @@ function testIntegerOperators(){
 function testFloatOperators(){
     
     //AttributeDeclaration f1 at operators.ceylon (51:4-51:29)
-    var $f1=$$$cl15.Float(4.2).negativeValue();
+    var $f1=$$$cl15.Float(4.2).getNegativeValue();
     function getF1(){
         return $f1;
     }
     function setF1(f1){
-        $f1=f1;
+        $f1=f1; return f1;
     }
-    setF1(getF1().negativeValue());
+    setF1(getF1().getNegativeValue());
     expect(getF1(),$$$cl15.Float(4.2),$$$cl15.String("negation",8));
-    setF1($$$cl15.Float(987654.9925567).negativeValue().positiveValue());
-    expect(getF1(),$$$cl15.Float(987654.9925567).negativeValue(),$$$cl15.String("positive",8));
-    setF1($$$cl15.Float(0.0).positiveValue());
+    setF1($$$cl15.Float(987654.9925567).getNegativeValue().getPositiveValue());
+    expect(getF1(),$$$cl15.Float(987654.9925567).getNegativeValue(),$$$cl15.String("positive",8));
+    setF1($$$cl15.Float(0.0).getPositiveValue());
     expect(getF1(),$$$cl15.Float(0.0),$$$cl15.String("+0.0=0.0",8));
-    setF1($$$cl15.Float(0.0).negativeValue());
+    setF1($$$cl15.Float(0.0).getNegativeValue());
     expect(getF1(),$$$cl15.Float(0.0),$$$cl15.String("-0.0=0.0",8));
     
     //AttributeDeclaration f2 at operators.ceylon (61:4-61:43)
@@ -88,20 +88,20 @@ function testFloatOperators(){
         return $f2;
     }
     function setF2(f2){
-        $f2=f2;
+        $f2=f2; return f2;
     }
     expect(getF2(),$$$cl15.Float(459.14159265),$$$cl15.String("addition",8));
     setF1(getF2().minus($$$cl15.Float(0.0016)));
     expect(getF1(),$$$cl15.Float(459.13999265),$$$cl15.String("subtraction",11));
-    setF2(getF1().negativeValue().plus(getF2()).minus($$$cl15.Float(1.2)));
-    expect(getF2(),$$$cl15.Float(1.1984000000000037).negativeValue(),$$$cl15.String("-f1+f2-1.2",10));
+    setF2(getF1().getNegativeValue().plus(getF2()).minus($$$cl15.Float(1.2)));
+    expect(getF2(),$$$cl15.Float(1.1984000000000037).getNegativeValue(),$$$cl15.String("-f1+f2-1.2",10));
     setF1($$$cl15.Float(3.0).times($$$cl15.Float(0.79)));
     expect(getF1(),$$$cl15.Float(2.37),$$$cl15.String("multiplication",14));
     setF2(getF1().times($$$cl15.Float(2.0e13)));
     expect(getF2(),$$$cl15.Float(47400000000000.0),$$$cl15.String("multiplication",14));
     setF2($$$cl15.Float(17.1).divided($$$cl15.Float(4.0E-18)));
     expect(getF2(),$$$cl15.Float(4275000000000000000.0),$$$cl15.String("division",8));
-    setF1(getF2().times($$$cl15.Float(51.6e2)).divided(getF1().negativeValue()));
+    setF1(getF2().times($$$cl15.Float(51.6e2)).divided(getF1().getNegativeValue()));
     expect(getF2(),$$$cl15.Float(4275000000000000000.0),$$$cl15.String("f2*51.6e2/-f1",13));
     setF1($$$cl15.Float(150.0).power($$$cl15.Float(0.5)));
     expect(getF1(),$$$cl15.Float(12.24744871391589),$$$cl15.String("power",5));
@@ -140,7 +140,7 @@ function testBooleanOperators(){
         return $b1;
     }
     function setB1(b1){
-        $b1=b1;
+        $b1=b1; return b1;
     }
     expect(getB1(),$$$cl15.getFalse(),$$$cl15.String("identity",8));
     
@@ -150,7 +150,7 @@ function testBooleanOperators(){
         return $b2;
     }
     function setB2(b2){
-        $b2=b2;
+        $b2=b2; return b2;
     }
     expect(getB2(),$$$cl15.getTrue(),$$$cl15.String("identity",8));
     setB1(getO1().equals(getO2()));
@@ -168,7 +168,7 @@ function testBooleanOperators(){
         return $b3;
     }
     function setB3(b3){
-        $b3=b3;
+        $b3=b3; return b3;
     }
     expect(getB3(),$$$cl15.getFalse(),$$$cl15.String("not",3));
     setB1(($$$cl15.getTrue()===$$$cl15.getTrue()?$$$cl15.getFalse():$$$cl15.getFalse()));
@@ -236,7 +236,7 @@ function testComparisonOperators(){
         return $b1;
     }
     function setB1(b1){
-        $b1=b1;
+        $b1=b1; return b1;
     }
     expect(getB1(),$$$cl15.getTrue(),$$$cl15.String("smaller",7));
     
@@ -246,7 +246,7 @@ function testComparisonOperators(){
         return $b2;
     }
     function setB2(b2){
-        $b2=b2;
+        $b2=b2; return b2;
     }
     expect(getB2(),$$$cl15.getFalse(),$$$cl15.String("larger",6));
     
@@ -256,7 +256,7 @@ function testComparisonOperators(){
         return $b3;
     }
     function setB3(b3){
-        $b3=b3;
+        $b3=b3; return b3;
     }
     expect(getB3(),$$$cl15.getTrue(),$$$cl15.String("small as",8));
     
@@ -266,7 +266,7 @@ function testComparisonOperators(){
         return $b4;
     }
     function setB4(b4){
-        $b4=b4;
+        $b4=b4; return b4;
     }
     expect(getB4(),$$$cl15.getFalse(),$$$cl15.String("large as",8));
     setB1($$$cl15.String("str1",4).compare($$$cl15.String("str1",4)).equals($$$cl15.getSmaller()));
@@ -337,7 +337,7 @@ function testCollectionOperators(){
     expect(getS2(),$$$cl15.String("null",4),$$$cl15.String("lookup",6));
     
     //AttributeDeclaration s3 at operators.ceylon (168:4-168:31)
-    var $s3=function($){return $!==null?$:$$$cl15.String("null",4)}(getSeq1().item($$$cl15.Integer(1).negativeValue()));
+    var $s3=function($){return $!==null?$:$$$cl15.String("null",4)}(getSeq1().item($$$cl15.Integer(1).getNegativeValue()));
     function getS3(){
         return $s3;
     }
@@ -403,7 +403,7 @@ function testIncDecOperators(){
         return $i1;
     }
     function setI1(i1){
-        $i1=i1;
+        $i1=i1; return i1;
     }
     
     //MethodDefinition f1 at operators.ceylon (189:4-193:4)
@@ -432,7 +432,7 @@ function testIncDecOperators(){
         return this.i;
     }
     $C1.prototype.setI=function setI(i){
-        this.i=i;
+        this.i=i; return i;
     }
     function C1($$c1){
         if ($$c1===undefined)$$c1=new $C1;
@@ -454,7 +454,7 @@ function testIncDecOperators(){
         return $i3;
     }
     function setI3(i3){
-        $i3=i3;
+        $i3=i3; return i3;
     }
     
     //MethodDefinition f2 at operators.ceylon (199:4-202:4)
@@ -498,7 +498,7 @@ function testIncDecOperators(){
     function f4(){
         
         //AttributeDeclaration i2 at operators.ceylon (221:8-221:25)
-        var $i2=function($){setI1($.getSuccessor());return $}(getI1());
+        var $i2=(function($){setI1($.getSuccessor());return $}(getI1()));
         function getI2(){
             return $i2;
         }
@@ -520,7 +520,7 @@ function testIncDecOperators(){
     function f5(){
         
         //AttributeDeclaration i2 at operators.ceylon (233:8-233:25)
-        var $i2=function($){setI1($.getPredecessor());return $}(getI1());
+        var $i2=(function($){setI1($.getPredecessor());return $}(getI1()));
         function getI2(){
             return $i2;
         }
@@ -548,18 +548,18 @@ function testArithmeticAssignOperators(){
         return $i1;
     }
     function setI1(i1){
-        $i1=i1;
+        $i1=i1; return i1;
     }
     (setI1(getI1().plus($$$cl15.Integer(10))),getI1());
     expect(getI1(),$$$cl15.Integer(11),$$$cl15.String("+= operator",11));
     
     //AttributeDeclaration i2 at operators.ceylon (250:4-250:37)
-    var $i2=(setI1(getI1().plus($$$cl15.Integer(5).negativeValue())),getI1());
+    var $i2=(setI1(getI1().plus($$$cl15.Integer(5).getNegativeValue())),getI1());
     function getI2(){
         return $i2;
     }
     function setI2(i2){
-        $i2=i2;
+        $i2=i2; return i2;
     }
     expect(getI2(),$$$cl15.Integer(6),$$$cl15.String("+= operator",11));
     expect(getI1(),$$$cl15.Integer(6),$$$cl15.String("+= operator",11));
@@ -577,7 +577,7 @@ function testArithmeticAssignOperators(){
         return this.i;
     }
     $C1.prototype.setI=function setI(i){
-        this.i=i;
+        this.i=i; return i;
     }
     function C1($$c1){
         if ($$c1===undefined)$$c1=new $C1;
@@ -599,7 +599,7 @@ function testArithmeticAssignOperators(){
         return $i3;
     }
     function setI3(i3){
-        $i3=i3;
+        $i3=i3; return i3;
     }
     
     //MethodDefinition f at operators.ceylon (257:4-260:4)
@@ -607,14 +607,14 @@ function testArithmeticAssignOperators(){
         (setI3(getI3().getSuccessor()),getI3());
         return getC1();
     }
-    setI2(function($1,$2){var $=$1.getI().plus($2);$1.setI($);return $}(f(),$$$cl15.Integer(11)));
+    setI2((function($1,$2){var $=$1.getI().plus($2);$1.setI($);return $}(f(),$$$cl15.Integer(11))));
     expect(getI2(),$$$cl15.Integer(12),$$$cl15.String("+= operator",11));
     expect(getC1().getI(),$$$cl15.Integer(12),$$$cl15.String("+= operator",11));
     expect(getI3(),$$$cl15.Integer(1),$$$cl15.String("+= operator",11));
     setI2((setI1(getI1().minus($$$cl15.Integer(14))),getI1()));
-    expect(getI1(),$$$cl15.Integer(8).negativeValue(),$$$cl15.String("-= operator",11));
-    expect(getI2(),$$$cl15.Integer(8).negativeValue(),$$$cl15.String("-= operator",11));
-    setI2((setI1(getI1().times($$$cl15.Integer(3).negativeValue())),getI1()));
+    expect(getI1(),$$$cl15.Integer(8).getNegativeValue(),$$$cl15.String("-= operator",11));
+    expect(getI2(),$$$cl15.Integer(8).getNegativeValue(),$$$cl15.String("-= operator",11));
+    setI2((setI1(getI1().times($$$cl15.Integer(3).getNegativeValue())),getI1()));
     expect(getI1(),$$$cl15.Integer(24),$$$cl15.String("*= operator",11));
     expect(getI2(),$$$cl15.Integer(24),$$$cl15.String("*= operator",11));
     setI2((setI1(getI1().divided($$$cl15.Integer(5))),getI1()));
