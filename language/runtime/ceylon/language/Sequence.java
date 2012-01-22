@@ -48,13 +48,6 @@ public interface Sequence<Element>
 
     @Ignore
     public static final class Sequence$impl {
-        public static <Element> boolean getEmpty(Sequence<Element> $this){
-            return false;
-        }
-
-        public static <Element> long getSize(Sequence<Element> $this){
-            return $this.getLastIndex().longValue()+1;
-        }
 
         public static <Element> Element getLast(Sequence<Element> $this){
             Element x = $this.item(Integer.instance($this.getLastIndex().longValue()));
@@ -68,28 +61,6 @@ public interface Sequence<Element>
 
         public static <Element> boolean defines(Sequence<Element> $this, Integer index){
             return index.longValue() <= $this.getLastIndex().longValue();
-        }
-
-        public static <Element> Iterator<? extends Element> getIterator(final Sequence<Element> $this){
-            class SequenceIterator<Element> implements Iterator<Element> {
-                private long from;
-                SequenceIterator(){
-                    this.from = from;
-                }
-                @TypeInfo("Element|ceylon.language.Finished")
-                public final java.lang.Object next() { 
-                    if (from <= $this.getLastIndex().longValue()) {
-                        return $this.item(Integer.instance(from++));
-                    } else {
-                        return exhausted.getExhausted();
-                    }
-                }
-                public final java.lang.String toString() {
-                    return "SequenceIterator";
-                }
-            }
-            
-            return new SequenceIterator<Element>();
         }
         
         public static <Element> java.lang.String toString(Sequence<Element> $this) {

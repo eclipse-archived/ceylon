@@ -89,11 +89,11 @@ public interface Correspondence<Key,Item> {
         }
         @Override
         public boolean getEmpty() {
-            return Sequence$impl.getEmpty(this);
+            return Some$impl.getEmpty(this);
         }
         @Override
         public long getSize() {
-            return Sequence$impl.getSize(this);
+            return List$impl.getSize(this);
         }
         @Override
         public Item getLast() {
@@ -105,7 +105,7 @@ public interface Correspondence<Key,Item> {
         }
         @Override
         public Iterator<? extends Item> getIterator() {
-            return Sequence$impl.getIterator(this);
+            return List$impl.getIterator(this);
         }
         @Override
         public List<? extends Item> segment(Integer from, Integer length) {

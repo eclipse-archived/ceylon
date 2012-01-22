@@ -225,7 +225,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
 
     @Override
     public boolean getEmpty() {
-        return Sequence$impl.getEmpty(this);
+        return Some$impl.getEmpty(this);
     }
 
     @Override
