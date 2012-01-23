@@ -28,7 +28,7 @@ import java.lang{
 @error
 class SatisfiesFileFilter() satisfies FileFilter {
     @error
-    shared actual Boolean accept(@error File f) {
+    shared actual Boolean accept(@error File? f) {
         return true;
     }
 }
@@ -37,7 +37,7 @@ class SatisfiesFileFilter() satisfies FileFilter {
 @error
 class SatisfiesFilenameFilter() satisfies FilenameFilter {
     @error
-    shared actual Boolean accept(@error File dir, String name) {
+    shared actual Boolean accept(@error File? dir, String? name) {
         return true;
     }
 }
