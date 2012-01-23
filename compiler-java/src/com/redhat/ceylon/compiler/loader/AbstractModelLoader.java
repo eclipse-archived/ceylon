@@ -746,7 +746,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 if(methodMirror == constructor) {
                     ((Class)klass).setOverloaded(isOverloaded);
                     if(!(klass instanceof LazyClass) || !((LazyClass)klass).isTopLevelObjectType())
-                        setParameters((Class)klass, methodMirror);
+                        setParameters((Class)klass, methodMirror, isCeylon);
                 } else if(methodMirror.isConstructor()) {
                     // skip other constructors
                 } else if(isGetter(methodMirror)) {
@@ -780,7 +780,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     if(isEqualsMethod(methodMirror))
                         setEqualsParameters(method, methodMirror);
                     else
-                        setParameters(method, methodMirror);
+                        setParameters(method, methodMirror, isCeylon);
                     
                     // and its return type
                     ProducedType type = getMethodReturnType(methodMirrors, method);
@@ -1004,7 +1004,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             klass.setExtendedType(extendedType);
     }
 
-    private void setParameters(Functional decl, MethodMirror methodMirror) {
+    private void setParameters(Functional decl, MethodMirror methodMirror, boolean isCeylon) {
         ParameterList parameters = new ParameterList();
         decl.addParameterList(parameters);
         for(VariableMirror paramMirror : methodMirror.getParameters()){
@@ -1019,7 +1019,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(paramName == null)
                 paramName = paramMirror.getName();
             parameter.setName(paramName);
-            parameter.setType(obtainType(paramMirror.getType(), paramMirror, (Scope) decl));
+            TypeMirror typeMirror = paramMirror.getType();
+            ProducedType type = obtainType(typeMirror, paramMirror, (Scope) decl);
+            if(!isCeylon && !typeMirror.isPrimitive()){
+                // Java parameters are all optional unless primitives
+                type = typeFactory.getOptionalType(type);
+            }
+            parameter.setType(type );
             if(paramMirror.getAnnotation(CEYLON_SEQUENCED_ANNOTATION) != null)
                 parameter.setSequenced(true);
             if(paramMirror.getAnnotation(CEYLON_DEFAULTED_ANNOTATION) != null)
@@ -1090,7 +1096,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         setTypeParameters(method, meth);
 
         // now its parameters
-        setParameters(method, meth);
+        setParameters(method, meth, true /* toplevel methods are always Ceylon */);
         method.setType(obtainType(meth.getReturnType(), meth, method));
         markUnboxed(method, meth.getReturnType());
      }
