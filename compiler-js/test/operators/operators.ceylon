@@ -165,8 +165,12 @@ void testCollectionOperators() {
     expect(s1, "one", "lookup");
     String s2 = seq1[2]?"null";
     expect(s2, "null", "lookup");
-    String s3 = seq1[-1]?"null"; 
-    expect(s3, "null", "lookup");           
+    String s3 = seq1[-1]?"null";
+    expect(s3, "null", "lookup");
+    variable Sequence<String>? unsafe := seq1;
+    expect(exists unsafe?[0], true, "safe index");
+    unsafe := null;
+    expect(exists unsafe?[0], false, "safe index");
 }
 
 void testNullsafeOperators() {
