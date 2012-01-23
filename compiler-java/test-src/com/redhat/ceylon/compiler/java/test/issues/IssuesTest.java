@@ -129,4 +129,13 @@ public class IssuesTest extends CompilerTest {
     public void testBug329(){
         compareWithJavaSource("Bug329");
     }
+
+    @Test
+    public void testBug330(){
+        // compile them both at the same time
+        compile("Bug330_1.ceylon", "Bug330_2.ceylon");
+        // compile them individually, loading the other half from the .car
+        compile("Bug330_1.ceylon");
+        compile("Bug330_2.ceylon");
+    }
 }
