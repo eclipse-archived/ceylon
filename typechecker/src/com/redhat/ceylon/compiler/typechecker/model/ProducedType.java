@@ -26,6 +26,11 @@ public class ProducedType extends ProducedReference {
     public TypeDeclaration getDeclaration() {
         return (TypeDeclaration) super.getDeclaration();
     }
+    
+    boolean isEquivalentToCases() {
+        TypeDeclaration dec = getDeclaration();
+        return dec.getCaseTypes()!=null && !(dec instanceof TypeParameter);
+    }
 
     /**
      * Is this type exactly the same type as the
@@ -35,9 +40,9 @@ public class ProducedType extends ProducedReference {
         if (getDeclaration() instanceof BottomType) {
             return type.getDeclaration() instanceof BottomType;
         }
-        else if (getDeclaration().getCaseTypes()!=null) {
+        else if (isEquivalentToCases()) {
             List<ProducedType> cases = getCaseTypes();
-            if (type.getDeclaration().getCaseTypes()!=null) {
+            if (type.isEquivalentToCases()) {
                 List<ProducedType> otherCases = type.getCaseTypes();
                 if (cases.size()!=otherCases.size()) {
                     return false;
@@ -97,7 +102,7 @@ public class ProducedType extends ProducedReference {
                 return false;
             }
         }
-        else if (type.getDeclaration().getCaseTypes()!=null) {
+        else if (type.isEquivalentToCases()) {
             List<ProducedType> otherCases = type.getCaseTypes();
             if (otherCases.size()==1) {
                 ProducedType st = otherCases.get(0);
@@ -198,14 +203,21 @@ public class ProducedType extends ProducedReference {
             return false;
         }
         else if (getDeclaration().getCaseTypes()!=null) {
+            boolean assignable = true;
             for (ProducedType ct: getInternalCaseTypes()) {
                 if (ct==null || !ct.isSubtypeOf(type, selfTypeToIgnore)) {
-                    return false;
+                    assignable = false;
                 }
             }
-            return true;
+            if (assignable) {
+                return true;
+            }
+            else if (type.getDeclaration() instanceof UnionType) {
+                return false;
+            }
+            //else fall through
         }
-        else if (type.getDeclaration().getCaseTypes()!=null) {
+        else if (type.isEquivalentToCases()) {
             for (ProducedType ct: type.getInternalCaseTypes()) {
                 if (ct!=null && isSubtypeOf(ct, selfTypeToIgnore)) {
                     return true;
@@ -214,6 +226,7 @@ public class ProducedType extends ProducedReference {
             if (type.getDeclaration() instanceof UnionType) {
                 return false;
             }
+            //else fall through
         }
         else if (type.getDeclaration() instanceof IntersectionType) {
             for (ProducedType ct: type.getInternalSatisfiedTypes()) {
