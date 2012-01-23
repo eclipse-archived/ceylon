@@ -12,8 +12,14 @@ function expect(actual,expected,text){
 }
 
 //ClassDefinition Pair at types.ceylon (10:0-16:0)
+function $Pair(){}
+for(var $ in CeylonObject.prototype){
+    var $m=CeylonObject.prototype[$];
+    $Pair.prototype[$]=$m;
+    if($.charAt($.length-1)!=='$'){$Pair.prototype[$+'$CeylonObject$']=$m}
+}
 function Pair(x, y, $$pair){
-    if ($$pair===undefined)$$pair=new CeylonObject;
+    if ($$pair===undefined)$$pair=new $Pair;
     
     //AttributeGetterDefinition string at types.ceylon (13:4-15:4)
     function getString(){
@@ -24,8 +30,9 @@ function Pair(x, y, $$pair){
 }
 
 //ClassDefinition Complex at types.ceylon (18:0-26:0)
+function $Complex(){}
 function Complex(x, y, $$complex){
-    if ($$complex===undefined)$$complex=new CeylonObject;
+    if ($$complex===undefined)$$complex=new $Complex;
     Pair(x,y,$$complex);
     $$complex.getString$Pair$=$$complex.getString;
     
@@ -44,8 +51,9 @@ function Complex(x, y, $$complex){
 }
 
 //InterfaceDefinition List at types.ceylon (28:0-33:0)
+function $List(){}
 function List($$list){
-    if ($$list===undefined)$$list=new CeylonObject;
+    if ($$list===undefined)$$list=new $List;
     
     //AttributeGetterDefinition empty at types.ceylon (30:4-32:4)
     function getEmpty(){
@@ -56,8 +64,14 @@ function List($$list){
 }
 
 //ClassDefinition ConcreteList at types.ceylon (35:0-43:0)
+function $ConcreteList(){}
+for(var $ in CeylonObject.prototype){
+    var $m=CeylonObject.prototype[$];
+    $ConcreteList.prototype[$]=$m;
+    if($.charAt($.length-1)!=='$'){$ConcreteList.prototype[$+'$CeylonObject$']=$m}
+}
 function ConcreteList(xs, $$concreteList){
-    if ($$concreteList===undefined)$$concreteList=new CeylonObject;
+    if ($$concreteList===undefined)$$concreteList=new $ConcreteList;
     List($$concreteList);
     
     //AttributeGetterDefinition size at types.ceylon (37:4-39:4)
@@ -75,8 +89,9 @@ function ConcreteList(xs, $$concreteList){
 }
 
 //ClassDefinition Couple at types.ceylon (45:0-50:0)
+function $Couple(){}
 function Couple(x, y, $$couple){
-    if ($$couple===undefined)$$couple=new CeylonObject;
+    if ($$couple===undefined)$$couple=new $Couple;
     Pair(x,y,$$couple);
     
     //AttributeDeclaration x at types.ceylon (48:4-48:18)
@@ -96,8 +111,14 @@ function Couple(x, y, $$couple){
 }
 
 //ClassDefinition Issue9C1 at types.ceylon (52:0-54:0)
+function $Issue9C1(){}
+for(var $ in CeylonObject.prototype){
+    var $m=CeylonObject.prototype[$];
+    $Issue9C1.prototype[$]=$m;
+    if($.charAt($.length-1)!=='$'){$Issue9C1.prototype[$+'$CeylonObject$']=$m}
+}
 function Issue9C1($$issue9C1){
-    if ($$issue9C1===undefined)$$issue9C1=new CeylonObject;
+    if ($$issue9C1===undefined)$$issue9C1=new $Issue9C1;
     
     //MethodDefinition test at types.ceylon (53:4-53:47)
     function test(){
@@ -108,8 +129,9 @@ function Issue9C1($$issue9C1){
 }
 
 //ClassDefinition Issue9C2 at types.ceylon (55:0-64:0)
+function $Issue9C2(){}
 function Issue9C2($$issue9C2){
-    if ($$issue9C2===undefined)$$issue9C2=new CeylonObject;
+    if ($$issue9C2===undefined)$$issue9C2=new $Issue9C2;
     Issue9C1($$issue9C2);
     $$issue9C2.test$Issue9C1$=$$issue9C2.test;
     
@@ -138,8 +160,9 @@ function Issue9C2($$issue9C2){
 }
 
 //ClassDefinition Issue9C3 at types.ceylon (65:0-74:0)
+function $Issue9C3(){}
 function Issue9C3($$issue9C3){
-    if ($$issue9C3===undefined)$$issue9C3=new CeylonObject;
+    if ($$issue9C3===undefined)$$issue9C3=new $Issue9C3;
     Issue9C2($$issue9C3);
     $$issue9C3.test$Issue9C2$=$$issue9C3.test;
     
