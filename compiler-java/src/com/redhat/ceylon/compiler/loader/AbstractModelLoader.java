@@ -601,10 +601,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             String dependencyName = (String) importAttribute.getValue("name");
             if (dependencyName != null) {
                 if (! dependencyName.equals("java")) {
-                    // FIXME: why is this not used?
                     String dependencyVersion = (String) importAttribute.getValue("version");
                     
-                    Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dependencyName),version);
+                    Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dependencyName), dependencyVersion);
                     
                     Boolean optionalVal = (Boolean) importAttribute.getValue("optional");
                     
