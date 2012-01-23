@@ -122,7 +122,7 @@ public class IssuesTest extends CompilerTest {
 
     @Test
     public void testBug327(){
-        compile("Bug327.ceylon", "Bug327_2.ceylon");
+        compareWithJavaSource("Bug327");
     }
 
     @Test
