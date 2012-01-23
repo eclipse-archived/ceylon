@@ -116,6 +116,16 @@ public class $empty {
         public boolean defines(Integer index) {
             return Empty$impl.defines(this, index);
         }
+        
+        public boolean equals(Object that) {
+            return that instanceof List ?
+                    ((List) that).getEmpty() : false;
+        }
+        
+        @Override
+        public int hashCode() {
+            return 0;
+        }
 
     };
     

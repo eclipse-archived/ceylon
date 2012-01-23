@@ -169,17 +169,18 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     @Override
     public final boolean equals(@Name("that") 
     @TypeInfo("ceylon.language.Equality") java.lang.Object that){
-        if(that instanceof Range) {
+        if (that instanceof Range) {
             Range<Element> $that = (Range<Element>) that;
             return $that.getFirst().equals(getFirst()) && $that.getLast().equals(getLast());
         }
         else {
-            return false;
+            return List$impl.equals(this, that);
         }
     }
     
     @Override
     public int hashCode(){
+        //TODO: not consistent with List hashcode
         return getFirst().hashCode()/2+getLast().hashCode()/2;// TODO: really should be xor
     }
     

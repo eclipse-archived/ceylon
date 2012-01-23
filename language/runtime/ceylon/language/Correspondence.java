@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import java.util.Arrays;
+
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -142,6 +144,15 @@ public interface Correspondence<Key,Item> {
         @Override
         public boolean containsAny(Iterable<?> elements) {
             return Category$impl.containsAny(this, elements);
+        }
+        @Override
+        public boolean equals(java.lang.Object obj) {
+            return List$impl.equals(this, obj);
+        }
+        @Override
+        public int hashCode() {
+            //TODO!!!!
+            return 0;
         }
     }
     

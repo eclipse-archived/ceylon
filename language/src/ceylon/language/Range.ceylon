@@ -165,10 +165,12 @@ shared class Range<Element>(Element first, Element last)
          their endpoints."
     shared actual Boolean equals(Equality that) {
         if (is Range<Element> that) {
+            //optimize for another Range
             return that.first==first && that.last==last;
         }
         else {
-            return false;
+            //it might be another sort of List
+            return that.equals(this);
         }
     }
     

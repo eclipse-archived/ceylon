@@ -163,8 +163,26 @@ public class Singleton<Element>
 
     @Override
     public boolean containsAny(Iterable<?> elements) {
-        // TODO Auto-generated method stub
         return Category$impl.containsAny(this, elements);
     }
 	
+    @Override
+    public boolean equals(java.lang.Object that) {
+        if (that instanceof List) {
+            List other = (List) that;
+            if (other.getSize()==1) {
+                java.lang.Object elem = other.item(0);
+                return element==elem || 
+                        elem!=null && element!=null &&
+                        elem.equals(element);
+            }
+        }
+        return false;
+    }
+    
+    @Override
+    public int hashCode() {
+        return element==null ? 0 : element.hashCode();
+    }
+    
 }

@@ -184,32 +184,16 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
     
     @Override
-    public boolean equals(java.lang.Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof Sequence))
-            return false;
-        @SuppressWarnings("unchecked")
-        Sequence<? extends Element> other = (Sequence<? extends Element>) obj;
-        if (getSize() != other.getSize()) {
-            return false;
-        }
-        Iterator<? extends Element> thisIterator = getIterator();
-        Iterator<? extends Element> otherIterator = other.getIterator();
-        java.lang.Object thisHead = thisIterator.next();
-        java.lang.Object otherHead = otherIterator.next();
-        while (thisHead != exhausted.getExhausted() && otherHead != exhausted.getExhausted()) {
-            if (!thisHead.equals(otherHead)) {
-                return false;
-            }
-            thisHead = thisIterator.next();
-            otherHead = otherIterator.next();
-        }
-        return (thisHead == exhausted.getExhausted() && otherHead == exhausted.getExhausted());
+    public boolean equals(java.lang.Object that) {
+        return List$impl.equals(this, that);
     }
 
+    @Override
+    public int hashCode() {
+        //TOOD: this is not a great impl
+        return Arrays.hashCode(array);
+    }
+    
     @Override
     public boolean contains(java.lang.Object element) {
         for (Element x: array) {
@@ -229,13 +213,12 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Override
     public boolean containsEvery(Iterable<?> elements) {
-        return false;
+        return Category$impl.containsEvery(this, elements);
     }
 
     @Override
     public boolean containsAny(Iterable<?> elements) {
-        // TODO Auto-generated method stub
-        return false;
+        return Category$impl.containsAny(this, elements);
     }
     
 }
