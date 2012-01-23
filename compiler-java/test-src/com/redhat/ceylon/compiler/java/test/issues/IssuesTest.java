@@ -124,4 +124,9 @@ public class IssuesTest extends CompilerTest {
     public void testBug327(){
         compile("Bug327.ceylon", "Bug327_2.ceylon");
     }
+
+    @Test
+    public void testBug329(){
+        compareWithJavaSource("Bug329");
+    }
 }
