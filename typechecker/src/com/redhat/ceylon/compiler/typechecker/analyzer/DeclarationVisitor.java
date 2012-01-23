@@ -856,9 +856,9 @@ public class DeclarationVisitor extends Visitor {
         if ( that.getAbstractedType()!=null ) {
             that.addWarning("lower bound type constraints are not yet supported");
         }
-        if ( that.getCaseTypes()!=null ) {
+        /*if ( that.getCaseTypes()!=null ) {
             that.addWarning("enumerated type constraints are not yet supported");
-        }
+        }*/
         if ( that.getParameterList()!=null ) {
             that.addWarning("parameter bounds are not yet supported");
         }

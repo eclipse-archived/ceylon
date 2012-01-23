@@ -100,6 +100,23 @@ public class SpecificationVisitor extends Visitor {
     }
 
     @Override
+    public void visit(Tree.ExtendedTypeExpression that) {
+        super.visit(that);
+        visitReference(that);
+    }
+
+    @Override
+    public void visit(Tree.CaseTypes that) {
+        //the BaseMemberExpressions in the CaseTypes
+        //list are actually types, not value refs!
+    }
+    
+    @Override
+    public void visit(Tree.SatisfiedTypes that) {
+        //unnecessary ... for consistency nothing else
+    }
+    
+    @Override
     public void visit(Tree.BaseTypeExpression that) {
         super.visit(that);
         visitReference(that);

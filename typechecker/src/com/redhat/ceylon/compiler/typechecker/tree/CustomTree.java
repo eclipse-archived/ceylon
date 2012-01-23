@@ -291,7 +291,6 @@ public class CustomTree extends Tree {
                     .replace("T", "000000000000")
                     .replace("P", "000000000000000");
         }
-        
     }
 
     public static class FloatLiteral
@@ -313,7 +312,22 @@ public class CustomTree extends Tree {
                     .replace("p", "e-12")
                     .replace("f", "e-15");
         }
-
+    }
+    
+    public static class IsCase
+            extends Tree.IsCase {
+        private Variable variable;
+        public IsCase(Token token) {
+            super(token);
+        }
+        @Override
+        public void setVariable(Variable node) {
+            variable = node;
+        }
+        @Override
+        public Variable getVariable() {
+            return variable;
+        }
     }
 
 }
