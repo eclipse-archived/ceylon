@@ -97,10 +97,10 @@ void test_ranges() {
     expect(nonempty r4.rest, false, "range.rest");
     expect(r1.lastIndex, 4, "range.lastIndex");
     expect(r2.lastIndex, 3, "range.lastIndex");
-    expect(r1.by(2).string, "1,3,5", "range.by");
-    expect(r1.by(3).string, "1,4", "range.by");
-    expect(r2.by(2).string, "7,5", "range.by");
-    expect(r2.by(3).string, "7,4", "range.by");
+    expect(r1.by(2).string, "{1,3,5}", "range.by");
+    expect(r1.by(3).string, "{1,4}", "range.by");
+    expect(r2.by(2).string, "{7,5}", "range.by");
+    expect(r2.by(3).string, "{7,4}", "range.by");
     expect(r4.by(10).string, "123..123", "range.by");
     expect(r1.segment(2,2).string, "3..4", "range.segment");
     expect(nonempty r1.segment(1,0), false, "range.segment");
@@ -113,6 +113,7 @@ void test_ranges() {
     expect(r1.span(3, null).string, "4..5", "range.span");
     expect(r1.span(3, 1000).string, "4..5", "range.span");
     expect(r1.span(0,0).string, "1..1", "range.span");
+    expect(!nonempty (1..2).span(4,5), true, "range.span (out of bounds)");
     expect(r1.definesEvery(1,2,3), true, "range.definesEvery");
     expect(r1.definesEvery(4,5,6,7), false, "range.definesEvery");
     expect(r1.definesAny(1,2,3), true, "range.definesAny");

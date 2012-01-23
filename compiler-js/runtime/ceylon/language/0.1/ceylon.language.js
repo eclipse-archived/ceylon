@@ -433,6 +433,32 @@ function Sequence($$sequence) {
 $Sequence.prototype.getEmpty = function() { return $false }
 $Sequence.prototype.getSize = function() { return Integer(this.getLastIndex()+1) }
 
+function $Empty() {}
+function Empty() {
+    var that = new $Empty;
+    that.value = [];
+    return that;
+}
+$Empty.prototype.getEmpty = function() { return $true; }
+$Empty.prototype.defines = function(x) { return $false; }
+$Empty.prototype.getKeys = function() { return IntCategory(this); }
+$Empty.prototype.definesEvery = function(x) { return $false; }
+$Empty.prototype.definesAny = function(x) { return $false; }
+$Empty.prototype.items = function(x) { return this; }
+$Empty.prototype.getSize = function() { return Integer(0); }
+$Empty.prototype.item = function(x) { return null; }
+$Empty.prototype.getFirst = function() { return null; }
+$Empty.prototype.segment = function(a,b) { return this; }
+$Empty.prototype.span = function(a,b) { return this; }
+$Empty.prototype.getIterator = function() { return EmptyIterator(); }
+
+$empty = Empty();
+
+function $EmptyIterator(){}
+function EmptyIterator() {
+}
+$EmptyIterator.next = function() { return $finished; }
+
 function $ArraySequence() {}
 function ArraySequence(value) {
     var that = new $ArraySequence;
@@ -659,7 +685,7 @@ $Range.prototype.by = function(step) {
     return ArraySequence(seq);
 }
 $Range.prototype.segment = function(from, len) {
-    if (len.compare(Integer(0)) !== larger) return ArraySequence([])
+    if (len.compare(Integer(0)) !== larger) return $empty;
     var x = this.first;
     for (var i=0; i < from.value; i++) { x = this.next(x); }
     //only positive length for now
@@ -670,7 +696,23 @@ $Range.prototype.segment = function(from, len) {
 }
 $Range.prototype.span = function(from, to) {
     from = largest(Integer(0),from);
-    to = to === getNull() ? this.getLastIndex() : smallest(to, this.getLastIndex());
+    if (to === getNull()) {
+        to = this.getLastIndex();
+    }
+    if (this.defines(from) === $false) {
+        //If it's an inverse range, adjust the "from" (upper bound)
+        if (from.compare(to) === larger && this.defines(to) === $true) {
+            //Decrease the upper bound
+            while (!this.defines(from)) {
+                from = from.getPredecessor();
+            }
+        } else {
+            return $empty;
+        }
+    } else while (this.defines(to) === $false) {
+        //decrease the upper bound
+        to = to.getPredecessor();
+    }
     return Range(this.item(from), this.item(to));
 }
 $Range.prototype.definesEvery = function(keys) {
@@ -736,18 +778,18 @@ $Singleton.prototype.getLastIndex = function() { return Integer(0); }
 $Singleton.prototype.getFirst = function() { return this.elem; }
 $Singleton.prototype.getLast = function() { return this.elem; }
 $Singleton.prototype.getEmpty = function() { return $false; }
-$Singleton.prototype.getRest = function() { return ArraySequence([]); }
+$Singleton.prototype.getRest = function() { return $empty; }
 $Singleton.prototype.defines = function(idx) { return idx.equals(Integer(0)); }
 $Singleton.prototype.getKeys = function() { return IntCategory(this); }
 $Singleton.prototype.span = function(from, to) {
 	if (to === undefined || to === null) to = from;
-    return (from.equals(Integer(0)) === getTrue() || to.equals(Integer(0)) === getTrue()) ? this : ArraySequence([])
+    return (from.equals(Integer(0)) === getTrue() || to.equals(Integer(0)) === getTrue()) ? this : $empty;
 }
 $Singleton.prototype.segment = function(idx, len) {
     if (idx.equals(Integer(0)) === getTrue() && len.compare(Integer(0)) === larger) {
         return this;
     }
-    return ArraySequence([]);
+    return $empty;
 }
 $Singleton.prototype.getIterator = function() { return SingletonIterator(this.elem); }
 
@@ -894,6 +936,7 @@ exports.exists=exists;
 exports.nonempty=nonempty;
 exports.parseInteger=$parseInteger;
 exports.parseFloat=$parseFloat;
+exports.empty=$empty;
 
     });
 }(typeof define==='function' && define.amd ? 
