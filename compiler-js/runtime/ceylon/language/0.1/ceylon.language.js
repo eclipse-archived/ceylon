@@ -402,7 +402,7 @@ $finished.getString = function() {return this.string}
 function getExhausted() { return $finished; }
 
 //These are operators for handling nulls
-function exists(value) { return value === getNull() ? getFalse() : getTrue(); }
+function exists(value) { return value === getNull() || value === undefined ? $false : $true; }
 function nonempty(value) { return Boolean$(value && value.value && value.value.length > 0); }
 
 function $Comparison() {}
