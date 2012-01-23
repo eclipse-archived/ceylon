@@ -108,8 +108,14 @@ function testFloatOperators(){
 }
 
 //ClassDefinition OpTest1 at operators.ceylon (81:0-81:17)
+function $OpTest1(){}
+for(var $ in CeylonObject.prototype){
+    var $m=CeylonObject.prototype[$];
+    $OpTest1.prototype[$]=$m;
+    if($.charAt($.length-1)!=='$'){$OpTest1.prototype[$+'$CeylonObject$']=$m}
+}
 function OpTest1($$opTest1){
-    if ($$opTest1===undefined)$$opTest1=new CeylonObject;
+    if ($$opTest1===undefined)$$opTest1=new $OpTest1;
     return $$opTest1;
 }
 
@@ -414,8 +420,14 @@ function testIncDecOperators(){
     f1();
     
     //ClassDefinition C1 at operators.ceylon (196:4-196:49)
+    function $C1(){}
+    for(var $ in CeylonObject.prototype){
+        var $m=CeylonObject.prototype[$];
+        $C1.prototype[$]=$m;
+        if($.charAt($.length-1)!=='$'){$C1.prototype[$+'$CeylonObject$']=$m}
+    }
     function C1($$c1){
-        if ($$c1===undefined)$$c1=new CeylonObject;
+        if ($$c1===undefined)$$c1=new $C1;
         
         //AttributeDeclaration i at operators.ceylon (196:17-196:47)
         var $i=$$$cl15.Integer(1);
@@ -553,8 +565,14 @@ function testArithmeticAssignOperators(){
     expect(getI1(),$$$cl15.Integer(6),$$$cl15.String("+= operator",11));
     
     //ClassDefinition C1 at operators.ceylon (254:4-254:49)
+    function $C1(){}
+    for(var $ in CeylonObject.prototype){
+        var $m=CeylonObject.prototype[$];
+        $C1.prototype[$]=$m;
+        if($.charAt($.length-1)!=='$'){$C1.prototype[$+'$CeylonObject$']=$m}
+    }
     function C1($$c1){
-        if ($$c1===undefined)$$c1=new CeylonObject;
+        if ($$c1===undefined)$$c1=new $C1;
         
         //AttributeDeclaration i at operators.ceylon (254:17-254:47)
         var $i=$$$cl15.Integer(1);

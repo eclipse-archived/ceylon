@@ -30,8 +30,14 @@ function testit(){
     $$$cl15.print(getFoob().getName());
     
     //ObjectDefinition x at testit.ceylon (18:4-22:4)
+    function $x(){}
+    for(var $ in CeylonObject.prototype){
+        var $m=CeylonObject.prototype[$];
+        $x.prototype[$]=$m;
+        if($.charAt($.length-1)!=='$'){$x.prototype[$+'$CeylonObject$']=$m}
+    }
     var $x=function x(){
-        var $$x=new CeylonObject;
+        var $$x=new $x;
         
         //MethodDefinition y at testit.ceylon (19:8-21:8)
         function y(){
@@ -70,8 +76,9 @@ this.testit=testit;
 var $$$cl15=require('ceylon/language/0.1/ceylon.language');
 
 //InterfaceDefinition X at misc.ceylon (1:0-5:0)
+function $X(){}
 function X($$x){
-    if ($$x===undefined)$$x=new CeylonObject;
+    if ($$x===undefined)$$x=new $X;
     
     //MethodDefinition helloWorld at misc.ceylon (2:4-4:4)
     function helloWorld(){
@@ -83,8 +90,14 @@ function X($$x){
 this.X=X;
 
 //ClassDefinition Foo at misc.ceylon (7:0-16:0)
+function $Foo(){}
+for(var $ in CeylonObject.prototype){
+    var $m=CeylonObject.prototype[$];
+    $Foo.prototype[$]=$m;
+    if($.charAt($.length-1)!=='$'){$Foo.prototype[$+'$CeylonObject$']=$m}
+}
 function Foo(name, $$foo){
-    if ($$foo===undefined)$$foo=new CeylonObject;
+    if ($$foo===undefined)$$foo=new $Foo;
     
     //AttributeDeclaration name at misc.ceylon (8:4-8:29)
     var $name=name;
@@ -127,8 +140,9 @@ function Foo(name, $$foo){
 this.Foo=Foo;
 
 //ClassDefinition Bar at misc.ceylon (18:0-32:0)
+function $Bar(){}
 function Bar($$bar){
-    if ($$bar===undefined)$$bar=new CeylonObject;
+    if ($$bar===undefined)$$bar=new $Bar;
     Foo($$$cl15.String("Hello",5),$$bar);
     $$bar.printName$Foo$=$$bar.printName;
     X($$bar);
@@ -141,8 +155,14 @@ function Bar($$bar){
     $$bar.printName=printName;
     
     //ClassDefinition Inner at misc.ceylon (23:4-29:4)
+    function $Inner(){}
+    for(var $ in CeylonObject.prototype){
+        var $m=CeylonObject.prototype[$];
+        $Inner.prototype[$]=$m;
+        if($.charAt($.length-1)!=='$'){$Inner.prototype[$+'$CeylonObject$']=$m}
+    }
     function Inner($$inner){
-        if ($$inner===undefined)$$inner=new CeylonObject;
+        if ($$inner===undefined)$$inner=new $Inner;
         $$$cl15.print($$$cl15.String("creating inner class of :",25).plus($$bar.getName()));
         
         //MethodDefinition incOuter at misc.ceylon (26:8-28:8)
@@ -169,8 +189,14 @@ function doIt(f){
 }
 
 //ObjectDefinition foob at misc.ceylon (42:0-44:0)
+function $foob(){}
+for(var $ in CeylonObject.prototype){
+    var $m=CeylonObject.prototype[$];
+    $foob.prototype[$]=$m;
+    if($.charAt($.length-1)!=='$'){$foob.prototype[$+'$CeylonObject$']=$m}
+}
 var $foob=function foob(){
-    var $$foob=new CeylonObject;
+    var $$foob=new $foob;
     
     //AttributeDeclaration name at misc.ceylon (43:4-43:30)
     var $name=$$$cl15.String("Gavin",5);

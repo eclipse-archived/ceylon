@@ -12,8 +12,14 @@ function expect(actual,expected,text){
 }
 
 //ClassDefinition Counter at members.ceylon (10:0-24:0)
+function $Counter(){}
+for(var $ in CeylonObject.prototype){
+    var $m=CeylonObject.prototype[$];
+    $Counter.prototype[$]=$m;
+    if($.charAt($.length-1)!=='$'){$Counter.prototype[$+'$CeylonObject$']=$m}
+}
 function Counter(initialCount, $$counter){
-    if ($$counter===undefined)$$counter=new CeylonObject;
+    if ($$counter===undefined)$$counter=new $Counter;
     
     //AttributeDeclaration currentCount at members.ceylon (11:4-11:45)
     var $currentCount=initialCount;
@@ -54,8 +60,14 @@ function Counter(initialCount, $$counter){
 this.Counter=Counter;
 
 //ClassDefinition Issue10C1 at members.ceylon (26:0-40:0)
+function $Issue10C1(){}
+for(var $ in CeylonObject.prototype){
+    var $m=CeylonObject.prototype[$];
+    $Issue10C1.prototype[$]=$m;
+    if($.charAt($.length-1)!=='$'){$Issue10C1.prototype[$+'$CeylonObject$']=$m}
+}
 function Issue10C1(arg1, $$issue10C1){
-    if ($$issue10C1===undefined)$$issue10C1=new CeylonObject;
+    if ($$issue10C1===undefined)$$issue10C1=new $Issue10C1;
     
     //AttributeDeclaration i1 at members.ceylon (27:4-27:18)
     var $i1=$$$cl15.Integer(3);
@@ -139,8 +151,9 @@ function Issue10C1(arg1, $$issue10C1){
 }
 
 //ClassDefinition Issue10C2 at members.ceylon (41:0-51:0)
+function $Issue10C2(){}
 function Issue10C2(arg1, $$issue10C2){
-    if ($$issue10C2===undefined)$$issue10C2=new CeylonObject;
+    if ($$issue10C2===undefined)$$issue10C2=new $Issue10C2;
     Issue10C1($$$cl15.Integer(1),$$issue10C2);
     
     //AttributeDeclaration i1 at members.ceylon (42:4-42:18)

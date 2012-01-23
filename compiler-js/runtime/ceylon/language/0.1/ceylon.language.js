@@ -425,9 +425,6 @@ function smallest(x, y) { return x.compare(y) === smaller ? x : y }
 
 function $Sequence() {}
 function Sequence($$sequence) {
-    // TODO: the following additional definition of getEmpty is necessary for closure style.
-    //       We need to find a better solution.
-    $$sequence.getEmpty = function() { return $false }
     return $$sequence;
 }
 $Sequence.prototype.getEmpty = function() { return $false }

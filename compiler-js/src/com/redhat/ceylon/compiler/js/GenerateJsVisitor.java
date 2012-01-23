@@ -361,7 +361,11 @@ public class GenerateJsVisitor extends Visitor
             String parentName = "";
             ExtendedType extType = that.getExtendedType();
             if (extType != null) {
-            	parentName = extType.getType().getDeclarationModel().getName();
+                TypeDeclaration parentTypeDecl = extType.getType().getDeclarationModel();
+                if (definedInCeylonLanguage(parentTypeDecl)) {
+                    return;
+                }
+            	parentName = parentTypeDecl.getName();
             }
             
             final List<Declaration> decs = new ArrayList<Declaration>();
@@ -417,13 +421,13 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void defineType(ClassOrInterface d) {
-        if (prototypeStyle) {
+        //if (prototypeStyle) {
             function();
             out("$");
             out(d.getName());
             out("(){}");
             endLine();
-        }
+        //}
     }
     
     private ClassOrInterface prototypeOwner;
@@ -451,14 +455,14 @@ public class GenerateJsVisitor extends Visitor
         out("===undefined)");
         self(d);
         out("=");
-        if (prototypeStyle) {
+        //if (prototypeStyle) {
             out("new $");
             out(d.getName());
             out(";");
-        }
-        else {
-            newObject();
-        }
+        //}
+        //else {
+        //    newObject();
+        //}
         endLine();
         /*out("var ");
         self(d);
@@ -472,14 +476,14 @@ public class GenerateJsVisitor extends Visitor
         out("var ");
         self(d);
         out("=");
-        if (prototypeStyle) {
+        //if (prototypeStyle) {
             out("new $");
             out(d.getName());
             out(";");
-        }
-        else {
-            newObject();
-        }
+        //}
+        //else {
+        //    newObject();
+        //}
         endLine();
     }
 
@@ -525,20 +529,20 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void copySuperclassPrototype(ExtendedType that, Declaration d) {
-        if (prototypeStyle) {
-            if (that==null) {
-                copyMembersToPrototype("CeylonObject", d);
-            }
-            else {
-                copyMembersToPrototype(that.getType(), d);
-            }
+        if (that==null) {
+            copyMembersToPrototype("CeylonObject", d);
+        }
+        else if (prototypeStyle || definedInCeylonLanguage(that.getType().getDeclarationModel())) {
+            copyMembersToPrototype(that.getType(), d);
         }
     }
 
     private void copyInterfacePrototypes(SatisfiedTypes that, Declaration d) {
-        if (prototypeStyle && that!=null) {
+        if (that!=null) {
             for (Tree.SimpleType st: that.getTypes()) {
-                copyMembersToPrototype(st, d);
+                if (prototypeStyle || definedInCeylonLanguage(st.getDeclarationModel())) {
+                    copyMembersToPrototype(st, d);
+                }
             }
         }
     }
@@ -1207,6 +1211,8 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(Expression that) {
+        //TODO: references to methods of types from ceylon.language always need
+        //      special treatment, even if prototypeStyle==false
         if (prototypeStyle && 
                 that.getTerm() instanceof QualifiedMemberOrTypeExpression) {
             QualifiedMemberOrTypeExpression term = (QualifiedMemberOrTypeExpression) that.getTerm();
@@ -1280,6 +1286,11 @@ public class GenerateJsVisitor extends Visitor
     		
     	}
     	return name;
+    }
+    
+    private boolean definedInCeylonLanguage(TypeDeclaration typeDecl) {
+        return typeDecl.getUnit().getPackage().getQualifiedNameString()
+                .startsWith("ceylon.language");
     }
     
     @Override
