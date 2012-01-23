@@ -1876,14 +1876,18 @@ public class GenerateJsVisitor extends Visitor
     public void visit(IndexExpression that) {
         IndexOperator op = that.getIndexOperator();
         if (op instanceof SafeIndexOp) {
-			//TODO assign in tmp var to avoid 2 calls
-            out("exists(");
-            visitIndex(that);
-            out(")?");
+            clAlias();
+            out(".exists(");
+            that.getPrimary().visit(this);
+            out(")===");
+            clAlias();
+            out(".getTrue()?");
         }
         visitIndex(that);
         if (op instanceof SafeIndexOp) {
-            out(":null");
+            out(":");
+            clAlias();
+            out(".getNull()");
         }
     }
 
