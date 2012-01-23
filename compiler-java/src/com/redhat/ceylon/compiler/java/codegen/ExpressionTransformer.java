@@ -165,15 +165,26 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         if (expectedType != null
                 && !(expectedType.getDeclaration() instanceof TypeParameter) 
-                && willEraseToObject(exprType)
                 // don't add cast to an erased type 
                 && !willEraseToObject(expectedType)
                 // don't add cast for null
                 && !isNothing(exprType)) {
-            // Erased types need a type cast
-            JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.TYPE_ARGUMENT);
-            exprType = expectedType;
-            result = make().TypeCast(targetType, result);
+            if(willEraseToObject(exprType)){
+                // Erased types need a type cast
+                JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.TYPE_ARGUMENT);
+                exprType = expectedType;
+                result = make().TypeCast(targetType, result);
+            }else if(!expectedType.getTypeArguments().isEmpty()){
+                // see if any of those type arguments has variance
+                for(TypeParameter t : expectedType.getTypeArguments().keySet()){
+                    if(t.isContravariant() || t.isCovariant()){
+                        // Types with variance types need a type cast
+                        JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.WANT_RAW_TYPE);
+                        // do not change exprType here since this is just a Java workaround
+                        result = make().TypeCast(targetType, result);
+                    }
+                }
+            }
         }
 
         // we must to the boxing after the cast to the proper type
