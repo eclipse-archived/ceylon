@@ -72,6 +72,9 @@ public class ProducedType extends ProducedReference {
             }
         }
         else if (getDeclaration() instanceof IntersectionType) {
+            //TODO: if any intersected type is an enumerated type, 
+            //      replace it with the union of its cases, then 
+            //      canonicalize the resulting intersection
             List<ProducedType> types = getSatisfiedTypes();
             if (type.getDeclaration() instanceof IntersectionType) {
                 List<ProducedType> otherTypes = type.getSatisfiedTypes();
@@ -113,6 +116,9 @@ public class ProducedType extends ProducedReference {
             }
         }
         else if (type.getDeclaration() instanceof IntersectionType) {
+            //TODO: if any intersected type is an enumerated type, 
+            //      replace it with the union of its cases, then 
+            //      canonicalize the resulting intersection
             List<ProducedType> otherTypes = type.getSatisfiedTypes();
             if (otherTypes.size()==1) {
                 ProducedType st = otherTypes.get(0);
@@ -238,6 +244,9 @@ public class ProducedType extends ProducedReference {
         }
         else if (getDeclaration() instanceof IntersectionType) {
             for (ProducedType ct: getInternalSatisfiedTypes()) {
+                //TODO: if ct is an enumerated type, replace it
+                //      with the union of its cases, then 
+                //      canonicalize the resulting intersection
                 if (ct==null || ct.isSubtypeOf(type, selfTypeToIgnore)) {
                     return true;
                 }
