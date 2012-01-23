@@ -1638,7 +1638,8 @@ public class Check {
                 if (oldit != null) {
                     List<Type> oldparams = oldit.allparams();
                     List<Type> newparams = it.allparams();
-                    if (!types.containsTypeEquivalent(oldparams, newparams))
+                    if (!Context.isCeylon()
+                            && !types.containsTypeEquivalent(oldparams, newparams))
                         log.error(pos, "cant.inherit.diff.arg",
                                   it.tsym, Type.toString(oldparams),
                                   Type.toString(newparams));
