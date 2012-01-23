@@ -2914,10 +2914,10 @@ public class ExpressionVisitor extends Visitor {
 
     /*void checkCaseOfSupertype(Tree.StaticType t, TypeDeclaration td,
             ProducedType type) {
-        //TODO: I think this check might now be unnecessary
-        //      ... at the very least it seems too restrictive,
-        //      since it doesn't allow intermediate types between
-        //      the enumerated type and the case type
+        //TODO: I think this check is a bit too restrictive, since 
+        //      it doesn't allow intermediate types between the 
+        //      enumerated type and the case type, but since the
+        //      similar check below doesn't work, we need it
         if (type.getDeclaration().getCaseTypes()!=null) {
             for (ProducedType ct: type.getDeclaration().getCaseTypes()) {
                 if (ct.substitute(type.getTypeArguments())
@@ -2933,11 +2933,15 @@ public class ExpressionVisitor extends Visitor {
     @Override 
     public void visit(Tree.CaseTypes that) {
         super.visit(that);
-        //TODO: this forces every case to be a subtype of the
-        //      enumerated type, whereas all we really need is 
-        //      for every concrete subtype every case to be a 
-        //      subtype of the enumerated type
+        //this forces every case to be a subtype of the
+        //enumerated type, so that we can make use of the
+        //enumerated type is equivalent to its cases
         TypeDeclaration td = (TypeDeclaration) that.getScope();
+        
+        //TODO: get rid of this awful hack:
+        List<ProducedType> cases = td.getCaseTypes();
+        td.setCaseTypes(null);
+        
         if (!(td instanceof TypeParameter)) {
             for (Tree.StaticType t: that.getTypes()) {
                 ProducedType type = t.getTypeModel();
@@ -2945,7 +2949,7 @@ public class ExpressionVisitor extends Visitor {
                     //it's not a self type
                     if (type!=null) {
                         checkAssignable(type, td.getType(), t, 
-                                "case object must be a subtype");
+                                "case type must be a subtype of enumerated type");
                     }
                 }
             }
@@ -2953,10 +2957,13 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType type = bme.getTypeModel();
                 if (type!=null) {
                     checkAssignable(type, td.getType(), bme, 
-                            "case type must be a subtype");
+                            "case type must be a subtype of enumerated type");
                 }
             }
         }
+        
+        //TODO: get rid of this awful hack:
+        td.setCaseTypes(cases);
     }
 
     private void checkExtensionOfMemberType(Node that, TypeDeclaration td,
