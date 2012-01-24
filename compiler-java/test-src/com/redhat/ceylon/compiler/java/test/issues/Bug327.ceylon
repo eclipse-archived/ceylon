@@ -17,11 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+@nomodel
+@error
 abstract class Bug327() of bug327_foo | bug327_bar {}
 
+@nomodel
 object bug327_foo extends Bug327() {}
+@nomodel
 object bug327_bar extends Bug327() {}
 
+@nomodel
 void bug327_test() {
     Bug327 fb = bug327_foo;
     switch (fb) 
