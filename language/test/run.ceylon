@@ -1,6 +1,6 @@
 shared void run() {
     equality();
-    complex();
+    //complex();
     booleans();
     numbers();
     sequences();
@@ -16,3 +16,5 @@ shared void run() {
     misc();
     results();
 }
+
+shared void test() { run(); }
