@@ -429,6 +429,7 @@ function Sequence($$sequence) {
 }
 $Sequence.prototype.getEmpty = function() { return $false }
 $Sequence.prototype.getSize = function() { return Integer(this.getLastIndex()+1) }
+$Sequence.prototype.defines = function(index) { return Boolean$(index.value<=this.getLastIndex().value) }
 
 function $Empty() {}
 function Empty() {
