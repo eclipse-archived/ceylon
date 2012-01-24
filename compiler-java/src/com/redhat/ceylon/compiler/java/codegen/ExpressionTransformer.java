@@ -174,21 +174,53 @@ public class ExpressionTransformer extends AbstractTransformer {
                 JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.TYPE_ARGUMENT);
                 exprType = expectedType;
                 result = make().TypeCast(targetType, result);
-            }else if(!expectedType.getTypeArguments().isEmpty()){
-                // see if any of those type arguments has variance
-                for(TypeParameter t : expectedType.getTypeArguments().keySet()){
-                    if(t.isContravariant() || t.isCovariant()){
-                        // Types with variance types need a type cast
-                        JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.WANT_RAW_TYPE);
-                        // do not change exprType here since this is just a Java workaround
-                        result = make().TypeCast(targetType, result);
-                    }
-                }
+            }else if(isRawCastNecessaryForVariance(expectedType, exprType)){
+                // Types with variance types need a type cast
+                JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.WANT_RAW_TYPE);
+                // do not change exprType here since this is just a Java workaround
+                result = make().TypeCast(targetType, result);
             }
         }
 
         // we must to the boxing after the cast to the proper type
         return boxUnboxIfNecessary(result, exprBoxed, exprType, boxingStrategy);
+    }
+
+    private boolean isRawCastNecessaryForVariance(ProducedType expectedType, ProducedType exprType) {
+        // exactly the same type, doesn't need casting
+        if(exprType.isExactly(expectedType))
+            return false;
+        // if we're not trying to put it into an interface, there's no need
+        if(!(expectedType.getDeclaration() instanceof Interface))
+            return false;
+        // the interface must have type arguments, otherwise we can't use raw types
+        if(expectedType.getTypeArguments().isEmpty())
+            return false;
+        // see if any of those type arguments has variance
+        boolean hasVariance = false;
+        for(TypeParameter t : expectedType.getTypeArguments().keySet()){
+            if(t.isContravariant() || t.isCovariant()){
+                hasVariance = true;
+            }
+        }
+        if(!hasVariance)
+            return false;
+        // see if we're inheriting the interface twice with different type parameters
+        java.util.List<ProducedType> satisfiedTypes = new LinkedList<ProducedType>();
+        for(ProducedType superType : exprType.getSupertypes()){
+            if(superType.getDeclaration() == expectedType.getDeclaration())
+                satisfiedTypes.add(superType);
+        }
+        // we need at least two instantiations
+        if(satisfiedTypes.size() <= 1)
+            return false;
+        // we need at least one that differs
+        for(ProducedType superType : satisfiedTypes){
+            if(!exprType.isExactly(superType))
+                return true;
+        }
+        // only inheriting from the same type
+        return false;
     }
 
     //
