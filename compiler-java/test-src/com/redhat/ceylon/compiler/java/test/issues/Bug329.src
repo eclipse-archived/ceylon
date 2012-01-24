@@ -1,21 +1,19 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-interface Bug329_Anything {
-}
-interface Bug329_Something extends com.redhat.ceylon.compiler.java.test.issues.Bug329_Anything {
+interface Bug329_Something {
     
-    public abstract .java.lang.String getSomething();
+    public abstract .java.lang.Object getSomething();
 }
 final class bug329_se implements com.redhat.ceylon.compiler.java.test.issues.Bug329_Something {
-    private final .java.lang.String something;
+    private final ceylon.language.String something;
     
     @.java.lang.Override
-    public final .java.lang.String getSomething() {
+    public final ceylon.language.String getSomething() {
         return something;
     }
     
     private bug329_se() {
-        this.something = "somethingElse";
+        this.something = .ceylon.language.String.instance("somethingElse");
     }
     private static final com.redhat.ceylon.compiler.java.test.issues.bug329_se value;
     static {
@@ -29,8 +27,8 @@ final class bug329_se implements com.redhat.ceylon.compiler.java.test.issues.Bug
 final class bug329_se2 implements com.redhat.ceylon.compiler.java.test.issues.Bug329_Something {
     
     @.java.lang.Override
-    public final .java.lang.String getSomething() {
-        return "somethingElse";
+    public final ceylon.language.String getSomething() {
+        return .ceylon.language.String.instance("somethingElse");
     }
     
     private bug329_se2() {

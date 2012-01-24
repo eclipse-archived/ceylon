@@ -18,11 +18,8 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-interface Bug329_Anything{} 
-
-@nomodel
-interface Bug329_Something satisfies Bug329_Anything {
-    shared formal String something;
+interface Bug329_Something {
+    shared formal Object something;
 }
 
 @nomodel
