@@ -6,3 +6,4 @@ require('default/members').test();
 require('default/types').test();
 require('default/operators').test();
 require('default/flow').test();
+require('default/functions').test();

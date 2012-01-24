@@ -24,7 +24,7 @@ function testit(){
     getFoo().printName();
     Bar().printName();
     Bar().Inner();
-    doIt(function(){var $=getFoo();$.inc.apply($,arguments)});
+    doIt(function(){var $=getFoo();return $.inc.apply($,arguments)});
     $$$cl15.print(getFoo().getCount());
     doIt(Bar);
     $$$cl15.print(getFoob().getName());
