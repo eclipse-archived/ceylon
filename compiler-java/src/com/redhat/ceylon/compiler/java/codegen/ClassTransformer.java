@@ -135,8 +135,8 @@ public class ClassTransformer extends AbstractTransformer {
             }
 
             int flags = 0;
-            if (isGenericsImplementation(decl.getDeclarationModel())) {
-                flags |= TYPE_ARGUMENT;
+            if (!decl.getDeclarationModel().getUnboxed()) {
+                flags |= NO_PRIMITIVES;
             }
             JCExpression type = makeJavaType(actualType(decl), flags);
 

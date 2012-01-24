@@ -1124,11 +1124,6 @@ public abstract class AbstractTransformer implements Transformation {
         return exprType;
     }
 
-    protected boolean isGenericsImplementation(TypedDeclaration decl) {
-        return ((TypedDeclaration)Util.getTopmostRefinedDeclaration(decl)).getTypeDeclaration() instanceof TypeParameter;
-    }
-
-
     /*
      * Sequences
      */

@@ -60,8 +60,10 @@ public class AttributeDefinitionBuilder {
     private AbstractTransformer owner;
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, String className, String attrName, String fieldName) {
-        boolean isGenericsType = owner.isGenericsImplementation(attrType);
-        int typeFlags = isGenericsType ? AbstractTransformer.TYPE_ARGUMENT : 0;
+        int typeFlags = 0;
+        if (!attrType.getUnboxed()) {
+            typeFlags |= AbstractTransformer.NO_PRIMITIVES;
+        }
         // Special erasure for the "hash" attribute which gets translated to hashCode()
         if ("hash".equals(attrName) && owner.isCeylonInteger(attrType.getType())) {
             typeFlags = AbstractTransformer.SMALL_TYPE;
