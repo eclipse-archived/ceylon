@@ -1,6 +1,6 @@
 import members { Counter }
 
-shared void testit() {
+shared void test() {
     value name = "hello";
     print(name);
     F foo = F("goodbye");

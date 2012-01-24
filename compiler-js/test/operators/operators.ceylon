@@ -173,6 +173,10 @@ void testCollectionOperators() {
     expect(exists unsafe?[0], false, "safe index");
 }
 
+class NullsafeTest() {
+    shared Integer f() {return 1;}
+}
+
 void testNullsafeOperators() {
     String[] seq = { "hi" };
     String s1 = seq[0]?"null";
@@ -186,6 +190,9 @@ void testNullsafeOperators() {
     String s6 = s4?.uppercased ? "null";
     expect(s5, "null", "nullsafe member");
     expect(s6, "TEST", "nullsafe member");
+    NullsafeTest? obj = null;
+    Integer? i = obj?.f();
+    expect(exists i, false, "nullsafe invoke");
 }
 
 void testIncDecOperators() {

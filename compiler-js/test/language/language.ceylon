@@ -178,6 +178,6 @@ shared void test() {
     test_interpolate();
     test_stringbuilder();
     testCharacter();
-    testString();
+    //testString();
     print("--- End Language Module Tests ---");
 }
