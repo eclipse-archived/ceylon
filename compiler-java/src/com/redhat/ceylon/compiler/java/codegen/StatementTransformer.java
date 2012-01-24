@@ -51,6 +51,7 @@ import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
+import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCCatch;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -510,15 +511,29 @@ public class StatementTransformer extends AbstractTransformer {
                 log.error("ceylon", "switch/satisfies not implemented yet");
                 return make().Exec(make().Erroneous());
             } else if (caseItem instanceof MatchCase) {
-                // TODO Support for 'case (...)' is not implemented yet");
-                log.error("ceylon", "switch/match not implemented yet");
-                return make().Exec(make().Erroneous());
+                last = transformCaseMatch(selectorAlias, caseClause, (MatchCase)caseItem, last);
             } else {
                 log.error("ceylon", "unknown switch case clause: "+caseItem);
                 return make().Exec(make().Erroneous());
             }
         }
         return at(stmt).Block(0, List.of(selector, last));
+    }
+
+    private JCStatement transformCaseMatch(String selectorAlias, CaseClause caseClause, MatchCase matchCase, JCStatement last) {
+        at(matchCase);
+        
+        JCExpression tests = null;
+        java.util.List<Tree.Expression> expressions = matchCase.getExpressionList().getExpressions();
+        for(Tree.Expression expr : expressions){
+            JCExpression transformedExpression = expressionGen().transformExpression(expr);
+            JCBinary test = make().Binary(JCTree.EQ, makeUnquotedIdent(selectorAlias), transformedExpression);
+            if(tests == null)
+                tests = test;
+            else
+                tests = make().Binary(JCTree.OR, tests, test);
+        }
+        return at(caseClause).If(tests, transform(caseClause.getBlock()), last);
     }
 
     /**
