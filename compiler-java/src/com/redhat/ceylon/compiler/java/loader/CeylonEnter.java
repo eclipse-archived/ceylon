@@ -26,6 +26,7 @@ import java.io.IOException;
 import javax.tools.JavaFileManager;
 import javax.tools.StandardLocation;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.compiler.java.codegen.BoxingDeclarationVisitor;
 import com.redhat.ceylon.compiler.java.codegen.BoxingVisitor;
@@ -217,7 +218,13 @@ public class CeylonEnter extends Enter {
         Repository repository = fileManager.getRepository();
         File artifact = null;
         try {
-            artifact = repository.getArtifact(module.getNameAsString(), module.getVersion());
+            ArtifactContext ctx = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);
+            artifact = repository.getArtifact(ctx);
+            if(artifact == null){
+                // try again for a jar
+                ctx.setSuffix(ArtifactContext.JAR);
+                artifact = repository.getArtifact(ctx);
+            }
         } catch (IOException e) {
             // FIXME: error? warning?
             e.printStackTrace();
