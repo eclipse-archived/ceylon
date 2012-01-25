@@ -24,7 +24,7 @@ $Counter.prototype.getCurrentCount$Counter$=function getCurrentCount$Counter$(){
     return this.currentCount$Counter;
 }
 $Counter.prototype.setCurrentCount$Counter$=function setCurrentCount$Counter$(currentCount){
-    this.currentCount$Counter=currentCount;
+    this.currentCount$Counter=currentCount; return currentCount;
 }
 
 //AttributeGetterDefinition count at members.ceylon (12:4-14:4)

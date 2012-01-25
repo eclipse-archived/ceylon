@@ -24,7 +24,7 @@ function testit(){
     getFoo().printName();
     Bar().printName();
     Bar().Inner();
-    doIt(function(){var $=getFoo();$.inc.apply($,arguments)});
+    doIt(function(){var $=getFoo();return $.inc.apply($,arguments)});
     $$$cl15.print(getFoo().getCount());
     doIt(Bar);
     $$$cl15.print(getFoob().getName());
@@ -107,7 +107,7 @@ $Foo.prototype.getCounter$Foo$=function getCounter$Foo$(){
     return this.counter$Foo;
 }
 $Foo.prototype.setCounter$Foo$=function setCounter$Foo$(counter){
-    this.counter$Foo=counter;
+    this.counter$Foo=counter; return counter;
 }
 
 //AttributeGetterDefinition count at misc.ceylon (10:4-10:43)

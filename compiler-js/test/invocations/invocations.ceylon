@@ -1,6 +1,6 @@
 import functions { ... }
 
-shared void invocations() {
+shared void test() {
     helloWorld();
     helloWorld{};
     hello("world");

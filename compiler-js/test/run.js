@@ -1,8 +1,10 @@
-require('default/misc').testit();
-require('default/invocations').invocations();
+require('default/misc').test();
+require('default/invocations').test();
 require('default/language').test();
 require('default/nesting').test();
 require('default/members').test();
 require('default/types').test();
 require('default/operators').test();
 require('default/flow').test();
+require('default/default').test();
+require('default/functions').test();

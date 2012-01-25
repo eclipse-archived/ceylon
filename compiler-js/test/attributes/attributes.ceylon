@@ -7,3 +7,5 @@ String lastName {
 assign lastName {
     print(lastName);
 }
+
+shared void test() {}

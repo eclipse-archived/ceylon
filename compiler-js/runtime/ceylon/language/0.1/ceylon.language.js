@@ -12,6 +12,38 @@ CeylonObject.prototype.toString=function() { return this.getString().value };
 //TODO: we need to distinguish between Objects and IdentifiableObjects
 CeylonObject.prototype.equals = function(other) { return Boolean$(this===other) }
 
+function Object(wat) {
+    return wat;
+}
+function $Cloneable() {}
+function Cloneable(wat) {
+    return wat;
+}
+
+function $Iterable() {}
+function Iterable(wat) {
+    return wat;
+}
+function $Iterator() {}
+function Iterator(wat) {
+    return wat;
+}
+
+function $Exception() {}
+function Exception(wat) {
+    return wat;
+}
+
+function $Comparable() {}
+function Comparable(wat) {
+    return wat;
+}
+
+function $Summable() {}
+function Summable(wat) {
+    return wat;
+}
+
 function $Integer() {}
 function Integer(value) {
     var that = new $Integer;
@@ -71,6 +103,7 @@ $Float.prototype.getNegativeValue = function() { return Float(-this.value) }
 $Float.prototype.getPositiveValue = function() { return this }
 $Float.prototype.equals = function(other) { return Boolean$(other && other.value===this.value) }
 $Float.prototype.compare = function(other) {
+    if (other === null || other === undefined) { return larger; }
     return this.value===other.value ? equal
                                     : (this.value<other.value ? smaller:larger);
 }
@@ -257,6 +290,58 @@ $String.prototype.contains = function(sub) {
     //TODO does this work for unicode, etc?
     return Boolean$(this.value.indexOf(sub.value) >= 0);
 }
+$String.prototype.getNormalized = function() {
+    //TODO IMPLEMENT!!!
+    return this;
+}
+$String.prototype.firstOccurrence = function(sub) {
+    //TODO implement!!!
+    return null;
+}
+$String.prototype.lastOccurrence = function(sub) {
+    //TODO implement!!!
+    return null;
+}
+$String.prototype.firstCharacterOccurrence = function(subc) {
+    //TODO implement!!!
+    return null;
+}
+$String.prototype.lastCharacterOccurrence = function(subc) {
+    //TODO implement!!!
+    return null;
+}
+$String.prototype.getCharacters = function() {
+    //TODO implement!!!
+    return $empty;
+}
+$String.prototype.getKeys = function() {
+    //TODO implement!!!
+    return $empty;
+}
+$String.prototype.join = function(strings) {
+    //TODO implement!!!
+    return this;
+}
+$String.prototype.split = function(seps, discard) {
+    //TODO implement!!!
+    return Singleton(this);
+}
+$String.prototype.getReversed = function() {
+    //TODO implement
+    return this;
+}
+$String.prototype.replace = function(sub, repl) {
+    //TODO implement
+    return this;
+}
+
+$String.prototype.repeat = function(times) {
+    var sb = StringBuilder();
+    for (var i = 0; i < times.value; i++) {
+        sb.append(this);
+    }
+    return sb.getString();
+}
 
 function $StringIterator() {}
 function StringIterator(string) {
@@ -356,6 +441,9 @@ $Character.prototype.getPredecessor = function() {
     if ((succ&0xf800) === 0xd800) {return Character(0xd7ff)}
     return Character((succ>=0) ? succ:0x10ffff);
 }
+$Character.prototype.contains = function(x) {
+    return this.getString().contains(x);
+}
 
 function $StringBuilder() {}
 function StringBuilder() {
@@ -369,8 +457,9 @@ $StringBuilder.prototype.append = function(s) {
     this.value = this.value + s.value;
 }
 $StringBuilder.prototype.appendAll = function(strings) {
+    if (strings === null || strings === undefined) { return this; }
     for (var i = 0; i < strings.value.length; i++) {
-        this.value = this.value + strings.value[i].value;
+        this.value += strings.value[i].value;
     }
     return this; //strictly speaking, this method should return void, but then string interpolation would be a big mess
 }
@@ -402,8 +491,9 @@ $finished.getString = function() {return this.string}
 function getExhausted() { return $finished; }
 
 //These are operators for handling nulls
-function exists(value) { return value === getNull() ? getFalse() : getTrue(); }
-function nonempty(value) { return Boolean$(value && value.value && value.value.length > 0); }
+function exists(value) { return value === getNull() || value === undefined ? $false : $true; }
+function nonempty(value) { return value === null || value === undefined ? $false : Boolean$(value.getEmpty() === $false); }
+//function nonempty(value) { return Boolean$(value && value.value && value.value.length > 0); }
 
 function $Comparison() {}
 function Comparison(name) {
@@ -425,13 +515,39 @@ function smallest(x, y) { return x.compare(y) === smaller ? x : y }
 
 function $Sequence() {}
 function Sequence($$sequence) {
-    // TODO: the following additional definition of getEmpty is necessary for closure style.
-    //       We need to find a better solution.
-    $$sequence.getEmpty = function() { return $false }
     return $$sequence;
 }
 $Sequence.prototype.getEmpty = function() { return $false }
 $Sequence.prototype.getSize = function() { return Integer(this.getLastIndex()+1) }
+$Sequence.prototype.defines = function(index) { return Boolean$(index.value<=this.getLastIndex().value) }
+
+function $Empty() {}
+function Empty() {
+    var that = new $Empty;
+    that.value = [];
+    return that;
+}
+$Empty.prototype.getEmpty = function() { return $true; }
+$Empty.prototype.defines = function(x) { return $false; }
+$Empty.prototype.getKeys = function() { return IntCategory(this); }
+$Empty.prototype.definesEvery = function(x) { return $false; }
+$Empty.prototype.definesAny = function(x) { return $false; }
+$Empty.prototype.items = function(x) { return this; }
+$Empty.prototype.getSize = function() { return Integer(0); }
+$Empty.prototype.item = function(x) { return null; }
+$Empty.prototype.getFirst = function() { return null; }
+$Empty.prototype.segment = function(a,b) { return this; }
+$Empty.prototype.span = function(a,b) { return this; }
+$Empty.prototype.getIterator = function() { return EmptyIterator(); }
+$Empty.prototype.getString = function() { return String$("{}"); }
+$Empty.prototype.contains = function(x) { return $false; }
+
+$empty = Empty();
+
+function $EmptyIterator(){}
+function EmptyIterator() {
+}
+$EmptyIterator.next = function() { return $finished; }
 
 function $ArraySequence() {}
 function ArraySequence(value) {
@@ -441,7 +557,23 @@ function ArraySequence(value) {
 }
 for(var $ in CeylonObject.prototype){$ArraySequence.prototype[$]=CeylonObject.prototype[$]}
 for(var $ in $Sequence.prototype){$ArraySequence.prototype[$]=$Sequence.prototype[$]}
-$ArraySequence.prototype.getString = function() { return String$("{" + this.value.toString() +"}") }
+$ArraySequence.prototype.getString = function() {
+	if (this.value.length === 0) {
+		return String$("{}");
+	}
+    var desc = "{ ";
+    var first = true;
+    for (var i = 0; i < this.value.length; i++) {
+        if (first) {
+            first = false;
+		} else {
+            desc += ", ";
+        }
+        var item = this.value[i];
+        desc += exists(item) === $true ? item.getString().value : "null";
+    }
+    return String$(desc +" }");
+}
 $ArraySequence.prototype.item = function(index) {
     var result = this.value[index.value];
     return result!==undefined ? result:null;
@@ -485,7 +617,10 @@ $ArraySequence.prototype.getRest = function() { return ArraySequence(this.value.
 $ArraySequence.prototype.items = function(keys) {
     var seq = [];
     for (var i = 0; i < keys.getSize().value; i++) {
-        seq.push(this.item(keys.item(Integer(i))));
+        var key = keys.item(Integer(i));
+        if (this.defines(key)) {
+            seq.push(this.item(key));
+        }
     }
     return ArraySequence(seq);
 }
@@ -659,7 +794,7 @@ $Range.prototype.by = function(step) {
     return ArraySequence(seq);
 }
 $Range.prototype.segment = function(from, len) {
-    if (len.compare(Integer(0)) !== larger) return ArraySequence([])
+    if (len.compare(Integer(0)) !== larger) return $empty;
     var x = this.first;
     for (var i=0; i < from.value; i++) { x = this.next(x); }
     //only positive length for now
@@ -670,7 +805,23 @@ $Range.prototype.segment = function(from, len) {
 }
 $Range.prototype.span = function(from, to) {
     from = largest(Integer(0),from);
-    to = to === getNull() ? this.getLastIndex() : smallest(to, this.getLastIndex());
+    if (to === getNull()) {
+        to = this.getLastIndex();
+    }
+    if (this.defines(from) === $false) {
+        //If it's an inverse range, adjust the "from" (upper bound)
+        if (from.compare(to) === larger && this.defines(to) === $true) {
+            //Decrease the upper bound
+            while (!this.defines(from)) {
+                from = from.getPredecessor();
+            }
+        } else {
+            return $empty;
+        }
+    } else while (this.defines(to) === $false) {
+        //decrease the upper bound
+        to = to.getPredecessor();
+    }
     return Range(this.item(from), this.item(to));
 }
 $Range.prototype.definesEvery = function(keys) {
@@ -736,18 +887,18 @@ $Singleton.prototype.getLastIndex = function() { return Integer(0); }
 $Singleton.prototype.getFirst = function() { return this.elem; }
 $Singleton.prototype.getLast = function() { return this.elem; }
 $Singleton.prototype.getEmpty = function() { return $false; }
-$Singleton.prototype.getRest = function() { return ArraySequence([]); }
+$Singleton.prototype.getRest = function() { return $empty; }
 $Singleton.prototype.defines = function(idx) { return idx.equals(Integer(0)); }
 $Singleton.prototype.getKeys = function() { return IntCategory(this); }
 $Singleton.prototype.span = function(from, to) {
 	if (to === undefined || to === null) to = from;
-    return (from.equals(Integer(0)) === getTrue() || to.equals(Integer(0)) === getTrue()) ? this : ArraySequence([])
+    return (from.equals(Integer(0)) === getTrue() || to.equals(Integer(0)) === getTrue()) ? this : $empty;
 }
 $Singleton.prototype.segment = function(idx, len) {
     if (idx.equals(Integer(0)) === getTrue() && len.compare(Integer(0)) === larger) {
         return this;
     }
-    return ArraySequence([]);
+    return $empty;
 }
 $Singleton.prototype.getIterator = function() { return SingletonIterator(this.elem); }
 
@@ -857,6 +1008,18 @@ function entries(seq) {
     return ArraySequence(e);
 }
 
+exports.$Cloneable=$Cloneable; //TODO just to let the compiler finish
+exports.Cloneable=Cloneable; //TODO just to let the compiler finish
+exports.Iterable=Iterable; //TODO just to let the compiler finish
+exports.$Iterable=$Iterable; //TODO just to let the compiler finish
+exports.$Iterator=$Iterator; //TODO just to let the compiler finish
+exports.Iterator=Iterator; //TODO just to let the compiler finish
+exports.$Summable=$Summable; //TODO just to let the compiler finish
+exports.$Exception=$Exception; //TODO just to let the compiler finish
+exports.$Comparable=$Comparable; //TODO just to let the compiler finish
+exports.Comparable=Comparable; //TODO just to let the compiler finish
+exports.$Object=CeylonObject; //TODO just to let the compiler finish
+exports.Object=Object; //TODO just to let the compiler finish
 exports.print=print;
 exports.Integer=Integer;
 exports.Float=Float;
@@ -894,6 +1057,7 @@ exports.exists=exists;
 exports.nonempty=nonempty;
 exports.parseInteger=$parseInteger;
 exports.parseFloat=$parseFloat;
+exports.empty=$empty;
 
     });
 }(typeof define==='function' && define.amd ? 

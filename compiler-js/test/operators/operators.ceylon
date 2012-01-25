@@ -165,8 +165,16 @@ void testCollectionOperators() {
     expect(s1, "one", "lookup");
     String s2 = seq1[2]?"null";
     expect(s2, "null", "lookup");
-    String s3 = seq1[-1]?"null"; 
-    expect(s3, "null", "lookup");           
+    String s3 = seq1[-1]?"null";
+    expect(s3, "null", "lookup");
+    variable Sequence<String>? unsafe := seq1;
+    expect(exists unsafe?[0], true, "safe index");
+    unsafe := null;
+    expect(exists unsafe?[0], false, "safe index");
+}
+
+class NullsafeTest() {
+    shared Integer f() {return 1;}
 }
 
 void testNullsafeOperators() {
@@ -182,6 +190,9 @@ void testNullsafeOperators() {
     String s6 = s4?.uppercased ? "null";
     expect(s5, "null", "nullsafe member");
     expect(s6, "TEST", "nullsafe member");
+    NullsafeTest? obj = null;
+    Integer? i = obj?.f();
+    expect(exists i, false, "nullsafe invoke");
 }
 
 void testIncDecOperators() {

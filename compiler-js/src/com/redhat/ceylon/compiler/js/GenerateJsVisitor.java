@@ -283,10 +283,6 @@ public class GenerateJsVisitor extends Visitor
         share(d);
     }
     
-    private void newObject() {
-        out("new CeylonObject;");
-    }
-    
     private void function() {
         out("function ");
     }
@@ -361,7 +357,11 @@ public class GenerateJsVisitor extends Visitor
             String parentName = "";
             ExtendedType extType = that.getExtendedType();
             if (extType != null) {
-            	parentName = extType.getType().getDeclarationModel().getName();
+                TypeDeclaration parentTypeDecl = extType.getType().getDeclarationModel();
+                if (declaredInCL(parentTypeDecl)) {
+                    return;
+                }
+            	parentName = parentTypeDecl.getName();
             }
             
             final List<Declaration> decs = new ArrayList<Declaration>();
@@ -417,13 +417,11 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void defineType(ClassOrInterface d) {
-        if (prototypeStyle) {
-            function();
-            out("$");
-            out(d.getName());
-            out("(){}");
-            endLine();
-        }
+        function();
+        out("$");
+        out(d.getName());
+        out("(){}");
+        endLine();
     }
     
     private ClassOrInterface prototypeOwner;
@@ -451,14 +449,9 @@ public class GenerateJsVisitor extends Visitor
         out("===undefined)");
         self(d);
         out("=");
-        if (prototypeStyle) {
-            out("new $");
-            out(d.getName());
-            out(";");
-        }
-        else {
-            newObject();
-        }
+        out("new $");
+        out(d.getName());
+        out(";");
         endLine();
         /*out("var ");
         self(d);
@@ -472,14 +465,9 @@ public class GenerateJsVisitor extends Visitor
         out("var ");
         self(d);
         out("=");
-        if (prototypeStyle) {
-            out("new $");
-            out(d.getName());
-            out(";");
-        }
-        else {
-            newObject();
-        }
+        out("new $");
+        out(d.getName());
+        out(";");
         endLine();
     }
 
@@ -525,20 +513,20 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void copySuperclassPrototype(ExtendedType that, Declaration d) {
-        if (prototypeStyle) {
-            if (that==null) {
-                copyMembersToPrototype("CeylonObject", d);
-            }
-            else {
-                copyMembersToPrototype(that.getType(), d);
-            }
+        if (that==null) {
+            copyMembersToPrototype("CeylonObject", d);
+        }
+        else if (prototypeStyle || declaredInCL(that.getType().getDeclarationModel())) {
+            copyMembersToPrototype(that.getType(), d);
         }
     }
 
     private void copyInterfacePrototypes(SatisfiedTypes that, Declaration d) {
-        if (prototypeStyle && that!=null) {
+        if (that!=null) {
             for (Tree.SimpleType st: that.getTypes()) {
-                copyMembersToPrototype(st, d);
+                if (prototypeStyle || declaredInCL(st.getDeclarationModel())) {
+                    copyMembersToPrototype(st, d);
+                }
             }
         }
     }
@@ -593,7 +581,7 @@ public class GenerateJsVisitor extends Visitor
             memberName(d);
             out("$");
             out(parent);
-            out("=");
+            out("$=");
             self(sub);
             out(".");
             memberName(d);
@@ -609,7 +597,7 @@ public class GenerateJsVisitor extends Visitor
             out(getter(d));
             out("$");
             out(parent);
-            out("=");
+            out("$=");
             self(sub);
             out(".");
             out(getter(d));
@@ -625,7 +613,7 @@ public class GenerateJsVisitor extends Visitor
             out(setter(d));
             out("$");
             out(parent);
-            out("=");
+            out("$=");
             self(sub);
             out(".");
             out(setter(d));
@@ -982,10 +970,7 @@ public class GenerateJsVisitor extends Visitor
     		 ClassOrInterface type = Util.getContainingClassOrInterface(that.getScope());
     		 ClassOrInterface parentType = type.getExtendedTypeDeclaration();
     		 if (parentType != null) {
-    			 postfix = '$' + parentType.getName();
-    			 if (prototypeStyle) {
-    				 postfix += '$';
-    			 }
+    			 postfix = '$' + parentType.getName() + '$';
     		 }
     	}
         if (that.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter ||
@@ -1210,13 +1195,15 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(Expression that) {
-        if (prototypeStyle && 
-                that.getTerm() instanceof QualifiedMemberOrTypeExpression) {
+        if (that.getTerm() instanceof QualifiedMemberOrTypeExpression) {
             QualifiedMemberOrTypeExpression term = (QualifiedMemberOrTypeExpression) that.getTerm();
-            if (term.getDeclaration() instanceof Functional) {
+            // references to methods of types from ceylon.language always need
+            // special treatment, even if prototypeStyle==false
+            if ((term.getDeclaration() instanceof Functional)
+                    && (prototypeStyle || declaredInCL(term.getDeclaration()))) {
                 out("function(){var $=");
                 term.getPrimary().visit(this);
-                out(";$.");
+                out(";return $.");
                 memberName(term.getDeclaration());
                 out(".apply($,arguments)}");
                 return;
@@ -1277,12 +1264,17 @@ public class GenerateJsVisitor extends Visitor
     				&& (container instanceof ClassOrInterface)) {
     		ClassOrInterface parentType = (ClassOrInterface) container;
     		name += '$' + parentType.getName();
-    		if (prototypeStyle && (forGetterSetter || (d instanceof Method))) {
+    		if (forGetterSetter || (d instanceof Method)) {
     			name += '$';
     		}
     		
     	}
     	return name;
+    }
+    
+    private boolean declaredInCL(Declaration typeDecl) {
+        return typeDecl.getUnit().getPackage().getQualifiedNameString()
+                .startsWith("ceylon.language");
     }
     
     @Override
@@ -1868,14 +1860,18 @@ public class GenerateJsVisitor extends Visitor
     public void visit(IndexExpression that) {
         IndexOperator op = that.getIndexOperator();
         if (op instanceof SafeIndexOp) {
-			//TODO assign in tmp var to avoid 2 calls
-            out("exists(");
-            visitIndex(that);
-            out(")?");
+            clAlias();
+            out(".exists(");
+            that.getPrimary().visit(this);
+            out(")===");
+            clAlias();
+            out(".getTrue()?");
         }
         visitIndex(that);
         if (op instanceof SafeIndexOp) {
-            out(":null");
+            out(":");
+            clAlias();
+            out(".getNull()");
         }
     }
 

@@ -168,16 +168,11 @@ shared void test() {
     test_zip();
     test_coalesce();
     test_append();
-    test_singleton();
     test_entries();
     test_exists_nonempty();
-    test_foreach();
-    test_arraysequence();
-    test_iterators();
-    test_ranges();
     test_interpolate();
     test_stringbuilder();
     testCharacter();
-    testString();
+    //testString();
     print("--- End Language Module Tests ---");
 }
