@@ -12,34 +12,36 @@ CeylonObject.prototype.toString=function() { return this.getString().value };
 //TODO: we need to distinguish between Objects and IdentifiableObjects
 CeylonObject.prototype.equals = function(other) { return Boolean$(this===other) }
 
+function Object(wat) {
+    return wat;
+}
 function $Cloneable() {}
-function Cloneable() {
-    var that = new $Cloneable;
-    return that;
+function Cloneable(wat) {
+    return wat;
 }
 
 function $Iterable() {}
-function Iterable() {
-    var that = new $Iterable;
-    return that;
+function Iterable(wat) {
+    return wat;
+}
+function $Iterator() {}
+function Iterator(wat) {
+    return wat;
 }
 
 function $Exception() {}
-function Exception() {
-    var that = new $Exception;
-    return that;
+function Exception(wat) {
+    return wat;
 }
 
 function $Comparable() {}
-function Comparable() {
-    var that = new $Comparable;
-    return that;
+function Comparable(wat) {
+    return wat;
 }
 
 function $Summable() {}
-function Summable() {
-    var that = new $Summable;
-    return that;
+function Summable(wat) {
+    return wat;
 }
 
 function $Integer() {}
@@ -101,6 +103,7 @@ $Float.prototype.getNegativeValue = function() { return Float(-this.value) }
 $Float.prototype.getPositiveValue = function() { return this }
 $Float.prototype.equals = function(other) { return Boolean$(other && other.value===this.value) }
 $Float.prototype.compare = function(other) {
+    if (other === null || other === undefined) { return larger; }
     return this.value===other.value ? equal
                                     : (this.value<other.value ? smaller:larger);
 }
@@ -326,6 +329,18 @@ $String.prototype.split = function(seps, discard) {
 $String.prototype.getReversed = function() {
     //TODO implement
     return this;
+}
+$String.prototype.replace = function(sub, repl) {
+    //TODO implement
+    return this;
+}
+
+$String.prototype.repeat = function(times) {
+    var sb = StringBuilder();
+    for (var i = 0; i < times.value; i++) {
+        sb.append(this);
+    }
+    return sb.getString();
 }
 
 function $StringIterator() {}
@@ -993,11 +1008,17 @@ function entries(seq) {
 }
 
 exports.$Cloneable=$Cloneable; //TODO just to let the compiler finish
+exports.Cloneable=Cloneable; //TODO just to let the compiler finish
+exports.Iterable=Iterable; //TODO just to let the compiler finish
 exports.$Iterable=$Iterable; //TODO just to let the compiler finish
+exports.$Iterator=$Iterator; //TODO just to let the compiler finish
+exports.Iterator=Iterator; //TODO just to let the compiler finish
 exports.$Summable=$Summable; //TODO just to let the compiler finish
 exports.$Exception=$Exception; //TODO just to let the compiler finish
 exports.$Comparable=$Comparable; //TODO just to let the compiler finish
+exports.Comparable=Comparable; //TODO just to let the compiler finish
 exports.$Object=CeylonObject; //TODO just to let the compiler finish
+exports.Object=Object; //TODO just to let the compiler finish
 exports.print=print;
 exports.Integer=Integer;
 exports.Float=Float;
