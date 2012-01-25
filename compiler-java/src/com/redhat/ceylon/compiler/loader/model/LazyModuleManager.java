@@ -48,7 +48,11 @@ public abstract class LazyModuleManager extends ModuleManager {
             super.resolveModule(module, artifact, phasedUnitsOfDependencies);
         }else{
             getModelLoader().addModuleToClassPath(module, artifact); // To be able to load it from the corresponding archive
-            getModelLoader().loadCompiledModule(module.getNameAsString());
+            Module compiledModule = getModelLoader().loadCompiledModule(module.getNameAsString());
+            if(compiledModule == null && !module.isDefault()){
+                // we didn't find module.class so it must be a java module if it's not the default module
+                ((LazyModule)module).setJava(true);
+            }
         }
     }
 
