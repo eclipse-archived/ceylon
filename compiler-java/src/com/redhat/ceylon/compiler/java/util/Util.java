@@ -21,6 +21,9 @@
 package com.redhat.ceylon.compiler.java.util;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedList;
@@ -411,5 +414,14 @@ public class Util {
             log.debug("[Invalid repo URL: "+repo+" (assuming file)]");
             return false;
         }
+    }
+
+    public static void copy(InputStream inputStream, OutputStream outputStream) throws IOException {
+        byte[] buffer = new byte[4096];
+        int read;
+        while((read = inputStream.read(buffer)) != -1){
+            outputStream.write(buffer, 0, read);
+        }
+        outputStream.flush();
     }
 }

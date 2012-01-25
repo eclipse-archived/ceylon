@@ -221,7 +221,7 @@ public class JarOutputRepositoryManager {
                 try {
                     InputStream inputStream = new FileInputStream(prefixedSourceFile);
                     try {
-                        copy(inputStream, srcOutputStream);
+                        Util.copy(inputStream, srcOutputStream);
                     } finally {
                         inputStream.close();
                     }
@@ -253,7 +253,7 @@ public class JarOutputRepositoryManager {
                         continue;
                     jarOutputStream.putNextEntry(new ZipEntry(entry.getName()));
                     InputStream inputStream = jarFile.getInputStream(entry);
-                    copy(inputStream, jarOutputStream);
+                    Util.copy(inputStream, jarOutputStream);
                     inputStream.close();
                     jarOutputStream.closeEntry();
                 }
@@ -273,14 +273,6 @@ public class JarOutputRepositoryManager {
             // now cleanup
             outputFile.delete();
             sha1File.delete();
-        }
-
-        private void copy(InputStream inputStream, JarOutputStream outputStream) throws IOException {
-            byte[] buffer = new byte[4096];
-            int read;
-            while((read = inputStream.read(buffer)) != -1){
-                outputStream.write(buffer, 0, read);
-            }
         }
 
         public JavaFileObject getJavaFileObject(String fileName, File sourceFile) {
