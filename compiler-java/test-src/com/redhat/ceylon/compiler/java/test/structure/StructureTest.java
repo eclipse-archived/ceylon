@@ -784,6 +784,11 @@ public class StructureTest extends CompilerTest {
     }
 
     @Test
+    public void testImpImportJavaRuntimeTypeWildcard(){
+        compareWithJavaSource("import_/ImportJavaRuntimeTypeWildcard");
+    }
+
+    @Test
     public void testImpImportCeylonLanguageType(){
         compareWithJavaSource("import_/ImportCeylonLanguageType");
     }
