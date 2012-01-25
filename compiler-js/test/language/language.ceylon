@@ -170,9 +170,6 @@ shared void test() {
     test_append();
     test_entries();
     test_exists_nonempty();
-    test_foreach();
-    test_iterators();
-    test_ranges();
     test_interpolate();
     test_stringbuilder();
     testCharacter();
