@@ -45,9 +45,10 @@ shared void numbers() {
     assert(-1.positiveValue==-1, "integer positive");
     assert(1.0.positiveValue==1.0, "float positive");
     
-    assert(12.string=="12", "natural string");
-    assert((-12).string=="-12", "integer string");
-    assert((-5.5).string=="-5.5", "float string");
+    assert(12.string=="12", "natural string 12");
+    assert((-12).string=="-12", "integer string -12");
+    assert((-5.5).string=="-5.5", "float string -5.5");
+    assert((1.0).string=="1.0", "float string 1.0");
     
     assert(1.unit, "natural unit");
     assert(!2.unit, "natural unit");

@@ -139,9 +139,9 @@ shared void sequences() {
     assert(!result.definesEvery(1,2), "sequence definesEvery");
     assert(result.definesAny(1,2), "sequence definesAny");
     assert(!result.definesAny(2,3), "sequence definesAny");
-    assert(result.items(1,2,3,4).string=="{ hello, world }", "sequence.items");
-    assert(result.items(1,0).string=="{ world, hello }", "sequence.items");
-    assert(result.items(5,6,7).string=="{}", "sequence.items");
+    assert(result.items(0,1,2,3).string=="{ hello, world, null, null }", "sequence.items 1");
+    assert(result.items(1,0).string=="{ world, hello }", "sequence.items 2");
+    assert(result.items(5,6,7).string=="{ null, null, null }", "sequence.items 3");
 
     if (nonempty result) {
         value rest = result.rest;
