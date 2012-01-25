@@ -54,8 +54,7 @@ void test_singleton() {
     assert(nonempty singleton.span(0, 0), "nonempty singleton span(0,0)");
     assert(nonempty singleton.span(0, 10), "nonempty singleton span(0,10)");
     assert(!nonempty singleton.segment(0, 0), "!nonempty singleton segment(0,0)");
-    assert(!nonempty singleton.segment(0, 1), "!nonempty singleton segment(0,1)");
-    assert(nonempty singleton.segment(0, -1), "!nonempty singleton segment(0,-1)");
+    assert(!nonempty singleton.segment(0, -1), "!nonempty singleton segment(0,-1)");
                                 
     assert(singleton.keys.contains(0), "singleton keys.contains(0)");
     assert(!singleton.keys.contains(1), "!singleton keys.contains(1)");
@@ -92,16 +91,28 @@ shared void sequences() {
     else {
         fail("sequence first");
     }
+    /*if (exists last = result.last) {
+        assert(last=="world", "sequence last");
+    }
+    else {
+        fail("sequence last");
+    }*/
     assert(result.string=="{ hello, world }", "sequence.string");
+
+    //span
     assert(result.span(1,1).string=="{ world }", "sequence.span(1,1).string");
     assert(result.span(1,null).string=="{ world }", "sequence.span(1,null).string");
     assert(result.span(0,3).string=="{ hello, world }", "sequence.span(0,3).string");
+    assert(result.span(1,0).string=="{ world, hello }", "sequence reverse span.string");
+    assert(nonempty result.span(1,1), "nonempty sequence.span(1,1)");
+    assert(nonempty result.span(0,0), "nonempty sequence.span(0,0)");
+
+    //segment
     assert(result.segment(1,1).string=="{ world }", "sequence.segment(1,1).string");
     assert(result.segment(0,3).string=="{ hello, world }", "sequence.segment(0,3).string");
-    assert(nonempty result.span(1,1), "nonempty sequence.span(1,1)");
     assert(nonempty result.segment(1,1), "nonempty sequence.segment(1,1)");
-    assert(nonempty result.span(0,0), "nonempty sequence.span(0,0)");
     assert(!nonempty result.segment(0,0), "!nonempty sequence.segment(0,0)");
+    assert(!nonempty result.segment(1,-1), "!nonempty sequence.segment(1,-1)");
 
     if (exists str = result[0]) {
         assert(str=="hello", "sequence item");
@@ -124,6 +135,13 @@ shared void sequences() {
     assert(!result.keys.contains(2), "sequence keys");
     assert(result.defines(0)&&result.defines(1)&&!result.defines(2),
            "sequence defines");
+    assert(result.definesEvery(0,1), "sequence definesEvery");
+    assert(!result.definesEvery(1,2), "sequence definesEvery");
+    assert(result.definesAny(1,2), "sequence definesAny");
+    assert(!result.definesAny(2,3), "sequence definesAny");
+    assert(result.items(1,2,3,4).string=="{ hello, world }", "sequence.items");
+    assert(result.items(1,0).string=="{ world, hello }", "sequence.items");
+    assert(result.items(5,6,7).string=="{}", "sequence.items");
 
     if (nonempty result) {
         value rest = result.rest;
@@ -167,7 +185,7 @@ shared void sequences() {
         assert(evenMore.size==5, "sequence size");
         assert(evenMore.string=="{ hello, world, goodbye, everyone, good luck! }", "sequence.string");
     }
-    
+
     value seq = { 1, 2, 3, 4 };
     assert(seq.size==4, "sequence size");
     assert(seq.string=="{ 1, 2, 3, 4 }", "sequence.string");
