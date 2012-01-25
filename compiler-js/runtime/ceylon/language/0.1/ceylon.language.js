@@ -710,13 +710,14 @@ for(var $ in CeylonObject.prototype){$SequenceBuilder.prototype[$]=CeylonObject.
 $SequenceBuilder.prototype.getSequence = function() { return ArraySequence(this.seq); }
 $SequenceBuilder.prototype.append = function(e) { this.seq.push(e); }
 $SequenceBuilder.prototype.appendAll = function(arr) {
-	if (arr && arr.value && arr.value.length)
-    for (var i = 0; i < arr.value.length; i++) {
-        this.seq.push(arr.value[i]);
+	if (arr && arr.value && arr.value.length) {
+        for (var i = 0; i < arr.value.length; i++) {
+            this.seq.push(arr.value[i]);
+        }
     }
 }
 $SequenceBuilder.prototype.getSize = function() { return Integer(this.seq.length); }
-$SequenceBuilder.prototype.getEmpty = function() { return Boolean$(this.seq.length == 0); }
+$SequenceBuilder.prototype.getEmpty = function() { return Boolean$(this.seq.length === 0); }
 
 function $SequenceAppender() {}
 function SequenceAppender(other) {
@@ -794,10 +795,11 @@ $Range.prototype.by = function(step) {
     return ArraySequence(seq);
 }
 $Range.prototype.segment = function(from, len) {
+    //only positive length for now
     if (len.compare(Integer(0)) !== larger) return $empty;
+    if (this.defines(from) === $false) return $empty;
     var x = this.first;
     for (var i=0; i < from.value; i++) { x = this.next(x); }
-    //only positive length for now
     var y = x;
     for (var i=1; i < len.value; i++) { y = this.next(y); }
     if (this.includes(y) === getFalse()) { y = this.last; }
