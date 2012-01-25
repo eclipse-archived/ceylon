@@ -780,7 +780,6 @@ public class StructureTest extends CompilerTest {
     
     @Test
     public void testImpImportJavaRuntimeTypeSingle(){
-        compileImportedPackage();
         compareWithJavaSource("import_/ImportJavaRuntimeTypeSingle");
     }
 
