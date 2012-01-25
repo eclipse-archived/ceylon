@@ -36,8 +36,17 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import javax.tools.DiagnosticListener;
+import javax.tools.FileObject;
+import javax.tools.JavaCompiler;
+import javax.tools.JavaCompiler.CompilationTask;
+import javax.tools.JavaFileObject;
+import javax.tools.StandardJavaFileManager;
+import javax.tools.ToolProvider;
 
 import junit.framework.Assert;
 
@@ -397,8 +406,42 @@ public class StructureTest extends CompilerTest {
 
         File srcFile = getSourceArchive("com.redhat.ceylon.compiler.java.test.structure.module.single", "6.6.6", repoA.getPath());
         assertTrue(srcFile.exists());
-}
-    
+    }
+
+    @Test
+    public void testMdlJarDependency() throws IOException{
+        // compile our java class
+        File outputFolder = new File("build/java-jar");
+        cleanCars(outputFolder.getPath());
+        outputFolder.mkdirs();
+        
+        JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
+        StandardJavaFileManager fileManager = javaCompiler.getStandardFileManager(null, null, null);
+        File javaFile = new File(path+"/module/jarDependency/java/JavaDependency.java");
+        Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjects(javaFile);
+        CompilationTask task = javaCompiler.getTask(null, null, null, Arrays.asList("-d", "build/java-jar", "-sourcepath", "test-src"), null, compilationUnits);
+        assertEquals(Boolean.TRUE, task.call());
+        
+        File jarFolder = new File(outputFolder, "com/redhat/ceylon/compiler/java/test/structure/module/jarDependency/java/1.0/");
+        jarFolder.mkdirs();
+        File jarFile = new File(jarFolder, "com.redhat.ceylon.compiler.java.test.structure.module.jarDependency.java-1.0.jar");
+        // now jar it up
+        JarOutputStream outputStream = new JarOutputStream(new FileOutputStream(jarFile));
+        ZipEntry entry = new ZipEntry("com/redhat/ceylon/compiler/java/test/structure/module/jarDependency/java/JavaDependency.class");
+        outputStream.putNextEntry(entry);
+        
+        FileInputStream inputStream = new FileInputStream(javaFile);
+        Util.copy(inputStream, outputStream);
+        inputStream.close();
+        outputStream.close();
+
+        // Try to compile the ceylon module
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-rep", outputFolder.getPath()), 
+                (DiagnosticListener<? super FileObject>)null, 
+                "module/jarDependency/ceylon/module.ceylon", "module/jarDependency/ceylon/Foo.ceylon");
+        assertEquals(Boolean.TRUE, ceylonTask.call());
+    }
+
     @Test
     public void testMdlSourceArchive() throws IOException{
         File sourceArchiveFile = getSourceArchive("com.redhat.ceylon.compiler.java.test.structure.module.single", "6.6.6");
