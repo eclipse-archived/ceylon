@@ -492,7 +492,8 @@ function getExhausted() { return $finished; }
 
 //These are operators for handling nulls
 function exists(value) { return value === getNull() || value === undefined ? $false : $true; }
-function nonempty(value) { return Boolean$(value && value.value && value.value.length > 0); }
+function nonempty(value) { return value === null || value === undefined ? $false : Boolean$(value.getEmpty() === $false); }
+//function nonempty(value) { return Boolean$(value && value.value && value.value.length > 0); }
 
 function $Comparison() {}
 function Comparison(name) {
