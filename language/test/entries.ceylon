@@ -97,10 +97,10 @@ Range<Integer> range {
     assert((0..10).span(2, 5).string=="2..5", "range span");
     assert((2..10).segment(1, 3).string=="3..5", "range segment");
     assert((2..10).span(2, 7).string=="4..9", "range span");
-    assert(!nonempty (0..9).segment(11,10), "empty range segment");
-    assert(!nonempty (0..9).segment(3,0), "empty range segment");
-    assert(!nonempty (0..9).span(11,12), "empty range span");
-    assert(!nonempty (0..9).span(5,3), "empty range span"); //TODO: this is wrong
+    assert(!nonempty (0..9).segment(11,10), "(0..9).segment(11,10) is empty");
+    assert(!nonempty (0..9).segment(3,0), "(0..9).segment(3,0) is empty");
+    assert(!nonempty (0..9).span(11,12), "(0..9).span(11,12) is empty");
+    assert(!nonempty (0..9).span(5,3), "(0..9).span(5,3) is empty"); //TODO: this is wrong
     
     assert((1..1).by(5).string=="1..1", "range by");
     assert((0..9).by(1).string=="0..9", "range by 1");
@@ -108,5 +108,58 @@ Range<Integer> range {
     assert((2..11).by(3).string=="{ 2, 5, 8, 11 }", "range by");
     assert((0..9).by(4).string=="{ 0, 4, 8 }", "range by");
     assert((2..11).by(4).string=="{ 2, 6, 10 }", "range by");
-    
+
+    //More range tests, from ceylon-js
+    assert((1..10).string=="1..10", "range.string");
+    value r1= 1..5;
+    assert(r1.size==5, "range.size");
+    value r2 = 7..4;
+    assert(r2.size==4, "range.size");
+    value r3 = -10..-5;
+    assert(r3.size==6, "range.size");
+    value r4 = 123..123;
+    assert(r4.size==1, "range.size");
+    assert(r1.includes(3), "range.includes");
+    assert(!r1.includes(6), "range.includes");
+    assert(r2.includes(5), "range.includes");
+    assert(!r2.includes(3), "range.includes");
+    assert(r4.first==r4.last, "range first == last");
+    assert(r1 != r2, "range.equals");
+    assert(r1 == 1..5, "range.equals");
+    value r1r = r1.rest;
+    value r2r = r2.rest;
+    assert(r1r.size==r1.size-1, "range.rest.size 1");
+    assert(r2r.size==r2.size-1, "range.rest.size 2");
+    assert(r1r.first?0 == r1.item(1)?1, "range.rest.first");
+    assert(r2r.first?0 == r2.item(1)?1, "range.rest.first");
+    assert(nonempty r4.rest, "nonempty range.rest");
+    assert(r1.lastIndex==4, "range.lastIndex");
+    assert(r2.lastIndex==3, "range.lastIndex");
+    assert(r1.by(2).string=="{ 1, 3, 5 }", "range.by");
+    assert(r1.by(3).string=="{ 1, 4 }", "range.by");
+    assert(r2.by(2).string=="{ 7, 5 }", "range.by");
+    assert(r2.by(3).string=="{ 7, 4 }", "range.by");
+    assert(r4.by(10).string=="123..123", "range.by");
+    assert(r1.segment(2,2).string=="3..4", "range.segment");
+    assert(!nonempty r1.segment(1,0), "range.segment");
+    assert(r1.segment(1,-1).empty, "range.segment");
+    assert(r1.segment(3,1).string=="4..4", "range.segment");
+    assert(r1.segment(0,1).string=="1..1", "range.segment");
+    assert(r1.span(1, 3).string=="2..4", "range.span");
+    assert(r1.span(3, 1).string=="4..2", "range.span");
+    assert(r1.span(2, 2).string=="3..3", "range.span");
+    assert(r1.span(3, null).string=="4..5", "range.span");
+    assert(r1.span(3, 1000).string=="4..5", "range.span");
+    assert(r1.span(0,0).string=="1..1", "range.span");
+    assert(!nonempty (1..2).span(4,5), "range.span (out of bounds)");
+    assert(r1.definesEvery(1,2,3), "range.definesEvery");
+    assert(!r1.definesEvery(4,5,6,7), "range.definesEvery");
+    assert(r1.definesAny(1,2,3), "range.definesAny");
+    assert(!r1.definesAny(7,6,5), "range.definesAny");
+    assert(r1.definesAny(6,5,4), "range.definesAny");
+    variable Integer sum := 0;
+    for (Integer x in r1) {
+        sum += x;
+    }
+    assert(sum==15, "range iteration");
 }
