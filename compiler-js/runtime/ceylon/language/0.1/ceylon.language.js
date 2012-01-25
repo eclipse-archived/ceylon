@@ -12,6 +12,36 @@ CeylonObject.prototype.toString=function() { return this.getString().value };
 //TODO: we need to distinguish between Objects and IdentifiableObjects
 CeylonObject.prototype.equals = function(other) { return Boolean$(this===other) }
 
+function $Cloneable() {}
+function Cloneable() {
+    var that = new $Cloneable;
+    return that;
+}
+
+function $Iterable() {}
+function Iterable() {
+    var that = new $Iterable;
+    return that;
+}
+
+function $Exception() {}
+function Exception() {
+    var that = new $Exception;
+    return that;
+}
+
+function $Comparable() {}
+function Comparable() {
+    var that = new $Comparable;
+    return that;
+}
+
+function $Summable() {}
+function Summable() {
+    var that = new $Summable;
+    return that;
+}
+
 function $Integer() {}
 function Integer(value) {
     var that = new $Integer;
@@ -257,6 +287,46 @@ $String.prototype.contains = function(sub) {
     //TODO does this work for unicode, etc?
     return Boolean$(this.value.indexOf(sub.value) >= 0);
 }
+$String.prototype.getNormalized = function() {
+    //TODO IMPLEMENT!!!
+    return this;
+}
+$String.prototype.firstOccurrence = function(sub) {
+    //TODO implement!!!
+    return null;
+}
+$String.prototype.lastOccurrence = function(sub) {
+    //TODO implement!!!
+    return null;
+}
+$String.prototype.firstCharacterOccurrence = function(subc) {
+    //TODO implement!!!
+    return null;
+}
+$String.prototype.lastCharacterOccurrence = function(subc) {
+    //TODO implement!!!
+    return null;
+}
+$String.prototype.getCharacters = function() {
+    //TODO implement!!!
+    return $empty;
+}
+$String.prototype.getKeys = function() {
+    //TODO implement!!!
+    return $empty;
+}
+$String.prototype.join = function(strings) {
+    //TODO implement!!!
+    return this;
+}
+$String.prototype.split = function(seps, discard) {
+    //TODO implement!!!
+    return Singleton(this);
+}
+$String.prototype.getReversed = function() {
+    //TODO implement
+    return this;
+}
 
 function $StringIterator() {}
 function StringIterator(string) {
@@ -356,6 +426,9 @@ $Character.prototype.getPredecessor = function() {
     if ((succ&0xf800) === 0xd800) {return Character(0xd7ff)}
     return Character((succ>=0) ? succ:0x10ffff);
 }
+$Character.prototype.contains = function(x) {
+    return this.getString().contains(x);
+}
 
 function $StringBuilder() {}
 function StringBuilder() {
@@ -369,8 +442,9 @@ $StringBuilder.prototype.append = function(s) {
     this.value = this.value + s.value;
 }
 $StringBuilder.prototype.appendAll = function(strings) {
+    if (strings === null || strings === undefined) { return this; }
     for (var i = 0; i < strings.value.length; i++) {
-        this.value = this.value + strings.value[i].value;
+        this.value += strings.value[i].value;
     }
     return this; //strictly speaking, this method should return void, but then string interpolation would be a big mess
 }
@@ -449,6 +523,8 @@ $Empty.prototype.getFirst = function() { return null; }
 $Empty.prototype.segment = function(a,b) { return this; }
 $Empty.prototype.span = function(a,b) { return this; }
 $Empty.prototype.getIterator = function() { return EmptyIterator(); }
+$Empty.prototype.getString = function() { return String$("{}"); }
+$Empty.prototype.contains = function(x) { return $false; }
 
 $empty = Empty();
 
@@ -465,7 +541,23 @@ function ArraySequence(value) {
 }
 for(var $ in CeylonObject.prototype){$ArraySequence.prototype[$]=CeylonObject.prototype[$]}
 for(var $ in $Sequence.prototype){$ArraySequence.prototype[$]=$Sequence.prototype[$]}
-$ArraySequence.prototype.getString = function() { return String$("{" + this.value.toString() +"}") }
+$ArraySequence.prototype.getString = function() {
+	if (this.value.length === 0) {
+		return String$("{}");
+	}
+    var desc = "{ ";
+    var first = true;
+    for (var i = 0; i < this.value.length; i++) {
+        if (first) {
+            first = false;
+		} else {
+            desc += ", ";
+        }
+        var item = this.value[i];
+        desc += exists(item) === $true ? item.getString().value : "null";
+    }
+    return String$(desc +" }");
+}
 $ArraySequence.prototype.item = function(index) {
     var result = this.value[index.value];
     return result!==undefined ? result:null;
@@ -509,7 +601,10 @@ $ArraySequence.prototype.getRest = function() { return ArraySequence(this.value.
 $ArraySequence.prototype.items = function(keys) {
     var seq = [];
     for (var i = 0; i < keys.getSize().value; i++) {
-        seq.push(this.item(keys.item(Integer(i))));
+        var key = keys.item(Integer(i));
+        if (this.defines(key)) {
+            seq.push(this.item(key));
+        }
     }
     return ArraySequence(seq);
 }
@@ -897,6 +992,12 @@ function entries(seq) {
     return ArraySequence(e);
 }
 
+exports.$Cloneable=$Cloneable; //TODO just to let the compiler finish
+exports.$Iterable=$Iterable; //TODO just to let the compiler finish
+exports.$Summable=$Summable; //TODO just to let the compiler finish
+exports.$Exception=$Exception; //TODO just to let the compiler finish
+exports.$Comparable=$Comparable; //TODO just to let the compiler finish
+exports.$Object=CeylonObject; //TODO just to let the compiler finish
 exports.print=print;
 exports.Integer=Integer;
 exports.Float=Float;
