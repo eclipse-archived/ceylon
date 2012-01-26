@@ -348,6 +348,7 @@ public class GenerateJsVisitor extends Visitor
         callSuperclass(that.getExtendedType(), d);
         copySuperMembers(that, d);
         callInterfaces(that.getSatisfiedTypes(), d);
+out("/*aqui?*/");
         that.getClassBody().visit(this);
         returnSelf(d);
         endBlock();
@@ -1018,12 +1019,22 @@ public class GenerateJsVisitor extends Visitor
         //Big TODO: make sure the member is actually
         //          refined by the current class!
     	if (that.getMemberOperator() instanceof SafeMemberOp) {
+    		out("function($){return $===null?");
+            if (that.getDeclaration() instanceof Method) {
+                clAlias();
+                out(".nullsafe:$.");
+            } else {
+                out("null:$.");
+            }
+            qualifiedMemberRHS(that);
+            out("}(");
 	        super.visit(that);
-    		out("===null?null:");
-    	}
+            out(")");
+    	} else {
         super.visit(that);
         out(".");
         qualifiedMemberRHS(that);
+        }
     }
     
     private void qualifiedMemberRHS(QualifiedMemberExpression that) {

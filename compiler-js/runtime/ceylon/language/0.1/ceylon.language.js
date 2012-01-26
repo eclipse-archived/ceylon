@@ -451,7 +451,8 @@ $StringBuilder.prototype.append = function(s) {
 $StringBuilder.prototype.appendAll = function(strings) {
     if (strings === null || strings === undefined) { return this; }
     for (var i = 0; i < strings.value.length; i++) {
-        this.value += strings.value[i].value;
+        var _s = strings.value[i];
+        this.value += _s?_s.value:"null";
     }
     return this; //strictly speaking, this method should return void, but then string interpolation would be a big mess
 }
@@ -1059,7 +1060,7 @@ exports.isOfType=isOfType;
 exports.parseInteger=$parseInteger;
 exports.parseFloat=$parseFloat;
 exports.empty=$empty;
-
+exports.nullsafe=function(){};
     });
 }(typeof define==='function' && define.amd ? 
     define : function (id, factory) {
