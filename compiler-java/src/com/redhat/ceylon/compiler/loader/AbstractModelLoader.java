@@ -29,6 +29,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.lang.model.type.TypeKind;
@@ -702,7 +703,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private void complete(ClassOrInterface klass, ClassMirror classMirror) {
-        HashSet<String> variables = new HashSet<String>();
+        Map<MethodMirror, List<MethodMirror>> variables = new HashMap<MethodMirror, List<MethodMirror>>();
         String qualifiedName = classMirror.getQualifiedName();
         boolean isJava = qualifiedName.startsWith("java.");
         boolean isCeylon = (classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null);
@@ -755,7 +756,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     addValue(klass, methodMirror, getJavaAttributeName(methodName));
                 } else if(isSetter(methodMirror)) {
                     // We skip setters for now and handle them later
-                    variables.add(getJavaAttributeName(methodName));
+                    variables.put(methodMirror, methodMirrors);
                 } else if(isHashAttribute(methodMirror)) {
                     // ERASURE
                     // Un-erasing 'hash' attribute from 'hashCode' method
@@ -786,12 +787,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         
         // Now mark all Values for which Setters exist as variable
-        for(String var : variables){
-            Declaration decl = klass.getMember(var);
+        for(Entry<MethodMirror, List<MethodMirror>> setterEntry : variables.entrySet()){
+            MethodMirror setter = setterEntry.getKey();
+            String name = getJavaAttributeName(setter.getName());
+            Declaration decl = klass.getMember(name);
             if (decl != null && decl instanceof Value) {
                 ((Value)decl).setVariable(true);
             } else {
-                logWarning("Has conflicting attribute and method name '" + var + "': "+qualifiedName);
+                // it was not a setter, it was a method, let's add it as such
+                addMethod(klass, setter, isCeylon, setterEntry.getValue());
             }
         }
         
