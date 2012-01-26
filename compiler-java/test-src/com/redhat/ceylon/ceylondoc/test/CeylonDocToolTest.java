@@ -174,6 +174,11 @@ public class CeylonDocToolTest {
                 Pattern.compile("<.*? id='sharedMethod'.*?>"));
         assertNoMatchInFile(destDir, "class_SharedClass.html", 
                 Pattern.compile("<.*? id='privateMethod'.*?>"));
+        
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("<div class='by'>By: Tom Bentley</div>"));
+        assertMatchInFile(destDir, "interface_Types.html", 
+                Pattern.compile("<div class='by'>By: Tom Bentley</div>"));
     }
     
     private File getOutputDir(CeylonDocTool tool, Module module) {

@@ -139,6 +139,8 @@ public class PackageDoc extends ClassOrPackageDoc {
         close("div");
         
         around("div class='doc'", getDoc(pkg));
+        
+        writeBy(pkg.getAuthors(), false);
     }
 
     protected void subMenu() throws IOException {

@@ -130,7 +130,7 @@ public class Util {
         return null;
     }
 
-    private static String unquote(String string) {
+    public static String unquote(String string) {
         return string.substring(1, string.length() - 1);
     }
 

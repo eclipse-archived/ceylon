@@ -457,6 +457,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         link(c.getType());
         tag("br");
         startPrintingLongDoc(c);
+        writeBy(c);
         writeSee(c);
         endLongDocAndPrintShortDoc(c);
         close("td");
@@ -514,6 +515,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         // description
         around("div class='doc'", getDoc(klass));
 
+        writeBy(klass);
         writeSee(klass);
         
         close("div");

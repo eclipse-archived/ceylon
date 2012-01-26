@@ -67,8 +67,10 @@ public class ModuleDoc extends CeylonDoc {
         close("div");
         
         around("div class='doc'", getDoc(module));
+        
+        writeBy(module.getAuthors(), false);
     }
-    
+
     private void packages() throws IOException {
         openTable("section-packages", "Packages", "Package", "Description");
         for (Package pkg : tool.getPackages(module)) {

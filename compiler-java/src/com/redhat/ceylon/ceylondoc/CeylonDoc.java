@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
@@ -284,6 +285,32 @@ public abstract class CeylonDoc extends Markup {
             close("div");
         }
     }
+    
+    protected void writeBy(Declaration decl) throws IOException {
+        Annotation by = Util.getAnnotation(decl, "by");
+        if (by != null) {
+            writeBy(by.getPositionalArguments(), true);
+        }
+    }
+
+    protected void writeBy(List<String> authors, boolean unquote) throws IOException {
+        if (!authors.isEmpty()) {
+            StringBuilder authorBuilder = new StringBuilder();
+            Iterator<String> authorIterator = authors.iterator();
+            while (authorIterator.hasNext()) {
+                if (unquote) {
+                    authorBuilder.append(Util.unquote(authorIterator.next()));
+                } else {
+                    authorBuilder.append(authorIterator.next());
+                }
+                if (authorIterator.hasNext()) {
+                    authorBuilder.append(", ");
+                }
+            }
+            around("div class='by'", "By: ", authorBuilder.toString());
+        }
+    }    
+    
 }
 
 
