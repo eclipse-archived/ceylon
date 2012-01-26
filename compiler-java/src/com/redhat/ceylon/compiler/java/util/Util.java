@@ -47,7 +47,9 @@ import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -438,6 +440,14 @@ public class Util {
             outputStream.write(buffer, 0, read);
         }
         outputStream.flush();
+    }
+
+    public static Package getPackage(Object decl) {
+        if(decl == null)
+            return null;
+        if(decl instanceof Package)
+            return (Package) decl;
+        return getPackage(((Declaration)decl).getContainer());
     }
 
 }

@@ -1431,4 +1431,31 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
+    public void printStats(){
+        int loaded = 0;
+        class Stats {
+            int loaded, total;
+        }
+        Map<Package, Stats> loadedByPackage = new HashMap<Package, Stats>();
+        for(Declaration decl : declarationsByName.values()){
+            if(decl instanceof LazyElement){
+                Package pkg = Util.getPackage(decl);
+                Stats stats = loadedByPackage.get(pkg);
+                if(stats == null){
+                    stats = new Stats();
+                    loadedByPackage.put(pkg, stats);
+                }
+                stats.total++;
+                if(((LazyElement)decl).isLoaded()){
+                    loaded++;
+                    stats.loaded++;
+                }
+            }
+        }
+        logVerbose("[Model loader: "+loaded+"(loaded)/"+declarationsByName.size()+"(total) declarations]");
+        for(Entry<Package, Stats> packageEntry : loadedByPackage.entrySet()){
+            logVerbose("[ Package "+packageEntry.getKey().getNameAsString()+": "
+                    +packageEntry.getValue().loaded+"(loaded)/"+packageEntry.getValue().total+"(total) declarations]");
+        }
+    }
 }

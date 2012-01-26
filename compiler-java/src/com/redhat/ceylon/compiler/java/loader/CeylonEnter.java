@@ -188,6 +188,9 @@ public class CeylonEnter extends Enter {
             }
         }
         printGeneratorErrors();
+        // write some stats
+        if(options.get(OptionName.VERBOSE) != null)
+            modelLoader.printStats();
     }
 
     // FIXME: this needs to be replaced when we deal with modules
