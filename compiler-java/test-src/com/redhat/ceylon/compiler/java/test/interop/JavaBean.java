@@ -9,4 +9,10 @@ public class JavaBean {
     
     public boolean oldStyle(){ return false; }
     public void setOldStyle(boolean b){}
+    
+    public String getURL(){ return null; }
+    public void setURL(String url){}
+
+    public String getURLEncoderForHTML(){ return null; }
+    public void setURLEncoderForHTML(String url){}
 }

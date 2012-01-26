@@ -14,6 +14,11 @@ final class attributes {
         java.setBooleanWithIs(false);
         sync = java.oldStyle();
         java.setOldStyle(false);
+        .java.lang.String syncStr;
+        syncStr = java.getURL();
+        java.setURL("");
+        syncStr = java.getURLEncoderForHTML();
+        java.setURLEncoderForHTML("");
     }
     
     public static void main(.java.lang.String[] args) {
@@ -44,11 +49,50 @@ class CeylonAttributes extends com.redhat.ceylon.compiler.java.test.interop.Java
     public final void setBooleanWithIs(boolean booleanWithIs) {
         this.booleanWithIs = booleanWithIs;
     }
+    private .java.lang.String url;
+    
+    @.java.lang.Override
+    public final .java.lang.String getURL() {
+        return url;
+    }
+    
+    @.java.lang.Override
+    public final void setURL(.java.lang.String url) {
+        this.url = url;
+    }
+    private .java.lang.String urlEncoderForHTML;
+    
+    @.java.lang.Override
+    public final .java.lang.String getURLEncoderForHTML() {
+        return urlEncoderForHTML;
+    }
+    
+    @.java.lang.Override
+    public final void setURLEncoderForHTML(.java.lang.String urlEncoderForHTML) {
+        this.urlEncoderForHTML = urlEncoderForHTML;
+    }
+    
+    private final void m() {
+        boolean sync;
+        sync = getBooleanWithGet();
+        setBooleanWithGet(false);
+        sync = isBooleanWithIs();
+        setBooleanWithIs(false);
+        sync = oldStyle();
+        setOldStyle(false);
+        .java.lang.String syncStr;
+        syncStr = getURL();
+        setURL("");
+        syncStr = getURLEncoderForHTML();
+        setURLEncoderForHTML("");
+    }
     
     CeylonAttributes() {
         super();
         this.booleanWithGet = false;
         this.booleanWithIs = false;
+        this.url = "";
+        this.urlEncoderForHTML = "";
     }
     
     public static void main(.java.lang.String[] args) {

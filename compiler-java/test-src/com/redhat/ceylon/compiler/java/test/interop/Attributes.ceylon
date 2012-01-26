@@ -37,15 +37,50 @@ void attributes() {
     sync := java.oldStyle();
     @error
     java.setOldStyle(false);
+
+    variable String syncStr;
+    @error
+    syncStr := java.url;
+    @error
+    java.url := "";
+
+    @error
+    syncStr := java.urlEncoderForHTML;
+    @error
+    java.urlEncoderForHTML := "";
 }
 
 @nomodel
 @error
 class CeylonAttributes() extends JavaBean() {
 
-    @error    
-    shared variable actual Boolean booleanWithGet := false; 
-    @error    
-    shared variable actual Boolean booleanWithIs := false; 
-    
+    @error
+    shared variable actual Boolean booleanWithGet := false;
+    @error
+    shared variable actual Boolean booleanWithIs := false;
+    @error
+    shared variable actual String url := "";
+    @error
+    shared variable actual String urlEncoderForHTML := "";
+
+    void m(){
+        variable Boolean sync;
+        sync := booleanWithGet;
+        booleanWithGet := false;
+
+        sync := booleanWithIs;
+        booleanWithIs := false;
+
+        @error
+        sync := oldStyle();
+        @error
+        setOldStyle(false);
+
+        variable String syncStr;
+        syncStr := url;
+        url := "";
+
+        syncStr := urlEncoderForHTML;
+        urlEncoderForHTML := "";
+    }
 }
