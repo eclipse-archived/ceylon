@@ -766,29 +766,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     addValue(klass, methodMirror, "string");
                 } else {
                     // normal method
-                    Method method = new Method();
-    
-                    method.setContainer(klass);
-                    method.setName(methodName);
-                    method.setUnit(klass.getUnit());
-                    method.setOverloaded(isOverloaded);
-                    setMethodOrValueFlags(klass, methodMirror, method);
-    
-                    // type params first
-                    setTypeParameters(method, methodMirror);
-    
-                    // now its parameters
-                    if(isEqualsMethod(methodMirror))
-                        setEqualsParameters(method, methodMirror);
-                    else
-                        setParameters(method, methodMirror, isCeylon);
-                    
-                    // and its return type
-                    ProducedType type = getMethodReturnType(methodMirrors, method);
-                    method.setType(type);
-                    
-                    markUnboxed(method, methodMirror.getReturnType());
-                    klass.getMembers().add(method);
+                    addMethod(klass, methodMirror, isCeylon, methodMirrors);
                 }
             }
         }
@@ -821,6 +799,32 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         setSatisfiedTypes(klass, classMirror);
         setCaseTypes(klass, classMirror);
         fillRefinedDeclarations(klass);
+    }
+
+    private void addMethod(ClassOrInterface klass, MethodMirror methodMirror, boolean isCeylon, List<MethodMirror> methodMirrors) {
+        Method method = new Method();
+        
+        method.setContainer(klass);
+        method.setName(methodMirror.getName());
+        method.setUnit(klass.getUnit());
+        method.setOverloaded(methodMirrors.size() > 1);
+        setMethodOrValueFlags(klass, methodMirror, method);
+
+        // type params first
+        setTypeParameters(method, methodMirror);
+
+        // now its parameters
+        if(isEqualsMethod(methodMirror))
+            setEqualsParameters(method, methodMirror);
+        else
+            setParameters(method, methodMirror, isCeylon);
+        
+        // and its return type
+        ProducedType type = getMethodReturnType(methodMirrors, method);
+        method.setType(type);
+        
+        markUnboxed(method, methodMirror.getReturnType());
+        klass.getMembers().add(method);
     }
 
     private ProducedType getMethodReturnType(List<MethodMirror> methodMirrors, Method method) {
