@@ -12,9 +12,15 @@ CeylonObject.prototype.toString=function() { return this.getString().value };
 //TODO: we need to distinguish between Objects and IdentifiableObjects
 CeylonObject.prototype.equals = function(other) { return Boolean$(this===other) }
 
-function Object(wat) {
+function Object$(wat) {
     return wat;
 }
+function $IdentifiableObject() {}
+$IdentifiableObject.T$all={'ceylon.language.IdentifiableObject':$IdentifiableObject}
+function IdentifiableObject(obj) {
+    return obj;
+}
+
 function $Cloneable() {}
 function Cloneable(wat) {
     return wat;
@@ -402,23 +408,9 @@ $Character.prototype.getLowercased = function() {
     var lcstr = codepointToString(this.value).toLowerCase();
     return Character(codepointFromString(lcstr, 0));
 }
-var $WS={}
-$WS[0x9]=true;
-$WS[0xa]=true;
-$WS[0xb]=true;
-$WS[0xc]=true;
-$WS[0xd]=true;
-$WS[0x20]=true;
-$WS[0x85]=true;
-$WS[0xa0]=true;
-$WS[0x1680]=true;
-$WS[0x180e]=true;
+var $WS={0x9:true, 0xa:true, 0xb:true, 0xc:true, 0xd:true, 0x20:true, 0x85:true, 0xa0:true,
+    0x1680:true, 0x180e:true, 0x2028:true, 0x2029:true, 0x202f:true, 0x205f:true, 0x3000:true}
 for (var i=0x2000; i<=0x200a; i++) { $WS[i]=true }
-$WS[0x2028]=true;
-$WS[0x2029]=true;
-$WS[0x202f]=true;
-$WS[0x205f]=true;
-$WS[0x3000]=true;
 $Character.prototype.getWhitespace = function() { return Boolean$(this.value in $WS) }
 $Character.prototype.getControl = function() { return Boolean$(this.value<32 || this.value===127) }
 $Character.prototype.getDigit = function() { return Boolean$(this.value>=48 && this.value<=57) }
@@ -494,6 +486,10 @@ function getExhausted() { return $finished; }
 function exists(value) { return value === getNull() || value === undefined ? $false : $true; }
 function nonempty(value) { return value === null || value === undefined ? $false : Boolean$(value.getEmpty() === $false); }
 //function nonempty(value) { return Boolean$(value && value.value && value.value.length > 0); }
+
+function isOfType(obj, typeName) {
+    return (obj!==null) ? (typeName in obj.constructor.T$all) : (typeName==="ceylon.language.Nothing");
+}
 
 function $Comparison() {}
 function Comparison(name) {
@@ -1021,7 +1017,9 @@ exports.$Exception=$Exception; //TODO just to let the compiler finish
 exports.$Comparable=$Comparable; //TODO just to let the compiler finish
 exports.Comparable=Comparable; //TODO just to let the compiler finish
 exports.$Object=CeylonObject; //TODO just to let the compiler finish
-exports.Object=Object; //TODO just to let the compiler finish
+exports.IdentifiableObject=IdentifiableObject;
+exports.$IdentifiableObject=$IdentifiableObject;
+exports.Object=Object$; //TODO just to let the compiler finish
 exports.print=print;
 exports.Integer=Integer;
 exports.Float=Float;
@@ -1057,6 +1055,7 @@ exports.prepend=prepend;
 exports.entries=entries;
 exports.exists=exists;
 exports.nonempty=nonempty;
+exports.isOfType=isOfType;
 exports.parseInteger=$parseInteger;
 exports.parseFloat=$parseFloat;
 exports.empty=$empty;
