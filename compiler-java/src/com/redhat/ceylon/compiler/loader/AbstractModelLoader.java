@@ -43,6 +43,7 @@ import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeParameterMirror;
 import com.redhat.ceylon.compiler.loader.mirror.VariableMirror;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
+import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
 import com.redhat.ceylon.compiler.loader.model.LazyElement;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
@@ -936,7 +937,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     private void addValue(ClassOrInterface klass, MethodMirror methodMirror, String methodName) {
-        Value value = new Value();
+        JavaBeanValue value = new JavaBeanValue();
+        value.setGet(methodMirror.getName().startsWith("get"));
         value.setContainer(klass);
         value.setName(methodName);
         value.setUnit(klass.getUnit());

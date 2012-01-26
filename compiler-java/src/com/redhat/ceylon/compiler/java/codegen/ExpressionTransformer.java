@@ -1541,8 +1541,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if(Decl.isJavaField(decl)){
                     selector = decl.getName();
                 }else{
-                    // invoke the getter
-                    selector = Util.getGetterName(decl.getName());
+                    // invoke the getter, using the Java interop form of Util.getGetterName because this is the only case
+                    // (Value inside a Class) where we might refer to JavaBean properties
+                    selector = Util.getGetterName(decl);
                 }
             } else if (decl.isCaptured() || decl.isShared()) {
                 // invoke the qualified getter

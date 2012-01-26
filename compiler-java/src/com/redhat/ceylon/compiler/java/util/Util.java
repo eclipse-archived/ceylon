@@ -40,6 +40,7 @@ import com.redhat.ceylon.cmr.impl.SimpleRepository;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
+import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -143,6 +144,11 @@ public class Util {
     }
 
     public static String getGetterName(String property){
+        // we default to just using "get" prefixes for every property, which is allows by JavaBean specs
+        return getGetterName(property, true);
+    }
+
+    private static String getGetterName(String property, boolean isGet) {
         // ERASURE
         if ("hash".equals(property)) {
             // FIXME This is NOT the way to handle this, we should check that we're
@@ -152,7 +158,16 @@ public class Util {
             return "toString";
         }
         
-        return "get"+capitalize(strip(property));
+        String prefix = isGet ? "get" : "is";
+        return prefix+capitalize(strip(property));
+    }
+
+    public static String getGetterName(Declaration decl) {
+        boolean isGet = true;
+        if(decl instanceof JavaBeanValue){
+            isGet = ((JavaBeanValue)decl).isGet();
+        }
+        return getGetterName(decl.getName(), isGet);
     }
 
     public static String getSetterName(String property){
@@ -424,4 +439,5 @@ public class Util {
         }
         outputStream.flush();
     }
+
 }
