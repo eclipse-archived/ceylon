@@ -157,6 +157,8 @@ public class Util {
     }
 
     public static String getGetterName(Declaration decl) {
+        // always use the refined decl
+        decl = decl.getRefinedDeclaration();
         if(decl instanceof JavaBeanValue){
             return ((JavaBeanValue)decl).getGetterName();
         }
@@ -172,6 +174,8 @@ public class Util {
     }
 
     public static String getSetterName(Declaration decl){
+        // always use the refined decl
+        decl = decl.getRefinedDeclaration();
         if(decl instanceof JavaBeanValue){
             return ((JavaBeanValue)decl).getSetterName();
         }
