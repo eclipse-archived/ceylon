@@ -348,7 +348,6 @@ public class GenerateJsVisitor extends Visitor
         callSuperclass(that.getExtendedType(), d);
         copySuperMembers(that, d);
         callInterfaces(that.getSatisfiedTypes(), d);
-out("/*aqui?*/");
         that.getClassBody().visit(this);
         returnSelf(d);
         endBlock();
