@@ -19,6 +19,8 @@ final class attributes {
         java.setURL("");
         syncStr = java.getURLEncoderForHTML();
         java.setURLEncoderForHTML("");
+        sync = java.getConfusedProperty();
+        java.setConfusedProperty("");
     }
     
     public static void main(.java.lang.String[] args) {

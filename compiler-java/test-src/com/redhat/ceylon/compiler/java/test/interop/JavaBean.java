@@ -15,4 +15,7 @@ public class JavaBean {
 
     public String getURLEncoderForHTML(){ return null; }
     public void setURLEncoderForHTML(String url){}
+    
+    public boolean getConfusedProperty(){ return false; }
+    public void setConfusedProperty(String str){}
 }

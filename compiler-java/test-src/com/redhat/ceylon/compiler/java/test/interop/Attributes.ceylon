@@ -48,6 +48,11 @@ void attributes() {
     syncStr := java.urlEncoderForHTML;
     @error
     java.urlEncoderForHTML := "";
+
+    @error
+    sync := java.confusedProperty;
+    @error
+    java.setConfusedProperty("");
 }
 
 @nomodel
