@@ -6,4 +6,7 @@ public class JavaBean {
 
     public boolean isBooleanWithIs(){ return false; }
     public void setBooleanWithIs(boolean b){}
+    
+    public boolean oldStyle(){ return false; }
+    public void setOldStyle(boolean b){}
 }

@@ -12,6 +12,8 @@ final class attributes {
         java.setBooleanWithGet(false);
         sync = java.isBooleanWithIs();
         java.setBooleanWithIs(false);
+        sync = java.oldStyle();
+        java.setOldStyle(false);
     }
     
     public static void main(.java.lang.String[] args) {

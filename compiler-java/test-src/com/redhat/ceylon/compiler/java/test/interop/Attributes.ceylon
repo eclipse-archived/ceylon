@@ -32,6 +32,11 @@ void attributes() {
     sync := java.booleanWithIs;
     @error
     java.booleanWithIs := false;
+
+    @error
+    sync := java.oldStyle();
+    @error
+    java.setOldStyle(false);
 }
 
 @nomodel
