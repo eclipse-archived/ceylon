@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -209,7 +210,12 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         if(repo != null)
             return repo;
         // lazy loading
-        List<String> userRepos = options.getMulti(OptionName.CEYLONREPO);
+        List<String> userRepos = new LinkedList<String>();
+        userRepos.addAll(options.getMulti(OptionName.CEYLONREPO));
+        // make sure we add the output repo if not in user repos
+        String outRepo = getOutputRepoOption();
+        if(!userRepos.contains(outRepo))
+            userRepos.add(outRepo);
         repo = Util.makeRepository(userRepos, cmrLogger);
         return repo;
     }
@@ -221,11 +227,16 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         // lazy loading
 
         // any user defined repos
-        // we use D and not CEYLONOUT here since that's where the option is stored
-        String outRepo = options.get(OptionName.D);
+        String outRepo = getOutputRepoOption();
         
         outputRepo = Util.makeOutputRepository(outRepo, cmrLogger);
         return outputRepo;
+    }
+
+    private String getOutputRepoOption() {
+        // we use D and not CEYLONOUT here since that's where the option is stored
+        String outRepo = options.get(OptionName.D);
+        return outRepo != null ? outRepo : "modules";
     }
 
     @Override
