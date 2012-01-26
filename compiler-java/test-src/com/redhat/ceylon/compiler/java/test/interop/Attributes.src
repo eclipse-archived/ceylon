@@ -1,0 +1,56 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class attributes {
+    
+    private attributes() {
+    }
+    
+    static void attributes() {
+        final com.redhat.ceylon.compiler.java.test.interop.JavaBean java = new com.redhat.ceylon.compiler.java.test.interop.JavaBean();
+        boolean sync;
+        sync = java.getBooleanWithGet();
+        java.setBooleanWithGet(false);
+        sync = java.isBooleanWithIs();
+        java.setBooleanWithIs(false);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.attributes.attributes();
+    }
+}
+class CeylonAttributes extends com.redhat.ceylon.compiler.java.test.interop.JavaBean {
+    private boolean booleanWithGet;
+    
+    @.java.lang.Override
+    public final boolean getBooleanWithGet() {
+        return booleanWithGet;
+    }
+    
+    @.java.lang.Override
+    public final void setBooleanWithGet(boolean booleanWithGet) {
+        this.booleanWithGet = booleanWithGet;
+    }
+    private boolean booleanWithIs;
+    
+    @.java.lang.Override
+    public final boolean isBooleanWithIs() {
+        return booleanWithIs;
+    }
+    
+    @.java.lang.Override
+    public final void setBooleanWithIs(boolean booleanWithIs) {
+        this.booleanWithIs = booleanWithIs;
+    }
+    
+    CeylonAttributes() {
+        super();
+        this.booleanWithGet = false;
+        this.booleanWithIs = false;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.interop.CeylonAttributes();
+    }
+}
