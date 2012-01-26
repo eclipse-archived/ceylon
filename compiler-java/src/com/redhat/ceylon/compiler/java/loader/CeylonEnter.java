@@ -213,6 +213,9 @@ public class CeylonEnter extends Enter {
     }
 
     public void addModuleToClassPath(Module module, boolean errorIfMissing) {
+        if(options.get(OptionName.VERBOSE) != null)
+            Log.printLines(log.noticeWriter, "[Adding module to classpath: "+module.getNameAsString()+"/"+module.getVersion()+"]");        
+        
         Paths.Path classPath = paths.getPathForLocation(StandardLocation.CLASS_PATH);
         
         Repository repository = fileManager.getRepository();
@@ -224,6 +227,12 @@ public class CeylonEnter extends Enter {
                 // try again for a jar
                 ctx.setSuffix(ArtifactContext.JAR);
                 artifact = repository.getArtifact(ctx);
+            }
+            if(options.get(OptionName.VERBOSE) != null){
+                if(artifact != null)
+                    Log.printLines(log.noticeWriter, "[Found module at : "+artifact.getPath()+"]");
+                else
+                    Log.printLines(log.noticeWriter, "[Could not find module]");
             }
         } catch (IOException e) {
             // FIXME: error? warning?
