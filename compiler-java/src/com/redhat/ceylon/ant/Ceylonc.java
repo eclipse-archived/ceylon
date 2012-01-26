@@ -54,7 +54,12 @@ public class Ceylonc extends MatchingTask {
     private List<Rep> repositories = new LinkedList<Rep>();
     private File executable;
     private List<Module> modules = new LinkedList<Module>();
+    private Boolean verbose;
 
+    public void setVerbose(Boolean verbose){
+        this.verbose = verbose;
+    }
+    
     /**
      * Sets the classpath
      * @param path
@@ -225,6 +230,9 @@ public class Ceylonc extends MatchingTask {
 
         Commandline cmd = new Commandline();
         cmd.setExecutable(getCompiler());
+        if(verbose != null && verbose.booleanValue()){
+            cmd.createArgument().setValue("-verbose");
+        }
         if(out != null){
             cmd.createArgument().setValue("-out");
             cmd.createArgument().setValue(out.getAbsolutePath());
