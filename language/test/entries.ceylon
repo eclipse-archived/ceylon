@@ -20,6 +20,16 @@ shared Range<Integer> range {
 }
 }*/
 
+void test_entries_function() {
+    value e = entries("a", "b", "c", "X", "Y", "Z", "1", "2", "3", "d", "e", "f");
+    value _e = Entry(-1, "null");
+    print(e);
+    assert((e.item(2)?_e).key==2, "entries");
+    assert((e.item(2)?_e).item=="c", "entries");
+    assert(1->"a" == 1->"a", "entry.equals");
+    assert(1->"a" != 1->"b", "entry.equals");
+}
+
 void entriesAndRanges() {
     
 /*Entry<Integer,String> entry {
@@ -162,4 +172,7 @@ Range<Integer> range {
         sum += x;
     }
     assert(sum==15, "range iteration");
+
+    //Test the entries function
+    test_entries_function();
 }

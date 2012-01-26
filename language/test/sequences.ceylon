@@ -61,6 +61,41 @@ void test_singleton() {
     assert(!singleton.keys.contains(2), "!singleton keys.contains(2)");
 }
 
+void test_join() {
+    value l1 = { "join", 1,2,3};
+    value l2 = { 4,5,6 };
+    value l3 = {7,8,9};
+    value joint = join(l1, l2, l3);
+    print(joint);
+    assert(joint.size==l1.size+l2.size+l3.size, "join");
+}
+
+void test_zip() {
+    value keys = { 1, 2, 3, 4, 5, 6 };
+    value items = { "one", "two", "three", "four", "five" };
+    value z1 = zip(keys, items);
+    value z2 = zip(keys, { "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete" });
+    print(z1);
+    print(z2);
+    assert(z1.size==5, "zip");
+    assert(z2.size==6, "zip");
+}
+
+//This is actually a test for the compiler. "exists" doesn't work yet.
+void test_exists_nonempty() {
+    String? yes = "yes";
+    String? no = null;
+    variable Integer[]? empties := Singleton(1);
+    value t1 = exists yes then "yes exists" else "WTF";
+    assert(t1 == "yes exists", "exists 1");
+    value t2 = exists no then "WTF" else "no doesn't exist";
+    assert(t2 == "no doesn't exist", "exists 2");
+    value t3 = nonempty empties then "nonempty works" else "nonempty broken";
+    assert(t3 == "nonempty works", "nonempty 1");
+    value t4 = nonempty {} then "nonempty is broken" else "works";
+    assert(t4 == "works", "nonempty 2");
+}
+
 shared void sequences() {
     value builder = SequenceBuilder<String>();
     value empty = builder.sequence;
@@ -283,5 +318,10 @@ shared void sequences() {
     assert(prepend({},"foo").size==1, "prepend to empty.size");
     assert(append({1, 2},"foo").size==3, "append.size");
     assert(prepend({1, 2},"foo").size==3, "prepend.size");
-    
+    assert(append({"one", "two" , "three"}, "four").size==4, "append");
+
+    //More sequence-related functions
+    test_join();
+    test_zip();
+    test_exists_nonempty();
 }

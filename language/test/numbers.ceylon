@@ -148,7 +148,10 @@ shared void numbers() {
     assert(max({1, 5})==5, "max naturals");
     assert(max({-1, +5})==+5, "max integers");
     assert(max({-1.5, 5.2})==5.2, "max floats");
-    
+    //eZL
+    assert(max({ 2, 4, 6, 8, 7, 250, 5, 3, 1 })==250, "max");
+    assert(min({ 200, 400, 600, 800, 700, 500, 300, 150 })==150, "min");
+
     //eZL
     assert(smallest(1,2)==1,          "smallest naturals");
     assert(smallest(-100, 100)==-100, "smallest integers");
