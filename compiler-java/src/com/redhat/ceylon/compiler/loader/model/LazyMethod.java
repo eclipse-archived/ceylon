@@ -46,7 +46,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public class LazyMethod extends Method {
+public class LazyMethod extends Method implements LazyElement {
 
     public ClassMirror classMirror;
     private ModelCompleter completer;
@@ -312,6 +312,11 @@ public class LazyMethod extends Method {
     public TypeDeclaration getInheritingDeclaration(Declaration d) {
         load();
         return super.getInheritingDeclaration(d);
+    }
+
+    @Override
+    public boolean isLoaded() {
+        return isLoaded;
     }
 
 }

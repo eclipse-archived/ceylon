@@ -31,7 +31,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public class LazyValue extends Value {
+public class LazyValue extends Value implements LazyElement {
     
     public ClassMirror classMirror;
     private ModelCompleter completer;
@@ -70,6 +70,11 @@ public class LazyValue extends Value {
     public ProducedType getType() {
         load();
         return super.getType();
+    }
+
+    @Override
+    public boolean isLoaded() {
+        return isLoaded;
     }
 
 }

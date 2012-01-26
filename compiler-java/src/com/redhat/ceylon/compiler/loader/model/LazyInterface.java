@@ -40,7 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public class LazyInterface extends Interface implements LazyElement {
+public class LazyInterface extends Interface implements LazyContainer {
 
     public ClassMirror classMirror;
     private ModelCompleter completer;
@@ -320,5 +320,10 @@ public class LazyInterface extends Interface implements LazyElement {
     public void addMember(Declaration decl) {
         // do this without lazy-loading
         super.getMembers().add(decl);
+    }
+
+    @Override
+    public boolean isLoaded() {
+        return isLoaded;
     }
 }

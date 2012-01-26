@@ -46,6 +46,7 @@ import com.redhat.ceylon.compiler.loader.mirror.VariableMirror;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
+import com.redhat.ceylon.compiler.loader.model.LazyContainer;
 import com.redhat.ceylon.compiler.loader.model.LazyElement;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
@@ -1200,8 +1201,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             param.setUnit(((Element)scope).getUnit());
             param.setContainer(scope);
             // let's not trigger the lazy-loading if we're completing a LazyClass/LazyInterface
-            if(scope instanceof LazyElement)
-                ((LazyElement)scope).addMember(param);
+            if(scope instanceof LazyContainer)
+                ((LazyContainer)scope).addMember(param);
             else // must be a method
                 scope.getMembers().add(param);
             param.setName((String)typeParam.getValue("value"));
@@ -1240,8 +1241,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             param.setUnit(((Element)scope).getUnit());
             param.setContainer(scope);
             // let's not trigger the lazy-loading if we're completing a LazyClass/LazyInterface
-            if(scope instanceof LazyElement)
-                ((LazyElement)scope).addMember(param);
+            if(scope instanceof LazyContainer)
+                ((LazyContainer)scope).addMember(param);
             else // must be a method
                 scope.getMembers().add(param);
             param.setName(typeParam.getName());

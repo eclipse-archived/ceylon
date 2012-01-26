@@ -17,16 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-
 package com.redhat.ceylon.compiler.loader.model;
 
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 
-/**
- * Represents a lazy declaration.
- *
- * @author Stéphane Épardaud <stef@epardaud.fr>
- */
-public interface LazyElement {
+public interface LazyContainer extends LazyElement {
+    public void addMember(Declaration decl);
 
-    public boolean isLoaded();
 }

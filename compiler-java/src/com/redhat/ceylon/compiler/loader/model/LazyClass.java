@@ -42,7 +42,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public class LazyClass extends Class implements LazyElement {
+public class LazyClass extends Class implements LazyContainer {
 
     public ClassMirror classMirror;
     private ModelCompleter completer;
@@ -354,5 +354,10 @@ public class LazyClass extends Class implements LazyElement {
     public void addMember(Declaration decl) {
         // do this without lazy-loading
         super.getMembers().add(decl);
+    }
+
+    @Override
+    public boolean isLoaded() {
+        return isLoaded;
     }
 }
