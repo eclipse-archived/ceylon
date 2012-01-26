@@ -160,16 +160,6 @@ void test_stringbuilder() {
 
 shared void test() {
     print("--- Start Language Module Tests ---");
-    test_largest();
-    test_smallest();
-    test_max();
-    test_min();
-    test_join();
-    test_zip();
-    test_coalesce();
-    test_append();
-    test_entries();
-    test_exists_nonempty();
     test_interpolate();
     test_stringbuilder();
     testCharacter();
