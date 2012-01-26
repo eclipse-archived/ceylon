@@ -143,12 +143,7 @@ public class Util {
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 
-    public static String getGetterName(String property){
-        // we default to just using "get" prefixes for every property, which is allows by JavaBean specs
-        return getGetterName(property, true);
-    }
-
-    private static String getGetterName(String property, boolean isGet) {
+    public static String getGetterName(String property) {
         // ERASURE
         if ("hash".equals(property)) {
             // FIXME This is NOT the way to handle this, we should check that we're
@@ -158,16 +153,14 @@ public class Util {
             return "toString";
         }
         
-        String prefix = isGet ? "get" : "is";
-        return prefix+capitalize(strip(property));
+        return "get"+capitalize(strip(property));
     }
 
     public static String getGetterName(Declaration decl) {
-        boolean isGet = true;
         if(decl instanceof JavaBeanValue){
-            isGet = ((JavaBeanValue)decl).isGet();
+            return ((JavaBeanValue)decl).getGetterName();
         }
-        return getGetterName(decl.getName(), isGet);
+        return getGetterName(decl.getName());
     }
 
     public static String getSetterName(String property){

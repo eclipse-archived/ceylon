@@ -946,7 +946,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     private void addValue(ClassOrInterface klass, MethodMirror methodMirror, String methodName) {
         JavaBeanValue value = new JavaBeanValue();
-        value.setGet(methodMirror.getName().startsWith("get"));
+        value.setGetterName(methodMirror.getName());
         value.setContainer(klass);
         value.setName(methodName);
         value.setUnit(klass.getUnit());

@@ -8,14 +8,14 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 public class JavaBeanValue extends Value {
-    private boolean isGet = false;
+    private String getterName;
 
-    public boolean isGet() {
-        return isGet;
+    public void setGetterName(String getterName) {
+        this.getterName = getterName;
     }
 
-    public void setGet(boolean isGet) {
-        this.isGet = isGet;
+    public String getGetterName() {
+        return getterName;
     }
     
 }
