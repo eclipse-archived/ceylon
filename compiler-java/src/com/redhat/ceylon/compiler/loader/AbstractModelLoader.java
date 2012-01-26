@@ -791,11 +791,22 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             MethodMirror setter = setterEntry.getKey();
             String name = getJavaAttributeName(setter.getName());
             Declaration decl = klass.getMember(name);
+            boolean foundGetter = false;
             if (decl != null && decl instanceof Value) {
-                ((Value)decl).setVariable(true);
-                if(decl instanceof JavaBeanValue)
-                    ((JavaBeanValue)decl).setSetterName(setter.getName());
-            } else {
+                Value value = (Value)decl;
+                VariableMirror setterParam = setter.getParameters().get(0);
+                ProducedType paramType = obtainType(setterParam.getType(), setterParam, klass);
+                // only add the setter if it has exactly the same type as the getter
+                if(paramType.isExactly(value.getType())){
+                    foundGetter = true;
+                    value.setVariable(true);
+                    if(decl instanceof JavaBeanValue)
+                        ((JavaBeanValue)decl).setSetterName(setter.getName());
+                }else
+                    logWarning("Setter parameter type for "+name+" does not match corresponding getter type, adding setter as a method");
+            } 
+            
+            if(!foundGetter){
                 // it was not a setter, it was a method, let's add it as such
                 addMethod(klass, setter, isCeylon, setterEntry.getValue());
             }
