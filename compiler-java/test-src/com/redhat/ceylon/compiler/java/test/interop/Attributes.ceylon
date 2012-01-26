@@ -53,6 +53,12 @@ void attributes() {
     sync := java.confusedProperty;
     @error
     java.setConfusedProperty("");
+
+    variable Integer syncInt;
+    @error
+    syncInt := java.épardaud;
+    @error
+    java.épardaud := 0;
 }
 
 @nomodel

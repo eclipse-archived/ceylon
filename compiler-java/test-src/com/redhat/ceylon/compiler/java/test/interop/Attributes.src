@@ -21,6 +21,9 @@ final class attributes {
         java.setURLEncoderForHTML("");
         sync = java.getConfusedProperty();
         java.setConfusedProperty("");
+        long syncInt;
+        syncInt = java.getÉpardaud();
+        java.setÉpardaud(0L);
     }
     
     public static void main(.java.lang.String[] args) {

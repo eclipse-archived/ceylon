@@ -18,4 +18,7 @@ public class JavaBean {
     
     public boolean getConfusedProperty(){ return false; }
     public void setConfusedProperty(String str){}
+    
+    public long getÉpardaud(){ throw new RuntimeException("I am not a number, I am a free man!"); }
+    public void setÉpardaud(long l){}
 }
