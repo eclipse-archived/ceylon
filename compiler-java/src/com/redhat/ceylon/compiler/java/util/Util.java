@@ -171,6 +171,13 @@ public class Util {
         return Character.toLowerCase(getterName.charAt(3)) + getterName.substring(4);
     }
 
+    public static String getSetterName(Declaration decl){
+        if(decl instanceof JavaBeanValue){
+            return ((JavaBeanValue)decl).getSetterName();
+        }
+        return getSetterName(decl.getName());
+    }
+
     public static String getCompanionClassName(String name){
         return name + "$impl";
     }

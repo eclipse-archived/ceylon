@@ -793,6 +793,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             Declaration decl = klass.getMember(name);
             if (decl != null && decl instanceof Value) {
                 ((Value)decl).setVariable(true);
+                if(decl instanceof JavaBeanValue)
+                    ((JavaBeanValue)decl).setSetterName(setter.getName());
             } else {
                 // it was not a setter, it was a method, let's add it as such
                 addMethod(klass, setter, isCeylon, setterEntry.getValue());

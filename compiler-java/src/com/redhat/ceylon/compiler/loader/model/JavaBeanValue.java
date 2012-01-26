@@ -9,9 +9,18 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
  */
 public class JavaBeanValue extends Value {
     private String getterName;
+    private String setterName;
 
     public void setGetterName(String getterName) {
         this.getterName = getterName;
+    }
+
+    public String getSetterName() {
+        return setterName;
+    }
+
+    public void setSetterName(String setterName) {
+        this.setterName = setterName;
     }
 
     public String getGetterName() {

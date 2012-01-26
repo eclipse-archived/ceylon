@@ -1735,7 +1735,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         boolean variable = decl.isVariable();
         
         at(op);
-        String selector = Util.getSetterName(decl.getName());
+        String selector = Util.getSetterName(decl);
         if (decl.isToplevel()) {
             // must use top level setter
             lhs = makeQualIdent(makeFQIdent(Util.quoteJavaKeywords(decl.getContainer().getQualifiedNameString())), Util.quoteIfJavaKeyword(decl.getName()));
