@@ -225,4 +225,11 @@ shared void numbers() {
     assert(parseInteger("-123")?0==-123, "parse integer");
     assert(parseFloat("12.34e3")?0.0==12.34e3, "parse float");
     
+    assert(1.0/0.0==positiveInfinity, "positiveInfinity");
+    assert(1.0!=positiveInfinity, "not positiveInfinity");
+    assert(-1.0/0.0==negativeInfinity, "negativeInfinity");
+    assert(1.0!=negativeInfinity, "not negativeInfinity");
+    assert(undefined(0.0/0.0), "undefined");
+    assert(!undefined(1.0), "defined");
+    
 }
