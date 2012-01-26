@@ -951,16 +951,12 @@ public class GenerateJsVisitor extends Visitor
         //Big TODO: make sure the member is actually
         //          refined by the current class!
     	if (that.getMemberOperator() instanceof SafeMemberOp) {
-    		out("function($){return $!==null?$.");
-	        qualifiedMemberRHS(that);
-	        out(":null}(");
 	        super.visit(that);
-	        out(")");
-    	} else {
-	        super.visit(that);
-	        out(".");
-	        qualifiedMemberRHS(that);
+    		out("===null?null:");
     	}
+        super.visit(that);
+        out(".");
+        qualifiedMemberRHS(that);
     }
     
     private void qualifiedMemberRHS(QualifiedMemberExpression that) {
