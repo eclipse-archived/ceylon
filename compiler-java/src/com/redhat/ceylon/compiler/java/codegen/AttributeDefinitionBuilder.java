@@ -78,8 +78,10 @@ public class AttributeDefinitionBuilder {
         this.attrName = attrName;
         this.fieldName = fieldName;
         
+        // Make sure we use the defined declaration for building the getter name, as we might be trying to
+        // override a JavaBean property with an "isFoo" getter, and we have to respect that.
         getterBuilder = MethodDefinitionBuilder
-            .systemMethod(owner, Util.getGetterName(attrName))
+            .systemMethod(owner, Util.getGetterName(attrType.getRefinedDeclaration()))
             .block(generateDefaultGetterBlock())
             .isActual(attrType.isActual())
             .resultType(type, attrType);
