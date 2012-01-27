@@ -1002,13 +1002,14 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(BaseMemberExpression that) {
-        qualify(that, that.getDeclaration());
-        if (that.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter ||
-                that.getDeclaration() instanceof Method) {
-            memberName(that.getDeclaration());
+        Declaration decl = that.getDeclaration();
+        qualify(that, decl);
+        if (decl instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter ||
+                decl instanceof Method) {
+            memberName(decl);
         }
         else {
-            out(getter(that.getDeclaration()));
+            out(getter(decl));
             out("()");
         }
     }
@@ -1826,18 +1827,11 @@ public class GenerateJsVisitor extends Visitor
            }
            
        } else {
-           clAlias();
-           out(".isOfType(");
-           specialConditionRHS(variableRHS, simpleCheck);
-           out(",'");
-           
            Type type = ((IsCondition) condition).getType();
-           if (type instanceof SimpleType) {
-               out(((SimpleType) type).getDeclarationModel().getQualifiedNameString());
-           } else {
-               out("$TODO$"); //TODO
-           }
-           out("')");
+           generateIsOfType(variableRHS, type, simpleCheck);
+           out("===");
+           clAlias();
+           out(".getTrue()");
        }
    }
    
@@ -1851,12 +1845,30 @@ public class GenerateJsVisitor extends Visitor
        }
    }
 
-   @Override public void visit(Break that) {
-       out("break;");
-   }
-   @Override public void visit(Continue that) {
-       out("continue;");
-   }
+    private void generateIsOfType(Term term, Type type, boolean simpleCheck) {
+        clAlias();
+        out(".isOfType(");
+        specialConditionRHS(term, simpleCheck);
+        out(",'");
+        
+        if (type instanceof SimpleType) {
+            out(((SimpleType) type).getDeclarationModel().getQualifiedNameString());
+        } else {
+            out("$TODO$"); //TODO
+        }
+        out("')");
+    }
+    @Override
+    public void visit(IsOp that) {
+        generateIsOfType(that.getTerm(), that.getType(), true); //TODO is it always simple?
+    }
+
+    @Override public void visit(Break that) {
+        out("break;");
+    }
+    @Override public void visit(Continue that) {
+        out("continue;");
+    }
 
    @Override public void visit(RangeOp that) {
 	   clAlias();

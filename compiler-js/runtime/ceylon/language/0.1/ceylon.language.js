@@ -509,7 +509,15 @@ function nonempty(value) { return value === null || value === undefined ? $false
 //function nonempty(value) { return Boolean$(value && value.value && value.value.length > 0); }
 
 function isOfType(obj, typeName) {
-    return (obj!==null) ? (typeName in obj.constructor.T$all) : (typeName==="ceylon.language.Nothing");
+    return Boolean$((obj!==null) ? (typeName in obj.constructor.T$all) : (typeName==="ceylon.language.Nothing"));
+}
+function className(obj) {
+    if (obj!==null) {
+        for ($ in obj.constructor.T$all) {
+            if (obj.constructor.T$all[$] === obj.constructor) return String$($);
+        }
+    }
+    return String$('ceylon.language.Nothing');
 }
 
 function $Comparison() {}
@@ -1108,6 +1116,7 @@ exports.nullsafe=function(){};
 exports.getPositiveInfinity=getPositiveInfinity;
 exports.getNegativeInfinity=getNegativeInfinity;
 exports.undefined=$undefined;
+exports.className=className;
     });
 }(typeof define==='function' && define.amd ? 
     define : function (id, factory) {
