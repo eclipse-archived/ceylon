@@ -823,7 +823,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         Method method = new Method();
         
         method.setContainer(klass);
-        method.setName(methodMirror.getName());
+        method.setName(Util.strip(methodMirror.getName()));
         method.setUnit(klass.getUnit());
         method.setOverloaded(methodMirrors.size() > 1);
         setMethodOrValueFlags(klass, methodMirror, method);
