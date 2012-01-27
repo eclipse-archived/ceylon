@@ -1,16 +1,21 @@
-void expect(Equality actual, Equality expected, String text) {
-    if (actual == expected) {
-        print("[ok] " + text + ": '" + actual.string + "'");
-    } else {
-        print("[NOT OK] " + text + ": actual='" + actual.string + "', expected='"
-              + expected.string + "'");
+variable Integer assertionCount:=0;
+variable Integer failureCount:=0;
+
+shared void assert(Boolean assertion, String message="") {
+    assertionCount+=1;
+    if (!assertion) {
+        failureCount+=1;
+        print("assertion failed \"" message "\"");
     }
 }
-void succeed(String text) {
-    print("[ok] " + text);
+
+shared void fail(String message) {
+    assert(false, message);
 }
-void fail(String text) {
-    print("[NOT OK] " + text);
+
+shared void results() {
+    print("assertions " assertionCount 
+          ", failures " failureCount "");
 }
 
 void test_if() {
@@ -18,11 +23,11 @@ void test_if() {
     if (true) {
         print("if(true) OK");
     } else {
-        print("Never happen");
+        fail("Never happen");
     }
     //False, with else
     if (false) {
-        print("Never happen");
+        fail("Never happen");
     } else {
         print("if(false) OK");
     }
@@ -32,37 +37,37 @@ void test_if() {
     }
     //chained if's
     if (1+2 == 4) {
-        print("can't happen");
+        fail("can't happen");
     } else if (2+2 == 5) {
-        print("No way");
+        fail("No way");
     } else {
         print("Chained if's with else OK");
     }
     //chained if's without else
     if (1+2 == 4) {
-        print("can't happen");
+        fail("can't happen");
     } else if (2+2 == 4) {
         print("Chained if's without else OK");
     }
     //More complex conditions
     if (2>1 && 1<2) {
         print("if && OK");
-    } else { print("if && FAIL"); }
+    } else { fail("if &&"); }
     if ((1>2 || 1>0) && 1<2) {
         print("if (||)&& OK");
-    } else { print("if (||)&& FAIL"); }
+    } else { fail("if (||)&&"); }
 }
 
 void test_while() {
     variable Integer i := 0;
     while (i < 2) {
-        print("while OK");
         i := i+1;
     }
+    assert(i==2, "while");
     while (i >= 2 && i < 4) {
-        print("while OK");
         i := i+1;
     }
+    assert(i==4,"while");
 }
 
 void testIfExists() {
@@ -70,29 +75,24 @@ void testIfExists() {
     String? s2 = "";
     if (exists s1) {
         fail("if (exists x)");
-    } else {
-        succeed("if (exists x)");
     }
     if (exists s2) {
-        succeed("if (exists x)");
     } else {
         fail("if (exists x)");
     }
     if (exists s3 = s1) {
         fail("if (exists x=y)");
-    } else {
-        succeed("if (exists x=y)");
     }
     String? s4 = "hi";
     if (exists s3 = s4) {
-        expect(s3, "hi", "if (exists x=y)");
+        assert(s3=="hi", "if (exists x=y)");
     } else {
         fail("if (exists x=y)");
     }
     if (exists s3 = s2) {
         if (exists s5 = s4) {
-            expect(s3, "", "if (exists x=y) nested");
-            expect(s5, "hi", "if (exists x=y) nested");
+            assert(s3=="", "if (exists x=y) nested");
+            assert(s5=="hi", "if (exists x=y) nested");
         } else {
             fail("if (exists x=y) nested");
         }
@@ -100,7 +100,7 @@ void testIfExists() {
         fail("if (exists x=y) nested");
     }
     if (exists len = s4?.size) {
-        expect(len, 2, "if (exists x=expr)");
+        assert(len==2, "if (exists x=expr)");
     } else {
         fail("if (exists x=expr)");
     }
@@ -114,27 +114,27 @@ void testWhileExists() {
         ++i1;
         break;
     }
-    expect(i1, 0, "while (exists x)");
+    assert(i1==0, "while (exists x)");
     i1 := 0;
     while (exists s2) {
         if (++i1 >= 2) {
             break;
         }
     }
-    expect(i1, 2, "while (exists x)");
+    assert(i1==2, "while (exists x)");
     i1 := 0;
     while (exists s3 = s1) {
         ++i1;
         break;
     }
-    expect(i1, 0, "while (exists x=y)");
+    assert(i1==0, "while (exists x=y)");
     variable String? s4 := "hi";
     i1 := 0;
     while (exists s3 = s4) {
         ++i1;
         s4 := null;
     }
-    expect(i1, 1, "while (exists x=y)");
+    assert(i1==1, "while (exists x=y)");
     i1 := 0;
     while (exists s3 = s2) {
         s4 := "hi";
@@ -149,15 +149,15 @@ void testWhileExists() {
             break;
         }
     } 
-    expect(i1, 4, "while (exists x=y) nested");
+    assert(i1==4, "while (exists x=y) nested");
     s4 := "hi";
     i1 := 0;
     while (exists len = s4?.size) {
-        expect(len, 2, "while (exists x=expr)");
+        assert(len==2, "while (exists x=expr)");
         s4 := null;
         ++i1;
     }
-    expect(i1, 1, "while (exists x=expr)");
+    assert(i1==1, "while (exists x=expr)");
 }
 
 class MySequence<out Element>(Sequence<Element> seq)
@@ -177,29 +177,24 @@ void testIfNonempty() {
     String[] s2 = { "abc" };
     if (nonempty s1) {
         fail("if (nonempty x)");
-    } else {
-        succeed("if (nonempty x)");
     }
     if (nonempty s2) {
-        succeed("if (nonempty x)");
     } else {
         fail("if (nonempty x)");
     }
     if (nonempty s3 = s1) {
         fail("if (nonempty x=y)");
-    } else {
-        succeed("if (nonempty x=y)");
     }
     String[] s4 = { "hi" };
     if (nonempty s3 = s4) {
-        expect(s3.first, "hi", "if (nonempty x=y)");
+        assert(s3.first=="hi", "if (nonempty x=y)");
     } else {
         fail("if (nonempty x=y)");
     }
     if (nonempty s3 = s2) {
         if (nonempty s5 = s4) {
-            expect(s3.first, "abc", "if (nonempty x=y) nested");
-            expect(s5.first, "hi", "if (nonempty x=y) nested");
+            assert(s3.first=="abc", "if (nonempty x=y) nested");
+            assert(s5.first=="hi", "if (nonempty x=y) nested");
         } else {
             fail("if (nonempty x=y) nested");
         }
@@ -207,24 +202,22 @@ void testIfNonempty() {
         fail("if (nonempty x=y) nested");
     }
     if (nonempty s6 = s4.segment(0, 1)) {
-        expect(s6.first, "hi", "if (nonempty x=expr)");
+        assert(s6.first=="hi", "if (nonempty x=expr)");
     } else {
         fail("if (nonempty x=expr)");
     }
     String[] s = MySequence<String>({"hi"});
     if (nonempty s) {
-        succeed("if (nonempty x) custom sequence");
     } else {
         fail("if (nonempty x) custom sequence");
     }
 }
 
 shared void test() {
-    print("--- Start flow control tests ---");
     test_if();
     test_while();
     testIfExists();
     testWhileExists();
     testIfNonempty();
-    print("--- End flow control tests ---");
+    results();
 }
