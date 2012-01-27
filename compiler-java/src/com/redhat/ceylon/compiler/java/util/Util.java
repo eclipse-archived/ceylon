@@ -69,6 +69,10 @@ public class Util {
 
     public static String quoteMethodNameIfProperty(Method method, Unit typeFact) {
         String name = method.getName();
+        // only quote if method is a member, we cannot get a conflict for local or toplevel methods
+        // since local methods have a $getter suffix and toplevel attribute class names are not mangled
+        if(!method.isClassOrInterfaceMember())
+            return name;
         // get/is with at least one more letter, no parameter and non-void type
         if(((name.length() >= 4 && name.startsWith("get"))
              || name.length() >= 3 && name.startsWith("is"))
