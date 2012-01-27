@@ -151,10 +151,12 @@ $Float.prototype.getFractionalPart = function() {
 }
 $Float.prototype.getSign = function() { return this.value > 0 ? Integer(1) : this.value < 0 ? Integer(-1) : Integer(0); }
 $Float.prototype.getHash = function() { return String$(this.value.toPrecision()).getHash(); }
+$Float.prototype.getUndefined = function() { return isNaN(this.value) ? $true : $false; }
+$Float.prototype.getFinite = function() { return this.value!==Infinity && this.value!==-Infinity && !isNaN(this.value) ? $true : $false; }
+$Float.prototype.getInfinite = function() { return this.value===Infinity || this.value===-Infinity ? $true : $false; }
 
-function getPositiveInfinity() { return Float(Infinity); }
-function getNegativeInfinity() { return Float(-Infinity); }
-function $undefined(value) { return isNaN(value.value) ? $true : $false; }
+function getInfinity() { return Float(Infinity); }
+//function getNegativeInfinity() { return Float(-Infinity); }
 
 function $String() {}
 $String.T$all={'ceylon.language.String':$String}
@@ -1144,9 +1146,8 @@ exports.parseInteger=$parseInteger;
 exports.parseFloat=$parseFloat;
 exports.empty=$empty;
 exports.nullsafe=function(){};
-exports.getPositiveInfinity=getPositiveInfinity;
-exports.getNegativeInfinity=getNegativeInfinity;
-exports.undefined=$undefined;
+exports.getInfinity=getInfinity;
+//exports.getNegativeInfinity=getNegativeInfinity;
 exports.className=className;
     });
 }(typeof define==='function' && define.amd ? 
