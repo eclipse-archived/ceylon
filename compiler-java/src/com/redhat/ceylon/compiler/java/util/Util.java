@@ -49,9 +49,9 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
@@ -66,7 +66,27 @@ public class Util {
         // ERASURE
         return "hash".equals(name) || "string".equals(name);
     }
-    
+
+    public static String quoteMethodNameIfProperty(Method method, Unit typeFact) {
+        String name = method.getName();
+        // get/is with at least one more letter, no parameter and non-void type
+        if(((name.length() >= 4 && name.startsWith("get"))
+             || name.length() >= 3 && name.startsWith("is"))
+            && method.getParameterLists().get(0).getParameters().isEmpty()
+            && !method.getType().isExactly(typeFact.getVoidDeclaration().getType()))
+            return quote(name);
+        // set with one parameter and void type
+        if((name.length() >= 4 && name.startsWith("set"))
+           && method.getParameterLists().get(0).getParameters().size() == 1
+           && method.getType().isExactly(typeFact.getVoidDeclaration().getType()))
+            return quote(name);
+        return name;
+    }
+
+    private static String quote(String name) {
+        return "$"+name;
+    }
+
     public static String quoteMethodName(String name){
         // ERASURE
         if ("hash".equals(name)) {
@@ -84,7 +104,7 @@ public class Util {
     
     public static String quoteIfJavaKeyword(String name){
         if(isJavaKeyword(name))
-            return "$"+name;
+            return quote(name);
         return name;
     }
     
@@ -449,5 +469,4 @@ public class Util {
             return (Package) decl;
         return getPackage(((Declaration)decl).getContainer());
     }
-
 }

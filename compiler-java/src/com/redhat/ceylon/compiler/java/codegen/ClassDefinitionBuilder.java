@@ -146,7 +146,7 @@ public class ClassDefinitionBuilder {
             for(Declaration member : decl.getMembers()){
                 if(member instanceof Method && !member.isFormal()){
                     // this member has a body so we need to add a definition for it
-                    MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(gen, true, member.getName());
+                    MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(gen, true, Util.quoteMethodNameIfProperty((Method) member, gen.typeFact()));
                     Method method = (Method) member;
                     ListBuffer<JCTree.JCExpression> params = ListBuffer.lb();
                     params.append(gen.makeUnquotedIdent("this"));
