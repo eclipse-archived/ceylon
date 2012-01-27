@@ -69,11 +69,11 @@ abstract class OptimSuperclass<I, F, C, S, B> {
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.expression.operator.OptimSuperclass<ceylon.language.Integer,ceylon.language.Float,ceylon.language.Character,ceylon.language.String,ceylon.language.Boolean>")
 class Optim extends com.redhat.ceylon.compiler.java.test.expression.operator.OptimSuperclass<ceylon.language.Integer, ceylon.language.Float, ceylon.language.Character, ceylon.language.String, ceylon.language.Boolean> {
     
-    private final long getInteger() {
+    private final long $getInteger() {
         return 1L;
     }
     
-    private final double getFloat() {
+    private final double $getFloat() {
         return 1.0;
     }
     
@@ -92,10 +92,10 @@ class Optim extends com.redhat.ceylon.compiler.java.test.expression.operator.Opt
         --n1;
         n1 = n2;
         n1 = 0L;
-        n1 = getInteger();
+        n1 = $getInteger();
         n1 = -n2;
         n1 = -0L;
-        n1 = -getInteger();
+        n1 = -$getInteger();
         n1 = n2 + n3;
         n1 = n2 - n3;
         n1 = n2 * n3;
@@ -142,10 +142,10 @@ class Optim extends com.redhat.ceylon.compiler.java.test.expression.operator.Opt
         double n3 = 0.0;
         n1 = n2;
         n1 = 0.0;
-        n1 = getFloat();
+        n1 = $getFloat();
         n1 = -n2;
         n1 = -0.0;
-        n1 = -getFloat();
+        n1 = -$getFloat();
         n1 = n2 + n3;
         n1 = n2 - n3;
         n1 = n2 * n3;
