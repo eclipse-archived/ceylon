@@ -288,6 +288,11 @@ public class ModelLoaderTest extends CompilerTest {
     }
 
     @Test
+    public void loadClassWithAttributeAndConflictingMethods(){
+        verifyClassLoading("KlassWithAttributeAndConflictingMethods.ceylon");
+    }
+
+    @Test
     public void loadTypeParameters(){
         verifyClassLoading("TypeParameters.ceylon");
     }
