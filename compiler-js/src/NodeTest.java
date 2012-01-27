@@ -37,7 +37,7 @@ public class NodeTest {
             } catch (IOException ex) {
                 sb.append("\n\n\nBIG PILE OF FAIL: ");
                 sb.append(ex.getClass().getName());
-                sb.append(ex.getMessage());
+                sb.append(", ").append(ex.getMessage());
             }
         }
         public String getResult() {
