@@ -332,17 +332,15 @@ public class GenerateJsVisitor extends Visitor
         out(")");
         beginBlock();
         declareSelf(d);
-        if (prototypeStyle) {
-            for (Parameter p: that.getParameterList().getParameters()) {
-                if (p.getDeclarationModel().isCaptured()) {
-                    self(d);
-                    out(".");
-                    memberName(p.getDeclarationModel());
-                    out("=");
-                    memberName(p.getDeclarationModel());
-                    out(";");
-                    endLine();
-                }
+        for (Parameter p: that.getParameterList().getParameters()) {
+            if (p.getDeclarationModel().isCaptured()) {
+                self(d);
+                out(".");
+                memberName(p.getDeclarationModel());
+                out("=");
+                memberName(p.getDeclarationModel());
+                out(";");
+                endLine();
             }
         }
         callSuperclass(that.getExtendedType(), d);
