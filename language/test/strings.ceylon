@@ -145,7 +145,9 @@ shared void strings() {
     assert(hello.hash==("HE"+"LLO").lowercased.hash, "string hash");
     
     value builder = StringBuilder();
+    assert(builder.string=="", "StringBuilder 1");
     builder.append("hello");
+    assert(builder.string=="hello", "StringBuilder 2");
     builder.appendCharacter(` `);
     builder.append("world");
     String s = builder.string;
@@ -153,7 +155,8 @@ shared void strings() {
     builder.appendAll();
     builder.appendAll(" ");
     builder.appendAll("goodbye", " ", "everyone");
-    assert(builder.string=="hello world goodbye everyone", "string builder");    
+    builder.appendSpace();
+    assert(builder.string=="hello world goodbye everyone ", "string builder");    
     
     assert("hello world".initial(0)=="", "string initial");
     assert("hello world".terminal(0)=="", "string terminal");
@@ -211,4 +214,8 @@ shared void strings() {
     nlb.appendNewline();
     assert(nlb.string.size==7, "string builder newline");
     assert(nlb.string=="\nhello\n", "string builder newline");
+
+    value s1 = "as it should";
+    value interp = "String part " 1 " interpolation " 2 " works" s1 "";
+    assert(interp=="String part 1 interpolation 2 worksas it should", "String Interpolation");
 }
