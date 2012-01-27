@@ -572,7 +572,11 @@ public class StructureTest extends CompilerTest {
     public void testAtrClassAttributeWithConflictingMethods(){
         compareWithJavaSource("attribute/ClassAttributeWithConflictingMethods");
     }
-
+    @Test
+    public void testAtrInnerAttributeGetterWithConflictingMethods(){
+        compareWithJavaSource("attribute/InnerAttributeGetterWithConflictingMethods");
+    }
+    
     //
     // Classes
     

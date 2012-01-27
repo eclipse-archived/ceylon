@@ -1,0 +1,39 @@
+package com.redhat.ceylon.compiler.java.test.structure.attribute;
+
+class InnerAttributeGetterWithConflictingMethods {
+    
+    private final void m() {
+        
+        final class x$getter {
+            
+            long getX() {
+                return 2L;
+            }
+            
+            private x$getter() {
+            }
+        }
+        final x$getter x$getter = new x$getter();
+        
+        final class getX {
+            
+            private getX() {
+            }
+            
+            long getX() {
+                return x$getter.getX();
+            }
+        }
+        final getX getX = new getX();
+        final long n = x$getter.getX();
+        final long n2 = getX.getX();
+    }
+    
+    InnerAttributeGetterWithConflictingMethods() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterWithConflictingMethods();
+    }
+}
