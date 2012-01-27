@@ -292,6 +292,7 @@ public class GenerateJsVisitor extends Visitor
         Interface d = that.getDeclarationModel();
         comment(that);
         defineType(d);
+        addTypeInfo(that);
         copyInterfacePrototypes(that.getSatisfiedTypes(), d);
         for (Statement s: that.getInterfaceBody().getStatements()) {
             addToPrototype(d, s);
@@ -314,6 +315,7 @@ public class GenerateJsVisitor extends Visitor
         Class d = that.getDeclarationModel();
         comment(that);
         defineType(d);
+        addTypeInfo(that);
         copySuperclassPrototype(that.getExtendedType(),d);
         copyInterfacePrototypes(that.getSatisfiedTypes(), d);
         for (Statement s: that.getClassBody().getStatements()) {
@@ -421,6 +423,70 @@ public class GenerateJsVisitor extends Visitor
         out("$");
         out(d.getName());
         out("(){}");
+        endLine();
+    }
+    
+    private void addTypeInfo(
+            com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration type) {   
+        String typeName = type.getDeclarationModel().getName();
+        
+        out("$");
+        out(typeName);
+        out(".T$all={'");
+        out(type.getDeclarationModel().getQualifiedNameString());
+        out("':");
+        qualify(type, type.getDeclarationModel());
+        out("$");
+        out(typeName);
+        out("}");
+        endLine();
+
+        ExtendedType extendedType = null;
+        SatisfiedTypes satisfiedTypes = null;
+        if (type instanceof ClassDefinition) {
+            ClassDefinition classDef = (ClassDefinition) type;
+            extendedType = classDef.getExtendedType();
+            satisfiedTypes = classDef.getSatisfiedTypes();
+        } else if (type instanceof InterfaceDefinition) {
+            satisfiedTypes = ((InterfaceDefinition) type).getSatisfiedTypes();
+        } else if (type instanceof ObjectDefinition) {
+            ObjectDefinition objectDef = (ObjectDefinition) type;
+            extendedType = objectDef.getExtendedType();
+            satisfiedTypes = objectDef.getSatisfiedTypes();
+        }
+        
+        if (extendedType != null) {
+            SimpleType extType = extendedType.getType();
+            copyTypeInfo(type.getDeclarationModel(), constructorFunctionName(extType));
+        } else if (!(type instanceof InterfaceDefinition)) {
+            copyTypeInfo(type.getDeclarationModel(), "$$$cl15.$IdentifiableObject");
+        }
+        
+        if (satisfiedTypes != null) {
+            for (SimpleType satType : satisfiedTypes.getTypes()) {
+                copyTypeInfo(type.getDeclarationModel(), constructorFunctionName(satType));
+            }
+        }
+    }
+    
+    private String constructorFunctionName(SimpleType type) {
+        String constr = qualifiedPath(type, type.getDeclarationModel());
+        if (constr.length() > 0) {
+            constr += '.';
+        }
+        constr += "$";
+        constr += type.getDeclarationModel().getName();
+        return constr;
+    }
+    
+    private void copyTypeInfo(Declaration d, String constructor) {
+        out("for($ in ");
+        out(constructor);
+        out(".T$all){$");
+        out(d.getName());
+        out(".T$all[$]=");
+        out(constructor);
+        out(".T$all[$]}");
         endLine();
     }
     
@@ -537,6 +603,7 @@ public class GenerateJsVisitor extends Visitor
         Class c = (Class) d.getTypeDeclaration();
         comment(that);
         defineType(c);
+        addTypeInfo(that);
         copySuperclassPrototype(that.getExtendedType(),d);
         copyInterfacePrototypes(that.getSatisfiedTypes(),d);
         for (Statement s: that.getClassBody().getStatements()) {
@@ -951,16 +1018,22 @@ public class GenerateJsVisitor extends Visitor
         //Big TODO: make sure the member is actually
         //          refined by the current class!
     	if (that.getMemberOperator() instanceof SafeMemberOp) {
-    		out("function($){return $!==null?$.");
-	        qualifiedMemberRHS(that);
-	        out(":null}(");
+    		out("function($){return $===null?");
+            if (that.getDeclaration() instanceof Method) {
+                clAlias();
+                out(".nullsafe:$.");
+            } else {
+                out("null:$.");
+            }
+            qualifiedMemberRHS(that);
+            out("}(");
 	        super.visit(that);
-	        out(")");
+            out(")");
     	} else {
-	        super.visit(that);
-	        out(".");
-	        qualifiedMemberRHS(that);
-    	}
+        super.visit(that);
+        out(".");
+        qualifiedMemberRHS(that);
+        }
     }
     
     private void qualifiedMemberRHS(QualifiedMemberExpression that) {
@@ -1637,10 +1710,10 @@ public class GenerateJsVisitor extends Visitor
 	   IfClause ifClause = that.getIfClause();
 	   Block ifBlock = ifClause.getBlock();
 	   Condition condition = ifClause.getCondition();
-	   if (condition instanceof ExistsOrNonemptyCondition) {
-		   // if (exists/nonempty ...)		   
-	       existsOrNonemptyConditionAndBlock((ExistsOrNonemptyCondition) condition,
-	               ifBlock, "if");
+	   if ((condition instanceof ExistsOrNonemptyCondition)
+	           || (condition instanceof IsCondition)) {
+		   // if (is/exists/nonempty ...)		   
+	       specialConditionAndBlock(condition, ifBlock, "if");
 	   } else {
 	       out("if ((");
 		   condition.visit(this);
@@ -1661,10 +1734,10 @@ public class GenerateJsVisitor extends Visitor
    @Override public void visit(WhileStatement that) {
 	   WhileClause whileClause = that.getWhileClause();
 	   Condition condition = whileClause.getCondition();
-	   if (condition instanceof ExistsOrNonemptyCondition) {
-		   // while (exists/nonempty...)
-	       existsOrNonemptyConditionAndBlock((ExistsOrNonemptyCondition) condition,
-	               whileClause.getBlock(), "while");
+	   if ((condition instanceof ExistsOrNonemptyCondition)
+	           || (condition instanceof IsCondition)) {
+		   // while (is/exists/nonempty...)
+	       specialConditionAndBlock(condition, whileClause.getBlock(), "while");
 	   } else {
 		   out("while ((");
 	       condition.visit(this);
@@ -1675,17 +1748,25 @@ public class GenerateJsVisitor extends Visitor
 	   }
    }
    
-   private void existsOrNonemptyConditionAndBlock(ExistsOrNonemptyCondition condition,
+   // handles an "is", "exists" or "nonempty" condition
+   private void specialConditionAndBlock(Condition condition,
                Block block, String keyword) {
-	   Variable existsVar = condition.getVariable();
-	   String existsVarName = existsVar.getDeclarationModel().getName();
+       Variable variable = null;
+       if (condition instanceof ExistsOrNonemptyCondition) {
+           variable = ((ExistsOrNonemptyCondition) condition).getVariable();
+       } else if (condition instanceof IsCondition) {
+           variable = ((IsCondition) condition).getVariable();
+       } else {
+           return;
+       }
+	   String varName = variable.getDeclarationModel().getName();
 	   
 	   boolean simpleCheck = false;
-	   Term existsVarRHS = existsVar.getSpecifierExpression().getExpression().getTerm();
-	   if (existsVarRHS instanceof BaseMemberExpression) {
-		   BaseMemberExpression bme = (BaseMemberExpression) existsVarRHS;
-		   if (bme.getDeclaration().getName().equals(existsVarName)) {
-			   // the simple case: if/while (exists/nonempty x)
+	   Term variableRHS = variable.getSpecifierExpression().getExpression().getTerm();
+	   if (variableRHS instanceof BaseMemberExpression) {
+		   BaseMemberExpression bme = (BaseMemberExpression) variableRHS;
+		   if (bme.getDeclaration().getName().equals(varName)) {
+			   // the simple case: if/while (is/exists/nonempty x)
 			   simpleCheck = true;
 		   }
 	   }
@@ -1693,22 +1774,19 @@ public class GenerateJsVisitor extends Visitor
 	   if (simpleCheck) {
 		   out(keyword);
            out("(");
-           existsVarRHS.visit(this);
-           existsOrNonemptyCheck(condition);
+           specialConditionCheck(condition, variableRHS, simpleCheck);
            out(")");
            block.visit(this);
 		   
 	   } else {
-		   // if/while (exists/nonempty x=...)
+		   // if/while (is/exists/nonempty x=...)
 		   
-		   out("var $ex$;");
+		   out("var $cond$;");
 		   endLine();
 		   
 		   out(keyword);
-		   out("(($ex$=");
-		   existsVarRHS.visit(this);
-		   out(")");
-           existsOrNonemptyCheck(condition);
+		   out("(");
+		   specialConditionCheck(condition, variableRHS, simpleCheck);
            out(")");
 		   
 		   if (block.getStatements().isEmpty()) {
@@ -1717,15 +1795,15 @@ public class GenerateJsVisitor extends Visitor
 		   } else {
 			   beginBlock();
 			   out("var $");
-			   out(existsVarName);
-			   out("=$ex$;");
+			   out(varName);
+			   out("=$cond$;");
 			   endLine();
 			   
 			   function();
-			   out(getter(existsVar.getDeclarationModel()));
+			   out(getter(variable.getDeclarationModel()));
 			   out("(){");
 			   out("return $");
-			   out(existsVarName);
+			   out(varName);
 			   out("}");
 			   endLine();
 			   
@@ -1735,15 +1813,42 @@ public class GenerateJsVisitor extends Visitor
 	   }
    }
    
-   private void existsOrNonemptyCheck(ExistsOrNonemptyCondition condition) {
-       if (condition instanceof NonemptyCondition) {
-           out(".getEmpty()===");
-           clAlias();
-           out(".getFalse()");
+   private void specialConditionCheck(Condition condition, Term variableRHS,
+                                      boolean simpleCheck) {
+       if (condition instanceof ExistsOrNonemptyCondition) {
+           specialConditionRHS(variableRHS, simpleCheck);
+           if (condition instanceof NonemptyCondition) {
+               out(".getEmpty()===");
+               clAlias();
+               out(".getFalse()");
+           } else {
+               out("!==null");
+           }
+           
        } else {
-           out("!==null");
+           clAlias();
+           out(".isOfType(");
+           specialConditionRHS(variableRHS, simpleCheck);
+           out(",'");
+           
+           Type type = ((IsCondition) condition).getType();
+           if (type instanceof SimpleType) {
+               out(((SimpleType) type).getDeclarationModel().getQualifiedNameString());
+           } else {
+               out("$TODO$"); //TODO
+           }
+           out("')");
        }
-
+   }
+   
+   private void specialConditionRHS(Term variableRHS, boolean simple) {
+       if (simple) {
+           variableRHS.visit(this);
+       } else {
+           out("($cond$=");
+           variableRHS.visit(this);
+           out(")");
+       }
    }
 
    @Override public void visit(Break that) {

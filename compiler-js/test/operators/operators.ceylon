@@ -1,81 +1,92 @@
-void expect(Equality actual, Equality expected, String text) {
-    if (actual == expected) {
-        print("[ok] " + text + ": '" + actual.string + "'");
-    } else {
-        print("[NOT OK] " + text + ": actual='" + actual.string + "', expected='"
-              + expected.string + "'");
+variable Integer assertionCount:=0;
+variable Integer failureCount:=0;
+
+shared void assert(Boolean assertion, String message="") {
+    assertionCount+=1;
+    if (!assertion) {
+        failureCount+=1;
+        print("assertion failed \"" message "\"");
     }
+}
+
+shared void fail(String message) {
+    assert(false, message);
+}
+
+shared void results() {
+    print("assertions " assertionCount 
+          ", failures " failureCount "");
 }
 
 void testIntegerOperators() {
     
     variable Integer i1 := -4;
     i1 := -i1;
-    expect(i1, 4, "negation");
+    assert(i1==4, "negation");
     i1 := + (-987654);
-    expect(i1, -987654, "positive");
+    assert(i1==-987654, "positive");
     i1 := +0;
-    expect(i1, 0, "+0=0");
+    assert(i1==0, "+0=0");
     i1 := -0;
-    expect(i1, 0, "+0=0");
+    assert(i1==0, "+0=0");
         
     variable Integer i2 := 123 + 456;
-    expect(i2, 579, "addition");
+    assert(i2==579, "addition");
     i1 := i2 - 16;
-    expect(i1, 563, "subtraction");
+    assert(i1==563, "subtraction");
     i2 := -i1 + i2 - 1;
-    expect(i2, 15, "-i1+i2-1");
+    assert(i2==15, "-i1+i2-1");
         
     i1 := 3 * 7;
-    expect(i1, 21, "multiplication");
+    assert(i1==21, "multiplication");
     i2 := i1 * 2;
-    expect(i2, 42, "multiplication");
+    assert(i2==42, "multiplication");
     i2 := 17 / 4;
-    expect(i2, 4, "integer division");
+    assert(i2==4, "integer division");
     i1 := i2 * 516 / -i1;
-    expect(i1, -98, "i2*516/-i1");
+    assert(i1==-98, "i2*516/-i1");
     
     i1 := 15 % 4;
-    expect(i1, 3, "modulo");
+    assert(i1==3, "modulo");
     i2 := 312 % 12;
-    expect(i2, 0, "modulo");
+    assert(i2==0, "modulo");
 
     i1 := 2 ** 10;
-    expect(i1, 1024, "power");
+    assert(i1==1024, "power");
     i2 := 100 ** 6;
-    expect(i2, 1000000000000, "power");
+    assert(i2==1000000000000, "power");
 }
 
 void testFloatOperators() {
     
     variable Float f1 := -4.2;
     f1 := -f1;
-    expect(f1, 4.2, "negation");
+    assert(f1==4.2, "negation");
     f1 := + (-987654.9925567);
-    expect(f1, -987654.9925567, "positive");
+    assert(f1==-987654.9925567, "positive");
     f1 := +0.0;
-    expect(f1, 0.0, "+0.0=0.0");
+    assert(f1==0.0, "+0.0=0.0");
     f1 := -0.0;
-    expect(f1, 0.0, "-0.0=0.0");
+    assert(f1==0.0, "-0.0=0.0");
         
     variable Float f2 := 3.14159265 + 456.0;
-    expect(f2, 459.14159265, "addition");
+    assert(f2==459.14159265, "addition");
     f1 := f2 - 0.0016;
-    expect(f1, 459.13999265, "subtraction");
+    assert(f1==459.13999265, "subtraction");
     f2 := -f1 + f2 - 1.2;
-    expect(f2, -1.1984000000000037, "-f1+f2-1.2");
+    assert(f2==-1.1984000000000037, "-f1+f2-1.2");
     
     f1 := 3.0 * 0.79;
-    expect(f1, 2.37, "multiplication");
+    assert(f1==2.37, "multiplication");
     f2 := f1 * 2.0e13;
-    expect(f2, 47400000000000.0, "multiplication");
+    assert(f2==47400000000000.0, "multiplication");
     f2 := 17.1 / 4.0E-18;
-    expect(f2, 4275000000000000000.0, "division");
+    assert(f2==4275000000000000000.0, "division");
     f1 := f2 * 51.6e2 / -f1;
-    expect(f2, 4275000000000000000.0, "f2*51.6e2/-f1");
+    assert(f2==4275000000000000000.0, "f2*51.6e2/-f1");
         
     f1 := 150.0 ** 0.5;
-    expect(f1, 12.24744871391589, "power");
+    assert(f1==12.24744871391589, "power");
 }
 
 class OpTest1() {}
@@ -84,93 +95,93 @@ void testBooleanOperators() {
     value o1 = OpTest1();
     value o2 = OpTest1();
     variable Boolean b1 := o1 === o2;
-    expect(b1, false, "identity");
+    assert(!b1, "identity");
     variable Boolean b2 := o1 === o1;
-    expect(b2, true, "identity");
+    assert(b2, "identity");
 
     b1 := o1 == o2;
-    expect(b1, false, "equals");
+    assert(!b1, "equals");
     b2 := o1 == o1;    
-    expect(b2, true, "equals");
+    assert(b2, "equals");
     b1 := 1 == 2;
-    expect(b1, false, "equals");
+    assert(!b1, "equals");
     b2 := 1 != 2;
-    expect(b2, true, "not equal");
+    assert(b2, "not equal");
     variable Boolean b3 := !b2;
-    expect(b3, false, "not");
+    assert(!b3, "not");
         
     b1 := true && false;
-    expect(b1, false, "and");
+    assert(!b1, "and");
     b2 := b1 && true;
-    expect(b2, false, "and");
+    assert(!b2, "and");
     b3 := true && true;
-    expect(b3, true, "and");
+    assert(b3, "and");
     b1 := true || false;
-    expect(b1, true, "or");
+    assert(b1, "or");
     b2 := false || b1;
-    expect(b2, true, "or");
+    assert(b2, "or");
     b3 := false || false;
-    expect(b3, false, "or");
+    assert(!b3, "or");
 }
 
 void testComparisonOperators() {
     Comparison c1 = "str1" <=> "str2";
-    expect(c1, smaller, "compare");
+    assert(c1==smaller, "compare");
     Comparison c2 = "str2" <=> "str1";
-    expect(c2, larger, "compare");
+    assert(c2==larger, "compare");
     Comparison c3 = "str1" <=> "str1";
-    expect(c3, equal, "compare");
+    assert(c3==equal, "compare");
     Comparison c4 = "" <=> "";
-    expect(c4, equal, "compare");
+    assert(c4==equal, "compare");
     Comparison c5 = "str1" <=> "";
-    expect(c5, larger, "compare");
+    assert(c5==larger, "compare");
     Comparison c6 = "" <=> "str2";
-    expect(c6, smaller, "compare");
+    assert(c6==smaller, "compare");
     
     variable Boolean b1 := "str1" < "str2";
-    expect(b1, true, "smaller");
+    assert(b1, "smaller");
     variable Boolean b2 := "str1" > "str2";
-    expect(b2, false, "larger");
+    assert(!b2, "larger");
     variable Boolean b3 := "str1" <= "str2";
-    expect(b3, true, "small as");
+    assert(b3, "small as");
     variable Boolean b4 := "str1" >= "str2";
-    expect(b4, false, "large as");
+    assert(!b4, "large as");
     b1 := "str1" < "str1";
-    expect(b1, false, "smaller");
+    assert(!b1, "smaller");
     b2 := "str1" > "str1";
-    expect(b2, false, "larger");
+    assert(!b2, "larger");
     b3 := "str1" <= "str1";
-    expect(b3, true, "small as");
+    assert(b3, "small as");
     b4 := "str1" >= "str1";
-    expect(b4, true, "large as");
+    assert(b4, "large as");
 }
 
 void testOtherOperators() {
     Integer->String entry = 47->"hi there";
-    expect(entry.key, 47, "entry key");
-    expect(entry.item, "hi there", "entry item");
+    assert(entry.key==47, "entry key");
+    assert(entry.item=="hi there", "entry item");
     value entry2 = true->entry;
-    expect(entry2.key, true, "entry key");
-    expect(entry2.item, 47->"hi there", "entry item");
+    assert(entry2.key==true, "entry key");
+    assert(entry2.item==47->"hi there", "entry item");
             
     String s1 = true then "ok" else "noo";
-    expect(s1, "ok", "then/else");
+    assert(s1=="ok", "then/else");
     String s2 = false then "what?" else "great"; 
-    expect(s2, "great", "then/else");
+    assert(s2=="great", "then/else");
 }
 
 void testCollectionOperators() {
     value seq1 = { "one", "two" };
     String s1 = seq1[0]?"null";
-    expect(s1, "one", "lookup");
+    assert(s1=="one", "lookup");
     String s2 = seq1[2]?"null";
-    expect(s2, "null", "lookup");
+    assert(s2=="null", "lookup");
     String s3 = seq1[-1]?"null";
-    expect(s3, "null", "lookup");
+    assert(s3=="null", "lookup");
     variable Sequence<String>? unsafe := seq1;
-    expect(exists unsafe?[0], true, "safe index");
+    assert(exists unsafe?[0], "safe index");
     unsafe := null;
-    expect(exists unsafe?[0], false, "safe index");
+    assert(!exists unsafe?[0], "safe index");
 }
 
 class NullsafeTest() {
@@ -180,27 +191,27 @@ class NullsafeTest() {
 void testNullsafeOperators() {
     String[] seq = { "hi" };
     String s1 = seq[0]?"null";
-    expect(s1, "hi", "default");
+    assert(s1=="hi", "default");
     String s2 = seq[1]?"null";
-    expect(s2, "null", "default");
+    assert(s2=="null", "default");
     
     String? s3 = null;
     String? s4 = "test";
     String s5 = s3?.uppercased ? "null";
     String s6 = s4?.uppercased ? "null";
-    expect(s5, "null", "nullsafe member");
-    expect(s6, "TEST", "nullsafe member");
+    assert(s5=="null", "nullsafe member");
+    assert(s6=="TEST", "nullsafe member");
     NullsafeTest? obj = null;
     Integer? i = obj?.f();
-    expect(exists i, false, "nullsafe invoke");
+    assert(!exists i, "nullsafe invoke");
 }
 
 void testIncDecOperators() {
     variable Integer i1 := 1;
     void f1() {
         Integer i2 = ++i1;
-        expect(i1, 2, "prefix increment");
-        expect(i2, 2, "prefix increment");
+        assert(i1==2, "prefix increment");
+        assert(i2==2, "prefix increment");
     }
     f1();
     
@@ -212,55 +223,55 @@ void testIncDecOperators() {
         return c1;
     }
     Integer i4 = ++f2().i;
-    expect(i4, 2, "prefix increment");
-    expect(c1.i, 2, "prefix increment");
-    expect(i3, 1, "prefix increment");
+    assert(i4==2, "prefix increment");
+    assert(c1.i==2, "prefix increment");
+    assert(i3==1, "prefix increment");
     
     void f3() {
         Integer i2 = --i1;
-        expect(i1, 1, "prefix decrement");
-        expect(i2, 1, "prefix decrement");
+        assert(i1==1, "prefix decrement");
+        assert(i2==1, "prefix decrement");
     }
     f3();
     
     Integer i5 = --f2().i;
-    expect(i5, 1, "prefix decrement");
-    expect(c1.i, 1, "prefix decrement");
-    expect(i3, 2, "prefix decrement");
+    assert(i5==1, "prefix decrement");
+    assert(c1.i==1, "prefix decrement");
+    assert(i3==2, "prefix decrement");
     
     void f4() {
         Integer i2 = i1++;
-        expect(i1, 2, "postfix increment");
-        expect(i2, 1, "postfix increment");
+        assert(i1==2, "postfix increment");
+        assert(i2==1, "postfix increment");
     }
     f4();
     
     Integer i6 = f2().i++;
-    expect(i6, 1, "postfix increment");
-    expect(c1.i, 2, "postfix increment");
-    expect(i3, 3, "postfix increment");
+    assert(i6==1, "postfix increment");
+    assert(c1.i==2, "postfix increment");
+    assert(i3==3, "postfix increment");
     
     void f5() {
         Integer i2 = i1--;
-        expect(i1, 1, "postfix decrement");
-        expect(i2, 2, "postfix decrement");
+        assert(i1==1, "postfix decrement");
+        assert(i2==2, "postfix decrement");
     }
     f5();
     
     Integer i7 = f2().i--;
-    expect(i7, 2, "postfix decrement");
-    expect(c1.i, 1, "postfix decrement");
-    expect(i3, 4, "postfix decrement");
+    assert(i7==2, "postfix decrement");
+    assert(c1.i==1, "postfix decrement");
+    assert(i3==4, "postfix decrement");
 }
 
 void testArithmeticAssignOperators() {
     variable Integer i1 := 1;
     i1 += 10;
-    expect(i1, 11, "+= operator");
+    assert(i1==11, "+= operator");
     
     variable Integer i2 := (i1 += -5);
-    expect(i2, 6, "+= operator");
-    expect(i1, 6, "+= operator");
+    assert(i2==6, "+= operator");
+    assert(i1==6, "+= operator");
     
     class C1() { shared variable Integer i := 1; }
     C1 c1 = C1();
@@ -271,29 +282,28 @@ void testArithmeticAssignOperators() {
     }
     
     i2 := (f().i += 11);
-    expect(i2, 12, "+= operator");
-    expect(c1.i, 12, "+= operator");
-    expect(i3, 1, "+= operator");
+    assert(i2==12, "+= operator");
+    assert(c1.i==12, "+= operator");
+    assert(i3==1, "+= operator");
     
     i2 := (i1 -= 14);
-    expect(i1, -8, "-= operator");
-    expect(i2, -8, "-= operator");
+    assert(i1==-8, "-= operator");
+    assert(i2==-8, "-= operator");
     
     i2 := (i1 *= -3);
-    expect(i1, 24, "*= operator");
-    expect(i2, 24, "*= operator");
+    assert(i1==24, "*= operator");
+    assert(i2==24, "*= operator");
     
     i2 := (i1 /= 5);
-    expect(i1, 4, "/= operator");
-    expect(i2, 4, "/= operator");
+    assert(i1==4, "/= operator");
+    assert(i2==4, "/= operator");
     
     i2 := (i1 %= 3);
-    expect(i1, 1, "%= operator");
-    expect(i2, 1, "%= operator");
+    assert(i1==1, "%= operator");
+    assert(i2==1, "%= operator");
 }
 
 shared void test() {
-    print("--- Start Operator Tests ---");
     testIntegerOperators();
     testFloatOperators();
     testBooleanOperators();
@@ -303,5 +313,5 @@ shared void test() {
     testNullsafeOperators();
     testIncDecOperators();
     testArithmeticAssignOperators();
-    print("--- End Operator Tests ---");
+    results();
 }
