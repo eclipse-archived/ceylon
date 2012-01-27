@@ -12,7 +12,14 @@ CeylonObject.prototype.toString=function() { return this.getString().value };
 //TODO: we need to distinguish between Objects and IdentifiableObjects
 CeylonObject.prototype.equals = function(other) { return Boolean$(this===other) }
 
+function $Void() {}
+function Void(wat) {
+    wat.constructor.T$all['ceylon.language.Void']=$Void;
+    return wat;
+}
 function Object$(wat) {
+    Void(wat);
+    wat.constructor.T$all['ceylon.language.Object']=CeylonObject;
     return wat;
 }
 function $IdentifiableObject() {}
@@ -22,11 +29,6 @@ function IdentifiableObject(obj) {
     return obj;
 }
 
-function $Void() {}
-function Void(wat) {
-    wat.constructor.T$all['ceylon.language.Void']=$Void;
-    return wat;
-}
 function $Cloneable() {}
 function Cloneable(wat) {
     wat.constructor.T$all['ceylon.language.Cloneable']=$Cloneable;
@@ -37,7 +39,26 @@ function Equality(wat) {
     wat.constructor.T$all['ceylon.language.Equality']=$Equality;
     return wat;
 }
-
+function $Castable() {}
+function Castable(wat) {
+    wat.constructor.T$all['ceylon.language.Castable']=$Castable;
+    return wat;
+}
+function $Sized() {}
+function Sized(wat) {
+    wat.constructor.T$all['ceylon.language.Sized']=$Sized;
+    return wat;
+}
+function $Ordered() {}
+function Ordered(wat) {
+    wat.constructor.T$all['ceylon.language.Ordered']=$Ordered;
+    return wat;
+}
+function $Category() {}
+function Category(wat) {
+    wat.constructor.T$all['ceylon.language.Category']=$Category;
+    return wat;
+}
 function $Iterable() {}
 function Iterable(wat) {
     wat.constructor.T$all['ceylon.language.Iterable']=$Iterable;
@@ -69,12 +90,13 @@ function Summable(wat) {
 
 function $Integer() {}
 $Integer.T$all={'ceylon.language.Integer':$Integer}
-for($ in $IdentifiableObject.T$all){$Integer.T$all[$]=$IdentifiableObject.T$all[$]}
 function Integer(value) {
     var that = new $Integer;
+    Object$(that);
     Summable(that);
     Comparable(that);
     Equality(that);
+    Castable(that);
     that.value = value;
     return that;
 }
@@ -160,11 +182,14 @@ function getInfinity() { return Float(Infinity); }
 
 function $String() {}
 $String.T$all={'ceylon.language.String':$String}
-for($ in $IdentifiableObject.T$all){$String.T$all[$]=$IdentifiableObject.T$all[$]}
 function String$(value,size) {
     var that = new $String;
+    Object$(that);
     Equality(that);
     Void(that);
+    Ordered(that);
+    Category(that);
+    Sized(that);
     that.value = value;
     that.codePoints = size;
     return that;
@@ -425,9 +450,9 @@ function codepointFromString(str, index) {
 
 function $Character() {}
 $Character.T$all={'ceylon.language.Character':$Character}
-for($ in $IdentifiableObject.T$all){$Character.T$all[$]=$IdentifiableObject.T$all[$]}
 function Character(value) {
     var that = new $Character;
+    Object$(that);
     Equality(that);
     Void(that);
     that.value = value;
@@ -509,6 +534,7 @@ function $Boolean() {}
 $Boolean.T$all={'ceylon.language.Boolean':$Boolean}
 $Boolean.T$all['ceylon.language.Equality']=$Equality;
 $Boolean.T$all['ceylon.language.Void']=$Void;
+//$Boolean.T$all['ceylon.language.Castable']=$Castable;
 for($ in $IdentifiableObject.T$all){$Boolean.T$all[$]=$IdentifiableObject.T$all[$]}
 for(var $ in CeylonObject.prototype){$Boolean.prototype[$]=CeylonObject.prototype[$]}
 var $true = new $Boolean;
@@ -539,6 +565,25 @@ function nonempty(value) { return value === null || value === undefined ? $false
 function isOfType(obj, typeName) {
     return Boolean$((obj!==null) ? (typeName in obj.constructor.T$all) : (typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void"));
 }
+function isOfAnyType(obj, typeNames) {
+    if (obj===null) {
+        return Boolean$(typeNames.indexOf('ceylon.language.Nothing')>=0 || typeNames.indexOf('ceylon.language.Void')>=0);
+    }
+    for (var i = 0; i < typeNames.length; i++) {
+        if (typeNames[i] in obj.constructor.T$all) return $true;
+    }
+    return $false;
+}
+function isOfAllTypes(obj, typeNames) {
+    if (obj===null) { //TODO check if this is right
+        return Boolean$(typeNames.indexOf('ceylon.language.Nothing')>=0 || typeNames.indexOf('ceylon.language.Void')>=0);
+    }
+    for (var i = 0; i < typeNames.length; i++) {
+        if (!(typeNames[i] in obj.constructor.T$all)) return $false;
+    }
+    return $true;
+}
+
 function className(obj) {
     if (obj!==null) {
         for ($ in obj.constructor.T$all) {
@@ -997,9 +1042,9 @@ $SingletonIterator.prototype.next = function() {
 
 function $Entry() {}
 $Entry.T$all={'ceylon.language.Entry':$Entry}
-for($ in $IdentifiableObject.T$all){$Entry.T$all[$]=$IdentifiableObject.T$all[$]}
 function Entry(key, item) {
     var that = new $Entry;
+    Object$(that);
     Equality(that);
     Void(that);
     that.key = key;
@@ -1142,6 +1187,8 @@ exports.entries=entries;
 exports.exists=exists;
 exports.nonempty=nonempty;
 exports.isOfType=isOfType;
+exports.isOfAnyType=isOfAnyType;
+exports.isOfAllTypes=isOfAllTypes;
 exports.parseInteger=$parseInteger;
 exports.parseFloat=$parseFloat;
 exports.empty=$empty;
