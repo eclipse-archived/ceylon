@@ -1578,7 +1578,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 selector = null;
             } else {
                 // not toplevel, not within method, must be a class member
-                selector = Util.quoteMethodName(decl.getName());
+                selector = Util.quoteMethodName(Util.quoteMethodNameIfProperty((Method) decl, typeFact()));
             }
         }
         if (result == null) {
