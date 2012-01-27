@@ -12,49 +12,91 @@ CeylonObject.prototype.toString=function() { return this.getString().value };
 //TODO: we need to distinguish between Objects and IdentifiableObjects
 CeylonObject.prototype.equals = function(other) { return Boolean$(this===other) }
 
+function $Void() {}
+function Void(wat) {
+    wat.constructor.T$all['ceylon.language.Void']=$Void;
+    return wat;
+}
 function Object$(wat) {
+    Void(wat);
+    wat.constructor.T$all['ceylon.language.Object']=CeylonObject;
     return wat;
 }
 function $IdentifiableObject() {}
 $IdentifiableObject.T$all={'ceylon.language.IdentifiableObject':$IdentifiableObject}
+$IdentifiableObject.T$all['ceylon.language.Object']=CeylonObject;
 function IdentifiableObject(obj) {
     return obj;
 }
 
 function $Cloneable() {}
 function Cloneable(wat) {
+    wat.constructor.T$all['ceylon.language.Cloneable']=$Cloneable;
     return wat;
 }
-
+function $Equality() {}
+function Equality(wat) {
+    wat.constructor.T$all['ceylon.language.Equality']=$Equality;
+    return wat;
+}
+function $Castable() {}
+function Castable(wat) {
+    wat.constructor.T$all['ceylon.language.Castable']=$Castable;
+    return wat;
+}
+function $Sized() {}
+function Sized(wat) {
+    wat.constructor.T$all['ceylon.language.Sized']=$Sized;
+    return wat;
+}
+function $Ordered() {}
+function Ordered(wat) {
+    wat.constructor.T$all['ceylon.language.Ordered']=$Ordered;
+    return wat;
+}
+function $Category() {}
+function Category(wat) {
+    wat.constructor.T$all['ceylon.language.Category']=$Category;
+    return wat;
+}
 function $Iterable() {}
 function Iterable(wat) {
+    wat.constructor.T$all['ceylon.language.Iterable']=$Iterable;
     return wat;
 }
 function $Iterator() {}
 function Iterator(wat) {
+    wat.constructor.T$all['ceylon.language.Iterator']=$Iterator;
     return wat;
 }
 
 function $Exception() {}
 function Exception(wat) {
+    wat.constructor.T$all['ceylon.language.Exception']=$Exception;
     return wat;
 }
 
 function $Comparable() {}
 function Comparable(wat) {
+    wat.constructor.T$all['ceylon.language.Comparable']=$Comparable;
     return wat;
 }
 
 function $Summable() {}
 function Summable(wat) {
+    wat.constructor.T$all['ceylon.language.Summable']=$Summable;
     return wat;
 }
 
 function $Integer() {}
 $Integer.T$all={'ceylon.language.Integer':$Integer}
-for($ in $IdentifiableObject.T$all){$Integer.T$all[$]=$IdentifiableObject.T$all[$]}
 function Integer(value) {
     var that = new $Integer;
+    Object$(that);
+    Summable(that);
+    Comparable(that);
+    Equality(that);
+    Castable(that);
     that.value = value;
     return that;
 }
@@ -131,16 +173,23 @@ $Float.prototype.getFractionalPart = function() {
 }
 $Float.prototype.getSign = function() { return this.value > 0 ? Integer(1) : this.value < 0 ? Integer(-1) : Integer(0); }
 $Float.prototype.getHash = function() { return String$(this.value.toPrecision()).getHash(); }
+$Float.prototype.getUndefined = function() { return isNaN(this.value) ? $true : $false; }
+$Float.prototype.getFinite = function() { return this.value!==Infinity && this.value!==-Infinity && !isNaN(this.value) ? $true : $false; }
+$Float.prototype.getInfinite = function() { return this.value===Infinity || this.value===-Infinity ? $true : $false; }
 
-function getPositiveInfinity() { return Float(Infinity); }
-function getNegativeInfinity() { return Float(-Infinity); }
-function $undefined(value) { return isNaN(value.value) ? $true : $false; }
+function getInfinity() { return Float(Infinity); }
+//function getNegativeInfinity() { return Float(-Infinity); }
 
 function $String() {}
 $String.T$all={'ceylon.language.String':$String}
-for($ in $IdentifiableObject.T$all){$String.T$all[$]=$IdentifiableObject.T$all[$]}
 function String$(value,size) {
     var that = new $String;
+    Object$(that);
+    Equality(that);
+    Void(that);
+    Ordered(that);
+    Category(that);
+    Sized(that);
     that.value = value;
     that.codePoints = size;
     return that;
@@ -401,9 +450,11 @@ function codepointFromString(str, index) {
 
 function $Character() {}
 $Character.T$all={'ceylon.language.Character':$Character}
-for($ in $IdentifiableObject.T$all){$Character.T$all[$]=$IdentifiableObject.T$all[$]}
 function Character(value) {
     var that = new $Character;
+    Object$(that);
+    Equality(that);
+    Void(that);
     that.value = value;
     return that;
 }
@@ -481,6 +532,9 @@ $StringBuilder.prototype.appendSpace = function() { this.value = this.value + " 
 function getNull() { return null }
 function $Boolean() {}
 $Boolean.T$all={'ceylon.language.Boolean':$Boolean}
+$Boolean.T$all['ceylon.language.Equality']=$Equality;
+$Boolean.T$all['ceylon.language.Void']=$Void;
+//$Boolean.T$all['ceylon.language.Castable']=$Castable;
 for($ in $IdentifiableObject.T$all){$Boolean.T$all[$]=$IdentifiableObject.T$all[$]}
 for(var $ in CeylonObject.prototype){$Boolean.prototype[$]=CeylonObject.prototype[$]}
 var $true = new $Boolean;
@@ -509,8 +563,27 @@ function nonempty(value) { return value === null || value === undefined ? $false
 //function nonempty(value) { return Boolean$(value && value.value && value.value.length > 0); }
 
 function isOfType(obj, typeName) {
-    return Boolean$((obj!==null) ? (typeName in obj.constructor.T$all) : (typeName==="ceylon.language.Nothing"));
+    return Boolean$((obj!==null) ? (typeName in obj.constructor.T$all) : (typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void"));
 }
+function isOfAnyType(obj, typeNames) {
+    if (obj===null) {
+        return Boolean$(typeNames.indexOf('ceylon.language.Nothing')>=0 || typeNames.indexOf('ceylon.language.Void')>=0);
+    }
+    for (var i = 0; i < typeNames.length; i++) {
+        if (typeNames[i] in obj.constructor.T$all) return $true;
+    }
+    return $false;
+}
+function isOfAllTypes(obj, typeNames) {
+    if (obj===null) { //TODO check if this is right
+        return Boolean$(typeNames.indexOf('ceylon.language.Nothing')>=0 || typeNames.indexOf('ceylon.language.Void')>=0);
+    }
+    for (var i = 0; i < typeNames.length; i++) {
+        if (!(typeNames[i] in obj.constructor.T$all)) return $false;
+    }
+    return $true;
+}
+
 function className(obj) {
     if (obj!==null) {
         for ($ in obj.constructor.T$all) {
@@ -969,9 +1042,11 @@ $SingletonIterator.prototype.next = function() {
 
 function $Entry() {}
 $Entry.T$all={'ceylon.language.Entry':$Entry}
-for($ in $IdentifiableObject.T$all){$Entry.T$all[$]=$IdentifiableObject.T$all[$]}
 function Entry(key, item) {
     var that = new $Entry;
+    Object$(that);
+    Equality(that);
+    Void(that);
     that.key = key;
     that.item = item;
     return that;
@@ -1061,12 +1136,15 @@ function entries(seq) {
 
 exports.$Cloneable=$Cloneable; //TODO just to let the compiler finish
 exports.Cloneable=Cloneable; //TODO just to let the compiler finish
+exports.$Equality=$Equality; //TODO just to let the compiler finish
+exports.Equality=Equality; //TODO just to let the compiler finish
 exports.Iterable=Iterable; //TODO just to let the compiler finish
 exports.$Iterable=$Iterable; //TODO just to let the compiler finish
 exports.$Iterator=$Iterator; //TODO just to let the compiler finish
 exports.Iterator=Iterator; //TODO just to let the compiler finish
 exports.$Summable=$Summable; //TODO just to let the compiler finish
 exports.$Exception=$Exception; //TODO just to let the compiler finish
+exports.Exception=Exception; //TODO just to let the compiler finish
 exports.$Comparable=$Comparable; //TODO just to let the compiler finish
 exports.Comparable=Comparable; //TODO just to let the compiler finish
 exports.$Object=CeylonObject; //TODO just to let the compiler finish
@@ -1109,13 +1187,14 @@ exports.entries=entries;
 exports.exists=exists;
 exports.nonempty=nonempty;
 exports.isOfType=isOfType;
+exports.isOfAnyType=isOfAnyType;
+exports.isOfAllTypes=isOfAllTypes;
 exports.parseInteger=$parseInteger;
 exports.parseFloat=$parseFloat;
 exports.empty=$empty;
 exports.nullsafe=function(){};
-exports.getPositiveInfinity=getPositiveInfinity;
-exports.getNegativeInfinity=getNegativeInfinity;
-exports.undefined=$undefined;
+exports.getInfinity=getInfinity;
+//exports.getNegativeInfinity=getNegativeInfinity;
 exports.className=className;
     });
 }(typeof define==='function' && define.amd ? 
