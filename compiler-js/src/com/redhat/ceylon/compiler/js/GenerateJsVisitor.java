@@ -1845,16 +1845,44 @@ public class GenerateJsVisitor extends Visitor
 
     private void generateIsOfType(Term term, Type type, boolean simpleCheck) {
         clAlias();
-        out(".isOfType(");
+        if (type instanceof SimpleType) {
+            out(".isOfType(");
+        } else if (type instanceof UnionType) {
+            out(".isOfAnyType(");
+        } else if (type instanceof IntersectionType) {
+            out(".isOfAllTypes(");
+        }
         specialConditionRHS(term, simpleCheck);
-        out(",'");
         
         if (type instanceof SimpleType) {
+            out(",'");
             out(((SimpleType) type).getDeclarationModel().getQualifiedNameString());
+            out("')");
+        } else if (type instanceof UnionType || type instanceof IntersectionType) {
+            out(",[");
+            List<StaticType> types = type instanceof UnionType ? ((UnionType)type).getStaticTypes() : ((IntersectionType)type).getStaticTypes();
+            boolean first = true;
+            for (StaticType t : types) {
+                if (first) {
+                    out("'");
+                    first = false;
+                } else {
+                    out(", '");
+                }
+                if (t instanceof SimpleType) {
+                    out(((SimpleType)t).getDeclarationModel().getQualifiedNameString());
+                    out("'");
+                } else {
+                    out("$TODO ");
+                    out(t.getClass().getName());
+                }
+            }
+            out("])");
         } else {
-            out("$TODO$"); //TODO
+            out(",'$TODO$ ");
+            out(type.getClass().getName()); //TODO
+            out("')");
         }
-        out("')");
     }
     @Override
     public void visit(IsOp that) {
