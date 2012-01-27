@@ -31,8 +31,10 @@ void test_foreach() {
         return found;
     }
     value odds = { 1, 3, 5 };
-    assert(hasEvens(list), "for/else");
-    assert(!hasEvens(odds), "for/else");
+    assert(hasEvens(list), "for/else 1");
+    assert(!hasEvens(odds), "for/else 2");
+    assert(hasEvens({1,3,5,2}),"for/else 3");
+    assert(hasEvens({1,3,2,5}),"for/else 4");
     //nested
     sum := 0;
     for (i in odds) {
