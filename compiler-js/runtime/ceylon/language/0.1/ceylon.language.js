@@ -128,6 +128,10 @@ $Float.prototype.getFractionalPart = function() {
 $Float.prototype.getSign = function() { return this.value > 0 ? Integer(1) : this.value < 0 ? Integer(-1) : Integer(0); }
 $Float.prototype.getHash = function() { return String$(this.value.toPrecision()).getHash(); }
 
+function getPositiveInfinity() { return Float(Infinity); }
+function getNegativeInfinity() { return Float(-Infinity); }
+function $undefined(value) { return isNaN(value.value) ? $true : $false; }
+
 function $String() {}
 function String$(value,size) {
     var that = new $String;
@@ -1061,6 +1065,9 @@ exports.parseInteger=$parseInteger;
 exports.parseFloat=$parseFloat;
 exports.empty=$empty;
 exports.nullsafe=function(){};
+exports.getPositiveInfinity=getPositiveInfinity;
+exports.getNegativeInfinity=getNegativeInfinity;
+exports.undefined=$undefined;
     });
 }(typeof define==='function' && define.amd ? 
     define : function (id, factory) {
