@@ -16,6 +16,6 @@ doc "The Float representing negative infinity."
 shared Float negativeInfinity = -1.0/0.0;
 
 doc "Determines whether the given float is undefined (Not a Number)."
-shared Boolean undefined(Float value) {
-    return value != value;
+shared Boolean undefined(Float number) {
+    return number != number;
 }
