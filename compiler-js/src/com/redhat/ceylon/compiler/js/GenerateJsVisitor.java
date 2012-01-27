@@ -1002,14 +1002,18 @@ public class GenerateJsVisitor extends Visitor
     public void visit(BaseMemberExpression that) {
         Declaration decl = that.getDeclaration();
         qualify(that, decl);
-        if (decl instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter ||
-                decl instanceof Method) {
+        if (!accessThroughGetter(decl)) {
             memberName(decl);
         }
         else {
             out(getter(decl));
             out("()");
         }
+    }
+    
+    private boolean accessThroughGetter(Declaration d) {
+        return !((d instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter)
+                  || (d instanceof Method));
     }
     
     @Override
@@ -1045,8 +1049,7 @@ public class GenerateJsVisitor extends Visitor
     			 postfix = '$' + parentType.getName() + '$';
     		 }
     	}
-        if (that.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter ||
-                that.getDeclaration() instanceof Method) {
+        if (!accessThroughGetter(that.getDeclaration())) {
             memberName(that.getDeclaration());
             out(postfix);
         }
@@ -1771,11 +1774,30 @@ public class GenerateJsVisitor extends Visitor
 	   }
 	   
 	   if (simpleCheck) {
+	       BaseMemberExpression bme = (BaseMemberExpression) variableRHS;
+	       
 		   out(keyword);
            out("(");
            specialConditionCheck(condition, variableRHS, simpleCheck);
            out(")");
-           block.visit(this);
+           
+           if (accessThroughGetter(bme.getDeclaration())) {
+               // a getter for the variable already exists
+               block.visit(this);
+           } else {
+               // no getter exists yet, so define one
+               beginBlock();
+               function();
+               out(getter(variable.getDeclarationModel()));
+               out("(){");
+               out("return ");
+               memberName(bme.getDeclaration());
+               out("}");
+               endLine();
+               
+               visitStatements(block.getStatements(), false);
+               endBlock();
+           }
 		   
 	   } else {
 		   // if/while (is/exists/nonempty x=...)
