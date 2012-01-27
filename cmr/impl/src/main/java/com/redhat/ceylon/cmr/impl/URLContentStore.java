@@ -32,6 +32,7 @@ public abstract class URLContentStore implements ContentStore, StructureBuilder 
 
     private static final String CAR = ".car";
     private static final String JAR = ".jar";
+    private static final String SHA1 = ".sha1";
     private static final String ZIP = ".zip";
 
     protected static final String SEPARATOR = "/";
@@ -48,6 +49,7 @@ public abstract class URLContentStore implements ContentStore, StructureBuilder 
         addSuffix(CAR);
         addSuffix(JAR);
         addSuffix(ZIP);
+        addSuffix(SHA1);
     }
 
     public void addSuffix(String suffix) {
@@ -62,8 +64,13 @@ public abstract class URLContentStore implements ContentStore, StructureBuilder 
         return node;
     }
 
+    private String getFullPath(Node parent, String child) {
+        return NodeUtils.getFullPath(parent, SEPARATOR) +
+                (SHA1.equals(child) ?  child : "/" + child);
+    }
+
     public OpenNode find(Node parent, String child) {
-        final String path = NodeUtils.getFullPath(parent, SEPARATOR) + "/" + child;
+        final String path = getFullPath(parent, child);
         if (urlExists(path)) {
             final UrlNode node = createNode(child);
             ContentHandle handle;
