@@ -17,36 +17,53 @@ function Object$(wat) {
 }
 function $IdentifiableObject() {}
 $IdentifiableObject.T$all={'ceylon.language.IdentifiableObject':$IdentifiableObject}
+$IdentifiableObject.T$all['ceylon.language.Object']=CeylonObject;
 function IdentifiableObject(obj) {
     return obj;
 }
 
+function $Void() {}
+function Void(wat) {
+    wat.constructor.T$all['ceylon.language.Void']=$Void;
+    return wat;
+}
 function $Cloneable() {}
 function Cloneable(wat) {
+    wat.constructor.T$all['ceylon.language.Cloneable']=$Cloneable;
+    return wat;
+}
+function $Equality() {}
+function Equality(wat) {
+    wat.constructor.T$all['ceylon.language.Equality']=$Equality;
     return wat;
 }
 
 function $Iterable() {}
 function Iterable(wat) {
+    wat.constructor.T$all['ceylon.language.Iterable']=$Iterable;
     return wat;
 }
 function $Iterator() {}
 function Iterator(wat) {
+    wat.constructor.T$all['ceylon.language.Iterator']=$Iterator;
     return wat;
 }
 
 function $Exception() {}
 function Exception(wat) {
+    wat.constructor.T$all['ceylon.language.Exception']=$Exception;
     return wat;
 }
 
 function $Comparable() {}
 function Comparable(wat) {
+    wat.constructor.T$all['ceylon.language.Comparable']=$Comparable;
     return wat;
 }
 
 function $Summable() {}
 function Summable(wat) {
+    wat.constructor.T$all['ceylon.language.Summable']=$Summable;
     return wat;
 }
 
@@ -55,6 +72,9 @@ $Integer.T$all={'ceylon.language.Integer':$Integer}
 for($ in $IdentifiableObject.T$all){$Integer.T$all[$]=$IdentifiableObject.T$all[$]}
 function Integer(value) {
     var that = new $Integer;
+    Summable(that);
+    Comparable(that);
+    Equality(that);
     that.value = value;
     return that;
 }
@@ -141,6 +161,8 @@ $String.T$all={'ceylon.language.String':$String}
 for($ in $IdentifiableObject.T$all){$String.T$all[$]=$IdentifiableObject.T$all[$]}
 function String$(value,size) {
     var that = new $String;
+    Equality(that);
+    Void(that);
     that.value = value;
     that.codePoints = size;
     return that;
@@ -404,6 +426,8 @@ $Character.T$all={'ceylon.language.Character':$Character}
 for($ in $IdentifiableObject.T$all){$Character.T$all[$]=$IdentifiableObject.T$all[$]}
 function Character(value) {
     var that = new $Character;
+    Equality(that);
+    Void(that);
     that.value = value;
     return that;
 }
@@ -481,6 +505,8 @@ $StringBuilder.prototype.appendSpace = function() { this.value = this.value + " 
 function getNull() { return null }
 function $Boolean() {}
 $Boolean.T$all={'ceylon.language.Boolean':$Boolean}
+$Boolean.T$all['ceylon.language.Equality']=$Equality;
+$Boolean.T$all['ceylon.language.Void']=$Void;
 for($ in $IdentifiableObject.T$all){$Boolean.T$all[$]=$IdentifiableObject.T$all[$]}
 for(var $ in CeylonObject.prototype){$Boolean.prototype[$]=CeylonObject.prototype[$]}
 var $true = new $Boolean;
@@ -509,7 +535,7 @@ function nonempty(value) { return value === null || value === undefined ? $false
 //function nonempty(value) { return Boolean$(value && value.value && value.value.length > 0); }
 
 function isOfType(obj, typeName) {
-    return Boolean$((obj!==null) ? (typeName in obj.constructor.T$all) : (typeName==="ceylon.language.Nothing"));
+    return Boolean$((obj!==null) ? (typeName in obj.constructor.T$all) : (typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void"));
 }
 function className(obj) {
     if (obj!==null) {
@@ -972,6 +998,8 @@ $Entry.T$all={'ceylon.language.Entry':$Entry}
 for($ in $IdentifiableObject.T$all){$Entry.T$all[$]=$IdentifiableObject.T$all[$]}
 function Entry(key, item) {
     var that = new $Entry;
+    Equality(that);
+    Void(that);
     that.key = key;
     that.item = item;
     return that;
@@ -1061,12 +1089,15 @@ function entries(seq) {
 
 exports.$Cloneable=$Cloneable; //TODO just to let the compiler finish
 exports.Cloneable=Cloneable; //TODO just to let the compiler finish
+exports.$Equality=$Equality; //TODO just to let the compiler finish
+exports.Equality=Equality; //TODO just to let the compiler finish
 exports.Iterable=Iterable; //TODO just to let the compiler finish
 exports.$Iterable=$Iterable; //TODO just to let the compiler finish
 exports.$Iterator=$Iterator; //TODO just to let the compiler finish
 exports.Iterator=Iterator; //TODO just to let the compiler finish
 exports.$Summable=$Summable; //TODO just to let the compiler finish
 exports.$Exception=$Exception; //TODO just to let the compiler finish
+exports.Exception=Exception; //TODO just to let the compiler finish
 exports.$Comparable=$Comparable; //TODO just to let the compiler finish
 exports.Comparable=Comparable; //TODO just to let the compiler finish
 exports.$Object=CeylonObject; //TODO just to let the compiler finish
