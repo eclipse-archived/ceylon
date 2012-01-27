@@ -1882,10 +1882,9 @@ public class GenerateJsVisitor extends Visitor
 	   out("var _item;");
 	   endLine();
 	   out("while (");
+	   out("(_item = _iter.next()) !== ");
 	   clAlias();
-	   out(".getExhausted().equals(_item = _iter.next()) !== ");
-	   clAlias();
-	   out(".getTrue())");
+	   out(".getExhausted())");
 	   List<Statement> stmnts = that.getForClause().getBlock().getStatements();
 	   if (stmnts.isEmpty()) {
 		   out("{}");
@@ -1923,11 +1922,9 @@ public class GenerateJsVisitor extends Visitor
 	   out("}");
 	   if (hasElse) {
 		   endLine();
-		   out("if (_item.equals(");
+		   out("if (");
 		   clAlias();
-		   out(".getExhausted()) === ");
-		   clAlias();
-		   out(".getTrue())");
+		   out(".getExhausted() === _item)");
 		   that.getElseClause().getBlock().visit(this);
 	   }
 	   indentLevel--;
