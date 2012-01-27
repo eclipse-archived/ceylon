@@ -290,4 +290,8 @@ public class StatementTest extends CompilerTest {
         compareWithJavaSource("swtch/SwitchIsVarSubst");
     }
     
+    @Test
+    public void testSwitchMatch(){
+        compareWithJavaSource("swtch/SwitchMatch");
+    }
 }
