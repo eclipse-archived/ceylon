@@ -18,7 +18,7 @@ void operators() {
     //assert(nonempty full[].uppercased, "[].");
     assert("hello" in "hello world", "in");
     assert("world" in "hello world", "in");
-                
+
     Correspondence<Integer, String> c1 = {};
     assert(!exists c1[0], "empty correspondence");
     
