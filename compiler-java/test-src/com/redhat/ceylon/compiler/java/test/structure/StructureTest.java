@@ -568,6 +568,10 @@ public class StructureTest extends CompilerTest {
     public void testAtrInnerAttributeGetterLateInitialisation(){
         compareWithJavaSource("attribute/InnerAttributeGetterLateInitialisation");
     }
+    @Test
+    public void testAtrClassAttributeWithConflictingMethods(){
+        compareWithJavaSource("attribute/ClassAttributeWithConflictingMethods");
+    }
 
     //
     // Classes

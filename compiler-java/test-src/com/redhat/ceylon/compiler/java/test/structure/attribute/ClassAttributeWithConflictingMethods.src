@@ -1,0 +1,29 @@
+package com.redhat.ceylon.compiler.java.test.structure.attribute;
+
+abstract class ClassAttributeWithConflictingMethods {
+    private .java.lang.String attr;
+    
+    public final .java.lang.String getAttr() {
+        return attr;
+    }
+    
+    public final void setAttr(.java.lang.String attr) {
+        this.attr = attr;
+    }
+    
+    public final .java.lang.String $getAttr() {
+        return getAttr();
+    }
+    
+    public final void $setAttr(final .java.lang.String attr) {
+    }
+    
+    private final void m() {
+        $setAttr($getAttr());
+        this.$setAttr(this.$getAttr());
+    }
+    
+    ClassAttributeWithConflictingMethods() {
+        this.attr = "";
+    }
+}
