@@ -94,9 +94,9 @@
             </fileset>
         </copy>
         <copy todir="${build.test}" file="${test.src}/run.js" />
-        <exec executable="node">
-            <arg value="${build.test}/run.js" />
-        </exec>
+        <java classname="NodeTest" classpathref="test.run.classpath">
+            <arg value="${build.test}/node_modules/default" />
+        </java>
     </target>
 
 </project>

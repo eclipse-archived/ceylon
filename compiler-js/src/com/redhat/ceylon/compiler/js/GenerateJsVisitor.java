@@ -332,17 +332,15 @@ public class GenerateJsVisitor extends Visitor
         out(")");
         beginBlock();
         declareSelf(d);
-        if (prototypeStyle) {
-            for (Parameter p: that.getParameterList().getParameters()) {
-                if (p.getDeclarationModel().isCaptured()) {
-                    self(d);
-                    out(".");
-                    memberName(p.getDeclarationModel());
-                    out("=");
-                    memberName(p.getDeclarationModel());
-                    out(";");
-                    endLine();
-                }
+        for (Parameter p: that.getParameterList().getParameters()) {
+            if (p.getDeclarationModel().isCaptured()) {
+                self(d);
+                out(".");
+                memberName(p.getDeclarationModel());
+                out("=");
+                memberName(p.getDeclarationModel());
+                out(";");
+                endLine();
             }
         }
         callSuperclass(that.getExtendedType(), d);
@@ -1002,15 +1000,20 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(BaseMemberExpression that) {
-        qualify(that, that.getDeclaration());
-        if (that.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter ||
-                that.getDeclaration() instanceof Method) {
-            memberName(that.getDeclaration());
+        Declaration decl = that.getDeclaration();
+        qualify(that, decl);
+        if (!accessThroughGetter(decl)) {
+            memberName(decl);
         }
         else {
-            out(getter(that.getDeclaration()));
+            out(getter(decl));
             out("()");
         }
+    }
+    
+    private boolean accessThroughGetter(Declaration d) {
+        return !((d instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter)
+                  || (d instanceof Method));
     }
     
     @Override
@@ -1046,8 +1049,7 @@ public class GenerateJsVisitor extends Visitor
     			 postfix = '$' + parentType.getName() + '$';
     		 }
     	}
-        if (that.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter ||
-                that.getDeclaration() instanceof Method) {
+        if (!accessThroughGetter(that.getDeclaration())) {
             memberName(that.getDeclaration());
             out(postfix);
         }
@@ -1772,11 +1774,30 @@ public class GenerateJsVisitor extends Visitor
 	   }
 	   
 	   if (simpleCheck) {
+	       BaseMemberExpression bme = (BaseMemberExpression) variableRHS;
+	       
 		   out(keyword);
            out("(");
            specialConditionCheck(condition, variableRHS, simpleCheck);
            out(")");
-           block.visit(this);
+           
+           if (accessThroughGetter(bme.getDeclaration())) {
+               // a getter for the variable already exists
+               block.visit(this);
+           } else {
+               // no getter exists yet, so define one
+               beginBlock();
+               function();
+               out(getter(variable.getDeclarationModel()));
+               out("(){");
+               out("return ");
+               memberName(bme.getDeclaration());
+               out("}");
+               endLine();
+               
+               visitStatements(block.getStatements(), false);
+               endBlock();
+           }
 		   
 	   } else {
 		   // if/while (is/exists/nonempty x=...)
@@ -1826,18 +1847,11 @@ public class GenerateJsVisitor extends Visitor
            }
            
        } else {
-           clAlias();
-           out(".isOfType(");
-           specialConditionRHS(variableRHS, simpleCheck);
-           out(",'");
-           
            Type type = ((IsCondition) condition).getType();
-           if (type instanceof SimpleType) {
-               out(((SimpleType) type).getDeclarationModel().getQualifiedNameString());
-           } else {
-               out("$TODO$"); //TODO
-           }
-           out("')");
+           generateIsOfType(variableRHS, type, simpleCheck);
+           out("===");
+           clAlias();
+           out(".getTrue()");
        }
    }
    
@@ -1851,12 +1865,58 @@ public class GenerateJsVisitor extends Visitor
        }
    }
 
-   @Override public void visit(Break that) {
-       out("break;");
-   }
-   @Override public void visit(Continue that) {
-       out("continue;");
-   }
+    private void generateIsOfType(Term term, Type type, boolean simpleCheck) {
+        clAlias();
+        if (type instanceof SimpleType) {
+            out(".isOfType(");
+        } else if (type instanceof UnionType) {
+            out(".isOfAnyType(");
+        } else if (type instanceof IntersectionType) {
+            out(".isOfAllTypes(");
+        }
+        specialConditionRHS(term, simpleCheck);
+        
+        if (type instanceof SimpleType) {
+            out(",'");
+            out(((SimpleType) type).getDeclarationModel().getQualifiedNameString());
+            out("')");
+        } else if (type instanceof UnionType || type instanceof IntersectionType) {
+            out(",[");
+            List<StaticType> types = type instanceof UnionType ? ((UnionType)type).getStaticTypes() : ((IntersectionType)type).getStaticTypes();
+            boolean first = true;
+            for (StaticType t : types) {
+                if (first) {
+                    out("'");
+                    first = false;
+                } else {
+                    out(", '");
+                }
+                if (t instanceof SimpleType) {
+                    out(((SimpleType)t).getDeclarationModel().getQualifiedNameString());
+                    out("'");
+                } else {
+                    out("$TODO ");
+                    out(t.getClass().getName());
+                }
+            }
+            out("])");
+        } else {
+            out(",'$TODO$ ");
+            out(type.getClass().getName()); //TODO
+            out("')");
+        }
+    }
+    @Override
+    public void visit(IsOp that) {
+        generateIsOfType(that.getTerm(), that.getType(), true); //TODO is it always simple?
+    }
+
+    @Override public void visit(Break that) {
+        out("break;");
+    }
+    @Override public void visit(Continue that) {
+        out("continue;");
+    }
 
    @Override public void visit(RangeOp that) {
 	   clAlias();
@@ -1882,10 +1942,9 @@ public class GenerateJsVisitor extends Visitor
 	   out("var _item;");
 	   endLine();
 	   out("while (");
+	   out("(_item = _iter.next()) !== ");
 	   clAlias();
-	   out(".getExhausted().equals(_item = _iter.next()) !== ");
-	   clAlias();
-	   out(".getTrue())");
+	   out(".getExhausted())");
 	   List<Statement> stmnts = that.getForClause().getBlock().getStatements();
 	   if (stmnts.isEmpty()) {
 		   out("{}");
@@ -1923,11 +1982,9 @@ public class GenerateJsVisitor extends Visitor
 	   out("}");
 	   if (hasElse) {
 		   endLine();
-		   out("if (_item.equals(");
+		   out("if (");
 		   clAlias();
-		   out(".getExhausted()) === ");
-		   clAlias();
-		   out(".getTrue())");
+		   out(".getExhausted() === _item)");
 		   that.getElseClause().getBlock().visit(this);
 	   }
 	   indentLevel--;
