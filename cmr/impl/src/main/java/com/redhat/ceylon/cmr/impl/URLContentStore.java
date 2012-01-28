@@ -65,8 +65,11 @@ public abstract class URLContentStore implements ContentStore, StructureBuilder 
     }
 
     private String getFullPath(Node parent, String child) {
-        return NodeUtils.getFullPath(parent, SEPARATOR) +
-                (parent.hasBinaries() ?  child : "/" + child);
+        final StringBuilder sb = new StringBuilder(NodeUtils.getFullPath(parent, SEPARATOR));
+        if (parent.hasBinaries() == false)
+            sb.append(SEPARATOR);
+        sb.append(child);
+        return sb.toString();
     }
 
     public OpenNode find(Node parent, String child) {
