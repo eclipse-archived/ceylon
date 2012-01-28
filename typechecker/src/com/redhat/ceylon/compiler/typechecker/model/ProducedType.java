@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
 
 import java.util.ArrayList;
@@ -194,7 +194,7 @@ public class ProducedType extends ProducedReference {
      * Is this type a subtype of the given type? 
      */
     public boolean isSubtypeOf(ProducedType type) {
-        return type!=null && isSubtypeOf(type, null);
+        return type!=null && getUnionOfCases(false).isSubtypeOf(type, null);
     }
     
     /**
@@ -1192,6 +1192,52 @@ public class ProducedType extends ProducedReference {
             producedTypeName = producedTypeName.replace(",>", ">");
         }
         return producedTypeName;
+    }
+
+    public ProducedType getUnionOfCases(boolean typeParams) {
+        TypeDeclaration sdt = getDeclaration();
+        Unit unit = getDeclaration().getUnit();
+        if (sdt instanceof IntersectionType) {
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            for (ProducedType st: sdt.getSatisfiedTypes()) {
+                addToIntersection(list, st.getUnionOfCases(typeParams)
+                        .substitute(getTypeArguments()), 
+                        unit); //argument substitution is unnecessary
+            }
+            IntersectionType it = new IntersectionType(unit);
+            it.setSatisfiedTypes(list);
+            return it.canonicalize().getType();
+        }
+        /*if (switchType.getDeclaration() instanceof UnionType) {
+            //this branch is not really necessary, because it
+            //does basically the same thing as the else clause
+            //but it's slightly simpler because there are no 
+            //type arguments to substitute
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            for (ProducedType st: switchType.getDeclaration().getCaseTypes()) {
+                addToUnion(list, getUnionOfCases(st));
+            }
+            UnionType ut = new UnionType(unit);
+            ut.setCaseTypes(list);
+            return ut.getType();
+        }*/
+        else if (sdt.getCaseTypes()==null) {
+            return this;
+        }
+        else if (sdt instanceof TypeParameter && !typeParams) {
+            return this;
+        }
+        else {
+            //build a union of all the cases
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            for (ProducedType ct: sdt.getCaseTypes()) {
+                addToUnion(list, ct.substitute(getTypeArguments())
+                        .getUnionOfCases(typeParams)); //note recursion
+            }
+            UnionType ut = new UnionType(unit);
+            ut.setCaseTypes(list);
+            return ut.getType();
+        }
     }
 
 }
