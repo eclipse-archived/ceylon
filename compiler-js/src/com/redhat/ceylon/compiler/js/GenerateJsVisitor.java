@@ -478,17 +478,6 @@ public class GenerateJsVisitor extends Visitor
         return constr;
     }
     
-    private void copyTypeInfo(Declaration d, String constructor) {
-        out("for($ in ");
-        out(constructor);
-        out(".T$all){$");
-        out(d.getName());
-        out(".T$all[$]=");
-        out(constructor);
-        out(".T$all[$]}");
-        endLine();
-    }
-    
     private ClassOrInterface prototypeOwner;
 
     private void addToPrototype(ClassOrInterface d, Statement s) {
@@ -556,18 +545,21 @@ public class GenerateJsVisitor extends Visitor
         out(d.getName());
         out(",");
         out(from);
-        out(",'");
-        if (!from.startsWith("$")) {
-            out("$");
+        if (!(d instanceof Interface)) {
+            out(",'");
+            if (!from.startsWith("$")) {
+                out("$");
+            }
+            out(from);
+            out("$'");
         }
-        out(from);
-        out("$');");
+        out(");");
         endLine();
     }
 
     private void copySuperclassPrototype(ExtendedType that, Declaration d) {
         if (that==null) {
-            copyMembersToPrototype("CeylonObject", d);
+            copyMembersToPrototype("$$$cl15.$IdentifiableObject", d);
         }
         else if (prototypeStyle || declaredInCL(that.getType().getDeclarationModel())) {
             copyMembersToPrototype(that.getType(), d);
