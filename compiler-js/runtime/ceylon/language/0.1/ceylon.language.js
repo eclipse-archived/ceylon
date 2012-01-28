@@ -5,6 +5,7 @@
 function print(line) { console.log(line.getString().value) }
 
 function initType(type, typeName) {
+    type.T$name = typeName;
     type.T$all = {}
     type.T$all[typeName] = type;
     for (var i=2; i<arguments.length; ++i) {
@@ -578,12 +579,7 @@ function isOfAllTypes(obj, typeNames) {
 }
 
 function className(obj) {
-    if (obj!==null) {
-        for ($ in obj.constructor.T$all) {
-            if (obj.constructor.T$all[$] === obj.constructor) return String$($);
-        }
-    }
-    return String$('ceylon.language.Nothing');
+    return String$(obj!==null ? obj.constructor.T$name : 'ceylon.language.Nothing');
 }
 
 function $Comparison() {}
