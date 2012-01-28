@@ -4,6 +4,21 @@
 //the Ceylon language module
 function print(line) { console.log(line.getString().value) }
 
+function initType(type, typeName) {
+    type.T$all={typeName: type}
+    for (var i=2; i<arguments.length; ++i) {
+        var superType = arguments[i];
+        for ($ in superType.T$all) {type.T$all[$] = superType.T$all[$]}
+    }
+}
+function inheritProto(type, superType, suffix) {
+    for(var $ in superType.prototype){
+        var $m=superType.prototype[$];
+        type.prototype[$]=$m;
+        if($.charAt($.length-1)!=='$'){type.prototype[$+suffix]=$m}
+    }
+}
+
 CeylonObject=function CeylonObject() {}
 
 CeylonObject.prototype.getString=function() { String$(Object.prototype.toString.apply(this)) };
@@ -1134,6 +1149,8 @@ function entries(seq) {
     return ArraySequence(e);
 }
 
+exports.initType=initType;
+exports.inheritProto=inheritProto;
 exports.$Cloneable=$Cloneable; //TODO just to let the compiler finish
 exports.Cloneable=Cloneable; //TODO just to let the compiler finish
 exports.$Equality=$Equality; //TODO just to let the compiler finish

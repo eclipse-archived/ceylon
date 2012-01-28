@@ -425,20 +425,8 @@ public class GenerateJsVisitor extends Visitor
     }
     
     private void addTypeInfo(
-            com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration type) {   
-        String typeName = type.getDeclarationModel().getName();
+            com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration type) {
         
-        out("$");
-        out(typeName);
-        out(".T$all={'");
-        out(type.getDeclarationModel().getQualifiedNameString());
-        out("':");
-        qualify(type, type.getDeclarationModel());
-        out("$");
-        out(typeName);
-        out("}");
-        endLine();
-
         ExtendedType extendedType = null;
         SatisfiedTypes satisfiedTypes = null;
         if (type instanceof ClassDefinition) {
@@ -453,18 +441,31 @@ public class GenerateJsVisitor extends Visitor
             satisfiedTypes = objectDef.getSatisfiedTypes();
         }
         
+        clAlias();
+        out(".initType($");
+        out(type.getDeclarationModel().getName());        
+        out(",'");
+        out(type.getDeclarationModel().getQualifiedNameString());
+        out("'");
+        
         if (extendedType != null) {
-            SimpleType extType = extendedType.getType();
-            copyTypeInfo(type.getDeclarationModel(), constructorFunctionName(extType));
+            out(",");
+            out(constructorFunctionName(extendedType.getType()));
         } else if (!(type instanceof InterfaceDefinition)) {
-            copyTypeInfo(type.getDeclarationModel(), "$$$cl15.$IdentifiableObject");
+            out(",");
+            clAlias();
+            out(".$IdentifiableObject");
         }
         
         if (satisfiedTypes != null) {
             for (SimpleType satType : satisfiedTypes.getTypes()) {
-                copyTypeInfo(type.getDeclarationModel(), constructorFunctionName(satType));
+                out(",");
+                out(constructorFunctionName(satType));
             }
         }
+        
+        out(");");
+        endLine();
     }
     
     private String constructorFunctionName(SimpleType type) {
@@ -550,30 +551,18 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void copyMembersToPrototype(String from, Declaration d) {
-    	out("for(var $ in ");
-    	out(from);
-    	out(".prototype)");
-    	beginBlock();
-    	
-    	out("var $m=");
-    	out(from);
-    	out(".prototype[$];");
-    	endLine();
-    	
-    	out("$");
-    	out(d.getName());
-    	out(".prototype[$]=$m;");
+        clAlias();
+        out(".inheritProto($");
+        out(d.getName());
+        out(",");
+        out(from);
+        out(",'");
+        if (!from.startsWith("$")) {
+            out("$");
+        }
+        out(from);
+        out("$');");
         endLine();
-        
-        out("if($.charAt($.length-1)!=='$'){$");
-    	out(d.getName());
-    	out(".prototype[$+'");
-    	if (!from.startsWith("$")) {
-    		out("$");
-    	}
-    	out(from);
-    	out("$']=$m}");
-        endBlock();
     }
 
     private void copySuperclassPrototype(ExtendedType that, Declaration d) {
