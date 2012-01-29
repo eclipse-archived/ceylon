@@ -214,7 +214,7 @@ public class GenerateJsVisitor extends Visitor
         }
         else {
             beginBlock();
-            if (prototypeOwner!=null) {
+            if ((prototypeOwner!=null) && (that.getScope() instanceof MethodOrValue)) {
                 /*out("var ");
                 self();
                 out("=this;");
