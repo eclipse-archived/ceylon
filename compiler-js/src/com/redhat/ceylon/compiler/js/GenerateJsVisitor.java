@@ -10,6 +10,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.DeclarationKind;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -1829,24 +1830,34 @@ public class GenerateJsVisitor extends Visitor
            
        } else {
            Type type = ((IsCondition) condition).getType();
-           generateIsOfType(variableRHS, type, simpleCheck);
+           generateIsOfType(variableRHS, null, type, simpleCheck);
            out("===");
            clAlias();
            out(".getTrue()");
        }
    }
    
-   private void specialConditionRHS(Term variableRHS, boolean simple) {
-       if (simple) {
-           variableRHS.visit(this);
-       } else {
-           out("($cond$=");
-           variableRHS.visit(this);
-           out(")");
-       }
-   }
+    private void specialConditionRHS(Term variableRHS, boolean simple) {
+        if (simple) {
+            variableRHS.visit(this);
+        } else {
+            out("($cond$=");
+            variableRHS.visit(this);
+            out(")");
+        }
+    }
+    
+    private void specialConditionRHS(String variableRHS, boolean simple) {
+        if (simple) {
+            out(variableRHS);
+        } else {
+            out("($cond$=");
+            out(variableRHS);
+            out(")");
+        }
+    }
 
-    private void generateIsOfType(Term term, Type type, boolean simpleCheck) {
+    private void generateIsOfType(Term term, String termString, Type type, boolean simpleCheck) {
         clAlias();
         if (type instanceof SimpleType) {
             out(".isOfType(");
@@ -1855,7 +1866,11 @@ public class GenerateJsVisitor extends Visitor
         } else if (type instanceof IntersectionType) {
             out(".isOfAllTypes(");
         }
-        specialConditionRHS(term, simpleCheck);
+        if (term != null) {
+            specialConditionRHS(term, simpleCheck);
+        } else {
+            specialConditionRHS(termString, simpleCheck);
+        }
         
         if (type instanceof SimpleType) {
             out(",'");
@@ -1889,7 +1904,7 @@ public class GenerateJsVisitor extends Visitor
     }
     @Override
     public void visit(IsOp that) {
-        generateIsOfType(that.getTerm(), that.getType(), true); //TODO is it always simple?
+        generateIsOfType(that.getTerm(), null, that.getType(), true); //TODO is it always simple?
     }
 
     @Override public void visit(Break that) {
@@ -1981,6 +1996,49 @@ public class GenerateJsVisitor extends Visitor
         out(")");
     }
 
+    @Override public void visit(TryCatchStatement that) {
+        out("try");
+        that.getTryClause().getBlock().visit(this);
+
+        out("catch($ex$)");
+        beginBlock();
+        for (CatchClause catchClause : that.getCatchClauses()) {
+            Variable variable = catchClause.getCatchVariable().getVariable();
+            out("if(");
+            generateIsOfType(null, "$ex$", variable.getType(), true);
+            out(")");
+            
+            if (catchClause.getBlock().getStatements().isEmpty()) {
+                out("{}");
+            } else {
+                beginBlock();
+                function();
+                out(getter(variable.getDeclarationModel()));
+                out("(){return $ex$}");
+                endLine();
+                
+                visitStatements(catchClause.getBlock().getStatements(), false);
+                endBlock();
+            }
+        }
+        endBlock();
+        
+        if (that.getFinallyClause() != null) {
+            out("finally");
+            that.getFinallyClause().getBlock().visit(this);
+        }
+    }
+    
+    @Override public void visit(Throw that) {
+        out("throw ");
+        if (that.getExpression() != null) {
+            that.getExpression().visit(this);
+        } else {
+            clAlias();
+            out(".Exception()");
+        }
+        out(";");
+    }
 
     private void visitIndex(IndexExpression that) {
         that.getPrimary().visit(this);

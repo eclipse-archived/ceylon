@@ -87,8 +87,18 @@ function Iterator(wat) {
 function $Exception() {}
 initType($Exception, 'ceylon.language.Exception', $IdentifiableObject);
 inheritProto($Exception, $IdentifiableObject, '$IdentifiableObject$');
-function Exception(wat) {
+function Exception(description, cause, wat) {
+    wat.description = description;
+    wat.cause = cause;
     return wat;
+}
+$Exception.prototype.getCause = function() {return this.cause}
+$Exception.prototype.getMessage = function() {
+    return this.description!==null ? this.description
+           : (this.cause!==null ? this.cause.getMessage() : String$("", 0));
+}
+$Exception.prototype.getString = function() {
+    return String$('Exception "' + this.getMessage().value + '"');
 }
 
 function $Comparable() {}
