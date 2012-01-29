@@ -532,34 +532,34 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void copyMembersToPrototype(SimpleType that, Declaration d) {
+        String thatName = that.getDeclarationModel().getName();
         String path = qualifiedPath(that, that.getDeclarationModel());
+        String suffix = path + '$' + thatName + '$';
         if (path.length() > 0) {
             path += '.';
         }
-        copyMembersToPrototype(path+"$"+that.getDeclarationModel().getName(), d);
+        copyMembersToPrototype(path+'$'+thatName, d, suffix);
     }
 
-    private void copyMembersToPrototype(String from, Declaration d) {
+    private void copyMembersToPrototype(String from, Declaration d, String suffix) {
         clAlias();
         out(".inheritProto($");
         out(d.getName());
         out(",");
         out(from);
-        if (!(d instanceof Interface)) {
+        if ((suffix != null) && (suffix.length() > 0)) {
             out(",'");
-            if (!from.startsWith("$")) {
-                out("$");
-            }
-            out(from);
-            out("$'");
+            out(suffix);
+            out("'");
         }
         out(");");
         endLine();
     }
-
+    
     private void copySuperclassPrototype(ExtendedType that, Declaration d) {
         if (that==null) {
-            copyMembersToPrototype("$$$cl15.$IdentifiableObject", d);
+            String suffix = (d instanceof Interface) ? null : "$$$cl15$IdentifiableObject$";
+            copyMembersToPrototype("$$$cl15.$IdentifiableObject", d, suffix);
         }
         else if (prototypeStyle || declaredInCL(that.getType().getDeclarationModel())) {
             copyMembersToPrototype(that.getType(), d);
