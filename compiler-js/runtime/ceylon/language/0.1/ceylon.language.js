@@ -700,7 +700,7 @@ $ArraySequence.prototype.segment = function(from, len) {
 }
 $ArraySequence.prototype.span = function(from, to) {
     var fromIndex = largest(Integer(0),from).value;
-    var toIndex = to === getNull() ? this.getLastIndex().value : smallest(to, this.getLastIndex()).value;
+    var toIndex = to === getNull() || to === undefined ? this.getLastIndex().value : smallest(to, this.getLastIndex()).value;
     var seq = [];
     if (fromIndex === toIndex) {
         return Singleton(this.item(from));
