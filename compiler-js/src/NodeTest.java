@@ -62,12 +62,12 @@ public class NodeTest {
             System.out.printf("%s is not a readable directory%n", dir);
             System.exit(1);
         }
-        File tmpscript = new File(dir.getParentFile(), "__tmp");
+        //File tmpscript = new File(dir.getParentFile(), "__tmp");
         for (File jsf : dir.listFiles(new JsExtFilter())) {
             System.out.printf("Running tests for %s%n", jsf.getName());
             //Create a tmp file
-            PrintStream pout = new PrintStream(new FileOutputStream(tmpscript, false));
-            pout.close();
+            //PrintStream pout = new PrintStream(new FileOutputStream(tmpscript, false));
+            //pout.close();
             String nodePath = findNode();
             if (nodePath == null) {
                 System.err.println("Could not find 'node' executable. Please install node.js and retry.");

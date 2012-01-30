@@ -1004,7 +1004,7 @@ public class GenerateJsVisitor extends Visitor
         //Big TODO: make sure the member is actually
         //          refined by the current class!
     	if (that.getMemberOperator() instanceof SafeMemberOp) {
-    		out("function($){return $===null?");
+    		out("(function($){return $===null?");
     		
             if (that.getDeclaration() instanceof Method && inInvocation) {
                 clAlias();
@@ -1015,7 +1015,7 @@ public class GenerateJsVisitor extends Visitor
             qualifiedMemberRHS(that);
             out("}(");
 	        super.visit(that);
-            out(")");
+            out("))");
     	} else {
             super.visit(that);
             out(".");
