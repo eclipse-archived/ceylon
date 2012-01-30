@@ -541,12 +541,13 @@ public class ExpressionVisitor extends Visitor {
         SpecifierExpression se = that.getDefaultArgument()==null ?
                 null :
                 that.getDefaultArgument().getSpecifierExpression();
-        if (that.getType()!=null) {
-            checkType(that.getType().getTypeModel(), se);
-        }
-        if (se!=null) {
-            if (that.getType().getTypeModel()!=null) {
-                if (unit.isOptionalType(that.getType().getTypeModel())) {
+        Type tt = that.getType();
+        if (tt!=null) {
+            checkType(tt.getTypeModel(), se);
+            //TODO: do we really need this check?!
+            //      should we just remove it?
+            if (se!=null && tt.getTypeModel()!=null) {
+                if (unit.isOptionalType(tt.getTypeModel())) {
                     Tree.Term t = se.getExpression().getTerm();
                     if (t instanceof Tree.BaseMemberExpression) {
                         ProducedReference pr = ((Tree.BaseMemberExpression) t).getTarget();
@@ -1371,7 +1372,8 @@ public class ExpressionVisitor extends Visitor {
             //TODO: this is temporary and should be removed, once we
             //      can typecheck parameters using the type args of
             //      Callable
-            that.addError("receiving expression cannot be invoked");
+            that.addError("receiving expression cannot be invoked: " + 
+                    prf.getDeclaration().getName() + " is not a method or class");
         }
         else {
             if (!(that.getPrimary() instanceof Tree.ExtendedTypeExpression) 
@@ -2642,7 +2644,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         Expression e = that.getSwitchClause().getExpression();
         if (e!=null) {
-            ProducedType switchType = getUnionOfCases(e.getTypeModel());            
+            ProducedType switchType = e.getTypeModel().getUnionOfCases(true);            
             for (CaseClause cc: that.getSwitchCaseList().getCaseClauses()) {
                 ProducedType ct = getType(cc);
                 if (ct!=null) {
@@ -2680,52 +2682,12 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private ProducedType getUnionOfCases(ProducedType switchType) {
-        TypeDeclaration sdt = switchType.getDeclaration();
-        if (sdt instanceof IntersectionType) {
-            List<ProducedType> list = new ArrayList<ProducedType>();
-            for (ProducedType st: sdt.getSatisfiedTypes()) {
-                addToIntersection(list, getUnionOfCases(st)
-                        .substitute(switchType.getTypeArguments()), unit); //argument substitution is unnecessary
-            }
-            IntersectionType it = new IntersectionType(unit);
-            it.setSatisfiedTypes(list);
-            return it.canonicalize().getType();
-        }
-        /*if (switchType.getDeclaration() instanceof UnionType) {
-            //this branch is not really necessary, because it
-            //does basically the same thing as the else clause
-            //but it's slightly simpler because there are no 
-            //type arguments to substitute
-            List<ProducedType> list = new ArrayList<ProducedType>();
-            for (ProducedType st: switchType.getDeclaration().getCaseTypes()) {
-                addToUnion(list, getUnionOfCases(st));
-            }
-            UnionType ut = new UnionType(unit);
-            ut.setCaseTypes(list);
-            return ut.getType();
-        }*/
-        else if (sdt.getCaseTypes()==null) {
-            return switchType;
-        }
-        else {
-            //build a union of all the cases
-            List<ProducedType> list = new ArrayList<ProducedType>();
-            for (ProducedType ct: sdt.getCaseTypes()) {
-                addToUnion(list, getUnionOfCases(ct.substitute(switchType.getTypeArguments()))); //note recursion
-            }
-            UnionType ut = new UnionType(unit);
-            ut.setCaseTypes(list);
-            return ut.getType();
-        }
-    }
-
     private ProducedType getType(Tree.CaseClause cc) {
         CaseItem ci = cc.getCaseItem();
         if (ci instanceof Tree.IsCase) {
             Type t = ((Tree.IsCase) ci).getType();
             if (t!=null) {
-                return getUnionOfCases(t.getTypeModel());
+                return t.getTypeModel().getUnionOfCases(true);
             }
             else {
                 return null;

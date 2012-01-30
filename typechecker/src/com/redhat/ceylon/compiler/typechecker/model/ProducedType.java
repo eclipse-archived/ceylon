@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
 
 import java.util.ArrayList;
@@ -27,11 +27,6 @@ public class ProducedType extends ProducedReference {
         return (TypeDeclaration) super.getDeclaration();
     }
     
-    boolean isEquivalentToCases() {
-        TypeDeclaration dec = getDeclaration();
-        return dec.getCaseTypes()!=null && !(dec instanceof TypeParameter);
-    }
-
     /**
      * Is this type exactly the same type as the
      * given type? 
@@ -40,9 +35,9 @@ public class ProducedType extends ProducedReference {
         if (getDeclaration() instanceof BottomType) {
             return type.getDeclaration() instanceof BottomType;
         }
-        else if (isEquivalentToCases()) {
+        else if (getDeclaration() instanceof UnionType) {
             List<ProducedType> cases = getCaseTypes();
-            if (type.isEquivalentToCases()) {
+            if (type.getDeclaration() instanceof UnionType) {
                 List<ProducedType> otherCases = type.getCaseTypes();
                 if (cases.size()!=otherCases.size()) {
                     return false;
@@ -72,9 +67,6 @@ public class ProducedType extends ProducedReference {
             }
         }
         else if (getDeclaration() instanceof IntersectionType) {
-            //TODO: if any intersected type is an enumerated type, 
-            //      replace it with the union of its cases, then 
-            //      canonicalize the resulting intersection
             List<ProducedType> types = getSatisfiedTypes();
             if (type.getDeclaration() instanceof IntersectionType) {
                 List<ProducedType> otherTypes = type.getSatisfiedTypes();
@@ -105,7 +97,7 @@ public class ProducedType extends ProducedReference {
                 return false;
             }
         }
-        else if (type.isEquivalentToCases()) {
+        else if (type.getDeclaration() instanceof UnionType) {
             List<ProducedType> otherCases = type.getCaseTypes();
             if (otherCases.size()==1) {
                 ProducedType st = otherCases.get(0);
@@ -116,9 +108,6 @@ public class ProducedType extends ProducedReference {
             }
         }
         else if (type.getDeclaration() instanceof IntersectionType) {
-            //TODO: if any intersected type is an enumerated type, 
-            //      replace it with the union of its cases, then 
-            //      canonicalize the resulting intersection
             List<ProducedType> otherTypes = type.getSatisfiedTypes();
             if (otherTypes.size()==1) {
                 ProducedType st = otherTypes.get(0);
@@ -208,31 +197,21 @@ public class ProducedType extends ProducedReference {
         else if (type.getDeclaration() instanceof BottomType) {
             return false;
         }
-        else if (getDeclaration().getCaseTypes()!=null) {
-            boolean assignable = true;
+        else if (getDeclaration() instanceof UnionType) {
             for (ProducedType ct: getInternalCaseTypes()) {
                 if (ct==null || !ct.isSubtypeOf(type, selfTypeToIgnore)) {
-                    assignable = false;
+                    return false;
                 }
             }
-            if (assignable) {
-                return true;
-            }
-            else if (type.getDeclaration() instanceof UnionType) {
-                return false;
-            }
-            //else fall through
+            return true;
         }
-        else if (type.isEquivalentToCases()) {
+        else if (type.getDeclaration() instanceof UnionType) {
             for (ProducedType ct: type.getInternalCaseTypes()) {
                 if (ct!=null && isSubtypeOf(ct, selfTypeToIgnore)) {
                     return true;
                 }
             }
-            if (type.getDeclaration() instanceof UnionType) {
-                return false;
-            }
-            //else fall through
+            return false;
         }
         else if (type.getDeclaration() instanceof IntersectionType) {
             for (ProducedType ct: type.getInternalSatisfiedTypes()) {
@@ -244,16 +223,13 @@ public class ProducedType extends ProducedReference {
         }
         else if (getDeclaration() instanceof IntersectionType) {
             for (ProducedType ct: getInternalSatisfiedTypes()) {
-                //TODO: if ct is an enumerated type, replace it
-                //      with the union of its cases, then 
-                //      canonicalize the resulting intersection
                 if (ct==null || ct.isSubtypeOf(type, selfTypeToIgnore)) {
                     return true;
                 }
             }
             return false;
         }
-        //else {
+        else {
             ProducedType st = getSupertype(type.getDeclaration(), selfTypeToIgnore);
             if (st==null) {
                 return false;
@@ -312,7 +288,7 @@ public class ProducedType extends ProducedReference {
                 }
                 return true;
             }
-        //}
+        }
     }
 
     /**
@@ -1192,6 +1168,52 @@ public class ProducedType extends ProducedReference {
             producedTypeName = producedTypeName.replace(",>", ">");
         }
         return producedTypeName;
+    }
+
+    public ProducedType getUnionOfCases(boolean typeParams) {
+        TypeDeclaration sdt = getDeclaration();
+        Unit unit = getDeclaration().getUnit();
+        if (sdt instanceof IntersectionType) {
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            for (ProducedType st: sdt.getSatisfiedTypes()) {
+                addToIntersection(list, st.getUnionOfCases(typeParams)
+                        .substitute(getTypeArguments()), 
+                        unit); //argument substitution is unnecessary
+            }
+            IntersectionType it = new IntersectionType(unit);
+            it.setSatisfiedTypes(list);
+            return it.canonicalize().getType();
+        }
+        /*if (switchType.getDeclaration() instanceof UnionType) {
+            //this branch is not really necessary, because it
+            //does basically the same thing as the else clause
+            //but it's slightly simpler because there are no 
+            //type arguments to substitute
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            for (ProducedType st: switchType.getDeclaration().getCaseTypes()) {
+                addToUnion(list, getUnionOfCases(st));
+            }
+            UnionType ut = new UnionType(unit);
+            ut.setCaseTypes(list);
+            return ut.getType();
+        }*/
+        else if (sdt.getCaseTypes()==null) {
+            return this;
+        }
+        else if (sdt instanceof TypeParameter && !typeParams) {
+            return this;
+        }
+        else {
+            //build a union of all the cases
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            for (ProducedType ct: sdt.getCaseTypes()) {
+                addToUnion(list, ct.substitute(getTypeArguments())
+                        .getUnionOfCases(typeParams)); //note recursion
+            }
+            UnionType ut = new UnionType(unit);
+            ut.setCaseTypes(list);
+            return ut.getType();
+        }
     }
 
 }
