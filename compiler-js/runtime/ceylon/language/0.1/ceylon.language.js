@@ -88,6 +88,7 @@ function $Exception() {}
 initType($Exception, 'ceylon.language.Exception', $IdentifiableObject);
 inheritProto($Exception, $IdentifiableObject, '$IdentifiableObject$');
 function Exception(description, cause, wat) {
+    if (wat===undefined) {wat=new $Exception}
     wat.description = description;
     wat.cause = cause;
     return wat;

@@ -2009,8 +2009,10 @@ public class GenerateJsVisitor extends Visitor
         that.getTryClause().getBlock().visit(this);
 
         if (!that.getCatchClauses().isEmpty()) {
-            out("catch($ex$)");
+            out("catch($ex0$)");
             beginBlock();
+            out("var $ex$=$ex0$;");
+            endLine();
             boolean firstCatch = true;
             for (CatchClause catchClause : that.getCatchClauses()) {
                 Variable variable = catchClause.getCatchVariable().getVariable();
