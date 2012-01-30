@@ -10,7 +10,6 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.DeclarationKind;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -2004,28 +2003,38 @@ public class GenerateJsVisitor extends Visitor
         out("try");
         that.getTryClause().getBlock().visit(this);
 
-        out("catch($ex$)");
-        beginBlock();
-        for (CatchClause catchClause : that.getCatchClauses()) {
-            Variable variable = catchClause.getCatchVariable().getVariable();
-            out("if(");
-            generateIsOfType(null, "$ex$", variable.getType(), true);
-            out(")");
-            
-            if (catchClause.getBlock().getStatements().isEmpty()) {
-                out("{}");
-            } else {
-                beginBlock();
-                function();
-                out(getter(variable.getDeclarationModel()));
-                out("(){return $ex$}");
-                endLine();
+        if (!that.getCatchClauses().isEmpty()) {
+            out("catch($ex$)");
+            beginBlock();
+            boolean firstCatch = true;
+            for (CatchClause catchClause : that.getCatchClauses()) {
+                Variable variable = catchClause.getCatchVariable().getVariable();
+                if (!firstCatch) {
+                    out("else ");
+                }
+                firstCatch = false;
+                out("if(");
+                generateIsOfType(null, "$ex$", variable.getType(), true);
+                out("===");
+                clAlias();
+                out(".getTrue())");
                 
-                visitStatements(catchClause.getBlock().getStatements(), false);
-                endBlock();
+                if (catchClause.getBlock().getStatements().isEmpty()) {
+                    out("{}");
+                } else {
+                    beginBlock();
+                    function();
+                    out(getter(variable.getDeclarationModel()));
+                    out("(){return $ex$}");
+                    endLine();
+                    
+                    visitStatements(catchClause.getBlock().getStatements(), false);
+                    endBlock();
+                }
             }
+            out("else{throw $ex$}");
+            endBlock();
         }
-        endBlock();
         
         if (that.getFinallyClause() != null) {
             out("finally");
