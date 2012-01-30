@@ -1993,9 +1993,9 @@ public class GenerateJsVisitor extends Visitor
    }
 
     public void visit(InOp that) {
-        that.getLeftTerm().visit(this);
-        out(".contains(");
         that.getRightTerm().visit(this);
+        out(".contains(");
+        that.getLeftTerm().visit(this);
         out(")");
     }
 
