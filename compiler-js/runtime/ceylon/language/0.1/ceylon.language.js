@@ -233,7 +233,7 @@ $String.prototype.span = function(from, to) {
 	var lastIndex = this.getLastIndex();
 	if (!lastIndex) return this; //it's empty
     var fromIndex = largest(Integer(0),from).value;
-    var toIndex = to === getNull() ? lastIndex.value : smallest(to, lastIndex).value;
+    var toIndex = to === getNull() to === undefined ? lastIndex.value : smallest(to, lastIndex).value;
     if (fromIndex === toIndex) {
 		return this.item(from).getString();
     } else if (toIndex > fromIndex) {
@@ -915,7 +915,7 @@ $Range.prototype.segment = function(from, len) {
 }
 $Range.prototype.span = function(from, to) {
     from = largest(Integer(0),from);
-    if (to === getNull()) {
+    if (to === getNull() || to === undefined) {
         to = this.getLastIndex();
     }
     if (this.defines(from) === $false) {
