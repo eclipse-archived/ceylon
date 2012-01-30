@@ -27,7 +27,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.*;
 
 public class GenerateJsVisitor extends Visitor 
         implements NaturalVisitor {
-    
+
+    private boolean inInvocation = false;
+
     private final class SuperVisitor extends Visitor {
         private final List<Declaration> decs;
 
@@ -1003,7 +1005,8 @@ public class GenerateJsVisitor extends Visitor
         //          refined by the current class!
     	if (that.getMemberOperator() instanceof SafeMemberOp) {
     		out("function($){return $===null?");
-            if (that.getDeclaration() instanceof Method) {
+    		
+            if (that.getDeclaration() instanceof Method && inInvocation) {
                 clAlias();
                 out(".nullsafe:$.");
             } else {
@@ -1056,6 +1059,7 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(InvocationExpression that) {
+        inInvocation=true;
         if (that.getNamedArgumentList()!=null) {
             out("(function (){");
             that.getNamedArgumentList().visit(this);
@@ -1080,6 +1084,7 @@ public class GenerateJsVisitor extends Visitor
         else {
             super.visit(that);
         }
+        inInvocation=false;
     }
     
     @Override
