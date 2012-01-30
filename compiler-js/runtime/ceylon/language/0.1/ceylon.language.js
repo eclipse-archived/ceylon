@@ -233,7 +233,7 @@ $String.prototype.span = function(from, to) {
 	var lastIndex = this.getLastIndex();
 	if (!lastIndex) return this; //it's empty
     var fromIndex = largest(Integer(0),from).value;
-    var toIndex = to === getNull() to === undefined ? lastIndex.value : smallest(to, lastIndex).value;
+    var toIndex = to === getNull() || to === undefined ? lastIndex.value : smallest(to, lastIndex).value;
     if (fromIndex === toIndex) {
 		return this.item(from).getString();
     } else if (toIndex > fromIndex) {
