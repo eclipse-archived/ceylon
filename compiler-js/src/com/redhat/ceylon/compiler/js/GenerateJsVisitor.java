@@ -1015,9 +1015,9 @@ public class GenerateJsVisitor extends Visitor
 	        super.visit(that);
             out(")");
     	} else {
-        super.visit(that);
-        out(".");
-        qualifiedMemberRHS(that);
+            super.visit(that);
+            out(".");
+            qualifiedMemberRHS(that);
         }
     }
     
@@ -1260,7 +1260,11 @@ public class GenerateJsVisitor extends Visitor
                     && (prototypeStyle || declaredInCL(term.getDeclaration()))) {
                 out("function(){var $=");
                 term.getPrimary().visit(this);
-                out(";return $.");
+                if (term.getMemberOperator() instanceof SafeMemberOp) {
+                    out(";return $===null?null:$.");
+                } else {
+                    out(";return $.");
+                }
                 memberName(term.getDeclaration());
                 out(".apply($,arguments)}");
                 return;
