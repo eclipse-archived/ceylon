@@ -21,7 +21,7 @@ shared void results() {
 void test_if() {
     //True, with else
     if (true) {
-        print("if(true) OK");
+        assert(true,"if(true)");
     } else {
         fail("Never happen");
     }
@@ -29,11 +29,11 @@ void test_if() {
     if (false) {
         fail("Never happen");
     } else {
-        print("if(false) OK");
+        assert(true,"if(false)");
     }
     //without else
     if (2+2 == 4) {
-        print("if without else OK");
+        assert(true,"if without else");
     }
     //chained if's
     if (1+2 == 4) {
@@ -41,20 +41,20 @@ void test_if() {
     } else if (2+2 == 5) {
         fail("No way");
     } else {
-        print("Chained if's with else OK");
+        assert(true,"Chained if's with else");
     }
     //chained if's without else
     if (1+2 == 4) {
         fail("can't happen");
     } else if (2+2 == 4) {
-        print("Chained if's without else OK");
+        assert(true,"Chained if's without else");
     }
     //More complex conditions
     if (2>1 && 1<2) {
-        print("if && OK");
+        assert(true,"if &&");
     } else { fail("if &&"); }
     if ((1>2 || 1>0) && 1<2) {
-        print("if (||)&& OK");
+        assert(true,"if (||)&&");
     } else { fail("if (||)&&"); }
 }
 
