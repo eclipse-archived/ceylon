@@ -28,7 +28,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.*;
 public class GenerateJsVisitor extends Visitor 
         implements NaturalVisitor {
 
-    private boolean inInvocation = false;
     private boolean sequencedParameter=false;
 
     private final class SuperVisitor extends Visitor {
@@ -1007,7 +1006,7 @@ public class GenerateJsVisitor extends Visitor
     	if (that.getMemberOperator() instanceof SafeMemberOp) {
     		out("(function($){return $===null?");
     		
-            if (that.getDeclaration() instanceof Method && inInvocation) {
+            if (that.getDeclaration() instanceof Method) {
                 clAlias();
                 out(".nullsafe:$.");
             } else {
@@ -1060,7 +1059,6 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(InvocationExpression that) {
-        inInvocation=true;
         sequencedParameter=false;
         if (that.getNamedArgumentList()!=null) {
             out("(function (){");
@@ -1100,7 +1098,6 @@ public class GenerateJsVisitor extends Visitor
             }
             super.visit(that);
         }
-        inInvocation=false;
     }
     
     @Override
