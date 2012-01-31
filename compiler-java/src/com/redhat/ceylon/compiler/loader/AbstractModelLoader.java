@@ -316,12 +316,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             break;
         case OBJECT:
             // we first make a class
-            decl = makeLazyClass(classMirror, null, true);
-            declarationsByName.put("C"+className, decl);
-            decls.add(decl);
+            Declaration objectClassDecl = makeLazyClass(classMirror, null, true);
+            declarationsByName.put("C"+className, objectClassDecl);
+            decls.add(objectClassDecl);
             // then we make a value for it
-            decl = makeToplevelAttribute(classMirror);
-            key = "V"+className;
+            Declaration objectDecl = makeToplevelAttribute(classMirror);
+            declarationsByName.put("V"+className, objectDecl);
+            decls.add(objectDecl);
+            // which one did we want?
+            decl = declarationType == DeclarationType.TYPE ? objectClassDecl : objectDecl;
             break;
         case CLASS:
             List<MethodMirror> constructors = getClassConstructors(classMirror);
@@ -338,8 +341,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             break;
         }
 
-        declarationsByName.put(key, decl);
-        decls.add(decl);
+        // objects have special handling above
+        if(type != ClassType.OBJECT){
+            declarationsByName.put(key, decl);
+            decls.add(decl);
+        }
 
         // find its module
         String pkgName = classMirror.getPackage().getQualifiedName();
