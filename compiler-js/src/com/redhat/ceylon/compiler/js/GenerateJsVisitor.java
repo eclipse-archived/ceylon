@@ -346,7 +346,7 @@ public class GenerateJsVisitor extends Visitor
             }
         }
         callSuperclass(that.getExtendedType(), d);
-        copySuperMembers(that, d);
+        copySuperMembers(that.getExtendedType(), that.getClassBody(), d);
         callInterfaces(that.getSatisfiedTypes(), d);
         that.getClassBody().visit(this);
         returnSelf(d);
@@ -354,10 +354,9 @@ public class GenerateJsVisitor extends Visitor
         share(d);
     }
 
-    private void copySuperMembers(ClassDefinition that, Class d) {
+    private void copySuperMembers(ExtendedType extType, ClassBody body, Class d) {
         if (!prototypeStyle) {
             String parentName = "";
-            ExtendedType extType = that.getExtendedType();
             if (extType != null) {
                 TypeDeclaration parentTypeDecl = extType.getType().getDeclarationModel();
                 if (declaredInCL(parentTypeDecl)) {
@@ -367,7 +366,7 @@ public class GenerateJsVisitor extends Visitor
             }
             
             final List<Declaration> decs = new ArrayList<Declaration>();
-            new SuperVisitor(decs).visit(that.getClassBody());
+            new SuperVisitor(decs).visit(body);
             for (Declaration dec: decs) {
                 if (dec instanceof Value) {
                     superGetterRef(dec,d,parentName);
@@ -590,7 +589,7 @@ public class GenerateJsVisitor extends Visitor
         for (Statement s: that.getClassBody().getStatements()) {
             addToPrototype(c, s);
         }
-        out("var $");
+        out("var o$");
         out(d.getName());
         out("=");
         function();
@@ -599,6 +598,7 @@ public class GenerateJsVisitor extends Visitor
         beginBlock();
         instantiateSelf(c);
         callSuperclass(that.getExtendedType(), c);
+        copySuperMembers(that.getExtendedType(), that.getClassBody(), c);
         callInterfaces(that.getSatisfiedTypes(), c);
         that.getClassBody().visit(this);
         returnSelf(c);       
@@ -616,7 +616,7 @@ public class GenerateJsVisitor extends Visitor
         out(getter(d));
         out("()");
         beginBlock();
-        out("return $");
+        out("return o$");
         out(d.getName());
         out(";");
         endBlock();
