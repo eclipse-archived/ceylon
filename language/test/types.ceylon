@@ -4,6 +4,79 @@ class T() extends Object() {
 
 interface Format {}
 
+class TypesPair<X,Y>(X x, Y y) 
+        given X satisfies Object
+        given Y satisfies Object {
+    shared actual default String string {
+        return "(" x.string ", " y.string ")";
+    }
+}
+
+class TypesComplex(Float x, Float y) 
+        extends TypesPair<Float, Float>(x,y) {
+    shared actual String string {
+        return "" x.string "+" y.string "i"; 
+    }
+    shared String pairString {
+        return super.string;
+    }
+}
+
+interface TypesList<out X> {
+    shared formal Integer size;
+    shared default Boolean empty {
+        return size==0;
+    }
+}
+
+class ConcreteTypesList<out X>(X... xs) 
+        satisfies TypesList<X> {
+    shared actual Integer size {
+        return 0;
+    }
+    shared actual Boolean empty {
+        return true;
+    }
+}
+
+class TypesCouple<X>(X x, X y) 
+        extends TypesPair<X,X>(x,y) 
+        given X satisfies Object {
+    shared X x = x;
+    shared X y = y;
+}
+
+
+class JsIssue9C1() {
+    shared default String test() { return "1"; }
+}
+class JsIssue9C2() extends JsIssue9C1() {
+    variable Boolean flag1 := false;
+    shared actual default String test() {
+        if (flag1) {
+            return "ERR1";
+        }
+        flag1 := true;
+        return super.test() + "2";
+    }
+}
+class JsIssue9C3() extends JsIssue9C2() {
+    variable Boolean flag2 := false;
+    shared actual default String test() {
+        if (flag2) {
+            return "ERR2";
+        }
+        flag2 := true;
+        return super.test() + "3";
+    }
+}
+
+void testJsIssue9() {
+    value obj = JsIssue9C3();
+    assert(obj.test()=="123", "Issue #9");
+}
+
+
 void types() {
     Void bool = true;
     Void entry = 1->2;
@@ -12,8 +85,8 @@ void types() {
     Void t = T();
     Void c = `c`;
     Void str = "string";
-    //Void seq = {"hello"};
-    //Void empty = {};
+    Void seq = {"hello"};
+    Void empty = {};
     
     assert(is Object bool, "boolean type is object");
     assert(is IdentifiableObject bool, "boolean type is identifiable");
@@ -33,7 +106,7 @@ void types() {
     assert(!is IdentifiableObject entry, "not entry type");
     assert(is Equality entry, "entry type 2");
     assert(!is Nothing entry, "not null entry type");
-    //assert(is Entry<Integer,Integer> entry, "entry type 3");
+    assert(is Entry<Integer,Integer> entry, "entry type 3");
     assert(is Void entry, "entry type 4");
         
     assert(is Object one, "not natural type 1");
@@ -100,7 +173,7 @@ void types() {
     if (is IdentifiableObject entry) { fail("entry type 6"); }
     if (is Object entry) {} else { fail("entry type 7"); }
     if (is Nothing entry) { fail("null type 11"); }
-    //if (is Entry<Integer,Integer> entry) {} else { fail("entry type 8"); }
+    if (is Entry<Integer,Integer> entry) {} else { fail("entry type 8"); }
     
     if (is Equality nothing) { fail("null type 12"); }
     if (is IdentifiableObject nothing) { fail("null type 13"); }
@@ -112,17 +185,26 @@ void types() {
     if (is Boolean|Character|T t) {} else { fail("union type"); }
     if (is Boolean|Character|T str) { fail("union type"); } else {}
     if (is Boolean|Character|T nothing) { fail("union type"); } else {}
-    if (is Equality&Castable<Bottom> one) {} else { fail("intersection type"); }
-    if (is Equality&Castable<Bottom> bool) { fail("intersection type"); } else {}
-    if (is Sized&Category&Ordered<Void> str) {} else { fail("intersection type"); }
-    if (is Sized&Category&Ordered<Void> t) { fail("intersection type"); } else {}
-    //if (is String[] empty) {} else { fail("sequence type"); }
-    //if (is String[] seq) {} else { fail("sequence type"); }
-    //if (is String[]? seq) {} else { fail("sequence type"); }
-    //if (is Integer[] seq) { fail("sequence type"); } else {}
+    if (is Equality&Castable<Bottom> one) {} else { fail("intersection type 1"); }
+    if (is Equality&Castable<Bottom> bool) { fail("intersection type 2"); } else {}
+    if (is Sized&Category&Ordered<Void> str) {} else { fail("intersection type 3"); }
+    if (is Sized&Category&Ordered<Void> t) { fail("intersection type 4"); } else {}
+    if (is String[] empty) {} else { fail("sequence type 1"); }
+    if (is String[] seq) {} else { fail("sequence type 2"); }
+    //if (is String[]? seq) {} else { fail("sequence type 3"); }
+    if (is Integer[] seq) { fail("sequence type 4"); } else {}
     
     assert(className(1)=="ceylon.language.Integer", "natural classname");
     assert(className(1.0)=="ceylon.language.Float", "float classname");
     assert(className("hello")=="ceylon.language.String", "string classname");
     assert(className(1->"hello")=="ceylon.language.Entry", "entry classname");
+
+    //from ceylon-js
+    value pair = TypesPair("hello", "world");
+    assert(pair.string=="(hello, world)", "pair.string");
+    value zero = TypesComplex(0.0, 0.0);
+    assert(zero.string=="0+0i", "complex.string");
+    assert(zero.pairString=="(0, 0)", "zero.pairString");
+    assert(ConcreteTypesList().empty, "concreteList.empty");
+    testJsIssue9();
 }
