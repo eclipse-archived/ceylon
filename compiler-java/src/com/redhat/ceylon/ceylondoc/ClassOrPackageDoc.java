@@ -107,6 +107,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         linkSource(m);
         tag("br");
         startPrintingLongDoc(m);
+        writeThrows(m);
         writeSee(m);
         endLongDocAndPrintShortDoc(m);
         close("td");
@@ -147,6 +148,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         linkSource(f);
         tag("br");
         startPrintingLongDoc(f);
+        writeThrows(f);
         endLongDocAndPrintShortDoc(f);
         close("td");
         close("tr");
@@ -188,5 +190,42 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         around("a href='#"+id+"'", title);
         close("div");
     }
+    
+    protected void writeThrows(Declaration declaration) throws IOException {
+        boolean first = true;
+        for (Annotation annotation : declaration.getAnnotations()) {
+            if (annotation.getName().equals("throws")) {
+
+                String excType = annotation.getPositionalArguments().get(0);
+                String excDesc = annotation.getPositionalArguments().size() == 2 ? annotation.getPositionalArguments().get(1) : null;
+                
+                if (first) {
+                    first = false;
+                    open("div class='throws'");
+                    write("Throws: ");
+                    open("ul");
+                }
+
+                open("li");
+
+                TypeDeclaration excTypeDecl = resolveDeclaration(declaration.getContainer(), excType);
+                if (excTypeDecl != null) {
+                    link(excTypeDecl.getType());
+                } else {
+                    write(excType);
+                }
+
+                if (excDesc != null) {
+                    write(Util.wikiToHTML(Util.unquote(excDesc)));
+                }
+
+                close("li");
+            }
+        }
+        if (!first) {
+            close("ul");
+            close("div");
+        }
+    }      
 
 }

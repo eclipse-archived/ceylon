@@ -78,7 +78,7 @@ public class Util {
         return wikiToHTML(getFirstLine(module.getDoc()));
     }
 
-    private static String wikiToHTML(String text) {
+    public static String wikiToHTML(String text) {
         return new MarkdownProcessor().markdown(text);
     }
 

@@ -179,6 +179,13 @@ public class CeylonDocToolTest {
                 Pattern.compile("<div class='by'>By: Tom Bentley</div>"));
         assertMatchInFile(destDir, "interface_Types.html", 
                 Pattern.compile("<div class='by'>By: Tom Bentley</div>"));
+        
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<div class='throws'>Throws:"));        
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("OverflowException<p>if the number is too large to be represented as an integer</p>"));        
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<a href='class_StubException.html'>StubException</a><p><code>when</code> with <strong>WIKI</strong> syntax</p>"));        
     }
     
     private File getOutputDir(CeylonDocTool tool, Module module) {
