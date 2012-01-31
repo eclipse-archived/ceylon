@@ -649,8 +649,10 @@ function $EmptyIterator(){}
 initType($EmptyIterator, 'ceylon.language.EmptyIterator', $IdentifiableObject, $Iterator);
 inheritProto($EmptyIterator, $IdentifiableObject, '$IdentifiableObject$');
 function EmptyIterator() {
+    var that = new $EmptyIterator;
+    return that;
 }
-$EmptyIterator.next = function() { return $finished; }
+$EmptyIterator.prototype.next = function() { return $finished; }
 
 function $ArraySequence() {}
 initType($ArraySequence, 'ceylon.language.ArraySequence', $IdentifiableObject, $Sequence);
