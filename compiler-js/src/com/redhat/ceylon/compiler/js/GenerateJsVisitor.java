@@ -29,6 +29,7 @@ public class GenerateJsVisitor extends Visitor
         implements NaturalVisitor {
 
     private boolean inInvocation = false;
+    private boolean sequencedParameter=false;
 
     private final class SuperVisitor extends Visitor {
         private final List<Declaration> decs;
@@ -1060,6 +1061,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(InvocationExpression that) {
         inInvocation=true;
+        sequencedParameter=false;
         if (that.getNamedArgumentList()!=null) {
             out("(function (){");
             that.getNamedArgumentList().visit(this);
@@ -1073,8 +1075,13 @@ public class GenerateJsVisitor extends Visitor
                     for (com.redhat.ceylon.compiler.typechecker.model.Parameter p: 
                         f.getParameterLists().get(0).getParameters()) {
                         if (!first) out(",");
-                        out("$");
-                        out(p.getName());
+                        if (p.isSequenced() && that.getNamedArgumentList().getSequencedArgument()==null) {
+                            clAlias();
+                            out(".empty");
+                        } else {
+                            out("$");
+                            out(p.getName());
+                        }
                         first = false;
                     }
                 }
@@ -1082,6 +1089,15 @@ public class GenerateJsVisitor extends Visitor
             out(")}())");
         }
         else {
+            if (that.getPrimary().getDeclaration() instanceof Functional) {
+                Functional f = (Functional)that.getPrimary().getDeclaration();
+                if (!f.getParameterLists().isEmpty()) {
+                    com.redhat.ceylon.compiler.typechecker.model.ParameterList plist = f.getParameterLists().get(0);
+                    if (!plist.getParameters().isEmpty() && plist.getParameters().get(plist.getParameters().size()-1).isSequenced()) {
+                        sequencedParameter=true;
+                    }
+                }
+            }
             super.visit(that);
         }
         inInvocation=false;
@@ -1090,20 +1106,25 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(PositionalArgumentList that) {
         out("(");
-        boolean first=true;
-        boolean sequenced=false;
-        for (PositionalArgument arg: that.getPositionalArguments()) {
-            if (!first) out(",");
-            if (!sequenced && arg.getParameter().isSequenced()) {
-                sequenced=true;
-                clAlias();
-                out(".ArraySequence([");
+        if (that.getPositionalArguments().isEmpty() && sequencedParameter) {
+            clAlias();
+            out(".empty");
+        } else {
+            boolean first=true;
+            boolean sequenced=false;
+            for (PositionalArgument arg: that.getPositionalArguments()) {
+                if (!first) out(",");
+                if (!sequenced && arg.getParameter().isSequenced()) {
+                    sequenced=true;
+                    clAlias();
+                    out(".ArraySequence([");
+                }
+                arg.visit(this);
+                first = false;
             }
-            arg.visit(this);
-            first = false;
-        }
-        if (sequenced) {
-            out("])");
+            if (sequenced) {
+                out("])");
+            }
         }
         out(")");
     }
@@ -1889,12 +1910,7 @@ public class GenerateJsVisitor extends Visitor
             List<StaticType> types = type instanceof UnionType ? ((UnionType)type).getStaticTypes() : ((IntersectionType)type).getStaticTypes();
             boolean first = true;
             for (StaticType t : types) {
-                if (first) {
-                    out("'");
-                    first = false;
-                } else {
-                    out(", '");
-                }
+                out(first?"'":", '");
                 if (t instanceof SimpleType) {
                     out(((SimpleType)t).getDeclarationModel().getQualifiedNameString());
                     out("'");
@@ -1902,6 +1918,7 @@ public class GenerateJsVisitor extends Visitor
                     out("$TODO ");
                     out(t.getClass().getName());
                 }
+                first = false;
             }
             out("])");
         } else {
