@@ -768,6 +768,10 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("type/BasicTypes");
     }
     @Test
+    public void testTypBottom(){
+        compareWithJavaSource("type/Bottom");
+    }
+    @Test
     public void testTypConversions(){
         compareWithJavaSource("type/Conversions");
     }
