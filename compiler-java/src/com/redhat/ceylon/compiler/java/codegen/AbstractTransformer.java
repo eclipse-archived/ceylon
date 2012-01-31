@@ -512,7 +512,14 @@ public abstract class AbstractTransformer implements Transformation {
     protected TypedDeclaration nonWideningTypeDecl(TypedDeclaration decl) {
         TypedDeclaration refinedDeclaration = (TypedDeclaration) decl.getRefinedDeclaration();
         if(decl != refinedDeclaration){
-            boolean isWidening = willEraseToObject(decl.getType())
+            /*
+             * We are widening if the type:
+             * - is not object
+             * - is erased to object
+             * - refines a declaration that is not erased to object
+             */
+            boolean isWidening = !sameType(syms().ceylonObjectType, decl.getType())
+                    && willEraseToObject(decl.getType())
                     && !willEraseToObject(refinedDeclaration.getType());
             if(isWidening)
                 return refinedDeclaration;
