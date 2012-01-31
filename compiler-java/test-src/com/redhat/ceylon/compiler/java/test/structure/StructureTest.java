@@ -675,6 +675,10 @@ public class StructureTest extends CompilerTest {
         //compareWithJavaSource("klass/RefinedVarianceInheritance");
         compileAndRun("com.redhat.ceylon.compiler.java.test.structure.klass.rvi_run", "klass/RefinedVarianceInheritance.ceylon");
     }
+    @Test
+    public void testKlsVariance(){
+        compareWithJavaSource("klass/Variance");
+    }
     
     //
     // Methods
