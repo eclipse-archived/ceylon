@@ -563,15 +563,15 @@ $finished.getString = function() {return this.string}
 function getExhausted() { return $finished; }
 
 //These are operators for handling nulls
-function exists(value) { return value === getNull() || value === undefined ? $false : $true; }
-function nonempty(value) { return value === null || value === undefined ? $false : Boolean$(value.getEmpty() === $false); }
-//function nonempty(value) { return Boolean$(value && value.value && value.value.length > 0); }
+function $nullsafe() { return null; }
+function exists(value) { return value === getNull() || value === undefined || value === $nullsafe ? $false : $true; }
+function nonempty(value) { return value === null || value === undefined || value === $nullsafe ? $false : Boolean$(value.getEmpty() === $false); }
 
 function isOfType(obj, typeName) {
-    return Boolean$((obj!==null) ? (typeName in obj.constructor.T$all) : (typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void"));
+    return Boolean$((obj!==null && obj!==$nullsafe) ? (typeName in obj.constructor.T$all) : (typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void"));
 }
 function isOfAnyType(obj, typeNames) {
-    if (obj===null) {
+    if (obj===null || obj===$nullsafe) {
         return Boolean$(typeNames.indexOf('ceylon.language.Nothing')>=0 || typeNames.indexOf('ceylon.language.Void')>=0);
     }
     for (var i = 0; i < typeNames.length; i++) {
@@ -580,7 +580,7 @@ function isOfAnyType(obj, typeNames) {
     return $false;
 }
 function isOfAllTypes(obj, typeNames) {
-    if (obj===null) { //TODO check if this is right
+    if (obj===null || obj===$nullsafe) { //TODO check if this is right
         return Boolean$(typeNames.indexOf('ceylon.language.Nothing')>=0 || typeNames.indexOf('ceylon.language.Void')>=0);
     }
     for (var i = 0; i < typeNames.length; i++) {
@@ -590,7 +590,7 @@ function isOfAllTypes(obj, typeNames) {
 }
 
 function className(obj) {
-    return String$(obj!==null ? obj.constructor.T$name : 'ceylon.language.Nothing');
+    return String$(obj!==null && obj!==$nullsafe ? obj.constructor.T$name : 'ceylon.language.Nothing');
 }
 
 function $Comparison() {}
@@ -751,7 +751,7 @@ $ArraySequence.prototype.equals = function(other) {
         for (var i = 0; i < this.getSize().value; i++) {
             var mine = this.item(Integer(i));
             var theirs = other.item(Integer(i));
-            if ((mine === null && theirs) || !(mine && mine.equals(theirs) === getTrue())) {
+            if (((mine === null || mine === $nullsafe) && theirs) || !(mine && mine.equals(theirs) === getTrue())) {
                 return getFalse();
             }
         }
@@ -1189,7 +1189,7 @@ exports.isOfAllTypes=isOfAllTypes;
 exports.parseInteger=$parseInteger;
 exports.parseFloat=$parseFloat;
 exports.empty=$empty;
-exports.nullsafe=function(){};
+exports.nullsafe=$nullsafe;
 exports.getInfinity=getInfinity;
 //exports.getNegativeInfinity=getNegativeInfinity;
 exports.className=className;
