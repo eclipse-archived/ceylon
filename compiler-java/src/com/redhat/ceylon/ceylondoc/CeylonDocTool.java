@@ -511,7 +511,7 @@ public class CeylonDocTool {
         os.close();
     }
 
-    private void doc(Declaration decl) throws IOException {
+    public void doc(Declaration decl) throws IOException {
         if (decl instanceof ClassOrInterface) {
             if (shouldInclude(decl)) {
                 Writer writer = openWriter(getObjectFile(decl));
