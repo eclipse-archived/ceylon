@@ -27,5 +27,18 @@ shared class StubClass() {
     doc "The stub method with `throws`."
     throws (StubException, "`when` with __WIKI__ syntax")
     shared void methodWithThrows() {}
+    
+    
+    shared interface StubInnerInterface {
 
+       shared formal void innerMethod();
+       
+    }     
+
+    shared class StubInnerClass() satisfies StubInnerInterface {
+
+            shared actual void innerMethod() {}
+
+    }
+    
 }

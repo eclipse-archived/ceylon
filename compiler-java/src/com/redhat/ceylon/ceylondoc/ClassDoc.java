@@ -84,6 +84,11 @@ public class ClassDoc extends ClassOrPackageDoc {
      */
     private List<Class> innerClasses;
     /**
+     * The {@linkplain #shouldInclude(Declaration) visible} 
+     * inner interfaces
+     */
+    private List<Interface> innerInterfaces;
+    /**
      * The {@linkplain #shouldInclude(Declaration) visible} interfaces 
      * that satisfy the key
      */
@@ -170,6 +175,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         satisfyingInterfaces = new ArrayList<Interface>();
         attributes = new ArrayList<MethodOrValue>();
         innerClasses = new ArrayList<Class>();
+        innerInterfaces = new ArrayList<Interface>();
         superClasses = getAncestors(klass);
         superInterfaces = getSuperInterfaces(klass);
         for (Declaration m : klass.getMembers()) {
@@ -182,6 +188,8 @@ public class ClassDoc extends ClassOrPackageDoc {
                     methods.add((Method) m);
                 else if (m instanceof Class)
                     innerClasses.add((Class) m);
+                else if (m instanceof Interface)
+                    innerInterfaces.add((Interface) m);
             }
         }
 
@@ -200,6 +208,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         Collections.sort(satisfyingInterfaces, comparator);
         Collections.sort(superInterfaces, producedTypeComparator);
         Collections.sort(innerClasses, comparator);
+        Collections.sort(innerInterfaces, comparator);
         
         loadSuperclassInheritedMembers(attributeSpecification);
         loadSuperclassInheritedMembers(methodSpecification);
@@ -210,6 +219,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     public void generate() throws IOException {
         htmlHead();
         summary();
+        innerInterfaces();
         innerClasses();
         
         if (hasAnyAttributes()) {
@@ -442,13 +452,25 @@ public class ClassDoc extends ClassOrPackageDoc {
         if (innerClasses.isEmpty())
             return;
         openTable("section-nested_classes", "Nested Classes", "Modifiers", "Name and Description");
-        for (Class m : innerClasses) {
-            doc(m);
+        for (Class innerClass : innerClasses) {
+            tool.doc(innerClass);
+            doc(innerClass);
+        }
+        close("table");
+    }
+    
+    private void innerInterfaces() throws IOException {
+        if (innerInterfaces.isEmpty())
+            return;
+        openTable("section-nested_interfaces", "Nested Interfaces", "Modifiers", "Name and Description");
+        for (Interface innerInterface : innerInterfaces) {
+            tool.doc(innerInterface);
+            doc(innerInterface);
         }
         close("table");
     }
 
-    private void doc(Class c) throws IOException {
+    private void doc(ClassOrInterface c) throws IOException {
         open("tr class='TableRowColor'");
         open("td");
         around("span class='modifiers'", getModifiers(c));
@@ -511,6 +533,9 @@ public class ClassDoc extends ClassOrPackageDoc {
 
         // satisfying interfaces
         writeListOnSummary("satisfyingClasses", "All Known Satisfying Interfaces: ", satisfyingInterfaces);
+        
+        // enclosing class or interface 
+        writeEnclosingType();
 
         // description
         around("div class='doc'", getDoc(klass));
@@ -520,7 +545,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         
         close("div");
     }
-    
+
     protected void subMenu() throws IOException {
         if (hasAnyAttributes()
                 || hasConstructor()
@@ -638,6 +663,15 @@ public class ClassDoc extends ClassOrPackageDoc {
                 }
                 link(typeDeclaration);
             }
+            close("div");
+        }
+    }
+    
+    private void writeEnclosingType() throws IOException {
+        if (klass.isMember()) {
+            open("div class='enclosingType'");
+            write("Enclosing " + (klass.getContainer() instanceof Class ? "class: " : "interface: "));
+            link(((ClassOrInterface) klass.getContainer()).getType());
             close("div");
         }
     }

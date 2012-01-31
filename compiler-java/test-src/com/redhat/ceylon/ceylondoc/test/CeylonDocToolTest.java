@@ -185,7 +185,26 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "class_StubClass.html", 
                 Pattern.compile("OverflowException<p>if the number is too large to be represented as an integer</p>"));        
         assertMatchInFile(destDir, "class_StubClass.html", 
-                Pattern.compile("<a href='class_StubException.html'>StubException</a><p><code>when</code> with <strong>WIKI</strong> syntax</p>"));        
+                Pattern.compile("<a href='class_StubException.html'>StubException</a><p><code>when</code> with <strong>WIKI</strong> syntax</p>"));
+        
+        assertFileExists(destDir, "interface_StubClass.StubInnerInterface.html");
+        assertFileExists(destDir, "class_StubClass.StubInnerClass.html");
+        
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("Nested Interfaces"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<a href='interface_StubClass.StubInnerInterface.html'>StubInnerInterface</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("Nested Classes"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<a href='class_StubClass.StubInnerClass.html'>StubInnerClass</a>"));
+        
+        assertMatchInFile(destDir, "interface_StubClass.StubInnerInterface.html", 
+                Pattern.compile("Enclosing class: <a href='class_StubClass.html'>StubClass</a>"));
+        assertMatchInFile(destDir, "class_StubClass.StubInnerClass.html", 
+                Pattern.compile("Enclosing class: <a href='class_StubClass.html'>StubClass</a>"));
+        assertMatchInFile(destDir, "class_StubClass.StubInnerClass.html", 
+                Pattern.compile("Satisfied Interfaces: <a href='interface_StubClass.StubInnerInterface.html'>StubInnerInterface</a>"));        
     }
     
     private File getOutputDir(CeylonDocTool tool, Module module) {
