@@ -1,0 +1,127 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+interface Bug260_Interface {
+    
+    public abstract ceylon.language.Integer getAttr();
+    
+    public abstract ceylon.language.Integer getAttrGetter();
+    
+    public abstract ceylon.language.Integer getAttrVariable();
+    
+    public abstract void setAttrVariable(ceylon.language.Integer attrVariable);
+    
+    public abstract ceylon.language.Integer getAttrGetterSetter();
+    
+    public abstract void setAttrGetterSetter(ceylon.language.Integer attrGetterSetter);
+    
+    public abstract ceylon.language.Integer m();
+    
+    public abstract com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2 getAttr2();
+    
+    public abstract com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2 m2();
+    
+    public abstract com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2 getAttr3();
+    
+    public abstract com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2 m3();
+}
+interface Bug260_Interface2 {
+}
+interface Bug260_Interface3 {
+}
+class Bug260_Intersection implements com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2, com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface3 {
+    
+    Bug260_Intersection() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug260_Intersection();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface", "com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2"})
+class Bug260 implements com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface, com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2 {
+    private final ceylon.language.Integer attr;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Nothing")
+    public final ceylon.language.Integer getAttr() {
+        return attr;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Nothing")
+    public final ceylon.language.Integer getAttrGetter() {
+        return null;
+    }
+    private ceylon.language.Integer attrVariable;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Nothing")
+    public final ceylon.language.Integer getAttrVariable() {
+        return attrVariable;
+    }
+    
+    @.java.lang.Override
+    public final void setAttrVariable(@.com.redhat.ceylon.compiler.java.metadata.Name("attrVariable")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Nothing")
+    ceylon.language.Integer attrVariable) {
+        this.attrVariable = attrVariable;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Nothing")
+    public final ceylon.language.Integer getAttrGetterSetter() {
+        return null;
+    }
+    
+    public final void setAttrGetterSetter(@.com.redhat.ceylon.compiler.java.metadata.Name("attrGetterSetter")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Nothing")
+    ceylon.language.Integer attrGetterSetter) {
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Nothing")
+    public final ceylon.language.Integer m() {
+        return null;
+    }
+    private final com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2 attr2;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Bottom")
+    public final com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2 getAttr2() {
+        return attr2;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Bottom")
+    public final com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2 m2() {
+        return .ceylon.language.bottom.getBottom();
+    }
+    private final com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2 attr3;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2&com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface3")
+    public final com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2 getAttr3() {
+        return attr3;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2&com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface3")
+    public final com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2 m3() {
+        return new com.redhat.ceylon.compiler.java.test.issues.Bug260_Intersection();
+    }
+    
+    Bug260() {
+        this.attr = null;
+        this.attrVariable = null;
+        this.attr2 = .ceylon.language.bottom.getBottom();
+        this.attr3 = new com.redhat.ceylon.compiler.java.test.issues.Bug260_Intersection();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug260();
+    }
+}
