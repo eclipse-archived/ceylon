@@ -508,6 +508,17 @@ public abstract class AbstractTransformer implements Transformation {
     protected ProducedType actualType(Tree.TypedDeclaration decl) {
         return decl.getType().getTypeModel();
     }
+    
+    protected TypedDeclaration nonWideningTypeDecl(TypedDeclaration decl) {
+        TypedDeclaration refinedDeclaration = (TypedDeclaration) decl.getRefinedDeclaration();
+        if(decl != refinedDeclaration){
+            boolean isWidening = willEraseToObject(decl.getType())
+                    && !willEraseToObject(refinedDeclaration.getType());
+            if(isWidening)
+                return refinedDeclaration;
+        }
+        return decl;
+    }
 
     protected ProducedType toPType(com.sun.tools.javac.code.Type t) {
         return loader().getType(t.tsym.getQualifiedName().toString(), null);

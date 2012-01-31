@@ -135,10 +135,11 @@ public class ClassTransformer extends AbstractTransformer {
             }
 
             int flags = 0;
-            if (!decl.getDeclarationModel().getUnboxed()) {
+            TypedDeclaration nonWideningType = nonWideningTypeDecl(decl.getDeclarationModel());
+            if (!nonWideningType.getUnboxed()) {
                 flags |= NO_PRIMITIVES;
             }
-            JCExpression type = makeJavaType(actualType(decl), flags);
+            JCExpression type = makeJavaType(nonWideningType.getType(), flags);
 
             int modifiers = (useField) ? transformAttributeFieldDeclFlags(decl) : transformLocalDeclFlags(decl);
             classBuilder.field(modifiers, attrName, type, initialValue, !useField);
@@ -171,7 +172,11 @@ public class ClassTransformer extends AbstractTransformer {
         JCBlock body = statementGen().transform(decl.getBlock());
         String name = decl.getIdentifier().getText();
         return AttributeDefinitionBuilder
-            .setter(this, name, decl.getDeclarationModel().getParameter())
+                /* 
+                 * We use the getter as TypedDeclaration here because this is the same type but has a refined
+                 * declaration we can use to make sure we're not widening the attribute type.
+                 */
+            .setter(this, name, decl.getDeclarationModel().getGetter())
             .modifiers(transformAttributeGetSetDeclFlags(decl))
             .isActual(isActual(decl))
             .setterBlock(body)
@@ -408,7 +413,8 @@ public class ClassTransformer extends AbstractTransformer {
 
     // Creates a method to retrieve the value for a defaulted parameter
     private JCMethodDecl transformDefaultedParameter(Tree.Parameter param, Tree.Declaration container, Tree.ParameterList params) {
-        String name = Util.getDefaultedParamMethodName(container.getDeclarationModel(), param.getDeclarationModel());
+        Parameter parameter = param.getDeclarationModel();
+        String name = Util.getDefaultedParamMethodName(container.getDeclarationModel(), parameter );
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, true, name);
         
         int modifiers = STATIC;
@@ -430,7 +436,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         // The method's return type is the same as the parameter's type
-        methodBuilder.resultType(param.getDeclarationModel());
+        methodBuilder.resultType(parameter);
 
         // The implementation of the method
         JCExpression expr = expressionGen().transform(param);

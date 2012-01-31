@@ -27,6 +27,7 @@ import static com.sun.tools.javac.code.Flags.STATIC;
 import static com.sun.tools.javac.code.TypeTags.VOID;
 
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -187,8 +188,8 @@ public class MethodDefinitionBuilder {
         return this;
     }
     
-    public MethodDefinitionBuilder parameter(long modifiers, String name, TypedDeclaration decl) {
-        JCExpression type = gen.makeJavaType(decl);
+    public MethodDefinitionBuilder parameter(long modifiers, String name, TypedDeclaration decl, TypedDeclaration nonWideningDecl) {
+        JCExpression type = gen.makeJavaType(nonWideningDecl);
         List<JCAnnotation> annots = List.nil();
         if (gen.needsAnnotations(decl)) {
             annots = annots.appendList(gen.makeAtName(name));
@@ -217,7 +218,7 @@ public class MethodDefinitionBuilder {
 
     public MethodDefinitionBuilder parameter(Parameter param) {
         String name = param.getName();
-        return parameter(FINAL, name, param);
+        return parameter(FINAL, name, param, param);
     }
 
     public MethodDefinitionBuilder isActual(boolean isActual) {
@@ -256,6 +257,12 @@ public class MethodDefinitionBuilder {
         } else {
             return noBody();
         }
+    }
+
+    public MethodDefinitionBuilder resultType(Method method) {
+        this.resultType = method;
+        this.resultTypeExpr = makeResultType(gen.nonWideningTypeDecl(method));
+        return this;
     }
 
     public MethodDefinitionBuilder resultType(TypedDeclaration resultType) {

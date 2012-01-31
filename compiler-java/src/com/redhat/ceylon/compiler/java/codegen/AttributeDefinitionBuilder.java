@@ -61,16 +61,17 @@ public class AttributeDefinitionBuilder {
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, String className, String attrName, String fieldName) {
         int typeFlags = 0;
-        if (!attrType.getUnboxed()) {
+        TypedDeclaration nonWideningType = owner.nonWideningTypeDecl(attrType);
+        if (!nonWideningType.getUnboxed()) {
             typeFlags |= AbstractTransformer.NO_PRIMITIVES;
         }
         // Special erasure for the "hash" attribute which gets translated to hashCode()
-        if ("hash".equals(attrName) && owner.isCeylonInteger(attrType.getType())) {
+        if ("hash".equals(attrName) && owner.isCeylonInteger(nonWideningType.getType())) {
             typeFlags = AbstractTransformer.SMALL_TYPE;
             isHashCode = true;
         }
         
-        JCExpression type = owner.makeJavaType(attrType.getType(), typeFlags);
+        JCExpression type = owner.makeJavaType(nonWideningType.getType(), typeFlags);
         this.attrType = type;
         
         this.owner = owner;
@@ -89,7 +90,7 @@ public class AttributeDefinitionBuilder {
             .systemMethod(owner, Util.getSetterName(attrType))
             .block(generateDefaultSetterBlock())
             .isActual(attrType.isActual())
-            .parameter(0, attrName, attrType);
+            .parameter(0, attrName, attrType, nonWideningType);
     }
 
     public static AttributeDefinitionBuilder wrapped(AbstractTransformer owner, String name, TypedDeclaration attrType) {
