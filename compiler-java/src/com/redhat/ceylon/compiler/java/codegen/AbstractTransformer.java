@@ -43,6 +43,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -94,6 +95,10 @@ public abstract class AbstractTransformer implements Transformation {
         loader = CeylonModelLoader.instance(context);
         typeFact = TypeFactory.instance(context);
         log = CeylonLog.instance(context);
+    }
+
+    public Context getContext() {
+        return context;
     }
 
     @Override
@@ -656,7 +661,6 @@ public abstract class AbstractTransformer implements Transformation {
                 return make().TypeIdent(TypeTags.INT);
             } else if (isCeylonArray(type)) {
                 ProducedType simpleType = simplifyType(type);
-                TypeDeclaration tdecl = simpleType.getDeclaration();
                 java.util.List<ProducedType> tal = simpleType.getTypeArgumentList();
                 return make().TypeArray(makeJavaType(tal.get(0), 0));
             }
@@ -806,6 +810,34 @@ public abstract class AbstractTransformer implements Transformation {
             thisType = getThisType((Declaration)decl.getContainer());
         }
         return thisType;
+    }
+    
+    protected ProducedType getTypeForParameter(Parameter parameter, boolean isRaw, java.util.List<ProducedType> typeArgumentModels) {
+        ProducedType type = parameter.getType();
+        if(isTypeParameter(type)){
+            TypeParameter tp = (TypeParameter) type.getDeclaration();
+            if(!isRaw && typeArgumentModels != null){
+                // try to use the inferred type if we're not going raw
+                Scope scope = parameter.getContainer();
+                int typeParamIndex = getTypeParameterIndex(scope, tp);
+                if(typeParamIndex != -1)
+                    return typeArgumentModels.get(typeParamIndex);
+            }
+            if(tp.getSatisfiedTypes().size() >= 1){
+                // try the first satisfied type
+                type = tp.getSatisfiedTypes().get(0).getType();
+                // unless it's erased, in which case try for more specific
+                if(!willEraseToObject(type))
+                    return type;
+            }
+        }
+        return type;
+    }
+
+    private int getTypeParameterIndex(Scope scope, TypeParameter tp) {
+        if(scope instanceof Method)
+            return ((Method)scope).getTypeParameters().indexOf(tp);
+        return ((ClassOrInterface)scope).getTypeParameters().indexOf(tp);
     }
     
     /*
@@ -1316,9 +1348,5 @@ public abstract class AbstractTransformer implements Transformation {
         // then ignore this result and return something else
         return make().LetExpr(def, toReturn);
 
-    }
-
-    public Context getContext() {
-        return context;
     }
 }
