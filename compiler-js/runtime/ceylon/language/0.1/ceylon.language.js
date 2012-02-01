@@ -443,8 +443,18 @@ $String.prototype.getKeys = function() {
     return $empty;
 }
 $String.prototype.join = function(strings) {
-    //TODO implement!!!
-    return this;
+    if (strings===undefined || strings.value.length===0) {return String$("", 0)}
+    if (this.codePoints === undefined) {this.codePoints = countCodepoints(this.value)}
+    var str = strings.value[0];
+    var result = str.value;
+    var len = str.codePoints;
+    for (var i=1; i<strings.value.length; ++i) {
+        str = strings.value[i];
+        result += this.value;
+        result += str.value;
+        len += this.codePoints + str.codePoints;
+    }
+    return String$(result, isNaN(len)?undefined:len);
 }
 $String.prototype.split = function(seps, discard) {
     //TODO implement!!!
