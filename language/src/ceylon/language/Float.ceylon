@@ -6,4 +6,16 @@ shared abstract class Float()
 
 }
 
+doc "Convert a string representation of a float into a Float value."
 shared Float? parseFloat(String string) { throw; }
+
+doc "The Float representing positive infinity."
+shared Float positiveInfinity = 1.0/0.0;
+
+doc "The Float representing negative infinity."
+shared Float negativeInfinity = -1.0/0.0;
+
+doc "Determines whether the given Float is undefined (Not a Number)."
+shared Boolean undefined(Float float) {
+    return float != float;
+}

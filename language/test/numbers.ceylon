@@ -45,9 +45,10 @@ shared void numbers() {
     assert(-1.positiveValue==-1, "integer positive");
     assert(1.0.positiveValue==1.0, "float positive");
     
-    assert(12.string=="12", "natural string");
-    assert((-12).string=="-12", "integer string");
-    assert((-5.5).string=="-5.5", "float string");
+    assert(12.string=="12", "natural string 12");
+    assert((-12).string=="-12", "integer string -12");
+    assert((-5.5).string=="-5.5", "float string -5.5");
+    assert((1.0).string=="1.0", "float string 1.0");
     
     assert(1.unit, "natural unit");
     assert(!2.unit, "natural unit");
@@ -97,21 +98,21 @@ shared void numbers() {
         return x*y;
     }
         
-    assert(add(1,2)==3, "");
-    assert(add(-1,+2)==+1, "");
-    assert(add(1.5,-2.5)==-1.0, "");
+    assert(add(1,2)==3, "add(1,2)==3");
+    assert(add(-1,+2)==+1, "add(-1,+2)==+1");
+    assert(add(1.5,-2.5)==-1.0, "add(1.5,-2.5)==-1.0");
     
-    assert(exp(1,2)==1, "");
-    assert(exp(-1,+2)==+1, "");
-    assert(exp(2.0,2.0)==4.0, "");
+    assert(exp(1,2)==1, "exp(1,2)==1");
+    assert(exp(-1,+2)==+1, "exp(-1,+2)==+1");
+    assert(exp(2.0,2.0)==4.0, "exp(2.0,2.0)==4.0");
     
-    assert(addIntegers(2, 4)==6, "");
-    assert(addIntegers(-2, -4)==-6, "");
-    assert(addFloats(-1.0, 1.0)==0.0, "");
+    assert(addIntegers(2, 4)==6, "addIntegers(2, 4)==6");
+    assert(addIntegers(-2, -4)==-6, "addIntegers(-2, -4)==-6");
+    assert(addFloats(-1.0, 1.0)==0.0, "addFloats(-1.0, 1.0)==0.0");
     
-    assert(multiplyIntegerByFloat(3, 1.5)==4.5, "");
-    assert(multiplyFloatByInteger(1.5, -1)==-1.5, "");                
-    assert(multiplyIntegerByInteger(1, -1)==-1, "");
+    assert(multiplyIntegerByFloat(3, 1.5)==4.5, "multiplyIntegerByFloat(3, 1.5)==4.5");
+    assert(multiplyFloatByInteger(1.5, -1)==-1.5, "multiplyFloatByInteger(1.5, -1)==-1.5");
+    assert(multiplyIntegerByInteger(1, -1)==-1, "multiplyIntegerByInteger(1, -1)==-1");
     
     assert(1.hash==(3-1)/2.hash, "natural hash");
     assert((+0).hash==(-1+(+1))*+100.hash, "integer hash");
@@ -147,7 +148,10 @@ shared void numbers() {
     assert(max({1, 5})==5, "max naturals");
     assert(max({-1, +5})==+5, "max integers");
     assert(max({-1.5, 5.2})==5.2, "max floats");
-    
+    //eZL
+    assert(max({ 2, 4, 6, 8, 7, 250, 5, 3, 1 })==250, "max");
+    assert(min({ 200, 400, 600, 800, 700, 500, 300, 150 })==150, "min");
+
     //eZL
     assert(smallest(1,2)==1,          "smallest naturals");
     assert(smallest(-100, 100)==-100, "smallest integers");
@@ -220,5 +224,12 @@ shared void numbers() {
     
     assert(parseInteger("-123")?0==-123, "parse integer");
     assert(parseFloat("12.34e3")?0.0==12.34e3, "parse float");
+    
+    assert(1.0/0.0==positiveInfinity, "positiveInfinity");
+    assert(1.0!=positiveInfinity, "not positiveInfinity");
+    assert(-1.0/0.0==negativeInfinity, "negativeInfinity");
+    assert(1.0!=negativeInfinity, "not negativeInfinity");
+    assert(undefined(0.0/0.0), "undefined");
+    assert(!undefined(1.0), "defined");
     
 }
