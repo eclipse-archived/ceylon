@@ -807,8 +807,8 @@ public class DeclarationVisitor extends Visitor {
                             if (t instanceof Tree.Literal) {
                                 ann.addNamedArgument( param, ( (Tree.Literal) t ).getText() );
                             }
-                            else if (t instanceof Tree.BaseTypeExpression) {
-                                ann.addNamedArgument( param, ( (Tree.BaseTypeExpression) t ).getIdentifier().getText() );
+                            else if (t instanceof Tree.BaseMemberOrTypeExpression) {
+                                ann.addNamedArgument( param, ( (Tree.BaseMemberOrTypeExpression) t ).getIdentifier().getText() );
                             }
                         }                    
                     }
@@ -819,8 +819,8 @@ public class DeclarationVisitor extends Visitor {
                         if (t instanceof Tree.Literal) {
                             ann.addPositionalArgment( ( (Tree.Literal) t ).getText() );
                         }
-                        else if (t instanceof Tree.BaseTypeExpression) {
-                            ann.addPositionalArgment( ( (Tree.BaseTypeExpression) t ).getIdentifier().getText() );
+                        else if (t instanceof Tree.BaseMemberOrTypeExpression) {
+                            ann.addPositionalArgment( ( (Tree.BaseMemberOrTypeExpression) t ).getIdentifier().getText() );
                         }
                     }
                 }
