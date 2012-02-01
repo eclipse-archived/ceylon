@@ -1167,7 +1167,9 @@ public abstract class AbstractTransformer implements Transformation {
     protected ProducedType determineExpressionType(Tree.Term term) {
         ProducedType exprType = term.getTypeModel();
         if (term instanceof Tree.InvocationExpression) {
-            Declaration decl = ((Tree.InvocationExpression)term).getPrimary().getDeclaration().getRefinedDeclaration();
+            Tree.InvocationExpression invocation = (Tree.InvocationExpression)term;
+            Tree.MemberOrTypeExpression primary = (Tree.MemberOrTypeExpression)invocation.getPrimary();
+            Declaration decl = primary.getDeclaration().getRefinedDeclaration();
             if (decl instanceof Method) {
                 exprType = ((Method)decl).getType();
             }

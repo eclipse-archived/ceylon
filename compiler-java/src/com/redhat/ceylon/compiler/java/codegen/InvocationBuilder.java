@@ -51,7 +51,7 @@ public class InvocationBuilder {
         boolean isRaw = typeArgs.isEmpty();
         String callVarName = null;
         
-        Declaration primaryDecl = ce.getPrimary().getDeclaration();
+        Declaration primaryDecl = ((Tree.MemberOrTypeExpression)ce.getPrimary()).getDeclaration();
         if (primaryDecl != null) {
             java.util.List<ParameterList> paramLists = ((Functional)primaryDecl).getParameterLists();
             java.util.List<Tree.NamedArgument> namedArguments = ce.getNamedArgumentList().getNamedArguments();
@@ -175,7 +175,7 @@ public class InvocationBuilder {
         ListBuffer<JCVariableDecl> vars = null;
         ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
 
-        Declaration primaryDecl = ce.getPrimary().getDeclaration();
+        Declaration primaryDecl = ((Tree.MemberOrTypeExpression)ce.getPrimary()).getDeclaration();
         Tree.PositionalArgumentList positional = ce.getPositionalArgumentList();
 
         java.util.List<ProducedType> typeArgumentModels = getTypeArguments(ce);

@@ -1105,7 +1105,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if (primary instanceof Tree.QualifiedTypeExpression) {
             return transform((Tree.QualifiedTypeExpression)primary, transformer);
         } else {
-            return makeQuotedIdent(primary.getDeclaration().getName());
+            return makeQuotedIdent(((Tree.MemberOrTypeExpression)primary).getDeclaration().getName());
         }
     }
     
@@ -1304,8 +1304,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private JCExpression transformAssignment(Node op, Tree.Term leftTerm, Tree.Term rightTerm) {
-        // FIXME: can this be anything else than a Primary?
-        TypedDeclaration decl = (TypedDeclaration) ((Tree.Primary)leftTerm).getDeclaration();
+        // FIXME: can this be anything else than a Tree.MemberOrTypeExpression?
+        TypedDeclaration decl = (TypedDeclaration) ((Tree.MemberOrTypeExpression)leftTerm).getDeclaration();
 
         // Remember and disable inStatement for RHS
         boolean tmpInStatement = inStatement;
@@ -1347,8 +1347,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression transformAssignment(Node op, Tree.Term leftTerm, JCExpression lhs, JCExpression rhs) {
         JCExpression result = null;
 
-        // FIXME: can this be anything else than a Primary?
-        TypedDeclaration decl = (TypedDeclaration) ((Tree.Primary)leftTerm).getDeclaration();
+        // FIXME: can this be anything else than a Tree.MemberOrTypeExpression?
+        TypedDeclaration decl = (TypedDeclaration) ((Tree.MemberOrTypeExpression)leftTerm).getDeclaration();
 
         boolean variable = decl.isVariable();
         
