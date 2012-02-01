@@ -1066,33 +1066,39 @@ public class GenerateJsVisitor extends Visitor
             out("return ");
             that.getPrimary().visit(this);
             out("(");
-            if (that.getPrimary().getDeclaration() instanceof Functional) {
-                Functional f = (Functional) that.getPrimary().getDeclaration();
-                if (!f.getParameterLists().isEmpty()) {
-                    boolean first=true;
-                    for (com.redhat.ceylon.compiler.typechecker.model.Parameter p: 
-                        f.getParameterLists().get(0).getParameters()) {
-                        if (!first) out(",");
-                        if (p.isSequenced() && that.getNamedArgumentList().getSequencedArgument()==null) {
-                            clAlias();
-                            out(".empty");
-                        } else {
-                            out("$");
-                            out(p.getName());
+            if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
+                Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
+                if (mte.getDeclaration() instanceof Functional) {
+                    Functional f = (Functional) mte;
+                    if (!f.getParameterLists().isEmpty()) {
+                        boolean first=true;
+                        for (com.redhat.ceylon.compiler.typechecker.model.Parameter p: 
+                            f.getParameterLists().get(0).getParameters()) {
+                            if (!first) out(",");
+                            if (p.isSequenced() && that.getNamedArgumentList().getSequencedArgument()==null) {
+                                clAlias();
+                                out(".empty");
+                            } else {
+                                out("$");
+                                out(p.getName());
+                            }
+                            first = false;
                         }
-                        first = false;
                     }
                 }
             }
             out(")}())");
         }
         else {
-            if (that.getPrimary().getDeclaration() instanceof Functional) {
-                Functional f = (Functional)that.getPrimary().getDeclaration();
-                if (!f.getParameterLists().isEmpty()) {
-                    com.redhat.ceylon.compiler.typechecker.model.ParameterList plist = f.getParameterLists().get(0);
-                    if (!plist.getParameters().isEmpty() && plist.getParameters().get(plist.getParameters().size()-1).isSequenced()) {
-                        sequencedParameter=true;
+            if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
+                Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
+                if (mte instanceof Functional) {
+                    Functional f = (Functional) mte;
+                    if (!f.getParameterLists().isEmpty()) {
+                        com.redhat.ceylon.compiler.typechecker.model.ParameterList plist = f.getParameterLists().get(0);
+                        if (!plist.getParameters().isEmpty() && plist.getParameters().get(plist.getParameters().size()-1).isSequenced()) {
+                            sequencedParameter=true;
+                        }
                     }
                 }
             }
