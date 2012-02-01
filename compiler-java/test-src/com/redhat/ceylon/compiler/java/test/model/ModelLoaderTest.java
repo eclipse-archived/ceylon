@@ -120,37 +120,38 @@ public class ModelLoaderTest extends CompilerTest {
     private void compareDeclarations(Declaration validDeclaration, Declaration modelDeclaration) {
         if(alreadyCompared(validDeclaration, modelDeclaration))
             return;
+        String name = validDeclaration.getQualifiedNameString();
         // check that we have a unit
         Assert.assertNotNull("Missing Unit: "+modelDeclaration.getQualifiedNameString(), modelDeclaration.getUnit());
         Assert.assertNotNull("Invalid Unit", modelDeclaration.getUnit().getPackage());
         // let's not check java stuff for now, due to missing types in the jdk's private methods
-        if(validDeclaration.getQualifiedNameString().startsWith("java."))
+        if(name.startsWith("java."))
             return;
         // only compare parameter names for public methods
         if(!(validDeclaration instanceof Parameter) || validDeclaration.isShared())
-            Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [name]", validDeclaration.getQualifiedNameString(), modelDeclaration.getQualifiedNameString());
-        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [shared]", validDeclaration.isShared(), modelDeclaration.isShared());
+            Assert.assertEquals(name+" [name]", validDeclaration.getQualifiedNameString(), modelDeclaration.getQualifiedNameString());
+        Assert.assertEquals(name+" [shared]", validDeclaration.isShared(), modelDeclaration.isShared());
         // if they're not shared, stop at making sure they are the same type of object
         if(!validDeclaration.isShared()){
             boolean sameType = validDeclaration.getClass().isAssignableFrom(modelDeclaration.getClass());
             // we may replace Getter or Setter with Value, no harm done
             sameType |= validDeclaration instanceof Getter && modelDeclaration instanceof Value;
             sameType |= validDeclaration instanceof Setter && modelDeclaration instanceof Value;
-            Assert.assertTrue(validDeclaration.getQualifiedNameString()+" [type]", sameType);
+            Assert.assertTrue(name+" [type]", sameType);
             return;
         }
         // full check
         if(validDeclaration instanceof Class){
-            Assert.assertTrue("[Class]", modelDeclaration instanceof Class);
+            Assert.assertTrue(name+" [Class]", modelDeclaration instanceof Class);
             compareClassDeclarations((Class)validDeclaration, (Class)modelDeclaration);
         }else if(validDeclaration instanceof Method){
-            Assert.assertTrue("[Method]", modelDeclaration instanceof Method);
+            Assert.assertTrue(name+" [Method]", modelDeclaration instanceof Method);
             compareMethodDeclarations((Method)validDeclaration, (Method)modelDeclaration);
         }else if(validDeclaration instanceof Value || validDeclaration instanceof Getter || validDeclaration instanceof Setter){
-            Assert.assertTrue("[Attribute]", modelDeclaration instanceof Value);
+            Assert.assertTrue(name+" [Attribute]", modelDeclaration instanceof Value);
             compareAttributeDeclarations((MethodOrValue)validDeclaration, (Value)modelDeclaration);
         }else if(validDeclaration instanceof TypeParameter){
-            Assert.assertTrue("[TypeParameter]", modelDeclaration instanceof TypeParameter);
+            Assert.assertTrue(name+" [TypeParameter]", modelDeclaration instanceof TypeParameter);
             compareTypeParameters((TypeParameter)validDeclaration, (TypeParameter)modelDeclaration);
         }
     }
