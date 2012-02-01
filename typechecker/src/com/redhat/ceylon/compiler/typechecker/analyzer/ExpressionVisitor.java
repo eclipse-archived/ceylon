@@ -252,7 +252,11 @@ public class ExpressionVisitor extends Visitor {
         if (v!=null) {
             //v.getType().visit(this);
             Tree.SpecifierExpression se = v.getSpecifierExpression();
-            if (se!=null) {
+            ProducedType knownType;
+            if (se==null) {
+                knownType = null;
+            }
+            else {
                 se.visit(this);
                 checkReferenceIsNonVariable(v, se);
                 /*checkAssignable( se.getExpression().getTypeModel(), 
@@ -260,13 +264,16 @@ public class ExpressionVisitor extends Visitor {
                         se.getExpression(), 
                         "expression may not be of void type");*/
                 initOriginalDeclaration(v);
+                //this is a bit ugly (the parser sends us a SyntheticVariable
+                //instead of the real StaticType which it very well knows!)
+                knownType = se.getExpression().getTypeModel();
+                if (knownType!=null && knownType.isSubtypeOf(type)) {
+                    that.addError("does not narrow type: " + knownType.getProducedTypeName() + 
+                            " is a subtype of " + type.getProducedTypeName());
+                }
             }
             defaultTypeToVoid(v);
             if (v.getType() instanceof Tree.SyntheticVariable) {
-                //this is a bit ugly (the parser sends us a SyntheticVariable
-                //instead of the real StaticType which it very well knows!)
-                ProducedType knownType = se==null ? null : 
-                        se.getExpression().getTypeModel();
                 //when we're reusing the original name, we narrow to the
                 //intersection of the outer type and the type specified
                 //in the condition
@@ -1099,7 +1106,9 @@ public class ExpressionVisitor extends Visitor {
             for (PositionalArgument pa: that.getPositionalArgumentList().getPositionalArguments()) {
                 sig.add(pa.getExpression().getTypeModel());
             }
-            that.getPrimary().setSignature(sig);
+            if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
+                ((Tree.MemberOrTypeExpression) that.getPrimary()).setSignature(sig);
+            }
         }
         if (that.getNamedArgumentList()!=null) {
             that.getNamedArgumentList().visit(this);
@@ -1111,8 +1120,8 @@ public class ExpressionVisitor extends Visitor {
             that.addError("malformed invocation expression");
         }
         else if (pr instanceof Tree.StaticMemberOrTypeExpression) {
-            Declaration dec = pr.getDeclaration();
             Tree.StaticMemberOrTypeExpression mte = (Tree.StaticMemberOrTypeExpression) pr;
+            Declaration dec = mte.getDeclaration();
             if ( mte.getTarget()==null && dec instanceof Functional && 
                     mte.getTypeArguments() instanceof Tree.InferredTypeArguments ) {
                 List<ProducedType> typeArgs = getInferedTypeArguments(that, (Functional) dec);
@@ -1392,7 +1401,8 @@ public class ExpressionVisitor extends Visitor {
                     prf.getDeclaration().getName() + " is not a method or class");
         }
         else {
-            Functional dec = (Functional) that.getPrimary().getDeclaration();
+            Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
+            Functional dec = (Functional) mte.getDeclaration();
             if (!(that.getPrimary() instanceof Tree.ExtendedTypeExpression)) {
                 if (dec instanceof Class && ((Class) dec).isAbstract()) {
                     that.addError("abstract classes may not be instantiated");
@@ -1641,7 +1651,7 @@ public class ExpressionVisitor extends Visitor {
         withinAnnotation=true;
         super.visit(that);
         withinAnnotation=false;
-        Declaration dec = that.getPrimary().getDeclaration();
+        Declaration dec = ((Tree.MemberOrTypeExpression) that.getPrimary()).getDeclaration();
         if (dec!=null && !dec.isToplevel()) {
             that.getPrimary().addError("annotation must be a toplevel method reference");
         }

@@ -555,8 +555,9 @@ public class TypeVisitor extends Visitor {
                     Tree.Primary pr = that.getInvocationExpression().getPrimary();
                     if (pr instanceof Tree.ExtendedTypeExpression) {
                         pr.setTypeModel(type);
-                        pr.setDeclaration(type.getDeclaration());
-                        ( (Tree.ExtendedTypeExpression) pr).setTarget(type);
+                        Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression) pr;
+                        ete.setDeclaration(type.getDeclaration());
+                        ete.setTarget(type);
                     }
                 }
                 if (type.getDeclaration() instanceof TypeParameter) {

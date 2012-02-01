@@ -1,14 +1,11 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.typechecker.io.VFSArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.io.ArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
-import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
+import com.redhat.ceylon.compiler.typechecker.io.VFSArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 
 /**

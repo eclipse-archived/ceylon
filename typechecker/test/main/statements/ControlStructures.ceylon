@@ -14,6 +14,11 @@ class ControlStructures() {
         print(n);
     }
     
+    @error if (is Void something) {}
+    @error if (is Object something) {}
+    @error if (is String s = "hello") {}
+    @error if (is Object s = "hello") {}
+    
     variable String? var := "gavin"; 
     @error if (exists var) {}
     if (exists v = var) {}

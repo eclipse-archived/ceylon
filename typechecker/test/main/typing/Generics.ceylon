@@ -210,6 +210,7 @@ class Generics() {
     }
     
     abstract class SortedList<T>(T... elements) 
+        extends Object()
         satisfies Sequence<T> 
         given T satisfies Comparable<T> {
         shared actual formal String string;

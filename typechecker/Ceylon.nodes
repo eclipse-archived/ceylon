@@ -521,9 +521,7 @@
          SATISFIES EXTENDS THEN_OP ELSE_OP))
 
 "The receiver of a member reference or invocation expression."
-^(abstract PRIMARY:TERM
-    Declaration declaration;
-    List<ProducedType> signature;)
+^(abstract PRIMARY:TERM)
 ^(abstract POSTFIX_EXPRESSION:PRIMARY
     PRIMARY(EXPRESSION INVOCATION_EXPRESSION INDEX_EXPRESSION
             QUALIFIED_TYPE_EXPRESSION QUALIFIED_MEMBER_EXPRESSION
@@ -541,7 +539,9 @@ argument list."
     POSITIONAL_ARGUMENT_LIST? NAMED_ARGUMENT_LIST?)
 
 ^(abstract MEMBER_OR_TYPE_EXPRESSION:PRIMARY
-    ProducedReference target;)
+    ProducedReference target;
+    Declaration declaration;
+    List<ProducedType> signature;)
 
 ^(EXTENDED_TYPE_EXPRESSION:MEMBER_OR_TYPE_EXPRESSION)
 

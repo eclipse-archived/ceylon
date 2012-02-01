@@ -37,11 +37,13 @@ public class SelfReferenceVisitor extends Visitor {
     }
 
     private void visitReference(Tree.Primary that) {
-        Declaration member  = that.getDeclaration();
-        if (member!=null) {
-            if ( !declarationSection && isInherited(that, member)) {
-                that.addError("inherited member may not be used in initializer: " + 
-                            member.getName());
+        if (that instanceof Tree.MemberOrTypeExpression) {
+            Declaration member = ((Tree.MemberOrTypeExpression) that).getDeclaration();
+            if (member!=null) {
+                if ( !declarationSection && isInherited(that, member)) {
+                    that.addError("inherited member may not be used in initializer: " + 
+                                member.getName());
+                }
             }
         }
     }
