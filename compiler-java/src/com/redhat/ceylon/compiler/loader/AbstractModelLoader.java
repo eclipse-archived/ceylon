@@ -770,7 +770,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     if (methodMirror == constructor) {
                         ((Class)klass).setOverloaded(isOverloaded);
                         if(!(klass instanceof LazyClass) || !((LazyClass)klass).isTopLevelObjectType())
-                            setParameters((Class)klass, methodMirror);
+                            setParameters((Class)klass, methodMirror, isCeylon);
                     }
                 } else if(isGetter(methodMirror)) {
                     // simple attribute
@@ -789,13 +789,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 } else {
                     if (first && isOverloaded) {
                         // We create an extra "abstraction" method for overloaded methods
-                        Method m = addMethod(klass, methodMirror, false);
+                        Method m = addMethod(klass, methodMirror, false, false);
                         m.setType(getAbstractionMethodReturnType(methodMirrors, m));
                         m.setAbstraction(true);
                         first = false;
                     }
                     // normal method
-                    addMethod(klass, methodMirror, isCeylon, methodMirrors);
+                    addMethod(klass, methodMirror, isCeylon, isOverloaded);
                 }
             }
         }
@@ -809,7 +809,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 continue;
             String name = fieldMirror.getName();
             // skip the field if "we've already got one"
-            if(klass.getDirectMember(name) != null)
+            if(klass.getDirectMember(name, null) != null)
                 continue;
             addValue(klass, fieldMirror);
         }
@@ -818,7 +818,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         for(Entry<MethodMirror, List<MethodMirror>> setterEntry : variables.entrySet()){
             MethodMirror setter = setterEntry.getKey();
             String name = getJavaAttributeName(setter.getName());
-            Declaration decl = klass.getMember(name);
+            Declaration decl = klass.getMember(name, null);
             boolean foundGetter = false;
             if (decl != null && decl instanceof Value) {
                 Value value = (Value)decl;
@@ -836,7 +836,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             
             if(!foundGetter){
                 // it was not a setter, it was a method, let's add it as such
-                addMethod(klass, setter, isCeylon, setterEntry.getValue());
+                addMethod(klass, setter, isCeylon, false);
             }
         }
         
@@ -846,13 +846,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         fillRefinedDeclarations(klass);
     }
 
-    private void addMethod(ClassOrInterface klass, MethodMirror methodMirror, boolean isCeylon, List<MethodMirror> methodMirrors) {
+    private Method addMethod(ClassOrInterface klass, MethodMirror methodMirror, boolean isCeylon, boolean isOverloaded) {
         Method method = new Method();
         
         method.setContainer(klass);
         method.setName(Util.strip(methodMirror.getName()));
         method.setUnit(klass.getUnit());
-        method.setOverloaded(methodMirrors.size() > 1);
+        method.setOverloaded(isOverloaded);
         setMethodOrValueFlags(klass, methodMirror, method);
 
         // type params first
@@ -865,14 +865,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             setParameters(method, methodMirror, isCeylon);
         
         // and its return type
-        ProducedType type = getMethodReturnType(methodMirrors, method);
+        ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, method);
         method.setType(type);
         
         markUnboxed(method, methodMirror.getReturnType());
         klass.getMembers().add(method);
+        
+        return method;
     }
 
-    private ProducedType getMethodReturnType(List<MethodMirror> methodMirrors, Method method) {
+    private ProducedType getAbstractionMethodReturnType(List<MethodMirror> methodMirrors, Method method) {
         if (methodMirrors.size() > 1) {
             // Make a union of the method return types
             UnionType unionType = new UnionType(typeFactory);
@@ -1028,7 +1030,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setType(obtainType(methodMirror.getReturnType(), methodMirror, klass));
         markUnboxed(value, methodMirror.getReturnType());
         klass.getMembers().add(value);
-        return value;
     }
 
     private void setMethodOrValueFlags(ClassOrInterface klass, MethodMirror methodMirror, MethodOrValue decl) {
