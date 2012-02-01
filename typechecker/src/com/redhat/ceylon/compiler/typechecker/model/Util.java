@@ -430,9 +430,6 @@ public class Util {
     
     static Declaration lookupMember(List<Declaration> members, String name,
             List<ProducedType> signature, boolean includeParameters) {
-        if (name.equals("s")) {
-            name.charAt(0);
-        }
         List<Declaration> results = new ArrayList<Declaration>();
         Declaration inexactMatch = null;
         for (Declaration d: members) {
