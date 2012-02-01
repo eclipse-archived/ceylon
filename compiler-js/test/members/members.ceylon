@@ -1,10 +1,21 @@
-void expect(Equality actual, Equality expected, String text) {
-    if (actual == expected) {
-        print("[ok] " + text + ": '" + actual.string + "'");
-    } else {
-        print("[NOT OK] " + text + ": actual='" + actual.string + "', expected='"
-              + expected.string + "'");
+variable Integer assertionCount:=0;
+variable Integer failureCount:=0;
+
+shared void assert(Boolean assertion, String message="") {
+    assertionCount+=1;
+    if (!assertion) {
+        failureCount+=1;
+        print("assertion failed \"" message "\"");
     }
+}
+
+shared void fail(String message) {
+    assert(false, message);
+}
+
+shared void results() {
+    print("assertions " assertionCount 
+          ", failures " failureCount "");
 }
 
 shared class Counter(Integer initialCount=0) {
@@ -52,28 +63,29 @@ class Issue10C2(Integer arg1) extends Issue10C1(1) {
 
 void testIssue10() {
     value obj = Issue10C2(2);
-    expect(obj.f1(), 1, "Issue #10 (parameter)");
-    expect(obj.f11(), 2, "Issue #10 (parameter)");
-    expect(obj.f2(), 3, "Issue #10 (non-shared attribute)");
-    expect(obj.f12(), 4, "Issue #10 (non-shared attribute)");
-    expect(obj.f3(), 5, "Issue #10 (non-shared attribute)");
-    expect(obj.i2, 6, "Issue #10 (shared attribute)");
-    expect(obj.f4(), 8, "Issue #10 (shared attribute)");
-    expect(obj.i3, 8, "Issue #10 (shared attribute)");
-    expect(obj.f6(), 9, "Issue #10 (non-shared method)");
-    expect(obj.f13(), 10, "Issue #10 (non-shared method)");
-    expect(obj.f8(), 11, "Issue #10 (non-shared method)");
-    expect(obj.f7(), 12, "Issue #10 (shared method)");
-    expect(obj.f10(), 14, "Issue #10 (shared method)");
-    expect(obj.f9(), 14, "Issue #10 (shared method)");
+    assert(obj.f1()==1, "Issue #10 (parameter)");
+    assert(obj.f11()==2, "Issue #10 (parameter)");
+    assert(obj.f2()==3, "Issue #10 (non-shared attribute)");
+    assert(obj.f12()==4, "Issue #10 (non-shared attribute)");
+    assert(obj.f3()==5, "Issue #10 (non-shared attribute)");
+    assert(obj.i2==6, "Issue #10 (shared attribute)");
+    assert(obj.f4()==8, "Issue #10 (shared attribute)");
+    assert(obj.i3==8, "Issue #10 (shared attribute)");
+    assert(obj.f6()==9, "Issue #10 (non-shared method)");
+    assert(obj.f13()==10, "Issue #10 (non-shared method)");
+    assert(obj.f8()==11, "Issue #10 (non-shared method)");
+    assert(obj.f7()==12, "Issue #10 (shared method)");
+    assert(obj.f10()==14, "Issue #10 (shared method)");
+    assert(obj.f9()==14, "Issue #10 (shared method)");
 }
 
 shared void test() {
     value c = Counter(0);
-    print(c.count);
+    assert(c.count==0,"counter 1");
     c.inc(); c.inc();
-    print(c.count);
-    print(c);
+    assert(c.count==2, "counter 2");
+    assert(c.string=="Counter[2]", "counter.string");
     
     testIssue10();
+    results();
 }

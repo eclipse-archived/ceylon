@@ -4,103 +4,124 @@
 //the Ceylon language module
 function print(line) { console.log(line.getString().value) }
 
-CeylonObject=function CeylonObject() {}
+function initType(type, typeName) {
+    type.T$name = typeName;
+    type.T$all = {}
+    type.T$all[typeName] = type;
+    for (var i=2; i<arguments.length; ++i) {
+        var superType = arguments[i];
+        for ($ in superType.T$all) {type.T$all[$] = superType.T$all[$]}
+    }
+}
+function inheritProto(type, superType, suffix) {
+    for(var $ in superType.prototype){
+        var $m=superType.prototype[$];
+        type.prototype[$]=$m;
+        if(suffix!==undefined && $.charAt($.length-1)!=='$'){type.prototype[$+suffix]=$m}
+    }
+}
 
-CeylonObject.prototype.getString=function() { String$(Object.prototype.toString.apply(this)) };
-CeylonObject.prototype.toString=function() { return this.getString().value };
-
-//TODO: we need to distinguish between Objects and IdentifiableObjects
-CeylonObject.prototype.equals = function(other) { return Boolean$(this===other) }
+// TODO: Equality will probably be removed
+function $Equality() {}
+initType($Equality, 'ceylon.language.Equality');
+function Equality(wat) {
+    return wat;
+}
 
 function $Void() {}
+initType($Void, 'ceylon.language.Void');
 function Void(wat) {
-    wat.constructor.T$all['ceylon.language.Void']=$Void;
     return wat;
 }
+function $Object() {}
+initType($Object, 'ceylon.language.Object', $Void);
 function Object$(wat) {
-    Void(wat);
-    wat.constructor.T$all['ceylon.language.Object']=CeylonObject;
     return wat;
 }
+$Object.prototype.getString=function() { String$(Object.prototype.toString.apply(this)) };
+$Object.prototype.toString=function() { return this.getString().value };
+$Object.prototype.equals = function(other) { return Boolean$(this===other) } //TODO: is this correct?
 function $IdentifiableObject() {}
-$IdentifiableObject.T$all={'ceylon.language.IdentifiableObject':$IdentifiableObject}
-$IdentifiableObject.T$all['ceylon.language.Object']=CeylonObject;
+initType($IdentifiableObject, 'ceylon.language.IdentifiableObject', $Object, $Equality);
+inheritProto($IdentifiableObject, $Object, '$Object$');
 function IdentifiableObject(obj) {
     return obj;
 }
 
 function $Cloneable() {}
+initType($Cloneable, 'ceylon.language.Cloneable');
 function Cloneable(wat) {
-    wat.constructor.T$all['ceylon.language.Cloneable']=$Cloneable;
-    return wat;
-}
-function $Equality() {}
-function Equality(wat) {
-    wat.constructor.T$all['ceylon.language.Equality']=$Equality;
     return wat;
 }
 function $Castable() {}
+initType($Castable, 'ceylon.language.Castable');
 function Castable(wat) {
-    wat.constructor.T$all['ceylon.language.Castable']=$Castable;
     return wat;
 }
 function $Sized() {}
+initType($Sized, 'ceylon.language.Sized');
 function Sized(wat) {
-    wat.constructor.T$all['ceylon.language.Sized']=$Sized;
-    return wat;
-}
-function $Ordered() {}
-function Ordered(wat) {
-    wat.constructor.T$all['ceylon.language.Ordered']=$Ordered;
-    return wat;
-}
-function $Category() {}
-function Category(wat) {
-    wat.constructor.T$all['ceylon.language.Category']=$Category;
     return wat;
 }
 function $Iterable() {}
+initType($Iterable, 'ceylon.language.Iterable');
 function Iterable(wat) {
-    wat.constructor.T$all['ceylon.language.Iterable']=$Iterable;
+    return wat;
+}
+function $Ordered() {}
+initType($Ordered, 'ceylon.language.Ordered', $Iterable);
+function Ordered(wat) {
+    return wat;
+}
+function $Category() {}
+initType($Category, 'ceylon.language.Category');
+function Category(wat) {
     return wat;
 }
 function $Iterator() {}
+initType($Iterator, 'ceylon.language.Iterator');
 function Iterator(wat) {
-    wat.constructor.T$all['ceylon.language.Iterator']=$Iterator;
     return wat;
 }
 
 function $Exception() {}
-function Exception(wat) {
-    wat.constructor.T$all['ceylon.language.Exception']=$Exception;
+initType($Exception, 'ceylon.language.Exception', $IdentifiableObject);
+inheritProto($Exception, $IdentifiableObject, '$IdentifiableObject$');
+function Exception(description, cause, wat) {
+    if (wat===undefined) {wat=new $Exception}
+    wat.description = description;
+    wat.cause = cause;
     return wat;
+}
+$Exception.prototype.getCause = function() {return this.cause}
+$Exception.prototype.getMessage = function() {
+    return this.description!==null ? this.description
+           : (this.cause!==null ? this.cause.getMessage() : String$("", 0));
+}
+$Exception.prototype.getString = function() {
+    return String$('Exception "' + this.getMessage().value + '"');
 }
 
 function $Comparable() {}
+initType($Comparable, 'ceylon.language.Comparable', $Equality);
 function Comparable(wat) {
-    wat.constructor.T$all['ceylon.language.Comparable']=$Comparable;
     return wat;
 }
 
 function $Summable() {}
+initType($Summable, 'ceylon.language.Summable');
 function Summable(wat) {
-    wat.constructor.T$all['ceylon.language.Summable']=$Summable;
     return wat;
 }
 
 function $Integer() {}
-$Integer.T$all={'ceylon.language.Integer':$Integer}
+initType($Integer, 'ceylon.language.Integer', $Object, $Castable, $Equality);
+inheritProto($Integer, $Object, '$Object$');
 function Integer(value) {
     var that = new $Integer;
-    Object$(that);
-    Summable(that);
-    Comparable(that);
-    Equality(that);
-    Castable(that);
     that.value = value;
     return that;
 }
-for(var $ in CeylonObject.prototype){$Integer.prototype[$]=CeylonObject.prototype[$]}
 $Integer.prototype.getString = function() { return String$(this.value.toString()) }
 $Integer.prototype.plus = function(other) { return Integer(this.value+other.value) }
 $Integer.prototype.minus = function(other) { return Integer(this.value-other.value) }
@@ -137,14 +158,13 @@ function $parseInteger(s) { return Integer(parseInt(s.value)); }
 function $parseFloat(s) { return Float(parseFloat(s.value)); }
 
 function $Float() {}
-$Float.T$all={'ceylon.language.Float':$Float}
-for($ in $IdentifiableObject.T$all){$Float.T$all[$]=$IdentifiableObject.T$all[$]}
+initType($Float, 'ceylon.language.Float', $Object, $Castable);
+inheritProto($Float, $Object, '$Object$');
 function Float(value) {
     var that = new $Float;
     that.value = value;
     return that;
 }
-for(var $ in CeylonObject.prototype){$Float.prototype[$]=CeylonObject.prototype[$]}
 $Float.prototype.getString = function() { return String$(this.value.toString()) }
 $Float.prototype.plus = function(other) { return Float(this.value+other.value) }
 $Float.prototype.minus = function(other) { return Float(this.value-other.value) }
@@ -181,20 +201,15 @@ function getInfinity() { return Float(Infinity); }
 //function getNegativeInfinity() { return Float(-Infinity); }
 
 function $String() {}
-$String.T$all={'ceylon.language.String':$String}
+initType($String, 'ceylon.language.String', $Object, $Ordered, $Comparable, $Sized,
+    $Category, $Summable, $Castable);
+inheritProto($String, $Object, '$Object$');
 function String$(value,size) {
     var that = new $String;
-    Object$(that);
-    Equality(that);
-    Void(that);
-    Ordered(that);
-    Category(that);
-    Sized(that);
     that.value = value;
     that.codePoints = size;
     return that;
 }
-for(var $ in CeylonObject.prototype){$String.prototype[$]=CeylonObject.prototype[$]}
 $String.prototype.getString = function() { return this }
 $String.prototype.toString = function() { return this.value }
 $String.prototype.plus = function(other) {
@@ -219,7 +234,7 @@ $String.prototype.span = function(from, to) {
 	var lastIndex = this.getLastIndex();
 	if (!lastIndex) return this; //it's empty
     var fromIndex = largest(Integer(0),from).value;
-    var toIndex = to === getNull() ? lastIndex.value : smallest(to, lastIndex).value;
+    var toIndex = to === getNull() || to === undefined ? lastIndex.value : smallest(to, lastIndex).value;
     if (fromIndex === toIndex) {
 		return this.item(from).getString();
     } else if (toIndex > fromIndex) {
@@ -409,15 +424,14 @@ $String.prototype.repeat = function(times) {
 }
 
 function $StringIterator() {}
-$StringIterator.T$all={'ceylon.language.StringIterator':$StringIterator}
-for($ in $IdentifiableObject.T$all){$StringIterator.T$all[$]=$IdentifiableObject.T$all[$]}
+initType($StringIterator, 'ceylon.language.StringIterator', $IdentifiableObject, $Iterator);
+inheritProto($StringIterator, $IdentifiableObject, '$IdentifiableObject$');
 function StringIterator(string) {
     var that = new $StringIterator;
     that.string = string;
     that.index = 0;
     return that;
 }
-for(var $ in CeylonObject.prototype){$StringIterator.prototype[$]=CeylonObject.prototype[$]}
 $StringIterator.prototype.next = function() {
     if (this.index >= this.string.length) { return $finished }
     var first = this.string.charCodeAt(this.index++);
@@ -449,16 +463,13 @@ function codepointFromString(str, index) {
 }
 
 function $Character() {}
-$Character.T$all={'ceylon.language.Character':$Character}
+initType($Character, 'ceylon.language.Character', $Object, $Comparable);
+inheritProto($Character, $Object, '$Object$');
 function Character(value) {
     var that = new $Character;
-    Object$(that);
-    Equality(that);
-    Void(that);
     that.value = value;
     return that;
 }
-for(var $ in CeylonObject.prototype){$Character.prototype[$]=CeylonObject.prototype[$]}
 $Character.prototype.getString = function() { return String$(codepointToString(this.value)) }
 $Character.prototype.equals = function(other) { return Boolean$(other && other.value===this.value) }
 $Character.prototype.compare = function(other) {
@@ -503,14 +514,13 @@ $Character.prototype.contains = function(x) {
 }
 
 function $StringBuilder() {}
-$StringBuilder.T$all={'ceylon.language.StringBuilder':$StringBuilder}
-for($ in $IdentifiableObject.T$all){$StringBuilder.T$all[$]=$IdentifiableObject.T$all[$]}
+initType($StringBuilder, 'ceylon.language.StringBuilder', $IdentifiableObject);
+inheritProto($StringBuilder, $IdentifiableObject, '$IdentifiableObject$');
 function StringBuilder() {
     var that = new $StringBuilder;
     that.value = "";
     return that;
 }
-for(var $ in CeylonObject.prototype){$StringBuilder.prototype[$]=CeylonObject.prototype[$]}
 $StringBuilder.prototype.getString = function() { return String$(this.value); }
 $StringBuilder.prototype.append = function(s) {
     this.value = this.value + s.value;
@@ -531,12 +541,8 @@ $StringBuilder.prototype.appendSpace = function() { this.value = this.value + " 
 
 function getNull() { return null }
 function $Boolean() {}
-$Boolean.T$all={'ceylon.language.Boolean':$Boolean}
-$Boolean.T$all['ceylon.language.Equality']=$Equality;
-$Boolean.T$all['ceylon.language.Void']=$Void;
-//$Boolean.T$all['ceylon.language.Castable']=$Castable;
-for($ in $IdentifiableObject.T$all){$Boolean.T$all[$]=$IdentifiableObject.T$all[$]}
-for(var $ in CeylonObject.prototype){$Boolean.prototype[$]=CeylonObject.prototype[$]}
+initType($Boolean, 'ceylon.language.Boolean', $IdentifiableObject);
+inheritProto($Boolean, $IdentifiableObject, '$IdentifiableObject$');
 var $true = new $Boolean;
 $true.string = String$("true");
 $true.getString = function() {return this.string}
@@ -549,24 +555,23 @@ function Boolean$(value) {
     return value ? $true : $false;
 }
 function $Finished() {}
-$Finished.T$all={'ceylon.language.Finished':$Finished}
-for($ in $IdentifiableObject.T$all){$Finished.T$all[$]=$IdentifiableObject.T$all[$]}
-for(var $ in CeylonObject.prototype){$Finished.prototype[$]=CeylonObject.prototype[$]}
+initType($Finished, 'ceylon.language.Finished', $IdentifiableObject);
+inheritProto($Finished, $IdentifiableObject, '$IdentifiableObject$');
 var $finished = new $Finished;
 $finished.string = String$("exhausted");
 $finished.getString = function() {return this.string}
 function getExhausted() { return $finished; }
 
 //These are operators for handling nulls
-function exists(value) { return value === getNull() || value === undefined ? $false : $true; }
-function nonempty(value) { return value === null || value === undefined ? $false : Boolean$(value.getEmpty() === $false); }
-//function nonempty(value) { return Boolean$(value && value.value && value.value.length > 0); }
+function $nullsafe() { return null; }
+function exists(value) { return value === getNull() || value === undefined || value === $nullsafe ? $false : $true; }
+function nonempty(value) { return value === null || value === undefined || value === $nullsafe ? $false : Boolean$(value.getEmpty() === $false); }
 
 function isOfType(obj, typeName) {
-    return Boolean$((obj!==null) ? (typeName in obj.constructor.T$all) : (typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void"));
+    return Boolean$((obj!==null && obj!==$nullsafe) ? (typeName in obj.constructor.T$all) : (typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void"));
 }
 function isOfAnyType(obj, typeNames) {
-    if (obj===null) {
+    if (obj===null || obj===$nullsafe) {
         return Boolean$(typeNames.indexOf('ceylon.language.Nothing')>=0 || typeNames.indexOf('ceylon.language.Void')>=0);
     }
     for (var i = 0; i < typeNames.length; i++) {
@@ -575,7 +580,7 @@ function isOfAnyType(obj, typeNames) {
     return $false;
 }
 function isOfAllTypes(obj, typeNames) {
-    if (obj===null) { //TODO check if this is right
+    if (obj===null || obj===$nullsafe) { //TODO check if this is right
         return Boolean$(typeNames.indexOf('ceylon.language.Nothing')>=0 || typeNames.indexOf('ceylon.language.Void')>=0);
     }
     for (var i = 0; i < typeNames.length; i++) {
@@ -585,23 +590,17 @@ function isOfAllTypes(obj, typeNames) {
 }
 
 function className(obj) {
-    if (obj!==null) {
-        for ($ in obj.constructor.T$all) {
-            if (obj.constructor.T$all[$] === obj.constructor) return String$($);
-        }
-    }
-    return String$('ceylon.language.Nothing');
+    return String$(obj!==null && obj!==$nullsafe ? obj.constructor.T$name : 'ceylon.language.Nothing');
 }
 
 function $Comparison() {}
-$Comparison.T$all={'ceylon.language.Comparison':$Comparison}
-for($ in $IdentifiableObject.T$all){$Comparison.T$all[$]=$IdentifiableObject.T$all[$]}
+initType($Comparison, 'ceylon.language.Comparison', $IdentifiableObject);
+inheritProto($Comparison, $IdentifiableObject, '$IdentifiableObject$');
 function Comparison(name) {
     var that = new $Comparison;
     that.name = String$(name);
     return that;
 }
-for(var $ in CeylonObject.prototype){$Comparison.prototype[$]=CeylonObject.prototype[$]}
 $Comparison.prototype.getString = function() { return this.name }
 
 var larger = Comparison("larger");
@@ -614,6 +613,7 @@ function largest(x, y) { return x.compare(y) === larger ? x : y }
 function smallest(x, y) { return x.compare(y) === smaller ? x : y }
 
 function $Sequence() {}
+initType($Sequence, 'ceylon.language.Sequence', $Ordered, $Sized, $Cloneable);
 function Sequence($$sequence) {
     return $$sequence;
 }
@@ -622,8 +622,7 @@ $Sequence.prototype.getSize = function() { return Integer(this.getLastIndex()+1)
 $Sequence.prototype.defines = function(index) { return Boolean$(index.value<=this.getLastIndex().value) }
 
 function $Empty() {}
-$Empty.T$all={'ceylon.language.Empty':$Empty}
-for($ in $IdentifiableObject.T$all){$Empty.T$all[$]=$IdentifiableObject.T$all[$]}
+initType($Empty, 'ceylon.language.Empty', $Sized, $Ordered);
 function Empty() {
     var that = new $Empty;
     that.value = [];
@@ -647,20 +646,23 @@ $Empty.prototype.contains = function(x) { return $false; }
 $empty = Empty();
 
 function $EmptyIterator(){}
+initType($EmptyIterator, 'ceylon.language.EmptyIterator', $IdentifiableObject, $Iterator);
+inheritProto($EmptyIterator, $IdentifiableObject, '$IdentifiableObject$');
 function EmptyIterator() {
+    var that = new $EmptyIterator;
+    return that;
 }
-$EmptyIterator.next = function() { return $finished; }
+$EmptyIterator.prototype.next = function() { return $finished; }
 
 function $ArraySequence() {}
-$ArraySequence.T$all={'ceylon.language.ArraySequence':$ArraySequence}
-for($ in $IdentifiableObject.T$all){$ArraySequence.T$all[$]=$IdentifiableObject.T$all[$]}
+initType($ArraySequence, 'ceylon.language.ArraySequence', $IdentifiableObject, $Sequence);
+inheritProto($ArraySequence, $IdentifiableObject, '$IdentifiableObject$');
+inheritProto($ArraySequence, $Sequence, '$Sequence$');
 function ArraySequence(value) {
     var that = new $ArraySequence;
     that.value = value;
     return that;
 }
-for(var $ in CeylonObject.prototype){$ArraySequence.prototype[$]=CeylonObject.prototype[$]}
-for(var $ in $Sequence.prototype){$ArraySequence.prototype[$]=$Sequence.prototype[$]}
 $ArraySequence.prototype.getString = function() {
 	if (this.value.length === 0) {
 		return String$("{}");
@@ -701,7 +703,7 @@ $ArraySequence.prototype.segment = function(from, len) {
 }
 $ArraySequence.prototype.span = function(from, to) {
     var fromIndex = largest(Integer(0),from).value;
-    var toIndex = to === getNull() ? this.getLastIndex().value : smallest(to, this.getLastIndex()).value;
+    var toIndex = to === getNull() || to === undefined ? this.getLastIndex().value : smallest(to, this.getLastIndex()).value;
     var seq = [];
     if (fromIndex === toIndex) {
         return Singleton(this.item(from));
@@ -749,7 +751,7 @@ $ArraySequence.prototype.equals = function(other) {
         for (var i = 0; i < this.getSize().value; i++) {
             var mine = this.item(Integer(i));
             var theirs = other.item(Integer(i));
-            if ((mine === null && theirs) || !(mine && mine.equals(theirs) === getTrue())) {
+            if (((mine === null || mine === $nullsafe) && theirs) || !(mine && mine.equals(theirs) === getTrue())) {
                 return getFalse();
             }
         }
@@ -761,14 +763,13 @@ $ArraySequence.prototype.getIterator = function() { return ArrayIterator(this.va
 $ArraySequence.prototype.getKeys = function() { return IntCategory(this); }
 
 function $IntCategory() {}
-$IntCategory.T$all={'ceylon.language.IntCategory':$IntCategory}
-for($ in $IdentifiableObject.T$all){$IntCategory.T$all[$]=$IdentifiableObject.T$all[$]}
+initType($IntCategory, 'ceylon.language.IntCategory', $IdentifiableObject, $Category);
+inheritProto($IntCategory, $IdentifiableObject, '$IdentifiableObject$');
 function IntCategory(seq) {
     var that = new $IntCategory;
     that.seq = seq;
     return that;
 }
-for(var $ in CeylonObject.prototype){$IntCategory.prototype[$]=CeylonObject.prototype[$]}
 $IntCategory.prototype.contains = function(k) {
     return this.seq.defines(k);
 }
@@ -789,8 +790,8 @@ $IntCategory.prototype.containsAny = function(keys) {
 }
 
 function $ArrayIterator() {}
-$ArrayIterator.T$all={'ceylon.language.ArrayIterator':$ArrayIterator}
-for($ in $IdentifiableObject.T$all){$ArrayIterator.T$all[$]=$IdentifiableObject.T$all[$]}
+initType($ArrayIterator, 'ceylon.language.ArrayIterator', $IdentifiableObject, $Iterator);
+inheritProto($ArrayIterator, $IdentifiableObject, '$IdentifiableObject$');
 function ArrayIterator(arr) {
     var that = new $ArrayIterator;
     that.array = arr;
@@ -798,7 +799,6 @@ function ArrayIterator(arr) {
     that.idx = 0;
     return that;
 }
-for(var $ in CeylonObject.prototype){$ArrayIterator.prototype[$]=CeylonObject.prototype[$]}
 $ArrayIterator.prototype.next = function() {
     if (this.current === $finished) {
         return $finished;
@@ -809,14 +809,13 @@ $ArrayIterator.prototype.next = function() {
 }
 
 function $SequenceBuilder() {}
-$SequenceBuilder.T$all={'ceylon.language.SequenceBuilder':$SequenceBuilder}
-for($ in $IdentifiableObject.T$all){$SequenceBuilder.T$all[$]=$IdentifiableObject.T$all[$]}
+initType($SequenceBuilder, 'ceylon.language.SequenceBuilder', $IdentifiableObject, $Sized);
+inheritProto($SequenceBuilder, $IdentifiableObject, '$IdentifiableObject$');
 function SequenceBuilder() {
     var that = new $SequenceBuilder;
     that.seq = [];
     return that;
 }
-for(var $ in CeylonObject.prototype){$SequenceBuilder.prototype[$]=CeylonObject.prototype[$]}
 $SequenceBuilder.prototype.getSequence = function() { return ArraySequence(this.seq); }
 $SequenceBuilder.prototype.append = function(e) { this.seq.push(e); }
 $SequenceBuilder.prototype.appendAll = function(arr) {
@@ -830,20 +829,19 @@ $SequenceBuilder.prototype.getSize = function() { return Integer(this.seq.length
 $SequenceBuilder.prototype.getEmpty = function() { return Boolean$(this.seq.length === 0); }
 
 function $SequenceAppender() {}
-$SequenceAppender.T$all={'ceylon.language.SequenceAppender':$SequenceAppender}
-for($ in $SequenceBuilder.T$all){$SequenceAppender.T$all[$]=$SequenceBuilder.T$all[$]}
+initType($SequenceAppender, 'ceylon.language.SequenceAppender', $SequenceBuilder);
+inheritProto($SequenceAppender, $SequenceBuilder, '$SequenceBuilder$');
 function SequenceAppender(other) {
 	var that = new $SequenceAppender;
 	that.seq = [];
 	that.appendAll(other);
 	return that;
 }
-for(var $ in CeylonObject.prototype){$SequenceAppender.prototype[$]=CeylonObject.prototype[$]}
-for(var $ in $SequenceBuilder.prototype){$SequenceAppender.prototype[$]=$SequenceBuilder.prototype[$]}
 
 function $Range() {}
-$Range.T$all={'ceylon.language.Range':$Range}
-for($ in $IdentifiableObject.T$all){$Range.T$all[$]=$IdentifiableObject.T$all[$]}
+initType($Range, 'ceylon.language.Range', $Object, $Sequence, $Category, $Equality);
+inheritProto($Range, $Object, '$Object$');
+inheritProto($Range, $Sequence, '$Sequence$');
 function Range(first, last) {
     var that = new $Range;
     that.first = first;
@@ -858,7 +856,6 @@ function Range(first, last) {
     that.size = Integer(index+1);
     return that;
 }
-for(var $ in CeylonObject.prototype){$Range.prototype[$]=CeylonObject.prototype[$]}
 $Range.prototype.getFirst = function() { return this.first; }
 $Range.prototype.getLast = function() { return this.last; }
 $Range.prototype.getEmpty = function() { return getFalse(); }
@@ -921,7 +918,7 @@ $Range.prototype.segment = function(from, len) {
 }
 $Range.prototype.span = function(from, to) {
     from = largest(Integer(0),from);
-    if (to === getNull()) {
+    if (to === getNull() || to === undefined) {
         to = this.getLastIndex();
     }
     if (this.defines(from) === $false) {
@@ -967,15 +964,14 @@ $Range.prototype.equals = function(other) {
 $Range.prototype.getIterator = function() { return RangeIterator(this); }
 
 function $RangeIterator() {}
-$RangeIterator.T$all={'ceylon.language.RangeIterator':$String}
-for($ in $IdentifiableObject.T$all){$RangeIterator.T$all[$]=$IdentifiableObject.T$all[$]}
+initType($RangeIterator, 'ceylon.language.RangeIterator', $IdentifiableObject, $Iterator);
+inheritProto($RangeIterator, $IdentifiableObject, '$IdentifiableObject$');
 function RangeIterator(range) {
     var that = new $RangeIterator;
     that.range = range;
     that.current = range.getFirst();
     return that;
 }
-for(var $ in CeylonObject.prototype){$RangeIterator.prototype[$]=CeylonObject.prototype[$]}
 $RangeIterator.prototype.next = function() {
     var rval = this.current;
     if (rval.equals($finished) === getTrue()) {
@@ -989,15 +985,15 @@ $RangeIterator.prototype.next = function() {
 }
 
 function $Singleton() {}
-$Singleton.T$all={'ceylon.language.Singleton':$Singleton}
-for($ in $IdentifiableObject.T$all){$Singleton.T$all[$]=$IdentifiableObject.T$all[$]}
+initType($Singleton, 'ceylon.language.Singleton', $Object, $Sequence);
+inheritProto($Singleton, $Object, '$Object$');
+inheritProto($Singleton, $Sequence, '$Sequence$');
 function Singleton(elem) {
     var that = new $Singleton;
     that.value = [elem];
     that.elem = elem;
     return that;
 }
-for(var $ in CeylonObject.prototype){$Singleton.prototype[$]=CeylonObject.prototype[$]}
 $Singleton.prototype.getString = function() { return String$("{ " + this.elem.getString().value + " }") }
 $Singleton.prototype.item = function(index) {
     return index.value===0 ? this.value[0] : null;
@@ -1023,15 +1019,14 @@ $Singleton.prototype.segment = function(idx, len) {
 $Singleton.prototype.getIterator = function() { return SingletonIterator(this.elem); }
 
 function $SingletonIterator() {}
-$SingletonIterator.T$all={'ceylon.language.SingletonIterator':$SingletonIterator}
-for($ in $IdentifiableObject.T$all){$SingletonIterator.T$all[$]=$IdentifiableObject.T$all[$]}
+initType($SingletonIterator, 'ceylon.language.SingletonIterator', $IdentifiableObject, $Iterator);
+inheritProto($SingletonIterator, $IdentifiableObject, '$IdentifiableObject$');
 function SingletonIterator(elem) {
     var that = new $SingletonIterator;
     that.elem = elem;
     that.done = false;
     return that;
 }
-for(var $ in CeylonObject.prototype){$SingletonIterator.prototype[$]=CeylonObject.prototype[$]}
 $SingletonIterator.prototype.next = function() {
     if (this.done) {
         return $finished;
@@ -1041,7 +1036,8 @@ $SingletonIterator.prototype.next = function() {
 }
 
 function $Entry() {}
-$Entry.T$all={'ceylon.language.Entry':$Entry}
+initType($Entry, 'ceylon.language.Entry', $Object, $Equality);
+inheritProto($Entry, $Object, '$Object$');
 function Entry(key, item) {
     var that = new $Entry;
     Object$(that);
@@ -1051,7 +1047,6 @@ function Entry(key, item) {
     that.item = item;
     return that;
 }
-for(var $ in CeylonObject.prototype){$Entry.prototype[$]=CeylonObject.prototype[$]}
 $Entry.prototype.getString = function() {
     return String$(this.key.getString().value + "->" + this.item.getString().value)
 }
@@ -1134,6 +1129,8 @@ function entries(seq) {
     return ArraySequence(e);
 }
 
+exports.initType=initType;
+exports.inheritProto=inheritProto;
 exports.$Cloneable=$Cloneable; //TODO just to let the compiler finish
 exports.Cloneable=Cloneable; //TODO just to let the compiler finish
 exports.$Equality=$Equality; //TODO just to let the compiler finish
@@ -1147,7 +1144,7 @@ exports.$Exception=$Exception; //TODO just to let the compiler finish
 exports.Exception=Exception; //TODO just to let the compiler finish
 exports.$Comparable=$Comparable; //TODO just to let the compiler finish
 exports.Comparable=Comparable; //TODO just to let the compiler finish
-exports.$Object=CeylonObject; //TODO just to let the compiler finish
+exports.$Object=$Object; //TODO just to let the compiler finish
 exports.IdentifiableObject=IdentifiableObject;
 exports.$IdentifiableObject=$IdentifiableObject;
 exports.Object=Object$; //TODO just to let the compiler finish
@@ -1192,7 +1189,7 @@ exports.isOfAllTypes=isOfAllTypes;
 exports.parseInteger=$parseInteger;
 exports.parseFloat=$parseFloat;
 exports.empty=$empty;
-exports.nullsafe=function(){};
+exports.nullsafe=$nullsafe;
 exports.getInfinity=getInfinity;
 //exports.getNegativeInfinity=getNegativeInfinity;
 exports.className=className;

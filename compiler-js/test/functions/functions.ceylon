@@ -1,11 +1,23 @@
-void expect(Equality actual, Equality expected, String text) {
-    if (actual == expected) {
-        print("[ok] " + text + ": '" + actual.string + "'");
-    } else {
-        print("[NOT OK] " + text + ": actual='" + actual.string + "', expected='"
-              + expected.string + "'");
+variable Integer assertionCount:=0;
+variable Integer failureCount:=0;
+
+shared void assert(Boolean assertion, String message="") {
+    assertionCount+=1;
+    if (!assertion) {
+        failureCount+=1;
+        print("assertion failed \"" message "\"");
     }
 }
+
+shared void fail(String message) {
+    assert(false, message);
+}
+
+shared void results() {
+    print("assertions " assertionCount 
+          ", failures " failureCount "");
+}
+
 
 shared void helloWorld() {
     print("hello world");
@@ -51,16 +63,17 @@ void testMethodReference() {
     Boolean tst(Boolean x(Integer i)) {
         return x(0);
     }
-    expect(tst(obj1.f), true, "Reference to method");
-    expect(tst(obj2.defines), true, "Reference to method from ceylon.language");
+    assert(tst(obj1.f), "Reference to method");
+    assert(tst(obj2.defines), "Reference to method from ceylon.language");
 }
 
 shared void test() {
     helloWorld();
     hello("test");
     helloAll("Gavin", "Enrique", "Ivo");
-    toString(5);
-    add(1.5, 2.5);
+    assert(toString(5)=="5", "toString(obj)");
+    assert(add(1.5, 2.5)==4.0,"add(Float,Float)");
     //repeat(5, void p(Integer x) { print(x); });
     testMethodReference();
+    results();
 }

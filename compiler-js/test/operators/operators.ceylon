@@ -204,6 +204,10 @@ void testNullsafeOperators() {
     NullsafeTest? obj = null;
     Integer? i = obj?.f();
     assert(!exists i, "nullsafe invoke");
+    Callable<Integer>? f2 = obj?.f;
+    assert(!exists f2, "nullsafe method ref");
+    obj?.f();
+    assert(!exists obj?.f(), "nullsafe simple call");
 }
 
 void testIncDecOperators() {

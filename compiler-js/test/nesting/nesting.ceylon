@@ -1,3 +1,23 @@
+variable Integer assertionCount:=0;
+variable Integer failureCount:=0;
+
+shared void assert(Boolean assertion, String message="") {
+    assertionCount+=1;
+    if (!assertion) {
+        failureCount+=1;
+        print("assertion failed \"" message "\"");
+    }
+}
+
+shared void fail(String message) {
+    assert(false, message);
+}
+
+shared void results() {
+    print("assertions " assertionCount 
+          ", failures " failureCount "");
+}
+
 shared class Outer(String name) {
     value int = 10;
     shared Float float = int.float;
@@ -104,17 +124,18 @@ class A() {
     
 shared void test() {
     outr("Hello");
-    print(Holder("ok").get());
-    print(Holder("ok"));
-    print(Wrapper().get());
-    print(Wrapper());
-    print(Unwrapper().get());
-    print(Unwrapper().o);
-    print(Unwrapper());
+    assert(Holder("ok").get().string=="ok","holder(ok)");
+    assert(Holder("ok").string=="ok","holder.string");
+    assert(Wrapper().get().string=="100","wrapper 1");
+    assert(Wrapper().string=="100","wrapper 2");
+    assert(Unwrapper().get().string=="23.56","unwrapper 1");
+    assert(Unwrapper().o.string=="23.56","unwrapper 2");
+    assert(Unwrapper().string=="23.56","unwrapper 3");
     print(producer()());
     print(returner("something")());
-    print(A().B().C().foobar());
-    print(A().B().C().quxx());
-    print(A().baz());
+    assert(A().B().C().foobar()=="foo", "foobar");
+    assert(A().B().C().quxx()=="qux", "quxx");
+    assert(A().baz()=="foo", "baz");
     Outer("Hello");
+    results();
 }
