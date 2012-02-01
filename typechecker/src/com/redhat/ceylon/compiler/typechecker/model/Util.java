@@ -96,23 +96,28 @@ public class Util {
         }
         if (d instanceof Functional) {
             Functional f = (Functional) d;
-            List<ParameterList> pls = f.getParameterLists();
-            if (pls!=null && !pls.isEmpty()) {
-                List<Parameter> params = pls.get(0).getParameters();
-                if (signature.size()!=params.size()) {
-                    return false;
-                }
-                else {
-                    for (int i=0; i<params.size(); i++) {
-                        TypeDeclaration paramType = params.get(i).getTypeDeclaration();
-                        TypeDeclaration sigType = signature.get(i).getDeclaration();
-                        if (sigType==null || paramType==null) return false;
-                        if (sigType instanceof UnknownType || paramType instanceof UnknownType) return false;
-                        if (!erase(sigType).inherits(erase(paramType))) {
-                            return false;
-                        }
+            if (f.isAbstraction()) {
+                return false;
+            }
+            else {
+                List<ParameterList> pls = f.getParameterLists();
+                if (pls!=null && !pls.isEmpty()) {
+                    List<Parameter> params = pls.get(0).getParameters();
+                    if (signature.size()!=params.size()) {
+                        return false;
                     }
-                    return true;
+                    else {
+                        for (int i=0; i<params.size(); i++) {
+                            TypeDeclaration paramType = params.get(i).getTypeDeclaration();
+                            TypeDeclaration sigType = signature.get(i).getDeclaration();
+                            if (sigType==null || paramType==null) return false;
+                            if (sigType instanceof UnknownType || paramType instanceof UnknownType) return false;
+                            if (!erase(sigType).inherits(erase(paramType))) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
                 }
             }
         }
