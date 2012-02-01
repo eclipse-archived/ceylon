@@ -227,6 +227,7 @@ public class Util {
 	}
 
     public static String getSimpleName(String name) {
+        name = name.replace('$', '.');
         return name.substring(name.lastIndexOf('.') + 1);
     }
 
