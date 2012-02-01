@@ -43,6 +43,11 @@ public interface ClassMirror extends AnnotatedMirror {
     boolean isAbstract();
 
     /**
+     * Returns true if this class is an inner class
+     */
+    boolean isInnerClass();
+
+    /**
      * Returns the non-qualified class name
      */
     String getSimpleName();
@@ -73,7 +78,13 @@ public interface ClassMirror extends AnnotatedMirror {
      * Returns the list of type parameters for this class
      */
     List<TypeParameterMirror> getTypeParameters();
-    
+
+    /**
+     * Returns the list of inner classes directly contained in this class. Does not include inherited
+     * inner classes. 
+     */
+    List<ClassMirror> getDirectInnerClasses();
+
     /**
      * Returns this class's superclass, or null if it doesn't have any
      */

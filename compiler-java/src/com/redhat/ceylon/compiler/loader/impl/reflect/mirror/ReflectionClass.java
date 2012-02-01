@@ -26,6 +26,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
@@ -46,6 +47,7 @@ public class ReflectionClass implements ClassMirror {
     private ReflectionPackage pkg;
     private boolean superClassSet;
     private ReflectionType superClass;
+    private LinkedList<ClassMirror> innerClasses;
 
     public ReflectionClass(Class<?> klass) {
         this.klass = klass;
@@ -171,5 +173,21 @@ public class ReflectionClass implements ClassMirror {
     @Override
     public String toString() {
         return "[ReflectionClass: "+klass.toString()+"]";
+    }
+
+    @Override
+    public boolean isInnerClass() {
+        return klass.isMemberClass();
+    }
+
+    @Override
+    public List<ClassMirror> getDirectInnerClasses() {
+        if(innerClasses == null){
+            innerClasses = new LinkedList<ClassMirror>();
+            for(Class<?> innerClass : klass.getDeclaredClasses()){
+                innerClasses.add(new ReflectionClass(innerClass));
+            }
+        }
+        return innerClasses;
     }
 }

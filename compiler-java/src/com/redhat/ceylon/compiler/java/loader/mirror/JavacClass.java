@@ -55,6 +55,8 @@ public class JavacClass implements ClassMirror {
     private List<TypeParameterMirror> typeParams;
 
     private List<FieldMirror> fields;
+
+    private LinkedList<ClassMirror> innerClasses;
     
     public JavacClass(ClassSymbol classSymbol){
         this.classSymbol = classSymbol;
@@ -182,5 +184,22 @@ public class JavacClass implements ClassMirror {
             typeParams = Collections.unmodifiableList(JavacUtil.getTypeParameters(classSymbol));
         }
         return typeParams;
+    }
+
+    @Override
+    public boolean isInnerClass() {
+        return classSymbol.isInner();
+    }
+
+    @Override
+    public List<ClassMirror> getDirectInnerClasses() {
+        if(innerClasses == null){
+            innerClasses = new LinkedList<ClassMirror>();
+            for(Symbol elem : classSymbol.getEnclosedElements()){
+                if(elem instanceof ClassSymbol)
+                    innerClasses.add(new JavacClass((ClassSymbol) elem));
+            }
+        }
+        return innerClasses;
     }
 }
