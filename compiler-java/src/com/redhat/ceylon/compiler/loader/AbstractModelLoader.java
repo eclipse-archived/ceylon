@@ -371,9 +371,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         for(Declaration d : decls){
             d.setShared(classMirror.isPublic());
         
-            // add it to its package
-            pkg.addMember(d);
-            d.setContainer(pkg);
+            // add it to its package if it's not an inner class
+            if(!classMirror.isInnerClass()){
+                pkg.addMember(d);
+                d.setContainer(pkg);
+            }
 
             // add it to its Unit
             d.setUnit(unit);
@@ -844,6 +846,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         setSatisfiedTypes(klass, classMirror);
         setCaseTypes(klass, classMirror);
         fillRefinedDeclarations(klass);
+        addInnerClasses(klass, classMirror);
+    }
+
+    private void addInnerClasses(ClassOrInterface klass, ClassMirror classMirror) {
+        for(ClassMirror innerClass : classMirror.getDirectInnerClasses()){
+            Declaration innerDecl = convertToDeclaration(innerClass, DeclarationType.TYPE);
+            innerDecl.setContainer(klass);
+            // let's not trigger lazy-loading
+            ((LazyContainer)klass).addMember(innerDecl);
+        }
     }
 
     private Method addMethod(ClassOrInterface klass, MethodMirror methodMirror, boolean isCeylon, boolean isOverloaded) {
