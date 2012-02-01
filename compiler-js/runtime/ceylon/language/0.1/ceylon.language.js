@@ -371,8 +371,21 @@ $String.prototype.contains = function(sub) {
     return Boolean$(this.value.indexOf(sub.value) >= 0);
 }
 $String.prototype.getNormalized = function() {
-    //TODO IMPLEMENT!!!
-    return this;
+    // make use of the fact that all WS characters are single UTF-16 code units
+    var result = "";
+    var first = true;
+    var i1 = 0;
+    while (i1 < this.value.length) {
+        while (this.value.charCodeAt(i1) in $WS) {
+            if (++i1 >= this.value.length) {return String$(result)}
+        }
+        var i2 = i1;
+        do {i2++} while (i2<this.value.length && !(this.value.charCodeAt(i2) in $WS));
+        if (!first) {result += " "}
+        first = false;
+        result += this.value.substring(i1, i2);
+    }
+    return String$(result);
 }
 $String.prototype.firstOccurrence = function(sub) {
     //TODO implement!!!
