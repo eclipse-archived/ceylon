@@ -48,15 +48,7 @@ shared class Singleton<Element>(Element element)
     }
     
     shared actual String string {
-        if (is Object first) {
-            return "{ " first.string " }";
-        }
-        /*else if (is Nothing first) {
-            return "{ null }";
-        }*/
-        else {
-            throw;
-        }
+        return "{ " first.string " }";
     }
     
     shared actual Element[] segment(Integer from, Integer length) {
