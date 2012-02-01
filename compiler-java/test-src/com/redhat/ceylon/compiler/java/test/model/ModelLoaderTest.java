@@ -50,22 +50,10 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.sun.source.util.TaskEvent;
-import com.sun.source.util.TaskListener;
 import com.sun.source.util.TaskEvent.Kind;
+import com.sun.source.util.TaskListener;
 import com.sun.tools.javac.api.JavacTaskImpl;
-import com.sun.tools.javac.code.Symbol;
-import com.sun.tools.javac.code.Symbol.ClassSymbol;
-import com.sun.tools.javac.code.Symbol.MethodSymbol;
-import com.sun.tools.javac.code.Symbol.TypeSymbol;
-import com.sun.tools.javac.code.Scope;
-import com.sun.tools.javac.code.Symtab;
-import com.sun.tools.javac.code.Type;
-import com.sun.tools.javac.code.Types;
-import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.Name;
-import com.sun.tools.javac.util.Name.Table;
-import com.sun.tools.javac.zip.ZipFileIndex;
 
 public class ModelLoaderTest extends CompilerTest {
     
