@@ -24,5 +24,7 @@ shared class InnerClassContainer() {
     shared object objectMember {}
     shared object objectMemberWithSatisfies satisfies InnerClassInterface {}
     
+    // this will create an inner class, but we should not see it in the members
+    // because it is marked @Ignore
     shared void m(Integer i = 2){} 
 }
