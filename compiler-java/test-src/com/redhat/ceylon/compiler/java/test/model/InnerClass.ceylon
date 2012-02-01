@@ -17,6 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-class InnerClassContainer() {
-    class InnerClass(){}
+shared interface InnerClassInterface{} 
+
+shared class InnerClassContainer() {
+    shared class InnerClass(){}
+    shared object objectMember {}
+    shared object objectMemberWithSatisfies satisfies InnerClassInterface {}
+    
+    shared void m(Integer i = 2){} 
 }
