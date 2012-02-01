@@ -465,6 +465,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 if(param.getName().equals(name))
                     return param;
             }
+            // FIXME: look in its containing class if it has one
             // not found
             return null;
         }else
