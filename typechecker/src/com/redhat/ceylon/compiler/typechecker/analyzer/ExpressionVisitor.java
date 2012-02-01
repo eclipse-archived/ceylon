@@ -1106,7 +1106,9 @@ public class ExpressionVisitor extends Visitor {
             for (PositionalArgument pa: that.getPositionalArgumentList().getPositionalArguments()) {
                 sig.add(pa.getExpression().getTypeModel());
             }
-            that.getPrimary().setSignature(sig);
+            if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
+                ((Tree.MemberOrTypeExpression) that.getPrimary()).setSignature(sig);
+            }
         }
         if (that.getNamedArgumentList()!=null) {
             that.getNamedArgumentList().visit(this);
