@@ -79,8 +79,63 @@ public class Util {
                     Character.isLowerCase(declaration.getName().charAt(0))); //don't return the type associated with an object dec 
     }
     
+    static boolean isParameter(Declaration d) {
+        return d instanceof Parameter
+                || d instanceof TypeParameter;
+    }
+
+    static boolean notOverloaded(Declaration d) {
+        return !(d instanceof Functional) || 
+                !((Functional) d).isOverloaded() ||
+                ((Functional) d).isAbstraction();
+    }
+    
+    static boolean hasMatchingSignature(List<ProducedType> signature, Declaration d) {
+        if (d instanceof Class && ((Class) d).isAbstract()) {
+            return false;
+        }
+        if (d instanceof Functional) {
+            Functional f = (Functional) d;
+            List<ParameterList> pls = f.getParameterLists();
+            if (pls!=null && !pls.isEmpty()) {
+                List<Parameter> params = pls.get(0).getParameters();
+                if (signature.size()!=params.size()) {
+                    return false;
+                }
+                else {
+                    for (int i=0; i<params.size(); i++) {
+                        TypeDeclaration paramType = params.get(i).getTypeDeclaration();
+                        TypeDeclaration sigType = signature.get(i).getDeclaration();
+                        if (sigType==null || paramType==null) return false;
+                        if (sigType instanceof UnknownType || paramType instanceof UnknownType) return false;
+                        if (!erase(sigType).inherits(erase(paramType))) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            }
+        }
+        return signature==null;
+    }
+    
     static boolean isNamed(String name, Declaration d) {
-        return d.getName()!=null && d.getName().equals(name);
+        String dname = d.getName();
+        return dname!=null && dname.equals(name);
+    }
+    
+    private static TypeDeclaration erase(TypeDeclaration paramType) {
+        if (paramType instanceof TypeParameter) {
+            if ( paramType.getSatisfiedTypes().isEmpty() ) {
+                return paramType.getExtendedTypeDeclaration();
+            }
+            else {
+                return paramType.getSatisfiedTypeDeclarations().get(0);
+            }
+        }
+        else {
+            return paramType;
+        }
     }
     
     static boolean isNameMatching(String startingWith, Declaration d) {
@@ -373,4 +428,62 @@ public class Util {
         return false;
     }
     
+    static Declaration lookupMember(List<Declaration> members, String name,
+            List<ProducedType> signature, boolean includeParameters) {
+        if (name.equals("s")) {
+            name.charAt(0);
+        }
+        List<Declaration> results = new ArrayList<Declaration>();
+        Declaration inexactMatch = null;
+        for (Declaration d: members) {
+            if (isResolvable(d) && isNamed(name, d) &&
+                    (includeParameters || !isParameter(d))) {
+                if (signature==null) {
+                    //no argument types: either a type 
+                    //declaration, an attribute, or a method 
+                    //reference - don't return overloaded
+                    //forms of the declaration (instead
+                    //return the "abstraction" of them)
+                    if (notOverloaded(d)) {
+                        //by returning the first thing we
+                        //find, we implement the rule that
+                        //parameters hide attributes with
+                        //the same name in the body of a
+                        //class (a bit of a hack solution)
+                        return d;
+                    }
+                }
+                else {
+                    if (notOverloaded(d)) {
+                        //we have found either a non-overloaded
+                        //declaration, or the "abstraction" 
+                        //which of all the overloaded forms 
+                        //of the declaration
+                        inexactMatch = d;
+                    }
+                    if (hasMatchingSignature(signature, d)) {
+                        //we have found an exactly matching 
+                        //overloaded declaration
+                        results.add(d);
+                    }
+                }
+            }
+        }
+        switch (results.size()) {
+        case 0:
+            //no exact match, so return the non-overloaded
+            //declaration or the "abstraction" of the 
+            //overloaded declaration
+            return inexactMatch;
+        case 1:
+            //exactly one exact match, so return it
+            return results.get(0);
+        default:
+            //more than one matching overloaded declaration,
+            //so return the "abstraction" of the overloaded
+            //declaration
+            return inexactMatch;
+        }
+    }
+
 }

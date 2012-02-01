@@ -2,8 +2,8 @@ package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.lookupMember;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,32 +101,21 @@ public class Package implements Scope {
     }
 
     @Override
-    public Declaration getDirectMemberOrParameter(String name) {
-        /*for ( Declaration d: getMembers() ) {
-            if ( isResolvable(d) && isNamed(name, d) ) {
-                return d;
-            }
-        }
-        return null;*/
-        return getDirectMember(name);
+    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature) {
+        return getDirectMember(name, signature);
     }
 
     /**
      * Search only inside the package, ignoring imports
      */
     @Override
-    public Declaration getMember(String name) {
-        return getDirectMember(name);
+    public Declaration getMember(String name, List<ProducedType> signature) {
+        return getDirectMember(name, signature);
     }
 
     @Override
-    public Declaration getDirectMember(String name) {
-        for (Declaration d: getMembers()) {
-            if (isResolvable(d) && /*d.isShared() &&*/ isNamed(name, d)) {
-                return d;
-            }
-        }
-        return null;
+    public Declaration getDirectMember(String name, List<ProducedType> signature) {
+        return lookupMember(getMembers(), name, signature, false);
     }
 
     @Override
@@ -139,14 +128,14 @@ public class Package implements Scope {
      * imports
      */
     @Override
-    public Declaration getMemberOrParameter(Unit unit, String name) {
+    public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature) {
         //this implements the rule that imports hide 
         //toplevel members of a package
         Declaration d = unit.getImportedDeclaration(name);
         if (d!=null) {
             return d;
         }
-        d = getDirectMemberOrParameter(name);
+        d = getDirectMemberOrParameter(name, signature);
         if (d!=null) {
             return d;
         }

@@ -27,5 +27,7 @@ public interface Functional {
     public List<TypeParameter> getTypeParameters();
     
     public boolean isOverloaded();
+    
+    public boolean isAbstraction();
 
 }

@@ -152,7 +152,7 @@ public class SpecificationVisitor extends Visitor {
                 //you are allowed to refer to later 
                 //declarations in a class declaration
                 //section
-                if ( !inDeclarationSection() ) {
+                if (!inDeclarationSection()) {
                     that.addError("not yet declared: " + 
                             member.getName());
                 }
@@ -195,7 +195,7 @@ public class SpecificationVisitor extends Visitor {
         Tree.Term lt = that.getLeftTerm();
         if (lt instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression m = (Tree.BaseMemberExpression) lt;
-            Declaration member = getBaseDeclaration(m);
+            Declaration member = getBaseDeclaration(m, null);
             if (member==declaration) {
                 that.getRightTerm().visit(this);
                 checkVariable(lt);
@@ -232,7 +232,7 @@ public class SpecificationVisitor extends Visitor {
         //      completely in ExpressionVisitor.checkAssignable()
         if (term instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression m = (Tree.BaseMemberExpression) term;
-            Declaration member = getBaseDeclaration(m);
+            Declaration member = getBaseDeclaration(m, null);
             if (member==declaration) {
                 if (!isVariable()) {
                     term.addError("not a variable: " +
@@ -246,7 +246,7 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.SpecifierStatement that) {
         Tree.Term m = that.getBaseMemberExpression();
         if (m instanceof Tree.BaseMemberExpression) {
-	        Declaration member = getBaseDeclaration((Tree.BaseMemberExpression)m);
+	        Declaration member = getBaseDeclaration((Tree.BaseMemberExpression)m, null);
 	        if (member==declaration) {
 	            that.getSpecifierExpression().visit(this);
 	            /*if (!declared) {

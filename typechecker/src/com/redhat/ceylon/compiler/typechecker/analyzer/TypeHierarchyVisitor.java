@@ -168,7 +168,7 @@ public class TypeHierarchyVisitor extends Visitor {
         for (int subIndex = size-1 ; subIndex>index;subIndex--) {
             Type type = orderedTypes.get(subIndex);
             //has a direct member and supertype as inherited members
-            Declaration directMember = type.declaration.getDirectMember(name);
+            Declaration directMember = type.declaration.getDirectMember(name, null);
             boolean isMemberRefined = directMember!=null && directMember.isShared() && !(directMember instanceof Parameter);
             isMemberRefined = isMemberRefined && type.declaration.getInheritedMembers(name).contains(declarationOfSupertypeMember);
             if (isMemberRefined) {
