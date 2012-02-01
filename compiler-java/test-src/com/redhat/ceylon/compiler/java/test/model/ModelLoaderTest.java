@@ -121,6 +121,7 @@ public class ModelLoaderTest extends CompilerTest {
         if(alreadyCompared(validDeclaration, modelDeclaration))
             return;
         String name = validDeclaration.getQualifiedNameString();
+        Assert.assertNotNull("Missing model declararion for: "+name, modelDeclaration);
         // check that we have a unit
         Assert.assertNotNull("Missing Unit: "+modelDeclaration.getQualifiedNameString(), modelDeclaration.getUnit());
         Assert.assertNotNull("Invalid Unit", modelDeclaration.getUnit().getPackage());
