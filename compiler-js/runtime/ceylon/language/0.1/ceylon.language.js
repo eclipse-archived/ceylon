@@ -367,12 +367,16 @@ $String.prototype.endsWith = function(str) {
     return cmpSubString(this.value, str.value, start);
 }
 $String.prototype.contains = function(sub) {
-    //TODO does this work for unicode, etc?
-    return Boolean$(this.value.indexOf(sub.value) >= 0);
+    var str;
+    if (sub.constructor === $String) {str = sub.value}
+    else if (sub.constructor !== $Character) {return $false}
+    else {str = codepointToString(sub.value)}
+    return Boolean$(this.value.indexOf(str) >= 0);
 }
 $String.prototype.getNormalized = function() {
     // make use of the fact that all WS characters are single UTF-16 code units
     var result = "";
+    var len = 0;
     var first = true;
     var i1 = 0;
     while (i1 < this.value.length) {
@@ -380,13 +384,22 @@ $String.prototype.getNormalized = function() {
             if (++i1 >= this.value.length) {return String$(result)}
         }
         var i2 = i1;
-        do {i2++} while (i2<this.value.length && !(this.value.charCodeAt(i2) in $WS));
-        if (!first) {result += " "}
+        var cc = this.value.charCodeAt(i2);
+        do {
+            ++i2;
+            if ((cc&0xfc00) === 0xd800) {++i2}
+            ++len;
+            cc = this.value.charCodeAt(i2);
+        } while (i2<this.value.length && !(cc in $WS));
+        if (!first) {
+            result += " ";
+            ++len;
+        }
         first = false;
         result += this.value.substring(i1, i2);
         i1 = i2+1;
     }
-    return String$(result);
+    return String$(result, len);
 }
 $String.prototype.firstOccurrence = function(sub) {
     //TODO implement!!!
@@ -397,11 +410,28 @@ $String.prototype.lastOccurrence = function(sub) {
     return null;
 }
 $String.prototype.firstCharacterOccurrence = function(subc) {
-    //TODO implement!!!
+    for (var i=0, count=0; i<this.value.length; count++) {
+        var cp = this.value.charCodeAt(i++);
+        if (((cp&0xfc00) === 0xd800) && i<this.value.length) {
+            cp = (cp<<10) + this.value.charCodeAt(i++) - 0x35fdc00;
+        }
+        if (cp === subc.value) {return Integer(count)}
+    }
+    this.codePoints = count;
     return null;
 }
 $String.prototype.lastCharacterOccurrence = function(subc) {
-    //TODO implement!!!
+    for (var i=this.value.length-1, count=0; i>=0; count++) {
+        var cp = this.value.charCodeAt(i--);
+        if (((cp%0xfc00) === 0xdc00) && i>=0) {
+           cp = (this.value.charCodeAt(i--)<<10) + cp - 0x35fdc00;
+        }
+        if (cp === subc.value) {
+            if (this.codePoints === undefined) {this.codePoints = countCodepoints(this.value)}
+            return Integer(this.codePoints - count - 1);
+        }
+    }
+    this.codePoints = count;
     return null;
 }
 $String.prototype.getCharacters = function() {
