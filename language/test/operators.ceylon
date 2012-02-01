@@ -16,8 +16,8 @@ void operators() {
     String[] full = { "hello", "world" };
     //assert(!nonempty empty[].uppercased, "[].");
     //assert(nonempty full[].uppercased, "[].");
-    assert("hello" in "hello world", "in");
-    assert("world" in "hello world", "in");
+    assert("hello" in "hello world", "in 1");
+    assert("world" in "hello world", "in 2");
 
     Correspondence<Integer, String> c1 = {};
     assert(!exists c1[0], "empty correspondence");
@@ -26,8 +26,8 @@ void operators() {
     String[] subrange = sequence[1..2];
     assert(subrange.size==1, "subrange size");
     assert(nonempty subrange, "subrange nonempty");
-    assert(sequence[1...].size==1, "open subrange size");
-    assert(sequence[0...].size==2, "open subrange size");
+    assert(sequence[1...].size==1, "open subrange size 1");
+    assert(sequence[0...].size==2, "open subrange size 2");
     assert(nonempty sequence[1...], "open subrange nonempty");
     assert(!nonempty sequence[2...], "open subrange empty");
                                 
