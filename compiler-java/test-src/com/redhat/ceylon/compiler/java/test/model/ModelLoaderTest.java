@@ -188,17 +188,37 @@ public class ModelLoaderTest extends CompilerTest {
         compareParameterLists(validDeclaration.getQualifiedNameString(), validDeclaration.getParameterLists(), modelDeclaration.getParameterLists());
         // make sure it has every member required
         for(Declaration validMember : validDeclaration.getMembers()){
-            Declaration modelMember = modelDeclaration.getMemberOrParameter(validMember.getName(), null);
+            Declaration modelMember = lookupMember(modelDeclaration, validMember);
             Assert.assertNotNull(validMember.getQualifiedNameString()+" [member] not found in loaded model", modelMember);
             compareDeclarations(validMember, modelMember);
         }
         // and not more
         for(Declaration modelMember : modelDeclaration.getMembers()){
-            Declaration validMember = validDeclaration.getMemberOrParameter(modelMember.getName(), null);
+            Declaration validMember = lookupMember(validDeclaration, modelMember);
             Assert.assertNotNull(modelMember.getQualifiedNameString()+" [extra member] encountered in loaded model", validMember);
         }
     }
     
+    private Declaration lookupMember(Class container, Declaration referenceMember) {
+        String name = referenceMember.getName();
+        for(Declaration member : container.getMembers()){
+            if(member.getName() != null 
+                    && member.getName().equals(name)){
+                // we have a special case if we're asking for a Value and we find a Class, it means it's an "object"'s
+                // class with the same name so we ignore it
+                if(referenceMember instanceof Value && member instanceof Class)
+                    continue;
+                // the opposite is also true
+                if(referenceMember instanceof Class && member instanceof Value)
+                    continue;
+                // otherwise we found it
+                return member;
+            }
+        }
+        // not found
+        return null;
+    }
+
     private void compareSatisfiedTypes(String name, List<TypeDeclaration> validTypeDeclarations, List<TypeDeclaration> modelTypeDeclarations) {
         Assert.assertEquals(name+ " [Satisfied types count]", validTypeDeclarations.size(), modelTypeDeclarations.size());
         for(int i=0;i<validTypeDeclarations.size();i++){
