@@ -121,7 +121,8 @@ class Union() {
     
     if (is Sequence<String?> strs) {
         for (s in strs) {
-            if (is String s) {}
+            @error if (is String s) {}
+            s.join();
         }
     }
     
