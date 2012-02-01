@@ -143,43 +143,45 @@ public class SpecificationVisitor extends Visitor {
     }
 
     private void visitReference(Tree.Primary that) {
-        Declaration member  = that.getDeclaration();
-        //Declaration member = getDeclaration(that.getScope(), that.getUnit(), id, context);
-        //TODO: check superclass members are not in declaration section!
-        if ( member==declaration && 
-                member.isDefinedInScope(that.getScope()) ) {
-            if (!declared) {
-                //you are allowed to refer to later 
-                //declarations in a class declaration
-                //section
-                if (!inDeclarationSection()) {
-                    that.addError("not yet declared: " + 
-                            member.getName());
-                }
-            }
-            else if (!specified.definitely) {
-                //you are allowed to refer to formal
-                //declarations in a class declaration
-                //section
-                if (!declaration.isFormal()) {
-                    if (isVariable()) {
-                        that.addError("not definitely initialized: " + 
-                                member.getName());                    
-                    }
-                    else {
-                        that.addError("not definitely specified: " + 
+        if (that instanceof Tree.MemberOrTypeExpression) {
+            Declaration member = ((Tree.MemberOrTypeExpression) that).getDeclaration();
+            //Declaration member = getDeclaration(that.getScope(), that.getUnit(), id, context);
+            //TODO: check superclass members are not in declaration section!
+            if ( member==declaration && 
+                    member.isDefinedInScope(that.getScope()) ) {
+                if (!declared) {
+                    //you are allowed to refer to later 
+                    //declarations in a class declaration
+                    //section
+                    if (!inDeclarationSection()) {
+                        that.addError("not yet declared: " + 
                                 member.getName());
                     }
                 }
-                else if (!inDeclarationSection()) {
-                    that.addError("formal member may not be used in initializer: " + 
-                            member.getName());                    
+                else if (!specified.definitely) {
+                    //you are allowed to refer to formal
+                    //declarations in a class declaration
+                    //section
+                    if (!declaration.isFormal()) {
+                        if (isVariable()) {
+                            that.addError("not definitely initialized: " + 
+                                    member.getName());                    
+                        }
+                        else {
+                            that.addError("not definitely specified: " + 
+                                    member.getName());
+                        }
+                    }
+                    else if (!inDeclarationSection()) {
+                        that.addError("formal member may not be used in initializer: " + 
+                                member.getName());                    
+                    }
                 }
-            }
-            else {
-                if ( member.isDefault() && !inDeclarationSection() ) {
-                    that.addError("default member may not be used in initializer: " + 
-                            member.getName());                    
+                else {
+                    if ( member.isDefault() && !inDeclarationSection() ) {
+                        that.addError("default member may not be used in initializer: " + 
+                                member.getName());                    
+                    }
                 }
             }
         }

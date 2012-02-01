@@ -54,17 +54,19 @@ public class ValueVisitor extends Visitor {
     }
 
     private void capture(Tree.Primary that) {
-        TypedDeclaration d = (TypedDeclaration) that.getDeclaration();
-        if (d==declaration) {
-            if (d instanceof Value) {
-                ((Value) d).setCaptured(true);
+        if (that instanceof Tree.MemberOrTypeExpression) {
+            TypedDeclaration d = (TypedDeclaration) ((Tree.MemberOrTypeExpression) that).getDeclaration();
+            if (d==declaration) {
+                if (d instanceof Value) {
+                    ((Value) d).setCaptured(true);
+                }
+                else if (d instanceof ValueParameter) {
+                    ((ValueParameter) d).setCaptured(true);
+                }
+                /*if (d.isVariable() && !d.isClassMember() && !d.isToplevel()) {
+                    that.addError("access to variable local from capturing scope: " + declaration.getName());
+                }*/
             }
-            else if (d instanceof ValueParameter) {
-                ((ValueParameter) d).setCaptured(true);
-            }
-            /*if (d.isVariable() && !d.isClassMember() && !d.isToplevel()) {
-                that.addError("access to variable local from capturing scope: " + declaration.getName());
-            }*/
         }
     }
     

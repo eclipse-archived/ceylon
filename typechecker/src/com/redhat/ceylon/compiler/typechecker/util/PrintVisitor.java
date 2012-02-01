@@ -97,8 +97,8 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
         if (node.getToken()!=null) {
             print(" (" + node.getLocation() + ")");
         }
-        if (node instanceof Tree.Primary) {
-            Declaration d = ((Tree.Primary) node).getDeclaration();
+        if (node instanceof Tree.MemberOrTypeExpression) {
+            Declaration d = ((Tree.MemberOrTypeExpression) node).getDeclaration();
             if (d!=null) {
                 print(" => " + d);
             }

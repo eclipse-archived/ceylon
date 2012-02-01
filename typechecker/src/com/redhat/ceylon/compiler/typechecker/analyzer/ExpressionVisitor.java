@@ -1118,8 +1118,8 @@ public class ExpressionVisitor extends Visitor {
             that.addError("malformed invocation expression");
         }
         else if (pr instanceof Tree.StaticMemberOrTypeExpression) {
-            Declaration dec = pr.getDeclaration();
             Tree.StaticMemberOrTypeExpression mte = (Tree.StaticMemberOrTypeExpression) pr;
+            Declaration dec = mte.getDeclaration();
             if ( mte.getTarget()==null && dec instanceof Functional && 
                     mte.getTypeArguments() instanceof Tree.InferredTypeArguments ) {
                 List<ProducedType> typeArgs = getInferedTypeArguments(that, (Functional) dec);
@@ -1399,7 +1399,8 @@ public class ExpressionVisitor extends Visitor {
                     prf.getDeclaration().getName() + " is not a method or class");
         }
         else {
-            Functional dec = (Functional) that.getPrimary().getDeclaration();
+            Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
+            Functional dec = (Functional) mte.getDeclaration();
             if (!(that.getPrimary() instanceof Tree.ExtendedTypeExpression)) {
                 if (dec instanceof Class && ((Class) dec).isAbstract()) {
                     that.addError("abstract classes may not be instantiated");
@@ -1648,7 +1649,7 @@ public class ExpressionVisitor extends Visitor {
         withinAnnotation=true;
         super.visit(that);
         withinAnnotation=false;
-        Declaration dec = that.getPrimary().getDeclaration();
+        Declaration dec = ((Tree.MemberOrTypeExpression) that.getPrimary()).getDeclaration();
         if (dec!=null && !dec.isToplevel()) {
             that.getPrimary().addError("annotation must be a toplevel method reference");
         }
