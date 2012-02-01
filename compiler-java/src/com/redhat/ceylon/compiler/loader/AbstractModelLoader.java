@@ -1059,7 +1059,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 extendedType = getType(superClass, klass);
         }else{
             String className = classMirror.getQualifiedName();
-            String superClassName = superClass.getQualifiedName();
+            String superClassName = superClass == null ? null : superClass.getQualifiedName();
             if(className.equals("ceylon.language.Void")){
                 // ceylon.language.Void has no super type
                 extendedType = null;
@@ -1067,7 +1067,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // we pretend its superclass is something else, but note that in theory we shouldn't 
                 // be seeing j.l.Object at all due to unerasure
                 extendedType = getType(CEYLON_IDENTIFIABLE_OBJECT_TYPE, klass);
-            }else if(superClassName.equals("java.lang.Exception")){
+            }else if("java.lang.Exception".equals(superClassName)){
                 // we pretend that a subclass of j.l.Excpetion is really a subclass of c.l.Excpetion
                 extendedType = getType(CEYLON_EXCEPTION_TYPE, klass);
             }else{
@@ -1078,7 +1078,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 }else{
                     // read it from the Java super type
                     // now deal with type erasure, avoid having Object as superclass
-                    if(superClassName.equals("java.lang.Object")){
+                    if("java.lang.Object".equals(superClassName)){
                         extendedType = getType(CEYLON_IDENTIFIABLE_OBJECT_TYPE, klass);
                     }else{
                         extendedType = getType(superClass, klass);
