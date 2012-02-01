@@ -401,7 +401,7 @@ public class ControlFlowVisitor extends Visitor {
                         || t instanceof Tree.PostfixOperatorExpression
                         || t instanceof Tree.PrefixOperatorExpression
                         || t instanceof Tree.AssignmentOp)) {
-                    expr.addError("not a legal statement");
+                    expr.addError("not a legal statement (not an invocation, assignment, or increment/decrement)");
                 }
             }
         }
