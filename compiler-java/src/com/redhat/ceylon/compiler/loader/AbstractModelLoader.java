@@ -852,6 +852,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private void addInnerClasses(ClassOrInterface klass, ClassMirror classMirror) {
         for(ClassMirror innerClass : classMirror.getDirectInnerClasses()){
+            // We skip members marked with @Ignore
+            if(innerClass.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
+                continue;
             Declaration innerDecl = convertToDeclaration(innerClass, DeclarationType.TYPE);
             innerDecl.setContainer(klass);
             // let's not trigger lazy-loading
