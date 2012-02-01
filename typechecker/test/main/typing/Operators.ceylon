@@ -117,7 +117,7 @@ class Operators() {
     @type["Boolean"] value x55 = 1 in cat;
     
     Sequence<Integer?> seqopt2 = { null, 1 };    
-    @error value x56 = "foo" in seqopt2;
+    value x56 = "foo" in seqopt2;
     
     @type["Comparison"] value x34 = 1<=>3;
     @type["Comparison"] value x35 = "foo"<=>"bar";
@@ -143,13 +143,13 @@ class Operators() {
     @type["Sequence<String>"] value x47 = {"hello", "world"}[].uppercased;
     @type["Nothing|Empty|Sequence<Character>"] value x48 = {"hello", "world"}[0]?.characters;
     @type["Sequence<Empty|Sequence<Character>>"] value x49 = {"hello", "world"}[].characters;
-    @type["Sequence<Ordered<String>>"] value x50 = {"hello", "world"}[].lines;
+    @type["Sequence<Iterable<String>>"] value x50 = {"hello", "world"}[].lines;
     @type["Nothing|String"] value x51 = {"hello", "world"}[0]?.normalized;
-    @type["Nothing|Ordered<String>"] value x512 = {"hello", "world"}[0]?.split(" ");
+    @type["Nothing|Iterable<String>"] value x512 = {"hello", "world"}[0]?.split(" ");
     @type["Sequence<String>"] value x52 = {"hello", "world"}[].normalized;
-    @type["Sequence<Ordered<String>>"] value x522 = {"hello", "world"}[].split(" ");
+    @type["Sequence<Iterable<String>>"] value x522 = {"hello", "world"}[].split(" ");
     @type["Nothing|String"] value x53 = noSequence?[0]?.normalized;
-    @type["Nothing|Ordered<String>"] value x532 = noSequence?[0]?.split(" ");
+    @type["Nothing|Iterable<String>"] value x532 = noSequence?[0]?.split(" ");
     @type["Sequence<Operators.X>"] value x54 = {Operators()}[].X();
     
     variable Integer n := 0;

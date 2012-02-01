@@ -63,6 +63,7 @@ public class TypeVisitor extends Visitor {
         if (importedPackage!=null) {
             ImportList il = (ImportList) that.getScope();
             il.setImportedPackage(importedPackage);
+            il.setContainer(that.getUnit().getPackage());
             that.setImportList(il);
             Set<String> names = new HashSet<String>();
             ImportMemberOrTypeList imtl = that.getImportMemberOrTypeList();
@@ -157,7 +158,7 @@ public class TypeVisitor extends Visitor {
         else {
             i.setAlias(name(alias.getIdentifier()));
         }
-        Declaration d = importedPackage.getMember(name);
+        Declaration d = importedPackage.getMember(name, null);
         if (d==null) {
             member.getIdentifier().addError("imported declaration not found: " + 
                     name, 100);
@@ -214,7 +215,7 @@ public class TypeVisitor extends Visitor {
             i.setAlias(name(alias.getIdentifier()));
         }
         i.setTypeDeclaration(d);
-        Declaration m = d.getMember(name);
+        Declaration m = d.getMember(name, null);
         if (m==null) {
             member.getIdentifier().addError("imported declaration not found: " + 
                     name + " of " + d.getName(), 100);
@@ -300,7 +301,7 @@ public class TypeVisitor extends Visitor {
         ProducedType pt = that.getOuterType().getTypeModel();
         if (pt!=null) {
             TypeDeclaration d = pt.getDeclaration();
-			TypeDeclaration type = (TypeDeclaration) d.getMember(name(that.getIdentifier()), unit);
+			TypeDeclaration type = (TypeDeclaration) d.getMember(name(that.getIdentifier()), unit, null);
             if (type==null) {
                 that.addError("member type declaration does not exist: " + 
                         name(that.getIdentifier()) +
@@ -631,7 +632,7 @@ public class TypeVisitor extends Visitor {
             List<ProducedType> list = new ArrayList<ProducedType>();
             for (Tree.BaseMemberExpression bme: that.getBaseMemberExpressions()) {
                 //bmes have not yet been resolved
-                TypedDeclaration od = getBaseDeclaration(bme);
+                TypedDeclaration od = getBaseDeclaration(bme, null);
                 if (od!=null) {
                     ProducedType type = od.getType();
                     TypeDeclaration dec = type.getDeclaration();

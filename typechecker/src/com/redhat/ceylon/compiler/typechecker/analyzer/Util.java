@@ -24,9 +24,10 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  */
 class Util extends Visitor {
     
-    static TypedDeclaration getBaseDeclaration(Tree.BaseMemberExpression bme) {
+    static TypedDeclaration getBaseDeclaration(Tree.BaseMemberExpression bme, 
+            List<ProducedType> signature) {
         Declaration result = bme.getScope().getMemberOrParameter(bme.getUnit(), 
-                name(bme.getIdentifier()));
+                name(bme.getIdentifier()), signature);
         if (result instanceof TypedDeclaration) {
         	return (TypedDeclaration) result;
         }
@@ -37,7 +38,7 @@ class Util extends Visitor {
     
     static TypeDeclaration getBaseDeclaration(Tree.BaseType bt) {
         Declaration result = bt.getScope().getMemberOrParameter(bt.getUnit(), 
-                name(bt.getIdentifier()));
+                name(bt.getIdentifier()), null);
         if (result instanceof TypeDeclaration) {
         	return (TypeDeclaration) result;
         }
@@ -46,9 +47,10 @@ class Util extends Visitor {
         }
     }
     
-    static TypeDeclaration getBaseDeclaration(Tree.BaseTypeExpression bte) {
+    static TypeDeclaration getBaseDeclaration(Tree.BaseTypeExpression bte, 
+            List<ProducedType> signature) {
         Declaration result = bte.getScope().getMemberOrParameter(bte.getUnit(), 
-                name(bte.getIdentifier()));
+                name(bte.getIdentifier()), signature);
         if (result instanceof TypeDeclaration) {
         	return (TypeDeclaration) result;
         }
@@ -88,6 +90,22 @@ class Util extends Visitor {
         }
         return typeArguments;
     }
+    
+    /*static List<ProducedType> getParameterTypes(Tree.ParameterTypes pts) {
+        if (pts==null) return null;
+        List<ProducedType> typeArguments = new ArrayList<ProducedType>();
+        for (Tree.SimpleType st: pts.getSimpleTypes()) {
+            ProducedType t = st.getTypeModel();
+            if (t==null) {
+                st.addError("could not resolve parameter type");
+                typeArguments.add(null);
+            }
+            else {
+                typeArguments.add(t);
+            }
+        }
+        return typeArguments;
+    }*/
     
     static Tree.Statement getLastExecutableStatement(Tree.ClassBody that) {
         List<Tree.Statement> statements = that.getStatements();

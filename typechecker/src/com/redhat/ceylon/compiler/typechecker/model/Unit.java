@@ -142,7 +142,7 @@ public class Unit {
                 return getBottomDeclaration();
             }
             for (Package languageScope : languageModule.getPackages() ) {
-                Declaration d = languageScope.getMember(name);
+                Declaration d = languageScope.getMember(name, null);
                 if (d != null) {
                     return d;
                 }

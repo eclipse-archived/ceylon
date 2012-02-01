@@ -9,6 +9,7 @@ import java.util.Map;
 //autocompletion in the IDE
 public class ImportList implements Scope {
     
+    Package container;
     Package importedPackage;
     List<Import> imports = new ArrayList<Import>();
     
@@ -19,52 +20,56 @@ public class ImportList implements Scope {
     
     @Override
     public List<String> getQualifiedName() {
-        throw new UnsupportedOperationException();
+        return getContainer().getQualifiedName();
     }
     
     @Override
     public String getQualifiedNameString() {
-        throw new UnsupportedOperationException();
+        return getContainer().getQualifiedNameString();
     }
     
     @Override
     public ProducedType getDeclaringType(Declaration d) {
-        throw new UnsupportedOperationException();
+        return null;
     }
     
     @Override
-    public Declaration getMemberOrParameter(Unit unit, String name) {
-        throw new UnsupportedOperationException();
+    public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature) {
+        return getContainer().getMemberOrParameter(unit, name, signature);
     }
     
     @Override
-    public Declaration getMember(String name) {
-        throw new UnsupportedOperationException();
+    public Declaration getMember(String name, List<ProducedType> signature) {
+        return getContainer().getMember(name, signature);
     }
     
     @Override
-    public Declaration getDirectMemberOrParameter(String name) {
-        throw new UnsupportedOperationException();
+    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature) {
+        return getContainer().getDirectMemberOrParameter(name, signature);
     }
     
     @Override
-    public Declaration getDirectMember(String name) {
-        throw new UnsupportedOperationException();
+    public Declaration getDirectMember(String name, List<ProducedType> signature) {
+        return getContainer().getDirectMember(name, signature);
     }
     
     @Override
     public boolean isInherited(Declaration d) {
-        throw new UnsupportedOperationException();
+        return false;
     }
     
     @Override
     public TypeDeclaration getInheritingDeclaration(Declaration d) {
-        throw new UnsupportedOperationException();
+        return null;
     }
     
     @Override
     public Scope getContainer() {
-        return null;
+        return container;
+    }
+    
+    public void setContainer(Package container) {
+        this.container = container;
     }
     
     @Override

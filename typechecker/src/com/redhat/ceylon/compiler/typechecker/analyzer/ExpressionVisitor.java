@@ -49,6 +49,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseItem;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifiedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
@@ -1087,9 +1088,24 @@ public class ExpressionVisitor extends Visitor {
             return pt;
         }
     }
-
+    
     @Override public void visit(Tree.InvocationExpression that) {
-        super.visit(that);
+        
+        //super.visit(that);
+        List<ProducedType> sig = null;
+        if (that.getPositionalArgumentList()!=null) {
+            that.getPositionalArgumentList().visit(this);
+            sig = new ArrayList<ProducedType>();
+            for (PositionalArgument pa: that.getPositionalArgumentList().getPositionalArguments()) {
+                sig.add(pa.getExpression().getTypeModel());
+            }
+            that.getPrimary().setSignature(sig);
+        }
+        if (that.getNamedArgumentList()!=null) {
+            that.getNamedArgumentList().visit(this);
+        }
+        that.getPrimary().visit(this);
+        
         Tree.Primary pr = that.getPrimary();
         if (pr==null) {
             that.addError("malformed invocation expression");
@@ -1376,10 +1392,11 @@ public class ExpressionVisitor extends Visitor {
                     prf.getDeclaration().getName() + " is not a method or class");
         }
         else {
-            if (!(that.getPrimary() instanceof Tree.ExtendedTypeExpression) 
-                    && prf.getDeclaration() instanceof Class 
-                    && ((Class) prf.getDeclaration()).isAbstract()) {
-                that.addError("abstract classes may not be instantiated");
+            Functional dec = (Functional) that.getPrimary().getDeclaration();
+            if (!(that.getPrimary() instanceof Tree.ExtendedTypeExpression)) {
+                if (dec instanceof Class && ((Class) dec).isAbstract()) {
+                    that.addError("abstract classes may not be instantiated");
+                }
             }
             //that.setTypeModel(prf.getType());
             ProducedType ct = that.getPrimary().getTypeModel();
@@ -1387,28 +1404,38 @@ public class ExpressionVisitor extends Visitor {
                 //pull the return type out of the Callable
                 that.setTypeModel(ct.getTypeArgumentList().get(0));
             }
-            //TODO: typecheck parameters using the type args of Callable
-            Functional dec = (Functional) that.getPrimary().getDeclaration();
-            List<ParameterList> pls = dec.getParameterLists();
-            if (pls.isEmpty()) {
-                if (dec instanceof TypeDeclaration) {
-                    that.addError("type cannot be instantiated: " + 
-                        dec.getName() + " (or return statement is missing)");
-                }
-                else {
-                    that.addError("member cannot be invoked: " +
-                        dec.getName());
-                }
+            if (dec.isAbstraction()) {
+                //nothing to check the argument types against
+                //that.addError("no matching overloaded declaration");
             }
-            else if (!dec.isOverloaded()) { //we don't typecheck args of an overloaded declaration, we let javac do it!
-                ParameterList pl = pls.get(0);            
-                if ( that.getPositionalArgumentList()!=null ) {
-                    checkPositionalArguments(pl, prf, that.getPositionalArgumentList());
-                }
-                if ( that.getNamedArgumentList()!=null ) {
-                    that.getNamedArgumentList().getNamedArgumentList().setParameterList(pl);
-                    checkNamedArguments(pl, prf, that.getNamedArgumentList());
-                }
+            else {
+                checkInvocationArguments(that, prf, dec);
+            }
+        }
+    }
+
+    private void checkInvocationArguments(Tree.InvocationExpression that,
+            ProducedReference prf, Functional dec) {
+        //TODO: typecheck parameters using the type args of Callable
+        List<ParameterList> pls = dec.getParameterLists();
+        if (pls.isEmpty()) {
+            if (dec instanceof TypeDeclaration) {
+                that.addError("type cannot be instantiated: " + 
+                        dec.getName() + " (or return statement is missing)");
+            }
+            else {
+                that.addError("member cannot be invoked: " +
+                        dec.getName());
+            }
+        }
+        else /*if (!dec.isOverloaded())*/ {
+            ParameterList pl = pls.get(0);            
+            if ( that.getPositionalArgumentList()!=null ) {
+                checkPositionalArguments(pl, prf, that.getPositionalArgumentList());
+            }
+            if ( that.getNamedArgumentList()!=null ) {
+                that.getNamedArgumentList().getNamedArgumentList().setParameterList(pl);
+                checkNamedArguments(pl, prf, that.getNamedArgumentList());
             }
         }
     }
@@ -2202,6 +2229,13 @@ public class ExpressionVisitor extends Visitor {
         
     //Atoms:
     
+    private void checkOverloadedReference(Tree.MemberOrTypeExpression that) {
+        if (that.getDeclaration() instanceof Functional &&
+                ((Functional)that.getDeclaration()).isAbstraction()) {
+            that.addError("ambiguous reference to overloaded method or class");
+        }
+    }
+    
     @Override public void visit(Tree.BaseMemberExpression that) {
         //TODO: this does not correctly handle methods
         //      and classes which are not subsequently 
@@ -2209,7 +2243,7 @@ public class ExpressionVisitor extends Visitor {
         /*if (that.getTypeArgumentList()!=null)
             that.getTypeArgumentList().visit(this);*/
         super.visit(that);
-        TypedDeclaration member = getBaseDeclaration(that);
+        TypedDeclaration member = getBaseDeclaration(that, that.getSignature());
         if (member==null) {
             that.addError("method or attribute does not exist: " +
                     name(that.getIdentifier()), 100);
@@ -2229,6 +2263,7 @@ public class ExpressionVisitor extends Visitor {
                     that.addWarning("references to this from default argument expressions not yet supported");
                 }
             }*/
+            checkOverloadedReference(that);
         }
     }
 
@@ -2241,7 +2276,8 @@ public class ExpressionVisitor extends Visitor {
         if (pt!=null && that.getIdentifier()!=null && 
                 !that.getIdentifier().getText().equals("")) {
             TypeDeclaration d = unwrap(pt, that).getDeclaration();
-            TypedDeclaration member = (TypedDeclaration) d.getMember(name(that.getIdentifier()), unit);
+            TypedDeclaration member = (TypedDeclaration) d.getMember(name(that.getIdentifier()), 
+                    unit, that.getSignature());
             if (member==null) {
                 that.addError("member method or attribute does not exist: " +
                         name(that.getIdentifier()) + 
@@ -2262,6 +2298,7 @@ public class ExpressionVisitor extends Visitor {
                     visitQualifiedMemberExpression(that, member, ta, tal);
                 }
                 //otherwise infer type arguments later
+                checkOverloadedReference(that);
             }
             if (that.getPrimary() instanceof Tree.Super) {
                 if (member!=null && member.isFormal()) {
@@ -2311,7 +2348,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         /*if (that.getTypeArgumentList()!=null)
             that.getTypeArgumentList().visit(this);*/
-        TypeDeclaration type = getBaseDeclaration(that);
+        TypeDeclaration type = getBaseDeclaration(that, that.getSignature());
         if (type==null) {
             that.addError("type does not exist: " + 
                     name(that.getIdentifier()), 100);
@@ -2326,6 +2363,7 @@ public class ExpressionVisitor extends Visitor {
                 visitBaseTypeExpression(that, type, ta, tal);
             }
             //otherwise infer type arguments later
+            checkOverloadedReference(that);
         }
     }
         
@@ -2342,7 +2380,8 @@ public class ExpressionVisitor extends Visitor {
         }
         if (pt!=null) {
             TypeDeclaration d = unwrap(pt, that).getDeclaration();
-            TypeDeclaration type = (TypeDeclaration) d.getMember(name(that.getIdentifier()), unit);
+            TypeDeclaration type = (TypeDeclaration) d.getMember(name(that.getIdentifier()), 
+                    unit, that.getSignature());
             if (type==null) {
                 that.addError("member type does not exist: " +
                         name(that.getIdentifier()) +
@@ -2363,6 +2402,7 @@ public class ExpressionVisitor extends Visitor {
                     visitQualifiedTypeExpression(that, pt, type, ta, tal);
                     //otherwise infer type arguments later
                 }
+                checkOverloadedReference(that);
             }
             //TODO: this is temporary until we get metamodel reference expressions!
             if (that.getPrimary() instanceof Tree.BaseTypeExpression ||
@@ -2964,7 +3004,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else {
                         //TODO: lots wrong here?
-                        TypeDeclaration mtd = (TypeDeclaration) td.getMember(std.getName());
+                        TypeDeclaration mtd = (TypeDeclaration) td.getMember(std.getName(), null);
                         at = mtd==null ? null : mtd.getType();
                     }
                     if (at!=null) {

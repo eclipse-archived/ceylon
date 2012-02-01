@@ -35,4 +35,9 @@ public class FunctionalParameter extends Parameter implements Scope, Functional 
     	return false;
     }
     
+    @Override
+    public boolean isAbstraction() {
+        return false;
+    }
+    
 }

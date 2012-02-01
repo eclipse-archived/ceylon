@@ -17,6 +17,7 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     private List<TypeParameter> typeParameters = Collections.emptyList();
     private List<ParameterList> parameterLists = new ArrayList<ParameterList>();
     private boolean overloaded;
+    private boolean abstraction;
 
     /*public boolean isFormal() {
          return formal;
@@ -65,5 +66,14 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     public void setOverloaded(boolean overloaded) {
 		this.overloaded = overloaded;
 	}
+    
+    public void setAbstraction(boolean abstraction) {
+        this.abstraction = abstraction;
+    }
+    
+    @Override
+    public boolean isAbstraction() {
+        return abstraction;
+    }
     
 }

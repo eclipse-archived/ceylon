@@ -11,27 +11,27 @@ import java.util.Map;
  * @author Gavin King
  */
 public interface Scope {
-    @Deprecated List<Declaration> getMembers();
+    
+    public String getQualifiedNameString();
 
-    @Deprecated List<String> getQualifiedName();
+    public ProducedType getDeclaringType(Declaration d);
 
-    String getQualifiedNameString();
+    public Declaration getMember(String name, List<ProducedType> signature);
+    public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature);
+    public Declaration getDirectMember(String name, List<ProducedType> signature);
+    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature);
 
-    ProducedType getDeclaringType(Declaration d);
-
-    Declaration getMemberOrParameter(Unit unit, String name);
-
-    Declaration getMember(String name);
-
-    Declaration getDirectMemberOrParameter(String name);
-
-    Declaration getDirectMember(String name);
-
-    boolean isInherited(Declaration d);
+    public boolean isInherited(Declaration d);
     public TypeDeclaration getInheritingDeclaration(Declaration d);
 
-    Scope getContainer();
+    public Scope getContainer();
     
-    Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity);
+    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity);
     
+    @Deprecated 
+    public List<Declaration> getMembers();
+
+    @Deprecated 
+    public List<String> getQualifiedName();
+
 }
