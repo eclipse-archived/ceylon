@@ -32,7 +32,7 @@ public class JsCompiler {
         return this;
     }
     
-    public List<UnexpectedError> listErorrs() {
+    public List<UnexpectedError> listErrors() {
         return Collections.unmodifiableList(errors);
     }
     
