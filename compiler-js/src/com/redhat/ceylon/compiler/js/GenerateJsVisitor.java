@@ -1069,7 +1069,7 @@ public class GenerateJsVisitor extends Visitor
             if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
                 Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
                 if (mte.getDeclaration() instanceof Functional) {
-                    Functional f = (Functional) mte;
+                    Functional f = (Functional) mte.getDeclaration();
                     if (!f.getParameterLists().isEmpty()) {
                         boolean first=true;
                         for (com.redhat.ceylon.compiler.typechecker.model.Parameter p: 

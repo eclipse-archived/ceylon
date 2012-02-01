@@ -384,6 +384,7 @@ $String.prototype.getNormalized = function() {
         if (!first) {result += " "}
         first = false;
         result += this.value.substring(i1, i2);
+        i1 = i2+1;
     }
     return String$(result);
 }
