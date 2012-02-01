@@ -1,4 +1,4 @@
-Ceylon Language module
+Ceylon language module
 ======================
 
 License
