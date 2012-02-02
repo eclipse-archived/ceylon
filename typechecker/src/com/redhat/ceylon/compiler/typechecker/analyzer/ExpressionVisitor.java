@@ -2032,6 +2032,14 @@ public class ExpressionVisitor extends Visitor {
         if (rt!=null) {
             if (rt.getTypeModel()!=null) {
                 checkReified(that, rt.getTypeModel());
+                if (that.getTerm()!=null) {
+                    ProducedType pt = that.getTerm().getTypeModel();
+                    if (pt!=null && pt.isSubtypeOf(rt.getTypeModel())) {
+                        that.addError("expression type is a subtype of the type: " +
+                                pt.getProducedTypeName() + " is assignable to " +
+                                rt.getTypeModel().getProducedTypeName());
+                    }
+                }
             }
         }
         that.setTypeModel(unit.getBooleanDeclaration().getType());
