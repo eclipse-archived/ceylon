@@ -476,12 +476,19 @@ $String.prototype.split = function(seps, discard) {
     return Singleton(this);
 }
 $String.prototype.getReversed = function() {
-    //TODO implement
-    return this;
+    var result = "";
+    for (var i=this.value.length; i>0;) {
+        var cc = this.value.charCodeAt(--i);
+        if ((cc&0xfc00)!==0xdc00 || i===0) {
+            result += this.value.charAt(i);
+        } else {
+            result += this.value.substr(--i, 2);
+        }
+    }
+    return String$(result);
 }
 $String.prototype.replace = function(sub, repl) {
-    //TODO implement
-    return this;
+    return String$(this.value.replace(new RegExp(sub.value, 'g'), repl.value));
 }
 $String.prototype.repeat = function(times) {
     var sb = StringBuilder();
