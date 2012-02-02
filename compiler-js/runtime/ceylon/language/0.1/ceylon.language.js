@@ -439,10 +439,10 @@ $String.prototype.getCharacters = function() {
     return this;
 }
 $String.prototype.getFirst = function() { return this.getSize().value>0?this.item(Integer(0)):null; }
-$String.prototype.getLast = function() { return this.getSize().value>0?this.item(Integer(this.getSize().decrement())):null; }
+$String.prototype.getLast = function() { return this.getSize().value>0?this.item(Integer(this.getSize().getPredecessor())):null; }
 $String.prototype.getKeys = function() {
     //TODO implement!!!
-    return $empty;
+    return this.getSize().value > 0 ? Range(Integer(0), this.getSize().getPredecessor()) : $empty;
 }
 $String.prototype.join = function(strings) {
     if (strings===undefined || strings.value.length===0) {return String$("", 0)}
