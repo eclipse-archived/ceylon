@@ -1075,7 +1075,7 @@ public class GenerateJsVisitor extends Visitor
                         for (com.redhat.ceylon.compiler.typechecker.model.Parameter p: 
                             f.getParameterLists().get(0).getParameters()) {
                             if (!first) out(",");
-                            if (p.isSequenced() && that.getNamedArgumentList().getSequencedArgument()==null) {
+                            if (p.isSequenced() && that.getNamedArgumentList().getSequencedArgument()==null && that.getNamedArgumentList().getNamedArguments().isEmpty()) {
                                 clAlias();
                                 out(".empty");
                             } else {
