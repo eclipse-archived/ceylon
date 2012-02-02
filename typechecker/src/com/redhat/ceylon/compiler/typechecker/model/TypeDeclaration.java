@@ -189,7 +189,8 @@ public abstract class TypeDeclaration extends Declaration
         return pt;
     }
 
-    private List<Declaration> getMembers(String name, List<TypeDeclaration> visited) {
+    private List<Declaration> getMembers(String name, 
+            List<TypeDeclaration> visited) {
         if (visited.contains(this)) {
             return Collections.emptyList();
         }
@@ -217,7 +218,8 @@ public abstract class TypeDeclaration extends Declaration
         return getInheritedMembers(name, new ArrayList<TypeDeclaration>());
     }
     
-    private List<Declaration> getInheritedMembers(String name, List<TypeDeclaration> visited) {
+    private List<Declaration> getInheritedMembers(String name, 
+            List<TypeDeclaration> visited) {
         List<Declaration> members = new ArrayList<Declaration>();
         for (TypeDeclaration t: getSatisfiedTypeDeclarations()) {
             //if ( !(t instanceof TypeParameter) ) { //don't look for members in a type parameter with a self-referential lower bound
@@ -247,7 +249,8 @@ public abstract class TypeDeclaration extends Declaration
         return isMember(dec, new ArrayList<TypeDeclaration>());
     }
     
-    private boolean isMember(Declaration dec, List<TypeDeclaration> visited) {
+    private boolean isMember(Declaration dec, 
+            List<TypeDeclaration> visited) {
         if (visited.contains(this)) {
             return false;
         }
@@ -304,11 +307,14 @@ public abstract class TypeDeclaration extends Declaration
      * order and searching supertypes first.
      * @param signature TODO
      */
-    public Declaration getRefinedMember(String name, List<ProducedType> signature) {
-        return getRefinedMember(name, signature, new ArrayList<TypeDeclaration>());
+    public Declaration getRefinedMember(String name, 
+            List<ProducedType> signature) {
+        return getRefinedMember(name, signature, 
+                new ArrayList<TypeDeclaration>());
     }
 
-    private Declaration getRefinedMember(String name, List<ProducedType> signature, List<TypeDeclaration> visited) {
+    private Declaration getRefinedMember(String name, 
+            List<ProducedType> signature, List<TypeDeclaration> visited) {
         if (visited.contains(this)) {
             return null;
         }
@@ -337,9 +343,10 @@ public abstract class TypeDeclaration extends Declaration
      * account, followed by supertypes.
      * @param signature TODO
      */
-    public Declaration getMember(String name, Unit unit, List<ProducedType> signature) {
+    public Declaration getMember(String name, Unit unit, 
+            List<ProducedType> signature) {
         //TODO: does not handle aliased members of supertypes
-        Declaration d = unit.getImportedDeclaration(this, name);
+        Declaration d = unit.getImportedDeclaration(this, name, signature);
         if (d==null) {
             return getMember(name, signature);
         }
@@ -353,7 +360,8 @@ public abstract class TypeDeclaration extends Declaration
      * searching this type first, followed by supertypes.
      */
     @Override
-    public Declaration getMember(String name, List<ProducedType> signature) {
+    public Declaration getMember(String name, 
+            List<ProducedType> signature) {
         //first search for the member in the local
         //scope, including non-shared declarations
         Declaration d = getDirectMember(name, signature);
@@ -384,7 +392,8 @@ public abstract class TypeDeclaration extends Declaration
      * supertypes.
      */
     @Override
-    public Declaration getMemberOrParameter(String name, List<ProducedType> signature) {
+    public Declaration getMemberOrParameter(String name, 
+            List<ProducedType> signature) {
         //first search for the member or parameter 
         //in the local scope, including non-shared 
         //declarations

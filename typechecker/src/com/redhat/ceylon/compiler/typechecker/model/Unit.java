@@ -75,13 +75,18 @@ public class Unit {
     
     /**
      * Search the imports of a compilation unit
-     * for the namd toplevel declaration.
+     * for the named toplevel declaration.
      */
-    public Declaration getImportedDeclaration(String name) {
+    public Declaration getImportedDeclaration(String name, 
+            List<ProducedType> signature) {
         for (Import i: getImports()) {
             if (i.getTypeDeclaration()==null && 
             		i.getAlias().equals(name)) {
-                return i.getDeclaration();
+                //in case of an overloaded member, this will
+                //be the "abstraction", so search for the 
+                //correct overloaded version
+                Declaration d = i.getDeclaration();
+                return d.getContainer().getMember(d.getName(), signature);
             }
         }
         return null;
@@ -91,12 +96,17 @@ public class Unit {
      * Search the imports of a compilation unit
      * for the named member declaration.
      */
-    public Declaration getImportedDeclaration(TypeDeclaration td, String name) {
+    public Declaration getImportedDeclaration(TypeDeclaration td, String name, 
+            List<ProducedType> signature) {
         for (Import i: getImports()) {
             TypeDeclaration itd = i.getTypeDeclaration();
 			if (itd!=null && itd.equals(td) && 
             		i.getAlias().equals(name)) {
-                return i.getDeclaration();
+                //in case of an overloaded member, this will
+                //be the "abstraction", so search for the 
+                //correct overloaded version
+                Declaration d = i.getDeclaration();
+                return d.getContainer().getMember(d.getName(), signature);
             }
         }
         return null;

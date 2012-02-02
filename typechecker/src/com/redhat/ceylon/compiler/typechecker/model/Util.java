@@ -119,9 +119,14 @@ public class Util {
                         return true;
                     }
                 }
+                else {
+                    return false;
+                }
             }
         }
-        return signature==null;
+        else {
+            return false;
+        }
     }
     
     static boolean isNamed(String name, Declaration d) {
