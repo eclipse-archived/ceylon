@@ -46,9 +46,6 @@ class FloatBoxing(){
         if(is Float localAttrConstantObject){
             localAttrFloat := localAttrConstantObject;
         }
-        if(is Float localAttrConstantFloat){
-            localAttrFloat := localAttrConstantFloat;
-        }
         
         localAttrFloat := localAttrFloat + 2.0; 
         localAttrFloat := localAttrFloat + 4;

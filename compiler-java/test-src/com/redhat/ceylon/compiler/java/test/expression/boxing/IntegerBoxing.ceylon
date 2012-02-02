@@ -46,9 +46,6 @@ class IntegerBoxing(){
         if(is Integer localAttrConstantObject){
             localAttrInteger := localAttrConstantObject;
         }
-        if(is Integer localAttrConstantInteger){
-            localAttrInteger := localAttrConstantInteger;
-        }
         
         localAttrInteger := localAttrInteger + 2; 
         localAttrObject := localAttrInteger + 2; 
