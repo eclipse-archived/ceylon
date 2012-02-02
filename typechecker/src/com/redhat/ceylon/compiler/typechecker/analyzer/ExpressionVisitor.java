@@ -2030,14 +2030,24 @@ public class ExpressionVisitor extends Visitor {
                 "expression may not be of void type");*/
         Tree.Type rt = that.getType();
         if (rt!=null) {
-            if (rt.getTypeModel()!=null) {
-                checkReified(that, rt.getTypeModel());
+            ProducedType t = rt.getTypeModel();
+            if (t!=null) {
+                checkReified(that, t);
                 if (that.getTerm()!=null) {
                     ProducedType pt = that.getTerm().getTypeModel();
-                    if (pt!=null && pt.isSubtypeOf(rt.getTypeModel())) {
+                    if (pt!=null && pt.isSubtypeOf(t)) {
                         that.addError("expression type is a subtype of the type: " +
                                 pt.getProducedTypeName() + " is assignable to " +
-                                rt.getTypeModel().getProducedTypeName());
+                                t.getProducedTypeName());
+                    }
+                    else {
+                        ProducedType it = intersectionType(t, pt, unit);
+                        if (it.getDeclaration() instanceof BottomType) {
+                            that.addError("tests assignability to Bottom type: intersection of " +
+                                    pt.getProducedTypeName() + " and " + 
+                                    t.getProducedTypeName() +
+                                    " is empty");
+                        }
                     }
                 }
             }
