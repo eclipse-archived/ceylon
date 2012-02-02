@@ -167,6 +167,27 @@ public class ModelLoaderTest extends CompilerTest {
         List<Annotation> validAnnotations = validDeclaration.getAnnotations();
         List<Annotation> modelAnnotations = modelDeclaration.getAnnotations();
         Assert.assertEquals(name+" [annotation count]", validAnnotations.size(), modelAnnotations.size());
+        for(int i=0;i<validAnnotations.size();i++){
+            compareAnnotation(name, validAnnotations.get(i), modelAnnotations.get(i));
+        }
+    }
+
+    private void compareAnnotation(String element, Annotation validAnnotation, Annotation modelAnnotation) {
+        Assert.assertEquals(element+ " [annotation name]", validAnnotation.getName(), modelAnnotation.getName());
+        String name = element+"@"+validAnnotation.getName();
+        List<String> validPositionalArguments = validAnnotation.getPositionalArguments();
+        List<String> modelPositionalArguments = modelAnnotation.getPositionalArguments();
+        Assert.assertEquals(name+ " [annotation argument size]", validPositionalArguments.size(), modelPositionalArguments.size());
+        for(int i=0;i<validPositionalArguments.size();i++){
+            Assert.assertEquals(name+ " [annotation argument "+i+"]", validPositionalArguments.get(i), modelPositionalArguments.get(i));
+        }
+        Map<String, String> validNamedArguments = validAnnotation.getNamedArguments();
+        Map<String, String> modelNamedArguments = modelAnnotation.getNamedArguments();
+        Assert.assertEquals(name+ " [annotation named argument size]", validNamedArguments.size(), modelNamedArguments.size());
+        for(Entry<String,String> validEntry : validNamedArguments.entrySet()){
+            String modelValue = modelNamedArguments.get(validEntry.getKey());
+            Assert.assertEquals(name+ " [annotation named argument "+validEntry.getKey()+"]", validEntry.getValue(), modelValue);
+        }
     }
 
     private boolean alreadyCompared(Declaration validDeclaration, Declaration modelDeclaration) {
