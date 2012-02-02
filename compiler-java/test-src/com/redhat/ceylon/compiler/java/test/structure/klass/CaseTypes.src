@@ -1,8 +1,19 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("abstract")})
+@.com.redhat.ceylon.compiler.java.metadata.CaseTypes({"com.redhat.ceylon.compiler.java.test.structure.klass.foo", "com.redhat.ceylon.compiler.java.test.structure.klass.bar"})
+public abstract class CaseTypes {
+    
+    public CaseTypes(@.com.redhat.ceylon.compiler.java.metadata.Name("name")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.String")
+    .java.lang.String name) {
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes")
 @.com.redhat.ceylon.compiler.java.metadata.Object
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public final class foo extends com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes {
     
     private foo() {
@@ -13,6 +24,7 @@ public final class foo extends com.redhat.ceylon.compiler.java.test.structure.kl
         value = new foo();
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass.foo")
     public static com.redhat.ceylon.compiler.java.test.structure.klass.foo getFoo() {
         return value;
@@ -21,6 +33,7 @@ public final class foo extends com.redhat.ceylon.compiler.java.test.structure.kl
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes")
 @.com.redhat.ceylon.compiler.java.metadata.Object
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public final class bar extends com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes {
     
     private bar() {
@@ -31,22 +44,25 @@ public final class bar extends com.redhat.ceylon.compiler.java.test.structure.kl
         value = new bar();
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass.bar")
     public static com.redhat.ceylon.compiler.java.test.structure.klass.bar getBar() {
         return value;
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon
-@.com.redhat.ceylon.compiler.java.metadata.CaseTypes({"com.redhat.ceylon.compiler.java.test.structure.klass.foo", "com.redhat.ceylon.compiler.java.test.structure.klass.bar"})
-public abstract class CaseTypes {
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("abstract")})
+@.com.redhat.ceylon.compiler.java.metadata.CaseTypes({"com.redhat.ceylon.compiler.java.test.structure.klass.Foo", "com.redhat.ceylon.compiler.java.test.structure.klass.Bar"})
+public abstract class CaseTypes2 {
     
-    public CaseTypes(@.com.redhat.ceylon.compiler.java.metadata.Name("name")
+    public CaseTypes2(@.com.redhat.ceylon.compiler.java.metadata.Name("name")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.String")
     .java.lang.String name) {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes2")
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class Foo extends com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes2 {
     
     public Foo() {
@@ -61,6 +77,7 @@ public class Foo extends com.redhat.ceylon.compiler.java.test.structure.klass.Ca
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes2")
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class Bar extends com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes2 {
     
     public Bar() {
@@ -74,23 +91,17 @@ public class Bar extends com.redhat.ceylon.compiler.java.test.structure.klass.Ca
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon
-@.com.redhat.ceylon.compiler.java.metadata.CaseTypes({"com.redhat.ceylon.compiler.java.test.structure.klass.Foo", "com.redhat.ceylon.compiler.java.test.structure.klass.Bar"})
-public abstract class CaseTypes2 {
-    
-    public CaseTypes2(@.com.redhat.ceylon.compiler.java.metadata.Name("name")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.String")
-    .java.lang.String name) {
-    }
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.CaseTypes({"com.redhat.ceylon.compiler.java.test.structure.klass.IFoo", "com.redhat.ceylon.compiler.java.test.structure.klass.IBar"})
+public interface ICaseTypes {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes"})
 public interface IFoo extends com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes"})
 public interface IBar extends com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes {
-}
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon
-@.com.redhat.ceylon.compiler.java.metadata.CaseTypes({"com.redhat.ceylon.compiler.java.test.structure.klass.IFoo", "com.redhat.ceylon.compiler.java.test.structure.klass.IBar"})
-public interface ICaseTypes {
 }

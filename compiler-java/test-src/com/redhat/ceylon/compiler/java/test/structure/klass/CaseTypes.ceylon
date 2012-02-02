@@ -17,24 +17,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared object foo extends CaseTypes("foo") {}
-shared object bar extends CaseTypes("bar") {}
-
+@error
 shared abstract class CaseTypes(String name) 
         of foo | bar 
         {}
 
-shared class Foo() extends CaseTypes2("Foo") {}
-shared class Bar() extends CaseTypes2("Bar") {}
+shared object foo extends CaseTypes("foo") {}
+shared object bar extends CaseTypes("bar") {}
 
 shared abstract class CaseTypes2(String name) 
         of Foo | Bar 
         {}
 
-shared interface IFoo satisfies ICaseTypes {}
-shared interface IBar satisfies ICaseTypes {}
+shared class Foo() extends CaseTypes2("Foo") {}
+shared class Bar() extends CaseTypes2("Bar") {}
 
 @error
 shared interface ICaseTypes
         of IFoo | IBar 
         {}
+
+shared interface IFoo satisfies ICaseTypes {}
+shared interface IBar satisfies ICaseTypes {}
