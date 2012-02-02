@@ -101,7 +101,8 @@ public class Package implements Scope {
     }
 
     @Override
-    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature) {
+    public Declaration getDirectMemberOrParameter(String name, 
+            List<ProducedType> signature) {
         return getDirectMember(name, signature);
     }
 
@@ -128,10 +129,11 @@ public class Package implements Scope {
      * imports
      */
     @Override
-    public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature) {
+    public Declaration getMemberOrParameter(Unit unit, String name, 
+            List<ProducedType> signature) {
         //this implements the rule that imports hide 
         //toplevel members of a package
-        Declaration d = unit.getImportedDeclaration(name);
+        Declaration d = unit.getImportedDeclaration(name, signature);
         if (d!=null) {
             return d;
         }
