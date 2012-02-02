@@ -1889,45 +1889,57 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
+    /** Appends an object with the type's type and list of union/instersection types. */
+    private void getTypeList(StaticType type) {
+        out("{ t:'");
+        if (type instanceof UnionType) {
+            out("u");
+        } else {
+            out("i");
+        }
+        out("', l:[");
+        List<StaticType> types = type instanceof UnionType ? ((UnionType)type).getStaticTypes() : ((IntersectionType)type).getStaticTypes();
+        boolean first = true;
+        for (StaticType t : types) {
+            if (!first) out(",");
+            if (t instanceof SimpleType) {
+                out("'");
+                out(((SimpleType)t).getDeclarationModel().getQualifiedNameString());
+                out("'");
+            } else {
+                getTypeList(t);
+            }
+            first = false;
+        }
+        out("]}");
+    }
+
+    /** Generates js code to check if a term is of a certain type. We solve this in JS by
+     * checking against all types that Type satisfies (in the case of union types, matching any
+     * type will do, and in case of intersection types, all types must be matched). */
     private void generateIsOfType(Term term, String termString, Type type, boolean simpleCheck) {
         clAlias();
         if (type instanceof SimpleType) {
             out(".isOfType(");
-        } else if (type instanceof UnionType) {
-            out(".isOfAnyType(");
-        } else if (type instanceof IntersectionType) {
-            out(".isOfAllTypes(");
+        } else {
+            out(".Boolean(");
+            clAlias();
+            out(".isOfTypes(");
         }
         if (term != null) {
             specialConditionRHS(term, simpleCheck);
         } else {
             specialConditionRHS(termString, simpleCheck);
         }
+        out(",");
         
         if (type instanceof SimpleType) {
-            out(",'");
+            out("'");
             out(((SimpleType) type).getDeclarationModel().getQualifiedNameString());
             out("')");
-        } else if (type instanceof UnionType || type instanceof IntersectionType) {
-            out(",[");
-            List<StaticType> types = type instanceof UnionType ? ((UnionType)type).getStaticTypes() : ((IntersectionType)type).getStaticTypes();
-            boolean first = true;
-            for (StaticType t : types) {
-                out(first?"'":", '");
-                if (t instanceof SimpleType) {
-                    out(((SimpleType)t).getDeclarationModel().getQualifiedNameString());
-                    out("'");
-                } else {
-                    out("$TODO ");
-                    out(t.getClass().getName());
-                }
-                first = false;
-            }
-            out("])");
         } else {
-            out(",'$TODO$ ");
-            out(type.getClass().getName()); //TODO
-            out("')");
+            getTypeList((StaticType)type);
+            out("))");
         }
     }
     @Override
