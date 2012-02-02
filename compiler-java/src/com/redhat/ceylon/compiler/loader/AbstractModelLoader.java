@@ -853,7 +853,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         setAnnotations(klass, classMirror);
     }
 
-    private void setAnnotations(Declaration decl, ClassMirror classMirror) {
+    private void setAnnotations(Declaration decl, AnnotatedMirror classMirror) {
         List<AnnotationMirror> annotations = getAnnotationArrayValue(classMirror, CEYLON_ANNOTATIONS_ANNOTATION);
         if(annotations == null)
             return;
