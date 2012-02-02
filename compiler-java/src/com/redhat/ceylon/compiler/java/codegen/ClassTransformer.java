@@ -110,6 +110,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         return classBuilder
+            .modelAnnotations(def.getDeclarationModel().getAnnotations())
             .modifiers(transformClassDeclFlags(def))
             .satisfies(def.getDeclarationModel().getSatisfiedTypes())
             .caseTypes(def.getDeclarationModel().getCaseTypes())

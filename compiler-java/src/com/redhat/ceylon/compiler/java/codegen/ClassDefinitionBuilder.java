@@ -29,6 +29,7 @@ import static com.sun.tools.javac.code.Flags.STATIC;
 
 import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -419,6 +420,11 @@ public class ClassDefinitionBuilder {
                 concreteInterfaceMemberDefs(gen.classGen().transformConcreteInterfaceMember(m, ((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)Decl.container(method)).getType()));
             }
         }
+        return this;
+    }
+
+    public ClassDefinitionBuilder modelAnnotations(java.util.List<Annotation> annotations) {
+        annotations(gen.makeAtAnnotations(annotations));
         return this;
     }
 }
