@@ -152,17 +152,17 @@ public class ReflectionClass implements ClassMirror {
 
     @Override
     public boolean isCeylonToplevelAttribute() {
-        return klass.isAnnotationPresent(com.redhat.ceylon.compiler.java.metadata.Attribute.class);
+        return !isInnerClass() && klass.isAnnotationPresent(com.redhat.ceylon.compiler.java.metadata.Attribute.class);
     }
 
     @Override
     public boolean isCeylonToplevelObject() {
-        return klass.isAnnotationPresent(com.redhat.ceylon.compiler.java.metadata.Object.class);
+        return !isInnerClass() && klass.isAnnotationPresent(com.redhat.ceylon.compiler.java.metadata.Object.class);
     }
 
     @Override
     public boolean isCeylonToplevelMethod() {
-        return klass.isAnnotationPresent(com.redhat.ceylon.compiler.java.metadata.Method.class);
+        return !isInnerClass() && klass.isAnnotationPresent(com.redhat.ceylon.compiler.java.metadata.Method.class);
     }
 
     @Override

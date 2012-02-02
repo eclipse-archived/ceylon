@@ -91,17 +91,17 @@ public class JavacClass implements ClassMirror {
 
     @Override
     public boolean isCeylonToplevelAttribute() {
-        return getAnnotation(AbstractModelLoader.CEYLON_ATTRIBUTE_ANNOTATION) != null;
+        return !isInnerClass() && getAnnotation(AbstractModelLoader.CEYLON_ATTRIBUTE_ANNOTATION) != null;
     }
 
     @Override
     public boolean isCeylonToplevelObject() {
-        return getAnnotation(AbstractModelLoader.CEYLON_OBJECT_ANNOTATION) != null;
+        return !isInnerClass() && getAnnotation(AbstractModelLoader.CEYLON_OBJECT_ANNOTATION) != null;
     }
 
     @Override
     public boolean isCeylonToplevelMethod() {
-        return getAnnotation(AbstractModelLoader.CEYLON_METHOD_ANNOTATION) != null;
+        return !isInnerClass() && getAnnotation(AbstractModelLoader.CEYLON_METHOD_ANNOTATION) != null;
     }
 
     @Override
