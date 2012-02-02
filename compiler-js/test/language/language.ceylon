@@ -10,13 +10,6 @@ void fail(String text) {
     print("[NOT OK] " + text);
 }
 
-//Another test for the compiler.
-void test_interpolate() {
-    value s1 = "as it should";
-    value interp = "String part " 1 " interpolation " 2 " works" s1 "";
-    expect(interp, "String part 1 interpolation 2 worksas it should", "String Interpolation");
-}
-
 void testCharacter() {
     Character c1 = `A`;
     //Character c2 = `𝄞`;
@@ -147,7 +140,6 @@ void testString() {
 
 shared void test() {
     print("--- Start Language Module Tests ---");
-    test_interpolate();
     testCharacter();
     //testString();
     print("--- End Language Module Tests ---");
