@@ -467,6 +467,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         List<JCTree> result = objectClassBuilder
             .annotations(makeAtObject())
+            .modelAnnotations(def.getDeclarationModel().getAnnotations())
             .modifiers(transformObjectDeclFlags(def))
             .constructorModifiers(PRIVATE)
             .satisfies(decl.getSatisfiedTypes())

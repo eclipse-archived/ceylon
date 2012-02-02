@@ -1210,6 +1210,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             throw new RuntimeException("Failed to find toplevel attribute "+value.getName());
         
         value.setType(obtainType(meth.getReturnType(), meth, null));
+        setAnnotations(value, meth);
         markUnboxed(value, meth.getReturnType());
     }
 
