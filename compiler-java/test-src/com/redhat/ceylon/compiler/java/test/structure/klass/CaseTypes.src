@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("abstract")})
 @.com.redhat.ceylon.compiler.java.metadata.CaseTypes({"com.redhat.ceylon.compiler.java.test.structure.klass.foo", "com.redhat.ceylon.compiler.java.test.structure.klass.bar"})
 public abstract class CaseTypes {
     
@@ -51,7 +50,6 @@ public final class bar extends com.redhat.ceylon.compiler.java.test.structure.kl
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("abstract")})
 @.com.redhat.ceylon.compiler.java.metadata.CaseTypes({"com.redhat.ceylon.compiler.java.test.structure.klass.Foo", "com.redhat.ceylon.compiler.java.test.structure.klass.Bar"})
 public abstract class CaseTypes2 {
     
@@ -91,7 +89,6 @@ public class Bar extends com.redhat.ceylon.compiler.java.test.structure.klass.Ca
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.CaseTypes({"com.redhat.ceylon.compiler.java.test.structure.klass.IFoo", "com.redhat.ceylon.compiler.java.test.structure.klass.IBar"})
 public interface ICaseTypes {
 }
