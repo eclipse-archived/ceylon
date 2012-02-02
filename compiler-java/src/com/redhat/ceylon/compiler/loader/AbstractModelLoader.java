@@ -1238,6 +1238,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         setParameters(method, meth, true /* toplevel methods are always Ceylon */);
         method.setType(obtainType(meth.getReturnType(), meth, method));
         markUnboxed(method, meth.getReturnType());
+        
+        setAnnotations(method, meth);
      }
     
     //
