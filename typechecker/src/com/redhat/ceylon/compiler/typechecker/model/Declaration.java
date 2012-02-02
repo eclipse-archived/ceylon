@@ -23,6 +23,7 @@ public abstract class Declaration extends Element {
     private List<Annotation> annotations = new ArrayList<Annotation>();
     private Scope visibleScope;
     private Declaration refinedDeclaration = this;
+    private boolean staticallyImportable;
 
     public Scope getVisibleScope() {
         return visibleScope;
@@ -171,6 +172,14 @@ public abstract class Declaration extends Element {
     
     public boolean isMember() {
     	return false;
+    }
+    
+    public boolean isStaticallyImportable() {
+        return staticallyImportable;
+    }
+    
+    public void setStaticallyImportable(boolean staticallyImportable) {
+        this.staticallyImportable = staticallyImportable;
     }
 
     /**

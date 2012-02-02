@@ -78,7 +78,8 @@ public class TypeVisitor extends Visitor {
         }
     }
 
-    private void importAllMembers(Package importedPackage, Set<String> ignoredMembers, ImportList il) {
+    private void importAllMembers(Package importedPackage, Set<String> ignoredMembers, 
+            ImportList il) {
         for (Declaration dec: importedPackage.getMembers()) {
             if (dec.isShared() && !ignoredMembers.contains(dec.getName())) {
                 Import i = new Import();
@@ -148,7 +149,8 @@ public class TypeVisitor extends Visitor {
         return sb.toString();
     }
     
-    private String importMember(Tree.ImportMemberOrType member, Package importedPackage, ImportList il) {
+    private String importMember(Tree.ImportMemberOrType member, Package importedPackage, 
+            ImportList il) {
         Import i = new Import();
         Tree.Alias alias = member.getAlias();
         String name = name(member.getIdentifier());
@@ -209,12 +211,11 @@ public class TypeVisitor extends Visitor {
         Tree.Alias alias = member.getAlias();
         String name = name(member.getIdentifier());
         if (alias==null) {
-            member.addError("must specify an alias");
+            i.setAlias(name);
         }
         else {
             i.setAlias(name(alias.getIdentifier()));
         }
-        i.setTypeDeclaration(d);
         Declaration m = d.getMember(name, null);
         if (m==null) {
             member.getIdentifier().addError("imported declaration not found: " + 
@@ -224,6 +225,12 @@ public class TypeVisitor extends Visitor {
             if (!m.isShared()) {
                 member.getIdentifier().addError("imported declaration is not shared: " +
                         name + " of " + d.getName(), 400);
+            }
+            if (!d.isStaticallyImportable()) {
+                i.setTypeDeclaration(d);
+                if (alias==null) {
+                    member.addError("does not specify an alias");
+                }
             }
             i.setDeclaration(m);
             member.setDeclarationModel(m);
