@@ -940,8 +940,8 @@ $Range.prototype.includes = function(x) {
     return Boolean$(rval);
 }
 $Range.prototype.contains = function(x) {
-    if (typeof x.compare==='function' || typeof x.prototype.compare==='function') {
-        return $Range.prototype.includes;
+    if (typeof x.compare==='function' || (x.prototype && typeof x.prototype.compare==='function')) {
+        return this.includes(x);
     }
     return $false;
 }
