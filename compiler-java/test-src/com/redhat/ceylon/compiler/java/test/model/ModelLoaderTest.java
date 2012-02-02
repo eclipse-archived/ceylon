@@ -306,6 +306,9 @@ public class ModelLoaderTest extends CompilerTest {
     }
 
     private void compareAttributeDeclarations(MethodOrValue validDeclaration, Value modelDeclaration) {
+        // let's not check Setters since their corresponding Getter is checked already
+        if(validDeclaration instanceof Setter)
+            return;
         // make sure the flags are the same
         Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [variable]", validDeclaration.isVariable(), modelDeclaration.isVariable());
         Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [formal]", validDeclaration.isFormal(), modelDeclaration.isFormal());
