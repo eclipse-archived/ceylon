@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
@@ -341,8 +342,9 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     public JCMethodDecl transform(Tree.AnyMethod def, ClassDefinitionBuilder classBuilder) {
-        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, def.getDeclarationModel().isClassOrInterfaceMember(), 
-                Util.quoteMethodNameIfProperty(def.getDeclarationModel(), typeFact()));
+        Method model = def.getDeclarationModel();
+        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, model.isClassOrInterfaceMember(), 
+                Util.quoteMethodNameIfProperty(model, typeFact()));
         
         ParameterList paramList = def.getParameterLists().get(0);
         for (Tree.Parameter param : paramList.getParameters()) {
@@ -360,11 +362,11 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         if (!(def.getType() instanceof VoidModifier)) {
-            methodBuilder.resultType(def.getDeclarationModel());
+            methodBuilder.resultType(model);
         }
         
         if (def instanceof Tree.MethodDefinition) {
-            Scope container = def.getDeclarationModel().getContainer();
+            Scope container = model.getContainer();
             boolean isInterface = container instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
             if(!isInterface){
                 JCBlock body = statementGen().transform(((Tree.MethodDefinition)def).getBlock());
@@ -380,6 +382,7 @@ public class ClassTransformer extends AbstractTransformer {
         return methodBuilder
             .modifiers(transformMethodDeclFlags(def))
             .isActual(Decl.isActual(def))
+            .modelAnnotations(model.getAnnotations())
             .build();
     }
 

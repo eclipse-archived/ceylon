@@ -27,6 +27,7 @@ import static com.sun.tools.javac.code.Flags.STATIC;
 import static com.sun.tools.javac.code.TypeTags.VOID;
 
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -274,6 +275,11 @@ public class MethodDefinitionBuilder {
     public MethodDefinitionBuilder resultType(JCExpression resultType, TypedDeclaration typeDecl) {
         this.resultType = typeDecl;
         this.resultTypeExpr = resultType;
+        return this;
+    }
+
+    public MethodDefinitionBuilder modelAnnotations(java.util.List<Annotation> annotations) {
+        annotations(gen.makeAtAnnotations(annotations));
         return this;
     }
 }

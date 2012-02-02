@@ -918,6 +918,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         method.setType(type);
         
         markUnboxed(method, methodMirror.getReturnType());
+        setAnnotations(method, methodMirror);
+        
         klass.getMembers().add(method);
         
         return method;
