@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
@@ -141,6 +142,7 @@ public class ModelLoaderTest extends CompilerTest {
             Assert.assertTrue(name+" [type]", sameType);
             return;
         }
+        compareAnnotations(validDeclaration, modelDeclaration);
         // full check
         if(validDeclaration instanceof Class){
             Assert.assertTrue(name+" [Class]", modelDeclaration instanceof Class);
@@ -157,6 +159,16 @@ public class ModelLoaderTest extends CompilerTest {
         }
     }
     
+    private void compareAnnotations(Declaration validDeclaration, Declaration modelDeclaration) {
+        // let's not compare setter annotations
+        if(validDeclaration instanceof Setter)
+            return;
+        String name = validDeclaration.getQualifiedNameString();
+        List<Annotation> validAnnotations = validDeclaration.getAnnotations();
+        List<Annotation> modelAnnotations = modelDeclaration.getAnnotations();
+        Assert.assertEquals(name+" [annotation count]", validAnnotations.size(), modelAnnotations.size());
+    }
+
     private boolean alreadyCompared(Declaration validDeclaration, Declaration modelDeclaration) {
         Set<Declaration> comparedDeclarations = alreadyCompared.get(modelDeclaration);
         if(comparedDeclarations == null){
@@ -330,5 +342,10 @@ public class ModelLoaderTest extends CompilerTest {
     @Test
     public void loadErasedTypes(){
         verifyClassLoading("ErasedTypes.ceylon");
+    }
+
+    @Test
+    public void loadDocAnnotations(){
+        verifyClassLoading("DocAnnotations.ceylon");
     }
 }
