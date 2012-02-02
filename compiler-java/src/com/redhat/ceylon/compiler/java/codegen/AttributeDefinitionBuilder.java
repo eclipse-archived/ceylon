@@ -85,6 +85,7 @@ public class AttributeDefinitionBuilder {
             .systemMethod(owner, Util.getGetterName(attrType))
             .block(generateDefaultGetterBlock())
             .isActual(attrType.isActual())
+            .annotations(owner.makeAtAnnotations(attrType.getAnnotations()))
             .resultType(type, attrType);
         setterBuilder = MethodDefinitionBuilder
             .systemMethod(owner, Util.getSetterName(attrType))
