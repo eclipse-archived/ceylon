@@ -402,11 +402,24 @@ $String.prototype.getNormalized = function() {
     return String$(result, len);
 }
 $String.prototype.firstOccurrence = function(sub) {
-    //TODO implement!!!
+    if (sub.value.length == 0) {return Integer(0)}
+    var bound = this.value.length - sub.value.length;
+    for (var i=0, count=0; i<=bound; ++count) {
+        if (cmpSubString(this.value, sub.value, i) === $true) {return Integer(count)}
+        if ((this.value.charCodeAt(i++)&0xfc00) === 0xd800) {++i}
+    }
     return null;
 }
 $String.prototype.lastOccurrence = function(sub) {
-    //TODO implement!!!
+    if (sub.value.length == 0) {return Integer(this.value.length>0 ? this.value.length-1 : 0)}
+    for (var i=this.value.length-sub.value.length; i>=0; --i) {
+        if (cmpSubString(this.value, sub.value, i) === $true) {
+            for (var count=0; i>0; ++count) {
+                if ((this.value.charCodeAt(--i)&0xfc00) === 0xdc00) {--i}
+            }
+            return Integer(count);
+        }
+    }
     return null;
 }
 $String.prototype.firstCharacterOccurrence = function(subc) {
@@ -436,7 +449,7 @@ $String.prototype.lastCharacterOccurrence = function(subc) {
 }
 $String.prototype.getCharacters = function() {
     //we can cheat and add the required behavior to String, avoiding the need to create a Sequence...
-    return this;
+    return this.value.length>0 ? this:$empty;
 }
 $String.prototype.getFirst = function() { return this.getSize().value>0?this.item(Integer(0)):null; }
 $String.prototype.getLast = function() { return this.getSize().value>0?this.item(Integer(this.getSize().getPredecessor())):null; }
@@ -470,7 +483,6 @@ $String.prototype.replace = function(sub, repl) {
     //TODO implement
     return this;
 }
-
 $String.prototype.repeat = function(times) {
     var sb = StringBuilder();
     for (var i = 0; i < times.value; i++) {
