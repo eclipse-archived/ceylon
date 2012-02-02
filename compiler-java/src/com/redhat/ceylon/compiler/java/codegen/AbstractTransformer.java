@@ -24,6 +24,7 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.antlr.runtime.Token;
 
@@ -32,6 +33,7 @@ import com.redhat.ceylon.compiler.java.loader.TypeFactory;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -1002,6 +1004,53 @@ public abstract class AbstractTransformer implements Transformation {
 
     protected List<JCAnnotation> makeAtIgnore() {
         return makeModelAnnotation(syms().ceylonAtIgnore);
+    }
+
+    protected List<JCAnnotation> makeAtAnnotations(java.util.List<Annotation> annotations) {
+        if(annotations == null || annotations.isEmpty())
+            return List.nil();
+        ListBuffer<JCExpression> array = new ListBuffer<JCTree.JCExpression>();
+        for(Annotation annotation : annotations){
+            array.append(makeAtAnnotation(annotation));
+        }
+        JCExpression annotationsAttribute = make().Assign(makeUnquotedIdent("value"), 
+                make().NewArray(null, null, array.toList()));
+        
+        return makeModelAnnotation(syms().ceylonAtAnnotationsType, List.of(annotationsAttribute));
+    }
+
+    private JCExpression makeAtAnnotation(Annotation annotation) {
+        JCExpression valueAttribute = make().Assign(makeUnquotedIdent("value"), 
+                                                    make().Literal(annotation.getName()));
+        List<JCExpression> attributes;
+        if(!annotation.getPositionalArguments().isEmpty()){
+            java.util.List<String> positionalArguments = annotation.getPositionalArguments();
+            ListBuffer<JCExpression> array = new ListBuffer<JCTree.JCExpression>();
+            for(String val : positionalArguments)
+                array.add(make().Literal(val));
+            JCExpression argumentsAttribute = make().Assign(makeUnquotedIdent("arguments"), 
+                                                            make().NewArray(null, null, array.toList()));
+            attributes = List.of(valueAttribute, argumentsAttribute);
+        }else if(!annotation.getNamedArguments().isEmpty()){
+            Map<String, String> namedArguments = annotation.getNamedArguments();
+            ListBuffer<JCExpression> array = new ListBuffer<JCTree.JCExpression>();
+            for(Entry<String, String> entry : namedArguments.entrySet()){
+                JCExpression argNameAttribute = make().Assign(makeUnquotedIdent("name"), 
+                        make().Literal(entry.getKey()));
+                JCExpression argValueAttribute = make().Assign(makeUnquotedIdent("value"), 
+                        make().Literal(entry.getValue()));
+
+                JCAnnotation namedArg = make().Annotation(makeIdent(syms().ceylonAtNamedArgumentType), 
+                                                          List.of(argNameAttribute, argValueAttribute));
+                array.add(namedArg);
+            }
+            JCExpression argumentsAttribute = make().Assign(makeUnquotedIdent("namedArguments"), 
+                    make().NewArray(null, null, array.toList()));
+            attributes = List.of(valueAttribute, argumentsAttribute);
+        }else
+            attributes = List.of(valueAttribute);
+
+        return make().Annotation(makeIdent(syms().ceylonAtAnnotationType), attributes);
     }
 
     protected boolean needsAnnotations(Declaration decl) {
