@@ -1117,7 +1117,7 @@ public class GenerateJsVisitor extends Visitor
             boolean sequenced=false;
             for (PositionalArgument arg: that.getPositionalArguments()) {
                 if (!first) out(",");
-                if (!sequenced && arg.getParameter().isSequenced()) {
+                if (!sequenced && arg.getParameter().isSequenced() && that.getEllipsis() == null) {
                     sequenced=true;
                     clAlias();
                     out(".ArraySequence([");
