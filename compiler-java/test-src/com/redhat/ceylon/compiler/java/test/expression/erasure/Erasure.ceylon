@@ -222,7 +222,6 @@ class Test() {
         sync := p1 in container;
         
         // is
-        if(is Integer p1){}
         sync := is Integer p1;
     }
 
