@@ -192,18 +192,6 @@ public class LazyValue extends Value implements LazyElement {
     }
 
     @Override
-    public boolean isShared() {
-        load();
-        return super.isShared();
-    }
-
-    @Override
-    public void setShared(boolean shared) {
-        load();
-        super.setShared(shared);
-    }
-
-    @Override
     public boolean isParameterized() {
         load();
         return super.isParameterized();
@@ -321,30 +309,6 @@ public class LazyValue extends Value implements LazyElement {
     public boolean refines(Declaration other) {
         load();
         return super.refines(other);
-    }
-
-    @Override
-    public Unit getUnit() {
-        load();
-        return super.getUnit();
-    }
-
-    @Override
-    public void setUnit(Unit compilationUnit) {
-        load();
-        super.setUnit(compilationUnit);
-    }
-
-    @Override
-    public Scope getContainer() {
-        load();
-        return super.getContainer();
-    }
-
-    @Override
-    public void setContainer(Scope scope) {
-        load();
-        super.setContainer(scope);
     }
 
     @Override
