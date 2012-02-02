@@ -55,6 +55,7 @@ import com.redhat.ceylon.compiler.loader.model.LazyPackage;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -105,6 +106,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public static final String CEYLON_ATTRIBUTE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Attribute";
     public static final String CEYLON_OBJECT_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Object";
     public static final String CEYLON_METHOD_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Method";
+    private static final String CEYLON_ANNOTATIONS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Annotations";
 
     private static final TypeMirror OBJECT_TYPE = simpleObjectType("java.lang.Object");
     private static final TypeMirror CEYLON_OBJECT_TYPE = simpleObjectType("ceylon.language.Object");
@@ -848,6 +850,37 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         setCaseTypes(klass, classMirror);
         fillRefinedDeclarations(klass);
         addInnerClasses(klass, classMirror);
+        addAnnotations(klass, classMirror);
+    }
+
+    private void addAnnotations(ClassOrInterface klass, ClassMirror classMirror) {
+        List<AnnotationMirror> annotations = getAnnotationArrayValue(classMirror, CEYLON_ANNOTATIONS_ANNOTATION);
+        if(annotations == null)
+            return;
+        for(AnnotationMirror annotation : annotations){
+            klass.getAnnotations().add(readModelAnnotation(annotation));
+        }
+    }
+
+    private Annotation readModelAnnotation(AnnotationMirror annotation) {
+        Annotation modelAnnotation = new Annotation();
+        modelAnnotation.setName((String) annotation.getValue());
+        @SuppressWarnings("unchecked")
+        List<String> arguments = (List<String>) annotation.getValue("arguments");
+        if(arguments != null){
+            modelAnnotation.getPositionalArguments().addAll(arguments);
+        }else{
+            @SuppressWarnings("unchecked")
+            List<AnnotationMirror> namedArguments = (List<AnnotationMirror>) annotation.getValue("namedArguments");
+            if(namedArguments != null){
+                for(AnnotationMirror namedArgument : namedArguments){
+                    String argName = (String) namedArgument.getValue("name");
+                    String argValue = (String) namedArgument.getValue("value");
+                    modelAnnotation.getNamedArguments().put(argName, argValue);
+                }
+            }
+        }
+        return modelAnnotation;
     }
 
     private void addInnerClasses(ClassOrInterface klass, ClassMirror classMirror) {
