@@ -850,15 +850,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         setCaseTypes(klass, classMirror);
         fillRefinedDeclarations(klass);
         addInnerClasses(klass, classMirror);
-        addAnnotations(klass, classMirror);
+        setAnnotations(klass, classMirror);
     }
 
-    private void addAnnotations(ClassOrInterface klass, ClassMirror classMirror) {
+    private void setAnnotations(Declaration decl, ClassMirror classMirror) {
         List<AnnotationMirror> annotations = getAnnotationArrayValue(classMirror, CEYLON_ANNOTATIONS_ANNOTATION);
         if(annotations == null)
             return;
         for(AnnotationMirror annotation : annotations){
-            klass.getAnnotations().add(readModelAnnotation(annotation));
+            decl.getAnnotations().add(readModelAnnotation(annotation));
         }
     }
 
