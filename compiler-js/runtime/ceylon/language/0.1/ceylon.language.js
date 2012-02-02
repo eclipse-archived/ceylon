@@ -643,25 +643,28 @@ function exists(value) { return value === getNull() || value === undefined || va
 function nonempty(value) { return value === null || value === undefined || value === $nullsafe ? $false : Boolean$(value.getEmpty() === $false); }
 
 function isOfType(obj, typeName) {
-    return Boolean$((obj!==null && obj!==$nullsafe) ? (typeName in obj.constructor.T$all) : (typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void"));
+    return Boolean$((obj===null || obj===$nullsafe) ? (typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void") : (typeName in obj.constructor.T$all));
 }
-function isOfAnyType(obj, typeNames) {
-    if (obj===null || obj===$nullsafe) {
-        return Boolean$(typeNames.indexOf('ceylon.language.Nothing')>=0 || typeNames.indexOf('ceylon.language.Void')>=0);
-    }
-    for (var i = 0; i < typeNames.length; i++) {
-        if (typeNames[i] in obj.constructor.T$all) return $true;
-    }
-    return $false;
-}
-function isOfAllTypes(obj, typeNames) {
+function isOfTypes(obj, types) {
     if (obj===null || obj===$nullsafe) { //TODO check if this is right
-        return Boolean$(typeNames.indexOf('ceylon.language.Nothing')>=0 || typeNames.indexOf('ceylon.language.Void')>=0);
+        return types.l.indexOf('ceylon.language.Nothing')>=0 || types.l.indexOf('ceylon.language.Void')>=0;
     }
-    for (var i = 0; i < typeNames.length; i++) {
-        if (!(typeNames[i] in obj.constructor.T$all)) return $false;
+    var result = false;
+    for (var i = 0; i < types.l.length; i++) {
+        var t = types.l[i];
+        var partial = false;
+        if (typeof t === 'string') {
+            partial = t in obj.constructor.T$all;
+        } else {
+            partial = isOfTypes(obj, t);
+        }
+        if (types.t==='u') {
+            result |= partial;
+        } else {
+            result &= partial;
+        }
     }
-    return $true;
+    return result;
 }
 
 function className(obj) {
@@ -1264,8 +1267,7 @@ exports.entries=entries;
 exports.exists=exists;
 exports.nonempty=nonempty;
 exports.isOfType=isOfType;
-exports.isOfAnyType=isOfAnyType;
-exports.isOfAllTypes=isOfAllTypes;
+exports.isOfTypes=isOfTypes;
 exports.parseInteger=$parseInteger;
 exports.parseFloat=$parseFloat;
 exports.empty=$empty;
