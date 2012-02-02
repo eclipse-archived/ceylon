@@ -1,20 +1,13 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon
-@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.issues.Bug233_Java")
 class Bug233_Ceylon extends com.redhat.ceylon.compiler.java.test.issues.Bug233_Java {
     
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.Bug233_Type")
-    public final com.redhat.ceylon.compiler.java.test.issues.Bug233_Type f(@.com.redhat.ceylon.compiler.java.metadata.Name("arg")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Nothing|com.redhat.ceylon.compiler.java.test.issues.Bug233_Type")
-    final com.redhat.ceylon.compiler.java.test.issues.Bug233_Type arg) {
+    public final com.redhat.ceylon.compiler.java.test.issues.Bug233_Type f(final com.redhat.ceylon.compiler.java.test.issues.Bug233_Type arg) {
         return (let com.redhat.ceylon.compiler.java.test.issues.Bug233_Type $ceylontmp0 = arg in $ceylontmp0 != null ? $ceylontmp0 : new com.redhat.ceylon.compiler.java.test.issues.Bug233_Type());
     }
     
-    Bug233_Ceylon(@.com.redhat.ceylon.compiler.java.metadata.Name("arg")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Nothing|com.redhat.ceylon.compiler.java.test.issues.Bug233_Type")
-    com.redhat.ceylon.compiler.java.test.issues.Bug233_Type arg) {
+    Bug233_Ceylon(com.redhat.ceylon.compiler.java.test.issues.Bug233_Type arg) {
         super(arg);
     }
 }

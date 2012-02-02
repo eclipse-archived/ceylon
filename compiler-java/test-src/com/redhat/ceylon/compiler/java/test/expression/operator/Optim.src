@@ -1,72 +1,45 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon
-@.com.redhat.ceylon.compiler.java.metadata.Attribute
 final class optimToplevelInteger {
     private static long value;
     static {
         value = 0L;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
     static long getOptimToplevelInteger() {
         return value;
     }
     
-    static void setOptimToplevelInteger(@.com.redhat.ceylon.compiler.java.metadata.Name("optimToplevelInteger")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
-    long optimToplevelInteger) {
+    static void setOptimToplevelInteger(long optimToplevelInteger) {
         value = optimToplevelInteger;
     }
     
     private optimToplevelInteger() {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon
-@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "I", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "F", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "C", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "S", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "B", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {})})
 abstract class OptimSuperclass<I, F, C, S, B> {
     
-    public abstract void boxedIntegerArithmetic(@.com.redhat.ceylon.compiler.java.metadata.Name("n2")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("I")
-    final I n2);
+    public abstract void boxedIntegerArithmetic(final I n2);
     
-    public abstract void boxedFloatArithmetic(@.com.redhat.ceylon.compiler.java.metadata.Name("n2")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("F")
-    final F n2);
+    public abstract void boxedFloatArithmetic(final F n2);
     
-    public abstract void boxedStringOperators(@.com.redhat.ceylon.compiler.java.metadata.Name("s2")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("S")
-    final S s2);
+    public abstract void boxedStringOperators(final S s2);
     
-    public abstract void boxedBooleanLogical(@.com.redhat.ceylon.compiler.java.metadata.Name("b2")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("B")
-    final B b2);
+    public abstract void boxedBooleanLogical(final B b2);
     
-    public abstract void boxedIntegerComparison(@.com.redhat.ceylon.compiler.java.metadata.Name("n2")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("I")
-    final I n2);
+    public abstract void boxedIntegerComparison(final I n2);
     
-    public abstract void boxedFloatComparison(@.com.redhat.ceylon.compiler.java.metadata.Name("n2")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("F")
-    final F n2);
+    public abstract void boxedFloatComparison(final F n2);
     
-    public abstract void boxedStringComparison(@.com.redhat.ceylon.compiler.java.metadata.Name("s2")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("S")
-    final S s2);
+    public abstract void boxedStringComparison(final S s2);
     
-    public abstract void boxedCharacterComparison(@.com.redhat.ceylon.compiler.java.metadata.Name("c2")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("C")
-    final C c2);
+    public abstract void boxedCharacterComparison(final C c2);
     
-    public abstract void boxedBooleanComparison(@.com.redhat.ceylon.compiler.java.metadata.Name("b2")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("B")
-    final B b2);
+    public abstract void boxedBooleanComparison(final B b2);
     
     OptimSuperclass() {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon
-@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.expression.operator.OptimSuperclass<ceylon.language.Integer,ceylon.language.Float,ceylon.language.Character,ceylon.language.String,ceylon.language.Boolean>")
 class Optim extends com.redhat.ceylon.compiler.java.test.expression.operator.OptimSuperclass<ceylon.language.Integer, ceylon.language.Float, ceylon.language.Character, ceylon.language.String, ceylon.language.Boolean> {
     
     private final long $getInteger() {
@@ -77,7 +50,6 @@ class Optim extends com.redhat.ceylon.compiler.java.test.expression.operator.Opt
         return 1.0;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {})})
     private final <T>T getBoxed(final T t) {
         return t;
     }
@@ -109,9 +81,7 @@ class Optim extends com.redhat.ceylon.compiler.java.test.expression.operator.Opt
     }
     
     @.java.lang.Override
-    public final void boxedIntegerArithmetic(@.com.redhat.ceylon.compiler.java.metadata.Name("n2")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
-    final ceylon.language.Integer n2) {
+    public final void boxedIntegerArithmetic(final ceylon.language.Integer n2) {
         long n1 = 0L;
         long n3 = 0L;
         n1++;
@@ -157,9 +127,7 @@ class Optim extends com.redhat.ceylon.compiler.java.test.expression.operator.Opt
     }
     
     @.java.lang.Override
-    public final void boxedFloatArithmetic(@.com.redhat.ceylon.compiler.java.metadata.Name("n2")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Float")
-    final ceylon.language.Float n2) {
+    public final void boxedFloatArithmetic(final ceylon.language.Float n2) {
         double n1 = 0.0;
         double n3 = 0.0;
         n1 = n2.getPositiveValue().doubleValue();
@@ -201,9 +169,7 @@ class Optim extends com.redhat.ceylon.compiler.java.test.expression.operator.Opt
     }
     
     @.java.lang.Override
-    public final void boxedBooleanLogical(@.com.redhat.ceylon.compiler.java.metadata.Name("b2")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Boolean")
-    final ceylon.language.Boolean b2) {
+    public final void boxedBooleanLogical(final ceylon.language.Boolean b2) {
         boolean b1 = false;
         boolean b3 = false;
         b1 = b2.booleanValue();
@@ -223,9 +189,7 @@ class Optim extends com.redhat.ceylon.compiler.java.test.expression.operator.Opt
     }
     
     @.java.lang.Override
-    public final void boxedStringOperators(@.com.redhat.ceylon.compiler.java.metadata.Name("s2")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.String")
-    final ceylon.language.String s2) {
+    public final void boxedStringOperators(final ceylon.language.String s2) {
         .java.lang.String s1 = "";
         .java.lang.String s3 = "";
         s1 = s2.plus(.ceylon.language.String.instance(s3)).toString();
@@ -250,8 +214,6 @@ class Optim extends com.redhat.ceylon.compiler.java.test.expression.operator.Opt
     
     private final void nonOptimisableArithmetic() {
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon
-        @.com.redhat.ceylon.compiler.java.metadata.Attribute
         final class localGetterInteger$getter {
             
             long getLocalGetterInteger() {
@@ -263,8 +225,6 @@ class Optim extends com.redhat.ceylon.compiler.java.test.expression.operator.Opt
         }
         final localGetterInteger$getter localGetterInteger$getter = new localGetterInteger$getter();
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon
-        @.com.redhat.ceylon.compiler.java.metadata.Attribute
         final class localGetterInteger$setter {
             private long value;
             
@@ -306,9 +266,7 @@ class Optim extends com.redhat.ceylon.compiler.java.test.expression.operator.Opt
     }
     
     @.java.lang.Override
-    public final void boxedIntegerComparison(@.com.redhat.ceylon.compiler.java.metadata.Name("n2")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
-    final ceylon.language.Integer n2) {
+    public final void boxedIntegerComparison(final ceylon.language.Integer n2) {
         long n1 = 0L;
         boolean sync;
         sync = .ceylon.language.Integer.instance(n1).equals(n2);
@@ -334,9 +292,7 @@ class Optim extends com.redhat.ceylon.compiler.java.test.expression.operator.Opt
     }
     
     @.java.lang.Override
-    public final void boxedFloatComparison(@.com.redhat.ceylon.compiler.java.metadata.Name("n2")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Float")
-    final ceylon.language.Float n2) {
+    public final void boxedFloatComparison(final ceylon.language.Float n2) {
         double n1 = 0.0;
         boolean sync;
         sync = .ceylon.language.Float.instance(n1).equals(n2);
@@ -362,9 +318,7 @@ class Optim extends com.redhat.ceylon.compiler.java.test.expression.operator.Opt
     }
     
     @.java.lang.Override
-    public final void boxedCharacterComparison(@.com.redhat.ceylon.compiler.java.metadata.Name("n2")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Character")
-    final ceylon.language.Character n2) {
+    public final void boxedCharacterComparison(final ceylon.language.Character n2) {
         int n1 = 'a';
         boolean sync;
         sync = .ceylon.language.Character.instance(n1).equals(n2);
@@ -386,9 +340,7 @@ class Optim extends com.redhat.ceylon.compiler.java.test.expression.operator.Opt
     }
     
     @.java.lang.Override
-    public final void boxedBooleanComparison(@.com.redhat.ceylon.compiler.java.metadata.Name("b2")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Boolean")
-    final ceylon.language.Boolean b2) {
+    public final void boxedBooleanComparison(final ceylon.language.Boolean b2) {
         boolean b1 = false;
         boolean sync;
         sync = .ceylon.language.Boolean.instance(b1) == b2;
@@ -410,9 +362,7 @@ class Optim extends com.redhat.ceylon.compiler.java.test.expression.operator.Opt
     }
     
     @.java.lang.Override
-    public final void boxedStringComparison(@.com.redhat.ceylon.compiler.java.metadata.Name("s2")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.String")
-    final ceylon.language.String s2) {
+    public final void boxedStringComparison(final ceylon.language.String s2) {
         .java.lang.String s1 = "";
         boolean sync;
         sync = .ceylon.language.String.instance(s1).equals(s2);
@@ -438,7 +388,6 @@ class Optim extends com.redhat.ceylon.compiler.java.test.expression.operator.Opt
         this.fieldInteger = 0L;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.Optim();

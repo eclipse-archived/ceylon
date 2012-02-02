@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon
-@.com.redhat.ceylon.compiler.java.metadata.Method
 final class bug313 {
     
     private bug313() {
@@ -12,20 +10,15 @@ final class bug313 {
         final ceylon.language.String name2 = (let ceylon.language.String $safe$0 = name in $safe$0 != null ? .ceylon.language.String.instance($safe$0.getUppercased()) : null);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug313.bug313();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon
 interface Bug310 {
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
     public abstract long getI();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon
-@.com.redhat.ceylon.compiler.java.metadata.Method
 final class bug310 {
     
     private bug310() {
@@ -36,14 +29,11 @@ final class bug310 {
         final ceylon.language.Integer j = (let com.redhat.ceylon.compiler.java.test.issues.Bug310 $safe$1 = x in $safe$1 != null ? .ceylon.language.Integer.instance($safe$1.getI()) : null);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug310.bug310();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon
-@.com.redhat.ceylon.compiler.java.metadata.Method
 final class bug310_2 {
     
     private bug310_2() {
@@ -54,7 +44,6 @@ final class bug310_2 {
         final boolean b = (let ceylon.language.Boolean $ceylontmp3 = (let ceylon.language.String $safe$2 = s1 in $safe$2 != null ? .ceylon.language.Boolean.instance($safe$2.equals(.ceylon.language.String.instance(""))) : null) in $ceylontmp3 != null ? $ceylontmp3 : .ceylon.language.Boolean.instance(false)).booleanValue();
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug310_2.bug310_2();

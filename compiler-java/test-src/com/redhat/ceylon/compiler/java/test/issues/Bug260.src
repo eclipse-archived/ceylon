@@ -43,12 +43,14 @@ class Bug260_Intersection implements com.redhat.ceylon.compiler.java.test.issues
 class Bug260 implements com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface, com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2 {
     private final ceylon.language.Integer attr;
     
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Nothing")
     public final ceylon.language.Integer getAttr() {
         return attr;
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Nothing")
     public final ceylon.language.Integer getAttrGetter() {
@@ -56,6 +58,7 @@ class Bug260 implements com.redhat.ceylon.compiler.java.test.issues.Bug260_Inter
     }
     private ceylon.language.Integer attrVariable;
     
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("variable")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Nothing")
     public final ceylon.language.Integer getAttrVariable() {
@@ -69,6 +72,7 @@ class Bug260 implements com.redhat.ceylon.compiler.java.test.issues.Bug260_Inter
         this.attrVariable = attrVariable;
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Nothing")
     public final ceylon.language.Integer getAttrGetterSetter() {
@@ -80,6 +84,7 @@ class Bug260 implements com.redhat.ceylon.compiler.java.test.issues.Bug260_Inter
     ceylon.language.Integer attrGetterSetter) {
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Nothing")
     public final ceylon.language.Integer m() {
@@ -87,12 +92,14 @@ class Bug260 implements com.redhat.ceylon.compiler.java.test.issues.Bug260_Inter
     }
     private final com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2 attr2;
     
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Bottom")
     public final com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2 getAttr2() {
         return attr2;
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Bottom")
     public final com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2 m2() {
@@ -100,12 +107,14 @@ class Bug260 implements com.redhat.ceylon.compiler.java.test.issues.Bug260_Inter
     }
     private final com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2 attr3;
     
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2&com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface3")
     public final com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2 getAttr3() {
         return attr3;
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2&com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface3")
     public final com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2 m3() {

@@ -17,8 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
- variable Integer optimToplevelInteger := 0;
+@nomodel
+variable Integer optimToplevelInteger := 0;
 
+@nomodel
 abstract class OptimSuperclass<I,F,C,S,B>(){
     formal shared void boxedIntegerArithmetic(I n2);
     formal shared void boxedFloatArithmetic(F n2);
@@ -32,6 +34,7 @@ abstract class OptimSuperclass<I,F,C,S,B>(){
     formal shared void boxedBooleanComparison(B b2);
 }
 
+@nomodel
 class Optim() extends OptimSuperclass<Integer,Float,Character,String,Boolean>(){
     Integer getInteger() { return 1; }
     Float getFloat() { return 1.0; }

@@ -24,6 +24,7 @@ final class attr2 {
         value = 1L;
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("variable")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
     static long getAttr2() {
         return value;
