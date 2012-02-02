@@ -435,9 +435,11 @@ $String.prototype.lastCharacterOccurrence = function(subc) {
     return null;
 }
 $String.prototype.getCharacters = function() {
-    //TODO implement!!!
-    return $empty;
+    //we can cheat and add the required behavior to String, avoiding the need to create a Sequence...
+    return this;
 }
+$String.prototype.getFirst = function() { return this.getSize().value>0?this.item(Integer(0)):null; }
+$String.prototype.getLast = function() { return this.getSize().value>0?this.item(Integer(this.getSize().decrement())):null; }
 $String.prototype.getKeys = function() {
     //TODO implement!!!
     return $empty;
