@@ -939,7 +939,12 @@ $Range.prototype.includes = function(x) {
     var rval = this.getDecreasing() === getTrue() ? ((compf === equal || compf === smaller) && (compl === equal || compl === larger)) : ((compf === equal || compf === larger) && (compl === equal || compl === smaller));
     return Boolean$(rval);
 }
-$Range.prototype.contains = $Range.prototype.includes;
+$Range.prototype.contains = function(x) {
+    if (typeof x.compare==='function' || typeof x.prototype.compare==='function') {
+        return $Range.prototype.includes;
+    }
+    return $false;
+}
 $Range.prototype.getRest = function() {
     var n = this.next(this.first);
     return (n.equals(this.last) === getTrue()) ? ArraySequence([]) : Range(n, this.last);
