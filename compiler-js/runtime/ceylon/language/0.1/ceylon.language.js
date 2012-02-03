@@ -649,7 +649,9 @@ function isOfTypes(obj, types) {
     if (obj===null || obj===$nullsafe) { //TODO check if this is right
         return types.l.indexOf('ceylon.language.Nothing')>=0 || types.l.indexOf('ceylon.language.Void')>=0;
     }
-    var result = false;
+    var unions = false;
+    var inters = true;
+    var _ints=false;
     for (var i = 0; i < types.l.length; i++) {
         var t = types.l[i];
         var partial = false;
@@ -659,12 +661,13 @@ function isOfTypes(obj, types) {
             partial = isOfTypes(obj, t);
         }
         if (types.t==='u') {
-            result |= partial;
+            unions |= partial;
         } else {
-            result &= partial;
+            inters &= partial;
+            _ints=true;
         }
     }
-    return result;
+    return _ints ? inters||unions : unions;
 }
 
 function className(obj) {
