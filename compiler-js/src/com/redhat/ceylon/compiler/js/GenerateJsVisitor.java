@@ -31,6 +31,7 @@ public class GenerateJsVisitor extends Visitor
         implements NaturalVisitor {
 
     private boolean sequencedParameter=false;
+    private int tmpvarCount = 0;
 
     private final class SuperVisitor extends Visitor {
         private final List<Declaration> decs;
@@ -2032,14 +2033,16 @@ public class GenerateJsVisitor extends Visitor
 	   //to avoid problems with repeated iterator variables
 	   out("(function(){"); indentLevel++;
 	   endLine();
-	   out("var _iter = ");
+	   final String iterVar = createTempVariable();
+	   final String itemVar = createTempVariable();
+	   out("var "); out(iterVar); out(" = ");
 	   iterable.visit(this);
 	   out(".getIterator();");
 	   endLine();
-	   out("var _item;");
+	   out("var "); out(itemVar); out(";");
 	   endLine();
 	   out("while (");
-	   out("(_item = _iter.next()) !== ");
+	   out("("); out(itemVar); out("="); out(iterVar); out(".next()) !== ");
 	   clAlias();
 	   out(".getExhausted())");
 	   List<Statement> stmnts = that.getForClause().getBlock().getStatements();
@@ -2052,17 +2055,17 @@ public class GenerateJsVisitor extends Visitor
 			   Value model = ((ValueIterator)foriter).getVariable().getDeclarationModel();
 			   function();
 			   out(getter(model));
-			   out("(){ return _item; }");
+			   out("(){ return "); out(itemVar); out("; }");
 		   } else if (foriter instanceof KeyValueIterator) {
 			   Value keyModel = ((KeyValueIterator)foriter).getKeyVariable().getDeclarationModel();
 			   Value valModel = ((KeyValueIterator)foriter).getValueVariable().getDeclarationModel();
 			   function();
 			   out(getter(keyModel));
-			   out("(){ return _item.getKey(); }");
+			   out("(){ return "); out(itemVar); out(".getKey(); }");
 			   endLine();
 			   function();
 			   out(getter(valModel));
-			   out("(){ return _item.getItem(); }");
+			   out("(){ return "); out(itemVar); out(".getItem(); }");
 		   }
 		   endLine();
 		   for (int i=0; i<stmnts.size(); i++) {
@@ -2081,13 +2084,12 @@ public class GenerateJsVisitor extends Visitor
 		   endLine();
 		   out("if (");
 		   clAlias();
-		   out(".getExhausted() === _item)");
+		   out(".getExhausted() === "); out(itemVar); out(")");
 		   that.getElseClause().getBlock().visit(this);
 	   }
 	   indentLevel--;
 	   endLine();
 	   out("}());");
-	   endLine();
    }
 
     public void visit(InOp that) {
@@ -2189,4 +2191,59 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
+    /** Creates and returns a name for a tmp var. */
+    private String createTempVariable() {
+        tmpvarCount++;
+        return "tmpvar" + tmpvarCount;
+    }
+
+    private void caseClause(CaseClause cc, String expvar) {
+        out("if (");
+        final CaseItem item = cc.getCaseItem();
+        if (item instanceof IsCase) {
+            generateIsOfType(null, expvar, ((IsCase)item).getType(), true);
+            out("===");
+            clAlias(); out(".getTrue()");
+        } else if (item instanceof SatisfiesCase) {
+            out("true");
+        } else if (item instanceof MatchCase){
+            boolean first = true;
+            for (Expression exp : ((MatchCase)item).getExpressionList().getExpressions()) {
+                if (!first) out(" || ");
+                out(expvar);
+                out("==="); //TODO equality?
+                /*out(".equals(");*/
+                exp.visit(this);
+                //out(")==="); clAlias(); out(".getTrue()");
+                first = false;
+            }
+        } else {
+            out("WARNING!!! JS COMPILER OUT OF WHACK WITH TYPECHECKER");
+        }
+        out(") ");
+        //TODO code inside block makes wrong refs sometimes, need to fix that (similar to what happened with if (is)
+        cc.getBlock().visit(this);
+    }
+
+    @Override
+    public void visit(SwitchStatement that) {
+        out("//Switch"); endLine();
+        //Put the expression in a tmp var
+        //TODO is this really necessary?
+        final String expvar = createTempVariable();
+        out("var "); out(expvar); out("=");
+        that.getSwitchClause().getExpression().visit(this);
+        out(";"); endLine();
+        //For each case, do an if
+        boolean first = true;
+        for (CaseClause cc : that.getSwitchCaseList().getCaseClauses()) {
+            if (!first) out("else ");
+            caseClause(cc, expvar);
+            first = false;
+        }
+        if (that.getSwitchCaseList().getElseClause() != null) {
+            out("else ");
+            that.getSwitchCaseList().getElseClause().visit(this);
+        }
+    }
 }
