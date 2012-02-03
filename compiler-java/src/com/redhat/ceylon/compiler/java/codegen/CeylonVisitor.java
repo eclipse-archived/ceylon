@@ -124,10 +124,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         boolean annots = gen.checkCompilerAnnotations(decl);
         if (Decl.withinClass(decl)) {
             classBuilder.defs(gen.classGen().transform(decl));
-        } else if (Decl.withinMethod(decl)) {
-            appendList(gen.transform(decl));
-        } else {
+        } else if (Decl.isToplevel(decl)) {
             topattrBuilder.add(decl);
+        } else {
+            appendList(gen.transform(decl));
         }
         gen.resetCompilerAnnotations(annots);
     }
@@ -138,10 +138,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         boolean annots = gen.checkCompilerAnnotations(decl);
         if (Decl.withinClass(decl)) {
             classBuilder.defs(gen.classGen().transform(decl));
-        } else if (Decl.withinMethod(decl)) {
-            appendList(gen.transform(decl));
-        } else {
+        } else if (Decl.isToplevel(decl)) {
             topattrBuilder.add(decl);
+        } else {
+            appendList(gen.transform(decl));
         }
         gen.resetCompilerAnnotations(annots);
     }
