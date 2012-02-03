@@ -25,6 +25,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -183,8 +184,12 @@ public class Decl {
         return decl.getDeclarationModel().isToplevel();
     }
     
-    public static boolean isInner(Tree.Declaration decl) {
-        return decl.getDeclarationModel().getContainer() instanceof Method;
+    public static boolean isLocal(Tree.Declaration decl) {
+        return isLocal(decl.getDeclarationModel());
+    }
+
+    public static boolean isLocal(Declaration decl) {
+        return decl.getContainer() instanceof MethodOrValue;
     }
     
     public static boolean isClassAttribute(Declaration decl) {

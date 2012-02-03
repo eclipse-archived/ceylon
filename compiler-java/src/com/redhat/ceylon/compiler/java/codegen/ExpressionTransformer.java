@@ -1169,7 +1169,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 selector = Util.getGetterName(decl.getName());
             }
         } else if (decl instanceof Method) {
-            if (Decl.withinMethod(decl)) {
+            if (Decl.isLocal(decl)) {
                 java.util.List<String> path = new LinkedList<String>();
                 if (!isRecursiveReference(expr)) {
                     path.add(decl.getName());
@@ -1359,7 +1359,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             lhs = makeQualIdent(makeFQIdent(Util.quoteJavaKeywords(decl.getContainer().getQualifiedNameString())), Util.quoteIfJavaKeyword(decl.getName()));
         } else if ((decl instanceof Getter)) {
             // must use the setter
-            if (Decl.withinMethod(decl)) {
+            if (Decl.isLocal(decl)) {
                 lhs = makeQualIdent(lhs, decl.getName() + "$setter");
             }
         } else if (variable && (Decl.isClassAttribute(decl))) {

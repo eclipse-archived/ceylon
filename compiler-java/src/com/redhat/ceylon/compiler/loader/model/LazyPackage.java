@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.lookupMember;
 
 /**
  * Represents a lazy Package declaration.
@@ -70,8 +71,15 @@ public class LazyPackage extends Package {
         String className = getQualifiedName(pkgName, name);
         ClassMirror classSymbol = modelLoader.lookupClassMirror(className);
         // only get it from the classpath if we're not compiling it
-        if(classSymbol != null && !classSymbol.isLoadedFromSource())
-            return modelLoader.convertToDeclaration(className, DeclarationType.VALUE);
+        if(classSymbol != null && !classSymbol.isLoadedFromSource()) {
+            Declaration d = modelLoader.convertToDeclaration(className, DeclarationType.VALUE);
+            if (d instanceof Class) {
+                if ( ((Class) d).isAbstraction()) {
+                    return lookupMember(compiledDeclarations, name, signature, false);
+                }
+            }
+            return d;
+        }
         return getDirectMemberFromSource(name);
     }
 

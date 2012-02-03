@@ -102,7 +102,8 @@ public class ModelLoaderTest extends CompilerTest {
                     CeylonModelLoader modelLoader = CeylonModelLoader.instance(context2);
                     // now see if we can find our declarations
                     for(Entry<String, Declaration> entry : decls.entrySet()){
-                        Declaration modelDeclaration = modelLoader.getDeclaration(entry.getKey().substring(1), 
+                        String quotedQualifiedName = Util.quoteJavaKeywords(entry.getKey().substring(1));
+                        Declaration modelDeclaration = modelLoader.getDeclaration(quotedQualifiedName, 
                                 entry.getValue() instanceof Value ? DeclarationType.VALUE : DeclarationType.TYPE);
                         Assert.assertNotNull(modelDeclaration);
                         // make sure we loaded them exactly the same
@@ -221,12 +222,18 @@ public class ModelLoaderTest extends CompilerTest {
         compareParameterLists(validDeclaration.getQualifiedNameString(), validDeclaration.getParameterLists(), modelDeclaration.getParameterLists());
         // make sure it has every member required
         for(Declaration validMember : validDeclaration.getMembers()){
+            // skip non-shared members
+            if(!validMember.isShared())
+                continue;
             Declaration modelMember = lookupMember(modelDeclaration, validMember);
             Assert.assertNotNull(validMember.getQualifiedNameString()+" [member] not found in loaded model", modelMember);
             compareDeclarations(validMember, modelMember);
         }
         // and not more
         for(Declaration modelMember : modelDeclaration.getMembers()){
+            // skip non-shared members
+            if(!modelMember.isShared())
+                continue;
             Declaration validMember = lookupMember(validDeclaration, modelMember);
             Assert.assertNotNull(modelMember.getQualifiedNameString()+" [extra member] encountered in loaded model", validMember);
         }
@@ -349,6 +356,11 @@ public class ModelLoaderTest extends CompilerTest {
     }
 
     @Test
+    public void loadTypeParameterResolving(){
+        verifyClassLoading("TypeParameterResolving.ceylon");
+    }
+
+    @Test
     public void loadToplevelMethods(){
         verifyClassLoading("ToplevelMethods.ceylon");
     }
@@ -371,5 +383,20 @@ public class ModelLoaderTest extends CompilerTest {
     @Test
     public void loadDocAnnotations(){
         verifyClassLoading("DocAnnotations.ceylon");
+    }
+
+    @Test
+    public void loadLocalDeclarations(){
+        verifyClassLoading("LocalDeclarations.ceylon");
+    }
+
+    @Test
+    public void loadDefaultValues(){
+        verifyClassLoading("DefaultValues.ceylon");
+    }
+
+    @Test
+    public void loadJavaKeywords(){
+        verifyClassLoading("JavaKeywords.ceylon");
     }
 }

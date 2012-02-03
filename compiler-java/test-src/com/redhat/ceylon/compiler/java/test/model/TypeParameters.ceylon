@@ -17,51 +17,51 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-interface InterfaceA {} 
-interface InterfaceB {} 
-interface InterfaceWithTypeParam<T, U> {}
+shared interface InterfaceA {} 
+shared interface InterfaceB {} 
+shared interface InterfaceWithTypeParam<T, U> {}
 
-class TypeParameters <T,U> (T t, U u) {
+shared class TypeParameters <T,U> (T t, U u) {
 
  shared T attr = t;
  
- T method(T t, U u){
+ shared T method(T t, U u){
   return t;
  }
 
  //
  // methods with type params
  
- T methodWithTypeParameters<T, U>(T t, U u){
+ shared T methodWithTypeParameters<T, U>(T t, U u){
   return t;
  }
  
  //
  // upper bounds tests
  
- F methodWithUpperBounds<F>(F f)
+ shared F methodWithUpperBounds<F>(F f)
   given F satisfies InterfaceA & InterfaceB {
   return f;
  }
 
- F methodWithParameterizedUpperBounds<F>(F f)
+ shared F methodWithParameterizedUpperBounds<F>(F f)
   given F satisfies InterfaceWithTypeParam<InterfaceA, InterfaceB> {
   return f;
  }
 
- F methodWithSelfParameterizedUpperBounds<F>(F f)
+ shared F methodWithSelfParameterizedUpperBounds<F>(F f)
   given F satisfies InterfaceWithTypeParam<F, F> {
   return f;
  }
 
- F methodWithErasedUpperBounds<F>(F f)
+ shared F methodWithErasedUpperBounds<F>(F f)
   given F satisfies IdentifiableObject {
   return f;
  }
  
  //
  // variance tests
- O methodWithVariance<in I, out O>(I i)
+ shared O methodWithVariance<in I, out O>(I i)
   given I satisfies O{
   return i;
  }
@@ -70,26 +70,26 @@ class TypeParameters <T,U> (T t, U u) {
 //
 // upper bounds tests
 
-class ClassWithUpperBounds<F>(F f)
+shared class ClassWithUpperBounds<F>(F f)
   given F satisfies InterfaceA & InterfaceB {
 }
 
-class ClassWithParameterizedUpperBounds<F>(F f)
+shared class ClassWithParameterizedUpperBounds<F>(F f)
  given F satisfies InterfaceWithTypeParam<InterfaceA, InterfaceB> {
 }
 
-class ClassWithSelfParameterizedUpperBounds<F>(F f)
+shared class ClassWithSelfParameterizedUpperBounds<F>(F f)
  given F satisfies InterfaceWithTypeParam<F, F> {
 }
 
-class ClassWithErasedUpperBounds<F>(F f)
+shared class ClassWithErasedUpperBounds<F>(F f)
  given F satisfies IdentifiableObject {
 }
  
 //
 // variance tests
 
-class ClassWithVariance<in I, out O>(I i)
+shared class ClassWithVariance<in I, out O>(I i)
   given I satisfies O{
 }
 
@@ -99,33 +99,33 @@ class ClassWithVariance<in I, out O>(I i)
 //
 // methods with type params
 
-T methodWithTypeParameters<T, U>(T t, U u){
+shared T methodWithTypeParameters<T, U>(T t, U u){
  return t;
 }
 
 //
 // upper bounds tests
 
-F methodWithUpperBounds<F>(F f)
+shared F methodWithUpperBounds<F>(F f)
  given F satisfies InterfaceA & InterfaceB {
  return f;
 }
-F methodWithParameterizedUpperBounds<F>(F f)
+shared F methodWithParameterizedUpperBounds<F>(F f)
  given F satisfies InterfaceWithTypeParam<InterfaceA, InterfaceB> {
  return f;
 }
-F methodWithSelfParameterizedUpperBounds<F>(F f)
+shared F methodWithSelfParameterizedUpperBounds<F>(F f)
  given F satisfies InterfaceWithTypeParam<F, F> {
  return f;
 }
-F methodWithErasedUpperBounds<F>(F f)
+shared F methodWithErasedUpperBounds<F>(F f)
  given F satisfies IdentifiableObject {
  return f;
 }
 
 //
 // variance tests
-O methodWithVariance<in I, out O>(I i)
+shared O methodWithVariance<in I, out O>(I i)
  given I satisfies O{
  return i;
 }

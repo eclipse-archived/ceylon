@@ -17,9 +17,5 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared interface Interface {
-}
-shared class Klass() {
-}
-shared class KlassWithConstructor(Integer param, Integer... varargs) {
-}
+DefaultValues defaultValuesTest = DefaultValues(1);
+Integer defaultValuesTest2 = defaultValuesMethod(1);

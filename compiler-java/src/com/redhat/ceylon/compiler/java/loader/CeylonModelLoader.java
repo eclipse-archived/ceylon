@@ -162,7 +162,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
             return c;
         Name name = enclosing.head;
         Symbol encl = owner.members().lookup(name).sym;
-        if (encl == null)
+        if (encl == null || !(encl instanceof ClassSymbol))
             encl = symtab.classes.get(TypeSymbol.formFlatName(name, owner));
         if(encl != null)
             return (ClassSymbol) encl;

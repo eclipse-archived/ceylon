@@ -456,20 +456,25 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     return param;
             }
             if (!m.isToplevel()) {
-                // look it up in its class
+                // look it up in its container
                 return lookupTypeParameter(scope.getContainer(), name);
             } else {
                 // not found
                 return null;
             }
         }else if(scope instanceof ClassOrInterface){
-            for(TypeParameter param : ((ClassOrInterface) scope).getTypeParameters()){
+            ClassOrInterface klass = (ClassOrInterface) scope;
+            for(TypeParameter param : klass.getTypeParameters()){
                 if(param.getName().equals(name))
                     return param;
             }
-            // FIXME: look in its containing class if it has one
-            // not found
-            return null;
+            if (!klass.isToplevel()) {
+                // look it up in its container
+                return lookupTypeParameter(scope.getContainer(), name);
+            } else {
+                // not found
+                return null;
+            }
         }else
             throw new RuntimeException("Type param "+name+" lookup not supported for scope "+scope);
     }

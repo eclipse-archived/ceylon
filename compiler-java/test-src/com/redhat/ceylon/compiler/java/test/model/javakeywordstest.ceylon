@@ -17,9 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared interface Interface {
-}
-shared class Klass() {
-}
-shared class KlassWithConstructor(Integer param, Integer... varargs) {
+void javaKeywords(){
+    JavaKeywords jk = JavaKeywords(1);
+    variable Integer sync;
+    sync := jk.char;
+    jk.byte(1);
+    int(1);
+    sync := package;
+    sync := char;
+    char := 1;
+    sync := byte.hash;
 }

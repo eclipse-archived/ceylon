@@ -17,9 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared interface Interface {
+@nomodel
+Integer topLevelGetterSetter {
+    return 0;
 }
-shared class Klass() {
+@nomodel
+shared Integer topLevelGetterSetterShared {
+    return 0;
 }
-shared class KlassWithConstructor(Integer param, Integer... varargs) {
+@nomodel
+assign topLevelGetterSetter {
+}
+@nomodel
+assign topLevelGetterSetterShared {
 }

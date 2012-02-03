@@ -17,9 +17,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared interface Interface {
+shared class JavaKeywords(Integer int) {
+    shared Integer char = int;
+    shared Integer byte(Integer int){
+        Integer assert = int;
+        return int;
+    }
 }
-shared class Klass() {
+
+shared Integer int (Integer int) {
+    return int;
 }
-shared class KlassWithConstructor(Integer param, Integer... varargs) {
+
+shared Integer package = 1;
+
+shared Integer char {
+    return 1;
 }
+assign char {}
+
+shared object byte {}

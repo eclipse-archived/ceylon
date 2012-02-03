@@ -17,9 +17,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared interface Interface {
+shared class LocalDeclarationsClassContainer() {
+    shared void m(){
+        class LocalClass(){
+            shared Integer attr = 2;
+        }
+        Integer getter {return 1;} assign getter {}
+        Integer attr = 2;
+        void localMethod(){}
+    } 
 }
-shared class Klass() {
+shared void localDeclarationsMethodContainer(){
+    class LocalClass(){
+        shared Integer attr = 2;
+    }
+    Integer getter {return 1;} assign getter {}
+    Integer attr = 2;
+    void localMethod(){}
 }
-shared class KlassWithConstructor(Integer param, Integer... varargs) {
+shared Integer localDeclarationsGetterContainer {
+    class LocalClass(){
+        shared Integer attr = 2;
+    }
+    Integer getter {return 1;} assign getter {}
+    Integer attr = 2;
+    void localMethod(){}
+    return 1;
 }

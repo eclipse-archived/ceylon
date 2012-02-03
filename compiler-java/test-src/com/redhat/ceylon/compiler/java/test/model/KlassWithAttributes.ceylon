@@ -17,16 +17,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-abstract class KlassWithAttributesSuper2() {
+shared interface InterfaceWithAttributes {
+ shared formal Integer formalAttr;
+ shared formal variable Integer formalAttr2;
+}
+
+shared abstract class KlassWithAttributesSuper2() {
  shared formal Integer formalAttr;
  shared formal Integer formalAttr2;
  shared default Integer defaultAttr = 2;
  shared default Integer defaultGetter {return 2;}
- // FIXME: enable when this compiles
- //shared default Integer defaultGetterSetter {return 2;} assign defaultGetterSetter {}
+ shared default Integer defaultGetterSetter {return 2;} assign defaultGetterSetter {}
 }
 
-abstract class KlassWithAttributesSuper1() extends KlassWithAttributesSuper2() {
+shared abstract class KlassWithAttributesSuper1() extends KlassWithAttributesSuper2() {
  // we implement a formal attr
  shared actual Integer formalAttr = 1;
  // we give a default impl to a formal attr
@@ -34,12 +38,11 @@ abstract class KlassWithAttributesSuper1() extends KlassWithAttributesSuper2() {
  // we make a default attr formal
  shared actual formal Integer defaultAttr;
  shared actual formal Integer defaultGetter;
- // FIXME: enable when this compiles
- //shared variable actual formal Integer defaultGetterSetter;
+ shared variable actual formal Integer defaultGetterSetter;
 }
 
 
-class KlassWithAttributes() extends KlassWithAttributesSuper1() {
+shared class KlassWithAttributes() extends KlassWithAttributesSuper1() {
     Integer n1 = 1;
     shared Integer n2 = 2;
     variable Integer n3 := 3;
@@ -68,13 +71,12 @@ class KlassWithAttributes() extends KlassWithAttributesSuper1() {
     void capture() {
         value x = n1;
         value y = n3;
-//        value z = n5;
+        value z = n5;
     }
 
     // override all formal attrs
     shared actual Integer formalAttr2 = 3;
     shared actual Integer defaultAttr = 3;
     shared actual Integer defaultGetter {return 3;}
-    // FIXME: enable when this compiles
-    //shared actual Integer defaultGetterSetter {return 3;} assign defaultGetterSetter {}
+    shared actual Integer defaultGetterSetter {return 3;} assign defaultGetterSetter {}
 }
