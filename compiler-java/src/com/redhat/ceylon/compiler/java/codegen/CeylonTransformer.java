@@ -31,10 +31,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
@@ -156,7 +152,7 @@ public class CeylonTransformer extends AbstractTransformer {
         return at(that).Import(makeQuotedQualIdent(null, names), false);
     }
     
-    public List<JCTree> transform(AnyAttribute decl) {
+    public List<JCTree> transform(Tree.AnyAttribute decl) {
         return transformAttribute(decl, null);
     }
 
@@ -164,17 +160,17 @@ public class CeylonTransformer extends AbstractTransformer {
         return transformAttribute(decl, null);
     }
     
-    public List<JCTree> transformAttribute(Tree.TypedDeclaration decl, AttributeSetterDefinition setterDecl) {
+    public List<JCTree> transformAttribute(Tree.TypedDeclaration decl, Tree.AttributeSetterDefinition setterDecl) {
         at(decl);
         String attrName = decl.getIdentifier().getText();
         String attrClassName = attrName;
         TypedDeclaration declarationModel = decl.getDeclarationModel();
         if (Decl.isLocal(decl)) {
-            if (decl instanceof AttributeGetterDefinition) {
+            if (decl instanceof Tree.AttributeGetterDefinition) {
                 attrClassName += "$getter";
-            } else if (decl instanceof AttributeSetterDefinition) {
+            } else if (decl instanceof Tree.AttributeSetterDefinition) {
                 attrClassName += "$setter";
-                declarationModel = ((AttributeSetterDefinition)decl).getDeclarationModel().getParameter();
+                declarationModel = ((Tree.AttributeSetterDefinition)decl).getDeclarationModel().getParameter();
             }
         }
 
@@ -199,19 +195,19 @@ public class CeylonTransformer extends AbstractTransformer {
             }
         }
 
-        if (decl instanceof AttributeSetterDefinition) {
+        if (decl instanceof Tree.AttributeSetterDefinition) {
             // For inner setters
-            AttributeSetterDefinition sdef = (AttributeSetterDefinition)decl;
+            Tree.AttributeSetterDefinition sdef = (Tree.AttributeSetterDefinition)decl;
             JCBlock setterBlock = make().Block(0, statementGen().transformStmts(sdef.getBlock().getStatements()));
             builder.setterBlock(setterBlock);
             builder.skipGetter();
         } else {
-            if (decl instanceof AttributeDeclaration) {
+            if (decl instanceof Tree.AttributeDeclaration) {
                 // For inner and toplevel value attributes
                 if (!declarationModel.isVariable()) {
                     builder.immutable();
                 }
-                AttributeDeclaration adecl = (AttributeDeclaration)decl;
+                Tree.AttributeDeclaration adecl = (Tree.AttributeDeclaration)decl;
                 if (adecl.getSpecifierOrInitializerExpression() != null) {
                     builder.initialValue(expressionGen().transformExpression(
                             adecl.getSpecifierOrInitializerExpression().getExpression(), 
@@ -220,7 +216,7 @@ public class CeylonTransformer extends AbstractTransformer {
                 }
             } else {
                 // For inner and toplevel getters
-                AttributeGetterDefinition gdef = (AttributeGetterDefinition)decl;
+                Tree.AttributeGetterDefinition gdef = (Tree.AttributeGetterDefinition)decl;
                 JCBlock getterBlock = make().Block(0, statementGen().transformStmts(gdef.getBlock().getStatements()));
                 builder.getterBlock(getterBlock);
                 
