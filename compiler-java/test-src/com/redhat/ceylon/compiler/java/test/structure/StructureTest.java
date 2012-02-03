@@ -732,6 +732,14 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("toplevel/ToplevelAttributeShared");
     }
     @Test
+    public void testTopToplevelGetter(){
+        compareWithJavaSource("toplevel/ToplevelGetter");
+    }
+    @Test
+    public void testTopToplevelGetterSetter(){
+        compareWithJavaSource("toplevel/ToplevelGetterSetter");
+    }
+    @Test
     public void testTopToplevelMethods(){
         compareWithJavaSource("toplevel/ToplevelMethods");
     }

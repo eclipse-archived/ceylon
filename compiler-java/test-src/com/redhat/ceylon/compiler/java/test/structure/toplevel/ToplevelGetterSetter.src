@@ -1,0 +1,26 @@
+package com.redhat.ceylon.compiler.java.test.structure.toplevel;
+
+final class topLevelGetterSetter {
+    
+    static long getTopLevelGetterSetter() {
+        return 0L;
+    }
+    
+    static void setTopLevelGetterSetter(long topLevelGetterSetter) {
+    }
+    
+    private topLevelGetterSetter() {
+    }
+}
+public final class topLevelGetterSetterShared {
+    
+    public static long getTopLevelGetterSetterShared() {
+        return 0L;
+    }
+    
+    public static void setTopLevelGetterSetterShared(long topLevelGetterSetterShared) {
+    }
+    
+    private topLevelGetterSetterShared() {
+    }
+}
