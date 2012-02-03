@@ -6,7 +6,9 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecut
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -200,7 +202,7 @@ public class SpecificationVisitor extends Visitor {
             Declaration member = getBaseDeclaration(m, null);
             if (member==declaration) {
                 that.getRightTerm().visit(this);
-                checkVariable(lt);
+                checkVariable(lt, that);
                 specify();
                 lt.visit(this);
             }
@@ -213,22 +215,22 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.AssignmentOp that) {
         super.visit(that);
-        checkVariable(that.getLeftTerm());
+        checkVariable(that.getLeftTerm(), that);
     }
 
     @Override
     public void visit(Tree.PostfixOperatorExpression that) {
         super.visit(that);
-        checkVariable(that.getTerm());
+        checkVariable(that.getTerm(), that);
     }
     
     @Override
     public void visit(Tree.PrefixOperatorExpression that) {
         super.visit(that);
-        checkVariable(that.getTerm());
+        checkVariable(that.getTerm(), that);
     }
     
-    private void checkVariable(Tree.Term term) {
+    private void checkVariable(Tree.Term term, Node node) {
         //TODO: we don't really need this error check here,
         //      since it duplicates a check done more 
         //      completely in ExpressionVisitor.checkAssignable()
@@ -237,8 +239,14 @@ public class SpecificationVisitor extends Visitor {
             Declaration member = getBaseDeclaration(m, null);
             if (member==declaration) {
                 if (!isVariable()) {
-                    term.addError("not a variable: " +
-                            member.getName(), 800);
+                    if (node instanceof Tree.AssignOp) {
+                        node.addError("non-variable values must be specified using \"=\": " +
+                                        member.getName(), 803);
+                    }
+                    else {
+                        node.addError("not a variable: " +
+                                member.getName(), 800);
+                    }
                 }
             }
         }
@@ -256,8 +264,9 @@ public class SpecificationVisitor extends Visitor {
 	                        m.getIdentifier().getText());
 	            }
 	            else*/ if (isVariable()) {
-	                that.addError("variable values must be assigned using \":=\": " +
-	                        member.getName());
+	                that.getSpecifierExpression()
+	                        .addError("variable values must be assigned using \":=\": " +
+	                            member.getName(), 802);
 	            }
 	            else if (cannotSpecify) {
 	                that.addError("cannot specify value from here: " + 
@@ -383,16 +392,17 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);        
         if (that.getDeclarationModel()==declaration) {
-            if (that.getSpecifierOrInitializerExpression()!=null) {
+            SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
+            if (sie!=null) {
                 if (isVariable()) {
-                    if (that.getSpecifierOrInitializerExpression() instanceof Tree.SpecifierExpression) {
-                        that.addError("variable values must be initialized using \":=\": " + 
-                                declaration.getName());
+                    if (sie instanceof Tree.SpecifierExpression) {
+                        sie.addError("variable values must be initialized using \":=\": " + 
+                                declaration.getName(), 802);
                     }
                 }
                 else {
-                    if (that.getSpecifierOrInitializerExpression() instanceof Tree.InitializerExpression) {
-                        that.addError("non-variable values must be specified using \"=\": " + 
+                    if (sie instanceof Tree.InitializerExpression) {
+                        sie.addError("non-variable values must be specified using \"=\": " + 
                                 declaration.getName(), 801);
                     }
                 }
@@ -516,7 +526,8 @@ public class SpecificationVisitor extends Visitor {
         super.visit(that);
         if (!cannotSpecify) {
             if (isSharedDeclarationUninitialized()) {
-                that.addError(declaration.getName() + " must be definitely specified by class initializer");
+                that.addError(declaration.getName() + 
+                        " must be definitely specified by class initializer");
             }
         }
         exit();

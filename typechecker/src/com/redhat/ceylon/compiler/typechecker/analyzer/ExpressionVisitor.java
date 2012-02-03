@@ -1729,13 +1729,13 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.PostfixOperatorExpression that) {
         super.visit(that);
         visitIncrementDecrement(that, type(that), that.getTerm());
-        checkAssignability(that.getTerm());
+        checkAssignability(that.getTerm(), that);
     }
 
     @Override public void visit(Tree.PrefixOperatorExpression that) {
         super.visit(that);
         visitIncrementDecrement(that, type(that), that.getTerm());
-        checkAssignability(that.getTerm());
+        checkAssignability(that.getTerm(), that);
     }
     
     private ProducedType checkOperandType(ProducedType pt, TypeDeclaration td, 
@@ -2066,18 +2066,18 @@ public class ExpressionVisitor extends Visitor {
         that.setTypeModel(lhst);
     }
 
-    private static void checkAssignability(Tree.Term that) {
+    private static void checkAssignability(Tree.Term that, Node node) {
         if (that instanceof Tree.BaseMemberExpression ||
                 that instanceof Tree.QualifiedMemberExpression) {
             ProducedReference pr = ((Tree.MemberOrTypeExpression) that).getTarget();
             if (pr!=null) {
                 Declaration dec = pr.getDeclaration();
                 if (!(dec instanceof Value | dec instanceof Getter)) {
-                    that.addError("member cannot be assigned: " 
+                    node.addError("member cannot be assigned: " 
                             + dec.getName());
                 }
                 else if ( !((TypedDeclaration) dec).isVariable() ) {
-                    that.addError("value is not variable: " 
+                    node.addError("value is not variable: " 
                             + dec.getName());
                 }
             }
@@ -2194,25 +2194,25 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.AssignOp that) {
         super.visit(that);
         visitAssignOperator(that);
-        checkAssignability(that.getLeftTerm());
+        checkAssignability(that.getLeftTerm(), that);
     }
         
     @Override public void visit(Tree.ArithmeticAssignmentOp that) {
         super.visit(that);
         visitArithmeticAssignOperator(that, getArithmeticDeclaration(that));
-        checkAssignability(that.getLeftTerm());
+        checkAssignability(that.getLeftTerm(), that);
     }
         
     @Override public void visit(Tree.LogicalAssignmentOp that) {
         super.visit(that);
         visitLogicalOperator(that);
-        checkAssignability(that.getLeftTerm());
+        checkAssignability(that.getLeftTerm(), that);
     }
         
     @Override public void visit(Tree.BitwiseAssignmentOp that) {
         super.visit(that);
         visitBitwiseOperator(that);
-        checkAssignability(that.getLeftTerm());
+        checkAssignability(that.getLeftTerm(), that);
     }
         
     @Override public void visit(Tree.RangeOp that) {
