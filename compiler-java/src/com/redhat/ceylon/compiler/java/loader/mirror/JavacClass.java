@@ -129,6 +129,11 @@ public class JavacClass implements ClassMirror {
     }
 
     @Override
+    public boolean isStatic() {
+        return (classSymbol.flags() & Flags.STATIC) != 0;
+    }
+
+    @Override
     public List<MethodMirror> getDirectMethods() {
         if (methods == null) {
             List<MethodMirror> ret = new LinkedList<MethodMirror>();

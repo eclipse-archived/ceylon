@@ -92,6 +92,11 @@ public class ReflectionClass implements ClassMirror {
     }
 
     @Override
+    public boolean isStatic() {
+        return Modifier.isStatic(klass.getModifiers());
+    }
+
+    @Override
     public List<MethodMirror> getDirectMethods() {
         if(methods != null)
             return methods;

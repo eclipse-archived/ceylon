@@ -41,6 +41,11 @@ public interface ClassMirror extends AnnotatedMirror {
      * Returns true if this is an abstract class
      */
     boolean isAbstract();
+    
+    /**
+     * Returns true if this is a static class
+     */
+    boolean isStatic();
 
     /**
      * Returns true if this class is an inner class
