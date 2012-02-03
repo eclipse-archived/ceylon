@@ -221,12 +221,18 @@ public class ModelLoaderTest extends CompilerTest {
         compareParameterLists(validDeclaration.getQualifiedNameString(), validDeclaration.getParameterLists(), modelDeclaration.getParameterLists());
         // make sure it has every member required
         for(Declaration validMember : validDeclaration.getMembers()){
+            // skip non-shared members
+            if(!validMember.isShared())
+                continue;
             Declaration modelMember = lookupMember(modelDeclaration, validMember);
             Assert.assertNotNull(validMember.getQualifiedNameString()+" [member] not found in loaded model", modelMember);
             compareDeclarations(validMember, modelMember);
         }
         // and not more
         for(Declaration modelMember : modelDeclaration.getMembers()){
+            // skip non-shared members
+            if(!modelMember.isShared())
+                continue;
             Declaration validMember = lookupMember(validDeclaration, modelMember);
             Assert.assertNotNull(modelMember.getQualifiedNameString()+" [extra member] encountered in loaded model", validMember);
         }
