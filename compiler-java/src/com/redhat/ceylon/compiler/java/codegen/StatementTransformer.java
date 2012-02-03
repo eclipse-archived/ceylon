@@ -386,6 +386,11 @@ public class StatementTransformer extends AbstractTransformer {
         }
     }
 
+    JCStatement transform(Tree.Continue stmt) {
+        // continue;
+        return at(stmt).Continue(null);
+    }
+
     JCStatement transform(Tree.Return ret) {
         Tree.Expression expr = ret.getExpression();
         JCExpression returnExpr = null;
