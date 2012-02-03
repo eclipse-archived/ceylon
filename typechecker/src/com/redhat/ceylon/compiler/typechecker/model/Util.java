@@ -438,7 +438,7 @@ public class Util {
         return false;
     }
     
-    static Declaration lookupMember(List<Declaration> members, String name,
+    public static Declaration lookupMember(List<Declaration> members, String name,
             List<ProducedType> signature, boolean includeParameters) {
         List<Declaration> results = new ArrayList<Declaration>();
         Declaration inexactMatch = null;
