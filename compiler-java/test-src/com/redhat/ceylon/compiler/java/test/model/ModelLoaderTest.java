@@ -388,4 +388,9 @@ public class ModelLoaderTest extends CompilerTest {
     public void loadLocalDeclarations(){
         verifyClassLoading("LocalDeclarations.ceylon");
     }
+
+    @Test
+    public void loadDefaultValues(){
+        verifyClassLoading("DefaultValues.ceylon");
+    }
 }
