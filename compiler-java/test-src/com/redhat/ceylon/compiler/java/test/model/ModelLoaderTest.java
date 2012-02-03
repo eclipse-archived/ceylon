@@ -102,7 +102,8 @@ public class ModelLoaderTest extends CompilerTest {
                     CeylonModelLoader modelLoader = CeylonModelLoader.instance(context2);
                     // now see if we can find our declarations
                     for(Entry<String, Declaration> entry : decls.entrySet()){
-                        Declaration modelDeclaration = modelLoader.getDeclaration(entry.getKey().substring(1), 
+                        String quotedQualifiedName = Util.quoteJavaKeywords(entry.getKey().substring(1));
+                        Declaration modelDeclaration = modelLoader.getDeclaration(quotedQualifiedName, 
                                 entry.getValue() instanceof Value ? DeclarationType.VALUE : DeclarationType.TYPE);
                         Assert.assertNotNull(modelDeclaration);
                         // make sure we loaded them exactly the same
