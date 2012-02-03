@@ -17,9 +17,11 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.*;
@@ -312,6 +314,32 @@ public class GenerateJsVisitor extends Visitor
         share(d);
     }
 
+    /** Add a comment to the generated code with info about the type parameters. */
+    private void comment(TypeParameter tp) {
+        out("<");
+        if (tp.isCovariant()) {
+            out("out ");
+        } else if (tp.isContravariant()) {
+            out("in ");
+        }
+        out(tp.getQualifiedNameString());
+        for (TypeParameter st : tp.getTypeParameters()) {
+            comment(st);
+        }
+        out("> ");
+    }
+    /** Add a comment to the generated code with info about the produced type parameters. */
+    private void comment(ProducedType pt) {
+        out("<");
+        out(pt.getProducedTypeQualifiedName());
+        //This is useful to iterate into the types of this type
+        //but for comment it's unnecessary
+        /*for (ProducedType spt : pt.getTypeArgumentList()) {
+            comment(spt);
+        }*/
+        out("> ");
+    }
+
     @Override
     public void visit(ClassDefinition that) {
         Class d = that.getDeclarationModel();
@@ -333,6 +361,16 @@ public class GenerateJsVisitor extends Visitor
         self(d);
         out(")");
         beginBlock();
+        if (!d.getTypeParameters().isEmpty()) {
+            //out(",");
+            //selfTypeParameters(d);
+            out("/* REIFIED GENERICS SOON! ");
+            for (TypeParameter tp : d.getTypeParameters()) {
+                comment(tp);
+            }
+            out("*/");
+            endLine();
+        }
         declareSelf(d);
         for (Parameter p: that.getParameterList().getParameters()) {
             if (p.getDeclarationModel().isCaptured()) {
@@ -1048,8 +1086,15 @@ public class GenerateJsVisitor extends Visitor
     public void visit(BaseTypeExpression that) {
         qualify(that, that.getDeclaration());
         memberName(that.getDeclaration());
+        if (!that.getTypeArguments().getTypeModels().isEmpty()) {
+            out("/* REIFIED GENERICS SOON!! ");
+            for (ProducedType pt : that.getTypeArguments().getTypeModels()) {
+                comment(pt);
+            }
+            out("*/");
+        }
     }
-    
+
     @Override
     public void visit(QualifiedTypeExpression that) {
         super.visit(that);
@@ -1318,7 +1363,14 @@ public class GenerateJsVisitor extends Visitor
         return "$$" + d.getName().substring(0,1).toLowerCase()
         		+ d.getName().substring(1);
     }
-    
+
+    /* * Output the name of a variable that receives the type parameter info, usually in the class constructor. * /
+    private void selfTypeParameters(TypeDeclaration d) {
+        out(selfTypeParametersString(d));
+    }
+    private String selfTypeParametersString(TypeDeclaration d) {
+        return "$$typeParms" + d.getName();
+    }*/
     /*private void self() {
         out("$$");
     }*/
@@ -1937,6 +1989,15 @@ public class GenerateJsVisitor extends Visitor
             out("'");
             out(((SimpleType) type).getDeclarationModel().getQualifiedNameString());
             out("')");
+            if (term != null && !term.getTypeModel().getTypeArguments().isEmpty()) {
+                out("/* REIFIED GENERICS SOON!!! ");
+                out(" term " + term.getTypeModel());
+                out(" model " + term.getTypeModel().getTypeArguments());
+                for (ProducedType pt : term.getTypeModel().getTypeArgumentList()) {
+                    comment(pt);
+                }
+                out("*/");
+            }
         } else {
             getTypeList((StaticType)type);
             out("))");
