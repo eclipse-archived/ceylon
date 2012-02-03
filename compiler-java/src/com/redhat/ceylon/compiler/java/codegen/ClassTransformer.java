@@ -318,7 +318,7 @@ public class ClassTransformer extends AbstractTransformer {
         JCExpression nameId = makeQuotedIdent(name);
         ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, name, Decl.isShared(def));
         builder.body(classGen().transform(def, builder));
-        if (Decl.withinMethod(def)) {
+        if (Decl.isLocal(def)) {
             // Inner method
             List<JCTree> result = builder.build();
             JCVariableDecl call = at(def).VarDef(
@@ -474,9 +474,7 @@ public class ClassTransformer extends AbstractTransformer {
             .init((List<JCStatement>)visitor.getResult().toList())
             .build();
         
-        if (Decl.withinMethod(def)
-                || Decl.withinGetter(def)
-                || Decl.withinSetter(def)) {
+        if (Decl.isLocal(def)) {
             result = result.append(makeLocalIdentityInstance(name, false));
         } else if (Decl.withinClassOrInterface(def)) {
             boolean visible = Decl.isCaptured(def);

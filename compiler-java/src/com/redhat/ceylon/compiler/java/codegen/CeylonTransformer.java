@@ -239,7 +239,7 @@ public class CeylonTransformer extends AbstractTransformer {
             }
         }
         
-        if (Decl.withinMethod(decl)) {
+        if (Decl.isLocal(decl)) {
             return builder.build().append(makeLocalIdentityInstance(attrClassName, declarationModel.isShared()));
         } else {
             builder.is(Flags.STATIC, true);
