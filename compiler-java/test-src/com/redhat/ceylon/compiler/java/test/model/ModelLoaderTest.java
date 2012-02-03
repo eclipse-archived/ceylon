@@ -378,4 +378,9 @@ public class ModelLoaderTest extends CompilerTest {
     public void loadDocAnnotations(){
         verifyClassLoading("DocAnnotations.ceylon");
     }
+
+    @Test
+    public void loadLocalDeclarations(){
+        verifyClassLoading("LocalDeclarations.ceylon");
+    }
 }
