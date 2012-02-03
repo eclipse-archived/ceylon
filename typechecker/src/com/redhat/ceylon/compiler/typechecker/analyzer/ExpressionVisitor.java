@@ -1460,7 +1460,7 @@ public class ExpressionVisitor extends Visitor {
             if (p==null) {
                 a.addError("no matching parameter for named argument " + 
                         name(a.getIdentifier()) + " declared by " + 
-                        pr.getDeclaration().getName());
+                        pr.getDeclaration().getName(), 101);
             }
             else {
                 if (!foundParameters.add(p)) {
@@ -1729,13 +1729,13 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.PostfixOperatorExpression that) {
         super.visit(that);
         visitIncrementDecrement(that, type(that), that.getTerm());
-        checkAssignability(that.getTerm());
+        checkAssignability(that.getTerm(), that);
     }
 
     @Override public void visit(Tree.PrefixOperatorExpression that) {
         super.visit(that);
         visitIncrementDecrement(that, type(that), that.getTerm());
-        checkAssignability(that.getTerm());
+        checkAssignability(that.getTerm(), that);
     }
     
     private ProducedType checkOperandType(ProducedType pt, TypeDeclaration td, 
@@ -2030,8 +2030,26 @@ public class ExpressionVisitor extends Visitor {
                 "expression may not be of void type");*/
         Tree.Type rt = that.getType();
         if (rt!=null) {
-            if (rt.getTypeModel()!=null) {
-                checkReified(that, rt.getTypeModel());
+            ProducedType t = rt.getTypeModel();
+            if (t!=null) {
+                checkReified(that, t);
+                if (that.getTerm()!=null) {
+                    ProducedType pt = that.getTerm().getTypeModel();
+                    if (pt!=null && pt.isSubtypeOf(t)) {
+                        that.addError("expression type is a subtype of the type: " +
+                                pt.getProducedTypeName() + " is assignable to " +
+                                t.getProducedTypeName());
+                    }
+                    else {
+                        ProducedType it = intersectionType(t, pt, unit);
+                        if (it.getDeclaration() instanceof BottomType) {
+                            that.addError("tests assignability to Bottom type: intersection of " +
+                                    pt.getProducedTypeName() + " and " + 
+                                    t.getProducedTypeName() +
+                                    " is empty");
+                        }
+                    }
+                }
             }
         }
         that.setTypeModel(unit.getBooleanDeclaration().getType());
@@ -2048,18 +2066,18 @@ public class ExpressionVisitor extends Visitor {
         that.setTypeModel(lhst);
     }
 
-    private static void checkAssignability(Tree.Term that) {
+    private static void checkAssignability(Tree.Term that, Node node) {
         if (that instanceof Tree.BaseMemberExpression ||
                 that instanceof Tree.QualifiedMemberExpression) {
             ProducedReference pr = ((Tree.MemberOrTypeExpression) that).getTarget();
             if (pr!=null) {
                 Declaration dec = pr.getDeclaration();
                 if (!(dec instanceof Value | dec instanceof Getter)) {
-                    that.addError("member cannot be assigned: " 
+                    node.addError("member cannot be assigned: " 
                             + dec.getName());
                 }
                 else if ( !((TypedDeclaration) dec).isVariable() ) {
-                    that.addError("value is not variable: " 
+                    node.addError("value is not variable: " 
                             + dec.getName());
                 }
             }
@@ -2176,25 +2194,25 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.AssignOp that) {
         super.visit(that);
         visitAssignOperator(that);
-        checkAssignability(that.getLeftTerm());
+        checkAssignability(that.getLeftTerm(), that);
     }
         
     @Override public void visit(Tree.ArithmeticAssignmentOp that) {
         super.visit(that);
         visitArithmeticAssignOperator(that, getArithmeticDeclaration(that));
-        checkAssignability(that.getLeftTerm());
+        checkAssignability(that.getLeftTerm(), that);
     }
         
     @Override public void visit(Tree.LogicalAssignmentOp that) {
         super.visit(that);
         visitLogicalOperator(that);
-        checkAssignability(that.getLeftTerm());
+        checkAssignability(that.getLeftTerm(), that);
     }
         
     @Override public void visit(Tree.BitwiseAssignmentOp that) {
         super.visit(that);
         visitBitwiseOperator(that);
-        checkAssignability(that.getLeftTerm());
+        checkAssignability(that.getLeftTerm(), that);
     }
         
     @Override public void visit(Tree.RangeOp that) {
