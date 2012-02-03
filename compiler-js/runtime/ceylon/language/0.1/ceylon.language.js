@@ -449,6 +449,8 @@ $String.prototype.lastCharacterOccurrence = function(subc) {
 }
 $String.prototype.getCharacters = function() {
     //we can cheat and add the required behavior to String, avoiding the need to create a Sequence...
+    //TODO: this probably doesn't work completely because String doesn't satisfy
+    //      all required interfaces, so "if(is ...)" will be false when it shouldn't.
     return this.value.length>0 ? this:$empty;
 }
 $String.prototype.getFirst = function() { return this.getSize().value>0?this.item(Integer(0)):null; }
@@ -472,8 +474,39 @@ $String.prototype.join = function(strings) {
     return String$(result, isNaN(len)?undefined:len);
 }
 $String.prototype.split = function(seps, discard) {
-    //TODO implement!!!
-    return Singleton(this);
+    var sepChars = $WS;
+    if (seps!==undefined && seps!==null) {
+        sepChars = {}
+        var it = seps.getIterator();
+        var c; while ((c=it.next()) !== $finished) {sepChars[c.value] = true}
+    }
+    if (discard === undefined) {discard = false}
+    
+    //TODO: return an iterable which determines the next token on demand
+    var tokens = [];
+    var tokenBegin = 0;
+    var tokenBeginCount = 0;
+    for (var i=0, count=0; i<this.value.length;) {
+        var j = i;
+        var cp = this.value.charCodeAt(i++);
+        if ((cp&0xfc00)===0xd800 && i<this.value.length) {
+            cp = (cp<<10) + this.value.charCodeAt(i++) - 0x35fdc00;
+        }
+        ++count;
+        if (cp in sepChars) {
+            if (tokenBegin != j) {
+                tokens.push(String$(this.value.substring(tokenBegin, j), count-tokenBeginCount-1))
+            }
+            if (!discard) {tokens.push(String$(this.value.substring(j, i), 1))}
+            tokenBegin = i;
+            tokenBeginCount = count;
+        }
+    }
+    if (tokenBegin != i) {
+        tokens.push(String$(this.value.substring(tokenBegin, i), count-tokenBeginCount))
+    }
+    this.codePoints = count;
+    return ArraySequence(tokens);
 }
 $String.prototype.getReversed = function() {
     var result = "";
