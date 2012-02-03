@@ -214,7 +214,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (Decl.isToplevel(def)) {
             result |= Decl.isShared(def) ? PUBLIC : 0;
             result |= STATIC;
-        } else if (Decl.isInner(def)) {
+        } else if (Decl.isLocal(def)) {
             result |= Decl.isShared(def) ? PUBLIC : 0;
         } else {
             result |= Decl.isShared(def) ? PUBLIC : PRIVATE;
