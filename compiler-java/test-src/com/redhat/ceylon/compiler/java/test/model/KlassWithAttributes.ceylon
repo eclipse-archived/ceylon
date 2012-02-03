@@ -17,6 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+shared interface InterfaceWithAttributes {
+ shared formal Integer formalAttr;
+ shared formal variable Integer formalAttr2;
+}
+
 shared abstract class KlassWithAttributesSuper2() {
  shared formal Integer formalAttr;
  shared formal Integer formalAttr2;

@@ -17,13 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-abstract class KlassWithMethodsSuper2() {
+shared interface InterfacewithMethods {
+    shared formal void formalMethod(Integer p1, String p2);
+    shared formal void varargs(Integer... args);
+}
+
+shared abstract class KlassWithMethodsSuper2() {
  shared formal void formalMethod();
  shared formal void formalMethod2();
  shared default void defaultMethod(){}
 }
 
-abstract class KlassWithMethodsSuper1() extends KlassWithMethodsSuper2() {
+shared abstract class KlassWithMethodsSuper1() extends KlassWithMethodsSuper2() {
  // we implement a formal method
  shared actual void formalMethod(){}
  // we give a default impl to a formal method
@@ -32,7 +37,7 @@ abstract class KlassWithMethodsSuper1() extends KlassWithMethodsSuper2() {
  shared actual formal void defaultMethod();
 }
 
-class KlassWithMethods() extends KlassWithMethodsSuper1() {
+shared class KlassWithMethods() extends KlassWithMethodsSuper1() {
  void empty(){}
  shared void emptyPublic(){}
  Integer natural(){return 1;}

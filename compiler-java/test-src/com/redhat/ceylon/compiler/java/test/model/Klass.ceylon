@@ -17,6 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+shared interface Interface {
+}
 shared class Klass() {
 }
 shared class KlassWithConstructor(Integer param, Integer... varargs) {
