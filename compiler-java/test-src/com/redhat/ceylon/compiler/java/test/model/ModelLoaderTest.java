@@ -394,4 +394,9 @@ public class ModelLoaderTest extends CompilerTest {
     public void loadDefaultValues(){
         verifyClassLoading("DefaultValues.ceylon");
     }
+
+    @Test
+    public void loadJavaKeywords(){
+        verifyClassLoading("JavaKeywords.ceylon");
+    }
 }
