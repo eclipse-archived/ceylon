@@ -849,6 +849,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 addMethod(klass, setter, isCeylon, false);
             }
         }
+
+        klass.setStaticallyImportable(!isCeylon && (classMirror.isStatic() || (classMirror instanceof LazyClass)));
         
         setExtendedType(klass, classMirror);
         setSatisfiedTypes(klass, classMirror);
@@ -1066,6 +1068,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setName(fieldMirror.getName());
         value.setUnit(klass.getUnit());
         value.setShared(fieldMirror.isPublic());
+        value.setStaticallyImportable(fieldMirror.isStatic());
         // field can't be abstract or interface, so not formal
         // can we override fields? good question. Not really, but from an external point of view?
         // FIXME: figure this out: (default)
@@ -1098,6 +1101,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 decl.setDefault(true);
             }
         }
+        decl.setStaticallyImportable(methodMirror.isStatic());
         if(isOverridingMethod(methodMirror)){
             decl.setActual(true);
         }
