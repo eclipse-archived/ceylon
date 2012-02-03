@@ -222,7 +222,8 @@ class Test() {
         sync := p1 in container;
         
         // is
-        sync := is Integer p1;
+        if(is Category p1){}
+        sync := is Category p1;
     }
 
     void testSequences(Integer&EmptyInterface p1,

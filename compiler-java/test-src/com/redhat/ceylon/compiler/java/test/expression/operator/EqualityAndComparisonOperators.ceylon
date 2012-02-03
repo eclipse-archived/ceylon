@@ -71,15 +71,10 @@ shared class EqualityAndComparisonOperators() {
         variable Boolean sync := false;
         Object foo = sync; 
         // boxing test
-        sync := is Boolean sync;
-        Boolean? dest = is Boolean true;
+        sync := is Empty sync;
+        Boolean? dest = is Empty true;
         // normal test
         sync := is Boolean foo;
-        // trick
-        sync := is Nothing foo;
-        sync := is Bottom foo;
-        sync := is Void foo;
-        sync := is Object foo;
         // unions
         //FIXME: parser doesn't like that 
         // sync := is BasicOperatorsA | BasicOperatorsB foo;
