@@ -1460,7 +1460,7 @@ public class ExpressionVisitor extends Visitor {
             if (p==null) {
                 a.addError("no matching parameter for named argument " + 
                         name(a.getIdentifier()) + " declared by " + 
-                        pr.getDeclaration().getName());
+                        pr.getDeclaration().getName(), 101);
             }
             else {
                 if (!foundParameters.add(p)) {
