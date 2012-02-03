@@ -22,8 +22,7 @@ shared abstract class KlassWithAttributesSuper2() {
  shared formal Integer formalAttr2;
  shared default Integer defaultAttr = 2;
  shared default Integer defaultGetter {return 2;}
- // FIXME: enable when this compiles
- //shared default Integer defaultGetterSetter {return 2;} assign defaultGetterSetter {}
+ shared default Integer defaultGetterSetter {return 2;} assign defaultGetterSetter {}
 }
 
 shared abstract class KlassWithAttributesSuper1() extends KlassWithAttributesSuper2() {
@@ -34,8 +33,7 @@ shared abstract class KlassWithAttributesSuper1() extends KlassWithAttributesSup
  // we make a default attr formal
  shared actual formal Integer defaultAttr;
  shared actual formal Integer defaultGetter;
- // FIXME: enable when this compiles
- //shared variable actual formal Integer defaultGetterSetter;
+ shared variable actual formal Integer defaultGetterSetter;
 }
 
 
@@ -68,13 +66,12 @@ shared class KlassWithAttributes() extends KlassWithAttributesSuper1() {
     void capture() {
         value x = n1;
         value y = n3;
-//        value z = n5;
+        value z = n5;
     }
 
     // override all formal attrs
     shared actual Integer formalAttr2 = 3;
     shared actual Integer defaultAttr = 3;
     shared actual Integer defaultGetter {return 3;}
-    // FIXME: enable when this compiles
-    //shared actual Integer defaultGetterSetter {return 3;} assign defaultGetterSetter {}
+    shared actual Integer defaultGetterSetter {return 3;} assign defaultGetterSetter {}
 }
