@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-abstract class KlassWithAttributesSuper2() {
+shared abstract class KlassWithAttributesSuper2() {
  shared formal Integer formalAttr;
  shared formal Integer formalAttr2;
  shared default Integer defaultAttr = 2;
@@ -26,7 +26,7 @@ abstract class KlassWithAttributesSuper2() {
  //shared default Integer defaultGetterSetter {return 2;} assign defaultGetterSetter {}
 }
 
-abstract class KlassWithAttributesSuper1() extends KlassWithAttributesSuper2() {
+shared abstract class KlassWithAttributesSuper1() extends KlassWithAttributesSuper2() {
  // we implement a formal attr
  shared actual Integer formalAttr = 1;
  // we give a default impl to a formal attr
@@ -39,7 +39,7 @@ abstract class KlassWithAttributesSuper1() extends KlassWithAttributesSuper2() {
 }
 
 
-class KlassWithAttributes() extends KlassWithAttributesSuper1() {
+shared class KlassWithAttributes() extends KlassWithAttributesSuper1() {
     Integer n1 = 1;
     shared Integer n2 = 2;
     variable Integer n3 := 3;
