@@ -192,9 +192,9 @@ shared void strings() {
     assert(!"".startsWith(hello), "empty string starts with");
     assert(!"".endsWith("world"), "empty string ends with");
     
-    assert(!exists "".split(null, true).first, "string split first 1");
-    assert(exists "hello".split(null, true).first, "string split first 2");
-    assert("hello world".split(null, true).first?""=="hello", "string split first 3");
+    assert(!"".split(null, true).empty, "string split first 1");
+    assert(!"hello".split(null, true).empty, "string split first 2");
+    assert("hello world".split(null, true).iterator.next()=="hello", "string split first 3");
     variable value count:=0;
     for (tok in "hello world goodbye".split(" ", true)) {
         count++;

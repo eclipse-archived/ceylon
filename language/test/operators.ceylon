@@ -42,8 +42,9 @@ void operators() {
     
     class X() {}
     X? xx = X();
-    assert(is X (xx else X()), "something");
-    assert(is X (true then X()), "something");
-    assert(is X (true then X() else X()), "something");
+    Object? obj(Object? x) { return x; }
+    assert(is X obj(xx else X()), "something");
+    assert(is X obj(true then X()), "something");
+    assert(is X obj(true then X() else X()), "something");
 
 }

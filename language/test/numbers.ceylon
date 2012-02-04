@@ -33,10 +33,11 @@ shared void numbers() {
     assert(-1*1.5==-1.5, "integer times float");
     assert(-1.5*+2==-3.0, "integer times float");
     
-    assert(is Integer 1+1, "natural addition");
-    assert(is Integer 1-2, "natural subtraction");
-    assert(is Integer +1+1, "integer addition");
-    assert(is Integer +1-2, "integer subtraction");
+    Object? obj(Object? x) { return x; }
+    assert(is Integer obj(1+1), "natural addition");
+    assert(is Integer obj(1-2), "natural subtraction");
+    assert(is Integer obj(+1+1), "integer addition");
+    assert(is Integer obj(+1-2), "integer subtraction");
     
     assert(1.negativeValue==-1, "natural negative");
     assert(-1.negativeValue==+1, "integer negative");
