@@ -7,5 +7,3 @@ shared interface Iterator<out Element> {
          there are no more elements to be iterated."
     shared formal Element|Finished next();
 }
-
-shared object exhausted extends Finished() {}
