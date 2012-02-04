@@ -17,27 +17,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import java.io{...}
+import java.io{File{createTempFile}}
 
 @nomodel
 @error
 void staticMethods() {
     @error
-    File f1 = File("file1");
+    File f1 = createTempFile("", "");
     @error
-    File f2 = f1.createTempFile("", "");
-    @error
-    File f3 = f1.createTempFile("", "", f2);
+    File f2 = createTempFile("", "", f1);
 }
 
+/*
 @nomodel
 @error
 void staticMethodsNamed() {
     // This is silly really, but we test it anyway
     @error
-    File f1 = File{arg0="file1";};
+    File f1 = createTempFile{arg0=""; arg1="";};
     @error
-    File f2 = f1.createTempFile{arg0=""; arg1="";};
-    @error
-    File f3 = f1.createTempFile{arg0=""; arg1=""; arg2=f2;};
+    File f2 = createTempFile{arg0=""; arg1=""; arg2=f1;};
 }
+*/

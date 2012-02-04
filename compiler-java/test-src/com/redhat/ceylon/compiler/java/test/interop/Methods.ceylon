@@ -29,13 +29,10 @@ void methods() {
     @error
     print(f1.canRead());
     Integer cmp = f1.compareTo(f2);
+    @error
     File f3 = f1.createTempFile("", ""); // Does not work
     @error
     File f4 = f1.createTempFile("", "", f2);
-    @error
-    File f5 = createTempFile("", "");
-    @error
-    File f6 = createTempFile("", "", f2);
     @error
     f1.listFiles();
 }

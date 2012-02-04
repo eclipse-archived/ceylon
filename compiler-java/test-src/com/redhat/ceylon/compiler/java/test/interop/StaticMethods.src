@@ -6,29 +6,12 @@ final class staticMethods {
     }
     
     static void staticMethods() {
-        final java.io.File f1 = new java.io.File("file1");
-        final java.io.File f2 = (let java.io.File $arg$0$callable$ = f1,java.io.File $arg$0$this$ = $arg$0$callable$,.java.lang.String $arg$0$0 = "",.java.lang.String $arg$0$1 = "" in $arg$0$callable$.createTempFile($arg$0$0, $arg$0$1));
-        final java.io.File f3 = f1.createTempFile("", "", f2);
+        final java.io.File f1 = java.io.File.createTempFile("", "");
+        final java.io.File f2 = java.io.File.createTempFile("", "", f1);
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.staticMethods.staticMethods();
-    }
-}
-final class staticMethodsNamed {
-    
-    private staticMethodsNamed() {
-    }
-    
-    static void staticMethodsNamed() {
-        final java.io.File f1 = (let .java.lang.String $arg$1$0 = "file1" in new java.io.File($arg$1$0));
-        final java.io.File f2 = (let java.io.File $arg$2$callable$ = f1,.java.lang.String $arg$2$0 = "",.java.lang.String $arg$2$1 = "" in $arg$2$callable$.createTempFile($arg$2$0, $arg$2$1));
-        final java.io.File f3 = (let java.io.File $arg$3$callable$ = f1,.java.lang.String $arg$3$0 = "",.java.lang.String $arg$3$1 = "",java.io.File $arg$3$2 = f2 in $arg$3$callable$.createTempFile($arg$3$0, $arg$3$1, $arg$3$2));
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.staticMethodsNamed.staticMethodsNamed();
     }
 }

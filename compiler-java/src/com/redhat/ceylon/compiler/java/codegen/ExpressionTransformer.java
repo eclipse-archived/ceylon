@@ -1217,6 +1217,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (qualExpr == null && needDollarThis && decl.isClassOrInterfaceMember() && expr.getScope() != decl.getContainer()) {
                 qualExpr = makeUnquotedIdent("$this");
             }
+            if (qualExpr == null && decl.isStaticallyImportable()) {
+                qualExpr = makeQualIdentFromString(decl.getContainer().getQualifiedNameString());
+            }
             
             if (transformer != null) {
                 result = transformer.transform(qualExpr, selector);
