@@ -1,6 +1,6 @@
 shared interface Set<out Element> 
         satisfies Collection<Element> &
-                  Slots<Set<Equality>> &
+                  //Slots<Set<Equality>> &
                   Cloneable<Set<Element>>
         given Element satisfies Equality {
     
@@ -46,4 +46,16 @@ shared interface Set<out Element>
         return false;
     }
     
+    shared formal Set<Element|Other> union<Other>(Set<Other> set) 
+            given Other satisfies Equality;
+    
+    shared formal Set<Element&Other> intersection<Other>(Set<Other> set) 
+            given Other satisfies Equality;
+    
+    shared formal Set<Element|Other> exclusiveUnion<Other>(Set<Other> set) 
+            given Other satisfies Equality;
+    
+    shared formal Set<Element> complement<Other>(Set<Other> set) 
+            given Other satisfies Equality;
+
 }

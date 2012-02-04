@@ -58,18 +58,22 @@ shared interface Map<out Key,out Item>
             shared actual String string {
                 return "";
             }
-            shared actual Set<Equality> and(Set<Equality> bits) {
+            shared actual Set<Key> complement<Other>(Set<Other> set) 
+                    given Other satisfies Equality {
                 return bottom;
             }
-            shared actual Set<Equality> or(Set<Equality> bits) {
+            shared actual Set<Key|Other> exclusiveUnion<Other>(Set<Other> set) 
+                    given Other satisfies Equality {
                 return bottom;
             }
-            shared actual Set<Equality> xor(Set<Equality> bits) {
+            shared actual Set<Key&Other> intersection<Other>(Set<Other> set) 
+                    given Other satisfies Equality {
                 return bottom;
             }
-            shared actual Set<Equality> complementIn(Set<Equality> bits) {
+            shared actual Set<Key|Other> union<Other>(Set<Other> set) 
+                    given Other satisfies Equality {
                 return bottom;
-            }        
+            }
         }
         return keySet;
     }
