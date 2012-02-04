@@ -219,18 +219,22 @@ public class GenerateJsVisitor extends Visitor
         }
         else {
             beginBlock();
-            if ((prototypeOwner!=null) && (that.getScope() instanceof MethodOrValue)) {
-                /*out("var ");
-                self();
-                out("=this;");
-                endLine();*/
-                out("var ");
-                self(prototypeOwner);
-                out("=this;");
-                endLine();
-            }
+            initSelf(that);
             visitStatements(stmnts, false);
             endBlock();
+        }
+    }
+    
+    private void initSelf(Block block) {
+        if ((prototypeOwner!=null) && (block.getScope() instanceof MethodOrValue)) {
+            /*out("var ");
+            self();
+            out("=this;");
+            endLine();*/
+            out("var ");
+            self(prototypeOwner);
+            out("=this;");
+            endLine();
         }
     }
     
@@ -373,17 +377,7 @@ public class GenerateJsVisitor extends Visitor
             endLine();
         }
         declareSelf(d);
-        for (Parameter p: that.getParameterList().getParameters()) {
-            if (p.getDeclarationModel().isCaptured()) {
-                self(d);
-                out(".");
-                memberName(p.getDeclarationModel());
-                out("=");
-                memberName(p.getDeclarationModel());
-                out(";");
-                endLine();
-            }
-        }
+        initParameters(that.getParameterList(), d);
         callSuperclass(that.getExtendedType(), d);
         copySuperMembers(that.getExtendedType(), that.getClassBody(), d);
         callInterfaces(that.getSatisfiedTypes(), d);
@@ -719,10 +713,44 @@ public class GenerateJsVisitor extends Visitor
         comment(that);
         function();
         memberName(d);
+        
         //TODO: if there are multiple parameter lists
         //      do the inner function declarations
-        super.visit(that);
+        ParameterList paramList = that.getParameterLists().get(0);
+        paramList.visit(this);
+        
+        beginBlock();
+        initSelf(that.getBlock());
+        initParameters(paramList, null);
+        visitStatements(that.getBlock().getStatements(), false);
+        endBlock();
+        
         share(d);
+    }
+    
+    private void initParameters(ParameterList params, TypeDeclaration typeDecl) {
+        for (Parameter param : params.getParameters()) {
+            String paramName = memberNameString(param.getDeclarationModel(), false);
+            if (param.getDefaultArgument() != null) {
+                out("if(");
+                out(paramName);
+                out("===undefined){");
+                out(paramName);
+                out("=");
+                param.getDefaultArgument().getSpecifierExpression().getExpression().visit(this);
+                out("}");
+                endLine();
+            }
+            if ((typeDecl != null) && param.getDeclarationModel().isCaptured()) {
+                self(typeDecl);
+                out(".");
+                out(paramName);
+                out("=");
+                out(paramName);
+                out(";");
+                endLine();
+            }
+        }
     }
     
     private void addMethodToPrototype(Declaration outer, 
@@ -1117,6 +1145,7 @@ public class GenerateJsVisitor extends Visitor
                 if (mte.getDeclaration() instanceof Functional) {
                     Functional f = (Functional) mte.getDeclaration();
                     if (!f.getParameterLists().isEmpty()) {
+                        List<String> argNames = that.getNamedArgumentList().getNamedArgumentList().getArgumentNames();
                         boolean first=true;
                         for (com.redhat.ceylon.compiler.typechecker.model.Parameter p: 
                             f.getParameterLists().get(0).getParameters()) {
@@ -1124,9 +1153,11 @@ public class GenerateJsVisitor extends Visitor
                             if (p.isSequenced() && that.getNamedArgumentList().getSequencedArgument()==null && that.getNamedArgumentList().getNamedArguments().isEmpty()) {
                                 clAlias();
                                 out(".empty");
-                            } else {
+                            } else if (p.isSequenced() || argNames.contains(p.getName())) {
                                 out("$");
                                 out(p.getName());
+                            } else {
+                                out("undefined");
                             }
                             first = false;
                         }
