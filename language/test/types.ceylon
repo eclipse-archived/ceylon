@@ -74,6 +74,15 @@ void testJsIssue9() {
     assert(obj.test()=="123", "Issue #9");
 }
 
+//originally in ceylon-js
+interface TypeTestI1 {}
+interface TypeTestI2 {}
+interface TypeTestI3 {}
+interface TypeTestI4 {}
+
+class TypeTestC1() satisfies TypeTestI1&TypeTestI2{}
+class TypeTestC3() satisfies TypeTestI3{}
+
 
 void types() {
     Void bool = true;
@@ -172,8 +181,8 @@ void types() {
     if (is IdentifiableObject entry) { fail("entry type 6"); }
     if (is Object entry) {} else { fail("entry type 7"); }
     if (is Nothing entry) { fail("null type 11"); }
-    if (is Entry<Equality,Equality> entry) {} else { fail("entry type 8"); }
-    //if (is Entry<Integer,Integer> entry) {} else { fail("entry type 8"); }
+    if (is Entry<Integer,Integer> entry) {} else { fail("entry type 8"); }
+    //if (is Entry<Integer,String> entry) { fail("entry type 9 (required reified gens)"); }
     
     if (is Equality nothing) { fail("null type 12"); }
     if (is IdentifiableObject nothing) { fail("null type 13"); }
@@ -181,18 +190,18 @@ void types() {
     if (is Nothing nothing) {} else { fail("null type 15"); }
     if (is Character? nothing) {} else { fail("null is optional type"); }
     
-    if (is Boolean|Character|T bool) {} else { fail("union type"); }
-    if (is Boolean|Character|T t) {} else { fail("union type"); }
-    if (is Boolean|Character|T str) { fail("union type"); } else {}
-    if (is Boolean|Character|T nothing) { fail("union type"); } else {}
+    if (is Boolean|Character|T bool) {} else { fail("union type 1"); }
+    if (is Boolean|Character|T t) {} else { fail("union type 2"); }
+    if (is Boolean|Character|T str) { fail("union type 3"); } else {}
+    if (is Boolean|Character|T nothing) { fail("union type 4"); } else {}
     if (is Equality&Castable<Bottom> one) {} else { fail("intersection type 1"); }
     if (is Equality&Castable<Bottom> bool) { fail("intersection type 2"); } else {}
-    if (is Sized&Category&Iterable<Void> str) {} else { fail("intersection type 3"); }
-    if (is Sized&Category&Iterable<Void> t) { fail("intersection type 4"); } else {}
+    if (is Sized&Category&Ordered<Void> str) {} else { fail("intersection type 3"); }
+    if (is Sized&Category&Ordered<Void> t) { fail("intersection type 4"); } else {}
     //if (is String[] empty) {} else { fail("sequence type 1"); }
     //if (is String[] seq) {} else { fail("sequence type 2"); }
     //if (is String[]? seq) {} else { fail("sequence type 3"); }
-    //if (is Integer[] seq) { fail("sequence type 4"); } else {}
+    //if (is Integer[] seq) { fail("sequence type 4 (required reified gens)"); } else {}
     
     assert(className(1)=="ceylon.language.Integer", "natural classname");
     assert(className(1.0)=="ceylon.language.Float", "float classname");
@@ -202,9 +211,13 @@ void types() {
     //from ceylon-js
     value pair = TypesPair("hello", "world");
     assert(pair.string=="(hello, world)", "pair.string");
+    assert(is TypesPair<String, String> pair, "pair type");
     value zero = TypesComplex(0.0, 0.0);
     assert(zero.string=="0+0i", "complex.string");
     assert(zero.pairString=="(0, 0)", "zero.pairString");
     assert(ConcreteTypesList().empty, "concreteList.empty");
     testJsIssue9();
+
+    TypeTestC1|TypeTestC3 c1 = TypeTestC1();
+    if (is TypeTestI1&TypeTestI2|TypeTestI3&TypeTestI4 c1) {} else { fail("is A&B|C&D"); }
 }
