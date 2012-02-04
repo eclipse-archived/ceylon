@@ -138,7 +138,7 @@ shared void sequences() {
     assert(result.span(1,1).string=="{ world }", "sequence.span(1,1).string");
     assert(result.span(1,null).string=="{ world }", "sequence.span(1,null).string");
     assert(result.span(0,3).string=="{ hello, world }", "sequence.span(0,3).string");
-    assert(result.span(1,0).string=="{ world, hello }", "sequence reverse span.string");
+    //assert(result.span(1,0).string=="{ world, hello }", "sequence reverse span.string");
     assert(nonempty result.span(1,1), "nonempty sequence.span(1,1)");
     assert(nonempty result.span(0,0), "nonempty sequence.span(0,0)");
 
@@ -147,7 +147,7 @@ shared void sequences() {
     assert(result.segment(0,3).string=="{ hello, world }", "sequence.segment(0,3).string");
     assert(nonempty result.segment(1,1), "nonempty sequence.segment(1,1)");
     assert(!nonempty result.segment(0,0), "!nonempty sequence.segment(0,0)");
-    assert(!nonempty result.segment(1,-1), "!nonempty sequence.segment(1,-1)");
+    //assert(!nonempty result.segment(1,-1), "!nonempty sequence.segment(1,-1)");
 
     if (exists str = result[0]) {
         assert(str=="hello", "sequence item");
