@@ -1229,6 +1229,9 @@ public class GenerateJsVisitor extends Visitor
     public void visit(SpecifierStatement that) {
         BaseMemberExpression bme = (Tree.BaseMemberExpression) that.getBaseMemberExpression();
         qualify(that, bme.getDeclaration());
+        if (!(prototypeStyle && bme.getDeclaration().isClassOrInterfaceMember())) {
+            out("$");
+        }
         memberName(bme.getDeclaration());
         out("=");
         that.getSpecifierExpression().visit(this);
@@ -2194,7 +2197,7 @@ public class GenerateJsVisitor extends Visitor
     /** Creates and returns a name for a tmp var. */
     private String createTempVariable() {
         tmpvarCount++;
-        return "tmpvar" + tmpvarCount;
+        return "tmpvar$" + tmpvarCount;
     }
 
     private void caseClause(CaseClause cc, String expvar) {
