@@ -1,7 +1,5 @@
 package ceylon.language;
 
-import java.util.Arrays;
-
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
