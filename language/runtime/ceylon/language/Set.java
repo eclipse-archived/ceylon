@@ -23,7 +23,21 @@ public interface Set<Element>
     public boolean subset(@TypeInfo("ceylon.language.Set<ceylon.language.Equality>") 
                           @Name("set") Set<? extends java.lang.Object> set);
     
+    @TypeInfo("ceylon.language.Set<Element|Other>")
+    public <Other> Set union(@TypeInfo("ceylon.language.Set<Other>") 
+                             @Name("set") Set<? extends Other> set);
     
+    @TypeInfo("ceylon.language.Set<Element&Other>")
+    public <Other> Set intersection(@TypeInfo("ceylon.language.Set<Other>") 
+                                    @Name("set") Set<? extends Other> set);
+
+    @TypeInfo("ceylon.language.Set<Element|Other>")
+    public <Other> Set exclusiveUnion(@TypeInfo("ceylon.language.Set<Other>") 
+                                      @Name("set") Set<? extends Other> set);
+    
+    @TypeInfo("ceylon.language.Set<Element>")
+    public <Other> Set<? extends Element> complement(@TypeInfo("ceylon.language.Set<Other>") 
+                                      @Name("set") Set<? extends Other> set);
     
     @Ignore
     public static final class Set$impl {
