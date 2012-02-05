@@ -592,21 +592,46 @@ $Character.prototype.getLowercased = function() {
     var lcstr = codepointToString(this.value).toLowerCase();
     return Character(codepointFromString(lcstr, 0));
 }
+$Character.prototype.getTitlecased = function() {
+    var tc = $toTitlecase[this.value];
+    return tc===undefined ? this.getUppercased() : Character(tc);
+}
 var $WS={0x9:true, 0xa:true, 0xb:true, 0xc:true, 0xd:true, 0x20:true, 0x85:true, 0xa0:true,
     0x1680:true, 0x180e:true, 0x2028:true, 0x2029:true, 0x202f:true, 0x205f:true, 0x3000:true}
 for (var i=0x2000; i<=0x200a; i++) { $WS[i]=true }
+var $titlecase={
+    0x1c8: [0x1c7, 0x1c9], 0x1cb: [0x1ca, 0x1cc], 0x1f2: [0x1f1, 0x1f3],
+    0x1f88: [undefined, 0x1f80], 0x1f89: [undefined, 0x1f81], 0x1f8a: [undefined, 0x1f82],
+    0x1f8b: [undefined, 0x1f83], 0x1f8c: [undefined, 0x1f84], 0x1f8d: [undefined, 0x1f85],
+    0x1f8e: [undefined, 0x1f86], 0x1f8f: [undefined, 0x1f87], 0x1f98: [undefined, 0x1f90],
+    0x1f99: [undefined, 0x1f91], 0x1f9a: [undefined, 0x1f92], 0x1f9b: [undefined, 0x1f93],
+    0x1f9c: [undefined, 0x1f94], 0x1f9d: [undefined, 0x1f95], 0x1f9e: [undefined, 0x1f96],
+    0x1f9f: [undefined, 0x1f97], 0x1fa8: [undefined, 0x1fa0], 0x1fa9: [undefined, 0x1fa1],
+    0x1faa: [undefined, 0x1fa2], 0x1fab: [undefined, 0x1fa3], 0x1fac: [undefined, 0x1fa4],
+    0x1fad: [undefined, 0x1fa5], 0x1fae: [undefined, 0x1fa6], 0x1faf: [undefined, 0x1fa7],
+    0x1fbc: [undefined, 0x1fb3], 0x1fcc: [undefined, 0x1fc3], 0x1ffc: [undefined, 0x1ff3]
+}
+var $toTitlecase={
+    0x1c7:0x1c8, 0x1ca:0x1cb, 0x1f1:0x1f2,
+    0x1c9:0x1c8, 0x1cc:0x1cb, 0x1f3:0x1f2, 0x1f80:0x1f88, 0x1f81:0x1f89, 0x1f82:0x1f8a,
+    0x1f83:0x1f8b, 0x1f84:0x1f8c, 0x1f85:0x1f8d, 0x1f86:0x1f8e, 0x1f87:0x1f8f, 0x1f90:0x1f98,
+    0x1f91:0x1f99, 0x1f92:0x1f9a, 0x1f93:0x1f9b, 0x1f94:0x1f9c, 0x1f95:0x1f9d, 0x1f96:0x1f9e,
+    0x1f97:0x1f9f, 0x1fa0:0x1fa8, 0x1fa1:0x1fa9, 0x1fa2:0x1faa, 0x1fa3:0x1fab, 0x1fa4:0x1fac,
+    0x1fa5:0x1fad, 0x1fa6:0x1fae, 0x1fa7:0x1faf, 0x1fb3:0x1fbc, 0x1fc3:0x1fcc, 0x1ff3:0x1ffc
+}
 $Character.prototype.getWhitespace = function() { return Boolean$(this.value in $WS) }
 $Character.prototype.getControl = function() { return Boolean$(this.value<32 || this.value===127) }
 $Character.prototype.getDigit = function() { return Boolean$(this.value>=48 && this.value<=57) }
 $Character.prototype.getInteger = function() { return Integer(this.value); }
 $Character.prototype.getUppercase = function() {
     var str = codepointToString(this.value);
-    return Boolean$(str.toLowerCase()!==str);
+    return Boolean$(str.toLowerCase()!==str && !(this.value in $titlecase));
 }
 $Character.prototype.getLowercase = function() {
     var str = codepointToString(this.value);
-    return Boolean$(str.toUpperCase()!==str);
+    return Boolean$(str.toUpperCase()!==str && !(this.value in $titlecase));
 }
+$Character.prototype.getTitlecase = function() {return Boolean$(this.value in $titlecase)}
 $Character.prototype.getSuccessor = function() {
     var succ = this.value+1;
     if ((succ&0xf800) === 0xd800) {return Character(0xe000)}

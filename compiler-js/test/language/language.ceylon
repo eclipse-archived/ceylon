@@ -1,67 +1,88 @@
-void expect(Equality actual, Equality expected, String text) {
-    print(text + ": actual='" + actual.string + "', expected='"
-            + expected.string + "' => "
-            + ((actual==expected) then "ok" else "FAIL"));
+variable Integer assertionCount:=0;
+variable Integer failureCount:=0;
+
+shared void assert(Boolean assertion, String message="") {
+    assertionCount+=1;
+    if (!assertion) {
+        failureCount+=1;
+        print("assertion failed \"" message "\"");
+    }
 }
-void succeed(String text) {
-    print("[ok] " + text);
+shared void assertEqual(Equality actual, Equality expected, String message="") {
+    assertionCount+=1;
+    if (actual!=expected) {
+        failureCount+=1;
+        print("assertion failed \"" message "\": actual='" actual "', expected='" expected "'");
+    }
 }
-void fail(String text) {
-    print("[NOT OK] " + text);
+
+shared void fail(String message) {
+    assert(false, message);
+}
+
+shared void results() {
+    print("assertions " assertionCount 
+          ", failures " failureCount "");
 }
 
 void testCharacter() {
     Character c1 = `A`;
     //Character c2 = `𝄞`;
     //Character c3 = `Ũ`;
-    expect(c1.string, "A", "Character.string");
-    //expect(c2.string, "𝄞", "Character.string");
-    //expect(c3.string, "Ũ", "Character.string");
-    //expect(`Ä`.lowercased, `ä`, "Character.lowercased");
-    //expect(`x`.lowercased, `x`, "Character.lowercased");
-    //expect(`ö`.uppercased, `Ö`, "Character.uppercased");
-    //expect(`#`.uppercased, `#`, "Character.uppercased");
-    expect(`A`.whitespace, false, "Character.whitespace");
-    expect(` `.whitespace, true, "Character.whitespace");
+    assertEqual(c1.string, "A", "Character.string");
+    //assertEqual(c2.string, "𝄞", "Character.string");
+    //assertEqual(c3.string, "Ũ", "Character.string");
+    assertEqual(`Ä`.lowercased, `ä`, "Character.lowercased");
+    assertEqual(`x`.lowercased, `x`, "Character.lowercased");
+    assertEqual(`ö`.uppercased, `Ö`, "Character.uppercased");
+    assertEqual(`#`.uppercased, `#`, "Character.uppercased");
+    assertEqual(`c`.titlecased, `C`, "Character.titlecased");
+    assertEqual(`C`.titlecased, `C`, "Character.titlecased");
+    assertEqual(`9`.titlecased, `9`, "Character.titlecased");
+    assertEqual(`A`.whitespace, false, "Character.whitespace");
+    assertEqual(` `.whitespace, true, "Character.whitespace");
     for (c in "\t") {
-        expect(c.whitespace, true, "Character.whitespace");
+        assertEqual(c.whitespace, true, "Character.whitespace");
     }
-    expect(` `.control, false, "Character.control");
+    assertEqual(` `.control, false, "Character.control");
     for (c in "\r") {
-        expect(c.control, true, "Character.control");
+        assertEqual(c.control, true, "Character.control");
     }
-    expect(`P`.uppercase, true, "Character.uppercase");
-    expect(`m`.uppercase, false, "Character.uppercase");
-    expect(`#`.uppercase, false, "Character.uppercase");
-    expect(`z`.lowercase, true, "Character.lowercase");
-    expect(`V`.lowercase, false, "Character.lowercase");
-    expect(`+`.lowercase, false, "Character.lowercase");
+    assertEqual(`P`.uppercase, true, "Character.uppercase");
+    assertEqual(`m`.uppercase, false, "Character.uppercase");
+    assertEqual(`#`.uppercase, false, "Character.uppercase");
+    assertEqual(`z`.lowercase, true, "Character.lowercase");
+    assertEqual(`V`.lowercase, false, "Character.lowercase");
+    assertEqual(`+`.lowercase, false, "Character.lowercase");
+    assertEqual(`M`.titlecase, false, "Character.titlecase");
+    assertEqual(`m`.titlecase, false, "Character.titlecase");
+    assertEqual(`6`.titlecase, false, "Character.titlecase");
     
-    expect(`A`.successor, `B`, "Character.successor");
-    expect(`w`.predecessor, `v`, "Character.predecessor");
+    assertEqual(`A`.successor, `B`, "Character.successor");
+    assertEqual(`w`.predecessor, `v`, "Character.predecessor");
 }
 
 void testString() {
-    expect("".empty, true, "String.empty");
-    expect("x".empty, false, "String.empty");
-    expect("".size, 0, "String.size");
+    assertEqual("".empty, true, "String.empty");
+    assertEqual("x".empty, false, "String.empty");
+    assertEqual("".size, 0, "String.size");
     String s1 = "abc";
     String s2 = "ä€Ũ\t";
     String s3 = "A𝄞`ŨÖ";
-    expect(s1.size, 3, "String.size");
-    expect(s2.size, 4, "String.size");
-    expect(s3.size, 5, "String.size");
-    expect((s1+s2).size, 7, "String.size");
-    expect((s1+s3).size, 8, "String.size");
+    assertEqual(s1.size, 3, "String.size");
+    assertEqual(s2.size, 4, "String.size");
+    assertEqual(s3.size, 5, "String.size");
+    assertEqual((s1+s2).size, 7, "String.size");
+    assertEqual((s1+s3).size, 8, "String.size");
     
-    expect("".shorterThan(0), false, "String.shorterThan");
-    expect("".shorterThan(1), true, "String.shorterThan");
-    expect("abc".shorterThan(3), false, "String.shorterThan");
-    expect("abc".shorterThan(4), true, "String.shorterThan");
-    expect("".longerThan(0), false, "String.longerThan");
-    expect("x".longerThan(0), true, "String.longerThan");
-    expect("abc".longerThan(3), false, "String.longerThan");
-    expect("abc".longerThan(2), true, "String.longerThan");
+    assertEqual("".shorterThan(0), false, "String.shorterThan");
+    assertEqual("".shorterThan(1), true, "String.shorterThan");
+    assertEqual("abc".shorterThan(3), false, "String.shorterThan");
+    assertEqual("abc".shorterThan(4), true, "String.shorterThan");
+    assertEqual("".longerThan(0), false, "String.longerThan");
+    assertEqual("x".longerThan(0), true, "String.longerThan");
+    assertEqual("abc".longerThan(3), false, "String.longerThan");
+    assertEqual("abc".longerThan(2), true, "String.longerThan");
     
     variable Integer cnt := 0;
     variable String s4 := "";
@@ -69,78 +90,71 @@ void testString() {
         s4 := c.string + s4;
         ++cnt;
     }
-    expect(cnt, 5, "String.iterator");
-    expect(s4, "ÖŨ`𝄞A", "String.iterator");
+    assertEqual(cnt, 5, "String.iterator");
+    assertEqual(s4, "ÖŨ`𝄞A", "String.iterator");
     
     if (exists c = s1[-1]) {
         fail("String.item");
-    } else {
-        succeed("String.item");
     }
     if (exists c = s1[0]) {
-        expect(c, `a`, "String.item");
+        assertEqual(c, `a`, "String.item");
     } else {
         fail("String.item");
     }
     if (exists c = s1[2]) {
-        expect(c, `c`, "String.item");
+        assertEqual(c, `c`, "String.item");
     } else {
         fail("String.item");
     }
     if (exists c = s1[3]) {
         fail("String.item");
-    } else {
-        succeed("String.item");
     }
     if (exists c = s3[4]) {
-        expect(c, `Ö`, "String.item");
+        assertEqual(c, `Ö`, "String.item");
     } else {
         fail("String.item");
     }
     if (exists c = ""[0]) {
         fail("String.item");
-    } else {
-        succeed("String.item");
     }
     
-    expect("".trimmed, "", "String.trimmed");
-    expect("x".trimmed, "x", "String.trimmed");
-    expect("  ".trimmed, "", "String.trimmed");
-    expect(" \tx \t".trimmed, "x", "String.trimmed");
-    expect(" \t𝄞\t".trimmed.size, 1, "String.trimmed.size");
+    assertEqual("".trimmed, "", "String.trimmed");
+    assertEqual("x".trimmed, "x", "String.trimmed");
+    assertEqual("  ".trimmed, "", "String.trimmed");
+    assertEqual(" \tx \t".trimmed, "x", "String.trimmed");
+    assertEqual(" \t𝄞\t".trimmed.size, 1, "String.trimmed.size");
     
-    expect("".initial(1), "", "String.initial");
-    expect("abc".initial(0), "", "String.initial");
-    expect("abc".initial(3), "abc", "String.initial");
-    expect("abc".initial(1), "a", "String.initial");
-    expect("𝄞abc".initial(2), "𝄞a", "String.intitial");
-    expect("𝄞abc".initial(2).size, 2, "String.intitial().size");
-    expect("".terminal(1), "", "String.terminal");
-    expect("abc".terminal(0), "", "String.terminal");
-    expect("abc".terminal(3), "abc", "String.terminal");
-    expect("abc".terminal(1), "c", "String.terminal");
-    expect("abc𝄞".terminal(2), "c𝄞", "String.terminal");
-    expect("abc𝄞".terminal(2).size, 2, "String.terminal().size");
+    assertEqual("".initial(1), "", "String.initial");
+    assertEqual("abc".initial(0), "", "String.initial");
+    assertEqual("abc".initial(3), "abc", "String.initial");
+    assertEqual("abc".initial(1), "a", "String.initial");
+    assertEqual("𝄞abc".initial(2), "𝄞a", "String.intitial");
+    assertEqual("𝄞abc".initial(2).size, 2, "String.intitial().size");
+    assertEqual("".terminal(1), "", "String.terminal");
+    assertEqual("abc".terminal(0), "", "String.terminal");
+    assertEqual("abc".terminal(3), "abc", "String.terminal");
+    assertEqual("abc".terminal(1), "c", "String.terminal");
+    assertEqual("abc𝄞".terminal(2), "c𝄞", "String.terminal");
+    assertEqual("abc𝄞".terminal(2).size, 2, "String.terminal().size");
     
-    expect("".startsWith("abc"), false, "String.startsWith");
-    expect("".startsWith(""), true, "String.startsWith");
-    expect("abc".startsWith(""), true, "String.startsWith");
-    expect("abc".startsWith("abc"), true, "String.startsWith");
-    expect("ab".startsWith("abc"), false, "String.startsWith");
-    expect("abc".startsWith("a"), true, "String.startsWith");
-    expect("abc".startsWith("b"), false, "String.startsWith");
-    expect("".endsWith("abc"), false, "String.endsWith");
-    expect("".endsWith(""), true, "String.endsWith");
-    expect("abc".endsWith(""), true, "String.endsWith");
-    expect("abc".endsWith("abc"), true, "String.endsWith");
-    expect("ab".endsWith("xab"), false, "String.endsWith");
-    expect("abc".endsWith("c"), true, "String.endsWith");
-    expect("abc".endsWith("b"), false, "String.endsWith");
+    assertEqual("".startsWith("abc"), false, "String.startsWith");
+    assertEqual("".startsWith(""), true, "String.startsWith");
+    assertEqual("abc".startsWith(""), true, "String.startsWith");
+    assertEqual("abc".startsWith("abc"), true, "String.startsWith");
+    assertEqual("ab".startsWith("abc"), false, "String.startsWith");
+    assertEqual("abc".startsWith("a"), true, "String.startsWith");
+    assertEqual("abc".startsWith("b"), false, "String.startsWith");
+    assertEqual("".endsWith("abc"), false, "String.endsWith");
+    assertEqual("".endsWith(""), true, "String.endsWith");
+    assertEqual("abc".endsWith(""), true, "String.endsWith");
+    assertEqual("abc".endsWith("abc"), true, "String.endsWith");
+    assertEqual("ab".endsWith("xab"), false, "String.endsWith");
+    assertEqual("abc".endsWith("c"), true, "String.endsWith");
+    assertEqual("abc".endsWith("b"), false, "String.endsWith");
 }
 
 shared void test() {
-    print("--- Start Language Module Tests ---");
     testCharacter();
-    //testString();
-    print("--- End Language Module Tests ---");
+    testString();
+    results();
 }
