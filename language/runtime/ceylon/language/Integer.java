@@ -132,8 +132,8 @@ public final class Integer
     public Comparison compare(@Name("other") Integer op) {
         long x = value;
         long y = op.value;
-        return (x < y) ? Comparison.SMALLER :
-            ((x == y) ? Comparison.EQUAL : Comparison.LARGER);
+        return (x < y) ? smaller.getSmaller() :
+            ((x == y) ? equal.getEqual() : larger.getLarger());
     }
     
     @Override

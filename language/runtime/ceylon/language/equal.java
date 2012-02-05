@@ -1,12 +1,18 @@
 package ceylon.language;
 
-import com.redhat.ceylon.compiler.java.metadata.Attribute;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Object;
 
-@Ceylon @Attribute
-public class equal {
+@Ceylon @Object
+public class equal extends Comparison {
 	
-    public static Comparison getEqual(){
-        return Comparison.EQUAL;
+	private equal() {
+		super("equal");
+	}
+	
+	private static final equal equal = new equal();
+	
+    public static equal getEqual(){
+        return equal;
     }
 }

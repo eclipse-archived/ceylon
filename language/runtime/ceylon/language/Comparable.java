@@ -27,19 +27,19 @@ public interface Comparable<Other extends Comparable<? super Other>> {
     @Ignore
     public static final class Comparable$impl {
         public static <Other extends Comparable<Other>> boolean largerThan(Comparable<Other> $this, Other other) {
-            return $this.compare(other)==Comparison.LARGER;
+            return $this.compare(other)==larger.getLarger();
         }
 
         public static <Other extends Comparable<Other>> boolean smallerThan(Comparable<Other> $this, Other other) {
-            return $this.compare(other)==Comparison.SMALLER;
+            return $this.compare(other)==smaller.getSmaller();
         }
 
         public static <Other extends Comparable<Other>> boolean asLargeAs(Comparable<Other> $this, Other other) {
-            return $this.compare(other)!=Comparison.SMALLER;
+            return $this.compare(other)!=smaller.getSmaller();
         }
 
         public static <Other extends Comparable<Other>> boolean asSmallAs(Comparable<Other> $this, Other other) {
-            return $this.compare(other)!=Comparison.LARGER;
+            return $this.compare(other)!=larger.getLarger();
         }
 
     }

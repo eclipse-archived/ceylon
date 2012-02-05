@@ -78,8 +78,8 @@ public final class String
     @Override
     public Comparison compare(@Name("other") String other) {
         int c = value.compareTo(other.value);
-        return (c < 0) ? Comparison.SMALLER :
-            ((c == 0) ? Comparison.EQUAL : Comparison.LARGER);
+        return (c < 0) ? smaller.getSmaller() :
+            ((c == 0) ? equal.getEqual() : larger.getLarger());
     }
 
     /*@Override

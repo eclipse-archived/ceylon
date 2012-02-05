@@ -1,43 +1,43 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.metadata.CaseTypes;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 
 @Ceylon
 @Class(extendsType = "ceylon.language.IdentifiableObject")
-public final class Comparison {
+@CaseTypes({"ceylon.language.equal", 
+	        "ceylon.language.smaller", 
+	        "ceylon.language.larger"})
+public class Comparison {
     
     private final java.lang.String name;
-	
-    public static final Comparison LARGER = new Comparison("larger");
-    public static final Comparison SMALLER = new Comparison("smaller");
-    public static final Comparison EQUAL = new Comparison("equal");
-    
+	    
     public boolean largerThan() {
-        return this == LARGER;
+        return this == larger.getLarger();
     }
 
     public boolean smallerThan() {
-        return this == SMALLER;
+        return this == smaller.getSmaller();
     }
 
     public boolean equal() {
-        return this == EQUAL;
+        return this == equal.getEqual();
     }
 
     public boolean unequal() {
-        return this != EQUAL;
+        return this != equal.getEqual();
     }
 
     public boolean asLargeAs() {
-        return this != SMALLER;
+        return this != smaller.getSmaller();
     }
 
     public boolean asSmallAs() {
-        return this != LARGER;
+        return this != larger.getLarger();
     }
 
-	private Comparison(java.lang.String name) {
+	Comparison(java.lang.String name) {
 		this.name=name;
 	}	
 	

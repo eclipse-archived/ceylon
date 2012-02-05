@@ -94,8 +94,8 @@ public final class Character
 	public Comparison compare(@Name("other") Character other) {
         long x = codePoint;
         long y = other.codePoint;
-        return (x < y) ? Comparison.SMALLER :
-            ((x == y) ? Comparison.EQUAL : Comparison.LARGER);
+        return (x < y) ? smaller.getSmaller() :
+            ((x == y) ? equal.getEqual() : larger.getLarger());
 	}
 
 	/*@Override

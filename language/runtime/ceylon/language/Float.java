@@ -127,8 +127,8 @@ public final class Float
     public Comparison compare(@Name("other") Float op) {
         double x = value;
         double y = op.value;
-        return (x < y) ? Comparison.SMALLER :
-            ((x == y) ? Comparison.EQUAL : Comparison.LARGER);
+        return (x < y) ? smaller.getSmaller() :
+            ((x == y) ? equal.getEqual() : larger.getLarger());
     }
     
     @Override

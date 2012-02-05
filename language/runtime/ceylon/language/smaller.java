@@ -1,12 +1,18 @@
 package ceylon.language;
 
-import com.redhat.ceylon.compiler.java.metadata.Attribute;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Object;
 
-@Ceylon @Attribute
-public class smaller {
+@Ceylon @Object
+public class smaller extends Comparison {
 	
-    public static Comparison getSmaller(){
-        return Comparison.SMALLER;
+	private smaller() {
+		super("smaller");
+	}
+	
+	private static final smaller smaller = new smaller();
+	
+    public static smaller getSmaller(){
+    	return smaller;
     }
 }
