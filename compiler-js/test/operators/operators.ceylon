@@ -188,6 +188,10 @@ class NullsafeTest() {
     shared Integer f() {return 1;}
 }
 
+Integer? nullsafeTest(Integer? f()) {
+    return f();
+}
+
 void testNullsafeOperators() {
     String[] seq = { "hi" };
     String s1 = seq[0]?"null";
@@ -204,8 +208,10 @@ void testNullsafeOperators() {
     NullsafeTest? obj = null;
     Integer? i = obj?.f();
     assert(!exists i, "nullsafe invoke");
-    Callable<Integer>? f2 = obj?.f;
-    assert(!exists f2, "nullsafe method ref");
+    Callable<Integer?> f2 = obj?.f;
+    assert(!exists nullsafeTest(f2), "nullsafe method ref");
+    Callable<Integer?>? f3 = obj?.f;
+    assert(exists f3, "nullsafe method ref 2");
     obj?.f();
     assert(!exists obj?.f(), "nullsafe simple call");
 }

@@ -672,14 +672,14 @@ function getExhausted() { return $finished; }
 
 //These are operators for handling nulls
 function $nullsafe() { return null; }
-function exists(value) { return value === getNull() || value === undefined || value === $nullsafe ? $false : $true; }
-function nonempty(value) { return value === null || value === undefined || value === $nullsafe ? $false : Boolean$(value.getEmpty() === $false); }
+function exists(value) { return value === getNull() || value === undefined ? $false : $true; }
+function nonempty(value) { return value === null || value === undefined ? $false : Boolean$(value.getEmpty() === $false); }
 
 function isOfType(obj, typeName) {
-    return Boolean$((obj===null || obj===$nullsafe) ? (typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void") : (typeName in obj.constructor.T$all));
+    return Boolean$((obj===null) ? (typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void") : (typeName in obj.constructor.T$all));
 }
 function isOfTypes(obj, types) {
-    if (obj===null || obj===$nullsafe) { //TODO check if this is right
+    if (obj===null) { //TODO check if this is right
         return types.l.indexOf('ceylon.language.Nothing')>=0 || types.l.indexOf('ceylon.language.Void')>=0;
     }
     var unions = false;
@@ -704,7 +704,7 @@ function isOfTypes(obj, types) {
 }
 
 function className(obj) {
-    return String$(obj!==null && obj!==$nullsafe ? obj.constructor.T$name : 'ceylon.language.Nothing');
+    return String$(obj!==null ? obj.constructor.T$name : 'ceylon.language.Nothing');
 }
 
 function $Comparison() {}
@@ -865,7 +865,7 @@ $ArraySequence.prototype.equals = function(other) {
         for (var i = 0; i < this.getSize().value; i++) {
             var mine = this.item(Integer(i));
             var theirs = other.item(Integer(i));
-            if (((mine === null || mine === $nullsafe) && theirs) || !(mine && mine.equals(theirs) === getTrue())) {
+            if (((mine === null) && theirs) || !(mine && mine.equals(theirs) === getTrue())) {
                 return getFalse();
             }
         }

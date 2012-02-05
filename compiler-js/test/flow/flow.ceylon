@@ -170,6 +170,8 @@ class MySequence<out Element>(Sequence<Element> seq)
     shared actual Element[] segment(Integer from, Integer length) { return seq.segment(from, length); }
     shared actual MySequence<Element> clone { return this; }
     shared actual String string { return seq.string; }
+    shared actual Integer hash { return seq.hash; }
+    shared actual Boolean equals(Equality other) { return seq.equals(other); }
 }
 
 void testIfNonempty() {
