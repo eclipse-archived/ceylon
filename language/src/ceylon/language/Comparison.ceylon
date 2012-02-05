@@ -8,3 +8,15 @@ shared abstract class Comparison(String name)
         return name;
     }
 }
+
+doc "The value is exactly equal to the given value."
+by "Gavin"
+shared object equal extends Comparison("equal") {}
+
+doc "The value is smaller than the given value."
+by "Gavin"
+shared object smaller extends Comparison("smaller") {}
+
+doc "The value is larger than the given value."
+by "Gavin"
+shared object larger extends Comparison("larger") {}
