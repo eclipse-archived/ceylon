@@ -51,7 +51,7 @@ shared interface Map<out Key,out Item>
                 return false;
             }
             shared actual Integer hash {
-                return 0;
+                return outer.size;
             }
             shared actual Iterator<Key> iterator {
                 return bottom;
@@ -88,10 +88,10 @@ shared interface Map<out Key,out Item>
                 return this;
             }
             shared actual Boolean equals(Equality that) {
-                return bottom;
+                return false;
             }
             shared actual Integer hash { 
-                return 0;
+                return outer.size;
             }
             shared actual Iterator<Item> iterator {
                 return bottom;
@@ -108,6 +108,29 @@ shared interface Map<out Key,out Item>
     }
     
     shared default Map<Item, Set<Key>> inverse {
-        throw; //TODO!
+        object inverse satisfies Map<Item, Set<Key>> {
+            shared actual Map<Item,Set<Key>> clone {
+                return this;
+            }
+            shared actual Boolean equals(Equality that) {
+                return false;
+            }
+            shared actual Integer hash { 
+                return outer.size;
+            }
+            shared actual Set<Key>? item(Equality key) {
+                return bottom;
+            }
+            shared actual Iterator<Entry<Item,Set<Key>>> iterator {
+                return bottom;
+            }
+            shared actual Integer size {
+                return outer.size;
+            }
+            shared actual String string {
+                return "";
+            }
+        }
+        return inverse;
     }
 }
