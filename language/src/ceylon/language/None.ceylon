@@ -15,7 +15,12 @@ shared interface None<out Element>
         return emptyIterator;
     }
     
-    shared actual default Integer size { return 0; }
+    shared actual default Integer size { 
+        return 0; 
+    }
     
-    shared actual Boolean empty { return true; }
+    shared actual Boolean empty { 
+        return true; 
+    }
+    
 }

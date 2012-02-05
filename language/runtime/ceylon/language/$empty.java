@@ -53,8 +53,8 @@ public class $empty {
         }
 
         @Override
-        public Iterator<java.lang.Object> getIterator() {
-            return Empty$impl.getIterator(this);
+        public Iterator getIterator() {
+            return None$impl.getIterator(this);
         }
 
         @Override

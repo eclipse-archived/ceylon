@@ -9,9 +9,12 @@ shared interface Some<out Element>
             throw;
         }
     }
+    
     doc "Returns `false`, since every `Some` contains at 
          least one element."
-    shared actual Boolean empty { return false; }
+    shared actual Boolean empty { 
+        return false; 
+    }
 
     shared formal FixedSized<Element> rest;
     

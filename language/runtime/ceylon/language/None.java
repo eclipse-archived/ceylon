@@ -25,6 +25,9 @@ public interface None<Element> extends FixedSized<Element> {
         public static <Element> boolean getEmpty(None<Element> $this){
             return true;
         }
+        public static <Element> Iterator getIterator(None<Element> $this){
+            return emptyIterator.getEmptyIterator();
+        }
     }
 
 }

@@ -47,14 +47,6 @@ public interface Empty
         public static boolean getEmpty(Empty $this){
             return true;
         }
-        public static Iterator<java.lang.Object> getIterator(Empty $this){
-            return new Iterator<java.lang.Object>() {
-                @Override
-                public java.lang.Object next() {
-                    return exhausted.getExhausted();
-                }
-            };
-        }
         public static java.lang.Object item(Empty $this, Integer key){
             return null;
         }

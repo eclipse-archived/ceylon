@@ -6,9 +6,9 @@ import com.redhat.ceylon.compiler.java.metadata.Object;
 @Ceylon @Object
 public class exhausted extends Finished {
     
-    private final static Finished exhausted = new exhausted();
+    private final static exhausted exhausted = new exhausted();
     
-    public static Finished getExhausted(){
+    public static exhausted getExhausted(){
         return exhausted;
     }
 
