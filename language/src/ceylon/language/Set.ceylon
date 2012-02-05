@@ -46,6 +46,10 @@ shared interface Set<out Element>
         return false;
     }
     
+    shared actual default Integer hash {
+        return size;
+    } 
+    
     shared formal Set<Element|Other> union<Other>(Set<Other> set) 
             given Other satisfies Equality;
     

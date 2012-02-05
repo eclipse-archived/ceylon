@@ -180,8 +180,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     
     @Override
     public int hashCode(){
-        //TODO: not consistent with List hashcode
-        return getFirst().hashCode()/2+getLast().hashCode()/2;// TODO: really should be xor
+        return List$impl.hashCode(this);
     }
     
     @Override

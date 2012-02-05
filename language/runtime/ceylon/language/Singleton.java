@@ -182,7 +182,7 @@ public class Singleton<Element>
     
     @Override
     public int hashCode() {
-        return element==null ? 0 : element.hashCode();
+        return 1;
     }
     
 }

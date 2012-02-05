@@ -149,8 +149,7 @@ public interface Correspondence<Key,Item> {
         }
         @Override
         public int hashCode() {
-            //TODO!!!!
-            return 0;
+            return List$impl.hashCode(this);
         }
     }
     

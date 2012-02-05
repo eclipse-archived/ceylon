@@ -32,6 +32,9 @@ public interface Set<Element>
         	}
         	return false;
         }
+        public static <Element> int hashCode(final Set<Element> $this) {
+            return (int) $this.getSize();
+        }
     }
 
 }

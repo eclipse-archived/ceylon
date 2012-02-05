@@ -38,6 +38,10 @@ shared interface Map<out Key,out Item>
         return false;
     }
     
+    shared actual default Integer hash {
+        return size;
+    } 
+    
     actual shared default Set<Key> keys {
         object keySet satisfies Set<Key> {
             shared actual Set<Key> clone { 

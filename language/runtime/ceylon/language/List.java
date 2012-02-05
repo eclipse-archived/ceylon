@@ -89,5 +89,8 @@ public interface List<Element>
         	return false;
         }
         
+        public static <Element> int hashCode(final List<Element> $this) {
+            return (int) $this.getSize();
+        }
     }    
 }

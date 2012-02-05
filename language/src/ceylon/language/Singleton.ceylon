@@ -77,7 +77,7 @@ shared class Singleton<Element>(Element element)
     }
     
     shared actual Integer hash {
-        return element.hash;
+        return 1;
     }
     
     shared actual Boolean contains(Equality element) {

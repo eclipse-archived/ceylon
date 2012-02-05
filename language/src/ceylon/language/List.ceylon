@@ -108,4 +108,8 @@ shared interface List<out Element>
         return false;
     }
     
+    shared actual default Integer hash {
+        return size;
+    } 
+    
 }

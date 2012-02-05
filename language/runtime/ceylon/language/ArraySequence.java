@@ -190,8 +190,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Override
     public int hashCode() {
-        //TOOD: this is not a great impl
-        return Arrays.hashCode(array);
+        return List$impl.hashCode(this);
     }
     
     @Override

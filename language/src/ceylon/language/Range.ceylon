@@ -174,10 +174,6 @@ shared class Range<Element>(Element first, Element last)
         }
     }
     
-    shared actual Integer hash {
-        return first.hash/2 + last.hash/2; //todo: really should be xor
-    }
-    
     doc "Returns the range itself, since ranges are 
          immutable."
     shared actual Range<Element> clone {

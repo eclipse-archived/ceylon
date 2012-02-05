@@ -56,6 +56,9 @@ public interface Map<Key,Item>
         	}
         	return false;
         }
+        public static <Key,Item> int hashCode(final Map<Key,Item> $this) {
+            return (int) $this.getSize();
+        }
     }
 
 }
