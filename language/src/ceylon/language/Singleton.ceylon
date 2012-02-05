@@ -83,4 +83,8 @@ shared class Singleton<Element>(Element element)
     shared actual Boolean contains(Equality element) {
         return this.element==element;
     }
+    
+    shared actual Integer count(Equality element) {
+        return contains(element) then 1 else 0;
+    }
 }

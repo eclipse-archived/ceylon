@@ -85,7 +85,8 @@ shared class Range<Element>(Element first, Element last)
                 if (is Element curr = current) {
                     if (curr == last) {
                         current := exhausted;
-                    } else {
+                    } 
+                    else {
                         current := outer.next(curr);
                     }
                 }
@@ -106,6 +107,10 @@ shared class Range<Element>(Element first, Element last)
         else {
             return false;
         }
+    }
+    
+    shared actual Integer count(Equality element) {
+        return contains(element) then 1 else 0;
     }
     
     doc "Determines if the range includes the given value."
