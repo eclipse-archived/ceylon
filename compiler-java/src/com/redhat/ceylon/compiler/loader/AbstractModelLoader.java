@@ -1326,6 +1326,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             else // must be a method
                 scope.getMembers().add(param);
             param.setName((String)typeParam.getValue("value"));
+            param.setExtendedType(typeFactory.getVoidDeclaration().getType());
             params.add(param);
             
             String varianceName = (String) typeParam.getValue("variance");
@@ -1366,6 +1367,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             else // must be a method
                 scope.getMembers().add(param);
             param.setName(typeParam.getName());
+            param.setExtendedType(typeFactory.getVoidDeclaration().getType());
             params.add(param);
         }
         // Now all type params have been set, we can resolve the references parts
