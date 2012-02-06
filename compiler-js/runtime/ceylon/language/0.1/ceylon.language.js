@@ -579,7 +579,10 @@ function Character(value) {
     return that;
 }
 $Character.prototype.getString = function() { return String$(codepointToString(this.value)) }
-$Character.prototype.equals = function(other) { return Boolean$(other && other.value===this.value) }
+$Character.prototype.equals = function(other) {
+    return Boolean$(other.constructor===$Character && other.value===this.value);
+}
+$Character.prototype.getHash = function() {return Integer(this.value)}
 $Character.prototype.compare = function(other) {
     return this.value===other.value ? equal
                                     : (this.value<other.value ? smaller:larger);
@@ -661,9 +664,6 @@ $Character.prototype.getPredecessor = function() {
     var succ = this.value-1;
     if ((succ&0xf800) === 0xd800) {return Character(0xd7ff)}
     return Character((succ>=0) ? succ:0x10ffff);
-}
-$Character.prototype.contains = function(x) {
-    return this.getString().contains(x);
 }
 
 function $StringBuilder() {}
