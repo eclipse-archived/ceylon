@@ -10,7 +10,6 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isElementOfIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
@@ -615,33 +614,13 @@ public class ExpressionVisitor extends Visitor {
             Tree.SpecifierExpression se) {
         if (var.getType()!=null) {
             ProducedType vt = var.getType().getTypeModel();
-            ProducedType ot;
-            TypeDeclaration vtd = vt.getDeclaration();
-            Class od = unit.getObjectDeclaration();
-            if (vtd.equals(od)) {
-                //we allow Void expression in exists conditions, 
-                //treating it as equivalent to Object?
-                ot = unit.getVoidDeclaration().getType();
-            }
-            else if (vtd instanceof IntersectionType &&
-                    isElementOfIntersection((IntersectionType)vtd, od)) {
-                //it's an intersection of an unbounded type 
-                //parameter with Object, in which case just
-                //remove Object from the intersection
-                List<ProducedType> list = new ArrayList<ProducedType>();
-                for (ProducedType pt: vtd.getSatisfiedTypes()) {
-                    if (!pt.getDeclaration().equals(od)) {
-                        addToIntersection(list, pt, unit);
-                    }
+            if (se!=null && se.getExpression()!=null) {
+                ProducedType set = se.getExpression().getTypeModel();
+                if (set!=null) {
+                    checkAssignable(unit.getDefiniteType(set), vt, se, 
+                            "specified expression must be assignable to declared type");
                 }
-                IntersectionType it = new IntersectionType(unit);
-                it.setSatisfiedTypes(list);
-                ot = unit.getOptionalType(it.getType());
             }
-            else {
-                ot = unit.getOptionalType(vt);
-            }
-            checkType(ot, se);
         }
     }
 
