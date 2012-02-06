@@ -10,6 +10,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isElementOfIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
@@ -321,26 +322,28 @@ public class ExpressionVisitor extends Visitor {
                     for (int i=0; i<params.size(); i++) {
                         TypeParameter tp = params.get(i);
                         ProducedType ta = args.get(i);
-                        if (tp.isCovariant()) {
-                            List<ProducedType> list = new ArrayList<ProducedType>();
-                            addToIntersection(list, unit.getVoidDeclaration().getType(), unit);
-                            for (ProducedType st: tp.getSatisfiedTypes()) {
-                            	addToIntersection(list, st, unit);
+                        if (ta!=null) {
+                            if (tp.isCovariant()) {
+                                List<ProducedType> list = new ArrayList<ProducedType>();
+                                addToIntersection(list, unit.getVoidDeclaration().getType(), unit);
+                                for (ProducedType st: tp.getSatisfiedTypes()) {
+                                    addToIntersection(list, st, unit);
+                                }
+                                IntersectionType ut = new IntersectionType(unit);
+                                ut.setSatisfiedTypes(list);
+                                if (!ta.isExactly(ut.getType())) {
+                                    that.addWarning("type argument to covariant type parameter in assignability condition must be " +
+                                            ut.getType().getProducedTypeName() + " (until we implement reified generics)");
+                                }
                             }
-                            IntersectionType ut = new IntersectionType(unit);
-                            ut.setSatisfiedTypes(list);
-                            if (!ta.isExactly(ut.getType())) {
-                                that.addWarning("type argument to covariant type parameter in assignability condition must be " +
-                                        ut.getType().getProducedTypeName() + " (until we implement reified generics)");
+                            else if (tp.isContravariant()) {
+                                if (!(ta.getDeclaration() instanceof BottomType)) {
+                                    that.addWarning("type argument to contravariant type parameter in assignability condition must be Bottom (until we implement reified generics)");
+                                }
                             }
-                        }
-                        else if (tp.isContravariant()) {
-                            if (!(ta.getDeclaration() instanceof BottomType)) {
-                                that.addWarning("type argument to contravariant type parameter in assignability condition must be Bottom (until we implement reified generics)");
+                            else {
+                                that.addWarning("type argument to invariant type parameter in assignability condition not yet supported (until we implement reified generics)");
                             }
-                        }
-                        else {
-                            that.addWarning("type argument to invariant type parameter in assignability condition not yet supported (until we implement reified generics)");
                         }
                     }
                 }
@@ -503,7 +506,8 @@ public class ExpressionVisitor extends Visitor {
         if (that.getKeyVariable()!=null && that.getValueVariable()!=null) {
             inferKeyType(that.getKeyVariable(), that.getSpecifierExpression());
             inferValueType(that.getValueVariable(), that.getSpecifierExpression());
-            checkKeyValueType(that.getKeyVariable(), that.getValueVariable(), that.getSpecifierExpression());
+            checkKeyValueType(that.getKeyVariable(), that.getValueVariable(), 
+                    that.getSpecifierExpression());
         }
     }
     
@@ -511,7 +515,8 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         inferType(that, that.getSpecifierOrInitializerExpression());
         if (that.getType()!=null) {
-            checkType(that.getType().getTypeModel(), that.getSpecifierOrInitializerExpression());
+            checkType(that.getType().getTypeModel(), 
+                    that.getSpecifierOrInitializerExpression());
         }
         validateHiddenAttribute(that);
     }
@@ -541,7 +546,8 @@ public class ExpressionVisitor extends Visitor {
         if (!(that.getBaseMemberExpression() instanceof Tree.BaseMemberExpression)) {
             that.getBaseMemberExpression().addError("illegal specification statement");
         }
-        checkType(that.getBaseMemberExpression().getTypeModel(), that.getSpecifierExpression());
+        checkType(that.getBaseMemberExpression().getTypeModel(), 
+                that.getSpecifierExpression());
     }
 
     @Override public void visit(Tree.Parameter that) {
@@ -559,7 +565,8 @@ public class ExpressionVisitor extends Visitor {
                     Tree.Term t = se.getExpression().getTerm();
                     if (t instanceof Tree.BaseMemberExpression) {
                         ProducedReference pr = ((Tree.BaseMemberExpression) t).getTarget();
-                        if (pr==null || !pr.getDeclaration().equals(unit.getNullDeclaration())) {
+                        if (pr==null || 
+                                !pr.getDeclaration().equals(unit.getNullDeclaration())) {
                             se.getExpression()
                                     .addError("defaulted parameters of optional type must have the default value null");
                         }
@@ -585,7 +592,8 @@ public class ExpressionVisitor extends Visitor {
             Tree.SpecifierExpression sie, Tree.Type that) {
         if (sie!=null && sie.getExpression()!=null) {
             //TODO: validate that expression type really is Callable
-            ProducedType rt = sie.getExpression().getTypeModel().getTypeArgumentList().get(0);
+            ProducedType rt = sie.getExpression().getTypeModel()
+                    .getTypeArgumentList().get(0);
             checkAssignable(rt, declaredType, that, 
                     "specified reference return type must be assignable to declared return type");
         }
@@ -595,7 +603,8 @@ public class ExpressionVisitor extends Visitor {
             Tree.SpecifierExpression sie, Tree.Type that) {
         if (sie!=null && sie.getExpression()!=null) {
             //TODO: validate that expression type really is Callable
-            ProducedType rt = sie.getExpression().getTypeModel().getTypeArgumentList().get(i+1);
+            ProducedType rt = sie.getExpression().getTypeModel()
+                    .getTypeArgumentList().get(i+1);
             checkIsExactly(rt, p.getType(), that, 
                     "specified reference parameter type must be exactly the same as declared type of parameter " + 
                     p.getName());
@@ -606,7 +615,33 @@ public class ExpressionVisitor extends Visitor {
             Tree.SpecifierExpression se) {
         if (var.getType()!=null) {
             ProducedType vt = var.getType().getTypeModel();
-            checkType(unit.getOptionalType(vt), se);
+            ProducedType ot;
+            TypeDeclaration vtd = vt.getDeclaration();
+            Class od = unit.getObjectDeclaration();
+            if (vtd.equals(od)) {
+                //we allow Void expression in exists conditions, 
+                //treating it as equivalent to Object?
+                ot = unit.getVoidDeclaration().getType();
+            }
+            else if (vtd instanceof IntersectionType &&
+                    isElementOfIntersection((IntersectionType)vtd, od)) {
+                //it's an intersection of an unbounded type 
+                //parameter with Object, in which case just
+                //remove Object from the intersection
+                List<ProducedType> list = new ArrayList<ProducedType>();
+                for (ProducedType pt: vtd.getSatisfiedTypes()) {
+                    if (!pt.getDeclaration().equals(od)) {
+                        addToIntersection(list, pt, unit);
+                    }
+                }
+                IntersectionType it = new IntersectionType(unit);
+                it.setSatisfiedTypes(list);
+                ot = unit.getOptionalType(it.getType());
+            }
+            else {
+                ot = unit.getOptionalType(vt);
+            }
+            checkType(ot, se);
         }
     }
 
@@ -1835,9 +1870,9 @@ public class ExpressionVisitor extends Visitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            checkOperandType(lhst, unit.getEqualityDeclaration(), that.getLeftTerm(), 
+            checkOperandType(lhst, unit.getObjectDeclaration(), that.getLeftTerm(), 
                     "operand expression must support equality");
-            checkOperandType(rhst, unit.getEqualityDeclaration(), that.getRightTerm(), 
+            checkOperandType(rhst, unit.getObjectDeclaration(), that.getRightTerm(), 
                     "operand expression must support equality");
             ProducedType et = unit.getEntryType(lhst, rhst);
             that.setTypeModel(et);
@@ -1991,7 +2026,7 @@ public class ExpressionVisitor extends Visitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            checkAssignable(lhst, unit.getEqualityDeclaration().getType(), that.getLeftTerm(), 
+            checkAssignable(lhst, unit.getObjectDeclaration().getType(), that.getLeftTerm(), 
                     "operand expression must support equality");
             checkAssignable(rhst, unit.getCategoryDeclaration().getType(), that.getRightTerm(), 
                     "operand expression must be a category");
@@ -2143,7 +2178,7 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.EqualityOp that) {
         super.visit(that);
-        visitComparisonOperator(that, unit.getEqualityDeclaration());
+        visitComparisonOperator(that, unit.getObjectDeclaration());
     }
 
     @Override public void visit(Tree.ComparisonOp that) {

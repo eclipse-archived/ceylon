@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 
@@ -278,9 +279,9 @@ public class Unit {
         return (TypeDeclaration) getLanguageModuleDeclaration("Quoted");
     }
         
-    public Interface getEqualityDeclaration() {
+    /*public Interface getEqualityDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Equality");
-    }
+    }*/
         
     public Interface getComparableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Comparable");
@@ -447,7 +448,14 @@ public class Unit {
     }
 
     public ProducedType getDefiniteType(ProducedType pt) {
-        return pt.minus(getNothingDeclaration());
+        return intersectionType(getObjectDeclaration().getType(), 
+                pt, pt.getDeclaration().getUnit());
+        /*if (pt.getDeclaration().equals(getVoidDeclaration())) {
+            return getObjectDeclaration().getType();
+        }
+        else {
+            return pt.minus(getNothingDeclaration());
+        }*/
     }
 
     public ProducedType getNonemptyDefiniteType(ProducedType pt) {
@@ -471,8 +479,8 @@ public class Unit {
     }
     
     public boolean isOptionalType(ProducedType pt) {
-        return getNothingDeclaration().getType().isSubtypeOf(pt)
-                && !pt.getDeclaration().equals(getVoidDeclaration());
+        return getNothingDeclaration().getType().isSubtypeOf(pt);
+                //&& !pt.getDeclaration().equals(getVoidDeclaration());
     }
     
     public boolean isEmptyType(ProducedType pt) {

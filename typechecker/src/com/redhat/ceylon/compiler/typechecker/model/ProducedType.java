@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.model;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isElementOfUnion;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -1110,12 +1111,12 @@ public class ProducedType extends ProducedReference {
             UnionType ut = (UnionType) getDeclaration();
             if (ut.getCaseTypes().size()==2) {
                 Unit unit = getDeclaration().getUnit();
-                if (Util.isElementOfUnion(ut, unit.getNothingDeclaration())) {
-                    return unit.getDefiniteType(this)
+                if (isElementOfUnion(ut, unit.getNothingDeclaration())) {
+                    return minus(unit.getNothingDeclaration())
                             .getProducedTypeName() + "?";
                 }
-                if (Util.isElementOfUnion(ut, unit.getEmptyDeclaration()) &&
-                        Util.isElementOfUnion(ut, unit.getSequenceDeclaration())) {
+                if (isElementOfUnion(ut, unit.getEmptyDeclaration()) &&
+                        isElementOfUnion(ut, unit.getSequenceDeclaration())) {
                     return unit.getElementType(this)
                             .getProducedTypeName() + "[]";
                 }
