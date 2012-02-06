@@ -49,7 +49,6 @@ public class BoxingDeclarationVisitor extends Visitor {
     @Override
     public void visit(AnyMethod that) {
         super.visit(that);
-        // FIXME: we need to set those in the model loader as well
         Method method = that.getDeclarationModel();
         // deal with invalid input
         if(method == null)
