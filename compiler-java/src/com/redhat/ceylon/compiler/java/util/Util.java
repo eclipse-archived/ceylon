@@ -266,10 +266,6 @@ public class Util {
         node.setUnboxed(true);
     }
 
-    public static void markUnBoxed(TypedDeclaration decl) {
-        decl.setUnboxed(true);
-    }
-
     public static BoxingStrategy getBoxingStrategy(Term node) {
         return isUnBoxed(node) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
     }
