@@ -33,8 +33,9 @@ import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.impl.ArtifactContextAdapter;
 import com.redhat.ceylon.cmr.impl.FileContentStore;
-import com.redhat.ceylon.cmr.impl.MavenRemoteContentStore;
+import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
 import com.redhat.ceylon.cmr.impl.RepositoryBuilder;
 import com.redhat.ceylon.cmr.impl.RootBuilder;
 import com.redhat.ceylon.cmr.impl.SimpleRepository;
@@ -410,13 +411,14 @@ public class Util {
                     repo = repo.substring(4);
                 }
                 try {
-                    OpenNode root;
-                    if(!maven)
-                        root = new RootBuilder(repo, log).buildRoot();
-                    else
-                        root = new MavenRemoteContentStore(repo, log).createRoot();
                     // we need to prepend to bypass the caching repo
-                    builder.prependExternalRoot(root);
+                    if(!maven){
+                        OpenNode root = new RootBuilder(repo, log).buildRoot();
+                        builder.prependExternalRoot(root);
+                    }else{
+                        ArtifactContextAdapter root = MavenRepositoryHelper.getMavenArtifactContextAdapter(repo, log);
+                        builder.prependExternalRoot(root);
+                    }
                 } catch (Exception e) {
                     log.warning("Failed to add repository: " + repo + ": "+e.getMessage());
                 }
