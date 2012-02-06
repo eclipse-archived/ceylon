@@ -782,6 +782,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         for(List<MethodMirror> methodMirrors : methods.values()){
             boolean isOverloaded = methodMirrors.size() > 1;
             boolean first = true;
+            Method abstractionMethod = null;
+            List<Method> overloadedMethods = null;
+            
             for (MethodMirror methodMirror : methodMirrors) {
                 String methodName = methodMirror.getName();
                 if(methodMirror.isConstructor()) {
@@ -807,14 +810,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 } else {
                     if (first && isOverloaded) {
                         // We create an extra "abstraction" method for overloaded methods
-                        Method m = addMethod(klass, methodMirror, false, false);
-                        m.setType(getAbstractionMethodReturnType(methodMirrors, m));
-                        m.setAbstraction(true);
+                        abstractionMethod = addMethod(klass, methodMirror, false, false);
+                        abstractionMethod.setAbstraction(true);
+                        overloadedMethods = new LinkedList<Method>();
                         first = false;
                     }
                     // normal method
-                    addMethod(klass, methodMirror, isCeylon, isOverloaded);
+                    Method m = addMethod(klass, methodMirror, isCeylon, isOverloaded);
+                    if(isOverloaded)
+                        overloadedMethods.add(m);
                 }
+            }
+            if(abstractionMethod != null){
+                setAbstractionMethodReturnType(klass, abstractionMethod, overloadedMethods);
             }
         }
 
@@ -940,22 +948,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return method;
     }
 
-    private ProducedType getAbstractionMethodReturnType(List<MethodMirror> methodMirrors, Method method) {
-        if (methodMirrors.size() > 1) {
-            // Make a union of the method return types
-            UnionType unionType = new UnionType(typeFactory);
-            LinkedList<ProducedType> unionTypes = new LinkedList<ProducedType>();
-            for (MethodMirror methodMirror : methodMirrors) {
-                ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, method);
-                com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion(unionTypes, type);
-            }
-            unionType.setCaseTypes(unionTypes);
-            return unionType.getType();
-        } else {
-            MethodMirror methodMirror = methodMirrors.get(0);
-            ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, method);
-            return type;
+    private void setAbstractionMethodReturnType(ClassOrInterface klass, Method abstractionMethod, List<Method> methods) {
+        // Make a union of the method return types
+        UnionType unionType = new UnionType(typeFactory);
+        LinkedList<ProducedType> unionTypes = new LinkedList<ProducedType>();
+        for (Method method : methods) {
+            ProducedType type = method.getType();
+            com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion(unionTypes, type);
         }
+        unionType.setCaseTypes(unionTypes);
+        abstractionMethod.setType(unionType.getType());
     }
     
     private void fillRefinedDeclarations(ClassOrInterface klass) {
