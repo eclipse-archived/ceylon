@@ -213,7 +213,6 @@ public class SmokeTestCase {
     }
 
     @Test
-    @Ignore // this test should work, but we don't want the tests to take forever
     public void testMavenRemote() throws Exception {
         RepositoryBuilder builder = new RepositoryBuilder(getRepositoryRoot(), log);
         OpenNode externalRoot = new MavenRemoteContentStore("https://repository.jboss.org/nexus/content/groups/public/", log).createRoot();

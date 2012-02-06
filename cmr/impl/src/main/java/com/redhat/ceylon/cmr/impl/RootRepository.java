@@ -79,8 +79,8 @@ public class RootRepository extends AbstractNodeRepository {
         File file = fileContentStore.getFile(node); // re-get
 
         if (context.isIgnoreSHA() == false && node instanceof OpenNode) {
-            OpenNode on = (OpenNode) node;
-            String sha1 = IOUtils.sha1(new FileInputStream(file));
+            final OpenNode on = (OpenNode) node;
+            final String sha1 = IOUtils.sha1(new FileInputStream(file));
             if (sha1 != null) {
                 ByteArrayInputStream shaStream = new ByteArrayInputStream(sha1.getBytes("ASCII"));
                 Node sha = node.getChild(SHA1);
@@ -88,6 +88,16 @@ public class RootRepository extends AbstractNodeRepository {
                     // put it to ext node as well, if supported
                     on.addContent(SHA1, shaStream, context);
                     shaStream.reset(); // reset, for next read
+                } else if (sha.hasBinaries()) {
+                    final String existingSha1 = IOUtils.readSha1(sha.getInputStream());
+                    if (sha1.equals(existingSha1) == false) {
+                        try {
+                            fileContentStore.delete(file, node);
+                        } catch (Exception e) {
+                            log.warning("Error removing new content: " + file);
+                        }
+                        throw new IOException("Bad SHA1 - file: " + sha1 + " != " + existingSha1);
+                    }
                 }
                 // create empty marker node
                 OpenNode sl = on.addNode(SHA1 + LOCAL);

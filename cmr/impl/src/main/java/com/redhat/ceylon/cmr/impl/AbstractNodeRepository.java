@@ -180,7 +180,8 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
             return null;
         }
 
-        if (context.isIgnoreSHA() == false && node.hasBinaries()) {
+        // by default we don't check sha1 on remote nodes, it should be done after download
+        if (context.isIgnoreSHA() == false && node.isRemote() == false && node.hasBinaries()) {
             Boolean result = null;
             Node shaResult = (node instanceof OpenNode) ? (OpenNode.class.cast(node).peekChild(SHA1 + CACHED)) : node.getChild(SHA1 + CACHED);
             if (shaResult == null) {
