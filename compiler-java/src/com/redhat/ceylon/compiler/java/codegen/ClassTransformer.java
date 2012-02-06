@@ -138,7 +138,7 @@ public class ClassTransformer extends AbstractTransformer {
 
             int flags = 0;
             TypedDeclaration nonWideningType = nonWideningTypeDecl(decl.getDeclarationModel());
-            if (!nonWideningType.getUnboxed()) {
+            if (!Util.isUnBoxed(nonWideningType)) {
                 flags |= NO_PRIMITIVES;
             }
             JCExpression type = makeJavaType(nonWideningType.getType(), flags);

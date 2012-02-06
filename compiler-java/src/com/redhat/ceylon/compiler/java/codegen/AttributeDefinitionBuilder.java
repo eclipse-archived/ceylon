@@ -62,7 +62,7 @@ public class AttributeDefinitionBuilder {
     private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, String className, String attrName, String fieldName) {
         int typeFlags = 0;
         TypedDeclaration nonWideningType = owner.nonWideningTypeDecl(attrType);
-        if (!nonWideningType.getUnboxed()) {
+        if (!Util.isUnBoxed(nonWideningType)) {
             typeFlags |= AbstractTransformer.NO_PRIMITIVES;
         }
         // Special erasure for the "hash" attribute which gets translated to hashCode()

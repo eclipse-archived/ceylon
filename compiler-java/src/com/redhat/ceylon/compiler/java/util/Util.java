@@ -258,7 +258,8 @@ public class Util {
     }
 
     public static boolean isUnBoxed(TypedDeclaration decl){
-        return decl.getUnboxed();
+        // null is considered boxed
+        return decl.getUnboxed() == Boolean.TRUE;
     }
 
     public static void markUnBoxed(Term node) {
