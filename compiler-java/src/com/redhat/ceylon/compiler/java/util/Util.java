@@ -34,9 +34,11 @@ import javax.tools.StandardLocation;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.impl.FileContentStore;
+import com.redhat.ceylon.cmr.impl.MavenRemoteContentStore;
 import com.redhat.ceylon.cmr.impl.RepositoryBuilder;
 import com.redhat.ceylon.cmr.impl.RootBuilder;
 import com.redhat.ceylon.cmr.impl.SimpleRepository;
+import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
@@ -402,10 +404,19 @@ public class Util {
             // go in reverse order because we prepend
             for (int i=userRepos.size()-1;i>=0;i--) {
                 String repo = userRepos.get(i);
+                boolean maven = false;
+                if(repo.startsWith("mvn:")){
+                    maven = true;
+                    repo = repo.substring(4);
+                }
                 try {
-                    final RootBuilder rb = new RootBuilder(repo, log);
+                    OpenNode root;
+                    if(!maven)
+                        root = new RootBuilder(repo, log).buildRoot();
+                    else
+                        root = new MavenRemoteContentStore(repo, log).createRoot();
                     // we need to prepend to bypass the caching repo
-                    builder.prependExternalRoot(rb.buildRoot());
+                    builder.prependExternalRoot(root);
                 } catch (Exception e) {
                     log.warning("Failed to add repository: " + repo + ": "+e.getMessage());
                 }
