@@ -20,7 +20,11 @@
 
 package com.redhat.ceylon.compiler.loader.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
+import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -33,6 +37,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 public abstract class LazyModule extends Module {
 
     private boolean isJava = false;
+    private Set<String> jarPackages = new HashSet<String>();
 
     public LazyModule() {
     }
@@ -78,10 +83,7 @@ public abstract class LazyModule extends Module {
     }
 
     private Package findPackageInModule(LazyModule module, String name) {
-        String moduleName = module.getNameAsString();
-        // is it the same package as the module, or a subpackage of it?
-        if(name.equals(moduleName)
-                || name.startsWith(moduleName+"."))
+        if(module.containsPackage(name))
             return getModelLoader().findOrCreatePackage(module, name);
         return null;
     }
@@ -96,4 +98,45 @@ public abstract class LazyModule extends Module {
         this.isJava = isJava;
     }
 
+    public void loadPackageList(VirtualFile artifact) {
+        String root = artifact.getPath();
+        for(VirtualFile child : artifact.getChildren())
+            loadPackageList(child, root);
+    }
+    
+    private void loadPackageList(VirtualFile artifact, String root) {
+        if(artifact.isFolder()){
+            for(VirtualFile child : artifact.getChildren())
+                loadPackageList(child, root);
+        }else{
+            String path = artifact.getPath();
+            if(path.toLowerCase().endsWith(".class")){
+                int sep = path.lastIndexOf('/');
+                String pkg = path.substring(root.length()+2, sep).replace('/', '.');
+                if(jarPackages.add(pkg))
+                    System.err.println("Found "+pkg+" in "+getNameAsString());
+            }
+        }
+    }
+
+    public boolean containsPackage(String pkgName){
+        String moduleName = getNameAsString();
+        if(!isJava){
+            // Ceylon rules are simple
+            // is it the same package as the module, or a subpackage of it?
+            return isSubPackage(moduleName, pkgName);
+        }else{
+            // special rules for the JDK which we don't load from the repo
+            if(moduleName.equals("java")
+                    || moduleName.equals("sun"))
+                return isSubPackage(moduleName, pkgName);
+            // otherwise we have the list of packages contained in that module jar
+            return jarPackages.contains(pkgName);
+        }
+    }
+
+    private boolean isSubPackage(String moduleName, String pkgName) {
+        return pkgName.equals(moduleName)
+                || pkgName.startsWith(moduleName+".");
+    }
 }

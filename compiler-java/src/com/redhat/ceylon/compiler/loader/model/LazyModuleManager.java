@@ -52,6 +52,7 @@ public abstract class LazyModuleManager extends ModuleManager {
             if(compiledModule == null && !module.isDefault()){
                 // we didn't find module.class so it must be a java module if it's not the default module
                 ((LazyModule)module).setJava(true);
+                ((LazyModule)module).loadPackageList(artifact);
             }
         }
     }
