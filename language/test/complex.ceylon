@@ -1,13 +1,13 @@
 class OrderedPair<out X,out Y>(X x, Y y) 
-        given X satisfies Equality
-        given Y satisfies Equality {
+        given X satisfies Object
+        given Y satisfies Object {
     shared X x = x;
     shared Y y = y;
     shared actual default String string {
         return "(" x ", " y ")";
     }
-    shared actual Boolean equals(Equality other) {
-        if (is OrderedPair<Equality,Equality> other) {
+    shared actual Boolean equals(Object other) {
+        if (is OrderedPair<Object,Object> other) {
             return x==other.x && y==other.y;
         }
         else {

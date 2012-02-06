@@ -1,7 +1,7 @@
-class Foo<out T>(T t) given T satisfies Equality {
+class Foo<out T>(T t) given T satisfies Object {
     T t = t;
-    shared actual Boolean equals(Equality that) {
-        if (is Foo<Equality> that) {
+    shared actual Boolean equals(Object that) {
+        if (is Foo<Object> that) {
             return t==that.t;
         }
         else {

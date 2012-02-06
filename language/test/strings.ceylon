@@ -1,5 +1,5 @@
 void iterate<Element>(List<Element> list) 
-    given Element satisfies Equality {
+    given Element satisfies Object {
     for (element in list) {
         assert(element in list);
     }
