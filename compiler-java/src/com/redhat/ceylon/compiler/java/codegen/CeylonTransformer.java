@@ -31,6 +31,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
@@ -104,13 +105,11 @@ public class CeylonTransformer extends AbstractTransformer {
     @SuppressWarnings("unchecked")
     public ListBuffer<JCTree> transformAfterTypeChecking(Tree.CompilationUnit t) {
         disableModelAnnotations = false;
-        ToplevelAttributesDefinitionBuilder builder = new ToplevelAttributesDefinitionBuilder(this);
-        CeylonVisitor visitor = new CeylonVisitor(this, builder);
+        CeylonVisitor visitor = new CeylonVisitor(this);
         t.visitChildren(visitor);
         
         ListBuffer<JCTree> result = ListBuffer.lb();
         result.appendList((ListBuffer<JCTree>) visitor.getResult());
-        result.appendList(builder.build());
         
         return result;
     }
@@ -153,26 +152,10 @@ public class CeylonTransformer extends AbstractTransformer {
     }
     
     public List<JCTree> transform(Tree.AnyAttribute decl) {
-        return transformAttribute(decl, null);
-    }
-
-    public List<JCTree> transform(Tree.AttributeSetterDefinition decl) {
-        return transformAttribute(decl, null);
-    }
-    
-    public List<JCTree> transformAttribute(Tree.TypedDeclaration decl, Tree.AttributeSetterDefinition setterDecl) {
         at(decl);
         String attrName = decl.getIdentifier().getText();
         String attrClassName = attrName;
         TypedDeclaration declarationModel = decl.getDeclarationModel();
-        if (Decl.isLocal(decl)) {
-            if (decl instanceof Tree.AttributeGetterDefinition) {
-                attrClassName += "$getter";
-            } else if (decl instanceof Tree.AttributeSetterDefinition) {
-                attrClassName += "$setter";
-                declarationModel = ((Tree.AttributeSetterDefinition)decl).getDeclarationModel().getParameter();
-            }
-        }
 
         AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
             .wrapped(this, attrName, declarationModel)
@@ -195,43 +178,31 @@ public class CeylonTransformer extends AbstractTransformer {
             }
         }
 
-        if (decl instanceof Tree.AttributeSetterDefinition) {
-            // For inner setters
-            Tree.AttributeSetterDefinition sdef = (Tree.AttributeSetterDefinition)decl;
-            JCBlock setterBlock = make().Block(0, statementGen().transformStmts(sdef.getBlock().getStatements()));
-            builder.setterBlock(setterBlock);
-            builder.skipGetter();
+        if (decl instanceof Tree.AttributeDeclaration) {
+            // For inner and toplevel value attributes
+            if (!declarationModel.isVariable()) {
+                builder.immutable();
+            }
+            Tree.AttributeDeclaration adecl = (Tree.AttributeDeclaration)decl;
+            if (adecl.getSpecifierOrInitializerExpression() != null) {
+                builder.initialValue(expressionGen().transformExpression(
+                        adecl.getSpecifierOrInitializerExpression().getExpression(), 
+                        Util.getBoxingStrategy(declarationModel),
+                        declarationModel.getType()));
+            }
         } else {
-            if (decl instanceof Tree.AttributeDeclaration) {
-                // For inner and toplevel value attributes
-                if (!declarationModel.isVariable()) {
-                    builder.immutable();
-                }
-                Tree.AttributeDeclaration adecl = (Tree.AttributeDeclaration)decl;
-                if (adecl.getSpecifierOrInitializerExpression() != null) {
-                    builder.initialValue(expressionGen().transformExpression(
-                            adecl.getSpecifierOrInitializerExpression().getExpression(), 
-                            Util.getBoxingStrategy(declarationModel),
-                            declarationModel.getType()));
-                }
+            // For inner and toplevel getters
+            Tree.AttributeGetterDefinition gdef = (Tree.AttributeGetterDefinition)decl;
+            JCBlock getterBlock = make().Block(0, statementGen().transformStmts(gdef.getBlock().getStatements()));
+            builder.getterBlock(getterBlock);
+            
+            // For toplevel getters
+            AttributeSetterDefinition setterDecl = gdef.getSetter();
+            if (setterDecl != null) {
+                JCBlock setterBlock = make().Block(0, statementGen().transformStmts(setterDecl.getBlock().getStatements()));
+                builder.setterBlock(setterBlock);
             } else {
-                // For inner and toplevel getters
-                Tree.AttributeGetterDefinition gdef = (Tree.AttributeGetterDefinition)decl;
-                JCBlock getterBlock = make().Block(0, statementGen().transformStmts(gdef.getBlock().getStatements()));
-                builder.getterBlock(getterBlock);
-                
-                if (Decl.isLocal(decl)) {
-                    // For inner getters
-                    builder.immutable();
-                } else {
-                    // For toplevel getters
-                    if (setterDecl != null) {
-                        JCBlock setterBlock = make().Block(0, statementGen().transformStmts(setterDecl.getBlock().getStatements()));
-                        builder.setterBlock(setterBlock);
-                    } else {
-                        builder.immutable();
-                    }
-                }
+                builder.immutable();
             }
         }
         

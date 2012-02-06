@@ -26,29 +26,21 @@ class MethodLocalAssign {
         final b1 b1 = new b1();
         b1.setB1(false);
         
-        final class b2$getter {
+        final class b2 {
             
             boolean getB2() {
                 return b1.getB1();
             }
             
-            private b2$getter() {
-            }
-        }
-        final b2$getter b2$getter = new b2$getter();
-        
-        final class b2$setter {
-            private boolean value;
-            
             void setB2(boolean b2) {
                 b1.setB1(b2);
             }
             
-            private b2$setter() {
+            private b2() {
             }
         }
-        final b2$setter b2$setter = new b2$setter();
-        b2$setter.setB2(true);
+        final b2 b2 = new b2();
+        b2.setB2(true);
     }
     
     MethodLocalAssign() {

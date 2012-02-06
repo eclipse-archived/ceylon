@@ -370,7 +370,7 @@ class Test {
         }
         long sync;
         sync = ((ceylon.language.Sized)naturals).getSize();
-        sync = ((ceylon.language.Sequence)leftsAndRights).getSize();
+        sync = ((ceylon.language.Sized)leftsAndRights).getSize();
         ceylon.language.Iterable $naturals$50;
         if (($naturals$50 = naturals) instanceof ceylon.language.Sequence) {
             final ceylon.language.Sequence $naturals$51 = (ceylon.language.Sequence)$naturals$50;

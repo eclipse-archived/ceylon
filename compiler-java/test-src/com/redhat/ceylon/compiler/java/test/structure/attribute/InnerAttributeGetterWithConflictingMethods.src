@@ -4,16 +4,16 @@ class InnerAttributeGetterWithConflictingMethods {
     
     private final void m() {
         
-        final class x$getter {
+        final class x {
             
             long getX() {
                 return 2L;
             }
             
-            private x$getter() {
+            private x() {
             }
         }
-        final x$getter x$getter = new x$getter();
+        final x x = new x();
         
         final class getX {
             
@@ -21,11 +21,11 @@ class InnerAttributeGetterWithConflictingMethods {
             }
             
             long getX() {
-                return x$getter.getX();
+                return x.getX();
             }
         }
         final getX getX = new getX();
-        final long n = x$getter.getX();
+        final long n = x.getX();
         final long n2 = getX.getX();
     }
     

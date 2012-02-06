@@ -1,5 +1,17 @@
 package bug148_3;
 
+final class f {
+    
+    static long getF() {
+        return 2L;
+    }
+    
+    static void setF(long f) {
+    }
+    
+    private f() {
+    }
+}
 public final class bug148_3 {
     
     private bug148_3() {
@@ -13,17 +25,5 @@ public final class bug148_3 {
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
         .bug148_3.bug148_3.bug148_3();
-    }
-}
-final class f {
-    
-    static long getF() {
-        return 2L;
-    }
-    
-    static void setF(long f) {
-    }
-    
-    private f() {
     }
 }

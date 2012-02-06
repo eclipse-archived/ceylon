@@ -17,17 +17,17 @@ class InnerAttributeGetterLateInitialisation {
         final m m = new m();
         m.value = 2L;
         
-        final class innerGetter$getter {
+        final class innerGetter {
             
             long getInnerGetter() {
                 return m.getM();
             }
             
-            private innerGetter$getter() {
+            private innerGetter() {
             }
         }
-        final innerGetter$getter innerGetter$getter = new innerGetter$getter();
-        final long n = innerGetter$getter.getInnerGetter();
+        final innerGetter innerGetter = new innerGetter();
+        final long n = innerGetter.getInnerGetter();
     }
     
     InnerAttributeGetterLateInitialisation() {

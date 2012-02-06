@@ -1136,7 +1136,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             } else {
                 // method local attr
                 if (!isRecursiveReference(expr)) {
-                    primaryExpr = makeQualIdent(primaryExpr, decl.getName() + "$getter");
+                    primaryExpr = makeQualIdent(primaryExpr, decl.getName());
                 }
                 selector = Util.getGetterName(decl.getName());
             }
@@ -1363,7 +1363,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if ((decl instanceof Getter)) {
             // must use the setter
             if (Decl.isLocal(decl)) {
-                lhs = makeQualIdent(lhs, decl.getName() + "$setter");
+                lhs = makeQualIdent(lhs, decl.getName());
             }
         } else if (variable && (Decl.isClassAttribute(decl))) {
             // must use the setter, nothing to do, unless it's a java field

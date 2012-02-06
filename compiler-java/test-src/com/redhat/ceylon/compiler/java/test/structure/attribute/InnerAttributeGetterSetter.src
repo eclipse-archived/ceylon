@@ -4,29 +4,21 @@ class InnerAttributeGetterSetter {
     
     private final void m() {
         
-        final class innerGetterSetter$getter {
+        final class innerGetterSetter {
             
             long getInnerGetterSetter() {
                 return 0L;
             }
             
-            private innerGetterSetter$getter() {
-            }
-        }
-        final innerGetterSetter$getter innerGetterSetter$getter = new innerGetterSetter$getter();
-        
-        final class innerGetterSetter$setter {
-            private long value;
-            
             void setInnerGetterSetter(long innerGetterSetter) {
             }
             
-            private innerGetterSetter$setter() {
+            private innerGetterSetter() {
             }
         }
-        final innerGetterSetter$setter innerGetterSetter$setter = new innerGetterSetter$setter();
-        final long n = innerGetterSetter$getter.getInnerGetterSetter();
-        innerGetterSetter$setter.setInnerGetterSetter(1L);
+        final innerGetterSetter innerGetterSetter = new innerGetterSetter();
+        final long n = innerGetterSetter.getInnerGetterSetter();
+        innerGetterSetter.setInnerGetterSetter(1L);
     }
     
     InnerAttributeGetterSetter() {
