@@ -111,8 +111,8 @@ public abstract class TypedDeclaration extends Declaration {
         this.originalDeclaration = originalDeclaration;
     }
 
-    private boolean unboxed;
-    public boolean getUnboxed() { return unboxed; }
-    public void setUnboxed(boolean value) { unboxed = value; }
+    private Boolean unboxed;
+    public Boolean getUnboxed() { return unboxed; }
+    public void setUnboxed(Boolean value) { unboxed = value; }
 
 }
