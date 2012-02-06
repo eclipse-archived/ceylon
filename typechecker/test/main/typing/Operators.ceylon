@@ -7,6 +7,12 @@ class Operators() {
     class Z() extends Object() {
         //fake impl
         shared actual String string = "Z()";
+        shared actual Boolean equals(Object that) {
+            return true;
+        }
+        shared actual Integer hash {
+            return 0;
+        }
     }
     
     @type["String"] value x0 = "Hello" + " " + "World";
@@ -53,7 +59,7 @@ class Operators() {
     @type["Boolean"] value x14 = "foo" == "bar";
     @type["Boolean"] value x15 = "foo" != "bar";
     
-    @error value x16 = "foo" == Z();
+    @error value x16 = "foo" == null;
     
     @type["Boolean"] value x17 = Y() === X();
     
@@ -112,7 +118,7 @@ class Operators() {
     @type["Boolean"] value x33 = "hello" in "hello world";
     
     object cat satisfies Category {
-        shared actual Boolean contains(Equality element) {
+        shared actual Boolean contains(Object element) {
             return true;
         }
     }
