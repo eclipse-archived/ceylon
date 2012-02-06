@@ -7,7 +7,7 @@ abstract class Array<Element>()
     
     shared formal void setItem(Integer index, Element element);
     
-    shared actual Boolean equals(Equality that) {
+    shared actual Boolean equals(Object that) {
         //TODO: copy/pasted from List
         if (is List<Object> that) {
             if (that.size==size) {
@@ -17,8 +17,8 @@ abstract class Array<Element>()
                     if (!exists x && !exists y) {
                         continue;
                     }
-                    if (is Equality x) {
-                        if (is Equality y) {
+                    if (is Object x) {
+                        if (is Object y) {
                             if (x==y) {
                                 continue;
                             }

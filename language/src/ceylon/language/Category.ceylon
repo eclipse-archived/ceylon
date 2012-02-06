@@ -12,13 +12,13 @@ shared interface Category {
          `Category`, that is, if it is an element of this
          `Category`."
     see (containsEvery, containsAny)
-    shared formal Boolean contains(Equality element);
+    shared formal Boolean contains(Object element);
     
     doc "Determines if every one of the given values belongs
          to this `Category`"
     see (contains)
-    shared default Boolean containsEvery(Equality... elements) {
-        for (Equality element in elements) {
+    shared default Boolean containsEvery(Object... elements) {
+        for (element in elements) {
             if (!contains(element)) {
                 return false;
             }
@@ -31,8 +31,8 @@ shared interface Category {
     doc "Determines if any of the given values belongs
          to this `Category`"
     see (contains)
-    shared default Boolean containsAny(Equality... elements) {
-        for (Equality element in elements) {
+    shared default Boolean containsAny(Object... elements) {
+        for (element in elements) {
             if (contains(element)) {
                 return true;
             }

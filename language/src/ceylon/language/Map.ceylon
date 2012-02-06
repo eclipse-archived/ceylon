@@ -1,11 +1,11 @@
 shared interface Map<out Key,out Item> 
         satisfies Collection<Key->Item> &
-                  Correspondence<Equality, Item> & 
+                  Correspondence<Object, Item> & 
                   Cloneable<Map<Key,Item>>
-        given Key satisfies Equality 
-        given Item satisfies Equality {
+        given Key satisfies Object 
+        given Item satisfies Object {
     
-    shared actual default Integer count(Equality element) {
+    shared actual default Integer count(Object element) {
         if (is Key->Item element) {
             if (exists item = item(element.key)) {
                 return item==element.item then 1 else 0;
@@ -19,8 +19,8 @@ shared interface Map<out Key,out Item>
         }
     }
     
-    shared actual default Boolean equals(Equality that) {
-        if (is Map<Equality,Equality> that) {
+    shared actual default Boolean equals(Object that) {
+        if (is Map<Object,Object> that) {
             if (that.size==size) {
                 for (entry in this) {
                     if (exists item = that[entry.key]) {
@@ -47,7 +47,7 @@ shared interface Map<out Key,out Item>
             shared actual Set<Key> clone { 
                 return this;
             }
-            shared actual Boolean equals(Equality that) {
+            shared actual Boolean equals(Object that) {
                 return false;
             }
             shared actual Integer hash {
@@ -63,19 +63,19 @@ shared interface Map<out Key,out Item>
                 return "";
             }
             shared actual Set<Key> complement<Other>(Set<Other> set) 
-                    given Other satisfies Equality {
+                    given Other satisfies Object {
                 return bottom;
             }
             shared actual Set<Key|Other> exclusiveUnion<Other>(Set<Other> set) 
-                    given Other satisfies Equality {
+                    given Other satisfies Object {
                 return bottom;
             }
             shared actual Set<Key&Other> intersection<Other>(Set<Other> set) 
-                    given Other satisfies Equality {
+                    given Other satisfies Object {
                 return bottom;
             }
             shared actual Set<Key|Other> union<Other>(Set<Other> set) 
-                    given Other satisfies Equality {
+                    given Other satisfies Object {
                 return bottom;
             }
         }
@@ -87,7 +87,7 @@ shared interface Map<out Key,out Item>
             shared actual Collection<Item> clone {
                 return this;
             }
-            shared actual Boolean equals(Equality that) {
+            shared actual Boolean equals(Object that) {
                 return false;
             }
             shared actual Integer hash { 
@@ -112,13 +112,13 @@ shared interface Map<out Key,out Item>
             shared actual Map<Item,Set<Key>> clone {
                 return this;
             }
-            shared actual Boolean equals(Equality that) {
+            shared actual Boolean equals(Object that) {
                 return false;
             }
             shared actual Integer hash { 
                 return outer.size;
             }
-            shared actual Set<Key>? item(Equality key) {
+            shared actual Set<Key>? item(Object key) {
                 return bottom;
             }
             shared actual Iterator<Entry<Item,Set<Key>>> iterator {

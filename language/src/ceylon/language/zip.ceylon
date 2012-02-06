@@ -12,8 +12,8 @@ doc "Given two sequences, form a new sequence consisting of
      
      for every `0<=i<min({xs.size,ys.zize})`."
 shared Entry<Key,Item>[] zip<Key,Item>(Iterable<Key> keys, Iterable<Item> items)
-        given Key satisfies Equality
-        given Item satisfies Equality {
+        given Key satisfies Object
+        given Item satisfies Object {
     value builder = SequenceBuilder<Key->Item>();
     variable value ki := keys.iterator;
     variable value ii := items.iterator;

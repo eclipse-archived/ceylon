@@ -6,7 +6,6 @@ doc "Abstraction of ordinal types, that is, types with
 see (Character, Integer, Integral, Range)
 by "Gavin"
 shared interface Ordinal<out Other> of Other
-        satisfies Equality 
         given Other satisfies Ordinal<Other> {
 
     doc "The successor of this value."

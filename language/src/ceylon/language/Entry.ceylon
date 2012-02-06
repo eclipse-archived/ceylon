@@ -4,9 +4,8 @@ doc "A key, together with a value associated with the key,
 by "Gavin"
 shared class Entry<out Key, out Item>(Key key, Item item)
         extends Object()
-        satisfies Equality
-        given Key satisfies Equality
-        given Item satisfies Equality {
+        given Key satisfies Object
+        given Item satisfies Object {
     
     doc "The key used to access the entry."
     shared Key key = key;
@@ -17,8 +16,8 @@ shared class Entry<out Key, out Item>(Key key, Item item)
     doc "Determines if the this entry is equal to the given
          entry. Two entries are equal if they have the same
          key and the same value."
-    shared actual Boolean equals(Equality that) {
-        if (is Entry<Equality,Equality> that) {
+    shared actual Boolean equals(Object that) {
+        if (is Entry<Object,Object> that) {
             return this.key==that.key && 
                     this.item==that.item;
         }

@@ -9,7 +9,7 @@ doc "Represents the range of totally ordered, ordinal values
 by "Gavin"
 shared class Range<Element>(Element first, Element last) 
         extends Object() 
-        satisfies Sequence<Element> & Category & Equality
+        satisfies Sequence<Element> & Category
         given Element satisfies Ordinal<Element> & 
                                 Comparable<Element> { 
     
@@ -77,7 +77,6 @@ shared class Range<Element>(Element first, Element last)
     doc "An iterator for the elements of the range."
     shared actual Iterator<Element> iterator {
         class RangeIterator()
-                extends Object()
                 satisfies Iterator<Element> {
             variable Element|Finished current := first;
             shared actual Element|Finished next() {
@@ -100,7 +99,7 @@ shared class Range<Element>(Element first, Element last)
     }
     
     doc "Determines if the range includes the given object."
-    shared actual Boolean contains(Equality element) {
+    shared actual Boolean contains(Object element) {
         if (is Element element) {
             return includes(element);
         }
@@ -109,7 +108,7 @@ shared class Range<Element>(Element first, Element last)
         }
     }
     
-    shared actual Integer count(Equality element) {
+    shared actual Integer count(Object element) {
         return contains(element) then 1 else 0;
     }
     
@@ -168,7 +167,7 @@ shared class Range<Element>(Element first, Element last)
 
     doc "Determines if two ranges are the same by comparing
          their endpoints."
-    shared actual Boolean equals(Equality that) {
+    shared actual Boolean equals(Object that) {
         if (is Range<Element> that) {
             //optimize for another Range
             return that.first==first && that.last==last;

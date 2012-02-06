@@ -3,7 +3,6 @@ doc "The general contract for values whose magnitude can be
      instances of any type that satisfies the interface."
 by "Gavin"
 shared interface Comparable<in Other> of Other 
-        satisfies Equality
         given Other satisfies Comparable<Other> {
     
     doc "Compares this value with the given value. 

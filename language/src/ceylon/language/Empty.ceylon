@@ -35,11 +35,11 @@ shared interface Empty
         return this;
     }
     
-    shared actual Boolean contains(Equality element) {
+    shared actual Boolean contains(Object element) {
         return false;
     }
     
-    shared actual Integer count(Equality element) {
+    shared actual Integer count(Object element) {
         return 0;
     }
     

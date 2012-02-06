@@ -148,7 +148,7 @@ shared abstract class String()
          this string. That is to say, a string is considered 
          a `Category` of its substrings and of its 
          characters."
-    shared actual formal Boolean contains(Equality element);
+    shared actual formal Boolean contains(Object element);
     
     doc "Determines if this string starts with the given 
          substring."
@@ -194,7 +194,7 @@ shared abstract class String()
          so, if this string has the same length, and the 
          same characters, in the same order, as the given 
          string."
-    shared actual formal Boolean equals(Equality that);
+    shared actual formal Boolean equals(Object that);
     
     shared actual formal Integer hash;
     

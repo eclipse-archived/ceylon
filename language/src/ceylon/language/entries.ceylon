@@ -1,7 +1,7 @@
 doc "Produces a `Ordered` iterator of each index to element 
      `Entry` for the given sequence of values."
 shared Entry<Integer,Element>[] entries<Element>(Element... sequence) 
-        given Element satisfies Equality {
+        given Element satisfies Object {
     
     if (nonempty sequence) {
         
@@ -47,8 +47,7 @@ shared Entry<Integer,Element>[] entries<Element>(Element... sequence)
             }
             
             shared actual Iterator<Integer->Element> iterator {
-                class EntryIterator(Integer from) 
-                        extends Object()
+                class EntryIterator(Integer from)
                         satisfies Iterator<Integer->Element> {
                     variable Integer idx := from;
                     shared actual Entry<Integer,Element>|Finished next() {

@@ -2,7 +2,7 @@ doc "A sequence with exactly one element."
 shared class Singleton<Element>(Element element)
         extends Object()
         satisfies Sequence<Element> 
-        given Element satisfies Equality {
+        given Element satisfies Object {
     shared actual Integer lastIndex {
         return 0;
     }
@@ -32,7 +32,6 @@ shared class Singleton<Element>(Element element)
 
     shared actual default Iterator<Element> iterator {
         class SingletonIterator()
-                extends Object()
                 satisfies Iterator<Element> {
             variable Element|Finished current := first;
             shared actual Element|Finished next() {
@@ -59,7 +58,7 @@ shared class Singleton<Element>(Element element)
         return from>0 then {} else this;
     }
     
-    shared actual Boolean equals(Equality that) {
+    shared actual Boolean equals(Object that) {
         if (is List<Element> that) {
             if (that.size!=1) {
                 return false;
@@ -80,11 +79,11 @@ shared class Singleton<Element>(Element element)
         return 1;
     }
     
-    shared actual Boolean contains(Equality element) {
+    shared actual Boolean contains(Object element) {
         return this.element==element;
     }
     
-    shared actual Integer count(Equality element) {
+    shared actual Integer count(Object element) {
         return contains(element) then 1 else 0;
     }
 }

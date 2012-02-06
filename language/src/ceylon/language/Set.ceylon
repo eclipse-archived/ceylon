@@ -2,13 +2,13 @@ shared interface Set<out Element>
         satisfies Collection<Element> &
                   //Slots<Set<Equality>> &
                   Cloneable<Set<Element>>
-        given Element satisfies Equality {
+        given Element satisfies Object {
     
-    shared actual default Integer count(Equality element) {
+    shared actual default Integer count(Object element) {
         return contains(element) then 1 else 0;
     }
     
-    shared default Boolean superset(Set<Equality> set) {
+    shared default Boolean superset(Set<Object> set) {
         for (element in set) {
             if (!contains(element)) {
                 return false;
@@ -19,7 +19,7 @@ shared interface Set<out Element>
         }
     }
     
-    shared default Boolean subset(Set<Equality> set) {
+    shared default Boolean subset(Set<Object> set) {
         for (element in this) {
             if (!set.contains(element)) {
                 return false;
@@ -30,8 +30,8 @@ shared interface Set<out Element>
         }
     }
     
-    shared actual default Boolean equals(Equality that) {
-        if (is Set<Equality> that) {
+    shared actual default Boolean equals(Object that) {
+        if (is Set<Object> that) {
             if (that.size==size) {
                 for (element in this) {
                     if (!element in that) {
@@ -51,15 +51,15 @@ shared interface Set<out Element>
     } 
     
     shared formal Set<Element|Other> union<Other>(Set<Other> set) 
-            given Other satisfies Equality;
+            given Other satisfies Object;
     
     shared formal Set<Element&Other> intersection<Other>(Set<Other> set) 
-            given Other satisfies Equality;
+            given Other satisfies Object;
     
     shared formal Set<Element|Other> exclusiveUnion<Other>(Set<Other> set) 
-            given Other satisfies Equality;
+            given Other satisfies Object;
     
     shared formal Set<Element> complement<Other>(Set<Other> set) 
-            given Other satisfies Equality;
+            given Other satisfies Object;
 
 }

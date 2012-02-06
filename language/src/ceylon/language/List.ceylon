@@ -2,9 +2,7 @@ shared interface List<out Element>
         satisfies Collection<Element> & 
                   Correspondence<Integer, Element> &
                   Ranged<Integer,List<Element>> &
-                  Cloneable<List<Element>>
-        /*given Element satisfies Equality?*/
-        /*given Element of Nothing|Equality*/ {
+                  Cloneable<List<Element>> {
     
     doc "The index of the last element of the list, or
          null if the list is empty."
@@ -34,7 +32,6 @@ shared interface List<out Element>
         
     shared actual default Iterator<Element> iterator {
         object listIterator
-                extends Object()
                 satisfies Iterator<Element> {
             variable Integer index := 0;
             shared actual Element|Finished next() { 
@@ -82,23 +79,25 @@ shared interface List<out Element>
     shared actual formal Element[] segment(Integer from, 
                                            Integer length);
     
-    shared actual default Boolean equals(Equality that) {
-        if (is List<Object> that) {
+    shared actual default Boolean equals(Object that) {
+        if (is List<Void> that) {
             if (that.size==size) {
                 for (i in 0..size-1) {
                     value x = this[i];
                     value y = that[i];
-                    if (!exists x && !exists y) {
-                        continue;
-                    }
-                    if (is Equality x) {
-                        if (is Equality y) {
-                            if (x==y) {
-                                continue;
+                    if (exists x) { 
+                        if (exists y) {
+                            if (x!=y) {
+                                return false;
                             }
                         }
+                        else {
+                            return false;
+                        }
                     }
-                    return false;
+                    else {
+                        return !exists y;
+                    }
                 }
                 else {
                     return true;

@@ -4,14 +4,13 @@ doc "The abstract supertype of all types with a well-defined
      the same object instance."
 by "Gavin"
 shared abstract class IdentifiableObject() 
-        extends Object() 
-        satisfies Equality {
+        extends Object() {
 
     doc "Default definition of equality compares the 
          identity of the two values. May be refined by 
          subclasses for which value equality is more
          appropriate."
-    shared default actual Boolean equals(Equality that) {
+    shared default actual Boolean equals(Object that) {
         if (is IdentifiableObject that) {
             return this===that;
         }

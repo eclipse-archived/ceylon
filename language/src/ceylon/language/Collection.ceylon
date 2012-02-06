@@ -1,15 +1,15 @@
 shared interface Collection<out Element> 
-        satisfies Iterable<Element> & Sized & 
-                  Category & Equality & 
+        satisfies Iterable<Element> & 
+                  Sized & Category & 
                   Cloneable<Collection<Element>> {
     
     shared actual default Boolean empty {
         return size==0;
     }
     
-    shared actual default Boolean contains(Equality element) {
+    shared actual default Boolean contains(Object element) {
         for (elem in this) {
-            if (is Equality elem) {
+            if (is Object elem) {
                 if (elem==element) {
                     return true;
                 }
@@ -20,10 +20,10 @@ shared interface Collection<out Element>
         }
     }
     
-    shared default Integer count(Equality element) {
+    shared default Integer count(Object element) {
         variable value count:=0;
         for (elem in this) {
-            if (is Equality elem) {
+            if (is Object elem) {
                 if (elem==element) {
                     count++;
                 }

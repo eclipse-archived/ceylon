@@ -7,7 +7,7 @@ doc "Abstract supertype of objects which associate values
      entries."
 by "Gavin"
 shared interface Correspondence<in Key, out Item>
-        given Key satisfies Equality {
+        given Key satisfies Object {
     
     doc "Returns the value defined for the given key, or 
          `null` if there is no value defined for the given 
@@ -27,7 +27,7 @@ shared interface Correspondence<in Key, out Item>
     see (defines)
     shared default Category keys {
         object keys satisfies Category {
-            shared actual Boolean contains(Equality key) {
+            shared actual Boolean contains(Object key) {
                 if (is Key key) {
                     return defines(key);
                 }

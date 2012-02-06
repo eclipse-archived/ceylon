@@ -46,11 +46,8 @@ shared interface Sequence<out Element>
             if (is Object first) {
                 return first.string;
             }
-            else if (is Nothing first) {
-                return "null";
-            }
             else {
-                throw;
+                return "null";
             }
         }
         

@@ -4,8 +4,7 @@ doc "Abstraction of numbers. Numeric operations are provided
      type `Other` of `Numeric`."
 see (Numeric)
 by "Gavin"
-shared interface Number 
-        satisfies Equality {
+shared interface Number {
     
     doc "Determine if the number is positive."
     shared formal Boolean positive;

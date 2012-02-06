@@ -2,7 +2,7 @@ doc "Represents the current process (instance of the virtual
      machine)."
 by "Gavin"
    "Tako"
-shared object process extends Object() {
+shared object process {
     
     doc "The command line arguments to the virtual machine."
     shared String[] arguments { throw; }
