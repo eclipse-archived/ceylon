@@ -58,7 +58,7 @@ public abstract class LazyModule extends Module {
         // then try in dependencies
         for(ModuleImport dependency : getImports()){
             // we don't have to worry about the default module here since we can't depend on it
-            pkg = findPackageInModule((LazyModule) dependency.getModule(), name);
+            pkg = findPackageInImport(name, dependency);
             if(pkg != null)
                 return pkg;
         }
@@ -66,6 +66,15 @@ public abstract class LazyModule extends Module {
         if(defaultModule)
             pkg = getModelLoader().findOrCreatePackage(this, name);
         return pkg;
+    }
+
+    private Package findPackageInImport(String name, ModuleImport dependency) {
+        Module module = dependency.getModule();
+        if (module instanceof LazyModule) {
+            return findPackageInModule((LazyModule) dependency.getModule(), name);
+        }
+        else
+            return module.getPackage(name);
     }
 
     private Package findPackageInModule(LazyModule module, String name) {

@@ -437,6 +437,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         ClassMirror classMirror = lookupClassMirror(typeName);
         if (classMirror == null) {
+            Declaration languageModuleDeclaration = typeFactory.getLanguageModuleDeclaration(typeName);
+            if (languageModuleDeclaration != null) {
+                return languageModuleDeclaration;
+            }
             throw new RuntimeException("Failed to resolve "+typeName);
         }
         return convertToDeclaration(classMirror, declarationType);
@@ -588,7 +592,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                  && modules.getLanguageModule() == null){
              modules.setLanguageModule(module);
          }
-         ((LazyModule)module).setJava(isJava);
+         
+         if (module instanceof LazyModule) {
+             ((LazyModule)module).setJava(isJava);
+         }
          // FIXME: this can't be that easy.
          module.setAvailable(true);
          module.setDefault(defaultModule);
