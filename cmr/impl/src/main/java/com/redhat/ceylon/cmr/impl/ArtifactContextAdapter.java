@@ -16,29 +16,23 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.ArtifactContextEnhancer;
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
-import java.io.File;
-
 /**
- * Maven local content store.
+ * Artifact context adapter -- prepare artifact context per custom repo.
+ * e.g. Maven has different naming for artifacts + default suffix is .jar
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class MavenLocalContentStore extends FileContentStore {
-    public MavenLocalContentStore() {
-        this(MavenRepositoryHelper.getMavenHome());
-    }
+public interface ArtifactContextAdapter {
 
-    public MavenLocalContentStore(File mvnRepository) {
-        super(mvnRepository);
-    }
+    OpenNode getRoot();
 
-    @Override
-    public OpenNode createRoot() {
-        final OpenNode root = super.createRoot();
-        root.addService(ArtifactContextEnhancer.class, MavenRepositoryHelper.ENHANCER);
-        return root;
-    }
+    Node findParent(ArtifactContext context);
+
+    String getArtifactName(ArtifactContext context);
+
+    OpenNode createParent(ArtifactContext context);
 }

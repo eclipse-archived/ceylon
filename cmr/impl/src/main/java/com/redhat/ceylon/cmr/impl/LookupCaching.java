@@ -16,24 +16,36 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.ArtifactContextEnhancer;
-import com.redhat.ceylon.cmr.api.Logger;
-import com.redhat.ceylon.cmr.spi.OpenNode;
+import java.util.List;
 
 /**
- * Maven remote content store.
+ * Simple thread local caching.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class MavenRemoteContentStore extends RemoteContentStore {
-    public MavenRemoteContentStore(String root, Logger log) {
-        super(root, log);
+public final class LookupCaching {
+
+    private static final ThreadLocal<Boolean> enabled = new ThreadLocal<Boolean>();
+    private static final ThreadLocal<List<String>> cached = new ThreadLocal<List<String>>();
+
+    public static void enable() {
+        enabled.set(Boolean.TRUE);
     }
 
-    @Override
-    public OpenNode createRoot() {
-        final OpenNode root = super.createRoot();
-        root.addService(ArtifactContextEnhancer.class, MavenRepositoryHelper.ENHANCER);
-        return root;
+    public static boolean isEnabled() {
+        return (enabled.get() != null);
+    }
+
+    public static void disable() {
+        cached.remove();
+        enabled.remove();
+    }
+
+    public static List<String> getTokens() {
+        return cached.get();
+    }
+
+    public static void setTokens(List<String> tokens) {
+        cached.set(tokens);
     }
 }

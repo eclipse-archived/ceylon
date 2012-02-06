@@ -19,7 +19,6 @@ package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.AbstractRepository;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactContextEnhancer;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
@@ -29,8 +28,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -43,8 +41,8 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
     protected static final String LOCAL = ".local";
     protected static final String CACHED = ".cached";
 
-    protected OpenNode root; // main local root
-    protected List<OpenNode> roots = new CopyOnWriteArrayList<OpenNode>(); // lookup roots - order matters! 
+    protected ArtifactContextAdapter root; // main local root
+    protected List<ArtifactContextAdapter> roots = new CopyOnWriteArrayList<ArtifactContextAdapter>(); // lookup roots - order matters!
 
     public AbstractNodeRepository(Logger log) {
         super(log);
@@ -54,10 +52,10 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
         if (root == null)
             throw new IllegalArgumentException("Missing root!");
 
-        return root;
+        return root.getRoot();
     }
 
-    protected void setRoot(OpenNode root) {
+    protected void setRoot(ArtifactContextAdapter root) {
         if (root == null)
             throw new IllegalArgumentException("Null root");
         if (this.root != null)
@@ -67,45 +65,21 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
         this.roots.add(root);
     }
 
-    protected void prependExternalRoot(OpenNode external) {
+    protected void prependExternalRoot(ArtifactContextAdapter external) {
         roots.add(0, external);
     }
 
-    protected void appendExternalRoot(OpenNode external) {
+    protected void appendExternalRoot(ArtifactContextAdapter external) {
         roots.add(external);
     }
 
-    protected void removeExternalRoot(OpenNode external) {
+    protected void removeExternalRoot(ArtifactContextAdapter external) {
         roots.remove(external);
-    }
-
-    protected List<String> getDefaultPath(ArtifactContext context, boolean addLeaf) {
-        final String name = context.getName();
-        final List<String> tokens = new ArrayList<String>();
-        tokens.addAll(Arrays.asList(name.split("\\.")));
-        final String version = context.getVersion();
-        if (!DEFAULT_MODULE.equals(name))
-            tokens.add(version); // add version
-        if (addLeaf)
-            tokens.add(context.getArtifactName()); // add leaf name
-        return tokens;
-    }
-
-    protected Node getOrCreateParent(ArtifactContext context) {
-        final List<String> tokens = getDefaultPath(context, false);
-        Node parent = getFromRootNode(tokens, context, false);
-        if (parent == null) {
-            OpenNode current = root;
-            for (String path : tokens)
-                current = current.addNode(path);
-            parent = current;
-        }
-        return parent;
     }
 
     public void putArtifact(ArtifactContext context, InputStream content) throws IOException {
         final Node parent = getOrCreateParent(context);
-        final String label = context.getArtifactName();
+        final String label = root.getArtifactName(context);
         if (parent instanceof OpenNode) {
             final OpenNode on = (OpenNode) parent;
             if (on.addContent(label, content, context) == null)
@@ -118,7 +92,7 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
     @Override
     protected void putFolder(ArtifactContext context, File folder) throws IOException {
         Node parent = getOrCreateParent(context);
-        final String label = context.getArtifactName();
+        final String label = root.getArtifactName(context);
         if (parent instanceof OpenNode) {
             final OpenNode on = (OpenNode) parent;
             final OpenNode curent = on.createNode(label);
@@ -152,10 +126,9 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
     }
 
     public void removeArtifact(ArtifactContext context) throws IOException {
-        final List<String> tokens = getDefaultPath(context, false);
-        Node parent = getFromRootNode(tokens, context, false);
+        Node parent = getFromRootNode(context, false);
         if (parent != null) {
-            final String label = context.getArtifactName();
+            final String label = root.getArtifactName(context);
             removeNode(parent, label);
         } else {
             log.debug("No such artifact: " + context);
@@ -172,8 +145,7 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
     }
 
     protected Node getLeafNode(ArtifactContext context) {
-        final List<String> tokens = getDefaultPath(context, true);
-        final Node node = getFromAllRoots(tokens, context, true);
+        final Node node = getFromAllRoots(context, true);
         if (node == null) {
             if (context.isThrowErrorIfMissing())
                 throw new IllegalArgumentException("No such artifact: " + context);
@@ -217,27 +189,37 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
         return shaFromArtifact.equals(shaFromSha);
     }
 
-    protected ArtifactContextEnhancer getEnhancer(OpenNode node) {
-        return node.getService(ArtifactContextEnhancer.class);
+    protected Node getOrCreateParent(ArtifactContext context) {
+        Node parent = getFromRootNode(context, false);
+        if (parent == null) {
+            parent = root.createParent(context);
+        }
+        return parent;
     }
 
-    protected Node getFromRootNode(Iterable<String> tokens, ArtifactContext context, boolean addLeaf) {
-        final ArtifactContextEnhancer ace = getEnhancer(root);
-        if (ace != null)
-            tokens = ace.buildArtifactTokens(context, addLeaf);
-        return NodeUtils.getNode(root, tokens);
+    protected Node getFromRootNode(ArtifactContext context, boolean addLeaf) {
+        return fromAdapters(Collections.singleton(root), context, addLeaf);
     }
 
-    protected Node getFromAllRoots(Iterable<String> tokens, ArtifactContext context, boolean addLeaf) {
-        for (OpenNode ext : roots) {
-            Iterable<String> tmp = tokens;
-            final ArtifactContextEnhancer ace = getEnhancer(ext);
-            if (ace != null)
-                tmp = ace.buildArtifactTokens(context, addLeaf);
+    protected Node getFromAllRoots(ArtifactContext context, boolean addLeaf) {
+        LookupCaching.enable();
+        try {
+            return fromAdapters(roots, context, addLeaf);
+        } finally {
+            LookupCaching.disable();
+        }
+    }
 
-            Node node = NodeUtils.getNode(ext, tmp);
-            if (node != null)
-                return node;
+    protected static Node fromAdapters(Iterable<ArtifactContextAdapter> adapters, ArtifactContext context, boolean addLeaf) {
+        for (ArtifactContextAdapter ext : adapters) {
+            Node node = ext.findParent(context);
+            if (node != null) {
+                if (addLeaf)
+                    node = node.getChild(ext.getArtifactName(context));
+
+                if (node != null)
+                    return node;
+            }
         }
 
         return null; // not found

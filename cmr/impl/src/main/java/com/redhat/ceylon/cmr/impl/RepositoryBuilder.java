@@ -123,11 +123,21 @@ public class RepositoryBuilder {
     }
 
     public RepositoryBuilder prependExternalRoot(OpenNode externalRoot) {
-        repository.prependExternalRoot(externalRoot);
+        repository.prependExternalRoot(new DefaultArtifactContextAdapter(externalRoot));
         return this;
     }
 
     public RepositoryBuilder appendExternalRoot(OpenNode externalRoot) {
+        repository.appendExternalRoot(new DefaultArtifactContextAdapter(externalRoot));
+        return this;
+    }
+
+    public RepositoryBuilder prependExternalRoot(ArtifactContextAdapter externalRoot) {
+        repository.prependExternalRoot(externalRoot);
+        return this;
+    }
+
+    public RepositoryBuilder appendExternalRoot(ArtifactContextAdapter externalRoot) {
         repository.appendExternalRoot(externalRoot);
         return this;
     }

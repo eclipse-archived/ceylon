@@ -51,7 +51,8 @@ public class RootRepository extends AbstractNodeRepository {
     public RootRepository(File rootDir, Logger log) {
         super(log);
         fileContentStore = new FileContentStore(rootDir);
-        setRoot(new RootNode(fileContentStore, fileContentStore));
+        final ArtifactContextAdapter aaca = new DefaultArtifactContextAdapter(new RootNode(fileContentStore, fileContentStore));
+        setRoot(aaca);
     }
 
     public File getArtifact(ArtifactContext context) throws IOException {

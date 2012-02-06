@@ -14,21 +14,23 @@
  * limitations under the License.
  */
 
-package com.redhat.ceylon.cmr.api;
+package com.redhat.ceylon.cmr.impl;
+
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.spi.OpenNode;
 
 /**
- * Artifact context enhancer -- prepare artifact context per custom repo.
- * e.g. Maven has different naming for artifacts + default suffix is .jar
+ * Default.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface ArtifactContextEnhancer {
-    /**
-     * Build artifact path.
-     *
-     * @param context the context
-     * @param addLeaf the add leaf flag
-     * @return artifact path
-     */
-    Iterable<String> buildArtifactTokens(ArtifactContext context, boolean addLeaf);
+public class DefaultArtifactContextAdapter extends AbstractArtifactContextAdapter {
+
+    public DefaultArtifactContextAdapter(OpenNode root) {
+        super(root);
+    }
+
+    public String getArtifactName(ArtifactContext context) {
+        return getArtifactName(context.getName(), context.getVersion(), context.getSuffix());
+    }
 }

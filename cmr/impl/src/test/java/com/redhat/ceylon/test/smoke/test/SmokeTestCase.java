@@ -21,7 +21,6 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.impl.*;
-import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -205,7 +204,7 @@ public class SmokeTestCase {
     @Test
     @Ignore // this test should work, if you have org.slf4j.slf4j-api 1.5.10 present
     public void testMavenLocal() throws Exception {
-        Repository repository = new SimpleRepository(new MavenLocalContentStore(), log);
+        Repository repository = new SimpleRepository(MavenRepositoryHelper.getMavenArtifactContextAdapter(), log);
         ArtifactContext ac = new ArtifactContext("org.slf4j.slf4j-api", "1.5.10");
         File file = repository.getArtifact(ac);
         Assert.assertNotNull(file);
@@ -215,7 +214,7 @@ public class SmokeTestCase {
     @Test
     public void testMavenRemote() throws Exception {
         RepositoryBuilder builder = new RepositoryBuilder(getRepositoryRoot(), log);
-        OpenNode externalRoot = new MavenRemoteContentStore("https://repository.jboss.org/nexus/content/groups/public/", log).createRoot();
+        ArtifactContextAdapter externalRoot = MavenRepositoryHelper.getMavenArtifactContextAdapter("https://repository.jboss.org/nexus/content/groups/public/", log);
         builder.prependExternalRoot(externalRoot);
         Repository repository = builder.buildRepository();
         ArtifactContext ac = new ArtifactContext("org.jboss.jboss-vfs", "3.0.1.GA");

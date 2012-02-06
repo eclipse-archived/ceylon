@@ -19,7 +19,6 @@ package com.redhat.ceylon.cmr.impl;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.spi.Node;
-import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 
 import java.io.File;
@@ -37,10 +36,10 @@ public class SimpleRepository extends AbstractNodeRepository {
         if (structureBuilder == null)
             throw new IllegalArgumentException("Null structure builder!");
 
-        setRoot(structureBuilder.createRoot());
+        setRoot(new DefaultArtifactContextAdapter(structureBuilder.createRoot()));
     }
 
-    public SimpleRepository(OpenNode root, Logger log) {
+    public SimpleRepository(ArtifactContextAdapter root, Logger log) {
         super(log);
         if (root == null)
             throw new IllegalArgumentException("Null root!");

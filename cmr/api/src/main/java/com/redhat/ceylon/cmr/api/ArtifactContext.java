@@ -63,23 +63,6 @@ public class ArtifactContext implements Serializable, ContentOptions {
         return new ArtifactContext(name, version, DOCS);
     }
 
-    public String getArtifactName() {
-        return getArtifactName(getName(), getVersion(), getSuffix());
-    }
-
-    protected String getArtifactName(String name, String version, String suffix) {
-        if (ArtifactContext.DOCS.equals(suffix))
-            return ArtifactContext.DOCS;
-        else if (Repository.DEFAULT_MODULE.equals(name))
-            return name + suffix;
-        else
-            return buildArtifactName(name, version, suffix);
-    }
-
-    protected String buildArtifactName(String name, String version, String suffix) {
-        return name + "-" + version + suffix;
-    }
-
     public String getName() {
         return name;
     }

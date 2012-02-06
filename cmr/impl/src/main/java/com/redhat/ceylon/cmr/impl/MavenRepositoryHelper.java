@@ -17,38 +17,18 @@
 package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactContextEnhancer;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.cmr.spi.OpenNode;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Maven repository helper.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-class MavenRepositoryHelper {
-
-    static final ArtifactContextEnhancer ENHANCER = new ArtifactContextEnhancer() {
-        public Iterable<String> buildArtifactTokens(ArtifactContext context, boolean addLeaf) {
-            String name = context.getName();
-            final List<String> tokens = new ArrayList<String>();
-            tokens.addAll(Arrays.asList(name.split("\\.")));
-            final String version = context.getVersion();
-            if (Repository.DEFAULT_MODULE.equals(name) == false)
-                tokens.add(version); // add version
-            if (addLeaf) {
-                final int p = name.lastIndexOf(".");
-                if (p >= 0)
-                    name = name.substring(p + 1);
-                tokens.add(name + "-" + context.getVersion() + ArtifactContext.JAR);
-            }
-            return tokens;
-        }
-    };
+public class MavenRepositoryHelper {
 
     static File getMavenHome() {
         File mvnHome = new File(System.getenv("MAVEN_HOME"), "repository");
@@ -67,5 +47,44 @@ class MavenRepositoryHelper {
         }
 
         throw new IllegalArgumentException("No Maven home specified!");
+    }
+
+    public static ArtifactContextAdapter getMavenArtifactContextAdapter() {
+        return new MavenArtifactContextAdapter(new MavenContentStore().createRoot());
+    }
+
+    public static ArtifactContextAdapter getMavenArtifactContextAdapter(File mvnRepository) {
+        return new MavenArtifactContextAdapter(new MavenContentStore(mvnRepository).createRoot());
+    }
+
+    public static ArtifactContextAdapter getMavenArtifactContextAdapter(String repositoryURL, Logger log) {
+        return new MavenArtifactContextAdapter(new RemoteContentStore(repositoryURL, log).createRoot());
+    }
+
+    private static class MavenArtifactContextAdapter extends AbstractArtifactContextAdapter {
+        private MavenArtifactContextAdapter(OpenNode root) {
+            super(root);
+        }
+
+        public String getArtifactName(ArtifactContext context) {
+            String name = context.getName();
+            final int p = name.lastIndexOf(".");
+            return getArtifactName(p >= 0 ? name.substring(p + 1) : name, context.getVersion(), ArtifactContext.JAR);
+        }
+    }
+
+    private static class MavenContentStore extends FileContentStore {
+        private MavenContentStore() {
+            this(getMavenHome());
+        }
+
+        private MavenContentStore(File root) {
+            super(root);
+        }
+
+        @Override
+        protected void delete(File file, Node node) {
+            // cannot delete from Maven repo
+        }
     }
 }
