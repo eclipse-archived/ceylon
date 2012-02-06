@@ -28,12 +28,18 @@ import javax.lang.model.type.TypeKind;
 import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Type.ArrayType;
+import com.sun.tools.javac.code.Type.WildcardType;
 
 public class JavacType implements TypeMirror {
 
     private Type type;
-    private TypeMirror componentType;
     private List<TypeMirror> typeArguments;
+    private boolean componentTypeSet;
+    private TypeMirror componentType;
+    private boolean upperBoundSet;
+    private JavacType upperBound;
+    private boolean lowerBoundSet;
+    private JavacType lowerBound;
 
     public JavacType(Type type) {
         this.type = type;
@@ -63,11 +69,13 @@ public class JavacType implements TypeMirror {
 
     @Override
     public TypeMirror getComponentType() {
-        if (type instanceof ArrayType) {
+        if (!componentTypeSet
+                && type instanceof ArrayType) {
             Type compType = ((ArrayType)type).getComponentType();
             if (compType != null) {
                 componentType = new JavacType(compType);
             }
+            componentTypeSet = true;
         }
         return componentType;
     }
@@ -77,4 +85,29 @@ public class JavacType implements TypeMirror {
         return type.isPrimitive();
     }
 
+    @Override
+    public TypeMirror getUpperBound() {
+        if (!upperBoundSet
+                && type instanceof WildcardType) {
+            Type bound = ((WildcardType)type).getExtendsBound();
+            if (bound != null) {
+                upperBound = new JavacType(bound);
+            }
+            upperBoundSet = true;
+        }
+        return upperBound;
+    }
+
+    @Override
+    public TypeMirror getLowerBound() {
+        if (!lowerBoundSet
+                && type instanceof WildcardType) {
+            Type bound = ((WildcardType)type).getSuperBound();
+            if (bound != null) {
+                lowerBound = new JavacType(bound);
+            }
+            lowerBoundSet = true;
+        }
+        return lowerBound;
+    }
 }

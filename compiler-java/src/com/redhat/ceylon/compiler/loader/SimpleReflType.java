@@ -66,4 +66,14 @@ public class SimpleReflType implements TypeMirror {
         return kind.isPrimitive();
     }
 
+    @Override
+    public TypeMirror getUpperBound() {
+        return null;
+    }
+
+    @Override
+    public TypeMirror getLowerBound() {
+        return null;
+    }
+
 }

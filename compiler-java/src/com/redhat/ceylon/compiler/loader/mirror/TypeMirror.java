@@ -55,4 +55,14 @@ public interface TypeMirror {
      * Returns true if this type represents a Java primitive
      */
     boolean isPrimitive();
+
+    /**
+     * Returns the upper bound of this wildcard type if this is a wildcard type with an upper bound. Returns null otherwise.
+     */
+    TypeMirror getUpperBound();
+
+    /**
+     * Returns the lower bound of this wildcard type if this is a wildcard type with an lower bound. Returns null otherwise.
+     */
+    TypeMirror getLowerBound();
 }

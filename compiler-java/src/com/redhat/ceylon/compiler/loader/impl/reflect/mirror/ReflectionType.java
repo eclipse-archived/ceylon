@@ -40,6 +40,8 @@ public class ReflectionType implements TypeMirror {
     private Type type;
     private List<TypeMirror> typeArguments;
     private ReflectionType componentType;
+    private ReflectionType upperBound;
+    private ReflectionType lowerBound;
 
     public ReflectionType(Type type) {
         this.type = type;
@@ -117,5 +119,31 @@ public class ReflectionType implements TypeMirror {
     @Override
     public String toString() {
         return "[ReflectionType: "+type.toString()+"]";
+    }
+
+    @Override
+    public TypeMirror getUpperBound() {
+        if(upperBound != null)
+            return upperBound;
+        Type[] ct = ((WildcardType)type).getUpperBounds();
+        // I don't see how there can possibly be more than one bound here according to the spec and grammar, for a wildcard type
+        if(ct.length != 1)
+            throw new RuntimeException("Not one upper bound in wildcard type: "+ct.length);
+        upperBound = new ReflectionType(ct[0]);
+        return upperBound;
+    }
+
+    @Override
+    public TypeMirror getLowerBound() {
+        if(lowerBound != null)
+            return lowerBound;
+        Type[] ct = ((WildcardType)type).getLowerBounds();
+        if(ct.length == 0)
+            return null;
+        // I don't see how there can possibly be more than one bound here according to the spec and grammar, for a wildcard type
+        if(ct.length > 1)
+            throw new RuntimeException("More than one lower bound in wildcard type: "+ct.length);
+        lowerBound = new ReflectionType(ct[0]);
+        return lowerBound;
     }
 }
