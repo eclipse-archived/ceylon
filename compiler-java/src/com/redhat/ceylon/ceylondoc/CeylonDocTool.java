@@ -309,7 +309,7 @@ public class CeylonDocTool {
         copyResource("resources/ceylond.js", new File(resourcesDir, "ceylond.js"));
         copyResource("resources/shCore.js", new File(resourcesDir, "shCore.js"));
         copyResource("resources/shBrushCeylon.js", new File(resourcesDir, "shBrushCeylon.js"));
-        
+        copyResource("resources/icons.png", new File(resourcesDir, "icons.png"));
         copyResource("resources/NOTICE.txt", new File(getOutputFolder(module), "NOTICE.txt"));
     }
 

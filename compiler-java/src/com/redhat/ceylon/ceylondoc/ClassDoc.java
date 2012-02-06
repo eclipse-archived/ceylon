@@ -476,6 +476,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         around("span class='modifiers'", getModifiers(c));
         close("td");
         open("td");
+        writeIcon(c);
         link(c.getType());
         tag("br");
         startPrintingLongDoc(c);
@@ -497,7 +498,9 @@ public class ClassDoc extends ClassOrPackageDoc {
         around("div class='package'", "<code>" + pkg.getNameAsString() + "</code>");
 
         open("div class='type'");
-        write(klass instanceof Class ? "Class " : "Interface ", "<code>", getClassName(), "</code>");
+        write(klass instanceof Class ? "Class " : "Interface ");
+        writeIcon(klass);
+        write("<code>", getClassName(), "</code>");
         writeSourceLink(klass);
         close("div");
         
@@ -513,6 +516,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             int i = 0;
             for (ProducedType superType : superTypes) {
                 open("ul class='inheritance'", "li");
+                writeIcon(superType.getDeclaration());
                 link(superType);
                 i++;
             }
@@ -605,6 +609,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     private void constructor(Class klass) throws IOException {
         openTable("section-constructor", "Constructor");
         open("tr", "td", "code");
+        writeIcon(klass);
         write(klass.getName());
         writeParameterList(klass.getParameterLists());
         close("code", "td", "tr", "table");
@@ -669,9 +674,11 @@ public class ClassDoc extends ClassOrPackageDoc {
     
     private void writeEnclosingType() throws IOException {
         if (klass.isMember()) {
+            ClassOrInterface enclosingType = (ClassOrInterface) klass.getContainer();
             open("div class='enclosingType'");
-            write("Enclosing " + (klass.getContainer() instanceof Class ? "class: " : "interface: "));
-            link(((ClassOrInterface) klass.getContainer()).getType());
+            write("Enclosing " + (enclosingType instanceof Class ? "class: " : "interface: "));
+            writeIcon(enclosingType);
+            link(enclosingType.getType());
             close("div");
         }
     }
