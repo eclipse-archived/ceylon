@@ -174,12 +174,6 @@ public class LazyValue extends Value implements LazyElement {
     }
 
     @Override
-    public void setUnboxed(boolean value) {
-        load();
-        super.setUnboxed(value);
-    }
-
-    @Override
     public Scope getVisibleScope() {
         load();
         return super.getVisibleScope();
