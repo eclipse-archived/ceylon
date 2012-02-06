@@ -94,15 +94,23 @@ public class BoxingDeclarationVisitor extends Visitor {
             // an error must have already been reported
             return;
         }
+        // abort if our boxing state has already been set
+        if(declaration.getUnboxed() != null)
+            return;
         if((transformer.isCeylonBasicType(declaration.getType()) 
             || transformer.isCeylonArray(declaration.getType()))
            && !(refinedDeclaration.getTypeDeclaration() instanceof TypeParameter)){
             // propagate to decl if needed
-            if(refinedDeclaration != declaration)
+            if(refinedDeclaration != declaration){
+                // make sure refined declarations have already been set
+                if(refinedDeclaration.getUnboxed() == null)
+                    setBoxingState(refinedDeclaration, refinedDeclaration);
+                // inherit
                 declaration.setUnboxed(refinedDeclaration.getUnboxed());
-            else
+            }else
                 declaration.setUnboxed(true);
-        }
+        }else
+            declaration.setUnboxed(false);
     }
 
     @Override
