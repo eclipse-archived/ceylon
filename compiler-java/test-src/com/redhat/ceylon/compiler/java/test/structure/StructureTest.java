@@ -443,6 +443,15 @@ public class StructureTest extends CompilerTest {
     }
 
     @Test
+    public void testMdlMavenDependency() throws IOException{
+        // Try to compile the ceylon module
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-rep", "mvn:http://repo1.maven.org/maven2"), 
+                (DiagnosticListener<? super FileObject>)null, 
+                "module/maven/module.ceylon", "module/maven/foo.ceylon");
+        assertEquals(Boolean.TRUE, ceylonTask.call());
+    }
+
+    @Test
     public void testMdlSourceArchive() throws IOException{
         File sourceArchiveFile = getSourceArchive("com.redhat.ceylon.compiler.java.test.structure.module.single", "6.6.6");
         sourceArchiveFile.delete();
