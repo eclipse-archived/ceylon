@@ -149,4 +149,10 @@ public class IssuesTest extends CompilerTest {
         compile("Bug330_1.ceylon");
         compile("Bug330_2.ceylon");
     }
+
+    @Test
+    public void testBug353(){
+        // compile them both at the same time
+        compile("Bug353_1.ceylon", "Bug353_2.ceylon");
+    }
 }
