@@ -147,7 +147,7 @@ public class LazyMethod extends Method implements LazyElement {
     }
 
     @Override
-    public boolean getUnboxed() {
+    public Boolean getUnboxed() {
         load();
         return super.getUnboxed();
     }
