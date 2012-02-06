@@ -17,34 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-doc "This is `StubClass`"
-shared class StubClass() satisfies StubInterface {
+doc "This is `StubInterface`"
+shared interface StubInterface {
 
-    doc "The stub attribute with `throws`."
-    throws (OverflowException, "if the number is too large to be represented as an integer")
-    shared Integer attributeWithThrows = 0;
-
-    doc "The stub method with `throws`."
-    throws (StubException, "`when` with __WIKI__ syntax")
-    shared void methodWithThrows() {}
-    
-    shared actual void formalMethod() {}
-    
-    shared actual void defaultMethod() {}
-    
-    deprecated("don't use this method")
-    void deprecatedMethod() {}    
-    
-    shared interface StubInnerInterface {
-
-        shared formal void innerMethod();
-       
-    }     
-
-    shared class StubInnerClass() satisfies StubInnerInterface {
-
-        shared actual void innerMethod() {}
-
-    }
+  shared formal void formalMethod();
+  
+  shared default void defaultMethod() {}
     
 }

@@ -148,6 +148,7 @@ public class CeylonDocToolTest {
         
         assertDirectoryExists(destDir, ".resources");
         assertFileExists(destDir, ".resources/index.js");
+        assertFileExists(destDir, ".resources/icons.png");
         assertFileExists(destDir, "index.html");
         assertFileExists(destDir, "search.html");
         assertFileExists(destDir, "interface_Types.html");
@@ -204,7 +205,22 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "class_StubClass.StubInnerClass.html", 
                 Pattern.compile("Enclosing class: <a href='class_StubClass.html'>StubClass</a>"));
         assertMatchInFile(destDir, "class_StubClass.StubInnerClass.html", 
-                Pattern.compile("Satisfied Interfaces: <a href='interface_StubClass.StubInnerInterface.html'>StubInnerInterface</a>"));        
+                Pattern.compile("Satisfied Interfaces: <a href='interface_StubClass.StubInnerInterface.html'>StubInnerInterface</a>"));
+        
+        assertIcons(destDir);
+    }
+    
+    private void assertIcons(File destDir) throws IOException {
+        assertMatchInFile(destDir, "interface_StubInterface.html", Pattern.compile("Interface <i class='icon-interface'></i><code>StubInterface</code>"));
+        assertMatchInFile(destDir, "interface_StubInterface.html", Pattern.compile("id='defaultMethod'><td><code><i class='icon-shared-member'></i>"));
+        assertMatchInFile(destDir, "interface_StubInterface.html", Pattern.compile("id='formalMethod'><td><code><i class='icon-shared-member'><i class='icon-decoration-formal'></i></i>"));
+        
+        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<i class='icon-interface'></i><a href='interface_StubClass.StubInnerInterface.html'>StubInnerInterface</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<i class='icon-class'></i><a href='class_StubClass.StubInnerClass.html'>StubInnerClass</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<i class='icon-class'></i>StubClass()"));
+        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("id='formalMethod'><td><code><i class='icon-shared-member'><i class='icon-decoration-impl'></i></i>"));
+        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("id='defaultMethod'><td><code><i class='icon-shared-member'><i class='icon-decoration-over'></i></i>"));
+        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("id='deprecatedMethod'><td><code><i class='icon-decoration-deprecated'><i class='icon-local-member'></i></i>"));
     }
     
     private File getOutputDir(CeylonDocTool tool, Module module) {
