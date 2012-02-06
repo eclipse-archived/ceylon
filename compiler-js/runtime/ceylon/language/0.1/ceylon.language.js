@@ -647,6 +647,11 @@ $Character.prototype.getLowercase = function() {
     return Boolean$(str.toUpperCase()!==str && !(this.value in $titlecase));
 }
 $Character.prototype.getTitlecase = function() {return Boolean$(this.value in $titlecase)}
+$Character.prototype.getLetter = function() {
+    //TODO: this captures only letters that have case
+    var str = codepointToString(this.value);
+    return Boolean$(str.toUpperCase()!==str || str.toLowerCase()!==str || (this.value in $titlecase));
+}
 $Character.prototype.getSuccessor = function() {
     var succ = this.value+1;
     if ((succ&0xf800) === 0xd800) {return Character(0xe000)}
