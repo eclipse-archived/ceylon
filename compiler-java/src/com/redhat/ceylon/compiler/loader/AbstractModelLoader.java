@@ -1479,6 +1479,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(!javacTypeArguments.isEmpty()){
                 List<ProducedType> typeArguments = new ArrayList<ProducedType>(javacTypeArguments.size());
                 for(TypeMirror typeArgument : javacTypeArguments){
+                    // if a single type argument is a wildcard, we erase to Object
+                    if(typeArgument.getKind() == TypeKind.WILDCARD)
+                        return typeFactory.getObjectDeclaration().getType();
                     typeArguments.add((ProducedType) getType(typeArgument, scope));
                 }
                 return declaration.getProducedType(null, typeArguments);
