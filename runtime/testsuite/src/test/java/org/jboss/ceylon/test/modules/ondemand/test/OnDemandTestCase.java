@@ -20,6 +20,7 @@ package org.jboss.ceylon.test.modules.ondemand.test;
 import org.jboss.acme.Qwert;
 import org.jboss.ceylon.test.modules.ModulesTest;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import si.alesj.ceylon.module;
@@ -43,7 +44,7 @@ public class OnDemandTestCase extends ModulesTest {
         JavaArchive lib2 = ShrinkWrap.create(JavaArchive.class, "si.alesj.ceylon-1.0.0.GA.car");
         lib2.addClass(module.class);
         lib2.addClass(Touch.class);
-        lib2.addAsResource("si/alesj/ceylon/test/config.xml");
+        lib2.addAsResource(new StringAsset("<config/>"), "si/alesj/ceylon/test/config.xml");
 
         testArchive(module, lib1, lib2);
     }

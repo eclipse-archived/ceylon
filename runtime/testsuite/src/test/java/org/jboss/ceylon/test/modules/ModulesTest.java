@@ -158,7 +158,7 @@ public abstract class ModulesTest {
 
     protected String getBootstrapModules() {
         final String projectHome = System.getProperty("ceylon.runtime.home", System.getProperty("user.dir"));
-        return projectHome + File.separator + "dist" + File.separator + "runtime-repo";
+        return projectHome + File.separator + "build" + File.separator + "dist" + File.separator + "runtime-repo";
     }
 
     protected static String toPathString(String name, String version) {
@@ -194,8 +194,8 @@ public abstract class ModulesTest {
         args.add(module);
         // run JBoss Modules
         System.err.print("Command line: ");
-        for(String arg : args){
-            System.err.print(arg+" ");
+        for (String arg : args) {
+            System.err.print(arg + " ");
         }
         System.err.println("");
         Main.main(args.toArray(new String[args.size()]));
