@@ -271,8 +271,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         case TYPEVAR:
             return safeLookupTypeParameter(scope, type.getQualifiedName());
         case WILDCARD:
-            // FIXME: wtf?
-            typeName = "ceylon.language.Nothing";
+            // FIXME: we shouldn't even get there, because if something contains a wildcard (Foo<?>) we erase it to
+            // IdentifiableObject, so this shouldn't be reachable.
+            typeName = "ceylon.language.Bottom";
             break;
         default:
             throw new RuntimeException("Failed to handle type "+type);
