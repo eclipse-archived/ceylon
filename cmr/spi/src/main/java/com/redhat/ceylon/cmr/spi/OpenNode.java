@@ -29,6 +29,8 @@ import java.io.Serializable;
 public interface OpenNode extends Node {
     <T> void addService(Class<T> serviceType, T service);
 
+    <T> T getService(Class<T> serviceType);
+
     void merge(OpenNode other);
 
     void link(OpenNode other);

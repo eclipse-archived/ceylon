@@ -20,12 +20,11 @@ package com.redhat.ceylon.test.smoke.test;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.impl.JULLogger;
-import com.redhat.ceylon.cmr.impl.RemoteContentStore;
-import com.redhat.ceylon.cmr.impl.RepositoryBuilder;
-import com.redhat.ceylon.cmr.impl.RootRepository;
+import com.redhat.ceylon.cmr.impl.*;
+import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -200,6 +199,32 @@ public class SmokeTestCase {
             Assert.assertNotNull(file);
         } finally {
             repo.removeArtifact(name, version);
+        }
+    }
+
+    @Test
+    @Ignore // this test should work, if you have org.slf4j.slf4j-api 1.5.10 present
+    public void testMavenLocal() throws Exception {
+        Repository repository = new SimpleRepository(new MavenLocalContentStore(), log);
+        ArtifactContext ac = new ArtifactContext("org.slf4j.slf4j-api", "1.5.10");
+        File file = repository.getArtifact(ac);
+        Assert.assertNotNull(file);
+        // No remove, as we don't wanna delete from mvn repo
+    }
+
+    @Test
+    @Ignore // this test should work, but we don't want the tests to take forever
+    public void testMavenRemote() throws Exception {
+        RepositoryBuilder builder = new RepositoryBuilder(getRepositoryRoot(), log);
+        OpenNode externalRoot = new MavenRemoteContentStore("https://repository.jboss.org/nexus/content/groups/public/", log).createRoot();
+        builder.prependExternalRoot(externalRoot);
+        Repository repository = builder.buildRepository();
+        ArtifactContext ac = new ArtifactContext("org.jboss.jboss-vfs", "3.0.1.GA");
+        try {
+            File file = repository.getArtifact(ac);
+            Assert.assertNotNull(file);
+        } finally {
+            repository.removeArtifact(ac);
         }
     }
 }

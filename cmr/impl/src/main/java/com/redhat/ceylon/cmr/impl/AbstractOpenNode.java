@@ -90,11 +90,6 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
         throw new IllegalArgumentException("No such service [" + serviceType + "] found in node chain!");
     }
 
-    protected synchronized <T> T getService(Class<T> serviceType) {
-        return serviceType.cast(services.get(serviceType));
-    }
-
-    @Override
     public synchronized <T> void addService(Class<T> serviceType, T service) {
         if (serviceType == null)
             throw new IllegalArgumentException("Null service type");
@@ -103,6 +98,10 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
             services.put(serviceType, service);
         else
             services.remove(serviceType);
+    }
+
+    public synchronized <T> T getService(Class<T> serviceType) {
+        return serviceType.cast(services.get(serviceType));
     }
 
     protected OpenNode putChildIfAbsent(String label, OpenNode child) {
