@@ -18,10 +18,11 @@
  * MA  02110-1301, USA.
  */
 import java.lang{Throwable}
+import java.util{List}
 
 @nomodel
 class ImportJavaRuntimeTypeSingle() {
-    void m() {
+    void m(@error List<Integer> l) {
         @error
         Throwable();
     }
