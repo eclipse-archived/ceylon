@@ -599,6 +599,12 @@ $Character.prototype.getTitlecased = function() {
 var $WS={0x9:true, 0xa:true, 0xb:true, 0xc:true, 0xd:true, 0x20:true, 0x85:true, 0xa0:true,
     0x1680:true, 0x180e:true, 0x2028:true, 0x2029:true, 0x202f:true, 0x205f:true, 0x3000:true}
 for (var i=0x2000; i<=0x200a; i++) { $WS[i]=true }
+var $digit={0x30:true, 0x660:true, 0x6f0:true, 0x7c0:true, 0x966:true, 0x9e6:true, 0xa66:true,
+    0xae6:true, 0xb66:true, 0xbe6:true, 0xc66:true, 0xce6:true, 0xd66:true, 0xe50:true,
+    0xed0:true, 0xf20:true, 0x1040:true, 0x1090:true, 0x17e0:true, 0x1810:true, 0x1946:true,
+    0x19d0:true, 0x1a80:true, 0x1a90:true, 0x1b50:true, 0x1bb0:true, 0x1c40:true, 0x1c50:true,
+    0xa620:true, 0xa8d0:true, 0xa900:true, 0xa9d0:true, 0xaa50:true, 0xabf0:true, 0xff10:true,
+    0x104a0:true, 0x11066:true, 0x110f0:true, 0x11136:true, 0x111d0:true, 0x116c0:true}
 var $titlecase={
     0x1c5: [0x1c4, 0x1c6], 0x1c8: [0x1c7, 0x1c9], 0x1cb: [0x1ca, 0x1cc], 0x1f2: [0x1f1, 0x1f3],
     0x1f88: [undefined, 0x1f80], 0x1f89: [undefined, 0x1f81], 0x1f8a: [undefined, 0x1f82],
@@ -621,7 +627,16 @@ var $toTitlecase={
 }
 $Character.prototype.getWhitespace = function() { return Boolean$(this.value in $WS) }
 $Character.prototype.getControl = function() { return Boolean$(this.value<32 || this.value===127) }
-$Character.prototype.getDigit = function() { return Boolean$(this.value>=48 && this.value<=57) }
+$Character.prototype.getDigit = function() {
+    var check = this.value & 0xfffffff0;
+    if (check in $digit) {
+        return Boolean$((this.value&0xf) <= 9);
+    }
+    if ((check|6) in $digit) {
+        return Boolean$((this.value&0xf) >= 6);
+    }
+    return Boolean$(this.value>=0x1d7ce && this.value<=0x1d7ff);
+}
 $Character.prototype.getInteger = function() { return Integer(this.value); }
 $Character.prototype.getUppercase = function() {
     var str = codepointToString(this.value);
