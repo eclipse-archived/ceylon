@@ -29,12 +29,10 @@ import javax.tools.StandardLocation;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.compiler.java.codegen.BoxingDeclarationVisitor;
-import com.redhat.ceylon.compiler.java.codegen.BoxingVisitorPlugin;
+import com.redhat.ceylon.compiler.java.codegen.BoxingVisitor;
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.java.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.java.codegen.CodeGenError;
-import com.redhat.ceylon.compiler.java.codegen.GetterSetterVisitorPlugin;
-import com.redhat.ceylon.compiler.java.codegen.PluggableVisitor;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeylonPhasedUnit;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
@@ -51,8 +49,8 @@ import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.comp.AttrContext;
@@ -268,16 +266,14 @@ public class CeylonEnter extends Enter {
         for (PhasedUnit pu : listOfUnits) { 
             pu.analyseFlow();
         }
-        // Extra phases for the compiler
         BoxingDeclarationVisitor boxingDeclarationVisitor = new BoxingDeclarationVisitor(gen);
+        BoxingVisitor boxingVisitor = new BoxingVisitor(gen);
+        // Extra phases for the compiler
         for (PhasedUnit pu : listOfUnits) {
             pu.getCompilationUnit().visit(boxingDeclarationVisitor);
         }
-        PluggableVisitor plugVisitor = new PluggableVisitor();
-        plugVisitor.add(new BoxingVisitorPlugin(gen));
-        plugVisitor.add(new GetterSetterVisitorPlugin());
         for (PhasedUnit pu : listOfUnits) {
-            pu.getCompilationUnit().visit(plugVisitor);
+            pu.getCompilationUnit().visit(boxingVisitor);
         }
         for (PhasedUnit pu : listOfUnits) {
             pu.getCompilationUnit().visit(new JavacAssertionVisitor((CeylonPhasedUnit) pu){
