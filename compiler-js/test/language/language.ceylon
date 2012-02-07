@@ -28,10 +28,10 @@ shared void results() {
 void testCharacter() {
     Character c1 = `A`;
     //Character c2 = `𝄞`;
-    //Character c3 = `Ũ`;
+    Character c3 = `Ũ`;
     assertEqual(c1.string, "A", "Character.string");
     //assertEqual(c2.string, "𝄞", "Character.string");
-    //assertEqual(c3.string, "Ũ", "Character.string");
+    assertEqual(c3.string, "Ũ", "Character.string");
     assertEqual(`Ä`.lowercased, `ä`, "Character.lowercased");
     assertEqual(`x`.lowercased, `x`, "Character.lowercased");
     assertEqual(`ö`.uppercased, `Ö`, "Character.uppercased");
