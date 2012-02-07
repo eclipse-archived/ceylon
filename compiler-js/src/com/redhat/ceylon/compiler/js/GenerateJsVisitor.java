@@ -423,7 +423,7 @@ public class GenerateJsVisitor extends Visitor
     private void callSuperclass(ExtendedType extendedType, Class d) {
         if (extendedType!=null) {
             qualify(extendedType.getType(), extendedType.getType().getDeclarationModel());
-            out(extendedType.getType().getDeclarationModel().getName());
+            memberName(extendedType.getType().getDeclarationModel());
             out("(");
             for (PositionalArgument arg: extendedType.getInvocationExpression()
                     .getPositionalArgumentList().getPositionalArguments()) {
@@ -441,7 +441,7 @@ public class GenerateJsVisitor extends Visitor
         if (satisfiedTypes!=null)
             for (SimpleType st: satisfiedTypes.getTypes()) {
                 qualify(st, st.getDeclarationModel());
-                out(st.getDeclarationModel().getName());
+                memberName(st.getDeclarationModel());
                 out("(");
                 self(d);
                 out(")");
@@ -568,7 +568,11 @@ public class GenerateJsVisitor extends Visitor
     private void copyMembersToPrototype(SimpleType that, Declaration d) {
         String thatName = that.getDeclarationModel().getName();
         String path = qualifiedPath(that, that.getDeclarationModel());
-        String suffix = path + '$' + thatName + '$';
+        String suffix = null;
+        if (!((d instanceof Interface)
+                || (that.getDeclarationModel() instanceof Interface))) {
+            suffix = path + '$' + thatName + '$';
+        }
         if (path.length() > 0) {
             path += '.';
         }
