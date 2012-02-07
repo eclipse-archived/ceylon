@@ -23,6 +23,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Operators.AssignmentOperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
@@ -180,8 +181,73 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         }
 
-        // we must to the boxing after the cast to the proper type
-        return boxUnboxIfNecessary(result, exprBoxed, exprType, boxingStrategy);
+        // we must do the boxing after the cast to the proper type
+        JCExpression ret = boxUnboxIfNecessary(result, exprBoxed, exprType, boxingStrategy);
+        ret = applyJavaTypeConversions(ret, exprType, expectedType, boxingStrategy);
+        return ret;
+    }
+
+    private JCExpression applyJavaTypeConversions(JCExpression ret, ProducedType exprType, ProducedType expectedType, BoxingStrategy boxingStrategy) {
+        ProducedType definiteExprType = simplifyType(exprType);
+        String convertFrom = definiteExprType.getUnderlyingType();
+        boolean needsBoxing = boxingStrategy == BoxingStrategy.BOXED;
+
+        String convertTo = null;
+        if(expectedType != null){
+            ProducedType definiteExpectedType = simplifyType(expectedType);
+            convertTo = definiteExpectedType.getUnderlyingType();
+        }
+        // check for identity conversion
+        if(convertFrom != null
+                && convertFrom.equals(convertTo))
+            return ret;
+        if(convertFrom != null && needsBoxing){
+            if(convertFrom.equals("java.lang.Boolean"))
+                ret = makeUtilInvocation("fromJavaBoolean", List.of(ret));
+            else if(convertFrom.equals("java.lang.Byte"))
+                ret = makeUtilInvocation("fromJavaByte", List.of(ret));
+            else if(convertFrom.equals("java.lang.Short"))
+                ret = makeUtilInvocation("fromJavaShort", List.of(ret));
+            else if(convertFrom.equals("java.lang.Integer"))
+                ret = makeUtilInvocation("fromJavaInteger", List.of(ret));
+            else if(convertFrom.equals("java.lang.Long"))
+                ret = makeUtilInvocation("fromJavaLong", List.of(ret));
+            else if(convertFrom.equals("java.lang.Float"))
+                ret = makeUtilInvocation("fromJavaFloat", List.of(ret));
+            else if(convertFrom.equals("java.lang.Double"))
+                ret = makeUtilInvocation("fromJavaDouble", List.of(ret));
+            else if(convertFrom.equals("java.lang.Character"))
+                ret = makeUtilInvocation("fromJavaCharacter", List.of(ret));
+        }
+        if(convertTo != null){
+            if(needsBoxing && convertTo.equals("java.lang.Boolean"))
+                ret = makeUtilInvocation("toJavaBoolean", List.of(ret));
+            else if(needsBoxing && convertTo.equals("java.lang.Byte"))
+                ret = makeUtilInvocation("toJavaByte", List.of(ret));
+            else if(convertTo.equals("byte"))
+                ret = make().TypeCast(syms().byteType, ret);
+            else if(needsBoxing && convertTo.equals("java.lang.Short"))
+                ret = makeUtilInvocation("toJavaShort", List.of(ret));
+            else if(convertTo.equals("short"))
+                ret = make().TypeCast(syms().shortType, ret);
+            else if(needsBoxing && convertTo.equals("java.lang.Integer"))
+                ret = makeUtilInvocation("toJavaInteger", List.of(ret));
+            else if(convertTo.equals("int"))
+                ret = make().TypeCast(syms().intType, ret);
+            else if(needsBoxing && convertTo.equals("java.lang.Long"))
+                ret = makeUtilInvocation("toJavaLong", List.of(ret));
+            else if(needsBoxing && convertTo.equals("java.lang.Float"))
+                ret = makeUtilInvocation("toJavaFloat", List.of(ret));
+            else if(convertTo.equals("float"))
+                ret = make().TypeCast(syms().floatType, ret);
+            else if(needsBoxing && convertTo.equals("java.lang.Double"))
+                ret = makeUtilInvocation("toJavaDouble", List.of(ret));
+            else if(needsBoxing && convertTo.equals("java.lang.Character"))
+                ret = makeUtilInvocation("toJavaCharacter", List.of(ret));
+            else if(convertTo.equals("char"))
+                ret = make().TypeCast(syms().charType, ret);
+        }
+        return ret;
     }
 
     private boolean isRawCastNecessaryForVariance(ProducedType expectedType, ProducedType exprType) {
