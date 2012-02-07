@@ -33,17 +33,27 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     protected final CeylonTransformer gen;
     private final ListBuffer<JCTree> defs;
     
+    private final ToplevelAttributesDefinitionBuilder topattrBuilder;
     private final ClassDefinitionBuilder classBuilder;
     
     public CeylonVisitor(CeylonTransformer ceylonTransformer) {
         this.gen = ceylonTransformer;
         this.defs = new ListBuffer<JCTree>();
+        this.topattrBuilder = null;
+        this.classBuilder = null;
+    }
+
+    public CeylonVisitor(CeylonTransformer ceylonTransformer, ToplevelAttributesDefinitionBuilder topattrBuilder) {
+        this.gen = ceylonTransformer;
+        this.defs = new ListBuffer<JCTree>();
+        this.topattrBuilder = topattrBuilder;
         this.classBuilder = null;
     }
 
     public CeylonVisitor(CeylonTransformer ceylonTransformer, ClassDefinitionBuilder classBuilder) {
         this.gen = ceylonTransformer;
         this.defs = new ListBuffer<JCTree>();
+        this.topattrBuilder = null;
         this.classBuilder = classBuilder;
     }
     
@@ -114,6 +124,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         boolean annots = gen.checkCompilerAnnotations(decl);
         if (Decl.withinClass(decl)) {
             classBuilder.defs(gen.classGen().transform(decl));
+        } else if (Decl.isToplevel(decl)) {
+            topattrBuilder.add(decl);
         } else {
             appendList(gen.transform(decl));
         }
@@ -126,6 +138,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         boolean annots = gen.checkCompilerAnnotations(decl);
         if (Decl.withinClass(decl)) {
             classBuilder.defs(gen.classGen().transform(decl));
+        } else if (Decl.isToplevel(decl)) {
+            topattrBuilder.add(decl);
+        } else {
+            appendList(gen.transform(decl));
         }
         gen.resetCompilerAnnotations(annots);
     }

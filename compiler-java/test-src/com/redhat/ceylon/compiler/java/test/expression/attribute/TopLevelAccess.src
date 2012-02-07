@@ -26,6 +26,23 @@ public final class b2 {
     private b2() {
     }
 }
+class TopLevelAccess {
+    
+    private final void m() {
+        final boolean bb1 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b1.getB1();
+        final boolean bb2 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b2.getB2();
+        final boolean bb3 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b3.getB3();
+        final boolean bb4 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b4.getB4();
+    }
+    
+    TopLevelAccess() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAccess();
+    }
+}
 final class b3 {
     
     static boolean getB3() {
@@ -42,22 +59,5 @@ public final class b4 {
     }
     
     private b4() {
-    }
-}
-class TopLevelAccess {
-    
-    private final void m() {
-        final boolean bb1 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b1.getB1();
-        final boolean bb2 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b2.getB2();
-        final boolean bb3 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b3.getB3();
-        final boolean bb4 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b4.getB4();
-    }
-    
-    TopLevelAccess() {
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAccess();
     }
 }

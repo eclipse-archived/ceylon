@@ -19,17 +19,17 @@ class InnerAttributeGetter {
         }
         final m m = new m();
         
-        final class innerGetter {
+        final class innerGetter$getter {
             
             long getInnerGetter() {
                 return m.getM();
             }
             
-            private innerGetter() {
+            private innerGetter$getter() {
             }
         }
-        final innerGetter innerGetter = new innerGetter();
-        final long n = innerGetter.getInnerGetter();
+        final innerGetter$getter innerGetter$getter = new innerGetter$getter();
+        final long n = innerGetter$getter.getInnerGetter();
     }
     
     InnerAttributeGetter() {

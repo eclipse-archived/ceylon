@@ -9,22 +9,22 @@ class MethodLocalAccess {
     
     private final long m2() {
         
-        final class n2 {
+        final class n2$getter {
             
             long getN2() {
                 return 1L;
             }
             
-            private n2() {
+            private n2$getter() {
             }
         }
-        final n2 n2 = new n2();
-        return n2.getN2();
+        final n2$getter n2$getter = new n2$getter();
+        return n2$getter.getN2();
     }
     
     private final long m3() {
         
-        final class selfref {
+        final class selfref$getter {
             
             long getSelfref() {
                 if (getSelfref() > 0L) {
@@ -34,11 +34,11 @@ class MethodLocalAccess {
                 }
             }
             
-            private selfref() {
+            private selfref$getter() {
             }
         }
-        final selfref selfref = new selfref();
-        return selfref.getSelfref();
+        final selfref$getter selfref$getter = new selfref$getter();
+        return selfref$getter.getSelfref();
     }
     
     MethodLocalAccess() {

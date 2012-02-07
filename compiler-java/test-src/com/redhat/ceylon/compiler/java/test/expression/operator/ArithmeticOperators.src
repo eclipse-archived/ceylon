@@ -57,45 +57,6 @@ final class toplevelI1 {
     private toplevelI1() {
     }
 }
-final class toplevelGetterN1 {
-    
-    static long getToplevelGetterN1() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.getToplevelN1();
-    }
-    
-    static void setToplevelGetterN1(long toplevelGetterN1) {
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.setToplevelN1(toplevelGetterN1);
-    }
-    
-    private toplevelGetterN1() {
-    }
-}
-final class toplevelGetterN2 {
-    
-    static long getToplevelGetterN2() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2.getToplevelN2();
-    }
-    
-    static void setToplevelGetterN2(long toplevelGetterN2) {
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2.setToplevelN2(toplevelGetterN2);
-    }
-    
-    private toplevelGetterN2() {
-    }
-}
-final class toplevelGetterI1 {
-    
-    static long getToplevelGetterI1() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1.getToplevelI1();
-    }
-    
-    static void setToplevelGetterI1(long toplevelGetterI1) {
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1.setToplevelI1(toplevelGetterI1);
-    }
-    
-    private toplevelGetterI1() {
-    }
-}
 class ArithmeticOperators {
     private final com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initN;
     private final com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initI;
@@ -354,66 +315,90 @@ class ArithmeticOperators {
         }
         final i1 i1 = new i1();
         
-        final class getterN1 {
+        final class getterN1$getter {
             
             long getGetterN1() {
                 return n1.getN1();
             }
             
+            private getterN1$getter() {
+            }
+        }
+        final getterN1$getter getterN1$getter = new getterN1$getter();
+        
+        final class getterN1$setter {
+            private long value;
+            
             void setGetterN1(long getterN1) {
                 n1.setN1(getterN1);
             }
             
-            private getterN1() {
+            private getterN1$setter() {
             }
         }
-        final getterN1 getterN1 = new getterN1();
+        final getterN1$setter getterN1$setter = new getterN1$setter();
         
-        final class getterN2 {
+        final class getterN2$getter {
             
             long getGetterN2() {
                 return n2.getN2();
             }
             
+            private getterN2$getter() {
+            }
+        }
+        final getterN2$getter getterN2$getter = new getterN2$getter();
+        
+        final class getterN2$setter {
+            private long value;
+            
             void setGetterN2(long getterN2) {
                 n2.setN2(getterN2);
             }
             
-            private getterN2() {
+            private getterN2$setter() {
             }
         }
-        final getterN2 getterN2 = new getterN2();
+        final getterN2$setter getterN2$setter = new getterN2$setter();
         
-        final class getterI1 {
+        final class getterI1$getter {
             
             long getGetterI1() {
                 return i1.getI1();
             }
             
+            private getterI1$getter() {
+            }
+        }
+        final getterI1$getter getterI1$getter = new getterI1$getter();
+        
+        final class getterI1$setter {
+            private long value;
+            
             void setGetterI1(long getterI1) {
                 i1.setI1(getterI1);
             }
             
-            private getterI1() {
+            private getterI1$setter() {
             }
         }
-        final getterI1 getterI1 = new getterI1();
-        (let long $ceylontmpop64 = getterN1.getGetterN1() in getterN1.setGetterN1($ceylontmpop64 + 1); $ceylontmpop64);
-        (let long $ceylontmpop65 = getterN1.getGetterN1() + 1 in getterN1.setGetterN1($ceylontmpop65); $ceylontmpop65);
-        (let long $ceylontmpop66 = getterN1.getGetterN1() in getterN1.setGetterN1($ceylontmpop66 - 1); $ceylontmpop66);
-        (let long $ceylontmpop67 = getterN1.getGetterN1() - 1 in getterN1.setGetterN1($ceylontmpop67); $ceylontmpop67);
-        getterI1.setGetterI1(getterN1.getGetterN1());
-        getterI1.setGetterI1(-getterN1.getGetterN1());
-        getterN1.setGetterN1(getterN1.getGetterN1() + getterN2.getGetterN2());
-        getterI1.setGetterI1(getterN1.getGetterN1() - getterN2.getGetterN2());
-        getterN1.setGetterN1(getterN1.getGetterN1() * getterN2.getGetterN2());
-        getterN1.setGetterN1(getterN1.getGetterN1() / getterN2.getGetterN2());
-        getterN1.setGetterN1(getterN1.getGetterN1() % getterN2.getGetterN2());
-        getterN1.setGetterN1(.ceylon.language.Integer.instance(getterN1.getGetterN1()).power(.ceylon.language.Integer.instance(getterN2.getGetterN2())).longValue());
-        (let long $ceylontmpop68 = getterN1.getGetterN1() + getterN2.getGetterN2() in getterN1.setGetterN1($ceylontmpop68); $ceylontmpop68);
-        (let long $ceylontmpop69 = getterN1.getGetterN1() * getterN1.getGetterN1() in getterN1.setGetterN1($ceylontmpop69); $ceylontmpop69);
-        (let long $ceylontmpop70 = getterN1.getGetterN1() / getterN2.getGetterN2() in getterN1.setGetterN1($ceylontmpop70); $ceylontmpop70);
-        (let long $ceylontmpop71 = getterN1.getGetterN1() % getterN2.getGetterN2() in getterN1.setGetterN1($ceylontmpop71); $ceylontmpop71);
+        final getterI1$setter getterI1$setter = new getterI1$setter();
+        (let long $ceylontmpop64 = getterN1$getter.getGetterN1() in getterN1$setter.setGetterN1($ceylontmpop64 + 1); $ceylontmpop64);
+        (let long $ceylontmpop65 = getterN1$getter.getGetterN1() + 1 in getterN1$setter.setGetterN1($ceylontmpop65); $ceylontmpop65);
+        (let long $ceylontmpop66 = getterN1$getter.getGetterN1() in getterN1$setter.setGetterN1($ceylontmpop66 - 1); $ceylontmpop66);
+        (let long $ceylontmpop67 = getterN1$getter.getGetterN1() - 1 in getterN1$setter.setGetterN1($ceylontmpop67); $ceylontmpop67);
+        getterI1$setter.setGetterI1(getterN1$getter.getGetterN1());
+        getterI1$setter.setGetterI1(-getterN1$getter.getGetterN1());
+        getterN1$setter.setGetterN1(getterN1$getter.getGetterN1() + getterN2$getter.getGetterN2());
+        getterI1$setter.setGetterI1(getterN1$getter.getGetterN1() - getterN2$getter.getGetterN2());
+        getterN1$setter.setGetterN1(getterN1$getter.getGetterN1() * getterN2$getter.getGetterN2());
+        getterN1$setter.setGetterN1(getterN1$getter.getGetterN1() / getterN2$getter.getGetterN2());
+        getterN1$setter.setGetterN1(getterN1$getter.getGetterN1() % getterN2$getter.getGetterN2());
+        getterN1$setter.setGetterN1(.ceylon.language.Integer.instance(getterN1$getter.getGetterN1()).power(.ceylon.language.Integer.instance(getterN2$getter.getGetterN2())).longValue());
+        (let long $ceylontmpop68 = getterN1$getter.getGetterN1() + getterN2$getter.getGetterN2() in getterN1$setter.setGetterN1($ceylontmpop68); $ceylontmpop68);
+        (let long $ceylontmpop69 = getterN1$getter.getGetterN1() * getterN1$getter.getGetterN1() in getterN1$setter.setGetterN1($ceylontmpop69); $ceylontmpop69);
+        (let long $ceylontmpop70 = getterN1$getter.getGetterN1() / getterN2$getter.getGetterN2() in getterN1$setter.setGetterN1($ceylontmpop70); $ceylontmpop70);
+        (let long $ceylontmpop71 = getterN1$getter.getGetterN1() % getterN2$getter.getGetterN2() in getterN1$setter.setGetterN1($ceylontmpop71); $ceylontmpop71);
     }
     
     private final void boxedLocals() {
@@ -485,5 +470,44 @@ class ArithmeticOperators {
         this.boxedN1 = initN;
         this.boxedN2 = initN;
         this.boxedI1 = initI;
+    }
+}
+final class toplevelGetterN1 {
+    
+    static long getToplevelGetterN1() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.getToplevelN1();
+    }
+    
+    static void setToplevelGetterN1(long toplevelGetterN1) {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.setToplevelN1(toplevelGetterN1);
+    }
+    
+    private toplevelGetterN1() {
+    }
+}
+final class toplevelGetterN2 {
+    
+    static long getToplevelGetterN2() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2.getToplevelN2();
+    }
+    
+    static void setToplevelGetterN2(long toplevelGetterN2) {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2.setToplevelN2(toplevelGetterN2);
+    }
+    
+    private toplevelGetterN2() {
+    }
+}
+final class toplevelGetterI1 {
+    
+    static long getToplevelGetterI1() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1.getToplevelI1();
+    }
+    
+    static void setToplevelGetterI1(long toplevelGetterI1) {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1.setToplevelI1(toplevelGetterI1);
+    }
+    
+    private toplevelGetterI1() {
     }
 }
