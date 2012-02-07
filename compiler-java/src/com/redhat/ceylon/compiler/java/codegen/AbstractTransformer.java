@@ -1124,7 +1124,8 @@ public abstract class AbstractTransformer implements Transformation {
         } else if (isCeylonString(targetType)) {
             expr = unboxString(expr);
         } else if (isCeylonCharacter(targetType)) {
-            expr = unboxCharacter(expr);
+            boolean isJavaCharacter = targetType.getUnderlyingType() != null;
+            expr = unboxCharacter(expr, isJavaCharacter);
         } else if (isCeylonBoolean(targetType)) {
             expr = unboxBoolean(expr);
         } else if (isCeylonArray(targetType)) {
@@ -1190,8 +1191,8 @@ public abstract class AbstractTransformer implements Transformation {
         return makeUnboxType(value, "toString");
     }
     
-    private JCTree.JCMethodInvocation unboxCharacter(JCExpression value) {
-        return makeUnboxType(value, "intValue");
+    private JCTree.JCMethodInvocation unboxCharacter(JCExpression value, boolean isJava) {
+        return makeUnboxType(value, isJava ? "charValue" : "intValue");
     }
     
     private JCTree.JCMethodInvocation unboxBoolean(JCExpression value) {
