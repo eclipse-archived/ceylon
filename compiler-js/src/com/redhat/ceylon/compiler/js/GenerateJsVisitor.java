@@ -1860,6 +1860,7 @@ public class GenerateJsVisitor extends Visitor
        } else if (condition instanceof IsCondition) {
            variable = ((IsCondition) condition).getVariable();
        } else {
+           condition.addUnexpectedError("No support for conditions of type " + condition.getClass().getSimpleName());
            return;
        }
 	   String varName = variable.getDeclarationModel().getName();
@@ -2024,7 +2025,7 @@ public class GenerateJsVisitor extends Visitor
             out("'");
             out(((SimpleType) type).getDeclarationModel().getQualifiedNameString());
             out("')");
-            if (term != null && !term.getTypeModel().getTypeArguments().isEmpty()) {
+            if (term != null && term.getTypeModel() != null && !term.getTypeModel().getTypeArguments().isEmpty()) {
                 out("/* REIFIED GENERICS SOON!!! ");
                 out(" term " + term.getTypeModel());
                 out(" model " + term.getTypeModel().getTypeArguments());
@@ -2238,8 +2239,8 @@ public class GenerateJsVisitor extends Visitor
             generateIsOfType(null, expvar, ((IsCase)item).getType(), true);
             out("===");
             clAlias(); out(".getTrue()");
-        } else if (item instanceof SatisfiesCase) {
-            out("true");
+        /*} else if (item instanceof SatisfiesCase) {
+            out("true");*/
         } else if (item instanceof MatchCase){
             boolean first = true;
             for (Expression exp : ((MatchCase)item).getExpressionList().getExpressions()) {
@@ -2252,10 +2253,9 @@ public class GenerateJsVisitor extends Visitor
                 first = false;
             }
         } else {
-            out("WARNING!!! JS COMPILER OUT OF WHACK WITH TYPECHECKER");
+            cc.addUnexpectedError("support for case of type " + cc.getClass().getSimpleName() + " not yet implemented");
         }
         out(") ");
-        //TODO code inside block makes wrong refs sometimes, need to fix that (similar to what happened with if (is)
         cc.getBlock().visit(this);
     }
 
