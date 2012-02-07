@@ -35,9 +35,11 @@ public class NodeTest {
                     count = stream.read(buf);
                 }
             } catch (IOException ex) {
-                sb.append("\n\n\nBIG PILE OF FAIL: ");
-                sb.append(ex.getClass().getName());
-                sb.append(", ").append(ex.getMessage());
+                if (ex.getMessage() == null || ex.getMessage().indexOf("tream closed") < 0) {
+                    sb.append("\n\n\nBIG PILE OF FAIL: ");
+                    sb.append(ex.getClass().getName());
+                    sb.append(", ").append(ex.getMessage());
+                }
             }
         }
         public String getResult() {
