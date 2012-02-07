@@ -103,7 +103,7 @@ class Bug260 implements com.redhat.ceylon.compiler.java.test.issues.Bug260_Inter
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Bottom")
     public final com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2 m2() {
-        return .ceylon.language.bottom.getBottom();
+        return (com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2).ceylon.language.bottom.getBottom();
     }
     private final com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2 attr3;
     
