@@ -1576,7 +1576,7 @@ assignmentExpression returns [Term term]
 
 assignmentOperator returns [AssignmentOp operator]
     : ASSIGN_OP { $operator = new AssignOp($ASSIGN_OP); }
-    //| '.=' 
+    //| APPLY_OP 
     | ADD_ASSIGN_OP { $operator = new AddAssignOp($ADD_ASSIGN_OP); }
     | SUBTRACT_ASSIGN_OP { $operator = new SubtractAssignOp($SUBTRACT_ASSIGN_OP); }
     | MULTIPLY_ASSIGN_OP { $operator = new MultiplyAssignOp($MULTIPLY_ASSIGN_OP); }
@@ -3153,9 +3153,9 @@ POWER_OP
     :    '**'
     ;
 
-APPLY_OP
+/*APPLY_OP
     :   '.='
-    ;
+    ;*/
 
 ADD_ASSIGN_OP
     :   '+='

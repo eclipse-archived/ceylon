@@ -108,8 +108,12 @@ public class Util {
                     }
                     else {
                         for (int i=0; i<params.size(); i++) {
-                            TypeDeclaration paramType = params.get(i).getTypeDeclaration();
-                            TypeDeclaration sigType = signature.get(i).getDeclaration();
+                            //ignore optionality for resolving overloads, since
+                            //all all Java method params are treated as optional
+                            TypeDeclaration paramType = definiteTypeDec(d.getUnit(), 
+                                    params.get(i).getType());
+                            TypeDeclaration sigType = definiteTypeDec(d.getUnit(), 
+                                    signature.get(i));
                             if (sigType==null || paramType==null) return false;
                             if (sigType instanceof UnknownType || paramType instanceof UnknownType) return false;
                             if (!erase(sigType).inherits(erase(paramType))) {
@@ -128,6 +132,10 @@ public class Util {
             return false;
         }
     }
+
+    private static TypeDeclaration definiteTypeDec(Unit unit, ProducedType pt) {
+        return unit.getDefiniteType(pt).getDeclaration();
+    }
     
     static boolean isNamed(String name, Declaration d) {
         String dname = d.getName();
@@ -140,8 +148,17 @@ public class Util {
                 return paramType.getExtendedTypeDeclaration();
             }
             else {
+                //TODO: is this actually correct? What is Java's
+                //      rule here?
                 return paramType.getSatisfiedTypeDeclarations().get(0);
             }
+        }
+        else if (paramType instanceof UnionType || 
+                paramType instanceof IntersectionType) {
+            //TODO: this is pretty sucky, cos in theory a
+            //      union or intersection might be assignable
+            //      to the parameter type with a typecast
+            return paramType.getUnit().getObjectDeclaration();
         }
         else {
             return paramType;

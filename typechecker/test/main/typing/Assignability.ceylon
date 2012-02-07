@@ -192,12 +192,14 @@ class Assignability() {
         @error print(something.name);
     }
 
-    if (is Y y = something) {
+    @error if (is Y y = something) {
         print(y.name);
     }
     
-    if (X() is Y) {}
-    if (is Y x = X()) {}
+    @error if (is Y X()) {}
+    @error if (is Object X()) {}
+    @error if (is Y x = X()) {}
+    @error if (is Object x = X()) {}
     
     X[]? seq = null;
     

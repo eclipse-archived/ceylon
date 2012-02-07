@@ -100,11 +100,14 @@ class Operators() {
     @error value x71 = {"hello"} nonempty;
     @error value x71n = nonempty {"hello"};
     
-    @type["Boolean"] value x31 = 1 is Integer;
-    @type["Boolean"] value x31n = is Integer 1;
+    Object one = 1;
+    @type["Boolean"] value x31 = one is Integer;
+    @type["Boolean"] value x31n = is Integer one;
+    @error value x31e = is Integer 1;
     
-    @type["Boolean"] value x32 = nothing is Integer;
-    @type["Boolean"] value x32n = is Integer nothing;
+    @type["Boolean"] value x32 = nothing is X;
+    @type["Boolean"] value x32n = is X nothing;    
+    @error value x32e = is Integer nothing;
     
     @type["Boolean"] value x33 = "hello" in "hello world";
     
@@ -137,6 +140,10 @@ class Operators() {
     @error value x43 = sequence["hello"];
     @error value x44 = sequence["hello"...];
     @error value x45 = sequence[1.."hello"];
+    
+    String? maybeString = null;
+    @type["Callable<Nothing|Iterable<String>,Nothing|Iterable<Character>,Boolean>"] value mss = maybeString?.split;
+    @type["Callable<Sequence<Iterable<String>>,Nothing|Iterable<Character>,Boolean>"] value hws = {"hello", "world"}[].split;
     
     @type["Empty|Sequence<String>"] value e45 = emp[].uppercased;
     @type["Sequence<Empty|Sequence<Character>>"] value x46 = {"hello", "world"}[].characters;

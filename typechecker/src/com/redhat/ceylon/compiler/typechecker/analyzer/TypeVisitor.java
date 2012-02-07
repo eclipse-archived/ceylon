@@ -226,7 +226,7 @@ public class TypeVisitor extends Visitor {
                 member.getIdentifier().addError("imported declaration is not shared: " +
                         name + " of " + d.getName(), 400);
             }
-            if (!d.isStaticallyImportable()) {
+            if (!m.isStaticallyImportable()) {
                 i.setTypeDeclaration(d);
                 if (alias==null) {
                     member.addError("does not specify an alias");

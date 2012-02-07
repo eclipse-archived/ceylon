@@ -273,18 +273,18 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             defaultTypeToVoid(v);
+            ProducedType it = knownType==null ? type : 
+                    intersectionType(type, knownType, that.getUnit());
+            if (it.getDeclaration() instanceof BottomType) {
+                that.addError("tests assignability to Bottom type: intersection of " +
+                        knownType.getProducedTypeName() + " and " + 
+                        type.getProducedTypeName() +
+                        " is empty");
+            }
             if (v.getType() instanceof Tree.SyntheticVariable) {
                 //when we're reusing the original name, we narrow to the
                 //intersection of the outer type and the type specified
                 //in the condition
-                ProducedType it = knownType==null ? type : 
-                        intersectionType(type, knownType, that.getUnit());
-                if (it.getDeclaration() instanceof BottomType) {
-                    that.addError("narrows to Bottom type: intersection of " +
-                            knownType.getProducedTypeName() + " and " + 
-                            type.getProducedTypeName() +
-                            " is empty");
-                }
                 v.getType().setTypeModel(it);
                 v.getDeclarationModel().setType(it);
             }
@@ -2825,8 +2825,8 @@ public class ExpressionVisitor extends Visitor {
             !((Generic) member).getTypeParameters().isEmpty();
     }
     
-    private static boolean acceptsTypeArguments(ProducedType receiver, Declaration member, List<ProducedType> typeArguments, 
-            Tree.TypeArguments tal, Node parent) {
+    private static boolean acceptsTypeArguments(ProducedType receiver, Declaration member, 
+            List<ProducedType> typeArguments, Tree.TypeArguments tal, Node parent) {
         if (member==null) return false;
         if (isGeneric(member)) {
             List<TypeParameter> params = ((Generic) member).getTypeParameters();
@@ -2857,33 +2857,23 @@ public class ExpressionVisitor extends Visitor {
                             }
                         }
                     }
-                    //TODO: there are no tests for this stuff
-                    //      and it could easily be broken!
-                    List<ProducedType> caseTypes = param.getCaseTypes();
-                    if (caseTypes!=null) {
-                        //TODO: what if the arg type has the exact same 
-                        //      cases as the param type?
-                        boolean found = false;
-                        for (ProducedType ct: caseTypes) {
-                            ProducedType cts = ct.getProducedType(receiver, member, typeArguments);
-                            if (argType.isSubtypeOf(cts)) found = true;
+                    boolean asec = argumentSatisfiesEnumeratedConstraint(receiver, member, 
+                            typeArguments, argType, param);
+                    if (!asec) {
+                        if (tal instanceof Tree.InferredTypeArguments) {
+                            parent.addError("inferred type argument " + argType.getProducedTypeName()
+                                    + " to type parameter " + param.getName()
+                                    + " of declaration " + member.getName()
+                                    + " not one of the enumerated cases");
                         }
-                        if (!found) {
-                            if (tal instanceof Tree.InferredTypeArguments) {
-                                parent.addError("inferred type argument " + argType.getProducedTypeName()
-                                        + " to type parameter " + param.getName()
-                                        + " of declaration " + member.getName()
-                                        + " not one of the listed cases");
-                            }
-                            else {
-                                ( (Tree.TypeArgumentList) tal ).getTypes()
-                                        .get(i).addError("type parameter " + param.getName() 
-                                        + " of declaration " + member.getName()
-                                        + " has argument " + argType.getProducedTypeName() 
-                                        + " not one of the listed cases");
-                            }
-                            return false;
+                        else {
+                            ( (Tree.TypeArgumentList) tal ).getTypes()
+                            .get(i).addError("type parameter " + param.getName() 
+                                    + " of declaration " + member.getName()
+                                    + " has argument " + argType.getProducedTypeName() 
+                                    + " not one of the enumerated cases");
                         }
+                        return false;
                     }
                 }
                 return true;
@@ -2906,6 +2896,52 @@ public class ExpressionVisitor extends Visitor {
             }
             return empty;
         }
+    }
+
+    private static boolean argumentSatisfiesEnumeratedConstraint(ProducedType receiver, 
+            Declaration member, List<ProducedType> typeArguments, ProducedType argType,
+            TypeParameter param) {
+        
+        List<ProducedType> caseTypes = param.getCaseTypes();
+        if (caseTypes==null) {
+            //no enumerated constraint
+            return true;
+        }
+        
+        //if the type argument is a subtype of one of the cases
+        //of the type parameter then the constraint is satisfied
+        for (ProducedType ct: caseTypes) {
+            ProducedType cts = ct.getProducedType(receiver, member, typeArguments);
+            if (argType.isSubtypeOf(cts)) {
+                return true;
+            }
+        }
+
+        //if the type argument is itself a type parameter with
+        //an enumerated constraint, and every enumerated case
+        //is a subtype of one of the cases of the type parameter,
+        //then the constraint is satisfied
+        if (argType.getDeclaration() instanceof TypeParameter) {
+            List<ProducedType> argCaseTypes = argType.getDeclaration().getCaseTypes();
+            if (argCaseTypes!=null) {
+                for (ProducedType act: argCaseTypes) {
+                    boolean foundCase = false;
+                    for (ProducedType ct: caseTypes) {
+                        ProducedType cts = ct.getProducedType(receiver, member, typeArguments);
+                        if (act.isSubtypeOf(cts)) {
+                            foundCase = true;
+                            break;
+                        }
+                    }
+                    if (!foundCase) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override 

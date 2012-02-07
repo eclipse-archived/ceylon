@@ -316,4 +316,7 @@ public class ModuleManager {
     public void prepareForTypeChecking() {
         // to be overridden by subclasses
     }
+
+    public void addImplicitImports() {
+    }
 }

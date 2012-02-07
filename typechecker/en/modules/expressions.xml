@@ -2353,7 +2353,7 @@ createItemMethod.intercept()
             </row>
     
             <row>
-                <entry>Member invocation and lookup, span,
+                <entry>Member invocation and selection, index, span,
                 postfix increment, postfix decrement:</entry>
                 <entry>
                 <literal>.</literal>,
@@ -2660,42 +2660,6 @@ createItemMethod.intercept()
     
     <programlisting>X t = x; Y result=y;</programlisting>
     
-    <!--  
-    <para>means the same value produced by the Ceylon library method 
-    <literal>when()</literal>:</para>
-    
-    <programlisting>when (b) then (x) else (y)</programlisting>
-    -->
-    
-    <!--
-    <para>Second,</para>
-    
-    <programlisting>if (exists o) then x else y   //pseudocode</programlisting>
-    
-    <para>means the same value produced by the Ceylon library method 
-    <literal>with()</literal>:</para>
-    
-    <programlisting>with (o) then (x) else (y)</programlisting>
-    -->
-    
-    <!--
-    <para>Third,</para>
-    
-    <programlisting>for (X x in c) e      //pseudocode</programlisting>
-    
-    <para>means the value of <literal>result</literal> after execution of the
-    following:</para>
-    
-    <programlisting>OpenList&lt;E&gt; result = none; for (X x in c) { result.add(e); }</programlisting>
-    -->
-    
-    <!--
-    <para>means the same value produced by the Ceylon library method 
-    <literal>from()</literal>:</para>
-    
-    <programlisting>from (X x in c) select (e)</programlisting>
-    -->
-    
     <para>The tables define semantics only. The compiler is permitted to emit equivalent 
     bytecode that produces the same value as the pseudo-code that defines the operator, 
     without actually executing any invocation, for the following operators:</para>
@@ -2769,8 +2733,7 @@ createItemMethod.intercept()
             <entry></entry>
             <entry><literal>X</literal></entry>
             <entry><literal>Member &lt;X,T&gt;</literal></entry>
-            <entry><literal>Gettable&lt;T&gt;</literal> or
-            <literal>T</literal></entry>
+            <entry><literal>T</literal></entry>
         </row>
         
         <row>
@@ -2780,8 +2743,7 @@ createItemMethod.intercept()
             <entry></entry>
             <entry><literal>Callable &lt;T,P...&gt;</literal></entry>
             <entry><literal>P...</literal></entry>
-            <entry><literal>Gettable&lt;T&gt;</literal> or
-            <literal>T</literal></entry>
+            <entry><literal>T</literal></entry>
         </row>
                 
         <row><entry namest="first" nameend="last"><emphasis>Assignment</emphasis></entry></row>
@@ -2833,7 +2795,7 @@ createItemMethod.intercept()
     </tgroup>
     </table>
         
-        <comment><para>TODO: do we really need the <literal>$</literal> operator?</para></comment>
+        <comment><para>TODO: are we really going to add the <literal>.=</literal> operator?</para></comment>
         
         <!--
         <para>Member specification uses one of three different member specification operators:
@@ -3181,14 +3143,23 @@ createItemMethod.intercept()
         
         <row>
             <entry><literal>lhs?.member</literal></entry>
-            <entry>nullsafe member</entry>
+            <entry>nullsafe attribute</entry>
             <entry><literal>if (exists lhs) lhs.member else null</literal></entry>
             <entry><literal>X?</literal></entry>
-            <entry><literal>Member &lt;X,T&gt;</literal></entry>
+            <entry><literal>Attribute &lt;X,T&gt;</literal></entry>
             <entry><literal>T?</literal></entry>
         </row>
-
+        
         <row>
+            <entry><literal>lhs?.member</literal></entry>
+            <entry>nullsafe method</entry>
+            <entry></entry>
+            <entry><literal>X?</literal></entry>
+            <entry><literal>Method &lt;X,T,P...&gt;</literal></entry>
+            <entry><literal>Callable &lt;T?,P...&gt;</literal></entry>
+        </row>
+        
+        <!--row>
             <entry><literal>lhs(x,y,z)</literal> or 
             <literal>lhs{a=x;b=y;}</literal></entry>
             <entry>nullsafe invoke</entry>
@@ -3196,7 +3167,7 @@ createItemMethod.intercept()
             <entry><literal>Callable &lt;T,P...&gt;?</literal></entry>
             <entry><literal>P...</literal></entry>
             <entry><literal>T?</literal></entry>
-        </row>
+        </row-->
         
     </tbody>
     </tgroup>
@@ -3341,14 +3312,23 @@ createItemMethod.intercept()
 
         <row>
             <entry><literal>lhs[].member</literal></entry>
-            <entry>spread member</entry>
+            <entry>spread attribute</entry>
             <entry><literal>{ for (X x in lhs) x.member }</literal></entry>
             <entry><literal>X[]</literal></entry>
-            <entry><literal>Member&lt;X,T&gt;</literal></entry>
+            <entry><literal>Attribute&lt;X,T&gt;</literal></entry>
             <entry><literal>T[]</literal></entry>
         </row>
         
         <row>
+            <entry><literal>lhs[].member</literal></entry>
+            <entry>spread method</entry>
+            <entry></entry>
+            <entry><literal>X[]</literal></entry>
+            <entry><literal>Method &lt;X,T,P...&gt;</literal></entry>
+            <entry><literal>Callable &lt;T[],P...&gt;</literal></entry>
+        </row>
+        
+        <!--row>
             <entry><literal>lhs(x,y,z)</literal> or 
             <literal>lhs{a=x;b=y;}</literal></entry>
             <entry>spread invoke</entry>
@@ -3356,7 +3336,7 @@ createItemMethod.intercept()
             <entry><literal>Callable &lt;T,P...&gt;[]</literal></entry>
             <entry><literal>P...</literal></entry>
             <entry><literal>T[]</literal></entry>
-        </row>
+        </row-->
         <!--  
         
         <row><entry namest="first" nameend="last"><emphasis>Shift</emphasis></entry></row>
