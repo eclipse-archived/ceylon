@@ -1,9 +1,7 @@
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintStream;
 
 
 /** Runs the test() function in each js module that was generated.
