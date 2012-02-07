@@ -195,24 +195,8 @@ public class CeylonEnter extends Enter {
 
     // FIXME: this needs to be replaced when we deal with modules
     private void resolveModuleDependencies() {
-        Modules modules = ceylonContext.getModules();
-        
         ModuleValidator validator = new ModuleValidator(ceylonContext, phasedUnits);
         validator.verifyModuleDependencyTree();
-
-        // every module depends on java.lang implicitely
-        Module javaModule = modelLoader.findOrCreateModule("java.lang");
-        // make sure java.lang is available
-        modelLoader.findOrCreatePackage(javaModule, "java.lang");
-        for(Module m : modules.getListOfModules()){
-            if(!m.getName().equals("java")){
-                ModuleImport moduleImport = phasedUnits.getModuleManager().findImport(m, javaModule);
-                if (moduleImport == null) {
-                    moduleImport = new ModuleImport(javaModule, false, true);
-                    m.getImports().add(moduleImport);
-                }
-            }
-        }
     }
 
     public void addModuleToClassPath(Module module, boolean errorIfMissing) {

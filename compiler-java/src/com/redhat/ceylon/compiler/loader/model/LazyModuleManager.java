@@ -29,6 +29,7 @@ import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 
 /**
  * ModuleManager which can load artifacts from jars and cars.
@@ -74,5 +75,22 @@ public abstract class LazyModuleManager extends ModuleManager {
     @Override
     public Iterable<String> getSearchedArtifactExtensions() {
         return Arrays.asList("car", "jar");
+    }
+
+    @Override
+    public void addImplicitImports() {
+        // every module depends on java.lang implicitely
+        Module javaModule = getModelLoader().findOrCreateModule("java.lang");
+        // make sure java.lang is available
+        getModelLoader().findOrCreatePackage(javaModule, "java.lang");
+        for(Module m : getContext().getModules().getListOfModules()){
+            if(!m.getName().equals("java")){
+                ModuleImport moduleImport = findImport(m, javaModule);
+                if (moduleImport == null) {
+                    moduleImport = new ModuleImport(javaModule, false, true);
+                    m.getImports().add(moduleImport);
+                }
+            }
+        }
     }
 }
