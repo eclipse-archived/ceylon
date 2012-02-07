@@ -186,6 +186,9 @@ void testCollectionOperators() {
 
 class NullsafeTest() {
     shared Integer f() {return 1;}
+    shared Integer? f2(Integer? x()) {
+        return x();
+    }
 }
 
 Integer? nullsafeTest(Integer? f()) {
@@ -195,16 +198,16 @@ Integer? nullsafeTest(Integer? f()) {
 void testNullsafeOperators() {
     String[] seq = { "hi" };
     String s1 = seq[0]?"null";
-    assert(s1=="hi", "default");
+    assert(s1=="hi", "default 1");
     String s2 = seq[1]?"null";
-    assert(s2=="null", "default");
+    assert(s2=="null", "default 2");
     
     String? s3 = null;
     String? s4 = "test";
     String s5 = s3?.uppercased ? "null";
     String s6 = s4?.uppercased ? "null";
-    assert(s5=="null", "nullsafe member");
-    assert(s6=="TEST", "nullsafe member");
+    assert(s5=="null", "nullsafe member 1");
+    assert(s6=="TEST", "nullsafe member 2");
     NullsafeTest? obj = null;
     Integer? i = obj?.f();
     assert(!exists i, "nullsafe invoke");
@@ -214,6 +217,13 @@ void testNullsafeOperators() {
     assert(exists f3, "nullsafe method ref 2");
     obj?.f();
     assert(!exists obj?.f(), "nullsafe simple call");
+    NullsafeTest? getNullsafe() { return obj; }
+    Callable<Integer?> f4 = getNullsafe()?.f;
+    //Integer? result_f4 = f4();
+    //assert(!exists result_f4, "nullsafe invoke 2");
+    Integer? i2 = getNullsafe()?.f();
+    assert(!exists i2, "nullsafe invoke 3");
+    assert(!exists NullsafeTest().f2(getNullsafe()?.f), "nullsafe method ref 3");
 }
 
 void testIncDecOperators() {
