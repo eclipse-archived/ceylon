@@ -3,6 +3,10 @@ package com.redhat.ceylon.compiler.java.test.interop;
 public class TypesJava {
     boolean return_boolean() { return true; };
     Boolean return_Boolean() { return true; };
+    byte return_byte() { return 1; };
+    Byte return_Byte() { return 1; };
+    short return_short() { return 1; };
+    Short return_Short() { return 1; };
     int return_int() { return 1; };
     Integer return_Integer() { return 1; };
     long return_long() { return 1L; };
@@ -17,6 +21,8 @@ public class TypesJava {
     Object return_Object() { return ""; };
 
     void booleanParams(boolean p, java.lang.Boolean j, ceylon.language.Boolean c){}
+    void byteParams(byte p, java.lang.Byte j){}
+    void shortParams(short p, java.lang.Short j){}
     void intParams(int p, java.lang.Integer j){}
     void longParams(long p, java.lang.Long j, ceylon.language.Integer c){}
     void floatParams(float p, java.lang.Float j){}
