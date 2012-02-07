@@ -120,7 +120,7 @@ public class PhasedUnits {
         if (file.getName().endsWith(".ceylon")) {
 
             //System.out.println("Parsing " + file.getName());
-            CeylonLexer lexer = new CeylonLexer(new ANTLRInputStream(file.getInputStream()));
+            CeylonLexer lexer = new CeylonLexer(new ANTLRInputStream(file.getInputStream(), System.getProperty("file.encoding")));
             CommonTokenStream tokenStream = new CommonTokenStream(lexer);
             CeylonParser parser = new CeylonParser(tokenStream);
             Tree.CompilationUnit cu = parser.compilationUnit();
