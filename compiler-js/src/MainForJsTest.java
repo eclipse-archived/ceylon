@@ -79,6 +79,9 @@ public class MainForJsTest {
                 .addSrcDirectory(new File("../ceylon.language/test"))
                 .getTypeChecker();
         typeChecker.process();
+        if (typeChecker.getErrors() > 0) {
+            System.exit(1);
+        }
         new JsModuleCompiler(typeChecker, output)
                 .optimize(opt)
                 .generate();

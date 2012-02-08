@@ -61,13 +61,13 @@
     </target>
 
     <target name="compiletest" depends="build">
-        <java classname="MainForJsTest" classpathref="test.run.classpath">
+        <java classname="MainForJsTest" classpathref="test.run.classpath" failonerror="true">
         	<sysproperty key="file.encoding" value="UTF-8" />
         </java>
     </target>
 
     <target name="compileopttest" depends="build">
-        <java classname="MainForJsTest" classpathref="test.run.classpath">
+        <java classname="MainForJsTest" classpathref="test.run.classpath" failonerror="true">
             <arg value="optimize" />
         	<sysproperty key="file.encoding" value="UTF-8" />
         </java>
