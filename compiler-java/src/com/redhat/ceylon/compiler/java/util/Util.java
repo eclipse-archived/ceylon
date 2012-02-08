@@ -44,6 +44,7 @@ import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
+import com.redhat.ceylon.compiler.loader.model.JavaMethod;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -76,6 +77,11 @@ public class Util {
         // since local methods have a $getter suffix and toplevel attribute class names are not mangled
         if(!method.isClassOrInterfaceMember())
             return name;
+        // do not quote method names if we have a refined constraint
+        Method refinedMethod = (Method) method.getRefinedDeclaration();
+        if(refinedMethod instanceof JavaMethod){
+            return ((JavaMethod)refinedMethod).getRealName();
+        }
         // get/is with at least one more letter, no parameter and non-void type
         if(((name.length() >= 4 && name.startsWith("get"))
              || name.length() >= 3 && name.startsWith("is"))

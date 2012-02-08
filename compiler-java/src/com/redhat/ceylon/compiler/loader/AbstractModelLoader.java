@@ -45,6 +45,7 @@ import com.redhat.ceylon.compiler.loader.mirror.TypeParameterMirror;
 import com.redhat.ceylon.compiler.loader.mirror.VariableMirror;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
+import com.redhat.ceylon.compiler.loader.model.JavaMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
 import com.redhat.ceylon.compiler.loader.model.LazyContainer;
 import com.redhat.ceylon.compiler.loader.model.LazyElement;
@@ -923,9 +924,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private Method addMethod(ClassOrInterface klass, MethodMirror methodMirror, boolean isCeylon, boolean isOverloaded) {
-        Method method = new Method();
+        JavaMethod method = new JavaMethod();
         
         method.setContainer(klass);
+        method.setRealName(methodMirror.getName());
         method.setName(Util.strip(methodMirror.getName()));
         method.setUnit(klass.getUnit());
         method.setOverloaded(isOverloaded);
