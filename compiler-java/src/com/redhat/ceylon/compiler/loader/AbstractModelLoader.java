@@ -1434,54 +1434,30 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             
         } else if (sameType(type, PRIM_BOOLEAN_TYPE)) {
             type = CEYLON_BOOLEAN_TYPE;
-        } else if (sameType(type, BOOLEAN_TYPE)) {
-            underlyingType = type.getQualifiedName();
-            type = CEYLON_BOOLEAN_TYPE;
             
         } else if (sameType(type, PRIM_BYTE_TYPE)) {
-            underlyingType = type.getQualifiedName();
-            type = CEYLON_INTEGER_TYPE;
-        } else if (sameType(type, BYTE_TYPE)) {
             underlyingType = type.getQualifiedName();
             type = CEYLON_INTEGER_TYPE;
             
         } else if (sameType(type, PRIM_SHORT_TYPE)) {
             underlyingType = type.getQualifiedName();
             type = CEYLON_INTEGER_TYPE;
-        } else if (sameType(type, SHORT_TYPE)) {
-            underlyingType = type.getQualifiedName();
-            type = CEYLON_INTEGER_TYPE;
             
         } else if (sameType(type, PRIM_INT_TYPE)) {
-            underlyingType = type.getQualifiedName();
-            type = CEYLON_INTEGER_TYPE;
-        } else if (sameType(type, INTEGER_TYPE)) {
             underlyingType = type.getQualifiedName();
             type = CEYLON_INTEGER_TYPE;
             
         } else if (sameType(type, PRIM_LONG_TYPE)) {
             type = CEYLON_INTEGER_TYPE;
-        } else if (sameType(type, LONG_TYPE)) {
-            underlyingType = type.getQualifiedName();
-            type = CEYLON_INTEGER_TYPE;
             
         } else if (sameType(type, PRIM_FLOAT_TYPE)) {
-            underlyingType = type.getQualifiedName();
-            type = CEYLON_FLOAT_TYPE;
-        } else if (sameType(type, FLOAT_TYPE)) {
             underlyingType = type.getQualifiedName();
             type = CEYLON_FLOAT_TYPE;
             
         } else if (sameType(type, PRIM_DOUBLE_TYPE)) {
             type = CEYLON_FLOAT_TYPE;
-        } else if (sameType(type, DOUBLE_TYPE)) {
-            underlyingType = type.getQualifiedName();
-            type = CEYLON_FLOAT_TYPE;
             
         } else if (sameType(type, PRIM_CHAR_TYPE)) {
-            underlyingType = type.getQualifiedName();
-            type = CEYLON_CHARACTER_TYPE;
-        } else if (sameType(type, CHARACTER_TYPE)) {
             underlyingType = type.getQualifiedName();
             type = CEYLON_CHARACTER_TYPE;
             
