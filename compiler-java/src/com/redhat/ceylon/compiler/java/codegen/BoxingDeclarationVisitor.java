@@ -28,6 +28,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -89,15 +90,19 @@ public class BoxingDeclarationVisitor extends Visitor {
     }
     
     private void setBoxingState(TypedDeclaration declaration, TypedDeclaration refinedDeclaration) {
-        if(declaration.getType() == null){
+        ProducedType type = declaration.getType();
+        if(type == null){
             // an error must have already been reported
             return;
         }
+        // inherit underlying type constraints
+        if(refinedDeclaration != declaration && type.getUnderlyingType() == null)
+            type.setUnderlyingType(refinedDeclaration.getType().getUnderlyingType());
         // abort if our boxing state has already been set
         if(declaration.getUnboxed() != null)
             return;
-        if((transformer.isCeylonBasicType(declaration.getType()) 
-            || transformer.isCeylonArray(declaration.getType()))
+        if((transformer.isCeylonBasicType(type) 
+            || transformer.isCeylonArray(type))
            && !(refinedDeclaration.getTypeDeclaration() instanceof TypeParameter)){
             // propagate to decl if needed
             if(refinedDeclaration != declaration){
