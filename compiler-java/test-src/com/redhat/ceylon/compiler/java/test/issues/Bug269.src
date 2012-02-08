@@ -7,16 +7,16 @@ class Bug269 {
     public final .java.lang.String toString() {
         return string;
     }
-    private final long hash;
+    private final int hash;
     
     @.java.lang.Override
     public final int hashCode() {
-        return (int)hash;
+        return hash;
     }
     
     Bug269() {
         this.string = "";
-        this.hash = 0L;
+        this.hash = (int)0L;
     }
     
     public static void main(.java.lang.String[] args) {

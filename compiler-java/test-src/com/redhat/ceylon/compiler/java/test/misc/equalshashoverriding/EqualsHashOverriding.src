@@ -19,7 +19,7 @@ class EqualsHashOverriding {
     
     @.java.lang.Override
     public final int hashCode() {
-        return (int).ceylon.language.String.instance(s).hashCode();
+        return .ceylon.language.String.instance(s).hashCode();
     }
     
     EqualsHashOverriding(.java.lang.String s) {
@@ -27,26 +27,26 @@ class EqualsHashOverriding {
     }
 }
 class EqualsHashOverriding2 {
-    private final long hash;
+    private final int hash;
     
     @.java.lang.Override
     public final int hashCode() {
-        return (int)hash;
+        return hash;
     }
     
     EqualsHashOverriding2(.java.lang.String s) {
-        this.hash = 0L;
+        this.hash = (int)0L;
     }
 }
 class EqualsHashOverriding3 {
-    private final long hash;
+    private final int hash;
     
     @.java.lang.Override
     public final int hashCode() {
-        return (int)hash;
+        return hash;
     }
     
     EqualsHashOverriding3(.java.lang.String s) {
-        hash = 0L;
+        hash = (int)0L;
     }
 }
