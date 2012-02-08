@@ -50,57 +50,67 @@ class JavaInterfaceImpl implements com.redhat.ceylon.compiler.java.test.interop.
     
     @.java.lang.Override
     public final boolean booleanMethod(final boolean b) {
-        return b;
+        return true;
     }
     
     @.java.lang.Override
     public final java.lang.Boolean boxedBooleanMethod(final java.lang.Boolean b) {
-        return b;
+        return new java.lang.Boolean(true);
     }
     
     @.java.lang.Override
     public final ceylon.language.Boolean ceylonBooleanMethod(final ceylon.language.Boolean b) {
-        return b;
+        return .ceylon.language.Boolean.instance(true);
     }
     
     @.java.lang.Override
     public final ceylon.language.Boolean classTypeParamMethodB(final ceylon.language.Boolean b) {
-        return b;
+        return .ceylon.language.Boolean.instance(true);
     }
     
     @.java.lang.Override
     public final long longMethod(final long i) {
-        return i;
+        return 1L;
     }
     
     @.java.lang.Override
     public final java.lang.Long boxedLongMethod(final java.lang.Long i) {
-        return i;
+        return new java.lang.Long(1L);
     }
     
     @.java.lang.Override
     public final ceylon.language.Integer ceylonIntegerMethod(final ceylon.language.Integer i) {
-        return i;
+        return .ceylon.language.Integer.instance(1L);
     }
     
     @.java.lang.Override
     public final ceylon.language.Integer classTypeParamMethodI(final ceylon.language.Integer i) {
-        return i;
+        return .ceylon.language.Integer.instance(1L);
     }
     
     @.java.lang.Override
     public final int intMethod(final int i) {
-        return i;
+        return (int)1L;
     }
     
     @.java.lang.Override
     public final java.lang.Integer boxedIntegerMethod(final java.lang.Integer i) {
-        return i;
+        return new java.lang.Integer((int)1L);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String stringMethod(final .java.lang.String i) {
+        return "";
+    }
+    
+    @.java.lang.Override
+    public final ceylon.language.String ceylonStringMethod(final ceylon.language.String i) {
+        return .ceylon.language.String.instance("");
     }
     
     @.java.lang.Override
     public final <M>M methodTypeParamMethod(final M b) {
-        return b;
+        return .ceylon.language.bottom.getBottom();
     }
     
     JavaInterfaceImpl() {
