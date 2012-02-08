@@ -641,8 +641,9 @@ public abstract class AbstractTransformer implements Transformation {
             } else {
                 return make().Type(syms().throwableType);
             }
-        } else if ((flags & (SATISFIES | EXTENDS | TYPE_ARGUMENT | CLASS_NEW)) == 0 && !isOptional(type)) {
-            if (isCeylonString(type)) {
+        } else if ((flags & (SATISFIES | EXTENDS | TYPE_ARGUMENT | CLASS_NEW)) == 0 
+                && (!isOptional(type) || isJavaString(type))) {
+            if (isCeylonString(type) || isJavaString(type)) {
                 return make().Type(syms().stringType);
             } else if (isCeylonBoolean(type)) {
                 return make().TypeIdent(TypeTags.BOOLEAN);
@@ -793,6 +794,10 @@ public abstract class AbstractTransformer implements Transformation {
         return jt;
     }
     
+    private boolean isJavaString(ProducedType type) {
+        return "java.lang.String".equals(type.getUnderlyingType());
+    }
+
     private String getDeclarationName(Declaration decl) {
         if (Decl.isLocal(decl)) {
             return decl.getName();

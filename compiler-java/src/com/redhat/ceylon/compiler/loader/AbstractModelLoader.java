@@ -1184,7 +1184,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             ProducedType type = obtainType(typeMirror, paramMirror, (Scope) decl);
             if(!isCeylon && !typeMirror.isPrimitive()){
                 // Java parameters are all optional unless primitives
-                type = typeFactory.getOptionalType(type);
+                ProducedType optionalType = typeFactory.getOptionalType(type);
+                optionalType.setUnderlyingType(type.getUnderlyingType());
+                type = optionalType;
             }
             parameter.setType(type );
             if(paramMirror.getAnnotation(CEYLON_SEQUENCED_ANNOTATION) != null)
@@ -1430,6 +1432,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         String underlyingType = null;
         // ERASURE
         if (sameType(type, STRING_TYPE)) {
+            underlyingType = type.getQualifiedName();
             type = CEYLON_STRING_TYPE;
             
         } else if (sameType(type, PRIM_BOOLEAN_TYPE)) {
