@@ -53,20 +53,37 @@ void test() {
     f1.listFiles(SatisfiesFilenameFilter());
 }
 
+@error
 @nomodel
 class JavaInterfaceImpl() satisfies JavaInterface<Boolean,Integer> {
-    shared actual Boolean booleanMethod(Boolean b){ return b; }
-    shared actual JBoolean boxedBooleanMethod(JBoolean b){ return b; }
-    shared actual Boolean ceylonBooleanMethod(Boolean b){ return b; }
-    shared actual Boolean classTypeParamMethodB(Boolean b){ return b; }
+    @error
+    shared actual Boolean booleanMethod(Boolean b){ return true; }
+    @error
+    shared actual JBoolean boxedBooleanMethod(JBoolean? b){ return JBoolean(true); }
+    @error
+    shared actual Boolean ceylonBooleanMethod(Boolean? b){ return true; }
+    @error
+    shared actual Boolean classTypeParamMethodB(Boolean? b){ return true; }
 
-    shared actual Integer longMethod(Integer i){ return i; }
-    shared actual JLong boxedLongMethod(JLong i){ return i; }
-    shared actual Integer ceylonIntegerMethod(Integer i){ return i; }
-    shared actual Integer classTypeParamMethodI(Integer i){ return i; }
+    @error
+    shared actual Integer longMethod(Integer i){ return 1; }
+    @error
+    shared actual JLong boxedLongMethod(JLong? i){ return JLong(1); }
+    @error
+    shared actual Integer ceylonIntegerMethod(Integer? i){ return 1; }
+    @error
+    shared actual Integer classTypeParamMethodI(Integer? i){ return 1; }
+    
+    @error
+    shared actual Integer intMethod(Integer i){ return 1; }
+    @error
+    shared actual JInteger boxedIntegerMethod(JInteger? i){ return JInteger(1); }
+    
+    @error
+    shared actual String stringMethod(String? i){ return ""; }
+    @error
+    shared actual String ceylonStringMethod(String? i){ return ""; }
 
-    shared actual JInteger intMethod(JInteger i){ return i; }
-    shared actual JInteger boxedIntegerMethod(JInteger i){ return i; }
-
-    shared actual M methodTypeParamMethod<M>(M b){ return b; }
+    @error
+    shared actual M methodTypeParamMethod<M>(M? b){ return bottom; }
 }

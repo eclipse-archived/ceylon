@@ -16,5 +16,8 @@ public interface JavaInterface<B,I> {
     int intMethod(int i);
     Integer boxedIntegerMethod(Integer i);
 
-    <M> M methodTypeParamMethod(M m); 
+    String stringMethod(String i);
+    ceylon.language.String ceylonStringMethod(ceylon.language.String i);
+
+    <M> M methodTypeParamMethod(M m);
 }
