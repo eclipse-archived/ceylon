@@ -647,19 +647,27 @@ public abstract class AbstractTransformer implements Transformation {
             } else if (isCeylonBoolean(type)) {
                 return make().TypeIdent(TypeTags.BOOLEAN);
             } else if (isCeylonInteger(type)) {
-                if ((flags & SMALL_TYPE) != 0) {
+                if ("byte".equals(type.getUnderlyingType())) {
+                    return make().TypeIdent(TypeTags.BYTE);
+                } else if ("short".equals(type.getUnderlyingType())) {
+                    return make().TypeIdent(TypeTags.SHORT);
+                } else if ((flags & SMALL_TYPE) != 0 || "int".equals(type.getUnderlyingType())) {
                     return make().TypeIdent(TypeTags.INT);
                 } else {
                     return make().TypeIdent(TypeTags.LONG);
                 }
             } else if (isCeylonFloat(type)) {
-                if ((flags & SMALL_TYPE) != 0) {
+                if ((flags & SMALL_TYPE) != 0 || "float".equals(type.getUnderlyingType())) {
                     return make().TypeIdent(TypeTags.FLOAT);
                 } else {
                     return make().TypeIdent(TypeTags.DOUBLE);
                 }
             } else if (isCeylonCharacter(type)) {
-                return make().TypeIdent(TypeTags.INT);
+                if ("char".equals(type.getUnderlyingType())) {
+                    return make().TypeIdent(TypeTags.CHAR);
+                } else {
+                    return make().TypeIdent(TypeTags.INT);
+                }
             } else if (isCeylonArray(type)) {
                 ProducedType simpleType = simplifyType(type);
                 java.util.List<ProducedType> tal = simpleType.getTypeArgumentList();
@@ -776,8 +784,10 @@ public abstract class AbstractTransformer implements Transformation {
             // - The Ceylon type T results in the Java type T
             if(tdecl instanceof TypeParameter)
                 jt = makeQuotedIdent(tdecl.getName());
-            else
+            else if(simpleType.getUnderlyingType() == null)
                 jt = makeQuotedQualIdentFromString(getDeclarationName(tdecl));
+            else
+                jt = makeQuotedQualIdentFromString(simpleType.getUnderlyingType());
         }
         
         return jt;
