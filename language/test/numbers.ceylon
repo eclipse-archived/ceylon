@@ -244,5 +244,74 @@ shared void numbers() {
     assert(infinity.infinite, "infinity is infinite");
     assert((-infinity).infinite, "-infinity is infinite");
     assert(!(0.0/0.0).infinite, "NaN not infinite");
-    
+
+	assert(1_000==parseInteger("1_000")?"", "parseInteger(1_000)");
+	assert(1000==parseInteger("1000")?"", "parseInteger(1000)");
+	assert(1k==parseInteger("1k")?"", "parseInteger(1k)");
+	assert(+1_000==parseInteger("+1_000")?"", "parseInteger(+1_000)");
+	assert(+1000==parseInteger("+1000")?"", "parseInteger(+1000)");
+	assert(+1k==parseInteger("+1k")?"", "parseInteger(+1k)");
+	assert(-1_000==parseInteger("-1_000")?"", "parseInteger(-1_000)");
+	assert(-1000==parseInteger("-1000")?"", "parseInteger(-1000)");
+	assert(-1k==parseInteger("-1k")?"", "parseInteger(-1k)");
+	
+	assert(0==parseInteger("0")?"", "parseInteger(0)");
+	assert(00==parseInteger("00")?"", "parseInteger(00)");
+	assert(0_000==parseInteger("0_000")?"", "parseInteger(0_000)");
+	assert(-00==parseInteger("-00")?"", "parseInteger(-00)");
+	assert(+00==parseInteger("+00")?"", "parseInteger(+00)");
+	assert(0k==parseInteger("0k")?"", "parseInteger(0k)");
+	
+	assert(1==parseInteger("1")?"", "parseInteger(1)");
+	assert(01==parseInteger("01")?"", "parseInteger(01)");
+	assert(0_001==parseInteger("0_001")?"", "parseInteger(0_001)");
+	assert(+1==parseInteger("+1")?"", "parseInteger(+1)");
+	assert(+01==parseInteger("+01")?"", "parseInteger(+01)");
+	assert(+0_001==parseInteger("+0_001")?"", "parseInteger(+0_001)");
+	
+	assert(-1==parseInteger("-1")?"", "parseInteger(-1)");
+	assert(-01==parseInteger("-01")?"", "parseInteger(-01)");
+	assert(-0_001==parseInteger("-0_001")?"", "parseInteger(-0_001)");
+	
+	assert(1k==parseInteger("1k")?"", "parseInteger(1k)");
+	assert(1M==parseInteger("1M")?"", "parseInteger(1M)");
+	assert(1G==parseInteger("1G")?"", "parseInteger(1G)");
+	assert(1T==parseInteger("1T")?"", "parseInteger(1T)");
+	assert(1P==parseInteger("1P")?"", "parseInteger(1P)");
+	assert(-1k==parseInteger("-1k")?"", "parseInteger(-1k)");
+	assert(-1M==parseInteger("-1M")?"", "parseInteger(-1M)");
+	assert(-1G==parseInteger("-1G")?"", "parseInteger(-1G)");
+	assert(-1T==parseInteger("-1T")?"", "parseInteger(-1T)");
+	assert(-1P==parseInteger("-1P")?"", "parseInteger(-1P)");
+	
+	assert(9223372036854775807==parseInteger("9223372036854775807")?"", "parseInteger(9223372036854775807)");
+	assert(9_223_372_036_854_775_807==parseInteger("9_223_372_036_854_775_807")?"", "parseInteger(9_223_372_036_854_775_807)");
+	assert(-9223372036854775808==parseInteger("-9223372036854775808")?"", "parseInteger(-9223372036854775808)");
+	assert(-9_223_372_036_854_775_808==parseInteger("-9_223_372_036_854_775_808")?"", "parseInteger(-9_223_372_036_854_775_808)");
+	
+	assert(!exists parseInteger(""), "parseInteger()");
+	assert(!exists parseInteger("+"), "parseInteger(+)");
+	assert(!exists parseInteger("-"), "parseInteger(-)");
+	assert(!exists parseInteger("foo"), "parseInteger(foo)");
+	assert(!exists parseInteger(" 0"), "parseInteger( 0)");
+	assert(!exists parseInteger("0 "), "parseInteger(0 )");
+	assert(!exists parseInteger("0+0"), "parseInteger(0+0)");
+	assert(!exists parseInteger("0-0"), "parseInteger(0-0)");
+	assert(!exists parseInteger("0+"), "parseInteger(0+)");
+	assert(!exists parseInteger("0-"), "parseInteger(0-)");
+	assert(!exists parseInteger("k"), "parseInteger(k)");
+	assert(!exists parseInteger("k1"), "parseInteger(k1)");
+	assert(!exists parseInteger("+k"), "parseInteger(+k)");
+	assert(!exists parseInteger("-k"), "parseInteger(-k)");
+	assert(!exists parseInteger("1kk"), "parseInteger(1kk)");
+	assert(!exists parseInteger("0_"), "parseInteger(0_)");
+	assert(!exists parseInteger("_0"), "parseInteger(_0)");
+	assert(!exists parseInteger("0_0"), "parseInteger(0_0)");
+	assert(!exists parseInteger("0_00"), "parseInteger(0_00)");
+	assert(!exists parseInteger("0_0000"), "parseInteger(0_0000)");
+	assert(!exists parseInteger("0_000_0"), "parseInteger(0_000_0)");
+	assert(!exists parseInteger("0000_000"), "parseInteger(0000_000)");
+	assert(!exists parseInteger("9223372036854775808"), "parseInteger(9223372036854775808)");
+	assert(!exists parseInteger("-9223372036854775809"), "parseInteger(-9223372036854775809)");
+	
 }
