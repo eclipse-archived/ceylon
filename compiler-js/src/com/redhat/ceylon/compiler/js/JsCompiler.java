@@ -16,15 +16,41 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class JsCompiler {
     
-    private final TypeChecker tc;
+    protected final TypeChecker tc;
     
     private boolean optimize = false;
+    private boolean stopOnErrors = true;
     private Writer systemOut = new OutputStreamWriter(System.out);
+
+    protected List<UnexpectedError> errors = new ArrayList<UnexpectedError>();
+    protected List<UnexpectedError> unitErrors = new ArrayList<UnexpectedError>();
     
-    private List<UnexpectedError> errors = new ArrayList<UnexpectedError>();
-    
+    private final Visitor unitVisitor = new Visitor() {
+        @Override
+        public void visitAny(Node that) {
+            for (Message err: that.getErrors()) {
+                if (err instanceof UnexpectedError) {
+                    unitErrors.add((UnexpectedError)err);
+                    Node n = ((UnexpectedError) err).getTreeNode();
+                    System.err.println(
+                        "error encountered [" +
+                        err.getMessage() + "] at " + 
+                        n.getLocation() + " of " +
+                        n.getUnit().getFilename());
+                }
+            }
+            super.visitAny(that);
+        }
+    };
+
     public JsCompiler(TypeChecker tc) {
         this.tc = tc;
+    }
+
+    /** Specifies whether the compiler should stop when errors are found in a compilation unit. */
+    public JsCompiler stopOnErrors(boolean flag) {
+        stopOnErrors = flag;
+        return this;
     }
 
     public JsCompiler optimize(boolean optimize) {
@@ -35,35 +61,39 @@ public class JsCompiler {
     public List<UnexpectedError> listErrors() {
         return Collections.unmodifiableList(errors);
     }
-    
+
+    public List<UnexpectedError> compile(PhasedUnit pu) {
+        unitErrors.clear();
+        pu.getCompilationUnit().visit(new GenerateJsVisitor(getWriter(pu),optimize));
+        pu.getCompilationUnit().visit(unitVisitor);
+        return unitErrors;
+    }
+
+    /** Indicates if compilation should stop, based on whether there were errors
+     * in the last compilation unit and the stopOnErrors flag is set. */
+    protected boolean stopOnError() {
+        if (!unitErrors.isEmpty()) {
+            errors.addAll(unitErrors);
+            return stopOnErrors;
+        }
+        return false;
+    }
+
     public void generate() {
         errors.clear();
         try {
             for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
-                pu.getCompilationUnit().visit(new GenerateJsVisitor(getWriter(pu),optimize));
-                pu.getCompilationUnit().visit(new Visitor() {
-                    @Override
-                    public void visitAny(Node that) {
-                        for (Message err: that.getErrors()) {
-                            if (err instanceof UnexpectedError) {
-                                errors.add((UnexpectedError)err);
-                                Node n = ((UnexpectedError) err).getTreeNode();
-                                System.err.println(
-                                    "error encountered [" +
-                                    err.getMessage() + "] at " + 
-                                    n.getLocation() + " of " +
-                                    n.getUnit().getFilename());
-                            }
-                        }
-                        super.visitAny(that);
-                    }
-                });
+                compile(pu);
+                if (stopOnError()) {
+                    System.err.println("Errors found. Compilation stopped.");
+                    break;
+                }
             }
         } finally {
             finish();
         }
     }
-    
+
     protected Writer getWriter(PhasedUnit pu) {
         return systemOut;
     }
@@ -71,7 +101,7 @@ public class JsCompiler {
     protected void finish() {
         try {
             systemOut.flush();
-            systemOut.close();
+            //systemOut.close();
         }
         catch (IOException ioe) {
             ioe.printStackTrace();

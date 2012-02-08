@@ -83,7 +83,7 @@ public class MainForJsTest {
             System.exit(1);
         }
         new JsModuleCompiler(typeChecker, output)
-                .optimize(opt)
+                .optimize(opt).stopOnErrors(false)
                 .generate();
         validateOutput(typeChecker);
     }
