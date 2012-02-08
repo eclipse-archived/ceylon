@@ -6,8 +6,8 @@ final class staticMethods {
     }
     
     static void staticMethods() {
-        final java.io.File f1 = java.io.File.createTempFile("", "");
-        final java.io.File f2 = java.io.File.createTempFile("", "", f1);
+        final java.io.File f1 = .java.io.File.createTempFile("", "");
+        final java.io.File f2 = .java.io.File.createTempFile("", "", f1);
     }
     
     public static void main(.java.lang.String[] args) {
