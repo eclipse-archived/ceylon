@@ -82,9 +82,9 @@ public class MainForJsTest {
         if (typeChecker.getErrors() > 0) {
             System.exit(1);
         }
-        new JsModuleCompiler(typeChecker, output)
-                .optimize(opt).stopOnErrors(false)
-                .generate();
+        JsCompiler jsc = new JsModuleCompiler(typeChecker, output).optimize(opt).stopOnErrors(false);
+        jsc.generate();
+        jsc.printErrors(System.out);
         validateOutput(typeChecker);
     }
 
