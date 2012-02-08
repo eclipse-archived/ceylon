@@ -87,6 +87,9 @@ public class GenerateJsVisitor extends Visitor
         this.prototypeStyle=prototypeStyle;
     }
 
+    /** Print generated code to the Writer specified at creation time.
+     * @param code The main code
+     * @param codez Optional additional strings to print after the main code. */
     private void out(String code, String... codez) {
         try {
             out.write(code);
@@ -100,31 +103,36 @@ public class GenerateJsVisitor extends Visitor
     }
     
     int indentLevel = 0;
-    
+
+    /** Print out 4 spaces per indentation level. */
     private void indent() {
         for (int i=0;i<indentLevel;i++) {
             out("    ");
         }
     }
-    
+
+    /** Prints a newline and the necessary spaces to reach current indentation level. */
     private void endLine() {
         out("\n");
         indent();
     }
 
+    /** Increases indentation level, prints opening brace, newline and necessary spaces to reach new indentation level. */
     private void beginBlock() {
         indentLevel++;
         out("{");
         endLine();
     }
-    
+
+    /** Decreases indentation level, prints closing brace in new line and necessary spaces to reach new indentation level. */
     private void endBlock() {
         indentLevel--;
         endLine();
         out("}");
         endLine();
     }
-    
+
+    /** Prints source code location in the form "at [filename] ([location])" */
     private void location(Node node) {
         out(" at ", node.getUnit().getFilename(), " (", node.getLocation(), ")");
     }
