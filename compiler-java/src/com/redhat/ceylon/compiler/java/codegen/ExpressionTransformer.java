@@ -1231,7 +1231,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 qualExpr = makeUnquotedIdent("$this");
             }
             if (qualExpr == null && decl.isStaticallyImportable()) {
-                qualExpr = makeQualIdentFromString(decl.getContainer().getQualifiedNameString());
+                qualExpr = makeQuotedFQIdent(decl.getContainer().getQualifiedNameString());
             }
             
             if (transformer != null) {
