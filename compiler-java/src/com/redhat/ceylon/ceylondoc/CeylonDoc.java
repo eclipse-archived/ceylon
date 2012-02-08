@@ -23,14 +23,18 @@ package com.redhat.ceylon.ceylondoc;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -309,8 +313,62 @@ public abstract class CeylonDoc extends Markup {
             }
             around("div class='by'", "By: ", authorBuilder.toString());
         }
-    }    
+    }
+    
+    protected void writeIcon(Declaration d) throws IOException {
+        List<String> icons = new ArrayList<String>();
+        
+        Annotation deprecated = Util.getAnnotation(d, "deprecated");
+        if (deprecated != null) {
+            icons.add("icon-decoration-deprecated");
+        }
+        
+        if( d instanceof ClassOrInterface ) {
+            if (d instanceof Interface) {
+                icons.add("icon-interface");
+            }
+            if (d instanceof Class) {
+                icons.add("icon-class");
+                if (((Class) d).isAbstract()) {
+                    icons.add("icon-decoration-abstract");
+                }
+            }
+            if (!d.isShared() ) {
+                icons.add("icon-decoration-local");
+            }
+        }
+        
+        if (d instanceof MethodOrValue) {
+            if( d.isShared() ) {
+                icons.add("icon-shared-member");
+            }
+            else {
+                icons.add("icon-local-member");
+            }
+            if( d.isFormal() ) {
+                icons.add("icon-decoration-formal");
+            }
+            if (d.isActual()) {
+                Declaration refinedDeclaration = d.getRefinedDeclaration();
+                if (refinedDeclaration != null) {
+                    if (refinedDeclaration.isFormal()) {
+                        icons.add("icon-decoration-impl");
+                    }
+                    if (refinedDeclaration.isDefault()) {
+                        icons.add("icon-decoration-over");
+                    }
+                }
+            }            
+        }
+        
+        int i = 0;
+        for (String icon : icons) {
+            open("i class='" + icon + "'");
+            i++;
+        }
+        while (i-- > 0) {
+            close("i");
+        }
+    }
     
 }
-
-

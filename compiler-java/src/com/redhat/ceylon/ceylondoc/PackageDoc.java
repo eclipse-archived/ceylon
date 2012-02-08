@@ -213,6 +213,7 @@ public class PackageDoc extends ClassOrPackageDoc {
     private void doc(ClassOrInterface d) throws IOException {
         open("tr class='TableRowColor category'");
         open("td", "code");
+        writeIcon(d);
         around("span class='modifiers'", getModifiers(d));
         write(" ");
         link(d.getType());

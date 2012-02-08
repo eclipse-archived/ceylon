@@ -83,6 +83,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     protected void doc(Method m) throws IOException {
         open("tr class='TableRowColor' id='" + m.getName() + "'");
         open("td", "code");
+        writeIcon(m);
         around("span class='modifiers'", getModifiers(m));
         write(" ");
         link(m.getType());
@@ -138,6 +139,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         }
         open("tr class='TableRowColor' id='" + f.getName() + "'");
         open("td", "code");
+        writeIcon(f);
         around("span class='modifiers'", getModifiers(f));
         write(" ");
         link(f.getType());

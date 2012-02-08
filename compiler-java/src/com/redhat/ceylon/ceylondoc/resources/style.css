@@ -190,3 +190,53 @@ ul.inheritance ul.inheritance li:before {
 .accesskey {
  color: #bbb;
 }
+
+[class^='icon-'] {
+ display:inline-block;
+ background-image: url("icons.png");
+ background-repeat:no-repeat;
+ height: 16px;
+ width: 16px;  
+ vertical-align: text-top;
+ margin-right: 4px;
+}
+
+.icon-local-member {
+ background-position: 0px 0px;
+}
+
+.icon-shared-member {
+ background-position: -16px 0px;
+}
+
+.icon-interface {
+ background-position: -32px 0px;
+}
+
+.icon-class {
+ background-position: -48px 0px;
+}
+
+.icon-decoration-local {
+ background-position: 4px 4px;
+}
+
+.icon-decoration-abstract {
+ background-position: -64px 0px;
+}
+
+.icon-decoration-formal {
+ background-position: -80px 0px;
+}
+
+.icon-decoration-impl {
+ background-position: -96px 0px;
+}
+
+.icon-decoration-over {
+ background-position: -112px 0px;
+}
+
+.icon-decoration-deprecated {
+ background-position: -128px 0px;
+}
