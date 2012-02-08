@@ -45,4 +45,9 @@ public class TypesJava {
     Character[] array_Character() { return new Character[] { 'a' }; };
     String[] array_String() { return new String[] { "" }; };
     Object[] array_Object() { return new String[] { "" }; };
+    
+    public byte byte_attr;
+    public byte getByte(){return 1;}
+    public void setByte(byte b){}
+    public int int_attr;
 }
