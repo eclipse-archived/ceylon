@@ -42,6 +42,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCConditional;
@@ -663,7 +664,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         final ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType);
-        final ProducedType rightType = getTypeArgument(leftType, 0);
+        final ProducedType rightType = getMostPreciseType(op.getLeftTerm(), getTypeArgument(leftType, 0));
 
         // we work on boxed types
         return transformAssignAndReturnOperation(op, op.getLeftTerm(), boxResult, 
@@ -672,9 +673,11 @@ public class ExpressionTransformer extends AbstractTransformer {
             @Override
             public JCExpression getNewValue(JCExpression previousValue) {
                 // make this call: previousValue OP RHS
-                return transformOverridableBinaryOperator(op, operator.binaryOperator, 
+                JCExpression ret = transformOverridableBinaryOperator(op, operator.binaryOperator, 
                         boxResult ? OptimisationStrategy.NONE : OptimisationStrategy.OPTIMISE, 
                         previousValue, rightType);
+                ret = unAutoPromote(ret, rightType);
+                return ret;
             }
         });
     }
@@ -731,11 +734,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             return at(expr).Unary(operator.javacOperator, term);
         }
         
+        Tree.Term term = expr.getTerm();
+
         Interface compoundType = expr.getUnit().getOrdinalDeclaration();
         ProducedType valueType = getSupertype(expr.getTerm(), compoundType);
-        ProducedType returnType = getTypeArgument(valueType, 0);
+        ProducedType returnType = getMostPreciseType(term, getTypeArgument(valueType, 0));
 
-        Tree.Term term = expr.getTerm();
         List<JCVariableDecl> decls = List.nil();
         List<JCStatement> stats = List.nil();
         JCExpression result = null;
@@ -761,6 +765,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // use +1/-1 if we can optimise a bit
                 successor = make().Binary(operator == OperatorTranslation.UNARY_POSTFIX_INCREMENT ? JCTree.PLUS : JCTree.MINUS, 
                         make().Ident(varName), makeInteger(1));
+                successor = unAutoPromote(successor, returnType);
             }else{
                 successor = make().Apply(null, 
                                          makeSelect(make().Ident(varName), operator.ceylonMethod), 
@@ -806,6 +811,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // use +1/-1 if we can optimise a bit
                 successor = make().Binary(operator == OperatorTranslation.UNARY_POSTFIX_INCREMENT ? JCTree.PLUS : JCTree.MINUS, 
                         make().Ident(varVName), makeInteger(1));
+                successor = unAutoPromote(successor, returnType);
             }else{
                 successor = make().Apply(null, 
                                          makeSelect(make().Ident(varVName), operator.ceylonMethod), 
@@ -833,7 +839,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     // Prefix operator
     
-    public JCExpression transform(Tree.PrefixOperatorExpression expr) {
+    public JCExpression transform(final Tree.PrefixOperatorExpression expr) {
         final OperatorTranslation operator = Operators.getOperator(expr.getClass());
         if(operator == null){
             return makeErroneous(expr, "Not supported yet: "+expr.getNodeType());
@@ -842,25 +848,28 @@ public class ExpressionTransformer extends AbstractTransformer {
         OptimisationStrategy optimisationStrategy = operator.getOptimisationStrategy(expr, this);
         final boolean canOptimise = optimisationStrategy.useJavaOperator();
         
+        Term term = expr.getTerm();
         // only fully optimise if we don't have to access the getter/setter
-        if(canOptimise && Util.isDirectAccessVariable(expr.getTerm())){
-            JCExpression term = transformExpression(expr.getTerm(), BoxingStrategy.UNBOXED, expr.getTypeModel());
-            return at(expr).Unary(operator.javacOperator, term);
+        if(canOptimise && Util.isDirectAccessVariable(term)){
+            JCExpression jcTerm = transformExpression(term, BoxingStrategy.UNBOXED, expr.getTypeModel());
+            return at(expr).Unary(operator.javacOperator, jcTerm);
         }
 
         Interface compoundType = expr.getUnit().getOrdinalDeclaration();
-        ProducedType valueType = getSupertype(expr.getTerm(), compoundType);
-        ProducedType returnType = getTypeArgument(valueType, 0);
+        ProducedType valueType = getSupertype(term, compoundType);
+        final ProducedType returnType = getMostPreciseType(term, getTypeArgument(valueType, 0));
         
         // we work on boxed types unless we could have optimised
-        return transformAssignAndReturnOperation(expr, expr.getTerm(), !canOptimise, 
+        return transformAssignAndReturnOperation(expr, term, !canOptimise, 
                 valueType, returnType, new AssignAndReturnOperationFactory(){
             @Override
             public JCExpression getNewValue(JCExpression previousValue) {
                 // use +1/-1 if we can optimise a bit
                 if(canOptimise){
-                    return make().Binary(operator == OperatorTranslation.UNARY_PREFIX_INCREMENT ? JCTree.PLUS : JCTree.MINUS, 
+                    JCExpression ret = make().Binary(operator == OperatorTranslation.UNARY_PREFIX_INCREMENT ? JCTree.PLUS : JCTree.MINUS, 
                             previousValue, makeInteger(1));
+                    ret = unAutoPromote(ret, returnType);
+                    return ret;
                 }
                 // make this call: previousValue.getSuccessor() or previousValue.getPredecessor()
                 return make().Apply(null, makeSelect(previousValue, operator.ceylonMethod), List.<JCExpression>nil());
@@ -1457,7 +1466,21 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         return null;
     }
-    
+
+    private JCExpression unAutoPromote(JCExpression ret, ProducedType returnType) {
+        // +/- auto-promotes to int, so if we're using java types we'll need a cast
+        return applyJavaTypeConversions(ret, typeFact().getIntegerDeclaration().getType(), 
+                returnType, BoxingStrategy.UNBOXED);
+    }
+
+    private ProducedType getMostPreciseType(Term term, ProducedType defaultType) {
+        // special case for interop when we're dealing with java types
+        ProducedType termType = term.getTypeModel();
+        if(termType.getUnderlyingType() != null)
+            return termType;
+        return defaultType;
+    }
+
     //
     // Helper functions
     
