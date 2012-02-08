@@ -98,21 +98,21 @@ public class BoxingDeclarationVisitor extends Visitor {
         // inherit underlying type constraints
         if(refinedDeclaration != declaration && type.getUnderlyingType() == null)
             type.setUnderlyingType(refinedDeclaration.getType().getUnderlyingType());
+        
         // abort if our boxing state has already been set
         if(declaration.getUnboxed() != null)
             return;
-        if((transformer.isCeylonBasicType(type) 
+        
+        if(refinedDeclaration != declaration){
+            // make sure refined declarations have already been set
+            if(refinedDeclaration.getUnboxed() == null)
+                setBoxingState(refinedDeclaration, refinedDeclaration);
+            // inherit
+            declaration.setUnboxed(refinedDeclaration.getUnboxed());
+        }else if((transformer.isCeylonBasicType(type) 
             || transformer.isCeylonArray(type))
            && !(refinedDeclaration.getTypeDeclaration() instanceof TypeParameter)){
-            // propagate to decl if needed
-            if(refinedDeclaration != declaration){
-                // make sure refined declarations have already been set
-                if(refinedDeclaration.getUnboxed() == null)
-                    setBoxingState(refinedDeclaration, refinedDeclaration);
-                // inherit
-                declaration.setUnboxed(refinedDeclaration.getUnboxed());
-            }else
-                declaration.setUnboxed(true);
+            declaration.setUnboxed(true);
         }else
             declaration.setUnboxed(false);
     }
