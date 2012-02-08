@@ -3,7 +3,8 @@ import members { Counter }
 shared void test() {
     value name = "hello";
     print(name);
-    F foo = F("goodbye");
+    //F foo = F("goodbye");
+    Foo foo = Foo("goodbye");
     printBoth(name, foo.name);
     printBoth{y="y"; x="x";};
     foo.inc(); foo.inc();

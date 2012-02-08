@@ -133,7 +133,7 @@ shared void test() {
     assert(Unwrapper().string=="23.56","unwrapper 3");
     //assert(is Callable<Integer> producer(), "function 1");
     assert(is Integer producer()(), "function 2");
-    assert(123===producer()(), "function 3");
+    assert(123==producer()(), "function 3");
     assert("something"==returner("something")(), "function 4");
     assert(A().B().C().foobar()=="foo", "foobar");
     assert(A().B().C().quxx()=="qux", "quxx");
