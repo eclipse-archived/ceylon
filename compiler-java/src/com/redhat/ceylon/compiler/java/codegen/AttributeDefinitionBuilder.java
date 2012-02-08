@@ -184,9 +184,6 @@ public class AttributeDefinitionBuilder {
 
     public JCTree.JCBlock generateDefaultGetterBlock() {
         JCExpression returnExpr = owner.makeUnquotedIdent(fieldName);
-        if (isHashCode) {
-            returnExpr = owner.make().TypeCast(owner.syms().intType, returnExpr);
-        }
         return owner.make().Block(0L, List.<JCTree.JCStatement>of(owner.make().Return(returnExpr)));
     }
 

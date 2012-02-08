@@ -403,13 +403,6 @@ public class StatementTransformer extends AbstractTransformer {
             returnExpr = expressionGen().transformExpression(expr.getTerm(), 
                     Util.getBoxingStrategy(declaration),
                     declaration.getType());
-            // Special cast for the "hash" attribute which gets translated to hashCode()
-            if (isCeylonInteger(expr.getTypeModel())) {
-                MethodOrValue m = (MethodOrValue)ret.getDeclaration();
-                if ("hash".equals(m.getName())) {
-                    returnExpr = make().TypeCast(syms().intType, returnExpr);
-                }
-            }
         }
         return at(ret).Return(returnExpr);
     }
