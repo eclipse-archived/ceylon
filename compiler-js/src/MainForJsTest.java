@@ -43,6 +43,7 @@ public class MainForJsTest {
                     file.createNewFile();
                     FileWriter fileWriter = new FileWriter(file);
                     writer = new PrintWriter(fileWriter);
+                    beginWrapper(writer);
                     output.put(pkg, writer);
                 }
                 catch (IOException ioe) {
@@ -55,6 +56,7 @@ public class MainForJsTest {
         @Override
         protected void finish() {
             for (PrintWriter writer: output.values()) {
+                try {endWrapper(writer);} catch (IOException ex){}
                 writer.flush();
                 writer.close();
             }
