@@ -58,4 +58,12 @@ shared class SequenceOperators() {
         spreadInvoke := sequence[].item(0);
         spreadInvoke := sequence[].item{index = 0;};
     }
+    
+    void testString(){
+        String string = "";
+        Character? c = string[0];
+        variable String sync;
+        sync := string[0..1];
+        sync := string[0...];
+    }
 }
