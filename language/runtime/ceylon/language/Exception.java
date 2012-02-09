@@ -55,4 +55,14 @@ public class Exception extends RuntimeException {
     public void printStackTrace() {
     	super.printStackTrace();
     }
+
+    @Ignore
+    public static final class Exception$impl {
+        public static ceylon.language.String $init$message(){
+            return null;
+        }
+        public static java.lang.Throwable $init$cause(ceylon.language.String message){
+            return null;
+        }
+    }
 }
