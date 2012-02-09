@@ -59,10 +59,12 @@ public class JsCompiler {
 
     /** Compile one phased unit.
      * @return The errors found for the unit. */
-    public List<AnalysisMessage> compile(PhasedUnit pu) {
+    public List<AnalysisMessage> compileUnit(PhasedUnit pu) {
         unitErrors.clear();
-        pu.getCompilationUnit().visit(new GenerateJsVisitor(getWriter(pu),optimize));
         pu.getCompilationUnit().visit(unitVisitor);
+        if (unitErrors.isEmpty() || !stopOnErrors) {
+            pu.getCompilationUnit().visit(new GenerateJsVisitor(getWriter(pu),optimize));
+        }
         return unitErrors;
     }
 
@@ -76,12 +78,13 @@ public class JsCompiler {
         return false;
     }
 
-    /** Compile all the phased units in the typechecker. */
-    public void generate() {
+    /** Compile all the phased units in the typechecker.
+     * @return true is compilation was successful (0 errors/warnings), false otherwise. */
+    public boolean generate() {
         errors.clear();
         try {
             for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
-                compile(pu);
+                compileUnit(pu);
                 if (stopOnError()) {
                     System.err.println("Errors found. Compilation stopped.");
                     break;
@@ -90,6 +93,7 @@ public class JsCompiler {
         } finally {
             finish();
         }
+        return errors.isEmpty();
     }
 
     protected Writer getWriter(PhasedUnit pu) {
