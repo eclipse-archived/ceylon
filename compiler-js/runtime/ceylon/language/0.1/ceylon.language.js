@@ -24,6 +24,8 @@ function inheritProto(type, superType, suffix) {
         if(suffix!==undefined && $.charAt($.length-1)!=='$') {proto[$+suffix] = $m}
     }
 }
+exports.initType=initType;
+exports.inheritProto=inheritProto;
 
 // TODO: Equality will probably be removed
 function Equality(wat) {
@@ -54,102 +56,127 @@ function Cloneable(wat) {
     return wat;
 }
 initType(Cloneable, 'ceylon.language.Cloneable');
+exports.Cloneable=Cloneable;
 function Callable(wat) {
     return wat;
 }
 initType(Castable, 'ceylon.language.Callable');
+exports.Callable=Callable;
 function Castable(wat) {
     return wat;
 }
 initType(Castable, 'ceylon.language.Castable');
+exports.Castable=Castable;
 function Closeable(wat) {
     return wat;
 }
 initType(Closeable, 'ceylon.language.Closeable');
+exports.Closeable=Closeable;
 function Comparable(wat) {
     return wat;
 }
 initType(Comparable, 'ceylon.language.Comparable', Equality);
+exports.Comparable=Comparable;
 function Container(wat) {
     return wat;
 }
 initType(Container, 'ceylon.language.Container');
+exports.Container=Container;
 function Correspondence(wat) {
     return wat;
 }
 initType(Correspondence, 'ceylon.language.Correspondence');
+exports.Correspondence=Correspondence;
 function Sized(wat) {
     return wat;
 }
 initType(Sized, 'ceylon.language.Sized', Container);
+exports.Sized=Sized;
 function Iterable(wat) {
     return wat;
 }
 initType(Iterable, 'ceylon.language.Iterable', Container);
+exports.Iterable=Iterable;
 function Category(wat) {
     return wat;
 }
 initType(Category, 'ceylon.language.Category');
+exports.Category=Category;
 function Iterator(wat) {
     return wat;
 }
 initType(Iterator, 'ceylon.language.Iterator');
+exports.Iterator=Iterator;
 function Collection(wat) {
     return wat;
 }
 initType(Collection, 'ceylon.language.Collection', Iterable, Sized, Category, Equality, Cloneable);
+exports.Collection=Collection;
 function FixedSized(wat) {
     return wat;
 }
 initType(FixedSized, 'ceylon.language.FixedSized', Collection);
+exports.FixedSized=FixedSized;
 function Some(wat) {
     return wat;
 }
 initType(Some, 'ceylon.language.Some', FixedSized);
+exports.Some=Some;
 function Summable(wat) {
     return wat;
 }
 initType(Summable, 'ceylon.language.Summable');
+exports.Summable=Summable;
 function Number(wat) {
     return wat;
 }
 initType(Number, 'ceylon.language.Number', Equality);
+exports.Number=Number;
 function Invertable(wat) {
     return wat;
 }
 initType(Invertable, 'ceylon.language.Invertable');
+exports.Invertable=Invertable;
 function Numeric(wat) {
     return wat;
 }
 initType(Numeric, 'ceylon.language.Numeric', Number, Comparable, Summable, Invertable);
+exports.Numeric=Numeric;
 function Ordinal(wat) {
     return wat;
 }
 initType(Ordinal, 'ceylon.language.Ordinal', Equality);
+exports.Ordinal=Ordinal;
 function Integral(wat) {
     return wat;
 }
 initType(Integral, 'ceylon.language.Integral', Numeric, Ordinal);
+exports.Integral=Integral;
 function Ranged(wat) {
     return wat;
 }
 initType(Ranged, 'ceylon.language.Ranged');
+exports.Ranged=Ranged;
 function List(wat) {
     return wat;
 }
 initType(List, 'ceylon.language.List', Collection, Correspondence, Ranged, Cloneable);
+exports.List=List;
 function Map(wat) {
     return wat;
 }
 initType(Map, 'ceylon.language.Map', Collection, Correspondence, Cloneable);
+exports.Map=Map;
 function None(wat) {
     return wat;
 }
 initType(None, 'ceylon.language.None', FixedSized);
+exports.None=None;
 function Set(wat) {
     return wat;
 }
 initType(Set, 'ceylon.language.Set', Collection, Cloneable);
+exports.Set=Set;
 
 //Interface methods
 var $FixedSized = FixedSized.$$;
@@ -794,43 +821,6 @@ $finished.string = String$("exhausted");
 $finished.getString = function() {return this.string}
 function getExhausted() { return $finished; }
 
-//These are operators for handling nulls
-function $nullsafe() { return null; }
-function exists(value) { return value === getNull() || value === undefined ? $false : $true; }
-function nonempty(value) { return value === null || value === undefined ? $false : Boolean$(value.getEmpty() === $false); }
-
-function isOfType(obj, typeName) {
-    return Boolean$((obj===null) ? (typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void") : (typeName in obj.constructor.T$all));
-}
-function isOfTypes(obj, types) {
-    if (obj===null) { //TODO check if this is right
-        return types.l.indexOf('ceylon.language.Nothing')>=0 || types.l.indexOf('ceylon.language.Void')>=0;
-    }
-    var unions = false;
-    var inters = true;
-    var _ints=false;
-    for (var i = 0; i < types.l.length; i++) {
-        var t = types.l[i];
-        var partial = false;
-        if (typeof t === 'string') {
-            partial = t in obj.constructor.T$all;
-        } else {
-            partial = isOfTypes(obj, t);
-        }
-        if (types.t==='u') {
-            unions |= partial;
-        } else {
-            inters &= partial;
-            _ints=true;
-        }
-    }
-    return _ints ? inters||unions : unions;
-}
-
-function className(obj) {
-    return String$(obj!==null ? obj.constructor.T$name : 'ceylon.language.Nothing');
-}
-
 function Comparison(name) {
     var that = new Comparison.$$;
     that.name = String$(name);
@@ -896,6 +886,11 @@ var $EmptyIterator = EmptyIterator.$$;
 $EmptyIterator.prototype.next = function() { return $finished; }
 emptyIterator=EmptyIterator();
 
+var _subm1=require('ceylon/language/0.1/functions');
+for (var $ in _subm1) {
+    exports[$]=_subm1[$];
+}
+
 function ArraySequence(value) {
     var that = new ArraySequence.$$;
     that.value = value;
@@ -918,7 +913,7 @@ $ArraySequence.prototype.getString = function() {
             desc += ", ";
         }
         var item = this.value[i];
-        desc += exists(item) === $true ? item.getString().value : "null";
+        desc += exports.exists(item) === $true ? item.getString().value : "null";
     }
     return String$(desc +" }");
 }
@@ -1303,106 +1298,9 @@ $Entry.prototype.equals = function(other) {
 }
 $Entry.prototype.getHash = function() { Integer(this.key.getHash().value ^ this.item.getHash().value) }
 
-//receives ArraySequence, returns element
-function min(seq) {
-    var v = seq.value[0];
-    if (seq.value.length > 1) {
-        for (i = 1; i < seq.value.length; i++) {
-            v = smallest(v, seq.value[i]);
-        }
-    }
-    return v;
-}
-//receives ArraySequence, returns element 
-function max(seq) {
-    var v = seq.value[0];
-    if (seq.value.length > 1) {
-        for (i = 1; i < seq.value.length; i++) {
-            v = largest(v, seq.value[i]);
-        }
-    }
-    return v;
-}
-//receives ArraySequence of ArraySequences, returns flat ArraySequence
-function join(seqs) {
-    var builder = [];
-    for (i = 0; i < seqs.value.length; i++) {
-        builder = builder.concat(seqs.value[i].value);
-    }
-    return ArraySequence(builder);
-}
-//receives ArraySequences, returns ArraySequence
-function zip(keys, items) {
-    var entries = []
-    var numEntries = Math.min(keys.value.length, items.value.length);
-    for (i = 0; i < numEntries; i++) {
-        entries[i] = Entry(keys.value[i], items.value[i]);
-    }
-    return ArraySequence(entries);
-}
-//receives and returns ArraySequence
-function coalesce(seq) {
-    var newseq = [];
-    for (i = 0; i < seq.value.length; i++) {
-        if (seq.value[i]) {
-            newseq = newseq.concat(seq.value[i]);
-        }
-    }
-    return ArraySequence(newseq);
-}
 
-//receives ArraySequence and CeylonObject, returns new ArraySequence
-function append(seq, elem) {
-    return ArraySequence(seq.value.concat(elem));
-}
-function prepend(seq, elem) {
-    if (seq.getEmpty() === $true) {
-        return Singleton(elem);
-    } else {
-        var sb = SequenceBuilder();
-        sb.append(elem);
-        sb.appendAll(seq);
-        return sb.getSequence();
-    }
-}
-
-//Receives ArraySequence, returns ArraySequence (with Entries)
-function entries(seq) {
-    var e = [];
-    for (i = 0; i < seq.value.length; i++) {
-        e.push(Entry(Integer(i), seq.value[i]));
-    }
-    return ArraySequence(e);
-}
-
-exports.initType=initType;
-exports.inheritProto=inheritProto;
-exports.Cloneable=Cloneable; //TODO just to let the compiler finish
-exports.Callable=Callable;
-exports.Castable=Castable;
-exports.Sized=Sized;
-exports.Closeable=Closeable;
-exports.Container=Container;
-exports.Correspondence=Correspondence;
-exports.Collection=Collection;
-exports.FixedSized=FixedSized;
-exports.Some=Some;
-exports.Number=Number;
-exports.Invertable=Invertable;
-exports.Numeric=Numeric;
-exports.Ordinal=Ordinal;
-exports.Integral=Integral;
-exports.Ranged=Ranged;
-exports.List=List;
-exports.Map=Map;
-exports.None=None;
-exports.Set=Set;
 exports.Equality=Equality; //TODO just to let the compiler finish
-exports.Iterable=Iterable; //TODO just to let the compiler finish
-exports.Iterator=Iterator; //TODO just to let the compiler finish
 exports.Exception=Exception; //TODO just to let the compiler finish
-exports.Comparable=Comparable; //TODO just to let the compiler finish
-exports.Summable=Summable;
 exports.IdentifiableObject=IdentifiableObject;
 exports.Object=Object$; //TODO just to let the compiler finish
 exports.print=print;
@@ -1421,32 +1319,18 @@ exports.getSmaller=getSmaller;
 exports.getEqual=getEqual;
 exports.getExhausted=getExhausted;
 exports.Sequence=Sequence;
-exports.ArraySequence=ArraySequence;
 exports.SequenceBuilder=SequenceBuilder;
 exports.SequenceAppender=SequenceAppender;
 exports.Range=Range;
+exports.ArraySequence=ArraySequence;
 exports.Singleton=Singleton;
 exports.Entry=Entry;
 exports.largest=largest;
 exports.smallest=smallest;
-exports.min=min;
-exports.max=max;
-exports.join=join;
-exports.zip=zip;
-exports.coalesce=coalesce;
-exports.append=append;
-exports.prepend=prepend;
-exports.entries=entries;
-exports.exists=exists;
-exports.nonempty=nonempty;
-exports.isOfType=isOfType;
-exports.isOfTypes=isOfTypes;
 exports.parseInteger=$parseInteger;
 exports.parseFloat=$parseFloat;
 exports.empty=$empty;
-exports.nullsafe=$nullsafe;
 exports.getInfinity=getInfinity;
-exports.className=className;
 exports.emptyIterator=emptyIterator;
 
     });
