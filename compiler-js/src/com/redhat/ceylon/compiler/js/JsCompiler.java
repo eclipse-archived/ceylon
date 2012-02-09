@@ -63,7 +63,8 @@ public class JsCompiler {
         unitErrors.clear();
         pu.getCompilationUnit().visit(unitVisitor);
         if (unitErrors.isEmpty() || !stopOnErrors) {
-            pu.getCompilationUnit().visit(new GenerateJsVisitor(getWriter(pu),optimize));
+            GenerateJsVisitor jsv = new GenerateJsVisitor(getWriter(pu),optimize);
+            pu.getCompilationUnit().visit(jsv);
         }
         return unitErrors;
     }
@@ -120,6 +121,21 @@ public class JsCompiler {
             count++;
         }
         out.printf("%d errors.%n", count);
+    }
+
+    /** Writes the beginning of the wrapper function for a JS module. */
+    public void beginWrapper(Writer writer) throws IOException {
+        writer.write("(function(define) { define(function(require, exports, module) {\n");
+    }
+
+    /** Writes the ending of the wrapper function for a JS module. */
+    public void endWrapper(Writer writer) throws IOException {
+        //Finish the wrapper
+        writer.write("});\n");
+        writer.write("}(typeof define==='function' && define.amd ? define : function (factory) {\n");
+        writer.write("if (typeof exports!=='undefined') { factory(require, exports, module);\n");
+        writer.write("} else { throw 'no module loader'; }\n");
+        writer.write("}));\n");
     }
 
 }
