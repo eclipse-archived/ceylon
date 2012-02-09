@@ -21,11 +21,18 @@
 class NumericLiteral(){
     shared void m() {
         // make sure we test all the max/min limits
-        Integer n1 = 9223372036854775807;
-        Integer n372 = -9_223_372_036_854_775_808;
-        Integer n2 = +2147483647;
-        Integer n3 = -2147483648;
-        Float n4 = 1.7976931348623157E308;
-        Float n5 = 4.9E-324;
+        Integer i1 = 9223372036854775807;
+        Integer i2 = -9_223_372_036_854_775_808;
+        Integer i3 = +2147483647;
+        Integer i4 = -2147483648;
+        Integer i5 = 0;
+        Integer i6 = -0;
+        
+        Float f1 = 1.7976931348623157E308;
+        Float f2 = -1.7976931348623157E308;
+        Float f3 = 4.9E-324;
+        Float f4 = -4.9E-324;
+        Float f5 = 0.0;
+        Float f6 = -0.0;
     }
 }
