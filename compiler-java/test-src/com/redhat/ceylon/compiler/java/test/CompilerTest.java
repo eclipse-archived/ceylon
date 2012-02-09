@@ -32,9 +32,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
+import java.util.TreeSet;
 import java.util.jar.JarFile;
 import java.util.regex.Matcher;
 
+import javax.tools.Diagnostic;
 import javax.tools.DiagnosticListener;
 import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
@@ -110,6 +113,83 @@ public abstract class CompilerTest {
         });
     }
 
+    public static class CompilerError implements Comparable<CompilerError>{
+        private final long lineNumber;
+        private final String message;
+
+        public CompilerError(long lineNumber, String message) {
+            this.lineNumber = lineNumber;
+            this.message = message;
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + (int) (lineNumber ^ (lineNumber >>> 32));
+            result = prime * result
+                    + ((message == null) ? 0 : message.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            CompilerError other = (CompilerError) obj;
+            if (lineNumber != other.lineNumber)
+                return false;
+            if (message == null) {
+                if (other.message != null)
+                    return false;
+            } else if (!message.equals(other.message))
+                return false;
+            return true;
+        }
+        
+        public String toString() {
+            return lineNumber + ": " + message;
+        }
+
+        @Override
+        public int compareTo(CompilerError o) {
+            long cmp = this.lineNumber - o.lineNumber;
+            if (cmp == 0) {
+                cmp = this.message.compareTo(o.message);
+            }
+            return cmp > 0 ? 1 : cmp < 0 ? -1 : 0;
+        }
+    }
+    
+    protected void assertErrors(String ceylon, CompilerError... expectedErrors) {
+        // make a compiler task
+        // FIXME: runFileManager.setSourcePath(dir);
+        final TreeSet<CompilerError> actualErrors = new TreeSet<CompilerError>();
+        
+        CeyloncTaskImpl task = getCompilerTask(defaultOptions, new DiagnosticListener() {
+            @Override
+            public void report(Diagnostic diagnostic) {
+                if (diagnostic.getKind() == Diagnostic.Kind.ERROR) {
+                    actualErrors.add(new CompilerError(diagnostic.getLineNumber(),
+                            diagnostic.getMessage(Locale.getDefault())));
+                }
+            }
+        
+        }, new String[] {ceylon+".ceylon"});
+
+        // now compile it all the way
+        Boolean success = task.call();
+
+        Assert.assertFalse("Compilation succeeded", success);
+        
+        Assert.assertEquals("Errors different from expected", new TreeSet<CompilerError>(Arrays.asList(expectedErrors)), actualErrors);
+        
+    }
+    
     protected void compareWithJavaSourceWithPositions(String name) {
         // make a compiler task
         // FIXME: runFileManager.setSourcePath(dir);
