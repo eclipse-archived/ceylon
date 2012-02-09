@@ -83,9 +83,12 @@ public class MainForJsTest {
             System.exit(1);
         }
         JsCompiler jsc = new JsModuleCompiler(typeChecker, output).optimize(opt).stopOnErrors(false);
-        jsc.generate();
-        jsc.printErrors(System.out);
-        validateOutput(typeChecker);
+        if (jsc.generate()) {
+            validateOutput(typeChecker);
+        } else {
+            jsc.printErrors(System.out);
+            System.out.println("Skipping output validation.");
+        }
     }
 
     static void validateOutput(TypeChecker typeChecker)
