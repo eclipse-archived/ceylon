@@ -223,9 +223,7 @@ shared void numbers() {
     assert(0.000_000_000_001==1.0p && 1.0p==1.0e-12, "float literal");
     assert(0.000_000_000_000_001==1.0f && 1.0f==1.0e-15, "float literal");
     
-    assert(parseInteger("-123")?0==-123, "parse integer");
-    assert(parseFloat("12.34e3")?0.0==12.34e3, "parse float");
-    
+    // infinity and .undefined
     assert(1.0/0.0==infinity, "infinity == infinity");
     assert(1.0!=infinity, "1 != infinity");
     assert(-1.0/0.0==-infinity, "-infinity == -infinity");
@@ -244,8 +242,11 @@ shared void numbers() {
     assert(infinity.infinite, "infinity is infinite");
     assert((-infinity).infinite, "-infinity is infinite");
     assert(!(0.0/0.0).infinite, "NaN not infinite");
-
-	assert(1_000==parseInteger("1_000")?"", "parseInteger(1_000)");
+    
+    // parseInteger()
+    assert(parseInteger("-123")?0==-123, "parse integer");
+    
+    assert(1_000==parseInteger("1_000")?"", "parseInteger(1_000)");
 	assert(1000==parseInteger("1000")?"", "parseInteger(1000)");
 	assert(1k==parseInteger("1k")?"", "parseInteger(1k)");
 	assert(+1_000==parseInteger("+1_000")?"", "parseInteger(+1_000)");
@@ -314,4 +315,19 @@ shared void numbers() {
 	assert(!exists parseInteger("9223372036854775808"), "parseInteger(9223372036854775808)");
 	assert(!exists parseInteger("-9223372036854775809"), "parseInteger(-9223372036854775809)");
 	
+	// parseFloat
+	assert(parseFloat("12.34e3")?0.0==12.34e3, "parseFloat(12.34e3)");
+	assert(parseFloat("12.340e3")?0.0==12.34e3, "parseFloat(12.340e3)");
+	assert(parseFloat("123.4e2")?0.0==12.34e3, "parseFloat(123.4e2)");
+	assert(parseFloat("1234e1")?0.0==12.34e3, "parseFloat(1234e1)");
+	assert(parseFloat("1234e+1")?0.0==12.34e3, "parseFloat(1234e+1)");
+	assert(parseFloat("12340e0")?0.0==12.34e3, "parseFloat(12340e0)");
+	assert(parseFloat("12340")?0.0==12.34e3, "parseFloat(12340)");
+	assert(parseFloat("12340.0")?0.0==12.34e3, "parseFloat(12340.0)");
+	assert(parseFloat("123400e-1")?0.0==12.34e3, "parseFloat(123400e-1)");
+	
+	assert(parseFloat("012340")?0.0==12.34e3, "parseFloat(012340)");
+	assert(parseFloat("+12340")?0.0==12.34e3, "parseFloat(+12340)");
+	
+	assert(parseFloat("-12340")?0.0==-12.34e3, "parseFloat(-12340)");
 }
