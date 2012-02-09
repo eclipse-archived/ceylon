@@ -136,7 +136,7 @@ public class GenerateJsVisitor extends Visitor
     private void location(Node node) {
         out(" at ", node.getUnit().getFilename(), " (", node.getLocation(), ")");
     }
-    
+
     @Override
     public void visit(CompilationUnit that) {
         root = that;
@@ -1317,7 +1317,7 @@ public class GenerateJsVisitor extends Visitor
     
     private void outerSelf(Declaration d) {
         if (d.isToplevel()) {
-            out("this");
+            out("exports");
         }
         else if (d.isClassOrInterfaceMember()) {
             self((TypeDeclaration)d.getContainer());
