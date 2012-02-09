@@ -10,6 +10,7 @@ import java.io.InputStream;
  */
 public class NodeTest {
 
+    /** Simple filter for .js files */
     private static class JsExtFilter implements FilenameFilter {
         @Override
         public boolean accept(File arg0, String name) {
@@ -17,6 +18,7 @@ public class NodeTest {
         }
     }
 
+    /** A thread dedicated to reading from a stream and storing the result to return it as a String. */
     private static class ReadStream extends Thread {
         private final InputStream stream;
         StringBuilder sb = new StringBuilder();
@@ -45,6 +47,7 @@ public class NodeTest {
         }
     }
 
+    /** Finds the full path to the node.js executable. */
     public static String findNode() {
         //TODO add windows executable
         String[] paths = { "/usr/bin/node", "/usr/local/bin/node", "/bin/node", "/opt/bin/node" };
@@ -56,18 +59,15 @@ public class NodeTest {
         }
         return null;
     }
+
     public static void main(String[] args) throws IOException, InterruptedException {
         File dir = new File(args[0]);
         if (!(dir.exists() && dir.isDirectory() && dir.canRead())) {
             System.out.printf("%s is not a readable directory%n", dir);
             System.exit(1);
         }
-        //File tmpscript = new File(dir.getParentFile(), "__tmp");
         for (File jsf : dir.listFiles(new JsExtFilter())) {
-            System.out.printf("Running tests for %s%n", jsf.getName());
-            //Create a tmp file
-            //PrintStream pout = new PrintStream(new FileOutputStream(tmpscript, false));
-            //pout.close();
+            System.out.printf("RUNNING %s%n", jsf.getName());
             String nodePath = findNode();
             if (nodePath == null) {
                 System.err.println("Could not find 'node' executable. Please install node.js and retry.");
@@ -85,14 +85,17 @@ public class NodeTest {
             proc.getInputStream().close();
             proc.getErrorStream().close();
             if (xv != 0) {
-                System.out.println("abnormal termination of node: " + xv);
+                System.out.printf("ERROR abnormal termination of node: %s%n", xv);
             }
-            System.out.println("RESULT:");
-            System.out.println(readOut.getResult());
+            if (readOut.getResult().length() > 0) {
+                System.out.println(readOut.getResult().trim());
+            }
             if (readErr.getResult().length() > 0) {
+                System.out.println();
                 System.out.println("ERRORS:");
-                System.out.println(readErr.getResult());
+                System.out.println(readErr.getResult().trim());
             }
+            System.out.println("------------------------------------------------------");
         }
     }
 }
