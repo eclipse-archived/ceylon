@@ -170,7 +170,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.TYPE_ARGUMENT);
                 exprType = expectedType;
                 result = make().TypeCast(targetType, result);
-            }else if(isRawCastNecessaryForVariance(expectedType, exprType)){
+            }else if(exprBoxed // unboxed types certainly don't need casting for variance  
+                    && isRawCastNecessaryForVariance(expectedType, exprType)){
                 // Types with variance types need a type cast
                 JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.WANT_RAW_TYPE);
                 // do not change exprType here since this is just a Java workaround
