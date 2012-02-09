@@ -136,7 +136,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         if (!v.hasResult()) {
-        	return make().Erroneous();
+        	return makeErroneous();
         }
         
         JCExpression result = v.getSingleResult();
@@ -273,8 +273,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         try {
             return make().Literal(Long.parseLong(num));
         } catch (NumberFormatException e) {
-            log.error("ceylon", "Literal outside representable range");
-            return make().Erroneous();
+            return makeErroneous(node, "Literal outside representable range");
         }
     }
     
@@ -408,7 +407,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         OperatorTranslation operator = Operators.getOperator(op.getClass());
         if (operator == null) {
-            return make().Erroneous();
+            return makeErroneous(op);
         }
 
         if(operator.getOptimisationStrategy(op, this).useJavaOperator()){
@@ -491,8 +490,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.LogicalOp op) {
         OperatorTranslation operator = Operators.getOperator(op.getClass());
         if(operator == null){
-            log.error("ceylon", "Not supported yet: "+op.getNodeType());
-            return at(op).Erroneous(List.<JCTree>nil());
+            return makeErroneous(op, "Not supported yet: "+op.getNodeType());
         }
         // Both terms are Booleans and can't be erased to anything
         JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.UNBOXED, null);
@@ -555,7 +553,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression transformOverridableBinaryOperator(Tree.BinaryOperatorExpression op, ProducedType leftType, ProducedType rightType) {
         OperatorTranslation operator = Operators.getOperator(op.getClass());
         if (operator == null) {
-            return make().Erroneous();
+            return makeErroneous(op);
         }
         OptimisationStrategy optimisationStrategy = operator.getOptimisationStrategy(op, this);
 
@@ -586,7 +584,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (loseComparison) {
             actualOperator = Operators.OperatorTranslation.BINARY_COMPARE;
             if (actualOperator == null) {
-                return make().Erroneous();
+                return makeErroneous();
             }
         }
 
@@ -605,8 +603,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(final Tree.ArithmeticAssignmentOp op){
         final AssignmentOperatorTranslation operator = Operators.getAssignmentOperator(op.getClass());
         if(operator == null){
-            log.error("ceylon", "Not supported yet: "+op.getNodeType());
-            return at(op).Erroneous(List.<JCTree>nil());
+            return makeErroneous(op, "Not supported yet: "+op.getNodeType());
         }
 
         // see if we can optimise it
@@ -643,15 +640,13 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.BitwiseAssignmentOp op){
-        log.error("ceylon", "Not supported yet: "+op.getNodeType());
-        return at(op).Erroneous(List.<JCTree>nil());
+        return makeErroneous(op, "Not supported yet: "+op.getNodeType());
     }
 
     public JCExpression transform(final Tree.LogicalAssignmentOp op){
         final AssignmentOperatorTranslation operator = Operators.getAssignmentOperator(op.getClass());
         if(operator == null){
-            log.error("ceylon", "Not supported yet: "+op.getNodeType());
-            return at(op).Erroneous(List.<JCTree>nil());
+            return makeErroneous(op, "Not supported yet: "+op.getNodeType());
         }
         
         // optimise if we can
@@ -684,8 +679,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.PostfixOperatorExpression expr) {
         OperatorTranslation operator = Operators.getOperator(expr.getClass());
         if(operator == null){
-            log.error("ceylon", "Not supported yet: "+expr.getNodeType());
-            return at(expr).Erroneous(List.<JCTree>nil());
+            return makeErroneous(expr, "Not supported yet: "+expr.getNodeType());
         }
         
         OptimisationStrategy optimisationStrategy = operator.getOptimisationStrategy(expr, this);
@@ -785,8 +779,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // $tmpV
             result = make().Ident(varVName);
         }else{
-            log.error("ceylon", "Not supported yet");
-            return at(expr).Erroneous(List.<JCTree>nil());
+            return makeErroneous(term, "Not supported yet");
         }
         // e?.attr++ is probably not legal
         // a[i]++ is not for M1 but will be:
@@ -803,8 +796,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.PrefixOperatorExpression expr) {
         final OperatorTranslation operator = Operators.getOperator(expr.getClass());
         if(operator == null){
-            log.error("ceylon", "Not supported yet: "+expr.getNodeType());
-            return at(expr).Erroneous(List.<JCTree>nil());
+            return makeErroneous(expr, "Not supported yet: "+expr.getNodeType());
         }
         
         OptimisationStrategy optimisationStrategy = operator.getOptimisationStrategy(expr, this);
@@ -915,8 +907,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // return, with the box type we asked for
             result = make().Ident(varVName);
         }else{
-            log.error("ceylon", "Not supported yet");
-            return at(operator).Erroneous(List.<JCTree>nil());
+            return makeErroneous(operator, "Not supported yet");
         }
         // OP(e?.attr) is probably not legal
         // OP(a[i]) is not for M1 but will be:
@@ -1081,7 +1072,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     private JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberOrTypeExpression expr) {
         if(expr.getTarget() == null)
-            return at(expr).Erroneous(List.<JCTree>nil());
+            return makeErroneous();
         return transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, 
                 expr.getTarget().getQualifyingType());
     }
@@ -1129,7 +1120,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // do not throw, an error will already have been reported
         Declaration decl = expr.getDeclaration();
         if (decl == null) {
-            return make().Erroneous(List.<JCTree>nil());
+            return makeErroneous();
         }
         
         // Explanation: primaryExpr and qualExpr both specify what is to come before the selector
@@ -1355,8 +1346,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             Tree.QualifiedMemberExpression qualified = ((Tree.QualifiedMemberExpression)leftTerm);
             expr = transformExpression(qualified.getPrimary(), BoxingStrategy.BOXED, qualified.getTarget().getQualifyingType());
         }else{
-            log.error("ceylon", "Not supported yet: "+op.getNodeType());
-            return at(op).Erroneous(List.<JCTree>nil());
+            return makeErroneous(op, "Not supported yet: "+op.getNodeType());
         }
         return transformAssignment(op, leftTerm, expr, rhs);
     }

@@ -45,12 +45,10 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
-import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
-import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
+import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.comp.AttrContext;
@@ -176,6 +174,7 @@ public class CeylonEnter extends Enter {
             if (tree instanceof CeylonCompilationUnit) {
                 CeylonCompilationUnit ceylonTree = (CeylonCompilationUnit) tree;
                 gen.setMap(ceylonTree.lineMap);
+                gen.setFileObject(((CeylonPhasedUnit)ceylonTree.phasedUnit).getFileObject());
                 ceylonTree.defs = gen.transformAfterTypeChecking(ceylonTree.ceylonTree).toList();
                 if(options.get(OptionName.VERBOSE) != null || options.get(OptionName.VERBOSE + ":ast") != null){
                     System.err.println("Model tree for "+tree.getSourceFile());

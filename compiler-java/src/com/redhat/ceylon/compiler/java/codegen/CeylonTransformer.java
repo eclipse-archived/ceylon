@@ -50,6 +50,7 @@ import com.sun.tools.javac.util.Position.LineMap;
 public class CeylonTransformer extends AbstractTransformer {
     private Options options;
     private LineMap map;
+    private JavaFileObject fileObject;
     
     public static CeylonTransformer getInstance(Context context) {
         CeylonTransformer trans = context.get(CeylonTransformer.class);
@@ -80,6 +81,14 @@ public class CeylonTransformer extends AbstractTransformer {
     @Override
     protected LineMap getMap() {
         return map;
+    }
+
+    public void setFileObject(JavaFileObject fileObject) {
+        this.fileObject = fileObject;
+    }
+    
+    public JavaFileObject getFileObject() {
+        return fileObject;
     }
 
     /**

@@ -1400,4 +1400,46 @@ public abstract class AbstractTransformer implements Transformation {
         return make().LetExpr(def, toReturn);
 
     }
+    
+    protected JCExpression makeErroneous() {
+        return makeErroneous(null);
+    }
+    
+    /**
+     * Makes an 'erroneous' AST node with no message
+     */
+    protected JCExpression makeErroneous(Node node) {
+        return makeErroneous(node, null, List.<JCTree>nil());
+    }
+    
+    /**
+     * Makes an 'erroneous' AST node with a message to be logged as an error
+     */
+    protected JCExpression makeErroneous(Node node, String message) {
+        return makeErroneous(node, message, List.<JCTree>nil());
+    }
+    
+    /**
+     * Makes an 'erroneous' AST node with a message to be logged as an error
+     */
+    protected JCExpression makeErroneous(Node node, String message, List<? extends JCTree> errs) {
+        if (node != null) {
+            at(node);
+        }
+        if (message != null) {
+            if (node != null) {
+                log.error(getPosition(node), "ceylon", message);
+            } else {
+                log.error("ceylon", message);
+            }
+        }
+        return make().Erroneous(errs);
+    }
+    
+    private int getPosition(Node node) {
+        int pos = getMap().getStartPosition(node.getToken().getLine())
+                + node.getToken().getCharPositionInLine();
+                log.useSource(gen().getFileObject());
+        return pos;
+    }
 }
