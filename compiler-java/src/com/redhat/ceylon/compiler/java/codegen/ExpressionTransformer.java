@@ -269,9 +269,17 @@ public class ExpressionTransformer extends AbstractTransformer {
         return expr;
     }
 
+    private JCExpression integerLiteral(Node node, String num) {
+        try {
+            return make().Literal(Long.parseLong(num));
+        } catch (NumberFormatException e) {
+            log.error("ceylon", "Literal outside representable range");
+            return make().Erroneous();
+        }
+    }
+    
     public JCExpression transform(Tree.NaturalLiteral lit) {
-        JCExpression expr = make().Literal(Long.parseLong(lit.getText()));
-        return expr;
+        return integerLiteral(lit, lit.getText());
     }
 
     public JCExpression transformStringExpression(Tree.StringTemplate expr) {
@@ -377,6 +385,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.NegativeOp op) {
+        if (op.getTerm() instanceof Tree.NaturalLiteral) {
+            // To cope with -9223372036854775808 we can't just parse the 
+            // number separately from the sign
+            return integerLiteral(op.getTerm(), "-" + op.getTerm().getText());
+        }
         return transformOverridableUnaryOperator(op, op.getUnit().getInvertableDeclaration());
     }
 
