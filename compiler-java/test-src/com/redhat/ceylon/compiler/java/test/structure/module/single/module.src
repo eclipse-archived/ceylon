@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.module.single;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
-@.com.redhat.ceylon.compiler.java.metadata.Module(name = "com.redhat.ceylon.compiler.java.test.structure.module.single", version = "6.6.6", dependencies = {@.com.redhat.ceylon.compiler.java.metadata.Import(name = "java")})
+@.com.redhat.ceylon.compiler.java.metadata.Module(name = "com.redhat.ceylon.compiler.java.test.structure.module.single", version = "6.6.6", dependencies = {})
 final class module {
     private static final ceylon.language.descriptor.Module value;
     static {
