@@ -36,6 +36,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import javax.annotation.processing.Processor;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 import javax.tools.JavaFileObject.Kind;
@@ -503,6 +504,12 @@ public class LanguageCompiler extends JavaCompiler {
             }
         }
         super.flow(env, results);   
+    }
+
+    @Override
+    public void initProcessAnnotations(Iterable<? extends Processor> processors)
+            throws IOException {
+        // don't do anything, which will leave the "processAnnotations" field to false
     }
 
 }
