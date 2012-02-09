@@ -22,6 +22,7 @@ class NumericLiteral(){
     shared void m() {
         // make sure we test all the max/min limits
         Integer n1 = 9223372036854775807;
+        Integer n372 = -9_223_372_036_854_775_808;
         Integer n2 = +2147483647;
         Integer n3 = -2147483648;
         Float n4 = 1.7976931348623157E308;
