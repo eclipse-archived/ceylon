@@ -126,10 +126,15 @@ public class GenerateJsVisitor extends Visitor
 
     /** Decreases indentation level, prints closing brace in new line and necessary spaces to reach new indentation level. */
     private void endBlock() {
+        endBlock(true);
+    }
+    private void endBlock(boolean newline) {
         indentLevel--;
         endLine();
         out("}");
-        endLine();
+        if (newline) {
+            endLine();
+        }
     }
 
     /** Prints source code location in the form "at [filename] ([location])" */
@@ -313,16 +318,14 @@ public class GenerateJsVisitor extends Visitor
         beginBlock();
         //declareSelf(d);
         that.getInterfaceBody().visit(this);
-        returnSelf(d);
+        //returnSelf(d);
         endBlock();
         share(d);
         
         addTypeInfo(that);
         copyInterfacePrototypes(that.getSatisfiedTypes(), d);
         
-        for (Statement s: that.getInterfaceBody().getStatements()) {
-            addToPrototype(d, s);
-        }
+        addToPrototype(d, that.getInterfaceBody().getStatements());
     }
 
     /** Add a comment to the generated code with info about the type parameters. */
@@ -390,9 +393,7 @@ public class GenerateJsVisitor extends Visitor
         copySuperclassPrototype(that.getExtendedType(),d);
         copyInterfacePrototypes(that.getSatisfiedTypes(), d);
         
-        for (Statement s: that.getClassBody().getStatements()) {
-            addToPrototype(d, s);
-        }
+        addToPrototype(d, that.getClassBody().getStatements());
     }
 
     private void copySuperMembers(ExtendedType extType, ClassBody body, Class d) {
@@ -504,6 +505,21 @@ public class GenerateJsVisitor extends Visitor
         }
         constr += type.getDeclarationModel().getName();
         return constr;
+    }
+    
+    private void addToPrototype(ClassOrInterface d, List<Statement> statements) {
+        if (prototypeStyle && !statements.isEmpty()) {
+            out(";(function($proto$)");
+            beginBlock();
+            for (Statement s: statements) {
+                addToPrototype(d, s);
+            }
+            endBlock(false);
+            out(")(");
+            memberName(d);
+            out(".$$.prototype);");
+            endLine();
+        }
     }
     
     private ClassOrInterface prototypeOwner;
@@ -635,9 +651,7 @@ public class GenerateJsVisitor extends Visitor
         out("return o$", d.getName(), ";");
         endBlock();
         
-        for (Statement s: that.getClassBody().getStatements()) {
-            addToPrototype(c, s);
-        }
+        addToPrototype(c, that.getClassBody().getStatements());
     }
     
     private void superRef(Declaration d, Class sub, String parent) {
@@ -721,7 +735,7 @@ public class GenerateJsVisitor extends Visitor
         Method d = that.getDeclarationModel();
         if (!prototypeStyle||!d.isClassOrInterfaceMember()) return;
         comment(that);
-        out(memberNameString(outer, false), ".$$.prototype.");
+        out("$proto$.");
         memberName(d);
         out("=");
         function();
@@ -747,7 +761,7 @@ public class GenerateJsVisitor extends Visitor
         Getter d = that.getDeclarationModel();
         if (!prototypeStyle||!d.isClassOrInterfaceMember()) return;
         comment(that);
-        out(memberNameString(outer, false), ".$$.prototype.", getter(d), "=");
+        out("$proto$.", getter(d), "=");
         function();
         out(getter(d), "()");
         super.visit(that);
@@ -779,7 +793,7 @@ public class GenerateJsVisitor extends Visitor
         Setter d = that.getDeclarationModel();
         if (!prototypeStyle || !d.isClassOrInterfaceMember()) return;
         comment(that);
-        out(memberNameString(outer, false), ".$$.prototype.", setter(d), "=");
+        out("$proto$.", setter(d), "=");
         function();
         out(setter(d), "(");
         memberName(d);
@@ -860,7 +874,7 @@ public class GenerateJsVisitor extends Visitor
         if (!prototypeStyle||d.isToplevel()) return;
         if (!d.isFormal()) {
             comment(that);
-            out(memberNameString(outer, false), ".$$.prototype.", getter(d), "=");
+            out("$proto$.", getter(d), "=");
             function();
             out(getter(d), "()");
             beginBlock();
@@ -869,7 +883,7 @@ public class GenerateJsVisitor extends Visitor
             out(";");
             endBlock();
             if (d.isVariable()) {
-                out(memberNameString(outer, false), ".$$.prototype.", setter(d), "=");
+                out("$proto$.", setter(d), "=");
                 function();
                 out(setter(d), "(", d.getName(), ")");
                 beginBlock();

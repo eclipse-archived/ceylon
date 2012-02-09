@@ -60,7 +60,7 @@ exports.Cloneable=Cloneable;
 function Callable(wat) {
     return wat;
 }
-initType(Castable, 'ceylon.language.Callable');
+initType(Callable, 'ceylon.language.Callable');
 exports.Callable=Callable;
 function Castable(wat) {
     return wat;
