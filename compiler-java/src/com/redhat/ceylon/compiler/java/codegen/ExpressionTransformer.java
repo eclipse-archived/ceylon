@@ -265,7 +265,15 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.FloatLiteral lit) {
-        JCExpression expr = make().Literal(Double.parseDouble(lit.getText()));
+        double value = Double.parseDouble(lit.getText());
+        // Don't need to handle the negative infinity and negative zero cases 
+        // because Ceylon Float literals have no sign
+        if (value == Double.POSITIVE_INFINITY) {
+            return makeErroneous(lit, "Literal so large it is indistinguishable from infinity");
+        } else if (value == 0.0 && !lit.getText().equals("0.0")) {
+            return makeErroneous(lit, "Literal so small it is indistinguishable from zero");
+        }
+        JCExpression expr = make().Literal(value);
         return expr;
     }
 
