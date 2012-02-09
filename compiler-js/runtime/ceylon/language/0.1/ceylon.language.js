@@ -127,11 +127,11 @@ function Summable(wat) {
 }
 initType(Summable, 'ceylon.language.Summable');
 exports.Summable=Summable;
-function Number(wat) {
+function Number$(wat) {
     return wat;
 }
-initType(Number, 'ceylon.language.Number', Equality);
-exports.Number=Number;
+initType(Number$, 'ceylon.language.Number', Equality);
+exports.Number=Number$;
 function Invertable(wat) {
     return wat;
 }
@@ -140,7 +140,7 @@ exports.Invertable=Invertable;
 function Numeric(wat) {
     return wat;
 }
-initType(Numeric, 'ceylon.language.Numeric', Number, Comparable, Summable, Invertable);
+initType(Numeric, 'ceylon.language.Numeric', Number$, Comparable, Summable, Invertable);
 exports.Numeric=Numeric;
 function Ordinal(wat) {
     return wat;
