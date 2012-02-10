@@ -138,6 +138,10 @@ public class ExpressionTest extends CompilerTest {
     public void testLitStringLiteral(){
         compareWithJavaSource("literal/StringLiteral");
     }
+    @Test
+    public void testLitCharacterLiteral(){
+        compareWithJavaSource("literal/CharacterLiteral");
+    }
     @Ignore("M2")
     @Test
     public void testLitQuotedLiteral(){
