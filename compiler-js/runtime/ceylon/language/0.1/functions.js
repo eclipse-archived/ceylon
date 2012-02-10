@@ -1,14 +1,27 @@
-(function(define) {
-    define(function(require, exports, module) {
+function print(line) { console.log(line.getString().value) }
+exports.print=print;
 
-var clang = require('ceylon/language/0.1/ceylon.language');
+var larger = Comparison("larger");
+function getLarger() { return larger }
+var smaller = Comparison("smaller");
+function getSmaller() { return smaller }
+var equal = Comparison("equal");
+function getEqual() { return equal }
+function largest(x, y) { return x.compare(y) === larger ? x : y }
+function smallest(x, y) { return x.compare(y) === smaller ? x : y }
+
+exports.getLarger=getLarger;
+exports.getSmaller=getSmaller;
+exports.getEqual=getEqual;
+exports.largest=largest;
+exports.smallest=smallest;
 
 //receives ArraySequence, returns element
 function min(seq) {
     var v = seq.value[0];
     if (seq.value.length > 1) {
         for (i = 1; i < seq.value.length; i++) {
-            v = clang.smallest(v, seq.value[i]);
+            v = smallest(v, seq.value[i]);
         }
     }
     return v;
@@ -18,7 +31,7 @@ function max(seq) {
     var v = seq.value[0];
     if (seq.value.length > 1) {
         for (i = 1; i < seq.value.length; i++) {
-            v = clang.largest(v, seq.value[i]);
+            v = largest(v, seq.value[i]);
         }
     }
     return v;
@@ -29,16 +42,16 @@ function join(seqs) {
     for (i = 0; i < seqs.value.length; i++) {
         builder = builder.concat(seqs.value[i].value);
     }
-    return clang.ArraySequence(builder);
+    return ArraySequence(builder);
 }
 //receives ArraySequences, returns ArraySequence
 function zip(keys, items) {
     var entries = []
     var numEntries = Math.min(keys.value.length, items.value.length);
     for (i = 0; i < numEntries; i++) {
-        entries[i] = clang.Entry(keys.value[i], items.value[i]);
+        entries[i] = Entry(keys.value[i], items.value[i]);
     }
-    return clang.ArraySequence(entries);
+    return ArraySequence(entries);
 }
 //receives and returns ArraySequence
 function coalesce(seq) {
@@ -48,18 +61,18 @@ function coalesce(seq) {
             newseq = newseq.concat(seq.value[i]);
         }
     }
-    return clang.ArraySequence(newseq);
+    return ArraySequence(newseq);
 }
 
 //receives ArraySequence and CeylonObject, returns new ArraySequence
 function append(seq, elem) {
-    return clang.ArraySequence(seq.value.concat(elem));
+    return ArraySequence(seq.value.concat(elem));
 }
 function prepend(seq, elem) {
-    if (seq.getEmpty() === clang.getTrue()) {
-        return clang.Singleton(elem);
+    if (seq.getEmpty() === getTrue()) {
+        return Singleton(elem);
     } else {
-        var sb = clang.SequenceBuilder();
+        var sb = SequenceBuilder();
         sb.append(elem);
         sb.appendAll(seq);
         return sb.getSequence();
@@ -70,22 +83,31 @@ function prepend(seq, elem) {
 function entries(seq) {
     var e = [];
     for (i = 0; i < seq.value.length; i++) {
-        e.push(clang.Entry(clang.Integer(i), seq.value[i]));
+        e.push(Entry(Integer(i), seq.value[i]));
     }
-    return clang.ArraySequence(e);
+    return ArraySequence(e);
 }
+
+exports.min=min;
+exports.max=max;
+exports.join=join;
+exports.zip=zip;
+exports.coalesce=coalesce;
+exports.append=append;
+exports.prepend=prepend;
+exports.entries=entries;
 
 //These are operators for handling nulls
 function $nullsafe() { return null; }
 function exists(value) {
-    return value === clang.getNull() || value === undefined ? clang.getFalse() : clang.getTrue();
+    return value === getNull() || value === undefined ? getFalse() : getTrue();
 }
 function nonempty(value) {
-    return value === null || value === undefined ? clang.getFalse() : clang.Boolean(value.getEmpty() === clang.getFalse());
+    return value === null || value === undefined ? getFalse() : Boolean$(value.getEmpty() === getFalse());
 }
 
 function isOfType(obj, typeName) {
-    return clang.Boolean((obj===null) ? (typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void") : (typeName in obj.constructor.T$all));
+    return Boolean$((obj===null) ? (typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void") : (typeName in obj.constructor.T$all));
 }
 function isOfTypes(obj, types) {
     if (obj===null) { //TODO check if this is right
@@ -113,30 +135,12 @@ function isOfTypes(obj, types) {
 }
 
 function className(obj) {
-    return clang.String(obj!==null ? obj.constructor.T$name : 'ceylon.language.Nothing');
+    return String$(obj!==null ? obj.constructor.T$name : 'ceylon.language.Nothing');
 }
 
-exports.min=min;
-exports.max=max;
-exports.join=join;
-exports.zip=zip;
-exports.coalesce=coalesce;
-exports.append=append;
-exports.prepend=prepend;
-exports.entries=entries;
+exports.nullsafe=$nullsafe;
 exports.exists=exists;
 exports.nonempty=nonempty;
 exports.isOfType=isOfType;
 exports.isOfTypes=isOfTypes;
-exports.nullsafe=$nullsafe;
 exports.className=className;
-
-    });
-}(typeof define==='function' && define.amd ? 
-    define : function (factory) {
-    if (typeof exports!=='undefined') {
-        factory(require, exports, module);
-    } else {
-        throw "no module loader";
-    }
-}));
