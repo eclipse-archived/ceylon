@@ -7,4 +7,5 @@ spi/target/
 api/target/
 impl/target/
 webdav/target/
+maven/target/
 build/

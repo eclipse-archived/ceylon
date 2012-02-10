@@ -20,10 +20,12 @@
         <module>api</module>
         <module>impl</module>
         <module>webdav</module>
+        <module>maven</module>
     </modules>
 
     <properties>
         <version.sardine.webdav>314</version.sardine.webdav>
+        <version.shrinkwrap.resolver>1.0.0-beta-5</version.shrinkwrap.resolver>
         <version.junit>4.8.1</version.junit>
     </properties>
 
@@ -148,6 +150,20 @@
                 <groupId>com.googlecode.sardine</groupId>
                 <artifactId>sardine</artifactId>
                 <version>${version.sardine.webdav}</version>
+            </dependency>
+
+            <!-- Maven / Shrinkwrap -->
+
+            <dependency>
+                <groupId>org.jboss.shrinkwrap.resolver</groupId>
+                <artifactId>shrinkwrap-resolver-api</artifactId>
+                <version>${version.shrinkwrap.resolver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.shrinkwrap.resolver</groupId>
+                <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+                <version>${version.shrinkwrap.resolver}</version>
             </dependency>
 
             <!-- Testing -->

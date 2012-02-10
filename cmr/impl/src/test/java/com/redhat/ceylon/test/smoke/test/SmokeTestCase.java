@@ -214,7 +214,7 @@ public class SmokeTestCase {
     @Test
     public void testMavenRemote() throws Exception {
         RepositoryBuilder builder = new RepositoryBuilder(getRepositoryRoot(), log);
-        ArtifactContextAdapter externalRoot = MavenRepositoryHelper.getMavenArtifactContextAdapter("https://repository.jboss.org/nexus/content/groups/public/", log);
+        ArtifactContextAdapter externalRoot = MavenRepositoryHelper.getMavenArtifactContextAdapter("https://repository.jboss.org/nexus/content/groups/public", log);
         builder.prependExternalRoot(externalRoot);
         Repository repository = builder.buildRepository();
         ArtifactContext ac = new ArtifactContext("org.jboss.jboss-vfs", "3.0.1.GA");
