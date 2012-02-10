@@ -14,6 +14,8 @@
 
     <property name="jscompiler.jar" value="jscompiler-${module.jscompiler.version}.jar" />
     <property name="jscompiler.lib" location="${build.lib}/${jscompiler.jar}" />
+    <property name="jslangpath" value="ceylon/language/0.1" />
+    <property name="jslangmodule" location="runtime/${jslangpath}/ceylon.language.js" />
 	
     <tstamp />
 
@@ -77,12 +79,11 @@
 
     <target name="nodetest" depends="compiletest" description="Run tests on node.js (requires node)">
         <echo message="Running tests on node.js (node must be installed)" />
-        <copy todir="${build.test}/node_modules">
-            <fileset dir="${runtime}">
-                <include name="**/*.js" />
-            </fileset>
-        </copy>
-        <copy todir="${build.test}" file="${test.src}/run.js" />
+        <mkdir dir="${build.test}/node_modules/${jslangpath}" />
+        <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="test.run.classpath">
+        	<arg value="${jslangmodule}" />
+        	<arg value="${build.test}/node_modules/${jslangpath}" />
+        </java>
         <java classname="NodeTest" classpathref="test.run.classpath">
             <arg value="${build.test}/node_modules/default" />
         </java>
@@ -90,12 +91,11 @@
 
     <target name="nodeopttest" depends="compileopttest" description="Run tests on node.js (requires node)">
         <echo message="Running tests on node.js (node must be installed)" />
-        <copy todir="${build.test}/node_modules">
-            <fileset dir="${runtime}">
-                <include name="**/*.js" />
-            </fileset>
-        </copy>
-        <copy todir="${build.test}" file="${test.src}/run.js" />
+        <mkdir dir="${build.test}/node_modules/${jslangpath}" />
+        <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="test.run.classpath">
+        	<arg value="${jslangmodule}" />
+        	<arg value="${build.test}/node_modules/${jslangpath}" />
+        </java>
         <java classname="NodeTest" classpathref="test.run.classpath">
             <arg value="${build.test}/node_modules/default" />
         </java>
