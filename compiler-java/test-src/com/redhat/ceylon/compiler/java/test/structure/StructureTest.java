@@ -82,6 +82,34 @@ public class StructureTest extends CompilerTest {
     }
 
     @Test
+    public void testMdlModuleDefault() throws IOException{
+        compile("module/def/CeylonClass.ceylon");
+        
+        File carFile = getModuleArchive("default", null);
+        assertTrue(carFile.exists());
+
+        JarFile car = new JarFile(carFile);
+
+        ZipEntry moduleClass = car.getEntry("com/redhat/ceylon/compiler/java/test/structure/module/def/CeylonClass.class");
+        assertNotNull(moduleClass);
+        car.close();
+    }
+
+    @Test
+    public void testMdlModuleDefaultJavaFile() throws IOException{
+        compile("module/def/JavaClass.java");
+        
+        File carFile = getModuleArchive("default", null);
+        assertTrue(carFile.exists());
+
+        JarFile car = new JarFile(carFile);
+
+        ZipEntry moduleClass = car.getEntry("com/redhat/ceylon/compiler/java/test/structure/module/def/JavaClass.class");
+        assertNotNull(moduleClass);
+        car.close();
+    }
+
+    @Test
     public void testMdlModuleOnlyInOutputRepo(){
         File carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.structure.module.single", "6.6.6");
         assertFalse(carFile.exists());
@@ -166,8 +194,15 @@ public class StructureTest extends CompilerTest {
     }
 
     private File getArchiveName(String moduleName, String version, String destDir, String extension) {
-        String modulePath = moduleName.replace('.', File.separatorChar)+File.separatorChar+version+File.separator;
-        File archiveFile = new File(destDir, modulePath+moduleName+"-"+version+"."+extension);
+        String modulePath = moduleName.replace('.', File.separatorChar);
+        if(version != null)
+            modulePath += File.separatorChar+version;
+        modulePath += File.separator;
+        String artifactName = modulePath+moduleName;
+        if(version != null)
+            artifactName += "-"+version;
+        artifactName += "."+extension;
+        File archiveFile = new File(destDir, artifactName);
         return archiveFile;
     }
 
