@@ -678,6 +678,7 @@ public class GenerateJsVisitor extends Visitor
             objectDefinition(that);
         } else {
             String name = memberNameString(d, false);
+            comment(that);
             outerSelf(d);
             out(".o$", name, "=");
             outerSelf(d);
