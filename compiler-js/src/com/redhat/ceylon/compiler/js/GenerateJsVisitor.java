@@ -307,8 +307,8 @@ public class GenerateJsVisitor extends Visitor
     
     private void addInterfaceToPrototype(ClassOrInterface type, InterfaceDefinition interfaceDef) {
         interfaceDefinition(interfaceDef);
-        String name = memberNameString(interfaceDef.getDeclarationModel(), false);
-        out("$proto$.", name, "=", name, ";");
+        Interface d = interfaceDef.getDeclarationModel();
+        out("$proto$.", memberNameString(d, false), "=", d.getName(), ";");
         endLine();
     }
     
@@ -324,8 +324,7 @@ public class GenerateJsVisitor extends Visitor
         comment(that);
         
         function();
-        memberName(d);
-        out("(");
+        out(d.getName(), "(");
         self(d);
         out(")");
         beginBlock();
@@ -370,8 +369,8 @@ public class GenerateJsVisitor extends Visitor
 
     private void addClassToPrototype(ClassOrInterface type, ClassDefinition classDef) {
         classDefinition(classDef);
-        String name = memberNameString(classDef.getDeclarationModel(), false);
-        out("$proto$.", name, "=", name, ";");
+        Class d = classDef.getDeclarationModel();
+        out("$proto$.", memberNameString(d, false), "=", d.getName(), ";");
         endLine();
     }
     
@@ -387,8 +386,7 @@ public class GenerateJsVisitor extends Visitor
         comment(that);
         
         function();
-        memberName(d);
-        out("(");
+        out(d.getName(), "(");
         for (Parameter p: that.getParameterList().getParameters()) {
             p.visit(this);
             out(", ");
@@ -515,7 +513,7 @@ public class GenerateJsVisitor extends Visitor
         }
         
         clAlias();
-        out(".initType(", memberNameString(type.getDeclarationModel(), false), ",'",
+        out(".initType(", type.getDeclarationModel().getName(), ",'",
             type.getDeclarationModel().getQualifiedNameString(), "'");
         
         if (extendedType != null) {
@@ -553,9 +551,7 @@ public class GenerateJsVisitor extends Visitor
                 addToPrototype(d, s);
             }
             endBlock(false);
-            out(")(");
-            memberName(d);
-            out(".$$.prototype);");
+            out(")(", d.getName(), ".$$.prototype);");
             endLine();
         }
     }
@@ -636,7 +632,7 @@ public class GenerateJsVisitor extends Visitor
 
     private void copyMembersToPrototype(String from, Declaration d, String suffix) {
         clAlias();
-        out(".inheritProto(", memberNameString(d, false), ",", from);
+        out(".inheritProto(", d.getName(), ",", from);
         if ((suffix != null) && (suffix.length() > 0)) {
             out(",'", suffix, "'");
         }
@@ -666,8 +662,8 @@ public class GenerateJsVisitor extends Visitor
     
     private void addObjectToPrototype(ClassOrInterface type, ObjectDefinition objDef) {
         objectDefinition(objDef);
-        String name = memberNameString(objDef.getDeclarationModel(), false);
-        out("$proto$.", name, "=", name, ";");
+        Value d = objDef.getDeclarationModel();
+        out("$proto$.", memberNameString(d, false), "=", d.getName(), ";");
         endLine();
     }
     
@@ -693,9 +689,8 @@ public class GenerateJsVisitor extends Visitor
         Class c = (Class) d.getTypeDeclaration();
         comment(that);
         
-        String name = memberNameString(that.getDeclarationModel(), false);
         function();
-        out(name, "()");
+        out(d.getName(), "()");
         beginBlock();
         instantiateSelf(c);
         referenceOuter(c);
@@ -714,7 +709,8 @@ public class GenerateJsVisitor extends Visitor
         copyInterfacePrototypes(that.getSatisfiedTypes(),d);
         
         if (!addToPrototype) {
-            out("var o$", name, "=", name, "(new ", name, ".$$);");
+            out("var o$", memberNameString(d, false), "=",
+                    d.getName(), "(new ", d.getName(), ".$$);");
             endLine();
         }
         
@@ -731,7 +727,7 @@ public class GenerateJsVisitor extends Visitor
         if (addToPrototype) {
             out("this.");
         }
-        out("o$", name, ";");
+        out("o$", memberNameString(d, false), ";");
         endBlock();
         
         addToPrototype(c, that.getClassBody().getStatements());
@@ -1451,7 +1447,7 @@ public class GenerateJsVisitor extends Visitor
     private String memberNameString(Declaration d, Boolean forGetterSetter) {
     	String name = d.getName();
     	Scope container = d.getContainer();
-    	if (prototypeStyle && !d.isShared() && d.isMember() && (container != null)
+    	if (prototypeStyle && !d.isShared() && d.isMember()
     				&& (container instanceof ClassOrInterface)) {
     		ClassOrInterface parentType = (ClassOrInterface) container;
     		name += '$' + parentType.getName();
