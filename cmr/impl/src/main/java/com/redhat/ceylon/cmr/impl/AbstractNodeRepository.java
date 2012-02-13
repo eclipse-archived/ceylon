@@ -175,6 +175,9 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
                 throw new IllegalArgumentException("Invalid SHA1 for artifact: " + context);
         }
 
+        // save the context info
+        context.toNode(node);
+
         return node;
     }
 

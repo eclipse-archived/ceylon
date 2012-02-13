@@ -42,11 +42,11 @@ public class RemoteContentStore extends URLContentStore {
     }
 
     public ContentHandle peekContent(Node node) {
-        return urlExists(node) ? new RemoteContentHandle(node) : null;
+        return urlExists(node) ? createContentHandle(null, null, null, node) : null;
     }
 
     public ContentHandle getContent(Node node) throws IOException {
-        return new RemoteContentHandle(node);
+        return createContentHandle(null, null, null, node);
     }
 
     public ContentHandle putContent(Node node, InputStream stream, ContentOptions options) throws IOException {

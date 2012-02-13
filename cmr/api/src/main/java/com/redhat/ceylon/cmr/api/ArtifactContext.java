@@ -18,6 +18,8 @@
 package com.redhat.ceylon.cmr.api;
 
 import com.redhat.ceylon.cmr.spi.ContentOptions;
+import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.cmr.spi.OpenNode;
 
 import java.io.Serializable;
 
@@ -33,6 +35,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     public static final String SRC = ".src";
     public static final String DOCS = "module-doc";
     public static final String SHA1 = ".sha1";
+    public static final String INFO = ".info";
 
     private String name;
     private String version;
@@ -61,6 +64,18 @@ public class ArtifactContext implements Serializable, ContentOptions {
 
     public ArtifactContext getDocsContext() {
         return new ArtifactContext(name, version, DOCS);
+    }
+
+    public void toNode(Node node) {
+        if (node instanceof OpenNode) {
+            final OpenNode on = (OpenNode) node;
+            on.addNode(INFO, this);
+        }
+    }
+
+    public static ArtifactContext fromNode(Node node) {
+        final Node ac = node.getChild(INFO);
+        return ac != null ? ac.getValue(ArtifactContext.class) : null;
     }
 
     public String getName() {

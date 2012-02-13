@@ -16,8 +16,14 @@
 
 package com.redhat.ceylon.cmr.maven;
 
-import com.redhat.ceylon.cmr.spi.*;
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.impl.RemoteContentStore;
+import com.redhat.ceylon.cmr.spi.ContentHandle;
+import com.redhat.ceylon.cmr.spi.Node;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -26,34 +32,50 @@ import java.io.InputStream;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class AetherContentStore implements ContentStore, StructureBuilder {
+public class AetherContentStore extends RemoteContentStore {
 
-    public ContentHandle peekContent(Node node) {
-        return null;
+    public AetherContentStore(String root, Logger log) {
+        super(root, log);
     }
 
-    public ContentHandle getContent(Node node) throws IOException {
-        return null;
+    protected ContentHandle createContentHandle(Node parent, String child, String path, Node node) {
+        return new AetherContentHandle(node);
     }
 
-    public ContentHandle putContent(Node node, InputStream stream, ContentOptions options) throws IOException {
-        return null;
-    }
+    private static class AetherContentHandle implements ContentHandle {
+        private Node node;
 
-    public OpenNode createRoot() {
-        return null;
-    }
+        private AetherContentHandle(Node node) {
+            this.node = node;
+        }
 
-    public OpenNode create(Node parent, String child) {
-        return null;
-    }
+        public boolean hasBinaries() {
+            return true;
+        }
 
-    public OpenNode find(Node parent, String child) {
-        return null;
-    }
+        public InputStream getBinariesAsStream() throws IOException {
+            return new FileInputStream(getContentAsFile());
+        }
 
-    public Iterable<? extends OpenNode> find(Node parent) {
-        return null;
-    }
+        public File getContentAsFile() throws IOException {
+            final ArtifactContext ac = ArtifactContext.fromNode(node);
+            if (ac == null)
+                throw new IOException("Missing artifact context info!");
 
+            final String name = ac.getName();
+            final int p = name.lastIndexOf(".");
+            final String groupId = name.substring(0, p);
+            final String artifactId = name.substring(p + 1);
+            final String version = ac.getVersion();
+
+            final File dependency = AetherUtils.getDependency(groupId, artifactId, version);
+            if (dependency == null || dependency.exists() == false)
+                throw new IOException("Invalid dependency: " + ac);
+
+            return dependency;
+        }
+
+        public void clean() {
+        }
+    }
 }

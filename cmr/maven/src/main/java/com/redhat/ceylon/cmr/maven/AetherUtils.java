@@ -19,6 +19,8 @@ package com.redhat.ceylon.cmr.maven;
 import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 
+import java.io.File;
+
 /**
  * Aether utils.
  * <p/>
@@ -30,11 +32,41 @@ class AetherUtils {
 
     private static MavenDependencyResolver resolver;
 
-    static MavenDependencyResolver getResolver(final String settingsXml) {
-        if (resolver == null)
-            resolver = DependencyResolvers.use(MavenDependencyResolver.class).configureFrom(settingsXml);
-        return resolver;
+    static File getDependency(String groupId, String artifactId, String version) {
+        final File[] files = getResolver().artifact(groupId + ":" + artifactId + ":" + version).exclusion("*").resolveAsFiles();
+        return (files != null && files.length == 1) ? files[0] : null;
     }
 
+    private static File getMavenSettings() {
+        String path = System.getProperty("user.home");
+        if (path != null) {
+            File file = new File(path, "settings.xml");
+            if (file.exists())
+                return file;
+        }
 
+        path = System.getProperty("user.home");
+        if (path != null) {
+            File file = new File(path, ".m2/settings.xml");
+            if (file.exists())
+                return file;
+        }
+
+        path = System.getenv("M2_HOME");
+        if (path != null) {
+            File file = new File(path, "conf/settings.xml");
+            if (file.exists())
+                return file;
+        }
+
+        throw new IllegalArgumentException("No known default path to Maven settings.xml!");
+    }
+
+    private static MavenDependencyResolver getResolver() {
+        if (resolver == null) {
+            final File settingsXml = getMavenSettings();
+            resolver = DependencyResolvers.use(MavenDependencyResolver.class).configureFrom(settingsXml.getPath());
+        }
+        return resolver;
+    }
 }
