@@ -1,3 +1,5 @@
+package com.redhat.ceylon.compiler;
+
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -81,8 +83,15 @@ public class MainForJs {
                     .addSrcDirectory(new File(path))
                     .getTypeChecker();
         }
-        typeChecker.process();
-        new JsCompiler(typeChecker).optimize(true).generate();
         //getting the type checker does process all types in the source directory
+        typeChecker.process();
+        if (typeChecker.getErrors() > 0) {
+            System.exit(1);
+            return;
+        }
+        JsCompiler jsc = new JsCompiler(typeChecker).optimize(true);
+        if (!jsc.generate()) {
+            jsc.printErrors(System.out);
+        }
     }
 }
