@@ -43,14 +43,14 @@ To run the "hello world" program, type:
 
     cd samples/helloworld
     ../../bin/ceylonc com.acme.helloworld
-    ../../bin/ceylond -private com.acme.helloworld
+    ../../bin/ceylond -non-shared -source-code com.acme.helloworld
     ../../bin/ceylon com.acme.helloworld/1.0.0 John
 
 To run a program defined in the default module, type:
 
     cd samples/no-module
     ../../bin/ceylonc default
-    ../../bin/ceylond -private default
+    ../../bin/ceylond -non-shared -source-code default
     ../../bin/ceylon default
 
 ## Tool usage

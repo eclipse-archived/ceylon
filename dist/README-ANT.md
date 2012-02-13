@@ -52,8 +52,8 @@ Supported attributes:
 - `src`: Source path (default: `./source`)
 - `out`: Output path (default: `./modules`)
 - `executable`: Path to `ceylond` program (default: `${ceylon.home}/bin/ceylond`)
-- `omitSource`: Do not include pointers to the source code (default: no)
-- `includePrivate`: Document even non-shared declarations (default: no)
+- `includeSourceCode`: Include pointers to the source code (default: no)
+- `includeNonShared`: Document even non-shared declarations (default: no)
 
 Nested elements:
 

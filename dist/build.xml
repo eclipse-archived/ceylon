@@ -151,6 +151,7 @@
             <arg value="${dist.dir}/repo"/>
             <arg value="-src"/>
             <arg value="${ceylon.language.dir}/src/"/>
+            <arg value="-source-code"/>
             <arg value="ceylon.language"/>
         </exec>
     </target>
