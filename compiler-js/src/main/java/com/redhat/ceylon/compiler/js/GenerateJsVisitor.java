@@ -539,7 +539,7 @@ public class GenerateJsVisitor extends Visitor
         if (constr.length() > 0) {
             constr += '.';
         }
-        constr += type.getDeclarationModel().getName();
+        constr += memberNameString(type.getDeclarationModel(), false);
         return constr;
     }
     
@@ -617,17 +617,16 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void copyMembersToPrototype(SimpleType that, Declaration d) {
-        String thatName = that.getDeclarationModel().getName();
-        String path = qualifiedPath(that, that.getDeclarationModel());
+        TypeDeclaration typeDecl = that.getDeclarationModel();
+        String path = qualifiedPath(that, typeDecl);
         String suffix = null;
-        if (!((d instanceof Interface)
-                || (that.getDeclarationModel() instanceof Interface))) {
-            suffix = path + '$' + thatName + '$';
+        if (!((d instanceof Interface) || (typeDecl instanceof Interface))) {
+            suffix = path + '$' + typeDecl.getName() + '$';
         }
         if (path.length() > 0) {
             path += '.';
         }
-        copyMembersToPrototype(path+thatName, d, suffix);
+        copyMembersToPrototype(path+memberNameString(typeDecl, false), d, suffix);
     }
 
     private void copyMembersToPrototype(String from, Declaration d, String suffix) {

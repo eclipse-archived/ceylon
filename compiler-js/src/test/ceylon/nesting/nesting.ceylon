@@ -121,6 +121,35 @@ class A() {
         return Baz().get();
     }
 }
+
+class O() {
+    String s = "hello";
+    class InnerClass() {
+        shared String f() {
+            return s;
+        }
+    }
+    object innerObject {
+        shared String f() {
+            return s;
+        }
+    }
+    interface InnerInterface {
+        shared String f() {
+            return s;
+        }
+    }
+    shared String test1() {
+        return InnerClass().f();
+    } 
+    shared String test2() {
+        return innerObject.f();
+    }
+    shared String test3() {
+        object obj satisfies InnerInterface {}
+        return obj.f();
+    }
+}
     
 shared void test() {
     outr("Hello");
@@ -138,6 +167,9 @@ shared void test() {
     assert(A().B().C().foobar()=="foo", "foobar");
     assert(A().B().C().quxx()=="qux", "quxx");
     assert(A().baz()=="foo", "baz");
+    assert(O().test1()=="hello", "method instantiating inner class");
+    assert(O().test2()=="hello", "method accessing inner object");
+    assert(O().test3()=="hello", "method deriving inner interface");
     Outer("Hello");
     results();
 }
