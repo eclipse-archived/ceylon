@@ -18,6 +18,7 @@ public class Stitcher {
         try {
             String line = null;
             while ((line = reader.readLine()) != null) {
+                line = line.trim();
                 if (line.length() > 0) {
                     if (line.startsWith("#include ")) {
                         File auxfile = new File(infile.getParentFile(), line.substring(9).trim());
@@ -27,7 +28,7 @@ public class Stitcher {
                             throw new IllegalArgumentException("Invalid included file " + auxfile);
                         }
                     } else {
-                        writer.println(line.trim());
+                        writer.println(line);
                     }
                 }
             }
