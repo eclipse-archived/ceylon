@@ -3,13 +3,14 @@
 
     <!-- Set build directories for all formats. -->
     <property name="build.dir" value="${basedir}/build" />
-    <property name="build.classes" location="${build.dir}/classes" />
+    <property name="build.classes" location="${build.dir}/classes/main" />
+    <property name="build.test-classes" location="${build.dir}/classes/test" />
     <property name="build.dist" location="${build.dir}/dist" />
     <property name="build.lib" location="${build.dir}/lib" />
     <property name="build.test" location="${build.dir}/test" />
 
-    <property name="test.src" location="test" />
-    <property name="src" location="src" />
+    <property name="test-src" location="src/test/java" />
+    <property name="src" location="src/main/java" />
     <property name="runtime" location="runtime" />
 
     <property name="jscompiler.jar" value="jscompiler-${module.jscompiler.version}.jar" />
@@ -32,6 +33,7 @@
         </fileset>
         <pathelement location="${ceylon.typechecker.lib}" />
         <pathelement location="${build.classes}" />
+        <pathelement location="${build.test-classes}" />
     </path>
 
     <!-- Rule to clean everything up -->
@@ -60,7 +62,17 @@
     <target name="build" depends="jscompiler.jar">
     </target>
 
-    <target name="compiletest" depends="build">
+	<target name="test-compile" depends="build">
+        <mkdir dir="${build.test-classes}" />
+    	<javac srcdir="${test-src}" destdir="${build.test-classes}" debug="true">
+    		<classpath>
+    			<pathelement location="${ceylon.typechecker.lib}" />
+    			<pathelement location="${build.classes}" />
+    		</classpath>
+    	</javac>
+	</target>
+
+    <target name="compiletest" depends="test-compile">
         <java classname="MainForJsTest" classpathref="test.run.classpath" failonerror="true">
         	<sysproperty key="file.encoding" value="UTF-8" />
         </java>
@@ -82,7 +94,6 @@
                 <include name="**/*.js" />
             </fileset>
         </copy>
-        <copy todir="${build.test}" file="${test.src}/run.js" />
         <java classname="NodeTest" classpathref="test.run.classpath">
             <arg value="${build.test}/node_modules/default" />
         </java>
@@ -95,7 +106,6 @@
                 <include name="**/*.js" />
             </fileset>
         </copy>
-        <copy todir="${build.test}" file="${test.src}/run.js" />
         <java classname="NodeTest" classpathref="test.run.classpath">
             <arg value="${build.test}/node_modules/default" />
         </java>
