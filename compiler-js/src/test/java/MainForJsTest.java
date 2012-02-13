@@ -77,7 +77,7 @@ public class MainForJsTest {
 
         TypeChecker typeChecker = new TypeCheckerBuilder()
                 .verbose(false)
-                .addSrcDirectory(new File("test"))
+                .addSrcDirectory(new File("src/test/ceylon"))
                 .addSrcDirectory(new File("../ceylon.language/test"))
                 .getTypeChecker();
         typeChecker.process();
@@ -99,7 +99,7 @@ public class MainForJsTest {
         for (PhasedUnit pu: typeChecker.getPhasedUnits().getPhasedUnits()) {
             Package pkg = pu.getPackage();
             File generated = new File("build/test/node_modules/" + toOutputPath(pkg));
-            File test = new File("test/"+ toTestPath(pkg));
+            File test = new File("src/test/ceylon/"+ toTestPath(pkg));
             if (test.exists()) {
                 BufferedReader reader = new BufferedReader(new FileReader(test));
                 BufferedReader outputReader = new BufferedReader(new FileReader(generated));
