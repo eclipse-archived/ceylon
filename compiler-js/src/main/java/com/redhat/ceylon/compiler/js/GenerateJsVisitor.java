@@ -772,9 +772,14 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(MethodDefinition that) {
+        if (!(prototypeStyle && that.getDeclarationModel().isClassOrInterfaceMember())) {
+            comment(that);
+            methodDefinition(that);
+        }
+    }
+    
+    private void methodDefinition(MethodDefinition that) {
         Method d = that.getDeclarationModel();
-        if (prototypeStyle&&d.isClassOrInterfaceMember()) return;
-        comment(that);
         function();
         memberName(d);
         
@@ -817,11 +822,7 @@ public class GenerateJsVisitor extends Visitor
         out("$proto$.");
         memberName(d);
         out("=");
-        function();
-        memberName(d);
-        //TODO: if there are multiple parameter lists
-        //      do the inner function declarations
-        super.visit(that);
+        methodDefinition(that);
     }
     
     @Override
