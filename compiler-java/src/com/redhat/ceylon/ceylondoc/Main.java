@@ -32,8 +32,8 @@ public class Main {
     public static void main(String[] args) throws IOException {
         String destDir = null;
         List<String> sourceDirs = new LinkedList<String>();
-        boolean showPrivate = false;
-        boolean omitSource = false;
+        boolean includeNonShared = false;
+        boolean includeSourceCode = false;
         List<String> modules = new LinkedList<String>();
         List<String> repositories = new LinkedList<String>();
         for (int i = 0; i < args.length; i++) {
@@ -55,10 +55,10 @@ public class Main {
                 sourceDirs.addAll(readPath(args[++i]));
             } else if ("-rep".equals(arg)) {
                 repositories.add(args[++i]);
-            } else if ("-private".equals(arg)) {
-                showPrivate = true;
-            } else if ("-omit-source".equals(arg)) {
-                omitSource = true;
+            } else if ("-non-shared".equals(arg)) {
+                includeNonShared = true;
+            } else if ("-source-code".equals(arg)) {
+                includeSourceCode = true;
             } else {
                 modules.add(arg);
             }
@@ -90,9 +90,9 @@ public class Main {
 
         try{
             CeylonDocTool ceylonDocTool = new CeylonDocTool(sourceFolders, repositories, modules, false);
-            ceylonDocTool.setShowPrivate(showPrivate);
             ceylonDocTool.setOutputRepository(destDir);
-            ceylonDocTool.setOmitSource(omitSource);
+            ceylonDocTool.setIncludeNonShared(includeNonShared);
+            ceylonDocTool.setIncludeSourceCode(includeSourceCode);
             ceylonDocTool.makeDoc();
         }catch(Exception x){
             System.err.println("Error: "+x.getMessage());
@@ -138,8 +138,8 @@ public class Main {
         for(String repo : defaultRepositories)
             System.err.println("              "+repo);
         System.err.print(
-                 "-private:     Document non-shared declarations\n"
-                +"-omit-source: Do not include the source code\n"
+                 "-non-shared:  Document non-shared declarations\n"
+                +"-source-code: Include the source code\n"
                 +"-d:           Not supported yet\n"
                 +"-help:        Prints help usage\n"
                 +"-version:     Prints version number\n"

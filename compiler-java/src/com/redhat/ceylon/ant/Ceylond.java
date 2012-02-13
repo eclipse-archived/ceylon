@@ -48,21 +48,21 @@ public class Ceylond extends Task {
     private List<Rep> repositories = new LinkedList<Rep>();
     private List<Module> modules = new LinkedList<Module>();
     private File executable;
-    private boolean omitSource;
-    private boolean includePrivate;
-
-    /**
-     * Do not include source code in the documentation
-     */
-    public void setOmitSource(boolean omitSource){
-        this.omitSource = omitSource;
-    }
+    private boolean includeNonShared;
+    private boolean includeSourceCode;
 
     /**
      * Include even non-shared declarations
      */
-    public void setPrivate(boolean includePrivate){
-        this.includePrivate = includePrivate;
+    public void setIncludeNonShared(boolean includeNonShared){
+        this.includeNonShared = includeNonShared;
+    }
+    
+    /**
+     * Include source code in the documentation
+     */
+    public void setIncludeSourceCode(boolean includeSourceCode){
+        this.includeSourceCode = includeSourceCode;
     }
 
 	/**
@@ -153,10 +153,10 @@ public class Ceylond extends Task {
                 cmd.createArgument().setValue(Util.quoteParameter(rep.url));
             }
         }
-        if(omitSource)
-            cmd.createArgument().setValue("-omit-source");
-        if(includePrivate)
-            cmd.createArgument().setValue("-private");
+        if(includeSourceCode)
+            cmd.createArgument().setValue("-source-code");
+        if(includeNonShared)
+            cmd.createArgument().setValue("-non-shared");
         // modules to document
         for (Module module : modules) {
             log("Adding module: "+module, Project.MSG_VERBOSE);

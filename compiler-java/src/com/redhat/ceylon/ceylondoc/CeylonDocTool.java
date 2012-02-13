@@ -85,9 +85,9 @@ public class CeylonDocTool {
      * The {@linkplain #shouldInclude(Declaration) visible} class/interfaces 
      * that satisfy the key
      */
-    private Map<TypeDeclaration, List<ClassOrInterface>> satisfyingClassesOrInterfaces = new HashMap<TypeDeclaration, List<ClassOrInterface>>();
-    private boolean showPrivate;
-    private boolean omitSource;
+    private Map<TypeDeclaration, List<ClassOrInterface>> satisfyingClassesOrInterfaces = new HashMap<TypeDeclaration, List<ClassOrInterface>>();    
+    private boolean includeNonShared;
+    private boolean includeSourceCode;
     private Map<Declaration, Node> sourceLocations = new HashMap<Declaration, Node>();
     private File tempDestDir;
     private CeylondLogger log;
@@ -169,20 +169,20 @@ public class CeylonDocTool {
         return outputRepository;
     }
 
-    public void setShowPrivate(boolean showPrivate) {
-        this.showPrivate = showPrivate;
+    public void setIncludeNonShared(boolean includeNonShared) {
+        this.includeNonShared = includeNonShared;
     }
 
-    public boolean isShowPrivate() {
-        return showPrivate;
+    public boolean isIncludeNonShared() {
+        return includeNonShared;
     }
 
-    public boolean isOmitSource() {
-        return omitSource;
+    public void setIncludeSourceCode(boolean includeSourceCode) {
+        this.includeSourceCode = includeSourceCode;
     }
-
-    public void setOmitSource(boolean omitSource) {
-        this.omitSource = omitSource;
+    
+    public boolean isIncludeSourceCode() {
+        return includeSourceCode;
     }
 
     private String getFileName(Scope klass) {
@@ -261,7 +261,7 @@ public class CeylonDocTool {
 
     public void makeDoc() throws IOException{
         
-        if (!omitSource) {
+        if (includeSourceCode) {
             buildSourceLocations();
             copySourceFiles();
         }
@@ -565,11 +565,11 @@ public class CeylonDocTool {
 
 
     protected boolean shouldInclude(Declaration decl){
-        return showPrivate || decl.isShared();
+        return includeNonShared || decl.isShared();
     }
     
     protected boolean shouldInclude(Package pkg){
-        return true; // TODO showPrivate || pkg.isShared();
+        return true; // TODO includeNonShared || pkg.isShared();
     }
     
     protected boolean shouldInclude(Module module){

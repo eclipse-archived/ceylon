@@ -282,8 +282,7 @@ public abstract class CeylonDoc extends Markup {
     
     protected void writeSourceLink(Object modPkgOrDecl) throws IOException {
         String srcUrl = getSrcUrl(modPkgOrDecl);
-        if (!tool.isOmitSource()
-                && srcUrl != null) {
+        if (tool.isIncludeSourceCode() && srcUrl != null) {
             open("div class='source-code "+DocType.typeOf(modPkgOrDecl).name().toLowerCase()+"'");
             around("a href='" + srcUrl + "'", "Source Code");
             close("div");

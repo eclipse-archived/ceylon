@@ -353,7 +353,8 @@
     <ceylond
       executable="${build.bin}/ceylond"
       src="../ceylon.language/src"
-      out="${build.api}">
+      out="${build.api}"
+      includeSourceCode="true">
       <module name="ceylon.language"/>
     </ceylond>
   </target>

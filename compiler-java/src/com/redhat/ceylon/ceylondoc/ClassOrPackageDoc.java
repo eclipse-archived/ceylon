@@ -116,7 +116,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     }
 
     private void linkSource(MethodOrValue m) throws IOException {
-        if (tool.isOmitSource()) {
+        if (!tool.isIncludeSourceCode()) {
             return;
         }
         String srcUrl;

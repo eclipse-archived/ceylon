@@ -136,8 +136,8 @@ public class CeylonDocToolTest {
         String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules/single";
         String testName = "moduleA";
         CeylonDocTool tool = tool(pathname, testName, "a");
-        tool.setShowPrivate(false);
-        tool.setOmitSource(false);
+        tool.setIncludeNonShared(false);
+        tool.setIncludeSourceCode(true);
         tool.makeDoc();
         
         Module module = new Module();
@@ -233,8 +233,8 @@ public class CeylonDocToolTest {
         String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules/single";
         String testName = "moduleAWithPrivate";
         CeylonDocTool tool = tool(pathname, testName, "a");
-        tool.setShowPrivate(true);
-        tool.setOmitSource(false);
+        tool.setIncludeNonShared(true);
+        tool.setIncludeSourceCode(true);
         tool.makeDoc();
         
         Module module = new Module();
