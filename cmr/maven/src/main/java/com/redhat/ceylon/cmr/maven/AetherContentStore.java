@@ -39,7 +39,7 @@ import java.util.Collections;
  */
 public class AetherContentStore extends AbstractContentStore {
 
-    private AetherUtils utils;
+    private final AetherUtils utils;
 
     public AetherContentStore(Logger log) {
         super(log);
