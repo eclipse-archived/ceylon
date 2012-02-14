@@ -44,11 +44,13 @@ public class AetherTestCase {
         ArtifactContextAdapter adapter = MavenRepositoryHelper.getMavenArtifactContextAdapter(structureBuilder);
         Repository repository = new SimpleRepository(adapter, log);
         File artifact = repository.getArtifact("org.slf4j.slf4j-api", "1.6.4");
+        boolean exists = false;
         try {
             Assert.assertNotNull(artifact);
             Assert.assertTrue(artifact.exists());
+            exists = true;
         } finally {
-            if (artifact != null && artifact.exists()) {
+            if (exists) {
                 Assert.assertTrue(artifact.delete()); // delete this one
             }
         }
