@@ -51,12 +51,12 @@ public final class Integer
         long result = 1;
         long x = base;
         while (power != 0) {
-          if ((power & 1L) == 1L) {
-            result *= x;
-            power -= 1;
-          }
-          x *= x;
-          power /= 2;
+            if ((power & 1L) == 1L) {
+                result *= x;
+                power -= 1;
+            }
+            x *= x;
+            power /= 2;
         }
         return result;
     }
