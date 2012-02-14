@@ -1096,44 +1096,59 @@ public class GenerateJsVisitor extends Visitor
 	        super.visit(that);
             out("))");
     	} else if (that.getMemberOperator() instanceof SpreadOp) {
+    	    //Determine if it's a method or attribute
+    	    boolean isMethod = that.getDeclaration() instanceof Method;
+    	    //Define a function
     	    out("(function()");
     	    beginBlock();
+    	    //Declare an array to store the values/references
     	    String tmplist = createTempVariable();
     	    out("var ", tmplist, "=[];"); endLine();
+    	    //Get an iterator
     	    String iter = createTempVariable();
     	    out("var ", iter, "=");
     	    super.visit(that);
     	    out(".getIterator();"); endLine();
+    	    //Iterate
     	    String elem = createTempVariable();
     	    out("var ", elem, ";"); endLine();
     	    out("while ((", elem, "=", iter, ".next()) !== ");
     	    clAlias();
     	    out(".getExhausted())");
     	    beginBlock();
+    	    //Add value or reference to the array
     	    out(tmplist, ".push(");
-    	    if (that.getDeclaration() instanceof Method) {
-    	        clAlias();
-    	        out(".JsCallable(", elem, ",", elem, ".");
+    	    if (isMethod) {
+    	        out("{o:", elem, ", f:", elem, ".");
                 qualifiedMemberRHS(that);
-                out(")");
+                out("}");
     	    } else {
                 out(elem, ".");
                 qualifiedMemberRHS(that);
     	    }
             out(");");
     	    endBlock();
+    	    //Gather arguments to pass to the callable
+    	    String tmpargs = isMethod ? createTempVariable() : null;
+    	    if (isMethod) {
+    	        out("var ", tmpargs, "=[];"); endLine();
+    	        out("for (var i=0; i<arguments.length;i++)"); beginBlock();
+    	        out(tmpargs, ".push(arguments[i]);");
+    	        endBlock();
+    	    }
+    	    //Return the array of values or a Callable with the arguments
             out("return "); clAlias();
-            if (that.getDeclaration() instanceof Method) {
-                out(".JsCallableList(", tmplist, ").call(arguments);");
+            if (isMethod) {
+                out(".JsCallableList(", tmplist, ").call(", tmpargs, ");");
             } else {
                 out(".ArraySequence(", tmplist, ");");
             }
     	    endBlock(false);
-    	    if (!(that.getDeclaration() instanceof Method)) {
+    	    //If it's not a method, call the function right away
+    	    if (!isMethod) {
     	        out("()");
     	    }
     	    out(")");
-            that.addError("Spread OP not supported yet in JS");
     	} else {
             super.visit(that);
             out(".");
