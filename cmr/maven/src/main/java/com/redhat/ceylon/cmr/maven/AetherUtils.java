@@ -51,7 +51,7 @@ class AetherUtils {
     }
 
     private static File getMavenSettings() {
-        String path = System.getProperty("user.home");
+        String path = System.getProperty("maven.repo.local");
         if (path != null) {
             File file = new File(path, "settings.xml");
             if (file.exists())
