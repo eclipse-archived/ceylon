@@ -60,6 +60,7 @@ public class ModuleValidator {
             verifyModuleDependencyTree(module.getImports(), dependencyTree, new ArrayList<Module>());
             dependencyTree.pollLast();
         }
+        moduleManager.addImplicitImports();
         executeExternalModulePhases();
     }
 

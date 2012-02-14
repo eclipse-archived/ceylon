@@ -3138,7 +3138,7 @@ createItemMethod.intercept()
         </row>
         -->
         
-        <row><entry namest="first" nameend="last"><emphasis>Nullafe invocation</emphasis></entry></row>
+        <row><entry namest="first" nameend="last"><emphasis>Nullsafe invocation</emphasis></entry></row>
         
         <row>
             <entry><literal>lhs?.member</literal></entry>
