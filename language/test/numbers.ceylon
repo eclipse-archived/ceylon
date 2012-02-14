@@ -369,15 +369,15 @@ shared void numbers() {
 	assert(parseFloat("12.34e3")?0.0==12.34e3, "parseFloat(12.34e3)");
 	assert(parseFloat("12.340e3")?0.0==12.34e3, "parseFloat(12.340e3)");
 	assert(parseFloat("123.4e2")?0.0==12.34e3, "parseFloat(123.4e2)");
-	assert(parseFloat("1234e1")?0.0==12.34e3, "parseFloat(1234e1)");
-	assert(parseFloat("1234e+1")?0.0==12.34e3, "parseFloat(1234e+1)");
-	assert(parseFloat("12340e0")?0.0==12.34e3, "parseFloat(12340e0)");
-	assert(parseFloat("12340")?0.0==12.34e3, "parseFloat(12340)");
+	assert(parseFloat("1234.0e1")?0.0==12.34e3, "parseFloat(1234.0e1)");
+	assert(parseFloat("1234.0e+1")?0.0==12.34e3, "parseFloat(1234.0e+1)");
+	assert(parseFloat("12340.0e0")?0.0==12.34e3, "parseFloat(12340.0e0)");
 	assert(parseFloat("12340.0")?0.0==12.34e3, "parseFloat(12340.0)");
-	assert(parseFloat("123400e-1")?0.0==12.34e3, "parseFloat(123400e-1)");
+	assert(parseFloat("12340.0")?0.0==12.34e3, "parseFloat(12340.0)");
+	assert(parseFloat("123400.0e-1")?0.0==12.34e3, "parseFloat(123400.0e-1)");
 	
-	assert(parseFloat("012340")?0.0==12.34e3, "parseFloat(012340)");
-	assert(parseFloat("+12340")?0.0==12.34e3, "parseFloat(+12340)");
+	assert(parseFloat("012340.0")?0.0==12.34e3, "parseFloat(012340.0)");
+	assert(parseFloat("+12340.0")?0.0==12.34e3, "parseFloat(+12340.0)");
 	
-	assert(parseFloat("-12340")?0.0==-12.34e3, "parseFloat(-12340)");
+	assert(parseFloat("-12340.0")?0.0==-12.34e3, "parseFloat(-12340.0)");
 }
