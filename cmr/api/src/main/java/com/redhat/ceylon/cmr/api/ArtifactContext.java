@@ -74,7 +74,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     }
 
     public static ArtifactContext fromNode(Node node) {
-        final Node ac = node.getChild(INFO);
+        final Node ac = (node instanceof OpenNode) ? ((OpenNode) node).peekChild(INFO) : node.getChild(INFO);
         return ac != null ? ac.getValue(ArtifactContext.class) : null;
     }
 

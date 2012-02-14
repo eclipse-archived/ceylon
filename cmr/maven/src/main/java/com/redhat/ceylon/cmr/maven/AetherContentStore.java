@@ -144,14 +144,7 @@ public class AetherContentStore extends AbstractContentStore {
             if (ac == null)
                 throw new IOException("Missing artifact context info!");
 
-            final String name = ac.getName();
-            final int p = name.lastIndexOf(".");
-            final String groupId = name.substring(0, p);
-            final String artifactId = name.substring(p + 1);
-            final String version = ac.getVersion();
-
-            final File dependency = utils.getDependency(groupId, artifactId, version);
-            return (dependency == null || dependency.exists() == false) ? null : dependency;
+            return findDependency(node);
         }
 
         public void clean() {
