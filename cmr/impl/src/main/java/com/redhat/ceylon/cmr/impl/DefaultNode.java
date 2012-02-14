@@ -49,7 +49,12 @@ public class DefaultNode extends AbstractOpenNode {
         super(label, value);
     }
 
-    void setHandle(ContentHandle handle) {
+    public void setContentMarker() {
+        setHandle(HANDLE_MARKER);
+    }
+
+    // make sure the handle is properly set
+    public synchronized void setHandle(ContentHandle handle) {
         this.handle = handle;
     }
 
@@ -75,7 +80,7 @@ public class DefaultNode extends AbstractOpenNode {
     public OpenNode addNode(String label, Object value) {
         try {
             //noinspection NullableProblems
-            return addNode(label, null, null, ContentOptions.DEFAULT, true);
+            return addNode(label, value, null, ContentOptions.DEFAULT, true);
         } catch (IOException e) {
             throw new RuntimeException("Should not be here!", e);
         }

@@ -18,31 +18,113 @@ package com.redhat.ceylon.cmr.maven;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Logger;
-import com.redhat.ceylon.cmr.impl.RemoteContentStore;
+import com.redhat.ceylon.cmr.impl.AbstractContentStore;
+import com.redhat.ceylon.cmr.impl.DefaultNode;
+import com.redhat.ceylon.cmr.impl.RootNode;
 import com.redhat.ceylon.cmr.spi.ContentHandle;
+import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.cmr.spi.OpenNode;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 
 /**
  * Sonatype Aether content store.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class AetherContentStore extends RemoteContentStore {
+public class AetherContentStore extends AbstractContentStore {
 
-    public AetherContentStore(String root, Logger log) {
-        super(root, log);
+    private AetherUtils utils;
+
+    public AetherContentStore(Logger log) {
+        super(log);
+        utils = new AetherUtils(log);
     }
 
-    protected ContentHandle createContentHandle(Node parent, String child, String path, Node node) {
+    public OpenNode createRoot() {
+        return new RootNode(this, this);
+    }
+
+    public OpenNode find(Node parent, String child) {
+        DefaultNode node = null;
+        if (hasContent(child) == false) {
+            node = new DefaultNode(child);
+            node.setContentMarker();
+        } else {
+            final File dependency = findDependency(parent);
+            if (dependency != null) {
+                node = new DefaultNode(child);
+                node.setHandle(new FileContentHandle(dependency));
+            }
+        }
+        return node;
+    }
+
+    public ContentHandle peekContent(Node node) {
+        final File dependency = findDependency(node);
+        return (dependency != null) ? new FileContentHandle(dependency) : null;
+    }
+
+    public ContentHandle getContent(Node node) throws IOException {
         return new AetherContentHandle(node);
     }
 
-    private static class AetherContentHandle implements ContentHandle {
+    public ContentHandle putContent(Node node, InputStream stream, ContentOptions options) throws IOException {
+        return null;  // cannot put content
+    }
+
+    public OpenNode create(Node parent, String child) {
+        return null; // cannot create
+    }
+
+    public Iterable<? extends OpenNode> find(Node parent) {
+        return Collections.emptyList(); // cannot find all children
+    }
+
+    private File findDependency(Node node) {
+        final ArtifactContext ac = ArtifactContext.fromNode(node);
+        if (ac == null)
+            return null;
+
+        final String name = ac.getName();
+        final int p = name.lastIndexOf(".");
+        final String groupId = name.substring(0, p);
+        final String artifactId = name.substring(p + 1);
+        final String version = ac.getVersion();
+
+        final File dependency = utils.getDependency(groupId, artifactId, version);
+        return (dependency == null || dependency.exists() == false) ? null : dependency;
+    }
+
+    private static class FileContentHandle implements ContentHandle {
+        private final File file;
+
+        private FileContentHandle(File file) {
+            this.file = file;
+        }
+
+        public boolean hasBinaries() {
+            return true;
+        }
+
+        public InputStream getBinariesAsStream() throws IOException {
+            return new FileInputStream(file);
+        }
+
+        public File getContentAsFile() throws IOException {
+            return file;
+        }
+
+        public void clean() {
+        }
+    }
+
+    private class AetherContentHandle implements ContentHandle {
         private Node node;
 
         private AetherContentHandle(Node node) {
@@ -68,11 +150,8 @@ public class AetherContentStore extends RemoteContentStore {
             final String artifactId = name.substring(p + 1);
             final String version = ac.getVersion();
 
-            final File dependency = AetherUtils.getDependency(groupId, artifactId, version);
-            if (dependency == null || dependency.exists() == false)
-                throw new IOException("Invalid dependency: " + ac);
-
-            return dependency;
+            final File dependency = utils.getDependency(groupId, artifactId, version);
+            return (dependency == null || dependency.exists() == false) ? null : dependency;
         }
 
         public void clean() {

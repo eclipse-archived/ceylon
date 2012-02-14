@@ -78,6 +78,15 @@ public class ArtifactContext implements Serializable, ContentOptions {
         return ac != null ? ac.getValue(ArtifactContext.class) : null;
     }
 
+    public static void removeNode(Node node) {
+        if (node instanceof OpenNode) {
+            final OpenNode on = (OpenNode) node;
+            if (on.peekChild(INFO) != null) {
+                on.removeNode(INFO);
+            }
+        }
+    }
+
     public String getName() {
         return name;
     }

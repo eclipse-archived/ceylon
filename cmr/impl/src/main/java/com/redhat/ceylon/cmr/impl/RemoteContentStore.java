@@ -53,8 +53,8 @@ public class RemoteContentStore extends URLContentStore {
         return null; // cannot write
     }
 
-    protected UrlNode createNode(String label) {
-        return new RemoteNode(label);
+    protected RemoteNode createNode(String label) {
+        return new ImmutableRemoteNode(label);
     }
 
     public OpenNode create(Node parent, String child) {
@@ -114,8 +114,8 @@ public class RemoteContentStore extends URLContentStore {
         }
     }
 
-    private static class RemoteNode extends UrlNode {
-        private RemoteNode(String label) {
+    private static class ImmutableRemoteNode extends RemoteNode {
+        private ImmutableRemoteNode(String label) {
             super(label);
         }
 

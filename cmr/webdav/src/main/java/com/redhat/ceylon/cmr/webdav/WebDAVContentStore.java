@@ -119,7 +119,7 @@ public class WebDAVContentStore extends URLContentStore {
             final List<DavResource> resources = getSardine().list(url);
             for (DavResource dr : resources) {
                 final String label = dr.getName();
-                final UrlNode node = new UrlNode(label);
+                final RemoteNode node = new RemoteNode(label);
                 if (dr.isDirectory())
                     node.setContentMarker();
                 else

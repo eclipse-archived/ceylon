@@ -217,8 +217,14 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
         for (ArtifactContextAdapter ext : adapters) {
             Node node = ext.findParent(context);
             if (node != null) {
-                if (addLeaf)
-                    node = node.getChild(ext.getArtifactName(context));
+                if (addLeaf) {
+                    context.toNode(node);
+                    try {
+                        node = node.getChild(ext.getArtifactName(context));
+                    } finally {
+                        ArtifactContext.removeNode(node);
+                    }
+                }
 
                 if (node != null)
                     return node;

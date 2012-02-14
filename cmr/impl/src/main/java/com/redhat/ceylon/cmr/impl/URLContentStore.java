@@ -17,65 +17,32 @@
 package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.Logger;
-import com.redhat.ceylon.cmr.spi.*;
+import com.redhat.ceylon.cmr.spi.ContentHandle;
+import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.cmr.spi.OpenNode;
 
 import java.net.URL;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * URL based content store.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public abstract class URLContentStore implements ContentStore, StructureBuilder {
-
-    private static final String CAR = ".car";
-    private static final String JAR = ".jar";
-    private static final String SHA1 = ".sha1";
-    private static final String ZIP = ".zip";
-
-    protected static final String SEPARATOR = "/";
+public abstract class URLContentStore extends AbstractRemoteContentStore {
 
     protected final String root;
-    protected final Set<String> suffixes = new HashSet<String>();
-    protected Logger log;
 
     protected URLContentStore(String root, Logger log) {
+        super(log);
         if (root == null)
             throw new IllegalArgumentException("Null root url");
         this.root = root;
-        this.log = log;
-        addSuffix(CAR);
-        addSuffix(JAR);
-        addSuffix(ZIP);
-        addSuffix(SHA1);
-    }
-
-    public void addSuffix(String suffix) {
-        suffixes.add(suffix);
-    }
-
-    public OpenNode createRoot() {
-        final UrlNode node = new UrlRootNode(root);
-        node.addService(ContentStore.class, this);
-        node.addService(StructureBuilder.class, this);
-        node.setHandle(DefaultNode.HANDLE_MARKER);
-        return node;
-    }
-
-    private String getFullPath(Node parent, String child) {
-        final StringBuilder sb = new StringBuilder(NodeUtils.getFullPath(parent, SEPARATOR));
-        if (parent.hasBinaries() == false)
-            sb.append(SEPARATOR);
-        sb.append(child);
-        return sb.toString();
     }
 
     public OpenNode find(Node parent, String child) {
         final String path = getFullPath(parent, child);
         if (urlExists(path)) {
-            final UrlNode node = createNode(child);
+            final RemoteNode node = createNode(child);
             ContentHandle handle;
             if (hasContent(child))
                 handle = createContentHandle(parent, child, path, node);
@@ -86,10 +53,6 @@ public abstract class URLContentStore implements ContentStore, StructureBuilder 
         } else {
             return null;
         }
-    }
-
-    protected UrlNode createNode(String label) {
-        return new UrlNode(label);
     }
 
     protected abstract ContentHandle createContentHandle(Node parent, String child, String path, Node node);
@@ -124,48 +87,4 @@ public abstract class URLContentStore implements ContentStore, StructureBuilder 
     }
 
     protected abstract boolean urlExists(URL url);
-
-    protected boolean hasContent(String child) {
-        for (String suffix : suffixes)
-            if (child.endsWith(suffix))
-                return true;
-        return false;
-    }
-
-    protected static class UrlNode extends DefaultNode {
-        public UrlNode(String label) {
-            super(label);
-        }
-
-        public boolean isRemote() {
-            return true;
-        }
-
-        public void setContentMarker() {
-            setHandle(HANDLE_MARKER);
-        }
-
-        public void setHandle(ContentHandle handle) {
-            super.setHandle(handle);
-        }
-    }
-
-    protected static class UrlRootNode extends UrlNode {
-        private final String root;
-        
-        public UrlRootNode(String root) {
-            super("");
-            this.root = root;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            return (obj == this);
-        }
-        
-        @Override
-        public String toString() {
-            return "UrlRootNode for "+root;
-        }
-    }
 }

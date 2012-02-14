@@ -20,6 +20,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.cmr.spi.StructureBuilder;
 
 import java.io.File;
 
@@ -59,6 +60,10 @@ public class MavenRepositoryHelper {
 
     public static ArtifactContextAdapter getMavenArtifactContextAdapter(String repositoryURL, Logger log) {
         return new MavenArtifactContextAdapter(new RemoteContentStore(repositoryURL, log).createRoot());
+    }
+
+    public static ArtifactContextAdapter getMavenArtifactContextAdapter(StructureBuilder structureBuilder) {
+        return new MavenArtifactContextAdapter(structureBuilder.createRoot());
     }
 
     private static class MavenArtifactContextAdapter extends AbstractArtifactContextAdapter {

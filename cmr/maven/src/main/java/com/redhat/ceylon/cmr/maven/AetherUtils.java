@@ -16,7 +16,9 @@
 
 package com.redhat.ceylon.cmr.maven;
 
+import com.redhat.ceylon.cmr.api.Logger;
 import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
+import org.jboss.shrinkwrap.resolver.api.ResolutionException;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 
 import java.io.File;
@@ -30,11 +32,22 @@ import java.io.File;
  */
 class AetherUtils {
 
+    private Logger log;
     private static MavenDependencyResolver resolver;
 
-    static File getDependency(String groupId, String artifactId, String version) {
-        final File[] files = getResolver().artifact(groupId + ":" + artifactId + ":" + version).exclusion("*").resolveAsFiles();
-        return (files != null && files.length == 1) ? files[0] : null;
+    AetherUtils(Logger log) {
+        this.log = log;
+    }
+
+    File getDependency(String groupId, String artifactId, String version) {
+        final String coordinates = groupId + ":" + artifactId + ":" + version;
+        try {
+            final File[] files = getResolver().artifact(coordinates).exclusion("*").resolveAsFiles();
+            return (files != null && files.length == 1) ? files[0] : null;
+        } catch (ResolutionException e) {
+            log.debug("Could not resolve artifact [" + coordinates + "] : " + e);
+            return null;
+        }
     }
 
     private static File getMavenSettings() {
