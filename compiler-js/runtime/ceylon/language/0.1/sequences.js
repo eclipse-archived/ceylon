@@ -285,3 +285,23 @@ exports.ArraySequence=ArraySequence;
 exports.Singleton=Singleton;
 exports.empty=$empty;
 exports.emptyIterator=emptyIterator;
+
+function JsCallableList(value) {
+    var that = new JsCallableList.$$;
+    that.value=value;
+    return that;
+}
+initType(JsCallableList, 'ceylon.language.JsCallableList', Callable);
+inheritProto(JsCallableList, Object$, '$Object$');
+inheritProto(JsCallableList, ArraySequence, '$ArraySequence$');
+var $JsCallableList = JsCallableList.$$;
+$JsCallableList.prototype.call = function() {
+    var rval = [];
+    for (var i = 0; i < this.value.length; i++) {
+        var c = this.value[i];
+        rval.push(c.call(arguments));
+    }
+    return ArraySequence(rval);
+}
+
+exports.JsCallableList=JsCallableList;

@@ -56,11 +56,9 @@ function Cloneable(wat) {
 }
 initType(Cloneable, 'ceylon.language.Cloneable');
 exports.Cloneable=Cloneable;
-function Callable(wat) {
-    return wat;
-}
-initType(Callable, 'ceylon.language.Callable');
-exports.Callable=Callable;
+
+#include callable.js
+
 function Castable(wat) {
     return wat;
 }
