@@ -48,7 +48,7 @@ public class AetherTestCase {
             Assert.assertNotNull(artifact);
             Assert.assertTrue(artifact.exists());
         } finally {
-            if (artifact.exists()) {
+            if (artifact != null && artifact.exists()) {
                 Assert.assertTrue(artifact.delete()); // delete this one
             }
         }
