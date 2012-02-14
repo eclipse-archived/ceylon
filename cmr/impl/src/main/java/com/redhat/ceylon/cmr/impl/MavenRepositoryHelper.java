@@ -32,11 +32,7 @@ import java.io.File;
 public class MavenRepositoryHelper {
 
     static File getMavenHome() {
-        File mvnHome = new File(System.getenv("MAVEN_HOME"), "repository");
-        if (mvnHome.exists())
-            return mvnHome;
-
-        mvnHome = new File(System.getProperty("user.home"), ".m2/repository");
+        File mvnHome = new File(System.getProperty("user.home"), ".m2/repository");
         if (mvnHome.exists())
             return mvnHome;
 
@@ -47,7 +43,7 @@ public class MavenRepositoryHelper {
                 return mvnHome;
         }
 
-        throw new IllegalArgumentException("No Maven home specified!");
+        throw new IllegalArgumentException("No Maven repository found!");
     }
 
     public static ArtifactContextAdapter getMavenArtifactContextAdapter() {
