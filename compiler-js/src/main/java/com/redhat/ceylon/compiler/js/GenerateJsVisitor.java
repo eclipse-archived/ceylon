@@ -1095,6 +1095,45 @@ public class GenerateJsVisitor extends Visitor
             out("}(");
 	        super.visit(that);
             out("))");
+    	} else if (that.getMemberOperator() instanceof SpreadOp) {
+    	    out("(function()");
+    	    beginBlock();
+    	    String tmplist = createTempVariable();
+    	    out("var ", tmplist, "=[];"); endLine();
+    	    String iter = createTempVariable();
+    	    out("var ", iter, "=");
+    	    super.visit(that);
+    	    out(".getIterator();"); endLine();
+    	    String elem = createTempVariable();
+    	    out("var ", elem, ";"); endLine();
+    	    out("while ((", elem, "=", iter, ".next()) !== ");
+    	    clAlias();
+    	    out(".getExhausted())");
+    	    beginBlock();
+    	    out(tmplist, ".push(");
+    	    if (that.getDeclaration() instanceof Method) {
+    	        clAlias();
+    	        out(".JsCallable(", elem, ",", elem, ".");
+                qualifiedMemberRHS(that);
+                out(")");
+    	    } else {
+                out(elem, ".");
+                qualifiedMemberRHS(that);
+    	    }
+            out(");");
+    	    endBlock();
+            out("return "); clAlias();
+            if (that.getDeclaration() instanceof Method) {
+                out(".JsCallableList(", tmplist, ").call(arguments);");
+            } else {
+                out(".ArraySequence(", tmplist, ");");
+            }
+    	    endBlock(false);
+    	    if (!(that.getDeclaration() instanceof Method)) {
+    	        out("()");
+    	    }
+    	    out(")");
+            that.addError("Spread OP not supported yet in JS");
     	} else {
             super.visit(that);
             out(".");
@@ -2258,4 +2297,5 @@ public class GenerateJsVisitor extends Visitor
             that.getSwitchCaseList().getElseClause().visit(this);
         }
     }
+
 }
