@@ -103,8 +103,58 @@ shared void numbers() {
     assert(add(-1,+2)==+1, "add(-1,+2)==+1");
     assert(add(1.5,-2.5)==-1.0, "add(1.5,-2.5)==-1.0");
     
+    assert(exp(2,2)==4, "exp(2,2)==4");
     assert(exp(1,2)==1, "exp(1,2)==1");
-    assert(exp(-1,+2)==+1, "exp(-1,+2)==+1");
+    assert(exp(0,2)==0, "exp(0,2)==0");
+    assert(exp(-1,2)==1, "exp(-1,2)==1");
+    assert(exp(-2,2)==4, "exp(-2,2)==4");
+    
+    assert(exp(2,1)==2, "exp(2,1)==2");
+    assert(exp(1,1)==1, "exp(1,1)==1");
+    assert(exp(0,1)==0, "exp(0,1)==0");
+    assert(exp(-1,1)==-1, "exp(-1,1)==-1");
+    assert(exp(-2,1)==-2, "exp(-2,1)==-2");
+    
+    assert(exp(2,0)==1, "exp(2,0)==2");
+    assert(exp(1,0)==1, "exp(1,0)==1");
+    assert(exp(0,0)==1, "exp(0,0)==0");
+    assert(exp(-1,0)==1, "exp(-1,0)==-1");
+    assert(exp(-2,0)==1, "exp(-2,0)==-2");
+    try { 
+        exp(2,-1);
+        fail("exp(2,-1) should throw");
+    } catch (Exception e) {}
+    assert(exp(1,-1)==1, "exp(1,-1)==1");
+    try {
+        exp(0,-1);
+        fail("exp(0,-1) should throw");
+    } catch (Exception e) {}
+    assert(exp(-1,-1)==-1, "exp(-1,-1)==-1");
+    try {
+        exp(-2,-1);
+        fail("exp(-2,-1) should throw");
+    } catch (Exception e) {}
+    
+    try {
+        exp(2,-2);
+        fail("exp(2,-2)==2 should throw");
+    } catch (Exception e) {}
+    assert(exp(1,-2)==1, "exp(1,-2)==1");
+    try {
+        exp(0,-2);
+        fail("exp(2,-1) should throw");
+    } catch (Exception e) {}
+    assert(exp(-1,-2)==1, "exp(-1,-2)==-1");
+    try {
+        exp(-2,-2);
+        fail("exp(-2,-2) should throw");
+    } catch (Exception e) {}
+    
+    Integer twoToPowerTen = 2*2*2*2*2*2*2*2*2*2;
+    assert(exp(2,10)==twoToPowerTen, "exp(2,10)==twoToPowerTen");
+    assert(exp(2,20)==twoToPowerTen*twoToPowerTen, "exp(2,30)==twoToPowerTen*twoToPowerTen");
+    assert(exp(2,30)==twoToPowerTen*twoToPowerTen*twoToPowerTen, "exp(2,30)==twoToPowerTen*twoToPowerTen*twoToPowerTen");
+    
     assert(exp(2.0,2.0)==4.0, "exp(2.0,2.0)==4.0");
     
     assert(addIntegers(2, 4)==6, "addIntegers(2, 4)==6");
