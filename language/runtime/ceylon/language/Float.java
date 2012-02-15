@@ -141,11 +141,10 @@ public final class Float
     @TypeInfo(value="ceylon.language.Integer")
     @Override
     public long getInteger() {
-        if (value < 9007199254740992L
-                && value > -9007199254740992L) {// 2**53
+        if (value >= Long.MIN_VALUE
+                && value <= Long.MAX_VALUE) {
             return (long)value;
-        }
-        // beyond 2**53 double's are unable to represent distinct integers 
+        } 
         throw new OverflowException();
     }
     

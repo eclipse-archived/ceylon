@@ -94,18 +94,18 @@ public class FloatTest {
         assertEquals(0, Float.instance(0.5).getInteger());
         assertEquals(0, Float.instance(-0.0).getInteger());
         assertEquals(0, Float.instance(-0.5).getInteger());
-        assertEquals(9007199254740991L, Float.instance(9007199254740991L).getInteger());
-        assertEquals(-9007199254740991L, Float.instance(-9007199254740991L).getInteger());
+        assertEquals(Long.MAX_VALUE, Float.instance(Long.MAX_VALUE).getInteger());
+        assertEquals(Long.MIN_VALUE, Float.instance(Long.MIN_VALUE).getInteger());
         
         try {
-            Float.instance(9007199254740992L).getInteger();
+            Float.instance(Math.nextUp(((double)Long.MAX_VALUE))).getInteger();
             fail("OverflowException expected");
         } catch (OverflowException e) {
             // Checking that this is thrown
         }
         
         try {
-            Float.instance(-9007199254740992L).getInteger();
+            Float.instance(Math.nextAfter((((double)Long.MIN_VALUE)), Double.NEGATIVE_INFINITY)).getInteger();
             fail("OverflowException expected");
         } catch (OverflowException e) {
             // Checking that this is thrown
