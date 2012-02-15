@@ -201,9 +201,9 @@ public class CeylonDocToolTest {
                 Pattern.compile("<a href='class_StubClass.StubInnerClass.html'>StubInnerClass</a>"));
         
         assertMatchInFile(destDir, "interface_StubClass.StubInnerInterface.html", 
-                Pattern.compile("Enclosing class: <a href='class_StubClass.html'>StubClass</a>"));
+                Pattern.compile("Enclosing class: <i class='icon-class'></i><a href='class_StubClass.html'>StubClass</a>"));
         assertMatchInFile(destDir, "class_StubClass.StubInnerClass.html", 
-                Pattern.compile("Enclosing class: <a href='class_StubClass.html'>StubClass</a>"));
+                Pattern.compile("Enclosing class: <i class='icon-class'></i><a href='class_StubClass.html'>StubClass</a>"));
         assertMatchInFile(destDir, "class_StubClass.StubInnerClass.html", 
                 Pattern.compile("Satisfied Interfaces: <a href='interface_StubClass.StubInnerInterface.html'>StubInnerInterface</a>"));
         
