@@ -1129,25 +1129,16 @@ public class GenerateJsVisitor extends Visitor
             out(");");
     	    endBlock();
     	    //Gather arguments to pass to the callable
-    	    String tmpargs = isMethod ? createTempVariable() : null;
-    	    if (isMethod) {
-    	        out("var ", tmpargs, "=[];"); endLine();
-    	        out("for (var i=0; i<arguments.length;i++)"); beginBlock();
-    	        out(tmpargs, ".push(arguments[i]);");
-    	        endBlock();
-    	    }
     	    //Return the array of values or a Callable with the arguments
             out("return "); clAlias();
             if (isMethod) {
-                out(".JsCallableList(", tmplist, ").call(", tmpargs, ");");
+                out(".JsCallableList(", tmplist, ");");
             } else {
                 out(".ArraySequence(", tmplist, ");");
             }
     	    endBlock(false);
     	    //If it's not a method, call the function right away
-    	    if (!isMethod) {
-    	        out("()");
-    	    }
+	        out("()");
     	    out(")");
     	} else {
             super.visit(that);
