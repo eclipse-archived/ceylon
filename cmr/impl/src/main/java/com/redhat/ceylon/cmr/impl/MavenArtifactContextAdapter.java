@@ -18,6 +18,7 @@ package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.ArtifactResultType;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
@@ -45,6 +46,10 @@ public class MavenArtifactContextAdapter extends AbstractArtifactContextAdapter 
 
     public ArtifactResult getArtifactResult(Repository repository, final Node node) {
         return new ArtifactResult() {
+            public ArtifactResultType type() {
+                return ArtifactResultType.MAVEN;
+            }
+
             public File artifact() throws IOException {
                 return node.getContent(File.class);
             }

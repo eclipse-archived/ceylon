@@ -16,39 +16,13 @@
 
 package com.redhat.ceylon.cmr.api;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
 /**
- * Artifact result.
+ * Artifact result type.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface ArtifactResult {
-    /**
-     * The result type.
-     *
-     * @return the type
-     */
-    ArtifactResultType type();
-
-    /**
-     * The requested artifact.
-     *
-     * @return the requested artifact
-     * @throws IOException for any I/O error
-     */
-    File artifact() throws IOException;
-
-    /**
-     * Dependecies.
-     * <p/>
-     * They could be lazily recursively fetched
-     * or they could be fetched in one go.
-     *
-     * @return dependencies, empty list if none
-     * @throws IOException for any I/O error
-     */
-    List<ArtifactResult> dependecies() throws IOException;
+public enum ArtifactResultType {
+    CEYLON,
+    MAVEN,
+    OTHER
 }

@@ -42,6 +42,17 @@ public class DefaultResolver implements Resolver {
 
     public File[] resolve(ArtifactContext context) throws IOException {
         final ArtifactResult result = repository.getArtifactResult(context);
+        return flatten(result);
+    }
+
+    /**
+     * Flatten.
+     *
+     * @param result the artifact result
+     * @return all dependencies
+     * @throws IOException for any I/O error
+     */
+    public static File[] flatten(ArtifactResult result) throws IOException {
         if (result == null)
             return null;
 

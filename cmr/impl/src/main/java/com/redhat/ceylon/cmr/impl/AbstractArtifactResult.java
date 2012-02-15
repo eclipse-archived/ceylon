@@ -17,6 +17,7 @@
 package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.ArtifactResultType;
 import com.redhat.ceylon.cmr.api.Repository;
 import org.jboss.jandex.*;
 
@@ -43,6 +44,10 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
     protected AbstractArtifactResult(Repository repository, String name) {
         this.repository = repository;
         this.name = name;
+    }
+
+    public ArtifactResultType type() {
+        return ArtifactResultType.CEYLON;
     }
 
     public List<ArtifactResult> dependecies() throws IOException {

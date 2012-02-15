@@ -17,6 +17,7 @@
 package com.redhat.ceylon.cmr.maven;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.ArtifactResultType;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.impl.MavenArtifactContextAdapter;
@@ -63,6 +64,10 @@ public class AetherArtifactContextAdapter extends MavenArtifactContextAdapter {
             this.dependencies = dependencies;
         }
 
+        public ArtifactResultType type() {
+            return ArtifactResultType.MAVEN;
+        }
+
         public File artifact() throws IOException {
             return file;
         }
@@ -77,6 +82,10 @@ public class AetherArtifactContextAdapter extends MavenArtifactContextAdapter {
 
         private SingleArtifactResult(File file) {
             this.file = file;
+        }
+
+        public ArtifactResultType type() {
+            return ArtifactResultType.MAVEN;
         }
 
         public File artifact() throws IOException {
