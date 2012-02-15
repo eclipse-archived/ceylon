@@ -104,4 +104,27 @@ public class IntegerTest {
 		assertParseInteger(null, "-9223372036854775809");
 	}
 	
+	@Test
+    public void testConversionToInteger() {
+        assertEquals(0.0, Integer.instance(0).getFloat(), 0.0);
+        assertEquals(1.0, Integer.instance(1).getFloat(), 1.0);
+        assertEquals(9007199254740991.0, Integer.instance(9007199254740991L).getFloat(), 0.0);
+        assertEquals(-9007199254740991.0, Integer.instance(-9007199254740991L).getFloat(), 0.0);
+        
+        try {
+            Integer.instance(9007199254740992L).getFloat();
+            fail("OverflowException expected");
+        } catch (OverflowException e) {
+            // Checking that this is thrown
+        }
+        
+        try {
+            Integer.instance(-9007199254740992L).getFloat();
+            fail("OverflowException expected");
+        } catch (OverflowException e) {
+            // Checking that this is thrown
+        }
+
+    }
+	
 }
