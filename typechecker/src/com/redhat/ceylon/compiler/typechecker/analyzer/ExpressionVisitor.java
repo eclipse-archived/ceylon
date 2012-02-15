@@ -1930,18 +1930,48 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void visitBitwiseOperator(Tree.BinaryOperatorExpression that) {
-        TypeDeclaration sd = unit.getSlotsDeclaration();
+    private void visitSetOperator(Tree.BitwiseOp that) {
+        //TypeDeclaration sd = unit.getSetDeclaration();
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            ProducedType ut = checkOperandTypes(lhst, rhst, sd, that, 
-                    "operand expressions must be compatible");
-            if (ut!=null) {
-                ProducedType t = ut.getTypeArguments().isEmpty() ? 
-                        ut : ut.getTypeArgumentList().get(0);
-                that.setTypeModel(t);
+            checkAssignable(lhst, unit.getSetType(unit.getObjectDeclaration().getType()), 
+                    that.getLeftTerm(), "set operand expression must be a set");
+            checkAssignable(lhst, unit.getSetType(unit.getObjectDeclaration().getType()), 
+                    that.getRightTerm(), "set operand expression must be a set");
+            ProducedType lhset = unit.getSetElementType(lhst);
+            ProducedType rhset = unit.getSetElementType(rhst);
+            ProducedType et;
+            if (that instanceof Tree.IntersectionOp) {
+                et = intersectionType(rhset, lhset, unit);
             }
+            else if (that instanceof Tree.ComplementOp) {
+                et = lhset;
+            }
+            else {
+                et = unionType(rhset, lhset, unit);
+            }            
+            that.setTypeModel(unit.getSetType(et));
+        }
+    }
+
+    private void visitSetAssignmentOperator(Tree.BitwiseAssignmentOp that) {
+        //TypeDeclaration sd = unit.getSetDeclaration();
+        ProducedType lhst = leftType(that);
+        ProducedType rhst = rightType(that);
+        if ( rhst!=null && lhst!=null ) {
+            checkAssignable(lhst, unit.getSetType(unit.getObjectDeclaration().getType()), 
+                    that.getLeftTerm(), "set operand expression must be a set");
+            checkAssignable(lhst, unit.getSetType(unit.getObjectDeclaration().getType()), 
+                    that.getRightTerm(), "set operand expression must be a set");
+            ProducedType lhset = unit.getSetElementType(lhst);
+            ProducedType rhset = unit.getSetElementType(rhst);
+            if (that instanceof Tree.UnionAssignOp ||
+                    that instanceof Tree.XorAssignOp) {
+                checkAssignable(rhset, lhset, that.getRightTerm(), 
+                        "resulting set element type must be assignable to to declared set element type");
+            }            
+            that.setTypeModel(unit.getSetType(lhst)); //in theory, we could make this narrower
         }
     }
 
@@ -2147,7 +2177,7 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.BitwiseOp that) {
         super.visit(that);
-        visitBitwiseOperator(that);
+        visitSetOperator(that);
     }
 
     @Override public void visit(Tree.LogicalOp that) {
@@ -2225,7 +2255,7 @@ public class ExpressionVisitor extends Visitor {
         
     @Override public void visit(Tree.BitwiseAssignmentOp that) {
         super.visit(that);
-        visitBitwiseOperator(that);
+        visitSetAssignmentOperator(that);
         checkAssignability(that.getLeftTerm(), that);
     }
         

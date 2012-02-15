@@ -243,8 +243,8 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Invertable");
     }
         
-    public Interface getSlotsDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Slots");
+    public Interface getSetDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("Set");
     }
         
     public Interface getFixedSlotsDeclaration() {
@@ -391,6 +391,10 @@ public class Unit {
         return producedType(getIterableDeclaration(), et);
     }
 
+    public ProducedType getSetType(ProducedType et) {
+        return producedType(getSetDeclaration(), et);
+    }
+
     /**
      * Returns a ProducedType corresponding to {@code Iterator<T>}
      * @param et The ProducedType corresponding to {@code T}
@@ -439,6 +443,16 @@ public class Unit {
 
     public ProducedType getIteratedType(ProducedType type) {
         ProducedType st = type.getSupertype(getIterableDeclaration());
+        if (st!=null && st.getTypeArguments().size()==1) {
+            return st.getTypeArgumentList().get(0);
+        }
+        else {
+            return null;
+        }
+    }
+
+    public ProducedType getSetElementType(ProducedType type) {
+        ProducedType st = type.getSupertype(getSetDeclaration());
         if (st!=null && st.getTypeArguments().size()==1) {
             return st.getTypeArgumentList().get(0);
         }

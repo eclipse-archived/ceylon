@@ -271,4 +271,14 @@ class Operators() {
 
     }
     
+    Set<String> ss = bottom;
+    Set<Integer> si = bottom;
+    Set<Object> so = bottom;
+    @type["Set<String|Integer>"] value sr0 = ss|si;
+    @type["Set<String|Integer>"] value sr1 = ss^si;
+    @type["Set<Bottom>"] value sr2 = ss&si;
+    @type["Set<String>"] value sr3 = ss~si;
+    @type["Set<String>"] value sr4 = ss&so;
+    @type["Set<Object>"] value sr5 = ss|so;
+    
 }
