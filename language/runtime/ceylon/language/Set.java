@@ -13,10 +13,9 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT, 
                                satisfies = "ceylon.language.Object"))
 @SatisfiedTypes({"ceylon.language.Collection<Element>",
-                 "ceylon.language.Slots<ceylon.language.Set<ceylon.language.Object>>",
                  "ceylon.language.Cloneable<ceylon.language.Set<Element>>"})
 public interface Set<Element> 
-        extends Collection<Element>, Slots<Set<Object>> {
+        extends Collection<Element> {
 
     public boolean superset(@TypeInfo("ceylon.language.Set<ceylon.language.Object>") 
                             @Name("set") Set<? extends java.lang.Object> set);
