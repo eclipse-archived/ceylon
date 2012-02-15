@@ -10,10 +10,10 @@
     <property name="test.reports" location="${build.dir}/test-reports"/>
 
     <!-- The Java source files for the module-resolver -->
-    <property name="cmr-api.src" location="${basedir}/api/src/main/java"/> 
-    <property name="cmr-impl.src" location="${basedir}/impl/src/main/java"/> 
-    <property name="cmr-spi.src" location="${basedir}/spi/src/main/java"/> 
-    <property name="cmr-webdav.src" location="${basedir}/webdav/src/main/java"/> 
+    <property name="cmr-api.src" location="${basedir}/api/src/main/java"/>
+    <property name="cmr-impl.src" location="${basedir}/impl/src/main/java"/>
+    <property name="cmr-spi.src" location="${basedir}/spi/src/main/java"/>
+    <property name="cmr-webdav.src" location="${basedir}/webdav/src/main/java"/>
 
     <!-- jar generated -->
     <property name="module-resolver.jar" location="${build.lib}/module-resolver.jar"/>
@@ -25,28 +25,32 @@
 
     <!-- Local repository -->
     <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
-    
+
     <!-- ceylon.module-resolver -->
     <property name="module.module-resolver.dir" value="com/redhat/ceylon/module-resolver"/>
     <property name="module.module-resolver.name" value="com.redhat.ceylon.module-resolver"/>
 
     <!-- module archives -->
-    <property name="ceylon.module-resolver.dir" value="${module.module-resolver.dir}/${module.module-resolver.version}"/>
-    <property name="ceylon.module-resolver.src" value="${ceylon.module-resolver.dir}/${module.module-resolver.name}-${module.module-resolver.version}.src"/>
-    <property name="ceylon.module-resolver.jar" value="${ceylon.module-resolver.dir}/${module.module-resolver.name}-${module.module-resolver.version}.jar"/>
+    <property name="ceylon.module-resolver.dir"
+              value="${module.module-resolver.dir}/${module.module-resolver.version}"/>
+    <property name="ceylon.module-resolver.src"
+              value="${ceylon.module-resolver.dir}/${module.module-resolver.name}-${module.module-resolver.version}.src"/>
+    <property name="ceylon.module-resolver.jar"
+              value="${ceylon.module-resolver.dir}/${module.module-resolver.name}-${module.module-resolver.version}.jar"/>
     <property name="ceylon.module-resolver.repo" value="${ceylon.repo.dir}/${ceylon.module-resolver.dir}"/>
     <property name="ceylon.module-resolver.dist" value="${build.dist}/${ceylon.module-resolver.dir}"/>
 
     <path id="compiler.classpath">
+        <pathelement path="${jandex.lib}"/>
         <pathelement path="${sardine.lib}"/>
     </path>
-	
+
     <path id="test.build.classpath">
         <path refid="compiler.classpath"/>
         <pathelement path="${build.classes}"/>
         <pathelement path="${junit.lib}"/>
     </path>
-    
+
     <path id="test.run.classpath">
         <path refid="test.build.classpath"/>
         <pathelement path="${cmr-impl-test.resources}"/>
@@ -56,10 +60,10 @@
         <pathelement path="${commons-logging.lib}"/>
         <pathelement path="${slf4j.lib}"/>
     </path>
-    
+
     <!-- ################################################################## -->
     <!-- constant to declare a file binary for checksumsum -->
-    <property name="checksum.binary-prefix" value=" *" />
+    <property name="checksum.binary-prefix" value=" *"/>
     <!-- Helper target, used to create a sha1 checksum file  -->
     <!-- Requires 'file' as a parameter. -->
     <target name="sha1sum">
@@ -96,11 +100,11 @@
             </fileset>
         </zip>
         <antcall target="sha1sum">
-            <param name="file" value="${build.dist}/${ceylon.module-resolver.src}" />
+            <param name="file" value="${build.dist}/${ceylon.module-resolver.src}"/>
         </antcall>
         <copy file="${module-resolver.jar}" tofile="${build.dist}/${ceylon.module-resolver.jar}"/>
         <antcall target="sha1sum">
-            <param name="file" value="${build.dist}/${ceylon.module-resolver.jar}" />
+            <param name="file" value="${build.dist}/${ceylon.module-resolver.jar}"/>
         </antcall>
     </target>
 
@@ -125,28 +129,28 @@
 
     <!-- Tasks related to building the module-resolver -->
     <!-- Rule to build module-resolver classes from their Java sources -->
-    <target name="module-resolver.classes" >
+    <target name="module-resolver.classes">
         <mkdir dir="${build.classes}"/>
         <javac debug="true"
-            srcdir="${cmr-spi.src}"
-            destdir="${build.classes}"
-            classpathref="compiler.classpath"
-            includeantruntime="false"/>
+               srcdir="${cmr-spi.src}"
+               destdir="${build.classes}"
+               classpathref="compiler.classpath"
+               includeantruntime="false"/>
         <javac debug="true"
-            srcdir="${cmr-api.src}"
-            destdir="${build.classes}"
-            classpathref="compiler.classpath"
-            includeantruntime="false"/>
+               srcdir="${cmr-api.src}"
+               destdir="${build.classes}"
+               classpathref="compiler.classpath"
+               includeantruntime="false"/>
         <javac debug="true"
-            srcdir="${cmr-impl.src}"
-            destdir="${build.classes}"
-            classpathref="compiler.classpath"
-            includeantruntime="false"/>
+               srcdir="${cmr-impl.src}"
+               destdir="${build.classes}"
+               classpathref="compiler.classpath"
+               includeantruntime="false"/>
         <javac debug="true"
-            srcdir="${cmr-webdav.src}"
-            destdir="${build.classes}"
-            classpathref="compiler.classpath"
-            includeantruntime="false"/>
+               srcdir="${cmr-webdav.src}"
+               destdir="${build.classes}"
+               classpathref="compiler.classpath"
+               includeantruntime="false"/>
     </target>
 
     <!-- Rule to build module-resolver jar -->
@@ -160,16 +164,16 @@
 
     <!-- Rule to compile and test -->
     <target name="build" depends="module-resolver.jar"/>
-	
+
     <target name="compile.tests" depends="build">
         <mkdir dir="${build.test}"/>
         <javac debug="true"
-            srcdir="${cmr-impl-test.src}"
-            destdir="${build.test}"
-            classpathref="test.build.classpath"
-            includeantruntime="false"/>
+               srcdir="${cmr-impl-test.src}"
+               destdir="${build.test}"
+               classpathref="test.build.classpath"
+               includeantruntime="false"/>
     </target>
-      
+
     <target name="test" depends="compile.tests" description="Runs the JUnit tests">
         <mkdir dir="${test.reports}"/>
         <junit printsummary="yes" haltonfailure="no">
@@ -181,7 +185,7 @@
                 </fileset>
             </batchtest>
         </junit>
-         
+
         <junitreport todir="${test.reports}">
             <fileset dir="${test.reports}">
                 <include name="TEST-*.xml"/>
