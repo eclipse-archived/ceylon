@@ -40,6 +40,11 @@ public class DefaultResolver implements Resolver {
         this.repository = repository;
     }
 
+    public File[] resolve(String name, String version) throws IOException {
+        final ArtifactContext context = new ArtifactContext(name, version);
+        return resolve(context);
+    }
+
     public File[] resolve(ArtifactContext context) throws IOException {
         final ArtifactResult result = repository.getArtifactResult(context);
         return flatten(result);

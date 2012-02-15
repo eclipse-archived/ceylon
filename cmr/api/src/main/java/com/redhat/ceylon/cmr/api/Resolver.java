@@ -29,6 +29,16 @@ public interface Resolver {
     /**
      * Resolve dependencies for the context.
      *
+     * @param name    the module name
+     * @param version the module version
+     * @return all dependencies, null if they cannot be found
+     * @throws IOException for any I/O error
+     */
+    File[] resolve(String name, String version) throws IOException;
+
+    /**
+     * Resolve dependencies for the context.
+     *
      * @param context the artifact context to resolve
      * @return all dependencies, null if they cannot be found
      * @throws IOException for any I/O error
