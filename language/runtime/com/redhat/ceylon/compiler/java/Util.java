@@ -15,15 +15,6 @@ import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 public class Util {
     
     /**
-     * Returns true if the given object satisfies ceylon.language.Equality
-     */
-    /*public static boolean isEquality(java.lang.Object o){
-        if (extendsClass(o, "ceylon.language.IdentifiableObject"))
-            return true;
-        return satisfiesInterface(o, "ceylon.language.Equality");
-    }*/
-    
-    /**
      * Returns true if the given object extends ceylon.language.IdentifiableObject
      */
     public static boolean isIdentifiableObject(java.lang.Object o){
