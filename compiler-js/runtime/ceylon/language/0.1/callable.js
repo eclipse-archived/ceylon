@@ -6,46 +6,40 @@ exports.Callable=Callable;
 
 //This is used for plain method references
 function JsCallable(o,f) {
-    var that = new JsCallable.$$;
-    that.o=o;
-    that.f = f;
-    return that;
-}
-initType(JsCallable, 'ceylon.language.JsCallable', Callable);
-var $JsCallable = JsCallable.$$;
-$JsCallable.prototype.getString = function() { return String$('ceylon.language.JsCallable'); }
-$JsCallable.prototype.call = function() {
-    var al=[];
-    if (arguments !== undefined && arguments.length > 0) {
-        for (var i=0; i<arguments.length;i++) {
-            al.push(arguments[i]);
+    var c = function() {
+        if (o === null) return null;
+        var al=[];
+        if (arguments !== undefined && arguments.length > 0) {
+            for (var i=0; i<arguments.length;i++) {
+                al.push(arguments[i]);
+            }
         }
-    }
-    return this.f.apply(this.o,al);
+        return f.apply(o,al);
+    };
+    c.getString = function() { return String$('ceylon.language.JsCallable'); }
+    initType(c, 'ceylon.language.JsCallable', Callable);
+    return c;
 }
 
 //This is used for spread method references
 function JsCallableList(value) {
-    var that = new JsCallableList.$$;
-    that.value=value;
-    return that;
-}
-initType(JsCallableList, 'ceylon.language.JsCallableList', Callable);
-inheritProto(JsCallableList, Object$, '$Object$');
-var $JsCallableList = JsCallableList.$$;
-$JsCallableList.prototype.call = function() {
-    var al=[];
-    if (arguments !== undefined && arguments.length > 0) {
-        for (var i=0; i<arguments.length;i++) {
-            al.push(arguments[i]);
+    var c = function() {
+        var al=[];
+        if (arguments !== undefined && arguments.length > 0) {
+            for (var i=0; i<arguments.length;i++) {
+                al.push(arguments[i]);
+            }
         }
-    }
-    var rval = [];
-    for (var i = 0; i < this.value.length; i++) {
-        var c = this.value[i];
-        rval.push(c.f.apply(c.o, al));
-    }
-    return ArraySequence(rval);
+        var rval = [];
+        for (var i = 0; i < value.length; i++) {
+            var c = value[i];
+            rval.push(c.f.apply(c.o, al));
+        }
+        return ArraySequence(rval);
+    };
+    c.getString = function() { return String$('ceylon.language.JsCallable'); }
+    initType(c, 'ceylon.language.JsCallableList', Callable);
+    return c;
 }
 
 exports.JsCallableList=JsCallableList;
