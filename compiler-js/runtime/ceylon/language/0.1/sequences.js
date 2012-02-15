@@ -2,10 +2,10 @@ function Sequence($$sequence) {
     return $$sequence;
 }
 initType(Sequence, 'ceylon.language.Sequence', List, Some, Cloneable, Ranged);
-var $Sequence = Sequence.$$;
-$Sequence.prototype.getEmpty = function() { return $false }
-$Sequence.prototype.getSize = function() { return Integer(this.getLastIndex()+1) }
-$Sequence.prototype.defines = function(index) { return Boolean$(index.value<=this.getLastIndex().value) }
+var Sequence$proto = Sequence.$$.prototype;
+Sequence$proto.getEmpty = function() { return $false }
+Sequence$proto.getSize = function() { return Integer(this.getLastIndex()+1) }
+Sequence$proto.defines = function(index) { return Boolean$(index.value<=this.getLastIndex().value) }
 
 function Empty() {
     var that = new Empty.$$;
@@ -13,24 +13,24 @@ function Empty() {
     return that;
 }
 initType(Empty, 'ceylon.language.Empty', List, None, Ranged, Cloneable);
-var $Empty = Empty.$$;
-$Empty.prototype.getEmpty = function() { return $true; }
-$Empty.prototype.defines = function(x) { return $false; }
-$Empty.prototype.getKeys = function() { return IntCategory(this); }
-$Empty.prototype.definesEvery = function(x) { return $false; }
-$Empty.prototype.definesAny = function(x) { return $false; }
-$Empty.prototype.items = function(x) { return this; }
-$Empty.prototype.getSize = function() { return Integer(0); }
-$Empty.prototype.item = function(x) { return null; }
-$Empty.prototype.getFirst = function() { return null; }
-$Empty.prototype.segment = function(a,b) { return this; }
-$Empty.prototype.span = function(a,b) { return this; }
-$Empty.prototype.getIterator = function() { return emptyIterator; }
-$Empty.prototype.getString = function() { return String$("{}"); }
-$Empty.prototype.contains = function(x) { return $false; }
-$Empty.prototype.getLastIndex = function() { return null; }
-$Empty.prototype.getClone = function() { return this; }
-$Empty.prototype.count = function(x) { return Integer(0); }
+var Empty$proto = Empty.$$.prototype;
+Empty$proto.getEmpty = function() { return $true; }
+Empty$proto.defines = function(x) { return $false; }
+Empty$proto.getKeys = function() { return IntCategory(this); }
+Empty$proto.definesEvery = function(x) { return $false; }
+Empty$proto.definesAny = function(x) { return $false; }
+Empty$proto.items = function(x) { return this; }
+Empty$proto.getSize = function() { return Integer(0); }
+Empty$proto.item = function(x) { return null; }
+Empty$proto.getFirst = function() { return null; }
+Empty$proto.segment = function(a,b) { return this; }
+Empty$proto.span = function(a,b) { return this; }
+Empty$proto.getIterator = function() { return emptyIterator; }
+Empty$proto.getString = function() { return String$("{}"); }
+Empty$proto.contains = function(x) { return $false; }
+Empty$proto.getLastIndex = function() { return null; }
+Empty$proto.getClone = function() { return this; }
+Empty$proto.count = function(x) { return Integer(0); }
 
 $empty = Empty();
 
@@ -40,8 +40,8 @@ function EmptyIterator() {
 }
 initType(EmptyIterator, 'ceylon.language.EmptyIterator', IdentifiableObject, Iterator);
 inheritProto(EmptyIterator, IdentifiableObject, '$IdentifiableObject$');
-var $EmptyIterator = EmptyIterator.$$;
-$EmptyIterator.prototype.next = function() { return $finished; }
+var EmptyIterator$proto = EmptyIterator.$$.prototype;
+EmptyIterator$proto.next = function() { return $finished; }
 emptyIterator=EmptyIterator();
 
 function ArraySequence(value) {
@@ -52,8 +52,8 @@ function ArraySequence(value) {
 initType(ArraySequence, 'ceylon.language.ArraySequence', IdentifiableObject, Sequence);
 inheritProto(ArraySequence, IdentifiableObject, '$IdentifiableObject$');
 inheritProto(ArraySequence, Sequence, '$Sequence$');
-var $ArraySequence = ArraySequence.$$;
-$ArraySequence.prototype.getString = function() {
+var ArraySequence$proto = ArraySequence.$$.prototype;
+ArraySequence$proto.getString = function() {
 	if (this.value.length === 0) {
 		return String$("{}");
 	}
@@ -70,17 +70,17 @@ $ArraySequence.prototype.getString = function() {
     }
     return String$(desc +" }");
 }
-$ArraySequence.prototype.item = function(index) {
+ArraySequence$proto.item = function(index) {
     var result = this.value[index.value];
     return result!==undefined ? result:null;
 }
-$ArraySequence.prototype.getSize = function() { return Integer(this.value.length) }
-$ArraySequence.prototype.getEmpty = function() { return this.value.length > 0 ? getFalse() : getTrue(); }
-$ArraySequence.prototype.getLastIndex = function() { return this.getSize().getPredecessor(); }
-$ArraySequence.prototype.getFirst = function() { return this.item(Integer(0)); }
-$ArraySequence.prototype.getLast = function() { return this.item(this.getLastIndex()); }
-$ArraySequence.prototype.defines = function(idx) { return Boolean$(idx.compare(this.getSize()) === smaller); }
-$ArraySequence.prototype.segment = function(from, len) {
+ArraySequence$proto.getSize = function() { return Integer(this.value.length) }
+ArraySequence$proto.getEmpty = function() { return this.value.length > 0 ? getFalse() : getTrue(); }
+ArraySequence$proto.getLastIndex = function() { return this.getSize().getPredecessor(); }
+ArraySequence$proto.getFirst = function() { return this.item(Integer(0)); }
+ArraySequence$proto.getLast = function() { return this.item(this.getLastIndex()); }
+ArraySequence$proto.defines = function(idx) { return Boolean$(idx.compare(this.getSize()) === smaller); }
+ArraySequence$proto.segment = function(from, len) {
     var seq = [];
     if (len.compare(Integer(0)) === larger) {
         var stop = from.plus(len).value;
@@ -91,7 +91,7 @@ $ArraySequence.prototype.segment = function(from, len) {
     }
     return ArraySequence(seq);
 }
-$ArraySequence.prototype.span = function(from, to) {
+ArraySequence$proto.span = function(from, to) {
     var fromIndex = largest(Integer(0),from).value;
     var toIndex = to === getNull() || to === undefined ? this.getLastIndex().value : smallest(to, this.getLastIndex()).value;
     var seq = [];
@@ -109,8 +109,8 @@ $ArraySequence.prototype.span = function(from, to) {
     }
     return ArraySequence(seq);
 }
-$ArraySequence.prototype.getRest = function() { return ArraySequence(this.value.slice(1)); }
-$ArraySequence.prototype.items = function(keys) {
+ArraySequence$proto.getRest = function() { return ArraySequence(this.value.slice(1)); }
+ArraySequence$proto.items = function(keys) {
     var seq = [];
     for (var i = 0; i < keys.getSize().value; i++) {
         var key = keys.item(Integer(i));
@@ -120,7 +120,7 @@ $ArraySequence.prototype.items = function(keys) {
     }
     return ArraySequence(seq);
 }
-$ArraySequence.prototype.definesEvery = function(keys) {
+ArraySequence$proto.definesEvery = function(keys) {
     for (var i = 0; i < keys.getSize().value; i++) {
         if (this.defines(keys.item(Integer(i))) === getFalse()) {
             return getFalse();
@@ -128,7 +128,7 @@ $ArraySequence.prototype.definesEvery = function(keys) {
     }
     return getTrue();
 }
-$ArraySequence.prototype.definesAny = function(keys) {
+ArraySequence$proto.definesAny = function(keys) {
     for (var i = 0; i < keys.getSize().value; i++) {
         if (this.defines(keys.item(Integer(i))) === getTrue()) {
             return getTrue();
@@ -136,7 +136,7 @@ $ArraySequence.prototype.definesAny = function(keys) {
     }
     return getFalse();
 }
-$ArraySequence.prototype.equals = function(other) {
+ArraySequence$proto.equals = function(other) {
     if (other && other.getSize().equals(this.getSize()) === getTrue()) {
         for (var i = 0; i < this.getSize().value; i++) {
             var mine = this.item(Integer(i));
@@ -149,9 +149,9 @@ $ArraySequence.prototype.equals = function(other) {
     }
     return getFalse();
 }
-$ArraySequence.prototype.getIterator = function() { return ArrayIterator(this.value); }
-$ArraySequence.prototype.getKeys = function() { return IntCategory(this); }
-$ArraySequence.prototype.contains = function(elem) {
+ArraySequence$proto.getIterator = function() { return ArrayIterator(this.value); }
+ArraySequence$proto.getKeys = function() { return IntCategory(this); }
+ArraySequence$proto.contains = function(elem) {
     for (var i=0; i<this.value.length; i++) {
         if (elem.equals(this.value[i])) {
             return $true;
@@ -167,18 +167,18 @@ function IntCategory(seq) {
 }
 initType(IntCategory, 'ceylon.language.IntCategory', IdentifiableObject, Category);
 inheritProto(IntCategory, IdentifiableObject, '$IdentifiableObject$');
-var $IntCategory = IntCategory.$$;
-$IntCategory.prototype.contains = function(k) {
+var IntCategory$proto = IntCategory.$$.prototype;
+IntCategory$proto.contains = function(k) {
     return this.seq.defines(k);
 }
-$IntCategory.prototype.containsEvery = function(keys) {
+IntCategory$proto.containsEvery = function(keys) {
     var all = true;
     for (var i = 0; i < this.seq.value.length; i++) {
         all = all && this.seq.defines(keys.item(Integer(i))).value;
     }
     return Boolean$(all);
 }
-$IntCategory.prototype.containsAny = function(keys) {
+IntCategory$proto.containsAny = function(keys) {
     for (var i = 0; i < this.seq.value.length; i++) {
         if (this.seq.defines(keys.item(Integer(i))) == $true) {
             return $true;
@@ -196,8 +196,8 @@ function ArrayIterator(arr) {
 }
 initType(ArrayIterator, 'ceylon.language.ArrayIterator', IdentifiableObject, Iterator);
 inheritProto(ArrayIterator, IdentifiableObject, '$IdentifiableObject$');
-var $ArrayIterator = ArrayIterator.$$;
-$ArrayIterator.prototype.next = function() {
+var ArrayIterator$proto = ArrayIterator.$$.prototype;
+ArrayIterator$proto.next = function() {
     if (this.current === $finished) {
         return $finished;
     }
@@ -213,18 +213,18 @@ function SequenceBuilder() {
 }
 initType(SequenceBuilder, 'ceylon.language.SequenceBuilder', IdentifiableObject, Sized);
 inheritProto(SequenceBuilder, IdentifiableObject, '$IdentifiableObject$');
-var $SequenceBuilder = SequenceBuilder.$$;
-$SequenceBuilder.prototype.getSequence = function() { return ArraySequence(this.seq); }
-$SequenceBuilder.prototype.append = function(e) { this.seq.push(e); }
-$SequenceBuilder.prototype.appendAll = function(arr) {
+var SequenceBuilder$proto = SequenceBuilder.$$.prototype;
+SequenceBuilder$proto.getSequence = function() { return ArraySequence(this.seq); }
+SequenceBuilder$proto.append = function(e) { this.seq.push(e); }
+SequenceBuilder$proto.appendAll = function(arr) {
 	if (arr && arr.value && arr.value.length) {
         for (var i = 0; i < arr.value.length; i++) {
             this.seq.push(arr.value[i]);
         }
     }
 }
-$SequenceBuilder.prototype.getSize = function() { return Integer(this.seq.length); }
-$SequenceBuilder.prototype.getEmpty = function() { return Boolean$(this.seq.length === 0); }
+SequenceBuilder$proto.getSize = function() { return Integer(this.seq.length); }
+SequenceBuilder$proto.getEmpty = function() { return Boolean$(this.seq.length === 0); }
 
 function SequenceAppender(other) {
 	var that = new SequenceAppender.$$;
@@ -244,30 +244,30 @@ function Singleton(elem) {
 initType(Singleton, 'ceylon.language.Singleton', Object$, Sequence);
 inheritProto(Singleton, Object$, '$Object$');
 inheritProto(Singleton, Sequence, '$Sequence$');
-var $Singleton = Singleton.$$;
-$Singleton.prototype.getString = function() { return String$("{ " + this.elem.getString().value + " }") }
-$Singleton.prototype.item = function(index) {
+var Singleton$proto = Singleton.$$.prototype;
+Singleton$proto.getString = function() { return String$("{ " + this.elem.getString().value + " }") }
+Singleton$proto.item = function(index) {
     return index.value===0 ? this.value[0] : null;
 }
-$Singleton.prototype.getSize = function() { return Integer(1); }
-$Singleton.prototype.getLastIndex = function() { return Integer(0); }
-$Singleton.prototype.getFirst = function() { return this.elem; }
-$Singleton.prototype.getLast = function() { return this.elem; }
-$Singleton.prototype.getEmpty = function() { return $false; }
-$Singleton.prototype.getRest = function() { return $empty; }
-$Singleton.prototype.defines = function(idx) { return idx.equals(Integer(0)); }
-$Singleton.prototype.getKeys = function() { return IntCategory(this); }
-$Singleton.prototype.span = function(from, to) {
+Singleton$proto.getSize = function() { return Integer(1); }
+Singleton$proto.getLastIndex = function() { return Integer(0); }
+Singleton$proto.getFirst = function() { return this.elem; }
+Singleton$proto.getLast = function() { return this.elem; }
+Singleton$proto.getEmpty = function() { return $false; }
+Singleton$proto.getRest = function() { return $empty; }
+Singleton$proto.defines = function(idx) { return idx.equals(Integer(0)); }
+Singleton$proto.getKeys = function() { return IntCategory(this); }
+Singleton$proto.span = function(from, to) {
 	if (to === undefined || to === null) to = from;
     return (from.equals(Integer(0)) === getTrue() || to.equals(Integer(0)) === getTrue()) ? this : $empty;
 }
-$Singleton.prototype.segment = function(idx, len) {
+Singleton$proto.segment = function(idx, len) {
     if (idx.equals(Integer(0)) === getTrue() && len.compare(Integer(0)) === larger) {
         return this;
     }
     return $empty;
 }
-$Singleton.prototype.getIterator = function() { return SingletonIterator(this.elem); }
+Singleton$proto.getIterator = function() { return SingletonIterator(this.elem); }
 
 function SingletonIterator(elem) {
     var that = new SingletonIterator.$$;
@@ -277,8 +277,8 @@ function SingletonIterator(elem) {
 }
 initType(SingletonIterator, 'ceylon.language.SingletonIterator', IdentifiableObject, Iterator);
 inheritProto(SingletonIterator, IdentifiableObject, '$IdentifiableObject$');
-var $SingletonIterator = SingletonIterator.$$;
-$SingletonIterator.prototype.next = function() {
+var $SingletonIterator$proto = SingletonIterator.$$.prototype;
+$SingletonIterator$proto.next = function() {
     if (this.done) {
         return $finished;
     }
