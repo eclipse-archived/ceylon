@@ -17,14 +17,12 @@
 
 package ceylon.modules.api.runtime;
 
-import java.util.logging.Logger;
-
 import ceylon.modules.CeylonRuntimeException;
 import ceylon.modules.Configuration;
 import ceylon.modules.spi.Constants;
-
-import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.compiler.java.metadata.Module;
+
+import java.util.logging.Logger;
 
 /**
  * Abstract Ceylon Modules runtime.
@@ -98,9 +96,9 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         }
 
         String runClassName = conf.run;
-        if (runClassName == null || runClassName.isEmpty()){
+        if (runClassName == null || runClassName.isEmpty()) {
             // "default" is not a package name
-            if(name.equals(Constants.DEFAULT.toString()))
+            if (name.equals(Constants.DEFAULT.toString()))
                 runClassName = RUN_INFO_CLASS;
             else
                 runClassName = name + "." + RUN_INFO_CLASS;
