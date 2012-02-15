@@ -1,6 +1,7 @@
 package ceylon.language;
 
 import static ceylon.language.parseFloat.parseFloat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -86,6 +87,50 @@ public class FloatTest {
         assertParseFloat(null, "1.0e1e1");
         assertParseFloat(null, "1.0e1k");
         assertParseFloat(null, "1.0kk");
+    }
+    
+    @Test
+    public void testConversionToInteger() {
+        assertEquals(0, Float.instance(0.5).getInteger());
+        assertEquals(0, Float.instance(-0.0).getInteger());
+        assertEquals(0, Float.instance(-0.5).getInteger());
+        assertEquals(9007199254740991L, Float.instance(9007199254740991L).getInteger());
+        assertEquals(-9007199254740991L, Float.instance(-9007199254740991L).getInteger());
+        
+        try {
+            Float.instance(9007199254740992L).getInteger();
+            fail("OverflowException expected");
+        } catch (OverflowException e) {
+            // Checking that this is thrown
+        }
+        
+        try {
+            Float.instance(-9007199254740992L).getInteger();
+            fail("OverflowException expected");
+        } catch (OverflowException e) {
+            // Checking that this is thrown
+        }
+        
+        try {
+            Float.instance(Double.POSITIVE_INFINITY).getInteger();
+            fail("OverflowException expected");
+        } catch (OverflowException e) {
+            // Checking that this is thrown
+        }
+        
+        try {
+            Float.instance(Double.NEGATIVE_INFINITY).getInteger();
+            fail("OverflowException expected");
+        } catch (OverflowException e) {
+            // Checking that this is thrown
+        }
+        
+        try {
+            Float.instance(Double.NaN).getInteger();
+            fail("OverflowException expected");
+        } catch (OverflowException e) {
+            // Checking that this is thrown
+        }
     }
 
 }
