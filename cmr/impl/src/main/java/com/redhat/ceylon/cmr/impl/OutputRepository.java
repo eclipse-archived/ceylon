@@ -16,10 +16,7 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.AbstractRepository;
-import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.Logger;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,12 +56,12 @@ public class OutputRepository extends AbstractRepository {
         this.repository = repository;
     }
 
-    public File getArtifact(ArtifactContext context) throws IOException {
-        final File artifact = output.getArtifact(context);
-        if (artifact != null) {
-            return artifact;
+    public ArtifactResult getArtifactResult(ArtifactContext context) throws IOException {
+        final ArtifactResult result = output.getArtifactResult(context);
+        if (result != null) {
+            return result;
         } else {
-            return repository.getArtifact(context);
+            return repository.getArtifactResult(context);
         }
     }
 

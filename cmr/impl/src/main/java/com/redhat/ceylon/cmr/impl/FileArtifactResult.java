@@ -16,27 +16,27 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.spi.Node;
-import com.redhat.ceylon.cmr.spi.OpenNode;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
- * Artifact context adapter -- prepare artifact context per custom repo.
- * e.g. Maven has different naming for artifacts + default suffix is .jar
+ * Existing file.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface ArtifactContextAdapter {
+public class FileArtifactResult extends AbstractArtifactResult {
 
-    OpenNode getRoot();
+    private final File file;
 
-    Node findParent(ArtifactContext context);
+    protected FileArtifactResult(Repository repository, String name, File file) {
+        super(repository, name);
+        this.file = file;
+    }
 
-    String getArtifactName(ArtifactContext context);
-
-    OpenNode createParent(ArtifactContext context);
-
-    ArtifactResult getArtifactResult(Repository repository, Node node);
+    public File artifact() throws IOException {
+        return file;
+    }
 }
+

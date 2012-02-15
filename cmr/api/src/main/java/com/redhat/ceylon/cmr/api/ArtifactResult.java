@@ -14,29 +14,34 @@
  * limitations under the License.
  */
 
-package com.redhat.ceylon.cmr.impl;
+package com.redhat.ceylon.cmr.api;
 
-import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.spi.Node;
-import com.redhat.ceylon.cmr.spi.OpenNode;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 /**
- * Artifact context adapter -- prepare artifact context per custom repo.
- * e.g. Maven has different naming for artifacts + default suffix is .jar
+ * Artifact result.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface ArtifactContextAdapter {
+public interface ArtifactResult {
+    /**
+     * The requested artifact.
+     *
+     * @return the requested artifact
+     * @throws IOException for any I/O error
+     */
+    File artifact() throws IOException;
 
-    OpenNode getRoot();
-
-    Node findParent(ArtifactContext context);
-
-    String getArtifactName(ArtifactContext context);
-
-    OpenNode createParent(ArtifactContext context);
-
-    ArtifactResult getArtifactResult(Repository repository, Node node);
+    /**
+     * Dependecies.
+     * <p/>
+     * They could be lazily recursively fetched
+     * or they could be fetched in one go.
+     *
+     * @return dependencies, empty list if none
+     * @throws IOException for any I/O error
+     */
+    List<ArtifactResult> dependecies() throws IOException;
 }

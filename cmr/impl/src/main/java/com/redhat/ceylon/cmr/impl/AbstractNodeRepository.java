@@ -19,6 +19,7 @@ package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.AbstractRepository;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
@@ -75,6 +76,11 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
 
     protected void removeExternalRoot(ArtifactContextAdapter external) {
         roots.remove(external);
+    }
+
+    protected ArtifactResult toArtifactResult(Node node) {
+        final ArtifactContextAdapter adapter = NodeUtils.getAdapterInfo(node);
+        return adapter.getArtifactResult(this, node);
     }
 
     public void putArtifact(ArtifactContext context, InputStream content) throws IOException {
@@ -227,8 +233,10 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
                     }
                 }
 
-                if (node != null)
+                if (node != null) {
+                    NodeUtils.keepAdapterInfo(node, ext);
                     return node;
+                }
             }
         }
 

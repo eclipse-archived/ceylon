@@ -17,11 +17,10 @@
 package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
-import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -47,9 +46,8 @@ public class SimpleRepository extends AbstractNodeRepository {
         setRoot(root);
     }
 
-    public File getArtifact(ArtifactContext context) throws IOException {
-        Node node = getLeafNode(context);
-        return (node != null) ? node.getContent(File.class) : null;
+    public ArtifactResult getArtifactResult(ArtifactContext context) throws IOException {
+        return root.getArtifactResult(this, getLeafNode(context));
     }
 
     @Override

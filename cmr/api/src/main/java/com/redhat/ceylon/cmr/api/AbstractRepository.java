@@ -42,6 +42,17 @@ public abstract class AbstractRepository implements Repository {
         return getArtifact(context);
     }
 
+    public File getArtifact(ArtifactContext context) throws IOException {
+        return getArtifactResult(context).artifact();
+    }
+
+    public ArtifactResult getArtifactResult(String name, String version) throws IOException {
+        ArtifactContext context = new ArtifactContext();
+        context.setName(name);
+        context.setVersion(version);
+        return getArtifactResult(context);
+    }
+
     public void putArtifact(String name, String version, InputStream content) throws IOException {
         ArtifactContext context = new ArtifactContext();
         context.setName(name);

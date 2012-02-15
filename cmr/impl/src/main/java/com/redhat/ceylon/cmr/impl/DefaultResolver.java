@@ -19,38 +19,40 @@ package com.redhat.ceylon.cmr.impl;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.spi.Node;
-import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.cmr.api.Resolver;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Default.
+ * Default resolver.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class DefaultArtifactContextAdapter extends AbstractArtifactContextAdapter {
+public class DefaultResolver implements Resolver {
+    private Repository repository;
 
-    public DefaultArtifactContextAdapter(OpenNode root) {
-        super(root);
+    public DefaultResolver(Repository repository) {
+        if (repository == null)
+            throw new IllegalArgumentException("Null repository!");
+        this.repository = repository;
     }
 
-    public ArtifactResult getArtifactResult(Repository repository, Node node) {
-        return new DefaultArtifactResult(repository, node);
+    public File[] resolve(ArtifactContext context) throws IOException {
+        final ArtifactResult result = repository.getArtifactResult(context);
+        if (result == null)
+            return null;
+
+        List<File> files = new ArrayList<File>();
+        recurse(files, result);
+        return files.toArray(new File[files.size()]);
     }
 
-    private static class DefaultArtifactResult extends AbstractArtifactResult {
-
-        private Node node;
-
-        private DefaultArtifactResult(Repository repository, Node node) {
-            super(repository, ArtifactContext.fromNode(node).getName());
-            this.node = node;
-        }
-
-        public File artifact() throws IOException {
-            return node.getContent(File.class);
-        }
+    private static void recurse(final List<File> files, final ArtifactResult current) throws IOException {
+        files.add(current.artifact());
+        for (ArtifactResult ar : current.dependecies())
+            recurse(files, ar);
     }
 }

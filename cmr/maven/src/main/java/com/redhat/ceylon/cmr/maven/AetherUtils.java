@@ -16,7 +16,9 @@
 
 package com.redhat.ceylon.cmr.maven;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.spi.Node;
 import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
 import org.jboss.shrinkwrap.resolver.api.ResolutionException;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
@@ -39,11 +41,34 @@ class AetherUtils {
         this.log = log;
     }
 
-    File getDependency(String groupId, String artifactId, String version) {
+    File findDependency(Node node) {
+        final File[] files = findDependencies(node);
+        return (files != null) ? files[0] : null;
+    }
+
+    File[] findDependencies(Node node) {
+        final ArtifactContext ac = ArtifactContext.fromNode(node);
+        if (ac == null)
+            return null;
+
+        final String name = ac.getName();
+        final int p = name.lastIndexOf(".");
+        final String groupId = name.substring(0, p);
+        final String artifactId = name.substring(p + 1);
+        final String version = ac.getVersion();
+
+        return fetchDependencies(groupId, artifactId, version, ac.isFetchSingleArtifact());
+    }
+
+    private File[] fetchDependencies(String groupId, String artifactId, String version, boolean fetchSingleArtifact) {
         final String coordinates = groupId + ":" + artifactId + ":" + version;
         try {
-            final File[] files = getResolver().artifact(coordinates).exclusion("*").resolveAsFiles();
-            return (files != null && files.length == 1) ? files[0] : null;
+            final MavenDependencyResolver mdr = getResolver().artifact(coordinates);
+
+            if (fetchSingleArtifact)
+                mdr.exclusion("*");
+
+            return mdr.resolveAsFiles();
         } catch (ResolutionException e) {
             log.debug("Could not resolve artifact [" + coordinates + "] : " + e);
             return null;

@@ -56,7 +56,7 @@ public class AetherContentStore extends AbstractContentStore {
             node = new DefaultNode(child);
             node.setContentMarker();
         } else {
-            final File dependency = findDependency(parent);
+            final File dependency = utils.findDependency(parent);
             if (dependency != null) {
                 node = new DefaultNode(child);
                 node.setHandle(new FileContentHandle(dependency));
@@ -66,7 +66,7 @@ public class AetherContentStore extends AbstractContentStore {
     }
 
     public ContentHandle peekContent(Node node) {
-        final File dependency = findDependency(node);
+        final File dependency = utils.findDependency(node);
         return (dependency != null) ? new FileContentHandle(dependency) : null;
     }
 
@@ -84,21 +84,6 @@ public class AetherContentStore extends AbstractContentStore {
 
     public Iterable<? extends OpenNode> find(Node parent) {
         return Collections.emptyList(); // cannot find all children
-    }
-
-    private File findDependency(Node node) {
-        final ArtifactContext ac = ArtifactContext.fromNode(node);
-        if (ac == null)
-            return null;
-
-        final String name = ac.getName();
-        final int p = name.lastIndexOf(".");
-        final String groupId = name.substring(0, p);
-        final String artifactId = name.substring(p + 1);
-        final String version = ac.getVersion();
-
-        final File dependency = utils.getDependency(groupId, artifactId, version);
-        return (dependency == null || dependency.exists() == false) ? null : dependency;
     }
 
     private static class FileContentHandle implements ContentHandle {
@@ -144,7 +129,7 @@ public class AetherContentStore extends AbstractContentStore {
             if (ac == null)
                 throw new IOException("Missing artifact context info!");
 
-            return findDependency(node);
+            return utils.findDependency(node);
         }
 
         public void clean() {

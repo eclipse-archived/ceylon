@@ -24,33 +24,34 @@ import com.redhat.ceylon.cmr.spi.OpenNode;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 /**
- * Default.
+ * Maven repository helper.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class DefaultArtifactContextAdapter extends AbstractArtifactContextAdapter {
-
-    public DefaultArtifactContextAdapter(OpenNode root) {
+public class MavenArtifactContextAdapter extends AbstractArtifactContextAdapter {
+    protected MavenArtifactContextAdapter(OpenNode root) {
         super(root);
     }
 
-    public ArtifactResult getArtifactResult(Repository repository, Node node) {
-        return new DefaultArtifactResult(repository, node);
+    public String getArtifactName(ArtifactContext context) {
+        String name = context.getName();
+        final int p = name.lastIndexOf(".");
+        return getArtifactName(p >= 0 ? name.substring(p + 1) : name, context.getVersion(), ArtifactContext.JAR);
     }
 
-    private static class DefaultArtifactResult extends AbstractArtifactResult {
+    public ArtifactResult getArtifactResult(Repository repository, final Node node) {
+        return new ArtifactResult() {
+            public File artifact() throws IOException {
+                return node.getContent(File.class);
+            }
 
-        private Node node;
-
-        private DefaultArtifactResult(Repository repository, Node node) {
-            super(repository, ArtifactContext.fromNode(node).getName());
-            this.node = node;
-        }
-
-        public File artifact() throws IOException {
-            return node.getContent(File.class);
-        }
+            public List<ArtifactResult> dependecies() throws IOException {
+                return Collections.emptyList(); // dunno how to grab deps
+            }
+        };
     }
 }

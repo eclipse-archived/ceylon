@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class AbstractArtifactContextAdapter implements ArtifactContextAdapter {
+public abstract class AbstractArtifactContextAdapter implements ArtifactContextAdapter {
 
     private OpenNode root;
 

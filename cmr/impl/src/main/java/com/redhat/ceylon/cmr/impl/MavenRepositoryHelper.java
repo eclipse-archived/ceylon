@@ -16,10 +16,8 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.spi.Node;
-import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 
 import java.io.File;
@@ -60,18 +58,6 @@ public class MavenRepositoryHelper {
 
     public static ArtifactContextAdapter getMavenArtifactContextAdapter(StructureBuilder structureBuilder) {
         return new MavenArtifactContextAdapter(structureBuilder.createRoot());
-    }
-
-    private static class MavenArtifactContextAdapter extends AbstractArtifactContextAdapter {
-        private MavenArtifactContextAdapter(OpenNode root) {
-            super(root);
-        }
-
-        public String getArtifactName(ArtifactContext context) {
-            String name = context.getName();
-            final int p = name.lastIndexOf(".");
-            return getArtifactName(p >= 0 ? name.substring(p + 1) : name, context.getVersion(), ArtifactContext.JAR);
-        }
     }
 
     private static class MavenContentStore extends FileContentStore {

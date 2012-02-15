@@ -34,6 +34,10 @@ public interface Repository {
 
     File getArtifact(ArtifactContext context) throws IOException;
 
+    ArtifactResult getArtifactResult(String name, String version) throws IOException;
+
+    ArtifactResult getArtifactResult(ArtifactContext context) throws IOException;
+
     void putArtifact(String name, String version, InputStream content) throws IOException;
 
     void putArtifact(String name, String version, File content) throws IOException;

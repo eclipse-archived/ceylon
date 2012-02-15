@@ -24,6 +24,7 @@
     </modules>
 
     <properties>
+        <version.jboss.jandex>1.0.3.Final</version.jboss.jandex>
         <version.sardine.webdav>314</version.sardine.webdav>
         <version.shrinkwrap.resolver>1.1.0-alpha-2</version.shrinkwrap.resolver>
         <version.junit>4.8.1</version.junit>
@@ -142,6 +143,14 @@
                 <groupId>com.redhat.ceylon.cmr</groupId>
                 <artifactId>cmr-impl</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <!-- Jandex -->
+
+            <dependency>
+                <groupId>org.jboss</groupId>
+                <artifactId>jandex</artifactId>
+                <version>${version.jboss.jandex}</version>
             </dependency>
 
             <!-- WebDAV -->

@@ -18,6 +18,7 @@
 package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.cmr.spi.OpenNode;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -29,6 +30,8 @@ import java.util.List;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public final class NodeUtils {
+
+    private static final String INFO = ".adapter";
 
     /**
      * Navigate to node.
@@ -128,6 +131,34 @@ public final class NodeUtils {
             current = firstParent(current);
         }
         return false;
+    }
+
+    /**
+     * Keep the adapter info.
+     *
+     * @param node    the node
+     * @param adapter the adapter
+     */
+    public static void keepAdapterInfo(Node node, ArtifactContextAdapter adapter) {
+        if (node instanceof OpenNode) {
+            final OpenNode on = (OpenNode) node;
+            on.addNode(INFO, adapter);
+        }
+    }
+
+    /**
+     * Get the adapter info.
+     *
+     * @param node the node
+     * @return adapter info
+     */
+    public static ArtifactContextAdapter getAdapterInfo(Node node) {
+        if (node instanceof OpenNode) {
+            final OpenNode on = (OpenNode) node;
+            final Node info = on.peekChild(INFO);
+            return (info != null) ? info.getValue(ArtifactContextAdapter.class) : null;
+        }
+        return null;
     }
 
     protected static void buildFullPath(Node node, StringBuilder path, String separator, boolean appendSeparator) {

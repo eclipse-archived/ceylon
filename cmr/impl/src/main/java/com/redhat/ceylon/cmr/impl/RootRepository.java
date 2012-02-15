@@ -18,6 +18,7 @@
 package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
@@ -55,19 +56,21 @@ public class RootRepository extends AbstractNodeRepository {
         setRoot(aaca);
     }
 
-    public File getArtifact(ArtifactContext context) throws IOException {
-        Node node = getLeafNode(context);
+    public ArtifactResult getArtifactResult(ArtifactContext context) throws IOException {
+        final Node node = getLeafNode(context);
         if (node != null) {
             if (node.isRemote()) {
                 final boolean forceOp = context.isForceOperation();
                 try {
                     context.setForceOperation(true); // just force the ops
-                    return putContent(context, node, node.getInputStream());
+                    final File file = putContent(context, node, node.getInputStream());
+                    // we expect the remote nodes to support Ceylon module info                    
+                    return new FileArtifactResult(this, context.getName(), file);
                 } finally {
                     context.setForceOperation(forceOp);
                 }
             } else {
-                return node.getContent(File.class);
+                return toArtifactResult(node);
             }
         } else {
             return null;

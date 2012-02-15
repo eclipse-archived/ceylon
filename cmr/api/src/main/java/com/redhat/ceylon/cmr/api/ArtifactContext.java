@@ -44,6 +44,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     private boolean ignoreSHA;
     private boolean throwErrorIfMissing;
     private boolean forceOperation;
+    private boolean fetchSingleArtifact;
 
     public ArtifactContext(String name, String version) {
         this.name = name;
@@ -141,6 +142,14 @@ public class ArtifactContext implements Serializable, ContentOptions {
 
     public void setForceOperation(boolean forceOperation) {
         this.forceOperation = forceOperation;
+    }
+
+    public boolean isFetchSingleArtifact() {
+        return fetchSingleArtifact;
+    }
+
+    public void setFetchSingleArtifact(boolean fetchSingleArtifact) {
+        this.fetchSingleArtifact = fetchSingleArtifact;
     }
 
     @Override
