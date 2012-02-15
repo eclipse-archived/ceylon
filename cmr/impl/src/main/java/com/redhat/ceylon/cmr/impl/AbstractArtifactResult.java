@@ -16,6 +16,7 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ArtifactResultType;
 import com.redhat.ceylon.cmr.api.Repository;
@@ -36,7 +37,7 @@ import java.util.List;
  */
 public abstract class AbstractArtifactResult implements ArtifactResult {
 
-    private static final DotName MODULE_ANNOTATION = DotName.createSimple("");
+    private static final DotName MODULE_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.Module");
 
     private Repository repository;
     private String name;
@@ -56,8 +57,13 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
             return Collections.emptyList();
 
         final List<ArtifactResult> results = new ArrayList<ArtifactResult>();
-        for (ModuleInfo mi : infos)
-            results.add(repository.getArtifactResult(mi.name, mi.version));
+        for (ModuleInfo mi : infos) {
+            final ArtifactContext context = new ArtifactContext(mi.name, mi.version);
+            context.setThrowErrorIfMissing(mi.optional == false);
+            final ArtifactResult result = repository.getArtifactResult(mi.name, mi.version);
+            if (result != null)
+                results.add(result);
+        }
         return results;
     }
 
@@ -87,12 +93,37 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
             return Collections.emptyList();
 
         final AnnotationInstance ai = annotations.get(0);
-        return Collections.emptyList(); // TODO
+        final AnnotationValue dependencies = ai.value("dependencies");
+        if (dependencies == null)
+            return Collections.emptyList();
+
+        final AnnotationInstance[] imports = dependencies.asNestedArray();
+        if (imports == null || imports.length == 0)
+            return Collections.emptyList();
+
+        final List<ModuleInfo> infos = new ArrayList<ModuleInfo>();
+        for (AnnotationInstance im : imports) {
+            ModuleInfo mi = new ModuleInfo();
+            mi.name = im.value("name").asString();
+            mi.version = im.value("version").asString();
+            mi.optional = asBoolean(im, "optional");
+            mi.export = asBoolean(im, "export");
+            infos.add(mi);
+        }
+        return infos;
+    }
+
+    private static boolean asBoolean(AnnotationInstance ai, String name) {
+        final AnnotationValue av = ai.value(name);
+        return (av != null) && av.asBoolean();
     }
 
     private static class ModuleInfo {
         private String name;
         private String version;
+        private boolean optional;
+        @SuppressWarnings("UnusedDeclaration")
+        private boolean export;
     }
 }
 
