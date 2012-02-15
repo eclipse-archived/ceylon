@@ -38,7 +38,29 @@ $Integer.prototype.getWholePart = function() { return this; }
 $Integer.prototype.getSign = function() { return this.value > 0 ? Integer(1) : this.value < 0 ? Integer(-1) : Integer(0); }
 $Integer.prototype.getHash = function() { return this; }
 
-function $parseInteger(s) { return Integer(parseInt(s.value)); }
+function $parseInteger(s) {
+    var x = s.value;
+    //xkcd.com/208/
+    if ((x.indexOf('_') >= 0 ? x.match(/^[+-]?\d{1,3}(_\d{3})+[kMGPT]?$/g) : x.match(/^[+-]?\d+[kMGPT]?$/g)) === null) {
+        return null;
+    }
+    x = x.replace("_", "");
+    var mag = null;
+    if (x.match(/[kMGTP]$/g) !== null) {
+        mag = x[x.length-1];
+        x = x.slice(0,-1);
+    }
+    var i = parseInt(x);
+    var factor=1;
+    switch(mag) {
+        case 'P':factor*=1000;
+        case 'T':factor*=1000;
+        case 'G':factor*=1000;
+        case 'M':factor*=1000;
+        case 'k':factor*=1000;
+    }
+    return isNaN(i) ? null : Integer(i*factor);
+}
 function $parseFloat(s) { return Float(parseFloat(s.value)); }
 
 function Float(value) {

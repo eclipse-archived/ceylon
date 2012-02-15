@@ -151,6 +151,14 @@ $ArraySequence.prototype.equals = function(other) {
 }
 $ArraySequence.prototype.getIterator = function() { return ArrayIterator(this.value); }
 $ArraySequence.prototype.getKeys = function() { return IntCategory(this); }
+$ArraySequence.prototype.contains = function(elem) {
+    for (var i=0; i<this.value.length; i++) {
+        if (elem.equals(this.value[i])) {
+            return $true;
+        }
+    }
+    return $false;
+}
 
 function IntCategory(seq) {
     var that = new IntCategory.$$;
