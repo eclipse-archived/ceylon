@@ -20,6 +20,7 @@ package com.redhat.ceylon.test.smoke.test;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.Resolver;
 import com.redhat.ceylon.cmr.impl.*;
 import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
 import org.junit.Assert;
@@ -224,5 +225,15 @@ public class SmokeTestCase {
         } finally {
             repository.removeArtifact(ac);
         }
+    }
+
+    @Test
+    @Ignore // TODO -- add 2 missing .car
+    public void testResolver() throws Exception {
+        Repository repository = getRepository();
+        Resolver resolver = new DefaultResolver(repository);
+        File[] files = resolver.resolve("", ""); // TODO
+        Assert.assertNotNull(files);
+        Assert.assertEquals(2, files.length);
     }
 }

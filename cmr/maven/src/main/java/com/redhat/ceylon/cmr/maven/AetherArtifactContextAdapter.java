@@ -16,10 +16,7 @@
 
 package com.redhat.ceylon.cmr.maven;
 
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ArtifactResultType;
-import com.redhat.ceylon.cmr.api.Logger;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.*;
 import com.redhat.ceylon.cmr.impl.MavenArtifactContextAdapter;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
@@ -48,11 +45,25 @@ public class AetherArtifactContextAdapter extends MavenArtifactContextAdapter {
         if (files == null || files.length == 0)
             return null;
 
-        final List<ArtifactResult> dependecies = (files.length == 1) ? Collections.<ArtifactResult>emptyList() : new ArrayList<ArtifactResult>();
-        for (int i = 1; i < files.length; i++)
-            dependecies.add(new SingleArtifactResult(files[i]));
+        if (files.length == 1)
+            return new SingleArtifactResult(files[0]);
 
-        return new AetherArtifactResult(files[0], dependecies);
+        final ArtifactContext context = ArtifactContext.fromNode(node);
+        final String name = getArtifactName(context);
+
+        File artifact = null;
+        final List<ArtifactResult> dependecies = new ArrayList<ArtifactResult>();
+        for (File file : files) {
+            if (name.equalsIgnoreCase(file.getName()))
+                artifact = file;
+            else
+                dependecies.add(new SingleArtifactResult(file));
+        }
+
+        if (artifact == null)
+            throw new IllegalArgumentException("No matching artifact, should not happen: " + name);
+
+        return new AetherArtifactResult(artifact, dependecies);
     }
 
     private static class AetherArtifactResult implements ArtifactResult {
