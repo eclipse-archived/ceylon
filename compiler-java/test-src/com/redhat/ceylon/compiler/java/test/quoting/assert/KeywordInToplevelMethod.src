@@ -11,6 +11,6 @@ public final class $package {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        $package();
+        .com.redhat.ceylon.compiler.java.test.quoting.$assert.$package.$package();
     }
 }

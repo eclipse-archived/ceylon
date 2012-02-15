@@ -17,17 +17,17 @@ final class $assert {
     private $assert() {
     }
 }
-final class m {
+final class keywordInToplevelAssignment {
     
-    private m() {
+    private keywordInToplevelAssignment() {
     }
     
-    static void m() {
+    static void keywordInToplevelAssignment() {
         .com.redhat.ceylon.compiler.java.test.quoting.$assert.$assert.setAssert(1L);
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.quoting.$assert.m.m();
+        .com.redhat.ceylon.compiler.java.test.quoting.$assert.keywordInToplevelAssignment.keywordInToplevelAssignment();
     }
 }
