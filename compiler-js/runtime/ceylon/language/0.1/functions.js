@@ -98,7 +98,6 @@ exports.prepend=prepend;
 exports.entries=entries;
 
 //These are operators for handling nulls
-function $nullsafe() { return null; }
 function exists(value) {
     return value === getNull() || value === undefined ? getFalse() : getTrue();
 }
@@ -146,7 +145,6 @@ function className(obj) {
     return String$(cons.T$name);
 }
 
-exports.nullsafe=$nullsafe;
 exports.exists=exists;
 exports.nonempty=nonempty;
 exports.isOfType=isOfType;

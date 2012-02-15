@@ -1083,18 +1083,23 @@ public class GenerateJsVisitor extends Visitor
         //Big TODO: make sure the member is actually
         //          refined by the current class!
     	if (that.getMemberOperator() instanceof SafeMemberOp) {
-    		out("(function($){return $===null?");
     		
             if (that.getDeclaration() instanceof Method) {
+                String tmp=createTempVariable();
+                out("(function(){var ", tmp, "=");
+                super.visit(that);
+                out("; return ");
                 clAlias();
-                out(".nullsafe:$.");
+                out(".JsCallable(", tmp, ",", tmp, "===null?null:", tmp, ".");
+                qualifiedMemberRHS(that);
+                out(");}())");
             } else {
-                out("null:$.");
+    		    out("(function($){return $===null?null:$.");
+                qualifiedMemberRHS(that);
+                out("}(");
+                super.visit(that);
+                out("))");
             }
-            qualifiedMemberRHS(that);
-            out("}(");
-	        super.visit(that);
-            out("))");
     	} else if (that.getMemberOperator() instanceof SpreadOp) {
     	    //Determine if it's a method or attribute
     	    boolean isMethod = that.getDeclaration() instanceof Method;
@@ -1138,8 +1143,7 @@ public class GenerateJsVisitor extends Visitor
             }
     	    endBlock(false);
     	    //If it's not a method, call the function right away
-	        out("()");
-    	    out(")");
+	        out("())");
     	} else {
             super.visit(that);
             out(".");
