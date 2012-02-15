@@ -4,6 +4,8 @@ import java.util.StringTokenizer;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.Defaulted;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
@@ -416,7 +418,9 @@ public final class String
     @TypeInfo("ceylon.language.Iterable<ceylon.language.String>")
     public Iterable<? extends String> split(
             @TypeInfo("ceylon.language.Nothing|ceylon.language.Iterable<ceylon.language.Character>")
+            @Defaulted
             @Name("separator") Iterable<? extends Character> separators,
+            @Defaulted
             @Name("discardSeparators") boolean discardSeparators) {
         java.lang.String delims;
         if (separators==null) {
@@ -486,5 +490,15 @@ public final class String
     @Override
     public String getClone() {
         return this;
+    }
+
+    @Ignore
+    public static class String$impl {
+        public static Iterable<? extends Character> split$separators(String $this){
+            return null;
+        }
+        public static boolean split$discardSeparators(String $this, Iterable<? extends Character> separators){
+            return false;
+        }
     }
 }

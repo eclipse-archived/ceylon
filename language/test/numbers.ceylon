@@ -103,8 +103,58 @@ shared void numbers() {
     assert(add(-1,+2)==+1, "add(-1,+2)==+1");
     assert(add(1.5,-2.5)==-1.0, "add(1.5,-2.5)==-1.0");
     
+    assert(exp(2,2)==4, "exp(2,2)==4");
     assert(exp(1,2)==1, "exp(1,2)==1");
-    assert(exp(-1,+2)==+1, "exp(-1,+2)==+1");
+    assert(exp(0,2)==0, "exp(0,2)==0");
+    assert(exp(-1,2)==1, "exp(-1,2)==1");
+    assert(exp(-2,2)==4, "exp(-2,2)==4");
+    
+    assert(exp(2,1)==2, "exp(2,1)==2");
+    assert(exp(1,1)==1, "exp(1,1)==1");
+    assert(exp(0,1)==0, "exp(0,1)==0");
+    assert(exp(-1,1)==-1, "exp(-1,1)==-1");
+    assert(exp(-2,1)==-2, "exp(-2,1)==-2");
+    
+    assert(exp(2,0)==1, "exp(2,0)==2");
+    assert(exp(1,0)==1, "exp(1,0)==1");
+    assert(exp(0,0)==1, "exp(0,0)==0");
+    assert(exp(-1,0)==1, "exp(-1,0)==-1");
+    assert(exp(-2,0)==1, "exp(-2,0)==-2");
+    try { 
+        exp(2,-1);
+        fail("exp(2,-1) should throw");
+    } catch (Exception e) {}
+    assert(exp(1,-1)==1, "exp(1,-1)==1");
+    try {
+        exp(0,-1);
+        fail("exp(0,-1) should throw");
+    } catch (Exception e) {}
+    assert(exp(-1,-1)==-1, "exp(-1,-1)==-1");
+    try {
+        exp(-2,-1);
+        fail("exp(-2,-1) should throw");
+    } catch (Exception e) {}
+    
+    try {
+        exp(2,-2);
+        fail("exp(2,-2)==2 should throw");
+    } catch (Exception e) {}
+    assert(exp(1,-2)==1, "exp(1,-2)==1");
+    try {
+        exp(0,-2);
+        fail("exp(2,-1) should throw");
+    } catch (Exception e) {}
+    assert(exp(-1,-2)==1, "exp(-1,-2)==-1");
+    try {
+        exp(-2,-2);
+        fail("exp(-2,-2) should throw");
+    } catch (Exception e) {}
+    
+    Integer twoToPowerTen = 2*2*2*2*2*2*2*2*2*2;
+    assert(exp(2,10)==twoToPowerTen, "exp(2,10)==twoToPowerTen");
+    assert(exp(2,20)==twoToPowerTen*twoToPowerTen, "exp(2,30)==twoToPowerTen*twoToPowerTen");
+    assert(exp(2,30)==twoToPowerTen*twoToPowerTen*twoToPowerTen, "exp(2,30)==twoToPowerTen*twoToPowerTen*twoToPowerTen");
+    
     assert(exp(2.0,2.0)==4.0, "exp(2.0,2.0)==4.0");
     
     assert(addIntegers(2, 4)==6, "addIntegers(2, 4)==6");
@@ -223,9 +273,7 @@ shared void numbers() {
     assert(0.000_000_000_001==1.0p && 1.0p==1.0e-12, "float literal");
     assert(0.000_000_000_000_001==1.0f && 1.0f==1.0e-15, "float literal");
     
-    assert(parseInteger("-123")?0==-123, "parse integer");
-    assert(parseFloat("12.34e3")?0.0==12.34e3, "parse float");
-    
+    // infinity and .undefined
     assert(1.0/0.0==infinity, "infinity == infinity");
     assert(1.0!=infinity, "1 != infinity");
     assert(-1.0/0.0==-infinity, "-infinity == -infinity");
@@ -245,4 +293,91 @@ shared void numbers() {
     assert((-infinity).infinite, "-infinity is infinite");
     assert(!(0.0/0.0).infinite, "NaN not infinite");
     
+    // parseInteger()
+    assert(parseInteger("-123")?0==-123, "parse integer");
+    
+    assert(1_000==parseInteger("1_000")?"", "parseInteger(1_000)");
+	assert(1000==parseInteger("1000")?"", "parseInteger(1000)");
+	assert(1k==parseInteger("1k")?"", "parseInteger(1k)");
+	assert(+1_000==parseInteger("+1_000")?"", "parseInteger(+1_000)");
+	assert(+1000==parseInteger("+1000")?"", "parseInteger(+1000)");
+	assert(+1k==parseInteger("+1k")?"", "parseInteger(+1k)");
+	assert(-1_000==parseInteger("-1_000")?"", "parseInteger(-1_000)");
+	assert(-1000==parseInteger("-1000")?"", "parseInteger(-1000)");
+	assert(-1k==parseInteger("-1k")?"", "parseInteger(-1k)");
+	
+	assert(0==parseInteger("0")?"", "parseInteger(0)");
+	assert(00==parseInteger("00")?"", "parseInteger(00)");
+	assert(0_000==parseInteger("0_000")?"", "parseInteger(0_000)");
+	assert(-00==parseInteger("-00")?"", "parseInteger(-00)");
+	assert(+00==parseInteger("+00")?"", "parseInteger(+00)");
+	assert(0k==parseInteger("0k")?"", "parseInteger(0k)");
+	
+	assert(1==parseInteger("1")?"", "parseInteger(1)");
+	assert(01==parseInteger("01")?"", "parseInteger(01)");
+	assert(0_001==parseInteger("0_001")?"", "parseInteger(0_001)");
+	assert(+1==parseInteger("+1")?"", "parseInteger(+1)");
+	assert(+01==parseInteger("+01")?"", "parseInteger(+01)");
+	assert(+0_001==parseInteger("+0_001")?"", "parseInteger(+0_001)");
+	
+	assert(-1==parseInteger("-1")?"", "parseInteger(-1)");
+	assert(-01==parseInteger("-01")?"", "parseInteger(-01)");
+	assert(-0_001==parseInteger("-0_001")?"", "parseInteger(-0_001)");
+	
+	assert(1k==parseInteger("1k")?"", "parseInteger(1k)");
+	assert(1M==parseInteger("1M")?"", "parseInteger(1M)");
+	assert(1G==parseInteger("1G")?"", "parseInteger(1G)");
+	assert(1T==parseInteger("1T")?"", "parseInteger(1T)");
+	assert(1P==parseInteger("1P")?"", "parseInteger(1P)");
+	assert(-1k==parseInteger("-1k")?"", "parseInteger(-1k)");
+	assert(-1M==parseInteger("-1M")?"", "parseInteger(-1M)");
+	assert(-1G==parseInteger("-1G")?"", "parseInteger(-1G)");
+	assert(-1T==parseInteger("-1T")?"", "parseInteger(-1T)");
+	assert(-1P==parseInteger("-1P")?"", "parseInteger(-1P)");
+	
+	assert(9223372036854775807==parseInteger("9223372036854775807")?"", "parseInteger(9223372036854775807)");
+	assert(9_223_372_036_854_775_807==parseInteger("9_223_372_036_854_775_807")?"", "parseInteger(9_223_372_036_854_775_807)");
+	assert(-9223372036854775808==parseInteger("-9223372036854775808")?"", "parseInteger(-9223372036854775808)");
+	assert(-9_223_372_036_854_775_808==parseInteger("-9_223_372_036_854_775_808")?"", "parseInteger(-9_223_372_036_854_775_808)");
+	
+	assert(!exists parseInteger(""), "parseInteger()");
+	assert(!exists parseInteger("+"), "parseInteger(+)");
+	assert(!exists parseInteger("-"), "parseInteger(-)");
+	assert(!exists parseInteger("foo"), "parseInteger(foo)");
+	assert(!exists parseInteger(" 0"), "parseInteger( 0)");
+	assert(!exists parseInteger("0 "), "parseInteger(0 )");
+	assert(!exists parseInteger("0+0"), "parseInteger(0+0)");
+	assert(!exists parseInteger("0-0"), "parseInteger(0-0)");
+	assert(!exists parseInteger("0+"), "parseInteger(0+)");
+	assert(!exists parseInteger("0-"), "parseInteger(0-)");
+	assert(!exists parseInteger("k"), "parseInteger(k)");
+	assert(!exists parseInteger("k1"), "parseInteger(k1)");
+	assert(!exists parseInteger("+k"), "parseInteger(+k)");
+	assert(!exists parseInteger("-k"), "parseInteger(-k)");
+	assert(!exists parseInteger("1kk"), "parseInteger(1kk)");
+	assert(!exists parseInteger("0_"), "parseInteger(0_)");
+	assert(!exists parseInteger("_0"), "parseInteger(_0)");
+	assert(!exists parseInteger("0_0"), "parseInteger(0_0)");
+	assert(!exists parseInteger("0_00"), "parseInteger(0_00)");
+	assert(!exists parseInteger("0_0000"), "parseInteger(0_0000)");
+	assert(!exists parseInteger("0_000_0"), "parseInteger(0_000_0)");
+	assert(!exists parseInteger("0000_000"), "parseInteger(0000_000)");
+	assert(!exists parseInteger("9223372036854775808"), "parseInteger(9223372036854775808)");
+	assert(!exists parseInteger("-9223372036854775809"), "parseInteger(-9223372036854775809)");
+	
+	// parseFloat
+	assert(parseFloat("12.34e3")?0.0==12.34e3, "parseFloat(12.34e3)");
+	assert(parseFloat("12.340e3")?0.0==12.34e3, "parseFloat(12.340e3)");
+	assert(parseFloat("123.4e2")?0.0==12.34e3, "parseFloat(123.4e2)");
+	assert(parseFloat("1234.0e1")?0.0==12.34e3, "parseFloat(1234.0e1)");
+	assert(parseFloat("1234.0e+1")?0.0==12.34e3, "parseFloat(1234.0e+1)");
+	assert(parseFloat("12340.0e0")?0.0==12.34e3, "parseFloat(12340.0e0)");
+	assert(parseFloat("12340.0")?0.0==12.34e3, "parseFloat(12340.0)");
+	assert(parseFloat("12340.0")?0.0==12.34e3, "parseFloat(12340.0)");
+	assert(parseFloat("123400.0e-1")?0.0==12.34e3, "parseFloat(123400.0e-1)");
+	
+	assert(parseFloat("012340.0")?0.0==12.34e3, "parseFloat(012340.0)");
+	assert(parseFloat("+12340.0")?0.0==12.34e3, "parseFloat(+12340.0)");
+	
+	assert(parseFloat("-12340.0")?0.0==-12.34e3, "parseFloat(-12340.0)");
 }

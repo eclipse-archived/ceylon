@@ -45,9 +45,49 @@ public final class Integer
         return instance(value / op.value);
     }
     
+    private static final long POWER_BY_SQUARING_BREAKEVEN = 6;
+    
+    private static long powerBySquaring(long base, long power) {
+        long result = 1;
+        long x = base;
+        while (power != 0) {
+            if ((power & 1L) == 1L) {
+                result *= x;
+                power -= 1;
+            }
+            x *= x;
+            power /= 2;
+        }
+        return result;
+    }
+    
+    private static long powerByMultiplying(long base, long power) {
+        long result = 1;
+        while (power > 0) {
+            result *= base;
+            power--;
+        }
+        return result;
+    }
+    
     @Override
     public Integer power(@Name("other") Integer op) {
-        return instance((long) Math.pow(value, op.value)); // FIXME: ugly
+        long power = op.value;
+        if (this.value == -1) {
+            return instance(power % 2 == 0 ? 1 : -1);
+        } else if (this.value == 1) {
+            return instance(1L);
+        }
+        if (power < 0) {
+            throw new RuntimeException(this.value + "**" + power + " cannot be represented as an Integer");
+        } else if (power == 0L) {
+            return instance(1L);
+        }
+        if (power >= POWER_BY_SQUARING_BREAKEVEN) {
+            return instance(powerBySquaring(this.value, power));
+        } else {
+            return instance(powerByMultiplying(this.value, power));
+        }   
     }
     
     @Ignore
