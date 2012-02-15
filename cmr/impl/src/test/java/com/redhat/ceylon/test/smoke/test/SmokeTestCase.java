@@ -228,11 +228,10 @@ public class SmokeTestCase {
     }
 
     @Test
-    @Ignore // TODO -- add 2 missing .car
     public void testResolver() throws Exception {
         Repository repository = getRepository();
         Resolver resolver = new DefaultResolver(repository);
-        File[] files = resolver.resolve("", ""); // TODO
+        File[] files = resolver.resolve("moduletest", "0.1");
         Assert.assertNotNull(files);
         Assert.assertEquals(2, files.length);
     }

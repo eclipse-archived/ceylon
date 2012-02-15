@@ -37,6 +37,7 @@ import java.util.List;
  */
 public abstract class AbstractArtifactResult implements ArtifactResult {
 
+    private static final String JAVA = "java";
     private static final DotName MODULE_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.Module");
 
     private Repository repository;
@@ -60,7 +61,7 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
         for (ModuleInfo mi : infos) {
             final ArtifactContext context = new ArtifactContext(mi.name, mi.version);
             context.setThrowErrorIfMissing(mi.optional == false);
-            final ArtifactResult result = repository.getArtifactResult(mi.name, mi.version);
+            final ArtifactResult result = repository.getArtifactResult(context);
             if (result != null)
                 results.add(result);
         }
@@ -103,12 +104,15 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
 
         final List<ModuleInfo> infos = new ArrayList<ModuleInfo>();
         for (AnnotationInstance im : imports) {
-            ModuleInfo mi = new ModuleInfo();
-            mi.name = im.value("name").asString();
-            mi.version = im.value("version").asString();
-            mi.optional = asBoolean(im, "optional");
-            mi.export = asBoolean(im, "export");
-            infos.add(mi);
+            final String name = im.value("name").asString();
+            if (JAVA.equalsIgnoreCase(name) == false) {
+                ModuleInfo mi = new ModuleInfo();
+                mi.name = name;
+                mi.version = im.value("version").asString();
+                mi.optional = asBoolean(im, "optional");
+                mi.export = asBoolean(im, "export");
+                infos.add(mi);
+            }
         }
         return infos;
     }
