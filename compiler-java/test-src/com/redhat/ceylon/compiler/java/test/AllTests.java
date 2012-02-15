@@ -31,6 +31,7 @@ import com.redhat.ceylon.compiler.java.test.misc.MiscTest;
 import com.redhat.ceylon.compiler.java.test.model.AnnotationsTest;
 import com.redhat.ceylon.compiler.java.test.model.ModelLoaderTest;
 import com.redhat.ceylon.compiler.java.test.model.TypeParserTest;
+import com.redhat.ceylon.compiler.java.test.quoting.QuotingTest;
 import com.redhat.ceylon.compiler.java.test.recovery.RecoveryTest;
 import com.redhat.ceylon.compiler.java.test.statement.StatementTest;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTest;
@@ -47,7 +48,8 @@ import com.redhat.ceylon.compiler.java.test.structure.StructureTest;
     RecoveryTest.class,
     StatementTest.class,
 	StructureTest.class,
-	TypeParserTest.class
+	TypeParserTest.class,
+	QuotingTest.class
 })
 public class AllTests {
 }
