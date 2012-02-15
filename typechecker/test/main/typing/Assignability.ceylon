@@ -378,4 +378,20 @@ class Assignability() {
     Invariant<Integer> iii2 = iii1;
     Invariant<Ordinal<Integer>> iii3 = iii2;
     
+    Void v = null;
+    if (exists v) {
+        @type["Object"] value val = v;
+    }
+    if (is String v) {
+        @type["String"] value val = v;
+    }
+    
+    Object? mo = null;
+    if (exists mo) {
+        @type["Object"] value val = mo;
+    }
+    if (is String mo) {
+        @type["String"] value val = mo;
+    }
+    
 }
