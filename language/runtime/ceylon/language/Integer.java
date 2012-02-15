@@ -192,6 +192,10 @@ public final class Integer
     @TypeInfo(value="ceylon.language.Float")
     @Override
     public double getFloat() {
+        if (value >= 9007199254740992L
+                || value <= -9007199254740992L) {
+            throw new OverflowException();
+        }
         return (double) value;
     }
     

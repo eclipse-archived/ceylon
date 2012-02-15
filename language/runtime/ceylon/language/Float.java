@@ -141,7 +141,11 @@ public final class Float
     @TypeInfo(value="ceylon.language.Integer")
     @Override
     public long getInteger() {
-        return Math.round(value);
+        if (value >= Long.MIN_VALUE
+                && value <= Long.MAX_VALUE) {
+            return (long)value;
+        } 
+        throw new OverflowException();
     }
     
     @TypeInfo(value="ceylon.language.Float")
