@@ -1150,10 +1150,6 @@ public class ProducedType extends ProducedReference {
             return null;
         }
         String producedTypeName = "";
-        if (getDeclaration().isMember()) {
-            producedTypeName += getQualifyingType().getProducedTypeQualifiedName();
-            producedTypeName += ".";
-        }
         producedTypeName += getDeclaration().getQualifiedNameString();
         if (!getTypeArgumentList().isEmpty()) {
             producedTypeName += "<";
