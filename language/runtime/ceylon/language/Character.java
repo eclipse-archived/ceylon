@@ -8,8 +8,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon
 @Class(extendsType="ceylon.language.Object")
-@SatisfiedTypes({"ceylon.language.Equality",
-		        "ceylon.language.Comparable<ceylon.language.Character>",
+@SatisfiedTypes({"ceylon.language.Comparable<ceylon.language.Character>",
 		        "ceylon.language.Ordinal<ceylon.language.Character>"})
 public final class Character
         implements Comparable<Character>, Ordinal<Character> {
@@ -78,7 +77,7 @@ public final class Character
     }
 
     @Override
-    public boolean equals(@Name("that") @TypeInfo("ceylon.language.Equality") java.lang.Object obj) {
+    public boolean equals(@Name("that") java.lang.Object obj) {
         if (this == obj)
             return true;
         if (obj instanceof Character) {

@@ -11,16 +11,16 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon
 @TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT, 
-                               satisfies = "ceylon.language.Equality"))
+                               satisfies = "ceylon.language.Object"))
 @SatisfiedTypes({"ceylon.language.Collection<Element>",
-                 "ceylon.language.Slots<ceylon.language.Set<ceylon.language.Equality>>",
+                 "ceylon.language.Slots<ceylon.language.Set<ceylon.language.Object>>",
                  "ceylon.language.Cloneable<ceylon.language.Set<Element>>"})
 public interface Set<Element> 
         extends Collection<Element>, Slots<Set<Object>> {
 
-    public boolean superset(@TypeInfo("ceylon.language.Set<ceylon.language.Equality>") 
+    public boolean superset(@TypeInfo("ceylon.language.Set<ceylon.language.Object>") 
                             @Name("set") Set<? extends java.lang.Object> set);
-    public boolean subset(@TypeInfo("ceylon.language.Set<ceylon.language.Equality>") 
+    public boolean subset(@TypeInfo("ceylon.language.Set<ceylon.language.Object>") 
                           @Name("set") Set<? extends java.lang.Object> set);
     
     @TypeInfo("ceylon.language.Set<Element|Other>")

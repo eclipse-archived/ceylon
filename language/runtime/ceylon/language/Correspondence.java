@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @Ceylon
 @TypeParameters({
     @TypeParameter(value = "Key", variance = Variance.IN,
-            satisfies="ceylon.language.Equality"),
+            satisfies="ceylon.language.Object"),
     @TypeParameter(value = "Item", variance = Variance.OUT)
 })
 public interface Correspondence<Key,Item> {

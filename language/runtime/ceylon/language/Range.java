@@ -15,8 +15,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 @Ceylon
 @Class(extendsType="ceylon.language.Object")
 @SatisfiedTypes({"ceylon.language.Sequence<Element>", 
-	             "ceylon.language.Category",
-	             "ceylon.language.Equality"})
+	             "ceylon.language.Category"})
 @TypeParameters(@TypeParameter(value="Element", 
     satisfies={"ceylon.language.Comparable<Element>",
 		       "ceylon.language.Ordinal<Element>"}))
@@ -130,8 +129,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
 
     @Override
-    public final boolean contains(@Name("element") 
-    @TypeInfo("ceylon.language.Equality") java.lang.Object value) {
+    public final boolean contains(@Name("element") java.lang.Object value) {
         // FIXME
     	try {
     		return value != null /*&& value instanceof Element*/ ?
@@ -143,8 +141,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
 
     @Override
-    public final long count(@Name("element") 
-    @TypeInfo("ceylon.language.Equality") java.lang.Object value) {
+    public final long count(@Name("element") java.lang.Object value) {
         return contains(value) ? 1 : 0;
     }
     
@@ -160,8 +157,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
     
     @Override
-    public final boolean equals(@Name("that") 
-    @TypeInfo("ceylon.language.Equality") java.lang.Object that){
+    public final boolean equals(@Name("that") java.lang.Object that){
         if (that instanceof Range) {
             Range<Element> $that = (Range<Element>) that;
             return $that.getFirst().equals(getFirst()) && $that.getLast().equals(getLast());
@@ -216,7 +212,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     //TODO: @TypeInfo
     @Override
     public boolean containsEvery(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Equality>")
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
     Iterable<?> elements) {
         return Category$impl.containsEvery(this, elements);
     }
@@ -224,7 +220,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     //TODO: @TypeInfo
     @Override
     public boolean containsAny(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Equality>")
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
     Iterable<?> elements) {
         return Category$impl.containsAny(this, elements);
     }

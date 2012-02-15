@@ -3,7 +3,6 @@ package ceylon.language;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
@@ -12,10 +11,9 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT))
 public interface Collection<Element> 
         extends Iterable<Element>, Sized, Category,
-                Equality, Cloneable<Collection<Element>> {
+                Cloneable<Collection<Element>> {
     
-    //public boolean contains(@TypeInfo("ceylon.language.Equality") @Name("element") java.lang.Object element);
-    public long count(@TypeInfo("ceylon.language.Equality") @Name("element") java.lang.Object element);
+    public long count(@Name("element") java.lang.Object element);
     
     @Ignore
     public static final class Collection$impl {

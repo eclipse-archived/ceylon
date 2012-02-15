@@ -17,7 +17,7 @@ public final class entries {
     
     private entries() {}
     
-    @TypeParameters(@TypeParameter(value="Element", satisfies="ceylon.language.Equality"))
+    @TypeParameters(@TypeParameter(value="Element", satisfies="ceylon.language.Object"))
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Entry<ceylon.language.Integer,Element>>")
     public static <Element> Iterable<? extends Entry<? extends Integer,? extends Element>> entries(@Name("sequence")
     @Sequenced @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")

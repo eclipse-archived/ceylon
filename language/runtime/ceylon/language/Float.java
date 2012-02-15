@@ -171,7 +171,7 @@ public final class Float
     }*/
     
     @Override
-    public boolean equals(@Name("that") @TypeInfo("ceylon.language.Equality") java.lang.Object that) {
+    public boolean equals(@Name("that") java.lang.Object that) {
         if (that instanceof Integer) {
             return value == ((Integer)that).value;
         } 

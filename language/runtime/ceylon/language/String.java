@@ -48,7 +48,7 @@ public final class String
     }
 
     @Override
-    public boolean equals(@Name("that") @TypeInfo("ceylon.language.Equality") java.lang.Object that) {
+    public boolean equals(@Name("that") java.lang.Object that) {
         if (that instanceof String) {
             String s = (String)that;
             return value.equals(s.value);
@@ -253,9 +253,7 @@ public final class String
     }
     
     @Override
-    public boolean contains(@Name("element") 
-    @TypeInfo("ceylon.language.Equality") 
-    java.lang.Object element) {
+    public boolean contains(@Name("element") java.lang.Object element) {
         if (element instanceof String) {
             return value.indexOf(((String)element).value)>=0;
         }
@@ -268,9 +266,7 @@ public final class String
     }
     
     @Override
-    public long count(@Name("element") 
-    @TypeInfo("ceylon.language.Equality") 
-    java.lang.Object element) {
+    public long count(@Name("element") java.lang.Object element) {
         throw new Exception(null, null); //TODO!!!!!
     }
     
@@ -284,14 +280,14 @@ public final class String
     
     @Override
     public boolean containsAny(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Equality>")
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
     Iterable<?> elements) {
         return Category$impl.containsAny(this, elements);
     }
 
     @Override
     public boolean containsEvery(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Equality>")
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
     Iterable<?> elements) {
         return Category$impl.containsEvery(this, elements);
     }

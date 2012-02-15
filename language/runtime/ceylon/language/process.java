@@ -7,8 +7,8 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
-@Ceylon @Object //TODO: extendedType=Object
-public class process extends ceylon.language.Object {
+@Ceylon @Object
+public class process {
 	
     @SuppressWarnings("unchecked")
     private Iterable<? extends String> args = $empty.getEmpty();
