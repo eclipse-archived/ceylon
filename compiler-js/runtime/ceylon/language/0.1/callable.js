@@ -12,9 +12,9 @@ function JsCallable(o,f) {
     return that;
 }
 initType(JsCallable, 'ceylon.language.JsCallable', Callable);
-var $JsCallable = JsCallable.$$;
-$JsCallable.prototype.getString = function() { return String$('ceylon.language.JsCallable'); }
-$JsCallable.prototype.call = function() {
+var JsCallable$proto = JsCallable.$$.prototype;
+JsCallable$proto.getString = function() { return String$('ceylon.language.JsCallable'); }
+JsCallable$proto.call = function() {
     var al=[];
     if (arguments !== undefined && arguments.length > 0) {
         for (var i=0; i<arguments.length;i++) {
@@ -32,8 +32,8 @@ function JsCallableList(value) {
 }
 initType(JsCallableList, 'ceylon.language.JsCallableList', Callable);
 inheritProto(JsCallableList, Object$, '$Object$');
-var $JsCallableList = JsCallableList.$$;
-$JsCallableList.prototype.call = function() {
+var JsCallableList$proto = JsCallableList.$$.prototype;
+JsCallableList$proto.call = function() {
     var al=[];
     if (arguments !== undefined && arguments.length > 0) {
         for (var i=0; i<arguments.length;i++) {

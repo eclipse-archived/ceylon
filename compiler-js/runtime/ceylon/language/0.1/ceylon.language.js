@@ -40,10 +40,10 @@ function Object$(wat) {
     return wat;
 }
 initType(Object$, 'ceylon.language.Object', Void);
-var $Object = Object$.$$;
-$Object.prototype.getString=function() { String$(Object.prototype.toString.apply(this)) };
-$Object.prototype.toString=function() { return this.getString().value };
-$Object.prototype.equals = function(other) { return Boolean$(this===other) } //TODO: is this correct?
+var Object$proto = Object$.$$.prototype;
+Object$proto.getString=function() { String$(Object.prototype.toString.apply(this)) };
+Object$proto.toString=function() { return this.getString().value };
+Object$proto.equals = function(other) { return Boolean$(this===other) } //TODO: is this correct?
 function IdentifiableObject(obj) {
     return obj;
 }
@@ -176,17 +176,17 @@ initType(Set, 'ceylon.language.Set', Collection, Cloneable);
 exports.Set=Set;
 
 //Interface methods
-var $FixedSized = FixedSized.$$;
-$FixedSized.prototype.getFirst = function() {
+var FixedSized$proto = FixedSized.$$.prototype;
+FixedSized$proto.getFirst = function() {
     var e = this.getIterator().next();
     return e === $finished ? null : e;
 }
 
-var $None = None.$$;
-$None.prototype.getFirst = function() { return null; }
-$None.prototype.getIterator = function() { return emptyIterator; }
-$None.prototype.getSize = function() { return Integer(0); }
-$None.prototype.getEmpty = function() { return $true; }
+var None$proto = None.$$.prototype;
+None$proto.getFirst = function() { return null; }
+None$proto.getIterator = function() { return emptyIterator; }
+None$proto.getSize = function() { return Integer(0); }
+None$proto.getEmpty = function() { return $true; }
 
 var $Some = Some.$$;
 $Some.prototype.getFirst = function() {
@@ -197,20 +197,20 @@ $Some.prototype.getFirst = function() {
 $Some.prototype.getEmpty = function() { return $false; }
 
 function Exception(description, cause, wat) {
-    if (wat===undefined) {wat=new $Exception}
+    if (wat===undefined) {wat=new Exception.$$}
     wat.description = description;
     wat.cause = cause;
     return wat;
 }
 initType(Exception, 'ceylon.language.Exception', IdentifiableObject);
 inheritProto(Exception, IdentifiableObject, '$IdentifiableObject$');
-var $Exception = Exception.$$;
-$Exception.prototype.getCause = function() {return this.cause}
-$Exception.prototype.getMessage = function() {
+var Exception$proto = Exception.$$.prototype;
+Exception$proto.getCause = function() {return this.cause}
+Exception$proto.getMessage = function() {
     return this.description!==null ? this.description
            : (this.cause!==null ? this.cause.getMessage() : String$("", 0));
 }
-$Exception.prototype.getString = function() {
+Exception$proto.getString = function() {
     return String$('Exception "' + this.getMessage().value + '"');
 }
 
@@ -246,8 +246,8 @@ function Comparison(name) {
 }
 initType(Comparison, 'ceylon.language.Comparison', IdentifiableObject);
 inheritProto(Comparison, IdentifiableObject, '$IdentifiableObject$');
-var $Comparison = Comparison.$$;
-$Comparison.prototype.getString = function() { return this.name }
+var Comparison$proto = Comparison.$$.prototype;
+Comparison$proto.getString = function() { return this.name }
 
 #include functions.js
 #include sequences.js
@@ -269,19 +269,19 @@ function Range(first, last) {
 initType(Range, 'ceylon.language.Range', Object$, Sequence, Category, Equality);
 inheritProto(Range, Object$, '$Object$');
 inheritProto(Range, Sequence, '$Sequence$');
-var $Range = Range.$$;
-$Range.prototype.getFirst = function() { return this.first; }
-$Range.prototype.getLast = function() { return this.last; }
-$Range.prototype.getEmpty = function() { return getFalse(); }
-$Range.prototype.getDecreasing = function() {
+var Range$proto = Range.$$.prototype;
+Range$proto.getFirst = function() { return this.first; }
+Range$proto.getLast = function() { return this.last; }
+Range$proto.getEmpty = function() { return getFalse(); }
+Range$proto.getDecreasing = function() {
     return Boolean$(this.first.compare(this.last) === larger);
 }
-$Range.prototype.next = function(x) {
+Range$proto.next = function(x) {
     return this.getDecreasing() === getTrue() ? x.getPredecessor() : x.getSuccessor();
 }
-$Range.prototype.getSize = function() { return this.size; }
-$Range.prototype.getLastIndex = function() { return Integer(this.size-1); }
-$Range.prototype.item = function(index) {
+Range$proto.getSize = function() { return this.size; }
+Range$proto.getLastIndex = function() { return Integer(this.size-1); }
+Range$proto.item = function(index) {
     var idx = 0;
     var x = this.first;
     while (idx < index.value) {
@@ -293,23 +293,23 @@ $Range.prototype.item = function(index) {
     }
     return x;
 }
-$Range.prototype.includes = function(x) {
+Range$proto.includes = function(x) {
     var compf = x.compare(this.first);
     var compl = x.compare(this.last);
     var rval = this.getDecreasing() === getTrue() ? ((compf === equal || compf === smaller) && (compl === equal || compl === larger)) : ((compf === equal || compf === larger) && (compl === equal || compl === smaller));
     return Boolean$(rval);
 }
-$Range.prototype.contains = function(x) {
+Range$proto.contains = function(x) {
     if (typeof x.compare==='function' || (x.prototype && typeof x.prototype.compare==='function')) {
         return this.includes(x);
     }
     return $false;
 }
-$Range.prototype.getRest = function() {
+Range$proto.getRest = function() {
     var n = this.next(this.first);
     return (n.equals(this.last) === getTrue()) ? ArraySequence([]) : Range(n, this.last);
 }
-$Range.prototype.by = function(step) {
+Range$proto.by = function(step) {
     if (step.compare(Integer(0)) !== larger) {
         //throw
     }
@@ -324,7 +324,7 @@ $Range.prototype.by = function(step) {
     }
     return ArraySequence(seq);
 }
-$Range.prototype.segment = function(from, len) {
+Range$proto.segment = function(from, len) {
     //only positive length for now
     if (len.compare(Integer(0)) !== larger) return $empty;
     if (this.defines(from) === $false) return $empty;
@@ -335,7 +335,7 @@ $Range.prototype.segment = function(from, len) {
     if (this.includes(y) === getFalse()) { y = this.last; }
     return Range(x, y);
 }
-$Range.prototype.span = function(from, to) {
+Range$proto.span = function(from, to) {
     from = largest(Integer(0),from);
     if (to === getNull() || to === undefined) {
         to = this.getLastIndex();
@@ -356,7 +356,7 @@ $Range.prototype.span = function(from, to) {
     }
     return Range(this.item(from), this.item(to));
 }
-$Range.prototype.definesEvery = function(keys) {
+Range$proto.definesEvery = function(keys) {
     for (var i = 0; i < keys.getSize().value; i++) {
         if (this.defines(keys.item(Integer(i))) === getFalse()) {
             return getFalse();
@@ -364,7 +364,7 @@ $Range.prototype.definesEvery = function(keys) {
     }
     return getTrue();
 }
-$Range.prototype.definesAny = function(keys) {
+Range$proto.definesAny = function(keys) {
     for (var i = 0; i < keys.getSize().value; i++) {
         if (this.defines(keys.item(Integer(i))) === getTrue()) {
             return getTrue();
@@ -372,15 +372,15 @@ $Range.prototype.definesAny = function(keys) {
     }
     return getFalse();
 }
-$Range.prototype.defines = function(idx) { return Boolean$(idx.compare(this.getSize()) === smaller); }
-$Range.prototype.getString = function() { return String$(this.first.getString().value + ".." + this.last.getString().value); }
-$Range.prototype.equals = function(other) {
+Range$proto.defines = function(idx) { return Boolean$(idx.compare(this.getSize()) === smaller); }
+Range$proto.getString = function() { return String$(this.first.getString().value + ".." + this.last.getString().value); }
+Range$proto.equals = function(other) {
     if (!other) { return getFalse(); }
     var eqf = this.first.equals(other.getFirst());
     var eql = this.last.equals(other.getLast());
     return Boolean$(eqf === getTrue() && eql === getTrue());
 }
-$Range.prototype.getIterator = function() { return RangeIterator(this); }
+Range$proto.getIterator = function() { return RangeIterator(this); }
 
 function RangeIterator(range) {
     var that = new RangeIterator.$$;
@@ -390,8 +390,8 @@ function RangeIterator(range) {
 }
 initType(RangeIterator, 'ceylon.language.RangeIterator', IdentifiableObject, Iterator);
 inheritProto(RangeIterator, IdentifiableObject, '$IdentifiableObject$');
-var $RangeIterator = RangeIterator.$$;
-$RangeIterator.prototype.next = function() {
+var RangeIterator$proto = RangeIterator.$$.prototype;
+RangeIterator$proto.next = function() {
     var rval = this.current;
     if (rval.equals($finished) === getTrue()) {
         return rval;
@@ -415,16 +415,16 @@ function Entry(key, item) {
 }
 initType(Entry, 'ceylon.language.Entry', Object$, Equality);
 inheritProto(Entry, Object$, '$Object$');
-var $Entry = Entry.$$;
-$Entry.prototype.getString = function() {
+var Entry$proto = Entry.$$.prototype;
+Entry$proto.getString = function() {
     return String$(this.key.getString().value + "->" + this.item.getString().value)
 }
-$Entry.prototype.getKey = function() { return this.key }
-$Entry.prototype.getItem = function() { return this.item }
-$Entry.prototype.equals = function(other) {
+Entry$proto.getKey = function() { return this.key }
+Entry$proto.getItem = function() { return this.item }
+Entry$proto.equals = function(other) {
     return Boolean$(other && this.key.equals(other.key) === getTrue() && this.item.equals(other.item) === getTrue());
 }
-$Entry.prototype.getHash = function() { Integer(this.key.getHash().value ^ this.item.getHash().value) }
+Entry$proto.getHash = function() { Integer(this.key.getHash().value ^ this.item.getHash().value) }
 
 
 exports.Equality=Equality; //TODO just to let the compiler finish
