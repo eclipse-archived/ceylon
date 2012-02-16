@@ -50,8 +50,7 @@ function ArraySequence(value) {
     return that;
 }
 initType(ArraySequence, 'ceylon.language.ArraySequence', IdentifiableObject, Sequence);
-inheritProto(ArraySequence, IdentifiableObject, '$IdentifiableObject$');
-inheritProto(ArraySequence, Sequence, '$Sequence$');
+inheritProto(ArraySequence, IdentifiableObject, '$IdentifiableObject$', Sequence);
 var ArraySequence$proto = ArraySequence.$$.prototype;
 ArraySequence$proto.getString = function() {
 	if (this.value.length === 0) {
@@ -242,8 +241,7 @@ function Singleton(elem) {
     return that;
 }
 initType(Singleton, 'ceylon.language.Singleton', Object$, Sequence);
-inheritProto(Singleton, Object$, '$Object$');
-inheritProto(Singleton, Sequence, '$Sequence$');
+inheritProto(Singleton, Object$, '$Object$', Sequence);
 var Singleton$proto = Singleton.$$.prototype;
 Singleton$proto.getString = function() { return String$("{ " + this.elem.getString().value + " }") }
 Singleton$proto.item = function(index) {

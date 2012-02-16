@@ -20,7 +20,7 @@ function inheritProto(type, superType, suffix) {
     for(var $ in superProto){
         var $m = superProto[$];
         proto[$] = $m;
-        if(suffix!==undefined && $.charAt($.length-1)!=='$') {proto[$+suffix] = $m}
+        if($.charAt($.length-1)!=='$') {proto[$+suffix] = $m}
     }
     for (var i=3; i<arguments.length; ++i) {
         superProto = arguments[i].$$.prototype;
@@ -279,8 +279,7 @@ function Range(first, last) {
     return that;
 }
 initType(Range, 'ceylon.language.Range', Object$, Sequence, Category, Equality);
-inheritProto(Range, Object$, '$Object$');
-inheritProto(Range, Sequence, '$Sequence$');
+inheritProto(Range, Object$, '$Object$', Sequence);
 var Range$proto = Range.$$.prototype;
 Range$proto.getFirst = function() { return this.first; }
 Range$proto.getLast = function() { return this.last; }
