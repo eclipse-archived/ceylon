@@ -87,12 +87,13 @@ public class WebDAVContentStore extends URLContentStore {
     public ContentHandle putContent(Node node, InputStream stream, ContentOptions options) throws IOException {
         final String url = getUrlAsString(node);
         final Sardine s = getSardine();
-        final String token = s.lock(url);
+        // Stef: disabled locking because we can't put a locked file
+//        final String token = s.lock(url);
         try {
             s.put(url, stream);
             return new WebDAVContentHandle(url);
         } finally {
-            s.unlock(url, token);
+//            s.unlock(url, token);
         }
     }
 
