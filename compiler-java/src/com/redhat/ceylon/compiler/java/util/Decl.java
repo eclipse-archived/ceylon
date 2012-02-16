@@ -21,6 +21,7 @@
 package com.redhat.ceylon.compiler.java.util;
 
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
+import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
@@ -184,12 +185,43 @@ public class Decl {
         return decl.getDeclarationModel().isToplevel();
     }
     
+    @Deprecated
+    public static boolean isLocalBroken(Tree.Declaration decl) {
+        return isLocalBroken(decl.getDeclarationModel());
+    }
+    
+    @Deprecated
+    public static boolean isLocalBroken(Declaration decl) {
+        return container(decl) instanceof MethodOrValue;
+    }
+    
+    /**
+     * Determines whether the declaration is local to a method,
+     * getter, setter or class initializer.
+     * @param decl The declaration
+     * @return true if the declaration is local
+     */
     public static boolean isLocal(Tree.Declaration decl) {
         return isLocal(decl.getDeclarationModel());
     }
 
+    /**
+     * Determines whether the declaration is local to a method,
+     * getter, setter.
+     * @param decl The declaration
+     * @return true if the declaration is local
+     */
     public static boolean isLocal(Declaration decl) {
-        return decl.getContainer() instanceof MethodOrValue;
+        Scope scope = container(decl);
+        while (scope instanceof ControlBlock) {
+            scope = scope.getContainer();
+        }
+        if (scope instanceof Getter
+                || scope instanceof Setter
+                || scope instanceof Method) {
+            return true;
+        }
+        return false;
     }
     
     public static boolean isClassAttribute(Declaration decl) {
