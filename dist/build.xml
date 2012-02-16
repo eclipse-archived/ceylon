@@ -117,6 +117,7 @@
                 <include name="httpclient-*.jar"/>
                 <include name="httpcore-*.jar"/>
                 <include name="commons-logging-*.jar"/>
+                <include name="commons-codec-*.jar"/>
                 <include name="slf4j-*.jar"/>
             </fileset>
         </copy>
