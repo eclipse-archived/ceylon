@@ -87,6 +87,7 @@ public class WebDAVContentStore extends URLContentStore {
     public ContentHandle putContent(Node node, InputStream stream, ContentOptions options) throws IOException {
         final String url = getUrlAsString(node);
         final Sardine s = getSardine();
+        mkdirs(node);
         // Stef: disabled locking because we can't put a locked file
 //        final String token = s.lock(url);
         try {
@@ -95,6 +96,17 @@ public class WebDAVContentStore extends URLContentStore {
         } finally {
 //            s.unlock(url, token);
         }
+    }
+
+    private void mkdirs(Node node) throws IOException {
+        for(Node parent : node.getParents()){
+            mkdirs(parent);
+            if(!urlExists(getURL(parent))){
+                final String path = getUrlAsString(parent);
+                getSardine().createDirectory(path);
+            }
+        }
+        
     }
 
     protected ContentHandle createContentHandle(Node parent, String child, String path, Node node) {
