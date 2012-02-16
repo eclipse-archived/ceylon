@@ -229,7 +229,10 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         // any user defined repos
         String outRepo = getOutputRepoOption();
         
-        outputRepo = Util.makeOutputRepository(outRepo, cmrLogger);
+        String user = options.get(OptionName.CEYLONUSER);
+        String password = options.get(OptionName.CEYLONPASS);
+        
+        outputRepo = Util.makeOutputRepository(outRepo, cmrLogger, user, password);
         return outputRepo;
     }
 

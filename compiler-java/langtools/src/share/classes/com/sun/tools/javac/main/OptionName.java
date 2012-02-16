@@ -51,6 +51,8 @@ public enum OptionName {
     CLASSPATH("-classpath"),
     CP("-cp"),
     CEYLONREPO("-rep"),
+    CEYLONUSER("-user"),
+    CEYLONPASS("-pass"),
     SOURCEPATH("-sourcepath"),
     CEYLONSOURCEPATH("-src"),
     BOOTCLASSPATH("-bootclasspath"),

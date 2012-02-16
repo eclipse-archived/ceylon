@@ -269,7 +269,7 @@ public class CeylonDocTool {
         collectSubclasses();
 
         // make a destination repo
-        Repository outputRepository = com.redhat.ceylon.compiler.java.util.Util.makeOutputRepository(this.outputRepository, log);
+        Repository outputRepository = com.redhat.ceylon.compiler.java.util.Util.makeOutputRepository(this.outputRepository, log, null, null);
 
         // document every module
         boolean documentedOne = false;

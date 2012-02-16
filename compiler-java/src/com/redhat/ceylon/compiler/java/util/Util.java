@@ -434,7 +434,7 @@ public class Util {
         return builder.buildRepository();
     }
 
-    public static Repository makeOutputRepository(String outRepo, Logger log) {
+    public static Repository makeOutputRepository(String outRepo, Logger log, String user, String password) {
         if(outRepo == null){
             outRepo = "modules";
         }
@@ -452,7 +452,10 @@ public class Util {
             structureBuilder = new FileContentStore(repoFolder);
         }else{
             // HTTP
-            structureBuilder = new WebDAVContentStore(outRepo, log);
+            WebDAVContentStore davContentStore = new WebDAVContentStore(outRepo, log);
+            davContentStore.setUsername(user);
+            davContentStore.setPassword(password);
+            structureBuilder = davContentStore;
         }
         return new SimpleRepository(structureBuilder, log);
     }
