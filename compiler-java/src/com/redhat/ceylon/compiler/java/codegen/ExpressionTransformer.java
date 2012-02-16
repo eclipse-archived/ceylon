@@ -1178,7 +1178,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                     selector = Util.getGetterName(decl);
                 }
             } else if (decl.isCaptured() || decl.isShared()) {
-                if (decl.isCaptured() && !((Value) decl).isVariable()) {
+                TypeDeclaration typeDecl = ((Value)decl).getType().getDeclaration();
+                boolean isObject = Character.isLowerCase(typeDecl.getName().charAt(0));
+                if (Decl.isLocal(typeDecl)
+                        && isObject) {
+                    // accessing a local 'object' declaration, so don't need a getter 
+                } else if (decl.isCaptured() && !((Value) decl).isVariable()) {
                     // accessing a local that is not getter wrapped
                 } else {
                     primaryExpr = makeQualIdent(primaryExpr, decl.getName());
