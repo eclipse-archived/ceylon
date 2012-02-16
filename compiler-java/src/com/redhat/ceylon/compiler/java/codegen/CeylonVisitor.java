@@ -108,7 +108,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         } else if (Decl.withinClassOrInterface(decl)) {
             // Class attributes
             gen.classGen().transform(decl, classBuilder);
-        } else if (Decl.withinMethod(decl) && Decl.isCaptured(decl)) {
+        } else if (Decl.isLocal(decl) 
+                && Decl.isCaptured(decl) 
+                && decl.getDeclarationModel().isVariable()) {
             // Captured local attributes get turned into an inner getter/setter class
             appendList(gen.transform(decl));
         } else {

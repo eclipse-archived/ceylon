@@ -35,6 +35,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -1177,9 +1178,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                     selector = Util.getGetterName(decl);
                 }
             } else if (decl.isCaptured() || decl.isShared()) {
-                // invoke the qualified getter
-                primaryExpr = makeQualIdent(primaryExpr, decl.getName());
-                selector = Util.getGetterName(decl.getName());
+                if (decl.isCaptured() && !((Value) decl).isVariable()) {
+                    // accessing a local that is not getter wrapped
+                } else {
+                    primaryExpr = makeQualIdent(primaryExpr, decl.getName());
+                    selector = Util.getGetterName(decl.getName());
+                }
             }
         } else if (decl instanceof Method) {
             if (Decl.isLocal(decl)) {
@@ -1384,10 +1388,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if (variable && (decl.isCaptured() || decl.isShared())) {
             // must use the qualified setter
             lhs = makeQualIdent(lhs, decl.getName());
-        } else if (!variable && Decl.withinMethod(decl) && decl.isCaptured()) {
-            // this only happens for SpecifierStatement, when assigning a value to a final
-            // variable after it has been declared
-            result = at(op).Assign(makeSelect(decl.getName(), "value"), rhs);
         } else {
             result = at(op).Assign(makeQualIdent(lhs, decl.getName()), rhs);
         }
