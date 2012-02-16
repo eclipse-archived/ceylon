@@ -214,7 +214,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (Decl.isToplevel(def)) {
             result |= Decl.isShared(def) ? PUBLIC : 0;
             result |= STATIC;
-        } else if (Decl.isLocalBroken(def)) {
+        } else if (Decl.isLocal(def)) {
             result |= Decl.isShared(def) ? PUBLIC : 0;
         } else {
             result |= Decl.isShared(def) ? PUBLIC : PRIVATE;
@@ -318,7 +318,7 @@ public class ClassTransformer extends AbstractTransformer {
         JCExpression nameId = makeQuotedIdent(name);
         ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, name, Decl.isShared(def));
         builder.body(classGen().transform(def, builder));
-        if (Decl.isLocalBroken(def)) {
+        if (Decl.isLocal(def)) {
             // Inner method
             List<JCTree> result = builder.build();
             JCVariableDecl call = at(def).VarDef(
@@ -474,7 +474,7 @@ public class ClassTransformer extends AbstractTransformer {
             .init((List<JCStatement>)visitor.getResult().toList())
             .build();
         
-        if (Decl.isLocalBroken(def)) {
+        if (Decl.isLocal(def)) {
             result = result.append(makeLocalIdentityInstance(name, false));
         } else if (Decl.withinClassOrInterface(def)) {
             boolean visible = Decl.isCaptured(def);

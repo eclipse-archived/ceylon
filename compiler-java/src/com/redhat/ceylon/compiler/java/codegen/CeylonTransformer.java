@@ -174,7 +174,7 @@ public class CeylonTransformer extends AbstractTransformer {
         String attrName = decl.getIdentifier().getText();
         String attrClassName = attrName;
         TypedDeclaration declarationModel = decl.getDeclarationModel();
-        if (Decl.isLocalBroken(decl)) {
+        if (Decl.isLocal(decl)) {
             if (decl instanceof Tree.AttributeGetterDefinition) {
                 attrClassName += "$getter";
             } else if (decl instanceof Tree.AttributeSetterDefinition) {
@@ -229,7 +229,7 @@ public class CeylonTransformer extends AbstractTransformer {
                 JCBlock getterBlock = make().Block(0, statementGen().transformStmts(gdef.getBlock().getStatements()));
                 builder.getterBlock(getterBlock);
                 
-                if (Decl.isLocalBroken(decl)) {
+                if (Decl.isLocal(decl)) {
                     // For inner getters
                     builder.immutable();
                 } else {

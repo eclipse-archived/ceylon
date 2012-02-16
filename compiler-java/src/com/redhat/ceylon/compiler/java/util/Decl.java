@@ -26,7 +26,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -183,16 +182,6 @@ public class Decl {
 
     public static boolean isToplevel(Tree.Declaration decl) {
         return decl.getDeclarationModel().isToplevel();
-    }
-    
-    @Deprecated
-    public static boolean isLocalBroken(Tree.Declaration decl) {
-        return isLocalBroken(decl.getDeclarationModel());
-    }
-    
-    @Deprecated
-    public static boolean isLocalBroken(Declaration decl) {
-        return container(decl) instanceof MethodOrValue;
     }
     
     /**
