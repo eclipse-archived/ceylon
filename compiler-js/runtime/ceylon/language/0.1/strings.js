@@ -170,7 +170,7 @@ String$proto.endsWith = function(str) {
 }
 String$proto.contains = function(sub) {
     var str;
-    if (sub.constructor === String.$$) {str = sub.value}
+    if (sub.constructor === String$.$$) {str = sub.value}
     else if (sub.constructor !== Character.$$) {return $false}
     else {str = codepointToString(sub.value)}
     return Boolean$(this.value.indexOf(str) >= 0);
