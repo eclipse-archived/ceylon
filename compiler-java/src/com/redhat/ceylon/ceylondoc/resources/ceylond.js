@@ -81,7 +81,7 @@ jQuery(function(){
 		if(i == 0)
 			div.addClass("selected");
 		var name = elem.name;
-		var matchStart = name.indexOf(q);
+		var matchStart = name.toLowerCase().indexOf(q);
 		var before = name.substring(0, matchStart);
 		var match = name.substring(matchStart, matchStart + q.length);
 		var after = name.substring(matchStart + q.length);
