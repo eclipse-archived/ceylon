@@ -728,6 +728,14 @@ public class StructureTest extends CompilerTest {
     public void testKlsVariance(){
         compareWithJavaSource("klass/Variance");
     }
+    @Test
+    public void testKlsObjectInMethod(){
+        compareWithJavaSource("klass/ObjectInMethod");
+    }
+    @Test
+    public void testKlsObjectInStatement(){
+        compareWithJavaSource("klass/ObjectInStatement");
+    }
     
     //
     // Methods
@@ -767,6 +775,10 @@ public class StructureTest extends CompilerTest {
     @Test
     public void testMthPublicMethod(){
         compareWithJavaSource("method/PublicMethod");
+    }
+    @Test
+    public void testMthFunctionInStatement(){
+        compareWithJavaSource("method/FunctionInStatement");
     }
     
     //

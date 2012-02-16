@@ -1,0 +1,31 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class ObjectInMethod {
+    
+    private final void m() {
+        final long i = 1L;
+        
+        final class foo {
+            private final .java.lang.String string;
+            
+            @.java.lang.Override
+            public final .java.lang.String toString() {
+                return string;
+            }
+            
+            private foo() {
+                this.string = .ceylon.language.Integer.instance(i).toString();
+            }
+        }
+        final foo foo = new foo();
+        final .java.lang.String s = foo.toString();
+    }
+    
+    ObjectInMethod() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.ObjectInMethod();
+    }
+}
