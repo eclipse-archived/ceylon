@@ -3,26 +3,12 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 class MethodWithLocalObject {
     
     private final void m() {
-        
-        final class ss {
-            private final .java.lang.String value;
-            {
-                value = "foo";
-            }
-            
-            .java.lang.String getSs() {
-                return value;
-            }
-            
-            private ss() {
-            }
-        }
-        final ss ss = new ss();
+        final .java.lang.String ss = "foo";
         
         final class y {
             
             public final .java.lang.String m() {
-                return ss.getSs();
+                return ss;
             }
             
             private y() {

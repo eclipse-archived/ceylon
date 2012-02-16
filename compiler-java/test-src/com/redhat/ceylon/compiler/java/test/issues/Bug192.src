@@ -6,22 +6,11 @@ final class bug192 {
     }
     
     static void bug192() {
-        
-        final class foo {
-            private .java.lang.String value;
-            
-            .java.lang.String getFoo() {
-                return value;
-            }
-            
-            private foo() {
-            }
-        }
-        final foo foo = new foo();
+        final .java.lang.String foo;
         if (true) {
-            foo.value = "hello";
+            foo = "hello";
         } else {
-            foo.value = "goodbye";
+            foo = "goodbye";
         }
         
         final class printFoo {
@@ -30,7 +19,7 @@ final class bug192 {
             }
             
             void printFoo() {
-                .ceylon.language.print.print(.ceylon.language.String.instance(foo.getFoo()));
+                .ceylon.language.print.print(.ceylon.language.String.instance(foo));
             }
         }
         final printFoo printFoo = new printFoo();

@@ -3,24 +3,13 @@ package com.redhat.ceylon.compiler.java.test.structure.attribute;
 class InnerAttributeGetterLateInitialisation {
     
     private final void m() {
-        
-        final class m {
-            private long value;
-            
-            long getM() {
-                return value;
-            }
-            
-            private m() {
-            }
-        }
-        final m m = new m();
-        m.value = 2L;
+        final long m;
+        m = 2L;
         
         final class innerGetter$getter {
             
             long getInnerGetter() {
-                return m.getM();
+                return m;
             }
             
             private innerGetter$getter() {
