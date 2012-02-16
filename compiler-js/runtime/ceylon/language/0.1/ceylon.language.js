@@ -22,9 +22,21 @@ function inheritProto(type, superType, suffix) {
         proto[$] = $m;
         if(suffix!==undefined && $.charAt($.length-1)!=='$') {proto[$+suffix] = $m}
     }
+    for (var i=3; i<arguments.length; ++i) {
+        superProto = arguments[i].$$.prototype;
+        for (var $ in superProto) {proto[$] = superProto[$]}
+    }
+}
+function inheritProtoI(type) {
+    var proto = type.$$.prototype;
+    for (var i=1; i<arguments.length; ++i) {
+        var superProto = arguments[i].$$.prototype;
+        for (var $ in superProto) {proto[$] = superProto[$]}
+    }
 }
 exports.initType=initType;
 exports.inheritProto=inheritProto;
+exports.inheritProtoI=inheritProtoI;
 
 // TODO: Equality will probably be removed
 function Equality(wat) {

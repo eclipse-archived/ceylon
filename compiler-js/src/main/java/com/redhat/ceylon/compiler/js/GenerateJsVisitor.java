@@ -336,7 +336,7 @@ public class GenerateJsVisitor extends Visitor
         share(d);
         
         addTypeInfo(that);
-        copyInterfacePrototypes(that.getSatisfiedTypes(), d);
+        copyMembersToPrototype(d, null, that.getSatisfiedTypes());
         
         addToPrototype(d, that.getInterfaceBody().getStatements());
     }
@@ -416,8 +416,7 @@ public class GenerateJsVisitor extends Visitor
         share(d);
         
         addTypeInfo(that);
-        copySuperclassPrototype(that.getExtendedType(),d);
-        copyInterfacePrototypes(that.getSatisfiedTypes(), d);
+        copyMembersToPrototype(d, that.getExtendedType(), that.getSatisfiedTypes());
         
         addToPrototype(d, that.getClassBody().getStatements());
     }
@@ -517,7 +516,7 @@ public class GenerateJsVisitor extends Visitor
             type.getDeclarationModel().getQualifiedNameString(), "'");
         
         if (extendedType != null) {
-            out(",", constructorFunctionName(extendedType.getType()));
+            out(",", initFunctionName(extendedType.getType()));
         } else if (!(type instanceof InterfaceDefinition)) {
             out(",");
             clAlias();
@@ -526,7 +525,7 @@ public class GenerateJsVisitor extends Visitor
         
         if (satisfiedTypes != null) {
             for (SimpleType satType : satisfiedTypes.getTypes()) {
-                out(",", constructorFunctionName(satType));
+                out(",", initFunctionName(satType));
             }
         }
         
@@ -534,7 +533,7 @@ public class GenerateJsVisitor extends Visitor
         endLine();
     }
     
-    private String constructorFunctionName(SimpleType type) {
+    private String initFunctionName(SimpleType type) {
         String constr = qualifiedPath(type, type.getDeclarationModel());
         if (constr.length() > 0) {
             constr += '.';
@@ -615,48 +614,59 @@ public class GenerateJsVisitor extends Visitor
         self(d);
         out(";");
     }
-
-    private void copyMembersToPrototype(SimpleType that, Declaration d) {
-        TypeDeclaration typeDecl = that.getDeclarationModel();
-        String path = qualifiedPath(that, typeDecl);
-        String suffix = null;
-        if (!((d instanceof Interface) || (typeDecl instanceof Interface))) {
-            suffix = path + '$' + typeDecl.getName() + '$';
-        }
-        if (path.length() > 0) {
-            path += '.';
-        }
-        copyMembersToPrototype(path+memberNameString(typeDecl, false), d, suffix);
-    }
-
-    private void copyMembersToPrototype(String from, Declaration d, String suffix) {
-        clAlias();
-        out(".inheritProto(", d.getName(), ",", from);
-        if ((suffix != null) && (suffix.length() > 0)) {
-            out(",'", suffix, "'");
-        }
-        out(");");
-        endLine();
-    }
     
-    private void copySuperclassPrototype(ExtendedType that, Declaration d) {
-        if (that==null) {
-            String suffix = (d instanceof Interface) ? null : "$$$cl15$IdentifiableObject$";
-            copyMembersToPrototype("$$$cl15.IdentifiableObject", d, suffix);
-        }
-        else if (prototypeStyle || declaredInCL(that.getType().getDeclarationModel())) {
-            copyMembersToPrototype(that.getType(), d);
-        }
-    }
+    private void copyMembersToPrototype(Declaration d, ExtendedType extType, SatisfiedTypes satTypes) {
 
-    private void copyInterfacePrototypes(SatisfiedTypes that, Declaration d) {
-        if (that!=null) {
-            for (Tree.SimpleType st: that.getTypes()) {
-                if (prototypeStyle || declaredInCL(st.getDeclarationModel())) {
-                    copyMembersToPrototype(st, d);
+        boolean copyFromExtType = !(d instanceof Interface)
+                && ((extType == null) || prototypeStyle
+                        || declaredInCL(extType.getType().getDeclarationModel()));
+        boolean copyFromSatType = false;
+        if ((satTypes != null) && !satTypes.getTypes().isEmpty()) {
+            if (prototypeStyle) {
+                copyFromSatType = true;
+            } else {
+                for (Tree.SimpleType st: satTypes.getTypes()) {
+                    if (declaredInCL(st.getDeclarationModel())) {
+                        copyFromSatType = true;
+                        break;
+                    }
                 }
             }
         }
+        if (!(copyFromExtType || copyFromSatType)) {
+            return;
+        }
+        
+        if (copyFromExtType) {
+            String from = null;
+            String suffix = null;
+            if (extType == null) {
+                from = "$$$cl15.IdentifiableObject";
+                suffix = "$$$cl15$IdentifiableObject$";
+            } else {
+                SimpleType type = extType.getType();
+                TypeDeclaration typeDecl = type.getDeclarationModel();
+                from = initFunctionName(type);
+                suffix = qualifiedPath(type, typeDecl) + '$' + typeDecl.getName() + '$';
+            }
+            
+            clAlias();
+            out(".inheritProto(", d.getName(), ",", from, ",'", suffix, "'");
+            
+        } else {
+            clAlias();
+            out(".inheritProtoI(", d.getName());
+        }
+        
+        if (copyFromSatType) {
+            for (Tree.SimpleType st: satTypes.getTypes()) {
+                if (prototypeStyle || declaredInCL(st.getDeclarationModel())) {
+                    out(",", initFunctionName(st));
+                }
+            }
+        }
+        out(");");
+        endLine();
     }
     
     private void addObjectToPrototype(ClassOrInterface type, ObjectDefinition objDef) {
@@ -704,8 +714,7 @@ public class GenerateJsVisitor extends Visitor
         endLine();
         
         addTypeInfo(that);
-        copySuperclassPrototype(that.getExtendedType(),d);
-        copyInterfacePrototypes(that.getSatisfiedTypes(),d);
+        copyMembersToPrototype(d, that.getExtendedType(), that.getSatisfiedTypes());
         
         if (!addToPrototype) {
             out("var o$", memberNameString(d, false), "=",
