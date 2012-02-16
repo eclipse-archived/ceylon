@@ -71,6 +71,7 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
     protected List<ModuleInfo> readModuleInformation() throws IOException {
         final File jarFile = artifact();
 
+        // TODO -- remove this with new Jandex release
         final File indexFile = new File(jarFile.getAbsolutePath().replace(".jar", "-jar") + ".idx");
         if (indexFile.exists() == false) {
             JarIndexer.createJarIndex(jarFile, new Indexer(), false, false, false);
@@ -104,17 +105,24 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
 
         final List<ModuleInfo> infos = new ArrayList<ModuleInfo>();
         for (AnnotationInstance im : imports) {
-            final String name = im.value("name").asString();
+            final String name = asString(im, "name");
             if (JAVA.equalsIgnoreCase(name) == false) {
                 ModuleInfo mi = new ModuleInfo();
                 mi.name = name;
-                mi.version = im.value("version").asString();
+                mi.version = asString(im, "version");
                 mi.optional = asBoolean(im, "optional");
                 mi.export = asBoolean(im, "export");
                 infos.add(mi);
             }
         }
         return infos;
+    }
+
+    private static String asString(AnnotationInstance ai, String name) {
+        final AnnotationValue av = ai.value(name);
+        if (av == null)
+            throw new IllegalArgumentException("Missing required annotation attribute: " + name);
+        return av.asString();
     }
 
     private static boolean asBoolean(AnnotationInstance ai, String name) {
