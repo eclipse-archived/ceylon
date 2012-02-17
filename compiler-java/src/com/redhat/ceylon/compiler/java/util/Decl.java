@@ -21,12 +21,12 @@
 package com.redhat.ceylon.compiler.java.util;
 
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
-import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -202,21 +202,8 @@ public class Decl {
      * @return true if the declaration is local
      */
     public static boolean isLocal(Declaration decl) {
-        int count = 0;
-        Scope scope = container(decl);
-        while (scope instanceof ControlBlock) {
-            scope = scope.getContainer();
-            count++;
-        }
-        if (scope instanceof Getter
-                || scope instanceof Setter
-                || scope instanceof Method) {
-            return true;
-        } else if (scope instanceof Class // Only classes have initializers
-                && count > 0) {
-            return true;
-        }
-        return false;
+        return decl.getContainer() instanceof MethodOrValue 
+                || decl.getContainer() instanceof ControlBlock;
     }
         
     public static boolean isClassAttribute(Declaration decl) {
