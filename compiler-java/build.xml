@@ -181,6 +181,7 @@
        classpathref="test.compile.classpath"
        includeantruntime="false">
       <include name="com/redhat/ceylon/compiler/java/test/**"/>
+      <include name="com/redhat/ceylon/ceylondoc/test/**"/>
     </javac>
   </target>
 
