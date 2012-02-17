@@ -1,0 +1,33 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class KlassInSetter {
+    
+    private final .java.lang.String getFoo() {
+        return "";
+    }
+    
+    private final void setFoo(.java.lang.String foo) {
+        if (true) {
+            final long i = 1L;
+            
+            class Bar {
+                
+                public final .java.lang.String bar() {
+                    return .ceylon.language.Integer.instance(i).toString();
+                }
+                
+                Bar() {
+                }
+            }
+            new Bar().bar();
+        }
+    }
+    
+    KlassInSetter() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassInSetter();
+    }
+}

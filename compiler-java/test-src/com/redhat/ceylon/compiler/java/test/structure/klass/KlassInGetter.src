@@ -1,0 +1,30 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class KlassInGetter {
+    
+    private final .java.lang.String getFoo() {
+        if (true) {
+            final long i = 1L;
+            
+            class Bar {
+                
+                public final .java.lang.String bar() {
+                    return .ceylon.language.Integer.instance(i).toString();
+                }
+                
+                Bar() {
+                }
+            }
+            return new Bar().bar();
+        }
+        return "";
+    }
+    
+    KlassInGetter() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassInGetter();
+    }
+}

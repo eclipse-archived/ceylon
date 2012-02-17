@@ -1,0 +1,31 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+class FunctionInGetter {
+    
+    private final .java.lang.String getFoo() {
+        if (true) {
+            final long i = 1L;
+            
+            final class bar {
+                
+                private bar() {
+                }
+                
+                .java.lang.String bar() {
+                    return .ceylon.language.Integer.instance(i).toString();
+                }
+            }
+            final bar bar = new bar();
+            return bar.bar();
+        }
+        return "";
+    }
+    
+    FunctionInGetter() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.method.FunctionInGetter();
+    }
+}

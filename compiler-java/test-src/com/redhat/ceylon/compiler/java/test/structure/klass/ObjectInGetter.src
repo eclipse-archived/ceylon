@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class ObjectInGetter {
+    
+    private final .java.lang.String getFoo() {
+        if (true) {
+            final long i = 1L;
+            
+            final class bar {
+                
+                @.java.lang.Override
+                public final .java.lang.String toString() {
+                    return .ceylon.language.Integer.instance(i).toString();
+                }
+                
+                private bar() {
+                }
+            }
+            final bar bar = new bar();
+            return bar.toString();
+        }
+        return "";
+    }
+    
+    ObjectInGetter() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.ObjectInGetter();
+    }
+}
