@@ -11,17 +11,18 @@ public class ConcurrentScheduler implements RunnerScheduler {
     
     @Override
     public void schedule(Runnable r) {
-        System.out.println("Aventando una tarea al pool");
-        tpool.submit(r, null);
+        System.out.printf("Submitting task into pool: %s%n", r);
+        tpool.execute(r);
     }
     
     @Override
     public void finished() {
-        System.out.println("esperando a que termine el pool con " + tpool.getActiveCount() + " hilos activos y " + tpool.getTaskCount() + " tareas");
+        System.out.printf("Waiting for pool to finish with %d active threads and %d tasks%n", tpool.getActiveCount(), tpool.getTaskCount());
         try {
+            tpool.shutdown();
             while (tpool.getActiveCount() > 0) {
-                tpool.awaitTermination(10, TimeUnit.SECONDS);
-                System.out.println("esperando a que termine el pool con " + tpool.getActiveCount() + " hilos activos y " + tpool.getTaskCount() + " tareas");
+                tpool.awaitTermination(5, TimeUnit.SECONDS);
+                System.out.printf("Waiting for pool to finish with %d active threads and %d tasks%n", tpool.getActiveCount(), tpool.getTaskCount());
             }
         } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();

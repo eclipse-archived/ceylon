@@ -5,7 +5,7 @@ import org.junit.runners.model.InitializationError;
 
 public class ConcurrentRunner extends BlockJUnit4ClassRunner {
 
-    public ConcurrentRunner(final Class<?> clase) throws InitializationError {
+    public ConcurrentRunner(Class<?> clase) throws InitializationError {
         super(clase);
         setScheduler(new ConcurrentScheduler());
     }
