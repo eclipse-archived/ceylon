@@ -736,6 +736,10 @@ public class StructureTest extends CompilerTest {
     public void testKlsObjectInStatement(){
         compareWithJavaSource("klass/ObjectInStatement");
     }
+    @Test
+    public void testKlsInitializerObjectInStatement(){
+        compareWithJavaSource("klass/InitializerObjectInStatement");
+    }
     
     //
     // Methods
