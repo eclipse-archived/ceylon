@@ -21,6 +21,7 @@
 package com.redhat.ceylon.compiler.java.util;
 
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -196,23 +197,28 @@ public class Decl {
 
     /**
      * Determines whether the declaration is local to a method,
-     * getter, setter.
+     * getter, setter or class initializer.
      * @param decl The declaration
      * @return true if the declaration is local
      */
     public static boolean isLocal(Declaration decl) {
+        int count = 0;
         Scope scope = container(decl);
         while (scope instanceof ControlBlock) {
             scope = scope.getContainer();
+            count++;
         }
         if (scope instanceof Getter
                 || scope instanceof Setter
                 || scope instanceof Method) {
             return true;
+        } else if (scope instanceof Class // Only classes have initializers
+                && count > 0) {
+            return true;
         }
         return false;
     }
-    
+        
     public static boolean isClassAttribute(Declaration decl) {
         return (withinClassOrInterface(decl)) && (decl.isCaptured() || decl.isShared());
     }
