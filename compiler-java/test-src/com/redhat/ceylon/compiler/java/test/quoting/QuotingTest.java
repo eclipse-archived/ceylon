@@ -95,7 +95,7 @@ public class QuotingTest extends CompilerTest {
     
     @Test
     public void testKeywordInImport(){
-        compareWithJavaSource("assert/KeywordInImport");
+        compareWithJavaSource("assert/KeywordInImport.src", "assert/KeywordInImport.ceylon", "assert/transient/TwoKeywordsInPackage.ceylon");
     }
     
     @Test
