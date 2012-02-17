@@ -36,6 +36,13 @@ if "%JAVA_HOME%" == "" (
 
 set "JAVA=%JAVA_HOME%\bin\java.exe"
 
+rem Check that Java executable actually exists
+if not exist "%JAVA%" (
+    @echo "Cannot find java.exe at %JAVA%, check that your JAVA_HOME variable is pointing to the right place"
+    set "exit=true"
+    exit /b 1
+)
+
 rem Process -cp and other args
 set USER_CP=
 set ARGS=
