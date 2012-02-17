@@ -3,9 +3,8 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 class FunctionInStatement {
     
     private final void m() {
-        .java.lang.Object $elem$0;
-        for (ceylon.language.Iterator<? extends ceylon.language.Integer> $i$iter$1 = new ceylon.language.Range<ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).getIterator(); !(($elem$0 = $i$iter$1.next()) instanceof .ceylon.language.Finished); ) {
-            final long i = ((ceylon.language.Integer)$elem$0).longValue();
+        if (true) {
+            final long i = 1L;
             
             final class foo {
                 

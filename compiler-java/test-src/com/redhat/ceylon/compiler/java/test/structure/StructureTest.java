@@ -748,6 +748,22 @@ public class StructureTest extends CompilerTest {
     public void testKlsInitializerKlassInStatement(){
         compareWithJavaSource("klass/InitializerKlassInStatement");
     }
+    @Test
+    public void testKlsObjectInGetter(){
+        compareWithJavaSource("klass/ObjectInGetter");
+    }
+    @Test
+    public void testKlsObjectInSetter(){
+        compareWithJavaSource("klass/ObjectInSetter");
+    }
+    @Test
+    public void testKlsClassInGetter(){
+        compareWithJavaSource("klass/KlassInGetter");
+    }
+    @Test
+    public void testKlsClassInSetter(){
+        compareWithJavaSource("klass/KlassInSetter");
+    }
     
     //
     // Methods
@@ -791,6 +807,14 @@ public class StructureTest extends CompilerTest {
     @Test
     public void testMthFunctionInStatement(){
         compareWithJavaSource("method/FunctionInStatement");
+    }
+    @Test
+    public void testMthFunctionInGetter(){
+        compareWithJavaSource("method/FunctionInGetter");
+    }
+    @Test
+    public void testMthFunctionInSetter(){
+        compareWithJavaSource("method/FunctionInSetter");
     }
     
     //

@@ -1,7 +1,8 @@
 @nomodel
 class FunctionInStatement() {
     void m() {
-        for (i in 1..10) {
+        if (true) {
+            Integer i = 1;
             String foo() { return i.string; }
             String s = foo();
         }
