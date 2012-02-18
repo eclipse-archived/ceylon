@@ -113,9 +113,7 @@ ArraySequence$proto.items = function(keys) {
     var seq = [];
     for (var i = 0; i < keys.getSize().value; i++) {
         var key = keys.item(Integer(i));
-        if (this.defines(key)) {
-            seq.push(this.item(key));
-        }
+        seq.push(this.item(key));
     }
     return ArraySequence(seq);
 }

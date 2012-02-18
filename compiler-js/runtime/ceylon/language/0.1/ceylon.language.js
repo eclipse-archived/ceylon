@@ -14,6 +14,16 @@ function initType(type, typeName) {
         for ($ in superTypes) {cons.T$all[$] = superTypes[$]}
     }
 }
+function initExistingType(type, cons, typeName) {
+    type.$$ = cons;
+    cons.T$name = typeName;
+    cons.T$all = {}
+    cons.T$all[typeName] = type;
+    for (var i=3; i<arguments.length; ++i) {
+        var superTypes = arguments[i].$$.T$all;
+        for ($ in superTypes) {cons.T$all[$] = superTypes[$]}
+    }
+}
 function inheritProto(type, superType, suffix) {
     var proto = type.$$.prototype;
     var superProto = superType.$$.prototype;
@@ -230,24 +240,35 @@ Exception$proto.getString = function() {
 #include strings.js
 
 function getNull() { return null }
-function Boolean$(value) {
-    return value ? $true : $false;
-}
-initType(Boolean$, 'ceylon.language.Boolean', IdentifiableObject);
+//function Boolean$(value) {
+//    return value ? $true : $false;
+//}
+//initType(Boolean$, 'ceylon.language.Boolean', IdentifiableObject);
+//inheritProto(Boolean$, IdentifiableObject, '$IdentifiableObject$');
+//var $true = new Boolean$.$$;
+//$true.string = String$("true");
+//$true.getString = function() {return this.string}
+//function getTrue() { return $true; }
+//var $false = new Boolean$.$$;
+//$false.string = String$("false");
+//$false.getString = function() {return this.string}
+//function getFalse() { return $false; }
+function Boolean$(value) {return Boolean(value)}
+initExistingType(Boolean$, Boolean, 'ceylon.language.Boolean', IdentifiableObject);
 inheritProto(Boolean$, IdentifiableObject, '$IdentifiableObject$');
-var $true = new Boolean$.$$;
-$true.string = String$("true");
-$true.getString = function() {return this.string}
-function getTrue() { return $true; }
-var $false = new Boolean$.$$;
-$false.string = String$("false");
-$false.getString = function() {return this.string}
-function getFalse() { return $false; }
+Boolean.prototype.equals = function(other) {return other.constructor===Boolean && other==this}
+var trueString = String$("true", 4);
+var falseString = String$("false", 5);
+Boolean.prototype.getString = function() {return this.valueOf()?trueString:falseString}
+function getTrue() {return true}
+function getFalse() {return false}
+var $true = true;
+var $false = false;
 function Finished() {}
 initType(Finished, 'ceylon.language.Finished', IdentifiableObject);
 inheritProto(Finished, IdentifiableObject, '$IdentifiableObject$');
 var $finished = new Finished.$$;
-$finished.string = String$("exhausted");
+$finished.string = String$("exhausted", 9);
 $finished.getString = function() {return this.string}
 function getExhausted() { return $finished; }
 

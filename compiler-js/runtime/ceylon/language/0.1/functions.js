@@ -129,9 +129,9 @@ function isOfTypes(obj, types) {
             partial = isOfTypes(obj, t);
         }
         if (types.t==='u') {
-            unions |= partial;
+            unions = partial || unions;
         } else {
-            inters &= partial;
+            inters = partial && inters;
             _ints=true;
         }
     }
