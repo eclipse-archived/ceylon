@@ -2813,8 +2813,7 @@ NonStringChars
 
 fragment
 StringPart
-    : ( ~ /* NonStringChars*/ ('\\' | '"')
-    | EscapeSequence) *
+    : ( ~ /* NonStringChars*/ ('\\' | '"') | EscapeSequence) *
     ;
     
 fragment
@@ -2830,7 +2829,19 @@ EscapeSequence
         |   '"'
         |   '\''
         |   '`'
+        |   'u' HexDigits
+        |   'U' HexDigits HexDigits
         )
+    ;
+
+fragment
+HexDigits
+    : HexDigit HexDigit HexDigit HexDigit
+    ;
+
+fragment
+HexDigit
+    : '0'..'9' | 'A'..'F'
     ;
 
 WS  

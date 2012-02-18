@@ -1,14 +1,25 @@
 <chapter id="lexical">
     <title>Lexical structure</title>
     
-    <para>The lexical structure of Ceylon source files is very similar to Java. 
-    Like Java, Unicode escape sequences <literal>\uXXXX</literal> are processed
-    first, to produce a raw stream of Unicode characters. This character stream 
-    is then processed by the lexer to produce a stream of terminal tokens of the 
-    Ceylon grammar.</para>
-        
+    <para>Every Ceylon source file is a sequence of Unicode characters. Lexical
+    analysis of the character stream, according to the grammar specified in this
+    chapter, results in a stream of tokens. These tokens form the input of the 
+    parser grammar defined in the later chapters of this specification.</para> 
+    
+    <para>The lexer distinguishes Unicode uppercase letter, lowercase letter, 
+    and numeric characters as defined by the Unicode standard. A 
+    <literal>LowercaseLetter</literal> is any character whose 
+    <literal>General_Category</literal> is <literal>Lowercase_Letter</literal>. 
+    An <literal>UppercaseLetter</literal> is any character whose 
+    <literal>General_Category</literal> is <literal>Uppercase_Letter</literal>, 
+    <literal>Titlecase_Letter</literal>, or <literal>Other_Letter</literal>. A 
+    <literal>Number</literal> is any character whose 
+    <literal>General_Category</literal> is <literal>Decimal_Number</literal>, 
+    <literal>Letter_Number</literal>, or <literal>Other_Number</literal>.</para>
+            
     <comment><para>TODO: what is the character encoding? Does it work just like
-    <literal>javac</literal>?</para></comment>
+    <literal>javac</literal>? Should we allow it to be declared by the source 
+    file itself?</para></comment>
         
     <section id="whitespace">
         <title>Whitespace</title>
@@ -37,8 +48,8 @@
             </listitem>
             <listitem>
                 <para>an end-of-line comment begins with <literal>//</literal> 
-                or <literal>#!</literal> and extends until a line terminator: an 
-                ASCII <literal>LF</literal>, <literal>CR</literal> or 
+                or <literal>#!</literal> and extends until a line terminator: 
+                an ASCII <literal>LF</literal>, <literal>CR</literal> or 
                 <literal>CR LF</literal>.</para>
             </listitem>
         </itemizedlist>
@@ -72,12 +83,11 @@
         <title>Identifiers and keywords</title>
         
         <para>Identifiers may contain upper and lowercase letters, digits and 
-        underscore.</para>
+        underscores.</para>
         
-        <programlisting>IdentifierChar: LowercaseChar | UppercaseChar | Digit</programlisting>
-        <programlisting>Digit: "0".."9"</programlisting>
-        <programlisting>LowercaseChar: &lt;lowercase letter&gt; | "_"</programlisting>
-        <programlisting>UppercaseChar: &lt;non-lowercase letter&gt;</programlisting>
+        <programlisting>LowercaseChar: LowercaseLetter | "_"</programlisting>
+        <programlisting>UppercaseChar: UppercaseLetter</programlisting>
+        <programlisting>IdentifierChar: LowercaseChar | UppercaseChar | Number</programlisting>
         
         <para>All identifiers are case sensitive: <literal>Person</literal> and
         <literal>person</literal> are two different legal identifiers.</para>
@@ -135,6 +145,10 @@
         <programlisting>Digits: Digit+ | Digit{1..3} ("_" Digit{3})+</programlisting>
         <programlisting>FractionalDigits: Digit+ | (Digit{3} "_")+ Digit{1..3} </programlisting>
         
+        <para>A digit is a decimal digit.</para>
+        
+        <programlisting>Digit: "0".."9"</programlisting>
+        
         <para>A floating point literal may include either an <emphasis>exponent</emphasis> 
         (for scientific notation) or a <emphasis>magnitude</emphasis> (an SI unit
         prefix). A natural literal may include a magnitude.</para>
@@ -176,7 +190,11 @@
         
         <programlisting>Character: ~("`" | "\" | Tab | Formfeed | Newline | Return | Backspace) | EscapeSequence</programlisting>
         
-        <programlisting>EscapeSequence: "\" ("b" | "t" | "n" | "f" | "r" | "\" | "&quot;" | "'" | "`" )</programlisting>
+        <programlisting>EscapeSequence: "\" ("b" | "t" | "n" | "f" | "r" | "\" | "&quot;" | "'" | "`" | CharacterCode)</programlisting>
+        
+        <programlisting>CharacterCode: "u" HexDigit{4} | "U" HexDigit{8}</programlisting>
+                
+        <programlisting>HexDigit: "0".."9" | "A".."F"</programlisting>
         
         <para>The following are legal character literals:</para>
         
@@ -184,6 +202,7 @@
         <programlisting>`#`</programlisting>
         <programlisting>` `</programlisting>
         <programlisting>`\n`</programlisting>
+        <programlisting>`\u212B`</programlisting>
         
         <comment><para>TODO: should we support an escape sequence for Unicode character names
         <literal>\N{name}</literal> like Python does?</para></comment>
@@ -203,7 +222,7 @@
         <para>The following are legal strings:</para>
         
         <programlisting>"Hello!"</programlisting>
-        
+        <programlisting>"\u00E5ngstr\u00F6ms"</programlisting>
         <programlisting>" \t\n\f\r,;:"</programlisting>
     
     </section>
