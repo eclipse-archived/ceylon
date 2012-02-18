@@ -208,9 +208,21 @@ class Assignability() {
     }
     
     Integer? nat = null;
-    @error if (nonempty nat) {} 
+    @error if (nonempty nat) {}
     
-    for (X x in {X(), X()} ) {
+    void m<T>() {
+        T[] ts = {};
+        if (nonempty ts) {
+            T t=ts.first;
+        }
+    }
+    
+    String[] strngs = {};
+    if (nonempty strngs) {
+        String s=strngs.first;
+    }
+    
+    for (X x in {X(), X()}) {
         print(x.hello);
     }
     
@@ -392,6 +404,16 @@ class Assignability() {
     }
     if (is String mo) {
         @type["String"] value val = mo;
+    }
+    
+    Set<String>? stringSet = null;
+    @error if (nonempty stringSet) {
+        
+    }
+    if (is FixedSized<String> stringSet) {
+        if (nonempty stringSet) {
+            @type["Set<String>&Some<String>"] value ness = stringSet;
+        }
     }
     
 }

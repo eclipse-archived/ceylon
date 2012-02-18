@@ -429,11 +429,11 @@ public class ExpressionVisitor extends Visitor {
     
     private void checkEmpty(ProducedType t, Node n) {
         if (t==null) {
-            n.addError("expression must be of sequence type: type not known");
+            n.addError("expression must be a type with fixed size: type not known");
         }
         else if (!unit.isEmptyType(t)) {
-            n.addError("expression must be of sequence type: " + 
-                    t.getProducedTypeName() + " is not a supertype of Empty");
+            n.addError("expression must be a type with fixed size: " + 
+                    t.getProducedTypeName() + " is not a supertype of FixedSized");
         }
     }
 
@@ -628,7 +628,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.SpecifierExpression se) {
         if (var.getType()!=null) {
             ProducedType vt = var.getType().getTypeModel();
-            checkType(unit.getOptionalType(unit.getEmptyType(vt)), se);
+            checkType(unit.getOptionalType(unit.getPossiblyNoneType(vt)), se);
         }
     }
 
