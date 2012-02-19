@@ -534,11 +534,16 @@ public class GenerateJsVisitor extends Visitor
     }
     
     private String initFunctionName(SimpleType type) {
-        String constr = qualifiedPath(type, type.getDeclarationModel());
+        boolean inProto = prototypeStyle && (type.getScope().getContainer() instanceof ClassOrInterface);
+        String constr = qualifiedPath(type, type.getDeclarationModel(), inProto);
         if (constr.length() > 0) {
             constr += '.';
         }
-        constr += memberNameString(type.getDeclarationModel(), false);
+        if (inProto && (constr.length() == 0)) {
+            constr += type.getDeclarationModel().getName();
+        } else {
+            constr += memberNameString(type.getDeclarationModel(), false);
+        }
         return constr;
     }
     
@@ -1364,6 +1369,10 @@ public class GenerateJsVisitor extends Visitor
     }
     
     private String qualifiedPath(Node that, Declaration d) {
+        return qualifiedPath(that, d, false);
+    }
+    
+    private String qualifiedPath(Node that, Declaration d, boolean inProto) {
         if (isImported(that, d)) {
             return packageAliasString(d.getUnit().getPackage());
         }
@@ -1382,6 +1391,11 @@ public class GenerateJsVisitor extends Visitor
                 //}
                 String path = "";
                 Scope scope = that.getScope();
+                if (inProto) {
+                    while ((scope != null) && (scope instanceof TypeDeclaration)) {
+                        scope = scope.getContainer();
+                    }
+                }
                 while (scope != null) {
                     if (scope instanceof TypeDeclaration) {
                         if (path.length() > 0) {

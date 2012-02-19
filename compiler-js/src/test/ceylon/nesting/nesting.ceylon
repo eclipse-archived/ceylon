@@ -150,7 +150,33 @@ class O() {
         return obj.f();
     }
 }
-    
+
+class OuterC1() {
+    class A() {
+        shared String tst() {return "OuterC1.A.tst()"; }
+    }
+    class B() extends A() {}
+    shared String tst() {return B().tst();}
+}
+
+String outerf() {
+    class A() {
+        shared String tst() {return "outerf.A.tst()"; }
+    }
+    class B() extends A() {}
+    return B().tst();
+}
+
+class OuterC2() {
+    class A() {
+        shared String tst() {return "OuterC2.A.tst()"; }
+    }
+    shared String tst() {
+        class B() extends A() {}
+        return B().tst();
+    }
+}
+
 shared void test() {
     outr("Hello");
     assert(Holder("ok").get().string=="ok","holder(ok)");
@@ -170,6 +196,9 @@ shared void test() {
     assert(O().test1()=="hello", "method instantiating inner class");
     assert(O().test2()=="hello", "method accessing inner object");
     assert(O().test3()=="hello", "method deriving inner interface");
+    assert(OuterC1().tst()=="OuterC1.A.tst()", "");
+    assert(outerf()=="outerf.A.tst()", "");
+    assert(OuterC2().tst()=="OuterC2.A.tst()", "");
     Outer("Hello");
     results();
 }
