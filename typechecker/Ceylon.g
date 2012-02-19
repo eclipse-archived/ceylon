@@ -2782,12 +2782,7 @@ QMARK
     ;
 
 CHAR_LITERAL
-    :   '`' ( ~ NonCharacterChars | EscapeSequence ) '`'
-    ;
-
-fragment
-NonCharacterChars
-    :    '`' | '\\' | '\t' | '\n' | '\f' | '\r' | '\b'
+    :   '`' ( ~ ('`' | '\\') | EscapeSequence ) '`'
     ;
 
 QUOTED_LITERAL
@@ -2807,13 +2802,8 @@ STRING_LITERAL
     ;
 
 fragment
-NonStringChars
-    :    '\\' | '"'
-    ;
-
-fragment
 StringPart
-    : ( ~ /* NonStringChars*/ ('\\' | '"') | EscapeSequence) *
+    : ( ~ ('\\' | '"') | EscapeSequence) *
     ;
     
 fragment
