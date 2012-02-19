@@ -188,7 +188,7 @@
         
         <programlisting>CharacterLiteral: "`" Character "`"</programlisting>
         
-        <programlisting>Character: ~("`" | "\" | Tab | Formfeed | Newline | Return | Backspace) | EscapeSequence</programlisting>
+        <programlisting>Character: ~("`" | "\") | EscapeSequence</programlisting>
         
         <programlisting>EscapeSequence: "\" ("b" | "t" | "n" | "f" | "r" | "\" | "&quot;" | "'" | "`" | CharacterCode)</programlisting>
         
