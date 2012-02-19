@@ -74,7 +74,7 @@ class MethodIfIs() {
         if (is Character? nothing) {
         }        
     }
-    Foo give() {
+    Foo? give() {
         return FooSub();
     }
 }

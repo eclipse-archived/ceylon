@@ -1,0 +1,18 @@
+package com.redhat.ceylon.compiler.java.test.expression.literal;
+
+class CharacterLiteral {
+    
+    public final void m() {
+        final int c1 = 'a';
+        final int c2 = 'I';
+        final int c3 = '\\';
+    }
+    
+    CharacterLiteral() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.literal.CharacterLiteral();
+    }
+}
