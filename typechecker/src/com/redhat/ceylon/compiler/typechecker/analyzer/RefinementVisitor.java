@@ -164,11 +164,18 @@ public class RefinementVisitor extends Visitor {
 		}
 		ProducedReference refinedMember = ci.getType().getTypedReference(refined, typeArgs);
 		ProducedReference refiningMember = ci.getType().getTypedReference(dec, typeArgs);
-		//note: this version checks return type and parameter types in one shot, but the
-		//resulting error messages aren't as friendly, so do it the hard way instead!
-		//checkAssignable(refiningMember.getFullType(), refinedMember.getFullType(), that,
-		checkAssignable(refiningMember.getType(), refinedMember.getType(), that,
-		        "member type must be assignable to refined member type");
+		if (refinedMember.getDeclaration() instanceof TypedDeclaration &&
+		        ((TypedDeclaration) refinedMember.getDeclaration()).isVariable()) {
+            checkIsExactly(refiningMember.getType(), refinedMember.getType(), that,
+                    "member type must be exactly the same as variable refined member type");
+		}
+		else {
+	        //note: this version checks return type and parameter types in one shot, but the
+	        //resulting error messages aren't as friendly, so do it the hard way instead!
+	        //checkAssignable(refiningMember.getFullType(), refinedMember.getFullType(), that,
+	        checkAssignable(refiningMember.getType(), refinedMember.getType(), that,
+	                "member type must be assignable to refined member type");
+		}
 		if (dec instanceof Functional && refined instanceof Functional) {
 		   ParameterList refiningParams = ((Functional) dec).getParameterLists().get(0);
 		   ParameterList refinedParams = ((Functional) refined).getParameterLists().get(0);
