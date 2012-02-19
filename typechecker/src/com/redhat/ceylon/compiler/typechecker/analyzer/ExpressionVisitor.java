@@ -1000,6 +1000,16 @@ public class ExpressionVisitor extends Visitor {
         that.getDeclarationModel().setType(t);
     }
         
+    @Override public void visit(Tree.Throw that) {
+        super.visit(that);
+        if (that.getExpression()!=null) {
+            checkAssignable(that.getExpression().getTypeModel(),
+                    unit.getExceptionDeclaration().getType(), 
+                    that.getExpression(),
+                    "thrown expression must be an exception");
+        }
+    }
+    
     @Override public void visit(Tree.Return that) {
         super.visit(that);
         if (returnType==null) {
