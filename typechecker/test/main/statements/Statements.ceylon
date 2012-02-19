@@ -37,5 +37,7 @@ void statements() {
     @error IdentifiableObject();
     @error Equality();
     @error process();
+    
+    @error throw 1;
         
 }
