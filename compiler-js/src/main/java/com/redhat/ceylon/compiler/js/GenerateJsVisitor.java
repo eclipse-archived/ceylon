@@ -534,15 +534,16 @@ public class GenerateJsVisitor extends Visitor
     }
     
     private String initFunctionName(SimpleType type) {
-        boolean inProto = prototypeStyle && (type.getScope().getContainer() instanceof ClassOrInterface);
-        String constr = qualifiedPath(type, type.getDeclarationModel(), inProto);
+        TypeDeclaration d = type.getDeclarationModel();
+        boolean inProto = prototypeStyle && d.isClassOrInterfaceMember();
+        String constr = qualifiedPath(type, d, inProto);
         if (constr.length() > 0) {
             constr += '.';
         }
         if (inProto && (constr.length() == 0)) {
-            constr += type.getDeclarationModel().getName();
+            constr += d.getName();
         } else {
-            constr += memberNameString(type.getDeclarationModel(), false);
+            constr += memberNameString(d, false);
         }
         return constr;
     }
