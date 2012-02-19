@@ -84,28 +84,32 @@ public class WebDAVContentStore extends URLContentStore {
     }
 
     public ContentHandle putContent(Node node, InputStream stream, ContentOptions options) throws IOException {
-        final String url = getUrlAsString(node);
         final Sardine s = getSardine();
-        mkdirs(node);
-        // Stef: disabled locking because we can't put a locked file
-//        final String token = s.lock(url);
+
+        final Node parent = NodeUtils.firstParent(node);
+        mkdirs(s, parent);
+
+        final String pUrl = getUrlAsString(parent);
+        final String token = s.lock(pUrl); // local parent
         try {
+            final String url = getUrlAsString(node);
             s.put(url, stream);
             return new WebDAVContentHandle(url);
         } finally {
-//            s.unlock(url, token);
+            s.unlock(pUrl, token);
         }
     }
 
-    private void mkdirs(Node node) throws IOException {
-        for(Node parent : node.getParents()){
-            mkdirs(parent);
-            if(!urlExists(getURL(parent))){
-                final String path = getUrlAsString(parent);
-                getSardine().createDirectory(path);
-            }
+    protected void mkdirs(Sardine s, Node parent) throws IOException {
+        if (parent == null)
+            return;
+
+        mkdirs(s, NodeUtils.firstParent(parent));
+
+        final String url = getUrlAsString(parent);
+        if (s.exists(url) == false) {
+            s.createDirectory(url);
         }
-        
     }
 
     protected ContentHandle createContentHandle(Node parent, String child, String path, Node node) {
