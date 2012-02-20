@@ -1347,7 +1347,8 @@ public class GenerateJsVisitor extends Visitor
             paren = !(bme.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter);
         } else if (that.getLeftTerm() instanceof QualifiedMemberExpression) {
             QualifiedMemberExpression qme = (QualifiedMemberExpression)that.getLeftTerm();
-            out(setter(qme.getDeclaration()));
+            super.visit(qme);
+            out(".", setter(qme.getDeclaration()));
             out("(");
             paren = true;
         }

@@ -79,6 +79,12 @@ void testIssue10() {
     assert(obj.f9()==14, "Issue #10 (shared method)");
 }
 
+class AssignTest() {
+    shared variable Integer x := 1;
+    shared Integer y { return x; }
+    assign y { x := y; }
+}
+
 shared void test() {
     value c = Counter(0);
     assert(c.count==0,"counter 1");
@@ -87,5 +93,11 @@ shared void test() {
     assert(c.string=="Counter[2]", "counter.string");
     
     testIssue10();
+    
+    value at = AssignTest();
+    at.x := 5;
+    assert(at.x==5, "assign to member");
+    at.y := 2;
+    assert(at.y==2, "assign using setter");
     results();
 }
