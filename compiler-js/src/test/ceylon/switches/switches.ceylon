@@ -35,6 +35,13 @@ String testMatch2(SwitchTest1 st) {
     case(testcase3) { return "case 3"; }
 }
 
+Integer|Float testIs1(Integer|Float x) {
+    switch (x)
+    case (is Integer) { return x+1; }
+    case (is Float) { return x+1.0; }
+    else { return infinity; }
+}
+
 shared void test() {
     value enums = {1, 2.0};
     //is cases
@@ -67,6 +74,10 @@ shared void test() {
     assert(testMatch2(testcase1)=="case 1|2", "match 4");
     assert(testMatch2(testcase2)=="case 1|2", "match 5");
     assert(testMatch2(testcase3)=="case 3", "match 6");
+
+    //is
+    assert(testIs1(1) == 2, "is1");
+    assert(testIs1(1.5) == 2.5, "is2");
 
     //TODO satisfies
 

@@ -2287,15 +2287,18 @@ public class GenerateJsVisitor extends Visitor
         return "tmpvar$" + tmpvarCount;
     }
 
-    private void caseClause(CaseClause cc, String expvar) {
+    /** Generates code for a case clause, as part of a switch statement. Each case
+     * is rendered as an if. */
+    private void caseClause(CaseClause cc, String expvar, Declaration decl) {
         out("if (");
         final CaseItem item = cc.getCaseItem();
         if (item instanceof IsCase) {
             generateIsOfType(null, expvar, ((IsCase)item).getType(), true);
             out("===");
             clAlias(); out(".getTrue()");
-        /*} else if (item instanceof SatisfiesCase) {
-            out("true");*/
+        } else if (item instanceof SatisfiesCase) {
+            item.addError("case(satisfies) not yet supported");
+            out("true");
         } else if (item instanceof MatchCase){
             boolean first = true;
             for (Expression exp : ((MatchCase)item).getExpressionList().getExpressions()) {
@@ -2311,23 +2314,44 @@ public class GenerateJsVisitor extends Visitor
             cc.addUnexpectedError("support for case of type " + cc.getClass().getSimpleName() + " not yet implemented");
         }
         out(") ");
-        cc.getBlock().visit(this);
+        if (decl == null) {
+            cc.getBlock().visit(this);
+        } else if (cc.getBlock().getStatements().isEmpty()) {
+            out("{}");
+        } else {
+            beginBlock();
+            function();
+            out(getter(decl));
+            out("(){");
+            out("return ", expvar, "; }");
+            endLine();
+            
+            visitStatements(cc.getBlock().getStatements(), false);
+            endBlock();
+        }
     }
 
     @Override
     public void visit(SwitchStatement that) {
-        out("//Switch"); endLine();
+        out("//Switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
+        endLine();
         //Put the expression in a tmp var
-        //TODO is this really necessary?
         final String expvar = createTempVariable();
         out("var ", expvar, "=");
-        that.getSwitchClause().getExpression().visit(this);
+        Expression expr = that.getSwitchClause().getExpression();
+        Declaration getter = null;
+        if (expr.getTerm() instanceof BaseMemberExpression) {
+            if (!accessThroughGetter(((BaseMemberExpression)expr.getTerm()).getDeclaration())) {
+                getter = ((BaseMemberExpression)expr.getTerm()).getDeclaration();
+            }
+        }
+        expr.visit(this);
         out(";"); endLine();
         //For each case, do an if
         boolean first = true;
         for (CaseClause cc : that.getSwitchCaseList().getCaseClauses()) {
             if (!first) out("else ");
-            caseClause(cc, expvar);
+            caseClause(cc, expvar, getter);
             first = false;
         }
         if (that.getSwitchCaseList().getElseClause() != null) {
