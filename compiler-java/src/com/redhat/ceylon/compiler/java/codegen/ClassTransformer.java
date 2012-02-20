@@ -82,7 +82,7 @@ public class ClassTransformer extends AbstractTransformer {
     public List<JCTree> transform(final Tree.ClassOrInterface def) {
         String className = def.getIdentifier().getText();
         ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder
-                .klass(this, def.getDeclarationModel(), className);
+                .klass(this, Decl.isAncestorLocal(def), className);
 
         if (def instanceof Tree.AnyClass) {
             ParameterList paramList = ((Tree.AnyClass)def).getParameterList();
@@ -316,7 +316,7 @@ public class ClassTransformer extends AbstractTransformer {
         // Generate a wrapper class for the method
         String name = def.getIdentifier().getText();
         JCExpression nameId = makeQuotedIdent(name);
-        ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, def.getDeclarationModel(), name, Decl.isShared(def));
+        ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, Decl.isAncestorLocal(def), name, Decl.isShared(def));
         builder.body(classGen().transform(def, builder));
         if (Decl.isLocal(def)) {
             // Inner method
@@ -343,7 +343,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     public JCMethodDecl transform(Tree.AnyMethod def, ClassDefinitionBuilder classBuilder) {
         Method model = def.getDeclarationModel();
-        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, model, model.isClassOrInterfaceMember(), 
+        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(def), model.isClassOrInterfaceMember(), 
                 Util.quoteMethodNameIfProperty(model, typeFact()));
         
         ParameterList paramList = def.getParameterLists().get(0);
@@ -387,7 +387,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     public JCMethodDecl transformConcreteInterfaceMember(MethodDefinition def, ProducedType type) {
-        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, def.getDeclarationModel(), true, Util.quoteMethodNameIfProperty(def.getDeclarationModel(), typeFact()));
+        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(def), true, Util.quoteMethodNameIfProperty(def.getDeclarationModel(), typeFact()));
         
         JCExpression typeExpr = makeJavaType(type);
         methodBuilder.parameter(FINAL, "$this", typeExpr, List.<JCTree.JCAnnotation>nil());
@@ -419,7 +419,7 @@ public class ClassTransformer extends AbstractTransformer {
     private JCMethodDecl transformDefaultedParameter(Tree.Parameter param, Tree.Declaration container, Tree.ParameterList params) {
         Parameter parameter = param.getDeclarationModel();
         String name = Util.getDefaultedParamMethodName(container.getDeclarationModel(), parameter );
-        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, param.getDeclarationModel(), true, name);
+        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(param), true, name);
         
         int modifiers = STATIC;
         if (container.getDeclarationModel().isShared()) {
@@ -454,7 +454,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     public List<JCTree> transformObject(Tree.ObjectDefinition def, ClassDefinitionBuilder containingClassBuilder) {
         String name = def.getIdentifier().getText();
-        ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.klass(this, def.getDeclarationModel(), name);
+        ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.klass(this, Decl.isAncestorLocal(def), name);
         
         CeylonVisitor visitor = new CeylonVisitor(gen(), objectClassBuilder);
         def.visitChildren(visitor);
@@ -511,7 +511,7 @@ public class ClassTransformer extends AbstractTransformer {
     private JCMethodDecl makeMainMethod(Declaration decl, JCExpression callee) {
         // Add a main() method
         MethodDefinitionBuilder methbuilder = MethodDefinitionBuilder
-                .main(this, decl)
+                .main(this, Decl.isAncestorLocal(decl))
                 .annotations(makeAtIgnore());
         // Add call to process.setupArguments
         JCExpression argsId = makeUnquotedIdent("args");

@@ -26,10 +26,8 @@ import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 import static com.sun.tools.javac.code.TypeTags.VOID;
 
-import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -75,30 +73,30 @@ public class MethodDefinitionBuilder {
     
     private ListBuffer<JCStatement> body = ListBuffer.lb();
 
-    private Declaration decl;
+    private boolean ancestorLocal;
 
-    public static MethodDefinitionBuilder method(AbstractTransformer gen, Declaration decl, boolean isMember, String name) {
-        return new MethodDefinitionBuilder(gen, decl, isMember ? Util.quoteMethodName(name) : Util.quoteIfJavaKeyword(name));
+    public static MethodDefinitionBuilder method(AbstractTransformer gen, boolean ancestorLocal, boolean isMember, String name) {
+        return new MethodDefinitionBuilder(gen, ancestorLocal, isMember ? Util.quoteMethodName(name) : Util.quoteIfJavaKeyword(name));
     }
     
-    public static MethodDefinitionBuilder systemMethod(AbstractTransformer gen, Declaration decl, String name) {
-        return new MethodDefinitionBuilder(gen, decl, name);
+    public static MethodDefinitionBuilder systemMethod(AbstractTransformer gen, boolean ancestorLocal, String name) {
+        return new MethodDefinitionBuilder(gen, ancestorLocal, name);
     }
     
-    public static MethodDefinitionBuilder constructor(AbstractTransformer gen, Declaration decl) {
-        return new MethodDefinitionBuilder(gen, decl, null);
+    public static MethodDefinitionBuilder constructor(AbstractTransformer gen, boolean ancestorLocal) {
+        return new MethodDefinitionBuilder(gen, ancestorLocal, null);
     }
 
-    public static MethodDefinitionBuilder main(AbstractTransformer gen, Declaration decl) {
-        return new MethodDefinitionBuilder(gen, decl, "main")
+    public static MethodDefinitionBuilder main(AbstractTransformer gen, boolean ancestorLocal) {
+        return new MethodDefinitionBuilder(gen, ancestorLocal, "main")
             .modifiers(PUBLIC | STATIC)
             .parameter(0, "args", gen.make().TypeArray(gen.make().Type(gen.syms().stringType)), List.<JCAnnotation>nil());
     }
     
-    private MethodDefinitionBuilder(AbstractTransformer gen, Declaration decl, String name) {
+    private MethodDefinitionBuilder(AbstractTransformer gen, boolean ancestorLocal, String name) {
         this.gen = gen;
         this.name = name;
-        this.decl = decl;
+        this.ancestorLocal = ancestorLocal;
         resultTypeExpr = makeResultType(null);
     }
     
@@ -158,7 +156,7 @@ public class MethodDefinitionBuilder {
     }
 
     public MethodDefinitionBuilder annotations(List<JCTree.JCAnnotation> annotations) {
-        if (Decl.isAncestorLocal(decl)) {
+        if (ancestorLocal) {
             return this;
         }
         this.annotations.appendList(annotations);

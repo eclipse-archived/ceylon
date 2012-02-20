@@ -59,7 +59,7 @@ public class AttributeDefinitionBuilder {
     private boolean isHashCode = false;
     
     private AbstractTransformer owner;
-    private TypedDeclaration decl;
+    private boolean ancestorLocal;
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, String className, String attrName, String fieldName) {
         int typeFlags = 0;
@@ -74,7 +74,7 @@ public class AttributeDefinitionBuilder {
         }
         
         JCExpression type = owner.makeJavaType(nonWideningType.getType(), typeFlags);
-        this.decl = attrType;
+        this.ancestorLocal = Decl.isAncestorLocal(attrType);
         this.attrType = type;
         this.owner = owner;
         this.className = className;
@@ -84,13 +84,13 @@ public class AttributeDefinitionBuilder {
         // Make sure we use the declaration for building the getter/setter names, as we might be trying to
         // override a JavaBean property with an "isFoo" getter, or non-Ceylon casing, and we have to respect that.
         getterBuilder = MethodDefinitionBuilder
-            .systemMethod(owner, attrType, Util.getGetterName(attrType))
+            .systemMethod(owner, ancestorLocal, Util.getGetterName(attrType))
             .block(generateDefaultGetterBlock())
             .isActual(attrType.isActual())
             .annotations(owner.makeAtAnnotations(attrType.getAnnotations()))
             .resultType(type, attrType);
         setterBuilder = MethodDefinitionBuilder
-            .systemMethod(owner, attrType, Util.getSetterName(attrType))
+            .systemMethod(owner, ancestorLocal, Util.getSetterName(attrType))
             .block(generateDefaultSetterBlock())
             .isActual(attrType.isActual())
             .parameter(0, attrName, attrType, nonWideningType);
@@ -121,10 +121,10 @@ public class AttributeDefinitionBuilder {
         appendDefinitionsTo(defs);
         if (className != null) {
             return ClassDefinitionBuilder
-                .klass(owner, decl, className)
+                .klass(owner, ancestorLocal, className)
                 .modifiers(Flags.FINAL | (modifiers & (Flags.PUBLIC | Flags.PRIVATE)))
                 .constructorModifiers(Flags.PRIVATE)
-                .annotations(!Decl.isAncestorLocal(decl) ? owner.makeAtAttribute() : List.<JCAnnotation>nil())
+                .annotations(!ancestorLocal ? owner.makeAtAttribute() : List.<JCAnnotation>nil())
                 .annotations(annotations.toList())
                 .defs(defs.toList())
                 .build();
@@ -234,7 +234,7 @@ public class AttributeDefinitionBuilder {
     }
 
     public AttributeDefinitionBuilder annotations(List<JCTree.JCAnnotation> annotations) {
-        if (Decl.isAncestorLocal(decl)) {
+        if (ancestorLocal) {
             return this;
         }
         this.annotations.appendList(annotations);
