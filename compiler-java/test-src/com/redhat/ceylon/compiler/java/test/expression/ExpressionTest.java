@@ -369,6 +369,10 @@ public class ExpressionTest extends CompilerTest {
     public void testOprSlotwiseOperators(){
         compareWithJavaSource("operator/SlotwiseOperators");
     }
+    @Test
+    public void testOprParenthesized(){
+        compareWithJavaSource("operator/Parenthesized");
+    }
     
     @Test
     public void testStpStringTemplate(){
