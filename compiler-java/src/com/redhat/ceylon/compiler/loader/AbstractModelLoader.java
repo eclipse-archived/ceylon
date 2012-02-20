@@ -111,7 +111,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror OBJECT_TYPE = simpleObjectType("java.lang.Object");
     private static final TypeMirror CEYLON_OBJECT_TYPE = simpleObjectType("ceylon.language.Object");
     private static final TypeMirror CEYLON_IDENTIFIABLE_OBJECT_TYPE = simpleObjectType("ceylon.language.IdentifiableObject");
-    private static final TypeMirror CEYLON_EQUALITY_TYPE = simpleObjectType("ceylon.language.Equality");
     private static final TypeMirror CEYLON_EXCEPTION_TYPE = simpleObjectType("ceylon.language.Exception");;
     
     private static final TypeMirror STRING_TYPE = simpleObjectType("java.lang.String");
@@ -1037,7 +1036,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         parameter.setUnit(decl.getUnit());
         parameter.setContainer((Scope) decl);
         parameter.setName("that");
-        parameter.setType(getType(CEYLON_EQUALITY_TYPE, decl));
+        parameter.setType(getType(CEYLON_OBJECT_TYPE, decl));
         parameter.setDeclaration((Declaration) decl);
         parameters.getParameters().add(parameter);
     }

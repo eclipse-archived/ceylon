@@ -545,7 +545,7 @@ public abstract class AbstractTransformer implements Transformation {
     protected boolean willEraseToObject(ProducedType type) {
         type = simplifyType(type);
         return (sameType(syms().ceylonVoidType, type) || sameType(syms().ceylonObjectType, type)
-                || sameType(syms().ceylonNothingType, type) || sameType(syms().ceylonEqualityType, type)
+                || sameType(syms().ceylonNothingType, type)
                 || sameType(syms().ceylonIdentifiableObjectType, type)
                 || type.getDeclaration() instanceof BottomType
                 || typeFact().isUnion(type)|| typeFact().isIntersection(type));
@@ -617,7 +617,7 @@ public abstract class AbstractTransformer implements Transformation {
         // ERASURE
         if (willEraseToObject(type)) {
             // For an erased type:
-            // - Any of the Ceylon types Void, Object, Nothing, Equality,
+            // - Any of the Ceylon types Void, Object, Nothing,
             //   IdentifiableObject, and Bottom result in the Java type Object
             // For any other union type U|V (U nor V is Optional):
             // - The Ceylon type U|V results in the Java type Object
@@ -1362,7 +1362,7 @@ public abstract class AbstractTransformer implements Transformation {
         } else if (type.isExactly(typeFact().getVoidDeclaration().getType())){
             // everything is Void, it's the root of the hierarchy
             return makeIgnoredEvalAndReturn(firstTestExpr, makeBoolean(true));
-        } else if (type.isExactly(typeFact().getEqualityDeclaration().getType())){
+        } else if (type.isExactly(typeFact().getObjectDeclaration().getType())){
             // it's erased
             return makeUtilInvocation("isEquality", List.of(firstTestExpr));
         } else if (type.isExactly(typeFact().getIdentifiableObjectDeclaration().getType())){
