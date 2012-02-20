@@ -40,4 +40,17 @@ public class AnnotationsTest extends CompilerTest {
     public void testAttribute(){
         compareWithJavaSource("annotations/attribute");
     }
+    @Test
+    public void testLocalClass(){
+        compareWithJavaSource("annotations/LocalKlass");
+    }
+    @Test
+    public void testLocalMethod(){
+        compareWithJavaSource("annotations/LocalMethod");
+    }
+    @Test
+    public void testLocalObject(){
+        compareWithJavaSource("annotations/LocalObject");
+    }
+    
 }
