@@ -151,6 +151,9 @@ void testString() {
     assertEqual("ab".endsWith("xab"), false, "String.endsWith");
     assertEqual("abc".endsWith("c"), true, "String.endsWith");
     assertEqual("abc".endsWith("b"), false, "String.endsWith");
+    
+    assertEqual("Hello
+                 world!".normalized, "Hello world!", "String with line break");
 }
 
 shared void test() {

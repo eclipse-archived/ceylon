@@ -1001,15 +1001,22 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(StringLiteral that) {
-        clAlias();
-        out(".String(");
+
         String text = that.getText();
-        out(text);
         // pre-calculate string length
         // TODO: also for strings that contain escape sequences
+        int codepoints = -1;
         if (text.indexOf('\\') < 0) {
+            codepoints = text.codePointCount(0, text.length()) - 2;
+        }
+        text = that.getText().replaceAll("\n", "\\\\n");
+        
+        clAlias();
+        out(".String(");
+        out(text);
+        if (codepoints >= 0) {
         	out(",");
-        	out(String.valueOf(text.codePointCount(0, text.length()) - 2));
+        	out(String.valueOf(codepoints));
         }
         out(")");
     }
