@@ -82,7 +82,6 @@ shared class EqualityAndComparisonOperators() {
         //FIXME: parser doesn't like that
         // sync := is BasicOperatorsA & BasicOperatorsB foo;
         // erased types
-        sync := is Equality foo;
         sync := is IdentifiableObject foo;
         sync := is Exception foo;
         // type parameters

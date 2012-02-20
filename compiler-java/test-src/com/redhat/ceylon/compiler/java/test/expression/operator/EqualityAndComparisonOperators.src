@@ -50,7 +50,6 @@ public class EqualityAndComparisonOperators {
         sync = .ceylon.language.Boolean.instance(sync) instanceof ceylon.language.Empty;
         final ceylon.language.Boolean dest = .ceylon.language.Boolean.instance(.ceylon.language.Boolean.instance(true) instanceof ceylon.language.Empty);
         sync = foo instanceof ceylon.language.Boolean;
-        sync = .com.redhat.ceylon.compiler.java.Util.isEquality(foo);
         sync = .com.redhat.ceylon.compiler.java.Util.isIdentifiableObject(foo);
         sync = foo instanceof .java.lang.Throwable;
     }

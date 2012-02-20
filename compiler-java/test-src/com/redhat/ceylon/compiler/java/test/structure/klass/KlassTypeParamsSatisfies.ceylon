@@ -18,10 +18,9 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class KlassTypeParamsSatisfies<U,V,W,X>()
-    given U satisfies Equality
+class KlassTypeParamsSatisfies<U,V,W>()
+    given U satisfies Container
     given V satisfies Sized
-    given W satisfies Equality & Sized
-    given X satisfies Container & Sized
+    given W satisfies Container & Sized
 {
 }

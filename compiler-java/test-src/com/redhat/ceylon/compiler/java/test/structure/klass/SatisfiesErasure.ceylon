@@ -18,8 +18,8 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class SatisfiesErasure() satisfies Equality {
-    shared actual Boolean equals(Equality that) {
+class SatisfiesErasure() {
+    shared actual Boolean equals(Object that) {
         return false;
     }
     shared actual Integer hash {

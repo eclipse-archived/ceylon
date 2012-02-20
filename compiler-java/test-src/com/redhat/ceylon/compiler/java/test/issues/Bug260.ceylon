@@ -23,8 +23,6 @@ interface Bug260_Interface {
     // we will narrow those to Nothing
     shared formal Integer? attr;
     shared formal Integer? attrGetter;
-    shared formal variable Integer? attrVariable;
-    shared formal variable Integer? attrGetterSetter;
     shared formal Integer? m();
     // we will narrow those to Bottom
     shared formal Bug260_Interface2 attr2;
@@ -50,9 +48,6 @@ class Bug260() satisfies Bug260_Interface & Bug260_Interface2 {
     // narrow to Nothing
     shared actual Nothing attr = null;
     shared actual Nothing attrGetter { return null; }
-    shared actual variable Nothing attrVariable := null;
-    shared actual Nothing attrGetterSetter { return null; }
-    assign attrGetterSetter {}
     
     shared actual Nothing m(){
         return null;

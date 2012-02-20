@@ -228,7 +228,7 @@ class Test() {
 
     void testSequences(Integer&EmptyInterface p1,
                        Sequence<Left&Right>&EmptyInterface leftsAndRights,
-                       Sequence<Entry<Left&Right&Equality,Left&Right&Equality>&EmptyInterface>&EmptyInterface leftsAndRightsEntries,
+                       Sequence<Entry<Left&Right,Left&Right>&EmptyInterface>&EmptyInterface leftsAndRightsEntries,
                        Nothing|Sequence<Left&Right>&EmptyInterface topsOrNothing){
         // sequence operators
         Empty|Sequence<Integer&EmptyInterface> naturals = {p1};

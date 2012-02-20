@@ -22,8 +22,6 @@ public class NullHandlingOperators {
     private final void testEmpty() {
         boolean sync = false;
         sync = .ceylon.language.String.instance("").getCharacters() instanceof ceylon.language.Sequence;
-        final .java.lang.Object foo = .ceylon.language.Boolean.instance(sync);
-        sync = foo instanceof ceylon.language.Sequence;
         sync = ceylon.language.$empty.getEmpty() instanceof ceylon.language.Sequence;
         final ceylon.language.Iterable<? extends ceylon.language.String> iter = ceylon.language.$empty.getEmpty();
         sync = iter instanceof ceylon.language.Sequence;

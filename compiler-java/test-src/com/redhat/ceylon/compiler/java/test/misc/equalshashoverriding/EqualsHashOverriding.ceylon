@@ -18,9 +18,9 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class EqualsHashOverriding(String s) satisfies Equality {
+class EqualsHashOverriding(String s) {
     shared void print() {}
-    shared actual Boolean equals(Equality that) {
+    shared actual Boolean equals(Object that) {
         if (is EqualsHashOverriding that) {
             return s.equals(that.s);
         }
@@ -33,11 +33,11 @@ class EqualsHashOverriding(String s) satisfies Equality {
     }
 }
 @nomodel
-class EqualsHashOverriding2(String s) satisfies Equality {
+class EqualsHashOverriding2(String s) {
     shared actual Integer hash = +0;
 }
 @nomodel
-class EqualsHashOverriding3(String s) satisfies Equality {
+class EqualsHashOverriding3(String s) {
     shared actual Integer hash;
     hash = +0;
 }

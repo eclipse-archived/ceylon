@@ -108,9 +108,8 @@ class Conversions() {
         Void e1;
         Object e2;
         Nothing e3;
-        Equality e4;
-        IdentifiableObject e5;
-        Bottom e6;
+        IdentifiableObject e4;
+        Bottom e5;
         
         // For an ordinary class or interface type T:
         // - The Ceylon type Foo<T> appearing anywhere else results in the Java type

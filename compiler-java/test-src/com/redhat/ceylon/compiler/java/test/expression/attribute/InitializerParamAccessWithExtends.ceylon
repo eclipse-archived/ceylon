@@ -22,6 +22,10 @@ class InitializerParamAccessWithExtends(Boolean b) extends Object() {
     Boolean m() {
         return b;
     }
+    shared actual Boolean equals(Object that) {
+        return true;
+    }
+    shared actual Integer hash {return +0;}
 }
 
 @nomodel

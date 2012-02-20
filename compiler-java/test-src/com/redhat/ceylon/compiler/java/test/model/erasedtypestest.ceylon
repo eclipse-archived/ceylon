@@ -19,5 +19,3 @@
  */
 ExtendsObject eo = ExtendsObject();
 ExtendsIdentifiableObject eio = ExtendsIdentifiableObject();
-ExtendsObjectWithEquality eowe = ExtendsObjectWithEquality();
-

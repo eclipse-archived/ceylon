@@ -28,7 +28,7 @@ interface VarianceBottom satisfies VarianceMiddle {}
 
 @nomodel
 class VarianceClass(VarianceMiddle classParam){
-    shared variable default VarianceMiddle classAttr := classParam;
+    shared default VarianceMiddle classAttr = classParam;
     
     shared default VarianceMiddle m(VarianceMiddle param){
         return param;
@@ -37,7 +37,7 @@ class VarianceClass(VarianceMiddle classParam){
 
 @nomodel
 class VarianceSubClass(VarianceBottom classParam) extends VarianceClass(classParam){
-    shared variable actual VarianceBottom classAttr := classParam;
+    shared actual VarianceBottom classAttr = classParam;
     
     shared actual VarianceBottom m(VarianceMiddle param) {
         return bottom;

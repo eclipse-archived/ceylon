@@ -6,14 +6,6 @@ interface Bug260_Interface {
     
     public abstract ceylon.language.Integer getAttrGetter();
     
-    public abstract ceylon.language.Integer getAttrVariable();
-    
-    public abstract void setAttrVariable(ceylon.language.Integer attrVariable);
-    
-    public abstract ceylon.language.Integer getAttrGetterSetter();
-    
-    public abstract void setAttrGetterSetter(ceylon.language.Integer attrGetterSetter);
-    
     public abstract ceylon.language.Integer m();
     
     public abstract com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2 getAttr2();
@@ -56,33 +48,6 @@ class Bug260 implements com.redhat.ceylon.compiler.java.test.issues.Bug260_Inter
     public final ceylon.language.Integer getAttrGetter() {
         return null;
     }
-    private ceylon.language.Integer attrVariable;
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("variable")})
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Nothing")
-    public final ceylon.language.Integer getAttrVariable() {
-        return attrVariable;
-    }
-    
-    @.java.lang.Override
-    public final void setAttrVariable(@.com.redhat.ceylon.compiler.java.metadata.Name("attrVariable")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Nothing")
-    ceylon.language.Integer attrVariable) {
-        this.attrVariable = attrVariable;
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Nothing")
-    public final ceylon.language.Integer getAttrGetterSetter() {
-        return null;
-    }
-    
-    public final void setAttrGetterSetter(@.com.redhat.ceylon.compiler.java.metadata.Name("attrGetterSetter")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Nothing")
-    ceylon.language.Integer attrGetterSetter) {
-    }
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
@@ -123,7 +88,6 @@ class Bug260 implements com.redhat.ceylon.compiler.java.test.issues.Bug260_Inter
     
     Bug260() {
         this.attr = null;
-        this.attrVariable = null;
         this.attr2 = .ceylon.language.bottom.getBottom();
         this.attr3 = new com.redhat.ceylon.compiler.java.test.issues.Bug260_Intersection();
     }

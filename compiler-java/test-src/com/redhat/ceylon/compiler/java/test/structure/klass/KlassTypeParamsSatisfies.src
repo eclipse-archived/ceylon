@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class KlassTypeParamsSatisfies<U, V extends ceylon.language.Sized, W extends ceylon.language.Sized, X extends ceylon.language.Container & ceylon.language.Sized> {
+class KlassTypeParamsSatisfies<U extends ceylon.language.Container, V extends ceylon.language.Sized, W extends ceylon.language.Container & ceylon.language.Sized> {
     
     KlassTypeParamsSatisfies() {
     }

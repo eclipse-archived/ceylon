@@ -44,10 +44,8 @@ shared class NullHandlingOperators() {
     void testEmpty() {
         variable Boolean sync := false;
         sync := nonempty "".characters;
-        Object foo = sync; 
-        sync := nonempty foo;
         sync := nonempty {};
-        Iterable<String> iter = {};
+        List<String>&FixedSized<String> iter = {};
         sync := nonempty iter;
         String[] seq = {};
         sync := nonempty seq;

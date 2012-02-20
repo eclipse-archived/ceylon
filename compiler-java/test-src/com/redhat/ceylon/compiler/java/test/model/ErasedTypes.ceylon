@@ -17,11 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-class ExtendsObject() extends Object(){
-    shared actual String string = "";
-}
-class ExtendsObjectWithEquality() extends Object() satisfies Equality{
-    shared actual Boolean equals(Equality that) {
+class ExtendsObject() extends Object() {
+    shared actual Boolean equals(Object that) {
         return true;
     }
     shared actual Integer hash {return +0;}

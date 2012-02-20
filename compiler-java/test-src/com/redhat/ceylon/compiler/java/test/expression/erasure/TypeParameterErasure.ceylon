@@ -70,7 +70,7 @@ class TypeParameterErasure() {
     }
 
     T parameterizedWithErasedBounds<T>(T t)
-    given T satisfies Equality {
+    given T satisfies Object {
         t.equals(t);
         return t;
     }
@@ -112,8 +112,8 @@ class TypeParameterErasure() {
 
         String s = parameterizedWithErasedBounds("");
         String s2 = parameterizedWithErasedBounds<String>("");
-        Equality e = parameterizedWithErasedBounds("");
-        Equality e2 = parameterizedWithErasedBounds<Equality>("");
+        Object e = parameterizedWithErasedBounds("");
+        Object e2 = parameterizedWithErasedBounds<Object>("");
 
         parameterizedWithParameterizedBounds<Integer>(2);
         parameterizedWithParameterizedBounds(2);
@@ -151,8 +151,8 @@ class TypeParameterErasure() {
 
         String s = parameterizedWithErasedBounds{t = "";};
         String s2 = parameterizedWithErasedBounds<String>{t = "";};
-        Equality e = parameterizedWithErasedBounds{t = "";};
-        Equality e2 = parameterizedWithErasedBounds<Equality>{t = "";};
+        Object e = parameterizedWithErasedBounds{t = "";};
+        Object e2 = parameterizedWithErasedBounds<Object>{t = "";};
 
         parameterizedWithParameterizedBounds<Integer>{t=2;};
         parameterizedWithParameterizedBounds{t=2;};
@@ -179,7 +179,7 @@ class TypeParameterErasure() {
             return i;
         }
         shared Inner parameterizedWithErasedBounds<Inner>(Inner i, T t)
-        given Inner satisfies Equality {
+        given Inner satisfies Object {
             i.equals(i);
             return i;
         }
@@ -213,7 +213,7 @@ class TypeParameterErasure() {
     }
 
     class ParameterizedWithErasedBounds<T>(T t)
-    given T satisfies Equality {
+    given T satisfies Object {
     }
 
     class ParameterizedWithParameterizedBounds<T>(T t) 
@@ -254,7 +254,7 @@ class TypeParameterErasure() {
         parameterizedMiddle.parameterizedWithIntersectionBounds(middle, middle);
 
         parameterizedMiddle.parameterizedWithErasedBounds("", middle);
-        parameterizedMiddle.parameterizedWithErasedBounds<Equality>("", middle);
+        parameterizedMiddle.parameterizedWithErasedBounds<Object>("", middle);
         parameterizedMiddle.parameterizedWithErasedBounds<String>("", middle);
 
         parameterizedMiddle.parameterizedWithParameterizedBounds(2,middle);
@@ -291,7 +291,7 @@ class TypeParameterErasure() {
         parameterizedMiddle.parameterizedWithIntersectionBounds{i=middle; t=middle;};
 
         parameterizedMiddle.parameterizedWithErasedBounds{i=""; t=middle;};
-        parameterizedMiddle.parameterizedWithErasedBounds<Equality>{i=""; t=middle;};
+        parameterizedMiddle.parameterizedWithErasedBounds<Object>{i=""; t=middle;};
         parameterizedMiddle.parameterizedWithErasedBounds<String>{i=""; t=middle;};
         
         parameterizedMiddle.parameterizedWithParameterizedBounds{i=2;t=middle;};

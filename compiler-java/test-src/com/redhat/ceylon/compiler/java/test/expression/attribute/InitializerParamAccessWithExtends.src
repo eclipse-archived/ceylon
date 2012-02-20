@@ -7,6 +7,16 @@ class InitializerParamAccessWithExtends extends .java.lang.Object {
         return b;
     }
     
+    @.java.lang.Override
+    public final boolean equals(final .java.lang.Object that) {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)0L;
+    }
+    
     InitializerParamAccessWithExtends(boolean b) {
         super();
         this.b = b;
