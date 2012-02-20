@@ -2320,8 +2320,9 @@ public class GenerateJsVisitor extends Visitor
             out("{}");
         } else {
             beginBlock();
-            function();
-            out(getter(decl));
+            out("function get", decl.getName().substring(0,1).toUpperCase(), decl.getName().substring(1));
+            //function();
+            //out(getter(decl));
             out("(){");
             out("return ", expvar, "; }");
             endLine();
