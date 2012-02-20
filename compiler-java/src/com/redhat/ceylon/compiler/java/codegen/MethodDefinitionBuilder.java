@@ -26,8 +26,10 @@ import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 import static com.sun.tools.javac.code.TypeTags.VOID;
 
+import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -73,37 +75,40 @@ public class MethodDefinitionBuilder {
     
     private ListBuffer<JCStatement> body = ListBuffer.lb();
 
-    public static MethodDefinitionBuilder method(AbstractTransformer gen, boolean isMember, String name) {
-        return new MethodDefinitionBuilder(gen, isMember ? Util.quoteMethodName(name) : Util.quoteIfJavaKeyword(name));
+    private Declaration decl;
+
+    public static MethodDefinitionBuilder method(AbstractTransformer gen, Declaration decl, boolean isMember, String name) {
+        return new MethodDefinitionBuilder(gen, decl, isMember ? Util.quoteMethodName(name) : Util.quoteIfJavaKeyword(name));
     }
     
-    public static MethodDefinitionBuilder systemMethod(AbstractTransformer gen, String name) {
-        return new MethodDefinitionBuilder(gen, name);
+    public static MethodDefinitionBuilder systemMethod(AbstractTransformer gen, Declaration decl, String name) {
+        return new MethodDefinitionBuilder(gen, decl, name);
     }
     
-    public static MethodDefinitionBuilder constructor(AbstractTransformer gen) {
-        return new MethodDefinitionBuilder(gen, null);
+    public static MethodDefinitionBuilder constructor(AbstractTransformer gen, Declaration decl) {
+        return new MethodDefinitionBuilder(gen, decl, null);
     }
 
-    public static MethodDefinitionBuilder main(AbstractTransformer gen) {
-        return new MethodDefinitionBuilder(gen, "main")
+    public static MethodDefinitionBuilder main(AbstractTransformer gen, Declaration decl) {
+        return new MethodDefinitionBuilder(gen, decl, "main")
             .modifiers(PUBLIC | STATIC)
             .parameter(0, "args", gen.make().TypeArray(gen.make().Type(gen.syms().stringType)), List.<JCAnnotation>nil());
     }
     
-    private MethodDefinitionBuilder(AbstractTransformer gen, String name) {
+    private MethodDefinitionBuilder(AbstractTransformer gen, Declaration decl, String name) {
         this.gen = gen;
         this.name = name;
+        this.decl = decl;
         resultTypeExpr = makeResultType(null);
     }
     
     public JCTree.JCMethodDecl build() {
         
         if (isActual) {
-            annotations.appendList(gen.makeAtOverride());
+            this.annotations.appendList(gen.makeAtOverride());
         }
         if (resultType != null) {
-            annotations.appendList(gen.makeJavaTypeAnnotations(resultType));
+            annotations(gen.makeJavaTypeAnnotations(resultType));
         }
         if(!typeParamAnnotations.isEmpty())
             annotations(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
@@ -153,6 +158,9 @@ public class MethodDefinitionBuilder {
     }
 
     public MethodDefinitionBuilder annotations(List<JCTree.JCAnnotation> annotations) {
+        if (Decl.isAncestorLocal(decl)) {
+            return this;
+        }
         this.annotations.appendList(annotations);
         return this;
     }

@@ -1056,7 +1056,7 @@ public abstract class AbstractTransformer implements Transformation {
             Parameter p = (Parameter)reqdecl;
             reqdecl = p.getDeclaration();
         }
-        return reqdecl.isToplevel() || (reqdecl.isClassOrInterfaceMember() && reqdecl.isShared());
+        return reqdecl.isToplevel() || (reqdecl.isClassOrInterfaceMember() && reqdecl.isShared() && !Decl.isAncestorLocal(reqdecl));
     }
 
     protected List<JCTree.JCAnnotation> makeJavaTypeAnnotations(TypedDeclaration decl) {

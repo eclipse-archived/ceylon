@@ -205,6 +205,34 @@ public class Decl {
         return decl.getContainer() instanceof MethodOrValue 
                 || decl.getContainer() instanceof ControlBlock;
     }
+    
+    /**
+     * Determines whether the declaration is local or a descendant of a 
+     * local. 
+     * @param decl The declaration
+     * @return true if the decl is local or descendant from a local
+     */
+    public static boolean isAncestorLocal(Tree.Declaration decl) {
+        return isAncestorLocal(decl.getDeclarationModel());
+    }
+    
+    /**
+     * Determines whether the declaration is local or a descendant of a 
+     * local. 
+     * @param decl The declaration
+     * @return true if the decl is local or descendant from a local
+     */
+    public static boolean isAncestorLocal(Declaration decl) {
+        Scope container = decl.getContainer();
+        while (container != null) {
+            if (container instanceof MethodOrValue
+                    || container instanceof ControlBlock) {
+                return true;
+            }
+            container = container.getContainer();
+        }
+        return false;
+    }
         
     public static boolean isClassAttribute(Declaration decl) {
         return (withinClassOrInterface(decl)) && (decl.isCaptured() || decl.isShared());

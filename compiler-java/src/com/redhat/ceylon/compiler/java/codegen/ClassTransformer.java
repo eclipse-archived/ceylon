@@ -82,7 +82,7 @@ public class ClassTransformer extends AbstractTransformer {
     public List<JCTree> transform(final Tree.ClassOrInterface def) {
         String className = def.getIdentifier().getText();
         ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder
-                .klass(this, className);
+                .klass(this, def.getDeclarationModel(), className);
 
         if (def instanceof Tree.AnyClass) {
             ParameterList paramList = ((Tree.AnyClass)def).getParameterList();
@@ -106,7 +106,7 @@ public class ClassTransformer extends AbstractTransformer {
                 at(null);
                 JCExpression nameId = makeQuotedFQIdent(c.getQualifiedNameString());
                 JCNewClass expr = make().NewClass(null, null, nameId, List.<JCTree.JCExpression>nil(), null);
-                classBuilder.body(makeMainMethod(expr));
+                classBuilder.body(makeMainMethod(def.getDeclarationModel(), expr));
             }
         }
         
@@ -316,7 +316,7 @@ public class ClassTransformer extends AbstractTransformer {
         // Generate a wrapper class for the method
         String name = def.getIdentifier().getText();
         JCExpression nameId = makeQuotedIdent(name);
-        ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, name, Decl.isShared(def));
+        ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, def.getDeclarationModel(), name, Decl.isShared(def));
         builder.body(classGen().transform(def, builder));
         if (Decl.isLocal(def)) {
             // Inner method
@@ -335,7 +335,7 @@ public class ClassTransformer extends AbstractTransformer {
                 String path = def.getDeclarationModel().getQualifiedNameString();
                 path += "." + name;
                 JCExpression qualifiedName = makeQuotedFQIdent(path);
-                builder.body(makeMainMethod(make().Apply(null, qualifiedName, List.<JCTree.JCExpression>nil())));
+                builder.body(makeMainMethod(def.getDeclarationModel(), make().Apply(null, qualifiedName, List.<JCTree.JCExpression>nil())));
             }
             return builder.build();                
         }
@@ -343,7 +343,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     public JCMethodDecl transform(Tree.AnyMethod def, ClassDefinitionBuilder classBuilder) {
         Method model = def.getDeclarationModel();
-        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, model.isClassOrInterfaceMember(), 
+        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, model, model.isClassOrInterfaceMember(), 
                 Util.quoteMethodNameIfProperty(model, typeFact()));
         
         ParameterList paramList = def.getParameterLists().get(0);
@@ -387,7 +387,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     public JCMethodDecl transformConcreteInterfaceMember(MethodDefinition def, ProducedType type) {
-        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, true, Util.quoteMethodNameIfProperty(def.getDeclarationModel(), typeFact()));
+        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, def.getDeclarationModel(), true, Util.quoteMethodNameIfProperty(def.getDeclarationModel(), typeFact()));
         
         JCExpression typeExpr = makeJavaType(type);
         methodBuilder.parameter(FINAL, "$this", typeExpr, List.<JCTree.JCAnnotation>nil());
@@ -419,7 +419,7 @@ public class ClassTransformer extends AbstractTransformer {
     private JCMethodDecl transformDefaultedParameter(Tree.Parameter param, Tree.Declaration container, Tree.ParameterList params) {
         Parameter parameter = param.getDeclarationModel();
         String name = Util.getDefaultedParamMethodName(container.getDeclarationModel(), parameter );
-        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, true, name);
+        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, param.getDeclarationModel(), true, name);
         
         int modifiers = STATIC;
         if (container.getDeclarationModel().isShared()) {
@@ -454,7 +454,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     public List<JCTree> transformObject(Tree.ObjectDefinition def, ClassDefinitionBuilder containingClassBuilder) {
         String name = def.getIdentifier().getText();
-        ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.klass(this, name);
+        ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.klass(this, def.getDeclarationModel(), name);
         
         CeylonVisitor visitor = new CeylonVisitor(gen(), objectClassBuilder);
         def.visitChildren(visitor);
@@ -508,10 +508,10 @@ public class ClassTransformer extends AbstractTransformer {
         return defs;
     }
     
-    private JCMethodDecl makeMainMethod(JCExpression callee) {
+    private JCMethodDecl makeMainMethod(Declaration decl, JCExpression callee) {
         // Add a main() method
         MethodDefinitionBuilder methbuilder = MethodDefinitionBuilder
-                .main(this)
+                .main(this, decl)
                 .annotations(makeAtIgnore());
         // Add call to process.setupArguments
         JCExpression argsId = makeUnquotedIdent("args");
