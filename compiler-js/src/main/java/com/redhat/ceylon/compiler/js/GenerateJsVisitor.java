@@ -875,9 +875,7 @@ public class GenerateJsVisitor extends Visitor
         if (prototypeStyle&&d.isClassOrInterfaceMember()) return;
         comment(that);
         function();
-        out(setter(d), "(");
-        memberName(d);
-        out(")");
+        out(setter(d), "(", d.getName(), ")");
         super.visit(that);
         shareSetter(d);
     }
@@ -889,9 +887,7 @@ public class GenerateJsVisitor extends Visitor
         comment(that);
         out("$proto$.", setter(d), "=");
         function();
-        out(setter(d), "(");
-        memberName(d);
-        out(")");
+        out(setter(d), "(", d.getName(), ")");
         super.visit(that);
     }
     
