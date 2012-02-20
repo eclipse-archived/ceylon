@@ -181,6 +181,7 @@
        classpathref="test.compile.classpath"
        includeantruntime="false">
       <include name="com/redhat/ceylon/compiler/java/test/**"/>
+      <include name="com/redhat/ceylon/ceylondoc/test/**"/>
     </javac>
   </target>
 
@@ -263,9 +264,8 @@
     </junitreport>
   </target>
 	
-	
   <!-- Runs the JUnit compiler tests only -->
-  <target name="compiler-tests-only" depends="publish,test.classes" description="Runs the JUnit tests">
+  <target name="compiler-tests-only" depends="publish,test.classes" description="Runs the JUnit compiler tests only">
     <mkdir dir="${test.reports}"/>
     <property name="bootclasspath" refid="test.run.classpath" />
     <junit printsummary="yes" haltonfailure="no">
@@ -291,9 +291,8 @@
     </junitreport>
   </target>
     
-    
   <!-- Runs the JUnit ceylon tests only -->
-  <target name="ceylon-tests-only" depends="publish,test.classes,ceylon-tests.car" description="Runs the JUnit tests">
+  <target name="ceylon-tests-only" depends="publish,test.classes,ceylon-tests.car" description="Runs the JUnit ceylon tests only">
     <mkdir dir="${test.reports}"/>
   	<property name="bootclasspath" refid="test.run.classpath" />
     <junit printsummary="yes" haltonfailure="no">
@@ -318,6 +317,28 @@
       <report format="frames" todir="${test.reports}"/>
     </junitreport>
   </target>
+	
+  <!-- Runs the JUnit ceylondoc tests only -->
+  <target name="ceylondoc-tests-only" depends="publish,test.classes" description="Runs the JUnit ceylondoc tests only">
+	<mkdir dir="${test.reports}"/>
+	<property name="bootclasspath" refid="test.run.classpath" />
+	<junit printsummary="yes" haltonfailure="no">
+	  <classpath refid="test.run.classpath"/>
+	  <jvmarg value="-Xbootclasspath/p:${bootclasspath}"/>
+	  <formatter type="xml"/>
+	  <batchtest fork="yes" todir="${test.reports}">
+	    <fileset dir="${test.src}">
+	      <include name="com/redhat/ceylon/ceylondoc/test/**/*Test.java"/>
+	    </fileset>
+	  </batchtest>
+	</junit>
+	<junitreport todir="${test.reports}">
+	  <fileset dir="${test.reports}">
+	    <include name="TEST-*.xml"/>
+	  </fileset>
+	  <report format="frames" todir="${test.reports}"/>
+	</junitreport>
+  </target>	
 
   <target name="ant-tasks" depends="publish">
     <path id="ant-tasks">
