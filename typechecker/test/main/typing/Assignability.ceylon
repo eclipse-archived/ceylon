@@ -208,9 +208,21 @@ class Assignability() {
     }
     
     Integer? nat = null;
-    @error if (nonempty nat) {} 
+    @error if (nonempty nat) {}
     
-    for (X x in {X(), X()} ) {
+    void m<T>() {
+        T[] ts = {};
+        if (nonempty ts) {
+            T t=ts.first;
+        }
+    }
+    
+    String[] strngs = {};
+    if (nonempty strngs) {
+        String s=strngs.first;
+    }
+    
+    for (X x in {X(), X()}) {
         print(x.hello);
     }
     
@@ -377,5 +389,31 @@ class Assignability() {
     Invariant<Ordinal<Integer>> iii1 = Invariant(ii1);
     Invariant<Integer> iii2 = iii1;
     Invariant<Ordinal<Integer>> iii3 = iii2;
+    
+    Void v = null;
+    if (exists v) {
+        @type["Object"] value val = v;
+    }
+    if (is String v) {
+        @type["String"] value val = v;
+    }
+    
+    Object? mo = null;
+    if (exists mo) {
+        @type["Object"] value val = mo;
+    }
+    if (is String mo) {
+        @type["String"] value val = mo;
+    }
+    
+    Set<String>? stringSet = null;
+    @error if (nonempty stringSet) {
+        
+    }
+    if (is FixedSized<String> stringSet) {
+        if (nonempty stringSet) {
+            @type["Set<String>&Some<String>"] value ness = stringSet;
+        }
+    }
     
 }

@@ -65,8 +65,8 @@ class Generics() {
     Producer<Consumer<Producer<String>>> o = Producer<Consumer<Producer<Object>>>();
     
     class Variances<out X, in Y, Z>(X x, Y y, Z z) 
-            given X satisfies Equality
-            given Y satisfies Equality {
+            given X satisfies Object
+            given Y satisfies Object {
         X goodAtt = x;
         @error Y badAtt = y;
         X[] goodAtt2 { return {x}; }
@@ -124,7 +124,7 @@ class Generics() {
         class GoodParameterizedClass2<out T>(Producer<T> t) {}
         class GoodParameterizedClass3<out T>(Consumer<T> t) {}
         class GoodParameterizedClass4<out T>(void get(T t)) {}
-        class GoodParameterizedClass5<out T>(void get(T[] t)) given T satisfies Equality {}
+        class GoodParameterizedClass5<out T>(void get(T[] t)) given T satisfies Object {}
         class GoodParameterizedClass6<out T>(void get(Producer<T> t)) {}
         class GoodParameterizedClass7<in T>(T t) {}
         class GoodParameterizedClass8<in T>(void get(Consumer<T> t)) {}
@@ -132,7 +132,7 @@ class Generics() {
         class GoodParameterizedClass10<in T>(Consumer<T> t) {}
         class BadParameterizedClass<out T>(void get(Consumer<T> t)) {}
         class BadParameterizedClass2<in T>(void get(T t)) {}
-        class BadParameterizedClass3<in T>(void get(T[] t)) given T satisfies Equality {}
+        class BadParameterizedClass3<in T>(void get(T[] t)) given T satisfies Object {}
         class BadParameterizedClass4<in T>(void get(Producer<T> t)) {}
         void goodHigherOrderMethod(void get(X x)) {}
         void badHigherOrderMethod(void get(@error Y x)) {}
@@ -176,9 +176,9 @@ class Generics() {
         @type["String"] value xh = x.hello;
     }
     
-    class Outer<X>(X x) given X satisfies Equality {
+    class Outer<X>(X x) given X satisfies Object {
         //shared X x = x;
-        shared class Inner<Y>(Y y) given Y satisfies Equality {
+        shared class Inner<Y>(Y y) given Y satisfies Object {
             //shared Y y = y;
             shared Entry<X,Y> getIt() {
                 return x->y;
@@ -232,25 +232,25 @@ class Generics() {
     
     interface SequenceSequence<out T, out X> 
             satisfies Sequence<T>
-            given T satisfies Sequence<X> & Equality
-            given X satisfies Equality {}
+            given T satisfies Sequence<X> & Object
+            given X satisfies Object {}
     
     interface BadSequenceSequence<out T> 
             satisfies Sequence<T>
-            /*@error*/ given T/*<out X>*/ satisfies Sequence<X> & Equality
-            @error given X satisfies Equality {}
+            /*@error*/ given T/*<out X>*/ satisfies Sequence<X> & Object
+            @error given X satisfies Object {}
     
     class Upper<X>(X x)
-            given X satisfies Equality {
+            given X satisfies Object {
         shared Entry<X,Y> method<Y>(X x, Y y) 
-                given Y satisfies Equality { 
+                given Y satisfies Object { 
             return x->y; 
         }
         shared class Inner<Y>(X x, Y y) {}
     }
     
     class Lower<W>(W w) extends Upper<W>(w)
-            given W satisfies Equality {}
+            given W satisfies Object {}
      
     @type["Entry<String,Integer>"] Lower<String>("hello").method<Integer>("world",1);
     @type["Generics.Upper<String>.Inner<Float>"] Lower<String>("hello").Inner<Float>("world", 2.3);

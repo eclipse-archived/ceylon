@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 
@@ -213,6 +214,18 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Iterator");
     }
 
+    private Interface getFixedSizedDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("FixedSized");
+    }
+
+    private Interface getSomeDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("Some");
+    }
+
+    private Interface getNoneDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("None");
+    }
+
     public Interface getCallableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Callable");
     }
@@ -242,8 +255,8 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Invertable");
     }
         
-    public Interface getSlotsDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Slots");
+    public Interface getSetDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("Set");
     }
         
     public Interface getFixedSlotsDeclaration() {
@@ -278,9 +291,9 @@ public class Unit {
         return (TypeDeclaration) getLanguageModuleDeclaration("Quoted");
     }
         
-    public Interface getEqualityDeclaration() {
+    /*public Interface getEqualityDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Equality");
-    }
+    }*/
         
     public Interface getComparableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Comparable");
@@ -333,12 +346,8 @@ public class Unit {
     }
     
     public ProducedType getEmptyType(ProducedType pt) {
-        if (pt==null) {
-            return null;
-        }
-        else {
-            return unionType(pt, getEmptyDeclaration().getType(), this);
-        }
+        return pt==null ? null :
+            unionType(pt, getEmptyDeclaration().getType(), this);
         /*else if (isEmptyType(pt)) {
             //Nothing|Nothing|T == Nothing|T
             return pt;
@@ -357,13 +366,15 @@ public class Unit {
         }*/
     }
     
+    public ProducedType getPossiblyNoneType(ProducedType pt) {
+        return pt==null ? null :
+            unionType(pt, producedType(getFixedSizedDeclaration(), 
+                    getVoidDeclaration().getType()), this);
+    }
+    
     public ProducedType getOptionalType(ProducedType pt) {
-        if (pt==null) {
-            return null;
-        }
-        else {
-            return unionType(pt, getNothingDeclaration().getType(), this);
-        }
+        return pt==null ? null :
+            unionType(pt, getNothingDeclaration().getType(), this);
         /*else if (isOptionalType(pt)) {
             //Nothing|Nothing|T == Nothing|T
             return pt;
@@ -388,6 +399,10 @@ public class Unit {
     
     public ProducedType getIterableType(ProducedType et) {
         return producedType(getIterableDeclaration(), et);
+    }
+
+    public ProducedType getSetType(ProducedType et) {
+        return producedType(getSetDeclaration(), et);
     }
 
     /**
@@ -446,12 +461,51 @@ public class Unit {
         }
     }
 
+    public ProducedType getSetElementType(ProducedType type) {
+        ProducedType st = type.getSupertype(getSetDeclaration());
+        if (st!=null && st.getTypeArguments().size()==1) {
+            return st.getTypeArgumentList().get(0);
+        }
+        else {
+            return null;
+        }
+    }
+
+    public ProducedType getFixedSizedElementType(ProducedType type) {
+        ProducedType st = type.getSupertype(getFixedSizedDeclaration());
+        if (st!=null && st.getTypeArguments().size()==1) {
+            return st.getTypeArgumentList().get(0);
+        }
+        else {
+            return null;
+        }
+    }
+
     public ProducedType getDefiniteType(ProducedType pt) {
-        return pt.minus(getNothingDeclaration());
+        return intersectionType(getObjectDeclaration().getType(), 
+                pt, pt.getDeclaration().getUnit());
+        /*if (pt.getDeclaration().equals(getVoidDeclaration())) {
+            return getObjectDeclaration().getType();
+        }
+        else {
+            return pt.minus(getNothingDeclaration());
+        }*/
+    }
+
+    public ProducedType getNonemptyType(ProducedType pt) {
+        return intersectionType(producedType(getSomeDeclaration(), 
+                getFixedSizedElementType(pt)), pt, 
+                pt.getDeclaration().getUnit());
+        /*if (pt.getDeclaration().equals(getVoidDeclaration())) {
+            return getObjectDeclaration().getType();
+        }
+        else {
+            return pt.minus(getNothingDeclaration());
+        }*/
     }
 
     public ProducedType getNonemptyDefiniteType(ProducedType pt) {
-        return pt.minus(getNothingDeclaration()).minus(getEmptyDeclaration());
+        return getNonemptyType(getDefiniteType(pt));
     }
 
     public ProducedType getNonemptySequenceType(ProducedType pt) {
@@ -471,12 +525,22 @@ public class Unit {
     }
     
     public boolean isOptionalType(ProducedType pt) {
-        return getNothingDeclaration().getType().isSubtypeOf(pt)
-                && !pt.getDeclaration().equals(getVoidDeclaration());
+        //shortcut way of testing that the given type 
+        //has a nonempty intersection with Nothing
+        return getNullDeclaration().getType().isSubtypeOf(pt);
+                //&& !pt.getDeclaration().equals(getVoidDeclaration());
     }
     
     public boolean isEmptyType(ProducedType pt) {
-        return getEmptyDeclaration().getType().isSubtypeOf(pt);
+        //must be a subtype of FixedSized<Void>?
+        return unionType(producedType(getFixedSizedDeclaration(), 
+                    getVoidDeclaration().getType()), 
+                    getNothingDeclaration().getType(), this)
+                .isSupertypeOf(pt) &&
+        //must have non-empty intersection with None<Bottom>
+                !(intersectionType(producedType(getNoneDeclaration(),
+                    getBottomDeclaration().getType()), pt, this)
+                .getDeclaration() instanceof BottomType);
     }
     
     public ProducedType getElementType(ProducedType pt) {

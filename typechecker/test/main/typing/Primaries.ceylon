@@ -98,12 +98,12 @@ class Primaries() {
         //@type["Primaries"] value p9 = Inner3().outer;
     }
     
-    interface G satisfies Equality {
+    interface G {
         shared String getIt() {
             return "Hello";
         }
     }
-    interface H satisfies Equality {
+    interface H {
         shared void doIt() {}
     }
     class S() extends B() satisfies G & H {}

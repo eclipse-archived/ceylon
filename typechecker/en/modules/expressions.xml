@@ -2702,8 +2702,7 @@ createItemMethod.intercept()
     <title>Basic invocation and assignment operators</title>
     
         <para>These operators support method invocation and attribute evaluation and
-        assignment. The <literal>$</literal> operator is a shortcut for converting
-        any expression to a <literal>String</literal>.</para>
+        assignment.</para>
     
     <table>
     <tgroup cols="6">

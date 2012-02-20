@@ -1,6 +1,6 @@
 class OuterTypeArgs() {
-	class Foo<T>() given T satisfies Equality {
-		shared default class Bar<S>() given S satisfies Equality {
+	class Foo<T>() given T satisfies Object {
+		shared default class Bar<S>() given S satisfies Object {
 			Bar<S> b0 = Bar<S>();
 			@error Bar<S> b1 = Foo<Integer>().Bar<S>();
 			Bar<S> b2 = Foo<T>().Bar<S>();
@@ -31,10 +31,10 @@ class OuterTypeArgs() {
 			}
 		}
 	}
-	class Baz<F>() extends Foo<F>() given F satisfies Equality {}
-	class Fum<T>() extends Foo<T>() given T satisfies Equality {
+	class Baz<F>() extends Foo<F>() given F satisfies Object {}
+	class Fum<T>() extends Foo<T>() given T satisfies Object {
 		shared actual class Bar<S>() extends super.Bar<S>() 
-		        given S satisfies Equality {
+		        given S satisfies Object {
 			shared actual Bar<S> get() {
 				return this;
 			}
@@ -60,7 +60,7 @@ class OuterTypeArgs() {
 	Baz<String>.Bar<Integer> fb5 = fmbg;
 	Baz<String>.Bar<Integer> fb6 = fbg;
 	
-	Baz<Equality>.Bar<String> bazbarobj = Baz<Equality>().Bar<String>();
+	Baz<Object>.Bar<String> bazbarobj = Baz<Object>().Bar<String>();
 	@error Baz<Integer>.Bar<String> bazbarnat = bazbarobj;
 	
 	class Outer<out T>(T t) {

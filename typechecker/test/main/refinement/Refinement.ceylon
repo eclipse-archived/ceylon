@@ -184,3 +184,15 @@ class ConcreteRefinement() extends AbstractRefined() {
     }
     assign bar {}
 }
+
+class VariableSuper() {
+    shared default variable Object i:=0;
+    shared default Object j=0;
+    shared default variable Object k:=0;
+}
+
+class VariableSub() extends VariableSuper() {
+    @error shared actual variable Integer i:=1;
+    shared actual variable Integer j:=1;
+    @error shared actual variable Void k:=0;
+}

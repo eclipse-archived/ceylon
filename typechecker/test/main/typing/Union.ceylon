@@ -131,7 +131,7 @@ class Union() {
     
     function first<T>(T... args) {
         if (nonempty args) {
-            return args.first; 
+            return args.first;
         }
         else {
             throw;
