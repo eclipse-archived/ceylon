@@ -56,8 +56,8 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         write("See also: ");
         for (String target : see.getPositionalArguments()) {
             // try to resolve in containing scopes
-            Declaration targetDecl = resolveDeclaration(decl.getContainer(), target);
-            if (targetDecl != null) {
+            Declaration targetDecl = resolveDeclaration((Scope) decl, target);
+            if(targetDecl != null){
                 if (!first) {
                     write(", ");
                 } else {
@@ -74,12 +74,11 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     }
 
     private Declaration resolveDeclaration(Scope decl, String target) {
-        if (decl == null)
+        if(decl == null)
             return null;
         Declaration member = decl.getMember(target, null);
-        if (member != null) {
+        if (member != null)
             return member;
-        }
         return resolveDeclaration(decl.getContainer(), target);
     }
 
