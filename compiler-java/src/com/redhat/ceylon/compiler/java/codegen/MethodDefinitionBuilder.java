@@ -73,37 +73,40 @@ public class MethodDefinitionBuilder {
     
     private ListBuffer<JCStatement> body = ListBuffer.lb();
 
-    public static MethodDefinitionBuilder method(AbstractTransformer gen, boolean isMember, String name) {
-        return new MethodDefinitionBuilder(gen, isMember ? Util.quoteMethodName(name) : Util.quoteIfJavaKeyword(name));
+    private boolean ancestorLocal;
+
+    public static MethodDefinitionBuilder method(AbstractTransformer gen, boolean ancestorLocal, boolean isMember, String name) {
+        return new MethodDefinitionBuilder(gen, ancestorLocal, isMember ? Util.quoteMethodName(name) : Util.quoteIfJavaKeyword(name));
     }
     
-    public static MethodDefinitionBuilder systemMethod(AbstractTransformer gen, String name) {
-        return new MethodDefinitionBuilder(gen, name);
+    public static MethodDefinitionBuilder systemMethod(AbstractTransformer gen, boolean ancestorLocal, String name) {
+        return new MethodDefinitionBuilder(gen, ancestorLocal, name);
     }
     
-    public static MethodDefinitionBuilder constructor(AbstractTransformer gen) {
-        return new MethodDefinitionBuilder(gen, null);
+    public static MethodDefinitionBuilder constructor(AbstractTransformer gen, boolean ancestorLocal) {
+        return new MethodDefinitionBuilder(gen, ancestorLocal, null);
     }
 
-    public static MethodDefinitionBuilder main(AbstractTransformer gen) {
-        return new MethodDefinitionBuilder(gen, "main")
+    public static MethodDefinitionBuilder main(AbstractTransformer gen, boolean ancestorLocal) {
+        return new MethodDefinitionBuilder(gen, ancestorLocal, "main")
             .modifiers(PUBLIC | STATIC)
             .parameter(0, "args", gen.make().TypeArray(gen.make().Type(gen.syms().stringType)), List.<JCAnnotation>nil());
     }
     
-    private MethodDefinitionBuilder(AbstractTransformer gen, String name) {
+    private MethodDefinitionBuilder(AbstractTransformer gen, boolean ancestorLocal, String name) {
         this.gen = gen;
         this.name = name;
+        this.ancestorLocal = ancestorLocal;
         resultTypeExpr = makeResultType(null);
     }
     
     public JCTree.JCMethodDecl build() {
         
         if (isActual) {
-            annotations.appendList(gen.makeAtOverride());
+            this.annotations.appendList(gen.makeAtOverride());
         }
         if (resultType != null) {
-            annotations.appendList(gen.makeJavaTypeAnnotations(resultType));
+            annotations(gen.makeJavaTypeAnnotations(resultType));
         }
         if(!typeParamAnnotations.isEmpty())
             annotations(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
@@ -153,6 +156,9 @@ public class MethodDefinitionBuilder {
     }
 
     public MethodDefinitionBuilder annotations(List<JCTree.JCAnnotation> annotations) {
+        if (ancestorLocal) {
+            return this;
+        }
         this.annotations.appendList(annotations);
         return this;
     }

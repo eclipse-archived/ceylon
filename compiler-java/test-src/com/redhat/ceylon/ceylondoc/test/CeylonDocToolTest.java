@@ -155,7 +155,6 @@ public class CeylonDocToolTest {
         assertFileNotExists(destDir, "class_PrivateClass.html");
         assertFileExists(destDir, "class_SharedClass.html");
         assertFileExists(destDir, "class_CaseSensitive.html");
-        assertFileNotExists(destDir, "class_caseSensitive.html");
         assertFileExists(destDir, "object_caseSensitive.html");
         
         assertMatchInFile(destDir, "index.html", 
@@ -251,7 +250,6 @@ public class CeylonDocToolTest {
         assertFileExists(destDir, "class_PrivateClass.html");
         assertFileExists(destDir, "class_SharedClass.html");
         assertFileExists(destDir, "class_CaseSensitive.html");
-        assertFileNotExists(destDir, "class_caseSensitive.html");
         assertFileExists(destDir, "object_caseSensitive.html");
         
         assertMatchInFile(destDir, "index.html", 

@@ -85,23 +85,29 @@ public class ClassDefinitionBuilder {
     private final ListBuffer<JCTree> body = ListBuffer.lb();
     private final ListBuffer<JCStatement> init = ListBuffer.lb();
 
-    public static ClassDefinitionBuilder klass(AbstractTransformer gen, String name) {
-        return new ClassDefinitionBuilder(gen, name);
+    private boolean ancestorLocal;
+
+    public static ClassDefinitionBuilder klass(AbstractTransformer gen, boolean ancestorLocal, String name) {
+        return new ClassDefinitionBuilder(gen, ancestorLocal, name);
     }
     
-    public static ClassDefinitionBuilder methodWrapper(AbstractTransformer gen, String name, boolean shared) {
-        return new ClassDefinitionBuilder(gen, name)
+    public static ClassDefinitionBuilder methodWrapper(AbstractTransformer gen, boolean ancestorLocal, String name, boolean shared) {
+        return new ClassDefinitionBuilder(gen, ancestorLocal, name)
             .annotations(gen.makeAtMethod())
             .modifiers(FINAL, shared ? PUBLIC : 0)
             .constructorModifiers(PRIVATE);
     }
 
-    private ClassDefinitionBuilder(AbstractTransformer gen, String name) {
+    private ClassDefinitionBuilder(AbstractTransformer gen, boolean ancestorLocal, String name) {
         this.gen = gen;
         this.name = name;
+        this.ancestorLocal = ancestorLocal;
         
         extending = getSuperclass(null);
         annotations(gen.makeAtCeylon());
+        if (ancestorLocal) {
+            this.annotations.appendList(gen.makeAtIgnore());
+        }
     }
 
     public List<JCTree> build() {
@@ -147,7 +153,7 @@ public class ClassDefinitionBuilder {
             for(Declaration member : decl.getMembers()){
                 if(member instanceof Method && !member.isFormal()){
                     // this member has a body so we need to add a definition for it
-                    MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(gen, true, Util.quoteMethodNameIfProperty((Method) member, gen.typeFact()));
+                    MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(gen, Decl.isAncestorLocal(member), true, Util.quoteMethodNameIfProperty((Method) member, gen.typeFact()));
                     Method method = (Method) member;
                     ListBuffer<JCTree.JCExpression> params = ListBuffer.lb();
                     params.append(gen.makeUnquotedIdent("this"));
@@ -219,7 +225,7 @@ public class ClassDefinitionBuilder {
             mods = modifiers & (PUBLIC | PRIVATE | PROTECTED);
         }
         return MethodDefinitionBuilder
-            .constructor(gen)
+            .constructor(gen, ancestorLocal)
             .modifiers(mods)
             .parameters(params.toList())
             .body(superCall)
@@ -305,6 +311,9 @@ public class ClassDefinitionBuilder {
     }
 
     public ClassDefinitionBuilder annotations(List<JCTree.JCAnnotation> annotations) {
+        if (ancestorLocal) {
+            return this;
+        }
         this.annotations.appendList(annotations);
         return this;
     }
