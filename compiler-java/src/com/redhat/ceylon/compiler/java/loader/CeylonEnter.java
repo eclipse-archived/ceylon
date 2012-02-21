@@ -198,13 +198,17 @@ public class CeylonEnter extends Enter {
         validator.verifyModuleDependencyTree();
     }
 
-    public void addModuleToClassPath(Module module, boolean errorIfMissing) {
+    public enum ModuleSource {
+        OUTPUT_REPO, REPO_LIST;
+    }
+    
+    public void addModuleToClassPath(Module module, boolean errorIfMissing, ModuleSource source) {
         if(options.get(OptionName.VERBOSE) != null)
             Log.printLines(log.noticeWriter, "[Adding module to classpath: "+module.getNameAsString()+"/"+module.getVersion()+"]");        
         
         Paths.Path classPath = paths.getPathForLocation(StandardLocation.CLASS_PATH);
         
-        Repository repository = fileManager.getRepository();
+        Repository repository = source == ModuleSource.REPO_LIST ? fileManager.getRepository() : fileManager.getOutputRepository();
         File artifact = null;
         try {
             ArtifactContext ctx = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);

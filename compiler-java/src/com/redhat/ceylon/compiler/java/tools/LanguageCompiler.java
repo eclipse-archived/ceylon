@@ -50,6 +50,7 @@ import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.java.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.java.loader.CeylonEnter;
+import com.redhat.ceylon.compiler.java.loader.CeylonEnter.ModuleSource;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.loader.model.CompilerModuleManager;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
@@ -318,7 +319,7 @@ public class LanguageCompiler extends JavaCompiler {
         pkg.setModule(module);
         module.getPackages().add(pkg);
         // automatically add this module's jar to the classpath if it exists
-        ceylonEnter.addModuleToClassPath(module, false);
+        ceylonEnter.addModuleToClassPath(module, false, ModuleSource.OUTPUT_REPO);
     }
 
     private Module loadModuleFromSource(String pkgName, LinkedList<JCCompilationUnit> moduleTrees) {
