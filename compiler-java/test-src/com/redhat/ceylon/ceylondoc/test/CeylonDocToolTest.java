@@ -175,18 +175,48 @@ public class CeylonDocToolTest {
         assertNoMatchInFile(destDir, "class_SharedClass.html", 
                 Pattern.compile("<.*? id='privateMethod'.*?>"));
         
+        assertBy(destDir);
+        assertThrows(destDir);
+        assertSee(destDir);
+        assertIcons(destDir);
+        assertInnerTypesDoc(destDir);
+    }
+    
+    private void assertBy(File destDir) throws IOException {
         assertMatchInFile(destDir, "index.html", 
                 Pattern.compile("<div class='by'>By: Tom Bentley</div>"));
         assertMatchInFile(destDir, "interface_Types.html", 
                 Pattern.compile("<div class='by'>By: Tom Bentley</div>"));
-        
+    }
+
+    private void assertThrows(File destDir) throws IOException {
         assertMatchInFile(destDir, "class_StubClass.html", 
                 Pattern.compile("<div class='throws'>Throws:"));        
         assertMatchInFile(destDir, "class_StubClass.html", 
                 Pattern.compile("OverflowException<p>if the number is too large to be represented as an integer</p>"));        
         assertMatchInFile(destDir, "class_StubClass.html", 
                 Pattern.compile("<a href='class_StubException.html'>StubException</a><p><code>when</code> with <strong>WIKI</strong> syntax</p>"));
+    }
+
+    private void assertSee(File destDir) throws IOException {
+        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<div class='see'>See also: <a href='interface_StubInterface.html'>StubInterface</a></div>"));
+        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<div class='see'>See also: <a href='class_StubClass.html#methodWithSee'>methodWithSee</a>, <a href='class_StubException.html'>StubException</a></div>"));
+        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<div class='see'>See also: <a href='class_StubClass.html#attributeWithSee'>attributeWithSee</a>, <a href='class_StubException.html'>StubException</a></div>"));
+    }
+    
+    private void assertIcons(File destDir) throws IOException {
+        assertMatchInFile(destDir, "interface_StubInterface.html", Pattern.compile("Interface <i class='icon-interface'></i><code>StubInterface</code>"));
+        assertMatchInFile(destDir, "interface_StubInterface.html", Pattern.compile("id='defaultMethod'><td><code><i class='icon-shared-member'></i>"));
+        assertMatchInFile(destDir, "interface_StubInterface.html", Pattern.compile("id='formalMethod'><td><code><i class='icon-shared-member'><i class='icon-decoration-formal'></i></i>"));
         
+        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<i class='icon-interface'></i><a href='interface_StubClass.StubInnerInterface.html'>StubInnerInterface</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<i class='icon-class'></i><a href='class_StubClass.StubInnerClass.html'>StubInnerClass</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<i class='icon-class'></i>StubClass()"));
+        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("id='formalMethod'><td><code><i class='icon-shared-member'><i class='icon-decoration-impl'></i></i>"));
+        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("id='defaultMethod'><td><code><i class='icon-shared-member'><i class='icon-decoration-over'></i></i>"));        
+    }
+    
+    private void assertInnerTypesDoc(File destDir) throws IOException {
         assertFileExists(destDir, "interface_StubClass.StubInnerInterface.html");
         assertFileExists(destDir, "class_StubClass.StubInnerClass.html");
         
@@ -204,28 +234,7 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "class_StubClass.StubInnerClass.html", 
                 Pattern.compile("Enclosing class: <i class='icon-class'></i><a href='class_StubClass.html'>StubClass</a>"));
         assertMatchInFile(destDir, "class_StubClass.StubInnerClass.html", 
-                Pattern.compile("Satisfied Interfaces: <a href='interface_StubClass.StubInnerInterface.html'>StubInnerInterface</a>"));
-        
-        assertSee(destDir);
-        assertIcons(destDir);
-    }
-    
-    private void assertSee(File destDir) throws IOException {
-        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<div class='see'>See also: <a href='interface_StubInterface.html'>StubInterface</a></div>"));
-        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<div class='see'>See also: <a href='class_StubClass.html#methodWithSee'>methodWithSee</a>, <a href='class_StubException.html'>StubException</a></div>"));
-        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<div class='see'>See also: <a href='class_StubClass.html#attributeWithSee'>attributeWithSee</a>, <a href='class_StubException.html'>StubException</a></div>"));
-    }
-    
-    private void assertIcons(File destDir) throws IOException {
-        assertMatchInFile(destDir, "interface_StubInterface.html", Pattern.compile("Interface <i class='icon-interface'></i><code>StubInterface</code>"));
-        assertMatchInFile(destDir, "interface_StubInterface.html", Pattern.compile("id='defaultMethod'><td><code><i class='icon-shared-member'></i>"));
-        assertMatchInFile(destDir, "interface_StubInterface.html", Pattern.compile("id='formalMethod'><td><code><i class='icon-shared-member'><i class='icon-decoration-formal'></i></i>"));
-        
-        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<i class='icon-interface'></i><a href='interface_StubClass.StubInnerInterface.html'>StubInnerInterface</a>"));
-        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<i class='icon-class'></i><a href='class_StubClass.StubInnerClass.html'>StubInnerClass</a>"));
-        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<i class='icon-class'></i>StubClass()"));
-        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("id='formalMethod'><td><code><i class='icon-shared-member'><i class='icon-decoration-impl'></i></i>"));
-        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("id='defaultMethod'><td><code><i class='icon-shared-member'><i class='icon-decoration-over'></i></i>"));        
+                Pattern.compile("Satisfied Interfaces: <a href='interface_StubClass.StubInnerInterface.html'>StubInnerInterface</a>"));                
     }
     
     private File getOutputDir(CeylonDocTool tool, Module module) {
@@ -276,6 +285,12 @@ public class CeylonDocToolTest {
                 Pattern.compile("<.*? id='sharedMethod'.*?>"));
         assertMatchInFile(destDir, "class_SharedClass.html", 
                 Pattern.compile("<.*? id='privateMethod'.*?>"));
+        
+        assertBy(destDir);
+        assertThrows(destDir);
+        assertSee(destDir);
+        assertIcons(destDir);
+        assertInnerTypesDoc(destDir);        
     }
     
     @Test
