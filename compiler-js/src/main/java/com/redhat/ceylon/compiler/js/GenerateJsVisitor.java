@@ -2289,13 +2289,18 @@ public class GenerateJsVisitor extends Visitor
 
     /** Generates code for a case clause, as part of a switch statement. Each case
      * is rendered as an if. */
-    private void caseClause(CaseClause cc, String expvar, Declaration decl) {
+    private void caseClause(CaseClause cc, String expvar, boolean getter) {
+        Declaration decl = null;
         out("if (");
         final CaseItem item = cc.getCaseItem();
         if (item instanceof IsCase) {
-            generateIsOfType(null, expvar, ((IsCase)item).getType(), true);
+            IsCase isCaseItem = (IsCase) item;
+            generateIsOfType(null, expvar, isCaseItem.getType(), true);
             out("===");
             clAlias(); out(".getTrue()");
+            if (getter && (isCaseItem.getVariable() != null)) {
+                decl = isCaseItem.getVariable().getDeclarationModel();
+            }
         } else if (item instanceof SatisfiesCase) {
             item.addError("case(satisfies) not yet supported");
             out("true");
@@ -2320,9 +2325,9 @@ public class GenerateJsVisitor extends Visitor
             out("{}");
         } else {
             beginBlock();
-            out("function get", decl.getName().substring(0,1).toUpperCase(), decl.getName().substring(1));
-            //function();
-            //out(getter(decl));
+            //out("function get", decl.getName().substring(0,1).toUpperCase(), decl.getName().substring(1));
+            function();
+            out(getter(decl));
             out("(){");
             out("return ", expvar, "; }");
             endLine();
@@ -2339,10 +2344,10 @@ public class GenerateJsVisitor extends Visitor
         final String expvar = createTempVariable();
         out("var ", expvar, "=");
         Expression expr = that.getSwitchClause().getExpression();
-        Declaration getter = null;
+        boolean getter = false;
         if (expr.getTerm() instanceof BaseMemberExpression) {
             if (!accessThroughGetter(((BaseMemberExpression)expr.getTerm()).getDeclaration())) {
-                getter = ((BaseMemberExpression)expr.getTerm()).getDeclaration();
+                getter = true;
             }
         }
         expr.visit(this);
