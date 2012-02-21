@@ -17,6 +17,7 @@ public final class prepend {
     private prepend() {}
     
     @TypeParameters(@TypeParameter(value="Element"))
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public static <Element> Sequence<? extends Element> prepend(
     @Name("sequence")
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
