@@ -112,22 +112,22 @@ public class RepositoryBuilder {
     }
 
     public RepositoryBuilder prependExternalRoot(OpenNode externalRoot) {
-        repository.prependExternalRoot(new DefaultRepository(externalRoot));
+        repository.prependRepository(new DefaultRepository(externalRoot));
         return this;
     }
 
     public RepositoryBuilder appendExternalRoot(OpenNode externalRoot) {
-        repository.appendExternalRoot(new DefaultRepository(externalRoot));
+        repository.appendRepository(new DefaultRepository(externalRoot));
         return this;
     }
 
-    public RepositoryBuilder prependExternalRoot(Repository externalRoot) {
-        repository.prependExternalRoot(externalRoot);
+    public RepositoryBuilder prependRepository(Repository externalRoot) {
+        repository.prependRepository(externalRoot);
         return this;
     }
 
-    public RepositoryBuilder appendExternalRoot(Repository externalRoot) {
-        repository.appendExternalRoot(externalRoot);
+    public RepositoryBuilder appendRepository(Repository externalRoot) {
+        repository.appendRepository(externalRoot);
         return this;
     }
 
