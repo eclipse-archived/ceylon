@@ -11,6 +11,9 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.AnalysisMessage;
+import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
+import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
+import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -21,18 +24,19 @@ public class JsCompiler {
     
     private boolean optimize = false;
     private boolean stopOnErrors = true;
+    private boolean indent = true;
+    private boolean comment = true;
+    private boolean modulify = false;
     private Writer systemOut = new OutputStreamWriter(System.out);
 
-    protected List<AnalysisMessage> errors = new ArrayList<AnalysisMessage>();
-    protected List<AnalysisMessage> unitErrors = new ArrayList<AnalysisMessage>();
+    protected List<Message> errors = new ArrayList<Message>();
+    protected List<Message> unitErrors = new ArrayList<Message>();
     
     private final Visitor unitVisitor = new Visitor() {
         @Override
         public void visitAny(Node that) {
             for (Message err: that.getErrors()) {
-                if (err instanceof AnalysisMessage) {
-                    unitErrors.add((AnalysisMessage)err);
-                }
+                unitErrors.add(err);
             }
             super.visitAny(that);
         }
@@ -52,18 +56,32 @@ public class JsCompiler {
         this.optimize = optimize;
         return this;
     }
+    public JsCompiler indent(boolean flag) {
+        indent=flag;
+        return this;
+    }
+    public JsCompiler comment(boolean flag) {
+        comment=flag;
+        return this;
+    }
+    public JsCompiler modulify(boolean flag) {
+        modulify=flag;
+        return this;
+    }
     
-    public List<AnalysisMessage> listErrors() {
+    public List<Message> listErrors() {
         return Collections.unmodifiableList(errors);
     }
 
     /** Compile one phased unit.
      * @return The errors found for the unit. */
-    public List<AnalysisMessage> compileUnit(PhasedUnit pu) throws IOException {
+    public List<Message> compileUnit(PhasedUnit pu) throws IOException {
         unitErrors.clear();
         pu.getCompilationUnit().visit(unitVisitor);
         if (unitErrors.isEmpty() || !stopOnErrors) {
             GenerateJsVisitor jsv = new GenerateJsVisitor(getWriter(pu),optimize);
+            jsv.setAddComments(comment);
+            jsv.setIndent(indent);
             pu.getCompilationUnit().visit(jsv);
         }
         return unitErrors;
@@ -82,14 +100,22 @@ public class JsCompiler {
     /** Compile all the phased units in the typechecker.
      * @return true is compilation was successful (0 errors/warnings), false otherwise. */
     public boolean generate() throws IOException {
+        boolean modDone = false;
         errors.clear();
         try {
             for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
+                if (modulify && !modDone) {
+                    beginWrapper(getWriter(pu));
+                    modDone = true;
+                }
                 compileUnit(pu);
                 if (stopOnError()) {
                     System.err.println("Errors found. Compilation stopped.");
                     break;
                 }
+            }
+            if (modulify) {
+                endWrapper(getWriter(tc.getPhasedUnits().getPhasedUnits().get(tc.getPhasedUnits().getPhasedUnits().size()-1)));
             }
         } finally {
             finish();
@@ -108,10 +134,21 @@ public class JsCompiler {
     /** Print all the errors found during compilation to the specified stream. */
     public void printErrors(PrintStream out) {
         int count = 0;
-        for (AnalysisMessage err: errors) {
-            Node n = err.getTreeNode();
-            out.printf("error encountered [%s] at %s of %s%n",
-                err.getMessage(), n.getLocation(), n.getUnit().getFilename());
+        for (Message err: errors) {
+            if (err instanceof AnalysisWarning && !(err instanceof AnalysisError)) {
+                out.print("warning");
+            } else {
+                out.print("error");
+            }
+            out.printf(" encountered [%s]", err.getMessage());
+            if (err instanceof AnalysisMessage) {
+                Node n = ((AnalysisMessage)err).getTreeNode();
+                out.printf(" at %s of %s", n.getLocation(), n.getUnit().getFilename());
+            } else if (err instanceof RecognitionError) {
+                RecognitionError rer = (RecognitionError)err;
+                out.printf(" at %d:%d", rer.getLine(), rer.getCharacterInLine());
+            }
+            out.println();
             count++;
         }
         out.printf("%d errors.%n", count);
