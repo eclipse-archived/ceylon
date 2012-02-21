@@ -27,6 +27,7 @@ public class JsCompiler {
     private boolean indent = true;
     private boolean comment = true;
     private boolean modulify = false;
+    private int errCount = 0;
     private Writer systemOut = new OutputStreamWriter(System.out);
 
     protected List<Message> errors = new ArrayList<Message>();
@@ -78,7 +79,7 @@ public class JsCompiler {
     public List<Message> compileUnit(PhasedUnit pu) throws IOException {
         unitErrors.clear();
         pu.getCompilationUnit().visit(unitVisitor);
-        if (unitErrors.isEmpty() || !stopOnErrors) {
+        if (errCount == 0 || !stopOnErrors) {
             GenerateJsVisitor jsv = new GenerateJsVisitor(getWriter(pu),optimize);
             jsv.setAddComments(comment);
             jsv.setIndent(indent);
@@ -90,11 +91,13 @@ public class JsCompiler {
     /** Indicates if compilation should stop, based on whether there were errors
      * in the last compilation unit and the stopOnErrors flag is set. */
     protected boolean stopOnError() {
-        if (!unitErrors.isEmpty()) {
-            errors.addAll(unitErrors);
-            return stopOnErrors;
+        for (Message err : unitErrors) {
+            if (err instanceof AnalysisError || !(err instanceof AnalysisWarning)) {
+                errCount++;
+            }
+            errors.add(err);
         }
-        return false;
+        return stopOnErrors && errCount > 0;
     }
 
     /** Compile all the phased units in the typechecker.
@@ -120,7 +123,7 @@ public class JsCompiler {
         } finally {
             finish();
         }
-        return errors.isEmpty();
+        return errCount == 0;
     }
 
     protected Writer getWriter(PhasedUnit pu) throws IOException {
