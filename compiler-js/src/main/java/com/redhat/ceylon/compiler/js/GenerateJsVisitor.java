@@ -31,6 +31,8 @@ public class GenerateJsVisitor extends Visitor
         implements NaturalVisitor {
 
     private boolean sequencedParameter=false;
+    private boolean indent=true;
+    private boolean comment=true;
     private int tmpvarCount = 0;
 
     private final class SuperVisitor extends Visitor {
@@ -87,6 +89,11 @@ public class GenerateJsVisitor extends Visitor
         this.prototypeStyle=prototypeStyle;
     }
 
+    /** Tells the receiver whether to add comments to certain declarations. Default is true. */
+    public void setAddComments(boolean flag) { comment = flag; }
+    /** Tells the receiver whether to indent the generated code. Default is true. */
+    public void setIndent(boolean flag) { indent = flag; }
+
     /** Print generated code to the Writer specified at creation time.
      * @param code The main code
      * @param codez Optional additional strings to print after the main code. */
@@ -106,6 +113,7 @@ public class GenerateJsVisitor extends Visitor
 
     /** Print out 4 spaces per indentation level. */
     private void indent() {
+        if (!indent) return;
         for (int i=0;i<indentLevel;i++) {
             out("    ");
         }
@@ -251,6 +259,7 @@ public class GenerateJsVisitor extends Visitor
     }
     
     private void comment(Tree.Declaration that) {
+        if (!comment) return;
         endLine();
         out("//", that.getNodeType(), " ", that.getDeclarationModel().getName());
         location(that);
@@ -343,6 +352,7 @@ public class GenerateJsVisitor extends Visitor
 
     /** Add a comment to the generated code with info about the type parameters. */
     private void comment(TypeParameter tp) {
+        if (!comment) return;
         out("<");
         if (tp.isCovariant()) {
             out("out ");
@@ -357,6 +367,7 @@ public class GenerateJsVisitor extends Visitor
     }
     /** Add a comment to the generated code with info about the produced type parameters. */
     private void comment(ProducedType pt) {
+        if (!comment) return;
         out("<");
         out(pt.getProducedTypeQualifiedName());
         //This is useful to iterate into the types of this type
@@ -2118,7 +2129,7 @@ public class GenerateJsVisitor extends Visitor
    }
 
    @Override public void visit(ForStatement that) {
-       out("//'for' statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
+       if (comment) out("//'for' statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
        endLine();
 	   ForIterator foriter = that.getForClause().getForIterator();
 	   SpecifierExpression iterable = foriter.getSpecifierExpression();
@@ -2333,7 +2344,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(SwitchStatement that) {
-        out("//Switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
+        if (comment) out("//Switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
         endLine();
         //Put the expression in a tmp var
         final String expvar = createTempVariable();
@@ -2358,7 +2369,7 @@ public class GenerateJsVisitor extends Visitor
             out("else ");
             that.getSwitchCaseList().getElseClause().visit(this);
         }
-        out("//End switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
+        if (comment) out("//End switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
     }
 
 }

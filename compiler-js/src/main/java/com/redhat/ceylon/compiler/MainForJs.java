@@ -24,20 +24,45 @@ public class MainForJs {
      * Files that are not under a proper module structure are placed under a <nomodule> module.
      */
     public static void main(String[] args) throws Exception {
-        String path;
+        boolean optimize = false;
+        boolean modulify = false;
+        boolean noindent = false;
+        boolean nocomments = false;
+        boolean verbose = false;
+        List<String> path = new ArrayList<String>(args.length);
         if ( args.length==0 ) {
-            System.err.println("Usage Main <directoryName>");
+            System.err.println("Usage ceylonjs [options] [file|dir]...");
+            System.err.println();
+            System.err.println("Options:");
+            System.err.println("-optimize    Create prototype-style JS code");
+            System.err.println("-module      Wrap generated code as CommonJS module");
+            System.err.println("-noindent    Do NOT indent code");
+            System.err.println("-nocomments  Do not generate any comments");
+            System.err.println("-compact     Same as -noindent -nocomments");
+            System.err.println("-verbose     Tell the whole story");
+            System.err.println();
+            System.err.println("If no files are specified or '--' is used, STDIN is read.");
             System.exit(-1);
             return;
         }
         else {
-            path = args[0];
+            for (String arg : args) {
+                if ("-optimize".equals(arg)) optimize=true;
+                else if ("-module".equals(arg)) modulify=true;
+                else if ("-compact".equals(arg)) {
+                    noindent=true; nocomments=true;
+                } else if ("-noindent".equals(arg)) noindent=true;
+                else if ("-nocomments".equals(arg)) nocomments=true;
+                else if ("-verbose".equals(arg)) verbose=true;
+                else if ("--".equals(arg)) {
+                    path.clear();
+                    break;
+                } else path.add(arg);
+            }
         }
-        
-        boolean noisy = "true".equals(System.getProperties().getProperty("verbose"));
 
         TypeChecker typeChecker;
-        if ("--".equals(path)) {
+        if (path.isEmpty()) {
             VirtualFile src = new VirtualFile() {
                 @Override
                 public boolean isFolder() {
@@ -74,22 +99,21 @@ public class MainForJs {
                 }
             };
             typeChecker = new TypeCheckerBuilder()
-                    .verbose(noisy)
+                    .verbose(verbose)
                     .addSrcDirectory(src)
                     .getTypeChecker();
         } else {
-            typeChecker = new TypeCheckerBuilder()
-                    .verbose(noisy)
-                    .addSrcDirectory(new File(path))
-                    .getTypeChecker();
+            TypeCheckerBuilder tcb = new TypeCheckerBuilder()
+                .verbose(verbose);
+            for (String filedir : path) {
+              tcb.addSrcDirectory(new File(filedir));
+            }
+            typeChecker = tcb.getTypeChecker();
         }
         //getting the type checker does process all types in the source directory
         typeChecker.process();
-        if (typeChecker.getErrors() > 0) {
-            System.exit(1);
-            return;
-        }
-        JsCompiler jsc = new JsCompiler(typeChecker).optimize(true);
+        JsCompiler jsc = new JsCompiler(typeChecker).optimize(optimize)
+            .comment(!nocomments).indent(!noindent).modulify(modulify);
         if (!jsc.generate()) {
             jsc.printErrors(System.out);
         }
