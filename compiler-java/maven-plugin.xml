@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+<groupId>org.ceylon-lang</groupId>
+  <artifactId>ceylon-maven-plugin</artifactId>
+  <packaging>maven-plugin</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>Ceylon Maven Plugin</name>
+  <description>Maven Plugins for the Ceylon toolset (ceylonc, ceylond, ceylon etc)</description>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.6</maven.compiler.source>
+    <maven.compiler.target>1.6</maven.compiler.target>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.ceylon-lang</groupId>
+      <artifactId>ceylon-compiler</artifactId>
+      <version>0.1</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <plugins>
+      <plugin>
+       <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <excludes>
+            <exclude>com/redhat/ceylon/ant/**</exclude>
+            <exclude>com/redhat/ceylon/ceylondoc/**</exclude>
+            <exclude>com/redhat/ceylon/compiler/**</exclude>
+          </excludes>
+          <includes>
+            <include>com/redhat/ceylon/maven/**</include>
+          </includes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
