@@ -203,8 +203,8 @@ void stringTypes() {
 void objectTypes() {
     @error
     TypesJava java = TypesJava();
-    IdentifiableObject o1 = java.return_Object();
-    IdentifiableObject? o2 = java.return_Object();
+    Object o1 = java.return_Object();
+    Object? o2 = java.return_Object();
     @error
     java.objectParams(o1);
     @error
