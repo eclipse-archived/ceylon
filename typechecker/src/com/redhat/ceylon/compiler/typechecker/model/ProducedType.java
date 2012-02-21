@@ -20,6 +20,8 @@ import java.util.Map;
  * @author Gavin King
  */
 public class ProducedType extends ProducedReference {
+    
+    private String underlyingType;
 
     ProducedType() {}
 
@@ -1048,6 +1050,7 @@ public class ProducedType extends ProducedReference {
                 Map<TypeParameter, ProducedType> substitutions) {
             ProducedType type = new ProducedType();
             type.setDeclaration(dec);
+            type.setUnderlyingType(pt.getUnderlyingType());
             ProducedType qt = pt.getQualifyingType();
             if (qt!=null) {
                 type.setQualifyingType(substitute(qt, substitutions));
@@ -1211,6 +1214,14 @@ public class ProducedType extends ProducedReference {
             ut.setCaseTypes(list);
             return ut.getType();
         }
+    }
+    
+    public void setUnderlyingType(String underlyingType) {
+        this.underlyingType = underlyingType;
+    }
+    
+    public String getUnderlyingType() {
+        return underlyingType;
     }
 
 }
