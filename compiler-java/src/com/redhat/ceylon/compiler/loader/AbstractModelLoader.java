@@ -745,6 +745,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         boolean isJava = qualifiedName.startsWith("java.");
         boolean isCeylon = (classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null);
         
+if ("Category".equals(classMirror.getSimpleName())) {
+    qualifiedName=qualifiedName;
+}
+        
         // Java classes with multiple constructors get turned into multiple Ceylon classes
         // Here we get the specific constructor that was assigned to us (if any)
         MethodMirror constructor = null;
@@ -1460,7 +1464,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         } else if (sameType(type, CHARACTER_TYPE)) {
             type = CEYLON_CHARACTER_TYPE;
         } else if (sameType(type, OBJECT_TYPE)) {
-            type = CEYLON_IDENTIFIABLE_OBJECT_TYPE;
+            type = CEYLON_OBJECT_TYPE;
         }
         
         return getType(type, scope);
