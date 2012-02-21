@@ -52,7 +52,7 @@ class MySequence<out Element>(Sequence<Element> seq)
     shared actual MySequence<Element> clone { return this; }
     shared actual String string { return seq.string; }
     shared actual Integer hash { return seq.hash; }
-    shared actual Boolean equals(Equality other) { return seq.equals(other); }
+    shared actual Boolean equals(Object other) { return seq.equals(other); }
 }
 
 class RefHelper() {

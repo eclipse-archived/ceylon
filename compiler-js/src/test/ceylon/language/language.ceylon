@@ -8,7 +8,7 @@ shared void assert(Boolean assertion, String message="") {
         print("assertion failed \"" message "\"");
     }
 }
-shared void assertEqual(Equality actual, Equality expected, String message="") {
+shared void assertEqual(Object actual, Object expected, String message="") {
     assertionCount+=1;
     if (actual!=expected) {
         failureCount+=1;

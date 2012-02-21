@@ -48,12 +48,6 @@ exports.initType=initType;
 exports.inheritProto=inheritProto;
 exports.inheritProtoI=inheritProtoI;
 
-// TODO: Equality will probably be removed
-function Equality(wat) {
-    return wat;
-}
-initType(Equality, 'ceylon.language.Equality');
-
 function Void(wat) {
     return wat;
 }
@@ -69,7 +63,7 @@ Object$proto.equals = function(other) { return Boolean$(this===other) } //TODO: 
 function IdentifiableObject(obj) {
     return obj;
 }
-initType(IdentifiableObject, 'ceylon.language.IdentifiableObject', Object$, Equality);
+initType(IdentifiableObject, 'ceylon.language.IdentifiableObject', Object$);
 inheritProto(IdentifiableObject, Object$, '$Object$');
 
 //INTERFACES
@@ -94,7 +88,7 @@ exports.Closeable=Closeable;
 function Comparable(wat) {
     return wat;
 }
-initType(Comparable, 'ceylon.language.Comparable', Equality);
+initType(Comparable, 'ceylon.language.Comparable');
 exports.Comparable=Comparable;
 function Container(wat) {
     return wat;
@@ -129,7 +123,7 @@ exports.Iterator=Iterator;
 function Collection(wat) {
     return wat;
 }
-initType(Collection, 'ceylon.language.Collection', Iterable, Sized, Category, Equality, Cloneable);
+initType(Collection, 'ceylon.language.Collection', Iterable, Sized, Category, Cloneable);
 exports.Collection=Collection;
 function FixedSized(wat) {
     return wat;
@@ -149,7 +143,7 @@ exports.Summable=Summable;
 function Number$(wat) {
     return wat;
 }
-initType(Number$, 'ceylon.language.Number', Equality);
+initType(Number$, 'ceylon.language.Number');
 exports.Number=Number$;
 function Invertable(wat) {
     return wat;
@@ -164,7 +158,7 @@ exports.Numeric=Numeric;
 function Ordinal(wat) {
     return wat;
 }
-initType(Ordinal, 'ceylon.language.Ordinal', Equality);
+initType(Ordinal, 'ceylon.language.Ordinal');
 exports.Ordinal=Ordinal;
 function Integral(wat) {
     return wat;
@@ -299,7 +293,7 @@ function Range(first, last) {
     that.size = Integer(index+1);
     return that;
 }
-initType(Range, 'ceylon.language.Range', Object$, Sequence, Category, Equality);
+initType(Range, 'ceylon.language.Range', Object$, Sequence, Category);
 inheritProto(Range, Object$, '$Object$', Sequence);
 var Range$proto = Range.$$.prototype;
 Range$proto.getFirst = function() { return this.first; }
@@ -439,13 +433,12 @@ RangeIterator$proto.next = function() {
 function Entry(key, item) {
     var that = new Entry.$$;
     Object$(that);
-    Equality(that);
     Void(that);
     that.key = key;
     that.item = item;
     return that;
 }
-initType(Entry, 'ceylon.language.Entry', Object$, Equality);
+initType(Entry, 'ceylon.language.Entry', Object$);
 inheritProto(Entry, Object$, '$Object$');
 var Entry$proto = Entry.$$.prototype;
 Entry$proto.getString = function() {
@@ -459,7 +452,6 @@ Entry$proto.equals = function(other) {
 Entry$proto.getHash = function() { Integer(this.key.getHash().value ^ this.item.getHash().value) }
 
 
-exports.Equality=Equality; //TODO just to let the compiler finish
 exports.Exception=Exception; //TODO just to let the compiler finish
 exports.IdentifiableObject=IdentifiableObject;
 exports.Object=Object$; //TODO just to let the compiler finish
