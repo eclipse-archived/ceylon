@@ -59,7 +59,7 @@ public class JsCompiler {
 
     /** Compile one phased unit.
      * @return The errors found for the unit. */
-    public List<AnalysisMessage> compileUnit(PhasedUnit pu) {
+    public List<AnalysisMessage> compileUnit(PhasedUnit pu) throws IOException {
         unitErrors.clear();
         pu.getCompilationUnit().visit(unitVisitor);
         if (unitErrors.isEmpty() || !stopOnErrors) {
@@ -81,7 +81,7 @@ public class JsCompiler {
 
     /** Compile all the phased units in the typechecker.
      * @return true is compilation was successful (0 errors/warnings), false otherwise. */
-    public boolean generate() {
+    public boolean generate() throws IOException {
         errors.clear();
         try {
             for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
@@ -97,18 +97,12 @@ public class JsCompiler {
         return errors.isEmpty();
     }
 
-    protected Writer getWriter(PhasedUnit pu) {
+    protected Writer getWriter(PhasedUnit pu) throws IOException {
         return systemOut;
     }
     
-    protected void finish() {
-        try {
-            systemOut.flush();
-            //systemOut.close();
-        }
-        catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
+    protected void finish() throws IOException {
+        systemOut.flush();
     }
 
     /** Print all the errors found during compilation to the specified stream. */

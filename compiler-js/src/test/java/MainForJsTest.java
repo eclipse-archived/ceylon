@@ -4,12 +4,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.Writer;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.redhat.ceylon.compiler.js.JsCompiler;
+import com.redhat.ceylon.compiler.js.JsModuleCompiler;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -22,45 +20,22 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
  */
 public class MainForJsTest {
     
-    private static final class JsModuleCompiler extends JsCompiler {
-        private final Map<Package, PrintWriter> output;
+    private static final class JsTestCompiler extends JsModuleCompiler {
 
-        private JsModuleCompiler(TypeChecker tc, Map<Package, PrintWriter> output) {
+        private JsTestCompiler(TypeChecker tc) {
             super(tc);
-            this.output = output;
         }
 
         @Override
-        protected Writer getWriter(PhasedUnit pu) {
+        protected Writer getModuleWriter(PhasedUnit pu) throws IOException {
             Package pkg = pu.getPackage();
-            PrintWriter writer = output.get(pkg);
-            if (writer==null) {
-                try {
-                    File file = new File("build/test/node_modules/"+
-                            toOutputPath(pkg));
-                    file.getParentFile().mkdirs();
-                    if (file.exists()) file.delete();
-                    file.createNewFile();
-                    FileWriter fileWriter = new FileWriter(file);
-                    writer = new PrintWriter(fileWriter);
-                    beginWrapper(writer);
-                    output.put(pkg, writer);
-                }
-                catch (IOException ioe) {
-                    ioe.printStackTrace();
-                }
-            }
-            return writer;
+            File file = new File("build/test/node_modules", toOutputPath(pkg));
+            file.getParentFile().mkdirs();
+            if (file.exists()) file.delete();
+            file.createNewFile();
+            return new FileWriter(file);
         }
 
-        @Override
-        protected void finish() {
-            for (PrintWriter writer: output.values()) {
-                try {endWrapper(writer);} catch (IOException ex){}
-                writer.flush();
-                writer.close();
-            }
-        }
     }
 
     static boolean opt = false;
@@ -72,8 +47,6 @@ public class MainForJsTest {
                 opt=true; 
             }
         }
-        
-        final Map<Package,PrintWriter> output = new HashMap<Package, PrintWriter>();
 
         TypeChecker typeChecker = new TypeCheckerBuilder()
                 .verbose(false)
@@ -84,7 +57,7 @@ public class MainForJsTest {
         if (typeChecker.getErrors() > 0) {
             System.exit(1);
         }
-        JsCompiler jsc = new JsModuleCompiler(typeChecker, output).optimize(opt).stopOnErrors(false);
+        JsCompiler jsc = new JsTestCompiler(typeChecker).optimize(opt).stopOnErrors(false);
         if (jsc.generate()) {
             validateOutput(typeChecker);
         } else {

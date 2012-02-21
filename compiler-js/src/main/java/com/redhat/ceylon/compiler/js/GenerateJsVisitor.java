@@ -48,7 +48,7 @@ public class GenerateJsVisitor extends Visitor
             super.visit(qe);
         }
 
-        public void visit(com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface qe) {
+        public void visit(Tree.ClassOrInterface qe) {
             //don't recurse
         }
     }
@@ -250,7 +250,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
     
-    private void comment(com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration that) {
+    private void comment(Tree.Declaration that) {
         endLine();
         out("//", that.getNodeType(), " ", that.getDeclarationModel().getName());
         location(that);
@@ -494,8 +494,7 @@ public class GenerateJsVisitor extends Visitor
             }
     }
 
-    private void addTypeInfo(
-            com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration type) {
+    private void addTypeInfo(Tree.Declaration type) {
         
         ExtendedType extendedType = null;
         SatisfiedTypes satisfiedTypes = null;
@@ -1703,37 +1702,37 @@ public class GenerateJsVisitor extends Visitor
     	thenTrueElseFalse();
     	out(")");
     }
-    
+    /** Outputs the CL equivalent of 'a==b' in JS. */
     private void leftEqualsRight(BinaryOperatorExpression that) {
     	that.getLeftTerm().visit(this);
         out(".equals(");
         that.getRightTerm().visit(this);
         out(")");
     }
-    
+    /** Outputs the CL equivalent of 'true' in JS. */
     private void clTrue() {
         clAlias();
         out(".getTrue()");
     }
-    
+    /** Outputs the CL equivalent of 'false' in JS. */
     private void clFalse() {
         clAlias();
         out(".getFalse()");
     }
-    
+    /** Outputs the CL equivalent of '==false' in JS. */
     private void equalsFalse() {
         out(".equals(");
         clFalse();
         out(")");    
     }
-    
+    /** Outputs the CL equivalent of '?true:false' in JS */
     private void thenTrueElseFalse() {
     	out("?");
     	clTrue();
         out(":");
         clFalse();
     }
-    
+    /** Outputs the CL equivalent of 'a <=> b' in JS. */
    private void leftCompareRight(BinaryOperatorExpression that) {
     	that.getLeftTerm().visit(this);
     	out(".compare(");
@@ -2119,13 +2118,15 @@ public class GenerateJsVisitor extends Visitor
    }
 
    @Override public void visit(ForStatement that) {
+       out("//'for' statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
+       endLine();
 	   ForIterator foriter = that.getForClause().getForIterator();
 	   SpecifierExpression iterable = foriter.getSpecifierExpression();
 	   boolean hasElse = that.getElseClause() != null && !that.getElseClause().getBlock().getStatements().isEmpty();
 	   //First we need to enclose this inside an anonymous function,
 	   //to avoid problems with repeated iterator variables
-	   out("(function(){"); indentLevel++;
-	   endLine();
+	   out("(function()");
+	   beginBlock();
 	   final String iterVar = createTempVariable();
 	   final String itemVar = createTempVariable();
 	   out("var ", iterVar, " = ");
@@ -2177,9 +2178,8 @@ public class GenerateJsVisitor extends Visitor
 		   out(".getExhausted() === ", itemVar, ")");
 		   that.getElseClause().getBlock().visit(this);
 	   }
-	   indentLevel--;
-	   endLine();
-	   out("}());");
+	   endBlock();
+	   out("());");
    }
 
     public void visit(InOp that) {
@@ -2326,7 +2326,6 @@ public class GenerateJsVisitor extends Visitor
             out("(){");
             out("return ", expvar, "; }");
             endLine();
-            
             visitStatements(cc.getBlock().getStatements(), false);
             endBlock();
         }
@@ -2359,6 +2358,7 @@ public class GenerateJsVisitor extends Visitor
             out("else ");
             that.getSwitchCaseList().getElseClause().visit(this);
         }
+        out("//End switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
     }
 
 }
