@@ -1951,7 +1951,8 @@ public class GenerateJsVisitor extends Visitor
            specialConditionCheck(condition, variableRHS, simpleCheck);
            out(")");
            
-           if (accessThroughGetter(bme.getDeclaration())) {
+           if (matchingGetterExists(bme.getDeclaration(), variable.getDeclarationModel(),
+                                    condition)) {
                // a getter for the variable already exists
                block.visit(this);
            } else {
@@ -2002,6 +2003,11 @@ public class GenerateJsVisitor extends Visitor
 			   endBlock();
 		   }
 	   }
+   }
+   
+   private boolean matchingGetterExists(Declaration outerVar, Declaration innerVar, Node that) {
+       return accessThroughGetter(outerVar) && getter(outerVar).equals(getter(innerVar))
+               && (qualifiedPath(that, outerVar).length() == 0);
    }
    
    private void specialConditionCheck(Condition condition, Term variableRHS,
@@ -2300,13 +2306,23 @@ public class GenerateJsVisitor extends Visitor
 
     /** Generates code for a case clause, as part of a switch statement. Each case
      * is rendered as an if. */
-    private void caseClause(CaseClause cc, String expvar, Declaration decl) {
+    private void caseClause(CaseClause cc, String expvar, Term switchTerm) {
+        Declaration decl = null;
         out("if (");
         final CaseItem item = cc.getCaseItem();
         if (item instanceof IsCase) {
-            generateIsOfType(null, expvar, ((IsCase)item).getType(), true);
+            IsCase isCaseItem = (IsCase) item;
+            generateIsOfType(null, expvar, isCaseItem.getType(), true);
             out("===");
             clAlias(); out(".getTrue()");
+            Variable caseVar = isCaseItem.getVariable();
+            if ((switchTerm instanceof BaseMemberExpression) && (caseVar != null)) {
+                BaseMemberExpression bme = (BaseMemberExpression) switchTerm;
+                if (!matchingGetterExists(bme.getDeclaration(),
+                        caseVar.getDeclarationModel(), cc)) {
+                    decl = caseVar.getDeclarationModel();
+                }
+            }
         } else if (item instanceof SatisfiesCase) {
             item.addError("case(satisfies) not yet supported");
             out("true");
@@ -2331,9 +2347,9 @@ public class GenerateJsVisitor extends Visitor
             out("{}");
         } else {
             beginBlock();
-            out("function get", decl.getName().substring(0,1).toUpperCase(), decl.getName().substring(1));
-            //function();
-            //out(getter(decl));
+            //out("function get", decl.getName().substring(0,1).toUpperCase(), decl.getName().substring(1));
+            function();
+            out(getter(decl));
             out("(){");
             out("return ", expvar, "; }");
             endLine();
@@ -2350,19 +2366,13 @@ public class GenerateJsVisitor extends Visitor
         final String expvar = createTempVariable();
         out("var ", expvar, "=");
         Expression expr = that.getSwitchClause().getExpression();
-        Declaration getter = null;
-        if (expr.getTerm() instanceof BaseMemberExpression) {
-            if (!accessThroughGetter(((BaseMemberExpression)expr.getTerm()).getDeclaration())) {
-                getter = ((BaseMemberExpression)expr.getTerm()).getDeclaration();
-            }
-        }
         expr.visit(this);
         out(";"); endLine();
         //For each case, do an if
         boolean first = true;
         for (CaseClause cc : that.getSwitchCaseList().getCaseClauses()) {
             if (!first) out("else ");
-            caseClause(cc, expvar, getter);
+            caseClause(cc, expvar, expr.getTerm());
             first = false;
         }
         if (that.getSwitchCaseList().getElseClause() != null) {

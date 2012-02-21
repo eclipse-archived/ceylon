@@ -42,6 +42,21 @@ Integer|Float testIs1(Integer|Float x) {
     else { return infinity; }
 }
 
+class TestIs2(Integer|String x) {
+    Integer|String y = x;
+    variable shared String z;
+    switch (y)
+    case (is Integer) { z := (y+1).string; }
+    case (is String) { z := y.uppercased; }
+    else { z := ""; }
+    shared String f() {
+        switch (y)
+        case (is Integer) { return (y+1).string; }
+        case (is String) { return y.uppercased; }
+        else { return ""; }
+    }
+}
+
 shared void test() {
     value enums = {1, 2.0};
     //is cases
@@ -78,6 +93,10 @@ shared void test() {
     //is
     assert(testIs1(1) == 2, "is1");
     assert(testIs1(1.5) == 2.5, "is2");
+    assert(TestIs2(1).z == "2", "is3");
+    assert(TestIs2("ab").z == "AB", "is3");
+    assert(TestIs2(1).f() == "2", "is3");
+    assert(TestIs2("ab").f() == "AB", "is3");
 
     //TODO satisfies
 
