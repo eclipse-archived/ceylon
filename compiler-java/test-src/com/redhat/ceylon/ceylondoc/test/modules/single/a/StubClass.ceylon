@@ -18,15 +18,24 @@
  * MA  02110-1301, USA.
  */
 doc "This is `StubClass`"
+see(StubInterface)
 shared class StubClass() satisfies StubInterface {
 
     doc "The stub attribute with `throws`."
     throws (OverflowException, "if the number is too large to be represented as an integer")
     shared Integer attributeWithThrows = 0;
+    
+    doc "The stub attribute with `see`."
+    see (methodWithSee, StubException)
+    shared Integer attributeWithSee = 0;
 
     doc "The stub method with `throws`."
     throws (StubException, "`when` with __WIKI__ syntax")
     shared void methodWithThrows() {}
+    
+    doc "The stub method with `see`."
+    see (attributeWithSee, StubException)
+    shared void methodWithSee() {}
     
     shared actual void formalMethod() {}
     

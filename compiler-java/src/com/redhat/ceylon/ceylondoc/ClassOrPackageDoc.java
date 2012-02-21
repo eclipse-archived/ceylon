@@ -50,33 +50,36 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         Annotation see = Util.getAnnotation(decl, "see");
         if(see == null)
             return;
+        
         boolean first = true;
         open("div class='see'");
         write("See also: ");
-        for(String target : see.getPositionalArguments()){
+        for (String target : see.getPositionalArguments()) {
             // try to resolve in containing scopes
-            TypeDeclaration targetDecl = resolveDeclaration((Scope) decl, target);
-            if(targetDecl != null){
+            Declaration targetDecl = resolveDeclaration(decl.getContainer(), target);
+            if (targetDecl != null) {
                 if (!first) {
                     write(", ");
                 } else {
                     first = false;
                 }
-                if(targetDecl.isMember())
+                if (targetDecl instanceof TypeDeclaration) {
+                    link(((TypeDeclaration) targetDecl).getType());
+                } else if (targetDecl.isMember()) {
                     linkToMember(targetDecl);
-                else
-                    link(targetDecl.getType());
+                }
             }
         }
         close("div");
     }
 
-    private TypeDeclaration resolveDeclaration(Scope decl, String target) {
-        if(decl == null)
+    private Declaration resolveDeclaration(Scope decl, String target) {
+        if (decl == null)
             return null;
         Declaration member = decl.getMember(target, null);
-        if (member instanceof TypeDeclaration)
-            return (TypeDeclaration)member;
+        if (member != null) {
+            return member;
+        }
         return resolveDeclaration(decl.getContainer(), target);
     }
 
@@ -151,6 +154,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         tag("br");
         startPrintingLongDoc(f);
         writeThrows(f);
+        writeSee(f);
         endLongDocAndPrintShortDoc(f);
         close("td");
         close("tr");
@@ -210,9 +214,9 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
 
                 open("li");
 
-                TypeDeclaration excTypeDecl = resolveDeclaration(declaration.getContainer(), excType);
-                if (excTypeDecl != null) {
-                    link(excTypeDecl.getType());
+                Declaration excTypeDecl = resolveDeclaration(declaration.getContainer(), excType);
+                if (excTypeDecl instanceof TypeDeclaration) {
+                    link(((TypeDeclaration)excTypeDecl).getType());
                 } else {
                     write(excType);
                 }
