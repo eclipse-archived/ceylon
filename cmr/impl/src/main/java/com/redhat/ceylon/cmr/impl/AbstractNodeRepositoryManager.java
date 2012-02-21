@@ -17,7 +17,7 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.AbstractRepository;
+import com.redhat.ceylon.cmr.api.AbstractRepositoryManager;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
@@ -36,16 +36,16 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public abstract class AbstractNodeRepository extends AbstractRepository {
+public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryManager {
 
     protected static final String SHA1 = ".sha1";
     protected static final String LOCAL = ".local";
     protected static final String CACHED = ".cached";
 
-    protected ArtifactContextAdapter root; // main local root
-    protected List<ArtifactContextAdapter> roots = new CopyOnWriteArrayList<ArtifactContextAdapter>(); // lookup roots - order matters!
+    protected Repository root; // main local root
+    protected List<Repository> roots = new CopyOnWriteArrayList<Repository>(); // lookup roots - order matters!
 
-    public AbstractNodeRepository(Logger log) {
+    public AbstractNodeRepositoryManager(Logger log) {
         super(log);
     }
 
@@ -56,7 +56,7 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
         return root.getRoot();
     }
 
-    protected void setRoot(ArtifactContextAdapter root) {
+    protected void setRoot(Repository root) {
         if (root == null)
             throw new IllegalArgumentException("Null root");
         if (this.root != null)
@@ -66,20 +66,20 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
         this.roots.add(root);
     }
 
-    protected void prependExternalRoot(ArtifactContextAdapter external) {
+    protected void prependExternalRoot(Repository external) {
         roots.add(0, external);
     }
 
-    protected void appendExternalRoot(ArtifactContextAdapter external) {
+    protected void appendExternalRoot(Repository external) {
         roots.add(external);
     }
 
-    protected void removeExternalRoot(ArtifactContextAdapter external) {
+    protected void removeExternalRoot(Repository external) {
         roots.remove(external);
     }
 
     protected ArtifactResult toArtifactResult(Node node) {
-        final ArtifactContextAdapter adapter = NodeUtils.getAdapterInfo(node);
+        final Repository adapter = NodeUtils.getRepository(node);
         return adapter.getArtifactResult(this, node);
     }
 
@@ -219,22 +219,22 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
         }
     }
 
-    protected static Node fromAdapters(Iterable<ArtifactContextAdapter> adapters, ArtifactContext context, boolean addLeaf) {
-        for (ArtifactContextAdapter ext : adapters) {
-            Node node = ext.findParent(context);
+    protected static Node fromAdapters(Iterable<Repository> repositories, ArtifactContext context, boolean addLeaf) {
+        for (Repository repository : repositories) {
+            Node node = repository.findParent(context);
             if (node != null) {
                 if (addLeaf) {
                     final Node parent = node;
                     context.toNode(parent);
                     try {
-                        node = node.getChild(ext.getArtifactName(context));
+                        node = node.getChild(repository.getArtifactName(context));
                     } finally {
                         ArtifactContext.removeNode(parent);
                     }
                 }
 
                 if (node != null) {
-                    NodeUtils.keepAdapterInfo(node, ext);
+                    NodeUtils.keepRepository(node, repository);
                     return node;
                 }
             }

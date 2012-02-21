@@ -28,17 +28,17 @@ import java.io.IOException;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class SimpleRepository extends AbstractNodeRepository {
+public class SimpleRepositoryManager extends AbstractNodeRepositoryManager {
 
-    public SimpleRepository(StructureBuilder structureBuilder, Logger log) {
+    public SimpleRepositoryManager(StructureBuilder structureBuilder, Logger log) {
         super(log);
         if (structureBuilder == null)
             throw new IllegalArgumentException("Null structure builder!");
 
-        setRoot(new DefaultArtifactContextAdapter(structureBuilder.createRoot()));
+        setRoot(new DefaultRepository(structureBuilder.createRoot()));
     }
 
-    public SimpleRepository(ArtifactContextAdapter root, Logger log) {
+    public SimpleRepositoryManager(Repository root, Logger log) {
         super(log);
         if (root == null)
             throw new IllegalArgumentException("Null root!");
@@ -52,6 +52,6 @@ public class SimpleRepository extends AbstractNodeRepository {
 
     @Override
     public String toString() {
-        return "SimpleRepository: " + getRoot();
+        return "SimpleRepositoryManager: " + getRoot();
     }
 }

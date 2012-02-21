@@ -23,7 +23,7 @@
 
     <tstamp/>
 
-    <!-- Local repository -->
+    <!-- Local repositoryManager -->
     <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
 
     <!-- ceylon.module-resolver -->
@@ -118,12 +118,12 @@
     </target>
 
     <target name="init.repo"
-            description="Create default local Ceylon module repository">
+            description="Create default local Ceylon module repositoryManager">
         <mkdir dir="${ceylon.module-resolver.repo}"/>
     </target>
 
     <target name="clean.repo"
-            description="Clean default local Ceylon module repository">
+            description="Clean default local Ceylon module repositoryManager">
         <delete dir="${ceylon.module-resolver.repo}"/>
     </target>
 

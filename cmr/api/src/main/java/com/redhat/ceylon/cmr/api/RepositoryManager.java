@@ -22,13 +22,32 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Repository API.
+ * RepositoryManager API.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface Repository {
+public interface RepositoryManager {
     static final String MODULES_CEYLON_LANG_ORG = "http://modules.ceylon-lang.org";
     static final String DEFAULT_MODULE = "default";
+
+    /**
+     * Resolve dependencies for the context.
+     *
+     * @param name    the module name
+     * @param version the module version
+     * @return all dependencies, null if they cannot be found
+     * @throws IOException for any I/O error
+     */
+    File[] resolve(String name, String version) throws IOException;
+
+    /**
+     * Resolve dependencies for the context.
+     *
+     * @param context the artifact context to resolve
+     * @return all dependencies, null if they cannot be found
+     * @throws IOException for any I/O error
+     */
+    File[] resolve(ArtifactContext context) throws IOException;
 
     File getArtifact(String name, String version) throws IOException;
 

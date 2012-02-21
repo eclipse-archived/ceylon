@@ -18,25 +18,56 @@ package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
 /**
- * Artifact context adapter -- prepare artifact context per custom repo.
+ * Repository -- prepare artifact context per custom repo.
  * e.g. Maven has different naming for artifacts + default suffix is .jar
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface ArtifactContextAdapter {
+public interface Repository {
 
+    /**
+     * Get root node.
+     *
+     * @return the root node
+     */
     OpenNode getRoot();
 
+    /**
+     * Find parent node for context.
+     *
+     * @param context the context
+     * @return parent node or null if cannot be found
+     */
     Node findParent(ArtifactContext context);
 
+    /**
+     * Get artifact name.
+     *
+     * @param context the context
+     * @return artifact's name
+     */
     String getArtifactName(ArtifactContext context);
 
+    /**
+     * Create parent.
+     *
+     * @param context the context
+     * @return create parent node
+     */
     OpenNode createParent(ArtifactContext context);
 
-    ArtifactResult getArtifactResult(Repository repository, Node node);
+    /**
+     * Get artifact result for node.
+     *
+     * @param manager the node's owning manager
+     * @param node the node
+     * @return node's artifact result
+     */
+    ArtifactResult getArtifactResult(RepositoryManager manager, Node node);
+
 }

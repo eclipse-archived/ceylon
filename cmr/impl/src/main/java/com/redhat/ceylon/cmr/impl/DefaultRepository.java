@@ -18,7 +18,7 @@ package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
@@ -30,22 +30,22 @@ import java.io.IOException;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class DefaultArtifactContextAdapter extends AbstractArtifactContextAdapter {
+public class DefaultRepository extends AbstractRepository {
 
-    public DefaultArtifactContextAdapter(OpenNode root) {
+    public DefaultRepository(OpenNode root) {
         super(root);
     }
 
-    public ArtifactResult getArtifactResult(Repository repository, Node node) {
-        return new DefaultArtifactResult(repository, node);
+    public ArtifactResult getArtifactResult(RepositoryManager manager, Node node) {
+        return new DefaultArtifactResult(manager, node);
     }
 
     private static class DefaultArtifactResult extends AbstractArtifactResult {
 
         private Node node;
 
-        private DefaultArtifactResult(Repository repository, Node node) {
-            super(repository, ArtifactContext.fromNode(node).getName());
+        private DefaultArtifactResult(RepositoryManager manager, Node node) {
+            super(manager, ArtifactContext.fromNode(node).getName());
             this.node = node;
         }
 

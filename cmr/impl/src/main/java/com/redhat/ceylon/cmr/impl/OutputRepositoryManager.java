@@ -23,37 +23,37 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Output repository.
+ * Output manager.
  * Treat compiler output differently from runtime repos.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class OutputRepository extends AbstractRepository {
+public class OutputRepositoryManager extends AbstractRepositoryManager {
 
-    private final Repository output;
-    private final Repository repository; // default root repository
+    private final RepositoryManager output;
+    private final RepositoryManager manager; // default root manager
 
     private static File getOutputDir() {
         return new File("output"); // TODO
     }
 
-    public OutputRepository(Repository repository, Logger log) {
-        this(getOutputDir(), repository, log);
+    public OutputRepositoryManager(RepositoryManager manager, Logger log) {
+        this(getOutputDir(), manager, log);
     }
 
-    public OutputRepository(File outputDir, Repository repository, Logger log) {
-        this(new RootRepository(outputDir, log), repository, log);
+    public OutputRepositoryManager(File outputDir, RepositoryManager manager, Logger log) {
+        this(new RootRepositoryManager(outputDir, log), manager, log);
     }
 
-    public OutputRepository(Repository output, Repository repository, Logger log) {
+    public OutputRepositoryManager(RepositoryManager output, RepositoryManager manager, Logger log) {
         super(log);
         if (output == null)
             throw new IllegalArgumentException("Output is null!");
-        if (repository == null)
-            throw new IllegalArgumentException("Repository is null!");
+        if (manager == null)
+            throw new IllegalArgumentException("Manager is null!");
 
         this.output = output;
-        this.repository = repository;
+        this.manager = manager;
     }
 
     public ArtifactResult getArtifactResult(ArtifactContext context) throws IOException {
@@ -61,7 +61,7 @@ public class OutputRepository extends AbstractRepository {
         if (result != null) {
             return result;
         } else {
-            return repository.getArtifactResult(context);
+            return manager.getArtifactResult(context);
         }
     }
 
@@ -79,6 +79,6 @@ public class OutputRepository extends AbstractRepository {
 
     @Override
     public String toString() {
-        return "OutputRepository: " + output;
+        return "OutputRepositoryManager: " + output;
     }
 }

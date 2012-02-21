@@ -17,11 +17,11 @@
 package com.redhat.ceylon.test.maven.test;
 
 import com.redhat.ceylon.cmr.api.Logger;
-import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.impl.ArtifactContextAdapter;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.impl.Repository;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
-import com.redhat.ceylon.cmr.impl.SimpleRepository;
+import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.maven.AetherContentStore;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import org.junit.Assert;
@@ -41,9 +41,9 @@ public class AetherTestCase {
     @Test
     public void testSimpleTest() throws Throwable {
         StructureBuilder structureBuilder = new AetherContentStore(log);
-        ArtifactContextAdapter adapter = MavenRepositoryHelper.getMavenArtifactContextAdapter(structureBuilder);
-        Repository repository = new SimpleRepository(adapter, log);
-        File artifact = repository.getArtifact("org.slf4j.slf4j-api", "1.6.4");
+        Repository repository = MavenRepositoryHelper.getMavenRepository(structureBuilder);
+        RepositoryManager manager = new SimpleRepositoryManager(repository, log);
+        File artifact = manager.getArtifact("org.slf4j.slf4j-api", "1.6.4");
         boolean exists = false;
         try {
             Assert.assertNotNull(artifact);

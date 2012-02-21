@@ -17,7 +17,7 @@
 package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
@@ -26,13 +26,15 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * Abstract repository.
+ *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public abstract class AbstractArtifactContextAdapter implements ArtifactContextAdapter {
+public abstract class AbstractRepository implements Repository {
 
     private OpenNode root;
 
-    public AbstractArtifactContextAdapter(OpenNode root) {
+    public AbstractRepository(OpenNode root) {
         this.root = root;
     }
 
@@ -41,7 +43,7 @@ public abstract class AbstractArtifactContextAdapter implements ArtifactContextA
         final List<String> tokens = new ArrayList<String>();
         tokens.addAll(Arrays.asList(name.split("\\.")));
         final String version = context.getVersion();
-        if (Repository.DEFAULT_MODULE.equals(name) == false)
+        if (RepositoryManager.DEFAULT_MODULE.equals(name) == false)
             tokens.add(version); // add version
         return tokens;
     }
@@ -60,7 +62,7 @@ public abstract class AbstractArtifactContextAdapter implements ArtifactContextA
     protected static String getArtifactName(String name, String version, String suffix) {
         if (ArtifactContext.DOCS.equals(suffix))
             return ArtifactContext.DOCS;
-        else if (Repository.DEFAULT_MODULE.equals(name))
+        else if (RepositoryManager.DEFAULT_MODULE.equals(name))
             return name + suffix;
         else
             return buildArtifactName(name, version, suffix);
@@ -99,10 +101,10 @@ public abstract class AbstractArtifactContextAdapter implements ArtifactContextA
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof ArtifactContextAdapter == false)
+        if (obj instanceof Repository == false)
             return false;
 
-        final ArtifactContextAdapter daca = (ArtifactContextAdapter) obj;
+        final Repository daca = (Repository) obj;
         return root.equals(daca.getRoot());
     }
 

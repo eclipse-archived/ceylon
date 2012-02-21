@@ -19,7 +19,7 @@ package com.redhat.ceylon.cmr.impl;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ArtifactResultType;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,11 +33,11 @@ import java.util.List;
  */
 public abstract class AbstractArtifactResult implements ArtifactResult {
 
-    private Repository repository;
+    private RepositoryManager manager;
     private String name;
 
-    protected AbstractArtifactResult(Repository repository, String name) {
-        this.repository = repository;
+    protected AbstractArtifactResult(RepositoryManager manager, String name) {
+        this.manager = manager;
         this.name = name;
     }
 
@@ -54,7 +54,7 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
         for (ModuleInfo mi : infos) {
             final ArtifactContext context = new ArtifactContext(mi.getName(), mi.getVersion());
             context.setThrowErrorIfMissing(mi.isOptional() == false);
-            final ArtifactResult result = repository.getArtifactResult(context);
+            final ArtifactResult result = manager.getArtifactResult(context);
             if (result != null)
                 results.add(result);
         }

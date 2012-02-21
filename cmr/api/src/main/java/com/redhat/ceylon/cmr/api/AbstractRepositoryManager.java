@@ -21,18 +21,52 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Abstract repository.
+ * Abstract repository manager.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public abstract class AbstractRepository implements Repository {
+public abstract class AbstractRepositoryManager implements RepositoryManager {
 
     protected Logger log;
 
-    public AbstractRepository(Logger log) {
+    public AbstractRepositoryManager(Logger log) {
         this.log = log;
+    }
+
+    /**
+     * Flatten.
+     *
+     * @param result the artifact result
+     * @return all dependencies
+     * @throws IOException for any I/O error
+     */
+    public static File[] flatten(ArtifactResult result) throws IOException {
+        if (result == null)
+            return null;
+
+        List<File> files = new ArrayList<File>();
+        recurse(files, result);
+        return files.toArray(new File[files.size()]);
+    }
+
+    private static void recurse(final List<File> files, final ArtifactResult current) throws IOException {
+        files.add(current.artifact());
+        for (ArtifactResult ar : current.dependecies())
+            recurse(files, ar);
+    }
+
+    public File[] resolve(String name, String version) throws IOException {
+        final ArtifactContext context = new ArtifactContext(name, version);
+        return resolve(context);
+    }
+
+    public File[] resolve(ArtifactContext context) throws IOException {
+        final ArtifactResult result = getArtifactResult(context);
+        return flatten(result);
     }
 
     public File getArtifact(String name, String version) throws IOException {
@@ -78,7 +112,7 @@ public abstract class AbstractRepository implements Repository {
     }
 
     protected void putFolder(ArtifactContext context, File folder) throws IOException {
-        throw new IOException("Repository doesn't support folder [" + folder + "] put: " + context);
+        throw new IOException("RepositoryManager doesn't support folder [" + folder + "] put: " + context);
     }
 
     public void removeArtifact(String name, String version) throws IOException {

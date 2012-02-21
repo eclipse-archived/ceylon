@@ -31,7 +31,7 @@ import java.util.List;
  */
 public final class NodeUtils {
 
-    private static final String INFO = ".adapter";
+    private static final String INFO = ".repository";
 
     /**
      * Navigate to node.
@@ -134,29 +134,29 @@ public final class NodeUtils {
     }
 
     /**
-     * Keep the adapter info.
+     * Keep the repository info.
      *
      * @param node    the node
-     * @param adapter the adapter
+     * @param repository the repository
      */
-    public static void keepAdapterInfo(Node node, ArtifactContextAdapter adapter) {
+    public static void keepRepository(Node node, Repository repository) {
         if (node instanceof OpenNode) {
             final OpenNode on = (OpenNode) node;
-            on.addNode(INFO, adapter);
+            on.addNode(INFO, repository);
         }
     }
 
     /**
-     * Get the adapter info.
+     * Get repository info.
      *
      * @param node the node
-     * @return adapter info
+     * @return repository info
      */
-    public static ArtifactContextAdapter getAdapterInfo(Node node) {
+    public static Repository getRepository(Node node) {
         if (node instanceof OpenNode) {
             final OpenNode on = (OpenNode) node;
             final Node info = on.peekChild(INFO);
-            return (info != null) ? info.getValue(ArtifactContextAdapter.class) : null;
+            return (info != null) ? info.getValue(Repository.class) : null;
         }
         return null;
     }

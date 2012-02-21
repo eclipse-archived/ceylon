@@ -19,7 +19,7 @@ package com.redhat.ceylon.cmr.impl;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ArtifactResultType;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
@@ -29,12 +29,12 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Maven repository helper.
+ * Maven repository.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class MavenArtifactContextAdapter extends AbstractArtifactContextAdapter {
-    protected MavenArtifactContextAdapter(OpenNode root) {
+public class MavenRepository extends AbstractRepository {
+    protected MavenRepository(OpenNode root) {
         super(root);
     }
 
@@ -44,7 +44,7 @@ public class MavenArtifactContextAdapter extends AbstractArtifactContextAdapter 
         return getArtifactName(p >= 0 ? name.substring(p + 1) : name, context.getVersion(), ArtifactContext.JAR);
     }
 
-    public ArtifactResult getArtifactResult(Repository repository, final Node node) {
+    public ArtifactResult getArtifactResult(RepositoryManager manager, final Node node) {
         return new ArtifactResult() {
             public ArtifactResultType type() {
                 return ArtifactResultType.MAVEN;

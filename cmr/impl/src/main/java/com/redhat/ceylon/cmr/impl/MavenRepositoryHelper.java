@@ -44,20 +44,20 @@ public class MavenRepositoryHelper {
         throw new IllegalArgumentException("No Maven repository found!");
     }
 
-    public static ArtifactContextAdapter getMavenArtifactContextAdapter() {
-        return new MavenArtifactContextAdapter(new MavenContentStore().createRoot());
+    public static Repository getMavenRepository() {
+        return new MavenRepository(new MavenContentStore().createRoot());
     }
 
-    public static ArtifactContextAdapter getMavenArtifactContextAdapter(File mvnRepository) {
-        return new MavenArtifactContextAdapter(new MavenContentStore(mvnRepository).createRoot());
+    public static Repository getMavenRepository(File mvnRepository) {
+        return new MavenRepository(new MavenContentStore(mvnRepository).createRoot());
     }
 
-    public static ArtifactContextAdapter getMavenArtifactContextAdapter(String repositoryURL, Logger log) {
-        return new MavenArtifactContextAdapter(new RemoteContentStore(repositoryURL, log).createRoot());
+    public static Repository getMavenRepository(String repositoryURL, Logger log) {
+        return new MavenRepository(new RemoteContentStore(repositoryURL, log).createRoot());
     }
 
-    public static ArtifactContextAdapter getMavenArtifactContextAdapter(StructureBuilder structureBuilder) {
-        return new MavenArtifactContextAdapter(structureBuilder.createRoot());
+    public static Repository getMavenRepository(StructureBuilder structureBuilder) {
+        return new MavenRepository(structureBuilder.createRoot());
     }
 
     private static class MavenContentStore extends FileContentStore {

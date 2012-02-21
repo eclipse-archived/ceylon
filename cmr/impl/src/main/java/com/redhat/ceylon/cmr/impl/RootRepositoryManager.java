@@ -31,7 +31,7 @@ import java.util.List;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class RootRepository extends AbstractNodeRepository {
+public class RootRepositoryManager extends AbstractNodeRepositoryManager {
 
     private final FileContentStore fileContentStore;
 
@@ -45,14 +45,14 @@ public class RootRepository extends AbstractNodeRepository {
         return root;
     }
 
-    public RootRepository(Logger log) {
+    public RootRepositoryManager(Logger log) {
         this(getRootDir(), log);
     }
 
-    public RootRepository(File rootDir, Logger log) {
+    public RootRepositoryManager(File rootDir, Logger log) {
         super(log);
         fileContentStore = new FileContentStore(rootDir);
-        final ArtifactContextAdapter aaca = new DefaultArtifactContextAdapter(new RootNode(fileContentStore, fileContentStore));
+        final Repository aaca = new DefaultRepository(new RootNode(fileContentStore, fileContentStore));
         setRoot(aaca);
     }
 
@@ -183,6 +183,6 @@ public class RootRepository extends AbstractNodeRepository {
 
     @Override
     public String toString() {
-        return "RootRepository: " + fileContentStore;
+        return "RootRepositoryManager: " + fileContentStore;
     }
 }

@@ -18,14 +18,12 @@
 package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.Logger;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.ContentTransformer;
 import com.redhat.ceylon.cmr.spi.MergeStrategy;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
 import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
 
 /**
  * Root repository builder.
@@ -34,17 +32,17 @@ import java.net.URL;
  */
 public class RepositoryBuilder {
 
-    private RootRepository repository;
+    private RootRepositoryManager repository;
     private Logger log;
 
     public RepositoryBuilder(Logger log) {
-        repository = new RootRepository(log);
+        repository = new RootRepositoryManager(log);
         this.log = log;
         init();
     }
 
     public RepositoryBuilder(File mainRepository, Logger log) {
-        repository = new RootRepository(mainRepository, log);
+        repository = new RootRepositoryManager(mainRepository, log);
         this.log = log;
         init();
     }
@@ -109,31 +107,31 @@ public class RepositoryBuilder {
      * @return this
      */
     public RepositoryBuilder addModulesCeylonLangOrg() {
-        appendExternalRoot(new RemoteContentStore(Repository.MODULES_CEYLON_LANG_ORG, log).createRoot());
+        appendExternalRoot(new RemoteContentStore(RepositoryManager.MODULES_CEYLON_LANG_ORG, log).createRoot());
         return this;
     }
 
     public RepositoryBuilder prependExternalRoot(OpenNode externalRoot) {
-        repository.prependExternalRoot(new DefaultArtifactContextAdapter(externalRoot));
+        repository.prependExternalRoot(new DefaultRepository(externalRoot));
         return this;
     }
 
     public RepositoryBuilder appendExternalRoot(OpenNode externalRoot) {
-        repository.appendExternalRoot(new DefaultArtifactContextAdapter(externalRoot));
+        repository.appendExternalRoot(new DefaultRepository(externalRoot));
         return this;
     }
 
-    public RepositoryBuilder prependExternalRoot(ArtifactContextAdapter externalRoot) {
+    public RepositoryBuilder prependExternalRoot(Repository externalRoot) {
         repository.prependExternalRoot(externalRoot);
         return this;
     }
 
-    public RepositoryBuilder appendExternalRoot(ArtifactContextAdapter externalRoot) {
+    public RepositoryBuilder appendExternalRoot(Repository externalRoot) {
         repository.appendExternalRoot(externalRoot);
         return this;
     }
 
-    public Repository buildRepository() {
+    public RepositoryManager buildRepository() {
         return repository;
     }
 

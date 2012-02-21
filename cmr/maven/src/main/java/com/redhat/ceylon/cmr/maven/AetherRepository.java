@@ -17,7 +17,7 @@
 package com.redhat.ceylon.cmr.maven;
 
 import com.redhat.ceylon.cmr.api.*;
-import com.redhat.ceylon.cmr.impl.MavenArtifactContextAdapter;
+import com.redhat.ceylon.cmr.impl.MavenRepository;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
@@ -28,19 +28,19 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Aether adapter.
+ * Aether repository.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class AetherArtifactContextAdapter extends MavenArtifactContextAdapter {
+public class AetherRepository extends MavenRepository {
     private final AetherUtils utils;
 
-    public AetherArtifactContextAdapter(OpenNode root, Logger log) {
+    public AetherRepository(OpenNode root, Logger log) {
         super(root);
         utils = new AetherUtils(log);
     }
 
-    public ArtifactResult getArtifactResult(Repository repository, Node node) {
+    public ArtifactResult getArtifactResult(RepositoryManager manager, Node node) {
         final File[] files = utils.findDependencies(node);
         if (files == null || files.length == 0)
             return null;
