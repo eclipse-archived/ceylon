@@ -109,16 +109,7 @@ public class RepositoryBuilder {
      * @return this
      */
     public RepositoryBuilder addModulesCeylonLangOrg() {
-        InputStream is = null;
-        try {
-            final URL url = new URL(Repository.MODULES_CEYLON_LANG_ORG);
-            is = url.openStream();
-            appendExternalRoot(new RemoteContentStore(Repository.MODULES_CEYLON_LANG_ORG, log).createRoot());
-        } catch (Exception ignored) {
-            log.info("Ceylon repository '" + Repository.MODULES_CEYLON_LANG_ORG + "' not yet available.");
-        } finally {
-            IOUtils.safeClose(is);
-        }
+        appendExternalRoot(new RemoteContentStore(Repository.MODULES_CEYLON_LANG_ORG, log).createRoot());
         return this;
     }
 
