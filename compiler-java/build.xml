@@ -346,30 +346,33 @@
     </artifact:mvn>
   	
   </target>
-	
+
+  <target name="-test.cond">
+    <condition property="dont.test.ast">
+      <contains string="${dont.test}" substring="ast"/>
+    </condition>
+    <condition property="dont.test.exec">
+      <contains string="${dont.test}" substring="exec"/>
+    </condition>
+    <condition property="dont.test.doc">
+      <contains string="${dont.test}" substring="doc"/>
+    </condition>
+    <condition property="dont.test.maven">
+      <or>
+        <contains string="${dont.test}" substring="maven"/>
+        <isset property="no-maven"/>
+      </or>
+    </condition>  
+  </target>
+  
   <!-- Runs the JUnit tests -->
-  <target name="test" depends="publish,test.classes,ceylon-tests.car" description="Runs the JUnit tests">
+  <target name="-test.prepare" depends="publish,test.classes,-test.cond">
     <mkdir dir="${test.reports}"/>
   	<property name="bootclasspath" refid="test.run.classpath" />
-    <junit printsummary="yes" haltonfailure="no">
-      <classpath refid="test.run.classpath"/>
-      <jvmarg value="-Xbootclasspath/p:${bootclasspath}"/>
-
-      <formatter type="xml"/>
-
-      <batchtest fork="yes" todir="${test.reports}">
-        <fileset dir="${test.src}">
-          <include name="**/*Test.java"/>
-          <exclude name="com/redhat/ceylon/compiler/java/test/CompilerTest.java"/>
-          <exclude name="com/redhat/ceylon/compiler/java/test/ceylon/**"/>
-        </fileset>
-        <zipfileset src="${ceylon-tests.car}">
-          <include name="com/redhat/ceylon/compiler/java/test/ceylon/**/*Test.class"/>
-          <exclude name="com/redhat/ceylon/compiler/java/test/ceylon/Test.class"/>
-        </zipfileset>
-      </batchtest>
-    </junit>
- 
+  </target>    
+    
+  <target name="test" depends="test.ast,test.exec,test.ceylond,test.maven"
+      description="Runs the tests and generates a test report. The dont.test system property can be used to select which tests to run">
     <junitreport todir="${test.reports}">
       <fileset dir="${test.reports}">
         <include name="TEST-*.xml"/>
@@ -377,11 +380,9 @@
       <report format="frames" todir="${test.reports}"/>
     </junitreport>
   </target>
-	
-  <!-- Runs the JUnit compiler tests only -->
-  <target name="compiler-tests-only" depends="publish,test.classes" description="Runs the JUnit compiler tests only">
-    <mkdir dir="${test.reports}"/>
-    <property name="bootclasspath" refid="test.run.classpath" />
+
+  <!-- Runs the JUnit tests which make assertions on the AST passed to javac -->
+  <target name="test.ast" depends="-test.prepare" unless="dont.test.ast">
     <junit printsummary="yes" haltonfailure="no">
       <classpath refid="test.run.classpath"/>
       <jvmarg value="-Xbootclasspath/p:${bootclasspath}"/>
@@ -396,19 +397,10 @@
         </fileset>
       </batchtest>
     </junit>
- 
-    <junitreport todir="${test.reports}">
-      <fileset dir="${test.reports}">
-        <include name="TEST-*.xml"/>
-      </fileset>
-      <report format="frames" todir="${test.reports}"/>
-    </junitreport>
   </target>
     
-  <!-- Runs the JUnit ceylon tests only -->
-  <target name="ceylon-tests-only" depends="publish,test.classes,ceylon-tests.car" description="Runs the JUnit ceylon tests only">
-    <mkdir dir="${test.reports}"/>
-  	<property name="bootclasspath" refid="test.run.classpath" />
+  <!-- Runs the JUnit tests which execute generate ceylon classes -->
+  <target name="test.exec" depends="-test.prepare,ceylon-tests.car" unless="dont.test.exec">
     <junit printsummary="yes" haltonfailure="no">
       <classpath refid="test.run.classpath"/>
       <jvmarg value="-Xbootclasspath/p:${bootclasspath}"/>
@@ -423,19 +415,10 @@
         </zipfileset>
       </batchtest>
     </junit>
- 
-    <junitreport todir="${test.reports}">
-      <fileset dir="${test.reports}">
-        <include name="TEST-*.xml"/>
-      </fileset>
-      <report format="frames" todir="${test.reports}"/>
-    </junitreport>
   </target>
 	
-  <!-- Runs the JUnit ceylondoc tests only -->
-  <target name="ceylondoc-tests-only" depends="publish,test.classes" description="Runs the JUnit ceylondoc tests only">
-	<mkdir dir="${test.reports}"/>
-	<property name="bootclasspath" refid="test.run.classpath" />
+  <!-- Runs the JUnit tests for ceylond -->
+  <target name="test.ceylond" depends="-test.prepare" unless="dont.test.doc">
 	<junit printsummary="yes" haltonfailure="no">
 	  <classpath refid="test.run.classpath"/>
 	  <jvmarg value="-Xbootclasspath/p:${bootclasspath}"/>
@@ -446,13 +429,22 @@
 	    </fileset>
 	  </batchtest>
 	</junit>
-	<junitreport todir="${test.reports}">
-	  <fileset dir="${test.reports}">
-	    <include name="TEST-*.xml"/>
-	  </fileset>
-	  <report format="frames" todir="${test.reports}"/>
-	</junitreport>
   </target>	
+  
+  <!-- Runs the JUnit tests for maven -->
+  <target name="test.maven" depends="-test.prepare" unless="dont.test.maven">
+    <junit printsummary="yes" haltonfailure="no">
+      <classpath refid="test.run.classpath"/>
+      <jvmarg value="-Xbootclasspath/p:${bootclasspath}"/>
+      <formatter type="xml"/>
+      <batchtest fork="yes" todir="${test.reports}">
+        <fileset dir="${test.src}">
+          <include name="com/redhat/ceylon/maven/test/**/*Test.java"/>
+          <exclude name="com/redhat/ceylon/maven/test/MojoTest.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
 
   <target name="ant-tasks" depends="publish">
     <path id="ant-tasks">
@@ -467,7 +459,7 @@
     <pathelement path="${junit.lib}"/>
   </path>
 
-  <target name="ceylon-tests.car" depends="publish,test.classes,ant-tasks">
+  <target name="ceylon-tests.car" depends="publish,test.classes,-test.cond,ant-tasks" unless="dont.test.exec">
   	<delete dir="${ceylon-tests.dir}"/>
     <mkdir dir="${ceylon-tests.dir}"/>
     <jar destfile="${ceylon-tests.car}">
