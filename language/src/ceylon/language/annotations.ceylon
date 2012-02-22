@@ -10,3 +10,4 @@ shared Nothing see(Void... programElements) { return null; }
 shared Nothing by(String... authors) { return null; }
 shared Nothing throws(Void type, String? when=null) { return null; }
 shared Nothing deprecated(String? reason=null) { return null; }
+shared Nothing tagged(String... tags) { return null; }
