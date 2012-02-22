@@ -22,6 +22,7 @@
         <version>1.0-SNAPSHOT</version>
         <configuration>
           <src>source</src>
+          <out>../../../../../../build/maven-plugin-test</out>
           <modules>
             <param>com.acme.helloworld</param>
           </modules>
