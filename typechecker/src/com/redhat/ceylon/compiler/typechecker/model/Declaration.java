@@ -24,6 +24,7 @@ public abstract class Declaration extends Element {
     private Scope visibleScope;
     private Declaration refinedDeclaration = this;
     private boolean staticallyImportable;
+    private boolean protectedVisibility;
 
     public Scope getVisibleScope() {
         return visibleScope;
@@ -180,6 +181,14 @@ public abstract class Declaration extends Element {
     
     public void setStaticallyImportable(boolean staticallyImportable) {
         this.staticallyImportable = staticallyImportable;
+    }
+    
+    public boolean isProtectedVisibility() {
+        return protectedVisibility;
+    }
+    
+    public void setProtectedVisibility(boolean protectedVisibility) {
+        this.protectedVisibility = protectedVisibility;
     }
 
     /**

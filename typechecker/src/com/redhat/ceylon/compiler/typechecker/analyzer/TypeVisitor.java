@@ -170,6 +170,10 @@ public class TypeVisitor extends Visitor {
                 member.getIdentifier().addError("imported declaration is not shared: " +
                         name, 400);
             }
+            if (d.isProtectedVisibility()) {
+                member.getIdentifier().addError("imported declaration is not visible: " +
+                        name);
+            }
             i.setDeclaration(d);
             member.setDeclarationModel(d);
             addImport(member, il, i);
@@ -225,6 +229,10 @@ public class TypeVisitor extends Visitor {
             if (!m.isShared()) {
                 member.getIdentifier().addError("imported declaration is not shared: " +
                         name + " of " + d.getName(), 400);
+            }
+            if (m.isProtectedVisibility()) {
+                member.getIdentifier().addError("imported declaration is not visible: " +
+                        name + " of " + d.getName());
             }
             if (!m.isStaticallyImportable()) {
                 i.setTypeDeclaration(d);
