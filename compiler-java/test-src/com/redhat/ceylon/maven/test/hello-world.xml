@@ -21,7 +21,7 @@
         <artifactId>ceylon-maven-plugin</artifactId>
         <version>1.0-SNAPSHOT</version>
         <configuration>
-          <src>samples/helloworld/source</src>
+          <src>source</src>
           <modules>
             <param>com.acme.helloworld</param>
           </modules>

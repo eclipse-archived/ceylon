@@ -7,6 +7,8 @@
 	<classpathentry kind="lib" path="lib/ant-1.8.2.jar"/>
 	<classpathentry kind="lib" path="lib/markdownj-core-faf3bf83000.jar"/>
 	<classpathentry kind="lib" path="lib/maven-plugin-api-3.0.4.jar"/>
+	<classpathentry kind="lib" path="/home/tom/ceylon/ceylon-compiler/lib/maven-invoker-2.0.11.jar"/>
+	<classpathentry kind="lib" path="/home/tom/ceylon/ceylon-compiler/lib/plexus-utils-1.5.6.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-spec"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon.language"/>

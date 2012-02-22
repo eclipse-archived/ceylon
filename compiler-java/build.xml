@@ -32,6 +32,12 @@
 
   <property name="markdown.version" value="faf3bf83000"/>
   <property name="markdown.lib" location="${base.path}/markdownj-core-${markdown.version}.jar"/>
+    
+  <property name="plexus-utils.version" value="1.5.6"/>
+  <property name="plexus-utils.lib" location="${base.path}/plexus-utils-${plexus-utils.version}.jar"/>
+    
+  <property name="maven-invoker.version" value="2.0.11"/>
+  <property name="maven-invoker.lib" location="${base.path}/maven-invoker-${maven-invoker.version}.jar"/>
 
   <!-- Jarfiles everything ends up in -->
   <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}"/>
@@ -64,6 +70,7 @@
     <path refid="compiler.classpath"/>
     <pathelement path="${build.classes}"/>
     <pathelement path="${junit.lib}"/>
+    <pathelement path="${maven-invoker.lib}"/>
   </path>
 
   <path id="test.run.classpath">
@@ -73,6 +80,8 @@
     <pathelement path="${junit.lib}"/>
     <pathelement path="${build.classes}"/>
     <pathelement path="${ceylon-tests.car}"/>
+    <pathelement path="${maven-invoker.lib}"/>
+    <pathelement path="${plexus-utils.lib}"/>
   </path>
 
   <path id="language.classpath">
@@ -185,6 +194,7 @@
        includeantruntime="false">
       <include name="com/redhat/ceylon/compiler/java/test/**"/>
       <include name="com/redhat/ceylon/ceylondoc/test/**"/>
+      <include name="com/redhat/ceylon/maven/test/**"/>
     </javac>
   </target>
 

@@ -1,6 +1,7 @@
 /bin/*.pyc
 /build/
 /target/
+/test-src/com/redhat/ceylon/maven/test/target/
 /modules/
 .settings/
 .classpath
