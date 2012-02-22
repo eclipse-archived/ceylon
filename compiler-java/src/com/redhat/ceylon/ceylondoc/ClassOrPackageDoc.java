@@ -56,7 +56,15 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         write("See also: ");
         for (String target : see.getPositionalArguments()) {
             // try to resolve in containing scopes
-            Declaration targetDecl = resolveDeclaration((Scope) decl, target);
+            Scope declScope;
+            if( decl instanceof Scope ) {
+                declScope = (Scope) decl;
+            }
+            else {
+                declScope = decl.getContainer();
+            }
+            
+            Declaration targetDecl = resolveDeclaration(declScope, target);
             if(targetDecl != null){
                 if (!first) {
                     write(", ");
@@ -212,8 +220,16 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 }
 
                 open("li");
+                
+                Scope declScope;
+                if( declaration instanceof Scope ) {
+                    declScope = (Scope) declaration;
+                }
+                else {
+                    declScope = declaration.getContainer();
+                }
 
-                Declaration excTypeDecl = resolveDeclaration(declaration.getContainer(), excType);
+                Declaration excTypeDecl = resolveDeclaration(declScope, excType);
                 if (excTypeDecl instanceof TypeDeclaration) {
                     link(((TypeDeclaration)excTypeDecl).getType());
                 } else {
