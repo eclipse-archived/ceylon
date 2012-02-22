@@ -105,4 +105,9 @@ public class AbstractArtifactContextAdapter implements ArtifactContextAdapter {
         final ArtifactContextAdapter daca = (ArtifactContextAdapter) obj;
         return root.equals(daca.getRoot());
     }
+
+    @Override
+    public String toString() {
+        return "ArtifactContextAdapter for root: "+root;
+    }
 }

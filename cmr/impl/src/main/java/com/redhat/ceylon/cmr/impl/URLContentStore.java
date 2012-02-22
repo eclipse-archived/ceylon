@@ -57,7 +57,7 @@ public abstract class URLContentStore implements ContentStore, StructureBuilder 
     }
 
     public OpenNode createRoot() {
-        final UrlNode node = new UrlRootNode();
+        final UrlNode node = new UrlRootNode(root);
         node.addService(ContentStore.class, this);
         node.addService(StructureBuilder.class, this);
         node.setHandle(DefaultNode.HANDLE_MARKER);
@@ -151,13 +151,21 @@ public abstract class URLContentStore implements ContentStore, StructureBuilder 
     }
 
     protected static class UrlRootNode extends UrlNode {
-        public UrlRootNode() {
+        private final String root;
+        
+        public UrlRootNode(String root) {
             super("");
+            this.root = root;
         }
 
         @Override
         public boolean equals(Object obj) {
             return (obj == this);
+        }
+        
+        @Override
+        public String toString() {
+            return "UrlRootNode for "+root;
         }
     }
 }
