@@ -2845,6 +2845,9 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
                 <para><literal>throws</literal> specifies a thrown exception
                 type.</para>
             </listitem>
+            <listitem>
+                <para><literal>tagged</literal> specifies classifying named tags.</para>
+            </listitem>
         </itemizedlist>
         
         <para>The <literal>String</literal> arguments to the <literal>deprecated</literal>, 
