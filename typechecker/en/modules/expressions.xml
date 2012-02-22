@@ -2955,8 +2955,10 @@ createItemMethod.intercept()
             <entry><literal>is Type rhs</literal></entry>
             <entry>is</entry>
             <entry></entry>
-            <entry>literal <literal>Type&lt;Void&gt;</literal></entry>
-            <entry><literal>Object?</literal></entry>
+            <entry>any literal type <literal>T</literal></entry>
+            <entry>any type which is not a subtype of 
+            <literal>T</literal>, whose intersection with 
+            <literal>T</literal> is not <literal>Bottom</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         
@@ -3101,7 +3103,9 @@ createItemMethod.intercept()
             <entry><!--<<literal>lhs?</literal> or --><literal>exists lhs</literal></entry>
             <entry>exists</entry>
             <entry><literal>if (exists lhs) true else false</literal></entry>
-            <entry><literal>Object?</literal></entry>
+            <entry>any type to which <literal>null</literal> is
+            assignable, whose intersection with <literal>Object</literal>
+            is not <literal>Bottom</literal></entry>
             <entry></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
@@ -3109,7 +3113,11 @@ createItemMethod.intercept()
             <entry><literal><!--??-->nonempty lhs</literal></entry>
             <entry>nonempty</entry>
             <entry><literal>if (nonempty lhs) true else false</literal></entry>
-            <entry><literal>Object[]?</literal></entry>
+            <entry>any subtype of <literal>Nothing|FixedSized&lt;Void&gt;</literal>
+            whose intersection with <literal>None&lt;Bottom&gt;</literal> 
+            is not <literal>Bottom</literal>, and whose intersection with 
+            <literal>Some&lt;Bottom&gt;</literal> is not 
+            <literal>Bottom</literal></entry>
             <entry></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
