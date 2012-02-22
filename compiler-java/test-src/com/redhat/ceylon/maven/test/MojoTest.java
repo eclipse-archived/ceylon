@@ -25,6 +25,12 @@ public abstract class MojoTest {
         request.setDebug(true);
     
         Invoker invoker = new DefaultInvoker();
+        if (System.getProperty("maven.home") == null
+                && System.getenv("M2_HOME") == null) {
+            Assert.fail("Unable to run maven tests without either maven.home " +
+            		"system property or M2_HOME environment variable set to " +
+            		"the location of a maven installation");
+        }
         InvocationResult result = invoker.execute(request);
     
         if (result.getExitCode() != 0) {
