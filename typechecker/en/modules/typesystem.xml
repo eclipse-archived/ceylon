@@ -2037,8 +2037,8 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
         
         <programlisting><![CDATA[Many<Element> join<Many<X>,Element>(Many<Element>... sequences)
         given Many<X>(X... elements) satisfies Sequence<X> 
-        given Element satisfies Equality<Element>
-        given X satisfies Equality<X> {
+        given Element satisfies Object
+        given X satisfies Object {
     return Many(joinSequences(sequences));
 }]]></programlisting>
         
@@ -2095,7 +2095,7 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
         
         <programlisting><![CDATA[Many<Result> findByKey<Many<E>,Result,Key>(Type<Result> type, Many<Key> keys)
         given Many<E> of E | E[]
-        given Key satisfies Equality<Key> {
+        given Key satisfies Object {
     ...
 }]]></programlisting>
         <programlisting>Person p = findByKey(Person, personId);</programlisting>
@@ -2216,8 +2216,8 @@ given Result(Integer count) satisfies Numeric<Result>]]></programlisting>
         upon expressions whose type is the type parameter.</para>
         
         <programlisting><![CDATA[class Holder<Value>(Value value) 
-        satisfies Equality
-        given Value satisfies Equality {
+        extends Object
+        given Value satisfies Object {
     shared Value value = value;
     shared actual Boolean equals(Object that) {
         if (is Holder<Value> that) {
@@ -2242,7 +2242,7 @@ given Result(Integer count) satisfies Numeric<Result>]]></programlisting>
         schema of the parameterized type.</para>
         
         <programlisting><![CDATA[shared class Set<out Element>(Element... elements)
-        given Element satisfies Equality {
+        given Element satisfies Object {
     ...
      
     shared Set<UnionElement> union(Set<UnionElement> set)

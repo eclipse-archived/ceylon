@@ -1436,15 +1436,15 @@ else {
             </listitem>
             <listitem>
                 <para>an <emphasis>assignabilty condition</emphasis> is satisfied when an expression
-                 evaluates to an instance of a specified type.</para>
+                 evaluates to an instance of a specified type,</para>
             </listitem>
             <listitem>
-                <para>an <emphasis>existence condition</emphasis> is satisfied when an expression of
-                type <literal>X?</literal> evaluates to a non-null value,</para>
+                <para>an <emphasis>existence condition</emphasis> is satisfied when an expression 
+                evaluates to a non-null value,</para>
             </listitem>
             <listitem>
                 <para>a <emphasis>nonemptiness condition</emphasis> is satisfied when an expression 
-                of type <literal>X[]?</literal> evaluates to a non-null, non-empty value, and</para>
+                evaluates to a non-null, non-empty value, and</para>
             </listitem>
             <listitem>
                 <para>a <emphasis>subtype condition</emphasis> is satisfies when a given type is a 
@@ -1473,7 +1473,7 @@ else {
         <section id="assignabilityexistencenonemptinessconditions">
             <title>Assignability, existence, and nonemptiness conditions</title>
         
-        <para>Assignability, existence, and nonemptiness conditions may either contain:</para>
+        <para>An assignability, existence, or nonemptiness condition may contain either:</para>
         
         <itemizedlist>
             <listitem>
@@ -1485,7 +1485,7 @@ else {
             </listitem>
         </itemizedlist>
         
-        <para>In the case of assignability or existence conditions, the type of the variable may be 
+        <para>In the case of an assignability or existence condition, the type of the variable may be 
         inferred.</para>
                 
         <programlisting>IsCondition: "is" (TypedVariable Specifier | UnionType MemberName)</programlisting>
@@ -1496,86 +1496,46 @@ else {
         
         <itemizedlist>
             <listitem>
-                <para>a subtype of <literal>Object?</literal> for an assignability condition,</para>
+                <para>a type which is not a subtype of the specified type, but whose intersection
+                with the specified type is not exactly <literal>Bottom</literal>, in the case of an 
+                assignability condition,</para>
             </listitem>
             <listitem>
-                <para>of form <literal>X?</literal> for some type <literal>X</literal> for an existence 
-                condition, or</para>
+                <para>a type to which <literal>null</literal> is assignable, whose intersection with 
+                <literal>Object</literal> is not exactly <literal>Bottom</literal>, in the case of an 
+                exists condition, or</para>
             </listitem>
             <listitem>
-                <para>of form <literal>X[]</literal> or <literal>X[]?</literal> for some type 
-                <literal>X</literal> for a nonemptiness condition, or</para>
+                <para>a subtype of <literal>Nothing|FixedSized&lt;Void&gt;</literal> whose intersection
+                with <literal>None&lt;Bottom&gt;</literal> is not exactly <literal>Bottom</literal>, 
+                and whose intersection with <literal>Some&lt;Bottom&gt;</literal> is not exactly 
+                <literal>Bottom</literal>, in the case of a nonemptiness condition.</para>
             </listitem>
         </itemizedlist>
         
         <para>Note that an existence or nonemptiness condition is equivalent to&mdash;and may be 
-        considered an abbreviation of&mdash;an assignability condition.</para>
+        considered an abbreviation of&mdash;an assignability condition:</para>
         
         <itemizedlist>
             <listitem>
-                <para><literal>if (exists x)</literal> is equivalent to <literal>if (is X x)</literal>
-                where <literal>x</literal> is an expression of type <literal>X?</literal>, and</para>
+                <para><literal>if (exists x)</literal> is equivalent to <literal>if (is Object x)</literal>, 
+                and</para>
             </listitem>
             <listitem>
-                <para><literal>if (nonempty x)</literal> is equivalent to <literal>if (is Sequence&lt;X&gt; x)</literal>
-                where <literal>x</literal> is an expression of type <literal>X[]?</literal>.</para>
+                <para><literal>if (nonempty x)</literal> is equivalent to <literal>if (is Some&lt;E&gt; x)</literal>
+                where <literal>x</literal> is an expression whose type is an invariant subtype of
+                <literal>FixedSized&lt;E&gt;</literal>.</para>
             </listitem>
         </itemizedlist>
         
-        <para>For <literal>exists</literal> conditions:</para>
+        <para>For an <literal>is</literal> condition:</para>
         
         <itemizedlist>
-            <listitem>
-                <para>If the condition declares a variable, the variable must be declared of type 
-                <literal>X</literal>, where the specifier expression is of type 
-                <literal>Nothing|X</literal>.</para>
-            </listitem>
-            <listitem>
-                <para>If the condition contains a value reference, the local will be treated by the 
-                compiler as having type <literal>X</literal> inside the block that immediately 
-                follows the condition, where the conditional expression is of type 
-                <literal>Nothing|X</literal>.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>For <literal>nonempty</literal> conditions:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>If the condition declares a variable, the variable must be declared of type 
-                <literal>X</literal>, where the specifier expression is of type 
-                <literal>Nothing|Empty|X</literal>.</para>
-            </listitem>
-            <listitem>
-                <para>If the condition contains a value reference, the value will be treated by the 
-                compiler as having type <literal>X</literal> inside the block that immediately 
-                follows the condition, where the conditional expression is of type 
-                <literal>Nothing|Empty|X</literal>.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>If you prefer, you can think of the following:</para>
-        
-        <programlisting>if (exists name) { ... }</programlisting>
-        
-        <para>As an abbreviation of:</para>
-        
-        <programlisting>if (exists String name = name) { ... }</programlisting>
-        
-        <para>Where the <literal>name</literal> declared by the condition hides the outer declaration
-        of <literal>name</literal> inside the block that follows.</para>
-                        
-        <para>For <literal>is</literal> conditions:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>If the condition declares a variable, the specifier expression type need not be 
-                assignable to the declared type of the variable, or</para>
-            </listitem>
             <listitem>
                 <para>if the condition contains a value reference, the value will be treated by the 
-                compiler as having the intersection type of the specified type with the type of the
-                value inside the block that immediately follows the condition.</para>
+                compiler as having type <literal>T&amp;X</literal> where the conditional expression is 
+                of type <literal>T</literal> and <literal>X</literal> is the specified type, inside 
+                the block that immediately follows the condition.</para>
             </listitem>
         </itemizedlist>
         
@@ -1591,8 +1551,50 @@ if (is Usable tx) { ... }</programlisting>
         <para>Where the <literal>tx</literal> declared by the condition hides the outer declaration
         of <literal>tx</literal> inside the block that follows.</para>
         
-        <para>An <literal>is</literal> condition may not narrow to the type <literal>Bottom</literal>
-        or to any intersection type equivalent to <literal>Bottom</literal>.</para>
+        <para>For an <literal>exists</literal> condition:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>if the condition declares a variable, the declared type of the variable 
+                must be a supertype of <literal>T&amp;Object</literal>, where the specifier expression 
+                is of type <literal>T</literal>, or</para>
+            </listitem>
+            <listitem>
+                <para>if the condition contains a value reference, the value will be treated by the 
+                compiler as having type <literal>T&amp;Object</literal> inside the block that immediately 
+                follows the condition, where the conditional expression is of type 
+                <literal>T</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>For a <literal>nonempty</literal> condition:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>if the condition declares a variable, the declared type of the variable must be 
+                a supertype of <literal>T&amp;Some&lt;E&gt;</literal>, where the specifier expression 
+                is of type <literal>T</literal> and <literal>T</literal> is an invariant subtype of
+                <literal>FixedSized&lt;E&gt;</literal>, or</para>
+            </listitem>
+            <listitem>
+                <para>if the condition contains a value reference, the value will be treated by the 
+                compiler as having type <literal>T&amp;Some&lt;E&gt;</literal> inside the block that 
+                immediately follows the condition, where the conditional expression is of type 
+                <literal>T</literal> and <literal>T</literal> is an invariant subtype of 
+                <literal>FixedSized&lt;E&gt;</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>If you prefer, you can think of the following:</para>
+        
+        <programlisting>if (exists name) { ... }</programlisting>
+        
+        <para>As an abbreviation of:</para>
+        
+        <programlisting>if (exists String name = name) { ... }</programlisting>
+        
+        <para>Where the <literal>name</literal> declared by the condition hides the outer declaration
+        of <literal>name</literal> inside the block that follows.</para>
                         
         <para>The condition is satisfied if the value reference or expression evaluates to an 
         instance of the required type when the control structure containing the condition is
@@ -1611,7 +1613,7 @@ if (is Usable tx) { ... }</programlisting>
             </listitem>
             <listitem>
                 <para>for a nonemptiness expression, the condition is satisfied unless the expression 
-                evaluates to an instance of <literal>Empty</literal> or <literal>Nothing</literal>
+                evaluates to an instance of <literal>None</literal> or <literal>Nothing</literal>
                 when the control structure is executed.</para>
             </listitem>
         </itemizedlist>
