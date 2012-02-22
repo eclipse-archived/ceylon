@@ -78,5 +78,26 @@ public class InteropTest extends CompilerTest {
         compile("JavaCheckedExceptions.java");
         compareWithJavaSource("CheckedExceptions");
     }
+    
+    @Test
+    public void testIopRefinesProtectedAccessMethod(){
+        compile("access/JavaAccessModifiers.java");
+        assertErrors("access/RefinesProtectedAccessMethod", 
+                new CompilerError(23, "non-actual member refines an inherited member"));
+    }
+    
+    @Test
+    public void testIopRefinesProtectedAccessMethodWithActual(){
+        compile("access/JavaAccessModifiers.java");
+        assertErrors("access/RefinesProtectedAccessMethodWithActual",
+                new CompilerError(23, "actual member is not shared"));
+    }
+    
+    @Test
+    public void testIopCallsProtectedAccessMethod(){
+        compile("access/JavaAccessModifiers.java");
+        assertErrors("access/CallsProtectedAccessMethod",
+                new CompilerError(23, "member method or attribute is not visible: protectedAccessMethod of type JavaAccessModifiers"));
+    }
 
 }
