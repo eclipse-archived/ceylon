@@ -25,8 +25,8 @@ import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.compiler.loader.mirror.FieldMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
 import com.sun.tools.javac.code.Flags;
-import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Symbol.VarSymbol;
+import com.sun.tools.javac.code.Type;
 
 public class JavacField implements FieldMirror {
 
@@ -59,6 +59,11 @@ public class JavacField implements FieldMirror {
     @Override
     public boolean isPublic() {
         return (fieldSymbol.flags() & Flags.PUBLIC) != 0;
+    }
+    
+    @Override
+    public boolean isProtected() {
+        return (fieldSymbol.flags() & Flags.PROTECTED) != 0;
     }
 
     @Override

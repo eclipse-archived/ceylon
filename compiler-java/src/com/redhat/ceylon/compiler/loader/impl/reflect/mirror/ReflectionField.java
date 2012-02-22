@@ -54,6 +54,11 @@ public class ReflectionField implements FieldMirror {
     public boolean isPublic() {
         return Modifier.isPublic(field.getModifiers());
     }
+    
+    @Override
+    public boolean isProtected() {
+        return Modifier.isProtected(field.getModifiers());
+    }
 
     @Override
     public boolean isFinal() {

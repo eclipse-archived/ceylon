@@ -68,6 +68,11 @@ public class ReflectionMethod implements MethodMirror {
     public boolean isPublic() {
         return Modifier.isPublic(method.getModifiers());
     }
+    
+    @Override
+    public boolean isProtected() {
+        return Modifier.isProtected(method.getModifiers());
+    }
 
     @Override
     public boolean isConstructor() {

@@ -42,6 +42,11 @@ public interface MethodMirror extends AnnotatedMirror {
      * Returns true if this method is public
      */
     boolean isPublic();
+    
+    /**
+     * Returns true if this method is protected
+     */
+    boolean isProtected();
 
     /**
      * Returns true if this method is a constructor

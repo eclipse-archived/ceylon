@@ -43,6 +43,11 @@ public interface FieldMirror extends AnnotatedMirror {
     boolean isPublic();
 
     /**
+     * Returns true if this field is protected
+     */
+    boolean isProtected();
+    
+    /**
      * Returns true if this field is final
      */
     boolean isFinal();
