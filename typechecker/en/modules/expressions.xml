@@ -1952,7 +1952,7 @@ setPerson(person);</programlisting>
         
         <comment><para>Note: this restriction results from the lack of existential types. 
         The expression <literal>Entry</literal> would have the existential type 
-        <literal>ClassConstructor&lt;Entry&lt;Key,Item&gt;,Key,Item&gt; given Key satisfies Equality given Item satisfies Equality</literal>.
+        <literal>ClassConstructor&lt;Entry&lt;Key,Item&gt;,Key,Item&gt; given Key satisfies Object given Item satisfies Object</literal>.
         The expression <literal>Comparable.smallerThan</literal> would be of existential type 
         <literal>MethodConstructor&lt;Value,Boolean,Value&gt; given Value satisfies Comparable&lt;Value&gt;</literal>.</para></comment>
         
@@ -2882,16 +2882,16 @@ createItemMethod.intercept()
             <entry><literal>lhs &equals; rhs</literal></entry>
             <entry>equal</entry>
             <entry><literal>lhs.equals(rhs)</literal></entry>
-            <entry><literal>Equality&lt;T&gt;</literal></entry>
-            <entry><literal>T</literal></entry>
+            <entry><literal>Object</literal></entry>
+            <entry><literal>Object</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
             <entry><literal>lhs != rhs</literal></entry>
             <entry>not equal</entry>
             <entry><literal>!lhs.equals(rhs)</literal></entry>
-            <entry><literal>Equality&lt;T&gt;</literal></entry>
-            <entry><literal>T</literal></entry>
+            <entry><literal>Object</literal></entry>
+            <entry><literal>Object</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         
@@ -2944,7 +2944,7 @@ createItemMethod.intercept()
             <entry><literal>lhs in rhs</literal></entry>
             <entry>in</entry>
             <entry><literal>let x=lhs in rhs.contains(x)</literal></entry>
-            <entry><literal>Equality</literal></entry>
+            <entry><literal>Object</literal></entry>
             <entry><literal>Category</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
@@ -3434,8 +3434,8 @@ createItemMethod.intercept()
             <entry><literal>lhs -> rhs</literal></entry>
             <entry>entry</entry>
             <entry><literal>Entry(lhs, rhs)</literal></entry>
-            <entry><literal>U given U satisfies Equality&lt;U&gt;</literal></entry>
-            <entry><literal>V given V satisfies Equality&lt;V&gt;</literal></entry>
+            <entry><literal>U given U satisfies Object</literal></entry>
+            <entry><literal>V given V satisfies Object</literal></entry>
             <entry><literal>Entry&lt;U,V&gt;</literal></entry>
         </row>
         
@@ -3820,9 +3820,10 @@ createItemMethod.intercept()
         
     </section>
     
-    <section id="slotwise">
-    <title>Slotwise operators</title>
+    <section id="sets">
+    <title>Set operators</title>
     
+        <!--
         <para>The C-style bitwise operators are generalized to apply to other types that 
         are formed from boolean-valued "slots". The interface <literal>Slots</literal> 
         defines the necessary abstraction.</para>
@@ -3850,6 +3851,9 @@ createItemMethod.intercept()
         in C or Java. Note also that the built-in numeric types are not bit strings, so 
         explicit conversion to <literal>Bits&lt;#n&gt;</literal> is required before these 
         operators may be applied to a numeric value.</para>
+        -->
+    
+    <para>These operators provide traditional mathematical operations for sets.</para>
     
     <table>
     <tgroup cols="6">
@@ -3871,8 +3875,9 @@ createItemMethod.intercept()
     </thead>
     <tbody>
     
-        <row><entry namest="first" nameend="last"><emphasis>Slotwise operators</emphasis></entry></row>
+        <row><entry namest="first" nameend="last"><emphasis>Set operators</emphasis></entry></row>
         
+        <!--
         <row>
             <entry><literal>~rhs</literal></entry>
             <entry>complement</entry>
@@ -3881,81 +3886,83 @@ createItemMethod.intercept()
             <entry><literal>FixedSlots&lt;B&gt;</literal></entry>
             <entry><literal>B</literal></entry>
         </row>
+        -->
         <row>
             <entry><literal>lhs | rhs</literal></entry>
-            <entry>or</entry>
-            <entry><literal>lhs.or(rhs)</literal></entry>
-            <entry><literal>Slots&lt;B&gt;</literal></entry>
-            <entry><literal>B</literal></entry>
-            <entry><literal>B</literal></entry>
+            <entry>union</entry>
+            <entry><literal>lhs.union(rhs)</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+            <entry><literal>Set&lt;Y&gt;</literal></entry>
+            <entry><literal>Set&lt;X|Y&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>lhs &amp; rhs</literal></entry>
-            <entry>and</entry>
-            <entry><literal>lhs.and(rhs)</literal></entry>
-            <entry><literal>Slots&lt;B&gt;</literal></entry>
-            <entry><literal>B</literal></entry>
-            <entry><literal>B</literal></entry>
+            <entry>intersection</entry>
+            <entry><literal>lhs.intersection(rhs)</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+            <entry><literal>Set&lt;Y&gt;</literal></entry>
+            <entry><literal>Set&lt;X&amp;Y&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>lhs ^ rhs</literal></entry>
-            <entry>exclusive or</entry>
-            <entry><literal>lhs.xor(rhs)</literal></entry>
-            <entry><literal>Slots&lt;B&gt;</literal></entry>
-            <entry><literal>B</literal></entry>
-            <entry><literal>B</literal></entry>
+            <entry>exclusive union</entry>
+            <entry><literal>lhs.exclusiveUnion(rhs)</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+            <entry><literal>Set&lt;Y&gt;</literal></entry>
+            <entry><literal>Set&lt;X|Y&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>lhs ~ rhs</literal></entry>
-            <entry>complement in</entry>
+            <entry>complement</entry>
             <entry><literal>lhs.complement(rhs)</literal></entry>
-            <entry><literal>Slots&lt;B&gt;</literal></entry>
-            <entry><literal>B</literal></entry>
-            <entry><literal>B</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+            <entry><literal>Set&lt;Object&gt;</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
         </row>
 
         
-        <row><entry namest="first" nameend="last"><emphasis>Slotwise assignment</emphasis></entry></row>
+        <row><entry namest="first" nameend="last"><emphasis>Set assignment</emphasis></entry></row>
         
         <row>
             <entry><literal>lhs |= rhs</literal></entry>
-            <entry>or</entry>
+            <entry>union</entry>
             <entry><literal>lhs:=lhs|rhs</literal></entry>
-            <entry><literal>Settable &lt;Slots&lt;B&gt;&gt;</literal></entry>
-            <entry><literal>B</literal></entry>
-            <entry><literal>B</literal></entry>
+            <entry><literal>Settable &lt;Set&lt;X&gt;&gt;</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>lhs &amp;= rhs</literal></entry>
-            <entry>and</entry>
+            <entry>intersection</entry>
             <entry><literal>lhs:=lhs&amp;rhs</literal></entry>
-            <entry><literal>Settable &lt;Slots&lt;B&gt;&gt;</literal></entry>
-            <entry><literal>B</literal></entry>
-            <entry><literal>B</literal></entry>
+            <entry><literal>Settable &lt;Set&lt;X&gt;&gt;</literal></entry>
+            <entry><literal>Set&lt;Object&gt;</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>lhs ^= rhs</literal></entry>
-            <entry>exclusive or</entry>
+            <entry>exclusive union</entry>
             <entry><literal>lhs:=lhs^rhs</literal></entry>
-            <entry><literal>Settable &lt;Slots&lt;B&gt;&gt;</literal></entry>
-            <entry><literal>B</literal></entry>
-            <entry><literal>B</literal></entry>
+            <entry><literal>Settable &lt;Set&lt;X&gt;&gt;</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>lhs ~= rhs</literal></entry>
-            <entry>complement in</entry>
+            <entry>complement</entry>
             <entry><literal>lhs:=lhs~rhs</literal></entry>
-            <entry><literal>Settable &lt;Slots&lt;B&gt;&gt;</literal></entry>
-            <entry><literal>B</literal></entry>
-            <entry><literal>B</literal></entry>
+            <entry><literal>Settable &lt;Set&lt;X&gt;&gt;</literal></entry>
+            <entry><literal>Set&lt;Object&gt;</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
         </row>
         
     </tbody>
     </tgroup>
     </table>
     
-        <comment><para>TODO: should we support the traditional C-style <literal>&gt;&gt;</literal> 
-        and <literal>&lt;&lt;</literal> bitshift operators?</para></comment>
+        <comment><para>TODO: how can we support the traditional C-style bitwise operators? 
+        Abstracting over sets and binary strings is difficult without type constructor 
+        parameterization.</para></comment>
     
     </section>
     

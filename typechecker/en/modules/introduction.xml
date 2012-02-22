@@ -149,7 +149,7 @@
     </para>
     
     <programlisting>interface Producer&lt;in Input, out Value&gt; 
-        given Value(Input input) satisfies Equality { ... }</programlisting>
+        given Value(Input input) satisfies Object { ... }</programlisting>
     
     <para>
     Ceylon's type system is fully reified. In particular, generic type arguments 
