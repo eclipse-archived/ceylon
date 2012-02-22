@@ -79,6 +79,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -787,8 +788,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         for(List<MethodMirror> methodMirrors : methods.values()){
             boolean isOverloaded = methodMirrors.size() > 1;
             boolean first = true;
-            Method abstractionMethod = null;
-            List<Method> overloadedMethods = null;
             
             for (MethodMirror methodMirror : methodMirrors) {
                 String methodName = methodMirror.getName();
@@ -815,19 +814,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 } else {
                     if (first && isOverloaded) {
                         // We create an extra "abstraction" method for overloaded methods
-                        abstractionMethod = addMethod(klass, methodMirror, false, false);
+                        Method abstractionMethod = addMethod(klass, methodMirror, false, false);
                         abstractionMethod.setAbstraction(true);
-                        overloadedMethods = new LinkedList<Method>();
+                        abstractionMethod.setType(new UnknownType(typeFactory).getType());
                         first = false;
                     }
                     // normal method
-                    Method m = addMethod(klass, methodMirror, isCeylon, isOverloaded);
-                    if(isOverloaded)
-                        overloadedMethods.add(m);
+                    addMethod(klass, methodMirror, isCeylon, isOverloaded);
                 }
-            }
-            if(abstractionMethod != null){
-                setAbstractionMethodReturnType(klass, abstractionMethod, overloadedMethods);
             }
         }
 
@@ -954,18 +948,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return method;
     }
 
-    private void setAbstractionMethodReturnType(ClassOrInterface klass, Method abstractionMethod, List<Method> methods) {
-        // Make a union of the method return types
-        UnionType unionType = new UnionType(typeFactory);
-        LinkedList<ProducedType> unionTypes = new LinkedList<ProducedType>();
-        for (Method method : methods) {
-            ProducedType type = method.getType();
-            com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion(unionTypes, type);
-        }
-        unionType.setCaseTypes(unionTypes);
-        abstractionMethod.setType(unionType.getType());
-    }
-    
     private void fillRefinedDeclarations(ClassOrInterface klass) {
         for(Declaration member : klass.getMembers()){
             if(member.isActual()){
