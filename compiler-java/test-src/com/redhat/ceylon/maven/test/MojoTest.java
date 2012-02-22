@@ -25,7 +25,6 @@ public abstract class MojoTest {
         request.setDebug(true);
     
         Invoker invoker = new DefaultInvoker();
-        invoker.setMavenHome(new File("/home/tom/apache-maven-3.0.3"));
         InvocationResult result = invoker.execute(request);
     
         if (result.getExitCode() != 0) {
