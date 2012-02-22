@@ -11,12 +11,14 @@
 
     <property name="test-src" location="src/test/java" />
     <property name="src" location="src/main/java" />
-    <property name="runtime" location="runtime" />
+    <property name="js-src" location="src/main/js" />
+    <property name="runtime" value="build/runtime" />
 
     <property name="jscompiler.jar" value="jscompiler-${module.jscompiler.version}.jar" />
     <property name="jscompiler.lib" location="${build.lib}/${jscompiler.jar}" />
+    <property name="jslangfile" value="ceylon.language.js" />
     <property name="jslangpath" value="ceylon/language/0.1" />
-    <property name="jslangmodule" value="${jslangpath}/ceylon.language.js" />
+    <property name="jslangmodule" value="${jslangpath}/${jslangfile}" />
 	
     <tstamp />
 
@@ -45,7 +47,8 @@
 
     <!-- project compilation -->
     <target name="compile" description="compile the js compiler">
-        <mkdir dir="${build.classes}/${jslangpath}" />
+        <mkdir dir="${runtime}/${jslangpath}" />
+        <mkdir dir="${build.classes}" />
         <!-- compile Java sources -->
         <echo message="${ceylon.typechecker.lib}" />
         <javac srcdir="${src}" destdir="${build.classes}" debug="true" classpath="${ceylon.typechecker.lib}">
@@ -53,8 +56,8 @@
         </javac>
         <!-- generate the ceylon.language.js file -->
         <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpath="${build.classes}">
-        	<arg value="runtime/${jslangmodule}" />
-        	<arg value="${build.classes}/${jslangpath}" />
+        	<arg value="${js-src}/${jslangfile}" />
+        	<arg value="${runtime}/${jslangpath}" />
         </java>
     </target>
 
@@ -98,7 +101,7 @@
     <target name="nodetest" depends="compiletest" description="Run tests on node.js (requires node)">
         <echo message="Running tests on node.js (node must be installed)" />
         <mkdir dir="${build.test}/node_modules/${jslangpath}" />
-        <copy file="${build.classes}/${jslangmodule}" todir="${build.test}/node_modules/${jslangpath}" />
+        <copy file="${runtime}/${jslangmodule}" todir="${build.test}/node_modules/${jslangpath}" />
         <java classname="NodeTest" classpathref="test.run.classpath">
             <arg value="${build.test}/node_modules/default" />
         </java>
@@ -107,7 +110,7 @@
     <target name="nodeopttest" depends="compileopttest" description="Run tests on node.js (requires node)">
         <echo message="Running tests on node.js (node must be installed)" />
         <mkdir dir="${build.test}/node_modules/${jslangpath}" />
-        <copy file="${build.classes}/${jslangmodule}" todir="${build.test}/${jslangpath}" />
+        <copy file="${runtime}/${jslangmodule}" todir="${build.test}/${jslangpath}" />
         <java classname="NodeTest" classpathref="test.run.classpath">
             <arg value="${build.test}/node_modules/default" />
         </java>
