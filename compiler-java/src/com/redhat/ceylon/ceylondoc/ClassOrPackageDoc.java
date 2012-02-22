@@ -56,7 +56,9 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         write("See also: ");
         for (String target : see.getPositionalArguments()) {
             // try to resolve in containing scopes
-            Declaration targetDecl = resolveDeclaration((Scope) decl, target);
+            
+            Scope declScope = resolveScope(decl);
+            Declaration targetDecl = resolveDeclaration(declScope, target);
             if(targetDecl != null){
                 if (!first) {
                     write(", ");
@@ -71,6 +73,16 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             }
         }
         close("div");
+    }
+
+    private Scope resolveScope(Declaration decl) {
+        if (decl == null) {
+            return null;
+        } else if (decl instanceof Scope) {
+            return (Scope) decl;
+        } else {
+            return decl.getContainer();
+        }
     }
 
     private Declaration resolveDeclaration(Scope decl, String target) {
@@ -196,9 +208,9 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         close("div");
     }
     
-    protected void writeThrows(Declaration declaration) throws IOException {
+    protected void writeThrows(Declaration decl) throws IOException {
         boolean first = true;
-        for (Annotation annotation : declaration.getAnnotations()) {
+        for (Annotation annotation : decl.getAnnotations()) {
             if (annotation.getName().equals("throws")) {
 
                 String excType = annotation.getPositionalArguments().get(0);
@@ -213,7 +225,8 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
 
                 open("li");
 
-                Declaration excTypeDecl = resolveDeclaration(declaration.getContainer(), excType);
+                Scope declScope = resolveScope(decl);
+                Declaration excTypeDecl = resolveDeclaration(declScope, excType);
                 if (excTypeDecl instanceof TypeDeclaration) {
                     link(((TypeDeclaration)excTypeDecl).getType());
                 } else {
