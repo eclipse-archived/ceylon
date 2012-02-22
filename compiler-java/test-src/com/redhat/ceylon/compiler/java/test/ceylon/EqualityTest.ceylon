@@ -19,11 +19,11 @@
  */
 shared class EqualityTest() extends Test() {
 
-    class Entity (Integer id) satisfies Equality {    
+    class Entity (Integer id) {    
     
         shared Integer id = id;
             
-        shared actual Boolean equals(Equality that) {
+        shared actual Boolean equals(Object that) {
             if (is Entity that) {
                 return id == that.id;
             } 
@@ -38,17 +38,17 @@ shared class EqualityTest() extends Test() {
 
     @test
     shared void testEquals() {
-        Equality entity1 = Entity(+1);
-        Equality entity2 = Entity(+2);
+        Object entity1 = Entity(+1);
+        Object entity2 = Entity(+2);
         assertFalse(entity1 == entity2);
     }
         
     
     @test
     shared void testHash() {
-        Equality entity = Entity(+1);
+        Object entity = Entity(+1);
         Integer entityHash = entity.hash;
         assertEquals(entityHash, entity.hash);        
     }    
     
-}      
+}
