@@ -320,8 +320,8 @@ public class CeylonEnter extends Enter {
 
     protected void logError(int position, String message) {
         boolean prev = log.multipleErrors;
-        // we want multiple errors for Ceylon
-        log.multipleErrors = true;
+        // we want multiple errors for Ceylon in verbose mode
+        log.multipleErrors = isVerbose("errors");
         try{
             log.error(position, "ceylon", message);
         }finally{
@@ -331,8 +331,8 @@ public class CeylonEnter extends Enter {
 
     protected void logWarning(int position, String message) {
         boolean prev = log.multipleErrors;
-        // we want multiple errors for Ceylon
-        log.multipleErrors = true;
+        // we want multiple errors for Ceylon in verbose mode
+        log.multipleErrors = isVerbose("errors");
         try{
             log.warning(position, "ceylon", message);
         }finally{
