@@ -786,7 +786,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 continue;
             if(methodMirror.isStaticInit())
                 continue;
-            // FIXME Should we allow static methods or not?
             if(isCeylon && methodMirror.isStatic())
                 continue;
             // FIXME: temporary, because some private classes from the jdk are
