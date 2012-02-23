@@ -393,7 +393,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         LazyPackage pkg = findOrCreatePackage(module, pkgName);
 
         // find/make its Unit
-        Unit unit = getCompiledUnit(pkg);
+        Unit unit = getCompiledUnit(pkg, classMirror);
 
         for(Declaration d : decls){
             d.setShared(classMirror.isPublic());
@@ -425,7 +425,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return constructors;
     }
 
-    private Unit getCompiledUnit(LazyPackage pkg) {
+    protected Unit getCompiledUnit(LazyPackage pkg, ClassMirror classMirror) {
         Unit unit = unitsByPackage.get(pkg);
         if(unit == null){
             unit = new Unit();
