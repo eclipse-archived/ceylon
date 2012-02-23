@@ -87,6 +87,7 @@ public class CeylonEnter extends Enter {
     private CeyloncFileManager fileManager;
     private JavaCompiler compiler;
     private boolean allowWarnings;
+    private boolean verbose;
     
     protected CeylonEnter(Context context) {
         super(context);
@@ -107,6 +108,7 @@ public class CeylonEnter extends Enter {
         fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
         compiler = LanguageCompiler.instance(context);
         allowWarnings = com.redhat.ceylon.compiler.Util.allowWarnings(context);
+        verbose = options.get(OptionName.VERBOSE) != null;
         
         // now superclass init
         init(context);
@@ -176,11 +178,11 @@ public class CeylonEnter extends Enter {
                 gen.setMap(ceylonTree.lineMap);
                 gen.setFileObject(((CeylonPhasedUnit)ceylonTree.phasedUnit).getFileObject());
                 ceylonTree.defs = gen.transformAfterTypeChecking(ceylonTree.ceylonTree).toList();
-                if(options.get(OptionName.VERBOSE) != null || options.get(OptionName.VERBOSE + ":ast") != null){
+                if(isVerbose("ast")){
                     System.err.println("Model tree for "+tree.getSourceFile());
                     System.err.println(ceylonTree.ceylonTree);
                 }
-                if(options.get(OptionName.VERBOSE) != null || options.get(OptionName.VERBOSE + ":code") != null){
+                if(isVerbose("code")){
                     System.err.println("Java code generated for "+tree.getSourceFile());
                     System.err.println(ceylonTree);
                 }
@@ -188,8 +190,12 @@ public class CeylonEnter extends Enter {
         }
         printGeneratorErrors();
         // write some stats
-        if(options.get(OptionName.VERBOSE) != null)
+        if(verbose)
             modelLoader.printStats();
+    }
+
+    private boolean isVerbose(String key) {
+        return verbose || options.get(OptionName.VERBOSE + ":" + key) != null;
     }
 
     // FIXME: this needs to be replaced when we deal with modules
@@ -203,7 +209,7 @@ public class CeylonEnter extends Enter {
     }
     
     public void addModuleToClassPath(Module module, boolean errorIfMissing, ModuleSource source) {
-        if(options.get(OptionName.VERBOSE) != null)
+        if(verbose)
             Log.printLines(log.noticeWriter, "[Adding module to classpath: "+module.getNameAsString()+"/"+module.getVersion()+"]");        
         
         Paths.Path classPath = paths.getPathForLocation(StandardLocation.CLASS_PATH);
@@ -218,7 +224,7 @@ public class CeylonEnter extends Enter {
                 ctx.setSuffix(ArtifactContext.JAR);
                 artifact = repository.getArtifact(ctx);
             }
-            if(options.get(OptionName.VERBOSE) != null){
+            if(verbose){
                 if(artifact != null)
                     Log.printLines(log.noticeWriter, "[Found module at : "+artifact.getPath()+"]");
                 else
