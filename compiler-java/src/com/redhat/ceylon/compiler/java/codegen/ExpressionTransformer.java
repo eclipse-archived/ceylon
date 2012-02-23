@@ -1427,8 +1427,15 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         } else if (variable && (Decl.isClassAttribute(decl))) {
             // must use the setter, nothing to do, unless it's a java field
-            if(Decl.isJavaField(decl))
-                result = at(op).Assign(makeQualIdent(lhs, decl.getName()), rhs);
+            if(Decl.isJavaField(decl)){
+                if (decl.isStaticallyImportable()) {
+                    // static field
+                    result = at(op).Assign(makeQualIdent(makeQuotedFQIdent(decl.getContainer().getQualifiedNameString()), decl.getName()), rhs);
+                }else{
+                    // normal field
+                    result = at(op).Assign(makeQualIdent(lhs, decl.getName()), rhs);
+                }
+            }
         } else if (variable && (decl.isCaptured() || decl.isShared())) {
             // must use the qualified setter
             lhs = makeQualIdent(lhs, decl.getName());
