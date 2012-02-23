@@ -2373,6 +2373,13 @@ public class ExpressionVisitor extends Visitor {
                             name(that.getIdentifier()) + 
                             " of type " + d.getName(), 400);
                 }
+                if (member.isProtectedVisibility() &&
+                        !(that.getPrimary() instanceof Tree.This) &&
+                        !(that.getPrimary() instanceof Tree.Super)) {
+                    that.addError("member method or attribute is not visible: " +
+                            name(that.getIdentifier()) + 
+                            " of type " + d.getName());
+                }
                 Tree.TypeArguments tal = that.getTypeArguments();
                 if (explicitTypeArguments(member,tal)) {
                     List<ProducedType> ta = getTypeArguments(tal);
@@ -2476,6 +2483,13 @@ public class ExpressionVisitor extends Visitor {
                     that.addError("member type is not visible: " +
                             name(that.getIdentifier()) +
                             " of type " + d.getName(), 400);
+                }
+                if (type.isProtectedVisibility() &&
+                        !(that.getPrimary() instanceof Tree.This) &&
+                        !(that.getPrimary() instanceof Tree.Super)) {
+                    that.addError("member type is not visible: " +
+                            name(that.getIdentifier()) +
+                            " of type " + d.getName());
                 }
                 Tree.TypeArguments tal = that.getTypeArguments();
                 if (explicitTypeArguments(type, tal)) {
