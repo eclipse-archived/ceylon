@@ -150,6 +150,7 @@ public class LazyPackage extends Package {
                 compiledDeclarations.remove(d);
                 // TODO : remove the declaration from the declaration map in AbstractModelLoader
             }
+            modelLoader.removeDeclarations(unit.getDeclarations());
         } else {
             super.removeUnit(unit);
         }
