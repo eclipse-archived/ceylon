@@ -17,30 +17,35 @@ public class StringBuilder {
         return builder.toString();
     }
     
-    public final synchronized void append(@Name("string") java.lang.String string) {
+    public final synchronized StringBuilder append(@Name("string") java.lang.String string) {
         builder.append(string);
+        return this;
     }
     
-    public final synchronized void appendAll(@Sequenced @Name("strings") 
+    public final synchronized StringBuilder appendAll(@Sequenced @Name("strings") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
     Iterable<? extends String> strings) {
         java.lang.Object elem;
         for (Iterator<? extends String> iter=strings.getIterator(); !((elem = iter.next()) instanceof Finished);) {
             builder.append(elem);
         }
+        return this;
     }
     
-    public final synchronized void appendCharacter(@Name("character") 
+    public final synchronized StringBuilder appendCharacter(@Name("character") 
     @TypeInfo("ceylon.language.Character") int character) {
         builder.append(java.lang.Character.toChars(character));
+        return this;
     }
     
-    public void appendNewline() {
+    public StringBuilder appendNewline() {
     	builder.append('\n');
+    	return this;
     }
     
-    public void appendSpace() {
+    public StringBuilder appendSpace() {
     	builder.append(' ');
+    	return this;
     }
     
 }

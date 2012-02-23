@@ -9,25 +9,29 @@ shared class StringBuilder() {
         throw; 
     }
     doc "Append the characters in the given string."
-    shared void append(String string) {
+    shared StringBuilder append(String string) {
         throw;
     }
     doc "Append the characters in the given strings."
-    shared void appendAll(String... strings) {
+    shared StringBuilder appendAll(String... strings) {
         for (s in strings) {
             append(s);
         }
+        return this;
     }
     doc "Append the given character."
-    shared void appendCharacter(Character character) {
+    shared StringBuilder appendCharacter(Character character) {
         append(character.string);
+        return this;
     }
     doc "Append a newline character."
-    shared void appendNewline() {
+    shared StringBuilder appendNewline() {
         appendCharacter(`\n`);
+        return this;
     }
     doc "Append a space character."
-    shared void appendSpace() {
+    shared StringBuilder appendSpace() {
         appendCharacter(` `);
+        return this;
     }
 }

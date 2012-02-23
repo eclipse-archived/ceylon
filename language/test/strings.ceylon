@@ -164,6 +164,9 @@ shared void strings() {
     builder.appendAll("goodbye", " ", "everyone");
     builder.appendSpace();
     assert(builder.string=="hello world goodbye everyone ", "string builder 2");
+    value builder2 = StringBuilder();
+    builder2.append("a").appendCharacter(`b`).appendAll("c", "d").appendSpace().append("e");
+    assert(builder.string=="abcd e", "string builder chained calls");
     
     assert("hello world".initial(0)=="", "string initial 1");
     assert("hello world".terminal(0)=="", "string terminal 1");
