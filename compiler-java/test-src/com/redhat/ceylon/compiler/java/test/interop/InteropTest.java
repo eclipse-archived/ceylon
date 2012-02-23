@@ -112,6 +112,7 @@ public class InteropTest extends CompilerTest {
     public void testIopRefinesDefaultAccessMethodWithActual(){
         compile("access/JavaAccessModifiers.java");
         assertErrors("access/RefinesDefaultAccessMethodWithActual",
+                new CompilerError(22, "actual member does not refine any inherited member"),
                 new CompilerError(22, "actual member is not shared"));
     }
     
