@@ -881,7 +881,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         }
 
-        klass.setStaticallyImportable(!isCeylon && (classMirror.isStatic() || (classMirror instanceof LazyClass)));
+        klass.setStaticallyImportable(!isCeylon && classMirror.isStatic());
         
         setExtendedType(klass, classMirror);
         setSatisfiedTypes(klass, classMirror);
