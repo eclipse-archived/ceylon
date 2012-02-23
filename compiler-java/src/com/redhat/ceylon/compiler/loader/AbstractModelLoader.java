@@ -398,15 +398,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         for(Declaration d : decls){
             d.setShared(classMirror.isPublic());
         
+            // add it to its Unit
+            d.setUnit(unit);
+            unit.getDeclarations().add(d);
+            
             // add it to its package if it's not an inner class
             if(!classMirror.isInnerClass()){
                 pkg.addMember(d);
                 d.setContainer(pkg);
             }
-
-            // add it to its Unit
-            d.setUnit(unit);
-            unit.getDeclarations().add(d);
         }
         
         return decl;
