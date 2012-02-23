@@ -32,3 +32,60 @@ void methods() {
     @error
     f1.listFiles();
 }
+
+@error
+@nomodel
+void overloadedMethodsAndSubClasses() {
+    @error
+    JavaWithOverloadedMembersSubClass inst = JavaWithOverloadedMembersSubClass();
+    @error
+    inst.method();
+    @error
+    inst.method(1);
+    // this fails because of https://github.com/ceylon/ceylon-spec/issues/210
+    @error
+    inst.method(1, 2);
+    @error
+    inst.topMethod();
+}
+
+@error
+@nomodel
+void overloadedConstructors() {
+    @error
+    JavaWithOverloadedMembersSubClass inst = JavaWithOverloadedMembersSubClass();
+    @error
+    JavaWithOverloadedMembersSubClass inst2 = JavaWithOverloadedMembersSubClass(2);
+}
+
+@error
+@nomodel
+class OverloadedMembersAndSubClasses() extends JavaWithOverloadedMembersSubClass() {
+    void test(){
+        @error
+        method();
+        @error
+        method(1);
+        // this fails because of https://github.com/ceylon/ceylon-spec/issues/210
+        @error
+        method(1, 2);
+        @error
+        topMethod();
+    }
+}
+
+@error
+@nomodel
+class OverloadedMembersAndSubClasses2() extends JavaWithOverloadedMembersSubClass(2) {
+}
+
+@error
+@nomodel
+class OverloadedMembersAndSubClasses3() extends JavaWithOverloadedMembersSubClass() {
+    @error
+    shared actual void method(){}
+    @error
+    shared actual void method(Integer param){}
+    @error
+    shared actual void topMethod(){}
+}

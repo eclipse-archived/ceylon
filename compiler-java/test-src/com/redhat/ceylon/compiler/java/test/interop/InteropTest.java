@@ -43,6 +43,7 @@ public class InteropTest extends CompilerTest {
 
     @Test
     public void testIopMethods(){
+        compile("JavaWithOverloadedMembers.java", "JavaWithOverloadedMembersSubClass.java");
         compareWithJavaSource("Methods");
     }
 
