@@ -20,8 +20,10 @@
 
 package com.redhat.ceylon.compiler.loader.model;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
@@ -32,6 +34,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
+
 import static com.redhat.ceylon.compiler.typechecker.model.Util.lookupMember;
 
 /**
@@ -43,6 +47,7 @@ public class LazyPackage extends Package {
     
     private AbstractModelLoader modelLoader;
     private List<Declaration> compiledDeclarations = new LinkedList<Declaration>();
+    private Set<Unit> lazyUnits = new HashSet<Unit>();
     
     public LazyPackage(AbstractModelLoader modelLoader){
         this.modelLoader = modelLoader;
@@ -115,6 +120,33 @@ public class LazyPackage extends Package {
 
     public void addMember(Declaration d) {
         compiledDeclarations.add(d);
+        if (d instanceof LazyClass && d.getUnit().getFilename() != null) {
+            lazyUnits.add(d.getUnit());
+        }
+    }
+
+    
+    @Override
+    public Iterable<Unit> getUnits() {
+        Iterable<Unit> sourceUnits = super.getUnits();
+        LinkedList<Unit> ret = new LinkedList<Unit>();
+        for (Unit unit : sourceUnits) {
+            ret.add(unit);
+        }
+        ret.addAll(lazyUnits);
+        return ret;
+    }
+
+    @Override
+    public void removeUnit(Unit unit) {
+        if (lazyUnits.remove(unit)) {
+            for (Declaration d : unit.getDeclarations()) {
+                compiledDeclarations.remove(d);
+                // TODO : remove the declaration from the declaration map in AbstractModelLoader
+            }
+        } else {
+            super.removeUnit(unit);
+        }
     }
 
     // FIXME: remove those two when they are public in typechecker's model.Util
