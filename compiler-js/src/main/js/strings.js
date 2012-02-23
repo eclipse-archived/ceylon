@@ -479,6 +479,7 @@ var StringBuilder$proto = StringBuilder.$$.prototype;
 StringBuilder$proto.getString = function() { return String$(this.value); }
 StringBuilder$proto.append = function(s) {
     this.value = this.value + s.value;
+    return this;
 }
 StringBuilder$proto.appendAll = function(strings) {
     if (strings === null || strings === undefined) { return this; }
@@ -486,13 +487,20 @@ StringBuilder$proto.appendAll = function(strings) {
         var _s = strings.value[i];
         this.value += _s?_s.value:"null";
     }
-    return this; //strictly speaking, this method should return void, but then string interpolation would be a big mess
+    return this;
 }
 StringBuilder$proto.appendCharacter = function(c) {
     this.append(c.getString());
+    return this;
 }
-StringBuilder$proto.appendNewline = function() { this.value = this.value + "\n"; }
-StringBuilder$proto.appendSpace = function() { this.value = this.value + " "; }
+StringBuilder$proto.appendNewline = function() {
+    this.value = this.value + "\n";
+    return this;
+}
+StringBuilder$proto.appendSpace = function() {
+    this.value = this.value + " ";
+    return this;
+}
 
 exports.String=String$;
 exports.Character=Character;
