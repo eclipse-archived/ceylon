@@ -191,12 +191,14 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     protected void endLongDocAndPrintShortDoc(Declaration d) throws IOException {
         close("div");
         open("div class='short'");
+        writeDeprecated(d);
         around("div class='doc'", getDocFirstLine(d));
         close("div");
     }
 
     protected void startPrintingLongDoc(Declaration d) throws IOException {
         open("div class='long'");
+        writeDeprecated(d);
         around("div class='doc'", getDoc(d));
     }
 
@@ -244,6 +246,22 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             close("ul");
             close("div");
         }
-    }      
+    }
+    
+    protected void writeDeprecated(Declaration decl) throws IOException {
+        Annotation deprecated = Util.getAnnotation(decl, "deprecated");
+        if (deprecated != null) {
+            open("div class='deprecated'");
+            String text = "__Deprecated:__ ";
+            if (!deprecated.getPositionalArguments().isEmpty()) {
+                String reason = deprecated.getPositionalArguments().get(0);
+                if (reason != null) {
+                    text += Util.unquote(reason);
+                }
+            }
+            write(Util.wikiToHTML(text));
+            close("div");
+        }
+    }    
 
 }
