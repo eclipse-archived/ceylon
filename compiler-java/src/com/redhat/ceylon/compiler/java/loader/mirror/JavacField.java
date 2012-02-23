@@ -68,9 +68,11 @@ public class JavacField implements FieldMirror {
 
     @Override
     public TypeMirror getType() {
-        Type retType = fieldSymbol.type;
-        if (retType != null) {
-            type = new JavacType(retType);
+        if(type == null){
+            Type retType = fieldSymbol.type;
+            if (retType != null) {
+                type = new JavacType(retType);
+            }
         }
         return type;
     }

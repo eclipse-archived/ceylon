@@ -106,9 +106,11 @@ public class JavacMethod implements MethodMirror {
 
     @Override
     public TypeMirror getReturnType() {
-        Type retType = methodSymbol.getReturnType();
-        if (retType != null) {
-            returnType = new JavacType(retType);
+        if(returnType == null){
+            Type retType = methodSymbol.getReturnType();
+            if (retType != null) {
+                returnType = new JavacType(retType);
+            }
         }
         return returnType;
     }
