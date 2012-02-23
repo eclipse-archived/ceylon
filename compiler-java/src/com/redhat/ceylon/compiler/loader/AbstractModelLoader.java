@@ -846,8 +846,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // We skip members marked with @Ignore
             if(fieldMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
                 continue;
-            // FIXME: Skip static fields for now
-            if(fieldMirror.isStatic())
+            if(isCeylon && fieldMirror.isStatic())
                 continue;
             String name = fieldMirror.getName();
             // skip the field if "we've already got one"
