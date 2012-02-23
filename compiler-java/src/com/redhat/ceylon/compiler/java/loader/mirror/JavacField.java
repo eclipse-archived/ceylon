@@ -65,6 +65,11 @@ public class JavacField implements FieldMirror {
     public boolean isProtected() {
         return (fieldSymbol.flags() & Flags.PROTECTED) != 0;
     }
+    
+    @Override
+    public boolean isDefaultAccess() {
+        return (fieldSymbol.flags() & (Flags.PROTECTED | Flags.PUBLIC | Flags.PRIVATE)) == 0;
+    }
 
     @Override
     public boolean isFinal() {

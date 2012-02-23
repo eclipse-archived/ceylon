@@ -48,6 +48,11 @@ public interface FieldMirror extends AnnotatedMirror {
     boolean isProtected();
     
     /**
+     * Returns true if this field is default (package) access.
+     */
+    boolean isDefaultAccess();
+    
+    /**
      * Returns true if this field is final
      */
     boolean isFinal();

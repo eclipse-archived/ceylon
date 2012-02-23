@@ -47,6 +47,11 @@ public interface MethodMirror extends AnnotatedMirror {
      * Returns true if this method is protected
      */
     boolean isProtected();
+    
+    /**
+     * Returns true if this method is default (package) access.
+     */
+    boolean isDefaultAccess();
 
     /**
      * Returns true if this method is a constructor

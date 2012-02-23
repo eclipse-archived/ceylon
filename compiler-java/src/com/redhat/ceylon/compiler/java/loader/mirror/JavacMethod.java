@@ -76,6 +76,11 @@ public class JavacMethod implements MethodMirror {
     public boolean isProtected() {
         return (methodSymbol.flags() & Flags.PROTECTED) != 0;
     }
+    
+    @Override
+    public boolean isDefaultAccess() {
+        return (methodSymbol.flags() & (Flags.PROTECTED | Flags.PUBLIC | Flags.PRIVATE)) == 0;
+    }
 
     @Override
     public boolean isConstructor() {
