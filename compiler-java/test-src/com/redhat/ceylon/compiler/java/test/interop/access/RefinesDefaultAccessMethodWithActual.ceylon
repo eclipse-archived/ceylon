@@ -18,6 +18,6 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class RefinesDefaultAccessMethodWithActual() extends JavaAccessModifiers() {
+class RefinesDefaultAccessMethod() extends JavaAccessModifiers() {
     actual void defaultAccessMethod() {}
 }

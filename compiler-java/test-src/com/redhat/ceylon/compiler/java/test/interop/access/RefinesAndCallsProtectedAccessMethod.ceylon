@@ -18,8 +18,8 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class RefinesProtectedAccessMethod() extends JavaAccessModifiers() {
-    shared actual void protectedAccessMethod() {
-        super.protectedAccessMethod();
+class RefinesAndCallProtectedAccessMethod() extends JavaAccessModifiers() {
+    void foo(JavaAccessModifiers bar) {
+        bar.protectedAccessMethod();
     }
 }

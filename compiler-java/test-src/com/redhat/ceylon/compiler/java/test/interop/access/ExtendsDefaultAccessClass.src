@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.interop.access;
 
-class ExtendsDefaultAccessClass extends com.redhat.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass {
+class ExtendsDefaultAccessClass extends .com.redhat.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass {
     
     ExtendsDefaultAccessClass() {
         super();

@@ -19,6 +19,7 @@
  */
 package com.redhat.ceylon.compiler.java.test.interop;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
@@ -82,15 +83,7 @@ public class InteropTest extends CompilerTest {
     @Test
     public void testIopRefinesProtectedAccessMethod(){
         compile("access/JavaAccessModifiers.java");
-        assertErrors("access/RefinesProtectedAccessMethod", 
-                new CompilerError(23, "non-actual member refines an inherited member"));
-    }
-    
-    @Test
-    public void testIopRefinesProtectedAccessMethodWithActual(){
-        compile("access/JavaAccessModifiers.java");
-        assertErrors("access/RefinesProtectedAccessMethodWithActual",
-                new CompilerError(23, "actual member is not shared"));
+        compareWithJavaSource("access/RefinesProtectedAccessMethod");
     }
     
     @Test
@@ -101,10 +94,18 @@ public class InteropTest extends CompilerTest {
     }
     
     @Test
+    @Ignore("#396")
+    public void testIopRefinesAndCallsProtectedAccessMethod(){
+        compile("access/JavaAccessModifiers.java");
+        compareWithJavaSource("access/RefinesAndCallsProtectedAccessMethod");
+    }
+    
+    @Test
     public void testIopRefinesDefaultAccessMethod(){
         compile("access/JavaAccessModifiers.java");
+        // XXX This error comes from javac rather than the ceylon typechecker
         assertErrors("access/RefinesDefaultAccessMethod",
-                new CompilerError(22, "non-actual member refines an inherited member"));
+                new CompilerError(22, "defaultAccessMethod() in com.redhat.ceylon.compiler.java.test.interop.access.RefinesDefaultAccessMethod cannot override defaultAccessMethod() in com.redhat.ceylon.compiler.java.test.interop.access.JavaAccessModifiers; attempting to assign weaker access privileges; was package"));
     }
     
     @Test
@@ -112,6 +113,13 @@ public class InteropTest extends CompilerTest {
         compile("access/JavaAccessModifiers.java");
         assertErrors("access/RefinesDefaultAccessMethodWithActual",
                 new CompilerError(22, "actual member is not shared"));
+    }
+    
+    @Test
+    public void testIopRefinesDefaultAccessMethodWithSharedActual(){
+        compile("access/JavaAccessModifiers.java");
+        assertErrors("access/RefinesDefaultAccessMethodWithSharedActual",
+                new CompilerError(22, "actual member does not refine any inherited member"));
     }
     
     @Test
