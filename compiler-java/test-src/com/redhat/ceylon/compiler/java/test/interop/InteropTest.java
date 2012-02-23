@@ -99,5 +99,40 @@ public class InteropTest extends CompilerTest {
         assertErrors("access/CallsProtectedAccessMethod",
                 new CompilerError(23, "member method or attribute is not visible: protectedAccessMethod of type JavaAccessModifiers"));
     }
+    
+    @Test
+    public void testIopRefinesDefaultAccessMethod(){
+        compile("access/JavaAccessModifiers.java");
+        assertErrors("access/RefinesDefaultAccessMethod",
+                new CompilerError(22, "non-actual member refines an inherited member"));
+    }
+    
+    @Test
+    public void testIopRefinesDefaultAccessMethodWithActual(){
+        compile("access/JavaAccessModifiers.java");
+        assertErrors("access/RefinesDefaultAccessMethodWithActual",
+                new CompilerError(22, "actual member is not shared"));
+    }
+    
+    @Test
+    public void testIopCallsDefaultAccessMethod(){
+        compile("access/JavaAccessModifiers.java");
+        assertErrors("access/CallsDefaultAccessMethod",
+                new CompilerError(23, "member method or attribute does not exist: packageAccessMethod in type JavaAccessModifiers"));
+    }
+    
+    @Test
+    public void testIopExtendsDefaultAccessClass(){
+        compile("access/JavaAccessModifiers.java");
+        compareWithJavaSource("access/ExtendsDefaultAccessClass");
+    }
+    
+    @Test
+    public void testIopExtendsDefaultAccessClassInAnotherPkg(){
+        compile("access/JavaAccessModifiers.java");
+        assertErrors("ExtendsDefaultAccessClassInAnotherPkg",
+                new CompilerError(20, "imported declaration is not shared: JavaDefaultAccessClass"),
+                new CompilerError(23, "com.redhat.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass is not public in com.redhat.ceylon.compiler.java.test.interop.access; cannot be accessed from outside package"));
+    }
 
 }

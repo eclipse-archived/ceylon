@@ -1,0 +1,13 @@
+package com.redhat.ceylon.compiler.java.test.interop.access;
+
+class ExtendsDefaultAccessClass extends com.redhat.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass {
+    
+    ExtendsDefaultAccessClass() {
+        super();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.interop.access.ExtendsDefaultAccessClass();
+    }
+}
