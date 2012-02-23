@@ -49,7 +49,7 @@ shared void numbers() {
     assert(12.string=="12", "natural string 12");
     assert((-12).string=="-12", "integer string -12");
     assert((-5.5).string=="-5.5", "float string -5.5");
-    assert((1.0).string=="1.0", "float string 1.0");
+    assert((1.0).string in {"1", "1.0"}, "float string 1.0");
     
     assert(1.unit, "natural unit");
     assert(!2.unit, "natural unit");
@@ -255,23 +255,23 @@ shared void numbers() {
     inner.vi+=1;
     inner.vj*=2;
     
-    assert(1_000==1k, "integer literal");
-    assert(1_000_000==1M, "integer literal");
-    assert(1_000_000_000==1G, "integer literal");
-    assert(1_000_000_000_000==1T, "integer literal");
-    assert(1_000_000_000_000_000==1P, "integer literal");
+    assert(1_000==1k, "integer literal 1");
+    assert(1_000_000==1M, "integer literal 2");
+    assert(1_000_000_000==1G, "integer literal 3");
+    assert(1_000_000_000_000==1T, "integer literal 4");
+    assert(1_000_000_000_000_000==1P, "integer literal 5");
     
-    assert(1_000.0==1.0k && 1.0k==1.0e+3, "float literal");
-    assert(1_000_000.0==1.0M && 1.0M==1.0e6, "float literal");
-    assert(1_000_000_000.0==1.0G && 1.0G==1.0e+9, "float literal");
-    assert(1_000_000_000_000.0==1.0T && 1.0T==1.0e+12, "float literal");
-    assert(1_000_000_000_000_000.0==1.0P && 1.0P==1.0e+15, "float literal");
+    assert(1_000.0==1.0k && 1.0k==1.0e+3, "float literal 6");
+    assert(1_000_000.0==1.0M && 1.0M==1.0e6, "float literal 7");
+    assert(1_000_000_000.0==1.0G && 1.0G==1.0e+9, "float literal 8");
+    assert(1_000_000_000_000.0==1.0T && 1.0T==1.0e+12, "float literal 9");
+    assert(1_000_000_000_000_000.0==1.0P && 1.0P==1.0e+15, "float literal 10");
 
-    assert(0.001==1.0m && 1.0m==1.0e-3, "float literal");
-    assert(0.000_001==1.0u && 1.0u==1.0e-6, "float literal");
-    assert(0.000_000_001==1.0n && 1.0n==1.0e-9, "float literal");
-    assert(0.000_000_000_001==1.0p && 1.0p==1.0e-12, "float literal");
-    assert(0.000_000_000_000_001==1.0f && 1.0f==1.0e-15, "float literal");
+    assert(0.001==1.0m && 1.0m==1.0e-3, "float literal 1");
+    assert(0.000_001==1.0u && 1.0u==1.0e-6, "float literal 2");
+    assert(0.000_000_001==1.0n && 1.0n==1.0e-9, "float literal 3");
+    assert(0.000_000_000_001==1.0p && 1.0p==1.0e-12, "float literal 4");
+    assert(0.000_000_000_000_001==1.0f && 1.0f==1.0e-15, "float literal 5");
     
     // infinity and .undefined
     assert(1.0/0.0==infinity, "infinity == infinity");
