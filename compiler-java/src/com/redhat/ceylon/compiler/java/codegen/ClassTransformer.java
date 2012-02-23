@@ -325,7 +325,7 @@ public class ClassTransformer extends AbstractTransformer {
                     make().Modifiers(FINAL),
                     names().fromString(name),
                     nameId,
-                    makeNewClass(name));
+                    makeNewClass(name, false));
             return result.append(call);
         } else {
             // Toplevel method
@@ -462,7 +462,7 @@ public class ClassTransformer extends AbstractTransformer {
         TypeDeclaration decl = def.getDeclarationModel().getType().getDeclaration();
 
         if (Decl.isToplevel(def)) {
-            objectClassBuilder.body(makeObjectGlobal(def, name).toList());
+            objectClassBuilder.body(makeObjectGlobal(def, def.getDeclarationModel().getQualifiedNameString()).toList());
         }
 
         List<JCTree> result = objectClassBuilder
@@ -479,8 +479,8 @@ public class ClassTransformer extends AbstractTransformer {
         } else if (Decl.withinClassOrInterface(def)) {
             boolean visible = Decl.isCaptured(def);
             int modifiers = FINAL | ((visible) ? PRIVATE : 0);
-            JCExpression type = makeQuotedIdent(name);
-            JCExpression initialValue = makeNewClass(name);
+            JCExpression type = makeJavaType(def.getType().getTypeModel());
+            JCExpression initialValue = makeNewClass(def.getDeclarationModel().getQualifiedNameString(), true);
             containingClassBuilder.field(modifiers, name, type, initialValue, !visible);
             
             if (visible) {
@@ -500,7 +500,7 @@ public class ClassTransformer extends AbstractTransformer {
         AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
                 .wrapped(this, decl.getIdentifier().getText(), decl.getDeclarationModel())
                 .immutable()
-                .initialValue(makeNewClass(generatedClassName))
+                .initialValue(makeNewClass(generatedClassName, true))
                 .is(PUBLIC, Decl.isShared(decl))
                 .is(STATIC, true);
 

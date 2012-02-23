@@ -363,7 +363,7 @@ public abstract class AbstractTransformer implements Transformation {
     protected JCTree.JCVariableDecl makeLocalIdentityInstance(String varName, boolean isShared) {
         JCExpression name = makeQuotedIdent(varName);
         
-        JCExpression initValue = makeNewClass(varName);
+        JCExpression initValue = makeNewClass(varName, false);
         List<JCAnnotation> annots = List.<JCAnnotation>nil();
 
         int modifiers = isShared ? 0 : FINAL;
@@ -377,13 +377,13 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     // Creates a "new foo();"
-    protected JCTree.JCNewClass makeNewClass(String className) {
-        return makeNewClass(className, List.<JCTree.JCExpression>nil());
+    protected JCTree.JCNewClass makeNewClass(String className, boolean fullyQualified) {
+        return makeNewClass(className, List.<JCTree.JCExpression>nil(), fullyQualified);
     }
     
     // Creates a "new foo(arg1, arg2, ...);"
-    protected JCTree.JCNewClass makeNewClass(String className, List<JCTree.JCExpression> args) {
-        JCExpression name = makeQuotedIdent(className);
+    protected JCTree.JCNewClass makeNewClass(String className, List<JCTree.JCExpression> args, boolean fullyQualified) {
+        JCExpression name = fullyQualified ? makeQuotedFQIdent(className) : makeQuotedQualIdentFromString(className);
         return makeNewClass(name, args);
     }
     
@@ -776,9 +776,9 @@ public abstract class AbstractTransformer implements Transformation {
             }
 
             if (typeArgs != null && typeArgs.size() > 0) {
-                jt = make().TypeApply(makeQuotedQualIdentFromString(getDeclarationName(tdecl)), typeArgs.toList());
+                jt = make().TypeApply(getDeclarationName(tdecl), typeArgs.toList());
             } else {
-                jt = makeQuotedQualIdentFromString(getDeclarationName(tdecl));
+                jt = getDeclarationName(tdecl);
             }
         } else {
             // For an ordinary class or interface type T:
@@ -786,9 +786,9 @@ public abstract class AbstractTransformer implements Transformation {
             if(tdecl instanceof TypeParameter)
                 jt = makeQuotedIdent(tdecl.getName());
             else if(simpleType.getUnderlyingType() == null)
-                jt = makeQuotedQualIdentFromString(getDeclarationName(tdecl));
+                jt = getDeclarationName(tdecl);
             else
-                jt = makeQuotedQualIdentFromString(simpleType.getUnderlyingType());
+                jt = makeQuotedFQIdent(simpleType.getUnderlyingType());
         }
         
         return jt;
@@ -798,11 +798,11 @@ public abstract class AbstractTransformer implements Transformation {
         return "java.lang.String".equals(type.getUnderlyingType());
     }
 
-    private String getDeclarationName(Declaration decl) {
+    private JCExpression getDeclarationName(Declaration decl) {
         if (Decl.isLocal(decl)) {
-            return decl.getName();
+            return makeQuotedQualIdentFromString(decl.getName());
         } else {
-            return decl.getQualifiedNameString();
+            return makeQuotedFQIdent(decl.getQualifiedNameString());
         }
     }
     
@@ -1286,14 +1286,14 @@ public abstract class AbstractTransformer implements Transformation {
     protected JCExpression makeEmpty() {
         return make().Apply(
                 List.<JCTree.JCExpression>nil(),
-                makeSelect("ceylon", "language", Util.quoteIfJavaKeyword("$empty"), Util.getGetterName("$empty")),
+                makeFQIdent("ceylon", "language", "$empty", Util.getGetterName("$empty")),
                 List.<JCTree.JCExpression>nil());
     }
     
     protected JCExpression makeFinished() {
         return make().Apply(
                 List.<JCTree.JCExpression>nil(),
-                makeSelect("ceylon", "language", Util.quoteIfJavaKeyword("$finished"), Util.getGetterName("$finished")),
+                makeFQIdent("ceylon", "language", "$finished", Util.getGetterName("$finished")),
                 List.<JCTree.JCExpression>nil());
     }
     

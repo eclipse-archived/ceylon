@@ -138,7 +138,7 @@ public class InvocationBuilder {
                             container = (Declaration)container.getContainer();
                         }
                         String className = Util.getCompanionClassName(container.getName());
-                        argExpr = gen.at(ce).Apply(null, gen.makeQuotedQualIdent(gen.makeQuotedQualIdentFromString(container.getQualifiedNameString()), className, methodName), arglist);
+                        argExpr = gen.at(ce).Apply(null, gen.makeQuotedQualIdent(gen.makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName), arglist);
                     } else {
                         argExpr = gen.makeEmpty();
                     }
@@ -285,7 +285,7 @@ public class InvocationBuilder {
                             container = (Declaration)container.getContainer();
                         }
                         String className = Util.getCompanionClassName(container.getName());
-                        argExpr = gen.at(ce).Apply(null, gen.makeQuotedQualIdent(gen.makeQuotedQualIdentFromString(container.getQualifiedNameString()), className, methodName), arglist);
+                        argExpr = gen.at(ce).Apply(null, gen.makeQuotedQualIdent(gen.makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName), arglist);
                     } else {
                         argExpr = gen.makeEmpty();
                     }
