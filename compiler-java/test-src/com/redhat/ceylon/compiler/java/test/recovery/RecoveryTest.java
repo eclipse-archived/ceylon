@@ -37,22 +37,22 @@ public class RecoveryTest extends CompilerTest {
     
     @Test
     public void testRcvBrokenClass(){
-        compile(2, "BrokenClass.ceylon");
+        compile(3, "BrokenClass.ceylon");
     }
 
     @Test
     public void testRcvBrokenMethod(){
-        compile(2, "BrokenMethod.ceylon");
+        compile(4, "BrokenMethod.ceylon");
     }
 
     @Test
     public void testRcvBrokenAttribute(){
-        compile(8, "BrokenAttribute.ceylon");
+        compile(14, "BrokenAttribute.ceylon");
     }
 
     @Test
     public void testRcvClassWithBrokenMembers(){
-        compile(23, "ClassWithBrokenMembers.ceylon");
+        compile(50, "ClassWithBrokenMembers.ceylon");
     }
 
     @Test
