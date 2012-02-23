@@ -67,6 +67,7 @@ public class InteropTest extends CompilerTest {
 
     @Test
     public void testIopStaticMembers(){
+        compile("JavaWithStaticMembers.java", "JavaWithStaticMembersSubClass.java");
         compareWithJavaSource("StaticMembers");
     }
 
