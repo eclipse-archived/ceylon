@@ -163,6 +163,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected boolean isBootstrap;
     protected ModuleManager moduleManager;
     protected Modules modules;
+    protected Map<String, ClassMirror> classMirrorCache = new HashMap<String, ClassMirror>();
 
     /**
      * Loads a given package, if required. This is mostly useful for the javac reflection impl.
@@ -173,12 +174,29 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public abstract void loadPackage(String packageName, boolean loadDeclarations);
     
     /**
-     * Looks up a ClassMirror by name.
+     * Looks up a ClassMirror by name. Uses cached results, and caches the result of calling lookupNewClassMirror
+     * on cache misses.
      * 
      * @param name the name of the Class to load
      * @return a ClassMirror for the specified class, or null if not found.
      */
-    public abstract ClassMirror lookupClassMirror(String name);
+    public final ClassMirror lookupClassMirror(String name){
+        // we use containsKey to be able to cache null results
+        if(classMirrorCache.containsKey(name))
+            return classMirrorCache.get(name);
+        ClassMirror mirror = lookupNewClassMirror(name);
+        // we even cache null results
+        classMirrorCache.put(name, mirror);
+        return mirror;
+    }
+
+    /**
+     * Looks up a ClassMirror by name. Called by lookupClassMirror on cache misses.
+     * 
+     * @param name the name of the Class to load
+     * @return a ClassMirror for the specified class, or null if not found.
+     */
+    public abstract ClassMirror lookupNewClassMirror(String name);
 
     /**
      * Adds the given module to the set of modules from which we can load classes.

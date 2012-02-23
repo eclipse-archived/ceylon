@@ -20,6 +20,9 @@
 
 package com.redhat.ceylon.compiler.java.loader;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.tools.JavaFileObject.Kind;
 
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
@@ -171,7 +174,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
     }
 
     @Override
-    public ClassMirror lookupClassMirror(String name) {
+    public ClassMirror lookupNewClassMirror(String name) {
         ClassSymbol classSymbol;
 
         String outerName = name;
