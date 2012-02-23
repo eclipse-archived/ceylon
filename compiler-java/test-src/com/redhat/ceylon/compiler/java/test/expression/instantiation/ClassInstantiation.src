@@ -2,8 +2,8 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
 class ClassInstantiation {
     
-    public final com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiation m() {
-        return new com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiation();
+    public final .com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiation m() {
+        return new .com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiation();
     }
     
     ClassInstantiation() {
@@ -16,8 +16,8 @@ class ClassInstantiation {
 }
 class ClassInstantiationWithParam {
     
-    public final com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParam m() {
-        return new com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParam(2L);
+    public final .com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParam m() {
+        return new .com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParam(2L);
     }
     
     ClassInstantiationWithParam(long i) {
@@ -25,8 +25,8 @@ class ClassInstantiationWithParam {
 }
 class ClassInstantiationWithParams {
     
-    public final com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParams m() {
-        return new com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParams(2L, "");
+    public final .com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParams m() {
+        return new .com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParams(2L, "");
     }
     
     ClassInstantiationWithParams(long i, .java.lang.String j) {
@@ -41,7 +41,7 @@ class InnerClassInstantiation {
     }
     
     private final void m() {
-        final com.redhat.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation.InnerClass x = new com.redhat.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation.InnerClass();
+        final .com.redhat.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation.InnerClass x = new .com.redhat.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation.InnerClass();
     }
     
     InnerClassInstantiation() {

@@ -7,12 +7,12 @@ public final class topLevelObjectShared {
     
     private topLevelObjectShared() {
     }
-    private static final com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared value;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared value;
     static {
-        value = new topLevelObjectShared();
+        value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared();
     }
     
-    public static com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared getTopLevelObjectShared() {
+    public static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared getTopLevelObjectShared() {
         return value;
     }
 }

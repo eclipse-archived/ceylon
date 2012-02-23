@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.structure.import_;
 class ImportTypeAlias {
     
     private final void m() {
-        new com.redhat.ceylon.compiler.java.test.structure.import_.pkg.C1();
+        new .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.C1();
     }
     
     ImportTypeAlias() {

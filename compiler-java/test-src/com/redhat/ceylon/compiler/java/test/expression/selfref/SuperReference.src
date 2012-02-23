@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.selfref;
 
 class SuperReference {
     
-    public void m(final com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReferenceChild x) {
+    public void m(final .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReferenceChild x) {
         x.test();
     }
     
@@ -18,7 +18,7 @@ class SuperReference {
         new .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReference();
     }
 }
-class SuperReferenceChild extends com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReference {
+class SuperReferenceChild extends .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReference {
     
     @.java.lang.Override
     public final void test() {

@@ -17,13 +17,13 @@ public class KlassMethodTypeParams {
 class GenericMethodInvocation {
     
     public final .java.lang.String m() {
-        final com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams k = new com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams();
-        return k.<ceylon.language.String, ceylon.language.Integer>bar(.ceylon.language.String.instance("hello"), .ceylon.language.Integer.instance(1L)).toString();
+        final .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams();
+        return k.<.ceylon.language.String, .ceylon.language.Integer>bar(.ceylon.language.String.instance("hello"), .ceylon.language.Integer.instance(1L)).toString();
     }
     
     public final .java.lang.String m2() {
-        final com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams k = new com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams();
-        return (let com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams $arg$0$callable$ = k,ceylon.language.String $arg$0$0 = .ceylon.language.String.instance("hello"),ceylon.language.Integer $arg$0$1 = .ceylon.language.Integer.instance(1L) in $arg$0$callable$.<ceylon.language.String, ceylon.language.Integer>bar($arg$0$0, $arg$0$1)).toString();
+        final .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams();
+        return (let .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams $arg$0$callable$ = k,.ceylon.language.String $arg$0$0 = .ceylon.language.String.instance("hello"),.ceylon.language.Integer $arg$0$1 = .ceylon.language.Integer.instance(1L) in $arg$0$callable$.<.ceylon.language.String, .ceylon.language.Integer>bar($arg$0$0, $arg$0$1)).toString();
     }
     
     GenericMethodInvocation() {

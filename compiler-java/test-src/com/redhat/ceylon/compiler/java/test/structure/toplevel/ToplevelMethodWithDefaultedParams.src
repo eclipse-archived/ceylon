@@ -89,7 +89,7 @@ public final class f5 {
     private f5() {
     }
     
-    public static void f5(final long n, final ceylon.language.Iterable<? extends ceylon.language.Integer> seq) {
+    public static void f5(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
     }
     
     public static final class f5$impl {

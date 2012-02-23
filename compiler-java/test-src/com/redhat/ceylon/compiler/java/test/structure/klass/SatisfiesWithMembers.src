@@ -10,7 +10,7 @@ interface SatisfiesWithMembers {
     
     public abstract void m();
 }
-class SatisfiesWithMembersClass implements com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers {
+class SatisfiesWithMembersClass implements .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers {
     private final boolean b;
     
     @.java.lang.Override

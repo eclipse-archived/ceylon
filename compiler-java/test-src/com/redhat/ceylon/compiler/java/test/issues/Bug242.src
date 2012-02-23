@@ -5,7 +5,7 @@ public final class bug242 {
     private bug242() {
     }
     
-    public static <T>void bug242(final ceylon.language.Iterable<? extends T> a, final long i) {
-        final T t = ((ceylon.language.Correspondence<? super ceylon.language.Integer, ? extends T>)a).item(.ceylon.language.Integer.instance(i));
+    public static <T>void bug242(final .ceylon.language.Iterable<? extends T> a, final long i) {
+        final T t = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends T>)a).item(.ceylon.language.Integer.instance(i));
     }
 }

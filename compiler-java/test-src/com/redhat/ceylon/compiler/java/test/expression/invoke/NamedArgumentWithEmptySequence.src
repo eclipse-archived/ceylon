@@ -2,11 +2,11 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class NamedArgumentWithEmptySequence {
     
-    private final void m(final ceylon.language.Iterable<? extends ceylon.language.Integer> b) {
+    private final void m(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> b) {
     }
     
     NamedArgumentWithEmptySequence() {
-        (let ceylon.language.Iterable $arg$0$0 = ceylon.language.$empty.getEmpty() in m($arg$0$0); null);
+        (let .ceylon.language.Iterable $arg$0$0 = .ceylon.language.$empty.getEmpty() in m($arg$0$0); null);
     }
     
     public static void main(.java.lang.String[] args) {

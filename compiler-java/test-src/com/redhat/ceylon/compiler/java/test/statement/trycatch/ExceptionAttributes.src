@@ -8,7 +8,7 @@ class ExceptionAttributes {
         if (($cause$0 = e.getCause()) != null) {
             final .java.lang.Throwable $cause$1 = $cause$0;
             final .java.lang.Throwable cc = $cause$1.getCause();
-            final ceylon.language.String message = .ceylon.language.String.instance($cause$1.getMessage());
+            final .ceylon.language.String message = .ceylon.language.String.instance($cause$1.getMessage());
         }
         final .java.lang.String message = e.getMessage();
     }

@@ -25,7 +25,7 @@ abstract class ClassAttribute {
         capturedvar = "";
     }
 }
-class SubClassAttribute extends com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttribute {
+class SubClassAttribute extends .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttribute {
     private final .java.lang.String formalvar;
     
     @.java.lang.Override

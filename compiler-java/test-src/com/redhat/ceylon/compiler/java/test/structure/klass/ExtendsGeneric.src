@@ -26,7 +26,7 @@ class ExtendsGeneric2<T> {
         new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric2();
     }
 }
-class ExtendsGeneric_FooSub extends com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric2<com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Foo<? super ceylon.language.Integer>> {
+class ExtendsGeneric_FooSub extends .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric2<.com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Foo<? super .ceylon.language.Integer>> {
     
     ExtendsGeneric_FooSub() {
         super();
@@ -37,7 +37,7 @@ class ExtendsGeneric_FooSub extends com.redhat.ceylon.compiler.java.test.structu
         new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_FooSub();
     }
 }
-class ExtendsGeneric_BarSub extends com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric<com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Bar<? extends ceylon.language.Integer>> {
+class ExtendsGeneric_BarSub extends .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric<.com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Bar<? extends .ceylon.language.Integer>> {
     
     ExtendsGeneric_BarSub() {
         super();
@@ -48,7 +48,7 @@ class ExtendsGeneric_BarSub extends com.redhat.ceylon.compiler.java.test.structu
         new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_BarSub();
     }
 }
-class ExtendsGeneric_BazSub extends com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric<com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Baz<ceylon.language.Integer>> {
+class ExtendsGeneric_BazSub extends .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric<.com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Baz<.ceylon.language.Integer>> {
     
     ExtendsGeneric_BazSub() {
         super();

@@ -6,12 +6,12 @@ final class methods {
     }
     
     static void methods() {
-        final java.io.File f1 = new java.io.File("file1");
-        final java.io.File f2 = new java.io.File("file2");
+        final .java.io.File f1 = new .java.io.File("file1");
+        final .java.io.File f2 = new .java.io.File("file2");
         .ceylon.language.print.print(.ceylon.language.Boolean.instance(f1.canRead()));
         final long cmp = f1.compareTo(f2);
-        final java.io.File f3 = f1.createTempFile("", "");
-        final java.io.File f4 = f1.createTempFile("", "", f2);
+        final .java.io.File f3 = f1.createTempFile("", "");
+        final .java.io.File f4 = f1.createTempFile("", "", f2);
         f1.listFiles();
     }
     

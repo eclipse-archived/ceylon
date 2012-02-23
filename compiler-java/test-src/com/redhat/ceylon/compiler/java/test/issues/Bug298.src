@@ -22,8 +22,8 @@ final class m {
     }
     
     static void m() {
-        final com.redhat.ceylon.compiler.java.test.issues.OuterClass o = new com.redhat.ceylon.compiler.java.test.issues.OuterClass();
-        final com.redhat.ceylon.compiler.java.test.issues.OuterClass.InnerClass i = o.new InnerClass();
+        final .com.redhat.ceylon.compiler.java.test.issues.OuterClass o = new .com.redhat.ceylon.compiler.java.test.issues.OuterClass();
+        final .com.redhat.ceylon.compiler.java.test.issues.OuterClass.InnerClass i = o.new InnerClass();
     }
     
     public static void main(.java.lang.String[] args) {

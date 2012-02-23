@@ -5,31 +5,31 @@ abstract class Bug327 {
     Bug327() {
     }
 }
-final class bug327_foo extends com.redhat.ceylon.compiler.java.test.issues.Bug327 {
+final class bug327_foo extends .com.redhat.ceylon.compiler.java.test.issues.Bug327 {
     
     private bug327_foo() {
         super();
     }
-    private static final com.redhat.ceylon.compiler.java.test.issues.bug327_foo value;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug327_foo value;
     static {
-        value = new bug327_foo();
+        value = new .com.redhat.ceylon.compiler.java.test.issues.bug327_foo();
     }
     
-    static com.redhat.ceylon.compiler.java.test.issues.bug327_foo getBug327_foo() {
+    static .com.redhat.ceylon.compiler.java.test.issues.bug327_foo getBug327_foo() {
         return value;
     }
 }
-final class bug327_bar extends com.redhat.ceylon.compiler.java.test.issues.Bug327 {
+final class bug327_bar extends .com.redhat.ceylon.compiler.java.test.issues.Bug327 {
     
     private bug327_bar() {
         super();
     }
-    private static final com.redhat.ceylon.compiler.java.test.issues.bug327_bar value;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug327_bar value;
     static {
-        value = new bug327_bar();
+        value = new .com.redhat.ceylon.compiler.java.test.issues.bug327_bar();
     }
     
-    static com.redhat.ceylon.compiler.java.test.issues.bug327_bar getBug327_bar() {
+    static .com.redhat.ceylon.compiler.java.test.issues.bug327_bar getBug327_bar() {
         return value;
     }
 }
@@ -39,7 +39,7 @@ final class bug327_test {
     }
     
     static void bug327_test() {
-        final com.redhat.ceylon.compiler.java.test.issues.Bug327 fb = .com.redhat.ceylon.compiler.java.test.issues.bug327_foo.getBug327_foo();
+        final .com.redhat.ceylon.compiler.java.test.issues.Bug327 fb = .com.redhat.ceylon.compiler.java.test.issues.bug327_foo.getBug327_foo();
         {
             .java.lang.Object $sel$0 = fb;
             if ($sel$0 == .com.redhat.ceylon.compiler.java.test.issues.bug327_foo.getBug327_foo()) {

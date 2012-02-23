@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.structure.import_;
 class ImportJavaRuntimeTypeWildcard {
     
     private final void m() {
-        new java.io.IOException();
+        new .java.io.IOException();
     }
     
     ImportJavaRuntimeTypeWildcard() {

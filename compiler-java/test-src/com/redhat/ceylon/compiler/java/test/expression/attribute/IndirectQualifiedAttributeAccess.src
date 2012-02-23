@@ -6,9 +6,9 @@ class IndirectQualifiedAttributeAccess {
     private final boolean getB() {
         return b;
     }
-    private final com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess q;
+    private final .com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess q;
     
-    private final com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess getQ() {
+    private final .com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess getQ() {
         return q;
     }
     
@@ -18,7 +18,7 @@ class IndirectQualifiedAttributeAccess {
     
     IndirectQualifiedAttributeAccess() {
         this.b = true;
-        this.q = new com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess();
+        this.q = new .com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess();
     }
     
     public static void main(.java.lang.String[] args) {

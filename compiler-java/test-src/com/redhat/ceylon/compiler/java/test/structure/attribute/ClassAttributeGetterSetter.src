@@ -36,7 +36,7 @@ abstract class ClassAttributeGetterSetter {
         this.f5 = "";
     }
 }
-class SubClassAttributeGetterSetter extends com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeGetterSetter {
+class SubClassAttributeGetterSetter extends .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeGetterSetter {
     
     @.java.lang.Override
     public final .java.lang.String getF3() {

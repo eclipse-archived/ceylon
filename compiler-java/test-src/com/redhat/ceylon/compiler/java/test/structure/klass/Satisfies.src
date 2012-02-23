@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 interface Satisfies {
 }
-class SatisfiesClass implements com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies {
+class SatisfiesClass implements .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies {
     
     SatisfiesClass() {
     }

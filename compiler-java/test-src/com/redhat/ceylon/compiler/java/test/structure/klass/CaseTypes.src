@@ -5,31 +5,31 @@ public abstract class CaseTypes {
     public CaseTypes(.java.lang.String name) {
     }
 }
-public final class foo extends com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes {
+public final class foo extends .com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes {
     
     private foo() {
         super("foo");
     }
-    private static final com.redhat.ceylon.compiler.java.test.structure.klass.foo value;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.klass.foo value;
     static {
-        value = new foo();
+        value = new .com.redhat.ceylon.compiler.java.test.structure.klass.foo();
     }
     
-    public static com.redhat.ceylon.compiler.java.test.structure.klass.foo getFoo() {
+    public static .com.redhat.ceylon.compiler.java.test.structure.klass.foo getFoo() {
         return value;
     }
 }
-public final class bar extends com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes {
+public final class bar extends .com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes {
     
     private bar() {
         super("bar");
     }
-    private static final com.redhat.ceylon.compiler.java.test.structure.klass.bar value;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.klass.bar value;
     static {
-        value = new bar();
+        value = new .com.redhat.ceylon.compiler.java.test.structure.klass.bar();
     }
     
-    public static com.redhat.ceylon.compiler.java.test.structure.klass.bar getBar() {
+    public static .com.redhat.ceylon.compiler.java.test.structure.klass.bar getBar() {
         return value;
     }
 }
@@ -38,7 +38,7 @@ public abstract class CaseTypes2 {
     public CaseTypes2(.java.lang.String name) {
     }
 }
-public class Foo extends com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes2 {
+public class Foo extends .com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes2 {
     
     public Foo() {
         super("Foo");
@@ -49,7 +49,7 @@ public class Foo extends com.redhat.ceylon.compiler.java.test.structure.klass.Ca
         new .com.redhat.ceylon.compiler.java.test.structure.klass.Foo();
     }
 }
-public class Bar extends com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes2 {
+public class Bar extends .com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes2 {
     
     public Bar() {
         super("Bar");
@@ -62,7 +62,7 @@ public class Bar extends com.redhat.ceylon.compiler.java.test.structure.klass.Ca
 }
 public interface ICaseTypes {
 }
-public interface IFoo extends com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes {
+public interface IFoo extends .com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes {
 }
-public interface IBar extends com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes {
+public interface IBar extends .com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes {
 }

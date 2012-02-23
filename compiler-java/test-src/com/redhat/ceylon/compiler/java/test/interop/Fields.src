@@ -6,15 +6,15 @@ final class fields {
     }
     
     static void fields() {
-        final com.redhat.ceylon.compiler.java.test.interop.JavaFields java = new com.redhat.ceylon.compiler.java.test.interop.JavaFields();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaFields java = new .com.redhat.ceylon.compiler.java.test.interop.JavaFields();
         long sync;
         sync = java.readOnlyField;
         sync = java.readWriteField;
         java.readWriteField = 2L;
-        (let com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE0 = java,long $ceylontmpopV1 = $ceylontmpopE0.readWriteField in $ceylontmpopE0.readWriteField = $ceylontmpopV1 + 1; $ceylontmpopV1);
-        (let com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE2 = java,long $ceylontmpopV3 = $ceylontmpopE2.readWriteField + 1 in $ceylontmpopE2.readWriteField = $ceylontmpopV3; $ceylontmpopV3);
-        java.readWriteField = (let com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE4 = java,long $ceylontmpopV5 = java.readWriteField in $ceylontmpopE4.readWriteField = $ceylontmpopV5; $ceylontmpopV5);
-        java.readWriteField = (let com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE6 = java,long $ceylontmpopV7 = $ceylontmpopE6.readWriteField + java.readWriteField in $ceylontmpopE6.readWriteField = $ceylontmpopV7; $ceylontmpopV7);
+        (let .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE0 = java,long $ceylontmpopV1 = $ceylontmpopE0.readWriteField in $ceylontmpopE0.readWriteField = $ceylontmpopV1 + 1; $ceylontmpopV1);
+        (let .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE2 = java,long $ceylontmpopV3 = $ceylontmpopE2.readWriteField + 1 in $ceylontmpopE2.readWriteField = $ceylontmpopV3; $ceylontmpopV3);
+        java.readWriteField = (let .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE4 = java,long $ceylontmpopV5 = java.readWriteField in $ceylontmpopE4.readWriteField = $ceylontmpopV5; $ceylontmpopV5);
+        java.readWriteField = (let .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE6 = java,long $ceylontmpopV7 = $ceylontmpopE6.readWriteField + java.readWriteField in $ceylontmpopE6.readWriteField = $ceylontmpopV7; $ceylontmpopV7);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -22,7 +22,7 @@ final class fields {
         .com.redhat.ceylon.compiler.java.test.interop.fields.fields();
     }
 }
-class CeylonFields extends com.redhat.ceylon.compiler.java.test.interop.JavaFields {
+class CeylonFields extends .com.redhat.ceylon.compiler.java.test.interop.JavaFields {
     
     private final void f() {
         final long i1 = readOnlyField;

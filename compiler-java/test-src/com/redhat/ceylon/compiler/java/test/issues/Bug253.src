@@ -10,27 +10,27 @@ interface Boxer<T> {
     
     public abstract void setTwo(T two);
 }
-class IntBoxer implements com.redhat.ceylon.compiler.java.test.issues.Boxer<ceylon.language.Integer> {
-    private ceylon.language.Integer one;
+class IntBoxer implements .com.redhat.ceylon.compiler.java.test.issues.Boxer<.ceylon.language.Integer> {
+    private .ceylon.language.Integer one;
     
     @.java.lang.Override
-    public final ceylon.language.Integer getOne() {
+    public final .ceylon.language.Integer getOne() {
         return one;
     }
     
     @.java.lang.Override
-    public final void setOne(ceylon.language.Integer one) {
+    public final void setOne(.ceylon.language.Integer one) {
         this.one = one;
     }
-    private ceylon.language.Integer two;
+    private .ceylon.language.Integer two;
     
     @.java.lang.Override
-    public final ceylon.language.Integer getTwo() {
+    public final .ceylon.language.Integer getTwo() {
         return two;
     }
     
     @.java.lang.Override
-    public final void setTwo(ceylon.language.Integer two) {
+    public final void setTwo(.ceylon.language.Integer two) {
         this.two = two;
     }
     
@@ -50,10 +50,10 @@ final class bug253 {
     }
     
     static void bug253() {
-        final com.redhat.ceylon.compiler.java.test.issues.IntBoxer boxer = new com.redhat.ceylon.compiler.java.test.issues.IntBoxer();
+        final .com.redhat.ceylon.compiler.java.test.issues.IntBoxer boxer = new .com.redhat.ceylon.compiler.java.test.issues.IntBoxer();
         boxer.setOne(.ceylon.language.Integer.instance(1L));
         boxer.setTwo(.ceylon.language.Integer.instance(2L));
-        boxer.setOne((let com.redhat.ceylon.compiler.java.test.issues.IntBoxer $ceylontmpopE0 = boxer,ceylon.language.Integer $ceylontmpopV1 = .ceylon.language.Integer.instance(3L) in $ceylontmpopE0.setTwo($ceylontmpopV1); $ceylontmpopV1));
+        boxer.setOne((let .com.redhat.ceylon.compiler.java.test.issues.IntBoxer $ceylontmpopE0 = boxer,.ceylon.language.Integer $ceylontmpopV1 = .ceylon.language.Integer.instance(3L) in $ceylontmpopE0.setTwo($ceylontmpopV1); $ceylontmpopV1));
     }
     
     public static void main(.java.lang.String[] args) {

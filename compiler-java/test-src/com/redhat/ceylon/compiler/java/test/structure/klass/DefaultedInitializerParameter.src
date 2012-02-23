@@ -74,7 +74,7 @@ class DefaultedInitializerParameter4 {
 }
 class DefaultedInitializerParameter5 {
     
-    DefaultedInitializerParameter5(long n, ceylon.language.Iterable<? extends ceylon.language.Integer> seq) {
+    DefaultedInitializerParameter5(long n, .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
     }
     
     static final class DefaultedInitializerParameter5$impl {

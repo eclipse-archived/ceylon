@@ -31,12 +31,12 @@ final class $transient {
     
     private $transient() {
     }
-    private static final com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient value;
+    private static final .com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient value;
     static {
-        value = new $transient();
+        value = new .com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient();
     }
     
-    static com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient getTransient() {
+    static .com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient getTransient() {
         return value;
     }
 }

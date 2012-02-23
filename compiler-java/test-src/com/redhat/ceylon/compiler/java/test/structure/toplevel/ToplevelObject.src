@@ -7,12 +7,12 @@ final class topLevelObject {
     
     private topLevelObject() {
     }
-    private static final com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject value;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject value;
     static {
-        value = new topLevelObject();
+        value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject();
     }
     
-    static com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject getTopLevelObject() {
+    static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject getTopLevelObject() {
         return value;
     }
 }

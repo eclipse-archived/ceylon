@@ -4,20 +4,20 @@ abstract class RefinedVarianceInheritance2Top {
     
     public abstract long m();
     
-    public abstract ceylon.language.Integer m2();
+    public abstract .ceylon.language.Integer m2();
     
     RefinedVarianceInheritance2Top() {
     }
 }
-class RefinedVarianceInheritance2Bottom extends com.redhat.ceylon.compiler.java.test.structure.klass.RefinedVarianceInheritance2Top {
+class RefinedVarianceInheritance2Bottom extends .com.redhat.ceylon.compiler.java.test.structure.klass.RefinedVarianceInheritance2Top {
     
     @.java.lang.Override
     public final long m() {
-        return ((ceylon.language.Integer).ceylon.language.bottom.getBottom()).longValue();
+        return ((.ceylon.language.Integer).ceylon.language.bottom.getBottom()).longValue();
     }
     
     @.java.lang.Override
-    public final ceylon.language.Integer m2() {
+    public final .ceylon.language.Integer m2() {
         return .ceylon.language.Integer.instance(1L);
     }
     

@@ -30,8 +30,8 @@ public class CreatorOperators {
     }
     
     private final void creators() {
-        final ceylon.language.Range<ceylon.language.Integer> r = new ceylon.language.Range<ceylon.language.Integer>(.ceylon.language.Integer.instance(getI1()), .ceylon.language.Integer.instance(getI2()));
-        final ceylon.language.Entry<? extends ceylon.language.Integer, ? extends ceylon.language.Integer> entry = new ceylon.language.Entry<ceylon.language.Integer, ceylon.language.Integer>(.ceylon.language.Integer.instance(getN1()), .ceylon.language.Integer.instance(getI2()));
+        final .ceylon.language.Range<.ceylon.language.Integer> r = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(getI1()), .ceylon.language.Integer.instance(getI2()));
+        final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer> entry = new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(getN1()), .ceylon.language.Integer.instance(getI2()));
     }
     
     public CreatorOperators() {

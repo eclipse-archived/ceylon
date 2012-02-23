@@ -84,8 +84,8 @@ final class bug269 {
         final long hash = 0L;
         .ceylon.language.print.print(.ceylon.language.String.instance(string));
         .ceylon.language.print.print(.ceylon.language.Integer.instance(hash));
-        .ceylon.language.print.print(.ceylon.language.String.instance(new com.redhat.ceylon.compiler.java.test.issues.Bug269().toString()));
-        .ceylon.language.print.print(.ceylon.language.Integer.instance(new com.redhat.ceylon.compiler.java.test.issues.Bug269().hashCode()));
+        .ceylon.language.print.print(.ceylon.language.String.instance(new .com.redhat.ceylon.compiler.java.test.issues.Bug269().toString()));
+        .ceylon.language.print.print(.ceylon.language.Integer.instance(new .com.redhat.ceylon.compiler.java.test.issues.Bug269().hashCode()));
     }
     
     public static void main(.java.lang.String[] args) {

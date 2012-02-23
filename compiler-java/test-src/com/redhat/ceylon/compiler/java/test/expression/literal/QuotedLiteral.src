@@ -3,8 +3,8 @@ package com.redhat.ceylon.compiler.java.test.expression.literal;
 class QuotedLiteral {
     
     public final void m() {
-        final ceylon.language.Quoted s1 = .ceylon.language.Quoted.instance("");
-        final ceylon.language.Quoted s2 = .ceylon.language.Quoted.instance("This is a test");
+        final .ceylon.language.Quoted s1 = .ceylon.language.Quoted.instance("");
+        final .ceylon.language.Quoted s2 = .ceylon.language.Quoted.instance("This is a test");
     }
     
     QuotedLiteral() {

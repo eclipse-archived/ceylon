@@ -4,8 +4,8 @@ class MethodForRange {
     
     public final void m() {
         .java.lang.Object $elem$0;
-        for (ceylon.language.Iterator<? extends ceylon.language.Integer> $i$iter$1 = new ceylon.language.Range<ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).getIterator(); !(($elem$0 = $i$iter$1.next()) instanceof .ceylon.language.Finished); ) {
-            final long i = ((ceylon.language.Integer)$elem$0).longValue();
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $i$iter$1 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).getIterator(); !(($elem$0 = $i$iter$1.next()) instanceof .ceylon.language.Finished); ) {
+            final long i = ((.ceylon.language.Integer)$elem$0).longValue();
         }
     }
     

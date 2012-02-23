@@ -6,8 +6,8 @@ class SwitchIsVarSubst {
         final .java.lang.String name;
         {
             .java.lang.Object $sel$0 = b;
-            if ($sel$0 instanceof ceylon.language.String) {
-                final .java.lang.String $b$2 = ((ceylon.language.String)$sel$0).toString();
+            if ($sel$0 instanceof .ceylon.language.String) {
+                final .java.lang.String $b$2 = ((.ceylon.language.String)$sel$0).toString();
                 name = "String: " + $b$2;
             } else if ($sel$0 instanceof .java.lang.Throwable) {
                 final .java.lang.Throwable $b$1 = (.java.lang.Throwable)$sel$0;

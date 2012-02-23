@@ -11,8 +11,8 @@ final class test {
         } catch (final .java.lang.Exception npe) {
         }
         try {
-            throw new java.lang.NullPointerException();
-        } catch (final java.lang.NullPointerException npe) {
+            throw new .java.lang.NullPointerException();
+        } catch (final .java.lang.NullPointerException npe) {
         }
     }
     

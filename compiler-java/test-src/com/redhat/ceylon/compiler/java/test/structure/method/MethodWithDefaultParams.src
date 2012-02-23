@@ -22,7 +22,7 @@ class MethodWithDefaultParams {
     public final void f5(final long n) {
     }
     
-    public final void f6(final long n, final ceylon.language.Iterable<? extends ceylon.language.Integer> seq) {
+    public final void f6(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
     }
     
     MethodWithDefaultParams() {
@@ -40,35 +40,35 @@ class MethodWithDefaultParams {
             super();
         }
         
-        static long f1$n(com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams $this) {
+        static long f1$n(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams $this) {
             return 5L;
         }
         
-        public static .java.lang.String f2$s(com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams $this, final long n) {
+        public static .java.lang.String f2$s(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams $this, final long n) {
             return "test";
         }
         
-        public static long f3$n(com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams $this) {
+        public static long f3$n(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams $this) {
             return 5L;
         }
         
-        public static long f3$m(com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams $this, final long n) {
+        public static long f3$m(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams $this, final long n) {
             return n;
         }
         
-        public static long f4$n(com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams $this) {
+        public static long f4$n(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams $this) {
             return 5L;
         }
         
-        public static long f4$m(com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams $this, final long n) {
+        public static long f4$m(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams $this, final long n) {
             return n + 1L;
         }
         
-        public static long f5$n(com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams $this) {
+        public static long f5$n(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams $this) {
             return $this.getProp();
         }
         
-        public static long f6$n(com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams $this) {
+        public static long f6$n(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams $this) {
             return $this.getProp();
         }
     }
@@ -87,7 +87,7 @@ interface MethodWithDefaultParams2 {
     
     public abstract void f5(final long n);
     
-    public abstract void f6(final long n, final ceylon.language.Iterable<? extends ceylon.language.Integer> seq);
+    public abstract void f6(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq);
     
     public static final class MethodWithDefaultParams2$impl {
         
@@ -95,35 +95,35 @@ interface MethodWithDefaultParams2 {
             super();
         }
         
-        public static long f1$n(com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this) {
+        public static long f1$n(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this) {
             return 5L;
         }
         
-        public static .java.lang.String f2$s(com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this, final long n) {
+        public static .java.lang.String f2$s(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this, final long n) {
             return "test";
         }
         
-        public static long f3$n(com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this) {
+        public static long f3$n(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this) {
             return 5L;
         }
         
-        public static long f3$m(com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this, final long n) {
+        public static long f3$m(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this, final long n) {
             return n;
         }
         
-        public static long f4$n(com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this) {
+        public static long f4$n(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this) {
             return 5L;
         }
         
-        public static long f4$m(com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this, final long n) {
+        public static long f4$m(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this, final long n) {
             return n + 1L;
         }
         
-        public static long f5$n(com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this) {
+        public static long f5$n(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this) {
             return $this.getProp();
         }
         
-        public static long f6$n(com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this) {
+        public static long f6$n(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this) {
             return $this.getProp();
         }
     }

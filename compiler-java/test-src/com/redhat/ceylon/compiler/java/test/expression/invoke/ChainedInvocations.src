@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 class ChainedInvocations {
     
     private final long m() {
-        return new com.redhat.ceylon.compiler.java.test.expression.invoke.ChainedInvocations().foo();
+        return new .com.redhat.ceylon.compiler.java.test.expression.invoke.ChainedInvocations().foo();
     }
     
     private final long foo() {

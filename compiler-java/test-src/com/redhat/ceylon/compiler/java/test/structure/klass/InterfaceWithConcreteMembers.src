@@ -10,11 +10,11 @@ public final class InterfaceWithConcreteMembers$impl {
         super();
     }
     
-    public static long foo(final com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers $this, final boolean b) {
+    public static long foo(final .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers $this, final boolean b) {
         return 1L;
     }
 }
-class Impl implements com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers {
+class Impl implements .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers {
     
     public long foo(final boolean b) {
         return InterfaceWithConcreteMembers$impl.foo(this, b);

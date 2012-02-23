@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.quoting.$assert;
 class KeywordInImport {
     
     KeywordInImport() {
-        new com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient.TwoKeywordsInPackage();
+        new .com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient.TwoKeywordsInPackage();
     }
     
     public static void main(.java.lang.String[] args) {

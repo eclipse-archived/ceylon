@@ -22,7 +22,7 @@ class InitializerParamAccessWithExtends extends .java.lang.Object {
         this.b = b;
     }
 }
-class InitializerParamAccessWithExtends2 extends com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccessWithExtends {
+class InitializerParamAccessWithExtends2 extends .com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccessWithExtends {
     private final boolean b;
     
     private final boolean m() {

@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.selfref;
 
 class ThisReference {
     
-    public final com.redhat.ceylon.compiler.java.test.expression.selfref.ThisReference m() {
+    public final .com.redhat.ceylon.compiler.java.test.expression.selfref.ThisReference m() {
         return this;
     }
     

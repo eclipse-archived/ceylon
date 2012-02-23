@@ -10,7 +10,7 @@ class Extends {
         new .com.redhat.ceylon.compiler.java.test.structure.klass.Extends();
     }
 }
-class ExtendsB extends com.redhat.ceylon.compiler.java.test.structure.klass.Extends {
+class ExtendsB extends .com.redhat.ceylon.compiler.java.test.structure.klass.Extends {
     
     ExtendsB() {
         super();

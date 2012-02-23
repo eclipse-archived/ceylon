@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 class NamedArgumentGetterInvocation {
     
     private final boolean m() {
-        return new com.redhat.ceylon.compiler.impl.NamedArgumentCall<NamedArgumentInvocation>(this, 
+        return new .com.redhat.ceylon.compiler.impl.NamedArgumentCall<NamedArgumentInvocation>(this, 
             new Object(){ .java.lang.String get(){ return "foo"; } }.get(), 
             new Object(){ long get(){ return 2; } }.get()) {
             final boolean f() {

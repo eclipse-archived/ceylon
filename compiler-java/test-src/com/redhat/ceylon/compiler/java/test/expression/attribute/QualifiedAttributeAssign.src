@@ -19,17 +19,17 @@ class QualifiedAttributeAssign {
     public final void setB2(boolean b2) {
         this.b2 = b2;
     }
-    private final com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign q;
+    private final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign q;
     
-    private final com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign getQ() {
+    private final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign getQ() {
         return q;
     }
     
-    private final void m(final com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssignFoo f) {
+    private final void m(final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssignFoo f) {
         this.setB(false);
         this.setB2(false);
-        new com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign().setB(true);
-        new com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign().setB2(true);
+        new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign().setB(true);
+        new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign().setB2(true);
         getQ().setB(getQ().getB2());
         f.setB(f.getB());
     }
@@ -37,7 +37,7 @@ class QualifiedAttributeAssign {
     QualifiedAttributeAssign() {
         this.b = true;
         this.b2 = true;
-        this.q = new com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign();
+        this.q = new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign();
     }
     
     public static void main(.java.lang.String[] args) {

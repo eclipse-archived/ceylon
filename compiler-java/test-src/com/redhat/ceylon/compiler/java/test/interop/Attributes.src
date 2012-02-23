@@ -6,7 +6,7 @@ final class attributes {
     }
     
     static void attributes() {
-        final com.redhat.ceylon.compiler.java.test.interop.JavaBean java = new com.redhat.ceylon.compiler.java.test.interop.JavaBean();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaBean java = new .com.redhat.ceylon.compiler.java.test.interop.JavaBean();
         boolean sync;
         sync = java.getBooleanWithGet();
         java.setBooleanWithGet(false);
@@ -31,7 +31,7 @@ final class attributes {
         .com.redhat.ceylon.compiler.java.test.interop.attributes.attributes();
     }
 }
-class CeylonAttributes extends com.redhat.ceylon.compiler.java.test.interop.JavaBean {
+class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.JavaBean {
     private boolean booleanWithGet;
     
     @.java.lang.Override

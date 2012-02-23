@@ -6,7 +6,7 @@ final class checkedExceptionsInMethod {
     }
     
     static void checkedExceptionsInMethod() {
-        final com.redhat.ceylon.compiler.java.test.interop.JavaCheckedExceptions x = new com.redhat.ceylon.compiler.java.test.interop.JavaCheckedExceptions();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaCheckedExceptions x = new .com.redhat.ceylon.compiler.java.test.interop.JavaCheckedExceptions();
         x.m();
     }
     
@@ -15,7 +15,7 @@ final class checkedExceptionsInMethod {
         .com.redhat.ceylon.compiler.java.test.interop.checkedExceptionsInMethod.checkedExceptionsInMethod();
     }
 }
-class CheckedExceptions extends com.redhat.ceylon.compiler.java.test.interop.JavaCheckedExceptions {
+class CheckedExceptions extends .com.redhat.ceylon.compiler.java.test.interop.JavaCheckedExceptions {
     
     @.java.lang.Override
     public final void m() {

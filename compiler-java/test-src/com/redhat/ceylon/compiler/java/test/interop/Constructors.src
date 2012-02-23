@@ -6,9 +6,9 @@ final class constructors {
     }
     
     static void constructors() {
-        final java.io.File f1 = new java.io.File("parent");
-        final java.io.File f2 = new java.io.File("parent", "test");
-        final java.io.File f3 = new java.io.File(f1, "test");
+        final .java.io.File f1 = new .java.io.File("parent");
+        final .java.io.File f2 = new .java.io.File("parent", "test");
+        final .java.io.File f3 = new .java.io.File(f1, "test");
     }
     
     public static void main(.java.lang.String[] args) {
