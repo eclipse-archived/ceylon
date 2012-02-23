@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import java.io{ File{createTempFile = createTempFile}, ...}
+import java.io{File}
 
 @nomodel
 @error
@@ -29,10 +29,6 @@ void methods() {
     @error
     print(f1.canRead());
     Integer cmp = f1.compareTo(f2);
-    @error
-    File f3 = f1.createTempFile("", ""); // Does not work
-    @error
-    File f4 = f1.createTempFile("", "", f2);
     @error
     f1.listFiles();
 }
