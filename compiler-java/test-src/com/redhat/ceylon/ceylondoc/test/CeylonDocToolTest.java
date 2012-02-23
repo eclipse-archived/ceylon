@@ -180,8 +180,9 @@ public class CeylonDocToolTest {
         assertSee(destDir);
         assertIcons(destDir);
         assertInnerTypesDoc(destDir);
+        assertDeprecated(destDir);
     }
-    
+
     private void assertBy(File destDir) throws IOException {
         assertMatchInFile(destDir, "index.html", 
                 Pattern.compile("<div class='by'>By: Tom Bentley</div>"));
@@ -237,6 +238,17 @@ public class CeylonDocToolTest {
                 Pattern.compile("Satisfied Interfaces: <a href='interface_StubClass.StubInnerInterface.html'>StubInnerInterface</a>"));                
     }
     
+    private void assertDeprecated(File destDir) throws IOException {
+        assertFileExists(destDir, "class_DeprecatedClass.html");
+        
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("<i class='icon-decoration-deprecated'><i class='icon-class'></i></i><span class='modifiers'>shared</span> <a href='class_DeprecatedClass.html'>DeprecatedClass</a></code></td><td><div class='long'><div class='deprecated'><p><strong>Deprecated:</strong> This is <code>DeprecatedClass</code></p>"));     
+        assertMatchInFile(destDir, "class_DeprecatedClass.html",
+                Pattern.compile("<div class='deprecated'><p><strong>Deprecated:</strong> Don't use this attribute!"));
+        assertMatchInFile(destDir, "class_DeprecatedClass.html",
+                Pattern.compile("<div class='deprecated'><p><strong>Deprecated:</strong> Don't use this method"));
+    }
+    
     private File getOutputDir(CeylonDocTool tool, Module module) {
         String outputRepo = tool.getOutputRepository();
         return new File(com.redhat.ceylon.compiler.java.util.Util.getModulePath(new File(outputRepo), module),
@@ -290,7 +302,8 @@ public class CeylonDocToolTest {
         assertThrows(destDir);
         assertSee(destDir);
         assertIcons(destDir);
-        assertInnerTypesDoc(destDir);        
+        assertInnerTypesDoc(destDir);
+        assertDeprecated(destDir);
     }
     
     @Test

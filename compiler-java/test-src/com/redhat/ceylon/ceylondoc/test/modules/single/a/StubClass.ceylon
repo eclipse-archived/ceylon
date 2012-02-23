@@ -28,7 +28,7 @@ shared class StubClass() satisfies StubInterface {
     doc "The stub attribute with `see`."
     see (methodWithSee, StubException)
     shared Integer attributeWithSee = 0;
-
+    
     doc "The stub method with `throws`."
     throws (StubException, "`when` with __WIKI__ syntax")
     shared void methodWithThrows() {}
@@ -41,14 +41,11 @@ shared class StubClass() satisfies StubInterface {
     
     shared actual void defaultMethod() {}
     
-    deprecated("don't use this method")
-    void deprecatedMethod() {}    
-    
     shared interface StubInnerInterface {
 
         shared formal void innerMethod();
        
-    }     
+    }
 
     shared class StubInnerClass() satisfies StubInnerInterface {
 
