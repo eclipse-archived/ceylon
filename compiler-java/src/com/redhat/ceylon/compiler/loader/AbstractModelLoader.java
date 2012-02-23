@@ -1487,7 +1487,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private ProducedType getType(TypeMirror type, Scope scope) {
         if (type.getKind() == TypeKind.ARRAY) {
-            Declaration decl = convertToDeclaration(CEYLON_ARRAY_TYPE, scope, DeclarationType.TYPE);
+            Declaration decl = typeFactory.getLanguageModuleDeclaration("Array");
             TypeDeclaration declaration = (TypeDeclaration) decl;
             List<ProducedType> typeArguments = new ArrayList<ProducedType>(1);
             typeArguments.add((ProducedType) obtainType(type.getComponentType(), scope));
