@@ -1565,6 +1565,27 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
+    public void removeDeclarations(List<Declaration> declarations) {
+        List<String> keysToRemove = new ArrayList<String>();
+        for (String name : declarationsByName.keySet()) {
+            String nameWithoutPrefix = name.substring(1);
+            for (Declaration decl : declarations) {
+                if (nameWithoutPrefix.equals(decl.getQualifiedNameString())) {
+                    keysToRemove.add(name);
+                }
+            }
+        }
+        for (String keyToRemove : keysToRemove) {
+            declarationsByName.remove(keyToRemove);
+        }
+        
+        for (Declaration decl : declarations) {
+            if (decl instanceof LazyClass || decl instanceof LazyInterface) {
+                classMirrorCache.remove(decl.getQualifiedNameString());
+            }
+        }
+    }
+    
     public void printStats(){
         int loaded = 0;
         class Stats {
