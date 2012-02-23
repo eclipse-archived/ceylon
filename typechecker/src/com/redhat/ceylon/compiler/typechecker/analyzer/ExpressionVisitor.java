@@ -2373,7 +2373,9 @@ public class ExpressionVisitor extends Visitor {
                             name(that.getIdentifier()) + 
                             " of type " + d.getName(), 400);
                 }
-                if (member.isProtectedVisibility()) {
+                if (member.isProtectedVisibility() &&
+                        !(that.getPrimary() instanceof Tree.This) &&
+                        !(that.getPrimary() instanceof Tree.Super)) {
                     that.addError("member method or attribute is not visible: " +
                             name(that.getIdentifier()) + 
                             " of type " + d.getName());
@@ -2482,7 +2484,9 @@ public class ExpressionVisitor extends Visitor {
                             name(that.getIdentifier()) +
                             " of type " + d.getName(), 400);
                 }
-                if (type.isProtectedVisibility()) {
+                if (type.isProtectedVisibility() &&
+                        !(that.getPrimary() instanceof Tree.This) &&
+                        !(that.getPrimary() instanceof Tree.Super)) {
                     that.addError("member type is not visible: " +
                             name(that.getIdentifier()) +
                             " of type " + d.getName());
