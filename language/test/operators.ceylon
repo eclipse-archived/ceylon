@@ -14,8 +14,34 @@ void operators() {
     
     String[] empty = {};
     String[] full = { "hello", "world" };
-    //assert(!nonempty empty[].uppercased, "[].");
-    //assert(nonempty full[].uppercased, "[].");
+    assert(!nonempty empty[].uppercased, "spread 1");
+    assert(nonempty full[].uppercased, "spread 2");
+    value spread1 = full[].uppercased;
+    value spread2 = full[].item(1);
+	if (exists s1s=spread1[0]) {
+        assert(s1s == "HELLO", "spread 3");
+    } else { fail("spread 3"); }
+    if (exists s1s=spread1[1]) {
+        assert(s1s == "WORLD", "spread 4");
+    } else { fail("spread 4"); }
+    assert(spread1.size == 2, "spread 5");
+    assert(spread2.size == 2, "spread 6");
+    if (exists s2s=spread2[0]) {
+        assert(s2s == `e`, "spread 7");
+    } else { fail("spread 7"); }
+    if (exists s2s=spread2[1]) {
+        assert(s2s == `o`, "spread 8");
+    } else { fail("spread 8"); }
+    /*Callable<Character?[], Integer> spread3 = full[].item;
+    value spread4 = spread3(1);
+    assert(spread4.size == 2, "spread 10");
+    if (exists s4s=spread4[0]) {
+        assert(s4s == "e", "spread 11");
+    } else { fail("spread 11"); }
+    if (exists s4s=spread4[1]) {
+        assert(s4s == "o", "spread 12");
+    } else { fail("spread 12"); }*/
+
     assert("hello" in "hello world", "in 1");
     assert("world" in "hello world", "in 2");
 
