@@ -1083,8 +1083,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setContainer(klass);
         value.setName(fieldMirror.getName());
         value.setUnit(klass.getUnit());
-        value.setShared(fieldMirror.isPublic() || fieldMirror.isProtected() || fieldMirror.isDefaultAccess());
-        value.setProtectedVisibility(fieldMirror.isProtected() || fieldMirror.isDefaultAccess());
+        value.setShared(fieldMirror.isPublic() || fieldMirror.isProtected());
+        value.setProtectedVisibility(fieldMirror.isProtected());
         value.setStaticallyImportable(fieldMirror.isStatic());
         // field can't be abstract or interface, so not formal
         // can we override fields? good question. Not really, but from an external point of view?
@@ -1110,8 +1110,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private void setMethodOrValueFlags(ClassOrInterface klass, MethodMirror methodMirror, MethodOrValue decl) {
-        decl.setShared(methodMirror.isPublic() || methodMirror.isProtected() || methodMirror.isDefaultAccess());
-        decl.setProtectedVisibility(methodMirror.isProtected() || methodMirror.isDefaultAccess());
+        decl.setShared(methodMirror.isPublic() || methodMirror.isProtected());
+        decl.setProtectedVisibility(methodMirror.isProtected());
         if(methodMirror.isAbstract() || klass instanceof Interface) {
             decl.setFormal(true);
         } else {
