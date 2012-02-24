@@ -49,7 +49,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseItem;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifiedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
@@ -1127,7 +1126,7 @@ public class ExpressionVisitor extends Visitor {
         if (that.getPositionalArgumentList()!=null) {
             that.getPositionalArgumentList().visit(this);
             sig = new ArrayList<ProducedType>();
-            for (PositionalArgument pa: that.getPositionalArgumentList().getPositionalArguments()) {
+            for (Tree.PositionalArgument pa: that.getPositionalArgumentList().getPositionalArguments()) {
                 sig.add(pa.getExpression().getTypeModel());
             }
             if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
