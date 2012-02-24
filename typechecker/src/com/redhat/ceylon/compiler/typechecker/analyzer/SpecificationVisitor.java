@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecutableStatement;
 
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -156,8 +157,14 @@ public class SpecificationVisitor extends Visitor {
                     //declarations in a class declaration
                     //section
                     if (!inDeclarationSection()) {
-                        that.addError("not yet declared: " + 
-                                member.getName());
+                        if (declaration.getContainer() instanceof Class) {
+                            that.addError("forward reference to class member in initializer: " + 
+                                    member.getName() + " is not yet declared (forward references must occur in declaration section)");
+                        }
+                        else {
+                            that.addError("forward reference to local declaration: " + 
+                                    member.getName() + " is not yet declared");
+                        }
                     }
                 }
                 else if (!specified.definitely) {
