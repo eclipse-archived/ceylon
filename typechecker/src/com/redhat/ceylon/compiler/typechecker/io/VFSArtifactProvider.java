@@ -13,9 +13,15 @@ public class VFSArtifactProvider implements ArtifactProvider {
     private final VFS vfs;
 
     public VFSArtifactProvider(VFS vfs) {
-        File home = new File( System.getProperty("user.home") );
-        File ceylon = new File( home, ".ceylon" );
-        File repo = new File( ceylon, "repo" );
+        File repo;
+        String ceylonUserRepo = System.getProperty("ceylon.user.repo");
+        if (ceylonUserRepo == null) {
+            File home = new File( System.getProperty("user.home") );
+            File ceylon = new File( home, ".ceylon" );
+            repo = new File( ceylon, "repo" );
+        } else {
+            repo = new File( ceylonUserRepo );
+        }
         repo.mkdirs();
         homeRepo = vfs.getFromFile(repo);
         this.vfs = vfs;
