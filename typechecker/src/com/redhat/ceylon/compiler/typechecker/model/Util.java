@@ -132,6 +132,32 @@ public class Util {
             return false;
         }
     }
+    
+    static boolean betterMatch(Declaration d, Declaration r) {
+        if (d instanceof Functional && r instanceof Functional) {
+            List<ParameterList> dpls = ((Functional) d).getParameterLists();
+            List<ParameterList> rpls = ((Functional) r).getParameterLists();
+            if (dpls!=null&&!dpls.isEmpty() && rpls!=null&&!rpls.isEmpty()) {
+                List<Parameter> dpl = dpls.get(0).getParameters();
+                List<Parameter> rpl = rpls.get(0).getParameters();
+                if (dpl.size()==rpl.size()) {
+                    for (int i=0; i<dpl.size(); i++) {
+                        TypeDeclaration paramType = definiteTypeDec(d.getUnit(), 
+                                dpl.get(i).getType());
+                        TypeDeclaration otherType = definiteTypeDec(d.getUnit(), 
+                                rpl.get(i).getType());
+                        if (otherType==null || paramType==null) return false;
+                        if (otherType instanceof UnknownType || paramType instanceof UnknownType) return false;
+                        if (!erase(paramType).inherits(erase(otherType))) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     private static TypeDeclaration definiteTypeDec(Unit unit, ProducedType pt) {
         return unit.getDefiniteType(pt).getDeclaration();
@@ -488,6 +514,11 @@ public class Util {
                     if (hasMatchingSignature(signature, d)) {
                         //we have found an exactly matching 
                         //overloaded declaration
+                        for (Iterator<Declaration> i = results.iterator(); i.hasNext();) {
+                            if (betterMatch(d,i.next())) {
+                                i.remove();
+                            }
+                        }
                         results.add(d);
                     }
                 }
