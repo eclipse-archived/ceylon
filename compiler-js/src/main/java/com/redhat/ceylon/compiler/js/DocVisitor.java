@@ -39,9 +39,12 @@ public class DocVisitor extends Visitor {
         super.visit(that);
     }
 
+    /** Returns a list of all the doc values found, in the order they were found. */
     public List<String> getDocs() {
         return docs;
     }
+    /** Returns a map of the references to the docs; the keys are the locations in the source code
+     * and the values are the index of the doc in the docs list. */
     public Map<String, Integer> getLocations() {
         return locs;
     }
