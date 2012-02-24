@@ -30,10 +30,8 @@
 
 package com.redhat.ceylon.compiler.java;
 
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
-
-import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.JavacFileManager;
 
 public class Main extends com.sun.tools.javac.Main {
 
@@ -47,6 +45,11 @@ public class Main extends com.sun.tools.javac.Main {
      */
     public static int compile(String[] args) {
         com.sun.tools.javac.main.Main compiler = new com.redhat.ceylon.compiler.java.launcher.Main("ceylonc");
+        return compiler.compile(args);
+    }
+    
+    public static int compile(String[] args, PrintWriter writer) {
+        com.sun.tools.javac.main.Main compiler = new com.redhat.ceylon.compiler.java.launcher.Main("ceylonc", writer);
         return compiler.compile(args);
     }
 
