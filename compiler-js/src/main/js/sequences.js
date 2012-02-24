@@ -32,7 +32,7 @@ Empty$proto.getLastIndex = function() { return null; }
 Empty$proto.getClone = function() { return this; }
 Empty$proto.count = function(x) { return Integer(0); }
 
-$empty = Empty();
+var $empty = Empty();
 
 function EmptyIterator() {
     var that = new EmptyIterator.$$;
@@ -42,7 +42,7 @@ initType(EmptyIterator, 'ceylon.language.EmptyIterator', IdentifiableObject, Ite
 inheritProto(EmptyIterator, IdentifiableObject, '$IdentifiableObject$');
 var EmptyIterator$proto = EmptyIterator.$$.prototype;
 EmptyIterator$proto.next = function() { return $finished; }
-emptyIterator=EmptyIterator();
+var emptyIterator=EmptyIterator();
 
 function ArraySequence(value) {
     var that = new ArraySequence.$$;

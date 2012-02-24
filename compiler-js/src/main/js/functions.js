@@ -20,7 +20,7 @@ exports.smallest=smallest;
 function min(seq) {
     var v = seq.value[0];
     if (seq.value.length > 1) {
-        for (i = 1; i < seq.value.length; i++) {
+        for (var i = 1; i < seq.value.length; i++) {
             v = smallest(v, seq.value[i]);
         }
     }
@@ -30,7 +30,7 @@ function min(seq) {
 function max(seq) {
     var v = seq.value[0];
     if (seq.value.length > 1) {
-        for (i = 1; i < seq.value.length; i++) {
+        for (var i = 1; i < seq.value.length; i++) {
             v = largest(v, seq.value[i]);
         }
     }
@@ -39,7 +39,7 @@ function max(seq) {
 //receives ArraySequence of ArraySequences, returns flat ArraySequence
 function join(seqs) {
     var builder = [];
-    for (i = 0; i < seqs.value.length; i++) {
+    for (var i = 0; i < seqs.value.length; i++) {
         builder = builder.concat(seqs.value[i].value);
     }
     return ArraySequence(builder);
@@ -48,7 +48,7 @@ function join(seqs) {
 function zip(keys, items) {
     var entries = []
     var numEntries = Math.min(keys.value.length, items.value.length);
-    for (i = 0; i < numEntries; i++) {
+    for (var i = 0; i < numEntries; i++) {
         entries[i] = Entry(keys.value[i], items.value[i]);
     }
     return ArraySequence(entries);
@@ -56,7 +56,7 @@ function zip(keys, items) {
 //receives and returns ArraySequence
 function coalesce(seq) {
     var newseq = [];
-    for (i = 0; i < seq.value.length; i++) {
+    for (var i = 0; i < seq.value.length; i++) {
         if (seq.value[i]) {
             newseq = newseq.concat(seq.value[i]);
         }
@@ -82,7 +82,7 @@ function prepend(seq, elem) {
 //Receives ArraySequence, returns ArraySequence (with Entries)
 function entries(seq) {
     var e = [];
-    for (i = 0; i < seq.value.length; i++) {
+    for (var i = 0; i < seq.value.length; i++) {
         e.push(Entry(Integer(i), seq.value[i]));
     }
     return ArraySequence(e);

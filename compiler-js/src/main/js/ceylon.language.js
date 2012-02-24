@@ -274,7 +274,7 @@ function Comparison(name) {
 initType(Comparison, 'ceylon.language.Comparison', IdentifiableObject);
 inheritProto(Comparison, IdentifiableObject, '$IdentifiableObject$');
 var Comparison$proto = Comparison.$$.prototype;
-Comparison$proto.getString = function() { return this.name }
+Comparison$proto.getString = function() { return this.name; }
 
 #include functions.js
 #include sequences.js
