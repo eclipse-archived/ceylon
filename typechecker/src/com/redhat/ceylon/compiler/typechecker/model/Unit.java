@@ -154,7 +154,7 @@ public class Unit {
             }
             for (Package languageScope : languageModule.getPackages() ) {
                 Declaration d = languageScope.getMember(name, null);
-                if (d != null) {
+                if (d != null && d.isShared()) {
                     return d;
                 }
             }
