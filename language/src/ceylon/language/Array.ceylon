@@ -1,4 +1,4 @@
-abstract class Array<Element>() 
+shared abstract class Array<Element>() 
         extends Object()
         satisfies List<Element> & 
                   FixedSized<Element> &
@@ -41,6 +41,6 @@ abstract class Array<Element>()
     
 }
 
-Array<Element> array<Element>(Element... elements) { throw; }
-Array<Element>&None<Element> arrayOfNone<Element>() { throw; }
-Array<Element>&Some<Element> arrayOfSome<Element>(Sequence<Element> elements) { throw; }
+shared Array<Element> array<Element>(Element... elements) { throw; }
+shared Array<Element>&None<Element> arrayOfNone<Element>() { throw; }
+shared Array<Element>&Some<Element> arrayOfSome<Element>(Sequence<Element> elements) { throw; }
