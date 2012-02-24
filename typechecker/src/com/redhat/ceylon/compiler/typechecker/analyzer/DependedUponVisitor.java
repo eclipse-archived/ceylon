@@ -7,6 +7,7 @@ import java.util.Set;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.ExternalUnit;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -58,19 +59,24 @@ public class DependedUponVisitor extends Visitor {
                 storeDependency(rd); //this one is needed for default arguments, I think
             }
             Unit declarationUnit = d.getUnit();
+            Unit currentUnit = phasedUnit.getUnit();
             if (declarationUnit != null) {
-                String currentUnitName = getSrcFolderRelativePath(phasedUnit.getUnit());
-                String dependedOnUnitName = getSrcFolderRelativePath(d.getUnit());
+                String currentUnitName = getSrcFolderRelativePath(currentUnit);
+                String dependedOnUnitName = getSrcFolderRelativePath(declarationUnit);
                 if (! dependedOnUnitName.equals(currentUnitName)) {
-                    PhasedUnit dependedOnPhasedUnit = phasedUnits.getPhasedUnitFromRelativePath(dependedOnUnitName);
-                    if (dependedOnPhasedUnit != null) {
-                        dependedOnPhasedUnit.getDependentsOf().add(phasedUnit);
+                    if (declarationUnit instanceof ExternalUnit) {
+                        ((ExternalUnit) declarationUnit).getDependentsOf().add(phasedUnit);
                     } else {
-                        for (PhasedUnits phasedUnitsOfDependency : phasedUnitsOfDependencies) {
-                            dependedOnPhasedUnit = phasedUnitsOfDependency.getPhasedUnitFromRelativePath(dependedOnUnitName);
-                            if (dependedOnPhasedUnit != null) {
-                                dependedOnPhasedUnit.getDependentsOf().add(phasedUnit);
-                                break;
+                        PhasedUnit dependedOnPhasedUnit = phasedUnits.getPhasedUnitFromRelativePath(dependedOnUnitName);
+                        if (dependedOnPhasedUnit != null) {
+                            dependedOnPhasedUnit.getDependentsOf().add(phasedUnit);
+                        } else {
+                            for (PhasedUnits phasedUnitsOfDependency : phasedUnitsOfDependencies) {
+                                dependedOnPhasedUnit = phasedUnitsOfDependency.getPhasedUnitFromRelativePath(dependedOnUnitName);
+                                if (dependedOnPhasedUnit != null) {
+                                    dependedOnPhasedUnit.getDependentsOf().add(phasedUnit);
+                                    break;
+                                }
                             }
                         }
                     }
