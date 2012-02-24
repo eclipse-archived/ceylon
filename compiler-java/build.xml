@@ -228,7 +228,7 @@
           version="${module.com.redhat.ceylon.module-resolver.version}"/>
       <dependency groupId="org.ceylon-lang" 
           artifactId="ceylon.language" 
-          version="${module.com.redhat.ceylon.language.version}"/>
+          version="${module.ceylon.language.version}"/>
       <dependency groupId="org.ceylon-lang" 
           artifactId="markdown" 
           version="${markdown.version}"/>
