@@ -313,7 +313,8 @@ public class TypeHierarchyVisitor extends Visitor {
             type = new Type();
             type.declaration = declaration;
             for (Declaration member : declaration.getMembers()) {
-                if (!(member instanceof MethodOrValue)) {
+                if (!(member instanceof MethodOrValue) || 
+                        member.isStaticallyImportable()) {
                     continue;
                 }
                 final String name = member.getName();
