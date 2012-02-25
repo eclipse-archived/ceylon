@@ -110,13 +110,14 @@ public class Util {
                         for (int i=0; i<params.size(); i++) {
                             //ignore optionality for resolving overloads, since
                             //all all Java method params are treated as optional
-                            TypeDeclaration paramType = definiteTypeDec(d.getUnit(), 
-                                    params.get(i).getType());
-                            TypeDeclaration sigType = definiteTypeDec(d.getUnit(), 
-                                    signature.get(i));
-                            if (sigType==null || paramType==null) return false;
-                            if (sigType instanceof UnknownType || paramType instanceof UnknownType) return false;
-                            if (!erase(sigType).inherits(erase(paramType))) {
+                            ProducedType paramType = d.getUnit().getDefiniteType(params.get(i).getType());
+                            ProducedType sigType = d.getUnit().getDefiniteType(signature.get(i));
+                            TypeDeclaration paramTypeDec = paramType.getDeclaration();
+                            TypeDeclaration sigTypeDec = sigType.getDeclaration();
+                            if (sigTypeDec==null || paramTypeDec==null) return false;
+                            if (sigTypeDec instanceof UnknownType || paramTypeDec instanceof UnknownType) return false;
+                            if (!erase(sigTypeDec).inherits(erase(paramTypeDec)) &&
+                                    underlyingTypesUnequal(paramType, sigType)) {
                                 return false;
                             }
                         }
@@ -132,6 +133,13 @@ public class Util {
             return false;
         }
     }
+
+    private static boolean underlyingTypesUnequal(ProducedType paramType,
+            ProducedType sigType) {
+        return sigType.getUnderlyingType()==null || 
+                paramType.getUnderlyingType()==null || 
+                !sigType.getUnderlyingType().equals(paramType.getUnderlyingType());
+    }
     
     static boolean betterMatch(Declaration d, Declaration r) {
         if (d instanceof Functional && r instanceof Functional) {
@@ -142,13 +150,14 @@ public class Util {
                 List<Parameter> rpl = rpls.get(0).getParameters();
                 if (dpl.size()==rpl.size()) {
                     for (int i=0; i<dpl.size(); i++) {
-                        TypeDeclaration paramType = definiteTypeDec(d.getUnit(), 
-                                dpl.get(i).getType());
-                        TypeDeclaration otherType = definiteTypeDec(d.getUnit(), 
-                                rpl.get(i).getType());
-                        if (otherType==null || paramType==null) return false;
-                        if (otherType instanceof UnknownType || paramType instanceof UnknownType) return false;
-                        if (!erase(paramType).inherits(erase(otherType))) {
+                        ProducedType paramType = d.getUnit().getDefiniteType(dpl.get(i).getType());
+                        TypeDeclaration paramTypeDec = paramType.getDeclaration();
+                        ProducedType otherType = d.getUnit().getDefiniteType(rpl.get(i).getType());
+                        TypeDeclaration otherTypeDec = otherType.getDeclaration();
+                        if (otherTypeDec==null || paramTypeDec==null) return false;
+                        if (otherTypeDec instanceof UnknownType || paramTypeDec instanceof UnknownType) return false;
+                        if (!erase(paramTypeDec).inherits(erase(otherTypeDec)) &&
+                                underlyingTypesUnequal(paramType, otherType)) {
                             return false;
                         }
                     }
@@ -159,10 +168,6 @@ public class Util {
         return false;
     }
 
-    private static TypeDeclaration definiteTypeDec(Unit unit, ProducedType pt) {
-        return unit.getDefiniteType(pt).getDeclaration();
-    }
-    
     static boolean isNamed(String name, Declaration d) {
         String dname = d.getName();
         return dname!=null && dname.equals(name);
@@ -514,12 +519,17 @@ public class Util {
                     if (hasMatchingSignature(signature, d)) {
                         //we have found an exactly matching 
                         //overloaded declaration
+                        boolean add=true;
                         for (Iterator<Declaration> i = results.iterator(); i.hasNext();) {
-                            if (betterMatch(d,i.next())) {
+                            Declaration o = i.next();
+                            if (betterMatch(d, o)) {
                                 i.remove();
                             }
+                            else if (betterMatch(o, d)) { //TODO: note assymmetry here resulting in nondeterminate behavior!
+                                add=false;
+                            }
                         }
-                        results.add(d);
+                        if (add) results.add(d);
                     }
                 }
             }
