@@ -62,9 +62,8 @@ public class WebDAVContentStore extends URLContentStore {
     }
 
     public OpenNode create(Node parent, String child) {
-        final String path = NodeUtils.getFullPath(parent, SEPARATOR) + "/" + child;
         try {
-            getSardine().createDirectory(path);
+            mkdirs(parent);
             return createNode(child);
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
