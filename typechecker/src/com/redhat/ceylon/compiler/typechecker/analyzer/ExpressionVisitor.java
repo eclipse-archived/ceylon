@@ -2313,7 +2313,8 @@ public class ExpressionVisitor extends Visitor {
     private void checkOverloadedReference(Tree.MemberOrTypeExpression that) {
         if (that.getDeclaration() instanceof Functional &&
                 ((Functional)that.getDeclaration()).isAbstraction()) {
-            that.addError("ambiguous reference to overloaded method or class");
+            that.addError("ambiguous reference to overloaded method or class: " +
+                    that.getDeclaration().getName());
         }
     }
     
