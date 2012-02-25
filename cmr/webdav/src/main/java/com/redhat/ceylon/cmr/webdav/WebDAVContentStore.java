@@ -178,7 +178,13 @@ public class WebDAVContentStore extends URLContentStore {
         }
 
         public boolean hasBinaries() {
-            return true;
+            try {
+                final List<DavResource> list = getSardine().list(url);
+                return list.size() == 1 && list.get(0).isDirectory() == false;
+            } catch (IOException e) {
+                log.warning("Cannot list resources: " + url + "; error - " + e);
+                return false;
+            }
         }
 
         public InputStream getBinariesAsStream() throws IOException {
