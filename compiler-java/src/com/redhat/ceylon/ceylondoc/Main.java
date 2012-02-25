@@ -36,6 +36,8 @@ public class Main {
         boolean includeSourceCode = false;
         List<String> modules = new LinkedList<String>();
         List<String> repositories = new LinkedList<String>();
+        String user = null,pass = null;
+        
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
             if ("-h".equals(arg)
@@ -59,6 +61,13 @@ public class Main {
                 includeNonShared = true;
             } else if ("-source-code".equals(arg)) {
                 includeSourceCode = true;
+            } else if ("-user".equals(arg)) {
+                user = args[++i];
+            } else if ("-pass".equals(arg)) {
+                pass = args[++i];
+            } else if (arg.startsWith("-")) {
+                System.err.println(arg+": unknown option");
+                System.exit(1);
             } else {
                 modules.add(arg);
             }
@@ -90,7 +99,7 @@ public class Main {
 
         try{
             CeylonDocTool ceylonDocTool = new CeylonDocTool(sourceFolders, repositories, modules, false);
-            ceylonDocTool.setOutputRepository(destDir);
+            ceylonDocTool.setOutputRepository(destDir, user, pass);
             ceylonDocTool.setIncludeNonShared(includeNonShared);
             ceylonDocTool.setIncludeSourceCode(includeSourceCode);
             ceylonDocTool.makeDoc();
