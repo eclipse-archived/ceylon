@@ -15,7 +15,9 @@
 
     <build>
         <plugins>
-            <plugin>
+            <!-- YOU NEED TO RUN ANT ON CMR AND RUNTIME FIRST -->
+
+            <!-- plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>1.7</version>
                 <executions>
@@ -24,36 +26,32 @@
                         <configuration>
                             <target>
 
-                                <!-- Bootstrap -->
-                                <mkdir dir="../dist/lib"/>
+                                <mkdir dir="../build/dist/lib"/>
                                 <copy file="${user.home}/.m2/repository/org/jboss/modules/jboss-modules/${version.org.jboss.modules}/jboss-modules-${version.org.jboss.modules}.jar"
-                                      tofile="../dist/lib/jboss-modules.jar"/>
+                                      tofile="../build/dist/lib/jboss-modules.jar"/>
                                 <copy file="../bootstrap/target/modules-bootstrap-${project.version}.jar"
-                                      tofile="../dist/lib/ceylon-runtime-bootstrap.jar"/>
+                                      tofile="../build/dist/lib/ceylon-runtime-bootstrap.jar"/>
 
-                                <!-- Language -->
                                 <copy file="${user.home}/.ceylon/repo/ceylon/language/${version.com.redhat.ceylon.language}/ceylon.language-${version.com.redhat.ceylon.language}.car"
-                                      tofile="../dist/runtime-repo/ceylon/language/${version.com.redhat.ceylon.language}/ceylon.language-${version.com.redhat.ceylon.language}.car"/>
+                                      tofile="../build/dist/runtime-repo/ceylon/language/${version.com.redhat.ceylon.language}/ceylon.language-${version.com.redhat.ceylon.language}.car"/>
 
-                                <!-- Repository -->
                                 <copy file="${user.home}/.m2/repository/com/redhat/ceylon/cmr/cmr-spi/${version.com.redhat.ceylon.cmr}/cmr-spi-${version.com.redhat.ceylon.cmr}.jar"
-                                      tofile="../dist/runtime-repo/com/redhat/ceylon/cmr/main/cmr-spi.jar"/>
+                                      tofile="../build/dist/runtime-repo/com/redhat/ceylon/cmr/main/cmr-spi.jar"/>
                                 <copy file="${user.home}/.m2/repository/com/redhat/ceylon/cmr/cmr-api/${version.com.redhat.ceylon.cmr}/cmr-api-${version.com.redhat.ceylon.cmr}.jar"
-                                      tofile="../dist/runtime-repo/com/redhat/ceylon/cmr/main/cmr-api.jar"/>
+                                      tofile="../build/dist/runtime-repo/com/redhat/ceylon/cmr/main/cmr-api.jar"/>
                                 <copy file="${user.home}/.m2/repository/com/redhat/ceylon/cmr/cmr-impl/${version.com.redhat.ceylon.cmr}/cmr-impl-${version.com.redhat.ceylon.cmr}.jar"
-                                      tofile="../dist/runtime-repo/com/redhat/ceylon/cmr/main/cmr-impl.jar"/>
+                                      tofile="../build/dist/runtime-repo/com/redhat/ceylon/cmr/main/cmr-impl.jar"/>
 
-                                <!-- Runtime -->
                                 <copy file="../spi/target/modules-spi-${project.version}.jar"
-                                      tofile="../dist/runtime-repo/ceylon/runtime/main/ceylon.modules.spi.jar"/>
+                                      tofile="../build/dist/runtime-repo/ceylon/runtime/main/ceylon.modules.spi.jar"/>
                                 <copy file="../api/target/modules-api-${project.version}.jar"
-                                      tofile="../dist/runtime-repo/ceylon/runtime/main/ceylon.modules.api.jar"/>
+                                      tofile="../build/dist/runtime-repo/ceylon/runtime/main/ceylon.modules.api.jar"/>
                                 <copy file="../impl/target/modules-impl-${project.version}.jar"
-                                      tofile="../dist/runtime-repo/ceylon/runtime/main/ceylon.modules.jboss.jar"/>
+                                      tofile="../build/dist/runtime-repo/ceylon/runtime/main/ceylon.modules.jboss.jar"/>
 
-                                <!-- Create zipped dist/ -->
                                 <zip destfile="${user.home}/.ceylon/repo/ceylon-runtime-bootstrap/ceylon-runtime-bootstrap.zip"
-                                     basedir="../dist/runtime-repo"/>
+                                     basedir="../build/dist/runtime-repo"/>
+
                             </target>
                         </configuration>
                         <goals>
@@ -61,7 +59,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin -->
         </plugins>
     </build>
 

@@ -19,7 +19,7 @@ package org.jboss.ceylon.test.modules;
 
 import ceylon.modules.spi.Argument;
 import ceylon.modules.spi.Constants;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import org.jboss.modules.Main;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.exporter.ZipExporter;
@@ -164,7 +164,7 @@ public abstract class ModulesTest {
     protected static String toPathString(String name, String version) {
         final StringBuilder builder = new StringBuilder();
         builder.append(name.replace('.', File.separatorChar));
-        if (!Repository.DEFAULT_MODULE.equals(name))
+        if (RepositoryManager.DEFAULT_MODULE.equals(name) == false)
             builder.append(File.separatorChar).append(version);
         builder.append(File.separatorChar);
         return builder.toString();

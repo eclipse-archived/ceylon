@@ -18,8 +18,10 @@
 package ceylon.modules.jboss.runtime;
 
 import ceylon.modules.Configuration;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import org.jboss.modules.ModuleLoader;
+
+import java.net.URL;
 
 /**
  * Default Ceylon Modules runtime.
@@ -29,7 +31,9 @@ import org.jboss.modules.ModuleLoader;
 public class JBossRuntime extends AbstractJBossRuntime {
     @Override
     protected ModuleLoader createModuleLoader(Configuration conf) {
-        Repository repository = createRepository(conf);
+        RepositoryManager repository = createRepository(conf);
+        URL url = repository.getClass().getProtectionDomain().getCodeSource().getLocation();
+        System.out.println("url = " + url);
         return new CeylonModuleLoader(repository);
     }
 }

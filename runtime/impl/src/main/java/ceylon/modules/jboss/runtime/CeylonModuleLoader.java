@@ -20,7 +20,7 @@ package ceylon.modules.jboss.runtime;
 import ceylon.modules.api.runtime.AbstractRuntime;
 import ceylon.modules.api.util.ModuleVersion;
 import ceylon.modules.jboss.repository.ResourceLoaderProvider;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.compiler.java.metadata.Import;
 import com.redhat.ceylon.compiler.java.metadata.Module;
 import org.jboss.modules.DependencySpec;
@@ -82,11 +82,11 @@ public class CeylonModuleLoader extends ModuleLoader {
         JAVA_SYSTEM_PATHS.add("java/util");
     }
 
-    private Repository repository;
+    private RepositoryManager repository;
     private Map<ModuleIdentifier, List<DependencySpec>> dependencies = new ConcurrentHashMap<ModuleIdentifier, List<DependencySpec>>();
     private Graph<ModuleIdentifier, ModuleIdentifier, Boolean> graph = new Graph<ModuleIdentifier, ModuleIdentifier, Boolean>();
 
-    public CeylonModuleLoader(Repository repository) {
+    public CeylonModuleLoader(RepositoryManager repository) {
         if (repository == null)
             throw new IllegalArgumentException("Null repository adapter");
         this.repository = repository;
@@ -175,7 +175,7 @@ public class CeylonModuleLoader extends ModuleLoader {
             if (moduleFile == null)
                 return null;
 
-            final boolean isDefault = Repository.DEFAULT_MODULE.equals(moduleIdentifier.getName());
+            final boolean isDefault = RepositoryManager.DEFAULT_MODULE.equals(moduleIdentifier.getName());
 
             Module module = null;
             if (!isDefault) {

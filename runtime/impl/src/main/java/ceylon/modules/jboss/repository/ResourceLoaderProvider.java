@@ -17,7 +17,7 @@
 
 package ceylon.modules.jboss.repository;
 
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ResourceLoader;
 import org.jboss.modules.ResourceLoaders;
@@ -43,7 +43,7 @@ public class ResourceLoaderProvider {
      */
     public static ResourceLoader getResourceLoader(
             ModuleIdentifier moduleIdentifier,
-            Repository repository,
+            RepositoryManager repository,
             File moduleFile) throws IOException {
         File classesRoot = null; // TODO repository.getCompileDirectory();
         if (classesRoot != null) {

@@ -21,9 +21,8 @@ import ceylon.modules.CeylonRuntimeException;
 import ceylon.modules.Configuration;
 import ceylon.modules.Main;
 import ceylon.modules.api.runtime.AbstractRuntime;
-
 import com.redhat.ceylon.cmr.api.Logger;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.RepositoryBuilder;
 import com.redhat.ceylon.cmr.impl.RootBuilder;
@@ -51,10 +50,10 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
         } catch (ModuleNotFoundException e) {
             String spec = name;
             String hint = "";
-            if (Repository.DEFAULT_MODULE.equals(name)) {
-                if(version != null)
+            if (RepositoryManager.DEFAULT_MODULE.equals(name)) {
+                if (version != null)
                     hint = " (default module should not have any version)";
-            }else if(version != null) {
+            } else if (version != null) {
                 spec += "/" + version;
                 hint = " (invalid version?)";
             } else {
@@ -72,7 +71,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
      * @param conf the configuration
      * @return repository extension
      */
-    protected Repository createRepository(Configuration conf) {
+    protected RepositoryManager createRepository(Configuration conf) {
         Logger log = new JULLogger();
         final RepositoryBuilder builder = new RepositoryBuilder(log);
 
@@ -86,7 +85,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
                     final RootBuilder rb = new RootBuilder(token, log);
                     builder.appendExternalRoot(rb.buildRoot());
                 } catch (Exception e) {
-                    log.warning("Failed to add repository: " + token +": "+e.getMessage());
+                    log.warning("Failed to add repository: " + token + ": " + e.getMessage());
                 }
             }
         }
