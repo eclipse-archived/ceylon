@@ -23,6 +23,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import com.redhat.ceylon.compiler.java.test.cmr.CMRTest;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest;
 import com.redhat.ceylon.compiler.java.test.interop.InteropTest;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTest;
@@ -49,7 +50,8 @@ import com.redhat.ceylon.compiler.java.test.structure.StructureTest;
     StatementTest.class,
 	StructureTest.class,
 	TypeParserTest.class,
-	QuotingTest.class
+	QuotingTest.class,
+	CMRTest.class
 })
 public class AllTests {
 }
