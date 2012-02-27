@@ -1,7 +1,6 @@
 /*
  * Copyright 2011 Red Hat inc. and third party contributors as noted 
  * by the author tags.
- * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -77,7 +76,8 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
     }
 
     public File getArtifact(ArtifactContext context) throws IOException {
-        return getArtifactResult(context).artifact();
+        final ArtifactResult result = getArtifactResult(context);
+        return (result != null) ? result.artifact() : null;
     }
 
     public ArtifactResult getArtifactResult(String name, String version) throws IOException {
