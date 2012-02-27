@@ -1,0 +1,22 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+class Bug404 {
+    
+    private final void test() {
+        boolean sync;
+        sync = (let .ceylon.language.String $ceylontmp0 = .ceylon.language.String.instance(.ceylon.language.Float.instance(1.0).toString()) in new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("1"), .ceylon.language.String.instance("1.0")).contains($ceylontmp0));
+        final .ceylon.language.Iterable<? extends .ceylon.language.String> empty = .ceylon.language.$empty.getEmpty();
+        sync = !((let .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$1$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)empty,int $spread$1$2 = (int)$spread$1$0.getSize(),.ceylon.language.String[] $spread$1$4 = new .ceylon.language.String[$spread$1$2] in for (int $index$2 = 0; $index$2 < $spread$1$2; $index$2++) $spread$1$4[$index$2] = .ceylon.language.String.instance($spread$1$0.item(.ceylon.language.Integer.instance($index$2)).getUppercased());; new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$1$4)) instanceof .ceylon.language.Sequence);
+        final .ceylon.language.Iterable<? extends .ceylon.language.String> full = new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("foo"));
+        sync = (let .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$3$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)full,int $spread$3$2 = (int)$spread$3$0.getSize(),.ceylon.language.String[] $spread$3$4 = new .ceylon.language.String[$spread$3$2] in for (int $index$4 = 0; $index$4 < $spread$3$2; $index$4++) $spread$3$4[$index$4] = .ceylon.language.String.instance($spread$3$0.item(.ceylon.language.Integer.instance($index$4)).getUppercased());; new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$3$4)) instanceof .ceylon.language.Sequence;
+        final .ceylon.language.Iterable<? extends .ceylon.language.String> spread1 = (let .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$5$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)full,int $spread$5$2 = (int)$spread$5$0.getSize(),.ceylon.language.String[] $spread$5$4 = new .ceylon.language.String[$spread$5$2] in for (int $index$6 = 0; $index$6 < $spread$5$2; $index$6++) $spread$5$4[$index$6] = .ceylon.language.String.instance($spread$5$0.item(.ceylon.language.Integer.instance($index$6)).getUppercased());; new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$5$4));
+    }
+    
+    Bug404() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug404();
+    }
+}
