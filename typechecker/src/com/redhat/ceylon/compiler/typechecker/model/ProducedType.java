@@ -1127,8 +1127,13 @@ public class ProducedType extends ProducedReference {
         }
         String producedTypeName = "";
         if (getDeclaration().isMember()) {
-            producedTypeName += getQualifyingType().getProducedTypeName(abbreviate);
-            producedTypeName += ".";
+            ProducedType qt = getQualifyingType();
+            if (qt!=null) { 
+                //TODO: is this really ok to have no qualifying type?
+                //      or is it actually a bug in model loader?
+                producedTypeName += qt.getProducedTypeName(abbreviate);
+                producedTypeName += ".";
+            }
         }
         producedTypeName += getDeclaration().getName();
         if (!getTypeArgumentList().isEmpty()) {
