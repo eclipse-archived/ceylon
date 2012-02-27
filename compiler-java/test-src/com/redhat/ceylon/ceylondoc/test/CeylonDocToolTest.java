@@ -54,7 +54,7 @@ public class CeylonDocToolTest {
         if (dir.exists()) {
             Util.delete(dir);
         }
-        tool.setOutputRepository(dir.getAbsolutePath());
+        tool.setOutputRepository(dir.getAbsolutePath(), null, null);
         return tool;
     }
 
