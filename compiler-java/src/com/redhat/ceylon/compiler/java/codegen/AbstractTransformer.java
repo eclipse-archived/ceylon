@@ -785,7 +785,8 @@ public abstract class AbstractTransformer implements Transformation {
             // - The Ceylon type T results in the Java type T
             if(tdecl instanceof TypeParameter)
                 jt = makeQuotedIdent(tdecl.getName());
-            else if(simpleType.getUnderlyingType() == null)
+            // don't use underlying type if we want no primitives
+            else if((flags & (SATISFIES | NO_PRIMITIVES)) != 0 || simpleType.getUnderlyingType() == null)
                 jt = getDeclarationName(tdecl);
             else
                 jt = makeQuotedFQIdent(simpleType.getUnderlyingType());
