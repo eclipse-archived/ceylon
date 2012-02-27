@@ -27,7 +27,7 @@ import javax.tools.JavaFileManager;
 import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.compiler.java.codegen.BoxingDeclarationVisitor;
 import com.redhat.ceylon.compiler.java.codegen.BoxingVisitor;
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
@@ -214,15 +214,18 @@ public class CeylonEnter extends Enter {
         
         Paths.Path classPath = paths.getPathForLocation(StandardLocation.CLASS_PATH);
         
-        Repository repository = source == ModuleSource.REPO_LIST ? fileManager.getRepository() : fileManager.getOutputRepository();
+        RepositoryManager repositoryManager = 
+                source == ModuleSource.REPO_LIST ? 
+                        fileManager.getRepositoryManager() 
+                        : fileManager.getOutputRepositoryManager();
         File artifact = null;
         try {
             ArtifactContext ctx = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);
-            artifact = repository.getArtifact(ctx);
+            artifact = repositoryManager.getArtifact(ctx);
             if(artifact == null){
                 // try again for a jar
                 ctx.setSuffix(ArtifactContext.JAR);
-                artifact = repository.getArtifact(ctx);
+                artifact = repositoryManager.getArtifact(ctx);
             }
             if(verbose){
                 if(artifact != null)

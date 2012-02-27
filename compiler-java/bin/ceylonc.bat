@@ -18,6 +18,7 @@ set "JAVA_CP=%JAVA_CP%:%CEYLON_HOME%\lib\httpclient-4.1.1.jar"
 set "JAVA_CP=%JAVA_CP%:%CEYLON_HOME%\lib\httpcore-4.1.1.jar"
 set "JAVA_CP=%JAVA_CP%:%CEYLON_HOME%\lib\commons-logging-1.1.1.jar"
 set "JAVA_CP=%JAVA_CP%:%CEYLON_HOME%\lib\commons-codec-1.4.jar"
+set "JAVA_CP=%JAVA_CP%:%CEYLON_HOME%\lib\jandex-1.0.3.Final.jar"
 
 rem COMPILE_CP are classes required by the code being compiled
 set "COMPILE_CP=%CEYLON_REPO%\ceylon\language\%CEYLON_VERSION%\ceylon.language-%CEYLON_VERSION%.car;%USER_CP%"

@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.io.ArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
@@ -32,10 +32,10 @@ import com.redhat.ceylon.compiler.typechecker.io.VFS;
 
 public class RepositoryArtifactProvider implements ArtifactProvider {
 
-    private Repository repository;
+    private RepositoryManager repository;
     private VFS vfs;
 
-    public RepositoryArtifactProvider(Repository repository, VFS vfs) {
+    public RepositoryArtifactProvider(RepositoryManager repository, VFS vfs) {
         this.repository = repository;
         this.vfs = vfs;
     }

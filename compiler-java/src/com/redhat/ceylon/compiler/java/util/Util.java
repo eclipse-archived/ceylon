@@ -32,13 +32,13 @@ import java.util.List;
 import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.cmr.api.Logger;
-import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.impl.ArtifactContextAdapter;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.FileContentStore;
 import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
+import com.redhat.ceylon.cmr.impl.Repository;
 import com.redhat.ceylon.cmr.impl.RepositoryBuilder;
 import com.redhat.ceylon.cmr.impl.RootBuilder;
-import com.redhat.ceylon.cmr.impl.SimpleRepository;
+import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
@@ -401,7 +401,7 @@ public class Util {
                 && !decl.isShared();
     }
 
-    public static Repository makeRepository(List<String> userRepos, Logger log) {
+    public static RepositoryManager makeRepositoryManager(List<String> userRepos, Logger log) {
         final RepositoryBuilder builder = new RepositoryBuilder(log);
 
         // any user defined repos first
@@ -422,8 +422,8 @@ public class Util {
                         OpenNode root = new RootBuilder(repo, log).buildRoot();
                         builder.prependExternalRoot(root);
                     }else{
-                        ArtifactContextAdapter root = MavenRepositoryHelper.getMavenArtifactContextAdapter(repo, log);
-                        builder.prependExternalRoot(root);
+                        Repository mvnRepo = MavenRepositoryHelper.getMavenRepository(repo, log);
+                        builder.prependRepository(mvnRepo);
                     }
                 } catch (Exception e) {
                     log.warning("Failed to add repository: " + repo + ": "+e.getMessage());
@@ -440,7 +440,7 @@ public class Util {
         return builder.buildRepository();
     }
 
-    public static Repository makeOutputRepository(String outRepo, Logger log, String user, String password) {
+    public static RepositoryManager makeOutputRepositoryManager(String outRepo, Logger log, String user, String password) {
         if(outRepo == null){
             outRepo = "modules";
         }
@@ -463,7 +463,7 @@ public class Util {
             davContentStore.setPassword(password);
             structureBuilder = davContentStore;
         }
-        return new SimpleRepository(structureBuilder, log);
+        return new SimpleRepositoryManager(structureBuilder, log);
     }
 
     private static boolean isHTTP(String repo, Logger log) {

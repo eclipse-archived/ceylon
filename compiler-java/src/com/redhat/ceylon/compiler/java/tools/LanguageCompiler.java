@@ -132,7 +132,7 @@ public class LanguageCompiler extends JavaCompiler {
         if (ceylonContext == null) {
             CeyloncFileManager fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
             VFS vfs = new VFS();
-            ArtifactProvider artifactProvider = new RepositoryArtifactProvider(fileManager.getRepository(), vfs);
+            ArtifactProvider artifactProvider = new RepositoryArtifactProvider(fileManager.getRepositoryManager(), vfs);
             ceylonContext = new com.redhat.ceylon.compiler.typechecker.context.Context(Arrays.asList(artifactProvider) , vfs);
             context.put(ceylonContextKey, ceylonContext);
         }

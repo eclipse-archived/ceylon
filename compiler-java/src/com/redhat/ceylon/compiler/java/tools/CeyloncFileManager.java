@@ -46,7 +46,7 @@ import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
 
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -62,8 +62,8 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
     private JarOutputRepositoryManager jarRepository;
     private Context context;
     private Options options;
-    private Repository repo;
-    private Repository outputRepo;
+    private RepositoryManager repoManager;
+    private RepositoryManager outputRepoManager;
     private com.redhat.ceylon.cmr.api.Logger cmrLogger;
 
     public CeyloncFileManager(Context context, boolean register, Charset charset) {
@@ -152,7 +152,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
             if (sibling != null && sibling instanceof RegularFileObject) {
                 siblingFile = ((RegularFileObject)sibling).getUnderlyingFile();
             }
-            return jarRepository.getFileObject(getOutputRepository(), currentModule, fileName, siblingFile);
+            return jarRepository.getFileObject(getOutputRepositoryManager(), currentModule, fileName, siblingFile);
         }else
             return super.getFileForOutput(location, fileName, sibling);
     }
@@ -205,10 +205,10 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         currentModule = module;
     }
     
-    public Repository getRepository() {
+    public RepositoryManager getRepositoryManager() {
         // caching
-        if(repo != null)
-            return repo;
+        if(repoManager != null)
+            return repoManager;
         // lazy loading
         List<String> userRepos = new LinkedList<String>();
         userRepos.addAll(options.getMulti(OptionName.CEYLONREPO));
@@ -216,14 +216,14 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         String outRepo = getOutputRepoOption();
         if(!userRepos.contains(outRepo))
             userRepos.add(outRepo);
-        repo = Util.makeRepository(userRepos, cmrLogger);
-        return repo;
+        repoManager = Util.makeRepositoryManager(userRepos, cmrLogger);
+        return repoManager;
     }
 
-    public Repository getOutputRepository() {
+    public RepositoryManager getOutputRepositoryManager() {
         // caching
-        if(outputRepo != null)
-            return outputRepo;
+        if(outputRepoManager != null)
+            return outputRepoManager;
         // lazy loading
 
         // any user defined repos
@@ -232,8 +232,8 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         String user = options.get(OptionName.CEYLONUSER);
         String password = options.get(OptionName.CEYLONPASS);
         
-        outputRepo = Util.makeOutputRepository(outRepo, cmrLogger, user, password);
-        return outputRepo;
+        outputRepoManager = Util.makeOutputRepositoryManager(outRepo, cmrLogger, user, password);
+        return outputRepoManager;
     }
 
     private String getOutputRepoOption() {

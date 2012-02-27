@@ -39,7 +39,7 @@ import java.util.zip.ZipEntry;
 import javax.tools.JavaFileObject;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.compiler.java.util.ShaSigner;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -60,15 +60,15 @@ public class JarOutputRepositoryManager {
         this.ceyloncFileManager = ceyloncFileManager;
     }
     
-    public JavaFileObject getFileObject(Repository repository, Module module, String fileName, File sourceFile) throws IOException{
-        ProgressiveJar progressiveJar = getProgressiveJar(repository, module);
+    public JavaFileObject getFileObject(RepositoryManager repositoryManager, Module module, String fileName, File sourceFile) throws IOException{
+        ProgressiveJar progressiveJar = getProgressiveJar(repositoryManager, module);
         return progressiveJar.getJavaFileObject(fileName, sourceFile);
     }
     
-    private ProgressiveJar getProgressiveJar(Repository repository, Module module) throws IOException {
+    private ProgressiveJar getProgressiveJar(RepositoryManager repositoryManager, Module module) throws IOException {
         ProgressiveJar jarFile = openJars.get(module);
         if(jarFile == null){
-            jarFile = new ProgressiveJar(repository, module, log, options, ceyloncFileManager);
+            jarFile = new ProgressiveJar(repositoryManager, module, log, options, ceyloncFileManager);
             openJars.put(module, jarFile);
         }
         return jarFile;
@@ -103,15 +103,15 @@ public class JarOutputRepositoryManager {
         private Log log;
         private Options options;
         private CeyloncFileManager ceyloncFileManager;
-        private Repository repo;
+        private RepositoryManager repoManager;
         private ArtifactContext carContext;
         private ArtifactContext srcContext;
         
-        public ProgressiveJar(Repository repo, Module module, Log log, Options options, CeyloncFileManager ceyloncFileManager) throws IOException{
+        public ProgressiveJar(RepositoryManager repoManager, Module module, Log log, Options options, CeyloncFileManager ceyloncFileManager) throws IOException{
             this.log = log;
             this.options = options;
             this.ceyloncFileManager = ceyloncFileManager;
-            this.repo = repo;
+            this.repoManager = repoManager;
             this.carContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);
             this.srcContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.SRC);
 
@@ -120,14 +120,14 @@ public class JarOutputRepositoryManager {
         }
 
         private void setupJarOutput() throws IOException {
-            File targetJarFile = repo.getArtifact(carContext);
+            File targetJarFile = repoManager.getArtifact(carContext);
             outputJarFile = File.createTempFile("car", ".tmp");
             originalJarFile = targetJarFile;
             jarOutputStream = new JarOutputStream(new FileOutputStream(outputJarFile));
         }
 
         private void setupSrcOutput() throws IOException {
-            File targetSrcFile = repo.getArtifact(srcContext);
+            File targetSrcFile = repoManager.getArtifact(srcContext);
             outputSrcFile = File.createTempFile("src", ".tmp");
             originalSrcFile = targetSrcFile;
             srcOutputStream = new JarOutputStream(new FileOutputStream(outputSrcFile));
@@ -266,10 +266,10 @@ public class JarOutputRepositoryManager {
             }
             File sha1File = ShaSigner.sign(outputFile, log, options);
             context.setForceOperation(true);
-            repo.putArtifact(context, outputFile);
+            repoManager.putArtifact(context, outputFile);
             ArtifactContext sha1Context = context.getSha1Context();
             sha1Context.setForceOperation(true);
-            repo.putArtifact(sha1Context, sha1File);
+            repoManager.putArtifact(sha1Context, sha1File);
             // now cleanup
             outputFile.delete();
             sha1File.delete();

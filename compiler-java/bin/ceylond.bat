@@ -20,6 +20,7 @@ set "JAVA_CP=%JAVA_CP%:%CEYLON_HOME%\lib\httpclient-4.1.1.jar"
 set "JAVA_CP=%JAVA_CP%:%CEYLON_HOME%\lib\httpcore-4.1.1.jar"
 set "JAVA_CP=%JAVA_CP%:%CEYLON_HOME%\lib\commons-logging-1.1.1.jar"
 set "JAVA_CP=%JAVA_CP%:%CEYLON_HOME%\lib\commons-codec-1.4.jar"
+set "JAVA_CP=%JAVA_CP%:%CEYLON_HOME%\lib\jandex-1.0.3.Final.jar"
 
 if "%USER_CP%" NEQ "" (
     set "JAVA_CP=%JAVA_CP%;%USER_CP%"

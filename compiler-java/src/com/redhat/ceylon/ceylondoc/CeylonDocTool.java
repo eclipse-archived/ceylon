@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.compiler.java.tools.RepositoryArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
@@ -102,7 +102,7 @@ public class CeylonDocTool {
         this.log = new CeylondLogger();
         
         // set up the artifact repository
-        Repository repository = com.redhat.ceylon.compiler.java.util.Util.makeRepository(repositories, log );
+        RepositoryManager repository = com.redhat.ceylon.compiler.java.util.Util.makeRepositoryManager(repositories, log );
         ArtifactProvider artifactProvider = new RepositoryArtifactProvider(repository, builder.getVFS());
         builder.addArtifactProvider(artifactProvider);
         
@@ -272,7 +272,7 @@ public class CeylonDocTool {
         collectSubclasses();
 
         // make a destination repo
-        Repository outputRepository = com.redhat.ceylon.compiler.java.util.Util.makeOutputRepository(this.outputRepository, log, user, pass);
+        RepositoryManager outputRepository = com.redhat.ceylon.compiler.java.util.Util.makeOutputRepositoryManager(this.outputRepository, log, user, pass);
 
         // document every module
         boolean documentedOne = false;
