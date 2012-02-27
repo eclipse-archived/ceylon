@@ -26,7 +26,7 @@ public interface Scope {
 
     public Scope getContainer();
     
-    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity);
+    public Map<DeclarationKey, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity);
     
     @Deprecated 
     public List<Declaration> getMembers();

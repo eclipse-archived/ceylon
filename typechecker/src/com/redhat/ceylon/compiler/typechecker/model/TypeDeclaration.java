@@ -509,16 +509,16 @@ public abstract class TypeDeclaration extends Declaration
     }
     
     @Override
-    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
-        Map<String, DeclarationWithProximity> result = getMatchingMemberDeclarations(startingWith, proximity);
+    public Map<DeclarationKey, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
+        Map<DeclarationKey, DeclarationWithProximity> result = getMatchingMemberDeclarations(startingWith, proximity);
         //TODO: is this correct? I thought inherited declarations hide outer
         //      declarations! I think this is a bug
         result.putAll(super.getMatchingDeclarations(unit, startingWith, proximity));
         return result;
     }
 
-    public Map<String, DeclarationWithProximity> getMatchingMemberDeclarations(String startingWith, int proximity) {
-        Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
+    public Map<DeclarationKey, DeclarationWithProximity> getMatchingMemberDeclarations(String startingWith, int proximity) {
+        Map<DeclarationKey, DeclarationWithProximity> result = new HashMap<DeclarationKey, DeclarationWithProximity>();
         TypeDeclaration et = getExtendedTypeDeclaration();
         for (TypeDeclaration st: getSatisfiedTypeDeclarations()) {
             //TODO: account for the case where one interface refines
@@ -534,7 +534,7 @@ public abstract class TypeDeclaration extends Declaration
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && d.isShared() && 
                     isNameMatching(startingWith, d)) {
-                result.put(d.getName(), new DeclarationWithProximity(d, proximity));
+                result.put(new DeclarationKey(d), new DeclarationWithProximity(d, proximity));
             }
         }
         //TODO: self type?

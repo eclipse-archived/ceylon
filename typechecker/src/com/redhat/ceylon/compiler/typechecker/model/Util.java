@@ -201,6 +201,11 @@ public class Util {
             d.getName().toLowerCase().startsWith(startingWith.toLowerCase());
     }
     
+    static boolean isAbstraction(Declaration d) {
+        return d instanceof Functional ?
+            ((Functional) d).isAbstraction() : false;
+    }
+    
     /**
      * Collect together type arguments given a list of 
      * type arguments to a declaration and the receiving 

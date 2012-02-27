@@ -5,11 +5,11 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
 
@@ -113,12 +113,12 @@ public class Unit {
         return null;
     }
     
-    public Map<String, DeclarationWithProximity> getMatchingImportedDeclarations(String startingWith, int proximity) {
-    	Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
+    public Map<DeclarationKey, DeclarationWithProximity> getMatchingImportedDeclarations(String startingWith, int proximity) {
+    	Map<DeclarationKey, DeclarationWithProximity> result = new HashMap<DeclarationKey, DeclarationWithProximity>();
         for (Import i: getImports()) {
             if (i.getAlias()!=null &&
                     i.getAlias().toLowerCase().startsWith(startingWith.toLowerCase())) {
-                result.put(i.getAlias(), new DeclarationWithProximity(i, proximity));
+                result.put(new DeclarationKey(i), new DeclarationWithProximity(i, proximity));
             }
         }
         return result;

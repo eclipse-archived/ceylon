@@ -73,7 +73,7 @@ public class ImportList implements Scope {
     }
     
     @Override
-    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit,
+    public Map<DeclarationKey, DeclarationWithProximity> getMatchingDeclarations(Unit unit,
             String startingWith, int proximity) {
         if (importedPackage!=null) {
             return importedPackage.getImportableDeclarations(unit, startingWith, imports, proximity);

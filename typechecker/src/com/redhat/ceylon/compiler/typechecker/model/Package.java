@@ -6,9 +6,9 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.lookupMember;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class Package implements Scope {
 
@@ -155,11 +155,11 @@ public class Package implements Scope {
     }
     
     @Override
-    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
-        Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
+    public Map<DeclarationKey, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
+        Map<DeclarationKey, DeclarationWithProximity> result = new HashMap<DeclarationKey, DeclarationWithProximity>();
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && isNameMatching(startingWith, d)) {
-                result.put(d.getName(), new DeclarationWithProximity(d, proximity+1));
+                result.put(new DeclarationKey(d), new DeclarationWithProximity(d, proximity+1));
             }
         }
         if (unit!=null) {
@@ -168,8 +168,8 @@ public class Package implements Scope {
         return result;
     }
 
-    Map<String, DeclarationWithProximity> getImportableDeclarations(Unit unit, String startingWith, List<Import> imports, int proximity) {
-        Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
+    Map<DeclarationKey, DeclarationWithProximity> getImportableDeclarations(Unit unit, String startingWith, List<Import> imports, int proximity) {
+        Map<DeclarationKey, DeclarationWithProximity> result = new HashMap<DeclarationKey, DeclarationWithProximity>();
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && d.isShared() && isNameMatching(startingWith, d) ) {
                 boolean already = false;
@@ -180,7 +180,7 @@ public class Package implements Scope {
                     }
                 }
                 if (!already) {
-                    result.put(d.getName(), new DeclarationWithProximity(d, proximity));
+                    result.put(new DeclarationKey(d), new DeclarationWithProximity(d, proximity));
                 }
             }
         }

@@ -87,8 +87,8 @@ public abstract class TypedDeclaration extends Declaration {
     }
     
     @Override
-    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
-    	Map<String, DeclarationWithProximity> result = super.getMatchingDeclarations(unit, startingWith, proximity);
+    public Map<DeclarationKey, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
+    	Map<DeclarationKey, DeclarationWithProximity> result = super.getMatchingDeclarations(unit, startingWith, proximity);
     	TypeDeclaration td = getTypeDeclaration();
     	if (td instanceof Class && !((Class) td).isAbstract()) {
             //in case this is a named argument style definition,
@@ -96,7 +96,7 @@ public abstract class TypedDeclaration extends Declaration {
     	    //TODO: they should not hide locals with the same name!
     		for ( Parameter p: ((Class) td).getParameterList().getParameters() ) {
     			if ( isNameMatching(startingWith, p) ) {
-    				result.put(p.getName(), new DeclarationWithProximity(p, proximity));
+    				result.put(new DeclarationKey(p), new DeclarationWithProximity(p, proximity));
     			}
     		}
     	}
