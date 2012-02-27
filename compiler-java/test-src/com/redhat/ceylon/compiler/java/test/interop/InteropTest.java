@@ -47,6 +47,13 @@ public class InteropTest extends CompilerTest {
         compareWithJavaSource("Methods");
     }
 
+    @Ignore("M3")
+    @Test
+    public void testIopImplementOverloadedMethods(){
+        compile("JavaWithOverloadedMembers.java", "JavaWithOverloadedMembersSubClass.java");
+        compareWithJavaSource("ImplementOverloadedMethods");
+    }
+
     @Test
     public void testIopFields(){
         compile("JavaFields.java");

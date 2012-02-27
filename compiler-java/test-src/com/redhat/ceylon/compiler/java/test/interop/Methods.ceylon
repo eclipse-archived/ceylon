@@ -78,14 +78,3 @@ class OverloadedMembersAndSubClasses() extends JavaWithOverloadedMembersSubClass
 @nomodel
 class OverloadedMembersAndSubClasses2() extends JavaWithOverloadedMembersSubClass(2) {
 }
-
-@error
-@nomodel
-class OverloadedMembersAndSubClasses3() extends JavaWithOverloadedMembersSubClass() {
-    @error
-    shared actual void method(){}
-    @error
-    shared actual void method(Integer param){}
-    @error
-    shared actual void topMethod(){}
-}
