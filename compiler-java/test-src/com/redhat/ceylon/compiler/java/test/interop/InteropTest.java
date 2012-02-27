@@ -153,4 +153,12 @@ public class InteropTest extends CompilerTest {
                 new CompilerError(23, "com.redhat.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass is not public in com.redhat.ceylon.compiler.java.test.interop.access; cannot be accessed from outside package"));
     }
 
+    @Test
+    public void testIopOverrideStaticMethods(){
+        compile("JavaWithStaticMembers.java");
+        assertErrors("OverrideStaticMethods",
+                new CompilerError(26, "member refines a non-default, non-formal member"),
+                new CompilerError(28, "member refines a non-default, non-formal member")
+        );
+    }
 }

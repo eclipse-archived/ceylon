@@ -122,13 +122,3 @@ class StaticMethodsAndSubClasses() extends JavaWithStaticMembersSubClass() {
         stopField := stopField;
     }
 }
-
-// fails due to https://github.com/ceylon/ceylon-spec/issues/211
-@error
-@nomodel
-class StaticMethodsOverriding() extends JavaWithStaticMembers() {
-    @error
-    shared actual void topMethod(){}
-    @error
-    shared actual variable Integer topField := 2;
-}
