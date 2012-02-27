@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberOrTypeExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /** A Visitor that gathers ceylondoc info for each node's declaration.
@@ -53,8 +54,13 @@ public class DocVisitor extends Visitor {
                 retrieveDocs(pt.getDeclaration().getAnnotations(), that.getLocation());
             }
         }
-        if (that.getDeclaration() != null && that.getLocation() != null) {
-            retrieveDocs(that.getDeclaration().getAnnotations(), that.getLocation());
+        String loc = that.getLocation();
+        if (that.getDeclaration() != null && loc != null) {
+            if (that instanceof QualifiedMemberOrTypeExpression) {
+                QualifiedMemberOrTypeExpression qme = (QualifiedMemberOrTypeExpression)that;
+                loc = qme.getIdentifier().getLocation();
+            }
+            retrieveDocs(that.getDeclaration().getAnnotations(), loc);
         }
         super.visit(that);
     }
