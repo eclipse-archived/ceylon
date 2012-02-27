@@ -43,29 +43,6 @@ void staticMethods() {
     Object roots2 = sync.listRoots();
 }
 
-@nomodel
-@error
-void staticMethodsNamed() {
-    // currently broken because of https://github.com/ceylon/ceylon-spec/issues/208
-    // This is silly really, but we test it anyway
-    @error
-    variable File sync;
-    // on Type
-    @error
-    sync := createTempFile{arg0=""; arg1="";};
-    @error
-    sync := createTempFile{arg0=""; arg1=""; @error arg2=sync;};
-    @error
-    Object roots1 = listRoots{};
-    // on instances
-    @error
-    sync := sync.createTempFile{arg0=""; arg1="";};
-    @error
-    sync := sync.createTempFile{arg0=""; arg1=""; @error arg2=sync;};
-    @error
-    Object roots2 = sync.listRoots{};
-}
-
 @error
 @nomodel
 void staticMethodsAndSubClassesOnInstance() {
