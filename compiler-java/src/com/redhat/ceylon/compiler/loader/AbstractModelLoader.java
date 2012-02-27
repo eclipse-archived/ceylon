@@ -1113,7 +1113,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(methodMirror.isAbstract() || klass instanceof Interface) {
             decl.setFormal(true);
         } else {
-            if (!methodMirror.isFinal()) {
+            if (!methodMirror.isFinal() && !methodMirror.isStatic()) {
                 decl.setDefault(true);
             }
         }
