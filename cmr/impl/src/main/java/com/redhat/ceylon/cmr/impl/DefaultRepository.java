@@ -36,7 +36,7 @@ public class DefaultRepository extends AbstractRepository {
         super(root);
     }
 
-    public ArtifactResult getArtifactResult(RepositoryManager manager, Node node) {
+    protected ArtifactResult getArtifactResultInternal(RepositoryManager manager, Node node) {
         return new DefaultArtifactResult(manager, node);
     }
 

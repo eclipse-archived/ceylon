@@ -17,6 +17,7 @@
 package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
@@ -94,6 +95,12 @@ public abstract class AbstractRepository implements Repository {
         return current;
     }
 
+    protected abstract ArtifactResult getArtifactResultInternal(RepositoryManager manager, Node node);
+
+    public ArtifactResult getArtifactResult(RepositoryManager manager, Node node) {
+        return (node != null) ? getArtifactResultInternal(manager, node) : null;
+    }
+
     @Override
     public int hashCode() {
         return root.hashCode();
@@ -110,6 +117,6 @@ public abstract class AbstractRepository implements Repository {
 
     @Override
     public String toString() {
-        return "ArtifactContextAdapter for root: "+root;
+        return "ArtifactContextAdapter for root: " + root;
     }
 }

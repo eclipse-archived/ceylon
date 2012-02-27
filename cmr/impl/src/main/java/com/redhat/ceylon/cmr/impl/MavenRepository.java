@@ -44,7 +44,7 @@ public class MavenRepository extends AbstractRepository {
         return getArtifactName(p >= 0 ? name.substring(p + 1) : name, context.getVersion(), ArtifactContext.JAR);
     }
 
-    public ArtifactResult getArtifactResult(RepositoryManager manager, final Node node) {
+    protected ArtifactResult getArtifactResultInternal(RepositoryManager manager, final Node node) {
         return new ArtifactResult() {
             public ArtifactResultType type() {
                 return ArtifactResultType.MAVEN;
