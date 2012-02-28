@@ -28,9 +28,11 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Writer;
 import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -133,6 +135,32 @@ public class CMRTest extends CompilerTest {
         assertNotNull(subpackageClass);
 
         car.close();
+    }
+
+    @Test
+    public void testMdlCarWithInvalidSHA1() throws IOException{
+        compile("module/single/module.ceylon");
+        
+        File carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.module.single", "6.6.6");
+        assertTrue(carFile.exists());
+
+        JarFile car = new JarFile(carFile);
+        // just to be sure
+        ZipEntry moduleClass = car.getEntry("com/redhat/ceylon/compiler/java/test/cmr/module/single/module.class");
+        assertNotNull(moduleClass);
+        car.close();
+
+        // now let's break the SHA1
+        File shaFile = getArchiveName("com.redhat.ceylon.compiler.java.test.cmr.module.single", "6.6.6", destDir, "car.sha1");
+        Writer w = new FileWriter(shaFile);
+        w.write("fubar");
+        w.flush();
+        w.close();
+        
+        // now try to compile the subpackage with a broken SHA1
+        //compile("module/single/subpackage/Subpackage.ceylon");
+        assertErrors("module/single/subpackage/Subpackage", 
+                new CompilerError(-1, "Module car "+destDir+"/com/redhat/ceylon/compiler/java/test/cmr/module/single/6.6.6/com.redhat.ceylon.compiler.java.test.cmr.module.single-6.6.6.car has an invalid SHA1 signature: you need to remove it and rebuild the archive, since it may be corrupted."));
     }
 
     @Test
