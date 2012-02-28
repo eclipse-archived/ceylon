@@ -380,7 +380,9 @@ public class Enter extends JCTree.Visitor {
             return;
         }
         chk.compiled.put(c.flatname, c);
-        enclScope.enter(c);
+        // CEYLON(stef): don't add anonymous classes to the environment 
+        if(tree.name.length() != 0)
+            enclScope.enter(c);
 
         // Set up an environment for class block and store in `typeEnvs'
         // table, to be retrieved later in memberEnter and attribution.
