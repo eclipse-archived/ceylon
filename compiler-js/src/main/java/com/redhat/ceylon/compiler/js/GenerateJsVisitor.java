@@ -2010,26 +2010,28 @@ public class GenerateJsVisitor extends Visitor
                && (qualifiedPath(that, outerVar).length() == 0);
    }
    
-   private void specialConditionCheck(Condition condition, Term variableRHS,
-                                      boolean simpleCheck) {
-       if (condition instanceof ExistsOrNonemptyCondition) {
-           specialConditionRHS(variableRHS, simpleCheck);
-           if (condition instanceof NonemptyCondition) {
-               out(".getEmpty()===");
-               clAlias();
-               out(".getFalse()");
-           } else {
-               out("!==null");
-           }
-           
-       } else {
-           Type type = ((IsCondition) condition).getType();
-           generateIsOfType(variableRHS, null, type, simpleCheck);
-           out("===");
-           clAlias();
-           out(".getTrue()");
-       }
-   }
+    private void specialConditionCheck(Condition condition, Term variableRHS, boolean simpleCheck) {
+        if (condition instanceof ExistsOrNonemptyCondition) {
+            if (condition instanceof NonemptyCondition) {
+                clAlias();
+                out(".nonempty(");
+                specialConditionRHS(variableRHS, simpleCheck);
+                out(")===");
+                clAlias();
+                out(".getFalse()");
+            } else {
+                specialConditionRHS(variableRHS, simpleCheck);
+                out("!==null");
+            }
+            
+        } else {
+            Type type = ((IsCondition) condition).getType();
+            generateIsOfType(variableRHS, null, type, simpleCheck);
+            out("===");
+            clAlias();
+            out(".getTrue()");
+        }
+    }
    
     private void specialConditionRHS(Term variableRHS, boolean simple) {
         if (simple) {
