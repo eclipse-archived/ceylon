@@ -39,13 +39,21 @@ import com.sun.tools.javac.util.ListBuffer;
 public class InvocationBuilder {
     private final AbstractTransformer gen;
     private final Tree.InvocationExpression invocation;
-    ListBuffer<JCVariableDecl> vars;
-    ListBuffer<JCExpression> args;
-    List<JCExpression> typeArgs;
-    String callVarName;
+    private ListBuffer<JCVariableDecl> vars;
+    private ListBuffer<JCExpression> args;
+    private List<JCExpression> typeArgs;
+    private String callVarName;
     
     public static InvocationBuilder invocation(AbstractTransformer gen, Tree.InvocationExpression invocation) {
-        return new InvocationBuilder(gen, invocation);
+        InvocationBuilder builder = new InvocationBuilder(gen, invocation);
+        if (invocation.getPositionalArgumentList() != null) {
+            builder.transformPositionalInvocation(invocation);
+        } else if (invocation.getNamedArgumentList() != null) {
+            builder.transformNamedInvocation(invocation);
+        } else {
+            throw new RuntimeException("Illegal State");
+        }
+        return builder;
     }
     
     private InvocationBuilder(AbstractTransformer gen, Tree.InvocationExpression invocation) {
@@ -54,18 +62,12 @@ public class InvocationBuilder {
     }
     
     public JCExpression build() {
-        if (invocation.getPositionalArgumentList() != null) {
-            return transformPositionalInvocation(invocation);
-        } else if (invocation.getNamedArgumentList() != null) {
-            return transformNamedInvocation(invocation);
-        } else {
-            throw new RuntimeException("Illegal State");
-        }
+        return makeInvocation();
     }
     
     // Named invocation
     
-    private JCExpression transformNamedInvocation(final Tree.InvocationExpression ce) {
+    private void transformNamedInvocation(final Tree.InvocationExpression ce) {
         ListBuffer<JCVariableDecl> vars = ListBuffer.lb();
         ListBuffer<JCExpression> args = ListBuffer.lb();
 
@@ -179,12 +181,10 @@ public class InvocationBuilder {
             }
         }
 
-        this.vars= vars;
+        this.vars = vars;
         this.args = args;
         this.typeArgs = typeArgs;
         this.callVarName = callVarName;
-        
-        return makeInvocation();
     }
     
     private boolean containsParameter(java.util.List<Tree.NamedArgument> namedArguments, Parameter param) {
@@ -199,7 +199,7 @@ public class InvocationBuilder {
 
     // Positional invocation
     
-    private JCExpression transformPositionalInvocation(Tree.InvocationExpression ce) {
+    private void transformPositionalInvocation(Tree.InvocationExpression ce) {
         ListBuffer<JCVariableDecl> vars = null;
         ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
 
@@ -320,8 +320,6 @@ public class InvocationBuilder {
         this.args = args;
         this.typeArgs = typeArgs;
         this.callVarName = callVarName;
-        
-        return makeInvocation();
     }
 
     // Make a list of $arg0, $arg1, ... , $argN
