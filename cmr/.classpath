@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="lib/httpclient-4.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/httpcore-4.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/jandex-1.0.3.Final.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
