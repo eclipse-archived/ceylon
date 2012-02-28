@@ -37,8 +37,12 @@ import com.sun.tools.javac.util.ListBuffer;
 
 
 public class InvocationBuilder {
-    private AbstractTransformer gen;
-    private Tree.InvocationExpression invocation;
+    private final AbstractTransformer gen;
+    private final Tree.InvocationExpression invocation;
+    ListBuffer<JCVariableDecl> vars;
+    ListBuffer<JCExpression> args;
+    List<JCExpression> typeArgs;
+    String callVarName;
     
     public static InvocationBuilder invocation(AbstractTransformer gen, Tree.InvocationExpression invocation) {
         return new InvocationBuilder(gen, invocation);
@@ -175,7 +179,12 @@ public class InvocationBuilder {
             }
         }
 
-        return makeInvocation(ce, vars, args, typeArgs, callVarName);
+        this.vars= vars;
+        this.args = args;
+        this.typeArgs = typeArgs;
+        this.callVarName = callVarName;
+        
+        return makeInvocation();
     }
     
     private boolean containsParameter(java.util.List<Tree.NamedArgument> namedArguments, Parameter param) {
@@ -307,7 +316,12 @@ public class InvocationBuilder {
             }
         }
 
-        return makeInvocation(ce, vars, args, typeArgs, callVarName);
+        this.vars = vars;
+        this.args = args;
+        this.typeArgs = typeArgs;
+        this.callVarName = callVarName;
+        
+        return makeInvocation();
     }
 
     // Make a list of $arg0, $arg1, ... , $argN
@@ -328,15 +342,10 @@ public class InvocationBuilder {
         names = names.appendList(makeVarRefArgumentList(varBaseName, argCount));
         return names;
     }
-
-    private JCExpression makeInvocation(
-            final Tree.InvocationExpression ce,
-            final ListBuffer<JCVariableDecl> vars,
-            final ListBuffer<JCExpression> args,
-            final List<JCExpression> typeArgs,
-            final String callVarName) {
-        gen.at(ce);
-        JCExpression result = gen.expressionGen().transformPrimary(ce.getPrimary(), new TermTransformer() {
+    
+    private JCExpression makeInvocation() {
+        gen.at(invocation);
+        JCExpression result = gen.expressionGen().transformPrimary(invocation.getPrimary(), new TermTransformer() {
 
             @Override
             public JCExpression transform(JCExpression primaryExpr, String selector) {
@@ -344,7 +353,7 @@ public class InvocationBuilder {
                 if (vars != null && !vars.isEmpty() && primaryExpr != null && selector != null) {
                     // Prepare the first argument holding the primary for the call
                     JCExpression callVarExpr = gen.makeUnquotedIdent(callVarName);
-                    ProducedType type = ((Tree.QualifiedMemberExpression)ce.getPrimary()).getTarget().getQualifyingType();
+                    ProducedType type = ((Tree.QualifiedMemberExpression)invocation.getPrimary()).getTarget().getQualifyingType();
                     JCVariableDecl callVar = gen.makeVar(callVarName, gen.makeJavaType(type, AbstractTransformer.NO_PRIMITIVES), primaryExpr);
                     vars.prepend(callVar);
                     actualPrimExpr = callVarExpr;
@@ -353,17 +362,17 @@ public class InvocationBuilder {
                 }
                 
                 JCExpression resultExpr;
-                if (ce.getPrimary() instanceof Tree.BaseTypeExpression) {
-                    ProducedType classType = (ProducedType)((Tree.BaseTypeExpression)ce.getPrimary()).getTarget();
+                if (invocation.getPrimary() instanceof Tree.BaseTypeExpression) {
+                    ProducedType classType = (ProducedType)((Tree.BaseTypeExpression)invocation.getPrimary()).getTarget();
                     resultExpr = gen.make().NewClass(null, null, gen.makeJavaType(classType, AbstractTransformer.CLASS_NEW), args.toList(), null);
-                } else if (ce.getPrimary() instanceof Tree.QualifiedTypeExpression) {
+                } else if (invocation.getPrimary() instanceof Tree.QualifiedTypeExpression) {
                     resultExpr = gen.make().NewClass(actualPrimExpr, null, gen.makeQuotedIdent(selector), args.toList(), null);
                 } else {
                     resultExpr = gen.make().Apply(typeArgs, gen.makeQuotedQualIdent(actualPrimExpr, selector), args.toList());
                 }
 
                 if (vars != null && !vars.isEmpty()) {
-                    ProducedType returnType = ce.getTypeModel();
+                    ProducedType returnType = invocation.getTypeModel();
                     if (gen.isVoid(returnType)) {
                         // void methods get wrapped like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1); null)
                         return gen.make().LetExpr(vars.toList(), List.<JCStatement>of(gen.make().Exec(resultExpr)), gen.makeNull());
