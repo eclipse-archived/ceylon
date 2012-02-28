@@ -117,6 +117,6 @@ public abstract class AbstractRepository implements Repository {
 
     @Override
     public String toString() {
-        return "ArtifactContextAdapter for root: " + root;
+        return "Repository for root: " + root;
     }
 }
