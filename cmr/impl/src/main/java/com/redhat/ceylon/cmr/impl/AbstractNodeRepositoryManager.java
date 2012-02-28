@@ -178,7 +178,8 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             }
             // check sha
             if (result != null && result == false)
-                throw new IllegalArgumentException("Invalid SHA1 for artifact: " + context);
+                throw new InvalidArchiveException("Invalid SHA1 for artifact: " + context, 
+                        NodeUtils.getFullPath(node));
         }
 
         // save the context info
