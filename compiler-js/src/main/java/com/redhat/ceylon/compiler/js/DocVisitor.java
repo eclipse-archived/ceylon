@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseType;
@@ -48,12 +47,11 @@ public class DocVisitor extends Visitor {
     //This catches function calls, method/attribute calls, object refs, constructors.
     @Override
     public void visit(MemberOrTypeExpression that) {
-        //Can't get location for this
-        if (that.getTypeModel() != null && !that.getTypeModel().getTypeArgumentList().isEmpty()) {
+        /*if (that.getTypeModel() != null && !that.getTypeModel().getTypeArgumentList().isEmpty()) {
             for (ProducedType pt : that.getTypeModel().getTypeArgumentList()) {
                 retrieveDocs(pt.getDeclaration().getAnnotations(), that.getLocation());
             }
-        }
+        }*/
         String loc = that.getLocation();
         if (that.getDeclaration() != null && loc != null) {
             if (that instanceof QualifiedMemberOrTypeExpression) {
@@ -79,11 +77,6 @@ public class DocVisitor extends Visitor {
     @Override
     public void visit(BaseType that) {
         retrieveDocs(that.getDeclarationModel().getType().getDeclaration().getAnnotations(), that.getLocation());
-        super.visit(that);
-    }
-
-    @Override
-    public void visit(com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation that) {
         super.visit(that);
     }
 
