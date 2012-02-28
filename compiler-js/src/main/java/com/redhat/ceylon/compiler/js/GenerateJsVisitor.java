@@ -2018,7 +2018,7 @@ public class GenerateJsVisitor extends Visitor
                 specialConditionRHS(variableRHS, simpleCheck);
                 out(")===");
                 clAlias();
-                out(".getFalse()");
+                out(".getTrue()");
             } else {
                 specialConditionRHS(variableRHS, simpleCheck);
                 out("!==null");
