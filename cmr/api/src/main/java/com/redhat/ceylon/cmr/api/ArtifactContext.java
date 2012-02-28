@@ -154,7 +154,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
 
     @Override
     public String toString() {
-        return getName() + "-" + getVersion();
+        return getName() + "-" + getVersion() + suffix;
     }
 
     public boolean forceOperation() {
