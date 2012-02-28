@@ -19,6 +19,7 @@
  */
 doc "This is `StubClass`"
 see(StubInterface)
+tagged("stubTag1", "stubTag2")
 shared class StubClass() satisfies StubInterface {
 
     doc "The stub attribute with `throws`."
@@ -29,6 +30,10 @@ shared class StubClass() satisfies StubInterface {
     see (methodWithSee, StubException)
     shared Integer attributeWithSee = 0;
     
+    doc "The stub attribute with `tagged`."
+    tagged("stubTag1")
+    shared Integer attributeWithTagged = 0;
+    
     doc "The stub method with `throws`."
     throws (StubException, "`when` with __WIKI__ syntax")
     shared void methodWithThrows() {}
@@ -36,6 +41,10 @@ shared class StubClass() satisfies StubInterface {
     doc "The stub method with `see`."
     see (attributeWithSee, StubException)
     shared void methodWithSee() {}
+    
+    doc "The stub method with `tagged`."
+    tagged("stubTag2")
+    shared void methodWithTagged() {}
     
     shared actual void formalMethod() {}
     

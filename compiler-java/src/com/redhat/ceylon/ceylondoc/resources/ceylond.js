@@ -45,11 +45,11 @@ jQuery(function(){
  var matches = [];
  var previousSearch;
  function search(q){
-	 if(q)
-		 q = q.toLowerCase();
-	 // abort if nothing new
-	 if(previousSearch == q)
-		 return;
+     if(q)
+         q = q.toLowerCase();
+     // abort if nothing new
+     if(previousSearch == q)
+         return;
 
 	 // reset
 	 var results = jQuery("#results");
@@ -61,50 +61,72 @@ jQuery(function(){
 	 // if we're empty, leave now
 	 if(!q)
 		 return;
-
+	 
 	 // collect matches
 	 jQuery.each(index, function(i, elem){
-		if(elem.name.toLowerCase().indexOf(q) != -1)
-			matches.push(elem);
+	     var matchedElement = null;
+	     
+	     if( elem.name.toLowerCase().indexOf(q) != -1 ) {	         
+	         matchedElement = jQuery.extend(true, {}, elem); // clone
+	         matchedElement.score = calculateScore(matchedElement.name, q);
+	     }
+	         
+	     for(i=0;i<elem.tags.length; i++) {
+	         var tag = elem.tags[i];
+	         if( tag.toLowerCase().indexOf(q) != -1 ) {
+	             if( !matchedElement ) {
+	                 matchedElement = jQuery.extend(true, {}, elem); // clone
+	                 matchedElement.score = 0;
+	             }	        
+	             matchedElement.tagMatch = true;
+	             matchedElement.score = matchedElement.score + calculateScore(tag, q);
+	         }
+	     }
+	     
+	     if( matchedElement ) {
+	         matches.push(matchedElement);
+	     }
 	 });
 	 // sort them
 	 matches.sort(function(a, b){ 
-		 var resA = matchScore(a.name, q);
-		 var resB = matchScore(b.name, q);
-		 if(resA[0] == resB[0])
-			 return resA[1] - resB[1];
-		 return resA[0] - resB[0];
+       return b.score - a.score;
 	 });
 	 // display them
 	 jQuery.each(matches, function(i, elem){
 		var div = jQuery("<div/>").addClass("match");
 		if(i == 0)
 			div.addClass("selected");
-		var name = elem.name;
-		var matchStart = name.toLowerCase().indexOf(q);
-		var before = name.substring(0, matchStart);
-		var match = name.substring(matchStart, matchStart + q.length);
-		var after = name.substring(matchStart + q.length);
-		var matchSpan = jQuery("<span/>").addClass("highlight").text(match);
-		var link = jQuery("<a/>").attr("href", elem.url).append(before).append(matchSpan).append(after);
+
+		var elemLink = jQuery("<a/>").attr("href", elem.url).append(highlightMatch(elem.name, q));
+		
 		jQuery("<div/>").addClass("type").text(elem.type).appendTo(div);
-		jQuery("<div/>").addClass("name").append(link).appendTo(div);
+		jQuery("<div/>").addClass("name").append(elemLink).appendTo(div);
 		jQuery("<div/>").addClass("doc").html(elem.doc).appendTo(div);
+
+		if (elem.tagMatch) {
+		    var tagsDiv = jQuery("<div/>").addClass("tags").append("Tags: ");
+		    for (i = 0; i < elem.tags.length; i++) {
+		        var tag = elem.tags[i];
+		        var tagLink = jQuery("<a/>").attr("href", "search.html?q=".concat(tag)).append(highlightMatch(tag, q));
+		        tagsDiv.append(tagLink);
+		        if (i < elem.tags.length - 1) {
+		            tagsDiv.append(", ");
+		        }
+		    }
+		    tagsDiv.appendTo(div);
+		}
+		
 		results.append(div);
 	 });
  }
-
- function matchScore(name, q){
-	 if(name == q)
-		 return [0,0];
-	 // favour those that start with the query string
-	 var index = name.toLowerCase().indexOf(q);
-	 if(index == 0)
-		 return [1, name.length]; // discriminator is smallest remaining string
-	 // discriminator is how close to the start we are
-	 return [2, index];
- }
  
+ jQuery("#q").each(function(){
+     var q = getUrlVars()['q'];
+     if(q) {
+         jQuery(this).val(q);         
+         search(q);
+     }
+ }); 
  jQuery("#q").keyup(function(){
 	 var q = jQuery(this).val();
 	 search(q);
@@ -136,7 +158,34 @@ jQuery(function(){
 	 }
  }).focus();
  
- function nextMatch(){
+ function calculateScore(text, q) {
+     var SCORE_EXACT      = 1000000000;
+     var SCORE_START_WITH = 1000000;
+     var SCORE_CONTAINS   = 1000;
+     
+     text = text.toLowerCase();
+     var index = text.indexOf(q);
+     
+     if( text == q )
+         return SCORE_EXACT;
+     else if( index == 0 )
+         return SCORE_START_WITH-text.length;
+     else 
+       return SCORE_CONTAINS-index;
+ }
+ 
+ function highlightMatch(text, q) {
+     var matchStart = text.toLowerCase().indexOf(q);
+     if( matchStart == -1 )
+         return text;
+
+     var before = text.substring(0, matchStart);
+     var match = text.substring(matchStart, matchStart + q.length);
+     var after = text.substring(matchStart + q.length);
+     return jQuery("<span/>").append(before).append(jQuery("<span/>").addClass("highlight").text(match)).append(after);
+ }
+  
+ function nextMatch() {
 	 if(matches.length < 2)
 		 return;
 	 jQuery(".match.selected").removeClass("selected");
@@ -144,13 +193,26 @@ jQuery(function(){
 		 selected++;
 	 jQuery(".match:eq("+selected+")").addClass("selected");
  }
- function previousMatch(){
-	 if(matches.length < 2)
-		 return;
-	 jQuery(".match.selected").removeClass("selected");
-	 if(selected > 0)
-		 selected--;
-	 jQuery(".match:eq("+selected+")").addClass("selected");
+ 
+ function previousMatch() {
+     if(matches.length < 2)
+         return;
+     jQuery(".match.selected").removeClass("selected");
+     if(selected > 0)
+         selected--;
+     jQuery(".match:eq("+selected+")").addClass("selected");
  }
-});
 
+ function getUrlVars() {
+     var vars = [];
+     var hash;
+     var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+     for ( var i = 0; i < hashes.length; i++) {
+         hash = hashes[i].split('=');
+         vars.push(hash[0]);
+         vars[hash[0]] = hash[1];
+     }
+     return vars;
+ } 
+
+});

@@ -26,6 +26,7 @@ import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Iterator;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
@@ -124,6 +125,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         startPrintingLongDoc(m);
         writeThrows(m);
         writeSee(m);
+        writeTagged(m);
         endLongDocAndPrintShortDoc(m);
         close("td");
         close("tr");
@@ -166,6 +168,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         startPrintingLongDoc(f);
         writeThrows(f);
         writeSee(f);
+        writeTagged(f);
         endLongDocAndPrintShortDoc(f);
         close("td");
         close("tr");
@@ -262,6 +265,25 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             write(Util.wikiToHTML(text));
             close("div");
         }
-    }    
+    }
+    
+    protected void writeTagged(Declaration decl) throws IOException {
+        List<String> tags = Util.getTags(decl);
+        if (!tags.isEmpty()) {
+            open("div class='tags'");
+            write("Tags: ");
+
+            Iterator<String> tagIterator = tags.iterator();
+            while (tagIterator.hasNext()) {
+                String tag = tagIterator.next();
+                write("<a href='search.html?q=" + tag + "'>" + tag + "</a>");
+                if (tagIterator.hasNext()) {
+                    write(", ");
+                }
+            }
+
+            close("div");
+        }
+    }
 
 }
