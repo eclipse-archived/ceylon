@@ -79,6 +79,9 @@
     		<classpath>
     			<pathelement location="${ceylon.typechecker.lib}" />
     			<pathelement location="${build.classes}" />
+				<fileset dir="lib">
+					<include name="**/*.jar" />
+				</fileset>
     		</classpath>
     	</javac>
 	</target>
