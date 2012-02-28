@@ -28,6 +28,7 @@ import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.impl.InvalidArchiveException;
 import com.redhat.ceylon.compiler.java.codegen.BoxingDeclarationVisitor;
 import com.redhat.ceylon.compiler.java.codegen.BoxingVisitor;
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
@@ -233,8 +234,15 @@ public class CeylonEnter extends Enter {
                 else
                     Log.printLines(log.noticeWriter, "[Could not find module]");
             }
-        } catch (IOException e) {
-            // FIXME: error? warning?
+        } catch (InvalidArchiveException e) {
+            log.error("ceylon", "Module car "+e.getPath()
+                    +" has an invalid SHA1 signature: you need to remove it and rebuild the archive, since it"
+                    +" may be corrupted.");
+        } catch (Exception e) {
+            String moduleName = module.getNameAsString();
+            if(!module.isDefault())
+                moduleName += "/" + module.getVersion();
+            log.error("ceylon", "Exception occured while trying to resolve module "+moduleName);
             e.printStackTrace();
         }
         if(artifact != null && artifact.exists())
