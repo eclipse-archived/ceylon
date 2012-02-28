@@ -59,6 +59,9 @@
         	<arg value="${js-src}/${jslangfile}" />
         	<arg value="${runtime}/${jslangpath}" />
         </java>
+        <copy todir="build">
+        	<dirset dir="src" includes="bin" />
+        </copy>
     </target>
 
     <!-- build jscompiler jar -->
