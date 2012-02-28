@@ -167,13 +167,13 @@ public class StatementTransformer extends AbstractTransformer {
                 JCExpression tmpVarExpr = makeUnquotedIdent(tmpVarName);
                 if (cond instanceof Tree.ExistsCondition) {
                     tmpVarExpr = unboxType(tmpVarExpr, toType);
-                    tmpVarTypeExpr = makeJavaType(tmpVarType);
+                    tmpVarTypeExpr = makeJavaType(tmpVarType, NO_PRIMITIVES);
                 } else if(cond instanceof Tree.IsCondition){
                     tmpVarExpr = unboxType(at(cond).TypeCast(rawToTypeExpr, tmpVarExpr), toType);
                     tmpVarTypeExpr = make().Type(syms().objectType);
                 } else {
                     tmpVarExpr = at(cond).TypeCast(toTypeExpr, tmpVarExpr);
-                    tmpVarTypeExpr = makeJavaType(tmpVarType);
+                    tmpVarTypeExpr = makeJavaType(tmpVarType, NO_PRIMITIVES);
                 }
                 
                 // Temporary variable holding the result of the expression/variable to test
