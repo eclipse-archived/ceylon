@@ -77,6 +77,17 @@ public class Util {
     public static String getDocFirstLine(Module module) {
         return wikiToHTML(getFirstLine(module.getDoc()));
     }
+    
+    public static List<String> getTags(Declaration decl) {
+        List<String> tags = new ArrayList<String>();
+        Annotation tagged = Util.getAnnotation(decl, "tagged");
+        if (tagged != null) {
+            for (String tag : tagged.getPositionalArguments()) {
+                tags.add(Util.unquote(tag));
+            }
+        }
+        return tags;
+    }
 
     public static String wikiToHTML(String text) {
         return new MarkdownProcessor().markdown(text);

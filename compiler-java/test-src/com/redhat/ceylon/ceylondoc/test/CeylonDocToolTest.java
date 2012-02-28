@@ -181,6 +181,7 @@ public class CeylonDocToolTest {
         assertIcons(destDir);
         assertInnerTypesDoc(destDir);
         assertDeprecated(destDir);
+        assertTagged(destDir);
     }
 
     private void assertBy(File destDir) throws IOException {
@@ -249,6 +250,23 @@ public class CeylonDocToolTest {
                 Pattern.compile("<div class='deprecated'><p><strong>Deprecated:</strong> Don't use this method"));
     }
     
+    private void assertTagged(File destDir) throws IOException {
+        assertMatchInFile(destDir, ".resources/index.js", 
+                Pattern.compile("\\{'name': 'StubClass', 'type': 'class', 'url': 'class_StubClass.html', 'doc': '<p>This is <code>StubClass</code></p>\\\\n', 'tags': \\['stubTag1', 'stubTag2'\\]\\}"));
+        assertMatchInFile(destDir, ".resources/index.js", 
+                Pattern.compile("\\{'name': 'StubClass.attributeWithTagged', 'type': 'value', 'url': 'class_StubClass.html#attributeWithTagged', 'doc': '<p>The stub attribute with <code>tagged</code>.</p>\\\\n', 'tags': \\['stubTag1'\\]\\}"));
+        assertMatchInFile(destDir, ".resources/index.js", 
+                Pattern.compile("\\{'name': 'StubClass.methodWithTagged', 'type': 'function', 'url': 'class_StubClass.html#methodWithTagged', 'doc': '<p>The stub method with <code>tagged</code>.</p>\\\\n', 'tags': \\['stubTag2'\\]\\}"));
+        
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<div class='tags'>Tags: <a href='search.html\\?q=stubTag1'>stubTag1</a>, <a href='search.html\\?q=stubTag2'>stubTag2</a></div>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<div class='tags'>Tags: <a href='search.html\\?q=stubTag1'>stubTag1</a></div></div><div class='short'><div class='doc'><p>The stub attribute with <code>tagged</code>.</p>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<div class='tags'>Tags: <a href='search.html\\?q=stubTag2'>stubTag2</a></div></div><div class='short'><div class='doc'><p>The stub method with <code>tagged</code>.</p>"));
+    }
+    
+    
     private File getOutputDir(CeylonDocTool tool, Module module) {
         String outputRepo = tool.getOutputRepository();
         return new File(com.redhat.ceylon.compiler.java.util.Util.getModulePath(new File(outputRepo), module),
@@ -304,6 +322,7 @@ public class CeylonDocToolTest {
         assertIcons(destDir);
         assertInnerTypesDoc(destDir);
         assertDeprecated(destDir);
+        assertTagged(destDir);
     }
     
     @Test

@@ -22,6 +22,8 @@ package com.redhat.ceylon.ceylondoc;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Iterator;
+import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -56,12 +58,12 @@ public class IndexDoc extends CeylonDoc {
         }
         // get rid of the eventual final dangling JSON list comma but adding a module entry 
         writeIndexElement(module.getNameAsString(), tool.kind(module), 
-                getObjectUrl(module), Util.getDocFirstLine(module));
+                getObjectUrl(module), Util.getDocFirstLine(module), null);
     }
 
     private void indexPackage(Package pkg) throws IOException {
         writeIndexElement(pkg.getNameAsString(), tool.kind(pkg), 
-                getObjectUrl(pkg), Util.getDocFirstLine(pkg));
+                getObjectUrl(pkg), Util.getDocFirstLine(pkg), null);
         write(",\n");
         indexMembers(pkg);
     }
@@ -98,11 +100,12 @@ public class IndexDoc extends CeylonDoc {
             throw new RuntimeException("Unknown type of object: "+decl);
         String type = tool.kind(decl);
         String doc = Util.getDocFirstLine(decl);
-        writeIndexElement(name, type, url, doc);
+        List<String> tags = Util.getTags(decl);
+        writeIndexElement(name, type, url, doc, tags);
         return true;
     }
 
-    private void writeIndexElement(String name, String type, String url, String doc) throws IOException {
+    private void writeIndexElement(String name, String type, String url, String doc, List<String> tags) throws IOException {
         write("{'name': '");
         write(name);
         write("', 'type': '");
@@ -111,7 +114,19 @@ public class IndexDoc extends CeylonDoc {
         write(url);
         write("', 'doc': '");
         write(escapeJSONString(doc).trim());
-        write("'}");
+        write("', 'tags': [");
+        if( tags != null ) {
+            Iterator<String> tagIterator = tags.iterator();
+            while (tagIterator.hasNext()) {
+                write("'");
+                write(escapeJSONString(tagIterator.next()).trim());
+                write("'");
+                if (tagIterator.hasNext()) {
+                    write(", ");
+                }
+            }        
+        }
+        write("]}");
     }
 
     private String escapeJSONString(String doc) {

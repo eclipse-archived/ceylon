@@ -482,6 +482,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         startPrintingLongDoc(c);
         writeBy(c);
         writeSee(c);
+        writeTagged(c);
         endLongDocAndPrintShortDoc(c);
         close("td");
         close("tr");
@@ -546,6 +547,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 
         writeBy(klass);
         writeSee(klass);
+        writeTagged(klass);
         
         close("div");
     }
