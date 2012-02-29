@@ -19,11 +19,13 @@ done
 JAVA_CP="$CEYLON_REPO/com/redhat/ceylon/compiler/java/$CEYLON_VERSION/com.redhat.ceylon.compiler.java-$CEYLON_VERSION.jar"
 JAVA_CP="$JAVA_CP:$CEYLON_REPO/com/redhat/ceylon/typechecker/$CEYLON_VERSION/com.redhat.ceylon.typechecker-$CEYLON_VERSION.jar"
 JAVA_CP="$JAVA_CP:$CEYLON_REPO/com/redhat/ceylon/module-resolver/$CEYLON_VERSION/com.redhat.ceylon.module-resolver-$CEYLON_VERSION.jar"
-JAVA_CP="$JAVA_CP:$CEYLON_HOME/../ceylon-compiler/lib/antlr-3.4-complete.jar"
+JAVA_CP="$JAVA_CP:$CEYLON_HOME/../../ceylon-compiler/lib/antlr-3.4-complete.jar"
+
+echo classpath es $JAVA_CP
 
 java \
     -enableassertions \
-    -Xbootclasspath/p:"$JAVA_CP:$(dirname "$PRG")/../build/lib/jscompiler-0.1.jar" \
+    -Xbootclasspath/p:"$JAVA_CP:$(dirname "$PRG")/../lib/jscompiler-0.1.jar" \
     "-Dceylon.home=$CEYLON_HOME" \
     com.redhat.ceylon.compiler.MainForJs \
     $ARGS
