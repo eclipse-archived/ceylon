@@ -196,8 +196,10 @@ public class StatementTransformer extends AbstractTransformer {
                 // Test on the tmpVar in the following condition
                 if (cond instanceof Tree.ExistsCondition) {
                     test = make().Binary(JCTree.NE, makeUnquotedIdent(tmpVarName), makeNull());                
+                } else if (cond instanceof Tree.NonemptyCondition){
+                    test = makeNonEmptyTest(tmpVarName);
                 } else {
-                    // nonempty and is
+                    // is
                     test = makeTypeTest(tmpVarName, toType);
                 }
             }
@@ -238,7 +240,7 @@ public class StatementTransformer extends AbstractTransformer {
         }
     }
 
-	List<JCStatement> transform(Tree.ForStatement stmt) {
+    List<JCStatement> transform(Tree.ForStatement stmt) {
         Name tempForFailVariable = currentForFailVariable;
         
         at(stmt);

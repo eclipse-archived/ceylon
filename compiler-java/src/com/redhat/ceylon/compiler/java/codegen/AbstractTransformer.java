@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -64,6 +65,7 @@ import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
+import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.tree.JCTree.LetExpr;
@@ -1400,6 +1402,17 @@ public abstract class AbstractTransformer implements Transformation {
             }
         }
         return result;
+    }
+
+    protected JCExpression makeNonEmptyTest(String varName) {
+        Interface fixedSize = typeFact().getFixedSizedDeclaration();
+        JCExpression test = makeTypeTest(varName, fixedSize.getType());
+        JCExpression fixedSizeType = makeJavaType(fixedSize.getType(), NO_PRIMITIVES | WANT_RAW_TYPE);
+        JCExpression getEmptyCall = make().Select(make().TypeCast(fixedSizeType, makeUnquotedIdent(varName)), 
+                names().fromString("getEmpty"));
+        JCExpression empty = make().Apply(List.<JCExpression>nil(), getEmptyCall, List.<JCExpression>nil());
+        JCExpression nonEmpty = make().Unary(JCTree.NOT, empty);
+        return make().Binary(JCTree.AND, test, nonEmpty);
     }
 
     /**

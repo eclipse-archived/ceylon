@@ -412,7 +412,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression expression = transformExpression(op.getTerm());
         at(op);
         String varName = tempName();
-        JCExpression test = makeTypeTest(varName, op.getUnit().getSequenceDeclaration().getType());
+        JCExpression test = makeNonEmptyTest(varName);
         return makeLetExpr(varName, List.<JCStatement>nil(), make().Type(syms().objectType), expression, test);
     }
 
