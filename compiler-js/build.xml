@@ -59,8 +59,8 @@
         	<arg value="${js-src}/${jslangfile}" />
         	<arg value="${runtime}/${jslangpath}" />
         </java>
-        <copy todir="build">
-        	<dirset dir="src" includes="bin" />
+        <copy todir="build/bin">
+        	<fileset dir="src/bin" includes="*" />
         </copy>
     </target>
 
