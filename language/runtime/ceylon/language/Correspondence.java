@@ -66,7 +66,7 @@ public interface Correspondence<Key,Item> {
         }
         @Override
         public java.lang.String toString() {
-            return Sequence$impl.toString(this);		
+            return List$impl.toString(this);		
         }
         public final Sequence<Item> getClone() {
             return this;

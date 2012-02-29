@@ -36,28 +36,4 @@ shared interface Sequence<out Element>
     shared formal Sequence<Value> prepend<Value>(Value... elements)
             given Value abstracts Element;*/
     
-    shared default actual String string {
-        return "{ " elementsString " }";
-    }
-    
-    String elementsString {
-
-        String firstString {
-            if (is Object first) {
-                return first.string;
-            }
-            else {
-                return "null";
-            }
-        }
-        
-        if (nonempty rest) {
-            return firstString + ", " + 
-                    rest.elementsString;
-        }
-        else {
-            return firstString;
-        }
-        
-    }
 }

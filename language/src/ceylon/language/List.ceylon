@@ -109,6 +109,28 @@ shared interface List<out Element>
     
     shared actual default Integer hash {
         return size;
-    } 
+    }
+    
+    shared default actual String string {
+        return "{ " elementsString " }";
+    }
+    
+    String elementsString {
+        variable String result := "";
+        variable Boolean first := true;
+        for (Element elem in this) {
+            if (!first) {
+                result := result + ", ";
+            }
+            if (is Object elem) {
+                result := result + elem.string;
+            } else {
+                result := result + "null";
+            }
+            first := false;
+        }
+        return result;
+        // This would have been nice: return ", ".join(this...);
+    }
     
 }

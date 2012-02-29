@@ -142,7 +142,7 @@ public class Singleton<Element>
 
 	@Override
 	public java.lang.String toString() {
-		return Sequence$impl.toString(this);
+		return List$impl.toString(this);
 	}
 
     @Override

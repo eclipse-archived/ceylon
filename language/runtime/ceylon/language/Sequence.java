@@ -63,16 +63,5 @@ public interface Sequence<Element>
             return index.longValue() <= $this.getLastIndex().longValue();
         }
         
-        public static <Element> java.lang.String toString(Sequence<Element> $this) {
-            java.lang.StringBuilder result = new java.lang.StringBuilder("{ ");
-            java.lang.Object elem;
-            for (Iterator<? extends Element> iter=$this.getIterator(); !((elem = iter.next()) instanceof Finished);) {
-                result.append(elem).append(", ");
-            }
-            result.setLength(result.length()-2);
-            result.append(" }");
-            return result.toString();
-        }
-        
     }    
 }
