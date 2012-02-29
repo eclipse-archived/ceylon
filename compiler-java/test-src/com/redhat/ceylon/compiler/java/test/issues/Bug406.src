@@ -5,8 +5,8 @@ class Bug406 {
     private final void test() {
         final .ceylon.language.Iterable<? extends .ceylon.language.String> full = new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world"));
         final .ceylon.language.Iterable<? extends .ceylon.language.String> spread1 = (let .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$0$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)full,int $spread$0$2 = (int)$spread$0$0.getSize(),.ceylon.language.String[] $spread$0$4 = new .ceylon.language.String[$spread$0$2] in for (int $index$1 = 0; $index$1 < $spread$0$2; $index$1++) $spread$0$4[$index$1] = .ceylon.language.String.instance($spread$0$0.item(.ceylon.language.Integer.instance($index$1)).getUppercased());; new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$0$4));
-        .ceylon.language.String $s1s$2;
-        if (($s1s$2 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String>)spread1).item(.ceylon.language.Integer.instance(0L))) != null) {
+        .ceylon.language.String $s1s$2 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String>)spread1).item(.ceylon.language.Integer.instance(0L));
+        if ($s1s$2 != null) {
             final .java.lang.String $s1s$3 = $s1s$2.toString();
         }
     }

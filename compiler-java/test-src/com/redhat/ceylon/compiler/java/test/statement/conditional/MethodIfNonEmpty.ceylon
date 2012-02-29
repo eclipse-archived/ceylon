@@ -25,4 +25,9 @@ class MethodIfNonEmpty() {
         }
         return 0;
     }
+    shared void m2(String s) {
+        if (nonempty s) {
+            print(s);
+        }
+    }
 }

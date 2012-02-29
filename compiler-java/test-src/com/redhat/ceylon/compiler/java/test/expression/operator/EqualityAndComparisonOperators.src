@@ -47,11 +47,11 @@ public class EqualityAndComparisonOperators {
     private final void testIs() {
         boolean sync = false;
         final .java.lang.Object foo = .ceylon.language.Boolean.instance(sync);
-        sync = .ceylon.language.Boolean.instance(sync) instanceof .ceylon.language.Empty;
-        final .ceylon.language.Boolean dest = .ceylon.language.Boolean.instance(.ceylon.language.Boolean.instance(true) instanceof .ceylon.language.Empty);
-        sync = foo instanceof .ceylon.language.Boolean;
-        sync = .com.redhat.ceylon.compiler.java.Util.isIdentifiableObject(foo);
-        sync = foo instanceof .java.lang.Throwable;
+        sync = (let .java.lang.Object $ceylontmp2 = .ceylon.language.Boolean.instance(sync) in ; $ceylontmp2 instanceof .ceylon.language.Empty);
+        final .ceylon.language.Boolean dest = .ceylon.language.Boolean.instance((let .java.lang.Object $ceylontmp3 = .ceylon.language.Boolean.instance(true) in ; $ceylontmp3 instanceof .ceylon.language.Empty));
+        sync = (let .java.lang.Object $ceylontmp4 = foo in ; $ceylontmp4 instanceof .ceylon.language.Boolean);
+        sync = (let .java.lang.Object $ceylontmp5 = foo in ; .com.redhat.ceylon.compiler.java.Util.isIdentifiableObject($ceylontmp5));
+        sync = (let .java.lang.Object $ceylontmp6 = foo in ; $ceylontmp6 instanceof .java.lang.Throwable);
     }
     
     public EqualityAndComparisonOperators() {

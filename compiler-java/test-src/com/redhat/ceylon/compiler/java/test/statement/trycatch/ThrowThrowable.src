@@ -5,8 +5,8 @@ class ThrowThrowable {
     private final void m() {
         try {
         } catch (final .java.lang.Exception e) {
-            .java.lang.Throwable $cause$0;
-            if (($cause$0 = e.getCause()) != null) {
+            .java.lang.Throwable $cause$0 = e.getCause();
+            if ($cause$0 != null) {
                 final .java.lang.Throwable $cause$1 = $cause$0;
                 throw $cause$1;
             }

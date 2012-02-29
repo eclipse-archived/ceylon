@@ -21,13 +21,13 @@ public class NullHandlingOperators {
     
     private final void testEmpty() {
         boolean sync = false;
-        sync = .ceylon.language.String.instance("").getCharacters() instanceof .ceylon.language.Sequence;
-        sync = .ceylon.language.$empty.getEmpty() instanceof .ceylon.language.Sequence;
+        sync = (let .java.lang.Object $ceylontmp8 = .ceylon.language.String.instance("").getCharacters() in ; $ceylontmp8 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp8).getEmpty());
+        sync = (let .java.lang.Object $ceylontmp9 = .ceylon.language.$empty.getEmpty() in ; $ceylontmp9 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp9).getEmpty());
         final .ceylon.language.Iterable<? extends .ceylon.language.String> iter = .ceylon.language.$empty.getEmpty();
-        sync = iter instanceof .ceylon.language.Sequence;
+        sync = (let .java.lang.Object $ceylontmp10 = iter in ; $ceylontmp10 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp10).getEmpty());
         final .ceylon.language.Iterable<? extends .ceylon.language.String> seq = .ceylon.language.$empty.getEmpty();
-        sync = seq instanceof .ceylon.language.Sequence;
-        final .ceylon.language.Boolean boxed = .ceylon.language.Boolean.instance(seq instanceof .ceylon.language.Sequence);
+        sync = (let .java.lang.Object $ceylontmp11 = seq in ; $ceylontmp11 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp11).getEmpty());
+        final .ceylon.language.Boolean boxed = .ceylon.language.Boolean.instance((let .java.lang.Object $ceylontmp12 = seq in ; $ceylontmp12 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp12).getEmpty()));
     }
     
     private final void testExists() {
@@ -40,10 +40,10 @@ public class NullHandlingOperators {
     private final void testThenElse() {
         final long n = 5L;
         final .ceylon.language.String foo = n > 0L ? .ceylon.language.String.instance("yes") : null;
-        final .ceylon.language.String bar = (let .ceylon.language.String $ceylontmp8 = foo in $ceylontmp8 != null ? $ceylontmp8 : .ceylon.language.String.instance("yes"));
-        final .ceylon.language.String baz = (let .ceylon.language.String $ceylontmp9 = n > 0L ? .ceylon.language.String.instance("yes") : null in $ceylontmp9 != null ? $ceylontmp9 : .ceylon.language.String.instance("no"));
+        final .ceylon.language.String bar = (let .ceylon.language.String $ceylontmp13 = foo in $ceylontmp13 != null ? $ceylontmp13 : .ceylon.language.String.instance("yes"));
+        final .ceylon.language.String baz = (let .ceylon.language.String $ceylontmp14 = n > 0L ? .ceylon.language.String.instance("yes") : null in $ceylontmp14 != null ? $ceylontmp14 : .ceylon.language.String.instance("no"));
         final double x = 5.0;
-        final double y = (let .ceylon.language.Float $ceylontmp10 = x > 0.0 ? .ceylon.language.Float.instance(x) : null in $ceylontmp10 != null ? $ceylontmp10 : .ceylon.language.Float.instance(1.0)).doubleValue();
+        final double y = (let .ceylon.language.Float $ceylontmp15 = x > 0.0 ? .ceylon.language.Float.instance(x) : null in $ceylontmp15 != null ? $ceylontmp15 : .ceylon.language.Float.instance(1.0)).doubleValue();
     }
     
     public NullHandlingOperators() {
