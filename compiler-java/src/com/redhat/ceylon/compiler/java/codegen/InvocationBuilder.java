@@ -19,21 +19,31 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
+import java.util.ArrayList;
+
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.TermTransformer;
 import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCTypeCast;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -95,6 +105,59 @@ public class InvocationBuilder {
         }
     }
     
+    class CallableArguments implements Arguments {
+        private java.util.List<Parameter> functionalParameters;
+        private java.util.List<Parameter> declaredParameters;
+        
+        CallableArguments(Functional functionalParameter,
+                java.util.List<Parameter> declaredParameters) {
+            this.functionalParameters = functionalParameter.getParameterLists().get(0).getParameters();
+            this.declaredParameters = declaredParameters;
+        }
+        
+        @Override
+        public Expression getExpression(int argIndex) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+        @Override
+        public Parameter getParameter(int argIndex) {
+            return functionalParameters.get(argIndex);
+        }
+        @Override
+        public int getNumArguments() {
+            return functionalParameters.size();
+        }
+        @Override
+        public boolean hasEllipsis() {
+            return false;
+        }
+        @Override
+        public JCExpression getTransformedExpression(int argIndex,
+                boolean isRaw,
+                java.util.List<ProducedType> typeArgumentModels) {
+            Parameter param = functionalParameters.get(argIndex);
+            JCExpression argExpr;
+            if (functionalParameters.size() <= 3) {
+                // The Callable has overridden one of the non-varargs call() 
+                // methods
+                argExpr = gen.make().Ident(
+                        gen.names().fromString("arg"+argIndex));
+            } else {
+                // The Callable has overridden the varargs call() method
+                // so we need to index into the varargs array
+                argExpr = gen.make().Indexed(
+                        gen.make().Ident(gen.names().fromString("arg0")), 
+                        gen.make().Literal(argIndex));
+            }
+            JCTypeCast cast = gen.make().TypeCast(gen.makeJavaType(param.getType(), AbstractTransformer.NO_PRIMITIVES), argExpr);
+            
+            JCExpression boxed = gen.boxUnboxIfNecessary(cast, true, 
+                    param.getType(), declaredParameters.get(argIndex).getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED);
+            return boxed;
+        }
+    }
+    
     private final AbstractTransformer gen;
     private Tree.InvocationExpression invocation;
     private final ProducedType returnType;
@@ -132,6 +195,39 @@ public class InvocationBuilder {
         return typeModel.getTypeArgumentList().get(0);
     }
     
+    public static InvocationBuilder invocationForCallable(AbstractTransformer gen, Term expr, Functional parameter) {
+        InvocationBuilder builder = new InvocationBuilder(gen, getCallableReturnType(expr));
+        builder.node = expr;
+        builder.transformForCallable(expr, parameter);
+        return builder;
+    }
+    
+    private void transformForCallable(Term expr, Functional functionalParameter) {
+        java.util.List<Parameter> declaredParameters;
+        if (expr instanceof Tree.Expression) {
+            Term term = ((Tree.Expression)expr).getTerm();
+            this.primary = (Tree.Primary)term;
+            if (term instanceof Tree.MemberOrTypeExpression) {
+                Tree.MemberOrTypeExpression bme = (Tree.MemberOrTypeExpression)term;
+                Functional decl = (Functional)bme.getDeclaration();
+                declaredParameters = decl.getParameterLists().get(0).getParameters();
+            } else {
+                throw new RuntimeException(term+"");
+            }
+        } else {
+            throw new RuntimeException(expr+"");
+        }
+        
+        java.util.List<ParameterList> parameterLists = functionalParameter.getParameterLists();
+        java.util.List<TypeParameter> typeParameters = functionalParameter.getTypeParameters();
+        ArrayList<ProducedType> typeArguments = new ArrayList<ProducedType>(typeParameters.size());
+        for (TypeParameter typeParameter : typeParameters) {
+            typeArguments.add(typeParameter.getType());
+        }        
+        computeCallInfo(expr.getTypeModel().getDeclaration(), 
+                new CallableArguments(functionalParameter, declaredParameters), 
+                typeArguments, parameterLists);
+        
     }
     
     // Named invocation
