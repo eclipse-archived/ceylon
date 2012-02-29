@@ -18,50 +18,53 @@
  * MA  02110-1301, USA.
  */
 @nomodel
+interface TPETop {
+    shared formal void top();
+    shared formal Integer topAttribute;
+}
+@nomodel
+interface TPELeft satisfies TPETop {
+    shared formal void left();
+    shared formal Integer leftAttribute;
+}
+@nomodel
+interface TPERight satisfies TPETop {
+    shared formal void right();
+    shared formal Integer rightAttribute;
+}
+@nomodel
+class TPECLeft() satisfies TPELeft {
+    shared actual void left() {}
+    shared actual void top() {}
+    shared actual Integer topAttribute = 1;
+    shared actual Integer leftAttribute = 1;
+}
+@nomodel
+class TPECMiddle() satisfies TPELeft & TPERight{
+    shared actual void left() {}
+    shared actual void top() {}
+    shared actual void right() {}
+    shared actual Integer topAttribute = 1;
+    shared actual Integer leftAttribute = 1;
+    shared actual Integer rightAttribute = 1;
+}
+
+@nomodel
 class TypeParameterErasure() {
-    @error
-    interface Top {
-        shared formal void top();
-        shared formal Integer topAttribute;
-    }
-    @error
-    interface Left satisfies Top {
-        shared formal void left();
-        shared formal Integer leftAttribute;
-    }
-    @error
-    interface Right satisfies Top {
-        shared formal void right();
-        shared formal Integer rightAttribute;
-    }
-    class CLeft() satisfies Left {
-        shared actual void left() {}
-        shared actual void top() {}
-        shared actual Integer topAttribute = 1;
-        shared actual Integer leftAttribute = 1;
-    }
-    class CMiddle() satisfies Left & Right{
-        shared actual void left() {}
-        shared actual void top() {}
-        shared actual void right() {}
-        shared actual Integer topAttribute = 1;
-        shared actual Integer leftAttribute = 1;
-        shared actual Integer rightAttribute = 1;
-    }
 
     T parameterized<T>(T t) {
         return t;
     }
 
     T parameterizedWithBounds<T>(T t)
-    given T satisfies Right {
+    given T satisfies TPERight {
         t.right();
         t.right{};
         return t;
     }
 
     T parameterizedWithIntersectionBounds<T>(T t)
-    given T satisfies Left & Right {
+    given T satisfies TPELeft & TPERight {
         t.left();
         t.left{};
         t.right();
@@ -86,21 +89,21 @@ class TypeParameterErasure() {
         Integer n = parameterized<Integer>(2);
         Integer n2 = parameterized(2);
 
-        variable Left&Right middle;
-        variable Left left;
-        variable Right right;
-        middle := CMiddle();
+        variable TPELeft&TPERight middle;
+        variable TPELeft left;
+        variable TPERight right;
+        middle := TPECMiddle();
         
         left := parameterized(middle);
         right := parameterized(middle);
         middle := parameterized(middle);
         // with explicit non-erased bounds
-        left := parameterized<Left>(middle);
-        right := parameterized<Right>(middle);
+        left := parameterized<TPELeft>(middle);
+        right := parameterized<TPERight>(middle);
         // with explicit erased bounds
-        left := parameterized<Left&Right>(middle);
-        right := parameterized<Left&Right>(middle);
-        middle := parameterized<Left&Right>(middle);
+        left := parameterized<TPELeft&TPERight>(middle);
+        right := parameterized<TPELeft&TPERight>(middle);
+        middle := parameterized<TPELeft&TPERight>(middle);
 
         left := parameterizedWithBounds(middle);
         right := parameterizedWithBounds(middle);
@@ -125,21 +128,21 @@ class TypeParameterErasure() {
         Integer n = parameterized<Integer>{t=2;};
         Integer n2 = parameterized{t=2;};
 
-        variable Left&Right middle;
-        variable Left left;
-        variable Right right;
-        middle := CMiddle();
+        variable TPELeft&TPERight middle;
+        variable TPELeft left;
+        variable TPERight right;
+        middle := TPECMiddle();
         
         left := parameterized{t=middle;};
         right := parameterized{t=middle;};
         middle := parameterized{t=middle;};
         // with explicit non-erased bounds
-        left := parameterized<Left>{t=middle;};
-        right := parameterized<Right>{t=middle;};
+        left := parameterized<TPELeft>{t=middle;};
+        right := parameterized<TPERight>{t=middle;};
         // with explicit erased bounds
-        left := parameterized<Left&Right>{t=middle;};
-        right := parameterized<Left&Right>{t=middle;};
-        middle := parameterized<Left&Right>{t=middle;};
+        left := parameterized<TPELeft&TPERight>{t=middle;};
+        right := parameterized<TPELeft&TPERight>{t=middle;};
+        middle := parameterized<TPELeft&TPERight>{t=middle;};
 
         left := parameterizedWithBounds{t=middle;};
         right := parameterizedWithBounds{t=middle;};
@@ -164,14 +167,14 @@ class TypeParameterErasure() {
         }
 
         shared Inner parameterizedWithBounds<Inner>(Inner i, T t)
-        given Inner satisfies Left {
+        given Inner satisfies TPELeft {
             i.left();
             i.left{};
             return i;
         }
 
         shared Inner parameterizedWithIntersectionBounds<Inner>(Inner i, T t)
-        given Inner satisfies Left & Right {
+        given Inner satisfies TPELeft & TPERight {
             i.left();
             i.left{};
             i.right();
@@ -191,21 +194,21 @@ class TypeParameterErasure() {
     }
 
     class ParameterizedWithBounds<T>(T t)
-    given T satisfies Left {
+    given T satisfies TPELeft {
         t.left();
         t.left{};
     }
 
     class ParameterizedWithIntersectionBounds<T>(T t)
-    given T satisfies Left & Right {
+    given T satisfies TPELeft & TPERight {
         t.left();
         t.left{};
         t.right();
         t.right{};
                 
-        void requiresCastLeft(Left l){}
+        void requiresCastLeft(TPELeft l){}
 
-        Left&Right middle = CMiddle();
+        TPELeft&TPERight middle = TPECMiddle();
         requiresCastLeft(t);
         requiresCastLeft{l = t;};
         requiresCastLeft(middle);
@@ -222,20 +225,20 @@ class TypeParameterErasure() {
     }
 
     void testTypeParameterInstantiations(){
-        Left&Right middle = CMiddle();
-        Left left = CLeft();
+        TPELeft&TPERight middle = TPECMiddle();
+        TPELeft left = TPECLeft();
         
-        Parameterized<Left&Right> parameterizedMiddle = Parameterized(middle);
-        Parameterized<Left> parameterizedLeft = Parameterized(left);
+        Parameterized<TPELeft&TPERight> parameterizedMiddle = Parameterized(middle);
+        Parameterized<TPELeft> parameterizedLeft = Parameterized(left);
 
-        Parameterized<Left&Right> parameterizedExplicitMiddle = Parameterized<Left&Right>(middle);
-        Parameterized<Left> parameterizedExplicitLeft = Parameterized<Left>(left);
+        Parameterized<TPELeft&TPERight> parameterizedExplicitMiddle = Parameterized<TPELeft&TPERight>(middle);
+        Parameterized<TPELeft> parameterizedExplicitLeft = Parameterized<TPELeft>(left);
 
-        ParameterizedWithBounds<Left&Right> parameterizedWithBoundsMiddle = ParameterizedWithBounds(middle);
-        ParameterizedWithBounds<Left> parameterizedWithBoundsLeft = ParameterizedWithBounds(left);
+        ParameterizedWithBounds<TPELeft&TPERight> parameterizedWithBoundsMiddle = ParameterizedWithBounds(middle);
+        ParameterizedWithBounds<TPELeft> parameterizedWithBoundsLeft = ParameterizedWithBounds(left);
 
-        ParameterizedWithIntersectionBounds<Left&Right> parameterizedWithIntersectionBoundsMiddle = ParameterizedWithIntersectionBounds(middle);
-        ParameterizedWithIntersectionBounds<Left&Right> parameterizedWithErasedExplicitBoundsMiddle = ParameterizedWithIntersectionBounds<Left&Right>(middle);
+        ParameterizedWithIntersectionBounds<TPELeft&TPERight> parameterizedWithIntersectionBoundsMiddle = ParameterizedWithIntersectionBounds(middle);
+        ParameterizedWithIntersectionBounds<TPELeft&TPERight> parameterizedWithErasedExplicitBoundsMiddle = ParameterizedWithIntersectionBounds<TPELeft&TPERight>(middle);
         
         ParameterizedWithErasedBounds<String> parameterizedWithErasedBoundsMiddle = ParameterizedWithErasedBounds("");
         ParameterizedWithErasedBounds<String> parameterizedWithReallyErasedExplicitBoundsMiddle = ParameterizedWithErasedBounds<String>("");
@@ -245,8 +248,8 @@ class TypeParameterErasure() {
         
         parameterizedMiddle.parameterized(left, middle);
         parameterizedMiddle.parameterized(middle, middle);
-        parameterizedMiddle.parameterized<Left>(middle, middle);
-        parameterizedMiddle.parameterized<Left&Right>(middle, middle);
+        parameterizedMiddle.parameterized<TPELeft>(middle, middle);
+        parameterizedMiddle.parameterized<TPELeft&TPERight>(middle, middle);
 
         parameterizedMiddle.parameterizedWithBounds(left, middle);
         parameterizedMiddle.parameterizedWithBounds(middle, middle);
@@ -262,28 +265,28 @@ class TypeParameterErasure() {
     }
 
     void testTypeParameterInstantiationsNamedArguments(){
-        Left&Right middle = CMiddle();
-        Left left = CLeft();
+        TPELeft&TPERight middle = TPECMiddle();
+        TPELeft left = TPECLeft();
         
-        Parameterized<Left&Right> parameterizedMiddle = Parameterized{t=middle;};
-        Parameterized<Left> parameterizedLeft = Parameterized{t=left;};
+        Parameterized<TPELeft&TPERight> parameterizedMiddle = Parameterized{t=middle;};
+        Parameterized<TPELeft> parameterizedLeft = Parameterized{t=left;};
 
-        Parameterized<Left&Right> parameterizedExplicitMiddle = Parameterized<Left&Right>{t=middle;};
-        Parameterized<Left> parameterizedExplicitLeft = Parameterized<Left>{t=left;};
+        Parameterized<TPELeft&TPERight> parameterizedExplicitMiddle = Parameterized<TPELeft&TPERight>{t=middle;};
+        Parameterized<TPELeft> parameterizedExplicitLeft = Parameterized<TPELeft>{t=left;};
 
-        ParameterizedWithBounds<Left&Right> parameterizedWithBoundsMiddle = ParameterizedWithBounds{t=middle;};
-        ParameterizedWithBounds<Left> parameterizedWithBoundsLeft = ParameterizedWithBounds{t=left;};
+        ParameterizedWithBounds<TPELeft&TPERight> parameterizedWithBoundsMiddle = ParameterizedWithBounds{t=middle;};
+        ParameterizedWithBounds<TPELeft> parameterizedWithBoundsLeft = ParameterizedWithBounds{t=left;};
 
-        ParameterizedWithIntersectionBounds<Left&Right> parameterizedWithIntersectionBoundsMiddle = ParameterizedWithIntersectionBounds{t=middle;};
-        ParameterizedWithIntersectionBounds<Left&Right> parameterizedWithErasedExplicitBoundsMiddle = ParameterizedWithIntersectionBounds<Left&Right>{t=middle;};
+        ParameterizedWithIntersectionBounds<TPELeft&TPERight> parameterizedWithIntersectionBoundsMiddle = ParameterizedWithIntersectionBounds{t=middle;};
+        ParameterizedWithIntersectionBounds<TPELeft&TPERight> parameterizedWithErasedExplicitBoundsMiddle = ParameterizedWithIntersectionBounds<TPELeft&TPERight>{t=middle;};
         
         ParameterizedWithParameterizedBounds<Integer> parameterizedWithParameterizedBounds = ParameterizedWithParameterizedBounds{t=2;};
         ParameterizedWithParameterizedBounds<Integer> parameterizedWithExplicitParameterizedBounds = ParameterizedWithParameterizedBounds<Integer>{t=2;};
  
         parameterizedMiddle.parameterized{i=left; t=middle;};
         parameterizedMiddle.parameterized{i=middle; t= middle;};
-        parameterizedMiddle.parameterized<Left>{i=middle; t= middle;};
-        parameterizedMiddle.parameterized<Left&Right>{i=middle; t=middle;};
+        parameterizedMiddle.parameterized<TPELeft>{i=middle; t= middle;};
+        parameterizedMiddle.parameterized<TPELeft&TPERight>{i=middle; t=middle;};
 
         parameterizedMiddle.parameterizedWithBounds{i=left; t=middle;};
         parameterizedMiddle.parameterizedWithBounds{i=middle; t=middle;};
