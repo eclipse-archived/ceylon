@@ -489,6 +489,10 @@ public abstract class AbstractTransformer implements Transformation {
         return typeFact.getVoidDeclaration().getType().isExactly(type);
     }
 
+    protected boolean isObject(ProducedType type) {
+        return typeFact.getObjectDeclaration().getType().isExactly(type);
+    }
+
     protected ProducedType simplifyType(ProducedType type) {
         if (isOptional(type)) {
             // For an optional type T?:
@@ -502,10 +506,18 @@ public abstract class AbstractTransformer implements Transformation {
             // Special case when the Union contains only a single CaseType
             // FIXME This is not correct! We might lose information about type arguments!
             type = tdecl.getCaseTypes().get(0);
-        } else if (tdecl instanceof IntersectionType && tdecl.getSatisfiedTypes().size() == 1) {
-            // Special case when the Intersection contains only a single SatisfiedType
-            // FIXME This is not correct! We might lose information about type arguments!
-            type = tdecl.getSatisfiedTypes().get(0);
+        } else if (tdecl instanceof IntersectionType){
+            java.util.List<ProducedType> satisfiedTypes = tdecl.getSatisfiedTypes();
+            if(satisfiedTypes.size() == 1) {
+                // Special case when the Intersection contains only a single SatisfiedType
+                // FIXME This is not correct! We might lose information about type arguments!
+                type = satisfiedTypes.get(0);
+            }else if(satisfiedTypes.size() == 2){
+                // special case for T? simplified as T&Object
+                if(isTypeParameter(satisfiedTypes.get(0))
+                        && isObject(satisfiedTypes.get(1)))
+                    type = satisfiedTypes.get(0);
+            }
         }
         
         return type;
