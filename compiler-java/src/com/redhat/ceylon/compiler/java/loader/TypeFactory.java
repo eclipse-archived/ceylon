@@ -116,4 +116,8 @@ public class TypeFactory extends Unit {
     public ProducedType getNonemptyIterableType(ProducedType pt) {
         return pt.minus(getEmptyDeclaration()).getSupertype(getIterableDeclaration());
     }
+
+    public ProducedType getFixedSizedType(ProducedType pt) {
+        return pt.getSupertype(getFixedSizedDeclaration());
+    }
 }

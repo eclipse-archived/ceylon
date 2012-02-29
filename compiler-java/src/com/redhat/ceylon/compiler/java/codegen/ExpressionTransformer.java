@@ -1041,17 +1041,24 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     private JCExpression transformSpreadOperator(Tree.QualifiedMemberExpression expr, TermTransformer transformer) {
         at(expr);
-        
+
+        // this holds the ternary test for empty
+        String testVarName = aliasName("spreadTest");
+        ProducedType testSequenceType = typeFact().getFixedSizedType(expr.getPrimary().getTypeModel());
+        JCExpression testSequenceTypeExpr = makeJavaType(testSequenceType, NO_PRIMITIVES);
+        JCExpression testSequenceExpr = transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, testSequenceType);
+
+        // reset back here after transformExpression
+        at(expr);
+
+        // this holds the whole spread operation
         String varBaseName = aliasName("spread");
         // sequence
         String srcSequenceName = varBaseName+"$0";
         ProducedType srcSequenceType = typeFact().getNonemptySequenceType(expr.getPrimary().getTypeModel());
         ProducedType srcElementType = typeFact().getElementType(srcSequenceType);
         JCExpression srcSequenceTypeExpr = makeJavaType(srcSequenceType, NO_PRIMITIVES);
-        JCExpression srcSequenceExpr = transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, srcSequenceType);
-
-        // reset back here after transformExpression
-        at(expr);
+        JCExpression srcSequenceExpr = make().TypeCast(srcSequenceTypeExpr, makeUnquotedIdent(testVarName));
 
         // size, getSize() always unboxed, but we need to cast to int for Java array access
         String sizeName = varBaseName+"$2";
@@ -1113,13 +1120,21 @@ public class ExpressionTransformer extends AbstractTransformer {
         // for
         JCForLoop forStmt = make().ForLoop(init, cond , step , body);
         
-        // build the whole thing
-        return makeLetExpr(varBaseName, 
+        // build the whole spread operation
+        JCExpression spread = makeLetExpr(varBaseName, 
                 List.<JCStatement>of(forStmt), 
                 srcSequenceTypeExpr, srcSequenceExpr,
                 sizeType, sizeExpr,
                 newArrayType, newArrayExpr,
                 returnArray);
+        
+        JCExpression testExpr = make().Conditional(makeNonEmptyTest(makeUnquotedIdent(testVarName)), 
+                spread, makeEmpty());
+        
+        // now surround it with the test
+        return makeLetExpr(testVarName, List.<JCStatement>nil(),
+                testSequenceTypeExpr, testSequenceExpr,
+                testExpr);
     }
 
     private JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberOrTypeExpression expr) {
