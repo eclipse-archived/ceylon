@@ -402,14 +402,18 @@ public class ExpressionTransformer extends AbstractTransformer {
         // we don't need any erasure type cast for an "is" test
         JCExpression expression = transformExpression(op.getTerm());
         at(op);
-        return makeTypeTest(expression, op.getType().getTypeModel());
+        String varName = tempName();
+        JCExpression test = makeTypeTest(varName, op.getType().getTypeModel());
+        return makeLetExpr(varName, List.<JCStatement>nil(), make().Type(syms().objectType), expression, test);
     }
 
     public JCTree transform(Tree.Nonempty op) {
         // we don't need any erasure type cast for a "nonempty" test
         JCExpression expression = transformExpression(op.getTerm());
         at(op);
-        return makeTypeTest(expression, op.getUnit().getSequenceDeclaration().getType());
+        String varName = tempName();
+        JCExpression test = makeTypeTest(varName, op.getUnit().getSequenceDeclaration().getType());
+        return makeLetExpr(varName, List.<JCStatement>nil(), make().Type(syms().objectType), expression, test);
     }
 
     public JCTree transform(Tree.Exists op) {
