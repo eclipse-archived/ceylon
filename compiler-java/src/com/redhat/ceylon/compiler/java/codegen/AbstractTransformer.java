@@ -1408,13 +1408,16 @@ public abstract class AbstractTransformer implements Transformation {
         Interface fixedSize = typeFact().getFixedSizedDeclaration();
         JCExpression test = makeTypeTest(varName, fixedSize.getType());
         JCExpression fixedSizeType = makeJavaType(fixedSize.getType(), NO_PRIMITIVES | WANT_RAW_TYPE);
-        JCExpression getEmptyCall = make().Select(make().TypeCast(fixedSizeType, makeUnquotedIdent(varName)), 
-                names().fromString("getEmpty"));
-        JCExpression empty = make().Apply(List.<JCExpression>nil(), getEmptyCall, List.<JCExpression>nil());
-        JCExpression nonEmpty = make().Unary(JCTree.NOT, empty);
+        JCExpression nonEmpty = makeNonEmptyTest(make().TypeCast(fixedSizeType, makeUnquotedIdent(varName)));
         return make().Binary(JCTree.AND, test, nonEmpty);
     }
 
+    protected JCExpression makeNonEmptyTest(JCExpression expr){
+        JCExpression getEmptyCall = make().Select(expr, names().fromString("getEmpty"));
+        JCExpression empty = make().Apply(List.<JCExpression>nil(), getEmptyCall, List.<JCExpression>nil());
+        return make().Unary(JCTree.NOT, empty);
+    }
+    
     /**
      * Invokes a static method of the Util helper class
      * @param methodName name of the method
