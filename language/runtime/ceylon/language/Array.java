@@ -96,6 +96,7 @@ public abstract class Array<Element> extends ArrayList<Element>
     }
 }
 
+@Ignore
 class EmptyArray<Element> extends Array<Element> implements None<Element> {
 
     public EmptyArray() {
@@ -104,6 +105,7 @@ class EmptyArray<Element> extends Array<Element> implements None<Element> {
     
 }
 
+@Ignore
 class NonemptyArray<Element> extends Array<Element> implements Some<Element> {
 
     public NonemptyArray(Element[] array, long first) {
