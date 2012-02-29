@@ -57,6 +57,9 @@ shared class SequenceOperators() {
         variable Character?[] spreadInvoke;
         spreadInvoke := sequence[].item(0);
         spreadInvoke := sequence[].item{index = 0;};
+
+        String[] empty = {};
+        String[] upperCasedEmpty = empty[].uppercased;
     }
     
     void testString(){

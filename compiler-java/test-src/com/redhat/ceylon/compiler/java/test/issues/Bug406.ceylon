@@ -23,8 +23,5 @@ class Bug406() {
         String[] full = { "hello", "world" };
         value spread1 = full[].uppercased;
         if (exists s1s=spread1[0]) {}
-        String[] empty = {};
-String[] f = empty[].uppercased;
-
     } 
 }
