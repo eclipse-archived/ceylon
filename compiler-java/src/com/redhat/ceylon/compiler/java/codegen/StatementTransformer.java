@@ -23,7 +23,6 @@ package com.redhat.ceylon.compiler.java.codegen;
 import static com.sun.tools.javac.code.Flags.FINAL;
 
 import com.redhat.ceylon.compiler.java.util.Util;
-import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
