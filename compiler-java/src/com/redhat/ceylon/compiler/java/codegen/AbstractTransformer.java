@@ -403,7 +403,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     // Creates a "( let var1=expr1,var2=expr2,...,varN=exprN in statements; varN; )"
-    // or a "( let var1=expr1,var2=expr2,...,varN=exprN,exprO in statements; exprO; )"
+    // or a "( let var1=expr1,var2=expr2,...,varN=exprN in statements; exprO; )"
     protected JCExpression makeLetExpr(String varBaseName, List<JCStatement> statements, JCExpression... args) {
         String varName = null;
         List<JCVariableDecl> decls = List.nil();
