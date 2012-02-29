@@ -103,7 +103,10 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         write(" ");
         link(m.getType());
         close("code", "td");
-        open("td", "code");
+        open("td");
+        linkSource(m);
+        writeTagged(m);
+        open("code");
         write(m.getName());
         List<TypeParameter> typeParameters = m.getTypeParameters();
         if (!typeParameters.isEmpty()) {
@@ -120,12 +123,10 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         }
         writeParameterList(m.getParameterLists());
         close("code");
-        linkSource(m);
-        tag("br");
+        
         startPrintingLongDoc(m);
         writeThrows(m);
         writeSee(m);
-        writeTagged(m);
         endLongDocAndPrintShortDoc(m);
         close("td");
         close("tr");
@@ -160,15 +161,15 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         write(" ");
         link(f.getType());
         close("code", "td");
-        open("td", "code");
+        open("td");
+        linkSource(f);
+        writeTagged(f);
+        open("code");
         write(f.getName());
         close("code");
-        linkSource(f);
-        tag("br");
         startPrintingLongDoc(f);
         writeThrows(f);
         writeSee(f);
-        writeTagged(f);
         endLongDocAndPrintShortDoc(f);
         close("td");
         close("tr");
@@ -271,14 +272,14 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         List<String> tags = Util.getTags(decl);
         if (!tags.isEmpty()) {
             open("div class='tags'");
-            write("Tags: ");
+            write("<span class='label'>Tags: </span>");
 
             Iterator<String> tagIterator = tags.iterator();
             while (tagIterator.hasNext()) {
                 String tag = tagIterator.next();
                 write("<a href='search.html?q=" + tag + "'>" + tag + "</a>");
                 if (tagIterator.hasNext()) {
-                    write(", ");
+                    write("<span class='comma'>,</span>");
                 }
             }
 

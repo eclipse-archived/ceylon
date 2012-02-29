@@ -256,16 +256,20 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, ".resources/index.js", 
                 Pattern.compile("\\{'name': 'StubClass.attributeWithTagged', 'type': 'value', 'url': 'class_StubClass.html#attributeWithTagged', 'doc': '<p>The stub attribute with <code>tagged</code>.</p>\\\\n', 'tags': \\['stubTag1'\\]\\}"));
         assertMatchInFile(destDir, ".resources/index.js", 
-                Pattern.compile("\\{'name': 'StubClass.methodWithTagged', 'type': 'function', 'url': 'class_StubClass.html#methodWithTagged', 'doc': '<p>The stub method with <code>tagged</code>.</p>\\\\n', 'tags': \\['stubTag2'\\]\\}"));
+                Pattern.compile("\\{'name': 'StubClass.methodWithTagged', 'type': 'function', 'url': 'class_StubClass.html#methodWithTagged', 'doc': '<p>The stub method with <code>tagged</code> .*?</p>\\\\n', 'tags': \\['stubTag2'\\]\\}"));
         
         assertMatchInFile(destDir, "class_StubClass.html", 
-                Pattern.compile("<div class='tags'>Tags: <a href='search.html\\?q=stubTag1'>stubTag1</a>, <a href='search.html\\?q=stubTag2'>stubTag2</a></div>"));
+                Pattern.compile("<div class='tags'><span class='label'>Tags: </span><a href='search.html\\?q=stubTag1'>stubTag1</a><span class='comma'>,</span><a href='search.html\\?q=stubTag2'>stubTag2</a></div>"));
         assertMatchInFile(destDir, "class_StubClass.html", 
-                Pattern.compile("<div class='tags'>Tags: <a href='search.html\\?q=stubTag1'>stubTag1</a></div></div><div class='short'><div class='doc'><p>The stub attribute with <code>tagged</code>.</p>"));
+                Pattern.compile("<div class='tags'><span class='label'>Tags: </span><a href='search.html\\?q=stubTag1'>stubTag1</a></div><code>attributeWithTagged"));
         assertMatchInFile(destDir, "class_StubClass.html", 
-                Pattern.compile("<div class='tags'>Tags: <a href='search.html\\?q=stubTag2'>stubTag2</a></div></div><div class='short'><div class='doc'><p>The stub method with <code>tagged</code>.</p>"));
+                Pattern.compile("<div class='tags'><span class='label'>Tags: </span><a href='search.html\\?q=stubTag2'>stubTag2</a></div><code>methodWithTagged"));
+        
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("<div class='tags'><span class='label'>Tags: </span><a href='search.html\\?q=stubTag1a'>stubTag1a</a><span class='comma'>,</span><a href='search.html\\?q=stubTag1b'>stubTag1b</a><span class='comma'>,</span><a href='search.html\\?q=stubTagWithVeryLongName ... !!!'>stubTagWithVeryLongName ... !!!</a></div><div class='long'><div class='doc'><p>This is <code>StubInterface</code></p>"));
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("<div class='tags'><span class='label'>Tags: </span><a href='search.html\\?q=stubTag1'>stubTag1</a><span class='comma'>,</span><a href='search.html\\?q=stubTag2'>stubTag2</a></div><div class='long'><div class='doc'><p>This is <code>StubClass</code></p>"));
     }
-    
     
     private File getOutputDir(CeylonDocTool tool, Module module) {
         String outputRepo = tool.getOutputRepository();

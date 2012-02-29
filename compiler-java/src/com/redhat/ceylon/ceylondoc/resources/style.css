@@ -240,3 +240,43 @@ ul.inheritance ul.inheritance li:before {
 .icon-decoration-deprecated {
  background-position: -128px 0px;
 }
+
+.tags a {
+ color: white;
+ background-color: rgb(153, 153, 153);
+ border-radius : 3px;
+ font-size: 9px;
+ font-weight: bold;
+ text-decoration: none;
+ padding: 3px;
+ margin: 2px; 
+}
+
+.tags a:hover {
+ background-color: rgb(123, 123, 123);	
+}
+
+.tags .comma {
+ display: none;
+}
+
+#section-interfaces .tags,
+#section-classes .tags,
+#section-attributes .tags,
+#section-methods .tags {
+ float: right;
+ clear: right; 
+ margin-bottom: 4px;
+}
+
+#section-interfaces .tags .label,
+#section-classes .tags .label,
+#section-attributes .tags .label,
+#section-methods .tags .label {
+ display: none;
+}
+
+#results .tags {
+ float: right;
+ clear: right;
+}

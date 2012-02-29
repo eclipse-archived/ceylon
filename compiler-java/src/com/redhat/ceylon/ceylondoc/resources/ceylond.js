@@ -78,7 +78,6 @@ jQuery(function(){
 	                 matchedElement = jQuery.extend(true, {}, elem); // clone
 	                 matchedElement.score = 0;
 	             }	        
-	             matchedElement.tagMatch = true;
 	             matchedElement.score = matchedElement.score + calculateScore(tag, q);
 	         }
 	     }
@@ -99,22 +98,20 @@ jQuery(function(){
 
 		var elemLink = jQuery("<a/>").attr("href", elem.url).append(highlightMatch(elem.name, q));
 		
+        var tagsDiv = jQuery("<div/>").addClass("tags");
+        for (i = 0; i < elem.tags.length; i++) {
+            var tag = elem.tags[i];
+            var tagLink = jQuery("<a/>").attr("href", "search.html?q=".concat(tag)).append(tag);
+            if( tag.toLowerCase().indexOf(q) != -1 ) {
+                tagLink.addClass("highlight")
+            }
+            tagsDiv.append(tagLink);
+        }
+		
 		jQuery("<div/>").addClass("type").text(elem.type).appendTo(div);
+		tagsDiv.appendTo(div);		
 		jQuery("<div/>").addClass("name").append(elemLink).appendTo(div);
 		jQuery("<div/>").addClass("doc").html(elem.doc).appendTo(div);
-
-		if (elem.tagMatch) {
-		    var tagsDiv = jQuery("<div/>").addClass("tags").append("Tags: ");
-		    for (i = 0; i < elem.tags.length; i++) {
-		        var tag = elem.tags[i];
-		        var tagLink = jQuery("<a/>").attr("href", "search.html?q=".concat(tag)).append(highlightMatch(tag, q));
-		        tagsDiv.append(tagLink);
-		        if (i < elem.tags.length - 1) {
-		            tagsDiv.append(", ");
-		        }
-		    }
-		    tagsDiv.appendTo(div);
-		}
 		
 		results.append(div);
 	 });

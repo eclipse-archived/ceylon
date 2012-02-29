@@ -219,6 +219,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         link(d.getType());
         close("code", "td");
         open("td");
+        writeTagged(d);
         startPrintingLongDoc(d);
         endLongDocAndPrintShortDoc(d);
         close("td");

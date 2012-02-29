@@ -18,6 +18,7 @@
  * MA  02110-1301, USA.
  */
 doc "This is `StubInterface`"
+tagged("stubTag1a", "stubTag1b", "stubTagWithVeryLongName ... !!!")
 shared interface StubInterface {
 
   shared formal void formalMethod();
