@@ -28,7 +28,10 @@ import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -37,49 +40,115 @@ import com.sun.tools.javac.util.ListBuffer;
 
 
 public class InvocationBuilder {
+    
+    /** Abstracts over things with arguments, in particular 
+     * {@link PositionalArguments positional argument invocations} 
+     * and {@link CallableArguments callable invocations}
+     */
+    interface Arguments {
+        /** Gets the number of arguments */
+        public int getNumArguments();
+        /** 
+         * Gets the expression supplying the argument value for the 
+         * given argument index 
+         */
+        public Expression getExpression(int argIndex);
+        /**
+         * Gets the transformed expression supplying the argument value for the 
+         * given argument index
+         */
+        public JCExpression getTransformedExpression(int argIndex, boolean isRaw, java.util.List<ProducedType> typeArgumentModels);
+        /**
+         * Gets the parameter for the given argument index
+         */
+        public Parameter getParameter(int argIndex);
+        public boolean hasEllipsis();
+    }
+    
+    class PositionalArguments implements Arguments {
+        private Tree.PositionalArgumentList positional;
+        
+        public PositionalArguments(Tree.PositionalArgumentList positional) {
+            this.positional = positional;
+        }
+        @Override
+        public Expression getExpression(int argIndex) {
+            return positional.getPositionalArguments().get(argIndex).getExpression();
+        }
+        @Override
+        public JCExpression getTransformedExpression(int argIndex, boolean isRaw, java.util.List<ProducedType> typeArgumentModels) {
+            return gen.expressionGen().transformArg(
+                    getExpression(argIndex), 
+                    getParameter(argIndex), isRaw, typeArgumentModels);
+        }
+        @Override
+        public Parameter getParameter(int argIndex) {
+            return positional.getPositionalArguments().get(argIndex).getParameter();
+        }
+        @Override
+        public int getNumArguments() {
+            return positional.getPositionalArguments().size();
+        }
+        @Override
+        public boolean hasEllipsis() {
+            return positional.getEllipsis() != null;
+        }
+    }
+    
     private final AbstractTransformer gen;
-    private final Tree.InvocationExpression invocation;
+    private Tree.InvocationExpression invocation;
+    private final ProducedType returnType;
+    private Tree.Primary primary;
+    
+    private Node node;
     private ListBuffer<JCVariableDecl> vars;
     private ListBuffer<JCExpression> args;
     private List<JCExpression> typeArgs;
     private String callVarName;
     
+    private InvocationBuilder(AbstractTransformer gen, ProducedType returnType) {
+        this.gen = gen;
+        this.returnType = returnType;
+    }
+    
     public static InvocationBuilder invocation(AbstractTransformer gen, Tree.InvocationExpression invocation) {
-        InvocationBuilder builder = new InvocationBuilder(gen, invocation);
+        InvocationBuilder builder = new InvocationBuilder(gen, invocation.getTypeModel());
+        builder.invocation = invocation;
+        builder.primary = invocation.getPrimary();
+        builder.node = invocation;
         if (invocation.getPositionalArgumentList() != null) {
-            builder.transformPositionalInvocation(invocation);
+            builder.transformPositionalInvocation();
         } else if (invocation.getNamedArgumentList() != null) {
-            builder.transformNamedInvocation(invocation);
+            builder.transformNamedInvocation();
         } else {
             throw new RuntimeException("Illegal State");
         }
         return builder;
     }
     
-    private InvocationBuilder(AbstractTransformer gen, Tree.InvocationExpression invocation) {
-        this.gen = gen;
-        this.invocation = invocation;
+    public static ProducedType getCallableReturnType(Tree.Term expr) {
+        ProducedType typeModel = expr.getTypeModel();
+        assert "ceylon.language.Callable".equals(typeModel.getDeclaration().getQualifiedNameString());
+        return typeModel.getTypeArgumentList().get(0);
     }
     
-    public JCExpression build() {
-        return makeInvocation();
     }
     
     // Named invocation
     
-    private void transformNamedInvocation(final Tree.InvocationExpression ce) {
+    private void transformNamedInvocation() {
         ListBuffer<JCVariableDecl> vars = ListBuffer.lb();
         ListBuffer<JCExpression> args = ListBuffer.lb();
 
-        java.util.List<ProducedType> typeArgumentModels = getTypeArguments(ce);
+        java.util.List<ProducedType> typeArgumentModels = getTypeArguments(invocation);
         List<JCExpression> typeArgs = transformTypeArguments(typeArgumentModels);
         boolean isRaw = typeArgs.isEmpty();
         String callVarName = null;
         
-        Declaration primaryDecl = ((Tree.MemberOrTypeExpression)ce.getPrimary()).getDeclaration();
+        Declaration primaryDecl = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
         if (primaryDecl != null) {
             java.util.List<ParameterList> paramLists = ((Functional)primaryDecl).getParameterLists();
-            java.util.List<Tree.NamedArgument> namedArguments = ce.getNamedArgumentList().getNamedArguments();
+            java.util.List<Tree.NamedArgument> namedArguments = invocation.getNamedArgumentList().getNamedArguments();
             java.util.List<Parameter> declaredParams = paramLists.get(0).getParameters();
             Parameter lastDeclared = declaredParams.size() > 0 ? declaredParams.get(declaredParams.size() - 1) : null;
             boolean boundSequenced = false;
@@ -144,7 +213,7 @@ public class InvocationBuilder {
                             container = (Declaration)container.getContainer();
                         }
                         String className = Util.getCompanionClassName(container.getName());
-                        argExpr = gen.at(ce).Apply(null, gen.makeQuotedQualIdent(gen.makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName), arglist);
+                        argExpr = gen.at(node).Apply(null, gen.makeQuotedQualIdent(gen.makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName), arglist);
                     } else {
                         argExpr = gen.makeEmpty();
                     }
@@ -156,7 +225,7 @@ public class InvocationBuilder {
                 }
             }
             
-            Tree.SequencedArgument sequencedArgument = ce.getNamedArgumentList().getSequencedArgument();
+            Tree.SequencedArgument sequencedArgument = invocation.getNamedArgumentList().getSequencedArgument();
             if (sequencedArgument != null) {
                 gen.at(sequencedArgument);
                 String varName = varBaseName + "$" + numDeclaredFixed;
@@ -199,49 +268,53 @@ public class InvocationBuilder {
 
     // Positional invocation
     
-    private void transformPositionalInvocation(Tree.InvocationExpression ce) {
+    private void transformPositionalInvocation() {
+        Declaration primaryDecl = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
+        Tree.PositionalArgumentList positional = invocation.getPositionalArgumentList();
+        java.util.List<ProducedType> typeArgumentModels = getTypeArguments(invocation);
+        java.util.List<ParameterList> paramLists = ((Functional)primaryDecl).getParameterLists();
+        computeCallInfo(primaryDecl, new PositionalArguments(positional), typeArgumentModels, paramLists);
+    }
+
+    
+    private void computeCallInfo(
+            Declaration primaryDecl,
+            Arguments positionalArguments,
+            java.util.List<ProducedType> typeArgumentModels,
+            java.util.List<ParameterList> paramLists) {
         ListBuffer<JCVariableDecl> vars = null;
         ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
-
-        Declaration primaryDecl = ((Tree.MemberOrTypeExpression)ce.getPrimary()).getDeclaration();
-        Tree.PositionalArgumentList positional = ce.getPositionalArgumentList();
-
-        java.util.List<ProducedType> typeArgumentModels = getTypeArguments(ce);
+        String callVarName = null;
         List<JCExpression> typeArgs = transformTypeArguments(typeArgumentModels);
         boolean isRaw = typeArgs.isEmpty();
-        String callVarName = null;
-        
-        java.util.List<ParameterList> paramLists = ((Functional)primaryDecl).getParameterLists();
         java.util.List<Parameter> declaredParams = paramLists.get(0).getParameters();
-        int numDeclared = declaredParams.size();
-        int numPassed = positional.getPositionalArguments().size();
+        int numParameters = declaredParams.size();
+        int numArguments = positionalArguments.getNumArguments();
         Parameter lastDeclaredParam = declaredParams.isEmpty() ? null : declaredParams.get(declaredParams.size() - 1); 
         if (lastDeclaredParam != null 
                 && lastDeclaredParam.isSequenced()
-                && positional.getEllipsis() == null // foo(sequence...) syntax => no need to box
-                && numPassed >= (numDeclared -1)) {
+                && !positionalArguments.hasEllipsis() // foo(sequence...) syntax => no need to box
+                && numArguments >= (numParameters -1)) {
             // => call to a varargs method
             // first, append the normal args
-            for (int ii = 0; ii < numDeclared - 1; ii++) {
-                Tree.PositionalArgument arg = positional.getPositionalArguments().get(ii);
-                args.append(gen.expressionGen().transformArg(arg.getExpression(), arg.getParameter(), isRaw, typeArgumentModels));
+            for (int ii = 0; ii < numParameters - 1; ii++) {
+                args.append(positionalArguments.getTransformedExpression(ii, isRaw, typeArgumentModels));
             }
             JCExpression boxed;
             // then, box the remaining passed arguments
-            if (numDeclared -1 == numPassed) {
+            if (numParameters -1 == numArguments) {
                 // box as Empty
                 boxed = gen.makeEmpty();
             } else {
                 // box with an ArraySequence<T>
                 List<Tree.Expression> x = List.<Tree.Expression>nil();
-                for (int ii = numDeclared - 1; ii < numPassed; ii++) {
-                    Tree.PositionalArgument arg = positional.getPositionalArguments().get(ii);
-                    x = x.append(arg.getExpression());
+                for (int ii = numParameters - 1; ii < numArguments; ii++) {
+                    x = x.append(positionalArguments.getExpression(ii));
                 }
                 boxed = gen.makeSequenceRaw(x);
             }
             args.append(boxed);
-        } else if (numPassed < numDeclared) {
+        } else if (numArguments < numParameters) {
             vars = ListBuffer.lb();
             String varBaseName = gen.aliasName("arg");
             callVarName = varBaseName + "$callable$";
@@ -254,10 +327,10 @@ public class InvocationBuilder {
             }
             // append the normal args
             int idx = 0;
-            for (Tree.PositionalArgument arg : positional.getPositionalArguments()) {
-                gen.at(arg);
-                Tree.Expression expr = arg.getExpression();
-                Parameter declaredParam = arg.getParameter();
+            for (int ii = 0; ii < positionalArguments.getNumArguments(); ii++) {
+                gen.at(positionalArguments.getExpression(ii));
+                Tree.Expression expr = positionalArguments.getExpression(ii);
+                Parameter declaredParam = positionalArguments.getParameter(ii);
                 int index;
                 BoxingStrategy boxType;
                 ProducedType type;
@@ -282,7 +355,7 @@ public class InvocationBuilder {
             }
             if (!Decl.isOverloaded(primaryDecl)) {
                 // append any arguments for defaulted parameters
-                for (int ii = numPassed; ii < numDeclared; ii++) {
+                for (int ii = numArguments; ii < numParameters; ii++) {
                     Parameter param = declaredParams.get(ii);
                     String varName = varBaseName + "$" + ii;
                     String methodName = Util.getDefaultedParamMethodName(primaryDecl, param);
@@ -294,7 +367,7 @@ public class InvocationBuilder {
                             container = (Declaration)container.getContainer();
                         }
                         String className = Util.getCompanionClassName(container.getName());
-                        argExpr = gen.at(ce).Apply(null, gen.makeQuotedQualIdent(gen.makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName), arglist);
+                        argExpr = gen.at(node).Apply(null, gen.makeQuotedQualIdent(gen.makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName), arglist);
                     } else {
                         argExpr = gen.makeEmpty();
                     }
@@ -304,15 +377,16 @@ public class InvocationBuilder {
                     JCVariableDecl varDecl = gen.makeVar(varName, typeExpr, argExpr);
                     vars.append(varDecl);
                 }
-                args.appendList(makeVarRefArgumentList(varBaseName, numDeclared));
+                args.appendList(makeVarRefArgumentList(varBaseName, numParameters));
             } else {
                 // For overloaded methods (and therefore Java interop) we just pass the arguments we have
-                args.appendList(makeVarRefArgumentList(varBaseName, numPassed));
+                args.appendList(makeVarRefArgumentList(varBaseName, numArguments));
             }
         } else {
             // append the normal args
-            for (Tree.PositionalArgument arg : positional.getPositionalArguments()) {
-                args.append(gen.expressionGen().transformArg(arg.getExpression(), arg.getParameter(), isRaw, typeArgumentModels));
+            for (int ii = 0; ii < positionalArguments.getNumArguments(); ii++) {
+                args.append(positionalArguments.getTransformedExpression(ii, 
+                        isRaw, typeArgumentModels));
             }
         }
 
@@ -342,16 +416,18 @@ public class InvocationBuilder {
     }
     
     private JCExpression makeInvocation() {
-        gen.at(invocation);
-        JCExpression result = gen.expressionGen().transformPrimary(invocation.getPrimary(), new TermTransformer() {
+        gen.at(node);
+        JCExpression result = gen.expressionGen().transformPrimary(primary, new TermTransformer() {
 
             @Override
             public JCExpression transform(JCExpression primaryExpr, String selector) {
                 JCExpression actualPrimExpr = null;
-                if (vars != null && !vars.isEmpty() && primaryExpr != null && selector != null) {
+                if (vars != null && !vars.isEmpty() 
+                        && primaryExpr != null 
+                        && selector != null) {
                     // Prepare the first argument holding the primary for the call
                     JCExpression callVarExpr = gen.makeUnquotedIdent(callVarName);
-                    ProducedType type = ((Tree.QualifiedMemberExpression)invocation.getPrimary()).getTarget().getQualifyingType();
+                    ProducedType type = ((Tree.QualifiedMemberExpression)primary).getTarget().getQualifyingType();
                     JCVariableDecl callVar = gen.makeVar(callVarName, gen.makeJavaType(type, AbstractTransformer.NO_PRIMITIVES), primaryExpr);
                     vars.prepend(callVar);
                     actualPrimExpr = callVarExpr;
@@ -360,17 +436,16 @@ public class InvocationBuilder {
                 }
                 
                 JCExpression resultExpr;
-                if (invocation.getPrimary() instanceof Tree.BaseTypeExpression) {
-                    ProducedType classType = (ProducedType)((Tree.BaseTypeExpression)invocation.getPrimary()).getTarget();
+                if (primary instanceof Tree.BaseTypeExpression) {
+                    ProducedType classType = (ProducedType)((Tree.BaseTypeExpression)primary).getTarget();
                     resultExpr = gen.make().NewClass(null, null, gen.makeJavaType(classType, AbstractTransformer.CLASS_NEW), args.toList(), null);
-                } else if (invocation.getPrimary() instanceof Tree.QualifiedTypeExpression) {
+                } else if (primary instanceof Tree.QualifiedTypeExpression) {
                     resultExpr = gen.make().NewClass(actualPrimExpr, null, gen.makeQuotedIdent(selector), args.toList(), null);
                 } else {
                     resultExpr = gen.make().Apply(typeArgs, gen.makeQuotedQualIdent(actualPrimExpr, selector), args.toList());
                 }
 
                 if (vars != null && !vars.isEmpty()) {
-                    ProducedType returnType = invocation.getTypeModel();
                     if (gen.isVoid(returnType)) {
                         // void methods get wrapped like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1); null)
                         return gen.make().LetExpr(vars.toList(), List.<JCStatement>of(gen.make().Exec(resultExpr)), gen.makeNull());
@@ -408,6 +483,10 @@ public class InvocationBuilder {
             }
         }
         return result;
+    }
+
+    public JCExpression build() {
+        return makeInvocation();
     }
     
 }
