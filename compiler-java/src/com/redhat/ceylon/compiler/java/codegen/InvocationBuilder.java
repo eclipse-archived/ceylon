@@ -19,6 +19,8 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
+import java.util.Collections;
+
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.TermTransformer;
 import com.redhat.ceylon.compiler.java.util.Decl;
@@ -30,6 +32,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
@@ -204,8 +208,12 @@ public class InvocationBuilder {
             if (term instanceof Tree.MemberOrTypeExpression) {
                 Tree.MemberOrTypeExpression bme = (Tree.MemberOrTypeExpression)term;
                 typeArguments = ((StaticMemberOrTypeExpression)bme).getTypeArguments();
-                Functional decl = (Functional)bme.getDeclaration();
-                declaredParameters = decl.getParameterLists().get(0).getParameters();
+                Declaration declaration = bme.getDeclaration();
+                if (declaration instanceof Functional) {
+                    declaredParameters = ((Functional)declaration).getParameterLists().get(0).getParameters();
+                } else {
+                    declaredParameters = Collections.<Parameter>emptyList();
+                }
             } else {
                 throw new RuntimeException(term+"");
             }
