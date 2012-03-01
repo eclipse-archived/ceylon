@@ -199,8 +199,8 @@ class Test {
         ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle).top();
         final long n1 = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle).getTopAttribute();
         takesTop((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle);
-        .java.lang.Object $middle$0 = middle;
-        if ($middle$0 instanceof .com.redhat.ceylon.compiler.java.test.expression.erasure.Left) {
+        .java.lang.Object $middle$0;
+        if (($middle$0 = middle) instanceof .com.redhat.ceylon.compiler.java.test.expression.erasure.Left) {
             final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left $middle$1 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)$middle$0;
             final long n2 = $middle$1.getLeftAttribute();
             $middle$1.left();
@@ -246,8 +246,8 @@ class Test {
     }
     
     private final void testNullHandlingOperators(final .java.lang.Object p1, final .java.lang.Object p1OrNothing) {
-        .java.lang.Object $p1OrNothing$7 = p1OrNothing;
-        if ($p1OrNothing$7 != null) {
+        .java.lang.Object $p1OrNothing$7;
+        if (($p1OrNothing$7 = p1OrNothing) != null) {
             final .java.lang.Object $p1OrNothing$8 = $p1OrNothing$7;
         }
         boolean bSync;
@@ -288,8 +288,8 @@ class Test {
         sync = ((.ceylon.language.Comparable<? super .ceylon.language.Integer>)p1).compare((.ceylon.language.Integer)p1).smallerThan();
         final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable<? super .ceylon.language.Integer>)p1).compare((.ceylon.language.Integer)p1);
         sync = (let .java.lang.Object $ceylontmp29 = p1 in ((.ceylon.language.Category)container).contains($ceylontmp29));
-        .java.lang.Object $p1$30 = p1;
-        if ($p1$30 instanceof .ceylon.language.Category) {
+        .java.lang.Object $p1$30;
+        if (($p1$30 = p1) instanceof .ceylon.language.Category) {
             final .ceylon.language.Category $p1$31 = (.ceylon.language.Category)$p1$30;
         }
         sync = (let .java.lang.Object $ceylontmp32 = p1 in ; $ceylontmp32 instanceof .ceylon.language.Category);
@@ -371,8 +371,8 @@ class Test {
         long sync;
         sync = ((.ceylon.language.Sized)naturals).getSize();
         sync = ((.ceylon.language.Sized)leftsAndRights).getSize();
-        .ceylon.language.Iterable $naturals$51 = naturals;
-        if ($naturals$51 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$naturals$51).getEmpty()) {
+        .ceylon.language.Iterable $naturals$51;
+        if (($naturals$51 = naturals) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$naturals$51).getEmpty()) {
             final .ceylon.language.Sequence $naturals$52 = (.ceylon.language.Sequence)$naturals$51;
         }
         boolean bSync;

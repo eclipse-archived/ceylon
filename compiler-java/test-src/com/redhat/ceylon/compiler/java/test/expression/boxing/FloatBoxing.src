@@ -27,8 +27,8 @@ class FloatBoxing {
         localAttrObject = <.ceylon.language.Float>id(.ceylon.language.Float.instance(1.0));
         final .java.lang.Object localAttrConstantObject = .ceylon.language.Float.instance(localAttrFloat);
         final double localAttrConstantFloat = localAttrFloat;
-        .java.lang.Object $localAttrConstantObject$0 = localAttrConstantObject;
-        if ($localAttrConstantObject$0 instanceof .ceylon.language.Float) {
+        .java.lang.Object $localAttrConstantObject$0;
+        if (($localAttrConstantObject$0 = localAttrConstantObject) instanceof .ceylon.language.Float) {
             final double $localAttrConstantObject$1 = ((.ceylon.language.Float)$localAttrConstantObject$0).doubleValue();
             localAttrFloat = $localAttrConstantObject$1;
         }

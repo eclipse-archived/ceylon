@@ -65,23 +65,23 @@ class Bar implements .com.redhat.ceylon.compiler.java.test.statement.conditional
 class MethodIfIs {
     
     public final void m(final .java.lang.Object x) {
-        .java.lang.Object $x$0 = x;
-        if ($x$0 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo) {
+        .java.lang.Object $x$0;
+        if (($x$0 = x) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo) {
             final .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo $x$1 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)$x$0;
             $x$1.foo();
-            .java.lang.Object $x$2 = $x$1;
-            if ($x$2 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub) {
+            .java.lang.Object $x$2;
+            if (($x$2 = $x$1) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub) {
                 final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub $x$3 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub)$x$2;
                 $x$3.foo2();
             }
         }
-        .java.lang.Object $x$4 = x;
-        if ($x$4 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo || $x$4 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bar) {
+        .java.lang.Object $x$4;
+        if (($x$4 = x) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo || $x$4 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bar) {
             final .java.lang.Object $x$5 = (.java.lang.Object)$x$4;
             ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Common)$x$5).common();
         }
-        .java.lang.Object $x$6 = x;
-        if ($x$6 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo && $x$6 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface) {
+        .java.lang.Object $x$6;
+        if (($x$6 = x) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo && $x$6 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface) {
             final .java.lang.Object $x$7 = (.java.lang.Object)$x$6;
             ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)$x$7).common();
             ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)$x$7).foo();
@@ -89,16 +89,16 @@ class MethodIfIs {
         }
         if (x == null) {
         }
-        .java.lang.Object $y$8 = give();
-        if ($y$8 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub) {
+        .java.lang.Object $y$8;
+        if (($y$8 = give()) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub) {
             final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub $y$9 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub)$y$8;
             $y$9.foo();
         }
         if (give() == null) {
         }
         final .java.lang.Object nothing = null;
-        .java.lang.Object $nothing$10 = nothing;
-        if ($nothing$10 == null || $nothing$10 instanceof .ceylon.language.Character) {
+        .java.lang.Object $nothing$10;
+        if (($nothing$10 = nothing) == null || $nothing$10 instanceof .ceylon.language.Character) {
             final .ceylon.language.Character $nothing$11 = (.ceylon.language.Character)$nothing$10;
         }
     }

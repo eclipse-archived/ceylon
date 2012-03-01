@@ -27,8 +27,8 @@ class IntegerBoxing {
         localAttrObject = <.ceylon.language.Integer>id(.ceylon.language.Integer.instance(1L));
         final .java.lang.Object localAttrConstantObject = .ceylon.language.Integer.instance(localAttrInteger);
         final long localAttrConstantInteger = localAttrInteger;
-        .java.lang.Object $localAttrConstantObject$0 = localAttrConstantObject;
-        if ($localAttrConstantObject$0 instanceof .ceylon.language.Integer) {
+        .java.lang.Object $localAttrConstantObject$0;
+        if (($localAttrConstantObject$0 = localAttrConstantObject) instanceof .ceylon.language.Integer) {
             final long $localAttrConstantObject$1 = ((.ceylon.language.Integer)$localAttrConstantObject$0).longValue();
             localAttrInteger = $localAttrConstantObject$1;
         }
