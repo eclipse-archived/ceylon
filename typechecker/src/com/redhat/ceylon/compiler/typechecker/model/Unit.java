@@ -214,15 +214,15 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Iterator");
     }
 
-    private Interface getFixedSizedDeclaration() {
+    public Interface getFixedSizedDeclaration() {
         return (Interface) getLanguageModuleDeclaration("FixedSized");
     }
 
-    private Interface getSomeDeclaration() {
+    public Interface getSomeDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Some");
     }
 
-    private Interface getNoneDeclaration() {
+    public Interface getNoneDeclaration() {
         return (Interface) getLanguageModuleDeclaration("None");
     }
 
