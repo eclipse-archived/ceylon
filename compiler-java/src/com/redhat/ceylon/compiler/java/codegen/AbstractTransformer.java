@@ -597,6 +597,10 @@ public abstract class AbstractTransformer implements Transformation {
     protected boolean isCeylonBasicType(ProducedType type) {
         return (isCeylonString(type) || isCeylonBoolean(type) || isCeylonInteger(type) || isCeylonFloat(type) || isCeylonCharacter(type));
     }
+    
+    protected boolean isCeylonCallable(ProducedType type) {
+        return type.getDeclaration().getType().getProducedTypeQualifiedName().startsWith("ceylon.language.Callable<");
+    }
 
     /*
      * Java Type creation
