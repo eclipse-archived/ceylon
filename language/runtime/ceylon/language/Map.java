@@ -8,9 +8,9 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon
-@TypeParameters({@TypeParameter(value = "Key",
+@TypeParameters({@TypeParameter(value = "Key", variance = Variance.OUT,
                                satisfies = "ceylon.language.Object"),
-                 @TypeParameter(value = "Element", variance = Variance.OUT, 
+                 @TypeParameter(value = "Item", variance = Variance.OUT, 
                                satisfies = "ceylon.language.Object")})
 @SatisfiedTypes({"ceylon.language.Collection<ceylon.language.Entry<Key,Item>>",
                  "ceylon.language.Correspondence<ceylon.language.Object,Item>",
