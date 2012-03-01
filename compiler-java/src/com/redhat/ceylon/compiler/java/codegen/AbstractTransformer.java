@@ -1354,12 +1354,13 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     // Creates comparisons of expressions against types
-    protected JCExpression makeTypeTest(String varName, ProducedType type) {
+    protected JCExpression makeTypeTest(JCExpression firstTimeExpr, String varName, ProducedType type) {
         JCExpression result = null;
         if (typeFact().isUnion(type)) {
             UnionType union = (UnionType)type.getDeclaration();
             for (ProducedType pt : union.getCaseTypes()) {
-                JCExpression partExpr = makeTypeTest(varName, pt);
+                JCExpression partExpr = makeTypeTest(firstTimeExpr, varName, pt);
+                firstTimeExpr = null;
                 if (result == null) {
                     result = partExpr;
                 } else {
@@ -1369,7 +1370,8 @@ public abstract class AbstractTransformer implements Transformation {
         } else if (typeFact().isIntersection(type)) {
             IntersectionType union = (IntersectionType)type.getDeclaration();
             for (ProducedType pt : union.getSatisfiedTypes()) {
-                JCExpression partExpr = makeTypeTest(varName, pt);
+                JCExpression partExpr = makeTypeTest(firstTimeExpr, varName, pt);
+                firstTimeExpr = null;
                 if (result == null) {
                     result = partExpr;
                 } else {
@@ -1377,7 +1379,7 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             }
         } else {
-            JCExpression varExpr = makeUnquotedIdent(varName);
+            JCExpression varExpr = firstTimeExpr != null ? firstTimeExpr : makeUnquotedIdent(varName);
             if (type.isExactly(typeFact().getNothingDeclaration().getType())){
                 // is Nothing => is null
                 return make().Binary(JCTree.EQ, varExpr, makeNull());
@@ -1404,9 +1406,9 @@ public abstract class AbstractTransformer implements Transformation {
         return result;
     }
 
-    protected JCExpression makeNonEmptyTest(String varName) {
+    protected JCExpression makeNonEmptyTest(JCExpression firstTimeExpr, String varName) {
         Interface fixedSize = typeFact().getFixedSizedDeclaration();
-        JCExpression test = makeTypeTest(varName, fixedSize.getType());
+        JCExpression test = makeTypeTest(firstTimeExpr, varName, fixedSize.getType());
         JCExpression fixedSizeType = makeJavaType(fixedSize.getType(), NO_PRIMITIVES | WANT_RAW_TYPE);
         JCExpression nonEmpty = makeNonEmptyTest(make().TypeCast(fixedSizeType, makeUnquotedIdent(varName)));
         return make().Binary(JCTree.AND, test, nonEmpty);

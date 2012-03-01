@@ -176,7 +176,7 @@ public class StatementTransformer extends AbstractTransformer {
                 }
                 
                 // Temporary variable holding the result of the expression/variable to test
-                decl = makeVar(tmpVarName, tmpVarTypeExpr, expr);
+                decl = makeVar(tmpVarName, tmpVarTypeExpr, null);
     
                 // The variable holding the result for the code inside the code block
                 JCVariableDecl decl2 = at(cond).VarDef(make().Modifiers(FINAL), substVarName, toTypeExpr, tmpVarExpr);
@@ -193,14 +193,17 @@ public class StatementTransformer extends AbstractTransformer {
                 removeVariableSubst(origVarName.toString(), prevSubst);
                 
                 at(cond);
+                // Assign the expression to test to the temporary variable
+                JCExpression firstTimeTestExpr = make().Assign(makeUnquotedIdent(tmpVarName), expr);
+                
                 // Test on the tmpVar in the following condition
                 if (cond instanceof Tree.ExistsCondition) {
-                    test = make().Binary(JCTree.NE, makeUnquotedIdent(tmpVarName), makeNull());                
+                    test = make().Binary(JCTree.NE, firstTimeTestExpr, makeNull());                
                 } else if (cond instanceof Tree.NonemptyCondition){
-                    test = makeNonEmptyTest(tmpVarName);
+                    test = makeNonEmptyTest(firstTimeTestExpr, tmpVarName);
                 } else {
                     // is
-                    test = makeTypeTest(tmpVarName, toType);
+                    test = makeTypeTest(firstTimeTestExpr, tmpVarName, toType);
                 }
             }
         } else if (cond instanceof Tree.BooleanCondition) {
@@ -545,7 +548,7 @@ public class StatementTransformer extends AbstractTransformer {
             CaseClause caseClause, IsCase isCase, JCStatement last) {
         at(isCase);
         ProducedType type = isCase.getType().getTypeModel();
-        JCExpression cond = makeTypeTest(selectorAlias, type);
+        JCExpression cond = makeTypeTest(null, selectorAlias, type);
         
         JCExpression toTypeExpr = makeJavaType(type);
         String name = isCase.getVariable().getIdentifier().getText();
