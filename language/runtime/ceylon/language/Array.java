@@ -61,7 +61,7 @@ public abstract class Array<Element> extends ArrayList<Element>
         long toIndex = to==null ? array.length-1 : to.longValue();
         long lastIndex = getLastIndex().longValue();
         if (fromIndex>lastIndex||toIndex<fromIndex) {
-            return arrayOfNone.arrayOfNone();
+            return arrayOfNone.<Element>arrayOfNone();
         }
         else if (toIndex>lastIndex) {
             return new NonemptyArray<Element>(array, fromIndex);
@@ -79,7 +79,7 @@ public abstract class Array<Element> extends ArrayList<Element>
         long resultLength = length.longValue();
         long lastIndex = getLastIndex().longValue();
         if (fromIndex>lastIndex||resultLength==0) {
-            return arrayOfNone.arrayOfNone();
+            return arrayOfNone.<Element>arrayOfNone();
         }
         else if (fromIndex+resultLength>lastIndex) {
             return new NonemptyArray<Element>(array, fromIndex);
@@ -117,7 +117,7 @@ class NonemptyArray<Element> extends Array<Element> implements Some<Element> {
     @Override
     public FixedSized<? extends Element> getRest() {
         if (first+1==array.length) {
-            return arrayOfNone.arrayOfNone();
+            return arrayOfNone.<Element>arrayOfNone();
         }
         else {
             return new NonemptyArray<Element>(array, first + 1);
