@@ -1241,6 +1241,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transform(expr, null);
     }
     
+    public JCExpression transform(Tree.BaseTypeExpression expr) {
+        return transform(expr, null);
+    }
+    
     private JCExpression transform(Tree.QualifiedTypeExpression expr, TermTransformer transformer) {
         JCExpression primaryExpr = transformQualifiedMemberPrimary(expr);
         return transformMemberExpression(expr, primaryExpr, transformer);
