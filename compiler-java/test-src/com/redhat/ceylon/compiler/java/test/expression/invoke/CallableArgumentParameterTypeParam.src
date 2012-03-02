@@ -1,0 +1,65 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class f {
+    
+    private f() {
+    }
+    
+    static <T>void f(final .ceylon.language.Callable<.java.lang.Object> foo) {
+    }
+}
+final class bar {
+    
+    private bar() {
+    }
+    
+    static <X>void bar(final X s) {
+    }
+}
+final class baz {
+    
+    private baz() {
+    }
+    
+    static void baz(final long i) {
+    }
+}
+final class m {
+    
+    private m() {
+    }
+    
+    static void m() {
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.<.ceylon.language.String>f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(){
+            
+            @.java.lang.Override
+            public .java.lang.Object call(final .java.lang.Object arg0) {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.<.ceylon.language.String>bar((.ceylon.language.String)arg0);
+                return null;
+            }
+            
+            @.java.lang.Override
+            public .java.lang.String toString() {
+                return "Callable<Void,String>";
+            }
+        });
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.<.ceylon.language.Integer>f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(){
+            
+            @.java.lang.Override
+            public .java.lang.Object call(final .java.lang.Object arg0) {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.baz.baz(((.ceylon.language.Integer)arg0).longValue());
+                return null;
+            }
+            
+            @.java.lang.Override
+            public .java.lang.String toString() {
+                return "Callable<Void,Integer>";
+            }
+        });
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.m.m();
+    }
+}

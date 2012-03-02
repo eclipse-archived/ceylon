@@ -1,0 +1,62 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+class C {
+    
+    private final long f() {
+        return 1L;
+    }
+    
+    private final .ceylon.language.Callable<.ceylon.language.Integer> m() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer call() {
+                return .ceylon.language.Integer.instance(f());
+            }
+                        
+            @.java.lang.Override
+            public .java.lang.String toString() {
+                return "Callable<Integer>";
+            }
+        };
+    }
+    
+    private final .ceylon.language.Callable<.ceylon.language.Integer> m2() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer call() {
+                return .ceylon.language.Integer.instance(C.this.f());
+            }
+            
+                        
+            @.java.lang.Override
+            public .java.lang.String toString() {
+                return "Callable<Integer>";
+            }
+        };
+    }
+    
+    private final .ceylon.language.Callable<.ceylon.language.Integer> m3(final .com.redhat.ceylon.compiler.java.test.expression.invoke.C c) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer call() {
+                return .ceylon.language.Integer.instance(c.f());
+            }
+            
+            @.java.lang.Override
+            public .java.lang.String toString() {
+                return "Callable<Integer>";
+            }
+        };
+    }
+    
+    C() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.C();
+    }
+}

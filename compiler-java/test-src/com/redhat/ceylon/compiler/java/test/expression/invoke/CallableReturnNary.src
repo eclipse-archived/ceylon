@@ -1,0 +1,36 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class foo {
+    
+    private foo() {
+    }
+    
+    static void foo(final long i, final .java.lang.String s, final boolean b, final int c) {
+    }
+}
+final class bar {
+    
+    private bar() {
+    }
+    
+    static .ceylon.language.Callable<.java.lang.Object> bar() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(){
+            
+            @.java.lang.Override
+            public .java.lang.Object call(final .java.lang.Object... arg0) {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.foo.foo(((.ceylon.language.Integer)arg0[0]).longValue(), ((.ceylon.language.String)arg0[1]).toString(), ((.ceylon.language.Boolean)arg0[2]).booleanValue(), ((.ceylon.language.Character)arg0[3]).intValue());
+                return null;
+            }
+            
+            @.java.lang.Override
+            public .java.lang.String toString() {
+                return "Callable<Void,Integer,String,Boolean,Character>";
+            }
+        };
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.bar();
+    }
+}

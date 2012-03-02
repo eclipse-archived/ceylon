@@ -1,0 +1,11 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class f {
+    
+    private f() {
+    }
+    
+    static void f(final .ceylon.language.Callable<.java.lang.Object> foo) {
+        (let .ceylon.language.Integer $arg$0$1 = .ceylon.language.Integer.instance(1L),.ceylon.language.String $arg$0$0 = .ceylon.language.String.instance("") in foo.call($arg$0$0, $arg$0$1); null);
+    }
+}

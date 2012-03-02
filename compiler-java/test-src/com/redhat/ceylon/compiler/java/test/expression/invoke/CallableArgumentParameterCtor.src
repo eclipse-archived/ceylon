@@ -1,0 +1,39 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class f {
+    
+    private f() {
+    }
+    
+    static <T>void f(final T t) {
+    }
+}
+class C {
+    
+    C(.java.lang.String s) {
+    }
+}
+final class m {
+    
+    private m() {
+    }
+    
+    static void m() {
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.C>>f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.C>() {
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.expression.invoke.C call(.java.lang.String arg0) {
+                return new .com.redhat.ceylon.compiler.java.test.expression.invoke.C((.java.lang.String)arg0);
+            }
+                        
+            @.java.lang.Override
+            public .java.lang.String toString() {
+                return "Callable<Void,String>";
+            }
+        });
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.m.m();
+    }
+}

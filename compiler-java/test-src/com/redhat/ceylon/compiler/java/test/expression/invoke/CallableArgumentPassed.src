@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class f {
+    
+    private f() {
+    }
+    
+    static void f(final .ceylon.language.Callable<.java.lang.Object> foo) {
+    }
+}
+final class m {
+    
+    private m() {
+    }
+    
+    static void m(final .ceylon.language.Callable<.java.lang.Object> bar) {
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.f(bar);
+    }
+}
