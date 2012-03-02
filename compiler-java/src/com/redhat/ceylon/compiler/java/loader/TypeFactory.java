@@ -20,6 +20,8 @@
 
 package com.redhat.ceylon.compiler.java.loader;
 
+import java.util.Collections;
+
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -119,5 +121,13 @@ public class TypeFactory extends Unit {
 
     public ProducedType getFixedSizedType(ProducedType pt) {
         return pt.getSupertype(getFixedSizedDeclaration());
+    }
+    
+    public ProducedType getCallableType(java.util.List<ProducedType> typeArgs) {
+        return getCallableDeclaration().getProducedType(null, typeArgs);
+    }
+    
+    public ProducedType getCallableType(ProducedType resultType) {
+        return getCallableType(Collections.<ProducedType>singletonList(resultType));
     }
 }
