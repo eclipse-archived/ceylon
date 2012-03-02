@@ -1020,8 +1020,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public JCExpression transformFunctional(Tree.Term expr,
-            Functional functional,
-            JCExpression unboxed) {
+            Functional functional) {
         // Generate a subclass of Callable
         MethodDefinitionBuilder callMethod = MethodDefinitionBuilder.method(gen(), false, true, "call");
         callMethod.isActual(true);
@@ -1048,7 +1047,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         InvocationBuilder invocationBuilder = InvocationBuilder.invocationForCallable(gen(), expr, functional);
-        unboxed = invocationBuilder.build();
+        JCExpression unboxed = invocationBuilder.build();
 
         JCExpression fnCall = boxUnboxIfNecessary(unboxed, !expr.getUnboxed(), 
                 returnType, BoxingStrategy.BOXED);
@@ -1255,6 +1254,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     // Generic code for all primaries
     
     public JCExpression transformPrimary(Tree.Primary primary, TermTransformer transformer) {
+        boolean prevFnCall = fnCall;
         fnCall = true;
         try {
             if (primary instanceof Tree.QualifiedMemberExpression) {
@@ -1269,7 +1269,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 return makeQuotedIdent(((Tree.MemberOrTypeExpression)primary).getDeclaration().getName());
             }
         } finally {
-            fnCall = false;
+            fnCall = prevFnCall;
         }
     }
     
@@ -1289,7 +1289,12 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         JCExpression qualExpr = null;
         String selector = null;
-        if (decl instanceof Getter) {
+        if (decl instanceof Functional
+                && !(decl instanceof FunctionalParameter) // A functional parameter will already be Callable-wrapped
+                && isCeylonCallable(expr.getTypeModel())
+                && !fnCall) {
+            result = transformFunctional(expr, (Functional)decl);
+        } else if (decl instanceof Getter) {
             // invoke the getter
             if (decl.isToplevel()) {
                 primaryExpr = null;
@@ -1403,12 +1408,6 @@ public class ExpressionTransformer extends AbstractTransformer {
                             List.<JCTree.JCExpression>nil());
                 }
             }
-        }
-        
-        if (decl instanceof Method // TODO Or Getable?
-                && isCeylonCallable(expr.getTypeModel())
-                && !fnCall) {
-            result = transformFunctional(expr, (Method)decl, result);
         }
         
         return result;
