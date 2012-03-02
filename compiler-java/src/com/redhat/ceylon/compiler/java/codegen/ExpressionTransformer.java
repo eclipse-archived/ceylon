@@ -21,6 +21,7 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 
 import com.redhat.ceylon.compiler.java.codegen.Operators.AssignmentOperatorTranslation;
@@ -29,6 +30,8 @@ import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
 import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -39,10 +42,13 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCConditional;
@@ -53,6 +59,7 @@ import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewArray;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
+import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCUnary;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -1006,10 +1013,84 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
 
+    public ProducedType getCallableReturnType(Tree.Term expr) {
+        ProducedType typeModel = expr.getTypeModel();
+        assert gen().isCeylonCallable(typeModel);
+        return typeModel.getTypeArgumentList().get(0);
+    }
+    
+    public JCExpression transformFunctional(Tree.Term expr,
+            Functional functional,
+            JCExpression unboxed) {
+        // Generate a subclass of Callable
+        MethodDefinitionBuilder callMethod = MethodDefinitionBuilder.method(gen(), false, true, "call");
+        callMethod.isActual(true);
+        callMethod.modifiers(Flags.PUBLIC);
+        ProducedType typeModel = expr.getTypeModel();
+        ProducedType returnType = getCallableReturnType(expr);
+        callMethod.resultType(makeJavaType(returnType, EXTENDS), null);
+        // Now append formal parameters
+        int numParams = functional.getParameterLists().get(0).getParameters().size();
+        switch (numParams) {
+        case 3:
+            callMethod.parameter(makeCallableCallParam(0, numParams-3));
+            // fall through
+        case 2:
+            callMethod.parameter(makeCallableCallParam(0, numParams-2));
+            // fall through
+        case 1:
+            callMethod.parameter(makeCallableCallParam(0, numParams-1));
+            break;
+        case 0:
+            break;
+        default: // use varargs
+            callMethod.parameter(makeCallableCallParam(Flags.VARARGS, 0));
+        }
+        
+        InvocationBuilder invocationBuilder = InvocationBuilder.invocationForCallable(gen(), expr, functional);
+        unboxed = invocationBuilder.build();
+
+        JCExpression fnCall = boxUnboxIfNecessary(unboxed, !expr.getUnboxed(), 
+                returnType, BoxingStrategy.BOXED);
+        
+        // Return the call result, or null if a void method
+        boolean isVoidFunction = returnType.isExactly(typeFact().getVoidDeclaration().getType());
+        if (isVoidFunction) {
+            callMethod.body(List.<JCStatement>of(make().Exec(fnCall), make().Return(makeNull())));
+        } else {
+            callMethod.body(List.<JCStatement>of(make().Return(fnCall)));
+        }
+        
+        MethodDefinitionBuilder stringMethod = MethodDefinitionBuilder.systemMethod(gen(), false, "toString");
+        stringMethod.isActual(true);
+        stringMethod.modifiers(Flags.PUBLIC);
+        stringMethod.resultType((TypedDeclaration)typeFact().getObjectDeclaration().getMember("string", Collections.<ProducedType>emptyList()));
+        stringMethod.body(make().Return(make().Literal(typeModel.getProducedTypeName())));
+        
+        JCClassDecl classDef = make().AnonymousClassDef(make().Modifiers(0), List.<JCTree>of(callMethod.build(), stringMethod.build()));
+        
+        return make().NewClass(null, 
+                null, 
+                makeJavaType(typeModel, EXTENDS | CLASS_NEW), 
+                List.<JCExpression>nil(), 
+                classDef);
+    }
+
+    private JCVariableDecl makeCallableCallParam(long flags, int ii) {
+        if ((flags & Flags.VARARGS) != 0) {
+            return make().VarDef(make().Modifiers(Flags.FINAL | flags), 
+                    names().fromString("arg"+ii), 
+                    make().TypeArray(makeIdent(syms().objectType)), null);
+        }
+        
+        return make().VarDef(make().Modifiers(Flags.FINAL | flags), 
+                names().fromString("arg"+ii), makeIdent(syms().objectType), null);
+    }
+
     //
     // Member expressions
 
-    public interface TermTransformer {
+    public static interface TermTransformer {
         JCExpression transform(JCExpression primaryExpr, String selector);
     }
 
@@ -1165,19 +1246,26 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transformMemberExpression(expr, primaryExpr, transformer);
     }
     
+    boolean fnCall = false;
+    
     // Generic code for all primaries
     
     public JCExpression transformPrimary(Tree.Primary primary, TermTransformer transformer) {
-        if (primary instanceof Tree.QualifiedMemberExpression) {
-            return transform((Tree.QualifiedMemberExpression)primary, transformer);
-        } else if (primary instanceof Tree.BaseMemberExpression) {
-            return transform((Tree.BaseMemberExpression)primary, transformer);
-        } else if (primary instanceof Tree.BaseTypeExpression) {
-            return transform((Tree.BaseTypeExpression)primary, transformer);
-        } else if (primary instanceof Tree.QualifiedTypeExpression) {
-            return transform((Tree.QualifiedTypeExpression)primary, transformer);
-        } else {
-            return makeQuotedIdent(((Tree.MemberOrTypeExpression)primary).getDeclaration().getName());
+        fnCall = true;
+        try {
+            if (primary instanceof Tree.QualifiedMemberExpression) {
+                return transform((Tree.QualifiedMemberExpression)primary, transformer);
+            } else if (primary instanceof Tree.BaseMemberExpression) {
+                return transform((Tree.BaseMemberExpression)primary, transformer);
+            } else if (primary instanceof Tree.BaseTypeExpression) {
+                return transform((Tree.BaseTypeExpression)primary, transformer);
+            } else if (primary instanceof Tree.QualifiedTypeExpression) {
+                return transform((Tree.QualifiedTypeExpression)primary, transformer);
+            } else {
+                return makeQuotedIdent(((Tree.MemberOrTypeExpression)primary).getDeclaration().getName());
+            }
+        } finally {
+            fnCall = false;
         }
     }
     
@@ -1311,6 +1399,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                             List.<JCTree.JCExpression>nil());
                 }
             }
+        }
+        
+        if (decl instanceof Method // TODO Or Getable?
+                && isCeylonCallable(expr.getTypeModel())
+                && !fnCall) {
+            result = transformFunctional(expr, (Method)decl, result);
         }
         
         return result;

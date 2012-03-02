@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.sun.tools.javac.code.Flags.FINAL;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -867,6 +868,15 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     protected ProducedType getTypeForParameter(Parameter parameter, boolean isRaw, java.util.List<ProducedType> typeArgumentModels) {
+        if (parameter instanceof FunctionalParameter) {
+            FunctionalParameter fp = (FunctionalParameter)parameter;
+            java.util.List<ProducedType> typeArgs = new ArrayList<ProducedType>(fp.getTypeParameters().size());
+            typeArgs.add(fp.getType());
+            for (TypeParameter typeParameter : fp.getTypeParameters()) {
+                typeArgs.add(typeParameter.getType());
+            }
+            return typeFact().getCallableType(typeArgs);
+        }
         ProducedType type = parameter.getType();
         if(isTypeParameter(type)){
             TypeParameter tp = (TypeParameter) type.getDeclaration();

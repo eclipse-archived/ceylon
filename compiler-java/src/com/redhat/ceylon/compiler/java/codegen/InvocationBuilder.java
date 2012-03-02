@@ -19,28 +19,23 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
-import java.util.ArrayList;
-
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.TermTransformer;
 import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.java.util.Util;
-import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
+import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCTypeCast;
@@ -107,11 +102,14 @@ public class InvocationBuilder {
     
     class CallableArguments implements Arguments {
         private java.util.List<Parameter> functionalParameters;
+        private java.util.List<ProducedType> functionalTypeArgs;
         private java.util.List<Parameter> declaredParameters;
         
         CallableArguments(Functional functionalParameter,
+                java.util.List<ProducedType> functionalTypeArgs,
                 java.util.List<Parameter> declaredParameters) {
             this.functionalParameters = functionalParameter.getParameterLists().get(0).getParameters();
+            this.functionalTypeArgs = functionalTypeArgs;
             this.declaredParameters = declaredParameters;
         }
         
@@ -136,7 +134,7 @@ public class InvocationBuilder {
         public JCExpression getTransformedExpression(int argIndex,
                 boolean isRaw,
                 java.util.List<ProducedType> typeArgumentModels) {
-            Parameter param = functionalParameters.get(argIndex);
+            Parameter param = declaredParameters.get(argIndex);
             JCExpression argExpr;
             if (functionalParameters.size() <= 3) {
                 // The Callable has overridden one of the non-varargs call() 
@@ -150,7 +148,8 @@ public class InvocationBuilder {
                         gen.make().Ident(gen.names().fromString("arg0")), 
                         gen.make().Literal(argIndex));
             }
-            JCTypeCast cast = gen.make().TypeCast(gen.makeJavaType(param.getType(), AbstractTransformer.NO_PRIMITIVES), argExpr);
+            ProducedType castType = gen.getTypeForParameter(param, isRaw, functionalTypeArgs);
+            JCTypeCast cast = gen.make().TypeCast(gen.makeJavaType(castType, AbstractTransformer.NO_PRIMITIVES), argExpr);
             
             JCExpression boxed = gen.boxUnboxIfNecessary(cast, true, 
                     param.getType(), declaredParameters.get(argIndex).getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED);
@@ -189,45 +188,40 @@ public class InvocationBuilder {
         return builder;
     }
     
-    public static ProducedType getCallableReturnType(Tree.Term expr) {
-        ProducedType typeModel = expr.getTypeModel();
-        assert "ceylon.language.Callable".equals(typeModel.getDeclaration().getQualifiedNameString());
-        return typeModel.getTypeArgumentList().get(0);
-    }
-    
     public static InvocationBuilder invocationForCallable(AbstractTransformer gen, Term expr, Functional parameter) {
-        InvocationBuilder builder = new InvocationBuilder(gen, getCallableReturnType(expr));
+        InvocationBuilder builder = new InvocationBuilder(gen, gen.expressionGen().getCallableReturnType(expr));
         builder.node = expr;
         builder.transformForCallable(expr, parameter);
         return builder;
     }
     
     private void transformForCallable(Term expr, Functional functionalParameter) {
-        java.util.List<Parameter> declaredParameters;
+        final java.util.List<Parameter> declaredParameters;
+        final TypeArguments typeArguments;
         if (expr instanceof Tree.Expression) {
             Term term = ((Tree.Expression)expr).getTerm();
             this.primary = (Tree.Primary)term;
             if (term instanceof Tree.MemberOrTypeExpression) {
                 Tree.MemberOrTypeExpression bme = (Tree.MemberOrTypeExpression)term;
+                typeArguments = ((StaticMemberOrTypeExpression)bme).getTypeArguments();
                 Functional decl = (Functional)bme.getDeclaration();
                 declaredParameters = decl.getParameterLists().get(0).getParameters();
             } else {
                 throw new RuntimeException(term+"");
             }
+        } else if (expr instanceof Tree.MemberOrTypeExpression) {
+            this.primary = (Tree.Primary)expr;
+            typeArguments = ((StaticMemberOrTypeExpression)expr).getTypeArguments();
+            Functional f = (Functional)((Tree.MemberOrTypeExpression)expr).getDeclaration();
+            declaredParameters = f.getParameterLists().get(0).getParameters();
         } else {
             throw new RuntimeException(expr+"");
         }
         
-        java.util.List<ParameterList> parameterLists = functionalParameter.getParameterLists();
-        java.util.List<TypeParameter> typeParameters = functionalParameter.getTypeParameters();
-        ArrayList<ProducedType> typeArguments = new ArrayList<ProducedType>(typeParameters.size());
-        for (TypeParameter typeParameter : typeParameters) {
-            typeArguments.add(typeParameter.getType());
-        }        
         computeCallInfo(expr.getTypeModel().getDeclaration(), 
-                new CallableArguments(functionalParameter, declaredParameters), 
-                typeArguments, parameterLists);
-        
+                new CallableArguments(functionalParameter, typeArguments.getTypeModels(), declaredParameters), 
+                typeArguments.getTypeModels(), 
+                functionalParameter.getParameterLists());
     }
     
     // Named invocation
@@ -382,7 +376,7 @@ public class InvocationBuilder {
         ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
         String callVarName = null;
         List<JCExpression> typeArgs = transformTypeArguments(typeArgumentModels);
-        boolean isRaw = typeArgs.isEmpty();
+        final boolean isRaw = typeArgs.isEmpty();
         java.util.List<Parameter> declaredParams = paramLists.get(0).getParameters();
         int numParameters = declaredParams.size();
         int numArguments = positionalArguments.getNumArguments();
@@ -538,6 +532,16 @@ public class InvocationBuilder {
                 } else if (primary instanceof Tree.QualifiedTypeExpression) {
                     resultExpr = gen.make().NewClass(actualPrimExpr, null, gen.makeQuotedIdent(selector), args.toList(), null);
                 } else {
+                    Declaration decl = ((Tree.StaticMemberOrTypeExpression)primary).getDeclaration();
+                    if (decl instanceof FunctionalParameter) {
+                            //&& !gen.isCeylonCallable(primary.getTypeModel())) {
+                        if (primaryExpr != null) {
+                            actualPrimExpr = gen.makeQualIdent(primaryExpr, decl.getName());
+                        } else {
+                            actualPrimExpr = gen.makeQuotedIdent(decl.getName());
+                        }
+                        selector = "call";
+                    }
                     resultExpr = gen.make().Apply(typeArgs, gen.makeQuotedQualIdent(actualPrimExpr, selector), args.toList());
                 }
 
