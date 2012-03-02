@@ -39,6 +39,7 @@ import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
+import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -619,8 +620,15 @@ public abstract class AbstractTransformer implements Transformation {
      * This function is used solely for method return types and parameters 
      */
     protected JCExpression makeJavaType(TypedDeclaration typeDecl) {
-        boolean usePrimitives = Util.isUnBoxed(typeDecl);
-        return makeJavaType(typeDecl.getType(), usePrimitives ? 0 : AbstractTransformer.NO_PRIMITIVES);
+        if (typeDecl instanceof FunctionalParameter) {
+            FunctionalParameter p = (FunctionalParameter)typeDecl;
+            return makeJavaType(typeFact().getCallableType(p.getType()), EXTENDS);    
+        } else if (isCeylonCallable(typeDecl.getType())) {
+            return makeJavaType(typeDecl.getType(), EXTENDS);    
+        } else {
+            boolean usePrimitives = Util.isUnBoxed(typeDecl);
+            return makeJavaType(typeDecl.getType(), usePrimitives ? 0 : AbstractTransformer.NO_PRIMITIVES);
+        }
     }
 
     protected JCExpression makeJavaType(ProducedType producedType) {
@@ -694,6 +702,7 @@ public abstract class AbstractTransformer implements Transformation {
         }
         
         JCExpression jt;
+        
         ProducedType simpleType = simplifyType(type);
         TypeDeclaration tdecl = simpleType.getDeclaration();
         java.util.List<ProducedType> tal = simpleType.getTypeArgumentList();
@@ -705,6 +714,11 @@ public abstract class AbstractTransformer implements Transformation {
 
             int idx = 0;
             for (ProducedType ta : tal) {
+                if (idx > 0 &&
+                        isCeylonCallable(type)) {
+                    // In the runtime Callable only has a single type param
+                    break;
+                }
                 if (isOptional(ta)) {
                     // For an optional type T?:
                     // - The Ceylon type Foo<T?> results in the Java type Foo<T>.
@@ -792,10 +806,18 @@ public abstract class AbstractTransformer implements Transformation {
                 idx++;
             }
 
-            if (typeArgs != null && typeArgs.size() > 0) {
-                jt = make().TypeApply(getDeclarationName(tdecl), typeArgs.toList());
+            JCExpression baseType;
+            if (isCeylonCallable(type) && 
+                    (flags & CLASS_NEW) != 0) {
+                baseType = makeIdent(syms().ceylonAbstractCallableType);
             } else {
-                jt = getDeclarationName(tdecl);
+                baseType = getDeclarationName(tdecl);
+            }
+            
+            if (typeArgs != null && typeArgs.size() > 0) {
+                jt = make().TypeApply(baseType, typeArgs.toList());
+            } else {
+                jt = baseType;
             }
         } else {
             // For an ordinary class or interface type T:
