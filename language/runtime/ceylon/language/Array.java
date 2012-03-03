@@ -1,8 +1,5 @@
 package ceylon.language;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -53,42 +50,6 @@ public abstract class Array<Element> extends ArrayList<Element>
             return array[0];
         }
     }
-
-    @Override
-    public ceylon.language.List<? extends Element> span(Integer from, Integer to) {
-        long fromIndex = from.longValue();
-        if (fromIndex<0) fromIndex=0;
-        long toIndex = to==null ? array.length-1 : to.longValue();
-        long lastIndex = getLastIndex().longValue();
-        if (fromIndex>lastIndex||toIndex<fromIndex) {
-            return arrayOfNone.<Element>arrayOfNone();
-        }
-        else if (toIndex>lastIndex) {
-            return new NonemptyArray<Element>(array, fromIndex);
-        }
-        else {
-            return new NonemptyArray<Element>(Arrays.copyOfRange(array, 
-                    (int)fromIndex, (int)toIndex+1), 0);
-        }
-    }
-    
-    @Override
-    public ceylon.language.List<? extends Element> segment(Integer from, Integer length) {
-        long fromIndex = from.longValue();
-        if (fromIndex<0) fromIndex=0;
-        long resultLength = length.longValue();
-        long lastIndex = getLastIndex().longValue();
-        if (fromIndex>lastIndex||resultLength==0) {
-            return arrayOfNone.<Element>arrayOfNone();
-        }
-        else if (fromIndex+resultLength>lastIndex) {
-            return new NonemptyArray<Element>(array, fromIndex);
-        }
-        else {
-            return new NonemptyArray<Element>(Arrays.copyOfRange(array, 
-                    (int)fromIndex, (int)(fromIndex + resultLength)), 0);
-        }
-    }
     
     @Override
     public java.lang.String toString() {
@@ -112,7 +73,7 @@ class NonemptyArray<Element> extends Array<Element> implements Some<Element> {
         super(array, first);
     }
 
-    public NonemptyArray(List<Element> list) {
+    public NonemptyArray(java.util.List<Element> list) {
         super(list);
     }
 

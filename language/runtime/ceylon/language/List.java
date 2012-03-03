@@ -18,7 +18,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 public interface List<Element> 
         extends Collection<Element>, 
                 Correspondence<Integer,Element>,
-                Ranged<Integer,List<? extends Element>> {
+                Ranged<Integer, java.lang.Object> {
 
     @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     public Integer getLastIndex();
@@ -26,14 +26,14 @@ public interface List<Element>
     public boolean defines(@Name("index") Integer index);
     
     @Override
-    @TypeInfo("ceylon.language.Empty|ceylon.language.List<Element>")
-    public List<? extends Element> span(@Name("from") Integer from, 
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    public java.lang.Object span(@Name("from") Integer from, 
             @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
             @Name("to") Integer to);
     
     @Override
-    @TypeInfo("ceylon.language.Empty|ceylon.language.List<Element>")
-    public List<? extends Element> segment(@Name("from") Integer from, 
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    public java.lang.Object segment(@Name("from") Integer from, 
             @Name("length") Integer length);
     
     @Ignore

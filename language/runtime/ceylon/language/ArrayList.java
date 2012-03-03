@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import java.util.Arrays;
+
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
@@ -33,6 +35,42 @@ abstract class ArrayList<Element> implements List<Element> {
     ArrayList() {
         this.array = (Element[]) new Object[0];
         this.first = 0;
+    }
+
+    @Override
+    public java.lang.Object span(Integer from, Integer to) {
+        long fromIndex = from.longValue();
+        if (fromIndex<0) fromIndex=0;
+        long toIndex = to==null ? array.length-1 : to.longValue();
+        long lastIndex = getLastIndex().longValue();
+        if (fromIndex>lastIndex||toIndex<fromIndex) {
+            return $empty.getEmpty();
+        }
+        else if (toIndex>lastIndex) {
+            return new ArraySequence<Element>(array, fromIndex);
+        }
+        else {
+            return new ArraySequence<Element>(Arrays.copyOfRange(array, 
+                    (int)fromIndex, (int)toIndex+1), 0);
+        }
+    }
+    
+    @Override
+    public java.lang.Object segment(Integer from, Integer length) {
+        long fromIndex = from.longValue();
+        if (fromIndex<0) fromIndex=0;
+        long resultLength = length.longValue();
+        long lastIndex = getLastIndex().longValue();
+        if (fromIndex>lastIndex||resultLength==0) {
+            return $empty.getEmpty();
+        }
+        else if (fromIndex+resultLength>lastIndex) {
+            return new ArraySequence<Element>(array, fromIndex);
+        }
+        else {
+            return new ArraySequence<Element>(Arrays.copyOfRange(array, 
+                    (int)fromIndex, (int)(fromIndex + resultLength)), 0);
+        }
     }
 
     @Override

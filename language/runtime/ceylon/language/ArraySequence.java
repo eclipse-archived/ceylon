@@ -1,8 +1,5 @@
 package ceylon.language;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
@@ -25,7 +22,7 @@ public class ArraySequence<Element> extends ArrayList<Element> implements Sequen
     }
 
     @Ignore
-    ArraySequence(List<Element> list) {
+    ArraySequence(java.util.List<Element> list) {
         super(list);
     	if (array.length==0) {
     		throw new IllegalArgumentException("ArraySequence may not have zero elements");
@@ -55,42 +52,6 @@ public class ArraySequence<Element> extends ArrayList<Element> implements Sequen
     @Override
     public Element getLast() {
         return array[array.length - 1];
-    }
-
-    @Override
-    public ceylon.language.List<? extends Element> span(Integer from, Integer to) {
-    	long fromIndex = from.longValue();
-    	if (fromIndex<0) fromIndex=0;
-    	long toIndex = to==null ? array.length-1 : to.longValue();
-        long lastIndex = getLastIndex().longValue();
-		if (fromIndex>lastIndex||toIndex<fromIndex) {
-            return $empty.getEmpty();
-        }
-        else if (toIndex>lastIndex) {
-            return new ArraySequence<Element>(array, fromIndex);
-        }
-        else {
-            return new ArraySequence<Element>(Arrays.copyOfRange(array, 
-            		(int)fromIndex, (int)toIndex+1), 0);
-        }
-    }
-    
-    @Override
-    public ceylon.language.List<? extends Element> segment(Integer from, Integer length) {
-        long fromIndex = from.longValue();
-    	if (fromIndex<0) fromIndex=0;
-		long resultLength = length.longValue();
-		long lastIndex = getLastIndex().longValue();
-		if (fromIndex>lastIndex||resultLength==0) {
-            return $empty.getEmpty();
-        }
-        else if (fromIndex+resultLength>lastIndex) {
-            return new ArraySequence<Element>(array, fromIndex);
-        }
-        else {
-            return new ArraySequence<Element>(Arrays.copyOfRange(array, 
-            		(int)fromIndex, (int)(fromIndex + resultLength)), 0);
-        }
     }
     
     @Override

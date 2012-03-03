@@ -109,7 +109,7 @@ public interface Correspondence<Key,Item> {
         }
         @Override
         public List<? extends Item> segment(Integer from, Integer length) {
-        	Iterable<? extends Key> keys = this.keys.segment(from, length);
+        	Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.segment(from, length);
         	if (keys.getEmpty()) {
         		return $empty.getEmpty();
         	}
@@ -119,7 +119,7 @@ public interface Correspondence<Key,Item> {
         }
         @Override
         public List<? extends Item> span(Integer from, Integer to) {
-        	Iterable<? extends Key> keys = this.keys.span(from, to);
+        	Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.span(from, to);
         	if (keys.getEmpty()) {
         		return $empty.getEmpty();
         	}
