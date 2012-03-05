@@ -158,6 +158,11 @@ public class CallableTest extends CompilerTest {
     }
     
     @Test
+    public void testCallablePositionalInvocationSequenced(){
+        compareWithJavaSource("invoke/CallablePositionalInvocationSequenced");
+    }
+    
+    @Test
     @Ignore("Awaiting fix for ceylon-spec#218")
     public void testCallablePositionalInvocationQualified(){
         compareWithJavaSource("invoke/CallablePositionalInvocationQualified");
@@ -181,6 +186,11 @@ public class CallableTest extends CompilerTest {
     @Test
     public void testCallableNamedInvocationNary(){
         compareWithJavaSource("invoke/CallableNamedInvocationNary");
+    }
+    
+    @Test
+    public void testCallableNamedInvocationSequenced(){
+        compareWithJavaSource("invoke/CallableNamedInvocationSequenced");
     }
 
 }
