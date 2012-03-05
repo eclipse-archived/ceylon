@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+class VarargsMethodSpecifyingMethodWithSequence {
+    
+    private final void foo(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
+    }
+    
+    private final void bar(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> ints) {
+        foo(ints);
+    }
+    
+    VarargsMethodSpecifyingMethodWithSequence() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.method.VarargsMethodSpecifyingMethodWithSequence();
+    }
+}

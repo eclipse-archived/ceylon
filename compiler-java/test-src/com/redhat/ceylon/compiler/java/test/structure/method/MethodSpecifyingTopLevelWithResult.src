@@ -1,0 +1,30 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+final class f {
+    
+    private f() {
+    }
+    
+    static long f() {
+        return 1L;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.method.f.f();
+    }
+}
+class MethodSpecifier {
+    
+    private final long foo() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.f.f();
+    }
+    
+    MethodSpecifier() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifier();
+    }
+}

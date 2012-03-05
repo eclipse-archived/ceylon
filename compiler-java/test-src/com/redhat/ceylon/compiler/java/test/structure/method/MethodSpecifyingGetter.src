@@ -1,0 +1,20 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+class MethodSpecifierGetter {
+    
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> getF() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    private final long foo(final boolean b) {
+        return getF().call(b).longValue();
+    }
+    
+    MethodSpecifierGetter() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierGetter();
+    }
+}

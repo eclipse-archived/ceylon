@@ -1,0 +1,20 @@
+package com.redhat.ceylon.compiler.java.test.structure.toplevel;
+
+final class f {
+    
+    private f() {
+    }
+    
+    static long f(final long i) {
+        return i;
+    }
+}
+final class g {
+    
+    private g() {
+    }
+    
+    static long g(final long x) {
+        return .com.redhat.ceylon.compiler.java.test.structure.toplevel.f.f(x);
+    }
+}

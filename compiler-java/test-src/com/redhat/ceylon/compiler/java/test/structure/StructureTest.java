@@ -290,6 +290,64 @@ public class StructureTest extends CompilerTest {
     public void testMthFunctionInSetter(){
         compareWithJavaSource("method/FunctionInSetter");
     }
+    @Test
+    public void testMthMethodSpecifyingNullaryTopLevel(){
+        compareWithJavaSource("method/MethodSpecifyingNullaryTopLevel");
+    }
+    @Test
+    public void testMthMethodSpecifyingUnaryTopLevel(){
+        compareWithJavaSource("method/MethodSpecifyingUnaryTopLevel");
+    }
+    @Test
+    public void testMthMethodSpecifyingTopLevelWithResult(){
+        compareWithJavaSource("method/MethodSpecifyingTopLevelWithResult");
+    }
+    @Test
+    public void testMthMethodSpecifyingCallable(){
+        compareWithJavaSource("method/MethodSpecifyingCallable");
+    }
+    @Test
+    public void testMthMethodSpecifyingInitializer(){
+        compareWithJavaSource("method/MethodSpecifyingInitializer");
+    }
+    
+    @Test
+    public void testMthMethodSpecifyingTopLevelWithTypeParam(){
+        compareWithJavaSource("method/MethodSpecifyingTopLevelWithTypeParam");
+    }
+    @Test
+    public void testMthMethodSpecifyingMethod(){
+        compareWithJavaSource("method/MethodSpecifyingMethod");
+    }
+    @Test
+    public void testMthMethodSpecifyingGetter(){
+        compareWithJavaSource("method/MethodSpecifyingGetter");
+    }
+    @Test
+    @Ignore("Awaiting fix for ceylon-spec#218")
+    public void testMthMethodSpecifyingInitParam(){
+        compareWithJavaSource("method/MethodSpecifyingInitParam");
+    }
+    @Test
+    public void testMthRefinedMethodSpecifyingTopLevel(){
+        compareWithJavaSource("method/RefinedMethodSpecifyingTopLevel");
+    }
+    @Test
+    public void testMthLocalMethodSpecifyingMethod(){
+        compareWithJavaSource("method/LocalMethodSpecifyingMethod");
+    }
+    @Test
+    public void testMthVarargsMethodSpecifyingMethodWithSequence(){
+        compareWithJavaSource("method/VarargsMethodSpecifyingMethodWithSequence");
+    }
+    @Test
+    public void testMthVarargsMethodSpecifyingMethodWithVarargs(){
+        compareWithJavaSource("method/VarargsMethodSpecifyingMethodWithVarargs");
+    }
+    @Test
+    public void testMthSequenceMethodSpecifyingMethodWithVarargs(){
+        compareWithJavaSource("method/SequenceMethodSpecifyingMethodWithVarargs");
+    }
     
     //
     // Toplevel
@@ -342,7 +400,10 @@ public class StructureTest extends CompilerTest {
     public void testTopToplevelVariableShared(){
         compareWithJavaSource("toplevel/ToplevelVariableShared");
     }
-    
+    @Test
+    public void testMthTopLevelSpecifyingTopLevel(){
+        compareWithJavaSource("toplevel/TopLevelSpecifyingTopLevel");
+    }
     //
     // Type
     

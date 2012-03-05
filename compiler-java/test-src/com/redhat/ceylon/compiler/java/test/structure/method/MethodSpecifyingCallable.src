@@ -1,0 +1,30 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+final class f {
+    
+    private f() {
+    }
+    
+    static .ceylon.language.Callable<.ceylon.language.String> f() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.method.f.f();
+    }
+}
+class MethodSpecifierCallable {
+    
+    private final .java.lang.String foo(final long i) {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.f.f().call(i).toString();
+    }
+    
+    MethodSpecifierCallable() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierCallable();
+    }
+}

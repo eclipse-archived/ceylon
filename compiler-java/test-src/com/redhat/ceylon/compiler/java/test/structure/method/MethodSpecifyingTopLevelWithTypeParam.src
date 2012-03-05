@@ -1,0 +1,29 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+final class f {
+    
+    private f() {
+    }
+    
+    static <X, Y>X f(final Y y) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+}
+class MethodSpecifyingTopLevelWithTypeParam<S, T> {
+    
+    private final .java.lang.String foo(final long i) {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.f.<.ceylon.language.String, .ceylon.language.Integer>f(.ceylon.language.Integer.instance(i)).toString();
+    }
+    
+    private final S bar(final T y) {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.f.f(y);
+    }
+    
+    MethodSpecifyingTopLevelWithTypeParam() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingTopLevelWithTypeParam();
+    }
+}
