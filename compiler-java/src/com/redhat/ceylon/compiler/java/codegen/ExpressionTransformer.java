@@ -1060,18 +1060,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             callMethod.body(List.<JCStatement>of(make().Return(fnCall)));
         }
         
-        MethodDefinitionBuilder stringMethod = MethodDefinitionBuilder.systemMethod(gen(), false, "toString");
-        stringMethod.isActual(true);
-        stringMethod.modifiers(Flags.PUBLIC);
-        stringMethod.resultType((TypedDeclaration)typeFact().getObjectDeclaration().getMember("string", Collections.<ProducedType>emptyList()));
-        stringMethod.body(make().Return(make().Literal(typeModel.getProducedTypeName())));
-        
-        JCClassDecl classDef = make().AnonymousClassDef(make().Modifiers(0), List.<JCTree>of(callMethod.build(), stringMethod.build()));
+        JCClassDecl classDef = make().AnonymousClassDef(make().Modifiers(0), List.<JCTree>of(callMethod.build()));
         
         return make().NewClass(null, 
                 null, 
                 makeJavaType(typeModel, EXTENDS | CLASS_NEW), 
-                List.<JCExpression>nil(), 
+                List.<JCExpression>of(make().Literal(typeModel.getProducedTypeName())), 
                 classDef);
     }
 
