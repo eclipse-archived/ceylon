@@ -594,7 +594,13 @@ public class InvocationBuilder {
     }
 
     public JCExpression build() {
-        return makeInvocation();
+        boolean prevFnCall = gen.expressionGen().isWithinInvocation();
+        gen.expressionGen().setWithinInvocation(true);
+        try {
+            return makeInvocation();
+        } finally {
+            gen.expressionGen().setWithinInvocation(prevFnCall);
+        }
     }
     
 }

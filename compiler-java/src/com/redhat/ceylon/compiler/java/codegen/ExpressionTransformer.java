@@ -80,6 +80,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     private boolean inStatement = false;
     private boolean needDollarThis = false;
+    private boolean withinInvocation = false;
     
     public static ExpressionTransformer getInstance(Context context) {
         ExpressionTransformer trans = context.get(ExpressionTransformer.class);
@@ -1243,27 +1244,19 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transformMemberExpression(expr, primaryExpr, transformer);
     }
     
-    boolean fnCall = false;
-    
     // Generic code for all primaries
     
     public JCExpression transformPrimary(Tree.Primary primary, TermTransformer transformer) {
-        boolean prevFnCall = fnCall;
-        fnCall = true;
-        try {
-            if (primary instanceof Tree.QualifiedMemberExpression) {
-                return transform((Tree.QualifiedMemberExpression)primary, transformer);
-            } else if (primary instanceof Tree.BaseMemberExpression) {
-                return transform((Tree.BaseMemberExpression)primary, transformer);
-            } else if (primary instanceof Tree.BaseTypeExpression) {
-                return transform((Tree.BaseTypeExpression)primary, transformer);
-            } else if (primary instanceof Tree.QualifiedTypeExpression) {
-                return transform((Tree.QualifiedTypeExpression)primary, transformer);
-            } else {
-                return makeQuotedIdent(((Tree.MemberOrTypeExpression)primary).getDeclaration().getName());
-            }
-        } finally {
-            fnCall = prevFnCall;
+        if (primary instanceof Tree.QualifiedMemberExpression) {
+            return transform((Tree.QualifiedMemberExpression)primary, transformer);
+        } else if (primary instanceof Tree.BaseMemberExpression) {
+            return transform((Tree.BaseMemberExpression)primary, transformer);
+        } else if (primary instanceof Tree.BaseTypeExpression) {
+            return transform((Tree.BaseTypeExpression)primary, transformer);
+        } else if (primary instanceof Tree.QualifiedTypeExpression) {
+            return transform((Tree.QualifiedTypeExpression)primary, transformer);
+        } else {
+            return makeQuotedIdent(((Tree.MemberOrTypeExpression)primary).getDeclaration().getName());
         }
     }
     
@@ -1286,7 +1279,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (decl instanceof Functional
                 && !(decl instanceof FunctionalParameter) // A functional parameter will already be Callable-wrapped
                 && isCeylonCallable(expr.getTypeModel())
-                && !fnCall) {
+                && !isWithinInvocation()) {
             result = transformFunctional(expr, (Functional)decl);
         } else if (decl instanceof Getter) {
             // invoke the getter
@@ -1607,5 +1600,13 @@ public class ExpressionTransformer extends AbstractTransformer {
             s = s.getContainer();
         }
         return (s instanceof Declaration) && (s == decl);
+    }
+
+    boolean isWithinInvocation() {
+        return withinInvocation;
+    }
+
+    void setWithinInvocation(boolean withinInvocation) {
+        this.withinInvocation = withinInvocation;
     }
 }
