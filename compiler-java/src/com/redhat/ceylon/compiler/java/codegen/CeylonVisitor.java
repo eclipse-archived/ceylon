@@ -152,7 +152,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if(hasErrors(decl))
             return;
         boolean annots = gen.checkCompilerAnnotations(decl);
-        if (Decl.container(decl) instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) {
+        if (Decl.withinClassOrInterface(decl)) {
             classBuilder.method(decl);
         } else {
             appendList(gen.classGen().transformWrappedMethod(decl));
