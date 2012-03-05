@@ -116,8 +116,7 @@ public class InvocationBuilder {
         
         @Override
         public Expression getExpression(int argIndex) {
-            // TODO Auto-generated method stub
-            return null;
+            throw new RuntimeException("Defaulted parameters are not defaulted when called via a method reference");
         }
         @Override
         public Parameter getParameter(int argIndex) {
