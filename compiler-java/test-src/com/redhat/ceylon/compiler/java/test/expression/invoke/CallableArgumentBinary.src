@@ -22,17 +22,12 @@ final class m {
     }
     
     static void m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void,Integer,String>"){
             
             @.java.lang.Override
             public .java.lang.Object call(final .java.lang.Object arg0, final .java.lang.Object arg1) {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.bar(((.ceylon.language.Integer)arg0).longValue(), ((.ceylon.language.String)arg1).toString());
                 return null;
-            }
-            
-            @.java.lang.Override
-            public .java.lang.String toString() {
-                return "Callable<Void,Integer,String>";
             }
         });
     }

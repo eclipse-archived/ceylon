@@ -16,16 +16,11 @@ final class bar {
     }
     
     static .ceylon.language.Callable<.com.redhat.ceylon.compiler.java.test.expression.invoke.C> bar() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.C>(){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.C>("Callable<C>"){
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.expression.invoke.C call() {
                 return new .com.redhat.ceylon.compiler.java.test.expression.invoke.C();
-            }
-            
-            @.java.lang.Override
-            public .java.lang.String toString() {
-                return "Callable<C>";
             }
         };
     }

@@ -19,17 +19,12 @@ final class bar {
     }
     
     static .ceylon.language.Callable<.java.lang.Object> bar() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void>"){
             
             @.java.lang.Override
             public .java.lang.Object call() {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.foo.foo();
                 return null;
-            }
-            
-            @.java.lang.Override
-            public .java.lang.String toString() {
-                return "Callable<Void>";
             }
         };
     }

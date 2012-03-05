@@ -30,30 +30,20 @@ final class m {
     }
     
     static void m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.<.ceylon.language.String>f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.<.ceylon.language.String>f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void,String>"){
             
             @.java.lang.Override
             public .java.lang.Object call(final .java.lang.Object arg0) {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.<.ceylon.language.String>bar((.ceylon.language.String)arg0);
                 return null;
             }
-            
-            @.java.lang.Override
-            public .java.lang.String toString() {
-                return "Callable<Void,String>";
-            }
         });
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.<.ceylon.language.Integer>f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.<.ceylon.language.Integer>f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void,Integer>"){
             
             @.java.lang.Override
             public .java.lang.Object call(final .java.lang.Object arg0) {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.baz.baz(((.ceylon.language.Integer)arg0).longValue());
                 return null;
-            }
-            
-            @.java.lang.Override
-            public .java.lang.String toString() {
-                return "Callable<Void,Integer>";
             }
         });
     }

@@ -42,28 +42,18 @@ final class m {
     }
     
     static void m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.<.ceylon.language.Integer>f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.<.ceylon.language.Integer>f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Callable<Integer>"){
             
             @.java.lang.Override
             public .ceylon.language.Integer call() {
                 return .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.<.ceylon.language.Integer>bar();
             }
-            
-            @.java.lang.Override
-            public .java.lang.String toString() {
-                return "Callable<Integer>";
-            }
         });
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.<.ceylon.language.Integer>f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.<.ceylon.language.Integer>f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Callable<Integer>"){
             
             @.java.lang.Override
             public .ceylon.language.Integer call() {
                 return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.baz.baz());
-            }
-            
-            @.java.lang.Override
-            public .java.lang.String toString() {
-                return "Callable<Integer>";
             }
         });
     }
