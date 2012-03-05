@@ -54,7 +54,7 @@ public class MavenRepository extends AbstractRepository {
                 return node.getContent(File.class);
             }
 
-            public List<ArtifactResult> dependecies() throws IOException {
+            public List<ArtifactResult> dependencies() throws IOException {
                 return Collections.emptyList(); // dunno how to grab deps
             }
         };

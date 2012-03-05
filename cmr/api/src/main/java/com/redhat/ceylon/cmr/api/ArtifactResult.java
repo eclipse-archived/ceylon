@@ -42,7 +42,7 @@ public interface ArtifactResult {
     File artifact() throws IOException;
 
     /**
-     * Dependecies.
+     * Dependencies.
      * <p/>
      * They could be lazily recursively fetched
      * or they could be fetched in one go.
@@ -50,5 +50,5 @@ public interface ArtifactResult {
      * @return dependencies, empty list if none
      * @throws IOException for any I/O error
      */
-    List<ArtifactResult> dependecies() throws IOException;
+    List<ArtifactResult> dependencies() throws IOException;
 }

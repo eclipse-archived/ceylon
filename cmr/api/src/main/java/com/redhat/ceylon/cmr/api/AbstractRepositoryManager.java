@@ -54,7 +54,7 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
 
     private static void recurse(final List<File> files, final ArtifactResult current) throws IOException {
         files.add(current.artifact());
-        for (ArtifactResult ar : current.dependecies())
+        for (ArtifactResult ar : current.dependencies())
             recurse(files, ar);
     }
 

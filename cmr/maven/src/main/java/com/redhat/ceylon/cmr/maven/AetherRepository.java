@@ -83,7 +83,7 @@ public class AetherRepository extends MavenRepository {
             return file;
         }
 
-        public List<ArtifactResult> dependecies() throws IOException {
+        public List<ArtifactResult> dependencies() throws IOException {
             return Collections.unmodifiableList(dependencies);
         }
     }
@@ -103,7 +103,7 @@ public class AetherRepository extends MavenRepository {
             return file;
         }
 
-        public List<ArtifactResult> dependecies() throws IOException {
+        public List<ArtifactResult> dependencies() throws IOException {
             return Collections.emptyList();
         }
     }

@@ -45,7 +45,7 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
         return ArtifactResultType.CEYLON;
     }
 
-    public List<ArtifactResult> dependecies() throws IOException {
+    public List<ArtifactResult> dependencies() throws IOException {
         List<ModuleInfo> infos = BytecodeUtils.readModuleInformation(name, artifact());
         if (infos.isEmpty())
             return Collections.emptyList();
