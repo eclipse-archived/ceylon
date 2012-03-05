@@ -1,0 +1,28 @@
+package com.redhat.ceylon.compiler.java.test.expression.instantiation;
+
+class QualifiedInstantiation {
+    
+    class Inner {
+        
+        Inner(.java.lang.String s) {
+        }
+    }
+    
+    private final void m(final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation q) {
+        QualifiedInstantiation.this.new Inner("");
+        this.new Inner("");
+        q.new Inner("");
+        (let .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation $arg$0$callable$ = QualifiedInstantiation.this,.java.lang.String $arg$0$0 = "" in $arg$0$callable$.new Inner($arg$0$0));
+        (let .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation $arg$1$callable$ = this,.java.lang.String $arg$1$0 = "" in $arg$1$callable$.new Inner($arg$1$0));
+        (let .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation $arg$2$callable$ = q,.java.lang.String $arg$2$0 = "" in $arg$2$callable$.new Inner($arg$2$0));
+    }
+    
+    QualifiedInstantiation() {
+        final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation.Inner inner;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation();
+    }
+}
