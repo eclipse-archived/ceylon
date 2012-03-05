@@ -9,6 +9,13 @@ import ceylon.language.Callable;
  * @param <Return>
  */
 public class AbstractCallable<Return> implements Callable<Return> {
+    
+    private final String string;
+
+    public AbstractCallable(String string) {
+        this.string = string;
+    }
+    
     public Return call() {
         throw new UnsupportedOperationException();
     }
@@ -27,5 +34,10 @@ public class AbstractCallable<Return> implements Callable<Return> {
     
     public Return call(java.lang.Object... args) {
         throw new UnsupportedOperationException();
+    }
+    
+    @java.lang.Override
+    public String toString() {
+        return string;
     }
 }
