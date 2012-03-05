@@ -81,6 +81,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     private boolean inStatement = false;
     private boolean needDollarThis = false;
     private boolean withinInvocation = false;
+    private boolean withinCallableInvocation = false;
     
     public static ExpressionTransformer getInstance(Context context) {
         ExpressionTransformer trans = context.get(ExpressionTransformer.class);
@@ -377,6 +378,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(expr);
         if (needDollarThis) {
             return makeUnquotedIdent("$this");
+        } if (isWithinCallableInvocation()) {
+            return makeSelect(makeJavaType(expr.getTypeModel()), "this");
         } else {
             return makeUnquotedIdent("this");
         }
@@ -1048,7 +1051,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         InvocationBuilder invocationBuilder = InvocationBuilder.invocationForCallable(gen(), expr, functional);
-        JCExpression unboxed = invocationBuilder.build();
+        JCExpression unboxed;
+        setWithinCallableInvocation(true);
+        try {
+            unboxed = invocationBuilder.build();
+        } finally {
+            setWithinInvocation(false);
+        }
 
         JCExpression fnCall = boxUnboxIfNecessary(unboxed, !expr.getUnboxed(), 
                 returnType, BoxingStrategy.BOXED);
@@ -1609,4 +1618,14 @@ public class ExpressionTransformer extends AbstractTransformer {
     void setWithinInvocation(boolean withinInvocation) {
         this.withinInvocation = withinInvocation;
     }
+
+    public boolean isWithinCallableInvocation() {
+        return withinCallableInvocation;
+    }
+
+    public void setWithinCallableInvocation(boolean withinCallableInvocation) {
+        this.withinCallableInvocation = withinCallableInvocation;
+    }
+    
+    
 }
