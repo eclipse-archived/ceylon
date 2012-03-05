@@ -52,6 +52,11 @@ public class CallableTest extends CompilerTest {
     }
     
     @Test
+    public void testCallableArgumentSequenced(){
+        compareWithJavaSource("invoke/CallableArgumentSequenced");
+    }
+    
+    @Test
     public void testCallableArgumentParameterClass(){
         compareWithJavaSource("invoke/CallableArgumentParameterClass");
     }
