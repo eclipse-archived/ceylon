@@ -520,17 +520,21 @@ public class InvocationBuilder {
             @Override
             public JCExpression transform(JCExpression primaryExpr, String selector) {
                 JCExpression actualPrimExpr = null;
+                if (primary instanceof Tree.QualifiedTypeExpression
+                        && ((Tree.QualifiedTypeExpression)primary).getPrimary() instanceof Tree.BaseTypeExpression) {
+                    actualPrimExpr = gen.makeSelect(primaryExpr, "this");
+                } else {
+                    actualPrimExpr = primaryExpr;
+                }
                 if (vars != null && !vars.isEmpty() 
                         && primaryExpr != null 
                         && selector != null) {
                     // Prepare the first argument holding the primary for the call
                     JCExpression callVarExpr = gen.makeUnquotedIdent(callVarName);
-                    ProducedType type = ((Tree.QualifiedMemberExpression)primary).getTarget().getQualifyingType();
-                    JCVariableDecl callVar = gen.makeVar(callVarName, gen.makeJavaType(type, AbstractTransformer.NO_PRIMITIVES), primaryExpr);
+                    ProducedType type = ((Tree.QualifiedMemberOrTypeExpression)primary).getTarget().getQualifyingType();
+                    JCVariableDecl callVar = gen.makeVar(callVarName, gen.makeJavaType(type, AbstractTransformer.NO_PRIMITIVES), actualPrimExpr);
                     vars.prepend(callVar);
                     actualPrimExpr = callVarExpr;
-                } else {
-                    actualPrimExpr = primaryExpr;
                 }
                 
                 JCExpression resultExpr;
