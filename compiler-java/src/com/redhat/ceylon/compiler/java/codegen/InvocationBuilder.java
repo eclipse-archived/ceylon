@@ -401,9 +401,9 @@ public class InvocationBuilder {
                 boxed = gen.makeEmpty();
             } else {
                 // box with an ArraySequence<T>
-                List<Tree.Expression> x = List.<Tree.Expression>nil();
+                List<JCExpression> x = List.<JCExpression>nil();
                 for (int ii = numParameters - 1; ii < numArguments; ii++) {
-                    x = x.append(positionalArguments.getExpression(ii));
+                    x = x.append(positionalArguments.getTransformedExpression(ii, isRaw, typeArgumentModels));
                 }
                 boxed = gen.makeSequenceRaw(x);
             }

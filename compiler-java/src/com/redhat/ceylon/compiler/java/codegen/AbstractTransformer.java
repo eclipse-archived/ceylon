@@ -1299,6 +1299,21 @@ public abstract class AbstractTransformer implements Transformation {
     /**
      * Returns a JCExpression along the lines of 
      * {@code new ArraySequence<seqElemType>(list...)}
+     * @param elems The elements in the sequence
+     * @param seqElemType The sequence type parameter
+     * @param makeJavaTypeOpts The option flags to pass to makeJavaType().
+     * @return a JCExpression
+     * @see #makeSequenceRaw(java.util.List)
+     */
+    protected JCExpression makeSequence(List<JCExpression> elems, ProducedType seqElemType, int makeJavaTypeOpts) {
+        ProducedType seqType = typeFact().getDefaultSequenceType(seqElemType);
+        JCExpression typeExpr = makeJavaType(seqType, makeJavaTypeOpts);
+        return makeNewClass(typeExpr, elems);
+    }
+    
+    /**
+     * Returns a JCExpression along the lines of 
+     * {@code new ArraySequence<seqElemType>(list...)}
      * @param list The elements in the sequence
      * @param seqElemType The sequence type parameter
      * @return a JCExpression
@@ -1310,9 +1325,7 @@ public abstract class AbstractTransformer implements Transformation {
             // no need for erasure casts here
             elems.append(expressionGen().transformExpression(expr));
         }
-        ProducedType seqType = typeFact().getDefaultSequenceType(seqElemType);
-        JCExpression typeExpr = makeJavaType(seqType, CeylonTransformer.TYPE_ARGUMENT);
-        return makeNewClass(typeExpr, elems.toList());
+        return makeSequence(elems.toList(), seqElemType,CeylonTransformer.TYPE_ARGUMENT);
     }
     
     /**
@@ -1328,9 +1341,11 @@ public abstract class AbstractTransformer implements Transformation {
             // no need for erasure casts here
             elems.append(expressionGen().transformExpression(expr));
         }
-        ProducedType seqType = typeFact().getDefaultSequenceType(typeFact().getObjectDeclaration().getType());
-        JCExpression typeExpr = makeJavaType(seqType, CeylonTransformer.WANT_RAW_TYPE);
-        return makeNewClass(typeExpr, elems.toList());
+        return makeSequence(elems.toList(), typeFact().getObjectDeclaration().getType(), CeylonTransformer.WANT_RAW_TYPE);
+    }
+    
+    protected JCExpression makeSequenceRaw(List<JCExpression> elems) {
+        return makeSequence(elems, typeFact().getObjectDeclaration().getType(), CeylonTransformer.WANT_RAW_TYPE);
     }
     
     protected JCExpression makeEmpty() {
