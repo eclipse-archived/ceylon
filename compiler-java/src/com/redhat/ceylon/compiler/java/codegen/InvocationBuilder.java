@@ -28,12 +28,9 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
-import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Setter;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
@@ -162,26 +159,26 @@ public class InvocationBuilder {
     }
     
     private final AbstractTransformer gen;
-    private Tree.InvocationExpression invocation;
     private final ProducedType returnType;
+    private final Node node;
+    private Tree.InvocationExpression invocation;
     private Tree.Primary primary;
     
-    private Node node;
     private ListBuffer<JCVariableDecl> vars;
     private ListBuffer<JCExpression> args;
     private List<JCExpression> typeArgs;
     private String callVarName;
     
-    private InvocationBuilder(AbstractTransformer gen, ProducedType returnType) {
+    private InvocationBuilder(AbstractTransformer gen, ProducedType returnType, Node node) {
         this.gen = gen;
         this.returnType = returnType;
+        this.node = node;
     }
     
     public static InvocationBuilder invocation(AbstractTransformer gen, Tree.InvocationExpression invocation) {
-        InvocationBuilder builder = new InvocationBuilder(gen, invocation.getTypeModel());
+        InvocationBuilder builder = new InvocationBuilder(gen, invocation.getTypeModel(), invocation);
         builder.invocation = invocation;
         builder.primary = invocation.getPrimary();
-        builder.node = invocation;
         if (invocation.getPositionalArgumentList() != null) {
             builder.transformPositionalInvocation();
         } else if (invocation.getNamedArgumentList() != null) {
@@ -193,8 +190,7 @@ public class InvocationBuilder {
     }
     
     public static InvocationBuilder invocationForCallable(AbstractTransformer gen, Term expr, Functional parameter) {
-        InvocationBuilder builder = new InvocationBuilder(gen, gen.expressionGen().getCallableReturnType(expr));
-        builder.node = expr;
+        InvocationBuilder builder = new InvocationBuilder(gen, gen.expressionGen().getCallableReturnType(expr), expr);
         builder.transformForCallable(expr, parameter);
         return builder;
     }
