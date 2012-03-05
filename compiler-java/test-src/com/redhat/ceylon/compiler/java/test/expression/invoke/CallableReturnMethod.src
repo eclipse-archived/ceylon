@@ -21,7 +21,7 @@ class C {
             
             @.java.lang.Override
             public .ceylon.language.Integer call() {
-                return .ceylon.language.Integer.instance(C.this.f());
+                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.C.this.f());
             }
         };
     }

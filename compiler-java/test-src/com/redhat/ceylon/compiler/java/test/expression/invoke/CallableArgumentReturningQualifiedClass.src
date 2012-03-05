@@ -1,0 +1,31 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+class C {
+    
+    public class D {
+        
+        public D() {
+        }
+    }
+    
+    private final void f(final .ceylon.language.Callable<.com.redhat.ceylon.compiler.java.test.expression.invoke.C.D> foo) {
+    }
+    
+    private final void m() {
+        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.C.D>("Callable<C.D>"){
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.expression.invoke.C.D call() {
+                return C.this.new D();
+            }
+        });
+    }
+    
+    C() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.C();
+    }
+}
