@@ -19,8 +19,6 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
-import java.util.Collections;
-
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.TermTransformer;
 import com.redhat.ceylon.compiler.java.util.Decl;
@@ -31,12 +29,11 @@ import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCTypeCast;
@@ -45,392 +42,480 @@ import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 
 
-public class InvocationBuilder {
-    
-    /** Abstracts over things with arguments, in particular 
-     * {@link PositionalArguments positional argument invocations} 
-     * and {@link CallableArguments callable invocations}
-     */
-    interface Arguments {
-        /** Gets the number of arguments */
-        public int getNumArguments();
-        /** 
-         * Gets the expression supplying the argument value for the 
-         * given argument index 
-         */
-        public Expression getExpression(int argIndex);
-        /**
-         * Gets the transformed expression supplying the argument value for the 
-         * given argument index
-         */
-        public JCExpression getTransformedExpression(int argIndex, boolean isRaw, java.util.List<ProducedType> typeArgumentModels);
-        /**
-         * Gets the parameter for the given argument index
-         */
-        public Parameter getParameter(int argIndex);
-        public boolean hasEllipsis();
-    }
-    
-    class PositionalArguments implements Arguments {
-        private Tree.PositionalArgumentList positional;
-        
-        public PositionalArguments(Tree.PositionalArgumentList positional) {
-            this.positional = positional;
-        }
-        @Override
-        public Expression getExpression(int argIndex) {
-            return positional.getPositionalArguments().get(argIndex).getExpression();
-        }
-        @Override
-        public JCExpression getTransformedExpression(int argIndex, boolean isRaw, java.util.List<ProducedType> typeArgumentModels) {
-            return gen.expressionGen().transformArg(
-                    getExpression(argIndex), 
-                    getParameter(argIndex), isRaw, typeArgumentModels);
-        }
-        @Override
-        public Parameter getParameter(int argIndex) {
-            return positional.getPositionalArguments().get(argIndex).getParameter();
-        }
-        @Override
-        public int getNumArguments() {
-            return positional.getPositionalArguments().size();
-        }
-        @Override
-        public boolean hasEllipsis() {
-            return positional.getEllipsis() != null;
-        }
-    }
-    
-    class CallableArguments implements Arguments {
-        private java.util.List<Parameter> functionalParameters;
-        private java.util.List<ProducedType> functionalTypeArgs;
-        private java.util.List<Parameter> declaredParameters;
-        
-        CallableArguments(Functional functionalParameter,
-                java.util.List<ProducedType> functionalTypeArgs,
-                java.util.List<Parameter> declaredParameters) {
-            this.functionalParameters = functionalParameter.getParameterLists().get(0).getParameters();
-            this.functionalTypeArgs = functionalTypeArgs;
-            this.declaredParameters = declaredParameters;
-        }
-        
-        @Override
-        public Expression getExpression(int argIndex) {
-            throw new RuntimeException("Defaulted parameters are not defaulted when called via a method reference");
-        }
-        @Override
-        public Parameter getParameter(int argIndex) {
-            return functionalParameters.get(argIndex);
-        }
-        @Override
-        public int getNumArguments() {
-            return functionalParameters.size();
-        }
-        @Override
-        public boolean hasEllipsis() {
-            return false;
-        }
-        @Override
-        public JCExpression getTransformedExpression(int argIndex,
-                boolean isRaw,
-                java.util.List<ProducedType> typeArgumentModels) {
-            Parameter param = declaredParameters.get(argIndex);
-            JCExpression argExpr;
-            if (functionalParameters.size() <= 3) {
-                // The Callable has overridden one of the non-varargs call() 
-                // methods
-                argExpr = gen.make().Ident(
-                        gen.names().fromString("arg"+argIndex));
-            } else {
-                // The Callable has overridden the varargs call() method
-                // so we need to index into the varargs array
-                argExpr = gen.make().Indexed(
-                        gen.make().Ident(gen.names().fromString("arg0")), 
-                        gen.make().Literal(argIndex));
-            }
-            ProducedType castType = gen.getTypeForParameter(param, isRaw, functionalTypeArgs);
-            JCTypeCast cast = gen.make().TypeCast(gen.makeJavaType(castType, AbstractTransformer.NO_PRIMITIVES), argExpr);
-            
-            JCExpression boxed = gen.boxUnboxIfNecessary(cast, true, 
-                    param.getType(), declaredParameters.get(argIndex).getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED);
-            return boxed;
-        }
-    }
-    
+abstract class InvocationBuilder {
+
     private final AbstractTransformer gen;
-    private final ProducedType returnType;
-    private final Node node;
-    private Tree.InvocationExpression invocation;
-    private Tree.Primary primary;
+    protected final ProducedType returnType;
+    protected final Node node;    
+    protected final Tree.Primary primary;
+    protected final Declaration primaryDeclaration;
     
-    private ListBuffer<JCVariableDecl> vars;
-    private ListBuffer<JCExpression> args;
-    private List<JCExpression> typeArgs;
-    private String callVarName;
+    protected final ListBuffer<JCVariableDecl> vars = ListBuffer.lb();
+    protected final ListBuffer<JCExpression> args = ListBuffer.lb();
+    protected final List<JCExpression> typeArgs;
+    protected String callVarName;
     
-    private InvocationBuilder(AbstractTransformer gen, ProducedType returnType, Node node) {
+    protected InvocationBuilder(AbstractTransformer gen, 
+            Tree.Primary primary, Declaration primaryDeclaration,
+            ProducedType returnType, Node node) {
         this.gen = gen;
+        this.primary = primary;
+        this.primaryDeclaration = primaryDeclaration;
         this.returnType = returnType;
         this.node = node;
+        typeArgs = transformTypeArguments(getTypeArguments());
     }
     
-    public static InvocationBuilder invocation(AbstractTransformer gen, Tree.InvocationExpression invocation) {
-        InvocationBuilder builder = new InvocationBuilder(gen, invocation.getTypeModel(), invocation);
-        builder.invocation = invocation;
-        builder.primary = invocation.getPrimary();
+    public static InvocationBuilder invocation(AbstractTransformer gen, 
+            final Tree.InvocationExpression invocation) {
+        
+        Tree.Primary primary = invocation.getPrimary();
+        Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)primary).getDeclaration();
+        InvocationBuilder builder;
         if (invocation.getPositionalArgumentList() != null) {
-            builder.transformPositionalInvocation();
+            final Tree.PositionalArgumentList positional = invocation.getPositionalArgumentList();
+            java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
+            builder = new PositionalInvocationBuilder(gen, 
+                    primary, primaryDeclaration,
+                    invocation.getTypeModel(), 
+                    invocation,
+                    paramLists) {
+                
+                @Override
+                protected Expression getExpression(int argIndex) {
+                    return positional.getPositionalArguments().get(argIndex).getExpression();
+                }
+                @Override
+                protected JCExpression getTransformedExpression(int argIndex, boolean isRaw, java.util.List<ProducedType> typeArgumentModels) {
+                    return gen().expressionGen().transformArg(
+                            getExpression(argIndex), 
+                            getParameter(argIndex), isRaw, typeArgumentModels);
+                }
+                @Override
+                protected Parameter getParameter(int argIndex) {
+                    return positional.getPositionalArguments().get(argIndex).getParameter();
+                }
+                @Override
+                protected int getNumArguments() {
+                    return positional.getPositionalArguments().size();
+                }
+                @Override
+                protected boolean hasEllipsis() {
+                    return positional.getEllipsis() != null;
+                }
+                
+            };
         } else if (invocation.getNamedArgumentList() != null) {
-            builder.transformNamedInvocation();
+            builder = new InvocationBuilder(gen, primary, primaryDeclaration, invocation.getTypeModel(), invocation) {
+                protected boolean containsParameter(java.util.List<Tree.NamedArgument> namedArguments, Parameter param) {
+                    for (Tree.NamedArgument namedArg : namedArguments) {
+                        Parameter declaredParam = namedArg.getParameter();
+                        if (param == declaredParam) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+                @Override
+                protected void compute() {
+                    java.util.List<ProducedType> typeArgumentModels = getTypeArguments();
+                    boolean isRaw = typeArgs.isEmpty();
+                    
+                    if (getPrimaryDeclaration() != null) {
+                        java.util.List<ParameterList> paramLists = ((Functional)getPrimaryDeclaration()).getParameterLists();
+                        java.util.List<Tree.NamedArgument> namedArguments = invocation.getNamedArgumentList().getNamedArguments();
+                        java.util.List<Parameter> declaredParams = paramLists.get(0).getParameters();
+                        Parameter lastDeclared = declaredParams.size() > 0 ? declaredParams.get(declaredParams.size() - 1) : null;
+                        boolean boundSequenced = false;
+                        String varBaseName = gen().aliasName("arg");
+                        callVarName = varBaseName + "$callable$";
+                        
+                        int numDeclared = declaredParams.size();
+                        int numDeclaredFixed = (lastDeclared != null && lastDeclared.isSequenced()) ? numDeclared - 1 : numDeclared;
+                        int numPassed = namedArguments.size();
+                        int idx = 0;
+                        for (Tree.NamedArgument namedArg : namedArguments) {
+                            gen().at(namedArg);
+                            Tree.Expression expr = ((Tree.SpecifiedArgument)namedArg).getSpecifierExpression().getExpression();
+                            Parameter declaredParam = namedArg.getParameter();
+                            int index;
+                            BoxingStrategy boxType;
+                            ProducedType type;
+                            if (declaredParam != null) {
+                                if (declaredParam.isSequenced()) {
+                                    boundSequenced = true;
+                                }
+                                index = declaredParams.indexOf(declaredParam);
+                                boxType = Util.getBoxingStrategy(declaredParam);
+                                type = gen().getTypeForParameter(declaredParam, isRaw, typeArgumentModels);
+                            } else {
+                                // Arguments of overloaded methods don't have a reference to parameter
+                                index = idx++;
+                                boxType = BoxingStrategy.UNBOXED;
+                                type = expr.getTypeModel();
+                            }
+                            String varName = varBaseName + "$" + index;
+                            // if we can't pick up on the type from the declaration, revert to the type of the expression
+                            if(gen().isTypeParameter(type))
+                                type = expr.getTypeModel();
+                            JCExpression typeExpr = gen().makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
+                            JCExpression argExpr = gen().expressionGen().transformExpression(expr, boxType, type);
+                            JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
+                            vars.append(varDecl);
+                        }
+                        
+                        if (!Decl.isOverloaded(getPrimaryDeclaration()) && numPassed < numDeclaredFixed) {
+                            boolean needsThis = false;
+                            if (Decl.withinClassOrInterface(getPrimaryDeclaration())) {
+                                // first append $this
+                                ProducedType thisType = gen().getThisType(getPrimaryDeclaration());
+                                vars.append(gen().makeVar(varBaseName + "$this$", gen().makeJavaType(thisType, AbstractTransformer.NO_PRIMITIVES), gen().makeUnquotedIdent(callVarName)));
+                                needsThis = true;
+                            }
+                            // append any arguments for defaulted parameters
+                            for (int ii = 0; ii < numDeclaredFixed; ii++) {
+                                Parameter param = declaredParams.get(ii);
+                                if (containsParameter(namedArguments, param)) {
+                                    continue;
+                                }
+                                String varName = varBaseName + "$" + ii;
+                                String methodName = Util.getDefaultedParamMethodName(getPrimaryDeclaration(), param);
+                                List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, ii, needsThis);
+                                JCExpression argExpr;
+                                if (!param.isSequenced()) {
+                                    Declaration container = param.getDeclaration().getRefinedDeclaration();
+                                    if (!container.isToplevel()) {
+                                        container = (Declaration)container.getContainer();
+                                    }
+                                    String className = Util.getCompanionClassName(container.getName());
+                                    argExpr = gen().at(node).Apply(null, gen().makeQuotedQualIdent(gen().makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName), arglist);
+                                } else {
+                                    argExpr = gen().makeEmpty();
+                                }
+                                BoxingStrategy boxType = Util.getBoxingStrategy(param);
+                                ProducedType type = gen().getTypeForParameter(param, isRaw, typeArgumentModels);
+                                JCExpression typeExpr = gen().makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
+                                JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
+                                vars.append(varDecl);
+                            }
+                        }
+                        
+                        Tree.SequencedArgument sequencedArgument = invocation.getNamedArgumentList().getSequencedArgument();
+                        if (sequencedArgument != null) {
+                            gen().at(sequencedArgument);
+                            String varName = varBaseName + "$" + numDeclaredFixed;
+                            JCExpression typeExpr = gen().makeJavaType(lastDeclared.getType(), AbstractTransformer.WANT_RAW_TYPE);
+                            JCExpression argExpr = gen().makeSequenceRaw(sequencedArgument.getExpressionList().getExpressions());
+                            JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
+                            vars.append(varDecl);
+                        } else if (lastDeclared != null 
+                                && lastDeclared.isSequenced() 
+                                && !boundSequenced) {
+                            String varName = varBaseName + "$" + numDeclaredFixed;
+                            JCExpression typeExpr = gen().makeJavaType(lastDeclared.getType(), AbstractTransformer.WANT_RAW_TYPE);
+                            JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, gen().makeEmpty());
+                            vars.append(varDecl);
+                        }
+                        
+                        if (!Decl.isOverloaded(getPrimaryDeclaration())) {
+                            args.appendList(makeVarRefArgumentList(varBaseName, numDeclared));
+                        } else {
+                            // For overloaded methods (and therefore Java interop) we just pass the arguments we have
+                            args.appendList(makeVarRefArgumentList(varBaseName, numPassed));
+                        }
+                    }
+                }
+            };
         } else {
             throw new RuntimeException("Illegal State");
         }
+        builder.compute();
         return builder;
     }
     
     public static InvocationBuilder invocationForCallable(AbstractTransformer gen, Term expr, Functional parameter) {
-        InvocationBuilder builder = new InvocationBuilder(gen, gen.expressionGen().getCallableReturnType(expr), expr);
-        builder.transformForCallable(expr, parameter);
-        return builder;
-    }
-    
-    private void transformForCallable(Term expr, Functional functionalParameter) {
-        final java.util.List<Parameter> declaredParameters;
-        final TypeArguments typeArguments;
-        if (expr instanceof Tree.Expression) {
-            Term term = ((Tree.Expression)expr).getTerm();
-            this.primary = (Tree.Primary)term;
-            if (term instanceof Tree.MemberOrTypeExpression) {
-                Tree.MemberOrTypeExpression bme = (Tree.MemberOrTypeExpression)term;
-                typeArguments = ((StaticMemberOrTypeExpression)bme).getTypeArguments();
-                Declaration declaration = bme.getDeclaration();
-                if (declaration instanceof Functional) {
-                    declaredParameters = ((Functional)declaration).getParameterLists().get(0).getParameters();
-                } else {
-                    declaredParameters = Collections.<Parameter>emptyList();
-                }
-            } else {
-                throw new RuntimeException(term+"");
-            }
-        } else if (expr instanceof Tree.MemberOrTypeExpression) {
-            this.primary = (Tree.Primary)expr;
-            typeArguments = ((StaticMemberOrTypeExpression)expr).getTypeArguments();
-            Functional f = (Functional)((Tree.MemberOrTypeExpression)expr).getDeclaration();
-            declaredParameters = f.getParameterLists().get(0).getParameters();
+        final Tree.MemberOrTypeExpression primary;
+        if (expr instanceof Tree.MemberOrTypeExpression) {
+            primary = (Tree.MemberOrTypeExpression)expr;
         } else {
             throw new RuntimeException(expr+"");
         }
         
-        computeCallInfo(expr.getTypeModel().getDeclaration(), 
-                new CallableArguments(functionalParameter, typeArguments.getTypeModels(), declaredParameters), 
-                typeArguments.getTypeModels(), 
-                functionalParameter.getParameterLists());
-    }
-    
-    // Named invocation
-    
-    private void transformNamedInvocation() {
-        ListBuffer<JCVariableDecl> vars = ListBuffer.lb();
-        ListBuffer<JCExpression> args = ListBuffer.lb();
+        final java.util.List<Parameter> declaredParameters = ((Functional)primary.getDeclaration()).getParameterLists().get(0).getParameters();
 
-        java.util.List<ProducedType> typeArgumentModels = getTypeArguments(invocation);
-        List<JCExpression> typeArgs = transformTypeArguments(typeArgumentModels);
-        boolean isRaw = typeArgs.isEmpty();
-        String callVarName = null;
+        TypeDeclaration primaryDeclaration = expr.getTypeModel().getDeclaration();
         
-        Declaration primaryDecl = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
-        if (primaryDecl != null) {
-            java.util.List<ParameterList> paramLists = ((Functional)primaryDecl).getParameterLists();
-            java.util.List<Tree.NamedArgument> namedArguments = invocation.getNamedArgumentList().getNamedArguments();
-            java.util.List<Parameter> declaredParams = paramLists.get(0).getParameters();
-            Parameter lastDeclared = declaredParams.size() > 0 ? declaredParams.get(declaredParams.size() - 1) : null;
-            boolean boundSequenced = false;
-            String varBaseName = gen.aliasName("arg");
-            callVarName = varBaseName + "$callable$";
+        java.util.List<ParameterList> paramLists = parameter.getParameterLists();
+        final java.util.List<Parameter> functionalParameters = paramLists.get(0).getParameters();
+        
+        
+        PositionalInvocationBuilder builder = new PositionalInvocationBuilder(
+                gen,
+                primary,
+                primaryDeclaration,
+                gen.expressionGen().getCallableReturnType(expr), 
+                expr,  
+                paramLists) {
             
-            int numDeclared = declaredParams.size();
-            int numDeclaredFixed = (lastDeclared != null && lastDeclared.isSequenced()) ? numDeclared - 1 : numDeclared;
-            int numPassed = namedArguments.size();
-            int idx = 0;
-            for (Tree.NamedArgument namedArg : namedArguments) {
-                gen.at(namedArg);
-                Tree.Expression expr = ((Tree.SpecifiedArgument)namedArg).getSpecifierExpression().getExpression();
-                Parameter declaredParam = namedArg.getParameter();
-                int index;
-                BoxingStrategy boxType;
-                ProducedType type;
-                if (declaredParam != null) {
-                    if (declaredParam.isSequenced()) {
-                        boundSequenced = true;
-                    }
-                    index = declaredParams.indexOf(declaredParam);
-                    boxType = Util.getBoxingStrategy(declaredParam);
-                    type = gen.getTypeForParameter(declaredParam, isRaw, typeArgumentModels);
+            @Override
+            protected Expression getExpression(int argIndex) {
+                throw new RuntimeException("Defaulted parameters are not defaulted when called via a method reference");
+            }
+            @Override
+            protected Parameter getParameter(int argIndex) {
+                return paramLists.get(0).getParameters().get(argIndex);
+            }
+            @Override
+            protected int getNumArguments() {
+                return paramLists.get(0).getParameters().size();
+            }
+            @Override
+            protected boolean hasEllipsis() {
+                return false;
+            }
+            @Override
+            protected JCExpression getTransformedExpression(int argIndex,
+                    boolean isRaw,
+                    java.util.List<ProducedType> typeArgumentModels) {
+                Parameter param = declaredParameters.get(argIndex);
+                JCExpression argExpr;
+                if (functionalParameters.size() <= 3) {
+                    // The Callable has overridden one of the non-varargs call() 
+                    // methods
+                    argExpr = gen().make().Ident(
+                            gen().names().fromString("arg"+argIndex));
                 } else {
-                    // Arguments of overloaded methods don't have a reference to parameter
-                    index = idx++;
-                    boxType = BoxingStrategy.UNBOXED;
-                    type = expr.getTypeModel();
+                    // The Callable has overridden the varargs call() method
+                    // so we need to index into the varargs array
+                    argExpr = gen().make().Indexed(
+                            gen().make().Ident(gen().names().fromString("arg0")), 
+                            gen().make().Literal(argIndex));
                 }
-                String varName = varBaseName + "$" + index;
-                // if we can't pick up on the type from the declaration, revert to the type of the expression
-                if(gen.isTypeParameter(type))
-                    type = expr.getTypeModel();
-                JCExpression typeExpr = gen.makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
-                JCExpression argExpr = gen.expressionGen().transformExpression(expr, boxType, type);
-                JCVariableDecl varDecl = gen.makeVar(varName, typeExpr, argExpr);
-                vars.append(varDecl);
+                ProducedType castType = gen().getTypeForParameter(param, isRaw, getTypeArguments());
+                JCTypeCast cast = gen().make().TypeCast(gen().makeJavaType(castType, AbstractTransformer.NO_PRIMITIVES), argExpr);
+                
+                JCExpression boxed = gen().boxUnboxIfNecessary(cast, true, 
+                        param.getType(), declaredParameters.get(argIndex).getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED);
+                return boxed;
             }
-            
-            if (!Decl.isOverloaded(primaryDecl) && numPassed < numDeclaredFixed) {
-                boolean needsThis = false;
-                if (Decl.withinClassOrInterface(primaryDecl)) {
-                    // first append $this
-                    ProducedType thisType = gen.getThisType(primaryDecl);
-                    vars.append(gen.makeVar(varBaseName + "$this$", gen.makeJavaType(thisType, AbstractTransformer.NO_PRIMITIVES), gen.makeUnquotedIdent(callVarName)));
-                    needsThis = true;
+        };
+        builder.compute();
+        return builder;
+    }
+    
+    protected abstract void compute();
+    
+    protected Declaration getPrimaryDeclaration() {
+        return primaryDeclaration;
+    }
+    
+    
+
+    // Make a list of $arg0, $arg1, ... , $argN
+    protected List<JCExpression> makeVarRefArgumentList(String varBaseName, int argCount) {
+        List<JCExpression> names = List.<JCExpression> nil();
+        for (int i = 0; i < argCount; i++) {
+            names = names.append(gen().makeUnquotedIdent(varBaseName + "$" + i));
+        }
+        return names;
+    }
+
+    // Make a list of $arg$this$, $arg0, $arg1, ... , $argN
+    protected List<JCExpression> makeThisVarRefArgumentList(String varBaseName, int argCount, boolean needsThis) {
+        List<JCExpression> names = List.<JCExpression> nil();
+        if (needsThis) {
+            names = names.append(gen().makeUnquotedIdent(varBaseName + "$this$"));
+        }
+        names = names.appendList(makeVarRefArgumentList(varBaseName, argCount));
+        return names;
+    }
+    
+    protected JCExpression transformInvocation(JCExpression primaryExpr, String selector) {
+        JCExpression actualPrimExpr = null;
+        if (primary instanceof Tree.QualifiedTypeExpression
+                && ((Tree.QualifiedTypeExpression)primary).getPrimary() instanceof Tree.BaseTypeExpression) {
+            actualPrimExpr = gen().makeSelect(primaryExpr, "this");
+        } else {
+            actualPrimExpr = primaryExpr;
+        }
+        if (vars != null && !vars.isEmpty() 
+                && primaryExpr != null 
+                && selector != null) {
+            // Prepare the first argument holding the primary for the call
+            JCExpression callVarExpr = gen().makeUnquotedIdent(callVarName);
+            ProducedType type = ((Tree.QualifiedMemberOrTypeExpression)primary).getTarget().getQualifyingType();
+            JCVariableDecl callVar = gen().makeVar(callVarName, gen().makeJavaType(type, AbstractTransformer.NO_PRIMITIVES), actualPrimExpr);
+            vars.prepend(callVar);
+            actualPrimExpr = callVarExpr;
+        }
+        
+        JCExpression resultExpr;
+        if (primary instanceof Tree.BaseTypeExpression) {
+            ProducedType classType = (ProducedType)((Tree.BaseTypeExpression)primary).getTarget();
+            resultExpr = gen().make().NewClass(null, null, gen().makeJavaType(classType, AbstractTransformer.CLASS_NEW), args.toList(), null);
+        } else if (primary instanceof Tree.QualifiedTypeExpression) {
+            resultExpr = gen().make().NewClass(actualPrimExpr, null, gen().makeQuotedIdent(selector), args.toList(), null);
+        } else {
+            Declaration decl = ((Tree.StaticMemberOrTypeExpression)primary).getDeclaration();
+            if (decl instanceof FunctionalParameter) {
+                if (primaryExpr != null) {
+                    actualPrimExpr = gen().makeQualIdent(primaryExpr, decl.getName());
+                } else {
+                    actualPrimExpr = gen().makeQuotedIdent(decl.getName());
                 }
-                // append any arguments for defaulted parameters
-                for (int ii = 0; ii < numDeclaredFixed; ii++) {
-                    Parameter param = declaredParams.get(ii);
-                    if (containsParameter(namedArguments, param)) {
-                        continue;
-                    }
-                    String varName = varBaseName + "$" + ii;
-                    String methodName = Util.getDefaultedParamMethodName(primaryDecl, param);
-                    List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, ii, needsThis);
-                    JCExpression argExpr;
-                    if (!param.isSequenced()) {
-                        Declaration container = param.getDeclaration().getRefinedDeclaration();
-                        if (!container.isToplevel()) {
-                            container = (Declaration)container.getContainer();
-                        }
-                        String className = Util.getCompanionClassName(container.getName());
-                        argExpr = gen.at(node).Apply(null, gen.makeQuotedQualIdent(gen.makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName), arglist);
-                    } else {
-                        argExpr = gen.makeEmpty();
-                    }
-                    BoxingStrategy boxType = Util.getBoxingStrategy(param);
-                    ProducedType type = gen.getTypeForParameter(param, isRaw, typeArgumentModels);
-                    JCExpression typeExpr = gen.makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
-                    JCVariableDecl varDecl = gen.makeVar(varName, typeExpr, argExpr);
-                    vars.append(varDecl);
-                }
+                selector = "call";
             }
-            
-            Tree.SequencedArgument sequencedArgument = invocation.getNamedArgumentList().getSequencedArgument();
-            if (sequencedArgument != null) {
-                gen.at(sequencedArgument);
-                String varName = varBaseName + "$" + numDeclaredFixed;
-                JCExpression typeExpr = gen.makeJavaType(lastDeclared.getType(), AbstractTransformer.WANT_RAW_TYPE);
-                JCExpression argExpr = gen.makeSequenceRaw(sequencedArgument.getExpressionList().getExpressions());
-                JCVariableDecl varDecl = gen.makeVar(varName, typeExpr, argExpr);
-                vars.append(varDecl);
-            } else if (lastDeclared != null 
-                    && lastDeclared.isSequenced() 
-                    && !boundSequenced) {
-                String varName = varBaseName + "$" + numDeclaredFixed;
-                JCExpression typeExpr = gen.makeJavaType(lastDeclared.getType(), AbstractTransformer.WANT_RAW_TYPE);
-                JCVariableDecl varDecl = gen.makeVar(varName, typeExpr, gen.makeEmpty());
-                vars.append(varDecl);
-            }
-            
-            if (!Decl.isOverloaded(primaryDecl)) {
-                args.appendList(makeVarRefArgumentList(varBaseName, numDeclared));
+            resultExpr = gen().make().Apply(typeArgs, gen().makeQuotedQualIdent(actualPrimExpr, selector), args.toList());
+        }
+
+        if (vars != null && !vars.isEmpty()) {
+            if (gen().isVoid(returnType)) {
+                // void methods get wrapped like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1); null)
+                return gen().make().LetExpr(vars.toList(), List.<JCStatement>of(gen().make().Exec(resultExpr)), gen().makeNull());
             } else {
-                // For overloaded methods (and therefore Java interop) we just pass the arguments we have
-                args.appendList(makeVarRefArgumentList(varBaseName, numPassed));
+                // all other methods like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1))
+                return gen().make().LetExpr(vars.toList(), resultExpr);
+            }
+        } else {
+            return resultExpr;
+        }
+    }
+    
+    protected JCExpression makeInvocation() {
+        gen().at(node);
+        JCExpression result = gen().expressionGen().transformPrimary(primary, new TermTransformer() {
+            @Override
+            public JCExpression transform(JCExpression primaryExpr, String selector) {
+                return transformInvocation(primaryExpr, selector);
+            }
+        });
+        return result;
+    }
+
+    // Invocation helper functions
+    
+    protected java.util.List<ProducedType> getTypeArguments() {
+        if (primary instanceof Tree.StaticMemberOrTypeExpression){
+            return ((Tree.StaticMemberOrTypeExpression)primary).getTypeArguments().getTypeModels();
+        }
+        return null;
+    }
+
+    protected List<JCExpression> transformTypeArguments(java.util.List<ProducedType> typeArguments) {
+        List<JCExpression> result = List.<JCExpression> nil();
+        if(typeArguments != null){
+            for (ProducedType arg : typeArguments) {
+                // cancel type parameters and go raw if we can't specify them
+                if(gen().willEraseToObject(arg)
+                        || gen().isTypeParameter(arg))
+                    return List.nil();
+                result = result.append(gen().makeJavaType(arg, AbstractTransformer.TYPE_ARGUMENT));
             }
         }
-
-        this.vars = vars;
-        this.args = args;
-        this.typeArgs = typeArgs;
-        this.callVarName = callVarName;
+        return result;
     }
-    
-    private boolean containsParameter(java.util.List<Tree.NamedArgument> namedArguments, Parameter param) {
-        for (Tree.NamedArgument namedArg : namedArguments) {
-            Parameter declaredParam = namedArg.getParameter();
-            if (param == declaredParam) {
-                return true;
-            }
+
+    public JCExpression build() {
+        boolean prevFnCall = gen().expressionGen().isWithinInvocation();
+        gen().expressionGen().setWithinInvocation(true);
+        try {
+            return makeInvocation();
+        } finally {
+            gen().expressionGen().setWithinInvocation(prevFnCall);
         }
-        return false;
     }
 
-    // Positional invocation
-    
-    private void transformPositionalInvocation() {
-        Declaration primaryDecl = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
-        Tree.PositionalArgumentList positional = invocation.getPositionalArgumentList();
-        java.util.List<ProducedType> typeArgumentModels = getTypeArguments(invocation);
-        java.util.List<ParameterList> paramLists = ((Functional)primaryDecl).getParameterLists();
-        computeCallInfo(primaryDecl, new PositionalArguments(positional), typeArgumentModels, paramLists);
+    protected AbstractTransformer gen() {
+        return gen;
     }
-
     
-    private void computeCallInfo(
-            Declaration primaryDecl,
-            Arguments positionalArguments,
-            java.util.List<ProducedType> typeArgumentModels,
-            java.util.List<ParameterList> paramLists) {
-        ListBuffer<JCVariableDecl> vars = null;
-        ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
-        String callVarName = null;
-        List<JCExpression> typeArgs = transformTypeArguments(typeArgumentModels);
+}
+
+abstract class PositionalInvocationBuilder extends InvocationBuilder {
+
+    protected final java.util.List<ParameterList> paramLists;
+    
+    protected PositionalInvocationBuilder(AbstractTransformer gen,
+            Tree.Primary primary,
+            Declaration primaryDeclaration,
+            ProducedType returnType, Node node,
+    java.util.List<ParameterList> paramLists) {
+        super(gen, primary, primaryDeclaration, returnType, node);
+        this.paramLists = paramLists;
+    }
+ 
+    /** Gets the number of arguments */
+    protected abstract int getNumArguments();
+    /** 
+     * Gets the expression supplying the argument value for the 
+     * given argument index 
+     */
+    protected abstract Expression getExpression(int argIndex);
+    /**
+     * Gets the transformed expression supplying the argument value for the 
+     * given argument index
+     */
+    protected abstract JCExpression getTransformedExpression(int argIndex, boolean isRaw, java.util.List<ProducedType> typeArgumentModels);
+    /**
+     * Gets the parameter for the given argument index
+     */
+    protected abstract Parameter getParameter(int argIndex);
+    protected abstract boolean hasEllipsis();
+    
+    @Override
+    protected void compute() {
+        
         final boolean isRaw = typeArgs.isEmpty();
         java.util.List<Parameter> declaredParams = paramLists.get(0).getParameters();
         int numParameters = declaredParams.size();
-        int numArguments = positionalArguments.getNumArguments();
+        int numArguments = this.getNumArguments();
         Parameter lastDeclaredParam = declaredParams.isEmpty() ? null : declaredParams.get(declaredParams.size() - 1); 
         if (lastDeclaredParam != null 
                 && lastDeclaredParam.isSequenced()
-                && !positionalArguments.hasEllipsis() // foo(sequence...) syntax => no need to box
+                && !this.hasEllipsis() // foo(sequence...) syntax => no need to box
                 && numArguments >= (numParameters -1)) {
             // => call to a varargs method
             // first, append the normal args
             for (int ii = 0; ii < numParameters - 1; ii++) {
-                args.append(positionalArguments.getTransformedExpression(ii, isRaw, typeArgumentModels));
+                args.append(this.getTransformedExpression(ii, isRaw, getTypeArguments()));
             }
             JCExpression boxed;
             // then, box the remaining passed arguments
             if (numParameters -1 == numArguments) {
                 // box as Empty
-                boxed = gen.makeEmpty();
+                boxed = gen().makeEmpty();
             } else {
                 // box with an ArraySequence<T>
                 List<JCExpression> x = List.<JCExpression>nil();
                 for (int ii = numParameters - 1; ii < numArguments; ii++) {
-                    x = x.append(positionalArguments.getTransformedExpression(ii, isRaw, typeArgumentModels));
+                    x = x.append(this.getTransformedExpression(ii, isRaw, getTypeArguments()));
                 }
-                boxed = gen.makeSequenceRaw(x);
+                boxed = gen().makeSequenceRaw(x);
             }
             args.append(boxed);
         } else if (numArguments < numParameters) {
-            vars = ListBuffer.lb();
-            String varBaseName = gen.aliasName("arg");
+            String varBaseName = gen().aliasName("arg");
             callVarName = varBaseName + "$callable$";
             boolean needsThis = false;
-            if (Decl.withinClassOrInterface(primaryDecl)) {
+            if (Decl.withinClassOrInterface(getPrimaryDeclaration())) {
                 // first append $this
-                ProducedType thisType = gen.getThisType(primaryDecl);
-                vars.append(gen.makeVar(varBaseName + "$this$", gen.makeJavaType(thisType, AbstractTransformer.NO_PRIMITIVES), gen.makeUnquotedIdent(callVarName)));
+                ProducedType thisType = gen().getThisType(getPrimaryDeclaration());
+                vars.append(gen().makeVar(varBaseName + "$this$", gen().makeJavaType(thisType, AbstractTransformer.NO_PRIMITIVES), gen().makeUnquotedIdent(callVarName)));
                 needsThis = true;
             }
             // append the normal args
             int idx = 0;
-            for (int ii = 0; ii < positionalArguments.getNumArguments(); ii++) {
-                gen.at(positionalArguments.getExpression(ii));
-                Tree.Expression expr = positionalArguments.getExpression(ii);
-                Parameter declaredParam = positionalArguments.getParameter(ii);
+            for (int ii = 0; ii < this.getNumArguments(); ii++) {
+                gen().at(this.getExpression(ii));
+                Tree.Expression expr = this.getExpression(ii);
+                Parameter declaredParam = this.getParameter(ii);
                 int index;
                 BoxingStrategy boxType;
                 ProducedType type;
                 if (declaredParam != null) {
                     index = declaredParams.indexOf(declaredParam);
                     boxType = Util.getBoxingStrategy(declaredParam);
-                    type = gen.getTypeForParameter(declaredParam, isRaw, typeArgumentModels);
+                    type = gen().getTypeForParameter(declaredParam, isRaw, getTypeArguments());
                 } else {
                     // Arguments of overloaded methods don't have a reference to parameter
                     index = idx++;
@@ -439,19 +524,19 @@ public class InvocationBuilder {
                 }
                 String varName = varBaseName + "$" + index;
                 // if we can't pick up on the type from the declaration, revert to the type of the expression
-                if(gen.isTypeParameter(type))
+                if(gen().isTypeParameter(type))
                     type = expr.getTypeModel();
-                JCExpression typeExpr = gen.makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
-                JCExpression argExpr = gen.expressionGen().transformExpression(expr, boxType, type);
-                JCVariableDecl varDecl = gen.makeVar(varName, typeExpr, argExpr);
+                JCExpression typeExpr = gen().makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
+                JCExpression argExpr = gen().expressionGen().transformExpression(expr, boxType, type);
+                JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
                 vars.append(varDecl);
             }
-            if (!Decl.isOverloaded(primaryDecl)) {
+            if (!Decl.isOverloaded(getPrimaryDeclaration())) {
                 // append any arguments for defaulted parameters
                 for (int ii = numArguments; ii < numParameters; ii++) {
                     Parameter param = declaredParams.get(ii);
                     String varName = varBaseName + "$" + ii;
-                    String methodName = Util.getDefaultedParamMethodName(primaryDecl, param);
+                    String methodName = Util.getDefaultedParamMethodName(getPrimaryDeclaration(), param);
                     List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, ii, needsThis);
                     JCExpression argExpr;
                     if (!param.isSequenced()) {
@@ -460,14 +545,14 @@ public class InvocationBuilder {
                             container = (Declaration)container.getContainer();
                         }
                         String className = Util.getCompanionClassName(container.getName());
-                        argExpr = gen.at(node).Apply(null, gen.makeQuotedQualIdent(gen.makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName), arglist);
+                        argExpr = gen().at(node).Apply(null, gen().makeQuotedQualIdent(gen().makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName), arglist);
                     } else {
-                        argExpr = gen.makeEmpty();
+                        argExpr = gen().makeEmpty();
                     }
                     BoxingStrategy boxType = Util.getBoxingStrategy(param);
-                    ProducedType type = gen.getTypeForParameter(param, isRaw, typeArgumentModels);
-                    JCExpression typeExpr = gen.makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
-                    JCVariableDecl varDecl = gen.makeVar(varName, typeExpr, argExpr);
+                    ProducedType type = gen().getTypeForParameter(param, isRaw, getTypeArguments());
+                    JCExpression typeExpr = gen().makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
+                    JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
                     vars.append(varDecl);
                 }
                 args.appendList(makeVarRefArgumentList(varBaseName, numParameters));
@@ -477,129 +562,10 @@ public class InvocationBuilder {
             }
         } else {
             // append the normal args
-            for (int ii = 0; ii < positionalArguments.getNumArguments(); ii++) {
-                args.append(positionalArguments.getTransformedExpression(ii, 
-                        isRaw, typeArgumentModels));
+            for (int ii = 0; ii < this.getNumArguments(); ii++) {
+                args.append(this.getTransformedExpression(ii, 
+                        isRaw, getTypeArguments()));
             }
         }
-
-        this.vars = vars;
-        this.args = args;
-        this.typeArgs = typeArgs;
-        this.callVarName = callVarName;
     }
-
-    // Make a list of $arg0, $arg1, ... , $argN
-    private List<JCExpression> makeVarRefArgumentList(String varBaseName, int argCount) {
-        List<JCExpression> names = List.<JCExpression> nil();
-        for (int i = 0; i < argCount; i++) {
-            names = names.append(gen.makeUnquotedIdent(varBaseName + "$" + i));
-        }
-        return names;
-    }
-
-    // Make a list of $arg$this$, $arg0, $arg1, ... , $argN
-    private List<JCExpression> makeThisVarRefArgumentList(String varBaseName, int argCount, boolean needsThis) {
-        List<JCExpression> names = List.<JCExpression> nil();
-        if (needsThis) {
-            names = names.append(gen.makeUnquotedIdent(varBaseName + "$this$"));
-        }
-        names = names.appendList(makeVarRefArgumentList(varBaseName, argCount));
-        return names;
-    }
-    
-    private JCExpression makeInvocation() {
-        gen.at(node);
-        JCExpression result = gen.expressionGen().transformPrimary(primary, new TermTransformer() {
-
-            @Override
-            public JCExpression transform(JCExpression primaryExpr, String selector) {
-                JCExpression actualPrimExpr = null;
-                if (primary instanceof Tree.QualifiedTypeExpression
-                        && ((Tree.QualifiedTypeExpression)primary).getPrimary() instanceof Tree.BaseTypeExpression) {
-                    actualPrimExpr = gen.makeSelect(primaryExpr, "this");
-                } else {
-                    actualPrimExpr = primaryExpr;
-                }
-                if (vars != null && !vars.isEmpty() 
-                        && primaryExpr != null 
-                        && selector != null) {
-                    // Prepare the first argument holding the primary for the call
-                    JCExpression callVarExpr = gen.makeUnquotedIdent(callVarName);
-                    ProducedType type = ((Tree.QualifiedMemberOrTypeExpression)primary).getTarget().getQualifyingType();
-                    JCVariableDecl callVar = gen.makeVar(callVarName, gen.makeJavaType(type, AbstractTransformer.NO_PRIMITIVES), actualPrimExpr);
-                    vars.prepend(callVar);
-                    actualPrimExpr = callVarExpr;
-                }
-                
-                JCExpression resultExpr;
-                if (primary instanceof Tree.BaseTypeExpression) {
-                    ProducedType classType = (ProducedType)((Tree.BaseTypeExpression)primary).getTarget();
-                    resultExpr = gen.make().NewClass(null, null, gen.makeJavaType(classType, AbstractTransformer.CLASS_NEW), args.toList(), null);
-                } else if (primary instanceof Tree.QualifiedTypeExpression) {
-                    resultExpr = gen.make().NewClass(actualPrimExpr, null, gen.makeQuotedIdent(selector), args.toList(), null);
-                } else {
-                    Declaration decl = ((Tree.StaticMemberOrTypeExpression)primary).getDeclaration();
-                    if (decl instanceof FunctionalParameter) {
-                            //&& !gen.isCeylonCallable(primary.getTypeModel())) {
-                        if (primaryExpr != null) {
-                            actualPrimExpr = gen.makeQualIdent(primaryExpr, decl.getName());
-                        } else {
-                            actualPrimExpr = gen.makeQuotedIdent(decl.getName());
-                        }
-                        selector = "call";
-                    }
-                    resultExpr = gen.make().Apply(typeArgs, gen.makeQuotedQualIdent(actualPrimExpr, selector), args.toList());
-                }
-
-                if (vars != null && !vars.isEmpty()) {
-                    if (gen.isVoid(returnType)) {
-                        // void methods get wrapped like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1); null)
-                        return gen.make().LetExpr(vars.toList(), List.<JCStatement>of(gen.make().Exec(resultExpr)), gen.makeNull());
-                    } else {
-                        // all other methods like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1))
-                        return gen.make().LetExpr(vars.toList(), resultExpr);
-                    }
-                } else {
-                    return resultExpr;
-                }
-            }
-            
-        });
-        return result;
-    }
-
-    // Invocation helper functions
-    
-    private java.util.List<ProducedType> getTypeArguments(Tree.InvocationExpression ce) {
-        if(ce.getPrimary() instanceof Tree.StaticMemberOrTypeExpression){
-            return ((Tree.StaticMemberOrTypeExpression)ce.getPrimary()).getTypeArguments().getTypeModels();
-        }
-        return null;
-    }
-
-    private List<JCExpression> transformTypeArguments(java.util.List<ProducedType> typeArguments) {
-        List<JCExpression> result = List.<JCExpression> nil();
-        if(typeArguments != null){
-            for (ProducedType arg : typeArguments) {
-                // cancel type parameters and go raw if we can't specify them
-                if(gen.willEraseToObject(arg)
-                        || gen.isTypeParameter(arg))
-                    return List.nil();
-                result = result.append(gen.makeJavaType(arg, AbstractTransformer.TYPE_ARGUMENT));
-            }
-        }
-        return result;
-    }
-
-    public JCExpression build() {
-        boolean prevFnCall = gen.expressionGen().isWithinInvocation();
-        gen.expressionGen().setWithinInvocation(true);
-        try {
-            return makeInvocation();
-        } finally {
-            gen.expressionGen().setWithinInvocation(prevFnCall);
-        }
-    }
-    
 }
