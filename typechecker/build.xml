@@ -40,11 +40,23 @@
     <property name="ceylon.typechecker.repo" value="${ceylon.repo.dir}/${ceylon.typechecker.dir}"/>
     <property name="ceylon.typechecker.dist" value="${build.dist}/${ceylon.typechecker.dir}"/>
 
+    <property name="ceylon.module-resolver.dir" value="com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}"/>
+    <property name="ceylon.module-resolver.jar" value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
+    <property name="ceylon.module-resolver.lib" location="${ceylon.repo.dir}/${ceylon.module-resolver.jar}"/>
+
+
     <!-- Classpath for the build tools. -->
     <path id="lib.classpath">
         <fileset dir="${support.dir}/lib">
             <include name="**/*.jar"/>
         </fileset>
+    </path>
+
+    <path id="classpath">
+        <fileset dir="${basedir}/lib">
+            <include name="**/*.jar"/>
+        </fileset>
+        <pathelement path="${ceylon.module-resolver.lib}"/>
     </path>
 
     <!-- ANTLR -->
@@ -306,7 +318,7 @@
                 srcdir="${src}:${gensrc}"
                 destdir="${build.classes}"
                 debug="true"
-                classpath="${antlr.lib}">
+                classpathref="classpath">
             <include name="**/*.java"/>
         </javac>
     </target>
@@ -364,9 +376,7 @@
         <java classname="MainForTest">
             <classpath>
                 <pathelement location="${build.classes}"/>
-                <fileset dir="lib">
-                    <include name="**/*.jar"/>
-                </fileset>
+                <path refid="classpath"/>
             </classpath>
         </java>
     </target>
@@ -377,9 +387,7 @@
         <java classname="MainForLanguage">
             <classpath>
                 <pathelement location="${build.classes}"/>
-                <fileset dir="lib">
-                    <include name="**/*.jar"/>
-                </fileset>
+                <path refid="classpath"/>
             </classpath>
         </java>
     </target>

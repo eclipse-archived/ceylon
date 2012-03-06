@@ -24,7 +24,20 @@ Directory structure:
 
 ## Type analyzer
 
-To run the type analyzer tests, in the root directory 
+The type checker project depends on two projects that you need to build locally:
+
+* [ceylon.language](https://github.com/ceylon/ceylon.language)
+* [ceylon-module-resolver](https://github.com/ceylon/ceylon-module-resolver)
+
+Go into `ceylon.language` first and run
+
+    ant clean publish
+
+Then go into `ceylon-module-resolver` and run
+
+    ant clean publish
+
+To run the type analyzer tests, in the root directory
 type:
 
     ant test
