@@ -41,7 +41,7 @@ Then go into **ceylon-spec** and run
 
 Then go into **ceylon-module-resolver** and run
 
-    mvn clean install
+    ant clean publish
     
 To build and test the compiler return to **ceylon-compiler** and run
 
