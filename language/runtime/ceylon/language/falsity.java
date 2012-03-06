@@ -9,7 +9,7 @@ class falsity extends Boolean  {
     private final static falsity value = new falsity();
 
     public boolean booleanValue() {
-        return true;
+        return false;
     }
     
     static falsity getFalsity(){
