@@ -28,22 +28,24 @@ Directory structure:
 Build the compiler and tools
 ----------------------------
 
-First you must make sure you have built the **ceylon.language**, **ceylon-spec** and
-**ceylon-module-resolver** projects.
+First you must make sure you have built the 
+[ceylon.language](https://github.com/ceylon/ceylon.language), 
+[ceylon-spec](https://github.com/ceylon/ceylon-spec) and
+[ceylon-module-resolver](https://github.com/ceylon/ceylon-module-resolver) projects.
 
-Go into **ceylon.language** first and run
-
-    ant clean publish
-    
-Then go into **ceylon-spec** and run
-
-    ant clean publish
-
-Then go into **ceylon-module-resolver** and run
+Go into `ceylon.language` first and run
 
     ant clean publish
     
-To build and test the compiler return to **ceylon-compiler** and run
+Then go into `ceylon-module-resolver` and run
+
+    ant clean publish
+
+Then go into `ceylon-spec` and run
+
+    ant clean publish
+    
+To build and test the compiler return to `ceylon-compiler` and run
 
     ant clean publish
     
