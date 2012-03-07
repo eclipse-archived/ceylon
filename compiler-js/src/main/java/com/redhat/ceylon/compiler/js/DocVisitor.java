@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberOrTypeExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -47,11 +48,6 @@ public class DocVisitor extends Visitor {
     //This catches function calls, method/attribute calls, object refs, constructors.
     @Override
     public void visit(MemberOrTypeExpression that) {
-        /*if (that.getTypeModel() != null && !that.getTypeModel().getTypeArgumentList().isEmpty()) {
-            for (ProducedType pt : that.getTypeModel().getTypeArgumentList()) {
-                retrieveDocs(pt.getDeclaration().getAnnotations(), that.getLocation());
-            }
-        }*/
         String loc = that.getLocation();
         if (that.getDeclaration() != null && loc != null) {
             if (that instanceof QualifiedMemberOrTypeExpression) {
@@ -71,7 +67,15 @@ public class DocVisitor extends Visitor {
 
     @Override
     public void visit(AnyMethod that) {
-        retrieveDocs(that.getDeclarationModel().getType().getDeclaration().getAnnotations(), that.getType().getLocation());
+        if (that instanceof MethodDeclaration) {
+            //Do not document the return type of method declarations since it's not really in the code.
+            MethodDeclaration md = (MethodDeclaration)that;
+            if (md.getSpecifierExpression() != null) {
+                md.getSpecifierExpression().visit(this);
+            }
+        } else {
+            retrieveDocs(that.getDeclarationModel().getType().getDeclaration().getAnnotations(), that.getType().getLocation());
+        }
         super.visit(that);
     }
     @Override

@@ -27,6 +27,7 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 @RunWith(Parameterized.class)
 public class TestDocVisitor {
 
+    private final String file;
     private final Map<String, List<String>> locations;
     private final DocVisitor doccer = new DocVisitor();
     private final TypeChecker tc;
@@ -61,13 +62,20 @@ public class TestDocVisitor {
         m2.put("smaller", Arrays.asList("7:10-7:16"));
         m2.put("larger", Arrays.asList("8:10-8:15"));
 
+        Map<String, List<String>> m3 = new HashMap<String, List<String>>();
+        m3.put("String", Arrays.asList("1:0-1:5", "4:12-4:17", "8:11-8:16"));
+        m3.put("Integer", Arrays.asList("1:18-1:24", "4:21-4:27", "8:18-8:24", "9:14-9:20"));
+        m3.put("void", Arrays.asList("4:0-4:3", "7:0-7:3"));
+        //m3.put("Callable", Arrays.asList("8:2-8:9"));
         return Arrays.asList(new Object[][]{
             {"src/test/resources/doc/calls.ceylon", m1 },
-            {"src/test/resources/doc/switch.ceylon", m2 }
+            {"src/test/resources/doc/switch.ceylon", m2 },
+            {"src/test/resources/doc/highers.ceylon", m3 }
         });
     }
 
     public TestDocVisitor(String path, Map<String, List<String>> locations) {
+        file = path.substring(path.lastIndexOf('/')+1);
         tc = new TypeCheckerBuilder().verbose(false).addSrcDirectory(new File(path)).getTypeChecker();
         tc.process();
         for (PhasedUnit pu : tc.getPhasedUnits().getPhasedUnits()) {
@@ -97,7 +105,7 @@ public class TestDocVisitor {
         for (Map.Entry<String, List<String>> locEntry : locations.entrySet()) {
             for (String loc : locEntry.getValue()) {
                 if (!locs.containsKey(loc)) {
-                    throw new AssertionFailedError("No doc for location " + loc);
+                    throw new AssertionFailedError("No doc for location " + loc + " in " + file);
                 }
             }
         }
@@ -108,8 +116,8 @@ public class TestDocVisitor {
                 contains |= e.getValue().contains(dloc.getKey());
             }
             if (!contains) {
-                System.out.printf("Unexpected location %s: %d (%s)%n", dloc.getKey(), dloc.getValue(),
-                    doccer.getDocs().get(dloc.getValue()));
+                System.out.printf("Unexpected location %s: %d (%s) at %s%n", dloc.getKey(), dloc.getValue(),
+                    doccer.getDocs().get(dloc.getValue()), file);
             }
         }
     }
