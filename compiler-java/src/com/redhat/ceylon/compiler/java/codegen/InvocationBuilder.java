@@ -512,8 +512,7 @@ abstract class InvocationBuilder {
                 
                 @Override
                 protected boolean hasEllipsis() {
-                    // TODO Auto-generated method stub
-                    return false;
+                    return method.getParameterLists().get(0).getParameters().get(getNumArguments() - 1).isSequenced();
                 }
             };
             builder.setUnboxed(primary.getUnboxed());
