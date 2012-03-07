@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.io;
 import java.io.File;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.io.impl.Helper;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 
 /**
@@ -13,19 +14,12 @@ public class VFSArtifactProvider implements ArtifactProvider {
     private final VFS vfs;
 
     public VFSArtifactProvider(VFS vfs) {
-        File repo;
-        String ceylonUserRepo = System.getProperty("ceylon.user.repo");
-        if (ceylonUserRepo == null) {
-            File home = new File( System.getProperty("user.home") );
-            File ceylon = new File( home, ".ceylon" );
-            repo = new File( ceylon, "repo" );
-        } else {
-            repo = new File( ceylonUserRepo );
-        }
-        repo.mkdirs();
+        File repo = Helper.getHomeRepository();
         homeRepo = vfs.getFromFile(repo);
         this.vfs = vfs;
     }
+
+
 
     public VFSArtifactProvider(VirtualFile homeRepo, VFS vfs) {
         this.homeRepo = homeRepo;

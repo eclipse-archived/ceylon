@@ -1,11 +1,12 @@
 package com.redhat.ceylon.compiler.typechecker.io.impl;
 
+import java.io.File;
 import java.util.zip.ZipEntry;
 
 /**
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
-class Helper {
+public class Helper {
     public static String getSimpleName(ZipEntry entry) {
         return getSimpleName(entry.getName());
     }
@@ -20,5 +21,19 @@ class Helper {
             final int firstIndex = entryName.lastIndexOf("/");
             return firstIndex == -1 ? entryName : entryName.substring(firstIndex+1);
         }
+    }
+
+    public static File getHomeRepository() {
+        File repo;
+        String ceylonUserRepo = System.getProperty("ceylon.user.repo");
+        if (ceylonUserRepo == null) {
+            File home = new File( System.getProperty("user.home") );
+            File ceylon = new File( home, ".ceylon" );
+            repo = new File( ceylon, "repo" );
+        } else {
+            repo = new File( ceylonUserRepo );
+        }
+        repo.mkdirs();
+        return repo;
     }
 }
