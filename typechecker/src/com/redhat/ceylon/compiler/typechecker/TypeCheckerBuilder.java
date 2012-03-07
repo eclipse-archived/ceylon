@@ -1,19 +1,16 @@
 package com.redhat.ceylon.compiler.typechecker;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.RepositoryBuilder;
-import com.redhat.ceylon.compiler.typechecker.io.ArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
-import com.redhat.ceylon.compiler.typechecker.io.VFSArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.io.cmr.impl.LeakingLogger;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Build a TypeChecker using the builder pattern
@@ -29,8 +26,6 @@ import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 public class TypeCheckerBuilder {
     private boolean verbose = false;
     private List<VirtualFile> srcDirectories = new ArrayList<VirtualFile>();
-    private List<ArtifactProvider> artifactProviders = new ArrayList<ArtifactProvider>();
-    private Logger cmsLogger;
     private final VFS vfs = new VFS();
     private boolean verifyDependencies = true;
     private AssertionVisitor assertionVisitor = new AssertionVisitor() { 
@@ -58,34 +53,6 @@ public class TypeCheckerBuilder {
 	 */
 	public TypeCheckerBuilder addSrcDirectory(VirtualFile srcDirectory) {
         srcDirectories.add( srcDirectory);
-        return this;
-    }
-
-    /**
-     * Let's you add a directory or a file.
-     * Directories are better as the type checker can extract the context like module name, package etc
-     */
-    @Deprecated
-    public TypeCheckerBuilder addRepository(File repository) {
-        return addRepository( vfs.getFromFile( repository ) );
-    }
-
-    /**
-     * Let's you add a directory or a file.
-     * Directories are better as the type checker can extract the context like module name, package etc
-     */
-    @Deprecated
-    public TypeCheckerBuilder addRepository(VirtualFile repository) {
-        artifactProviders.add( new VFSArtifactProvider( repository, vfs ) );
-        return this;
-    }
-
-    /**
-     * Lets you add an artifact provider.
-     */
-    @Deprecated
-    public TypeCheckerBuilder addArtifactProvider(ArtifactProvider artifactProvider) {
-        artifactProviders.add( artifactProvider );
         return this;
     }
 
