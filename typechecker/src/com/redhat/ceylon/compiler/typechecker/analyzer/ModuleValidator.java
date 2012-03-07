@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -7,6 +9,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -75,7 +80,7 @@ public class ModuleValidator {
             if (moduleManager.findModule(module, dependencyTree, true) != null) {
                 //circular dependency
                 StringBuilder error = new StringBuilder("Circular dependency between modules: ");
-                buildDependencyString(dependencyTree, module, error);
+                ModuleHelper.buildDependencyString(dependencyTree, module, error);
                 error.append(".");
                 //TODO is there a better place than the top level module triggering the error?
                 //nested modules might not have representations in the src tree
@@ -87,67 +92,22 @@ public class ModuleValidator {
             
             if ( ! module.isAvailable() ) {
                 //try and load the module from the repository
-                VirtualFile artifact = null;
-                List<ArtifactProvider> artifactProviders = context.getArtifactProviders();
-                for (final ArtifactProvider artifactProvider : artifactProviders) {
-                    // this really is just for error messages
-                    searchedArtifacts.add(VFSArtifactProvider.getArtifactName(module.getName(), 
-                            module.getVersion(), "*"));
-                    artifact = artifactProvider.getArtifact(module.getName(), 
-                            module.getVersion(), 
-                            searchedArtifactExtensions);
-                    if (artifact != null) {
-                        break;
-                    }
+                ArtifactResult artifact = null;
+                RepositoryManager repositoryManager = context.getRepositoryManager();
+                Exception exceptionOnGetArtifact = null;
+                ArtifactContext artifactContext = new ArtifactContext(module.getNameAsString(), module.getVersion() );
+                try {
+                    artifact = repositoryManager.getArtifactResult(artifactContext);
+                } catch (IOException e) {
+                    exceptionOnGetArtifact = e;
                 }
                 if (artifact == null) {
                     //not there => error
-                    StringBuilder error = new StringBuilder("Cannot find module artifact(s) : ");
-                    List<String> searchedArtifactList = new ArrayList<String>(searchedArtifacts.size());
-                    searchedArtifactList.addAll(searchedArtifacts);
-                    if (searchedArtifactList.size() > 0) {
-                        error.append(searchedArtifactList.get(0));
-                    }
-                    if (searchedArtifacts.size() > 1) {
-                        for (String searchedArtifact : searchedArtifactList.subList(1, searchedArtifactList.size())) {
-                            error.append(", ");
-                            error.append("\n\t");
-                            error.append(searchedArtifact);
-                        }
-                    }
-                    error.append("\n\t  in repositories : ");
-                    if (artifactProviders.size() > 0) {
-                        error.append(artifactProviders.get(0));
-                    }
-                    if (artifactProviders.size() > 1) {
-                        for (ArtifactProvider searchedProvider : artifactProviders.subList(1, artifactProviders.size())) {
-                            error.append(", ");
-                            error.append("\n\t");
-                            error.append(searchedProvider);
-                        }
-                    }
-                    error.append("\n\tDependency tree: ");
-                    buildDependencyString(dependencyTree, module, error);
-                    error.append(".");
-                    if ( module.getLanguageModule() == module ) {
-                        error.append("\n\tGet ceylon.language and run 'ant publish' Get more information at http://ceylon-lang.org/code/source/#ceylonlanguage_module");
-                        //ceylon.language is essential to the type checker
-                        throw new LanguageModuleNotFoundException(error.toString());
-                    }
-                    else {
-                        //today we attach that to the module dependency
-                        moduleManager.attachErrorToDependencyDeclaration(moduleImport, error.toString());
-                    }
+                    ModuleHelper.buildErrorOnMissingArtifact(artifactContext, module, moduleImport, dependencyTree, exceptionOnGetArtifact, moduleManager);
                 }
                 else {
-                    try {
-                        //parse module units and build module dependency and carry on
-                        moduleManager.resolveModule(module, artifact, phasedUnitsOfDependencies);
-                    } finally {
-                        if (artifact instanceof ClosableVirtualFile) {
-                            ((ClosableVirtualFile)artifact).close();
-                        }
-                    }
+                    //parse module units and build module dependency and carry on
+                    moduleManager.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies);
                 }
             }
             dependencyTree.addLast(module);
@@ -213,12 +173,5 @@ public class ModuleValidator {
                 pu.validateRefinement(); //TODO: only needed for type hierarchy view in IDE!
             }
         }
-    }
-
-    private void buildDependencyString(LinkedList<Module> dependencyTree, Module module, StringBuilder error) {
-        for (Module errorModule : dependencyTree) {
-            error.append(errorModule).append(" -> ");
-        }
-        error.append(module);
     }
 }

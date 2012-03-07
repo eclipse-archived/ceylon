@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.formatPath;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -12,8 +13,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.ArtifactResultType;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
+import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
@@ -293,12 +299,41 @@ public class ModuleManager {
         return null;
     }
 
-    public void resolveModule(Module module, VirtualFile artifact, List<PhasedUnits> phasedUnitsOfDependencies) {
-        PhasedUnits modulePhasedUnit = new PhasedUnits(context);
-        phasedUnitsOfDependencies.add(modulePhasedUnit);
-        modulePhasedUnit.parseUnit(artifact);
-        //populate module.getDependencies()
-        modulePhasedUnit.visitModules();
+    public void resolveModule(ArtifactResult artifact, Module module, ModuleImport moduleImport, LinkedList<Module> dependencyTree, List<PhasedUnits> phasedUnitsOfDependencies) {
+        //This implementation relies on the ability to read the model from source
+        //the compiler for example subclasses this to read lazily and from the compiled model
+        ArtifactContext artifactContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.SRC);
+        RepositoryManager repositoryManager = context.getRepositoryManager();
+        Exception exceptionOnGetArtifact = null;
+        ArtifactResult sourceArtifact = null;
+        try {
+            sourceArtifact = repositoryManager.getArtifactResult(artifactContext);
+        } catch (IOException e) {
+            exceptionOnGetArtifact = e;
+        }
+        if ( sourceArtifact == null ) {
+            ModuleHelper.buildErrorOnMissingArtifact(artifactContext, module, moduleImport, dependencyTree, exceptionOnGetArtifact, this);
+        }
+        else {
+            PhasedUnits modulePhasedUnit = new PhasedUnits(context);
+            phasedUnitsOfDependencies.add(modulePhasedUnit);
+            ClosableVirtualFile virtualArtifact= null;
+            try {
+                virtualArtifact = context.getVfs().getFromZipFile(sourceArtifact.artifact());
+                modulePhasedUnit.parseUnit(virtualArtifact);
+                //populate module.getDependencies()
+                modulePhasedUnit.visitModules();
+            } catch (IOException e) {
+                StringBuilder error = new StringBuilder("Unable to read source artifact for ");
+                error.append(artifactContext.toString());
+                error.append( "\ndue to connection error: ").append(e.getMessage());
+                attachErrorToDependencyDeclaration(moduleImport, error.toString());
+            } finally {
+                if (virtualArtifact != null) {
+                    virtualArtifact.close();
+                }
+            }
+        }
     }
 
     public Iterable<String> getSearchedArtifactExtensions() {
