@@ -1172,6 +1172,14 @@ public class GenerateJsVisitor extends Visitor
     	    endBlock(false);
     	    //If it's not a method, call the function right away
 	        out("())");
+    	} else if (that.getDeclaration() instanceof Method) {
+            out("(function(){var $=");
+            super.visit(that);
+            out(";return ");
+            clAlias();
+            out(".JsCallable($, $.");
+            qualifiedMemberRHS(that);
+            out(")})()");
     	} else {
             super.visit(that);
             out(".");
@@ -1464,15 +1472,13 @@ public class GenerateJsVisitor extends Visitor
             // special treatment, even if prototypeStyle==false
             if ((term.getDeclaration() instanceof Functional)
                     && (prototypeStyle || declaredInCL(term.getDeclaration()))) {
-                out("function(){var $=");
+                out("(function(){var $=");
                 term.getPrimary().visit(this);
-                if (term.getMemberOperator() instanceof SafeMemberOp) {
-                    out(";return $===null?null:$.");
-                } else {
-                    out(";return $.");
-                }
+                out(";return ");
+                clAlias();
+                out(".JsCallable($, $.");
                 memberName(term.getDeclaration());
-                out(".apply($,arguments)}");
+                out(")})()");
                 return;
             }
         }
