@@ -1048,16 +1048,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         InvocationBuilder invocationBuilder = InvocationBuilder.invocationForCallable(gen(), expr, functional);
-        JCExpression unboxed;
+        JCExpression fnCall;
         setWithinCallableInvocation(true);
         try {
-            unboxed = invocationBuilder.build();
+            fnCall = invocationBuilder.build();
         } finally {
             setWithinInvocation(false);
         }
-
-        JCExpression fnCall = boxUnboxIfNecessary(unboxed, !expr.getUnboxed(), 
-                returnType, BoxingStrategy.BOXED);
         
         // Return the call result, or null if a void method
         boolean isVoidFunction = returnType.isExactly(typeFact().getVoidDeclaration().getType());

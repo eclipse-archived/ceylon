@@ -26,6 +26,7 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -33,6 +34,8 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
@@ -45,10 +48,12 @@ import com.sun.tools.javac.util.ListBuffer;
 abstract class InvocationBuilder {
 
     private final AbstractTransformer gen;
-    protected final ProducedType returnType;
     protected final Node node;    
     protected final Tree.Primary primary;
     protected final Declaration primaryDeclaration;
+    protected final ProducedType returnType;
+    protected boolean unboxed;
+    protected BoxingStrategy boxingStrategy;
     
     protected final ListBuffer<JCVariableDecl> vars = ListBuffer.lb();
     protected final ListBuffer<JCExpression> args = ListBuffer.lb();
@@ -57,15 +62,156 @@ abstract class InvocationBuilder {
     
     protected InvocationBuilder(AbstractTransformer gen, 
             Tree.Primary primary, Declaration primaryDeclaration,
-            ProducedType returnType, Node node) {
+            ProducedType returnType, /*boolean isBoxed,*/ Node node) {
         this.gen = gen;
         this.primary = primary;
         this.primaryDeclaration = primaryDeclaration;
         this.returnType = returnType;
+        //this.isBoxed = isBoxed;
         this.node = node;
         typeArgs = transformTypeArguments(getTypeArguments());
     }
     
+    protected abstract void compute();
+    
+    protected AbstractTransformer gen() {
+        return gen;
+    }
+    
+    protected Declaration getPrimaryDeclaration() {
+        return primaryDeclaration;
+    }
+
+    public boolean isUnboxed() {
+        return unboxed;
+    }
+
+    public void setUnboxed(boolean unboxed) {
+        this.unboxed = unboxed;
+    }
+
+    public BoxingStrategy getBoxingStrategy() {
+        return boxingStrategy;
+    }
+
+    public void setBoxingStrategy(BoxingStrategy boxingStrategy) {
+        this.boxingStrategy = boxingStrategy;
+    }
+
+    protected java.util.List<ProducedType> getTypeArguments() {
+        if (primary instanceof Tree.StaticMemberOrTypeExpression){
+            return ((Tree.StaticMemberOrTypeExpression)primary).getTypeArguments().getTypeModels();
+        }
+        return null;
+    }
+
+    protected List<JCExpression> transformTypeArguments(java.util.List<ProducedType> typeArguments) {
+        List<JCExpression> result = List.<JCExpression> nil();
+        if(typeArguments != null){
+            for (ProducedType arg : typeArguments) {
+                // cancel type parameters and go raw if we can't specify them
+                if(gen().willEraseToObject(arg)
+                        || gen().isTypeParameter(arg))
+                    return List.nil();
+                result = result.append(gen().makeJavaType(arg, AbstractTransformer.TYPE_ARGUMENT));
+            }
+        }
+        return result;
+    }
+    
+    // Make a list of $arg0, $arg1, ... , $argN
+    protected List<JCExpression> makeVarRefArgumentList(String varBaseName, int argCount) {
+        List<JCExpression> names = List.<JCExpression> nil();
+        for (int i = 0; i < argCount; i++) {
+            names = names.append(gen().makeUnquotedIdent(varBaseName + "$" + i));
+        }
+        return names;
+    }
+
+    // Make a list of $arg$this$, $arg0, $arg1, ... , $argN
+    protected List<JCExpression> makeThisVarRefArgumentList(String varBaseName, int argCount, boolean needsThis) {
+        List<JCExpression> names = List.<JCExpression> nil();
+        if (needsThis) {
+            names = names.append(gen().makeUnquotedIdent(varBaseName + "$this$"));
+        }
+        names = names.appendList(makeVarRefArgumentList(varBaseName, argCount));
+        return names;
+    }
+    
+    protected JCExpression transformInvocation(JCExpression primaryExpr, String selector) {
+        JCExpression actualPrimExpr = null;
+        if (primary instanceof Tree.QualifiedTypeExpression
+                && ((Tree.QualifiedTypeExpression)primary).getPrimary() instanceof Tree.BaseTypeExpression) {
+            actualPrimExpr = gen().makeSelect(primaryExpr, "this");
+        } else {
+            actualPrimExpr = primaryExpr;
+        }
+        if (vars != null && !vars.isEmpty() 
+                && primaryExpr != null 
+                && selector != null) {
+            // Prepare the first argument holding the primary for the call
+            JCExpression callVarExpr = gen().makeUnquotedIdent(callVarName);
+            ProducedType type = ((Tree.QualifiedMemberOrTypeExpression)primary).getTarget().getQualifyingType();
+            JCVariableDecl callVar = gen().makeVar(callVarName, gen().makeJavaType(type, AbstractTransformer.NO_PRIMITIVES), actualPrimExpr);
+            vars.prepend(callVar);
+            actualPrimExpr = callVarExpr;
+        }
+        
+        JCExpression resultExpr;
+        if (primary instanceof Tree.BaseTypeExpression) {
+            ProducedType classType = (ProducedType)((Tree.BaseTypeExpression)primary).getTarget();
+            resultExpr = gen().make().NewClass(null, null, gen().makeJavaType(classType, AbstractTransformer.CLASS_NEW), args.toList(), null);
+        } else if (primary instanceof Tree.QualifiedTypeExpression) {
+            resultExpr = gen().make().NewClass(actualPrimExpr, null, gen().makeQuotedIdent(selector), args.toList(), null);
+        } else {
+            Declaration decl = ((Tree.StaticMemberOrTypeExpression)primary).getDeclaration();
+            if (decl instanceof FunctionalParameter) {
+                if (primaryExpr != null) {
+                    actualPrimExpr = gen().makeQualIdent(primaryExpr, decl.getName());
+                } else {
+                    actualPrimExpr = gen().makeQuotedIdent(decl.getName());
+                }
+                selector = "call";
+            }
+            resultExpr = gen().make().Apply(typeArgs, gen().makeQuotedQualIdent(actualPrimExpr, selector), args.toList());
+        }
+
+        if (vars != null && !vars.isEmpty()) {
+            if (gen().isVoid(returnType)) {
+                // void methods get wrapped like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1); null)
+                return gen().make().LetExpr(vars.toList(), List.<JCStatement>of(gen().make().Exec(resultExpr)), gen().makeNull());
+            } else {
+                // all other methods like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1))
+                return gen().make().LetExpr(vars.toList(), resultExpr);
+            }
+        } else {
+            return resultExpr;
+        }
+    }
+    
+    protected JCExpression makeInvocation() {
+        gen().at(node);
+        JCExpression result = gen().expressionGen().transformPrimary(primary, new TermTransformer() {
+            @Override
+            public JCExpression transform(JCExpression primaryExpr, String selector) {
+                return transformInvocation(primaryExpr, selector);
+            }
+        });
+        return result;
+    }
+
+    public JCExpression build() {
+        boolean prevFnCall = gen().expressionGen().isWithinInvocation();
+        gen().expressionGen().setWithinInvocation(true);
+        try {
+            JCExpression invocation = makeInvocation();
+            invocation = gen().boxUnboxIfNecessary(invocation, !unboxed, 
+                    returnType, boxingStrategy);
+            return invocation;
+        } finally {
+            gen().expressionGen().setWithinInvocation(prevFnCall);
+        }
+    }
     public static InvocationBuilder invocation(AbstractTransformer gen, 
             final Tree.InvocationExpression invocation) {
         
@@ -77,7 +223,7 @@ abstract class InvocationBuilder {
             java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
             builder = new PositionalInvocationBuilder(gen, 
                     primary, primaryDeclaration,
-                    invocation.getTypeModel(), 
+                    invocation.getTypeModel(),
                     invocation,
                     paramLists) {
                 
@@ -106,7 +252,11 @@ abstract class InvocationBuilder {
                 
             };
         } else if (invocation.getNamedArgumentList() != null) {
-            builder = new InvocationBuilder(gen, primary, primaryDeclaration, invocation.getTypeModel(), invocation) {
+            builder = new InvocationBuilder(gen, 
+                    primary, 
+                    primaryDeclaration, 
+                    invocation.getTypeModel(),
+                    invocation) {
                 protected boolean containsParameter(java.util.List<Tree.NamedArgument> namedArguments, Parameter param) {
                     for (Tree.NamedArgument namedArg : namedArguments) {
                         Parameter declaredParam = namedArg.getParameter();
@@ -229,6 +379,8 @@ abstract class InvocationBuilder {
         } else {
             throw new RuntimeException("Illegal State");
         }
+        builder.setBoxingStrategy(BoxingStrategy.INDIFFERENT);
+        builder.setUnboxed(invocation.getUnboxed());
         builder.compute();
         return builder;
     }
@@ -253,8 +405,8 @@ abstract class InvocationBuilder {
                 gen,
                 primary,
                 primaryDeclaration,
-                gen.expressionGen().getCallableReturnType(expr), 
-                expr,  
+                gen.expressionGen().getCallableReturnType(expr),
+                expr,
                 paramLists) {
             
             @Override
@@ -299,136 +451,90 @@ abstract class InvocationBuilder {
                 return boxed;
             }
         };
+        builder.setUnboxed(expr.getUnboxed());
+        builder.setBoxingStrategy(BoxingStrategy.BOXED);// Must be boxed because non-primitive return type
         builder.compute();
         return builder;
     }
     
-    protected abstract void compute();
-    
-    protected Declaration getPrimaryDeclaration() {
-        return primaryDeclaration;
-    }
-    
-    
-
-    // Make a list of $arg0, $arg1, ... , $argN
-    protected List<JCExpression> makeVarRefArgumentList(String varBaseName, int argCount) {
-        List<JCExpression> names = List.<JCExpression> nil();
-        for (int i = 0; i < argCount; i++) {
-            names = names.append(gen().makeUnquotedIdent(varBaseName + "$" + i));
-        }
-        return names;
-    }
-
-    // Make a list of $arg$this$, $arg0, $arg1, ... , $argN
-    protected List<JCExpression> makeThisVarRefArgumentList(String varBaseName, int argCount, boolean needsThis) {
-        List<JCExpression> names = List.<JCExpression> nil();
-        if (needsThis) {
-            names = names.append(gen().makeUnquotedIdent(varBaseName + "$this$"));
-        }
-        names = names.appendList(makeVarRefArgumentList(varBaseName, argCount));
-        return names;
-    }
-    
-    protected JCExpression transformInvocation(JCExpression primaryExpr, String selector) {
-        JCExpression actualPrimExpr = null;
-        if (primary instanceof Tree.QualifiedTypeExpression
-                && ((Tree.QualifiedTypeExpression)primary).getPrimary() instanceof Tree.BaseTypeExpression) {
-            actualPrimExpr = gen().makeSelect(primaryExpr, "this");
+    public static InvocationBuilder invocationForSpecifier(
+            CeylonTransformer gen, SpecifierExpression specifierExpression,
+            final Method method) {
+        
+        final Term term = specifierExpression.getExpression().getTerm();
+        final ProducedType returnType = method.getType();
+        InvocationBuilder builder;
+        if (term instanceof StaticMemberOrTypeExpression) {
+            StaticMemberOrTypeExpression primary = (StaticMemberOrTypeExpression)term;
+            Declaration primaryDeclaration = primary.getDeclaration();
+            builder = new PositionalInvocationBuilder(
+                    gen, 
+                    primary, 
+                    primaryDeclaration, 
+                    returnType, 
+                    specifierExpression, 
+                    method.getParameterLists()) {
+                @Override
+                protected int getNumArguments() {
+                    return paramLists.get(0).getParameters().size();
+                }
+                
+                @Override
+                protected Expression getExpression(int argIndex) {
+                    // TODO Auto-generated method stub
+                    return null;
+                }
+                
+                @Override
+                protected JCExpression getTransformedExpression(int argIndex,
+                        boolean isRaw,
+                        java.util.List<ProducedType> typeArgumentModels) {
+                    return gen().makeQuotedIdent(paramLists.get(0).getParameters().get(argIndex).getName());
+                }
+                
+                @Override
+                protected Parameter getParameter(int argIndex) {
+                    return paramLists.get(0).getParameters().get(argIndex);
+                }
+                
+                @Override
+                protected boolean hasEllipsis() {
+                    // TODO Auto-generated method stub
+                    return false;
+                }
+            };
+            builder.setUnboxed(primary.getUnboxed());
+            builder.setBoxingStrategy(method.getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED);
+        } else if (gen.isCeylonCallable(term.getTypeModel())) {
+            final JCExpression callable = gen.expressionGen().transformExpression(term);//gen.expressionGen().transformFunctional(term, method);
+            
+            builder = new InvocationBuilder(gen, null, null, returnType, specifierExpression) {
+                @Override
+                protected void compute() {
+                    for(Parameter parameter : method.getParameterLists().get(0).getParameters()) {
+                        this.args.append(gen().makeQuotedIdent(parameter.getName()));
+                    }
+                }
+                @Override
+                protected JCExpression makeInvocation() {
+                    gen().at(node);
+                    JCExpression result;
+                    //result = transformInvocation(callable, "call");
+                    result = gen().make().Apply(typeArgs, gen().makeQuotedQualIdent(callable, "call"), args.toList());
+                    return result;
+                }
+            };
+            // Because we're calling a callable, and they always return a 
+            // boxed result
+            builder.setUnboxed(false);
+            builder.setBoxingStrategy(method.getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED);
         } else {
-            actualPrimExpr = primaryExpr;
-        }
-        if (vars != null && !vars.isEmpty() 
-                && primaryExpr != null 
-                && selector != null) {
-            // Prepare the first argument holding the primary for the call
-            JCExpression callVarExpr = gen().makeUnquotedIdent(callVarName);
-            ProducedType type = ((Tree.QualifiedMemberOrTypeExpression)primary).getTarget().getQualifyingType();
-            JCVariableDecl callVar = gen().makeVar(callVarName, gen().makeJavaType(type, AbstractTransformer.NO_PRIMITIVES), actualPrimExpr);
-            vars.prepend(callVar);
-            actualPrimExpr = callVarExpr;
+            throw new RuntimeException();
         }
         
-        JCExpression resultExpr;
-        if (primary instanceof Tree.BaseTypeExpression) {
-            ProducedType classType = (ProducedType)((Tree.BaseTypeExpression)primary).getTarget();
-            resultExpr = gen().make().NewClass(null, null, gen().makeJavaType(classType, AbstractTransformer.CLASS_NEW), args.toList(), null);
-        } else if (primary instanceof Tree.QualifiedTypeExpression) {
-            resultExpr = gen().make().NewClass(actualPrimExpr, null, gen().makeQuotedIdent(selector), args.toList(), null);
-        } else {
-            Declaration decl = ((Tree.StaticMemberOrTypeExpression)primary).getDeclaration();
-            if (decl instanceof FunctionalParameter) {
-                if (primaryExpr != null) {
-                    actualPrimExpr = gen().makeQualIdent(primaryExpr, decl.getName());
-                } else {
-                    actualPrimExpr = gen().makeQuotedIdent(decl.getName());
-                }
-                selector = "call";
-            }
-            resultExpr = gen().make().Apply(typeArgs, gen().makeQuotedQualIdent(actualPrimExpr, selector), args.toList());
-        }
-
-        if (vars != null && !vars.isEmpty()) {
-            if (gen().isVoid(returnType)) {
-                // void methods get wrapped like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1); null)
-                return gen().make().LetExpr(vars.toList(), List.<JCStatement>of(gen().make().Exec(resultExpr)), gen().makeNull());
-            } else {
-                // all other methods like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1))
-                return gen().make().LetExpr(vars.toList(), resultExpr);
-            }
-        } else {
-            return resultExpr;
-        }
+        builder.compute();
+        return builder;
     }
-    
-    protected JCExpression makeInvocation() {
-        gen().at(node);
-        JCExpression result = gen().expressionGen().transformPrimary(primary, new TermTransformer() {
-            @Override
-            public JCExpression transform(JCExpression primaryExpr, String selector) {
-                return transformInvocation(primaryExpr, selector);
-            }
-        });
-        return result;
-    }
-
-    // Invocation helper functions
-    
-    protected java.util.List<ProducedType> getTypeArguments() {
-        if (primary instanceof Tree.StaticMemberOrTypeExpression){
-            return ((Tree.StaticMemberOrTypeExpression)primary).getTypeArguments().getTypeModels();
-        }
-        return null;
-    }
-
-    protected List<JCExpression> transformTypeArguments(java.util.List<ProducedType> typeArguments) {
-        List<JCExpression> result = List.<JCExpression> nil();
-        if(typeArguments != null){
-            for (ProducedType arg : typeArguments) {
-                // cancel type parameters and go raw if we can't specify them
-                if(gen().willEraseToObject(arg)
-                        || gen().isTypeParameter(arg))
-                    return List.nil();
-                result = result.append(gen().makeJavaType(arg, AbstractTransformer.TYPE_ARGUMENT));
-            }
-        }
-        return result;
-    }
-
-    public JCExpression build() {
-        boolean prevFnCall = gen().expressionGen().isWithinInvocation();
-        gen().expressionGen().setWithinInvocation(true);
-        try {
-            return makeInvocation();
-        } finally {
-            gen().expressionGen().setWithinInvocation(prevFnCall);
-        }
-    }
-
-    protected AbstractTransformer gen() {
-        return gen;
-    }
-    
 }
 
 abstract class PositionalInvocationBuilder extends InvocationBuilder {
@@ -438,7 +544,8 @@ abstract class PositionalInvocationBuilder extends InvocationBuilder {
     protected PositionalInvocationBuilder(AbstractTransformer gen,
             Tree.Primary primary,
             Declaration primaryDeclaration,
-            ProducedType returnType, Node node,
+            ProducedType returnType, 
+            Node node,
     java.util.List<ParameterList> paramLists) {
         super(gen, primary, primaryDeclaration, returnType, node);
         this.paramLists = paramLists;
