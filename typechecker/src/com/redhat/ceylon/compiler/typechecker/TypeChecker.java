@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker;
 
 import java.util.List;
 
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleValidator;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -35,12 +36,12 @@ public class TypeChecker {
     private final StatisticsVisitor statsVisitor;
 
     //package level
-    TypeChecker(VFS vfs, List<VirtualFile> srcDirectories, List<ArtifactProvider> artifactProviders, boolean verifyDependencies, 
+    TypeChecker(VFS vfs, List<VirtualFile> srcDirectories, RepositoryManager repositoryManager, boolean verifyDependencies,
             AssertionVisitor assertionVisitor, ModuleManagerFactory moduleManagerFactory, boolean verbose) {
         long start = System.nanoTime();
         this.srcDirectories = srcDirectories;
         this.verbose = verbose;
-        this.context = new Context(artifactProviders, vfs);
+        this.context = new Context(repositoryManager, vfs);
         this.phasedUnits = new PhasedUnits(context, moduleManagerFactory);
         this.verifyDependencies = verifyDependencies;
         this.assertionVisitor = assertionVisitor;

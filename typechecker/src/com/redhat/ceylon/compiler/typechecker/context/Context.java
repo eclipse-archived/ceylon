@@ -1,11 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import com.redhat.ceylon.compiler.typechecker.io.ArtifactProvider;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
-import com.redhat.ceylon.compiler.typechecker.io.VFSArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 
 /**
@@ -15,16 +11,13 @@ import com.redhat.ceylon.compiler.typechecker.model.Modules;
  */
 public class Context {
 
-    private List<ArtifactProvider> artifactProviders;
     private Modules modules;
     private VFS vfs;
+    private RepositoryManager repositoryManager;
 
-    public Context(List<ArtifactProvider> artifactProviders, VFS vfs) {
+    public Context(RepositoryManager repositoryManager, VFS vfs) {
         this.vfs = vfs;
-        this.artifactProviders = new LinkedList<ArtifactProvider>();
-        this.artifactProviders.addAll(artifactProviders);
-        if(this.artifactProviders.isEmpty())
-            this.artifactProviders.add(new VFSArtifactProvider(vfs));
+        this.repositoryManager = repositoryManager;
     }
 
     public Modules getModules() {
@@ -35,8 +28,8 @@ public class Context {
         this.modules = modules;
     }
 
-    public List<ArtifactProvider> getArtifactProviders() {
-        return artifactProviders;
+    public RepositoryManager getRepositoryManager() {
+        return repositoryManager;
     }
 
     public VFS getVfs() {
