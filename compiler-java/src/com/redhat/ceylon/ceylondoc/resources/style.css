@@ -241,42 +241,130 @@ ul.inheritance ul.inheritance li:before {
  background-position: -128px 0px;
 }
 
-.tags a {
- color: white;
- background-color: rgb(153, 153, 153);
- border-radius : 3px;
- font-size: 9px;
- font-weight: bold;
- text-decoration: none;
- padding: 3px;
- margin: 2px; 
+.tagLabel {
+	color: white;
+	background-color: rgb(153, 153, 153);
+	border-radius: 3px;
+	font-size: 9px;
+	font-weight: bold;
+	text-decoration: none;
+	padding: 3px;
+	margin: 2px;
+	cursor: pointer;
+	position: relative;
+	top: -2px;
 }
 
-.tags a:hover {
- background-color: rgb(123, 123, 123);	
+.tagLabel:visited {
+	color: white;
 }
 
-.tags .comma {
- display: none;
+.tagLabel:hover {
+	background-color: rgb(123, 123, 123);
 }
 
 #section-interfaces .tags,
 #section-classes .tags,
 #section-attributes .tags,
 #section-methods .tags {
- float: right;
- clear: right; 
- margin-bottom: 4px;
+	float: right;
+	clear: right;
+	margin-bottom: 4px;
 }
 
-#section-interfaces .tags .label,
-#section-classes .tags .label,
-#section-attributes .tags .label,
-#section-methods .tags .label {
- display: none;
+#section-interfaces .tags .tagCaption,
+#section-classes .tags .tagCaption,
+#section-attributes .tags .tagCaption,
+#section-methods .tags .tagCaption	{
+	display: none;
 }
 
 #results .tags {
- float: right;
- clear: right;
+	float: right;
+	clear: right;
+}
+
+#filterDropdownLink {
+	cursor: pointer;
+}
+
+#filterDropdownLinkInfo {
+	font-size: small;
+	font-weight: normal;
+	vertical-align: top;
+}
+
+#filterDropdownCaret {
+	display: inline-block;
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
+	border-top: 4px solid white;
+	vertical-align: top;
+	margin-top: 8px;
+	margin-left: 4px;
+}
+
+#filterDropdownPanel {
+	display: none;
+	min-width: 200px;
+	position: absolute;
+	background-color: white;
+	border: 1px solid gray;
+	margin-top: 6px;
+	margin-left: 6px;
+	padding-top: 4px;
+}
+
+#filterDropdownPanel:after {
+	content: '';
+	display: inline-block;
+	border-left: 6px solid transparent;
+	border-right: 6px solid transparent;
+	border-bottom: 6px solid #ffffff;
+	position: absolute;
+	top: -6px;
+	left: 10px;
+}
+
+#filterDropdownPanelInfo {
+	margin: 6px;
+	font-weight: normal;
+	font-size: small;
+	color: gray;
+}
+
+#filterDropdownPanelTags>div {
+    margin: 6px;
+} 
+
+#filterActions {
+    min-width: 220px;
+    background: #ddd;
+    border-top: 1px solid gray;
+    padding: 4px;
+}
+
+#filterActions a {
+	color: #4b5c78;
+	font-size: small;
+	font-weight: normal;
+	text-decoration: underline;
+	cursor: pointer;
+	margin: 10px;
+}
+
+.tagOccurrenceCount {
+	font-weight: normal;
+	font-size: small;
+	color: gray;
+	float: right;
+	margin-left: 10px;
+}
+
+.tagSelected {
+	background-color: rgb(51, 153, 255);
+}
+
+.tagSelected:hover {
+	background-color: rgb(0, 115, 230);
 }

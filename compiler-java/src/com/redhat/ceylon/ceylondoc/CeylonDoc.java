@@ -210,6 +210,8 @@ public abstract class CeylonDoc extends Markup {
         around("a href='"+getResourceUrl("../search.html")+"'", getAccessKeyed("Search", 'S', "Search this module"));
         close("div");
         
+        writeFilterDropdownMenu(docType);
+        
         open("div");
         write(module.getNameAsString() + "/" + module.getVersion());
         close("div");
@@ -217,6 +219,28 @@ public abstract class CeylonDoc extends Markup {
         close("div");
     }
     
+    private void writeFilterDropdownMenu(DocType docType) throws IOException {
+        if( docType != DocType.SEARCH ) {
+            open("div id='filterMenu'");
+            open("div id='filterDropdownLink'");
+            write("<span title='Filter this page [Shortcut: F]'>");
+            write("<span class='accesskey'>F</span>ilter</span>");
+            write("<span id='filterDropdownLinkInfo'></span>");
+            write("<span id='filterDropdownCaret'></span>");
+            close("div"); // filterDropdownLink
+            open("div id='filterDropdownPanel'");
+            write("<div id='filterDropdownPanelInfo'>Filter declarations by tags.</div>");
+            write("<div id='filterDropdownPanelTags'></div>");
+            open("div id='filterActions'");
+            write("<a id='filterActionAll'>All</a>");
+            write("<a id='filterActionNone'>None</a>");
+            write("<a id='filterActionMore'>Show more</a>");
+            close("div"); // filterActions
+            close("div"); // filterDropdownPanel
+            close("div"); // filterMenu
+        }        
+    }
+
     protected String getAccessKeyed(String string, char key, String tooltip) {
         int index = string.indexOf(key);
         if(index == -1)
@@ -252,7 +276,6 @@ public abstract class CeylonDoc extends Markup {
     }
 
     protected void htmlHead(String title, String... additional) throws IOException {
-        
         write("<!DOCTYPE html>");
         open("html xmlns='http://www.w3.org/1999/xhtml'");
         open("head");
@@ -267,6 +290,7 @@ public abstract class CeylonDoc extends Markup {
             }
         }
         around("script type='text/javascript' src='" + getResourceUrl("jquery-1.7.min.js") + "'");
+        around("script type='text/javascript' src='" + getResourceUrl("index.js") + "'");
         around("script type='text/javascript' src='" + getResourceUrl("ceylond.js") + "'");
         for (String add : additional) {
             if (add.endsWith(".js")) {

@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -40,6 +42,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 public class IndexDoc extends CeylonDoc {
 
     private Module module;
+    private Set<String> tagIndex = new TreeSet<String>();
 
     public IndexDoc(CeylonDocTool tool, Writer writer, Module module) throws IOException {
         super(module, tool, writer);
@@ -49,6 +52,21 @@ public class IndexDoc extends CeylonDoc {
     public void generate() throws IOException {
         write("var index = [\n");
         indexPackages();
+        write("];\n");
+        writeTagIndex();
+    }
+
+    private void writeTagIndex() throws IOException {
+        write("var tagIndex = [\n");
+        Iterator<String> tagIterator = tagIndex.iterator();
+        while (tagIterator.hasNext()) {
+            write("'");
+            write(escapeJSONString(tagIterator.next()));
+            write("'");
+            if (tagIterator.hasNext()) {
+                write(",\n");
+            }
+        }
         write("];\n");
     }
 
@@ -101,6 +119,7 @@ public class IndexDoc extends CeylonDoc {
         String type = tool.kind(decl);
         String doc = Util.getDocFirstLine(decl);
         List<String> tags = Util.getTags(decl);
+        tagIndex.addAll(tags);
         writeIndexElement(name, type, url, doc, tags);
         return true;
     }

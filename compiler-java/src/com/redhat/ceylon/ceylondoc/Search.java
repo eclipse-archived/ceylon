@@ -32,7 +32,7 @@ public class Search extends CeylonDoc {
     }
 
     public void generate() throws IOException {
-        htmlHead("Search", "index.js");
+        htmlHead("Search");
         writeNav(module, null, DocType.SEARCH);
         include("resources/search.html");
         close("body", "html");

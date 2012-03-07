@@ -272,17 +272,12 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         List<String> tags = Util.getTags(decl);
         if (!tags.isEmpty()) {
             open("div class='tags'");
-            write("<span class='label'>Tags: </span>");
-
+            write("<span class='tagCaption'>Tags: </span>");
             Iterator<String> tagIterator = tags.iterator();
             while (tagIterator.hasNext()) {
                 String tag = tagIterator.next();
-                write("<a href='search.html?q=" + tag + "'>" + tag + "</a>");
-                if (tagIterator.hasNext()) {
-                    write("<span class='comma'>,</span>");
-                }
+                write("<a class='tagLabel' name='" + tag + "' href='search.html?q=" + tag + "'>" + tag + "</a>");
             }
-
             close("div");
         }
     }
