@@ -348,6 +348,14 @@ public class StructureTest extends CompilerTest {
     public void testMthSequenceMethodSpecifyingMethodWithVarargs(){
         compareWithJavaSource("method/SequenceMethodSpecifyingMethodWithVarargs");
     }
+    @Test
+    public void testTwoParamLists(){
+        compareWithJavaSource("method/TwoParamLists");
+    }
+    @Test
+    public void testThreeParamLists(){
+        compareWithJavaSource("method/ThreeParamLists");
+    }
     
     //
     // Toplevel

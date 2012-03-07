@@ -1,0 +1,25 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+public final class fullName {
+    
+    private fullName() {
+    }
+    
+    public static .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> fullName(final .ceylon.language.String firstName) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>("Callable<Callable<String>>"){
+            
+            @.java.lang.Override
+            public .ceylon.language.Callable<.ceylon.language.String> call(final .java.lang.Object arg0) {
+                final .ceylon.language.String middleName = (.ceylon.language.String)arg0;
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("Callable<String>"){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.String call(final .java.lang.Object arg0) {
+                        final .ceylon.language.String lastName = (.ceylon.language.String)arg0;
+                        return firstName.plus(.ceylon.language.String.instance(" ")).plus(middleName).plus(.ceylon.language.String.instance(" ")).plus(lastName);
+                    }
+                };
+            }
+        };
+    }
+}

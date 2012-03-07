@@ -1,0 +1,24 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+final class getOrder {
+    
+    private getOrder() {
+    }
+    
+    static .ceylon.language.Callable<? extends .ceylon.language.Comparison> getOrder() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Comparison>("Callable<Comparison>"){
+            
+            @.java.lang.Override
+            public .ceylon.language.Comparison call(final .java.lang.Object arg0, final .java.lang.Object arg1) {
+                final .ceylon.language.Integer y = (.ceylon.language.Integer)arg1;
+                final .ceylon.language.Integer x = (.ceylon.language.Integer)arg0;
+                return x.compare(y);
+            }
+        };
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.method.getOrder.getOrder();
+    }
+}
