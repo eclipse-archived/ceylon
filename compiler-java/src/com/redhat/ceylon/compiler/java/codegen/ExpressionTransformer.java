@@ -163,7 +163,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return applyErasureAndBoxing(result, exprType, exprBoxed, boxingStrategy, expectedType);
     }
     
-    private JCExpression applyErasureAndBoxing(JCExpression result, ProducedType exprType,
+    JCExpression applyErasureAndBoxing(JCExpression result, ProducedType exprType,
             boolean exprBoxed,
             BoxingStrategy boxingStrategy, ProducedType expectedType) {
         

@@ -31,9 +31,11 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
@@ -489,7 +491,17 @@ abstract class InvocationBuilder {
                 protected JCExpression getTransformedExpression(int argIndex,
                         boolean isRaw,
                         java.util.List<ProducedType> typeArgumentModels) {
-                    return gen().makeQuotedIdent(paramLists.get(0).getParameters().get(argIndex).getName());
+                    Parameter parameter = getParameter(argIndex);
+                    ProducedType exprType = gen().expressionGen().getTypeForParameter(parameter, isRaw, typeArgumentModels);
+                    Parameter declaredParameter = ((Functional)primaryDeclaration).getParameterLists().get(0).getParameters().get(argIndex);
+                    JCExpression result = gen().makeQuotedIdent(parameter.getName());
+                    result = gen().expressionGen().applyErasureAndBoxing(
+                            result, 
+                            exprType, 
+                            !parameter.getUnboxed(), 
+                            Util.getBoxingStrategy(declaredParameter), 
+                            declaredParameter.getType());
+                    return result;
                 }
                 
                 @Override
