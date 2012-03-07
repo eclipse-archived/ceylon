@@ -56,9 +56,12 @@ public class VFSArtifactProvider implements ArtifactProvider {
         }
         name.deleteCharAt( name.length() - 1 ); //remove trailing dot
         // the default module doesn't have a name
-        if(!name.equals(Module.DEFAULT_MODULE_NAME))
+        if(!name.equals(Module.DEFAULT_MODULE_NAME)) {
             name.append("-").append(version);
-        name.append(".").append(extension);
+        }
+        if ( extension != null ) {
+            name.append(".").append(extension);
+        }
         return name.toString();
     }
 
