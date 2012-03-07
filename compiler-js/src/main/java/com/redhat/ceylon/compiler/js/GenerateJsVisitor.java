@@ -27,7 +27,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.*;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.*;
 
-public class GenerateJsVisitor extends Visitor 
+public class GenerateJsVisitor extends Visitor
         implements NaturalVisitor {
 
     private boolean sequencedParameter=false;
@@ -42,7 +42,7 @@ public class GenerateJsVisitor extends Visitor
             this.decs = decs;
         }
 
-        @Override 
+        @Override
         public void visit(QualifiedMemberOrTypeExpression qe) {
             if (qe.getPrimary() instanceof Super) {
                 decs.add(qe.getDeclaration());
@@ -54,18 +54,18 @@ public class GenerateJsVisitor extends Visitor
             //don't recurse
         }
     }
-    
+
     private final class OuterVisitor extends Visitor {
         boolean found = false;
         private Declaration dec;
-        
+
         private OuterVisitor(Declaration dec) {
             this.dec = dec;
         }
 
-        @Override 
+        @Override
         public void visit(QualifiedMemberOrTypeExpression qe) {
-            if (qe.getPrimary() instanceof Outer || 
+            if (qe.getPrimary() instanceof Outer ||
                     qe.getPrimary() instanceof This) {
                 if ( qe.getDeclaration().equals(dec) ) {
                     found = true;
@@ -74,16 +74,16 @@ public class GenerateJsVisitor extends Visitor
             super.visit(qe);
         }
     }
-    
+
     private final Writer out;
     private boolean prototypeStyle;
     private CompilationUnit root;
-    
+
     @Override
     public void handleException(Exception e, Node that) {
         that.addUnexpectedError(that.getMessage(e, this));
     }
-    
+
     public GenerateJsVisitor(Writer out, boolean prototypeStyle) {
         this.out = out;
         this.prototypeStyle=prototypeStyle;
@@ -108,7 +108,7 @@ public class GenerateJsVisitor extends Visitor
             ioe.printStackTrace();
         }
     }
-    
+
     int indentLevel = 0;
 
     /** Print out 4 spaces per indentation level. */
@@ -158,7 +158,7 @@ public class GenerateJsVisitor extends Visitor
         require(clm.getPackage(clm.getNameAsString()));
         super.visit(that);
     }
-    
+
     @Override
     public void visit(Import that) {
         require(that.getImportList().getImportedPackage());
@@ -172,11 +172,11 @@ public class GenerateJsVisitor extends Visitor
         out("');");
         endLine();
     }
-    
+
     private void packageAlias(Package pkg) {
     	out(packageAliasString(pkg));
     }
-    
+
     private String packageAliasString(Package pkg) {
         StringBuilder sb = new StringBuilder("$$$");
         //out(pkg.getNameAsString().replace('.', '$'));
@@ -196,12 +196,12 @@ public class GenerateJsVisitor extends Visitor
         }
         out(pkg.getNameAsString());
     }
-    
+
     @Override
     public void visit(Parameter that) {
         memberName(that.getDeclarationModel());
     }
-    
+
     @Override
     public void visit(ParameterList that) {
         out("(");
@@ -213,23 +213,23 @@ public class GenerateJsVisitor extends Visitor
         }
         out(")");
     }
-    
+
     private void visitStatements(List<Statement> statements, boolean endLastLine) {
     	for (int i=0; i<statements.size(); i++) {
             Statement s = statements.get(i);
             s.visit(this);
-            if ((endLastLine || (i<statements.size()-1)) && 
+            if ((endLastLine || (i<statements.size()-1)) &&
                     	s instanceof ExecutableStatement) {
                 endLine();
             }
         }
     }
-    
+
     @Override
     public void visit(Body that) {
         visitStatements(that.getStatements(), true);
     }
-    
+
     @Override
     public void visit(Block that) {
         List<Statement> stmnts = that.getStatements();
@@ -244,7 +244,7 @@ public class GenerateJsVisitor extends Visitor
             endBlock();
         }
     }
-    
+
     private void initSelf(Block block) {
         if ((prototypeOwner!=null) && (block.getScope() instanceof MethodOrValue)) {
             /*out("var ");
@@ -257,7 +257,7 @@ public class GenerateJsVisitor extends Visitor
             endLine();
         }
     }
-    
+
     private void comment(Tree.Declaration that) {
         if (!comment) return;
         endLine();
@@ -265,7 +265,7 @@ public class GenerateJsVisitor extends Visitor
         location(that);
         endLine();
     }
-    
+
     private void var(Declaration d) {
         out("var ");
         memberName(d);
@@ -283,7 +283,7 @@ public class GenerateJsVisitor extends Visitor
             endLine();
         }
     }
-    
+
     @Override
     public void visit(ClassDeclaration that) {
         Class d = that.getDeclarationModel();
@@ -309,18 +309,18 @@ public class GenerateJsVisitor extends Visitor
         out(";");
         share(d);
     }
-    
+
     private void function() {
         out("function ");
     }
-    
+
     private void addInterfaceToPrototype(ClassOrInterface type, InterfaceDefinition interfaceDef) {
         interfaceDefinition(interfaceDef);
         Interface d = interfaceDef.getDeclarationModel();
         out("$proto$.", memberNameString(d, false), "=", d.getName(), ";");
         endLine();
     }
-    
+
     @Override
     public void visit(InterfaceDefinition that) {
         if (!(prototypeStyle && that.getDeclarationModel().isClassOrInterfaceMember())) {
@@ -331,7 +331,7 @@ public class GenerateJsVisitor extends Visitor
     private void interfaceDefinition(InterfaceDefinition that) {
         Interface d = that.getDeclarationModel();
         comment(that);
-        
+
         function();
         out(d.getName(), "(");
         self(d);
@@ -343,10 +343,10 @@ public class GenerateJsVisitor extends Visitor
         //returnSelf(d);
         endBlock();
         share(d);
-        
+
         addTypeInfo(that);
         copyMembersToPrototype(d, null, that.getSatisfiedTypes());
-        
+
         addToPrototype(d, that.getInterfaceBody().getStatements());
     }
 
@@ -384,18 +384,18 @@ public class GenerateJsVisitor extends Visitor
         out("$proto$.", memberNameString(d, false), "=", d.getName(), ";");
         endLine();
     }
-    
+
     @Override
     public void visit(ClassDefinition that) {
         if (!(prototypeStyle && that.getDeclarationModel().isClassOrInterfaceMember())) {
             classDefinition(that);
         }
     }
-    
+
     private void classDefinition(ClassDefinition that) {
         Class d = that.getDeclarationModel();
         comment(that);
-        
+
         function();
         out(d.getName(), "(");
         for (Parameter p: that.getParameterList().getParameters()) {
@@ -425,13 +425,13 @@ public class GenerateJsVisitor extends Visitor
         returnSelf(d);
         endBlock();
         share(d);
-        
+
         addTypeInfo(that);
         copyMembersToPrototype(d, that.getExtendedType(), that.getSatisfiedTypes());
-        
+
         addToPrototype(d, that.getClassBody().getStatements());
     }
-    
+
     private void referenceOuter(TypeDeclaration d) {
         if (prototypeStyle && d.isClassOrInterfaceMember()) {
             self(d);
@@ -452,7 +452,7 @@ public class GenerateJsVisitor extends Visitor
                 }
             	parentName = parentTypeDecl.getName();
             }
-            
+
             final List<Declaration> decs = new ArrayList<Declaration>();
             new SuperVisitor(decs).visit(body);
             for (Declaration dec: decs) {
@@ -491,7 +491,7 @@ public class GenerateJsVisitor extends Visitor
             endLine();
         }
     }
-    
+
     private void callInterfaces(SatisfiedTypes satisfiedTypes, Class d, Node that) {
         if (satisfiedTypes!=null)
             for (SimpleType st: satisfiedTypes.getTypes()) {
@@ -506,7 +506,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void addTypeInfo(Tree.Declaration type) {
-        
+
         ExtendedType extendedType = null;
         SatisfiedTypes satisfiedTypes = null;
         if (type instanceof ClassDefinition) {
@@ -520,11 +520,11 @@ public class GenerateJsVisitor extends Visitor
             extendedType = objectDef.getExtendedType();
             satisfiedTypes = objectDef.getSatisfiedTypes();
         }
-        
+
         clAlias();
         out(".initType(", type.getDeclarationModel().getName(), ",'",
             type.getDeclarationModel().getQualifiedNameString(), "'");
-        
+
         if (extendedType != null) {
             out(",", initFunctionName(extendedType.getType()));
         } else if (!(type instanceof InterfaceDefinition)) {
@@ -532,17 +532,17 @@ public class GenerateJsVisitor extends Visitor
             clAlias();
             out(".IdentifiableObject");
         }
-        
+
         if (satisfiedTypes != null) {
             for (SimpleType satType : satisfiedTypes.getTypes()) {
                 out(",", initFunctionName(satType));
             }
         }
-        
+
         out(");");
         endLine();
     }
-    
+
     private String initFunctionName(SimpleType type) {
         TypeDeclaration d = type.getDeclarationModel();
         boolean inProto = prototypeStyle && d.isClassOrInterfaceMember();
@@ -557,7 +557,7 @@ public class GenerateJsVisitor extends Visitor
         }
         return constr;
     }
-    
+
     private void addToPrototype(ClassOrInterface d, List<Statement> statements) {
         if (prototypeStyle && !statements.isEmpty()) {
             out(";(function($proto$)");
@@ -570,7 +570,7 @@ public class GenerateJsVisitor extends Visitor
             endLine();
         }
     }
-    
+
     private ClassOrInterface prototypeOwner;
 
     private void addToPrototype(ClassOrInterface d, Statement s) {
@@ -595,7 +595,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void declareSelf(ClassOrInterface d) {
-        out("if ("); 
+        out("if (");
         self(d);
         out("===undefined)");
         self(d);
@@ -630,7 +630,7 @@ public class GenerateJsVisitor extends Visitor
         self(d);
         out(";");
     }
-    
+
     private void copyMembersToPrototype(Declaration d, ExtendedType extType, SatisfiedTypes satTypes) {
 
         boolean copyFromExtType = !(d instanceof Interface)
@@ -652,7 +652,7 @@ public class GenerateJsVisitor extends Visitor
         if (!(copyFromExtType || copyFromSatType)) {
             return;
         }
-        
+
         if (copyFromExtType) {
             String from = null;
             String suffix = null;
@@ -665,15 +665,15 @@ public class GenerateJsVisitor extends Visitor
                 from = initFunctionName(type);
                 suffix = qualifiedPath(type, typeDecl) + '$' + typeDecl.getName() + '$';
             }
-            
+
             clAlias();
             out(".inheritProto(", d.getName(), ",", from, ",'", suffix, "'");
-            
+
         } else {
             clAlias();
             out(".inheritProtoI(", d.getName());
         }
-        
+
         if (copyFromSatType) {
             for (Tree.SimpleType st: satTypes.getTypes()) {
                 if (prototypeStyle || declaredInCL(st.getDeclarationModel())) {
@@ -684,14 +684,14 @@ public class GenerateJsVisitor extends Visitor
         out(");");
         endLine();
     }
-    
+
     private void addObjectToPrototype(ClassOrInterface type, ObjectDefinition objDef) {
         objectDefinition(objDef);
         Value d = objDef.getDeclarationModel();
         out("$proto$.", memberNameString(d, false), "=", d.getName(), ";");
         endLine();
     }
-    
+
     @Override
     public void visit(ObjectDefinition that) {
         Value d = that.getDeclarationModel();
@@ -707,13 +707,13 @@ public class GenerateJsVisitor extends Visitor
             endLine();
         }
     }
-    
+
     private void objectDefinition(ObjectDefinition that) {
         Value d = that.getDeclarationModel();
         boolean addToPrototype = prototypeStyle && d.isClassOrInterfaceMember();
         Class c = (Class) d.getTypeDeclaration();
         comment(that);
-        
+
         function();
         out(d.getName(), "()");
         beginBlock();
@@ -723,21 +723,21 @@ public class GenerateJsVisitor extends Visitor
         copySuperMembers(that.getExtendedType(), that.getClassBody(), c);
         callInterfaces(that.getSatisfiedTypes(), c, that);
         that.getClassBody().visit(this);
-        returnSelf(c);       
+        returnSelf(c);
         indentLevel--;
         endLine();
         out("}");
         endLine();
-        
+
         addTypeInfo(that);
         copyMembersToPrototype(d, that.getExtendedType(), that.getSatisfiedTypes());
-        
+
         if (!addToPrototype) {
             out("var o$", memberNameString(d, false), "=",
                     d.getName(), "(new ", d.getName(), ".$$);");
             endLine();
         }
-        
+
         if (addToPrototype) {
             out("$proto$.", getter(d), "=");
         } else if (d.isShared()) {
@@ -753,10 +753,10 @@ public class GenerateJsVisitor extends Visitor
         }
         out("o$", memberNameString(d, false), ";");
         endBlock();
-        
+
         addToPrototype(c, that.getClassBody().getStatements());
     }
-    
+
     private void superRef(Declaration d, Class sub, String parent) {
         //if (d.isActual()) {
             self(sub);
@@ -792,8 +792,16 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(MethodDeclaration that) {}
-    
+    public void visit(MethodDeclaration that) {
+        if (that.getSpecifierExpression() != null) {
+            comment(that);
+            out("var ", that.getIdentifier().getText(), "=");
+            that.getSpecifierExpression().getExpression().visit(this);
+            out(";");
+            endLine();
+        }
+    }
+
     @Override
     public void visit(MethodDefinition that) {
         if (!(prototypeStyle && that.getDeclarationModel().isClassOrInterfaceMember())) {
@@ -801,26 +809,26 @@ public class GenerateJsVisitor extends Visitor
             methodDefinition(that);
         }
     }
-    
+
     private void methodDefinition(MethodDefinition that) {
         Method d = that.getDeclarationModel();
         function();
         memberName(d);
-        
+
         //TODO: if there are multiple parameter lists
         //      do the inner function declarations
         ParameterList paramList = that.getParameterLists().get(0);
         paramList.visit(this);
-        
+
         beginBlock();
         initSelf(that.getBlock());
         initParameters(paramList, null);
         visitStatements(that.getBlock().getStatements(), false);
         endBlock();
-        
+
         share(d);
     }
-    
+
     private void initParameters(ParameterList params, TypeDeclaration typeDecl) {
         for (Parameter param : params.getParameters()) {
             String paramName = memberNameString(param.getDeclarationModel(), false);
@@ -837,8 +845,8 @@ public class GenerateJsVisitor extends Visitor
             }
         }
     }
-    
-    private void addMethodToPrototype(Declaration outer, 
+
+    private void addMethodToPrototype(Declaration outer,
             MethodDefinition that) {
         Method d = that.getDeclarationModel();
         if (!prototypeStyle||!d.isClassOrInterfaceMember()) return;
@@ -848,7 +856,7 @@ public class GenerateJsVisitor extends Visitor
         out("=");
         methodDefinition(that);
     }
-    
+
     @Override
     public void visit(AttributeGetterDefinition that) {
         Getter d = that.getDeclarationModel();
@@ -860,7 +868,7 @@ public class GenerateJsVisitor extends Visitor
         shareGetter(d);
     }
 
-    private void addGetterToPrototype(Declaration outer, 
+    private void addGetterToPrototype(Declaration outer,
             AttributeGetterDefinition that) {
         Getter d = that.getDeclarationModel();
         if (!prototypeStyle||!d.isClassOrInterfaceMember()) return;
@@ -878,7 +886,7 @@ public class GenerateJsVisitor extends Visitor
             endLine();
         }
     }
-    
+
     @Override
     public void visit(AttributeSetterDefinition that) {
         Setter d = that.getDeclarationModel();
@@ -890,7 +898,7 @@ public class GenerateJsVisitor extends Visitor
         shareSetter(d);
     }
 
-    private void addSetterToPrototype(Declaration outer, 
+    private void addSetterToPrototype(Declaration outer,
             AttributeSetterDefinition that) {
         Setter d = that.getDeclarationModel();
         if (!prototypeStyle || !d.isClassOrInterfaceMember()) return;
@@ -900,7 +908,7 @@ public class GenerateJsVisitor extends Visitor
         out(setter(d), "(", d.getName(), ")");
         super.visit(that);
     }
-    
+
     private boolean isCaptured(Declaration d) {
         if (d.isToplevel()||d.isClassOrInterfaceMember()) { //TODO: what about things nested inside control structures
             if (d.isShared() || d.isCaptured() ) {
@@ -924,7 +932,7 @@ public class GenerateJsVisitor extends Visitor
             endLine();
         }
     }
-    
+
     @Override
     public void visit(AttributeDeclaration that) {
         Value d = that.getDeclarationModel();
@@ -967,7 +975,7 @@ public class GenerateJsVisitor extends Visitor
             }
         }
     }
-    
+
     private void addGetterAndSetterToPrototype(Declaration outer,
             AttributeDeclaration that) {
         Value d = that.getDeclarationModel();
@@ -994,11 +1002,11 @@ public class GenerateJsVisitor extends Visitor
             }
         }
     }
-    
+
     private void clAlias() {
         out("$$$cl15");
     }
-    
+
     @Override
     public void visit(CharLiteral that) {
         clAlias();
@@ -1008,7 +1016,7 @@ public class GenerateJsVisitor extends Visitor
         out(String.valueOf(that.getText().codePointAt(1)));
         out(")");
     }
-    
+
     @Override
     public void visit(StringLiteral that) {
 
@@ -1020,7 +1028,7 @@ public class GenerateJsVisitor extends Visitor
             codepoints = text.codePointCount(0, text.length()) - 2;
         }
         text = that.getText().replaceAll("\n", "\\\\n");
-        
+
         clAlias();
         out(".String(");
         out(text);
@@ -1056,23 +1064,23 @@ public class GenerateJsVisitor extends Visitor
         clAlias();
         out(".Float(", that.getText(), ")");
     }
-    
+
     @Override
     public void visit(NaturalLiteral that) {
         clAlias();
         out(".Integer(", that.getText(), ")");
     }
-    
+
     @Override
     public void visit(This that) {
         self(Util.getContainingClassOrInterface(that.getScope()));
     }
-    
+
     @Override
     public void visit(Super that) {
         self(Util.getContainingClassOrInterface(that.getScope()));
     }
-    
+
     @Override
     public void visit(Outer that) {
         if (prototypeStyle) {
@@ -1087,7 +1095,7 @@ public class GenerateJsVisitor extends Visitor
         }
         self(that.getTypeModel().getDeclaration());
     }
-    
+
     @Override
     public void visit(BaseMemberExpression that) {
         Declaration decl = that.getDeclaration();
@@ -1100,18 +1108,18 @@ public class GenerateJsVisitor extends Visitor
             out("()");
         }
     }
-    
+
     private boolean accessThroughGetter(Declaration d) {
         return !((d instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter)
                   || (d instanceof Method));
     }
-    
+
     @Override
     public void visit(QualifiedMemberExpression that) {
         //Big TODO: make sure the member is actually
         //          refined by the current class!
     	if (that.getMemberOperator() instanceof SafeMemberOp) {
-    		
+
             if (that.getDeclaration() instanceof Method) {
                 String tmp=createTempVariable();
                 out("(function(){var ", tmp, "=");
@@ -1186,7 +1194,7 @@ public class GenerateJsVisitor extends Visitor
             qualifiedMemberRHS(that);
         }
     }
-    
+
     private void qualifiedMemberRHS(QualifiedMemberExpression that) {
     	boolean sup = that.getPrimary() instanceof Super;
     	String postfix = "";
@@ -1207,7 +1215,7 @@ public class GenerateJsVisitor extends Visitor
             out("()");
         }
     }
-    
+
     @Override
     public void visit(BaseTypeExpression that) {
         qualify(that, that.getDeclaration());
@@ -1227,7 +1235,7 @@ public class GenerateJsVisitor extends Visitor
         out(".");
         memberName(that.getDeclaration());
     }
-    
+
     @Override
     public void visit(InvocationExpression that) {
         sequencedParameter=false;
@@ -1244,7 +1252,7 @@ public class GenerateJsVisitor extends Visitor
                     if (!f.getParameterLists().isEmpty()) {
                         List<String> argNames = that.getNamedArgumentList().getNamedArgumentList().getArgumentNames();
                         boolean first=true;
-                        for (com.redhat.ceylon.compiler.typechecker.model.Parameter p: 
+                        for (com.redhat.ceylon.compiler.typechecker.model.Parameter p:
                             f.getParameterLists().get(0).getParameters()) {
                             if (!first) out(",");
                             if (p.isSequenced() && that.getNamedArgumentList().getSequencedArgument()==null && that.getNamedArgumentList().getNamedArguments().isEmpty()) {
@@ -1279,7 +1287,7 @@ public class GenerateJsVisitor extends Visitor
             super.visit(that);
         }
     }
-    
+
     @Override
     public void visit(PositionalArgumentList that) {
         out("(");
@@ -1305,7 +1313,7 @@ public class GenerateJsVisitor extends Visitor
         }
         out(")");
     }
-    
+
     @Override
     public void visit(NamedArgumentList that) {
         for (NamedArgument arg: that.getNamedArguments()) {
@@ -1320,7 +1328,7 @@ public class GenerateJsVisitor extends Visitor
             out(";");
         }
     }
-    
+
     @Override
     public void visit(SequencedArgument that) {
         clAlias();
@@ -1333,7 +1341,7 @@ public class GenerateJsVisitor extends Visitor
         }
         out("])");
     }
-    
+
     @Override
     public void visit(SequenceEnumeration that) {
         clAlias();
@@ -1348,7 +1356,7 @@ public class GenerateJsVisitor extends Visitor
         }
         out("])");
     }
-    
+
     @Override
     public void visit(SpecifierStatement that) {
         BaseMemberExpression bme = (Tree.BaseMemberExpression) that.getBaseMemberExpression();
@@ -1360,7 +1368,7 @@ public class GenerateJsVisitor extends Visitor
         out("=");
         that.getSpecifierExpression().visit(this);
     }
-    
+
     @Override
     public void visit(AssignOp that) {
         boolean paren=false;
@@ -1390,24 +1398,24 @@ public class GenerateJsVisitor extends Visitor
     		out(".");
     	}
     }
-    
+
     private String qualifiedPath(Node that, Declaration d) {
         return qualifiedPath(that, d, false);
     }
-    
+
     private String qualifiedPath(Node that, Declaration d, boolean inProto) {
         if (isImported(that, d)) {
             return packageAliasString(d.getUnit().getPackage());
         }
         else if (prototypeStyle) {
-            if (d.isClassOrInterfaceMember() && 
+            if (d.isClassOrInterfaceMember() &&
                     !(d instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter &&
                             !d.isCaptured())) {
                 TypeDeclaration id = that.getScope().getInheritingDeclaration(d);
                 if (id == null) {
                     //a local declaration of some kind,
                     //perhaps in an outer scope
-                    id = (TypeDeclaration) d.getContainer(); 
+                    id = (TypeDeclaration) d.getContainer();
                 } //else {
                     //an inherited declaration that might be
                     //inherited by an outer scope
@@ -1463,7 +1471,7 @@ public class GenerateJsVisitor extends Visitor
         super.visit(that);
         out(";");
     }
-    
+
     @Override
     public void visit(Expression that) {
         if (that.getTerm() instanceof QualifiedMemberOrTypeExpression) {
@@ -1490,14 +1498,14 @@ public class GenerateJsVisitor extends Visitor
         out("return ");
         super.visit(that);
     }
-    
+
     @Override
     public void visit(AnnotationList that) {}
-    
+
     private void self(TypeDeclaration d) {
     	out(selfString(d));
     }
-    
+
     private String selfString(TypeDeclaration d) {
         return "$$" + d.getName().substring(0,1).toLowerCase()
         		+ d.getName().substring(1);
@@ -1513,7 +1521,7 @@ public class GenerateJsVisitor extends Visitor
     /*private void self() {
         out("$$");
     }*/
-    
+
     private void outerSelf(Declaration d) {
         if (d.isToplevel()) {
             out("exports");
@@ -1522,21 +1530,21 @@ public class GenerateJsVisitor extends Visitor
             self((TypeDeclaration)d.getContainer());
         }
     }
-    
+
     private String setter(Declaration d) {
     	String name = memberNameString(d, true);
         return "set" + toUpperCase(name.charAt(0)) + name.substring(1);
     }
-    
+
     private String getter(Declaration d) {
     	String name = memberNameString(d, true);
         return "get" + toUpperCase(name.charAt(0)) + name.substring(1);
     }
-    
+
     private void memberName(Declaration d) {
     	out(memberNameString(d, false));
     }
-    
+
     private String memberNameString(Declaration d, Boolean forGetterSetter) {
     	String name = d.getName();
     	Scope container = d.getContainer();
@@ -1547,16 +1555,16 @@ public class GenerateJsVisitor extends Visitor
     		if (forGetterSetter || (d instanceof Method)) {
     			name += '$';
     		}
-    		
+
     	}
     	return name;
     }
-    
+
     private boolean declaredInCL(Declaration typeDecl) {
         return typeDecl.getUnit().getPackage().getQualifiedNameString()
                 .startsWith("ceylon.language");
     }
-    
+
     @Override
     public void visit(SumOp that) {
         that.getLeftTerm().visit(this);
@@ -1564,7 +1572,7 @@ public class GenerateJsVisitor extends Visitor
         that.getRightTerm().visit(this);
         out(")");
     }
-    
+
     @Override
     public void visit(DifferenceOp that) {
         that.getLeftTerm().visit(this);
@@ -1572,7 +1580,7 @@ public class GenerateJsVisitor extends Visitor
         that.getRightTerm().visit(this);
         out(")");
     }
-    
+
     @Override
     public void visit(ProductOp that) {
         that.getLeftTerm().visit(this);
@@ -1580,7 +1588,7 @@ public class GenerateJsVisitor extends Visitor
         that.getRightTerm().visit(this);
         out(")");
     }
-    
+
     @Override
     public void visit(QuotientOp that) {
         that.getLeftTerm().visit(this);
@@ -1588,41 +1596,41 @@ public class GenerateJsVisitor extends Visitor
         that.getRightTerm().visit(this);
         out(")");
     }
-    
+
     @Override public void visit(RemainderOp that) {
     	that.getLeftTerm().visit(this);
     	out(".remainder(");
     	that.getRightTerm().visit(this);
     	out(")");
     }
-    
+
     @Override public void visit(PowerOp that) {
     	that.getLeftTerm().visit(this);
     	out(".power(");
     	that.getRightTerm().visit(this);
     	out(")");
     }
-    
+
     @Override public void visit(AddAssignOp that) {
     	arithmeticAssignOp(that, "plus");
     }
-    
+
     @Override public void visit(SubtractAssignOp that) {
     	arithmeticAssignOp(that, "minus");
     }
-    
+
     @Override public void visit(MultiplyAssignOp that) {
     	arithmeticAssignOp(that, "times");
     }
-    
+
     @Override public void visit(DivideAssignOp that) {
     	arithmeticAssignOp(that, "divided");
     }
-    
+
     @Override public void visit(RemainderAssignOp that) {
     	arithmeticAssignOp(that, "remainder");
     }
-    
+
     private void arithmeticAssignOp(ArithmeticAssignmentOp that,
     		                        String functionName) {
     	Term lhs = that.getLeftTerm();
@@ -1632,7 +1640,7 @@ public class GenerateJsVisitor extends Visitor
     		if (lhsPath.length() > 0) {
     			lhsPath += '.';
     		}
-    		
+
     		out("(", lhsPath, setter(lhsBME.getDeclaration()), "(", lhsPath,
 		        getter(lhsBME.getDeclaration()), "().", functionName, "(");
     		that.getRightTerm().visit(this);
@@ -1648,31 +1656,31 @@ public class GenerateJsVisitor extends Visitor
     		out("))");
     	}
     }
-    
+
     @Override public void visit(NegativeOp that) {
         that.getTerm().visit(this);
         out(".getNegativeValue()");
     }
-    
+
     @Override public void visit(PositiveOp that) {
         that.getTerm().visit(this);
         out(".getPositiveValue()");
     }
-    
+
     @Override public void visit(EqualOp that) {
     	leftEqualsRight(that);
     }
-    
+
     @Override public void visit(NotEqualOp that) {
     	leftEqualsRight(that);
         equalsFalse();
     }
-    
+
     @Override public void visit(NotOp that) {
         that.getTerm().visit(this);
         equalsFalse();
     }
-    
+
     @Override public void visit(IdenticalOp that) {
         out("(");
         that.getLeftTerm().visit(this);
@@ -1681,25 +1689,25 @@ public class GenerateJsVisitor extends Visitor
         thenTrueElseFalse();
         out(")");
     }
-    
+
     @Override public void visit(CompareOp that) {
     	leftCompareRight(that);
     }
-    
+
     @Override public void visit(SmallerOp that) {
     	leftCompareRight(that);
     	out(".equals(");
     	clAlias();
     	out(".getSmaller())");
     }
-    
+
     @Override public void visit(LargerOp that) {
     	leftCompareRight(that);
     	out(".equals(");
     	clAlias();
     	out(".getLarger())");
     }
-    
+
     @Override public void visit(SmallAsOp that) {
     	out("(");
     	leftCompareRight(that);
@@ -1709,7 +1717,7 @@ public class GenerateJsVisitor extends Visitor
     	thenTrueElseFalse();
     	out(")");
     }
-    
+
     @Override public void visit(LargeAsOp that) {
     	out("(");
     	leftCompareRight(that);
@@ -1740,7 +1748,7 @@ public class GenerateJsVisitor extends Visitor
     private void equalsFalse() {
         out(".equals(");
         clFalse();
-        out(")");    
+        out(")");
     }
     /** Outputs the CL equivalent of '?true:false' in JS */
     private void thenTrueElseFalse() {
@@ -1754,9 +1762,9 @@ public class GenerateJsVisitor extends Visitor
     	that.getLeftTerm().visit(this);
     	out(".compare(");
     	that.getRightTerm().visit(this);
-    	out(")");    	
+    	out(")");
     }
-   
+
    @Override public void visit(AndOp that) {
 	   out("(");
 	   that.getLeftTerm().visit(this);
@@ -1768,7 +1776,7 @@ public class GenerateJsVisitor extends Visitor
 	   clFalse();
 	   out(")");
    }
-   
+
    @Override public void visit(OrOp that) {
 	   out("(");
 	   that.getLeftTerm().visit(this);
@@ -1780,7 +1788,7 @@ public class GenerateJsVisitor extends Visitor
 	   that.getRightTerm().visit(this);
 	   out(")");
    }
-   
+
    @Override public void visit(EntryOp that) {
        clAlias();
        out(".Entry(");
@@ -1789,13 +1797,13 @@ public class GenerateJsVisitor extends Visitor
        that.getRightTerm().visit(this);
        out(")");
    }
-   
+
    @Override public void visit(Element that) {
 	   out(".item(");
 	   that.getExpression().visit(this);
 	   out(")");
    }
-   
+
    @Override public void visit(DefaultOp that) {
 	   out("function($){return $!==null?$:");
 	   that.getRightTerm().visit(this);
@@ -1803,7 +1811,7 @@ public class GenerateJsVisitor extends Visitor
 	   that.getLeftTerm().visit(this);
 	   out(")");
    }
-   
+
    @Override public void visit(ThenOp that) {
        out("(");
        that.getLeftTerm().visit(this);
@@ -1813,15 +1821,15 @@ public class GenerateJsVisitor extends Visitor
        that.getRightTerm().visit(this);
        out(":null)");
    }
-   
+
    @Override public void visit(IncrementOp that) {
 	   prefixIncrementOrDecrement(that.getTerm(), "getSuccessor");
    }
-   
+
    @Override public void visit(DecrementOp that) {
 	   prefixIncrementOrDecrement(that.getTerm(), "getPredecessor");
    }
-   
+
    private void prefixIncrementOrDecrement(Term term, String functionName) {
 	   if (term instanceof BaseMemberExpression) {
 		   BaseMemberExpression bme = (BaseMemberExpression) term;
@@ -1829,7 +1837,7 @@ public class GenerateJsVisitor extends Visitor
 		   if (path.length() > 0) {
 			   path += '.';
 		   }
-		   
+
 		   out("(", path, setter(bme.getDeclaration()), "(", path);
 		   String bmeGetter = getter(bme.getDeclaration());
 		   out(bmeGetter, "().", functionName, "()),", path, bmeGetter, "())");
@@ -1841,15 +1849,15 @@ public class GenerateJsVisitor extends Visitor
 		   out(")");
 	   }
    }
-   
+
    @Override public void visit(PostfixIncrementOp that) {
 	   postfixIncrementOrDecrement(that.getTerm(), "getSuccessor");
    }
-   
+
    @Override public void visit(PostfixDecrementOp that) {
 	   postfixIncrementOrDecrement(that.getTerm(), "getPredecessor");
    }
-   
+
    private void postfixIncrementOrDecrement(Term term, String functionName) {
 	   if (term instanceof BaseMemberExpression) {
 		   BaseMemberExpression bme = (BaseMemberExpression) term;
@@ -1857,14 +1865,14 @@ public class GenerateJsVisitor extends Visitor
 		   if (path.length() > 0) {
 			   path += '.';
 		   }
-		   
+
 		   out("(function($){", path, setter(bme.getDeclaration()), "($.", functionName,
 	           "());return $}(", path, getter(bme.getDeclaration()), "()))");
 	   } else if (term instanceof QualifiedMemberExpression) {
 		   QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
 		   out("function($){var $2=$.", getter(qme.getDeclaration()), "();$.",
 	           setter(qme.getDeclaration()), "($2.", functionName, "());return $2}(");
-		   qme.getPrimary().visit(this);			   
+		   qme.getPrimary().visit(this);
 		   out(")");
 	   }
    }
@@ -1883,13 +1891,13 @@ public class GenerateJsVisitor extends Visitor
    }
 
    @Override public void visit(IfStatement that) {
-	   
+
 	   IfClause ifClause = that.getIfClause();
 	   Block ifBlock = ifClause.getBlock();
 	   Condition condition = ifClause.getCondition();
 	   if ((condition instanceof ExistsOrNonemptyCondition)
 	           || (condition instanceof IsCondition)) {
-		   // if (is/exists/nonempty ...)		   
+		   // if (is/exists/nonempty ...)
 	       specialConditionAndBlock(condition, ifBlock, "if");
 	   } else {
 	       out("if ((");
@@ -1901,7 +1909,7 @@ public class GenerateJsVisitor extends Visitor
 	    	   ifBlock.visit(this);
 	       }
 	   }
-	   
+
        if (that.getElseClause() != null) {
            out("else ");
            that.getElseClause().visit(this);
@@ -1924,7 +1932,7 @@ public class GenerateJsVisitor extends Visitor
 	       whileClause.getBlock().visit(this);
 	   }
    }
-   
+
    // handles an "is", "exists" or "nonempty" condition
    private void specialConditionAndBlock(Condition condition,
                Block block, String keyword) {
@@ -1938,7 +1946,7 @@ public class GenerateJsVisitor extends Visitor
            return;
        }
 	   String varName = variable.getDeclarationModel().getName();
-	   
+
 	   boolean simpleCheck = false;
 	   Term variableRHS = variable.getSpecifierExpression().getExpression().getTerm();
 	   if (variableRHS instanceof BaseMemberExpression) {
@@ -1948,15 +1956,15 @@ public class GenerateJsVisitor extends Visitor
 			   simpleCheck = true;
 		   }
 	   }
-	   
+
 	   if (simpleCheck) {
 	       BaseMemberExpression bme = (BaseMemberExpression) variableRHS;
-	       
+
 		   out(keyword);
            out("(");
            specialConditionCheck(condition, variableRHS, simpleCheck);
            out(")");
-           
+
            if (matchingGetterExists(bme.getDeclaration(), variable.getDeclarationModel(),
                                     condition)) {
                // a getter for the variable already exists
@@ -1971,32 +1979,32 @@ public class GenerateJsVisitor extends Visitor
                memberName(bme.getDeclaration());
                out("}");
                endLine();
-               
+
                visitStatements(block.getStatements(), false);
                endBlock();
            }
-		   
+
 	   } else {
 		   // if/while (is/exists/nonempty x=...)
-		   
+
 		   out("var $cond$;");
 		   endLine();
-		   
+
 		   out(keyword);
 		   out("(");
 		   specialConditionCheck(condition, variableRHS, simpleCheck);
            out(")");
-		   
+
 		   if (block.getStatements().isEmpty()) {
 			   out("{}");
-			   
+
 		   } else {
 			   beginBlock();
 			   out("var $");
 			   out(varName);
 			   out("=$cond$;");
 			   endLine();
-			   
+
 			   function();
 			   out(getter(variable.getDeclarationModel()));
 			   out("(){");
@@ -2004,18 +2012,18 @@ public class GenerateJsVisitor extends Visitor
 			   out(varName);
 			   out("}");
 			   endLine();
-			   
+
 			   visitStatements(block.getStatements(), false);
 			   endBlock();
 		   }
 	   }
    }
-   
+
    private boolean matchingGetterExists(Declaration outerVar, Declaration innerVar, Node that) {
        return accessThroughGetter(outerVar) && getter(outerVar).equals(getter(innerVar))
                && (qualifiedPath(that, outerVar).length() == 0);
    }
-   
+
     private void specialConditionCheck(Condition condition, Term variableRHS, boolean simpleCheck) {
         if (condition instanceof ExistsOrNonemptyCondition) {
             if (condition instanceof NonemptyCondition) {
@@ -2029,7 +2037,7 @@ public class GenerateJsVisitor extends Visitor
                 specialConditionRHS(variableRHS, simpleCheck);
                 out("!==null");
             }
-            
+
         } else {
             Type type = ((IsCondition) condition).getType();
             generateIsOfType(variableRHS, null, type, simpleCheck);
@@ -2038,7 +2046,7 @@ public class GenerateJsVisitor extends Visitor
             out(".getTrue()");
         }
     }
-   
+
     private void specialConditionRHS(Term variableRHS, boolean simple) {
         if (simple) {
             variableRHS.visit(this);
@@ -2048,7 +2056,7 @@ public class GenerateJsVisitor extends Visitor
             out(")");
         }
     }
-    
+
     private void specialConditionRHS(String variableRHS, boolean simple) {
         if (simple) {
             out(variableRHS);
@@ -2102,7 +2110,7 @@ public class GenerateJsVisitor extends Visitor
             specialConditionRHS(termString, simpleCheck);
         }
         out(",");
-        
+
         if (type instanceof SimpleType) {
             out("'");
             out(((SimpleType) type).getDeclarationModel().getQualifiedNameString());
@@ -2235,7 +2243,7 @@ public class GenerateJsVisitor extends Visitor
                 out("===");
                 clAlias();
                 out(".getTrue())");
-                
+
                 if (catchClause.getBlock().getStatements().isEmpty()) {
                     out("{}");
                 } else {
@@ -2244,7 +2252,7 @@ public class GenerateJsVisitor extends Visitor
                     out(getter(variable.getDeclarationModel()));
                     out("(){return $ex$}");
                     endLine();
-                    
+
                     visitStatements(catchClause.getBlock().getStatements(), false);
                     endBlock();
                 }
@@ -2252,13 +2260,13 @@ public class GenerateJsVisitor extends Visitor
             out("else{throw $ex$}");
             endBlock();
         }
-        
+
         if (that.getFinallyClause() != null) {
             out("finally");
             that.getFinallyClause().getBlock().visit(this);
         }
     }
-    
+
     @Override public void visit(Throw that) {
         out("throw ");
         if (that.getExpression() != null) {
