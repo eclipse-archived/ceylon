@@ -16,7 +16,7 @@ public class MainForTest {
      * Files that are not under a proper module structure are placed under a <nomodule> module.
      */
     public static void main(String[] args) throws Exception {
-
+        long start = System.nanoTime();
         TypeChecker typeChecker = new TypeCheckerBuilder()
                 .verbose(false)
                 .addSrcDirectory( new File("test/main") )
@@ -63,5 +63,6 @@ public class MainForTest {
                 .getTypeChecker();
         typeChecker.process();
         latestZippedLanguageSourceFile.close();
+        System.out.println("Tests took " + ( (System.nanoTime()-start) / 1000000 ) + " ms");
     }
 }
