@@ -425,7 +425,7 @@ abstract class InvocationBuilder {
             }
             @Override
             protected boolean hasEllipsis() {
-                return false;
+                return paramLists.get(0).getParameters().get(getNumArguments() - 1).isSequenced();
             }
             @Override
             protected JCExpression getTransformedExpression(int argIndex,
