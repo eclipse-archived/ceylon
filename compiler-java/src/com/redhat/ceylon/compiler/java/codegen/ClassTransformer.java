@@ -40,6 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.tree.CustomTree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
@@ -373,6 +374,14 @@ public class ClassTransformer extends AbstractTransformer {
                 methodBuilder.block(body);
             }else
                 methodBuilder.noBody();
+        } else if (def instanceof MethodDeclaration
+                && ((MethodDeclaration) def).getSpecifierExpression() != null) {
+            InvocationBuilder specifierBuilder = InvocationBuilder.invocationForSpecifier(gen(), ((MethodDeclaration) def).getSpecifierExpression(), def.getDeclarationModel());
+            if (def.getType().getTypeModel().isExactly(typeFact().getVoidDeclaration().getType())) {
+                methodBuilder.body(make().Exec(specifierBuilder.build()));
+            } else {
+                methodBuilder.body(make().Return(specifierBuilder.build()));
+            }
         }
         
         if(Util.hasCompilerAnnotation(def, "test")){
