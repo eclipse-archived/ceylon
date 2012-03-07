@@ -148,22 +148,16 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         gen.resetCompilerAnnotations(annots);
     }
 
-    public void visit(Tree.MethodDefinition decl) {
-        if(hasErrors(decl))
-            return;
-        boolean annots = gen.checkCompilerAnnotations(decl);
-        if (Decl.withinClassOrInterface(decl)) {
-            classBuilder.method(decl);
-        } else {
-            appendList(gen.classGen().transformWrappedMethod(decl));
-        }
-        gen.resetCompilerAnnotations(annots);
-    }
-
-    public void visit(Tree.MethodDeclaration meth) {
+    public void visit(Tree.AnyMethod meth) {
         if(hasErrors(meth))
             return;
-        classBuilder.method(meth);
+        boolean annots = gen.checkCompilerAnnotations(meth);
+        if (Decl.withinClassOrInterface(meth)) {
+            classBuilder.method(meth);
+        } else {
+            appendList(gen.classGen().transformWrappedMethod(meth));
+        }
+        gen.resetCompilerAnnotations(annots);
     }
     
     private boolean hasErrors(Node decl) {

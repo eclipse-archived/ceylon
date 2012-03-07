@@ -313,7 +313,7 @@ public class ClassTransformer extends AbstractTransformer {
         return actual;
     }
     
-    public List<JCTree> transformWrappedMethod(Tree.MethodDefinition def) {
+    public List<JCTree> transformWrappedMethod(Tree.AnyMethod def) {
         // Generate a wrapper class for the method
         String name = def.getIdentifier().getText();
         JCExpression nameId = makeQuotedIdent(name);
