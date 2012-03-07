@@ -465,10 +465,11 @@ abstract class InvocationBuilder {
         
         final Term term = specifierExpression.getExpression().getTerm();
         final ProducedType returnType = method.getType();
+        Tree.Primary primary = (Tree.Primary)term;
         InvocationBuilder builder;
-        if (term instanceof StaticMemberOrTypeExpression) {
-            StaticMemberOrTypeExpression primary = (StaticMemberOrTypeExpression)term;
-            Declaration primaryDeclaration = primary.getDeclaration();
+        if (term instanceof MemberOrTypeExpression
+                && ((MemberOrTypeExpression)primary).getDeclaration() instanceof Functional) {
+            Declaration primaryDeclaration = ((MemberOrTypeExpression)primary).getDeclaration();
             builder = new PositionalInvocationBuilder(
                     gen, 
                     primary, 
