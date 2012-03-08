@@ -218,9 +218,9 @@ void testNullsafeOperators() {
     obj?.f();
     assert(!exists obj?.f(), "nullsafe simple call");
     NullsafeTest? getNullsafe() { return obj; }
-    Callable<Integer?> f4 = getNullsafe()?.f;
-    //Integer? result_f4 = f4();
-    //assert(!exists result_f4, "nullsafe invoke 2");
+    function f4() = getNullsafe()?.f;
+    Integer? result_f4 = f4();
+    assert(!exists result_f4, "nullsafe invoke 2");
     Integer? i2 = getNullsafe()?.f();
     assert(!exists i2, "nullsafe invoke 3");
     assert(!exists NullsafeTest().f2(getNullsafe()?.f), "nullsafe method ref 3");
