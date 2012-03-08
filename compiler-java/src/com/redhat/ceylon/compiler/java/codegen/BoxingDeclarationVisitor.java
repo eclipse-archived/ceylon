@@ -58,13 +58,18 @@ public class BoxingDeclarationVisitor extends Visitor {
         // deal with invalid input
         if(refinedMethod == null)
             return;
-        setBoxingState(method, refinedMethod);
         List<ParameterList> methodParameterLists = method.getParameterLists();
         List<ParameterList> refinedParameterLists = refinedMethod.getParameterLists();
+        // A Callable, which never have primitive parameters
+        if (methodParameterLists.size() > 1)
+            return;        
+        setBoxingState(method, refinedMethod);
+        
         // deal with invalid input
         if(methodParameterLists.isEmpty()
                 || refinedParameterLists.isEmpty())
             return;
+
         Iterator<Parameter> parameters = methodParameterLists.get(0).getParameters().iterator();
         for(Parameter refinedParam : refinedParameterLists.get(0).getParameters()){
             Parameter param = parameters.next();
