@@ -225,11 +225,11 @@ public class ClassDoc extends ClassOrPackageDoc {
         if (hasAnyAttributes()) {
             open("div id='section-attributes'");
             attributes();
+            close("div");
             inheritedSectionCategory = "attributes";
             writeSuperclassInheritedMembers(attributeSpecification, "Attributes inherited from class: ");
             writeInterfaceInheritedMembers(attributeSpecification, "Attributes inherited from interface: ");
             makeSureInheritedSectionIsClosed();
-            close("div");
         }
 
         if (hasConstructor()) {
@@ -239,11 +239,11 @@ public class ClassDoc extends ClassOrPackageDoc {
         if (hasAnyMethods()) {
             open("div id='section-methods'");
             methods();
+            close("div");
             inheritedSectionCategory = "methods";
             writeSuperclassInheritedMembers(methodSpecification, "Methods inherited from class: ");
             writeInterfaceInheritedMembers(methodSpecification, "Methods inherited from interface: ");
             makeSureInheritedSectionIsClosed();
-            close("div");
         }
         
         close("body");
@@ -380,7 +380,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         if(inheritedSectionOpen)
             return;
         inheritedSectionOpen = true;
-        open("div class='collapsible'");
+        open("div id='section-inherited-"+inheritedSectionCategory+"' class='collapsible'");
         around("div class='short'", "Show inherited "+inheritedSectionCategory);
         open("div class='long'");
     }
