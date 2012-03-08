@@ -27,6 +27,7 @@ import javax.tools.JavaFileManager;
 import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.InvalidArchiveException;
 import com.redhat.ceylon.compiler.java.codegen.BoxingDeclarationVisitor;
@@ -205,34 +206,16 @@ public class CeylonEnter extends Enter {
         validator.verifyModuleDependencyTree();
     }
 
-    public enum ModuleSource {
-        OUTPUT_REPO, REPO_LIST;
-    }
-    
-    public void addModuleToClassPath(Module module, boolean errorIfMissing, ModuleSource source) {
-        if(verbose)
-            Log.printLines(log.noticeWriter, "[Adding module to classpath: "+module.getNameAsString()+"/"+module.getVersion()+"]");        
-        
-        Paths.Path classPath = paths.getPathForLocation(StandardLocation.CLASS_PATH);
-        
-        RepositoryManager repositoryManager = 
-                source == ModuleSource.REPO_LIST ? 
-                        fileManager.getRepositoryManager() 
-                        : fileManager.getOutputRepositoryManager();
-        File artifact = null;
+    public void addOutputModuleToClassPath(Module module){
+        RepositoryManager repositoryManager = fileManager.getOutputRepositoryManager();
+        ArtifactResult artifact = null;
         try {
             ArtifactContext ctx = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);
-            artifact = repositoryManager.getArtifact(ctx);
+            artifact = repositoryManager.getArtifactResult(ctx);
             if(artifact == null){
                 // try again for a jar
                 ctx.setSuffix(ArtifactContext.JAR);
-                artifact = repositoryManager.getArtifact(ctx);
-            }
-            if(verbose){
-                if(artifact != null)
-                    Log.printLines(log.noticeWriter, "[Found module at : "+artifact.getPath()+"]");
-                else
-                    Log.printLines(log.noticeWriter, "[Could not find module]");
+                artifact = repositoryManager.getArtifactResult(ctx);
             }
         } catch (InvalidArchiveException e) {
             log.error("ceylon", "Module car "+e.getPath()
@@ -245,6 +228,33 @@ public class CeylonEnter extends Enter {
             log.error("ceylon", "Exception occured while trying to resolve module "+moduleName);
             e.printStackTrace();
         }
+        addModuleToClassPath(module, false, artifact);
+    }
+    
+    public void addModuleToClassPath(Module module, boolean errorIfMissing, ArtifactResult result) {
+        if(verbose)
+            Log.printLines(log.noticeWriter, "[Adding module to classpath: "+module.getNameAsString()+"/"+module.getVersion()+"]");        
+        
+        Paths.Path classPath = paths.getPathForLocation(StandardLocation.CLASS_PATH);
+
+        File artifact = null;
+        try {
+            artifact = result != null ? result.artifact() : null;
+        } catch (IOException e) {
+            String moduleName = module.getNameAsString();
+            if(!module.isDefault())
+                moduleName += "/" + module.getVersion();
+            log.error("ceylon", "Exception occured while trying to resolve module "+moduleName);
+            e.printStackTrace();
+        }
+        
+        if(verbose){
+            if(artifact != null)
+                Log.printLines(log.noticeWriter, "[Found module at : "+artifact.getPath()+"]");
+            else
+                Log.printLines(log.noticeWriter, "[Could not find module]");
+        }
+
         if(artifact != null && artifact.exists())
             classPath.add(artifact);
         else if(errorIfMissing)

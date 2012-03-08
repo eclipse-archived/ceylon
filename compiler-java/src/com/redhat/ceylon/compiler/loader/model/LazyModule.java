@@ -20,11 +20,15 @@
 
 package com.redhat.ceylon.compiler.loader.model;
 
+import java.io.IOException;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
+import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -98,21 +102,32 @@ public abstract class LazyModule extends Module {
         this.isJava = isJava;
     }
 
-    public void loadPackageList(VirtualFile artifact) {
-        String root = artifact.getPath();
-        for(VirtualFile child : artifact.getChildren())
-            loadPackageList(child, root);
+    public void loadPackageList(ArtifactResult artifact) {
+        ZipFile zipFile;
+        try {
+            zipFile = new ZipFile(artifact.artifact());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try{
+            Enumeration<? extends ZipEntry> entries = zipFile.entries();
+            while(entries.hasMoreElements())
+                loadPackageList(entries.nextElement());
+        }finally{
+            try {
+                zipFile.close();
+            } catch (IOException e) {
+                // ignore
+            }
+        }
     }
     
-    private void loadPackageList(VirtualFile artifact, String root) {
-        if(artifact.isFolder()){
-            for(VirtualFile child : artifact.getChildren())
-                loadPackageList(child, root);
-        }else{
-            String path = artifact.getPath();
+    private void loadPackageList(ZipEntry entry) {
+        if(!entry.isDirectory()){
+            String path = entry.getName();
             if(path.toLowerCase().endsWith(".class")){
                 int sep = path.lastIndexOf('/');
-                String pkg = path.substring(root.length()+2, sep).replace('/', '.');
+                String pkg = path.substring(0, sep).replace('/', '.');
                 if(jarPackages.add(pkg))
                     System.err.println("Found "+pkg+" in "+getNameAsString());
             }

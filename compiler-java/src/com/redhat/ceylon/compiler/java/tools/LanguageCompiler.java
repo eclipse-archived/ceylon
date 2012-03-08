@@ -32,7 +32,6 @@ package com.redhat.ceylon.compiler.java.tools;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -50,13 +49,11 @@ import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.java.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.java.loader.CeylonEnter;
-import com.redhat.ceylon.compiler.java.loader.CeylonEnter.ModuleSource;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.loader.model.CompilerModuleManager;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
-import com.redhat.ceylon.compiler.typechecker.io.ArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -132,8 +129,7 @@ public class LanguageCompiler extends JavaCompiler {
         if (ceylonContext == null) {
             CeyloncFileManager fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
             VFS vfs = new VFS();
-            ArtifactProvider artifactProvider = new RepositoryArtifactProvider(fileManager.getRepositoryManager(), vfs);
-            ceylonContext = new com.redhat.ceylon.compiler.typechecker.context.Context(Arrays.asList(artifactProvider) , vfs);
+            ceylonContext = new com.redhat.ceylon.compiler.typechecker.context.Context(fileManager.getRepositoryManager(), vfs);
             context.put(ceylonContextKey, ceylonContext);
         }
         return ceylonContext;
@@ -319,7 +315,7 @@ public class LanguageCompiler extends JavaCompiler {
         pkg.setModule(module);
         module.getPackages().add(pkg);
         // automatically add this module's jar to the classpath if it exists
-        ceylonEnter.addModuleToClassPath(module, false, ModuleSource.OUTPUT_REPO);
+        ceylonEnter.addOutputModuleToClassPath(module);
     }
 
     private Module loadModuleFromSource(String pkgName, LinkedList<JCCompilationUnit> moduleTrees) {

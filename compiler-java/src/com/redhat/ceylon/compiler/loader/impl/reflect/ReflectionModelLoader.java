@@ -21,10 +21,12 @@
 package com.redhat.ceylon.compiler.loader.impl.reflect;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.TypeParser;
 import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionClass;
@@ -33,7 +35,6 @@ import com.redhat.ceylon.compiler.loader.impl.reflect.model.ReflectionModule;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
-import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
@@ -89,18 +90,24 @@ public class ReflectionModelLoader extends AbstractModelLoader {
     }
 
     @Override
-    public void addModuleToClassPath(Module module, VirtualFile artifact) {
+    public void addModuleToClassPath(Module module, ArtifactResult artifact) {
         if(artifact == null)
             return;
+        File file;
+        try {
+            file = artifact.artifact();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String path = file.getAbsolutePath();
         try {
             // FIXME: this will be handled by the module system
-            String path = artifact.getPath();
             @SuppressWarnings("deprecation")
             URL url = new File(path).toURL();
             URLClassLoader cl = new URLClassLoader(new URL[]{url});
             ((ReflectionModule)module).setClassLoader(cl);
         } catch (MalformedURLException e) {
-            throw new RuntimeException("Failed to load module car from "+artifact.getPath());
+            throw new RuntimeException("Failed to load module car from "+path);
         }
     }
 

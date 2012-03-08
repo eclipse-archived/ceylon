@@ -34,6 +34,7 @@ import java.util.Set;
 
 import javax.lang.model.type.TypeKind;
 
+import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotatedMirror;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
@@ -55,7 +56,6 @@ import com.redhat.ceylon.compiler.loader.model.LazyModule;
 import com.redhat.ceylon.compiler.loader.model.LazyPackage;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
-import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -204,7 +204,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      * @param module the module
      * @param artifact the module's artifact, if any. Can be null. 
      */
-    public abstract void addModuleToClassPath(Module module, VirtualFile artifact);
+    public abstract void addModuleToClassPath(Module module, ArtifactResult artifact);
 
     /**
      * Returns true if the given method is overriding an inherited method (from super class or interfaces).

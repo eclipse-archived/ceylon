@@ -20,13 +20,10 @@
 
 package com.redhat.ceylon.compiler.java.loader;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.tools.JavaFileObject.Kind;
 
+import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
-import com.redhat.ceylon.compiler.java.loader.CeylonEnter.ModuleSource;
 import com.redhat.ceylon.compiler.java.loader.mirror.JavacClass;
 import com.redhat.ceylon.compiler.java.loader.mirror.JavacMethod;
 import com.redhat.ceylon.compiler.java.loader.model.CompilerModuleManager;
@@ -38,7 +35,6 @@ import com.redhat.ceylon.compiler.loader.TypeParser;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
-import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
@@ -98,8 +94,9 @@ public class CeylonModelLoader extends AbstractModelLoader {
     }
 
     @Override
-    public void addModuleToClassPath(Module module, VirtualFile artifact){
-        ((CompilerModuleManager)phasedUnits.getModuleManager()).getCeylonEnter().addModuleToClassPath(module, true, ModuleSource.REPO_LIST);
+    public void addModuleToClassPath(Module module, ArtifactResult artifact){
+        if(artifact != null)
+            ((CompilerModuleManager)phasedUnits.getModuleManager()).getCeylonEnter().addModuleToClassPath(module, true, artifact);
     }
 
     public void setupSourceFileObjects(com.sun.tools.javac.util.List<JCCompilationUnit> trees) {

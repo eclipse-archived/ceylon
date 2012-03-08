@@ -43,13 +43,11 @@ import java.util.Map;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.compiler.java.tools.RepositoryArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
-import com.redhat.ceylon.compiler.typechecker.io.ArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -103,8 +101,7 @@ public class CeylonDocTool {
         
         // set up the artifact repository
         RepositoryManager repository = com.redhat.ceylon.compiler.java.util.Util.makeRepositoryManager(repositories, log );
-        ArtifactProvider artifactProvider = new RepositoryArtifactProvider(repository, builder.getVFS());
-        builder.addArtifactProvider(artifactProvider);
+        builder.setRepositoryManager(repository);
         
         // we need to plug in the module manager which can load from .cars
         final List<ModuleSpec> modules = ModuleSpec.parse(moduleSpecs);

@@ -21,13 +21,14 @@
 package com.redhat.ceylon.compiler.loader.model;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
+import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
-import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 
@@ -43,10 +44,10 @@ public abstract class LazyModuleManager extends ModuleManager {
     }
     
     @Override
-    public void resolveModule(Module module, VirtualFile artifact,
-            List<PhasedUnits> phasedUnitsOfDependencies) {
+    public void resolveModule(ArtifactResult artifact, Module module, ModuleImport moduleImport, 
+            LinkedList<Module> dependencyTree, List<PhasedUnits> phasedUnitsOfDependencies) {
         if(isModuleLoadedFromSource(module.getNameAsString())){
-            super.resolveModule(module, artifact, phasedUnitsOfDependencies);
+            super.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies);
         }else{
             getModelLoader().addModuleToClassPath(module, artifact); // To be able to load it from the corresponding archive
             Module compiledModule = getModelLoader().loadCompiledModule(module.getNameAsString());
