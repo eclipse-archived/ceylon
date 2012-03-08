@@ -7,6 +7,7 @@ final class bar {
     private bar() {
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
     static void bar() {
         .bug187.main.main();
     }
