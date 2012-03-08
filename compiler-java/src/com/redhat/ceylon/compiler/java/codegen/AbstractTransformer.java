@@ -867,6 +867,17 @@ public abstract class AbstractTransformer implements Transformation {
         return thisType;
     }
     
+    /**
+     * Gets the first type parameter from the type model representing a 
+     * ceylon.language.Callable<Result, ParameterTypes...>.
+     * @param typeModel
+     * @return The result type of the Callable.
+     */
+    protected ProducedType getCallableReturnType(ProducedType typeModel) {
+        assert isCeylonCallable(typeModel);
+        return typeModel.getTypeArgumentList().get(0);
+    }
+    
     protected ProducedType getTypeForParameter(Parameter parameter, boolean isRaw, java.util.List<ProducedType> typeArgumentModels) {
         if (parameter instanceof FunctionalParameter) {
             FunctionalParameter fp = (FunctionalParameter)parameter;
@@ -1128,7 +1139,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     protected List<JCTree.JCAnnotation> makeJavaTypeAnnotations(TypedDeclaration decl) {
-        if(decl.getType() == null)
+        if(decl == null || decl.getType() == null)
             return List.nil();
         return makeJavaTypeAnnotations(decl.getType(), needsAnnotations(decl));
     }

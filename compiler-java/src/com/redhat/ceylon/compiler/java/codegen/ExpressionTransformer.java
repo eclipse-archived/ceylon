@@ -1013,21 +1013,17 @@ public class ExpressionTransformer extends AbstractTransformer {
                     type);
         }
     }
-
-    public ProducedType getCallableReturnType(Tree.Term expr) {
-        ProducedType typeModel = expr.getTypeModel();
-        assert gen().isCeylonCallable(typeModel);
-        return typeModel.getTypeArgumentList().get(0);
-    }
     
     public JCExpression transformFunctional(Tree.Term expr,
             Functional functional) {
+        return CallableBuilder.functional(gen(), expr, functional.getParameterLists().get(0)).build();
+        /*
         // Generate a subclass of Callable
         MethodDefinitionBuilder callMethod = MethodDefinitionBuilder.method(gen(), false, true, "call");
         callMethod.isActual(true);
         callMethod.modifiers(Flags.PUBLIC);
         ProducedType typeModel = expr.getTypeModel();
-        ProducedType returnType = getCallableReturnType(expr);
+        ProducedType returnType = getCallableReturnType(typeModel);
         callMethod.resultType(makeJavaType(returnType, EXTENDS), null);
         // Now append formal parameters
         int numParams = functional.getParameterLists().get(0).getParameters().size();
@@ -1047,7 +1043,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             callMethod.parameter(makeCallableCallParam(Flags.VARARGS, 0));
         }
         
-        InvocationBuilder invocationBuilder = InvocationBuilder.invocationForCallable(gen(), expr, functional);
+        InvocationBuilder invocationBuilder = InvocationBuilder.invocationForCallable(gen(), expr, functional.getParameterLists());
         JCExpression fnCall;
         setWithinCallableInvocation(true);
         try {
@@ -1064,15 +1060,22 @@ public class ExpressionTransformer extends AbstractTransformer {
             callMethod.body(List.<JCStatement>of(make().Return(fnCall)));
         }
         
+        return makeCallable(callMethod, typeModel);
+        */
+    }
+
+    public JCNewClass makeCallable(MethodDefinitionBuilder callMethod,
+            ProducedType typeModel) {
         JCClassDecl classDef = make().AnonymousClassDef(make().Modifiers(0), List.<JCTree>of(callMethod.build()));
         
-        return make().NewClass(null, 
+        JCNewClass instance = make().NewClass(null, 
                 null, 
                 makeJavaType(typeModel, EXTENDS | CLASS_NEW), 
                 List.<JCExpression>of(make().Literal(typeModel.getProducedTypeName())), 
                 classDef);
+        return instance;
     }
-
+    /*
     private JCVariableDecl makeCallableCallParam(long flags, int ii) {
         if ((flags & Flags.VARARGS) != 0) {
             return make().VarDef(make().Modifiers(Flags.FINAL | flags), 
@@ -1083,6 +1086,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return make().VarDef(make().Modifiers(Flags.FINAL | flags), 
                 names().fromString("arg"+ii), makeIdent(syms().objectType), null);
     }
+    */
 
     //
     // Member expressions

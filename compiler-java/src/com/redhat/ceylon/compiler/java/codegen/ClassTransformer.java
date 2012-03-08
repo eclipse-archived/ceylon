@@ -48,6 +48,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinitio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
+import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -344,10 +345,55 @@ public class ClassTransformer extends AbstractTransformer {
 
     public JCMethodDecl transform(Tree.AnyMethod def, ClassDefinitionBuilder classBuilder) {
         Method model = def.getDeclarationModel();
+        
+        java.util.List<ParameterList> parameterLists = def.getParameterLists();
+        boolean mpl = parameterLists.size() > 1;
+        ProducedType innerResultType = model.getType();
+        ProducedType resultType = innerResultType;
+        
+        // Transform the method body of the 'inner-most method'
+        List<JCStatement> body = null;
+        if (def instanceof Tree.MethodDefinition) {
+            Scope container = model.getContainer();
+            boolean isInterface = container instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
+            if(!isInterface){
+                body = statementGen().transform(((Tree.MethodDefinition)def).getBlock()).getStatements();
+            }
+        } else if (def instanceof MethodDeclaration
+                && ((MethodDeclaration) def).getSpecifierExpression() != null) {
+            InvocationBuilder specifierBuilder = InvocationBuilder.invocationForSpecifier(gen(), ((MethodDeclaration) def).getSpecifierExpression(), def.getDeclarationModel());
+            if (def.getType().getTypeModel().isExactly(typeFact().getVoidDeclaration().getType())) {
+                body = List.<JCStatement>of(make().Exec(specifierBuilder.build()));
+            } else {
+                body = List.<JCStatement>of(make().Return(specifierBuilder.build()));
+            }
+        }
+        
+        // Construct all but the outer-most method
+        for (int index = parameterLists.size() - 1; index >  0; index--) {
+            resultType = gen().typeFact().getCallableType(resultType);
+            CallableBuilder cb = CallableBuilder.mpl(gen(), resultType, def.getDeclarationModel().getParameterLists().get(index), body);
+            body = List.<JCStatement>of(make().Return(cb.build()));
+        }
+        
+        // Finally construct the outermost method using the body we've built so far
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(def), model.isClassOrInterfaceMember(), 
                 Util.quoteMethodNameIfProperty(model, typeFact()));
         
-        ParameterList paramList = def.getParameterLists().get(0);
+        ParameterList paramList = parameterLists.get(0);
+        
+        if (mpl) {
+            methodBuilder.resultType(null, makeJavaType(resultType));
+        } else {
+            methodBuilder.resultType(model);
+        }
+        
+        if (def.getTypeParameterList() != null) {
+            for (Tree.TypeParameterDeclaration t : def.getTypeParameterList().getTypeParameterDeclarations()) {
+                methodBuilder.typeParameter(t);
+            }
+        }
+        
         for (Tree.Parameter param : paramList.getParameters()) {
             methodBuilder.parameter(param);
             // Does the parameter have a default value?
@@ -355,44 +401,23 @@ public class ClassTransformer extends AbstractTransformer {
                 classBuilder.concreteInterfaceMemberDefs(transformDefaultedParameter(param, def, paramList));
             }
         }
-
-        if (def.getTypeParameterList() != null) {
-            for (Tree.TypeParameterDeclaration t : def.getTypeParameterList().getTypeParameterDeclarations()) {
-                methodBuilder.typeParameter(t);
-            }
-        }
-
-        if (!(def.getType() instanceof VoidModifier)) {
-            methodBuilder.resultType(model);
-        }
         
-        if (def instanceof Tree.MethodDefinition) {
-            Scope container = model.getContainer();
-            boolean isInterface = container instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
-            if(!isInterface){
-                JCBlock body = statementGen().transform(((Tree.MethodDefinition)def).getBlock());
-                methodBuilder.block(body);
-            }else
-                methodBuilder.noBody();
-        } else if (def instanceof MethodDeclaration
-                && ((MethodDeclaration) def).getSpecifierExpression() != null) {
-            InvocationBuilder specifierBuilder = InvocationBuilder.invocationForSpecifier(gen(), ((MethodDeclaration) def).getSpecifierExpression(), def.getDeclarationModel());
-            if (def.getType().getTypeModel().isExactly(typeFact().getVoidDeclaration().getType())) {
-                methodBuilder.body(make().Exec(specifierBuilder.build()));
-            } else {
-                methodBuilder.body(make().Return(specifierBuilder.build()));
-            }
+        if (body != null) {
+            methodBuilder.body(body);
+        } else {
+            methodBuilder.noBody();
         }
         
         if(Util.hasCompilerAnnotation(def, "test")){
             methodBuilder.annotations(List.of(make().Annotation(makeQualIdentFromString("org.junit.Test"), List.<JCTree.JCExpression>nil())));
         }
         
-        return methodBuilder
+        methodBuilder
             .modifiers(transformMethodDeclFlags(def))
             .isActual(Decl.isActual(def))
-            .modelAnnotations(model.getAnnotations())
-            .build();
+            .modelAnnotations(model.getAnnotations());
+        
+        return methodBuilder.build();
     }
 
     public JCMethodDecl transformConcreteInterfaceMember(MethodDefinition def, ProducedType type) {

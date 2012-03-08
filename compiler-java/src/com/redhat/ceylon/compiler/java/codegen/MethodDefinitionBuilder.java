@@ -134,7 +134,7 @@ public class MethodDefinitionBuilder {
         return (!isFormal && (body != null) && ((modifiers & ABSTRACT) == 0)) ? gen.make().Block(0, body.toList()) : null;
     }
 
-    private JCExpression makeResultType(TypedDeclaration resultType) {
+    JCExpression makeResultType(TypedDeclaration resultType) {
         if (resultType == null
                 || resultType.getType().isExactly(gen.typeFact().getVoidDeclaration().getType())) {
             return gen.make().TypeIdent(VOID);

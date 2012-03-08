@@ -227,7 +227,7 @@ abstract class InvocationBuilder {
                     primary, primaryDeclaration,
                     invocation.getTypeModel(),
                     invocation,
-                    paramLists) {
+                    paramLists.get(0)) {
                 
                 @Override
                 protected Expression getExpression(int argIndex) {
@@ -387,7 +387,8 @@ abstract class InvocationBuilder {
         return builder;
     }
     
-    public static InvocationBuilder invocationForCallable(AbstractTransformer gen, Term expr, Functional parameter) {
+    public static InvocationBuilder invocationForCallable(
+            AbstractTransformer gen, Term expr, ParameterList parameterList) {
         final Tree.MemberOrTypeExpression primary;
         if (expr instanceof Tree.MemberOrTypeExpression) {
             primary = (Tree.MemberOrTypeExpression)expr;
@@ -399,17 +400,16 @@ abstract class InvocationBuilder {
 
         TypeDeclaration primaryDeclaration = expr.getTypeModel().getDeclaration();
         
-        java.util.List<ParameterList> paramLists = parameter.getParameterLists();
-        final java.util.List<Parameter> functionalParameters = paramLists.get(0).getParameters();
+        final java.util.List<Parameter> functionalParameters = parameterList.getParameters();
         
         
         PositionalInvocationBuilder builder = new PositionalInvocationBuilder(
                 gen,
                 primary,
                 primaryDeclaration,
-                gen.expressionGen().getCallableReturnType(expr),
+                gen.getCallableReturnType(expr.getTypeModel()),
                 expr,
-                paramLists) {
+                parameterList) {
             
             @Override
             protected Expression getExpression(int argIndex) {
@@ -417,21 +417,22 @@ abstract class InvocationBuilder {
             }
             @Override
             protected Parameter getParameter(int argIndex) {
-                return paramLists.get(0).getParameters().get(argIndex);
+                return parameterList.getParameters().get(argIndex);
             }
             @Override
             protected int getNumArguments() {
-                return paramLists.get(0).getParameters().size();
+                return parameterList.getParameters().size();
             }
             @Override
             protected boolean hasEllipsis() {
-                return paramLists.get(0).getParameters().get(getNumArguments() - 1).isSequenced();
+                return parameterList.getParameters().get(getNumArguments() - 1).isSequenced();
             }
             @Override
             protected JCExpression getTransformedExpression(int argIndex,
                     boolean isRaw,
                     java.util.List<ProducedType> typeArgumentModels) {
                 Parameter param = declaredParameters.get(argIndex);
+                /*
                 JCExpression argExpr;
                 if (functionalParameters.size() <= 3) {
                     // The Callable has overridden one of the non-varargs call() 
@@ -447,10 +448,11 @@ abstract class InvocationBuilder {
                 }
                 ProducedType castType = gen().getTypeForParameter(param, isRaw, getTypeArguments());
                 JCTypeCast cast = gen().make().TypeCast(gen().makeJavaType(castType, AbstractTransformer.NO_PRIMITIVES), argExpr);
-                
+                // TODO Should this be applyErasureAndBoxing()?
                 JCExpression boxed = gen().boxUnboxIfNecessary(cast, true, 
-                        param.getType(), declaredParameters.get(argIndex).getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED);
-                return boxed;
+                        param.getType(), param.getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED);
+                */
+                return CallableBuilder.unpickCallableParameter(gen(), isRaw, typeArgumentModels, param, argIndex, functionalParameters.size());
             }
         };
         builder.setUnboxed(expr.getUnboxed());
@@ -476,10 +478,10 @@ abstract class InvocationBuilder {
                     primaryDeclaration, 
                     returnType, 
                     specifierExpression, 
-                    method.getParameterLists()) {
+                    method.getParameterLists().get(0)) {
                 @Override
                 protected int getNumArguments() {
-                    return paramLists.get(0).getParameters().size();
+                    return parameterList.getParameters().size();
                 }
                 
                 @Override
@@ -507,7 +509,7 @@ abstract class InvocationBuilder {
                 
                 @Override
                 protected Parameter getParameter(int argIndex) {
-                    return paramLists.get(0).getParameters().get(argIndex);
+                    return parameterList.getParameters().get(argIndex);
                 }
                 
                 @Override
@@ -551,16 +553,16 @@ abstract class InvocationBuilder {
 
 abstract class PositionalInvocationBuilder extends InvocationBuilder {
 
-    protected final java.util.List<ParameterList> paramLists;
+    protected final ParameterList parameterList;
     
     protected PositionalInvocationBuilder(AbstractTransformer gen,
             Tree.Primary primary,
             Declaration primaryDeclaration,
             ProducedType returnType, 
             Node node,
-    java.util.List<ParameterList> paramLists) {
+            ParameterList parameterList) {
         super(gen, primary, primaryDeclaration, returnType, node);
-        this.paramLists = paramLists;
+        this.parameterList = parameterList;
     }
  
     /** Gets the number of arguments */
@@ -585,7 +587,7 @@ abstract class PositionalInvocationBuilder extends InvocationBuilder {
     protected void compute() {
         
         final boolean isRaw = typeArgs.isEmpty();
-        java.util.List<Parameter> declaredParams = paramLists.get(0).getParameters();
+        java.util.List<Parameter> declaredParams = parameterList.getParameters();
         int numParameters = declaredParams.size();
         int numArguments = this.getNumArguments();
         Parameter lastDeclaredParam = declaredParams.isEmpty() ? null : declaredParams.get(declaredParams.size() - 1); 
