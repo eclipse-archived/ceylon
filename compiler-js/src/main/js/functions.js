@@ -145,8 +145,13 @@ function className(obj) {
     return String$(cons.T$name);
 }
 
+function identityHash(obj) {
+    return obj.identifiableObjectID;
+}
+
 exports.exists=exists;
 exports.nonempty=nonempty;
 exports.isOfType=isOfType;
 exports.isOfTypes=isOfTypes;
 exports.className=className;
+exports.identityHash=identityHash;

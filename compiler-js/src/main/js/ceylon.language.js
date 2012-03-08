@@ -60,11 +60,22 @@ var Object$proto = Object$.$$.prototype;
 Object$proto.getString=function() { String$(Object.prototype.toString.apply(this)) };
 Object$proto.toString=function() { return this.getString().value };
 Object$proto.equals = function(other) { return Boolean$(this===other); } //TODO: is this correct?
+var identifiableObjectID=1;
 function IdentifiableObject(obj) {
+    obj.identifiableObjectID=Integer(identifiableObjectID++);
     return obj;
 }
 initType(IdentifiableObject, 'ceylon.language.IdentifiableObject', Object$);
 inheritProto(IdentifiableObject, Object$, '$Object$');
+var IdentifiableObject$proto = IdentifiableObject.$$.prototype;
+IdentifiableObject$proto.getHash = function() { return this.identifiableObjectID; }
+IdentifiableObject$proto.getString = function() { return String$(className(this).value + "@" + this.getHash().value); }
+IdentifiableObject$proto.equals = function(other) {
+    if (isOfType(other, 'ceylon.language.IdentifiableObject')) {
+        return other===this;
+    }
+    return false;
+}
 
 //INTERFACES
 function Cloneable(wat) {
