@@ -89,11 +89,16 @@ public class ModuleValidator {
                 ArtifactResult artifact = null;
                 RepositoryManager repositoryManager = context.getRepositoryManager();
                 Exception exceptionOnGetArtifact = null;
-                ArtifactContext artifactContext = new ArtifactContext(module.getNameAsString(), module.getVersion() );
-                try {
-                    artifact = repositoryManager.getArtifactResult(artifactContext);
-                } catch (IOException e) {
-                    exceptionOnGetArtifact = e;
+                ArtifactContext artifactContext = null;
+                for(String extension : searchedArtifactExtensions){
+                    artifactContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), "."+extension);
+                    try {
+                        artifact = repositoryManager.getArtifactResult(artifactContext);
+                        if(artifact != null) 
+                            break;
+                    } catch (IOException e) {
+                        exceptionOnGetArtifact = e;
+                    }
                 }
                 if (artifact == null) {
                     //not there => error
