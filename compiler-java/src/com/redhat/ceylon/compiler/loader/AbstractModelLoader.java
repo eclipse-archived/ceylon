@@ -275,20 +275,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         case FLOAT:   typeName = "java.lang.Float"; break;
         case DOUBLE:  typeName = "java.lang.Double"; break;
         case ARRAY:
-            TypeMirror componentType = type.getComponentType();
-            //throw new RuntimeException("Array type not implemented");
-            //UnionType[Empty|Sequence<Natural>] casetypes 
-            // producedtypes.typearguments: typeparam[element]->type[natural]
-            TypeDeclaration emptyDecl = (TypeDeclaration)convertToDeclaration("ceylon.language.Empty", DeclarationType.TYPE);
-            TypeDeclaration sequenceDecl = (TypeDeclaration)convertToDeclaration("ceylon.language.Sequence", DeclarationType.TYPE);
-            UnionType unionType = new UnionType(typeFactory);
-            List<ProducedType> caseTypes = new ArrayList<ProducedType>(2);
-            caseTypes.add(emptyDecl.getType());
-            List<ProducedType> typeArguments = new ArrayList<ProducedType>(1);
-            typeArguments.add(getType(componentType, scope));
-            caseTypes.add(sequenceDecl.getProducedType(null, typeArguments));
-            unionType.setCaseTypes(caseTypes);
-            return unionType;
+            return typeFactory.getLanguageModuleDeclaration("Array");
         case DECLARED:
             typeName = type.getQualifiedName();
             break;
@@ -1486,15 +1473,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private ProducedType getType(TypeMirror type, Scope scope) {
+        Declaration decl = convertToDeclaration(type, scope, DeclarationType.TYPE);
+        TypeDeclaration declaration = (TypeDeclaration) decl;
         if (type.getKind() == TypeKind.ARRAY) {
-            Declaration decl = typeFactory.getLanguageModuleDeclaration("Array");
-            TypeDeclaration declaration = (TypeDeclaration) decl;
             List<ProducedType> typeArguments = new ArrayList<ProducedType>(1);
-            typeArguments.add((ProducedType) obtainType(type.getComponentType(), scope));
+            TypeMirror ct = type.getComponentType();
+            typeArguments.add((ProducedType) obtainType(ct, scope));
             return declaration.getProducedType(null, typeArguments);
         } else {
-            Declaration decl = convertToDeclaration(type, scope, DeclarationType.TYPE);
-            TypeDeclaration declaration = (TypeDeclaration) decl;
             List<TypeMirror> javacTypeArguments = type.getTypeArguments();
             if(!javacTypeArguments.isEmpty()){
                 List<ProducedType> typeArguments = new ArrayList<ProducedType>(javacTypeArguments.size());
