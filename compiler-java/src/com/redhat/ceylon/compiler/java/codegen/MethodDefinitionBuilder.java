@@ -61,8 +61,8 @@ public class MethodDefinitionBuilder {
     private boolean isActual;
     private boolean isFormal;
     
-    private TypedDeclaration resultType;
     private JCExpression resultTypeExpr;
+    private List<JCAnnotation> resultTypeAnnos;
     
     private final ListBuffer<JCAnnotation> annotations = ListBuffer.lb();
     
@@ -105,8 +105,8 @@ public class MethodDefinitionBuilder {
         if (isActual) {
             this.annotations.appendList(gen.makeAtOverride());
         }
-        if (resultType != null) {
-            annotations(gen.makeJavaTypeAnnotations(resultType));
+        if (resultTypeAnnos != null) {
+            annotations(resultTypeAnnos);
         }
         if(!typeParamAnnotations.isEmpty())
             annotations(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
@@ -135,7 +135,8 @@ public class MethodDefinitionBuilder {
     }
 
     private JCExpression makeResultType(TypedDeclaration resultType) {
-        if (resultType == null) {
+        if (resultType == null
+                || resultType.getType().isExactly(gen.typeFact().getVoidDeclaration().getType())) {
             return gen.make().TypeIdent(VOID);
         } else {
             return gen.makeJavaType(resultType);
@@ -267,19 +268,19 @@ public class MethodDefinitionBuilder {
     }
 
     public MethodDefinitionBuilder resultType(Method method) {
-        this.resultType = method;
-        this.resultTypeExpr = makeResultType(gen.nonWideningTypeDecl(method));
-        return this;
+        return resultType(makeResultType(gen.nonWideningTypeDecl(method)), method);
     }
 
     public MethodDefinitionBuilder resultType(TypedDeclaration resultType) {
-        this.resultType = resultType;
-        this.resultTypeExpr = makeResultType(resultType);
-        return this;
+        return resultType(makeResultType(resultType), resultType);
     }
 
     public MethodDefinitionBuilder resultType(JCExpression resultType, TypedDeclaration typeDecl) {
-        this.resultType = typeDecl;
+        return resultType(gen.makeJavaTypeAnnotations(typeDecl), resultType);
+    }
+    
+    public MethodDefinitionBuilder resultType(List<JCAnnotation> resultTypeAnnos, JCExpression resultType) {
+        this.resultTypeAnnos = resultTypeAnnos;
         this.resultTypeExpr = resultType;
         return this;
     }
