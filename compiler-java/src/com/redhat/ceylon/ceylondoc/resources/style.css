@@ -266,7 +266,9 @@ ul.inheritance ul.inheritance li:before {
 #section-interfaces .tags,
 #section-classes .tags,
 #section-attributes .tags,
-#section-methods .tags {
+#section-methods .tags,
+#section-nested_interfaces .tags,
+#section-nested_classes .tags {	
 	float: right;
 	clear: right;
 	margin-bottom: 4px;
@@ -275,7 +277,9 @@ ul.inheritance ul.inheritance li:before {
 #section-interfaces .tags .tagCaption,
 #section-classes .tags .tagCaption,
 #section-attributes .tags .tagCaption,
-#section-methods .tags .tagCaption	{
+#section-methods .tags .tagCaption,
+#section-nested_interfaces .tags .tagCaption,
+#section-nested_classes .tags .tagCaption {	
 	display: none;
 }
 

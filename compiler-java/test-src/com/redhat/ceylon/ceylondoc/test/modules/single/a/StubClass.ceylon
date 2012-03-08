@@ -50,8 +50,11 @@ shared class StubClass() satisfies StubInterface {
     
     shared actual void defaultMethod() {}
     
+    doc "This is `StubInnerInterface`"
+    tagged("stubInnerTag1")
     shared interface StubInnerInterface {
 
+        tagged("stubInnerMethodTag1")
         shared formal void innerMethod();
        
     }

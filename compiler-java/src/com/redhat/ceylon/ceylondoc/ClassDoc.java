@@ -478,11 +478,11 @@ public class ClassDoc extends ClassOrPackageDoc {
         open("td");
         writeIcon(c);
         link(c.getType());
+        writeTagged(c);
         tag("br");
         startPrintingLongDoc(c);
         writeBy(c);
         writeSee(c);
-        writeTagged(c);
         endLongDocAndPrintShortDoc(c);
         close("td");
         close("tr");

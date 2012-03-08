@@ -252,7 +252,7 @@ public class CeylonDocToolTest {
     
     private void assertTagged(File destDir) throws IOException {
         assertMatchInFile(destDir, ".resources/index.js", 
-                Pattern.compile("var tagIndex = \\[\\n'stubTag1',"));
+                Pattern.compile("var tagIndex = \\[\\n'stubInnerMethodTag1',"));
         assertMatchInFile(destDir, ".resources/index.js", 
                 Pattern.compile("\\{'name': 'StubClass', 'type': 'class', 'url': 'class_StubClass.html', 'doc': '<p>This is <code>StubClass</code></p>\\\\n', 'tags': \\['stubTag1', 'stubTag2'\\]\\}"));
         assertMatchInFile(destDir, ".resources/index.js", 
