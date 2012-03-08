@@ -5,7 +5,7 @@ shared abstract class Array<Element>()
                   Cloneable<Array<Element>> &
                   Ranged<Integer, Array<Element>> {
     
-    shared formal void setItem(Integer index, Element element);
+    shared formal void setItem(Integer index, Element? element);
     
     shared actual Boolean equals(Object that) {
         //TODO: copy/pasted from List
