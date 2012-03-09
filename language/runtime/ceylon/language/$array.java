@@ -28,6 +28,10 @@ public final class $array {
 			Element elem = (Element)$tmp;
 			if (elem!=null) list.add(elem);
 		}
-        return new ceylon.language.NonemptyArray<Element>(list);
+		if (list.size() > 0) {
+		    return new ceylon.language.NonemptyArray<Element>(list);
+		} else {
+		    return arrayOfNone.<Element>arrayOfNone();
+		}
     }
 }

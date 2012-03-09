@@ -97,9 +97,11 @@ public interface List<Element>
             java.lang.StringBuilder result = new java.lang.StringBuilder("{ ");
             java.lang.Object elem;
             for (Iterator<? extends Element> iter=$this.getIterator(); !((elem = iter.next()) instanceof Finished);) {
-                result.append(elem).append(", ");
+                if (result.length() > 2) {
+                    result.append(", ");
+                }
+                result.append(elem);
             }
-            result.setLength(result.length()-2);
             result.append(" }");
             return result.toString();
         }
