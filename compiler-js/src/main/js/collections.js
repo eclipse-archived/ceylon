@@ -89,6 +89,7 @@ function Some(wat) {
     return wat;
 }
 initType(Some, 'ceylon.language.Some', FixedSized);
+inheritProto(Some, FixedSized, '$FixedSized$');
 //we can skip inheritProto because we override the only inherited method
 var $Some = Some.$$;
 $Some.prototype.getFirst = function() {
@@ -103,6 +104,7 @@ function None(wat) {
     return wat;
 }
 initType(None, 'ceylon.language.None', FixedSized);
+inheritProto(Some, FixedSized, '$FixedSized$');
 //we can skip inheritProto because we override the only inherited method
 var None$proto = None.$$.prototype;
 None$proto.getFirst = function() { return null; }

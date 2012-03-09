@@ -3,5 +3,6 @@ shared void test() {
   testCorrespondence();
   testMisc();
   testCollection();
+  testFixedSized();
   results();
 }
