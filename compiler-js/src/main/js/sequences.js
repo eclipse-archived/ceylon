@@ -2,10 +2,12 @@ function Sequence($$sequence) {
     return $$sequence;
 }
 initType(Sequence, 'ceylon.language.Sequence', List, Some, Cloneable, Ranged);
+inheritProto(Sequence, List, '$List$');
+inheritProto(Sequence, Some, '$Some$');
 var Sequence$proto = Sequence.$$.prototype;
-Sequence$proto.getEmpty = function() { return $false }
-Sequence$proto.getSize = function() { return Integer(this.getLastIndex()+1) }
-Sequence$proto.defines = function(index) { return Boolean$(index.value<=this.getLastIndex().value) }
+Sequence$proto.getEmpty = function() { return $false; }
+Sequence$proto.getSize = function() { return this.getLastIndex().getSuccessor(); }
+Sequence$proto.defines = function(index) { return Boolean$(index.compare(this.getSize()) === smaller); }
 
 function Empty() {
     var that = new Empty.$$;
@@ -13,6 +15,8 @@ function Empty() {
     return that;
 }
 initType(Empty, 'ceylon.language.Empty', List, None, Ranged, Cloneable);
+inheritProto(Empty, List, '$List$');
+inheritProto(Empty, None, '$None$');
 var Empty$proto = Empty.$$.prototype;
 Empty$proto.getEmpty = function() { return $true; }
 Empty$proto.defines = function(x) { return $false; }
@@ -78,7 +82,6 @@ ArraySequence$proto.getEmpty = function() { return this.value.length > 0 ? getFa
 ArraySequence$proto.getLastIndex = function() { return this.getSize().getPredecessor(); }
 ArraySequence$proto.getFirst = function() { return this.item(Integer(0)); }
 ArraySequence$proto.getLast = function() { return this.item(this.getLastIndex()); }
-ArraySequence$proto.defines = function(idx) { return Boolean$(idx.compare(this.getSize()) === smaller); }
 ArraySequence$proto.segment = function(from, len) {
     var seq = [];
     if (len.compare(Integer(0)) === larger) {
