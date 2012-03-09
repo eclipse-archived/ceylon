@@ -433,11 +433,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     private Class makeLazyClass(ClassMirror classMirror, Class superClass, MethodMirror constructor, boolean forTopLevelObject) {
-        return new LazyClass(classMirror, this, superClass, constructor, forTopLevelObject);
+        Class klass = new LazyClass(classMirror, this, superClass, constructor, forTopLevelObject);
+        addInnerClasses(klass, classMirror);
+        return klass;
     }
 
     private Interface makeLazyInterface(ClassMirror classMirror) {
-        return new LazyInterface(classMirror, this);
+        Interface iface = new LazyInterface(classMirror, this);
+        addInnerClasses(iface, classMirror);
+        return iface;
     }
 
     public Declaration convertToDeclaration(String typeName, DeclarationType declarationType) {
@@ -874,7 +878,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         setSatisfiedTypes(klass, classMirror);
         setCaseTypes(klass, classMirror);
         fillRefinedDeclarations(klass);
-        addInnerClasses(klass, classMirror);
         setAnnotations(klass, classMirror);
     }
 
@@ -1479,7 +1482,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             List<ProducedType> typeArguments = new ArrayList<ProducedType>(1);
             TypeMirror ct = type.getComponentType();
             typeArguments.add((ProducedType) obtainType(ct, scope));
-            return declaration.getProducedType(null, typeArguments);
+            return declaration.getProducedType(getQualifyingType(declaration), typeArguments);
         } else {
             List<TypeMirror> javacTypeArguments = type.getTypeArguments();
             if(!javacTypeArguments.isEmpty()){
@@ -1490,10 +1493,18 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         return typeFactory.getObjectDeclaration().getType();
                     typeArguments.add((ProducedType) getType(typeArgument, scope));
                 }
-                return declaration.getProducedType(null, typeArguments);
+                return declaration.getProducedType(getQualifyingType(declaration), typeArguments);
             }
             return declaration.getType();
         }
+    }
+
+    private ProducedType getQualifyingType(TypeDeclaration declaration) {
+        // As taken from ProducedType.getType():
+        if (declaration.isMember()) {
+            return((ClassOrInterface) declaration.getContainer()).getType();
+        }
+        return null;
     }
 
     @Override
