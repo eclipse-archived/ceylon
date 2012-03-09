@@ -308,8 +308,9 @@ abstract class InvocationBuilder {
                             }
                             String varName = varBaseName + "$" + index;
                             // if we can't pick up on the type from the declaration, revert to the type of the expression
-                            if(gen().isTypeParameter(type))
+                            if(gen().isTypeParameter(gen().simplifyType(type)))
                                 type = expr.getTypeModel();
+                            
                             JCExpression typeExpr = gen().makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
                             JCExpression argExpr = gen().expressionGen().transformExpression(expr, boxType, type);
                             JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
