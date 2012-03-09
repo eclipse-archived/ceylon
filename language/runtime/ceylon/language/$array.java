@@ -31,7 +31,7 @@ public final class $array {
 		if (list.size() > 0) {
 		    return new ceylon.language.NonemptyArray<Element>(list);
 		} else {
-		    return arrayOfNone.arrayOfNone();
+		    return arrayOfNone.<Element>arrayOfNone();
 		}
     }
 }
