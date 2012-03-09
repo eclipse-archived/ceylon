@@ -17,44 +17,183 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+import java.lang {
+    JBoolean = Boolean,
+    JByte = Byte,
+    JShort = Short,
+    JInteger = Integer,
+    JLong = Long,
+    JFloat = Float,
+    JDouble = Double,
+    JCharacter = Character
+}
+import com.redhat.ceylon.compiler.java.test.interop { TypesJava }
+import java.io { File }
+
 @nomodel
-@error
-void arraysBoxed() {
-    @error
-    TypesJava java = TypesJava();
-    Boolean[] b1 = java.array_boolean();
-    Boolean[] b2 = java.array_Boolean();
-    Integer[] n1 = java.array_int();
-    Integer[] n2 = java.array_Integer();
-    Integer[] n3 = java.array_long();
-    Integer[] n4 = java.array_Long();
-    Float[] f1 = java.array_float();
-    Float[] f2 = java.array_Float();
-    Float[] f3 = java.array_double();
-    Float[] f4 = java.array_Double();
-    Character[] c1 = java.array_char();
-    Character[] c2 = java.array_Character();
-    String[] s = java.array_String();
-    Object[] o = java.array_Object();
+void testFiles() {
+    File f = File(".");
+    Array<File> items = f.listFiles();
+    File? f2 = items.item(0);
 }
 
 @nomodel
-@error
-void arraysUnboxed() {
-    @error
+void test_booleans() {
     TypesJava java = TypesJava();
-    Array<Boolean> b1 = java.array_boolean();
-    Array<Boolean> b2 = java.array_Boolean();
-    Array<Integer> n1 = java.array_int();
-    Array<Integer> n2 = java.array_Integer();
-    Array<Integer> n3 = java.array_long();
-    Array<Integer> n4 = java.array_Long();
-    Array<Float> f1 = java.array_float();
-    Array<Float> f2 = java.array_Float();
-    Array<Float> f3 = java.array_double();
-    Array<Float> f4 = java.array_Double();
-    Array<Character> c1 = java.array_char();
-    Array<Character> c2 = java.array_Character();
-    Array<String> s = java.array_String();
-    Array<Object> o = java.array_Object();
+    Array<Boolean> items = java.return_booleans();
+    Boolean? b = items.item(0);
+    items.setItem(1, b);
+    for (Boolean b2 in items) { print(b2); }
+    java.take_booleans(items);
 }
+
+@nomodel
+void test_JBooleans() {
+    TypesJava java = TypesJava();
+    Array<JBoolean> items = java.return_Booleans();
+    JBoolean? b = items.item(0);
+    items.setItem(1, b);
+    for (JBoolean b2 in items) { print(b2); }
+    java.take_Booleans(items);
+}
+/*
+@nomodel
+void test_bytes() {
+    TypesJava java = TypesJava();
+    Array<Integer> items = java.return_bytes();
+    Integer? n = items.item(0);
+    items.setItem(1, n);
+    for (Integer n2 in items) { print(n2); }
+    java.take_bytes(items);
+}
+
+@nomodel
+void test_shorts() {
+    TypesJava java = TypesJava();
+    Array<Integer> items = java.return_shorts();
+    Integer? n = items.item(0);
+    items.setItem(1, n);
+    for (Integer n2 in items) { print(n2); }
+    java.take_shorts(items);
+}
+
+@nomodel
+void test_ints() {
+    TypesJava java = TypesJava();
+    Array<Integer> items = java.return_ints();
+    Integer? n = items.item(0);
+    items.setItem(1, n);
+    for (Integer n2 in items) { print(n2); }
+    java.take_ints(items);
+}
+*/
+@nomodel
+void test_JIntegers() {
+    TypesJava java = TypesJava();
+    Array<JInteger> items = java.return_Integers();
+    JInteger? n = items.item(0);
+    items.setItem(1, n);
+    for (JInteger n2 in items) { print(n2); }
+    java.take_Integers(items);
+}
+
+@nomodel
+void test_longs() {
+    TypesJava java = TypesJava();
+    Array<Integer> items = java.return_longs();
+    Integer? n = items.item(0);
+    items.setItem(1, n);
+    for (Integer n2 in items) { print(n2); }
+    java.take_longs(items);
+}
+
+@nomodel
+void test_JLongs() {
+    TypesJava java = TypesJava();
+    Array<JLong> items = java.return_Longs();
+    JLong? n = items.item(0);
+    items.setItem(1, n);
+    for (JLong n2 in items) { print(n2); }
+    java.take_Longs(items);
+}
+/*
+@nomodel
+void test_floats() {
+    TypesJava java = TypesJava();
+    Array<Float> items = java.return_floats();
+    Float? f = items.item(0);
+    items.setItem(1, f);
+    for (Float f2 in items) { print(f2); }
+    java.take_floats(items);
+}
+*/
+@nomodel
+void test_JFloats() {
+    TypesJava java = TypesJava();
+    Array<JFloat> items = java.return_Floats();
+    JFloat? f = items.item(0);
+    items.setItem(1, f);
+    for (JFloat f2 in items) { print(f2); }
+    java.take_Floats(items);
+}
+
+@nomodel
+void test_doubles() {
+    TypesJava java = TypesJava();
+    Array<Float> items = java.return_doubles();
+    Float? f = items.item(0);
+    items.setItem(1, f);
+    for (Float f2 in items) { print(f2); }
+    java.take_doubles(items);
+}
+
+@nomodel
+void test_JDoubles() {
+    TypesJava java = TypesJava();
+    Array<JDouble> items = java.return_Doubles();
+    JDouble? f = items.item(0);
+    items.setItem(1, f);
+    for (JDouble f2 in items) { print(f2); }
+    java.take_Doubles(items);
+}
+/*
+@nomodel
+void test_chars() {
+    TypesJava java = TypesJava();
+    Array<Character> items = java.return_chars();
+    Character? c = items.item(0);
+    items.setItem(1, c);
+    for (Character c2 in items) { print(c2); }
+    java.take_chars(items);
+}
+*/
+@nomodel
+void test_JCharacters() {
+    TypesJava java = TypesJava();
+    Array<JCharacter> items = java.return_Characters();
+    JCharacter? c = items.item(0);
+    items.setItem(1, c);
+    for (JCharacter c2 in items) { print(c2); }
+    java.take_Characters(items);
+}
+
+@nomodel
+void test_Strings() {
+    TypesJava java = TypesJava();
+    Array<String> items = java.return_Strings();
+    String? s = items.item(0);
+    items.setItem(1, s);
+    for (String s2 in items) { print(s2); }
+    java.take_Strings(items);
+}
+
+@nomodel
+void test_Objects() {
+    TypesJava java = TypesJava();
+    Array<Object> items = java.return_Objects();
+    Object? o = items.item(0);
+    items.setItem(1, o);
+    for (Object o2 in items) { print(o2); }
+    java.take_Objects(items);
+}
+
