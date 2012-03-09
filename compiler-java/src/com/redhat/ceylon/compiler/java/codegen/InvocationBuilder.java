@@ -112,8 +112,8 @@ abstract class InvocationBuilder {
         if(typeArguments != null){
             for (ProducedType arg : typeArguments) {
                 // cancel type parameters and go raw if we can't specify them
-                if(gen().willEraseToObject(arg)
-                        || gen().isTypeParameter(arg))
+                if(gen().willEraseToObject(arg))
+                        //|| gen().isTypeParameter(arg))
                     return List.nil();
                 result = result.append(gen().makeJavaType(arg, AbstractTransformer.TYPE_ARGUMENT));
             }
@@ -433,27 +433,8 @@ abstract class InvocationBuilder {
                     boolean isRaw,
                     java.util.List<ProducedType> typeArgumentModels) {
                 Parameter param = declaredParameters.get(argIndex);
-                /*
-                JCExpression argExpr;
-                if (functionalParameters.size() <= 3) {
-                    // The Callable has overridden one of the non-varargs call() 
-                    // methods
-                    argExpr = gen().make().Ident(
-                            gen().names().fromString("arg"+argIndex));
-                } else {
-                    // The Callable has overridden the varargs call() method
-                    // so we need to index into the varargs array
-                    argExpr = gen().make().Indexed(
-                            gen().make().Ident(gen().names().fromString("arg0")), 
-                            gen().make().Literal(argIndex));
-                }
-                ProducedType castType = gen().getTypeForParameter(param, isRaw, getTypeArguments());
-                JCTypeCast cast = gen().make().TypeCast(gen().makeJavaType(castType, AbstractTransformer.NO_PRIMITIVES), argExpr);
-                // TODO Should this be applyErasureAndBoxing()?
-                JCExpression boxed = gen().boxUnboxIfNecessary(cast, true, 
-                        param.getType(), param.getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED);
-                */
-                return CallableBuilder.unpickCallableParameter(gen(), isRaw, typeArgumentModels, param, argIndex, functionalParameters.size());
+                ProducedType argType = primary.getTypeModel().getTypeArgumentList().get(argIndex+1);
+                return CallableBuilder.unpickCallableParameter(gen(), isRaw, typeArgumentModels, param, argType, argIndex, functionalParameters.size());
             }
         };
         builder.setUnboxed(expr.getUnboxed());

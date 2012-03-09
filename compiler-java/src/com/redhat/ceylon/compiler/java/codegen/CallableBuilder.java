@@ -61,7 +61,7 @@ public class CallableBuilder {
         cb.paramLists = parameterList;
         int ii =0;
         for (Parameter p : parameterList.getParameters()) {
-            JCExpression init = unpickCallableParameter(gen, true, null, p, ii, parameterList.getParameters().size());
+            JCExpression init = unpickCallableParameter(gen, true, null, p, null, ii, parameterList.getParameters().size());
             //gen.expressionGen().applyErasureAndBoxing(gen.makeQuotedIdent("arg"+ii), 
             //        gen., exprBoxed, boxingStrategy, p.getType());
             //JCExpression init = gen.make().TypeCast(gen.makeJavaType(p.getType()), gen.makeQuotedIdent("arg"+ii))
@@ -128,6 +128,7 @@ public class CallableBuilder {
             boolean isRaw,
             java.util.List<ProducedType> typeArgumentModels,
             Parameter param,
+            ProducedType argType, 
             int argIndex,
             int numParameters) {
         JCExpression argExpr;
@@ -143,7 +144,12 @@ public class CallableBuilder {
                     gen.make().Ident(gen.names().fromString("arg0")), 
                     gen.make().Literal(argIndex));
         }
-        ProducedType castType = gen.getTypeForParameter(param, isRaw, typeArgumentModels);
+        ProducedType castType;
+        if (argType != null) {
+            castType = argType;
+        } else {
+            castType = gen.getTypeForParameter(param, isRaw, typeArgumentModels);
+        }
         JCTypeCast cast = gen.make().TypeCast(gen.makeJavaType(castType, AbstractTransformer.NO_PRIMITIVES), argExpr);
         // TODO Should this be calling applyErasureAndBoxing() instead?
         BoxingStrategy boxingStrategy;
