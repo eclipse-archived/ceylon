@@ -1,0 +1,46 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+class C<X> {
+    
+    public final <Y>X f(final X x, final Y y) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    C() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.method.C();
+    }
+}
+class MethodSpecifyingTopLevelWithTypeParamMixed<S, T> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.C<.ceylon.language.String> c;
+    
+    public final .com.redhat.ceylon.compiler.java.test.structure.method.C<.ceylon.language.String> getC() {
+        return c;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.C<S> c2;
+    
+    public final .com.redhat.ceylon.compiler.java.test.structure.method.C<S> getC2() {
+        return c2;
+    }
+    
+    private final .java.lang.String foo(final .java.lang.String s, final long i) {
+        return getC().<.ceylon.language.Integer>f(.ceylon.language.String.instance(s), .ceylon.language.Integer.instance(i)).toString();
+    }
+    
+    private final S bar(final S x, final T y) {
+        return getC2().<T>f(x, y);
+    }
+    
+    MethodSpecifyingTopLevelWithTypeParamMixed() {
+        this.c = new .com.redhat.ceylon.compiler.java.test.structure.method.C<.ceylon.language.String>();
+        this.c2 = new .com.redhat.ceylon.compiler.java.test.structure.method.C<S>();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingTopLevelWithTypeParamMixed();
+    }
+}

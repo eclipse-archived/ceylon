@@ -17,7 +17,7 @@ final class f {
 class MethodSpecifierCallable {
     
     private final .java.lang.String foo(final long i) {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.f.f().call(i).toString();
+        return .com.redhat.ceylon.compiler.java.test.structure.method.f.f().call(.ceylon.language.Integer.instance(i)).toString();
     }
     
     MethodSpecifierCallable() {

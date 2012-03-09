@@ -18,15 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class C<X>() {
-    shared X f<Y>(X x,Y y) {
-        throw;
-    }
-}
-@nomodel
-class MethodSpecifyingTopLevelWithTypeParamMixed<S,T>() {
-    shared C<String> c = C<String>();
-    shared C<S> c2 = C<S>();
-    String foo(String s, Integer i) = c.f<Integer>;
-    S bar(S x, T y) = c2.f<T>;
+void higher(Callable<String,Integer> ref){
+    function f(Integer i)=ref;
+    f(2);
 }
