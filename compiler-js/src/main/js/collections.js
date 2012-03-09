@@ -49,7 +49,28 @@ function Collection(wat) {
 initType(Collection, 'ceylon.language.Collection', Iterable, Sized, Category, Cloneable);
 inheritProto(Collection, Sized, '$Sized$');
 inheritProto(Collection, Category, '$Category$');
-//TODO implement methods
+var Collection$proto = Collection.$$.prototype;
+Collection$proto.contains = function(obj) {
+    var iter = this.getIterator();
+    var item;
+    while ((item = iter.next()) !== $finished) {
+        if (exists(item) === $true && item.equals(obj) === $true) {
+            return $true;
+        }
+    }
+    return $false;
+}
+Collection$proto.count = function(obj) {
+    var iter = this.getIterator();
+    var item;
+    var count = 0;
+    while ((item = iter.next()) !== $finished) {
+        if (exists(item) === $true && item.equals(obj) === $true) {
+            count++;
+        }
+    }
+    return Integer(count);
+}
 exports.Collection=Collection;
 
 function FixedSized(wat) {
