@@ -17,9 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+import java.util {HashMap, Map}
+
 @nomodel
-class Bug407() {
-    void test(Map<String, Integer> map) {
-        for (me in map) {}
-    } 
+void bug407() {
+    Map<String, Integer> map = HashMap<String, Integer>();
+    for (me in map.entrySet()) {}
 }
