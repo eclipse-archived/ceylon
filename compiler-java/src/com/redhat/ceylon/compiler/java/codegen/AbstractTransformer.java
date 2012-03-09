@@ -480,19 +480,19 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     // A type is optional when it is a union of Nothing|Type...
-    protected boolean isOptional(ProducedType type) {
+    public boolean isOptional(ProducedType type) {
         return typeFact().isOptionalType(type);
     }
     
-    protected boolean isNothing(ProducedType type) {
+    public boolean isNothing(ProducedType type) {
         return typeFact.getNothingDeclaration().getType().isExactly(type);
     }
     
-    protected boolean isVoid(ProducedType type) {
+    public boolean isVoid(ProducedType type) {
         return typeFact.getVoidDeclaration().getType().isExactly(type);
     }
 
-    protected boolean isObject(ProducedType type) {
+    public boolean isObject(ProducedType type) {
         return typeFact.getObjectDeclaration().getType().isExactly(type);
     }
 
@@ -1447,7 +1447,7 @@ public abstract class AbstractTransformer implements Transformation {
             } else if (type.isExactly(typeFact().getObjectDeclaration().getType())){
                 // is Object => is not null
                 return make().Binary(JCTree.NE, varExpr, makeNull());
-            } else if (type.isExactly(typeFact().getVoidDeclaration().getType())){
+            } else if (isVoid(type)){
                 // everything is Void, it's the root of the hierarchy
                 return makeIgnoredEvalAndReturn(varExpr, makeBoolean(true));
             } else if (type.isExactly(typeFact().getObjectDeclaration().getType())){

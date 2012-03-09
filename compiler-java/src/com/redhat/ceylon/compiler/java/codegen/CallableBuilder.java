@@ -42,8 +42,7 @@ public class CallableBuilder {
         cb.paramLists = parameterList;
         cb.typeModel = expr.getTypeModel();
         ProducedType returnType = gen.getCallableReturnType(cb.typeModel);
-        boolean isVoidFunction = returnType.isExactly(gen.typeFact().getVoidDeclaration().getType());
-        if (isVoidFunction) {
+        if (gen.isVoid(returnType)) {
             cb.body = List.<JCStatement>of(gen.make().Exec(fnCall), gen.make().Return(gen.makeNull()));
         } else {
             cb.body = List.<JCStatement>of(gen.make().Return(fnCall));

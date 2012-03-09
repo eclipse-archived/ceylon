@@ -136,7 +136,7 @@ public class MethodDefinitionBuilder {
 
     JCExpression makeResultType(TypedDeclaration resultType) {
         if (resultType == null
-                || resultType.getType().isExactly(gen.typeFact().getVoidDeclaration().getType())) {
+                || gen.isVoid(resultType.getType())) {
             return gen.make().TypeIdent(VOID);
         } else {
             return gen.makeJavaType(resultType);

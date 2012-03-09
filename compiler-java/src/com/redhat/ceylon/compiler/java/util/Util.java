@@ -42,6 +42,7 @@ import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
+import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
 import com.redhat.ceylon.compiler.loader.model.JavaMethod;
@@ -53,6 +54,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
@@ -71,7 +73,7 @@ public class Util {
         return "hash".equals(name) || "string".equals(name);
     }
 
-    public static String quoteMethodNameIfProperty(Method method, Unit typeFact) {
+    public static String quoteMethodNameIfProperty(Method method, AbstractTransformer gen) {
         String name = method.getName();
         // only quote if method is a member, we cannot get a conflict for local or toplevel methods
         // since local methods have a $getter suffix and toplevel attribute class names are not mangled
@@ -86,12 +88,12 @@ public class Util {
         if(((name.length() >= 4 && name.startsWith("get"))
              || name.length() >= 3 && name.startsWith("is"))
             && method.getParameterLists().get(0).getParameters().isEmpty()
-            && !method.getType().isExactly(typeFact.getVoidDeclaration().getType()))
+            && !gen.isVoid(method.getType()))
             return quote(name);
         // set with one parameter and void type
         if((name.length() >= 4 && name.startsWith("set"))
            && method.getParameterLists().get(0).getParameters().size() == 1
-           && method.getType().isExactly(typeFact.getVoidDeclaration().getType()))
+           && gen.isVoid(method.getType()))
             return quote(name);
         return name;
     }

@@ -362,7 +362,7 @@ public class ClassTransformer extends AbstractTransformer {
         } else if (def instanceof MethodDeclaration
                 && ((MethodDeclaration) def).getSpecifierExpression() != null) {
             InvocationBuilder specifierBuilder = InvocationBuilder.invocationForSpecifier(gen(), ((MethodDeclaration) def).getSpecifierExpression(), def.getDeclarationModel());
-            if (def.getType().getTypeModel().isExactly(typeFact().getVoidDeclaration().getType())) {
+            if (gen().isVoid(def.getType().getTypeModel())) {
                 body = List.<JCStatement>of(make().Exec(specifierBuilder.build()));
             } else {
                 body = List.<JCStatement>of(make().Return(specifierBuilder.build()));
@@ -378,7 +378,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         // Finally construct the outermost method using the body we've built so far
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(def), model.isClassOrInterfaceMember(), 
-                Util.quoteMethodNameIfProperty(model, typeFact()));
+                Util.quoteMethodNameIfProperty(model, gen()));
         
         ParameterList paramList = parameterLists.get(0);
         
@@ -421,7 +421,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     public JCMethodDecl transformConcreteInterfaceMember(MethodDefinition def, ProducedType type) {
-        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(def), true, Util.quoteMethodNameIfProperty(def.getDeclarationModel(), typeFact()));
+        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(def), true, Util.quoteMethodNameIfProperty(def.getDeclarationModel(), gen()));
         
         JCExpression typeExpr = makeJavaType(type);
         methodBuilder.parameter(FINAL, "$this", typeExpr, List.<JCTree.JCAnnotation>nil());
