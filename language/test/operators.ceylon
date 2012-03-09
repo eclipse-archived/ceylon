@@ -11,7 +11,8 @@ void operators() {
     assert(!exists maybe?[10], "?[]");
     assert(!exists maybeNot?[0], "?[]");
     assert(!exists maybeNot?[10], "?[]");
-    
+    assert(!nonempty maybeNot, "nonempty null");
+
     String[] empty = {};
     String[] full = { "hello", "world" };
     assert(!nonempty empty[].uppercased, "spread 1");
@@ -32,15 +33,16 @@ void operators() {
     if (exists s2s=spread2[1]) {
         assert(s2s == `o`, "spread 8");
     } else { fail("spread 8"); }
-    /*Callable<Character?[], Integer> spread3 = full[].item;
+    Character?[] spread3(Integer x) = full[].item;
+    //Callable<Character?[], Integer> spread3 = full[].item;
     value spread4 = spread3(1);
     assert(spread4.size == 2, "spread 10");
     if (exists s4s=spread4[0]) {
-        assert(s4s == "e", "spread 11");
+        assert(s4s == `e`, "spread 11");
     } else { fail("spread 11"); }
     if (exists s4s=spread4[1]) {
-        assert(s4s == "o", "spread 12");
-    } else { fail("spread 12"); }*/
+        assert(s4s == `o`, "spread 12");
+    } else { fail("spread 12"); }
 
     assert("hello" in "hello world", "in 1");
     assert("world" in "hello world", "in 2");
