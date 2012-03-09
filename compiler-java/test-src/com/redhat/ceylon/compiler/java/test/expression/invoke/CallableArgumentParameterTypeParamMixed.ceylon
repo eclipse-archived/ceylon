@@ -18,14 +18,24 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void f<S,T>(void foo(S s, T t)) {
+void f<S,T>(S foo(S s, T t)) {
 }
 @nomodel
-void bar<U,V>(U u, V v) {
+U bar<U,V>(U u, V v) {
+    return u;
+}
+@nomodel
+Integer baz(Integer i, Boolean b) {
+    return i;
 }
 @nomodel
 class C<X>() {
     void m<Y>() {
+        f<Integer,Boolean>(baz);
+        f<Boolean,Integer>(bar<Boolean,Integer>);
+        f<X,Integer>(bar<X,Integer>);
         f<X,Y>(bar<X,Y>);
+        f<X&Y,Y>(bar<X&Y,Y>);
+        f<X|Y,Y>(bar<X|Y,Y>);
     }
 }

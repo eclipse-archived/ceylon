@@ -28,12 +28,12 @@ class GenericMethodInvocationMixed<X> {
     
     public final <Y>void m3(final X x, final Y y) {
         final .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams<X> k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams<X>();
-        k.bar(x, y);
+        k.<Y>bar(x, y);
     }
     
     public final <Y>void m4(final X x, final Y y) {
         final .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams<X> k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams<X>();
-        (let .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams<X> $arg$1$callable$ = k,X $arg$1$0 = x,Y $arg$1$1 = y in $arg$1$callable$.bar($arg$1$0, $arg$1$1));
+        (let .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams<X> $arg$1$callable$ = k,X $arg$1$0 = x,Y $arg$1$1 = y in $arg$1$callable$.<Y>bar($arg$1$0, $arg$1$1));
     }
     
     GenericMethodInvocationMixed() {

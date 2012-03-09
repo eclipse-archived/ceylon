@@ -1,0 +1,83 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class f {
+    
+    private f() {
+    }
+    
+    static <S, T>void f(final .ceylon.language.Callable<S> foo) {
+    }
+}
+final class bar {
+    
+    private bar() {
+    }
+    
+    static <U, V>U bar(final U u, final V v) {
+        return u;
+    }
+}
+final class baz {
+    
+    private baz() {
+    }
+    
+    static long baz(final long i, final boolean b) {
+        return i;
+    }
+}
+class C<X> {
+    
+    private final <Y>void m() {
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.<.ceylon.language.Integer, .ceylon.language.Boolean>f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Callable<Integer,Integer,Boolean>"){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer call(final .java.lang.Object arg0, final .java.lang.Object arg1) {
+                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.baz.baz(((.ceylon.language.Integer)arg0).longValue(), ((.ceylon.language.Boolean)arg1).booleanValue()));
+            }
+        });
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.<.ceylon.language.Boolean, .ceylon.language.Integer>f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>("Callable<Boolean,Boolean,Integer>"){
+            
+            @.java.lang.Override
+            public .ceylon.language.Boolean call(final .java.lang.Object arg0, final .java.lang.Object arg1) {
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.<.ceylon.language.Boolean, .ceylon.language.Integer>bar((.ceylon.language.Boolean)arg0, (.ceylon.language.Integer)arg1);
+            }
+        });
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.<X, .ceylon.language.Integer>f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<X>("Callable<X,X,Integer>"){
+            
+            @.java.lang.Override
+            public X call(final .java.lang.Object arg0, final .java.lang.Object arg1) {
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.<X, .ceylon.language.Integer>bar((X)arg0, (.ceylon.language.Integer)arg1);
+            }
+        });
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.<X, Y>f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<X>("Callable<X,X,Y>"){
+            
+            @.java.lang.Override
+            public X call(final .java.lang.Object arg0, final .java.lang.Object arg1) {
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.<X, Y>bar((X)arg0, (Y)arg1);
+            }
+        });
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable("Callable<X&Y,X&Y,Y>"){
+            
+            @.java.lang.Override
+            public .java.lang.Object call(final .java.lang.Object arg0, final .java.lang.Object arg1) {
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.bar((.java.lang.Object)arg0, (Y)arg1);
+            }
+        });
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable("Callable<X|Y,X|Y,Y>"){
+            
+            @.java.lang.Override
+            public .java.lang.Object call(final .java.lang.Object arg0, final .java.lang.Object arg1) {
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.bar((.java.lang.Object)arg0, (Y)arg1);
+            }
+        });
+    }
+    
+    C() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.C();
+    }
+}
