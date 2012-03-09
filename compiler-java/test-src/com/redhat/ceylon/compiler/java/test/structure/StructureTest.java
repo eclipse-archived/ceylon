@@ -316,6 +316,10 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("method/MethodSpecifyingTopLevelWithTypeParam");
     }
     @Test
+    public void testMthMethodSpecifyingTopLevelWithTypeParamMixed(){
+        compareWithJavaSource("method/MethodSpecifyingTopLevelWithTypeParamMixed");
+    }
+    @Test
     public void testMthMethodSpecifyingMethod(){
         compareWithJavaSource("method/MethodSpecifyingMethod");
     }

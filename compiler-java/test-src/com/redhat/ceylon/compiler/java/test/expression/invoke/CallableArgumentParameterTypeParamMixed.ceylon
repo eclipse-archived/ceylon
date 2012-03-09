@@ -18,12 +18,14 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-X f<X,Y>(Y y) {
-    throw;
+void f<S,T>(void foo(S s, T t)) {
 }
 @nomodel
-class MethodSpecifyingTopLevelWithTypeParam<S,T>() {
-    String foo(Integer i) = f<String,Integer>;
-    S bar(T y) = f<S,T>;
-    A baz<A,B>(B y) = f<A,B>;
+void bar<U,V>(U u, V v) {
+}
+@nomodel
+class C<X>() {
+    void m<Y>() {
+        f<X,Y>(bar<X,Y>);
+    }
 }

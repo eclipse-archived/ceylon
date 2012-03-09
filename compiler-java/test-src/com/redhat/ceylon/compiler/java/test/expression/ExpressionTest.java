@@ -171,6 +171,11 @@ public class ExpressionTest extends CompilerTest {
     public void testInvGenericMethodInvocation(){
         compareWithJavaSource("invoke/GenericMethodInvocation");
     }
+    
+    @Test
+    public void testInvGenericMethodInvocationMixed(){
+        compareWithJavaSource("invoke/GenericMethodInvocationMixed");
+    }
 
     @Test
     public void testInvInnerMethodInvocation(){
@@ -272,6 +277,11 @@ public class ExpressionTest extends CompilerTest {
     public void testInvToplevelMethodWithDefaultedParams(){
         compareWithJavaSource("invoke/ToplevelMethodWithDefaultedParams");
     }
+    
+    @Test
+    public void testInvOptionalTypeParamArgument(){
+        compareWithJavaSource("invoke/OptionalTypeParamArgument");
+    }
 
     // Self references
     
@@ -363,6 +373,10 @@ public class ExpressionTest extends CompilerTest {
     @Test
     public void testOprArithmeticOperators(){
         compareWithJavaSource("operator/ArithmeticOperators");
+    }
+    @Test
+    public void testOprOptionalTypeParamAssign(){
+        compareWithJavaSource("operator/OptionalTypeParamAssign");
     }
     @Test
     public void testOprOptim(){

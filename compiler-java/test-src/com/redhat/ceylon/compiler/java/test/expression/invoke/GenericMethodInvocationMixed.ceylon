@@ -18,12 +18,28 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-X f<X,Y>(Y y) {
-    throw;
+shared class KlassMethodTypeParams<U>() {
+    shared U bar<V>(U u, V v) {
+        return u;
+    }
 }
+
 @nomodel
-class MethodSpecifyingTopLevelWithTypeParam<S,T>() {
-    String foo(Integer i) = f<String,Integer>;
-    S bar(T y) = f<S,T>;
-    A baz<A,B>(B y) = f<A,B>;
+class GenericMethodInvocationMixed<X>(){
+    shared String m() {
+        value k = KlassMethodTypeParams<String>();
+        return k.bar<Integer>("hello", 1);
+    }
+    shared String m2() {
+        value k = KlassMethodTypeParams<String>();
+        return k.bar<Integer>{ u = "hello"; v = 1; };
+    }
+    shared void m3<Y>(X x, Y y) {
+        value k = KlassMethodTypeParams<X>();
+        k.bar<Y>(x, y);
+    }
+    shared void m4<Y>(X x, Y y) {
+        value k = KlassMethodTypeParams<X>();
+        k.bar<Y>{ u = x; v = y; };
+    }
 }

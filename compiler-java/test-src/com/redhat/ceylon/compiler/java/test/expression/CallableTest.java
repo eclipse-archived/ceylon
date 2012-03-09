@@ -80,6 +80,11 @@ public class CallableTest extends CompilerTest {
     }
     
     @Test
+    public void testCallableArgumentParameterTypeParamMixed(){
+        compareWithJavaSource("invoke/CallableArgumentParameterTypeParamMixed");
+    }
+    
+    @Test
     @Ignore("Awaiting support for parameter bounds")
     public void testCallableArgumentParameterCtor(){
         compareWithJavaSource("invoke/CallableArgumentParameterCtor");

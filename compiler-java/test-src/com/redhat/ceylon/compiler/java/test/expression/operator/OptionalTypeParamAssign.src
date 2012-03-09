@@ -1,0 +1,38 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+class C<T> {
+    private T t;
+    
+    public final T getT() {
+        return t;
+    }
+    
+    public final void setT(T t) {
+        this.t = t;
+    }
+    
+    C() {
+        this.t = null;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.operator.C();
+    }
+}
+final class m {
+    
+    private m() {
+    }
+    
+    static void m() {
+        final .com.redhat.ceylon.compiler.java.test.expression.operator.C<.java.lang.Object> c = new .com.redhat.ceylon.compiler.java.test.expression.operator.C<.java.lang.Object>();
+        final .java.lang.Object o = .ceylon.language.Integer.instance(1L);
+        c.setT(o);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.operator.m.m();
+    }
+}
