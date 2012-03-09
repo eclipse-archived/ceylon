@@ -248,7 +248,7 @@ abstract class InvocationBuilder {
                     return positional.getPositionalArguments().size();
                 }
                 @Override
-                protected boolean hasEllipsis() {
+                protected boolean dontBoxSequence() {
                     return positional.getEllipsis() != null;
                 }
                 
@@ -424,7 +424,7 @@ abstract class InvocationBuilder {
                 return parameterList.getParameters().size();
             }
             @Override
-            protected boolean hasEllipsis() {
+            protected boolean dontBoxSequence() {
                 return parameterList.getParameters().get(getNumArguments() - 1).isSequenced();
             }
             @Override
@@ -513,7 +513,7 @@ abstract class InvocationBuilder {
                 }
                 
                 @Override
-                protected boolean hasEllipsis() {
+                protected boolean dontBoxSequence() {
                     return method.getParameterLists().get(0).getParameters().get(getNumArguments() - 1).isSequenced();
                 }
             };
@@ -581,7 +581,7 @@ abstract class PositionalInvocationBuilder extends InvocationBuilder {
      * Gets the parameter for the given argument index
      */
     protected abstract Parameter getParameter(int argIndex);
-    protected abstract boolean hasEllipsis();
+    protected abstract boolean dontBoxSequence();
     
     @Override
     protected void compute() {
@@ -593,7 +593,7 @@ abstract class PositionalInvocationBuilder extends InvocationBuilder {
         Parameter lastDeclaredParam = declaredParams.isEmpty() ? null : declaredParams.get(declaredParams.size() - 1); 
         if (lastDeclaredParam != null 
                 && lastDeclaredParam.isSequenced()
-                && !this.hasEllipsis() // foo(sequence...) syntax => no need to box
+                && !this.dontBoxSequence() // foo(sequence...) syntax => no need to box
                 && numArguments >= (numParameters -1)) {
             // => call to a varargs method
             // first, append the normal args
