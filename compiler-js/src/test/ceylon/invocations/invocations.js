@@ -1,8 +1,9 @@
+(function(define) { define(function(require, exports, module) {
 var $$$cl15=require('ceylon/language/0.1/ceylon.language');
 var $$$f9=require('default/functions');
 
-//MethodDefinition invocations at invocations.ceylon (3:0-18:0)
-function invocations(){
+//MethodDefinition test at invocations.ceylon (3:0-18:0)
+function test(){
     $$$f9.helloWorld();
     (function (){return $$$f9.helloWorld()}());
     $$$f9.hello($$$cl15.String("world",5));
@@ -40,4 +41,9 @@ function invocations(){
     }
     $$$f9.repeat($$$cl15.Integer(10),p);
 }
-this.invocations=invocations;
+exports.test=test;
+});
+}(typeof define==='function' && define.amd ? define : function (factory) {
+if (typeof exports!=='undefined') { factory(require, exports, module);
+} else { throw 'no module loader'; }
+}));

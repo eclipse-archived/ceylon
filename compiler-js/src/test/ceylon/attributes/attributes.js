@@ -1,3 +1,4 @@
+(function(define) { define(function(require, exports, module) {
 var $$$cl15=require('ceylon/language/0.1/ceylon.language');
 
 //AttributeDeclaration firstName at attributes.ceylon (1:0-1:26)
@@ -15,3 +16,14 @@ function getLastName(){
 function setLastName(lastName){
     $$$cl15.print(lastName);
 }
+
+//MethodDefinition test at attributes.ceylon (11:0-11:20)
+function test(){
+    
+}
+exports.test=test;
+});
+}(typeof define==='function' && define.amd ? define : function (factory) {
+if (typeof exports!=='undefined') { factory(require, exports, module);
+} else { throw 'no module loader'; }
+}));
