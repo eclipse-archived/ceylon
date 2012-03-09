@@ -168,7 +168,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             BoxingStrategy boxingStrategy, ProducedType expectedType) {
         
         if (expectedType != null
-                && !(expectedType.getDeclaration() instanceof TypeParameter) 
+                && !(simplifyType(expectedType).getDeclaration() instanceof TypeParameter) 
                 // don't add cast to an erased type 
                 && !willEraseToObject(expectedType)
                 // don't add cast for null
