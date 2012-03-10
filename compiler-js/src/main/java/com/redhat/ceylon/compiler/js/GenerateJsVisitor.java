@@ -199,7 +199,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(Parameter that) {
-        memberName(that.getDeclarationModel());
+        out(memberName(that.getDeclarationModel(), false));
     }
 
     @Override
@@ -208,7 +208,7 @@ public class GenerateJsVisitor extends Visitor
         boolean first=true;
         for (Parameter param: that.getParameters()) {
             if (!first) out(",");
-            memberName(param.getDeclarationModel());
+            out(memberName(param.getDeclarationModel(), false));
             first = false;
         }
         out(")");
@@ -267,19 +267,13 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void var(Declaration d) {
-        out("var ");
-        memberName(d);
-        out("=");
+        out("var ", memberName(d, false), "=");
     }
 
     private void share(Declaration d) {
         if (isCaptured(d) && !(prototypeStyle && d.isClassOrInterfaceMember())) {
             outerSelf(d);
-            out(".");
-            memberName(d);
-            out("=");
-            memberName(d);
-            out(";");
+            out(".", memberName(d, false), "=", memberName(d, false), ";");
             endLine();
         }
     }
@@ -292,8 +286,7 @@ public class GenerateJsVisitor extends Visitor
         TypeDeclaration dec = that.getTypeSpecifier().getType().getTypeModel()
                 .getDeclaration();
         qualify(that,dec);
-        memberName(dec);
-        out(";");
+        out(memberName(dec, false), ";");
         endLine();
         share(d);
     }
@@ -317,7 +310,7 @@ public class GenerateJsVisitor extends Visitor
     private void addInterfaceToPrototype(ClassOrInterface type, InterfaceDefinition interfaceDef) {
         interfaceDefinition(interfaceDef);
         Interface d = interfaceDef.getDeclarationModel();
-        out("$proto$.", memberNameString(d, false), "=", d.getName(), ";");
+        out("$proto$.", memberName(d, false), "=", d.getName(), ";");
         endLine();
     }
 
@@ -381,7 +374,7 @@ public class GenerateJsVisitor extends Visitor
     private void addClassToPrototype(ClassOrInterface type, ClassDefinition classDef) {
         classDefinition(classDef);
         Class d = classDef.getDeclarationModel();
-        out("$proto$.", memberNameString(d, false), "=", d.getName(), ";");
+        out("$proto$.", memberName(d, false), "=", d.getName(), ";");
         endLine();
     }
 
@@ -478,16 +471,14 @@ public class GenerateJsVisitor extends Visitor
     private void callSuperclass(ExtendedType extendedType, Class d, Node that) {
         if (extendedType!=null) {
             qualify(that, extendedType.getType().getDeclarationModel());
-            memberName(extendedType.getType().getDeclarationModel());
-            out("(");
+            out(memberName(extendedType.getType().getDeclarationModel(), false), "(");
             for (PositionalArgument arg: extendedType.getInvocationExpression()
                     .getPositionalArgumentList().getPositionalArguments()) {
                 arg.visit(this);
                 out(",");
             }
             self(d);
-            out(")");
-            out(";");
+            out(");");
             endLine();
         }
     }
@@ -496,11 +487,9 @@ public class GenerateJsVisitor extends Visitor
         if (satisfiedTypes!=null)
             for (SimpleType st: satisfiedTypes.getTypes()) {
                 qualify(that, st.getDeclarationModel());
-                memberName(st.getDeclarationModel());
-                out("(");
+                out(memberName(st.getDeclarationModel(), false), "(");
                 self(d);
-                out(")");
-                out(";");
+                out(");");
                 endLine();
             }
     }
@@ -553,7 +542,7 @@ public class GenerateJsVisitor extends Visitor
         if (inProto && (constr.length() == 0)) {
             constr += d.getName();
         } else {
-            constr += memberNameString(d, false);
+            constr += memberName(d, false);
         }
         return constr;
     }
@@ -603,7 +592,7 @@ public class GenerateJsVisitor extends Visitor
         if (prototypeStyle && d.isClassOrInterfaceMember()) {
             out("this.");
         }
-        out(memberNameString(d, false), ".$$;");
+        out(memberName(d, false), ".$$;");
         endLine();
         /*out("var ");
         self(d);
@@ -620,8 +609,7 @@ public class GenerateJsVisitor extends Visitor
         if (prototypeStyle && d.isClassOrInterfaceMember()) {
             out("this.");
         }
-        memberName(d);
-        out(".$$;");
+        out(memberName(d, false), ".$$;");
         endLine();
     }
 
@@ -688,7 +676,7 @@ public class GenerateJsVisitor extends Visitor
     private void addObjectToPrototype(ClassOrInterface type, ObjectDefinition objDef) {
         objectDefinition(objDef);
         Value d = objDef.getDeclarationModel();
-        out("$proto$.", memberNameString(d, false), "=", d.getName(), ";");
+        out("$proto$.", memberName(d, false), "=", d.getName(), ";");
         endLine();
     }
 
@@ -698,7 +686,7 @@ public class GenerateJsVisitor extends Visitor
         if (!(prototypeStyle && d.isClassOrInterfaceMember())) {
             objectDefinition(that);
         } else {
-            String name = memberNameString(d, false);
+            String name = memberName(d, false);
             comment(that);
             outerSelf(d);
             out(".o$", name, "=");
@@ -733,7 +721,7 @@ public class GenerateJsVisitor extends Visitor
         copyMembersToPrototype(d, that.getExtendedType(), that.getSatisfiedTypes());
 
         if (!addToPrototype) {
-            out("var o$", memberNameString(d, false), "=",
+            out("var o$", memberName(d, false), "=",
                     d.getName(), "(new ", d.getName(), ".$$);");
             endLine();
         }
@@ -751,7 +739,7 @@ public class GenerateJsVisitor extends Visitor
         if (addToPrototype) {
             out("this.");
         }
-        out("o$", memberNameString(d, false), ";");
+        out("o$", memberName(d, false), ";");
         endBlock();
 
         addToPrototype(c, that.getClassBody().getStatements());
@@ -760,13 +748,9 @@ public class GenerateJsVisitor extends Visitor
     private void superRef(Declaration d, Class sub, String parent) {
         //if (d.isActual()) {
             self(sub);
-            out(".");
-            memberName(d);
-            out("$", parent, "$=");
+            out(".", memberName(d, false), "$", parent, "$=");
             self(sub);
-            out(".");
-            memberName(d);
-            out(";");
+            out(".", memberName(d, false), ";");
             endLine();
         //}
     }
@@ -813,7 +797,7 @@ public class GenerateJsVisitor extends Visitor
     private void methodDefinition(MethodDefinition that) {
         Method d = that.getDeclarationModel();
         function();
-        memberName(d);
+        out(memberName(d, false));
 
         //TODO: if there are multiple parameter lists
         //      do the inner function declarations
@@ -831,7 +815,7 @@ public class GenerateJsVisitor extends Visitor
 
     private void initParameters(ParameterList params, TypeDeclaration typeDecl) {
         for (Parameter param : params.getParameters()) {
-            String paramName = memberNameString(param.getDeclarationModel(), false);
+            String paramName = memberName(param.getDeclarationModel(), false);
             if (param.getDefaultArgument() != null) {
                 out("if(", paramName, "===undefined){", paramName, "=");
                 param.getDefaultArgument().getSpecifierExpression().getExpression().visit(this);
@@ -851,9 +835,7 @@ public class GenerateJsVisitor extends Visitor
         Method d = that.getDeclarationModel();
         if (!prototypeStyle||!d.isClassOrInterfaceMember()) return;
         comment(that);
-        out("$proto$.");
-        memberName(d);
-        out("=");
+        out("$proto$.", memberName(d, false), "=");
         methodDefinition(that);
     }
 
@@ -941,9 +923,7 @@ public class GenerateJsVisitor extends Visitor
             if (prototypeStyle&&d.isClassOrInterfaceMember()) {
                 if (that.getSpecifierOrInitializerExpression()!=null) {
                     outerSelf(d);
-                    out(".");
-                    memberName(d);
-                    out("=");
+                    out(".", memberName(d, false), "=");
                     super.visit(that);
                     out(";");
                     endLine();
@@ -986,18 +966,14 @@ public class GenerateJsVisitor extends Visitor
             function();
             out(getter(d), "()");
             beginBlock();
-            out("return this.");
-            memberName(d);
-            out(";");
+            out("return this.", memberName(d, false), ";");
             endBlock();
             if (d.isVariable()) {
                 out("$proto$.", setter(d), "=");
                 function();
                 out(setter(d), "(", d.getName(), ")");
                 beginBlock();
-                out("this.");
-                memberName(d);
-                out("=", d.getName(), "; return ", d.getName(), ";");
+                out("this.", memberName(d, false), "=", d.getName(), "; return ", d.getName(), ";");
                 endBlock();
             }
         }
@@ -1101,7 +1077,7 @@ public class GenerateJsVisitor extends Visitor
         Declaration decl = that.getDeclaration();
         qualify(that, decl);
         if (!accessThroughGetter(decl)) {
-            memberName(decl);
+            out(memberName(decl, false));
         }
         else {
             out(getter(decl));
@@ -1126,7 +1102,7 @@ public class GenerateJsVisitor extends Visitor
                 super.visit(that);
                 out("; return ");
                 clAlias();
-                out(".JsCallable(", tmp, ",", tmp, "===null?null:", tmp, ".");
+                out(".Callable(", tmp, ",", tmp, "===null?null:", tmp, ".");
                 qualifiedMemberRHS(that);
                 out(");}())");
             } else {
@@ -1137,6 +1113,10 @@ public class GenerateJsVisitor extends Visitor
                 out("))");
             }
     	} else if (that.getMemberOperator() instanceof SpreadOp) {
+    	    if (comment) {
+    	        out("//SpreadOp at ", that.getLocation());
+    	        endLine();
+    	    }
     	    //Determine if it's a method or attribute
     	    boolean isMethod = that.getDeclaration() instanceof Method;
     	    //Define a function
@@ -1181,13 +1161,9 @@ public class GenerateJsVisitor extends Visitor
     	    //If it's not a method, call the function right away
 	        out("())");
     	} else if (that.getDeclaration() instanceof Method) {
-            out("(function(){var $=");
-            super.visit(that);
-            out(";return ");
-            clAlias();
-            out(".JsCallable($, $.");
-            qualifiedMemberRHS(that);
-            out(")})()");
+    	    //TODO right now this causes that all method invocations are done this way
+    	    //we need to filter somehow to only use this pattern when the result is supposed to be a callable
+    	    generateCallable(that);
     	} else {
             super.visit(that);
             out(".");
@@ -1195,6 +1171,15 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
+    private void generateCallable(QualifiedMemberExpression that) {
+        out("(function(){var $=");
+        that.getPrimary().visit(this);
+        out(";return ");
+        clAlias();
+        out(".Callable($, $.");
+        qualifiedMemberRHS(that);
+        out(")})()");
+    }
     private void qualifiedMemberRHS(QualifiedMemberExpression that) {
     	boolean sup = that.getPrimary() instanceof Super;
     	String postfix = "";
@@ -1206,8 +1191,7 @@ public class GenerateJsVisitor extends Visitor
     		 }
     	}
         if (!accessThroughGetter(that.getDeclaration())) {
-            memberName(that.getDeclaration());
-            out(postfix);
+            out(memberName(that.getDeclaration(), false), postfix);
         }
         else {
             out(getter(that.getDeclaration()));
@@ -1219,7 +1203,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(BaseTypeExpression that) {
         qualify(that, that.getDeclaration());
-        memberName(that.getDeclaration());
+        out(memberName(that.getDeclaration(), false));
         if (!that.getTypeArguments().getTypeModels().isEmpty()) {
             out("/* REIFIED GENERICS SOON!! ");
             for (ProducedType pt : that.getTypeArguments().getTypeModels()) {
@@ -1232,8 +1216,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(QualifiedTypeExpression that) {
         super.visit(that);
-        out(".");
-        memberName(that.getDeclaration());
+        out(".", memberName(that.getDeclaration(), false));
     }
 
     @Override
@@ -1364,8 +1347,7 @@ public class GenerateJsVisitor extends Visitor
         if (!(prototypeStyle && bme.getDeclaration().isClassOrInterfaceMember())) {
             out("$");
         }
-        memberName(bme.getDeclaration());
-        out("=");
+        out(memberName(bme.getDeclaration(), false), "=");
         that.getSpecifierExpression().visit(this);
     }
 
@@ -1484,9 +1466,7 @@ public class GenerateJsVisitor extends Visitor
                 term.getPrimary().visit(this);
                 out(";return ");
                 clAlias();
-                out(".JsCallable($, $.");
-                memberName(term.getDeclaration());
-                out(")})()");
+                out(".Callable($, $.", memberName(term.getDeclaration(), false), ")})()");
                 return;
             }
         }
@@ -1532,20 +1512,16 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private String setter(Declaration d) {
-    	String name = memberNameString(d, true);
+    	String name = memberName(d, true);
         return "set" + toUpperCase(name.charAt(0)) + name.substring(1);
     }
 
     private String getter(Declaration d) {
-    	String name = memberNameString(d, true);
+    	String name = memberName(d, true);
         return "get" + toUpperCase(name.charAt(0)) + name.substring(1);
     }
 
-    private void memberName(Declaration d) {
-    	out(memberNameString(d, false));
-    }
-
-    private String memberNameString(Declaration d, Boolean forGetterSetter) {
+    private String memberName(Declaration d, Boolean forGetterSetter) {
     	String name = d.getName();
     	Scope container = d.getContainer();
     	if (prototypeStyle && !d.isShared() && d.isMember()
@@ -1975,8 +1951,7 @@ public class GenerateJsVisitor extends Visitor
                function();
                out(getter(variable.getDeclarationModel()));
                out("(){");
-               out("return ");
-               memberName(bme.getDeclaration());
+               out("return ", memberName(bme.getDeclaration(), false));
                out("}");
                endLine();
 
