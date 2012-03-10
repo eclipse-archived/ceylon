@@ -1102,7 +1102,7 @@ public class GenerateJsVisitor extends Visitor
                 super.visit(that);
                 out("; return ");
                 clAlias();
-                out(".Callable(", tmp, ",", tmp, "===null?null:", tmp, ".");
+                out(".JsCallable(", tmp, ",", tmp, "===null?null:", tmp, ".");
                 qualifiedMemberRHS(that);
                 out(");}())");
             } else {
@@ -1113,53 +1113,7 @@ public class GenerateJsVisitor extends Visitor
                 out("))");
             }
     	} else if (that.getMemberOperator() instanceof SpreadOp) {
-    	    if (comment) {
-    	        out("//SpreadOp at ", that.getLocation());
-    	        endLine();
-    	    }
-    	    //Determine if it's a method or attribute
-    	    boolean isMethod = that.getDeclaration() instanceof Method;
-    	    //Define a function
-    	    out("(function()");
-    	    beginBlock();
-    	    //Declare an array to store the values/references
-    	    String tmplist = createTempVariable();
-    	    out("var ", tmplist, "=[];"); endLine();
-    	    //Get an iterator
-    	    String iter = createTempVariable();
-    	    out("var ", iter, "=");
-    	    super.visit(that);
-    	    out(".getIterator();"); endLine();
-    	    //Iterate
-    	    String elem = createTempVariable();
-    	    out("var ", elem, ";"); endLine();
-    	    out("while ((", elem, "=", iter, ".next()) !== ");
-    	    clAlias();
-    	    out(".getExhausted())");
-    	    beginBlock();
-    	    //Add value or reference to the array
-    	    out(tmplist, ".push(");
-    	    if (isMethod) {
-    	        out("{o:", elem, ", f:", elem, ".");
-                qualifiedMemberRHS(that);
-                out("}");
-    	    } else {
-                out(elem, ".");
-                qualifiedMemberRHS(that);
-    	    }
-            out(");");
-    	    endBlock();
-    	    //Gather arguments to pass to the callable
-    	    //Return the array of values or a Callable with the arguments
-            out("return "); clAlias();
-            if (isMethod) {
-                out(".JsCallableList(", tmplist, ");");
-            } else {
-                out(".ArraySequence(", tmplist, ");");
-            }
-    	    endBlock(false);
-    	    //If it's not a method, call the function right away
-	        out("())");
+    	    generateSpread(that);
         } else if (that.getDeclaration() instanceof Method && that.getSignature() == null) {
     	    //TODO right now this causes that all method invocations are done this way
     	    //we need to filter somehow to only use this pattern when the result is supposed to be a callable
@@ -1172,12 +1126,62 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
+    /** SpreadOp cannot be a simple function call because we need to reference the object methods directly, so it's a function */
+    private void generateSpread(QualifiedMemberOrTypeExpression that) {
+        //Determine if it's a method or attribute
+        boolean isMethod = that.getDeclaration() instanceof Method;
+        //Define a function
+        out("(function()");
+        beginBlock();
+        if (comment) {
+            out("//SpreadOp at ", that.getLocation());
+            endLine();
+        }
+        //Declare an array to store the values/references
+        String tmplist = createTempVariable();
+        out("var ", tmplist, "=[];"); endLine();
+        //Get an iterator
+        String iter = createTempVariable();
+        out("var ", iter, "=");
+        super.visit(that);
+        out(".getIterator();"); endLine();
+        //Iterate
+        String elem = createTempVariable();
+        out("var ", elem, ";"); endLine();
+        out("while ((", elem, "=", iter, ".next()) !== ");
+        clAlias();
+        out(".getExhausted())");
+        beginBlock();
+        //Add value or reference to the array
+        out(tmplist, ".push(");
+        if (isMethod) {
+            out("{o:", elem, ", f:", elem, ".");
+            qualifiedMemberRHS(that);
+            out("}");
+        } else {
+            out(elem, ".");
+            qualifiedMemberRHS(that);
+        }
+        out(");");
+        endBlock();
+        //Gather arguments to pass to the callable
+        //Return the array of values or a Callable with the arguments
+        out("return "); clAlias();
+        if (isMethod) {
+            out(".JsCallableList(", tmplist, ");");
+        } else {
+            out(".ArraySequence(", tmplist, ");");
+        }
+        endBlock(false);
+        out("())");
+    }
+
     private void generateCallable(QualifiedMemberOrTypeExpression that, String name) {
         out("(function(){var $=");
         that.getPrimary().visit(this);
         out(";return ");
         clAlias();
-        out(".Callable($, $.");
+        out(".JsCallable($, $.");
         if (name == null) {
             qualifiedMemberRHS(that);
         } else {
@@ -1185,6 +1189,7 @@ public class GenerateJsVisitor extends Visitor
         }
         out(")})()");
     }
+
     private void qualifiedMemberRHS(QualifiedMemberOrTypeExpression that) {
     	boolean sup = that.getPrimary() instanceof Super;
     	String postfix = "";
@@ -1467,7 +1472,11 @@ public class GenerateJsVisitor extends Visitor
             // special treatment, even if prototypeStyle==false
             if ((term.getDeclaration() instanceof Functional)
                     && (prototypeStyle || declaredInCL(term.getDeclaration()))) {
-                generateCallable(term, memberName(term.getDeclaration(), false));
+                if (term.getMemberOperator() instanceof SpreadOp) {
+                    generateSpread(term);
+                } else {
+                    generateCallable(term, memberName(term.getDeclaration(), false));
+                }
                 return;
             }
         }
