@@ -43,6 +43,28 @@ void operators() {
     if (exists s4s=spread4[1]) {
         assert(s4s == `o`, "spread 12");
     } else { fail("spread 12"); }
+    interface SpreadTest {
+        shared formal String x();
+    }
+    class Spread1() satisfies SpreadTest {
+        shared actual String x() { return "S1"; }
+    }
+    class Spread2() satisfies SpreadTest {
+        shared actual String x() { return "S2"; }
+    }
+    value spreadList = { Spread1(), Spread2() };
+    value spread13 = spreadList[].x();
+    assert(spread13.size == 2, "spread 13 size");
+    assert(is String spread13[0], "spread 13 item 0");
+    if (is String s13_1 = spread13[1]) {
+        assert(s13_1 == "S2", "spread 13 item 1");
+    } else { fail("spread 13 item 1"); }
+    function spread14() = spreadList[].x;
+    assert(spread14().size == 2, "spread 14 size");
+    assert(is String spread14()[0], "spread 14 item 0");
+    if (is String s14_1 = spread14()[1]) {
+        assert(s14_1 == "S2", "spread 14 item 1");
+    } else { fail("spread 14 item 1");}
 
     assert("hello" in "hello world", "in 1");
     assert("world" in "hello world", "in 2");
