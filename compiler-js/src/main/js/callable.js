@@ -16,7 +16,7 @@ function JsCallable(o,f) {
         }
         return f.apply(o,al);
     };
-    c.getString = function() { return String$('ceylon.language.JsCallable'); }
+    c.getString = function() { return String$('ceylon.language.Callable'); }
     initType(c, 'ceylon.language.JsCallable', Callable);
     return c;
 }
