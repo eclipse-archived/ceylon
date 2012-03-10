@@ -43,4 +43,4 @@ function JsCallableList(value) {
 }
 
 exports.JsCallableList=JsCallableList;
-exports.JsCallable=JsCallable;
+exports.Callable=JsCallable;
