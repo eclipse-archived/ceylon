@@ -1160,27 +1160,32 @@ public class GenerateJsVisitor extends Visitor
     	    endBlock(false);
     	    //If it's not a method, call the function right away
 	        out("())");
-    	} else if (that.getDeclaration() instanceof Method) {
+        } else if (that.getDeclaration() instanceof Method && that.getSignature() == null) {
     	    //TODO right now this causes that all method invocations are done this way
     	    //we need to filter somehow to only use this pattern when the result is supposed to be a callable
-    	    generateCallable(that);
-    	} else {
+    	    //looks like checking for signature is a good way (not THE way though; named arg calls don't have signature)
+            generateCallable(that, null);
+        } else {
             super.visit(that);
             out(".");
             qualifiedMemberRHS(that);
         }
     }
 
-    private void generateCallable(QualifiedMemberExpression that) {
+    private void generateCallable(QualifiedMemberOrTypeExpression that, String name) {
         out("(function(){var $=");
         that.getPrimary().visit(this);
         out(";return ");
         clAlias();
         out(".Callable($, $.");
-        qualifiedMemberRHS(that);
+        if (name == null) {
+            qualifiedMemberRHS(that);
+        } else {
+            out(name);
+        }
         out(")})()");
     }
-    private void qualifiedMemberRHS(QualifiedMemberExpression that) {
+    private void qualifiedMemberRHS(QualifiedMemberOrTypeExpression that) {
     	boolean sup = that.getPrimary() instanceof Super;
     	String postfix = "";
     	if (sup) {
@@ -1462,11 +1467,7 @@ public class GenerateJsVisitor extends Visitor
             // special treatment, even if prototypeStyle==false
             if ((term.getDeclaration() instanceof Functional)
                     && (prototypeStyle || declaredInCL(term.getDeclaration()))) {
-                out("(function(){var $=");
-                term.getPrimary().visit(this);
-                out(";return ");
-                clAlias();
-                out(".Callable($, $.", memberName(term.getDeclaration(), false), ")})()");
+                generateCallable(term, memberName(term.getDeclaration(), false));
                 return;
             }
         }
