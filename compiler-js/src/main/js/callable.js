@@ -37,10 +37,10 @@ function JsCallableList(value) {
         }
         return ArraySequence(rval);
     };
-    c.getString = function() { return String$('ceylon.language.JsCallable'); }
+    c.getString = function() { return String$('ceylon.language.Callable[]'); }
     initType(c, 'ceylon.language.JsCallableList', Callable);
     return c;
 }
 
 exports.JsCallableList=JsCallableList;
-exports.Callable=JsCallable;
+exports.JsCallable=JsCallable;
