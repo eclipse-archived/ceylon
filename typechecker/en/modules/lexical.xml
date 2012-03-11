@@ -100,8 +100,8 @@
         
         <programlisting>LIdentifier: LowercaseChar IdentifierChar* | LIdentifierPrefix IdentifierChar+</programlisting>
         <programlisting>UIdentifier: UppercaseChar IdentifierChar* | UIdentifierPrefix IdentifierChar+</programlisting>
-	<programlisting>LIdentifierPrefix: "$"</programlisting>
-	<programlisting>UIdentifierPrefix: "$$"</programlisting>
+	<programlisting>LIdentifierPrefix: "\i"</programlisting>
+	<programlisting>UIdentifierPrefix: "\I"</programlisting>
 
         <para>The following examples are legal identifiers:</para>
         
@@ -110,13 +110,13 @@
         <programlisting>personName</programlisting>
         <programlisting>_id</programlisting>
         <programlisting>x2</programlisting>
-        <programlisting>$_id</programlisting>
-        <programlisting>$$object</programlisting>
-	<programlisting>$Object</programlisting>
+        <programlisting>\I_id</programlisting>
+        <programlisting>\Iobject</programlisting>
+	<programlisting>\iObject</programlisting>
 
-	<para>The prefix is not considered part of the identifier name. <literal>$person</literal>
-	is equal to <literal>person</literal>. However, while <literal>$$person</literal>
-	would also equal <literal>person</literal> and <literal>$person</literal>, it is considered an
+	<para>The prefix is not considered part of the identifier name. <literal>\iperson</literal>
+	is equal to <literal>person</literal>. However, while <literal>\Iperson</literal>
+	would also equal <literal>person</literal> and <literal>\iperson</literal>, it is considered an
 	<programlisting>UIdentifier</programlisting> and may not be lexed so it could compare.</para>
         
         <para>Package and module names are built from all-lowercase identifier names.</para>
@@ -137,11 +137,11 @@
         </literal></para>
 
 	<para>However, they are legal identifier names which need to be qualified.
-	Example: <literal>$else</literal></para>
+	Example: <literal>\ielse</literal></para>
 
         <para>The following are <emphasis>not</emphasis> legal identifiers:</para>
 	
-	<para><literal>$$$person $ $$ else el$e</literal></para> 
+	<para><literal>\i\iperson \i \I else el\Ie</literal></para> 
     </section>
     
     <section id="literals">
