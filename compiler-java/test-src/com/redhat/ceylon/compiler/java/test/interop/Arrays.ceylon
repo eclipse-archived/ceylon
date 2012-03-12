@@ -56,7 +56,7 @@ void test_JBooleans() {
     for (JBoolean b2 in items) { print(b2); }
     java.take_Booleans(items);
 }
-/*
+
 @nomodel
 void test_bytes() {
     TypesJava java = TypesJava();
@@ -65,6 +65,16 @@ void test_bytes() {
     items.setItem(1, n);
     for (Integer n2 in items) { print(n2); }
     java.take_bytes(items);
+}
+
+@nomodel
+void test_JBytes() {
+    TypesJava java = TypesJava();
+    Array<JByte> items = java.return_Bytes();
+    JByte? n = items.item(0);
+    items.setItem(1, n);
+    for (JByte n2 in items) { print(n2); }
+    java.take_Bytes(items);
 }
 
 @nomodel
@@ -78,6 +88,16 @@ void test_shorts() {
 }
 
 @nomodel
+void test_JShorts() {
+    TypesJava java = TypesJava();
+    Array<JShort> items = java.return_Shorts();
+    JShort? n = items.item(0);
+    items.setItem(1, n);
+    for (JShort n2 in items) { print(n2); }
+    java.take_Shorts(items);
+}
+
+@nomodel
 void test_ints() {
     TypesJava java = TypesJava();
     Array<Integer> items = java.return_ints();
@@ -86,7 +106,7 @@ void test_ints() {
     for (Integer n2 in items) { print(n2); }
     java.take_ints(items);
 }
-*/
+
 @nomodel
 void test_JIntegers() {
     TypesJava java = TypesJava();
@@ -116,7 +136,7 @@ void test_JLongs() {
     for (JLong n2 in items) { print(n2); }
     java.take_Longs(items);
 }
-/*
+
 @nomodel
 void test_floats() {
     TypesJava java = TypesJava();
@@ -126,7 +146,7 @@ void test_floats() {
     for (Float f2 in items) { print(f2); }
     java.take_floats(items);
 }
-*/
+
 @nomodel
 void test_JFloats() {
     TypesJava java = TypesJava();
@@ -156,7 +176,7 @@ void test_JDoubles() {
     for (JDouble f2 in items) { print(f2); }
     java.take_Doubles(items);
 }
-/*
+
 @nomodel
 void test_chars() {
     TypesJava java = TypesJava();
@@ -166,7 +186,7 @@ void test_chars() {
     for (Character c2 in items) { print(c2); }
     java.take_chars(items);
 }
-*/
+
 @nomodel
 void test_JCharacters() {
     TypesJava java = TypesJava();

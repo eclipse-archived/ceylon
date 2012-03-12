@@ -52,6 +52,10 @@ public class TypesJava {
     
     boolean[] return_booleans() { return new boolean[] { true, false }; };
     Boolean[] return_Booleans() { return new Boolean[] { true, false }; };
+    byte[] return_bytes() { return new byte[] { 1, 2, 3 }; };
+    Byte[] return_Bytes() { return new Byte[] { 1, 2, 3 }; };
+    short[] return_shorts() { return new short[] { 1, 2, 3 }; };
+    Short[] return_Shorts() { return new Short[] { 1, 2, 3 }; };
     int[] return_ints() { return new int[] { 1, 2, 3 }; };
     Integer[] return_Integers() { return new Integer[] { 1, 2, 3 }; };
     long[] return_longs() { return new long[] { 1L, 2L, 3L }; };
@@ -67,6 +71,10 @@ public class TypesJava {
 
     void take_booleans(boolean[] val) { };
     void take_Booleans(Boolean[] val) { };
+    void take_bytes(byte[] val) { };
+    void take_Bytes(Byte[] val) { };
+    void take_shorts(short[] val) { };
+    void take_Shorts(Short[] val) { };
     void take_ints(int[] val) { };
     void take_Integers(Integer[] val) { };
     void take_longs(long[] val) { };
