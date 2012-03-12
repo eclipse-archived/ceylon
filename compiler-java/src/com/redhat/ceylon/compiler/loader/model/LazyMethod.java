@@ -249,12 +249,6 @@ public class LazyMethod extends Method implements LazyElement {
     }
 
     @Override
-    public Scope getContainer() {
-        load();
-        return super.getContainer();
-    }
-
-    @Override
     public List<Declaration> getMembers() {
         load();
         return super.getMembers();
