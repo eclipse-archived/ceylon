@@ -69,6 +69,14 @@ public class TypeFactory extends Unit {
     }
 
     /**
+     * Gets the declaration of {@code Array}
+     * @return The declaration
+     */
+    public TypeDeclaration getArrayDeclaration() {
+        return (TypeDeclaration) getLanguageModuleDeclaration("Array");
+    }
+
+    /**
      * Determines whether the given ProducedType is a union
      * @param pt 
      * @return whether the type is a union type
@@ -104,6 +112,15 @@ public class TypeFactory extends Unit {
      */
     public ProducedType getIteratorType(ProducedType et) {
         return Util.producedType(getIteratorDeclaration(), et);
+    }
+
+    /**
+     * Returns a ProducedType corresponding to {@code Array<T>}
+     * @param et The ProducedType corresponding to {@code T}
+     * @return The ProducedType corresponding to {@code Array<T>}
+     */
+    public ProducedType getArrayType(ProducedType et) {
+        return Util.producedType(getArrayDeclaration(), et);
     }
 
     /**
