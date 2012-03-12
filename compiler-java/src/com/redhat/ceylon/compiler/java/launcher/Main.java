@@ -333,6 +333,11 @@ public class Main extends com.sun.tools.javac.main.Main {
         return true;
     }
 
+    /**
+     * Checker whether optName is a valid URL or directory
+     * @param optName The option name
+     * @return
+     */
     private boolean checkDirectoryOrURL(String optName) {
         String value = options.get(optName);
         if (value == null)
@@ -348,11 +353,7 @@ public class Main extends com.sun.tools.javac.main.Main {
             // not a URL, perhaps a file?
         }
         File file = new File(value);
-        if (!file.exists()) {
-            error("err.dir.not.found", value);
-            return false;
-        }
-        if (!file.isDirectory()) {
+        if (file.exists() && !file.isDirectory()) {
             error("err.file.not.directory", value);
             return false;
         }
@@ -592,4 +593,6 @@ public class Main extends com.sun.tools.javac.main.Main {
     private static final String javacBundleName = "com.sun.tools.javac.resources.ceylonc";
 
     private static Messages messages;
+    
+    
 }
