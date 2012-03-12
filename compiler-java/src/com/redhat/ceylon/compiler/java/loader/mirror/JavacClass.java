@@ -207,4 +207,9 @@ public class JavacClass implements ClassMirror {
         }
         return innerClasses;
     }
+
+    @Override
+    public boolean isAnonymous() {
+        return classSymbol.name.isEmpty();
+    }
 }

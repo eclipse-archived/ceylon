@@ -195,4 +195,9 @@ public class ReflectionClass implements ClassMirror {
         }
         return innerClasses;
     }
+
+    @Override
+    public boolean isAnonymous() {
+        return klass.isAnonymousClass();
+    }
 }

@@ -916,6 +916,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // We skip members marked with @Ignore
             if(innerClass.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
                 continue;
+            // We skip anonymous inner classes
+            if(innerClass.isAnonymous())
+                continue;
             Declaration innerDecl = convertToDeclaration(innerClass, DeclarationType.TYPE);
             innerDecl.setContainer(klass);
             // let's not trigger lazy-loading
