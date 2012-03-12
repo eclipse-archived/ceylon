@@ -502,21 +502,34 @@ abstract class InvocationBuilder {
             builder.setUnboxed(primary.getUnboxed());
             builder.setBoxingStrategy(method.getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED);
         } else if (gen.isCeylonCallable(term.getTypeModel())) {
-            final JCExpression callable = gen.expressionGen().transformExpression(term);//gen.expressionGen().transformFunctional(term, method);
+            final JCExpression callable = gen.expressionGen().transformExpression(term);
             
             builder = new InvocationBuilder(gen, null, null, returnType, specifierExpression) {
                 @Override
                 protected void compute() {
+                    boolean isRaw = typeArgs.isEmpty();
+                    java.util.List<ProducedType> typeArgumentModels = getTypeArguments();
+                    int argIndex = 0;
                     for(Parameter parameter : method.getParameterLists().get(0).getParameters()) {
-                        this.args.append(gen().makeQuotedIdent(parameter.getName()));
+                        ProducedType exprType = gen().expressionGen().getTypeForParameter(parameter, isRaw, typeArgumentModels);
+                        Parameter declaredParameter = method.getParameterLists().get(0).getParameters().get(argIndex);
+                        
+                        JCExpression result = gen().makeQuotedIdent(parameter.getName());
+                        
+                        result = gen().expressionGen().applyErasureAndBoxing(
+                                result, 
+                                exprType, 
+                                !parameter.getUnboxed(), 
+                                BoxingStrategy.BOXED,// Callables always have boxed params 
+                                declaredParameter.getType());
+                        this.args.append(result);
+                        argIndex++;
                     }
                 }
                 @Override
                 protected JCExpression makeInvocation() {
                     gen().at(node);
-                    JCExpression result;
-                    //result = transformInvocation(callable, "call");
-                    result = gen().make().Apply(typeArgs, gen().makeQuotedQualIdent(callable, "call"), args.toList());
+                    JCExpression result= gen().make().Apply(typeArgs, gen().makeQuotedQualIdent(callable, "call"), args.toList());
                     return result;
                 }
             };
