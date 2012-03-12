@@ -197,15 +197,16 @@ public class ExpressionTransformer extends AbstractTransformer {
         ProducedType definiteExprType = simplifyType(exprType);
         String convertFrom = definiteExprType.getUnderlyingType();
 
+        ProducedType definiteExpectedType = null;
         String convertTo = null;
         if(expectedType != null){
-            ProducedType definiteExpectedType = simplifyType(expectedType);
+            definiteExpectedType = simplifyType(expectedType);
             convertTo = definiteExpectedType.getUnderlyingType();
         }
         // check for identity conversion
-        if(convertFrom != null
-                && convertFrom.equals(convertTo))
+        if(convertFrom != null && convertFrom.equals(convertTo))
             return ret;
+        boolean arrayUnbox = boxingStrategy == BoxingStrategy.UNBOXED && definiteExpectedType != null && isCeylonArray(definiteExpectedType);
         if(convertTo != null){
             if(convertTo.equals("byte"))
                 ret = make().TypeCast(syms().byteType, ret);
@@ -217,6 +218,29 @@ public class ExpressionTransformer extends AbstractTransformer {
                 ret = make().TypeCast(syms().floatType, ret);
             else if(convertTo.equals("char"))
                 ret = make().TypeCast(syms().charType, ret);
+            else if(convertTo.equals("byte[]"))
+                ret = make().TypeCast(make().TypeArray(make().TypeIdent(TypeTags.BYTE)), ret);
+            else if(convertTo.equals("short[]"))
+                ret = make().TypeCast(make().TypeArray(make().TypeIdent(TypeTags.SHORT)), ret);
+            else if(convertTo.equals("int[]"))
+                ret = make().TypeCast(make().TypeArray(make().TypeIdent(TypeTags.INT)), ret);
+            else if(convertTo.equals("long[]"))
+                ret = make().TypeCast(make().TypeArray(make().TypeIdent(TypeTags.LONG)), ret);
+            else if(convertTo.equals("float[]"))
+                ret = make().TypeCast(make().TypeArray(make().TypeIdent(TypeTags.FLOAT)), ret);
+            else if(convertTo.equals("double[]"))
+                ret = make().TypeCast(make().TypeArray(make().TypeIdent(TypeTags.DOUBLE)), ret);
+            else if(convertTo.equals("char[]"))
+                ret = make().TypeCast(make().TypeArray(make().TypeIdent(TypeTags.CHAR)), ret);
+            else if(convertTo.equals("boolean[]"))
+                ret = make().TypeCast(make().TypeArray(make().TypeIdent(TypeTags.BOOLEAN)), ret);
+            else if (arrayUnbox) {
+                String ct = convertTo.substring(0, convertTo.length() - 2);
+                ret = make().TypeCast(make().TypeArray(makeQuotedQualIdentFromString(ct)), ret);
+            }
+        } else if (arrayUnbox) {
+            ProducedType ct = getArrayComponentType(definiteExpectedType);
+            ret = make().TypeCast(make().TypeArray(makeJavaType(ct)), ret);
         }
         return ret;
     }
