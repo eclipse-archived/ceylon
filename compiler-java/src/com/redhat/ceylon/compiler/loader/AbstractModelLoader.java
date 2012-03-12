@@ -1467,6 +1467,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     private boolean sameType(TypeMirror t1, TypeMirror t2) {
+        // make sure we deal with arrays which can't have a qualified name
+        if(t1.getKind() == TypeKind.ARRAY){
+            if(t2.getKind() != TypeKind.ARRAY)
+                return false;
+            return sameType(t1.getComponentType(), t2.getComponentType());
+        }
+        if(t2.getKind() == TypeKind.ARRAY)
+            return false;
+        // the rest should be OK
         return t1.getQualifiedName().equals(t2.getQualifiedName());
     }
     
