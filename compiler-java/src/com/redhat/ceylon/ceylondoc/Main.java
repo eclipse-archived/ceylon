@@ -28,6 +28,9 @@ import java.util.List;
 
 public class Main {
     private static final String CEYLOND_VERSION = "0.1 'Newton'";
+    private static final int SC_OK = 0;
+    private static final int SC_ARGS = 1;
+    private static final int SC_ERROR = 2;
 
     public static void main(String[] args) throws IOException {
         String destDir = null;
@@ -40,34 +43,50 @@ public class Main {
         
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
+            int argsLeft = arg.length() - 1 - i;
             if ("-h".equals(arg)
                     || "-help".equals(arg)
                     || "--help".equals(arg)) {
-                printUsage();
+                printUsage(SC_OK);
             } else if ("-v".equals(arg)
                         || "-version".equals(arg)
                         || "--version".equals(arg)) {
                 printVersion();
             } else if ("-d".equals(arg)) {
                 System.err.println("-d: option not yet supported (though perhaps you meant -out?)");
-                System.exit(1);
+                exit(SC_ARGS);
             } else if ("-out".equals(arg)) {
+                if (argsLeft <= 0) {
+                    optionMissingArgument(arg);
+                }
                 destDir = args[++i];
             } else if ("-src".equals(arg)) {
+                if (argsLeft <= 0) {
+                    optionMissingArgument(arg);
+                }
                 sourceDirs.addAll(readPath(args[++i]));
             } else if ("-rep".equals(arg)) {
+                if (argsLeft <= 0) {
+                    optionMissingArgument(arg);
+                }
                 repositories.add(args[++i]);
             } else if ("-non-shared".equals(arg)) {
                 includeNonShared = true;
             } else if ("-source-code".equals(arg)) {
                 includeSourceCode = true;
             } else if ("-user".equals(arg)) {
+                if (argsLeft <= 0) {
+                    optionMissingArgument(arg);
+                }
                 user = args[++i];
             } else if ("-pass".equals(arg)) {
+                if (argsLeft <= 0) {
+                    optionMissingArgument(arg);
+                }
                 pass = args[++i];
             } else if (arg.startsWith("-")) {
                 System.err.println(arg+": unknown option");
-                System.exit(1);
+                exit(SC_ARGS);
             } else {
                 modules.add(arg);
             }
@@ -75,7 +94,8 @@ public class Main {
         }
         
         if(modules.isEmpty()){
-            printUsage();
+            System.err.println("No modules specified");
+            printUsage(SC_ARGS);
         }
         if (destDir == null) {
             destDir = "modules";
@@ -91,7 +111,7 @@ public class Main {
                 File src = new File(srcDir);
                 if (!src.isDirectory()) {
                     System.err.println("No such source directory: " + srcDir);
-                    System.exit(1);
+                    exit(SC_ARGS);
                 }
                 sourceFolders.add(src);
             }
@@ -106,8 +126,17 @@ public class Main {
         }catch(Exception x){
             System.err.println("Error: "+x.getMessage());
             x.printStackTrace();
-            System.exit(1);
+            exit(SC_ERROR);
         }
+    }
+
+    private static void exit(int statusCode) {
+        System.exit(statusCode);
+    }
+    
+    private static void optionMissingArgument(String arg) {
+        System.err.println("Expected an argument for " + arg + " option");
+        exit(SC_ARGS);
     }
 
     private static List<String> readPath(String path) {
@@ -129,10 +158,10 @@ public class Main {
 
     private static void printVersion() {
         System.out.println("Version: ceylond "+CEYLOND_VERSION);
-        System.exit(0);
+        exit(SC_OK);
     }
 
-    private static void printUsage() {
+    private static void printUsage(int statusCode) {
         List<String> defaultRepositories = com.redhat.ceylon.compiler.java.util.Util.addDefaultRepositories(Collections.<String>emptyList());
         System.err.print(
                 "Usage: ceylon [options...] moduleName[/version]... :\n"
@@ -153,6 +182,6 @@ public class Main {
                 +"-help:        Prints help usage\n"
                 +"-version:     Prints version number\n"
         );
-        System.exit(1);
+        exit(statusCode);
     }
 }
