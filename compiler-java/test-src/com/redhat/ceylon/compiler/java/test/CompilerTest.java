@@ -402,11 +402,11 @@ public abstract class CompilerTest {
         return getCompilerTask(defaultOptions, null, sourcePaths);
     }
 
-    protected CeyloncTaskImpl getCompilerTask(List<String> defaultOptions, String... sourcePaths){
-        return getCompilerTask(defaultOptions, null, sourcePaths);
+    protected CeyloncTaskImpl getCompilerTask(List<String> options, String... sourcePaths){
+        return getCompilerTask(options, null, sourcePaths);
     }
 
-    protected CeyloncTaskImpl getCompilerTask(List<String> defaultOptions, DiagnosticListener<? super FileObject> diagnosticListener, 
+    protected CeyloncTaskImpl getCompilerTask(List<String> initialOptions, DiagnosticListener<? super FileObject> diagnosticListener, 
             String... sourcePaths){
         // make sure we get a fresh jar cache for each compiler run
         ZipFileIndex.clearCache();
@@ -422,7 +422,7 @@ public abstract class CompilerTest {
         new File(destDir).mkdirs();
 
         List<String> options = new LinkedList<String>();
-        options.addAll(defaultOptions);
+        options.addAll(initialOptions);
         options.addAll(Arrays.asList("-src", getSourcePath(), "-verbose:ast,code"));
         Iterable<? extends JavaFileObject> compilationUnits1 =
                 runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
