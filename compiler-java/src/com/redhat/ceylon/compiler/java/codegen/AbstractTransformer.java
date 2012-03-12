@@ -695,10 +695,6 @@ public abstract class AbstractTransformer implements Transformation {
                 } else {
                     return make().TypeIdent(TypeTags.INT);
                 }
-            } else if (isCeylonArray(type)) {
-                ProducedType simpleType = simplifyType(type);
-                java.util.List<ProducedType> tal = simpleType.getTypeArgumentList();
-                return make().TypeArray(makeJavaType(tal.get(0), 0));
             }
         }
         
