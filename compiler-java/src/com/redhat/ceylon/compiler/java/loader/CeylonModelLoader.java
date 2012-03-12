@@ -201,6 +201,14 @@ public class CeylonModelLoader extends AbstractModelLoader {
             if(classSymbol != null){
                 if(outerName.length() != name.length())
                     classSymbol = lookupInnerClass(classSymbol, name.substring(outerName.length()+1).split("\\."));
+                if(classSymbol.classfile == null){
+                    // try to complete it if that changes anything
+                    classSymbol.complete();
+                    if(classSymbol.classfile == null){
+                        log.error("ceylon", "Unable to find class file for "+name);
+                        return null;
+                    }
+                }
                 return classSymbol != null ? new JavacClass(classSymbol) : null;
             }
             int lastDot = outerName.lastIndexOf(".");
