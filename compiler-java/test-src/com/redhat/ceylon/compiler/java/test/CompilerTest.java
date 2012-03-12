@@ -433,4 +433,33 @@ public abstract class CompilerTest {
     protected String getSourcePath() {
         return dir;
     }
+
+    protected static File getModuleArchive(String moduleName, String version) {
+        return getModuleArchive(moduleName, version, destDir);
+    }
+
+    protected static File getModuleArchive(String moduleName, String version, String destDir) {
+        return getArchiveName(moduleName, version, destDir, "car");
+    }
+
+    protected static File getSourceArchive(String moduleName, String version) {
+        return getArchiveName(moduleName, version, destDir, "src");
+    }
+    
+    protected static File getSourceArchive(String moduleName, String version, String destDir) {
+        return getArchiveName(moduleName, version, destDir, "src");
+    }
+
+    protected static File getArchiveName(String moduleName, String version, String destDir, String extension) {
+        String modulePath = moduleName.replace('.', File.separatorChar);
+        if(version != null)
+            modulePath += File.separatorChar+version;
+        modulePath += File.separator;
+        String artifactName = modulePath+moduleName;
+        if(version != null)
+            artifactName += "-"+version;
+        artifactName += "."+extension;
+        File archiveFile = new File(destDir, artifactName);
+        return archiveFile;
+    }
 }
