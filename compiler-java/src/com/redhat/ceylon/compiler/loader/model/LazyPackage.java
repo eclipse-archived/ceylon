@@ -20,6 +20,7 @@
 
 package com.redhat.ceylon.compiler.loader.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -75,7 +76,9 @@ public class LazyPackage extends Package {
 
         String className = getQualifiedName(pkgName, name);
         
-        Declaration d = lookupMember(compiledDeclarations, name, signature, false);
+        // make sure we iterate over a copy of compiledDeclarations, to avoid lazy loading to modify it and
+        // cause a ConcurrentModificationException: https://github.com/ceylon/ceylon-compiler/issues/399
+        Declaration d = lookupMember(copy(compiledDeclarations), name, signature, false);
         if (d != null) {
             return d;
         }
@@ -86,12 +89,20 @@ public class LazyPackage extends Package {
             d = modelLoader.convertToDeclaration(className, DeclarationType.VALUE);
             if (d instanceof Class) {
                 if ( ((Class) d).isAbstraction()) {
-                    return lookupMember(compiledDeclarations, name, signature, false);
+                    // make sure we iterate over a copy of compiledDeclarations, to avoid lazy loading to modify it and
+                    // cause a ConcurrentModificationException: https://github.com/ceylon/ceylon-compiler/issues/399
+                    return lookupMember(copy(compiledDeclarations), name, signature, false);
                 }
             }
             return d;
         }
         return getDirectMemberFromSource(name);
+    }
+
+    private List<Declaration> copy(List<Declaration> list) {
+        List<Declaration> ret = new ArrayList<Declaration>(list.size());
+        ret.addAll(list);
+        return ret;
     }
 
     private Declaration getDirectMemberFromSource(String name) {
