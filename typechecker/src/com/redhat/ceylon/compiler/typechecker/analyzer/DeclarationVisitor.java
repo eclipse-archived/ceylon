@@ -451,9 +451,6 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
-        if ( that.getSpecifierExpression()!=null ) {
-            that.addWarning("method definition by reference is not yet supported");
-        }
         if ( that.getDeclarationModel().isFormal() && that.getSpecifierExpression()!=null ) {
             that.addError("formal methods may not have a method reference");
         }
@@ -546,7 +543,6 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
         parameterList.getParameters().add(p);
-        that.addWarning("higher order methods are not yet supported");
     }
 
     @Override
