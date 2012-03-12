@@ -44,12 +44,13 @@ import com.sun.source.util.JavacTask;
 
 public class CeylonDocToolTest {
 
-    private CeylonDocTool tool(String pathname, String testName, String moduleName, String... repositories)
+    private CeylonDocTool tool(String pathname, String testName, String moduleName, 
+            boolean throwOnError, String... repositories)
             throws IOException {
         CeylonDocTool tool = new CeylonDocTool(Arrays.asList(new File(pathname)), 
                 Arrays.asList(repositories), 
                 Arrays.asList(moduleName),
-                true/* throw on error */);
+                throwOnError);
         File dir = new File("build", "CeylonDocToolTest/" + testName);
         if (dir.exists()) {
             Util.delete(dir);
@@ -135,7 +136,7 @@ public class CeylonDocToolTest {
     public void moduleA() throws IOException {
         String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules/single";
         String testName = "moduleA";
-        CeylonDocTool tool = tool(pathname, testName, "a");
+        CeylonDocTool tool = tool(pathname, testName, "a", true);
         tool.setIncludeNonShared(false);
         tool.setIncludeSourceCode(true);
         tool.makeDoc();
@@ -283,7 +284,7 @@ public class CeylonDocToolTest {
     public void moduleAWithPrivate() throws IOException {
         String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules/single";
         String testName = "moduleAWithPrivate";
-        CeylonDocTool tool = tool(pathname, testName, "a");
+        CeylonDocTool tool = tool(pathname, testName, "a", true);
         tool.setIncludeNonShared(true);
         tool.setIncludeSourceCode(true);
         tool.makeDoc();
@@ -339,7 +340,7 @@ public class CeylonDocToolTest {
         // compile the b module
         compile(pathname+"/b", "b");
         
-        CeylonDocTool tool = tool(pathname+"/c", testName, "c", "build/ceylon-cars");
+        CeylonDocTool tool = tool(pathname+"/c", testName, "c", true, "build/ceylon-cars");
         tool.makeDoc();
     }
 
