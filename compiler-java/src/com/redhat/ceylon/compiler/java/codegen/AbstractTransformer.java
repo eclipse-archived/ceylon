@@ -874,6 +874,17 @@ public abstract class AbstractTransformer implements Transformation {
         return typeModel.getTypeArgumentList().get(0);
     }
     
+    /**
+     * Gets the first type parameter from the type model representing a 
+     * ceylon.language.Array<Element>.
+     * @param typeModel
+     * @return The component type of the Array.
+     */
+    protected ProducedType getArrayComponentType(ProducedType typeModel) {
+        assert isCeylonArray(typeModel);
+        return typeModel.getTypeArgumentList().get(0);
+    }
+    
     protected ProducedType getTypeForParameter(Parameter parameter, boolean isRaw, java.util.List<ProducedType> typeArgumentModels) {
         if (parameter instanceof FunctionalParameter) {
             FunctionalParameter fp = (FunctionalParameter)parameter;
