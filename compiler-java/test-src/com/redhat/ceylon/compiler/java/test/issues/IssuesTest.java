@@ -19,12 +19,32 @@
  */
 package com.redhat.ceylon.compiler.java.test.issues;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import junit.framework.Assert;
+
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
+import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 
 public class IssuesTest extends CompilerTest {
     
+    @Test
+    public void testBug41(){
+        compile("Bug41.ceylon");
+        List<String> options = new ArrayList<String>();
+        options.addAll(defaultOptions);
+        options.add("-verbose");
+        options.add("-cp");
+        options.add(dir+File.pathSeparator+getModuleArchive("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, Util.getHomeRepository()));
+        Boolean result = getCompilerTask(options, "Bug41_2.ceylon").call();
+        Assert.assertEquals("Compilation worked", Boolean.TRUE, result);
+    }
+
     @Test
     public void testBug111(){
         compareWithJavaSource("Bug111");
