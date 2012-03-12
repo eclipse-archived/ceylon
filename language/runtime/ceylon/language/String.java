@@ -35,8 +35,25 @@ public final class String
         return value;
     }
 
+    @Ignore
     public static ceylon.language.String instance(java.lang.String s) {
         return new ceylon.language.String(s);
+    }
+
+    @Ignore
+    public static ceylon.language.String instance(java.lang.String... strings) {
+        StringBuffer buf = new StringBuffer();
+        for (java.lang.String s: strings)
+            buf.append(s);
+        return new ceylon.language.String(buf.toString());
+    }
+
+    @Ignore
+    public static ceylon.language.String instance(String... strings) {
+        StringBuffer buf = new StringBuffer();
+        for (String s: strings)
+            buf.append(s.value);
+        return new ceylon.language.String(buf.toString());
     }
 
     public java.lang.String getUppercased() {
@@ -61,20 +78,6 @@ public final class String
     @Override
     public int hashCode() {
         return value.hashCode();
-    }
-
-    public static ceylon.language.String instance(java.lang.String... strings) {
-        StringBuffer buf = new StringBuffer();
-        for (java.lang.String s: strings)
-            buf.append(s);
-        return new ceylon.language.String(buf.toString());
-    }
-
-    public static ceylon.language.String instance(String... strings) {
-        StringBuffer buf = new StringBuffer();
-        for (String s: strings)
-            buf.append(s.value);
-        return new ceylon.language.String(buf.toString());
     }
 
     @Override

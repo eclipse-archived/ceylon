@@ -21,6 +21,7 @@ public final class Integer
         value = l;
     }
     
+    @Ignore
     public static Integer instance(long l) {
         return new Integer(l);
     }

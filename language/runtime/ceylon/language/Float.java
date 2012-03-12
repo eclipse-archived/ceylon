@@ -21,6 +21,7 @@ public final class Float
         value = d;
     }
     
+    @Ignore
     public static Float instance(double d) {
         return new Float(d);
     }

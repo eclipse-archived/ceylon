@@ -2,6 +2,7 @@ package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
 @Ceylon
 @Class(extendsType="ceylon.language.Object")
@@ -18,7 +19,8 @@ public class Quoted {
     	this.value = value;
     }
 
-    public static Quoted instance(java.lang.String value){
+    @Ignore
+    public static Quoted instance(java.lang.String value) {
         return new Quoted(value);
     }
     

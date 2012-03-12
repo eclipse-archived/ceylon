@@ -2,6 +2,7 @@ package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -47,6 +48,7 @@ public final class Character
         return java.lang.Character.isISOControl(codePoint);
     }       
 
+    @Ignore
     public static Character instance(int c) {
         return new Character(c);
     }
