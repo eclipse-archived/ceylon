@@ -1493,8 +1493,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if (type.getKind() == TypeKind.ARRAY) {
             List<ProducedType> typeArguments = new ArrayList<ProducedType>(1);
             TypeMirror ct = type.getComponentType();
-            typeArguments.add((ProducedType) obtainType(ct, scope));
-            return declaration.getProducedType(getQualifyingType(declaration), typeArguments);
+            ProducedType ctpt = (ProducedType) obtainType(ct, scope);
+            typeArguments.add(ctpt);
+            ProducedType arrayType = declaration.getProducedType(getQualifyingType(declaration), typeArguments);
+            if (ctpt.getUnderlyingType() != null) {
+                arrayType.setUnderlyingType(ctpt.getUnderlyingType() + "[]");
+            }
+            return arrayType;
         } else {
             List<TypeMirror> javacTypeArguments = type.getTypeArguments();
             if(!javacTypeArguments.isEmpty()){
