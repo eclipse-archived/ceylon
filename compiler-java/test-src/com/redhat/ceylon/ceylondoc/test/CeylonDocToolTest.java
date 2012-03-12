@@ -50,7 +50,7 @@ public class CeylonDocToolTest {
                 Arrays.asList(repositories), 
                 Arrays.asList(moduleName),
                 true/* throw on error */);
-        File dir = new File(System.getProperty("java.io.tmpdir"), "CeylonDocToolTest/" + testName);
+        File dir = new File("build", "CeylonDocToolTest/" + testName);
         if (dir.exists()) {
             Util.delete(dir);
         }
