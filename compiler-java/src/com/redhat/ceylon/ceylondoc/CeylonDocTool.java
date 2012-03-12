@@ -145,7 +145,7 @@ public class CeylonDocTool {
             if(foundModule != null)
                 documentedModules.add(foundModule);
             else
-                throw new RuntimeException("Can't find module: "+moduleSpec);
+                throw new RuntimeException("Can't find module: " + moduleSpec.name + "/" + moduleSpec.version);
         }
         return documentedModules;
     }
