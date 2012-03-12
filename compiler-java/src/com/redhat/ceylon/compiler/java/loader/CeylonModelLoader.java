@@ -149,12 +149,12 @@ public class CeylonModelLoader extends AbstractModelLoader {
             for(Symbol m : ceylonPkg.members().getElements()){
                 if(!(m instanceof ClassSymbol))
                     return;
-                m.complete();
-                // avoid anonymous and local classes
-                if(isAnonymousOrLocal((ClassSymbol) m))
-                    continue;
                 ClassSymbol enclosingClass = getEnclosing((ClassSymbol) m);
                 if(enclosingClass.classfile.getKind() != Kind.SOURCE){
+                    m.complete();
+                    // avoid anonymous and local classes
+                    if(isAnonymousOrLocal((ClassSymbol) m))
+                        continue;
                     convertToDeclaration(lookupClassMirror(m.getQualifiedName().toString()), DeclarationType.VALUE);
                 }
             }
