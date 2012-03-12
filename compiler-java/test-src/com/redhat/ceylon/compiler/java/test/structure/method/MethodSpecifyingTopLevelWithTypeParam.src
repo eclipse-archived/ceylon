@@ -16,7 +16,7 @@ class MethodSpecifyingTopLevelWithTypeParam<S, T> {
     }
     
     private final S bar(final T y) {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.f.f(y);
+        return .com.redhat.ceylon.compiler.java.test.structure.method.f.<S, T>f(y);
     }
     
     MethodSpecifyingTopLevelWithTypeParam() {

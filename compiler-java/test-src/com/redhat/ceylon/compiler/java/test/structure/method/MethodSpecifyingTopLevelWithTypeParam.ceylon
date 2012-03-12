@@ -25,5 +25,5 @@ X f<X,Y>(Y y) {
 class MethodSpecifyingTopLevelWithTypeParam<S,T>() {
     String foo(Integer i) = f<String,Integer>;
     S bar(T y) = f<S,T>;
-    A baz<A,B>(B y) = f<A,B>;
+    //A baz<A,B>(B y) = f<A,B>;
 }
