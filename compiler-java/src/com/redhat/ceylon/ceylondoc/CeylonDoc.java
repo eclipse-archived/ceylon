@@ -55,6 +55,10 @@ public abstract class CeylonDoc extends Markup {
         this.tool = tool;
     }
     
+    protected boolean inCurrentModule(ClassOrInterface decl) {
+        return module.equals(getPackage(decl).getModule());
+    }
+    
     protected void link(ProducedType type) throws IOException {
         TypeDeclaration decl = type.getDeclaration();
         if(decl instanceof UnionType){
@@ -106,7 +110,11 @@ public abstract class CeylonDoc extends Markup {
 
     protected void link(ClassOrInterface decl, List<ProducedType> typeParameters) throws IOException {
         String name = decl.getName();
-        around("a href='" + getObjectUrl(decl) + "'", name);
+        if (inCurrentModule(decl)) {
+            around("a href='" + getObjectUrl(decl) + "'", name);
+        } else {
+            write(name);
+        }
         if (typeParameters != null && !typeParameters.isEmpty()) {
             write("&lt;");
             boolean once = false;
@@ -124,7 +132,11 @@ public abstract class CeylonDoc extends Markup {
     protected void linkToMember(Declaration decl) throws IOException {
         ClassOrInterface container = (ClassOrInterface) decl.getContainer();
         String name = decl.getName();
-        around("a href='" + getObjectUrl(container) + "#"+ name + "'", name);
+        if (inCurrentModule(container)) {
+            around("a href='" + getObjectUrl(container) + "#"+ name + "'", name);
+        } else {
+            write(name);
+        }
     }
 
     protected String getFileName(Scope klass) {
