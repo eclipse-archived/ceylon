@@ -9,10 +9,9 @@ import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
-import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon
-@TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT))
+@TypeParameters(@TypeParameter(value = "Element"))
 @SatisfiedTypes({
     "ceylon.language.List<Element>",
     "ceylon.language.FixedSized<Element>",
