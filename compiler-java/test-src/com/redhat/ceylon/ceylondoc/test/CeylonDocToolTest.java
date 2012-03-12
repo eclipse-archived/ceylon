@@ -344,6 +344,24 @@ public class CeylonDocToolTest {
         tool.makeDoc();
     }
 
+    @Test
+    public void ceylonLanguage() throws IOException {
+        String pathname = "../ceylon.language/src";
+        String testName = "ceylon.language";
+        CeylonDocTool tool = tool(pathname, testName, testName, false);
+        tool.setIncludeNonShared(false);
+        tool.setIncludeSourceCode(true);
+        tool.makeDoc();
+        
+        Module module = new Module();
+        module.setName(Arrays.asList("ceylon.language"));
+        module.setVersion("0.1");
+        
+        File destDir = getOutputDir(tool, module);
+        
+        assertFileExists(destDir, "index.html");
+    }
+    
     private void compile(String pathname, String moduleName) throws IOException {
         CeyloncTool compiler = new CeyloncTool();
         List<String> options = Arrays.asList("-src", pathname, "-out", "build/ceylon-cars");
