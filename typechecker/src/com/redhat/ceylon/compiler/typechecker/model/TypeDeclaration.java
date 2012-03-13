@@ -371,6 +371,13 @@ public abstract class TypeDeclaration extends Declaration
             //looking for, return it
             //TODO: should also return it if we're 
             //      calling from local scope!
+            if(isAbstraction(d)){
+                // look for a supertype decl that matches the signature better
+                Declaration s = getSupertypeDeclaration(name, signature);
+                if (s!=null && !isAbstraction(s)) {
+                    return s;
+                }
+            }
             return d;
         }
         else {
@@ -386,6 +393,10 @@ public abstract class TypeDeclaration extends Declaration
         return d;
     }
     
+    private boolean isAbstraction(Declaration d) {
+        return d instanceof Functional && ((Functional)d).isAbstraction();
+    }
+
     /**
      * Get the parameter or most-refined member with the 
      * given name, searching this type first, followed by 
@@ -399,6 +410,13 @@ public abstract class TypeDeclaration extends Declaration
         //declarations
         Declaration d = getDirectMemberOrParameter(name, signature);
         if (d!=null) {
+            if(isAbstraction(d)){
+                // look for a supertype decl that matches the signature better
+                Declaration s = getSupertypeDeclaration(name, signature);
+                if (s!=null && !isAbstraction(s)) {
+                    return s;
+                }
+            }
             return d;
         }
         else {
@@ -473,9 +491,13 @@ public abstract class TypeDeclaration extends Declaration
         class Criteria implements ProducedType.Criteria {
             @Override
             public boolean satisfies(TypeDeclaration type) {
+                // do not look in ourselves
+                if(type == TypeDeclaration.this)
+                    return false;
                 Declaration d = type.getDirectMember(name, signature);
                 if (d!=null && d.isShared()) {
-                    return true;
+                    // only accept abstractions if we don't have a signature
+                    return !isAbstraction(d) || signature == null;
                 }
                 else {
                     return false;
