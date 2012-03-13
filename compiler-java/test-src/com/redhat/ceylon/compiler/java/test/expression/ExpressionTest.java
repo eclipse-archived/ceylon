@@ -564,9 +564,8 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("operator/Optim");
     }
     @Test
-    @Ignore("M2")
-    public void testOprSlotwiseOperators(){
-        compareWithJavaSource("operator/SlotwiseOperators");
+    public void testOprSetOperators(){
+        compareWithJavaSource("operator/SetOperators");
     }
     @Test
     public void testOprParenthesized(){

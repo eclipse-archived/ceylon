@@ -17,34 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared class AllOperators() {
-    variable Boolean b1 := false;
-    variable Boolean b2 := false;
-    variable Integer n1 := 0;
-    variable Integer n2 := 0;
-    variable Integer i1 := +0;
-    variable Integer i2 := +0;
-    variable Float f1 := 0.0;
-    variable Float f2 := 0.0;
+shared class SetOperators() {
     
-    void slotwise() {
-        @error
-        i1 := ~i2;
-        @error
-        i1 := +4 | i2;
-        @error
-        i1 := +4 & i2;
-        @error
-        i1 := +4 & i2;
-        @error
-        i1 := +4 ~ i2;
-        @error
-        i1 |= i2;
-        @error
-        i1 &= i2;
-        @error
-        i1 ~= i2;
-        @error
-        i1 ^= i2;
+    void set(Set<Integer> a, Set<Integer> b) {
+        variable Set<Integer> sync;
+        sync := a | b;
+        sync := a & b;
+        sync := a & b;
+        sync := a ~ b;
+        sync |= a;
+        sync &= a;
+        sync ~= a;
+        sync ^= a;
     }
 }
