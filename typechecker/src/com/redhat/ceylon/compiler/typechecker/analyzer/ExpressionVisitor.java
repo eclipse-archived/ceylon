@@ -2234,11 +2234,6 @@ public class ExpressionVisitor extends Visitor {
         visitUnaryOperator(that, unit.getInvertableDeclaration());
     }
         
-    @Override public void visit(Tree.FlipOp that) {
-        super.visit(that);
-        visitUnaryOperator(that, unit.getFixedSlotsDeclaration());
-    }
-        
     @Override public void visit(Tree.NotOp that) {
         super.visit(that);
         visitUnaryOperator(that, unit.getBooleanDeclaration());

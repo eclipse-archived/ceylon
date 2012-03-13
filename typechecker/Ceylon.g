@@ -1845,8 +1845,6 @@ unaryMinusOrComplementOperator returns [UnaryOperatorExpression operator]
       { $operator = new NegativeOp($DIFFERENCE_OP); }
     | SUM_OP
       { $operator = new PositiveOp($SUM_OP); }
-    | COMPLEMENT_OP
-      { $operator = new FlipOp($COMPLEMENT_OP); }
     ;
 
 exponentiationExpression returns [Term term]
