@@ -164,23 +164,23 @@ public class Main {
     private static void printUsage(int statusCode) {
         List<String> defaultRepositories = com.redhat.ceylon.compiler.java.util.Util.addDefaultRepositories(Collections.<String>emptyList());
         System.err.print(
-                "Usage: ceylon [options...] moduleName[/version]... :\n"
-                +"\n"
-                +"-out <path>:  Output module repository (default: 'modules')\n"
-                +"-src <path>:  Source path (default: 'source')\n"
-                +"              You can set this option multiple times\n"
-                +"-rep <path>:  Module repository\n"
-                +"              You can set this option multiple times\n"
-                +"              Default:\n"
+                "Usage: ceylond [options...] moduleName[/version]... :\n"
+                +"where possible options include:\n"
+                +"  -out <path>:  Output module repository (default: 'modules')\n"
+                +"  -src <path>:  Source path (default: 'source')\n"
+                +"                You can set this option multiple times\n"
+                +"  -rep <path>:  Module repository\n"
+                +"                You can set this option multiple times\n"
+                +"                Default:\n"
         );
         for(String repo : defaultRepositories)
-            System.err.println("              "+repo);
+            System.err.println("                "+repo);
         System.err.print(
-                 "-non-shared:  Document non-shared declarations\n"
-                +"-source-code: Include the source code\n"
-                +"-d:           Not supported yet\n"
-                +"-help:        Prints help usage\n"
-                +"-version:     Prints version number\n"
+                 "  -non-shared:  Document non-shared declarations\n"
+                +"  -source-code: Include the source code\n"
+                +"  -d:           Not supported yet\n"
+                +"  -help:        Prints help usage\n"
+                +"  -version:     Prints version number\n"
         );
         exit(statusCode);
     }
