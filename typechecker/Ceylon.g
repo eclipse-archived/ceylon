@@ -3211,12 +3211,7 @@ COMPILER_ANNOTATION
     ;
 
 fragment
-LIDENTIFIER
-    :   LIdentifierPrefix name=IdentifierPart+
-        {$text = $name; /* FIXME this is unlikely to work */ }
-    // also see UIDENTIFIER    
-    ;
-
+LIDENTIFIER :;
 fragment
 PIDENTIFIER :;
 fragment
@@ -3227,7 +3222,9 @@ UIDENTIFIER
         { int cp = $text.codePointAt(0);
           if (cp=='_' || Character.isLowerCase(cp)) $type=LIDENTIFIER; }
     |   UIdentifierPrefix name=IdentifierPart+
-        { $text = $name; /* FIXME this is unlikely to work */ }
+        { setText($text.substring(2)); }
+    |   LIdentifierPrefix name=IdentifierPart+
+        { setText($text.substring(2)); $type=LIDENTIFIER; }
     ;
 
 fragment
