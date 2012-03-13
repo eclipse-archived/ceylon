@@ -28,6 +28,7 @@ package com.redhat.ceylon.ant;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -246,6 +247,7 @@ public class Ceylonc extends MatchingTask {
                 // skip empty entries
                 if(rep.url == null || rep.url.isEmpty())
                     continue;
+                log("Adding repository: "+rep, Project.MSG_VERBOSE);
                 cmd.createArgument().setValue("-rep");
                 cmd.createArgument().setValue(Util.quoteParameter(rep.url));
             }
@@ -270,6 +272,7 @@ public class Ceylonc extends MatchingTask {
             Execute exe = new Execute(new LogStreamHandler(this, Project.MSG_INFO, Project.MSG_WARN));
             exe.setAntRun(getProject());
             exe.setWorkingDirectory(getProject().getBaseDir());
+            log("Command line " + Arrays.toString(cmd.getCommandline()), Project.MSG_VERBOSE);
             exe.setCommandline(cmd.getCommandline());
             exe.execute();
             if (exe.getExitValue() != 0)

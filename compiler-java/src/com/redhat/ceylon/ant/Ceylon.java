@@ -28,6 +28,7 @@ package com.redhat.ceylon.ant;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -143,6 +144,7 @@ public class Ceylon extends MatchingTask {
             Execute exe = new Execute(new LogStreamHandler(this, Project.MSG_INFO, Project.MSG_WARN));
             exe.setAntRun(getProject());
             exe.setWorkingDirectory(getProject().getBaseDir());
+            log("Command line " + Arrays.toString(cmd.getCommandline()), Project.MSG_VERBOSE);
             exe.setCommandline(cmd.getCommandline());
             exe.execute();
             if (exe.getExitValue() != 0)

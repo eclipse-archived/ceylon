@@ -37,4 +37,9 @@ public class Module {
             return name;
         return name + "/" + version;
     }
+    
+    @Override
+    public String toString() {
+        return toSpec();
+    }
 }
