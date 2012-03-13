@@ -44,12 +44,12 @@ public class Main extends com.sun.tools.javac.Main {
      *         the man page for details.
      */
     public static int compile(String[] args) {
-        com.sun.tools.javac.main.Main compiler = new com.redhat.ceylon.compiler.java.launcher.Main("ceylonc");
+        com.redhat.ceylon.compiler.java.launcher.Main compiler = new com.redhat.ceylon.compiler.java.launcher.Main("ceylonc");
         return compiler.compile(args);
     }
     
     public static int compile(String[] args, PrintWriter writer) {
-        com.sun.tools.javac.main.Main compiler = new com.redhat.ceylon.compiler.java.launcher.Main("ceylonc", writer);
+        com.redhat.ceylon.compiler.java.launcher.Main compiler = new com.redhat.ceylon.compiler.java.launcher.Main("ceylonc", writer);
         return compiler.compile(args);
     }
 
