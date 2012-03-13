@@ -18,6 +18,7 @@
  * MA  02110-1301, USA.
  */
 import java.io{File{createTempFile, listRoots}}
+import java.lang{JBoolean = Boolean{bFalse = \iFALSE}}
 import com.redhat.ceylon.compiler.java.test.interop{
     JavaWithStaticMembersSubClass{smethod=method, sfield=field, stopMethod=topMethod, stopField=topField}
 }
@@ -98,4 +99,10 @@ class StaticMethodsAndSubClasses() extends JavaWithStaticMembersSubClass() {
         @error
         stopField := stopField;
     }
+}
+
+@nomodel
+@error
+void staticFields() {
+    JBoolean false = bFalse;
 }

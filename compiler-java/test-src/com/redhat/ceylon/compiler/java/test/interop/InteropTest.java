@@ -82,7 +82,13 @@ public class InteropTest extends CompilerTest {
     public void testIopTypes(){
         compareWithJavaSource("Types");
     }
-	
+
+    @Test
+    public void testIopCaseMismatch(){
+        compile("javaCaseMismatch.java");
+        compareWithJavaSource("CaseMismatch");
+    }
+
     @Test
     public void testIopCheckedExceptions(){
         compile("JavaCheckedExceptions.java");
