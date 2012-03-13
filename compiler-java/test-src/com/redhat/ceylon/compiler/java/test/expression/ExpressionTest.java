@@ -581,6 +581,10 @@ public class ExpressionTest extends CompilerTest {
     public void testOprParenthesized(){
         compareWithJavaSource("operator/Parenthesized");
     }
+    @Test
+    public void testOprSpread(){
+        compareWithJavaSource("operator/Spread");
+    }
     
     @Test
     public void testStpStringTemplate(){
