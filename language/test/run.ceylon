@@ -26,6 +26,8 @@ shared void run() {
     exceptions();
     print("Testing operators");
     operators();
+    print("Testing callables");
+    callables();
     print("Misc tests");
     misc();
     results();
