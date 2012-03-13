@@ -243,8 +243,8 @@ public class CeylonDocToolTest {
     private void assertDeprecated(File destDir) throws IOException {
         assertFileExists(destDir, "class_DeprecatedClass.html");
         
-        assertMatchInFile(destDir, "index.html", 
-                Pattern.compile("<i class='icon-decoration-deprecated'><i class='icon-class'></i></i><span class='modifiers'>shared</span> <a href='class_DeprecatedClass.html'>DeprecatedClass</a></code></td><td><div class='long'><div class='deprecated'><p><strong>Deprecated:</strong> This is <code>DeprecatedClass</code></p>"));     
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("<i class='icon-decoration-deprecated'><i class='icon-class'></i></i><span class='modifiers'>shared</span> <a href='class_DeprecatedClass.html'>DeprecatedClass</a></code></td><td><div class='description'><div class='deprecated'><p><strong>Deprecated:</strong> This is <code>DeprecatedClass</code></p>"));
         assertMatchInFile(destDir, "class_DeprecatedClass.html",
                 Pattern.compile("<div class='deprecated'><p><strong>Deprecated:</strong> Don't use this attribute!"));
         assertMatchInFile(destDir, "class_DeprecatedClass.html",
@@ -269,9 +269,9 @@ public class CeylonDocToolTest {
                 Pattern.compile("<div class='tags'><span class='tagCaption'>Tags: </span><a class='tagLabel' name='stubTag2' href='search.html\\?q=stubTag2'>stubTag2</a></div><code>methodWithTagged"));
         
         assertMatchInFile(destDir, "index.html", 
-                Pattern.compile("<div class='tags'><span class='tagCaption'>Tags: </span><a class='tagLabel' name='stubTag1a' href='search.html\\?q=stubTag1a'>stubTag1a</a><a class='tagLabel' name='stubTag1b' href='search.html\\?q=stubTag1b'>stubTag1b</a><a class='tagLabel' name='stubTagWithVeryLongName ... !!!' href='search.html\\?q=stubTagWithVeryLongName ... !!!'>stubTagWithVeryLongName ... !!!</a></div><div class='long'><div class='doc'><p>This is <code>StubInterface</code></p>"));
+                Pattern.compile("<div class='tags'><span class='tagCaption'>Tags: </span><a class='tagLabel' name='stubTag1a' href='search.html\\?q=stubTag1a'>stubTag1a</a><a class='tagLabel' name='stubTag1b' href='search.html\\?q=stubTag1b'>stubTag1b</a><a class='tagLabel' name='stubTagWithVeryLongName ... !!!' href='search.html\\?q=stubTagWithVeryLongName ... !!!'>stubTagWithVeryLongName ... !!!</a></div><div class='description'><div class='doc'><p>This is <code>StubInterface</code></p>"));
         assertMatchInFile(destDir, "index.html", 
-                Pattern.compile("<div class='tags'><span class='tagCaption'>Tags: </span><a class='tagLabel' name='stubTag1' href='search.html\\?q=stubTag1'>stubTag1</a><a class='tagLabel' name='stubTag2' href='search.html\\?q=stubTag2'>stubTag2</a></div><div class='long'><div class='doc'><p>This is <code>StubClass</code></p>"));
+                Pattern.compile("<div class='tags'><span class='tagCaption'>Tags: </span><a class='tagLabel' name='stubTag1' href='search.html\\?q=stubTag1'>stubTag1</a><a class='tagLabel' name='stubTag2' href='search.html\\?q=stubTag2'>stubTag2</a></div><div class='description'><div class='doc'><p>This is <code>StubClass</code></p>"));
     }
     
     private File getOutputDir(CeylonDocTool tool, Module module) {

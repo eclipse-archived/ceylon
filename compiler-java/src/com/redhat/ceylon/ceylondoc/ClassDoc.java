@@ -480,10 +480,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         link(c.getType());
         writeTagged(c);
         tag("br");
-        startPrintingLongDoc(c);
-        writeBy(c);
-        writeSee(c);
-        endLongDocAndPrintShortDoc(c);
+        writeDescription(c);
         close("td");
         close("tr");
     }
@@ -613,7 +610,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         open("tr", "td", "code");
         writeIcon(klass);
         write(klass.getName());
-        writeParameterList(klass.getParameterLists());
+        writeParameterList(klass);
         close("code", "td", "tr", "table");
     }
 

@@ -21,7 +21,6 @@
 package com.redhat.ceylon.ceylondoc;
 
 import static com.redhat.ceylon.ceylondoc.Util.getDoc;
-import static com.redhat.ceylon.ceylondoc.Util.getDocFirstLine;
 import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
 
 import java.io.IOException;
@@ -31,6 +30,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -39,7 +39,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 public abstract class ClassOrPackageDoc extends CeylonDoc {
 
@@ -94,20 +93,64 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             return member;
         return resolveDeclaration(decl.getContainer(), target);
     }
-
-    protected void doc(Method m) throws IOException {
-        open("tr class='TableRowColor' id='" + m.getName() + "'");
+    
+    protected void doc(MethodOrValue d) throws IOException {
+        open("tr class='TableRowColor' id='" + d.getName() + "'");
         open("td", "code");
-        writeIcon(m);
-        around("span class='modifiers'", getModifiers(m));
+        writeIcon(d);
+        around("span class='modifiers'", getModifiers(d));
         write(" ");
-        link(m.getType());
+        link(d.getType());
         close("code", "td");
         open("td");
-        linkSource(m);
-        writeTagged(m);
+        writeLinkSource(d);
+        writeTagged(d);
+        
         open("code");
-        write(m.getName());
+        write(d.getName());
+        if( d instanceof Method ) {
+            Method m = (Method) d;
+            writeTypeParameters(m);
+            writeParameterList(m);
+        }
+        close("code");
+        writeDescription(d);
+        close("td");
+        close("tr");
+    }
+    
+    protected void writeDescription(Declaration d) throws IOException {
+        open("div class='description'");
+        writeDeprecated(d);
+        around("div class='doc'", getDoc(d));
+        if( d instanceof MethodOrValue ) {
+            writeThrows(d);        
+            writeSee(d);
+            writeBy(d);
+        }
+        close("div"); // description
+    }
+
+    private void writeLinkSource(MethodOrValue m) throws IOException {
+        if (!tool.isIncludeSourceCode()) {
+            return;
+        }
+        String srcUrl;
+        if (m.isToplevel()) {
+            srcUrl = getSrcUrl(m);
+        } else {
+            srcUrl = getSrcUrl(m.getContainer());
+        }
+        int[] lines = tool.getDeclarationSrcLocation(m);
+        if(lines != null){
+            open("a class='link-source-code member' href='" + srcUrl + "#" + lines[0] + "," + lines[1] + "'");
+            write("<i class='icon-source-code'></i>");
+            write("Source Code");
+            close("a");
+        }
+    }
+
+    private void writeTypeParameters(Method m) throws IOException {
         List<TypeParameter> typeParameters = m.getTypeParameters();
         if (!typeParameters.isEmpty()) {
             write("&lt;");
@@ -121,62 +164,10 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             }
             write("&gt;");
         }
-        writeParameterList(m.getParameterLists());
-        close("code");
-        
-        startPrintingLongDoc(m);
-        writeThrows(m);
-        writeSee(m);
-        endLongDocAndPrintShortDoc(m);
-        close("td");
-        close("tr");
     }
 
-    private void linkSource(MethodOrValue m) throws IOException {
-        if (!tool.isIncludeSourceCode()) {
-            return;
-        }
-        String srcUrl;
-        if (m.isToplevel()) {
-            srcUrl = getSrcUrl(m);
-        } else {
-            srcUrl = getSrcUrl(m.getContainer());
-        }
-        int[] lines = tool.getDeclarationSrcLocation(m);
-        if(lines != null){
-            open("div class='source-code member'");
-            around("a href='" + srcUrl + "#" + lines[0] + "," + lines[1] + "'", "Source Code");
-            close("div");
-        }
-    }
-
-    protected void doc(MethodOrValue f) throws IOException {
-        if (f instanceof Value) {
-            f = (Value) f;
-        }
-        open("tr class='TableRowColor' id='" + f.getName() + "'");
-        open("td", "code");
-        writeIcon(f);
-        around("span class='modifiers'", getModifiers(f));
-        write(" ");
-        link(f.getType());
-        close("code", "td");
-        open("td");
-        linkSource(f);
-        writeTagged(f);
-        open("code");
-        write(f.getName());
-        close("code");
-        startPrintingLongDoc(f);
-        writeThrows(f);
-        writeSee(f);
-        endLongDocAndPrintShortDoc(f);
-        close("td");
-        close("tr");
-    }
-
-    protected void writeParameterList(List<ParameterList> parameterLists) throws IOException {
-        for (ParameterList lists : parameterLists) {
+    protected void writeParameterList(Functional f) throws IOException {
+        for (ParameterList lists : f.getParameterLists()) {
             write("(");
             boolean first = true;
             for (Parameter param : lists.getParameters()) {
@@ -190,20 +181,6 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             }
             write(")");
         }
-    }
-
-    protected void endLongDocAndPrintShortDoc(Declaration d) throws IOException {
-        close("div");
-        open("div class='short'");
-        writeDeprecated(d);
-        around("div class='doc'", getDocFirstLine(d));
-        close("div");
-    }
-
-    protected void startPrintingLongDoc(Declaration d) throws IOException {
-        open("div class='long'");
-        writeDeprecated(d);
-        around("div class='doc'", getDoc(d));
     }
 
     protected abstract void subMenu() throws IOException;

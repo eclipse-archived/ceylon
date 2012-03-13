@@ -109,7 +109,11 @@ th {
 }
 
 .TableRowColor {
- border-bottom: 1px solid #E6E7E8;
+ border-bottom: 1px solid rgb(200, 200, 200);
+}
+
+.TableRowColor:hover {
+ background-color: rgb(240, 240, 240);
 }
 
 .TableRowColor:last-child {
@@ -154,11 +158,6 @@ ul.inheritance ul.inheritance li:before {
 
 .collapsible .short {
  font-weight: bold;
-}
-
-.source-code {
- float: right;
- font-size: small;
 }
 
 #results .match {
@@ -239,6 +238,33 @@ ul.inheritance ul.inheritance li:before {
 
 .icon-decoration-deprecated {
  background-position: -128px 0px;
+}
+
+.icon-source-code {
+ background-position: -144px 0px;
+ margin-right: 0px;
+}
+
+.icon-expand {
+ background-position: -160px 0px;
+ margin-right: 0px;
+}
+
+.icon-collapse {
+ background-position: -176px 0px;
+ margin-right: 0px;
+}
+
+.icon-decoration-expand {
+ background-position: -192px 0px; 
+ width: 32px;  
+ height: 4px;
+}
+
+.icon-decoration-collapse {
+ background-position: -224px 0px; 
+ width: 32px;  
+ height: 4px;
 }
 
 .tagLabel {
@@ -371,4 +397,41 @@ ul.inheritance ul.inheritance li:before {
 
 .tagSelected:hover {
 	background-color: rgb(0, 115, 230);
+}
+
+.link-source-code, 
+.link-collapsible {
+	float: right;
+	font-size: 0.7em;
+	text-decoration: none;
+	vertical-align: text-top;
+	color: #369;
+	margin-left: 12px;
+}
+
+.link-source-code:visited, 
+.link-collapsible:visited {
+	color: #369;	
+}
+
+.link-source-code:hover, 
+.link-collapsible:hover {
+	color: #4b5c78;
+	text-decoration: underline;
+}
+
+.description-collapsible  {
+	cursor: pointer;
+}
+
+.description-collapsed {
+    height: 2.4em;
+    overflow: hidden;
+}
+
+.description-decoration {
+    height: 4px;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
 }

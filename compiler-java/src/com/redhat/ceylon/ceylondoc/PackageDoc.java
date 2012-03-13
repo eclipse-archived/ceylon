@@ -220,8 +220,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         close("code", "td");
         open("td");
         writeTagged(d);
-        startPrintingLongDoc(d);
-        endLongDocAndPrintShortDoc(d);
+        writeDescription(d);
         close("td");
         close("tr");
     }

@@ -215,6 +215,62 @@ jQuery(function(){
 });
 
 
+/*
+ * COLLAPSIBLE DESCRIPTION
+ */
+$(document).ready(function() {
+  
+    $('.description').each(function() {
+        var descDiv = $(this);
+        var descHeightLong = descDiv.height();
+        var descHeightShort = descDiv.addClass('description-collapsed').height();
+        
+        if (descHeightLong - descHeightShort > 1) {
+            var iconDecoration = $('<i/>').addClass('icon-decoration-expand');
+            var descDecoration = $('<div/>').addClass('description-decoration').append(iconDecoration);            
+            var iconExpand = $('<i/>').addClass('icon-expand');
+            var iconCollapse = $('<i/>').addClass('icon-collapse');
+            var collapsibleLink = $('<a/>').attr('href', '#').text('Expand').addClass('link-collapsible').prepend(iconExpand);
+            
+            var collapsibleHandler = function() {
+                var isCollapsed = descDiv.hasClass('description-collapsed');
+                if( isCollapsed ) {
+                    collapsibleLink.text('Collapse');
+                    collapsibleLink.prepend(iconCollapse);
+                    iconDecoration.removeClass('icon-decoration-expand').addClass('icon-decoration-collapse');
+                }
+                else {
+                    collapsibleLink.text('Expand');
+                    collapsibleLink.prepend(iconExpand);
+                    iconDecoration.removeClass('icon-decoration-collapse').addClass('icon-decoration-expand');
+                }
+                descDiv.toggleClass('description-collapsed');
+                return false;
+            };
+            
+            collapsibleLink.click(collapsibleHandler);
+            
+            var sourceCodeLink = $('.link-source-code', descDiv.parent());
+            if( sourceCodeLink.length == 0 ) {
+                descDiv.parent().prepend(collapsibleLink);
+            }
+            else {
+                sourceCodeLink.after(collapsibleLink);
+            }
+            
+            descDiv.addClass("description-collapsible");
+            descDiv.parent().append(descDecoration);
+            descDiv.click(collapsibleHandler);
+        }
+        else {
+            descDiv.removeClass('description-collapsed');
+        }
+        
+    });
+    
+});
+
+
 /* 
  * FILTER DROPDOWN MENU   
  */
