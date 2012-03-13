@@ -1161,6 +1161,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private void setParameters(Functional decl, MethodMirror methodMirror, boolean isCeylon) {
         ParameterList parameters = new ParameterList();
+        parameters.setNamedParametersSupported(isCeylon);
         decl.addParameterList(parameters);
         for(VariableMirror paramMirror : methodMirror.getParameters()){
             ValueParameter parameter = new ValueParameter();
