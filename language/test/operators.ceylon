@@ -1,5 +1,14 @@
+interface SpreadTest {
+    shared formal String x();
+}
+class Spread1() satisfies SpreadTest {
+    shared actual String x() { return "S1"; }
+}
+class Spread2() satisfies SpreadTest {
+    shared actual String x() { return "S2"; }
+}
+
 void operators() {
-    
     String? maybe = "hello";
     String? maybeNot = null;
     assert(exists maybe?.uppercased, "?.");
@@ -43,15 +52,6 @@ void operators() {
     if (exists s4s=spread4[1]) {
         assert(s4s == `o`, "spread 12");
     } else { fail("spread 12"); }
-    interface SpreadTest {
-        shared formal String x();
-    }
-    class Spread1() satisfies SpreadTest {
-        shared actual String x() { return "S1"; }
-    }
-    class Spread2() satisfies SpreadTest {
-        shared actual String x() { return "S2"; }
-    }
     value spreadList = { Spread1(), Spread2() };
     value spread13 = spreadList[].x();
     assert(spread13.size == 2, "spread 13 size");
