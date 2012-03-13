@@ -166,12 +166,11 @@ abstract class InvocationBuilder {
         } else if (primary instanceof Tree.QualifiedTypeExpression) {
             resultExpr = gen().make().NewClass(actualPrimExpr, null, gen().makeQuotedIdent(selector), args.toList(), null);
         } else {
-            Declaration decl = ((Tree.StaticMemberOrTypeExpression)primary).getDeclaration();
-            if (decl instanceof FunctionalParameter) {
+            if (primaryDeclaration instanceof FunctionalParameter) {
                 if (primaryExpr != null) {
-                    actualPrimExpr = gen().makeQualIdent(primaryExpr, decl.getName());
+                    actualPrimExpr = gen().makeQualIdent(primaryExpr, primaryDeclaration.getName());
                 } else {
-                    actualPrimExpr = gen().makeQuotedIdent(decl.getName());
+                    actualPrimExpr = gen().makeQuotedIdent(primaryDeclaration.getName());
                 }
                 selector = "call";
             }
@@ -207,8 +206,8 @@ abstract class InvocationBuilder {
         gen().expressionGen().setWithinInvocation(true);
         try {
             JCExpression invocation = makeInvocation();
-            invocation = gen().boxUnboxIfNecessary(invocation, !unboxed, 
-                    returnType, boxingStrategy);
+            invocation = gen().expressionGen().applyErasureAndBoxing(invocation, returnType, 
+                    !unboxed, boxingStrategy, returnType);
             return invocation;
         } finally {
             gen().expressionGen().setWithinInvocation(prevFnCall);
@@ -382,8 +381,14 @@ abstract class InvocationBuilder {
         } else {
             throw new RuntimeException("Illegal State");
         }
-        builder.setBoxingStrategy(BoxingStrategy.INDIFFERENT);
-        builder.setUnboxed(invocation.getUnboxed());
+        if (primaryDeclaration instanceof FunctionalParameter) {
+            // Callables always have boxed return type
+            builder.setBoxingStrategy(invocation.getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED);
+            builder.setUnboxed(false);
+        } else {
+            builder.setBoxingStrategy(BoxingStrategy.INDIFFERENT);
+            builder.setUnboxed(invocation.getUnboxed());
+        }
         builder.compute();
         return builder;
     }
