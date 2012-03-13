@@ -30,11 +30,16 @@
     <property name="ceylon.typechecker.dir" value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}" />
     <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar" />
     <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}" />
+    <property name="ceylon.module-resolver.loc" value="${basedir}/../ceylon-module-resolver" />
+    <property name="ceylon.module-resolver.dir" value="com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}" />
+    <property name="ceylon.module-resolver.jar" value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar" />
+    <property name="ceylon.module-resolver.lib" value="${ceylon.repo.dir}/${ceylon.module-resolver.jar}" />
 
     <path id="test.run.classpath">
         <fileset dir="${ceylon.typechecker.loc}/lib">
             <include name="**/*.jar" />
         </fileset>
+        <pathelement location="${ceylon.module-resolver.lib}" />
         <pathelement location="${ceylon.typechecker.lib}" />
         <pathelement location="${build.classes}" />
         <pathelement location="${build.test-classes}" />
