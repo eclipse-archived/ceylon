@@ -18,3 +18,65 @@ final class methods {
         .com.redhat.ceylon.compiler.java.test.interop.methods.methods();
     }
 }
+final class overloadedMethodsAndSubClasses {
+    
+    private overloadedMethodsAndSubClasses() {
+    }
+    
+    static void overloadedMethodsAndSubClasses() {
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembersSubClass inst = new .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembersSubClass();
+        inst.method();
+        inst.method(1L);
+        inst.method(1L, 2L);
+        inst.topMethod();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.overloadedMethodsAndSubClasses.overloadedMethodsAndSubClasses();
+    }
+}
+final class overloadedConstructors {
+    
+    private overloadedConstructors() {
+    }
+    
+    static void overloadedConstructors() {
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembersSubClass inst = new .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembersSubClass();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembersSubClass inst2 = new .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembersSubClass(2L);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.overloadedConstructors.overloadedConstructors();
+    }
+}
+class OverloadedMembersAndSubClasses extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembersSubClass {
+    
+    private final void test() {
+        method();
+        method(1L);
+        method(1L, 2L);
+        topMethod();
+    }
+    
+    OverloadedMembersAndSubClasses() {
+        super();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.interop.OverloadedMembersAndSubClasses();
+    }
+}
+class OverloadedMembersAndSubClasses2 extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembersSubClass {
+    
+    OverloadedMembersAndSubClasses2() {
+        super(2L);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.interop.OverloadedMembersAndSubClasses2();
+    }
+}
