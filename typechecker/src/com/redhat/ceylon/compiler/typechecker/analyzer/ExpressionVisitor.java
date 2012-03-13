@@ -2186,6 +2186,7 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.BitwiseOp that) {
         super.visit(that);
+        that.addWarning("Set operators not yet supported");
         visitSetOperator(that);
     }
 
@@ -2259,6 +2260,7 @@ public class ExpressionVisitor extends Visitor {
         
     @Override public void visit(Tree.BitwiseAssignmentOp that) {
         super.visit(that);
+        that.addWarning("Set operators not yet supported");
         visitSetAssignmentOperator(that);
         checkAssignability(that.getLeftTerm(), that);
     }
