@@ -565,7 +565,17 @@ public class ExpressionTest extends CompilerTest {
     }
     @Test
     public void testOprSetOperators(){
-        compareWithJavaSource("operator/SetOperators");
+        assertErrors("operator/SetOperators",
+                new CompilerError(24, "Set operators not yet supported"),
+                new CompilerError(25, "Set operators not yet supported"),
+                new CompilerError(26, "Set operators not yet supported"),
+                new CompilerError(27, "Set operators not yet supported"),
+                new CompilerError(28, "Set operators not yet supported"),
+                new CompilerError(29, "Set operators not yet supported"),
+                new CompilerError(30, "Set operators not yet supported"),
+                new CompilerError(31, "Set operators not yet supported")
+                );
+        
     }
     @Test
     public void testOprParenthesized(){
