@@ -136,9 +136,9 @@ public class Ceylonc extends MatchingTask {
         resetFileLists();
         
         // exclude anything from modules
-        for(int i=0;i<modules.size();i++){
-            String exclude = modules.get(i).name.replaceAll("\\.", "/")+"/*.ceylon";
-            log("Adding exclude: "+exclude, Project.MSG_VERBOSE);
+        if (!modules.isEmpty()) {
+            String exclude = "**/*.ceylon";
+            log("Compiling module(s), so adding adding exclude: "+exclude, Project.MSG_VERBOSE);
             createExclude().setName(exclude);
         }
         String[] list = src.list();
