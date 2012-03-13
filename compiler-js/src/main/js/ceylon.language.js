@@ -154,7 +154,9 @@ Correspondence$proto.items = function(keys) {
     }
     return $empty;
 }
-//TODO implement keys
+Correspondence$proto.keys = function() {
+    return TypeCategory(this, 'ceylon.language.Integer');
+}
 exports.Correspondence=Correspondence;
 
 #include collections.js
