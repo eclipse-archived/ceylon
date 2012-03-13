@@ -30,7 +30,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.*;
 public class GenerateJsVisitor extends Visitor
         implements NaturalVisitor {
 
-    private boolean sequencedParameter=false;
     private boolean indent=true;
     private boolean comment=true;
     private int tmpvarCount = 0;
@@ -816,10 +815,15 @@ public class GenerateJsVisitor extends Visitor
     private void initParameters(ParameterList params, TypeDeclaration typeDecl) {
         for (Parameter param : params.getParameters()) {
             String paramName = memberName(param.getDeclarationModel(), false);
-            if (param.getDefaultArgument() != null) {
+            if (param.getDefaultArgument() != null || param.getDeclarationModel().isSequenced()) {
                 out("if(", paramName, "===undefined){", paramName, "=");
-                param.getDefaultArgument().getSpecifierExpression().getExpression().visit(this);
-                out("}");
+                if (param.getDefaultArgument() == null) {
+                    clAlias();
+                    out(".empty");
+                } else {
+                    param.getDefaultArgument().getSpecifierExpression().getExpression().visit(this);
+                }
+                out(";}");
                 endLine();
             }
             if ((typeDecl != null) && param.getDeclarationModel().isCaptured()) {
@@ -1231,7 +1235,6 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(InvocationExpression that) {
-        sequencedParameter=false;
         if (that.getNamedArgumentList()!=null) {
             out("(function (){");
             that.getNamedArgumentList().visit(this);
@@ -1265,18 +1268,6 @@ public class GenerateJsVisitor extends Visitor
             out(")}())");
         }
         else {
-            if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
-                Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
-                if (mte.getDeclaration() instanceof Functional) {
-                    Functional f = (Functional) mte.getDeclaration();
-                    if (!f.getParameterLists().isEmpty()) {
-                        com.redhat.ceylon.compiler.typechecker.model.ParameterList plist = f.getParameterLists().get(0);
-                        if (!plist.getParameters().isEmpty() && plist.getParameters().get(plist.getParameters().size()-1).isSequenced()) {
-                            sequencedParameter=true;
-                        }
-                    }
-                }
-            }
             super.visit(that);
         }
     }
@@ -1284,10 +1275,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(PositionalArgumentList that) {
         out("(");
-        if (that.getPositionalArguments().isEmpty() && sequencedParameter) {
-            clAlias();
-            out(".empty");
-        } else {
+        if (!that.getPositionalArguments().isEmpty()) {
             boolean first=true;
             boolean sequenced=false;
             for (PositionalArgument arg: that.getPositionalArguments()) {
