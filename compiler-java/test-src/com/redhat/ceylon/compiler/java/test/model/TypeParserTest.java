@@ -29,6 +29,7 @@ import org.junit.Test;
 import com.redhat.ceylon.compiler.loader.ModelLoader;
 import com.redhat.ceylon.compiler.loader.TypeParser;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
@@ -76,13 +77,57 @@ public class TypeParserTest {
         Assert.assertNotNull(declaration);
         Assert.assertTrue(declaration instanceof UnionType);
         UnionType union = (UnionType) declaration;
-        Assert.assertEquals(3, union.getCaseTypes().size());
-        Assert.assertEquals("a", union.getCaseTypes().get(0).getDeclaration().getName());
-        Assert.assertTrue(union.getCaseTypes().get(0).getDeclaration() instanceof Class);
-        Assert.assertEquals("b", union.getCaseTypes().get(1).getDeclaration().getName());
-        Assert.assertTrue(union.getCaseTypes().get(1).getDeclaration() instanceof Class);
-        Assert.assertEquals("c", union.getCaseTypes().get(2).getDeclaration().getName());
-        Assert.assertTrue(union.getCaseTypes().get(2).getDeclaration() instanceof Class);
+        List<ProducedType> types = union.getCaseTypes();
+        Assert.assertEquals(3, types.size());
+        Assert.assertEquals("a", types.get(0).getDeclaration().getName());
+        Assert.assertTrue(types.get(0).getDeclaration() instanceof Class);
+        Assert.assertEquals("b", types.get(1).getDeclaration().getName());
+        Assert.assertTrue(types.get(1).getDeclaration() instanceof Class);
+        Assert.assertEquals("c", types.get(2).getDeclaration().getName());
+        Assert.assertTrue(types.get(2).getDeclaration() instanceof Class);
+    }
+
+    @Test
+    public void testIntersection(){
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("a&b&c", null);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof IntersectionType);
+        IntersectionType intersection = (IntersectionType) declaration;
+        List<ProducedType> types = intersection.getSatisfiedTypes();
+        Assert.assertEquals(3, types.size());
+        Assert.assertEquals("a", types.get(0).getDeclaration().getName());
+        Assert.assertTrue(types.get(0).getDeclaration() instanceof Class);
+        Assert.assertEquals("b", types.get(1).getDeclaration().getName());
+        Assert.assertTrue(types.get(1).getDeclaration() instanceof Class);
+        Assert.assertEquals("c", types.get(2).getDeclaration().getName());
+        Assert.assertTrue(types.get(2).getDeclaration() instanceof Class);
+    }
+
+    @Test
+    public void testIntersectionAndUnion(){
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("a&b|c", null);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof UnionType);
+        UnionType union = (UnionType) declaration;
+        List<ProducedType> unionTypes = union.getCaseTypes();
+        Assert.assertEquals(2, unionTypes.size());
+        
+        Assert.assertTrue(unionTypes.get(0).getDeclaration() instanceof IntersectionType);
+        IntersectionType intersection = (IntersectionType) unionTypes.get(0).getDeclaration();
+
+        List<ProducedType> intersectionTypes = intersection.getSatisfiedTypes();
+        Assert.assertEquals(2, intersectionTypes.size());
+        Assert.assertEquals("a", intersectionTypes.get(0).getDeclaration().getName());
+        Assert.assertTrue(intersectionTypes.get(0).getDeclaration() instanceof Class);
+        Assert.assertEquals("b", intersectionTypes.get(1).getDeclaration().getName());
+        Assert.assertTrue(intersectionTypes.get(1).getDeclaration() instanceof Class);
+
+        Assert.assertEquals("c", unionTypes.get(1).getDeclaration().getName());
+        Assert.assertTrue(unionTypes.get(1).getDeclaration() instanceof Class);
     }
 
     @Test
