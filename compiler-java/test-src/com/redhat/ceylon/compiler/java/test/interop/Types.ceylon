@@ -23,7 +23,7 @@ import java.lang {
     JShort = Short,
     JInteger = Integer,
     JLong = Long,
-    JFloat = Float {toFloat = valueOf},
+    JFloat = Float,
     JDouble = Double,
     JCharacter = Character 
 }
@@ -138,11 +138,11 @@ void floatTypes() {
     // FIXME
     //Float? f4 = java.return_Float()?.doubleValue();
     @error
-    java.floatParams(1.0, toFloat(1.0));
+    java.floatParams(1.0, JFloat(1.0));
     @error
-    java.floatParams(box(1.0), toFloat(box(1.0)));
+    java.floatParams(box(1.0), JFloat(box(1.0)));
     @error
-    java.floatParams(java.return_float(), toFloat(java.return_float()));
+    java.floatParams(java.return_float(), JFloat(java.return_float()));
     @error
     java.floatParams(java.return_Float().floatValue(), java.return_Float());
 }

@@ -125,9 +125,9 @@ final class floatTypes {
         final double f1 = java.return_float();
         final .ceylon.language.Float f2 = .ceylon.language.Float.instance(java.return_float());
         final double f3 = java.return_Float().doubleValue();
-        java.floatParams((float)1.0, .java.lang.Float.valueOf((float)1.0));
-        java.floatParams((float).com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Float>box(.ceylon.language.Float.instance(1.0)).doubleValue(), .java.lang.Float.valueOf((float).com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Float>box(.ceylon.language.Float.instance(1.0)).doubleValue()));
-        java.floatParams(java.return_float(), .java.lang.Float.valueOf(java.return_float()));
+        java.floatParams((float)1.0, new .java.lang.Float(1.0));
+        java.floatParams((float).com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Float>box(.ceylon.language.Float.instance(1.0)).doubleValue(), new .java.lang.Float(.com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Float>box(.ceylon.language.Float.instance(1.0)).doubleValue()));
+        java.floatParams(java.return_float(), new .java.lang.Float(java.return_float()));
         java.floatParams(java.return_Float().floatValue(), java.return_Float());
     }
     
