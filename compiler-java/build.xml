@@ -74,6 +74,13 @@
     <pathelement path="${build.classes}"/>
     <pathelement path="${ceylon-tests.car}"/>
   </path>
+  
+  <path id="integrationtest.run.classpath">
+    <path refid="compiler.classpath"/>
+    <pathelement path="${junit.lib}"/>
+    <pathelement path="${build.classes}"/>
+    <pathelement path="${ceylon.ant.lib}"/>
+  </path>
 
   <path id="language.classpath">
     <pathelement path="${language.jar}"/>
@@ -276,6 +283,7 @@
        includeantruntime="false">
       <include name="com/redhat/ceylon/compiler/java/test/**"/>
       <include name="com/redhat/ceylon/ceylondoc/test/**"/>
+      <include name="com/redhat/ceylon/itest/**"/>
     </javac>
   </target>
 
@@ -369,6 +377,7 @@
           <include name="**/*Test.java"/>
           <exclude name="com/redhat/ceylon/compiler/java/test/CompilerTest.java"/>
           <exclude name="com/redhat/ceylon/compiler/java/test/ceylon/**"/>
+          <exclude name="com/redhat/ceylon/itest/**"/>
         </fileset>
       </batchtest>
     </junit>
@@ -404,7 +413,25 @@
 	    </fileset>
 	  </batchtest>
 	</junit>
-  </target>	
+  </target>
+  
+  <target name="integration-test" depends="-test.prepare" 
+      description="Runs integration tests (ant task tests, script tests etc)">
+    
+    <junit printsummary="yes" haltonfailure="no">
+      <classpath refid="integrationtest.run.classpath"/>
+      <jvmarg value="-Dant.home=${ant.home}"/>
+      <jvmarg value="-Dbuild.bin=${build.bin}"/>
+      <jvmarg value="-Dbuild.lib=${build.lib}"/>
+      <formatter type="xml"/>
+      <batchtest fork="yes" todir="${test.reports}">
+        <fileset dir="${test.src}">
+          <include name="com/redhat/ceylon/itest/**/*Test.java"/>
+          <exclude name="com/redhat/ceylon/itest/**/AntBasedTest.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
   
   <target name="ant-tasks" depends="publish">
     <path id="ant-tasks">
