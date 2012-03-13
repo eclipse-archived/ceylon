@@ -43,6 +43,7 @@ function Iterator(wat) {
 }
 initType(Iterator, 'ceylon.language.Iterator');
 exports.Iterator=Iterator;
+
 function Collection(wat) {
     return wat;
 }
@@ -125,8 +126,76 @@ function List(wat) {
 initType(List, 'ceylon.language.List', Collection, Correspondence, Ranged, Cloneable);
 inheritProto(List, Collection, '$Collection$');
 inheritProto(List, Correspondence, '$Correspondence$');
-//TODO implement methods
+var List$proto = List.$$.prototype;
+List$proto.getSize = function() {
+    var li = this.getLastIndex();
+    return li === null ? Integer(0) : li.getSuccessor();
+}
+List$proto.defines = function(idx) {
+    var li = this.getLastIndex();
+    if (li === null) li = Integer(-1);
+    return Boolean$(li.compare(idx) !== smaller);
+}
+List$proto.getIterator = function() {
+    return ListIterator(this);
+}
+List$proto.equals = function(other) {
+    if (isOfType(other, 'ceylon.language.List') === $true && other.getSize().equals(this.getSize()) === $true) {
+        for (var i = 0; i < this.getSize().value; i++) {
+            var mine = this.item(Integer(i));
+            var theirs = other.item(Integer(i));
+            if (((mine === null) && theirs) || !(mine && mine.equals(theirs) === $true)) {
+                return $false;
+            }
+        }
+        return $true;
+    }
+    return $false;
+}
+List$proto.getHash = function() {
+    return this.getSize();
+}
+List$proto.getString = function() {
+    var s = '{';
+    var first = true;
+    var iter = this.getIterator();
+    var item;
+    while ((item = iter.next()) !== $finished) {
+        s += first ? ' ' : ', ';
+        if (exists(item) === $true) {
+            s += item.getString().value;
+        } else {
+            s += 'null';
+        }
+        first = false;
+    }
+    if (!first) {
+        s += ' ';
+    }
+    s += '}';
+    return String$(s);
+}
 exports.List=List;
+
+function ListIterator(list) {
+    var that = new ListIterator.$$;
+    that.list=list;
+    that.index=0;
+    that.lastIndex=list.getLastIndex();
+    if (that.lastIndex === null) {
+        that.lastIndex = -1;
+    } else {
+        that.lastIndex = that.lastIndex.value;
+    }
+    return that;
+}
+initType(ListIterator, 'ceylon.language.ListIterator', Iterator);
+ListIterator.$$.prototype.next = function() {
+    if (this.index <= this.lastIndex) {
+        return this.list.item(Integer(this.index++));
+    }
+    return $finished;
+}
 
 function Map(wat) {
     return wat;

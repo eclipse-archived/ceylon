@@ -5,9 +5,11 @@ initType(Sequence, 'ceylon.language.Sequence', List, Some, Cloneable, Ranged);
 inheritProto(Sequence, List, '$List$');
 inheritProto(Sequence, Some, '$Some$');
 var Sequence$proto = Sequence.$$.prototype;
-Sequence$proto.getEmpty = function() { return $false; }
-Sequence$proto.getSize = function() { return this.getLastIndex().getSuccessor(); }
-Sequence$proto.defines = function(index) { return Boolean$(index.compare(this.getSize()) === smaller); }
+Sequence$proto.getLast = function() {
+    var last = this.item(this.getLastIndex());
+    if (last === null) throw Exception();
+    return last;
+}
 
 function Empty() {
     var that = new Empty.$$;
@@ -20,7 +22,7 @@ inheritProto(Empty, None, '$None$');
 var Empty$proto = Empty.$$.prototype;
 Empty$proto.getEmpty = function() { return $true; }
 Empty$proto.defines = function(x) { return $false; }
-Empty$proto.getKeys = function() { return IntCategory(this); }
+Empty$proto.getKeys = function() { return TypeCategory(this, 'ceylon.language.Integer'); }
 Empty$proto.definesEvery = function(x) { return $false; }
 Empty$proto.definesAny = function(x) { return $false; }
 Empty$proto.items = function(x) { return this; }
@@ -56,29 +58,12 @@ function ArraySequence(value) {
 initType(ArraySequence, 'ceylon.language.ArraySequence', IdentifiableObject, Sequence);
 inheritProto(ArraySequence, IdentifiableObject, '$IdentifiableObject$', Sequence);
 var ArraySequence$proto = ArraySequence.$$.prototype;
-ArraySequence$proto.getString = function() {
-	if (this.value.length === 0) {
-		return String$("{}");
-	}
-    var desc = "{ ";
-    var first = true;
-    for (var i = 0; i < this.value.length; i++) {
-        if (first) {
-            first = false;
-		} else {
-            desc += ", ";
-        }
-        var item = this.value[i];
-        desc += exports.exists(item) === $true ? item.getString().value : "null";
-    }
-    return String$(desc +" }");
-}
 ArraySequence$proto.item = function(index) {
     var result = this.value[index.value];
     return result!==undefined ? result:null;
 }
 ArraySequence$proto.getSize = function() { return Integer(this.value.length) }
-ArraySequence$proto.getEmpty = function() { return this.value.length > 0 ? getFalse() : getTrue(); }
+ArraySequence$proto.getEmpty = function() { return this.value.length > 0 ? $false : $true; }
 ArraySequence$proto.getLastIndex = function() { return this.getSize().getPredecessor(); }
 ArraySequence$proto.getFirst = function() { return this.item(Integer(0)); }
 ArraySequence$proto.getLast = function() { return this.item(this.getLastIndex()); }
@@ -120,37 +105,7 @@ ArraySequence$proto.items = function(keys) {
     }
     return ArraySequence(seq);
 }
-ArraySequence$proto.definesEvery = function(keys) {
-    for (var i = 0; i < keys.getSize().value; i++) {
-        if (this.defines(keys.item(Integer(i))) === getFalse()) {
-            return getFalse();
-        }
-    }
-    return getTrue();
-}
-ArraySequence$proto.definesAny = function(keys) {
-    for (var i = 0; i < keys.getSize().value; i++) {
-        if (this.defines(keys.item(Integer(i))) === getTrue()) {
-            return getTrue();
-        }
-    }
-    return getFalse();
-}
-ArraySequence$proto.equals = function(other) {
-    if (other && other.getSize().equals(this.getSize()) === getTrue()) {
-        for (var i = 0; i < this.getSize().value; i++) {
-            var mine = this.item(Integer(i));
-            var theirs = other.item(Integer(i));
-            if (((mine === null) && theirs) || !(mine && mine.equals(theirs) === getTrue())) {
-                return getFalse();
-            }
-        }
-        return getTrue();
-    }
-    return getFalse();
-}
-ArraySequence$proto.getIterator = function() { return ArrayIterator(this.value); }
-ArraySequence$proto.getKeys = function() { return IntCategory(this); }
+ArraySequence$proto.getKeys = function() { return TypeCategory(this, 'ceylon.language.Integer'); }
 ArraySequence$proto.contains = function(elem) {
     for (var i=0; i<this.value.length; i++) {
         if (elem.equals(this.value[i])) {
@@ -160,50 +115,17 @@ ArraySequence$proto.contains = function(elem) {
     return $false;
 }
 
-function IntCategory(seq) {
-    var that = new IntCategory.$$;
+function TypeCategory(seq, type) {
+    var that = new TypeCategory.$$;
+    that.type = type;
     that.seq = seq;
     return that;
 }
-initType(IntCategory, 'ceylon.language.IntCategory', IdentifiableObject, Category);
-inheritProto(IntCategory, IdentifiableObject, '$IdentifiableObject$');
-var IntCategory$proto = IntCategory.$$.prototype;
-IntCategory$proto.contains = function(k) {
-    return this.seq.defines(k);
-}
-IntCategory$proto.containsEvery = function(keys) {
-    var all = true;
-    for (var i = 0; i < this.seq.value.length; i++) {
-        all = all && this.seq.defines(keys.item(Integer(i))).value;
-    }
-    return Boolean$(all);
-}
-IntCategory$proto.containsAny = function(keys) {
-    for (var i = 0; i < this.seq.value.length; i++) {
-        if (this.seq.defines(keys.item(Integer(i))) == $true) {
-            return $true;
-        }
-    }
-    return $false;
-}
-
-function ArrayIterator(arr) {
-    var that = new ArrayIterator.$$;
-    that.array = arr;
-    that.current = arr && arr.length ? arr[0] : $finished;
-    that.idx = 0;
-    return that;
-}
-initType(ArrayIterator, 'ceylon.language.ArrayIterator', IdentifiableObject, Iterator);
-inheritProto(ArrayIterator, IdentifiableObject, '$IdentifiableObject$');
-var ArrayIterator$proto = ArrayIterator.$$.prototype;
-ArrayIterator$proto.next = function() {
-    if (this.current === $finished) {
-        return $finished;
-    }
-    this.current = this.idx < this.array.length ? this.array[this.idx] : $finished;
-    this.idx++;
-    return this.current;
+initType(TypeCategory, 'ceylon.language.TypeCategory', IdentifiableObject, Category);
+inheritProto(TypeCategory, IdentifiableObject, '$IdentifiableObject$', Category);
+var TypeCategory$proto = TypeCategory.$$.prototype;
+TypeCategory$proto.contains = function(k) {
+    return Boolean$(isOfType(k, this.type) === $true && this.seq.defines(k) === $true);
 }
 
 function SequenceBuilder() {
@@ -255,7 +177,7 @@ Singleton$proto.getLast = function() { return this.elem; }
 Singleton$proto.getEmpty = function() { return $false; }
 Singleton$proto.getRest = function() { return $empty; }
 Singleton$proto.defines = function(idx) { return idx.equals(Integer(0)); }
-Singleton$proto.getKeys = function() { return IntCategory(this); }
+Singleton$proto.getKeys = function() { return TypeCategory(this, 'ceylon.language.Integer'); }
 Singleton$proto.span = function(from, to) {
 	if (to === undefined || to === null) to = from;
     return (from.equals(Integer(0)) === getTrue() || to.equals(Integer(0)) === getTrue()) ? this : $empty;
