@@ -22,7 +22,7 @@ final class bar {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void>"){
             
             @.java.lang.Override
-            public .java.lang.Object call() {
+            public .java.lang.Object $call() {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.foo.foo();
                 return null;
             }

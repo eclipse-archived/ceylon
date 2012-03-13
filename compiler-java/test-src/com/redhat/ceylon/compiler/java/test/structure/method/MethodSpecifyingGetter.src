@@ -7,7 +7,7 @@ class MethodSpecifierGetter {
     }
     
     private final long foo(final boolean b) {
-        return getF().call(.ceylon.language.Boolean.instance(b)).longValue();
+        return getF().$call(.ceylon.language.Boolean.instance(b)).longValue();
     }
     
     MethodSpecifierGetter() {

@@ -25,8 +25,8 @@ final class m {
         .com.redhat.ceylon.compiler.java.test.expression.invoke.f.f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void,Integer,String,Boolean,Character>"){
             
             @.java.lang.Override
-            public .java.lang.Object call(final .java.lang.Object... arg0) {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.bar(((.ceylon.language.Integer)arg0[0]).longValue(), ((.ceylon.language.String)arg0[1]).toString(), ((.ceylon.language.Boolean)arg0[2]).booleanValue(), ((.ceylon.language.Character)arg0[3]).intValue());
+            public .java.lang.Object $call(final .java.lang.Object... $param$0) {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.bar(((.ceylon.language.Integer)$param$0[0]).longValue(), ((.ceylon.language.String)$param$0[1]).toString(), ((.ceylon.language.Boolean)$param$0[2]).booleanValue(), ((.ceylon.language.Character)$param$0[3]).intValue());
                 return null;
             }
         });

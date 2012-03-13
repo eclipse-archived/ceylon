@@ -366,6 +366,11 @@ public class StructureTest extends CompilerTest {
     public void testThreeParamLists(){
         compareWithJavaSource("method/ThreeParamLists");
     }
+    @Ignore("M3")
+    @Test
+    public void testCallableEscaping(){
+        compareWithJavaSource("method/CallableEscaping");
+    }
     
     //
     // Toplevel

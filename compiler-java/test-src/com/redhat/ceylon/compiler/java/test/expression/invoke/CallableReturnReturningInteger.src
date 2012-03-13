@@ -23,7 +23,7 @@ final class bar {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Callable<Integer>"){
             
             @.java.lang.Override
-            public .ceylon.language.Integer call() {
+            public .ceylon.language.Integer $call() {
                 return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.foo.foo());
             }
         };

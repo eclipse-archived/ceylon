@@ -15,7 +15,7 @@ class C {
         f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.C.D>("Callable<C.D>"){
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.test.expression.invoke.C.D call() {
+            public .com.redhat.ceylon.compiler.java.test.expression.invoke.C.D $call() {
                 return C.this.new D();
             }
         });

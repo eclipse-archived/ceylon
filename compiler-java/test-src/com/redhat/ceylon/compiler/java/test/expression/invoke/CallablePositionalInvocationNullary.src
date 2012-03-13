@@ -6,6 +6,6 @@ final class f {
     }
     
     static void f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
-        foo.call();
+        foo.$call();
     }
 }

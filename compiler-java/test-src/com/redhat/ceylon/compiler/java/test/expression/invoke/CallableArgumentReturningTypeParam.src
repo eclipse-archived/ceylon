@@ -45,14 +45,14 @@ final class m {
         .com.redhat.ceylon.compiler.java.test.expression.invoke.f.<.ceylon.language.Integer>f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Callable<Integer>"){
             
             @.java.lang.Override
-            public .ceylon.language.Integer call() {
+            public .ceylon.language.Integer $call() {
                 return .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.<.ceylon.language.Integer>bar();
             }
         });
         .com.redhat.ceylon.compiler.java.test.expression.invoke.f.<.ceylon.language.Integer>f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Callable<Integer>"){
             
             @.java.lang.Override
-            public .ceylon.language.Integer call() {
+            public .ceylon.language.Integer $call() {
                 return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.baz.baz());
             }
         });

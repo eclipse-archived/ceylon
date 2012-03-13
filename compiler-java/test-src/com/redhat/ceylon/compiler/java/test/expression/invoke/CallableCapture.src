@@ -27,7 +27,7 @@ final class m {
         final .ceylon.language.Callable<? extends .ceylon.language.String> bar = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("Callable<String,Integer>"){
             
             @.java.lang.Override
-            public .ceylon.language.String call(final .java.lang.Object $param$0) {
+            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
                 return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.foo.foo(((.ceylon.language.Integer)$param$0).longValue()));
             }
         };

@@ -17,8 +17,8 @@ final class bar {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void,Integer,String,Boolean>"){
             
             @.java.lang.Override
-            public .java.lang.Object call(final .java.lang.Object arg0, final .java.lang.Object arg1, final .java.lang.Object arg2) {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.foo.foo(((.ceylon.language.Integer)arg0).longValue(), ((.ceylon.language.String)arg1).toString(), ((.ceylon.language.Boolean)arg2).booleanValue());
+            public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.foo.foo(((.ceylon.language.Integer)$param$0).longValue(), ((.ceylon.language.String)$param$1).toString(), ((.ceylon.language.Boolean)$param$2).booleanValue());
                 return null;
             }
         };

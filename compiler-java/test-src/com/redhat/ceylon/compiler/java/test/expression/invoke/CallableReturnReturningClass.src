@@ -19,7 +19,7 @@ final class bar {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.C>("Callable<C>"){
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.test.expression.invoke.C call() {
+            public .com.redhat.ceylon.compiler.java.test.expression.invoke.C $call() {
                 return new .com.redhat.ceylon.compiler.java.test.expression.invoke.C();
             }
         };

@@ -21,7 +21,7 @@ final class m {
     static void m() {
         .com.redhat.ceylon.compiler.java.test.expression.invoke.f.<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.C>>f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.C>("Callable<Void,String>") {
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.test.expression.invoke.C call(.java.lang.String arg0) {
+            public .com.redhat.ceylon.compiler.java.test.expression.invoke.C $call(.java.lang.String arg0) {
                 return new .com.redhat.ceylon.compiler.java.test.expression.invoke.C((.java.lang.String)arg0);
             }
         });
