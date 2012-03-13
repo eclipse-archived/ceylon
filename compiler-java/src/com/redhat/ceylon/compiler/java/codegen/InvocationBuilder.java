@@ -172,7 +172,7 @@ abstract class InvocationBuilder {
                 } else {
                     actualPrimExpr = gen().makeQuotedIdent(primaryDeclaration.getName());
                 }
-                selector = "call";
+                selector = "$call";
             }
             resultExpr = gen().make().Apply(typeArgs, gen().makeQuotedQualIdent(actualPrimExpr, selector), args.toList());
         }
@@ -534,7 +534,7 @@ abstract class InvocationBuilder {
                 @Override
                 protected JCExpression makeInvocation() {
                     gen().at(node);
-                    JCExpression result= gen().make().Apply(typeArgs, gen().makeQuotedQualIdent(callable, "call"), args.toList());
+                    JCExpression result= gen().make().Apply(typeArgs, gen().makeQuotedQualIdent(callable, "$call"), args.toList());
                     return result;
                 }
             };

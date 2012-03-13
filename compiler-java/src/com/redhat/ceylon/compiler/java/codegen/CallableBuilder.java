@@ -33,13 +33,12 @@ import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCTypeCast;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
+import com.sun.tools.javac.util.Name;
 
 public class CallableBuilder {
 
-    private final CeylonTransformer gen;
-    //private java.util.List<ParameterList> paramLists;
+    private final AbstractTransformer gen;
     private ProducedType typeModel;
-    //private ProducedType returnType;
     private List<JCStatement> body;
     private ParameterList paramLists;
     
@@ -81,9 +80,6 @@ public class CallableBuilder {
         int ii =0;
         for (Parameter p : parameterList.getParameters()) {
             JCExpression init = unpickCallableParameter(gen, true, null, p, null, ii, parameterList.getParameters().size());
-            //gen.expressionGen().applyErasureAndBoxing(gen.makeQuotedIdent("arg"+ii), 
-            //        gen., exprBoxed, boxingStrategy, p.getType());
-            //JCExpression init = gen.make().TypeCast(gen.makeJavaType(p.getType()), gen.makeQuotedIdent("arg"+ii))
             JCVariableDecl varDef = gen.make().VarDef(gen.make().Modifiers(Flags.FINAL), 
                     gen.names().fromString(p.getName()), 
                     gen.makeJavaType(p.getType(), AbstractTransformer.NO_PRIMITIVES), 
@@ -98,7 +94,7 @@ public class CallableBuilder {
     
     public JCNewClass build() {
         // Generate a subclass of Callable
-        MethodDefinitionBuilder callMethod = MethodDefinitionBuilder.method(gen, false, true, "call");
+        MethodDefinitionBuilder callMethod = MethodDefinitionBuilder.method(gen, false, true, "$call");
         callMethod.isActual(true);
         callMethod.modifiers(Flags.PUBLIC);
         ProducedType returnType = gen.getCallableReturnType(typeModel);
@@ -134,13 +130,17 @@ public class CallableBuilder {
         return instance;
     }
     
+    private static Name makeParamName(AbstractTransformer gen, int paramIndex) {
+        return gen.names().fromString("$param$"+paramIndex);
+    }
+    
     private JCVariableDecl makeCallableCallParam(long flags, int ii) {
         JCExpression type = gen.makeIdent(gen.syms().objectType);
         if ((flags & Flags.VARARGS) != 0) {
             type = gen.make().TypeArray(type);
         }
         return gen.make().VarDef(gen.make().Modifiers(Flags.FINAL | flags), 
-                gen.names().fromString("arg"+ii), type, null);
+                makeParamName(gen, ii), type, null);
     }
     
     public static JCExpression unpickCallableParameter(AbstractTransformer gen,
@@ -155,12 +155,12 @@ public class CallableBuilder {
             // The Callable has overridden one of the non-varargs call() 
             // methods
             argExpr = gen.make().Ident(
-                    gen.names().fromString("arg"+argIndex));
+                    makeParamName(gen, argIndex));
         } else {
             // The Callable has overridden the varargs call() method
             // so we need to index into the varargs array
             argExpr = gen.make().Indexed(
-                    gen.make().Ident(gen.names().fromString("arg0")), 
+                    gen.make().Ident(makeParamName(gen, 0)), 
                     gen.make().Literal(argIndex));
         }
         ProducedType castType;
