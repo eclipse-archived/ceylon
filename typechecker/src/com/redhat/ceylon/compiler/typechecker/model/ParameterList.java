@@ -6,6 +6,7 @@ import java.util.List;
 public class ParameterList {
     
     private List<Parameter> parameters = new ArrayList<Parameter>();
+    private boolean supportsNamedParameters = true;
     
     public List<Parameter> getParameters() {
         return parameters;
@@ -14,6 +15,14 @@ public class ParameterList {
     @Override
     public String toString() {
         return "ParameterList" + parameters.toString();
+    }
+
+    public boolean isNamedParametersSupported() {
+        return supportsNamedParameters;
+    }
+
+    public void setNamedParametersSupported(boolean supportsNamedParameters) {
+        this.supportsNamedParameters = supportsNamedParameters;
     }
     
 }

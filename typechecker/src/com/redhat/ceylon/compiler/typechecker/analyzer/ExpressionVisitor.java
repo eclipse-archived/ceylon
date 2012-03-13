@@ -1437,6 +1437,13 @@ public class ExpressionVisitor extends Visitor {
                 //pull the return type out of the Callable
                 that.setTypeModel(ct.getTypeArgumentList().get(0));
             }
+            if(that.getNamedArgumentList() != null){
+                List<ParameterList> parameterLists = dec.getParameterLists();
+                if(!parameterLists.isEmpty()
+                        && !parameterLists.get(0).isNamedParametersSupported()) {
+                    that.addError("named invocations of Java methods not supported");
+                }
+            }
             if (dec.isAbstraction()) {
                 //nothing to check the argument types against
                 //that.addError("no matching overloaded declaration");
@@ -1467,8 +1474,10 @@ public class ExpressionVisitor extends Visitor {
                 checkPositionalArguments(pl, prf, that.getPositionalArgumentList());
             }
             if ( that.getNamedArgumentList()!=null ) {
-                that.getNamedArgumentList().getNamedArgumentList().setParameterList(pl);
-                checkNamedArguments(pl, prf, that.getNamedArgumentList());
+                if(pl.isNamedParametersSupported()) {
+                    that.getNamedArgumentList().getNamedArgumentList().setParameterList(pl);
+                    checkNamedArguments(pl, prf, that.getNamedArgumentList());
+                }
             }
         }
     }
@@ -2309,7 +2318,8 @@ public class ExpressionVisitor extends Visitor {
     
     private void checkOverloadedReference(Tree.MemberOrTypeExpression that) {
         if (that.getDeclaration() instanceof Functional &&
-                ((Functional)that.getDeclaration()).isAbstraction()) {
+                ((Functional)that.getDeclaration()).isAbstraction() &&
+                that.getSignature() != null) {
             that.addError("ambiguous reference to overloaded method or class: " +
                     that.getDeclaration().getName());
         }
