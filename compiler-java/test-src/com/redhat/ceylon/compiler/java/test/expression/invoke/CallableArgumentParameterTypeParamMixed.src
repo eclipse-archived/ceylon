@@ -5,7 +5,7 @@ final class f {
     private f() {
     }
     
-    static <S, T>void f(final .ceylon.language.Callable<S> foo) {
+    static <S, T>void f(final .ceylon.language.Callable<? extends S> foo) {
     }
 }
 final class bar {

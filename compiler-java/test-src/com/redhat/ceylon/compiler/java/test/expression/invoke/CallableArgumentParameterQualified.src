@@ -5,18 +5,18 @@ final class f {
     private f() {
     }
     
-    static void f(final .ceylon.language.Callable<.java.lang.Object> foo) {
+    static void f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
     }
 }
 class C {
-    private final .ceylon.language.Callable<.java.lang.Object> bar;
+    private final .ceylon.language.Callable<? extends .java.lang.Object> bar;
     
     private final void m(final .com.redhat.ceylon.compiler.java.test.expression.invoke.C c) {
         .com.redhat.ceylon.compiler.java.test.expression.invoke.f.f(c.bar);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.f.f(this.bar);
     }
     
-    C(.ceylon.language.Callable<.java.lang.Object> bar) {
+    C(.ceylon.language.Callable<? extends .java.lang.Object> bar) {
         this.bar = bar;
     }
 }

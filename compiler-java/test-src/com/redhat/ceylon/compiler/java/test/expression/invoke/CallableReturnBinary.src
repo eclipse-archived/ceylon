@@ -13,7 +13,7 @@ final class bar {
     private bar() {
     }
     
-    static .ceylon.language.Callable<.java.lang.Object> bar() {
+    static .ceylon.language.Callable<? extends .java.lang.Object> bar() {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void,Integer,String>"){
             
             @.java.lang.Override

@@ -15,7 +15,7 @@ final class bar {
     private bar() {
     }
     
-    static .ceylon.language.Callable<.com.redhat.ceylon.compiler.java.test.expression.invoke.C> bar() {
+    static .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.C> bar() {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.C>("Callable<C>"){
             
             @.java.lang.Override

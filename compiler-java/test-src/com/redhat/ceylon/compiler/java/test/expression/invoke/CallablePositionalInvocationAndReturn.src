@@ -5,7 +5,7 @@ final class testCallable {
     private testCallable() {
     }
     
-    static .java.lang.String testCallable(final .ceylon.language.Callable<.ceylon.language.String> f) {
+    static .java.lang.String testCallable(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
         return f.call(.ceylon.language.Integer.instance(1L)).toString();
     }
 }

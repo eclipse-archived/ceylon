@@ -5,7 +5,7 @@ final class f {
     private f() {
     }
     
-    static .ceylon.language.Callable<.ceylon.language.String> f() {
+    static .ceylon.language.Callable<? extends .ceylon.language.String> f() {
         throw new .ceylon.language.Exception(null, null);
     }
     

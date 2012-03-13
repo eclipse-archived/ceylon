@@ -19,7 +19,7 @@ final class bar {
     private bar() {
     }
     
-    static .ceylon.language.Callable<.ceylon.language.Integer> bar() {
+    static .ceylon.language.Callable<? extends .ceylon.language.Integer> bar() {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Callable<Integer>"){
             
             @.java.lang.Override

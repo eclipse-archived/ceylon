@@ -5,7 +5,7 @@ final class higher {
     private higher() {
     }
     
-    static void higher(final .ceylon.language.Callable<.ceylon.language.String> ref) {
+    static void higher(final .ceylon.language.Callable<? extends .ceylon.language.String> ref) {
         
         final class f {
             

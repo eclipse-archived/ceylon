@@ -6,7 +6,7 @@ class C {
         return 1L;
     }
     
-    private final .ceylon.language.Callable<.ceylon.language.Integer> m() {
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> m() {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Callable<Integer>"){
             
             @.java.lang.Override
@@ -16,7 +16,7 @@ class C {
         };
     }
     
-    private final .ceylon.language.Callable<.ceylon.language.Integer> m2() {
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> m2() {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Callable<Integer>"){
             
             @.java.lang.Override
@@ -26,7 +26,7 @@ class C {
         };
     }
     
-    private final .ceylon.language.Callable<.ceylon.language.Integer> m3(final .com.redhat.ceylon.compiler.java.test.expression.invoke.C c) {
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> m3(final .com.redhat.ceylon.compiler.java.test.expression.invoke.C c) {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Callable<Integer>"){
             
             @.java.lang.Override

@@ -9,7 +9,7 @@ public final class fullName {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>("Callable<Callable<String>>"){
             
             @.java.lang.Override
-            public .ceylon.language.Callable<.ceylon.language.String> call(final .java.lang.Object arg0) {
+            public .ceylon.language.Callable<? extends .ceylon.language.String> call(final .java.lang.Object arg0) {
                 final .ceylon.language.String middleName = (.ceylon.language.String)arg0;
                 return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("Callable<String>"){
                     

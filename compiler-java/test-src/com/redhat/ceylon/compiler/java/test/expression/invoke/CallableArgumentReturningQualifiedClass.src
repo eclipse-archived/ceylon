@@ -8,7 +8,7 @@ class C {
         }
     }
     
-    private final void f(final .ceylon.language.Callable<.com.redhat.ceylon.compiler.java.test.expression.invoke.C.D> foo) {
+    private final void f(final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.C.D> foo) {
     }
     
     private final void m() {

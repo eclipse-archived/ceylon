@@ -15,7 +15,7 @@ final class f {
     private f() {
     }
     
-    static void f(final .ceylon.language.Callable<.com.redhat.ceylon.compiler.java.test.expression.invoke.C> foo) {
+    static void f(final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.C> foo) {
     }
 }
 final class m {

@@ -5,7 +5,7 @@ final class f {
     private f() {
     }
     
-    static void f(final .ceylon.language.Callable<.java.lang.Object> foo) {
+    static void f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
     }
 }
 final class g {
