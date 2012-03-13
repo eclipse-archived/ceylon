@@ -1,0 +1,18 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class ceylonKeywords {
+    
+    private ceylonKeywords() {
+    }
+    
+    static void ceylonKeywords() {
+        final .com.redhat.ceylon.compiler.java.test.interop.satisfies klass = new .com.redhat.ceylon.compiler.java.test.interop.satisfies();
+        final long i = klass.satisfies;
+        klass.of();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.ceylonKeywords.ceylonKeywords();
+    }
+}

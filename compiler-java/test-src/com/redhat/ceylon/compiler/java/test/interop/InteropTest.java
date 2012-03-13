@@ -90,6 +90,12 @@ public class InteropTest extends CompilerTest {
     }
 
     @Test
+    public void testIopCeylonKeywords(){
+        compile("satisfies.java");
+        compareWithJavaSource("CeylonKeywords");
+    }
+
+    @Test
     public void testIopCheckedExceptions(){
         compile("JavaCheckedExceptions.java");
         compareWithJavaSource("CheckedExceptions");
