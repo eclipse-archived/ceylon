@@ -25,8 +25,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
@@ -45,8 +47,12 @@ public class TypeParser {
         this.unit = unit;
     }
     
+    enum Expecting {
+        Nothing, Union, Intersection;
+    }
+    
     /** 
-     * Format: spec: type(<spec(,spec)*>)?(\|type(<spec(,spec)*>)?)
+     * Format: spec: type(<spec(,spec)*>)?([|&]type(<spec(,spec)*>)?)
      */
     public ProducedType decodeType(String value, Scope scope) {
         // stack of lists of union or param types 
@@ -54,18 +60,19 @@ public class TypeParser {
         types.push(new LinkedList<ProducedType>());
         char[] chars = value.toCharArray();
         int nameStart = 0;
-        boolean expectingUnion = true;
+        Expecting expecting = Expecting.Nothing;
         for (int i = 0; i < chars.length; i++) {
             String typeName = null;
             switch(chars[i]){
             case ',':
             case '|':
+            case '&':
             case '>':
             case '<':
                 if(i > nameStart){
                     // we're adding one simple type
                     typeName = new String(chars, nameStart, i-nameStart).trim();
-                    unify(types.peek(), getType(typeName, scope), expectingUnion);
+                    unify(types.peek(), getType(typeName, scope), expecting);
                 }// else it has already been added on the way down
                 nameStart = i+1;
             }
@@ -75,28 +82,38 @@ public class TypeParser {
                 types.push(new LinkedList<ProducedType>());
                 break;
             case ',':
-                expectingUnion = false;
+                expecting = Expecting.Nothing;
                 break;
             case '|':
-                expectingUnion = true;
+                expecting = Expecting.Union;
+                break;
+            case '&':
+                expecting = Expecting.Intersection;
                 break;
             case '>':
                 // we have every param for the current type, now create it
                 LinkedList<ProducedType> params = types.pop();
                 ProducedType type = types.peek().getLast();
+                TypeDeclaration decl = type.getDeclaration();
                 // if it's a union type we're parameterising its last type
-                if(type.getDeclaration() instanceof UnionType){
-                    List<ProducedType> caseTypes = type.getDeclaration().getCaseTypes();
+                if(decl instanceof UnionType){
+                    List<ProducedType> caseTypes = decl.getCaseTypes();
                     type = caseTypes.get(caseTypes.size()-1);
                     ProducedType parameterisedType = type.getDeclaration().getProducedType(null, params);
                     // replace it
                     caseTypes.set(caseTypes.size()-1, parameterisedType);
-                }else{
+                }else if(decl instanceof IntersectionType){
+                    List<ProducedType> satisfiedTypes = decl.getSatisfiedTypes();
+                    type = satisfiedTypes.get(satisfiedTypes.size()-1);
                     ProducedType parameterisedType = type.getDeclaration().getProducedType(null, params);
+                    // replace it
+                    satisfiedTypes.set(satisfiedTypes.size()-1, parameterisedType);
+                }else{
+                    ProducedType parameterisedType = decl.getProducedType(null, params);
                     // and replace it
                     types.peek().set(types.peek().size()-1, parameterisedType);
                 }
-                expectingUnion = false;
+                expecting = Expecting.Nothing;
                 break;
             }
         }
@@ -104,38 +121,48 @@ public class TypeParser {
         if(nameStart < chars.length){
             // we're adding one simple type
             String typeName = new String(chars, nameStart, chars.length - nameStart).trim();
-            unify(types.peek(), getType(typeName, scope), expectingUnion);
+            unify(types.peek(), getType(typeName, scope), expecting);
         }// else it has already been added on the way down 
 
         // we should have it done
         return types.pop().pop();
     }
 
-    private void unify(LinkedList<ProducedType> list, ProducedType type, boolean unify) {
-        if(!unify){
+    private void unify(LinkedList<ProducedType> list, ProducedType type, Expecting expecting) {
+        if(expecting == Expecting.Nothing){
             list.add(type);
             return;
         }
         if(list.isEmpty()){
-            // add a new union type
-            UnionType unionType = new UnionType(unit);
-            LinkedList<ProducedType> unionTypes = new LinkedList<ProducedType>();
-            unionTypes.add(type);
-            unionType.setCaseTypes(unionTypes);
-            list.add(unionType.getType());
+            // add a new composite type
+            TypeDeclaration compositeType = expecting == Expecting.Union ? new UnionType(unit) : new IntersectionType(unit);
+            LinkedList<ProducedType> compositeTypes = new LinkedList<ProducedType>();
+            compositeTypes.add(type);
+            if(expecting == Expecting.Union)
+                compositeType.setCaseTypes(compositeTypes);
+            else
+                compositeType.setSatisfiedTypes(compositeTypes);
+            list.add(compositeType.getType());
         }else{
             ProducedType last = list.getLast();
-            if(last.getDeclaration() instanceof UnionType){
+            TypeDeclaration decl = last.getDeclaration();
+            if(decl instanceof UnionType && expecting == Expecting.Union){
                 // add to an existing union type
-                last.getDeclaration().getCaseTypes().add(type);
+                decl.getCaseTypes().add(type);
+            }else if(decl instanceof IntersectionType && expecting == Expecting.Intersection){
+                // add to an existing intersection type
+                decl.getSatisfiedTypes().add(type);
             }else{
-                // turn a non-union type into one
-                UnionType unionType = new UnionType(unit);
-                LinkedList<ProducedType> unionTypes = new LinkedList<ProducedType>();
-                unionTypes.add(last);
-                unionTypes.add(type);
-                unionType.setCaseTypes(unionTypes);
-                list.set(list.size()-1, unionType.getType());
+                // turn a non-expected type into one
+                TypeDeclaration compositeType = expecting == Expecting.Union ? new UnionType(unit) : new IntersectionType(unit);
+                LinkedList<ProducedType> compositeTypes = new LinkedList<ProducedType>();
+                compositeTypes.add(last);
+                compositeTypes.add(type);
+                if(expecting == Expecting.Union)
+                    compositeType.setCaseTypes(compositeTypes);
+                else
+                    compositeType.setSatisfiedTypes(compositeTypes);
+                list.set(list.size()-1, compositeType.getType());
             }
         }
     }
