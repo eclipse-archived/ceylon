@@ -66,7 +66,6 @@ void test_join() {
     value l2 = { 4,5,6 };
     value l3 = {7,8,9};
     value joint = join(l1, l2, l3);
-    print(joint);
     assert(joint.size==l1.size+l2.size+l3.size, "join");
 }
 
@@ -75,8 +74,6 @@ void test_zip() {
     value items = { "one", "two", "three", "four", "five" };
     value z1 = zip(keys, items);
     value z2 = zip(keys, { "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete" });
-    print(z1);
-    print(z2);
     assert(z1.size==5, "zip");
     assert(z2.size==6, "zip");
 }
@@ -132,7 +129,7 @@ shared void sequences() {
     else {
         fail("sequence last");
     }*/
-    assert(result.string=="{ hello, world }", "sequence.string");
+    assert(result.string=="{ hello, world }", "sequence.string 1");
 
     //span
     assert(result.span(1,1).string=="{ world }", "sequence.span(1,1).string");
@@ -165,15 +162,15 @@ shared void sequences() {
         fail("sequence item");
     }
 
-    assert(result.keys.contains(0), "sequence keys");
-    assert(result.keys.contains(1), "sequence keys");
-    assert(!result.keys.contains(2), "sequence keys");
+    assert(result.keys.contains(0), "sequence keys 0");
+    assert(result.keys.contains(1), "sequence keys 1");
+    assert(!result.keys.contains(2), "sequence keys 2");
     assert(result.defines(0)&&result.defines(1)&&!result.defines(2),
            "sequence defines");
-    assert(result.definesEvery(0,1), "sequence definesEvery");
-    assert(!result.definesEvery(1,2), "sequence definesEvery");
-    assert(result.definesAny(1,2), "sequence definesAny");
-    assert(!result.definesAny(2,3), "sequence definesAny");
+    assert(result.definesEvery(0,1), "sequence definesEvery 0,1");
+    assert(!result.definesEvery(1,2), "sequence definesEvery 1,2");
+    assert(result.definesAny(1,2), "sequence definesAny 1,2");
+    assert(!result.definesAny(2,3), "sequence definesAny 2,3");
     assert(result.items(0,1,2,3).string=="{ hello, world, null, null }", "sequence.items 1");
     assert(result.items(1,0).string=="{ world, hello }", "sequence.items 2");
     assert(result.items(5,6,7).string=="{ null, null, null }", "sequence.items 3");
@@ -181,8 +178,8 @@ shared void sequences() {
     if (nonempty result) {
         value rest = result.rest;
         assert(rest.size==1, "rest size");
-        assert(rest.keys.contains(0), "rest keys");
-        assert(!rest.keys.contains(1), "rest keys");
+        assert(rest.keys.contains(0), "rest keys 1");
+        assert(!rest.keys.contains(1), "rest keys 2");
         if (exists str = rest[0]) {
             assert(str=="world", "rest item");
         }
@@ -211,19 +208,19 @@ shared void sequences() {
         value more = appender.sequence;
         assert(more.size==3, "sequence size");
         assert(more.first=="hello", "sequence first");
-        assert(more.string=="{ hello, world, goodbye }", "sequence.string");
+        assert(more.string=="{ hello, world, goodbye }", "sequence.string 2");
         appender.appendAll();
         appender.appendAll("everyone", "good luck!");
         //appender.append("everyone");
         //appender.append("good luck!");
         value evenMore = appender.sequence;
         assert(evenMore.size==5, "sequence size");
-        assert(evenMore.string=="{ hello, world, goodbye, everyone, good luck! }", "sequence.string");
+        assert(evenMore.string=="{ hello, world, goodbye, everyone, good luck! }", "sequence.string 3");
     }
 
     value seq = { 1, 2, 3, 4 };
     assert(seq.size==4, "sequence size");
-    assert(seq.string=="{ 1, 2, 3, 4 }", "sequence.string");
+    assert(seq.string=="{ 1, 2, 3, 4 }", "sequence.string 4");
     assert(seq.first==1, "sequence first");
     assert(seq.rest.string=="{ 2, 3, 4 }", "sequence.rest.string");
     variable value i:=0;
@@ -240,11 +237,11 @@ shared void sequences() {
     
     value union = SequenceBuilder<String|Float>();
     union.append("x");
-    union.append(5.0);
-    union.appendAll("y", -1.0);
+    union.append(5.1);
+    union.appendAll("y", -1.2);
     value useq = union.sequence;
     assert(useq.size==4, "union sequence builder");
-    assert(useq.string=="{ x, 5.0, y, -1.0 }", "union sequence builder.string");
+    assert(useq.string=="{ x, 5.1, y, -1.2 }", "union sequence builder.string");
     variable value s:=0;
     variable value f:=0;
     for (e in useq) {
