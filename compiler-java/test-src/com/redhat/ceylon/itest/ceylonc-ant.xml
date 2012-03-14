@@ -1,7 +1,4 @@
-<project name="Ceylonc Ant Task test" >
-  <!--<property name="ceylon.ant.dir" value="com/redhat/ceylon/ant/${module.com.redhat.ceylon.compiler.version}"/>
-  <property name="ceylon.ant.jar" value="${ceylon.ant.dir}/com.redhat.ceylon.ant-${module.com.redhat.ceylon.compiler.version}.jar"/>
-  <property name="ceylon.ant.lib" location="${ceylon.repo.dir}/${ceylon.ant.jar}"/>-->
+<project name="ceylonc Ant Task test" >
   <target name="-init">
       <echo message="ant.home: ${ant.home}"/>
       <echo message="ant.file: ${ant.file}"/>
@@ -10,12 +7,9 @@
     </target>
   
   <target name="ant-tasks" depends="-init">
-    <!--<path id="ant-tasks">
-      <pathelement location="${ceylon.ant.lib}"/>
-    </path>-->
-    <taskdef name="ceylonc" classname="com.redhat.ceylon.ant.Ceylonc" /><!-- classpathref="ant-tasks"-->
-    <taskdef name="ceylond" classname="com.redhat.ceylon.ant.Ceylond" /><!-- classpathref="ant-tasks"-->
-    <taskdef name="ceylon" classname="com.redhat.ceylon.ant.Ceylon" /><!-- classpathref="ant-tasks"-->
+    <taskdef name="ceylonc" classname="com.redhat.ceylon.ant.Ceylonc" />
+    <taskdef name="ceylond" classname="com.redhat.ceylon.ant.Ceylond" />
+    <taskdef name="ceylon" classname="com.redhat.ceylon.ant.Ceylon" />
   </target>
       
   <target name="foo-alone" depends="ant-tasks">

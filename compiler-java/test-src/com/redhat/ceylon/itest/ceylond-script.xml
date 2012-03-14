@@ -1,4 +1,4 @@
-<project name="Ceylon script tests" >
+<project name="ceylond script tests" >
   <target name="-init">
     <echo message="ant.home: ${ant.home}"/>
     <echo message="ant.file: ${ant.file}"/>

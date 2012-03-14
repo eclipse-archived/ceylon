@@ -1,4 +1,4 @@
-<project name="Ceylon script tests" >
+<project name="ceylonc script tests" >
   <target name="-init">
     <echo message="ant.home: ${ant.home}"/>
     <echo message="ant.file: ${ant.file}"/>
@@ -38,7 +38,7 @@
     </exec>
   </target>
 
-<target name="foo-verbose" depends="-init">
+  <target name="foo-verbose" depends="-init">
     <exec executable="${script.ceylonc}" failonerror="true">
       <arg value="-src"/><arg value="${arg.src}"/>
       <arg value="-out"/><arg value="${arg.out}"/>
