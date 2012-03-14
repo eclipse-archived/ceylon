@@ -80,8 +80,8 @@ public class Ceylon extends Task {
     /**
      * Set the name of a runnable module with an optional version
      */
-    public void setModule(String module) {
-        this.module = module;
+    public void setModule(ModuleAndVersion module) {
+        this.module = module.toSpec();
     }
 
     /**

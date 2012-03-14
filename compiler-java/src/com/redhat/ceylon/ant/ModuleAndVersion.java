@@ -19,20 +19,18 @@
  */
 package com.redhat.ceylon.ant;
 
-public class Module {
+public class ModuleAndVersion extends Module {
+
+    public String version;
     
-    public String name;
-    
-    public void setName(String name) {
-        this.name = name;
+    public void setVersion(String version) {
+        this.version = version;
     }
 
     public String toSpec() {
-        return name;
+        if(version == null)
+            return name;
+        return name + "/" + version;
     }
-    
-    @Override
-    public String toString() {
-        return toSpec();
-    }
+
 }

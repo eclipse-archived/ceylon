@@ -47,7 +47,7 @@ public class Ceylond extends Task {
     private Path src;   
     private File out;
     private List<Rep> repositories = new LinkedList<Rep>();
-    private List<Module> modules = new LinkedList<Module>();
+    private List<ModuleAndVersion> modules = new LinkedList<ModuleAndVersion>();
     private File executable;
     private boolean includeNonShared;
     private boolean includeSourceCode;
@@ -90,7 +90,7 @@ public class Ceylond extends Task {
      * Adds a module to compile
      * @param module the module name to compile
      */
-    public void addModule(Module module){
+    public void addModule(ModuleAndVersion module){
         modules.add(module);
     }
     
