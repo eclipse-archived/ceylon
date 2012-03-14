@@ -165,7 +165,9 @@
             executable="${ceylon.compiler.loc}/build/bin/ceylonc"
             src="${test.src}"
             out="${build.test}">
-            <include name="**/*.ceylon"/>
+            <files>
+                <include name="**/*.ceylon"/>
+            </files>
         </ceylonc>
     	<javac
     	    srcdir="${test.src}"
