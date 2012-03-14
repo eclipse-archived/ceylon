@@ -111,6 +111,11 @@
         <copy todir="${build.dist}">
             <fileset dir="${dist.dir}"/>
         </copy>
+        <chmod perm="0755">
+            <fileset dir="${build.dist}">
+                <include name="bin/ceylon"/>
+            </fileset>
+        </chmod>
         <!-- Copy the libraries -->
         <copy file="${bootstrap.lib}" tofile="${build.dist.lib}/${bootstrap.jar}"/>
         <copy file="${jboss-modules.lib}" tofile="${build.dist.lib}/${jboss-modules.jar}"/>
