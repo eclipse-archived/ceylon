@@ -171,6 +171,11 @@ public class CallableTest extends CompilerTest {
     }
     
     @Test
+    public void testCallablePositionalInvocationAndReturn(){
+        compareWithJavaSource("invoke/CallablePositionalInvocationAndReturn");
+    }
+    
+    @Test
     public void testCallablePositionalInvocationSequenced(){
         compareWithJavaSource("invoke/CallablePositionalInvocationSequenced");
     }
