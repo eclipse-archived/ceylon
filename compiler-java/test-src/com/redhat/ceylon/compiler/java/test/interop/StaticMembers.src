@@ -6,12 +6,90 @@ final class staticMethods {
     }
     
     static void staticMethods() {
-        final .java.io.File f1 = .java.io.File.createTempFile("", "");
-        final .java.io.File f2 = .java.io.File.createTempFile("", "", f1);
+        .java.io.File sync;
+        sync = .java.io.File.createTempFile("", "");
+        sync = .java.io.File.createTempFile("", "", sync);
+        final .java.lang.Object roots1 = .ceylon.language.Array.instance(.java.io.File.listRoots());
+        sync = sync.createTempFile("", "");
+        sync = sync.createTempFile("", "", sync);
+        final .java.lang.Object roots2 = .ceylon.language.Array.instance(sync.listRoots());
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.staticMethods.staticMethods();
+    }
+}
+final class staticMethodsAndSubClassesOnInstance {
+    
+    private staticMethodsAndSubClassesOnInstance() {
+    }
+    
+    static void staticMethodsAndSubClassesOnInstance() {
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass inst = new .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass();
+        inst.method();
+        inst.method(1L);
+        inst.method(1L, 2L);
+        inst.topMethod();
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.field = inst.field;
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topField = inst.topField;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.staticMethodsAndSubClassesOnInstance.staticMethodsAndSubClassesOnInstance();
+    }
+}
+final class staticMethodsAndSubClassesOnType {
+    
+    private staticMethodsAndSubClassesOnType() {
+    }
+    
+    static void staticMethodsAndSubClassesOnType() {
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.method();
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.method(1L);
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.method(1L, 2L);
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topMethod();
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.field = .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.field;
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topField = .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topField;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.staticMethodsAndSubClassesOnType.staticMethodsAndSubClassesOnType();
+    }
+}
+class StaticMethodsAndSubClasses extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass {
+    
+    private final void test() {
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.method();
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.method(1L);
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.method(1L, 2L);
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topMethod();
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.field = .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.field;
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topField = .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topField;
+    }
+    
+    StaticMethodsAndSubClasses() {
+        super();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.interop.StaticMethodsAndSubClasses();
+    }
+}
+final class staticFields {
+    
+    private staticFields() {
+    }
+    
+    static void staticFields() {
+        final .java.lang.Boolean false = .java.lang.Boolean.FALSE;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.staticFields.staticFields();
     }
 }

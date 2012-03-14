@@ -53,7 +53,6 @@ void staticMethodsAndSubClassesOnInstance() {
     inst.method();
     @error
     inst.method(1);
-    // this fails because of https://github.com/ceylon/ceylon-spec/issues/210
     @error
     inst.method(1, 2);
     @error
@@ -70,9 +69,8 @@ void staticMethodsAndSubClassesOnType() {
     smethod();
     @error
     smethod(1);
-    // this fails because of https://github.com/ceylon/ceylon-spec/issues/210
     @error
-    method(1, 2);
+    smethod(1, 2);
     @error
     stopMethod();
     @error
@@ -89,7 +87,6 @@ class StaticMethodsAndSubClasses() extends JavaWithStaticMembersSubClass() {
         method();
         @error
         method(1);
-        // this fails because of https://github.com/ceylon/ceylon-spec/issues/210
         @error
         method(1, 2);
         @error
