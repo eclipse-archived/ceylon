@@ -74,52 +74,92 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     
     @Ignore
     public static Array<Character> instance(char[] array) {
-        return new NonemptyArray<Character>(array);
+        if (array.length == 0) {
+            return new EmptyArray<Character>();
+        } else {
+            return new NonemptyArray<Character>(array);
+        }
     }
     
     @Ignore
     public static Array<Integer> instance(byte[] array) {
-        return new NonemptyArray<Integer>(array);
+        if (array.length == 0) {
+            return new EmptyArray<Integer>();
+        } else {
+            return new NonemptyArray<Integer>(array);
+        }
     }
     
     @Ignore
     public static Array<Integer> instance(short[] array) {
-        return new NonemptyArray<Integer>(array);
+        if (array.length == 0) {
+            return new EmptyArray<Integer>();
+        } else {
+            return new NonemptyArray<Integer>(array);
+        }
     }
     
     @Ignore
     public static Array<Integer> instance(int[] array) {
-        return new NonemptyArray<Integer>(array);
+        if (array.length == 0) {
+            return new EmptyArray<Integer>();
+        } else {
+            return new NonemptyArray<Integer>(array);
+        }
     }
     
     @Ignore
     public static Array<Integer> instance(long[] array) {
-        return new NonemptyArray<Integer>(array);
+        if (array.length == 0) {
+            return new EmptyArray<Integer>();
+        } else {
+            return new NonemptyArray<Integer>(array);
+        }
     }
     
     @Ignore
     public static Array<Float> instance(float[] array) {
-        return new NonemptyArray<Float>(array);
+        if (array.length == 0) {
+            return new EmptyArray<Float>();
+        } else {
+            return new NonemptyArray<Float>(array);
+        }
     }
     
     @Ignore
     public static Array<Float> instance(double[] array) {
-        return new NonemptyArray<Float>(array);
+        if (array.length == 0) {
+            return new EmptyArray<Float>();
+        } else {
+            return new NonemptyArray<Float>(array);
+        }
     }
     
     @Ignore
     public static Array<Boolean> instance(boolean[] array) {
-        return new NonemptyArray<Boolean>(array);
+        if (array.length == 0) {
+            return new EmptyArray<Boolean>();
+        } else {
+            return new NonemptyArray<Boolean>(array);
+        }
     }
     
     @Ignore
     public static Array<String> instance(java.lang.String[] array) {
-        return new NonemptyArray<String>(array);
+        if (array.length == 0) {
+            return new EmptyArray<String>();
+        } else {
+            return new NonemptyArray<String>(array);
+        }
     }
     
     @Ignore
     public static <T> Array<T> instance(T[] array) {
-        return new NonemptyArray<T>(array);
+        if (array.length == 0) {
+            return new EmptyArray<T>();
+        } else {
+            return new NonemptyArray<T>(array);
+        }
     }
 
     @Override
