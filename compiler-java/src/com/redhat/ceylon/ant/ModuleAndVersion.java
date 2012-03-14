@@ -19,9 +19,20 @@
  */
 package com.redhat.ceylon.ant;
 
+import java.util.regex.Pattern;
+
 public class ModuleAndVersion extends Module {
 
     public String version;
+    
+    public ModuleAndVersion() {
+    }
+    
+    public ModuleAndVersion(String spec) {
+        int index = spec.indexOf('/');
+        name = spec.substring(0, index);
+        version = spec.substring(index + 1);
+    }
     
     public void setVersion(String version) {
         this.version = version;
