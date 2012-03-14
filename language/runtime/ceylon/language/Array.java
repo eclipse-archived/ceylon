@@ -199,6 +199,8 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
             return ((double[])array).length;
         } else if (array instanceof boolean[]) {
             return ((boolean[])array).length;
+        } else if (array instanceof java.lang.String[]) {
+            return ((java.lang.String[])array).length;
         } else {
             return ((Element[])array).length;
         }
