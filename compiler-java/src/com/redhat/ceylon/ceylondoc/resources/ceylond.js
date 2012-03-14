@@ -232,7 +232,12 @@ $(document).ready(function() {
             var iconCollapse = $('<i/>').addClass('icon-collapse');
             var collapsibleLink = $('<a/>').attr('href', '#').text('Expand').addClass('link-collapsible').prepend(iconExpand);
             
-            var collapsibleHandler = function() {
+            var collapsibleHandler = function(event) {
+                var target = $(event.target);
+                if( target.is('a') && !target.is('.link-collapsible') ) {
+                    return true;
+                }
+                
                 var isCollapsed = descDiv.hasClass('description-collapsed');
                 if( isCollapsed ) {
                     collapsibleLink.text('Collapse');

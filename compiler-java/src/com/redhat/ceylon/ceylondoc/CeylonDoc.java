@@ -55,8 +55,8 @@ public abstract class CeylonDoc extends Markup {
         this.tool = tool;
     }
     
-    protected boolean inCurrentModule(ClassOrInterface decl) {
-        return module.equals(getPackage(decl).getModule());
+    protected boolean inCurrentModule(Scope scope) {
+        return module.equals(getPackage(scope).getModule());
     }
     
     protected void link(ProducedType type) throws IOException {
@@ -129,11 +129,18 @@ public abstract class CeylonDoc extends Markup {
         }
     }
 
-    protected void linkToMember(Declaration decl) throws IOException {
-        ClassOrInterface container = (ClassOrInterface) decl.getContainer();
+    protected void linkToDeclaration(Declaration decl) throws IOException {
         String name = decl.getName();
+        Scope container = decl.getContainer();
+
         if (inCurrentModule(container)) {
-            around("a href='" + getObjectUrl(container) + "#"+ name + "'", name);
+            String sectionPackageAnchor = "#section-package";
+            String containerUrl = getObjectUrl(container);
+            if (containerUrl.endsWith(sectionPackageAnchor)) {
+                containerUrl = containerUrl.substring(0, containerUrl.length() - sectionPackageAnchor.length());
+            }
+            String declarationUrl = containerUrl + "#" + name;
+            around("a href='" + declarationUrl + "'", name);
         } else {
             write(name);
         }
