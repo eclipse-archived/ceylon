@@ -179,13 +179,28 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         long lastIndex = getLastIndex().longValue();
         if (fromIndex>lastIndex||toIndex<fromIndex) {
             return $empty.getEmpty();
-        } else if (toIndex>lastIndex) {
-            throw new RuntimeException("Not yet implemented"); // TODO Not yet implemented
-            //return new ArraySequence<Element>(array, fromIndex);
         } else {
-            throw new RuntimeException("Not yet implemented"); // TODO Not yet implemented
-            //return new ArraySequence<Element>(Arrays.copyOfRange(array, 
-            //        (int)fromIndex, (int)toIndex+1), 0);
+            if (array instanceof char[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((char[])array, (int)fromIndex, (int)toIndex+1));
+            } else if (array instanceof byte[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((byte[])array, (int)fromIndex, (int)toIndex+1));
+            } else if (array instanceof short[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((short[])array, (int)fromIndex, (int)toIndex+1));
+            } else if (array instanceof int[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((int[])array, (int)fromIndex, (int)toIndex+1));
+            } else if (array instanceof long[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((long[])array, (int)fromIndex, (int)toIndex+1));
+            } else if (array instanceof float[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((float[])array, (int)fromIndex, (int)toIndex+1));
+            } else if (array instanceof double[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((double[])array, (int)fromIndex, (int)toIndex+1));
+            } else if (array instanceof boolean[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((boolean[])array, (int)fromIndex, (int)toIndex+1));
+            } else if (array instanceof java.lang.String[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((java.lang.String[])array, (int)fromIndex, (int)toIndex+1));
+            } else {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((Element[])array, (int)fromIndex, (int)toIndex+1));
+            }
         }
     }
     
@@ -197,15 +212,28 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         long lastIndex = getLastIndex().longValue();
         if (fromIndex>lastIndex||resultLength==0) {
             return $empty.getEmpty();
-        }
-        else if (fromIndex+resultLength>lastIndex) {
-            throw new RuntimeException("Not yet implemented"); // TODO Not yet implemented
-            //return new ArraySequence<Element>(array, fromIndex);
-        }
-        else {
-            throw new RuntimeException("Not yet implemented"); // TODO Not yet implemented
-            //return new ArraySequence<Element>(Arrays.copyOfRange(array, 
-            //        (int)fromIndex, (int)(fromIndex + resultLength)), 0);
+        } else {
+            if (array instanceof char[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((char[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+            } else if (array instanceof byte[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((byte[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+            } else if (array instanceof short[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((short[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+            } else if (array instanceof int[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((int[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+            } else if (array instanceof long[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((long[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+            } else if (array instanceof float[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((float[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+            } else if (array instanceof double[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((double[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+            } else if (array instanceof boolean[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((boolean[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+            } else if (array instanceof java.lang.String[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((java.lang.String[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+            } else {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((Element[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+            }
         }
     }
 
@@ -488,8 +516,27 @@ class NonemptyArray<Element> extends Array<Element> implements Some<Element> {
         if (getSize() == 1) {
             return arrayOfNone.<Element>arrayOfNone();
         } else {
-            throw new RuntimeException("Not yet implemented"); // TODO Not yet implemented
-            //return new NonemptyArray<Element>(Arrays.copyOfRange(array, 1, getSize() - 1));
+            if (array instanceof char[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((char[])array, 1, (int)getSize() - 1));
+            } else if (array instanceof byte[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((byte[])array, 1, (int)getSize() - 1));
+            } else if (array instanceof short[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((short[])array, 1, (int)getSize() - 1));
+            } else if (array instanceof int[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((int[])array, 1, (int)getSize() - 1));
+            } else if (array instanceof long[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((long[])array, 1, (int)getSize() - 1));
+            } else if (array instanceof float[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((float[])array, 1, (int)getSize() - 1));
+            } else if (array instanceof double[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((double[])array, 1, (int)getSize() - 1));
+            } else if (array instanceof boolean[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((boolean[])array, 1, (int)getSize() - 1));
+            } else if (array instanceof java.lang.String[]) {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((java.lang.String[])array, 1, (int)getSize() - 1));
+            } else {
+                return new NonemptyArray<Element>(Arrays.copyOfRange((Element[])array, 1, (int)getSize() - 1));
+            }
         }
     }
 
