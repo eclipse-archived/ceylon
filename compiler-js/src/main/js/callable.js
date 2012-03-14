@@ -1,3 +1,8 @@
+function initType(a,b,c,d,e,f){}//IGNORE
+function String$(x){}//IGNORE
+function ArraySequence(x){}//IGNORE
+var exports;//IGNORE
+
 function Callable(wat) {
     return wat;
 }

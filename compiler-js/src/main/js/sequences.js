@@ -1,3 +1,16 @@
+function initType(a,b,c,d,e,f,g,h,i,j,k,l);//IGNORE
+function inheritProto(a,b,c,d,e,f,g,h,i,j,k,l);//IGNORE
+function String$(x){}//IGNORE
+function Boolean$(x){}//IGNORE
+function Character(x){}//IGNORE
+function isOfType(a,b){}//IGNORE
+function Integer(x){}//IGNORE
+function smallest(x,y){}//IGNORE
+function largest(x,y){}//IGNORE
+function Exception(){}//IGNORE
+var List,Some,Cloneable,Ranged,exports,$true,$false,larger,smaller,equal,Object$,$empty,$finished,Iterator;//IGNORE
+var IdentifiableObject,Category,Sized;//IGNORE
+
 function Sequence($$sequence) {
     return $$sequence;
 }
@@ -11,44 +24,6 @@ Sequence$proto.getLast = function() {
     return last;
 }
 
-function Empty() {
-    var that = new Empty.$$;
-    that.value = [];
-    return that;
-}
-initType(Empty, 'ceylon.language.Empty', List, None, Ranged, Cloneable);
-inheritProto(Empty, List, '$List$');
-inheritProto(Empty, None, '$None$');
-var Empty$proto = Empty.$$.prototype;
-Empty$proto.getEmpty = function() { return $true; }
-Empty$proto.defines = function(x) { return $false; }
-Empty$proto.getKeys = function() { return TypeCategory(this, 'ceylon.language.Integer'); }
-Empty$proto.definesEvery = function(x) { return $false; }
-Empty$proto.definesAny = function(x) { return $false; }
-Empty$proto.items = function(x) { return this; }
-Empty$proto.getSize = function() { return Integer(0); }
-Empty$proto.item = function(x) { return null; }
-Empty$proto.getFirst = function() { return null; }
-Empty$proto.segment = function(a,b) { return this; }
-Empty$proto.span = function(a,b) { return this; }
-Empty$proto.getIterator = function() { return emptyIterator; }
-Empty$proto.getString = function() { return String$("{}"); }
-Empty$proto.contains = function(x) { return $false; }
-Empty$proto.getLastIndex = function() { return null; }
-Empty$proto.getClone = function() { return this; }
-Empty$proto.count = function(x) { return Integer(0); }
-
-var $empty = Empty();
-
-function EmptyIterator() {
-    var that = new EmptyIterator.$$;
-    return that;
-}
-initType(EmptyIterator, 'ceylon.language.EmptyIterator', IdentifiableObject, Iterator);
-inheritProto(EmptyIterator, IdentifiableObject, '$IdentifiableObject$');
-var EmptyIterator$proto = EmptyIterator.$$.prototype;
-EmptyIterator$proto.next = function() { return $finished; }
-var emptyIterator=EmptyIterator();
 
 function ArraySequence(value) {
     var that = new ArraySequence.$$;
@@ -73,14 +48,14 @@ ArraySequence$proto.segment = function(from, len) {
         var stop = from.plus(len).value;
         for (var i=from.value; i < stop; i++) {
             var x = this.item(Integer(i));
-            if (x !== getNull()) { seq.push(x); }
+            if (x !== null) { seq.push(x); }
         }
     }
     return ArraySequence(seq);
 }
 ArraySequence$proto.span = function(from, to) {
     var fromIndex = largest(Integer(0),from).value;
-    var toIndex = to === getNull() || to === undefined ? this.getLastIndex().value : smallest(to, this.getLastIndex()).value;
+    var toIndex = to === null || to === undefined ? this.getLastIndex().value : smallest(to, this.getLastIndex()).value;
     var seq = [];
     if (fromIndex === toIndex) {
         return Singleton(this.item(from));
@@ -181,10 +156,10 @@ Singleton$proto.defines = function(idx) { return idx.equals(Integer(0)); }
 Singleton$proto.getKeys = function() { return TypeCategory(this, 'ceylon.language.Integer'); }
 Singleton$proto.span = function(from, to) {
 	if (to === undefined || to === null) to = from;
-    return (from.equals(Integer(0)) === getTrue() || to.equals(Integer(0)) === getTrue()) ? this : $empty;
+    return (from.equals(Integer(0)) === $true || to.equals(Integer(0)) === $true) ? this : $empty;
 }
 Singleton$proto.segment = function(idx, len) {
-    if (idx.equals(Integer(0)) === getTrue() && len.compare(Integer(0)) === larger) {
+    if (idx.equals(Integer(0)) === $true && len.compare(Integer(0)) === larger) {
         return this;
     }
     return $empty;
@@ -213,5 +188,3 @@ exports.SequenceBuilder=SequenceBuilder;
 exports.SequenceAppender=SequenceAppender;
 exports.ArraySequence=ArraySequence;
 exports.Singleton=Singleton;
-exports.empty=$empty;
-exports.emptyIterator=emptyIterator;

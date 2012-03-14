@@ -1,3 +1,14 @@
+function initType(a,b,c,d,e,f,g,h,i,j,k,l){}//IGNORE
+function inheritProto(a,b,c){}//IGNORE
+function exists(x){}//IGNORE
+function Boolean$(x){}//IGNORE
+function Exception(){}//IGNORE
+function Integer(x){}//IGNORE
+function isOfType(a,b){}//IGNORE
+function String$(x){}//IGNORE
+function TypeCategory(a,b){}//IGNORE
+var exports,Container,$finished,$false,$true,Cloneable,smaller,larger,Correspondence,Object$,IdentifiableObject;//IGNORE
+
 function Sized(wat) {
     return wat;
 }
@@ -12,7 +23,7 @@ function Iterable(wat) {
 }
 initType(Iterable, 'ceylon.language.Iterable', Container);
 Iterable.$$.prototype.getEmpty = function() {
-    return Boolean$(getIterator().next() === $finished);
+    return Boolean$(this.getIterator().next() === $finished);
 }
 exports.Iterable=Iterable;
 
@@ -272,3 +283,66 @@ Set$proto.equals = function(other) {
 Set$proto.getHash = function() { return this.getSize(); }
 exports.Set=Set;
 
+function Array$() {
+    var that = new Array$.$$;
+    return that;
+}
+initType(Array$, 'ceylon.language.Array', Object$, List, FixedSized, Cloneable, Ranged);
+inheritProto(Array$, Object$, '$Object$');
+inheritProto(Array$, List, '$List$');
+inheritProto(Array$, FixedSized, '$FixedSized$');
+exports.Array=Array$;
+
+function Empty() {
+    var that = new Empty.$$;
+    that.value = [];
+    return that;
+}
+initType(Empty, 'ceylon.language.Empty', List, None, Ranged, Cloneable);
+inheritProto(Empty, List, '$List$');
+inheritProto(Empty, None, '$None$');
+var Empty$proto = Empty.$$.prototype;
+Empty$proto.getEmpty = function() { return $true; }
+Empty$proto.defines = function(x) { return $false; }
+Empty$proto.getKeys = function() { return TypeCategory(this, 'ceylon.language.Integer'); }
+Empty$proto.definesEvery = function(x) { return $false; }
+Empty$proto.definesAny = function(x) { return $false; }
+Empty$proto.items = function(x) { return this; }
+Empty$proto.getSize = function() { return Integer(0); }
+Empty$proto.item = function(x) { return null; }
+Empty$proto.getFirst = function() { return null; }
+Empty$proto.segment = function(a,b) { return this; }
+Empty$proto.span = function(a,b) { return this; }
+Empty$proto.getIterator = function() { return emptyIterator; }
+Empty$proto.getString = function() { return String$("{}"); }
+Empty$proto.contains = function(x) { return $false; }
+Empty$proto.getLastIndex = function() { return null; }
+Empty$proto.getClone = function() { return this; }
+Empty$proto.count = function(x) { return Integer(0); }
+
+var $empty = Empty();
+
+function EmptyIterator() {
+    var that = new EmptyIterator.$$;
+    return that;
+}
+initType(EmptyIterator, 'ceylon.language.EmptyIterator', IdentifiableObject, Iterator);
+inheritProto(EmptyIterator, IdentifiableObject, '$IdentifiableObject$');
+var EmptyIterator$proto = EmptyIterator.$$.prototype;
+EmptyIterator$proto.next = function() { return $finished; }
+var emptyIterator=EmptyIterator();
+
+exports.empty=$empty;
+exports.emptyIterator=emptyIterator;
+
+function EmptyArray() {
+    var that = new EmptyArray.$$;
+    return that;
+}
+initType(EmptyArray, 'ceylon.language.EmptyArray', Array$, None);
+inheritProto(EmptyArray, Array$, '$Array$');
+inheritProto(EmptyArray, None, '$None$');
+//TODO implement setItem
+
+
+exports.arrayOfNone=function() { return EmptyArray(); }

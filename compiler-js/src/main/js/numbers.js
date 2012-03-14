@@ -1,3 +1,10 @@
+function initType(a,b,c,d,e,f,g,h,i,j,k,l);//IGNORE
+function String$(x){};//IGNORE
+function Boolean$(x){};//IGNORE
+function Character(x){};//IGNORE
+function inheritProto(a,b,c,d,e,f,g);//IGNORE
+var Object$,Castable,Integral,Numeric,equal,smaller,larger,exports,$true,$false;//IGNORE
+
 function Integer(value) {
     var that = new Integer.$$;
     that.value = value;

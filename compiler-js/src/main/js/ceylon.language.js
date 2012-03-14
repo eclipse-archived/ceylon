@@ -3,6 +3,15 @@
 
 //the Ceylon language module
 
+function Integer(x){}//IGNORE
+function exists(x){}//IGNORE
+function String$(x,y){}//IGNORE
+function ArraySequence(x){}//IGNORE
+function nonempty(x){}//IGNORE
+function className(x){}//IGNORE
+function isOfType(a,b){}//IGNORE
+var larger,smaller,Sequence,Category,$empty,equal; //IGNORE
+
 function initType(type, typeName) {
     var cons = function() {}
     type.$$ = cons;

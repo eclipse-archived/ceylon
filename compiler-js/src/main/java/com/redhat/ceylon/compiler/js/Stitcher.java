@@ -21,13 +21,13 @@ public class Stitcher {
                 line = line.trim();
                 if (line.length() > 0) {
                     if (line.startsWith("//#include ")) {
-                        File auxfile = new File(infile.getParentFile(), line.substring(9).trim());
+                        File auxfile = new File(infile.getParentFile(), line.substring(11).trim());
                         if (auxfile.exists() && auxfile.isFile() && auxfile.canRead()) {
                             stitch(auxfile, writer);
                         } else {
                             throw new IllegalArgumentException("Invalid included file " + auxfile);
                         }
-                    } else {
+                    } else if (!line.endsWith("//IGNORE")) {
                         writer.println(line);
                     }
                 }

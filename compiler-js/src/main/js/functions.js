@@ -1,3 +1,13 @@
+var exports,console,$true,$false;//IGNORE
+function Comparison(x){}//IGNORE
+function ArraySequence(x){}//IGNORE
+function Entry(a,b){}//IGNORE
+function Singleton(x){}//IGNORE
+function SequenceBuilder(){}//IGNORE
+function Integer(x){}//IGNORE
+function Boolean$(f){}//IGNORE
+function String$(f,x){}//IGNORE
+
 function print(line) { console.log(line.getString().value) }
 exports.print=print;
 
@@ -69,7 +79,7 @@ function append(seq, elem) {
     return ArraySequence(seq.value.concat(elem));
 }
 function prepend(seq, elem) {
-    if (seq.getEmpty() === getTrue()) {
+    if (seq.getEmpty() === $true) {
         return Singleton(elem);
     } else {
         var sb = SequenceBuilder();
@@ -99,10 +109,10 @@ exports.entries=entries;
 
 //These are operators for handling nulls
 function exists(value) {
-    return value === getNull() || value === undefined ? getFalse() : getTrue();
+    return value === null || value === undefined ? $false : $true;
 }
 function nonempty(value) {
-    return value === null || value === undefined ? getFalse() : Boolean$(value.getEmpty() === getFalse());
+    return value === null || value === undefined ? $false : Boolean$(value.getEmpty() === $false);
 }
 
 function isOfType(obj, typeName) {

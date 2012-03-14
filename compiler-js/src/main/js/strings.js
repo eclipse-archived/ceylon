@@ -1,3 +1,11 @@
+function initType(a,b,c,d,e,f,g,h,i,j,k,l);//IGNORE
+function inheritProto(a,b,c,d,e,f,g,h,j,i,k,l);//IGNORE
+function Boolean$(x){}//IGNORE
+function Integer(x){}//IGNORE
+function ArraySequence(x){}//IGNORE
+var Object$,List,Comparable,Ranged,FixedSized,Summable,Castable,Cloneable,smaller,larger,equal;//IGNORE
+var $true,$false,$empty,$finished,IdentifiableObject,Iterator,exports;//IGNORE
+
 function String$(value,size) {
     var that = new String$.$$;
     that.value = value;
@@ -32,7 +40,7 @@ String$proto.span = function(from, to) {
 	var lastIndex = this.getLastIndex();
 	if (!lastIndex) return this; //it's empty
     var fromIndex = largest(Integer(0),from).value;
-    var toIndex = to === getNull() || to === undefined ? lastIndex.value : smallest(to, lastIndex).value;
+    var toIndex = to === null || to === undefined ? lastIndex.value : smallest(to, lastIndex).value;
     if (fromIndex === toIndex) {
 		return this.item(from).getString();
     } else if (toIndex > fromIndex) {
@@ -60,7 +68,7 @@ String$proto.segment = function(from, len) {
         var stop = from.plus(len).value;
         for (var i=from.value; i < stop; i++) {
             var x = this.item(Integer(i));
-            if (x !== getNull()) { s = s.plus(x.getString()); }
+            if (x !== null) { s = s.plus(x.getString()); }
         }
     }
     return s;
