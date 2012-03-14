@@ -172,7 +172,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
 
     @Override
-    public java.lang.Object span(Integer from, Integer to) {
+    public FixedSized<? extends Element> span(Integer from, Integer to) {
         long fromIndex = from.longValue();
         if (fromIndex<0) fromIndex=0;
         long toIndex = to==null ? getSize()-1 : to.longValue();
@@ -205,7 +205,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
     
     @Override
-    public java.lang.Object segment(Integer from, Integer length) {
+    public FixedSized<? extends Element> segment(Integer from, Integer length) {
         long fromIndex = from.longValue();
         if (fromIndex<0) fromIndex=0;
         long resultLength = length.longValue();
