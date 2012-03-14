@@ -251,7 +251,11 @@ public class JarOutputRepositoryManager {
                     // skip the old entry if we overwrote it
                     if(filter.avoid(entry.getName()))
                         continue;
-                    jarOutputStream.putNextEntry(new ZipEntry(entry.getName()));
+                    ZipEntry copiedEntry = new ZipEntry(entry.getName());
+                    // Preserve the modification time and comment
+                    copiedEntry.setTime(entry.getTime());
+                    copiedEntry.setComment(entry.getComment());
+                    jarOutputStream.putNextEntry(copiedEntry);
                     InputStream inputStream = jarFile.getInputStream(entry);
                     Util.copy(inputStream, jarOutputStream);
                     inputStream.close();
