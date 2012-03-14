@@ -459,7 +459,9 @@
       executable="${build.bin}/ceylonc"
       src="${test.src}"
       out="${build.ceylon.cars}">
-       <include name="com/redhat/ceylon/compiler/java/test/ceylon/*.ceylon"/>
+      <files>
+        <include name="com/redhat/ceylon/compiler/java/test/ceylon/*.ceylon"/>
+      </files>
     </ceylonc>
   </target>
 
@@ -479,7 +481,9 @@
       executable="${build.bin}/ceylonc"
       src="samples/helloworld/source"
       out="${build.ceylon.cars}">
+      <files>
        <include name="com/acme/helloworld/*.ceylon"/>
+      </files>
     </ceylonc>
   	<!-- by module name -->
     <ceylonc
