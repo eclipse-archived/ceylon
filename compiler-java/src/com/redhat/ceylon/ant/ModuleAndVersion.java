@@ -30,8 +30,12 @@ public class ModuleAndVersion extends Module {
     
     public ModuleAndVersion(String spec) {
         int index = spec.indexOf('/');
-        name = spec.substring(0, index);
-        version = spec.substring(index + 1);
+        if (index != -1) {
+            name = spec.substring(0, index);
+            version = spec.substring(index + 1);
+        } else {
+            name = spec;
+        }
     }
     
     public void setVersion(String version) {
