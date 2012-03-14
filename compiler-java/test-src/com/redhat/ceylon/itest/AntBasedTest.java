@@ -22,13 +22,19 @@ package com.redhat.ceylon.itest;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Enumeration;
 import java.util.Properties;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -246,5 +252,39 @@ public abstract class AntBasedTest {
     
     protected final void assertNotContainsMatch(String string, Pattern pattern) {
         Assert.assertFalse(pattern.matcher(string).find());   
+    }
+    
+    protected final void assertZipEntryNewer(File zipFile, 
+            String olderEntry, String newerEntry) throws IOException {
+        ZipFile zip = new ZipFile(zipFile);
+        Enumeration<? extends ZipEntry> entries = zip.entries();
+        Long newer = null;
+        Long older = null;
+        while (entries.hasMoreElements()) {
+            ZipEntry entry = entries.nextElement();
+            if (entry.getName().equals(newerEntry)) {
+                newer = entry.getTime();
+            }
+            if (entry.getName().equals(olderEntry)) {
+                older = entry.getTime();
+            }
+        }
+        if (newer != null
+                && older != null) {
+            if (newer <= older) {
+                SimpleDateFormat fmt = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
+                Assert.fail("Entry " + newerEntry + 
+                        " (mtime: " + fmt.format(new Date(newer)) + ") " +
+                		"was not newer than " + olderEntry + 
+                		" (mtime: " +fmt.format(new Date(older)) + ") " +
+        				"in archive " + zipFile);
+            }
+        } else if (newer != null) {
+            Assert.fail("Couldn't find entry " + olderEntry + " in archive " + zipFile);
+        } else if (older != null) {
+            Assert.fail("Couldn't find entry " + newerEntry + " in archive " + zipFile);
+        } else {
+            Assert.fail("Couldn't find entries " + newerEntry + " and " + olderEntry + " in archive " + zipFile);
+        }
     }
 }

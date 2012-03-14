@@ -11,7 +11,16 @@
     <taskdef name="ceylond" classname="com.redhat.ceylon.ant.Ceylond" />
     <taskdef name="ceylon" classname="com.redhat.ceylon.ant.Ceylon" />
   </target>
-      
+  
+  <target name="no-module-or-files" depends="ant-tasks">
+    <ceylonc
+      executable="${script.ceylonc}"
+      src="${arg.src}"
+      out="${arg.out}"
+      verbose="${arg.verbose}">
+    </ceylonc>
+  </target>
+  
   <target name="foo-alone" depends="ant-tasks">
     <ceylonc
       executable="${script.ceylonc}"
@@ -23,13 +32,14 @@
   </target>
 
   <target name="foo-file" depends="ant-tasks,foo-alone">
-    <echo message="Hello, world"/>
     <ceylonc
       executable="${script.ceylonc}"
       src="${arg.src}"
       out="${arg.out}"
       verbose="${arg.verbose}">
-        <include name="com/example/foo/a/foo.ceylon"/>
+        <files>
+          <include name="com/example/foo/a/foo.ceylon"/>
+        </files>
     </ceylonc>
   </target>
 
@@ -41,6 +51,19 @@
        <module name="com.example.bar"/>
     </ceylonc>
   </target>
+  
+  <target name="foo-and-file-from-bar" depends="ant-tasks">
+      <ceylonc
+        executable="${script.ceylonc}"
+        src="${arg.src}"
+        out="${arg.out}"
+        verbose="${arg.verbose}">
+          <module name="com.example.foo"/>
+          <files>
+            <include name="com/example/bar/b/bar.ceylon"/>
+          </files>
+      </ceylonc>
+    </target>
 
   <target name="foo-and-bar" depends="ant-tasks">
     <ceylonc

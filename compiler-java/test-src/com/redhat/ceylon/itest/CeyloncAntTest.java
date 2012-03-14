@@ -68,6 +68,13 @@ public class CeyloncAntTest extends AntBasedTest {
     }
     
     @Test
+    public void testNoModuleOrFiles() throws Exception {
+        AntResult result = ant("no-module-or-files");
+        Assert.assertEquals(1, result.getStatusCode());
+        assertContains(result.getStdout(), "You must specify a <module> and/or <files>");
+    }
+    
+    @Test
     public void testCompileFileFromFoo() throws Exception {
         AntResult result = ant("foo-file");
         Assert.assertEquals(0, result.getStatusCode());
@@ -100,6 +107,29 @@ public class CeyloncAntTest extends AntBasedTest {
         Assert.assertTrue(new File(result.getOut(), "com/example/bar/1.0/com.example.bar-1.0.car.sha1").exists());
         Assert.assertTrue(new File(result.getOut(), "com/example/bar/1.0/com.example.bar-1.0.src").exists());
         Assert.assertTrue(new File(result.getOut(), "com/example/bar/1.0/com.example.bar-1.0.src.sha1").exists());
+    }
+    
+    @Test
+    public void testCompileModuleFooAndFileFromBar() throws Exception {
+        // First compile foo and bar
+        AntResult result = ant("foo-and-bar");
+        Assert.assertEquals(0, result.getStatusCode());
+        
+        // Now compile foo and a single file (bar.ceylon containing class C)
+        // from bar
+        result = ant("foo-and-file-from-bar");
+        Assert.assertEquals(0, result.getStatusCode());
+        Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/com.example.foo-1.0.car").exists());
+        Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/com.example.foo-1.0.car.sha1").exists());
+        Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/com.example.foo-1.0.src").exists());
+        Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/com.example.foo-1.0.src.sha1").exists());
+        Assert.assertTrue(new File(result.getOut(), "com/example/bar/1.0/com.example.bar-1.0.car").exists());
+        Assert.assertTrue(new File(result.getOut(), "com/example/bar/1.0/com.example.bar-1.0.car.sha1").exists());
+        Assert.assertTrue(new File(result.getOut(), "com/example/bar/1.0/com.example.bar-1.0.src").exists());
+        Assert.assertTrue(new File(result.getOut(), "com/example/bar/1.0/com.example.bar-1.0.src.sha1").exists());
+        assertZipEntryNewer(new File(result.getOut(), "com/example/bar/1.0/com.example.bar-1.0.car"),
+                "com/example/bar/b/m.class",
+                "com/example/bar/b/C.class");
     }
     
     @Test
