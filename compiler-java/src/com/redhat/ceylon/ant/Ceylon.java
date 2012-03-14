@@ -34,13 +34,13 @@ import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
+import org.apache.tools.ant.Task;
 import org.apache.tools.ant.taskdefs.Execute;
 import org.apache.tools.ant.taskdefs.LogStreamHandler;
-import org.apache.tools.ant.taskdefs.MatchingTask;
 import org.apache.tools.ant.types.Commandline;
 import org.apache.tools.ant.types.Path;
 
-public class Ceylon extends MatchingTask {
+public class Ceylon extends Task {
 
     private static final String FAIL_MSG = "Run failed; see the compiler error output for details.";
 
@@ -88,6 +88,7 @@ public class Ceylon extends MatchingTask {
      * Executes the task.
      * @exception BuildException if an error occurs
      */
+    @Override
     public void execute() throws BuildException {
         checkParameters();
         
