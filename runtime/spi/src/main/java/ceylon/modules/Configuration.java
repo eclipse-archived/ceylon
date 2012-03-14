@@ -103,7 +103,7 @@ public class Configuration {
                 repositories.add(values[arg]);
                 break;
             case HELP:
-                printUsage();
+                printUsage(0);
                 break;
             case VERSION:
                 printVersion();
@@ -118,7 +118,7 @@ public class Configuration {
         SecurityActions.exit(0);
     }
 
-    public void printUsage() {
+    private void printUsage(int exitCode) {
         String distRepo = getDistRepo();
         String homeRepo = getHomeRepo();
         System.err.print("Usage: ceylon [options...] moduleName/version [args...]\n"
@@ -141,7 +141,7 @@ public class Configuration {
                         + " -version:            Prints version number\n"
                         + " moduleName/version:  Module name and version to run (required)\n"
         );
-        SecurityActions.exit(1);
+        SecurityActions.exit(exitCode);
     }
 
     private String getDistRepo() {
@@ -162,12 +162,12 @@ public class Configuration {
         if (executable == null
                 || executable.isEmpty()) {
             System.err.println("Error: Missing +executable parameter\n");
-            printUsage();
+            printUsage(1);
         }
         if (module == null
                 || module.isEmpty()) {
             System.err.println("Error: Missing module name\n");
-            printUsage();
+            printUsage(1);
         }
     }
 }
