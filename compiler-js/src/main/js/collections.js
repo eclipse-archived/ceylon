@@ -152,9 +152,7 @@ List$proto.equals = function(other) {
     }
     return $false;
 }
-List$proto.getHash = function() {
-    return this.getSize();
-}
+List$proto.getHash = function() { return this.getSize(); }
 List$proto.getString = function() {
     var s = '{';
     var first = true;
@@ -203,7 +201,31 @@ function Map(wat) {
 initType(Map, 'ceylon.language.Map', Collection, Correspondence, Cloneable);
 inheritProto(Map, Collection, '$Collection$');
 inheritProto(Map, Correspondence, '$Correspondence$');
-//TODO implement methods
+var Map$proto = Map.$$.prototype;
+Map$proto.count = function(elem) {
+    if (isOfType(elem,'ceylon.language.Entry') === $true) {
+        var item = this.item(elem.getKey());
+        if (item !== null && item.equals(elem.getItem()) === $true) {
+            return Integer(1);
+        }
+    }
+    return Integer(0);
+}
+Map$proto.equals = function(other) {
+    if (isOfType(other, 'ceylon.language.Map') === $true && other.getSize().equals(this.getSize())) {
+        var iter = this.getIterator();
+        var entry; while ((entry = iter.next()) !== $finished) {
+            var oi = other.item(entry.getKey());
+            if (oi === null || entry.getItem().equals(oi.getItem()) === $false) {
+                return $false;
+            }
+        }
+        return $true;
+    }
+    return $false;
+}
+Map$proto.getHash = function() { return this.getSize(); }
+//TODO implement methods: getKeys, getValues, getInverse
 exports.Map=Map;
 
 function Set(wat) {
@@ -211,6 +233,42 @@ function Set(wat) {
 }
 initType(Set, 'ceylon.language.Set', Collection, Cloneable);
 inheritProto(Set, Collection, '$Collection$');
-//TODO implement methods
+var Set$proto = Set.$$.prototype;
+Set$proto.count = function(elem) {
+    return this.contains(elem) === $true ? Integer(1) : Integer(0);
+}
+Set$proto.superset = function(set) {
+    var iter = set.getIterator();
+    var elem; while ((elem = iter.next()) !== $finished) {
+        if (this.contains(elem) === $false) {
+            return $false;
+        }
+    }
+    return $true;
+}
+Set$proto.subset = function(set) {
+    var iter = this.getIterator();
+    var elem; while ((elem = iter.next()) !== $finished) {
+        if (set.contains(elem) === $false) {
+            return $false;
+        }
+    }
+    return $true;
+}
+Set$proto.equals = function(other) {
+    if (isOfType(other, 'ceylon.language.Set') === $true) {
+        if (other.getSize().equals(this.getSize())) {
+            var iter = this.getIterator();
+            var elem; while ((elem = iter.next()) !== $finished) {
+                if (other.contains(elem) === $false) {
+                    return $false;
+                }
+            }
+            return $true;
+        }
+    }
+    return $false;
+}
+Set$proto.getHash = function() { return this.getSize(); }
 exports.Set=Set;
 
