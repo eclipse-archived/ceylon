@@ -12,14 +12,14 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 })
 public interface Callable<Return> {
     
-    public Return call();
+    public Return $call();
     
-    public Return call(java.lang.Object arg0);
+    public Return $call(java.lang.Object arg0);
     
-    public Return call(java.lang.Object arg0, java.lang.Object arg1);
+    public Return $call(java.lang.Object arg0, java.lang.Object arg1);
     
-    public Return call(java.lang.Object arg0, java.lang.Object arg1, java.lang.Object arg2);
+    public Return $call(java.lang.Object arg0, java.lang.Object arg1, java.lang.Object arg2);
     
-    public Return call(java.lang.Object... args);
+    public Return $call(java.lang.Object... args);
 
 }

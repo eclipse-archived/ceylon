@@ -16,23 +16,23 @@ public class AbstractCallable<Return> implements Callable<Return> {
         this.string = string;
     }
     
-    public Return call() {
+    public Return $call() {
         throw new UnsupportedOperationException();
     }
     
-    public Return call(java.lang.Object arg0) {
+    public Return $call(java.lang.Object arg0) {
         throw new UnsupportedOperationException();
     }
     
-    public Return call(java.lang.Object arg0, java.lang.Object arg1) {
+    public Return $call(java.lang.Object arg0, java.lang.Object arg1) {
         throw new UnsupportedOperationException();
     }
     
-    public Return call(java.lang.Object arg0, java.lang.Object arg1, java.lang.Object arg2) {
+    public Return $call(java.lang.Object arg0, java.lang.Object arg1, java.lang.Object arg2) {
         throw new UnsupportedOperationException();
     }
     
-    public Return call(java.lang.Object... args) {
+    public Return $call(java.lang.Object... args) {
         throw new UnsupportedOperationException();
     }
     
