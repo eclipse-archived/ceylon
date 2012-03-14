@@ -35,26 +35,28 @@ import java.util.List;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Project;
+import org.apache.tools.ant.Task;
 import org.apache.tools.ant.taskdefs.Execute;
 import org.apache.tools.ant.taskdefs.LogStreamHandler;
-import org.apache.tools.ant.taskdefs.MatchingTask;
 import org.apache.tools.ant.types.Commandline;
+import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.Reference;
 import org.apache.tools.ant.util.GlobPatternMapper;
 import org.apache.tools.ant.util.SourceFileScanner;
 
-public class Ceylonc extends MatchingTask {
+public class Ceylonc extends Task {
 
     private static final String FAIL_MSG = "Compile failed; see the compiler error output for details.";
 
-    private Path src;   
+    private Path src;
     private File out;
     private File[] compileList;
     private Path classpath;
     private List<Rep> repositories = new LinkedList<Rep>();
     private File executable;
     private List<Module> modules = new LinkedList<Module>();
+    private FileSet files;
     private Boolean verbose;
 
     public void setVerbose(Boolean verbose){
@@ -118,6 +120,13 @@ public class Ceylonc extends MatchingTask {
         modules.add(module);
     }
     
+    public void addFiles(FileSet fileset) {
+        if (this.files != null) {
+            throw new BuildException("<ceylonc> only supports a single <files> element");
+        }
+        this.files = fileset;
+    }
+    
     /**
      * Set the destination directory into which the Java source files should be
      * compiled.
@@ -136,23 +145,24 @@ public class Ceylonc extends MatchingTask {
         checkParameters();
         resetFileLists();
         
-        // exclude anything from modules
-        if (!modules.isEmpty()) {
-            String exclude = "**/*.ceylon";
-            log("Compiling module(s), so adding adding exclude: "+exclude, Project.MSG_VERBOSE);
-            createExclude().setName(exclude);
-        }
-        String[] list = src.list();
-        for (int i = 0; i < list.length; i++) {
-            File srcDir = getProject().resolveFile(list[i]);
-            if (!srcDir.exists()) {
-                throw new BuildException("source path \"" + srcDir.getPath() + "\" does not exist!", getLocation());
+        if (files != null) {
+            if (src == null) {
+                src = new Path(getProject(), "source");
             }
-
-            DirectoryScanner ds = getDirectoryScanner(srcDir);
-            String[] files = ds.getIncludedFiles();
-
-            scanDir(srcDir, out != null ? out : srcDir, files);
+            String[] list = src.list();
+            for (int i = 0; i < list.length; i++) {
+                File srcDir = getProject().resolveFile(list[i]);
+                FileSet fs = (FileSet)this.files.clone();
+                fs.setDir(srcDir);
+                if (!srcDir.exists()) {
+                    throw new BuildException("source path \"" + srcDir.getPath() + "\" does not exist!", getLocation());
+                }
+    
+                DirectoryScanner ds = fs.getDirectoryScanner(getProject());
+                String[] files = ds.getIncludedFiles();
+    
+                scanDir(srcDir, out != null ? out : srcDir, files);
+            }
         }
 
         compile();
@@ -217,6 +227,10 @@ public class Ceylonc extends MatchingTask {
      * @exception BuildException if an error occurs
      */
     protected void checkParameters() throws BuildException {
+        if (this.modules.isEmpty()
+                && this.files == null) {
+            throw new BuildException("You must specify a <module> and/or <files>");
+        }
         // this will check that we have one
         getCompiler();
     }
@@ -240,8 +254,10 @@ public class Ceylonc extends MatchingTask {
             cmd.createArgument().setValue(out.getAbsolutePath());
         }
         if(src != null){
-            cmd.createArgument().setValue("-src");
-            cmd.createArgument().setValue(src.toString());
+            for (String path : src.list()) {
+                cmd.createArgument().setValue("-src");
+                cmd.createArgument().setValue(path);
+            }
         }
         if(repositories != null){
             for(Rep rep : repositories){
