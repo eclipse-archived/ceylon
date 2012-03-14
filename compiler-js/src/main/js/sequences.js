@@ -96,7 +96,9 @@ ArraySequence$proto.span = function(from, to) {
     }
     return ArraySequence(seq);
 }
-ArraySequence$proto.getRest = function() { return ArraySequence(this.value.slice(1)); }
+ArraySequence$proto.getRest = function() {
+    return this.getSize().equals(Integer(1)) === $true ? $empty : ArraySequence(this.value.slice(1));
+}
 ArraySequence$proto.items = function(keys) {
     var seq = [];
     for (var i = 0; i < keys.getSize().value; i++) {
@@ -134,7 +136,7 @@ function SequenceBuilder() {
     return that;
 }
 initType(SequenceBuilder, 'ceylon.language.SequenceBuilder', IdentifiableObject, Sized);
-inheritProto(SequenceBuilder, IdentifiableObject, '$IdentifiableObject$');
+inheritProto(SequenceBuilder, IdentifiableObject, '$IdentifiableObject$', Sized);
 var SequenceBuilder$proto = SequenceBuilder.$$.prototype;
 SequenceBuilder$proto.getSequence = function() { return ArraySequence(this.seq); }
 SequenceBuilder$proto.append = function(e) { this.seq.push(e); }
@@ -146,7 +148,6 @@ SequenceBuilder$proto.appendAll = function(arr) {
     }
 }
 SequenceBuilder$proto.getSize = function() { return Integer(this.seq.length); }
-SequenceBuilder$proto.getEmpty = function() { return Boolean$(this.seq.length === 0); }
 
 function SequenceAppender(other) {
 	var that = new SequenceAppender.$$;
