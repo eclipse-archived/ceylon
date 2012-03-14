@@ -20,4 +20,5 @@
 Module module {
     name = 'com.example.foo';
     version = '1.0';
+    //run = hello;
 }

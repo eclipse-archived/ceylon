@@ -32,19 +32,49 @@
     </exec>
   </target>
   
-  <target name="run-foo" depends="compile-foo">
+  <target name="exec-hello-compiled" depends="compile-foo">
     <exec executable="${script.ceylon}" failonerror="true">
-      <arg value="-run"/><arg value="${arg.run}"/>
-      <arg value="-rep"/><arg value="${arg.rep}"/>
+      <arg value="-rep"/><arg value="${arg.out}"/>
+      <arg value="-run"/><arg value="com.example.foo.a.hello"/>
+      <arg value="com.example.foo/1.0"/>
     </exec>
   </target>
   
-  <target name="run-foo-from-source" depends="-init">
+  <target name="exec-goodbye-compiled" depends="compile-foo">
     <exec executable="${script.ceylon}" failonerror="true">
-      <arg value="-run"/><arg value="${arg.run}"/>
-      <arg value="-src"/><arg value="${arg.src}"/>
-      <arg value="com.example.foo"/>
+      <arg value="-rep"/><arg value="${arg.out}"/>
+      <arg value="-run"/><arg value="com.example.foo.a.Goodbye"/>
+      <arg value="com.example.foo/1.0"/>
     </exec>
   </target>
-
+  
+  <target name="exec-foo-compiled" depends="compile-foo">
+    <exec executable="${script.ceylon}" failonerror="true">
+      <arg value="-rep"/><arg value="${arg.out}"/>
+      <arg value="com.example.foo/1.0"/>
+    </exec>
+  </target>
+  
+  <target name="exec-hello-source" depends="-init">
+    <exec executable="${script.ceylon}" failonerror="true">
+      <arg value="-src"/><arg value="${arg.src}"/>
+      <arg value="-run"/><arg value="com.example.foo.a.hello"/>
+      <arg value="com.example.foo/1.0"/>
+    </exec>
+  </target>
+  
+  <target name="exec-goodbye-source" depends="-init">
+    <exec executable="${script.ceylon}" failonerror="true">
+      <arg value="-src"/><arg value="${arg.src}"/>
+      <arg value="-run"/><arg value="com.example.foo.a.Goodbye"/>
+      <arg value="com.example.foo/1.0"/>
+    </exec>
+  </target>
+  
+  <target name="exec-foo-source" depends="-init">
+    <exec executable="${script.ceylon}" failonerror="true">
+      <arg value="-src"/><arg value="${arg.src}"/>
+      <arg value="com.example.foo/1.0"/>
+    </exec>
+  </target>
 </project>

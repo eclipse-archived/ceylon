@@ -22,3 +22,6 @@ shared interface I {
 shared void hello() {
     print("Hello, world");
 }
+shared class Goodbye() {
+    print("Goodbye cruel world");
+}
