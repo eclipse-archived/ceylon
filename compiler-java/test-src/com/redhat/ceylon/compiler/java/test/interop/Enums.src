@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class enums {
+    
+    private enums() {
+    }
+    
+    static void enums() {
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaEnum e = .com.redhat.ceylon.compiler.java.test.interop.JavaEnum.ONE;
+        e.field = e.field;
+        e.setProperty(e.getProperty());
+        e.method();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.enums.enums();
+    }
+}

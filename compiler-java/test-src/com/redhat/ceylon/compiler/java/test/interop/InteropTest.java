@@ -84,6 +84,12 @@ public class InteropTest extends CompilerTest {
     }
 
     @Test
+    public void testIopEnums(){
+        compile("JavaEnum.java");
+        compareWithJavaSource("Enums");
+    }
+
+    @Test
     public void testIopCaseMismatch(){
         compile("javaCaseMismatch.java");
         compareWithJavaSource("CaseMismatch");
