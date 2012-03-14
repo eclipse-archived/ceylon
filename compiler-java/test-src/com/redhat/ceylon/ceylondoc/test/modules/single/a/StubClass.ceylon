@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 doc "This is `StubClass`"
-see(StubInterface)
+see(StubInterface, stubTopLevelAttribute, stubTopLevelMethod)
 tagged("stubTag1", "stubTag2")
 shared class StubClass() satisfies StubInterface {
 

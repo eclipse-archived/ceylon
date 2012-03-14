@@ -67,8 +67,8 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 }
                 if (targetDecl instanceof TypeDeclaration) {
                     link(((TypeDeclaration) targetDecl).getType());
-                } else if (targetDecl.isMember()) {
-                    linkToMember(targetDecl);
+                } else {
+                    linkToDeclaration(targetDecl);
                 }
             }
         }

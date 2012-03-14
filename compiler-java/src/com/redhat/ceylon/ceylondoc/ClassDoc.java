@@ -288,7 +288,7 @@ public class ClassDoc extends ClassOrPackageDoc {
                 } else {
                     first = false;
                 }
-                linkToMember(member);
+                linkToDeclaration(member);
             }
             close("code", "td", "tr", "table");
         }
@@ -419,7 +419,7 @@ public class ClassDoc extends ClassOrPackageDoc {
                 } else {
                     first = false;
                 }
-                linkToMember(member);
+                linkToDeclaration(member);
             }
             close("code", "td", "tr", "table");
         }
