@@ -86,7 +86,7 @@ public class Ceylonc extends MatchingTask {
      * Sets the classpath by a path reference
      * @param classpathReference
      */
-	public void setClasspathRef(Reference classpathReference) {
+	public void setClasspathref(Reference classpathReference) {
 		createClasspath().setRefid(classpathReference);
 	}
 
