@@ -20,6 +20,7 @@
 package com.redhat.ceylon.itest;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class CeylonAntTest extends AntBasedTest {
@@ -43,6 +44,7 @@ public class CeylonAntTest extends AntBasedTest {
     }
     
     @Test
+    @Ignore("Module descriptor doesn't support 'run' yet")
     public void testExecFooModuleCompiled() throws Exception {
         AntResult result = ant("exec-foo-compiled");
         Assert.assertEquals(0, result.getStatusCode());
@@ -50,6 +52,7 @@ public class CeylonAntTest extends AntBasedTest {
     }
     
     @Test
+    @Ignore("ceylon doesn't support compilation yet")
     public void testExecHelloMethodFromSource() throws Exception {
         AntResult result = ant("exec-hello-source");
         Assert.assertEquals(0, result.getStatusCode());
@@ -57,6 +60,7 @@ public class CeylonAntTest extends AntBasedTest {
     }
     
     @Test
+    @Ignore("ceylon doesn't support compilation yet")
     public void testExecGoodbyeClassFromSource() throws Exception {
         AntResult result = ant("exec-goodbye-source");
         Assert.assertEquals(0, result.getStatusCode());
@@ -64,6 +68,8 @@ public class CeylonAntTest extends AntBasedTest {
     }
     
     @Test
+    @Ignore("ceylon doesn't support compilation yet")
+    // and... @Ignore("Module descriptor doesn't support 'run' yet")
     public void testExecFooModuleFromSource() throws Exception {
         AntResult result = ant("exec-foo-compiled");
         Assert.assertEquals(0, result.getStatusCode());
