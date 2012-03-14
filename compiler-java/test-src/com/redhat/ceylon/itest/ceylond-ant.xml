@@ -1,0 +1,53 @@
+<project name="ceylond Ant Task test" >
+  <target name="-init">
+      <echo message="ant.home: ${ant.home}"/>
+      <echo message="ant.file: ${ant.file}"/>
+      <echo message="src: ${arg.src}"/>
+      <echo message="out: ${arg.out}"/>
+    </target>
+  
+  <target name="ant-tasks" depends="-init">
+    <taskdef name="ceylonc" classname="com.redhat.ceylon.ant.Ceylonc" />
+    <taskdef name="ceylond" classname="com.redhat.ceylon.ant.Ceylond" />
+    <taskdef name="ceylon" classname="com.redhat.ceylon.ant.Ceylon" />
+  </target>
+      
+  <target name="foo-alone" depends="ant-tasks">
+    <ceylond
+      executable="${script.ceylond}"
+      src="${arg.src}"
+      out="${arg.out}">
+        <module name="com.example.foo"/>
+    </ceylond>
+  </target>
+
+  <target name="foo-file" depends="ant-tasks,foo-alone">
+    <echo message="Hello, world"/>
+    <ceylond
+      executable="${script.ceylond}"
+      src="${arg.src}"
+      out="${arg.out}">
+        <include name="com/example/foo/a/foo.ceylon"/>
+    </ceylond>
+  </target>
+
+  <target name="bar-alone" depends="ant-tasks">
+    <ceylond
+      executable="${script.ceylond}"
+      src="${arg.src}"
+      out="${arg.out}">
+       <module name="com.example.bar"/>
+    </ceylond>
+  </target>
+
+  <target name="foo-and-bar" depends="ant-tasks">
+    <ceylond
+      executable="${script.ceylond}"
+      src="${arg.src}"
+      out="${arg.out}">
+       <module name="com.example.foo"/>
+       <module name="com.example.bar"/>
+    </ceylond>
+  </target>
+
+</project>

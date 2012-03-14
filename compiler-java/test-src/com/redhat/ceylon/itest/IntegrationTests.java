@@ -27,8 +27,11 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class) 
 @SuiteClasses({
     CeyloncAntTest.class,
+    CeylondAntTest.class,
+    CeylonAntTest.class,
     CeyloncScriptTest.class,
-    CeylondScriptTest.class
+    CeylondScriptTest.class,
+    CeylonScriptTest.class
 })
 public class IntegrationTests {
 

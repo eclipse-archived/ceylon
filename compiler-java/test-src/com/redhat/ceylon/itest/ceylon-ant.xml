@@ -1,0 +1,21 @@
+<project name="ceylon Ant Task test" >
+  <target name="-init">
+      <echo message="ant.home: ${ant.home}"/>
+      <echo message="ant.file: ${ant.file}"/>
+      <echo message="src: ${arg.src}"/>
+      <echo message="out: ${arg.out}"/>
+    </target>
+  
+  <target name="ant-tasks" depends="-init">
+    <taskdef name="ceylonc" classname="com.redhat.ceylon.ant.Ceylonc" />
+    <taskdef name="ceylond" classname="com.redhat.ceylon.ant.Ceylond" />
+    <taskdef name="ceylon" classname="com.redhat.ceylon.ant.Ceylon" />
+  </target>
+      
+  <target name="exec-hello" depends="ant-tasks">
+    <ceylon
+      executable="${script.ceylon}"
+      run="${arg.run}"/>
+  </target>
+
+</project>

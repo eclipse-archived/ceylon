@@ -19,3 +19,6 @@
  */
 shared interface I {
 }
+shared void hello() {
+    print("Hello, world");
+}
