@@ -11,7 +11,7 @@ function initType(type, typeName) {
     cons.T$all[typeName] = type;
     for (var i=2; i<arguments.length; ++i) {
         var superTypes = arguments[i].$$.T$all;
-        for ($ in superTypes) {cons.T$all[$] = superTypes[$]}
+        for (var $ in superTypes) {cons.T$all[$] = superTypes[$]}
     }
 }
 function initExistingType(type, cons, typeName) {
@@ -21,7 +21,7 @@ function initExistingType(type, cons, typeName) {
     cons.T$all[typeName] = type;
     for (var i=3; i<arguments.length; ++i) {
         var superTypes = arguments[i].$$.T$all;
-        for ($ in superTypes) {cons.T$all[$] = superTypes[$]}
+        for (var $ in superTypes) {cons.T$all[$] = superTypes[$]}
     }
 }
 function inheritProto(type, superType, suffix) {
@@ -84,7 +84,7 @@ function Cloneable(wat) {
 initType(Cloneable, 'ceylon.language.Cloneable');
 exports.Cloneable=Cloneable;
 
-#include callable.js
+//#include callable.js
 
 function Castable(wat) {
     return wat;
@@ -159,7 +159,7 @@ Correspondence$proto.keys = function() {
 }
 exports.Correspondence=Correspondence;
 
-#include collections.js
+//#include collections.js
 
 function Summable(wat) {
     return wat;
@@ -210,8 +210,8 @@ Exception$proto.getString = function() {
     return String$('Exception "' + this.getMessage().value + '"');
 }
 
-#include numbers.js
-#include strings.js
+//#include numbers.js
+//#include strings.js
 
 function getNull() { return null }
 //function Boolean$(value) {
@@ -256,8 +256,8 @@ inheritProto(Comparison, IdentifiableObject, '$IdentifiableObject$');
 var Comparison$proto = Comparison.$$.prototype;
 Comparison$proto.getString = function() { return this.name; }
 
-#include functions.js
-#include sequences.js
+//#include functions.js
+//#include sequences.js
 
 function Range(first, last) {
     var that = new Range.$$;

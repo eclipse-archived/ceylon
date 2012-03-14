@@ -20,7 +20,7 @@ public class Stitcher {
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
                 if (line.length() > 0) {
-                    if (line.startsWith("#include ")) {
+                    if (line.startsWith("//#include ")) {
                         File auxfile = new File(infile.getParentFile(), line.substring(9).trim());
                         if (auxfile.exists() && auxfile.isFile() && auxfile.canRead()) {
                             stitch(auxfile, writer);
