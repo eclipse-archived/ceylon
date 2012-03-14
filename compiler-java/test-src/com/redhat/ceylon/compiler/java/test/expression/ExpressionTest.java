@@ -428,6 +428,16 @@ public class ExpressionTest extends CompilerTest {
     }
     
     @Test
+    public void testCallableCapture(){
+        compareWithJavaSource("invoke/CallableCapture");
+    }
+    
+    @Test
+    public void testCallablePositionalInvocationAndReturn(){
+        compareWithJavaSource("invoke/CallablePositionalInvocationAndReturn");
+    }
+    
+    @Test
     public void testCallablePositionalInvocationSequenced(){
         compareWithJavaSource("invoke/CallablePositionalInvocationSequenced");
     }
