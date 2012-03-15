@@ -5,7 +5,7 @@ There are a few steps needed to be able to build and test the project.
 
 1) We need to install Ceylon Language into our local Maven repository.
 
-mvn install:install-file -Dfile=ceylon.language-0.1.car -DgroupId=ceylon.language -DartifactId=ceylon-language -Dversion=0.1 -Dpackaging=jar -DgeneratePom=true -DcreateChecksum=true
+mvn install:install-file -Dfile=ceylon.language-0.2.car -DgroupId=ceylon.language -DartifactId=ceylon-language -Dversion=0.2 -Dpackaging=jar -DgeneratePom=true -DcreateChecksum=true
 
 2) We need to checkout and build (mvn clean install) Ceylon Module Resolver project (CMR).
 
