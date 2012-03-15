@@ -1250,10 +1250,10 @@ interface DefiniteReturn {
     void switchCase1() {
         Boolean b = true;
         switch (b)
-        case (truth) {
+        case (true) {
             return;
         }
-        case (falsity) {
+        case (false) {
             return;
         }
         //TODO: remove
@@ -1266,10 +1266,10 @@ interface DefiniteReturn {
     void switchCase2() {
         Boolean b = true;
         switch (b)
-        case (truth) {
+        case (true) {
             return;
         }
-        case (falsity) {
+        case (false) {
         }
         //TODO: remove
         else {
@@ -1281,10 +1281,10 @@ interface DefiniteReturn {
     void switchCase3() {
         Boolean b = true;
         switch (b)
-        case (truth) {
+        case (true) {
             return;
         }
-        case (falsity) {
+        case (false) {
             return;
         }
         //TODO: remove

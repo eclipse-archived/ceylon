@@ -62,14 +62,7 @@ void test() {
     case (diamonds) {}
     case (clubs) {}
     case (spades) {}
-    case (nothing) {}
-    
-    /*switch (maybe)
-    case (hearts) {}
-    case (diamonds) {}
-    case (clubs) {}
-    case (spades) {}
-    case (null) {}*/
+    case (null) {}
     
     switch (maybe)
     case (hearts) {}

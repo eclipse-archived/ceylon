@@ -603,10 +603,10 @@ interface DefiniteSpecification {
         Boolean b = true;
         String s;
         switch (b)
-        case (truth) {
+        case (true) {
             s = "hello";
         }
-        case (falsity) {
+        case (false) {
             s = "there";
             print(s);
         }
@@ -621,10 +621,10 @@ interface DefiniteSpecification {
         Boolean b = true;
         String s;
         switch (b)
-        case (truth) {
+        case (true) {
             s = "hello";
         }
-        case (falsity) {
+        case (false) {
             return;
         }
         //TODO: remove
@@ -638,10 +638,10 @@ interface DefiniteSpecification {
         Boolean b = true;
         String s;
         switch (b)
-        case (truth) {
+        case (true) {
             s = "hello";
         }
-        case (falsity) {
+        case (false) {
         }
         //TODO: remove
         else {
@@ -654,10 +654,10 @@ interface DefiniteSpecification {
         Boolean b = true;
         String s;
         switch (b)
-        case (truth) {
+        case (true) {
             s = "hello";
         }
-        case (falsity) {
+        case (false) {
             s = "world";
         }
         //TODO: remove

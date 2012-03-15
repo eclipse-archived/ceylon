@@ -57,7 +57,7 @@ class Is() {
     case (is String) {
         process.writeLine(s);
     }
-    case (nothing) {}
+    case (null) {}
 
     switch (s)
     case (is String) {

@@ -185,7 +185,7 @@ class ControlStructures() {
     
     switch (v)
     case (is Object) {}
-    case (nothing) {}
+    case (null) {}
     
     switch (v)
     case (is Object) {}
@@ -196,7 +196,7 @@ class ControlStructures() {
 
     @error switch (v)
     case (is Object|Nothing) {}
-    case (nothing) {}
+    case (null) {}
 
     @error switch (v)
     case (is Object|Nothing) {}
@@ -211,18 +211,18 @@ class ControlStructures() {
     Boolean b = true;
     
     switch (b)
-    case (truth) {}
-    case (falsity) {}
+    case (true) {}
+    case (false) {}
     
     switch (b)
-    case (truth, falsity) {}
+    case (true, false) {}
     
     switch (b)
-    case (truth) {}
+    case (true) {}
     else {}
 
     @error switch (b)
-    case (truth) {}
+    case (true) {}
     
     switch (b)
     case (is Boolean) {}
@@ -239,12 +239,12 @@ class ControlStructures() {
     
     switch (s)
     case (is String) {}
-    case (nothing) {}
+    case (null) {}
     
     @error switch (s)
     case (is Nothing) {}
     case (is String) {}
-    case (nothing) {}
+    case (null) {}
     
     switch (s)
     case (is String) {}
