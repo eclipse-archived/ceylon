@@ -78,7 +78,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
     }
 
     protected File putContent(ArtifactContext context, Node node, InputStream stream) throws IOException {
-        log.debug("Creating local copy of external node: " + node);
+        log.debug("Creating local copy of external node: " + node +" at repo: "+fileContentStore.getDisplayString());
         fileContentStore.putContent(node, stream, context);
         File file = fileContentStore.getFile(node); // re-get
 

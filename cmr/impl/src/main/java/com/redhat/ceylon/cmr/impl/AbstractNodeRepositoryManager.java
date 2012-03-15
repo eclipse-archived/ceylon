@@ -85,6 +85,8 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
 
     public void putArtifact(ArtifactContext context, InputStream content) throws IOException {
         final Node parent = getOrCreateParent(context);
+        log.debug("Adding artifact "+context+" to repository "+root.getDisplayString());
+        log.debug(" -> "+NodeUtils.getFullPath(parent));
         final String label = root.getArtifactName(context);
         if (parent instanceof OpenNode) {
             final OpenNode on = (OpenNode) parent;
@@ -93,11 +95,14 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         } else {
             addContent(context, parent, label, content);
         }
+        log.debug(" -> [done]");
     }
 
     @Override
     protected void putFolder(ArtifactContext context, File folder) throws IOException {
         Node parent = getOrCreateParent(context);
+        log.debug("Adding folder "+context+" to repository "+root.getDisplayString());
+        log.debug(" -> "+NodeUtils.getFullPath(parent));
         final String label = root.getArtifactName(context);
         if (parent instanceof OpenNode) {
             final OpenNode on = (OpenNode) parent;
@@ -112,6 +117,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         } else {
             throw new IOException("Cannot put folder [" + folder + "] to non-open node: " + context);
         }
+        log.debug(" -> [done]");
     }
 
     protected void putFiles(OpenNode current, File file, ContentOptions options) throws IOException {
@@ -123,7 +129,9 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             for (File f : file.listFiles())
                 putFiles(current, f, options);
         } else {
+            log.debug(" Adding file "+file.getPath()+" at "+ NodeUtils.getFullPath(current));
             current.addContent(file.getName(), new FileInputStream(file), options);
+            log.debug("  -> [done]");
         }
     }
 
@@ -133,11 +141,13 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
 
     public void removeArtifact(ArtifactContext context) throws IOException {
         Node parent = getFromRootNode(context, false);
+        log.debug("Remove artifact "+context+" to repository "+root.getDisplayString());
         if (parent != null) {
             final String label = root.getArtifactName(context);
             removeNode(parent, label);
+            log.debug(" -> [done]");
         } else {
-            log.debug("No such artifact: " + context);
+            log.debug(" -> No such artifact: " + context);
         }
     }
 
@@ -220,8 +230,10 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         }
     }
 
-    protected static Node fromAdapters(Iterable<Repository> repositories, ArtifactContext context, boolean addLeaf) {
+    protected Node fromAdapters(Iterable<Repository> repositories, ArtifactContext context, boolean addLeaf) {
+        log.debug("Looking for "+context);
         for (Repository repository : repositories) {
+            log.debug(" Trying repository "+repository.getDisplayString());
             Node node = repository.findParent(context);
             if (node != null) {
                 if (addLeaf) {
@@ -236,11 +248,14 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
 
                 if (node != null) {
                     NodeUtils.keepRepository(node, repository);
+                    log.debug("  -> Found at "+NodeUtils.getFullPath(node));
                     return node;
                 }
             }
+            log.debug("  -> Not Found");
         }
 
+        log.debug(" -> Artifact "+context+" not found in any repository");
         return null; // not found
     }
 }

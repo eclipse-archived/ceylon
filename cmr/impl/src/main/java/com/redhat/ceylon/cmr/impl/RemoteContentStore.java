@@ -107,7 +107,7 @@ public class RemoteContentStore extends URLContentStore {
 
         public InputStream getBinariesAsStream() throws IOException {
             final URL url = getURL(NodeUtils.getFullPath(node, SEPARATOR));
-            log.info("Fetching resource: " + url);
+            log.debug("Fetching resource: " + url);
             return url.openStream();
         }
 
