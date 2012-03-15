@@ -59,7 +59,7 @@ public class RepoFileHandler implements HttpHandler {
         String path = t.getRequestURI().getPath();
         String method = t.getRequestMethod();
         
-        System.err.println("Serving URI "+method+" "+path);
+        log("Serving URI "+method+" "+path);
 
         // filter on our prefix
         if(path.equals("/repo") || path.startsWith("/repo/")){
@@ -112,7 +112,7 @@ public class RepoFileHandler implements HttpHandler {
 
             if(file.exists()){
                 if("GET".equals(method)){
-                    System.err.println("Serving file "+file.getPath());
+                    log("Serving file "+file.getPath());
                     t.sendResponseHeaders(HttpURLConnection.HTTP_OK, file.length());
                     OutputStream os = t.getResponseBody();
                     // only write the contents if it's not a directory, otherwise the CMR expects an empty 200 response
@@ -136,9 +136,9 @@ public class RepoFileHandler implements HttpHandler {
                     return;
                 }
             }else
-                System.err.println("File does not exist: "+file.getAbsolutePath());
+                log("File does not exist: "+file.getAbsolutePath());
         }
-        System.err.println("Returning 404");
+        log("Returning 404");
         t.sendResponseHeaders(HttpURLConnection.HTTP_NOT_FOUND, 0);
         t.getResponseBody().close();
     }
@@ -183,6 +183,10 @@ public class RepoFileHandler implements HttpHandler {
             out.write(buf, 0, read);
         }
         out.flush();
+    }
+
+    private void log(String string) {
+        System.err.println(string);
     }
 
 }
