@@ -303,7 +303,7 @@ public class ProducedType extends ProducedReference {
      * given type.
      */
     public ProducedType minus(ClassOrInterface ci) {
-        if (getDeclaration().equals(ci)) {
+        if (getDeclaration().equals(ci) || getSupertype(ci) != null) {
             return getDeclaration().getUnit().getBottomDeclaration().getType();
         }
         else if (getDeclaration() instanceof UnionType) {
