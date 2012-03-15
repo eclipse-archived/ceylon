@@ -5,5 +5,5 @@ doc "The type of the `null` value. Any union type of form
 see (null)
 by "Gavin" 
 shared abstract class Nothing() 
-        of nothing
+        of null
         extends Void() {}

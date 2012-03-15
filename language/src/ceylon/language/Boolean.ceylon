@@ -2,24 +2,20 @@ doc "A type capable of representing the values true and
      false of Boolean logic."
 by "Gavin"
 shared abstract class Boolean() 
-        of truth | falsity {}
+        of true | false {}
 
-object truth extends Boolean() {
+doc "A value representing truth in Boolean logic."
+by "Gavin"
+shared object true extends Boolean() {
     shared actual String string {
         return "true";
     }
 }
 
-object falsity extends Boolean() {
+doc "A value representing falsity in Boolean logic."
+by "Gavin"
+shared object false extends Boolean() {
     shared actual String string {
         return "false";
     }
 }
-
-doc "A value representing truth in Boolean logic."
-by "Gavin"
-shared Boolean true = truth;
-
-doc "A value representing falsity in Boolean logic."
-by "Gavin"
-shared Boolean false = falsity;
