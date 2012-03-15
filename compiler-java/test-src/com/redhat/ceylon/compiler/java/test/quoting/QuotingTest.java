@@ -107,4 +107,14 @@ public class QuotingTest extends CompilerTest {
     public void testKeywordInToplevelAssignment(){
         compareWithJavaSource("assert/KeywordInToplevelAssignment");
     }
+    
+    @Test
+    public void testMangledToplevelAttribute(){
+        compareWithJavaSource("assert/MangledToplevelAttribute");
+    }
+    
+    @Test
+    public void testMangledToplevelMethod(){
+        compareWithJavaSource("assert/MangledToplevelMethod");
+    }
 }
