@@ -42,6 +42,7 @@ import com.sun.tools.javac.code.Symbol.ClassSymbol;
 import com.sun.tools.javac.code.Symbol.MethodSymbol;
 import com.sun.tools.javac.code.Symbol.VarSymbol;
 import com.sun.tools.javac.code.Type;
+import com.sun.tools.javac.code.TypeTags;
 
 public class JavacClass implements ClassMirror {
 
@@ -163,9 +164,9 @@ public class JavacClass implements ClassMirror {
 
     @Override
     public TypeMirror getSuperclass() {
-        Type supercls = classSymbol.getSuperclass();
-        if (supercls != null) {
-            if (superclass == null) {
+        if (superclass == null) {
+            Type supercls = classSymbol.getSuperclass();
+            if (supercls != null && supercls.tag != TypeTags.NONE) {
                 superclass = new JavacType(supercls);
             }
         }
