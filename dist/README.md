@@ -8,7 +8,8 @@ The language is elegant, highly readable, extremely typesafe, and makes it easy 
 get things done. And it's easy to learn for programmers who are familiar with 
 mainstream languages used in business computing. Ceylon has a full-featured 
 Eclipse-based development environment, allowing developers to take best advantage 
-of the powerful static type system. Programs written in Ceylon execute on any JVM.
+of the powerful static type system. Programs written in Ceylon execute on any 
+Java 6 compatible JVM.
 
 Read more about Ceylon at <http://ceylon-lang.org>.
 
