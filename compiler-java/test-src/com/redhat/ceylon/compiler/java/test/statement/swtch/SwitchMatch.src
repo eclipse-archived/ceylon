@@ -1,0 +1,69 @@
+package com.redhat.ceylon.compiler.java.test.statement.swtch;
+
+abstract class SwitchMatchTop {
+    
+    SwitchMatchTop() {
+    }
+}
+final class switchMatch_foo extends .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop {
+    
+    private switchMatch_foo() {
+        super();
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo value;
+    static {
+        value = new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo();
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo getSwitchMatch_foo() {
+        return value;
+    }
+}
+final class switchMatch_bar extends .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop {
+    
+    private switchMatch_bar() {
+        super();
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar value;
+    static {
+        value = new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar();
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar getSwitchMatch_bar() {
+        return value;
+    }
+}
+class SwitchMatch {
+    
+    private final void onObject() {
+        final .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop fb = .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo.getSwitchMatch_foo();
+        {
+            .java.lang.Object $sel$0 = fb;
+            if ($sel$0 == .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo.getSwitchMatch_foo()) {
+                .ceylon.language.print.print(.ceylon.language.String.instance("foo"));
+            } else if ($sel$0 == .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar.getSwitchMatch_bar()) {
+                .ceylon.language.print.print(.ceylon.language.String.instance("bar"));
+            } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+        }
+    }
+    
+    private final void onBoolean() {
+        final boolean b = true;
+        {
+            .java.lang.Object $sel$1 = b;
+            if ($sel$1 == .ceylon.language.Boolean.instance(true)) {
+                .ceylon.language.print.print(.ceylon.language.String.instance("true"));
+            } else if ($sel$1 == .ceylon.language.Boolean.instance(false)) {
+                .ceylon.language.print.print(.ceylon.language.String.instance("false"));
+            } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+        }
+    }
+    
+    SwitchMatch() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatch();
+    }
+}
