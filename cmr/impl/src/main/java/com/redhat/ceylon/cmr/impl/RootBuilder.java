@@ -35,7 +35,7 @@ public class RootBuilder {
 
     public RootBuilder(String token, Logger log) throws Exception {
         if (token == null)
-            throw new IllegalArgumentException("Null root token");
+            throw new IllegalArgumentException("Null repository");
 
         final String key = (token.startsWith("${") ? token.substring(2, token.length() - 1) : token);
         final String temp = SecurityActions.getProperty(key);
@@ -47,9 +47,9 @@ public class RootBuilder {
         } else {
             final File file = (token.startsWith("file") ? new File(new URI(token)) : new File(token));
             if (file.exists() == false)
-                throw new IllegalArgumentException("Token does not point to an existing directory: " + token);
+                throw new IllegalArgumentException("Directory does not exist: " + token);
             if (file.isDirectory() == false)
-                throw new IllegalArgumentException("Token does not point to a directory: " + token);
+                throw new IllegalArgumentException("Repository exists but is not a directory: " + token);
 
             structureBuilder = new FileContentStore(file);
         }
