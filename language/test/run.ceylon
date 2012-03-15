@@ -30,6 +30,8 @@ shared void run() {
     callables();
     print("Misc tests");
     misc();
+    print("Array/Collection/FixedSized tests");
+    testArrays();
     results();
 }
 
