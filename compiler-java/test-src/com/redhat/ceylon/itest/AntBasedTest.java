@@ -36,9 +36,20 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 public abstract class AntBasedTest {
 
@@ -50,7 +61,8 @@ public abstract class AntBasedTest {
     protected static final String ARG_OUT = "arg.out";
     
     protected final Method mainMethod;
-    protected final File buildfile;
+    protected final File originalBuildfile;
+    protected File actualBuildFile;
     private Class<?> securityManagerClass;
     private ByteArrayOutputStream redirectedStdout;
     private ByteArrayOutputStream redirectedStderr;
@@ -61,7 +73,7 @@ public abstract class AntBasedTest {
     private File out;
 
     public AntBasedTest(String buildfileResource) throws Exception {
-        buildfile = new File(buildfileResource);
+        originalBuildfile = new File(buildfileResource);
         String antHome = System.getProperty("ant.home");
         if (antHome == null) {
             throw new Exception("ant.home not set, cannot run ant integration tests");
@@ -100,6 +112,42 @@ public abstract class AntBasedTest {
     }
     
     @Before
+    public void rewriteBuildFile() throws Exception {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder parser = factory.newDocumentBuilder();
+        Document document = parser.parse(this.originalBuildfile);
+        if (isWindows()) {
+            /*
+             * On windows you can't just use the <exec> task on a .bat file
+             * you have to exec "cmd -c foo.bat". To avoid a maintainance 
+             * nightmare in the test build files, we just rewrite the build 
+             * files on the fly.
+             */
+            XPathFactory xpfactory = XPathFactory.newInstance();
+            NodeList execTasks = (NodeList)xpfactory.newXPath().evaluate("//exec", document, XPathConstants.NODESET);
+            for (int ii = 0; ii < execTasks.getLength(); ii++) {
+                Element exec = (Element)execTasks.item(ii);
+                
+                String executable = exec.getAttribute("executable");
+                exec.setAttribute("executable", "cmd");
+                
+                Element argExecutable = document.createElement("arg");
+                argExecutable.setAttribute("value", executable);
+                exec.insertBefore(argExecutable,  exec.getFirstChild());
+            
+                Element argOptiopnC = document.createElement("arg");
+                argOptiopnC.setAttribute("value", "/c");
+                exec.insertBefore(argOptiopnC,  exec.getFirstChild());
+            }
+        }
+        actualBuildFile = File.createTempFile("ceylon-ant-test.", "build.xml");
+        TransformerFactory.newInstance().newTransformer().transform(
+                new DOMSource(document), 
+                new StreamResult(actualBuildFile));
+    
+    }
+    
+    @Before
     public void saveProperties() throws Exception {
         savedProperties = new Properties(System.getProperties());
         String scriptDir = System.getProperty("build.bin", "build/bin");
@@ -133,6 +181,7 @@ public abstract class AntBasedTest {
     
     @After
     public void deleteOut() {
+        deleteRecursively(actualBuildFile);    
         deleteRecursively(out);
     }
     
@@ -175,7 +224,7 @@ public abstract class AntBasedTest {
     
     protected AntResult ant(String goal) throws Exception {
         String[] antArgs = new String[]{
-                "-buildfile", buildfile.getPath(),
+                "-buildfile", actualBuildFile.getPath(),
                 "-verbose",
                 goal};
         
