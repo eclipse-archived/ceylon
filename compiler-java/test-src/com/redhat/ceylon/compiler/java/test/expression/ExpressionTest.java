@@ -596,8 +596,8 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("operator/Spread");
     }
     @Test
-    public void testOprSpreadInvoke(){
-        compareWithJavaSource("operator/SpreadInvoke");
+    public void testOprSpreadMethodReference(){
+        compareWithJavaSource("operator/SpreadMethodReference");
     }
     
     @Test
