@@ -89,6 +89,11 @@ public class RemoteContentStore extends URLContentStore {
         return "RemoteContentStore: " + root;
     }
 
+    @Override
+    public String getDisplayString() {
+        return root;
+    }
+
     private class RemoteContentHandle implements ContentHandle {
         private final Node node;
 

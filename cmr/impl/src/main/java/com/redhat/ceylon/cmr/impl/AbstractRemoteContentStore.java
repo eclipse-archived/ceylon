@@ -67,5 +67,10 @@ public abstract class AbstractRemoteContentStore extends AbstractContentStore {
         public boolean equals(Object obj) {
             return (obj == this);
         }
+        
+        @Override
+        public String getDisplayString() {
+            return getService(ContentStore.class).getDisplayString();
+        }
     }
 }

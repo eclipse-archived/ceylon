@@ -111,4 +111,9 @@ public class InMemoryContentStore implements ContentStore, StructureBuilder {
         public void clean() {
         }
     }
+
+    @Override
+    public String getDisplayString() {
+        return "InMemoryContentStore";
+    }
 }

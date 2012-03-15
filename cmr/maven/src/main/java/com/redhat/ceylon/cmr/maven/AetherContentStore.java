@@ -135,4 +135,9 @@ public class AetherContentStore extends AbstractContentStore {
         public void clean() {
         }
     }
+
+    @Override
+    public String getDisplayString() {
+        return "Aether";
+    }
 }

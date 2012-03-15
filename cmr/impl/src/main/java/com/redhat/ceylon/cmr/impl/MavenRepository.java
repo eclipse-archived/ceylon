@@ -59,4 +59,9 @@ public class MavenRepository extends AbstractRepository {
             }
         };
     }
+    
+    @Override
+    public String getDisplayString() {
+        return "[Maven] " + super.getDisplayString();
+    }
 }

@@ -87,4 +87,9 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     }
 
     protected abstract boolean urlExists(URL url);
+    
+    @Override
+    public String getDisplayString() {
+        return root;
+    }
 }

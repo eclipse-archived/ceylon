@@ -119,4 +119,9 @@ public abstract class AbstractRepository implements Repository {
     public String toString() {
         return "Repository for root: " + root;
     }
+    
+    @Override
+    public String getDisplayString() {
+        return root.getDisplayString();
+    }
 }

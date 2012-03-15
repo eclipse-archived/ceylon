@@ -202,4 +202,9 @@ public class DefaultNode extends AbstractOpenNode {
 
         return ch.getBinariesAsStream();
     }
+
+    @Override
+    public String getDisplayString() {
+        return getLabel();
+    }
 }

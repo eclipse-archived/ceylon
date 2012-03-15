@@ -41,4 +41,9 @@ public class RootNode extends DefaultNode {
     public String toString() {
         return "RootNode for "+getService(ContentStore.class);
     }
+    
+    @Override
+    public String getDisplayString() {
+        return getService(ContentStore.class).getDisplayString();
+    }
 }

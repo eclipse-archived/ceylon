@@ -86,4 +86,9 @@ public class MarkerNode extends AbstractOpenNode {
     public boolean isRemote() {
         return false;
     }
+
+    @Override
+    public String getDisplayString() {
+        return "Marker node";
+    }
 }

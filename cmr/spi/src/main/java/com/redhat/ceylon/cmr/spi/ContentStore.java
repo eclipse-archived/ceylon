@@ -56,4 +56,5 @@ public interface ContentStore {
      */
     ContentHandle putContent(Node node, InputStream stream, ContentOptions options) throws IOException;
 
+    String getDisplayString();
 }

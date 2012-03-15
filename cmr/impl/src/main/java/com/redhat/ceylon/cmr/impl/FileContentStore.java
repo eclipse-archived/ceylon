@@ -50,6 +50,11 @@ public class FileContentStore implements ContentStore, StructureBuilder {
         return "FileContentStore: " + root;
     }
 
+    @Override
+    public String getDisplayString() {
+        return root.getPath();
+    }
+
     File getFile(Node node) {
         if (node == null)
             throw new IllegalArgumentException("Null node");
