@@ -33,7 +33,6 @@ public class JBossRuntime extends AbstractJBossRuntime {
     protected ModuleLoader createModuleLoader(Configuration conf) {
         RepositoryManager repository = createRepository(conf);
         URL url = repository.getClass().getProtectionDomain().getCodeSource().getLocation();
-        System.out.println("url = " + url);
         return new CeylonModuleLoader(repository);
     }
 }
