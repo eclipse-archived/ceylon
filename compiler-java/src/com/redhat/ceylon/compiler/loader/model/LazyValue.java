@@ -48,13 +48,18 @@ public class LazyValue extends Value implements LazyElement {
     
     public ClassMirror classMirror;
     private ModelCompleter completer;
+    private String realName;
     private boolean isLoaded = false;
 
     public LazyValue(ClassMirror classMirror, ModelCompleter completer) {
         this.classMirror = classMirror;
         this.completer = completer;
-        // FIXME: why doesn't that move to getSimpleName()?
-        setName(Util.strip(classMirror.getSimpleName()));
+        this.realName = classMirror.getSimpleName();
+        setName(Util.strip(this.realName));
+    }
+
+    public String getRealName() {
+        return this.realName;
     }
 
     private void load() {

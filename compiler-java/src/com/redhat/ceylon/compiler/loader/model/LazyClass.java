@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.loader.model;
 
 import java.util.List;
 
+import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.ModelCompleter;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
@@ -49,6 +50,7 @@ public class LazyClass extends Class implements LazyContainer {
     private Class superClass;
     private MethodMirror constructor;
     private boolean forTopLevelObject;
+    private String realName;
     
     private boolean isLoaded = false;
     private boolean isTypeParamsLoaded = false;
@@ -59,7 +61,8 @@ public class LazyClass extends Class implements LazyContainer {
         this.superClass = superClass;
         this.constructor = constructor;
         this.forTopLevelObject = forTopLevelObject;
-        setName(classMirror.getSimpleName());
+        this.realName = classMirror.getSimpleName();
+        setName(Util.strip(this.realName));
         setAbstract(classMirror.isAbstract());
     }
 
@@ -69,6 +72,10 @@ public class LazyClass extends Class implements LazyContainer {
     
     public boolean isTopLevelObjectType(){
         return forTopLevelObject;
+    }
+
+    public String getRealName() {
+        return this.realName;
     }
     
     private void load() {

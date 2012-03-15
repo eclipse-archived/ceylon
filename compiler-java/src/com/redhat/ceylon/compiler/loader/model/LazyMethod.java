@@ -50,15 +50,20 @@ public class LazyMethod extends Method implements LazyElement {
 
     public ClassMirror classMirror;
     private ModelCompleter completer;
+    private String realName;
     private boolean isLoaded = false;
-
+    
     public LazyMethod(ClassMirror classMirror, ModelCompleter completer) {
         this.classMirror = classMirror;
         this.completer = completer;
-        // FIXME: move strip to getSimpleName()
-        setName(Util.strip(classMirror.getSimpleName()));
+        this.realName = classMirror.getSimpleName();
+        setName(Util.strip(this.realName));
     }
 
+    public String getRealName() {
+        return this.realName;
+    }
+    
     private void load() {
         if(!isLoaded){
             isLoaded = true;

@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.loader.model;
 
 import java.util.List;
 
+import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.ModelCompleter;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
@@ -44,13 +45,19 @@ public class LazyInterface extends Interface implements LazyContainer {
 
     public ClassMirror classMirror;
     private ModelCompleter completer;
+    private String realName;
     private boolean isLoaded = false;
     private boolean isTypeParamsLoaded = false;
 
     public LazyInterface(ClassMirror classMirror, ModelCompleter completer) {
         this.classMirror = classMirror;
         this.completer = completer;
-        setName(classMirror.getSimpleName());
+        this.realName = classMirror.getSimpleName();
+        setName(Util.strip(this.realName));
+    }
+
+    public String getRealName() {
+        return this.realName;
     }
     
     private void load() {
