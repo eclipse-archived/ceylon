@@ -1,7 +1,7 @@
 # Ceylon distribution
 
-This is the Milestone 1 "Newton" release of the Ceylon command line tools (version 
-0.1). This is a pre-release version of the platform for review by the community.
+This is the Milestone 2 "Minitel" release of the Ceylon command line tools (version 
+0.2). This is a pre-release version of the platform for review by the community.
 
 Ceylon is a programming language for writing large programs in a team environment. 
 The language is elegant, highly readable, extremely typesafe, and makes it easy to 
@@ -32,7 +32,7 @@ The command line tools are located in the `bin` directory.
 
 The API documentation for the language module `ceylon.language` may be found here:
 
-- `repo/ceylon/language/0.1/module-doc`
+- `repo/ceylon/language/0.2/module-doc`
 
 ## Running the sample programs
 
@@ -125,7 +125,6 @@ We're deeply indebted to the community volunteers who contributed a substantial 
 of the current Ceylon codebase, working often in their own spare time. The following 
 people have contributed to this release:
 
-Gavin King, Stephane Epardaud, Tako Schotanus, Gary Benson, Emmanuel Bernard, Andrew Haley, 
-Tom Bentley, Ales Justin, David Festal, Flavio Oliveri, Sergej Koshchejev, Max Rydahl Andersen, 
-Mladen Turk, James Cobb, Ben Keating, Michael Brackx, Ross Tate, Ivo Kasiuk, Gertjan Assies,
-Nicolas Leroux, Julien Viet.
+Gavin King, Stéphane Épardaud, Tako Schotanus, Emmanuel Bernard, Tom Bentley, Aleš Justin, 
+David Festal, Flavio Oliveri, Max Rydahl Andersen, Mladen Turk, James Cobb, Tomáš Hradec, 
+Michael Brackx, Ross Tate, Ivo Kasiuk, Enrique Zamudio, Julien Ponge.

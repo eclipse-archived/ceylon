@@ -1,0 +1,12 @@
+#!/bin/sh
+
+VERSION=0.2
+
+set -e
+
+case "$1" in
+configure)
+	update-alternatives --install /usr/bin/ceylon ceylon /usr/share/ceylon/$VERSION/bin/ceylon 02000
+    update-alternatives --install /usr/bin/ceylonc ceylonc /usr/share/ceylon/$VERSION/bin/ceylonc 02000
+    update-alternatives --install /usr/bin/ceylond ceylond /usr/share/ceylon/$VERSION/bin/ceylond 02000
+esac

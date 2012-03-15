@@ -1,13 +1,13 @@
 ## Ant tasks for Ceylon
 
 We include support for Ceylon ant tasks in
-`repo/com/redhat/ceylon/ant/0.1/com.redhat.ceylon.ant-0.1.jar`.
+`repo/com/redhat/ceylon/ant/0.2/com.redhat.ceylon.ant-0.2.jar`.
 
 ### Loading the ant tasks
 
-    <property name="ceylon.home" value="path/to/ceylon-0.1"/>
+    <property name="ceylon.home" value="path/to/ceylon-0.2"/>
     <path id="ant-tasks">
-      <pathelement location="${ceylon.home}/repo/com/redhat/ceylon/ant/0.1/com.redhat.ceylon.ant-0.1.jar"/>
+      <pathelement location="${ceylon.home}/repo/com/redhat/ceylon/ant/0.2/com.redhat.ceylon.ant-0.2.jar"/>
     </path>
     <taskdef name="ceylonc" classname="com.redhat.ceylon.ant.Ceylonc" classpathref="ant-tasks"/>
     <taskdef name="ceylond" classname="com.redhat.ceylon.ant.Ceylond" classpathref="ant-tasks"/>

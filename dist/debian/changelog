@@ -1,3 +1,9 @@
+ceylon-0.2 (0.2) oneiric; urgency=low
+
+  * M2 release
+
+ -- Stephane Epardaud <stephane@ceylon-lang.org>  Thu, 15 Mar 2012 18:09:47 +0100
+
 ceylon-0.1 (0.1) oneiric; urgency=low
 
   * Initial release

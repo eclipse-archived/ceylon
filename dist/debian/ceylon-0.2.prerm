@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-VERSION=0.1
+VERSION=0.2
 
 if [ "$1" = "remove" ] || [ "$1" = "deconfigure" ]; then
 	update-alternatives --remove ceylon /usr/share/ceylon/$VERSION/bin/ceylon
