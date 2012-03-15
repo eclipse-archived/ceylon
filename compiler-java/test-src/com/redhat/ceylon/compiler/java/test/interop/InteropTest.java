@@ -60,6 +60,13 @@ public class InteropTest extends CompilerTest {
         compareWithJavaSource("Fields");
     }
 
+    @Ignore("M3")
+    @Test
+    public void testIopSpecialFields(){
+        compile("JavaFields.java");
+        compareWithJavaSource("SpecialFields");
+    }
+
     @Test
     public void testIopAttributes(){
         compile("JavaBean.java");

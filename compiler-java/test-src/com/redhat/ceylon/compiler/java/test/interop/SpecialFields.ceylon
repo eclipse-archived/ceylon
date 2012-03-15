@@ -37,6 +37,14 @@ void fields() {
     java.readWriteField := java.readWriteField := java.readWriteField;
     @error
     java.readWriteField := java.readWriteField += java.readWriteField;
+    @error
+    java.hash := java.hash;
+    @error
+    java.hash := java.hashCode();
+    @error
+    java.string := java.string;
+    @error
+    java.string := java.toString();
 }
 
 @nomodel
