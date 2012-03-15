@@ -3239,6 +3239,21 @@ public class ExpressionVisitor extends Visitor {
         if (that.getTypeModel()==null) {
             that.setTypeModel( defaultType() );
         }
+        if (that instanceof Tree.Expression) {
+            Tree.Expression expr = (Tree.Expression)that;
+            Tree.Term term = expr.getTerm();
+            if (term instanceof Tree.QualifiedMemberOrTypeExpression) {
+                Tree.QualifiedMemberOrTypeExpression qme = (Tree.QualifiedMemberOrTypeExpression)term;
+                if (qme.getMemberOperator() instanceof Tree.SpreadOp
+                        && qme.getTypeModel().getDeclaration().getQualifiedNameString().equals("ceylon.language.Callable")) {
+                    that.addWarning("spread method references not supported yet");
+                }
+                if (qme.getMemberOperator() instanceof Tree.SafeMemberOp
+                        && qme.getTypeModel().getDeclaration().getQualifiedNameString().equals("ceylon.language.Callable")) {
+                    that.addWarning("null-safe method references not supported yet");
+                }
+            }
+        }
     }
 
     @Override public void visit(Tree.Type that) {
