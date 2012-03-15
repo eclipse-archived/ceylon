@@ -95,7 +95,8 @@ public class Options {
             list = new LinkedList<String>();
             multiValues.put(name, list);
         }
-        list.add(value);
+        if(!list.contains(value))
+            list.add(value);
     }
 
     public void addMulti(OptionName name, String value) {
