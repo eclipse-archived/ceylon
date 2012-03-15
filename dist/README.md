@@ -64,7 +64,8 @@ To see a list of command line options, type one of:
 
 ## Ant tasks for Ceylon
 
-We include support for Ceylon ant tasks which are documented in `README-ANT.md`.
+We include support for Ceylon ant tasks which are documented on
+at <http://ceylon-lang.org/documentation/1.0/reference/tool/ant/>.
 
 ## Source code
 
