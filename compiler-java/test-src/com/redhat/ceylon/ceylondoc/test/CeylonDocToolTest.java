@@ -39,6 +39,7 @@ import org.junit.Test;
 import com.redhat.ceylon.ceylondoc.CeylonDocTool;
 import com.redhat.ceylon.ceylondoc.Util;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
+import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.source.util.JavacTask;
 
@@ -358,7 +359,7 @@ public class CeylonDocToolTest {
         
         Module module = new Module();
         module.setName(Arrays.asList("ceylon.language"));
-        module.setVersion("0.1");
+        module.setVersion(TypeChecker.LANGUAGE_MODULE_VERSION);
         
         File destDir = getOutputDir(tool, module);
         
