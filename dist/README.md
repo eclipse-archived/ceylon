@@ -79,8 +79,9 @@ Bugs and suggestions may be reported in GitHub's issue tracker.
 
 ## Systems where Ceylon is known to work
 
-Since Ceylon is running on the JVM it should work on every platform where the JVM
-is supported. However we have tested the following platforms to make sure it works:
+Since Ceylon is running on the JVM it should work on every platform that 
+supports a Java 6 compatible JVM. However we have tested the following 
+platforms to make sure it works:
 
 ### Linux
 
