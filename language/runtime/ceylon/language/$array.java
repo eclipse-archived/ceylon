@@ -19,7 +19,7 @@ public final class $array {
 
     @TypeParameters(@TypeParameter(value="Element"))
     @TypeInfo("ceylon.language.Array<Element>")
-    public static <Element> Array<? extends Element> $array(
+    public static <Element> Array<? extends Element> array(
     @Name("elements")
     @Sequenced
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
