@@ -595,6 +595,10 @@ public class ExpressionTest extends CompilerTest {
     public void testOprSpread(){
         compareWithJavaSource("operator/Spread");
     }
+    @Test
+    public void testOprSpreadInvoke(){
+        compareWithJavaSource("operator/SpreadInvoke");
+    }
     
     @Test
     public void testStpStringTemplate(){
