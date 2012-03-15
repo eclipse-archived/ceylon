@@ -100,7 +100,7 @@ public class CeylonDocTool {
         this.log = new CeylondLogger();
         
         // set up the artifact repository
-        RepositoryManager repository = com.redhat.ceylon.compiler.java.util.Util.makeRepositoryManager(repositories, log );
+        RepositoryManager repository = com.redhat.ceylon.compiler.java.util.Util.makeRepositoryManager(repositories, null, log );
         builder.setRepositoryManager(repository);
         
         // we need to plug in the module manager which can load from .cars

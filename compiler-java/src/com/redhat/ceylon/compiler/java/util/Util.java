@@ -403,7 +403,7 @@ public class Util {
                 && !decl.isShared();
     }
 
-    public static RepositoryManager makeRepositoryManager(List<String> userRepos, Logger log) {
+    public static RepositoryManager makeRepositoryManager(List<String> userRepos, String outRepo, Logger log) {
         final RepositoryBuilder builder = new RepositoryBuilder(log);
 
         // any user defined repos first
@@ -433,6 +433,15 @@ public class Util {
             }
         }
 
+        if(outRepo != null){
+            try{
+                OpenNode root = new RootBuilder(outRepo, log).buildRoot();
+                builder.prependExternalRoot(root);
+            }catch(Exception e){
+                log.debug("Failed to add output repository as input repository (doesn't matter): " + outRepo + ": "+e.getMessage());
+            }
+        }
+        
         // Caching repo
         builder.addCeylonHome();
 

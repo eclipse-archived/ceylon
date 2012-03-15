@@ -225,9 +225,9 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         userRepos.addAll(options.getMulti(OptionName.CEYLONREPO));
         // make sure we add the output repo if not in user repos
         String outRepo = getOutputRepoOption();
-        if(!userRepos.contains(outRepo))
-            userRepos.add(outRepo);
-        repoManager = Util.makeRepositoryManager(userRepos, getLogger());
+        if(userRepos.contains(outRepo))
+            outRepo = null;
+        repoManager = Util.makeRepositoryManager(userRepos, outRepo, getLogger());
         return repoManager;
     }
 
