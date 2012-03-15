@@ -244,6 +244,9 @@ public class Pretty extends JCTree.Visitor {
             printExpr(trees.head);
             for (List<T> l = trees.tail; l.nonEmpty(); l = l.tail) {
                 print(sep);
+                if (sep.endsWith("\n")) {
+                    align();
+                }
                 printExpr(l.head);
             }
         }
@@ -1244,10 +1247,30 @@ public class Pretty extends JCTree.Visitor {
 
     public void visitLetExpr(LetExpr tree) {
         try {
-            if(tree.stats != null)
-                print("(let " + tree.defs + " in " + tree.stats + "; " + tree.expr + ")");
-            else
-                print("(let " + tree.defs + " in " + tree.expr + ")");
+            print("(");
+            println();
+            indent();
+            align();
+            print("let");
+            println();
+            indent();
+            align();
+            printExprs(tree.defs, ",\n");
+            println();
+            undent();
+            if (tree.stats != null) {
+                align();
+                print("in ");
+                printBlock(tree.stats);
+                println();
+            }
+            align();
+            print("returning ");
+            printExpr(tree.expr);
+            println();
+            undent();
+            align();
+            print(")");
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
