@@ -1165,13 +1165,19 @@ public class ExpressionTransformer extends AbstractTransformer {
                 newArrayType, newArrayExpr,
                 returnArray);
         
-        JCExpression testExpr = make().Conditional(makeNonEmptyTest(makeUnquotedIdent(testVarName)), 
+        JCExpression resultExpr;
+        
+        if (!typeFact().isEmptyType(expr.getPrimary().getTypeModel())) {
+            resultExpr = spread;
+        } else {
+            resultExpr = make().Conditional(makeNonEmptyTest(makeUnquotedIdent(testVarName)), 
                 spread, makeEmpty());
+        }
         
         // now surround it with the test
         return makeLetExpr(testVarName, List.<JCStatement>nil(),
                 testSequenceTypeExpr, testSequenceExpr,
-                testExpr);
+                resultExpr);
     }
 
     private JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberOrTypeExpression expr) {
