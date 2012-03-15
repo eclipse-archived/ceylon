@@ -46,6 +46,7 @@ import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
 import com.redhat.ceylon.compiler.loader.model.JavaMethod;
+import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -75,8 +76,12 @@ public class Util {
 
     public static String quoteMethodNameIfProperty(Method method, AbstractTransformer gen) {
         String name = method.getName();
-        // only quote if method is a member, we cannot get a conflict for local or toplevel methods
-        // since local methods have a $getter suffix and toplevel attribute class names are not mangled
+        // Toplevel methods keep their original name because their names might be mangled
+        if (method instanceof LazyMethod) {
+            return ((LazyMethod)method).getRealName();
+        }
+        // only quote if method is a member, we cannot get a conflict for local
+        // since local methods have a $getter suffix
         if(!method.isClassOrInterfaceMember())
             return name;
         // do not quote method names if we have a refined constraint
