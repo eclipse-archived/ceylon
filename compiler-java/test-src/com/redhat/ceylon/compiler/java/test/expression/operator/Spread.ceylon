@@ -18,7 +18,8 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void m() {
+void m(String[] seq2) {
     value seq = {"Hello", "World"};
-    value ini2 = seq[].size;
+    value ini = seq[].size;
+    value ini2 = seq2[].size;
 }
