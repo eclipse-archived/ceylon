@@ -1233,13 +1233,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     @Override
     public void complete(LazyMethod method) {
         MethodMirror meth = null;
-        String lookupName = Util.quoteIfJavaKeyword(method.getName());
+        String lookupName = method.getName();
         for(MethodMirror m : method.classMirror.getDirectMethods()){
             // We skip members marked with @Ignore
             if(m.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
                 continue;
             
-            if(m.getName().equals(lookupName)){
+            if(Util.strip(m.getName()).equals(lookupName)){
                 meth = m;
                 break;
             }
