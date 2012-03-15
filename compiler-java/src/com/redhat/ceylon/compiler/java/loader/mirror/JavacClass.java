@@ -120,8 +120,7 @@ public class JavacClass implements ClassMirror {
 
     @Override
     public String getSimpleName() {
-        // FIXME Using flatName() instead of just getSimpleName() is for anonymous classes, but do we need them?
-        return Util.getSimpleName(classSymbol.flatName().toString());
+        return classSymbol.getSimpleName().toString();
     }
 
     @Override

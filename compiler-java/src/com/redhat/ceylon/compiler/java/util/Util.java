@@ -237,11 +237,6 @@ public class Util {
 	    return prefix + name;
 	}
 
-    public static String getSimpleName(String name) {
-        name = name.replace('$', '.');
-        return name.substring(name.lastIndexOf('.') + 1);
-    }
-
     public static Declaration getTopmostRefinedDeclaration(Declaration decl){
         if(decl instanceof Parameter && decl.getContainer() instanceof Functional){
             // Parameters in a refined class, interface or method are not considered refinements themselves
