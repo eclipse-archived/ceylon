@@ -4,7 +4,11 @@ class MethodWhile {
     
     public final void m() {
         boolean cont = true;
-        while ((let boolean $ceylontmp0 = cont in $ceylontmp0)) {
+        while ((
+            let
+                boolean $ceylontmp0 = cont
+            returning $ceylontmp0
+        )) {
             cont = false;
         }
     }
@@ -12,7 +16,11 @@ class MethodWhile {
     public final void whileExists() {
         .ceylon.language.Boolean cont = .ceylon.language.Boolean.instance(true);
         .ceylon.language.Boolean $c$1;
-        while ((let boolean $ceylontmp3 = ($c$1 = cont) != null in $ceylontmp3)) {
+        while ((
+            let
+                boolean $ceylontmp3 = ($c$1 = cont) != null
+            returning $ceylontmp3
+        )) {
             final boolean $c$2 = $c$1.booleanValue();
             cont = null;
         }
@@ -21,7 +29,11 @@ class MethodWhile {
     public final void whileNonEmpty() {
         .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L));
         .ceylon.language.Iterable<? extends .ceylon.language.Integer> $s$4;
-        while ((let boolean $ceylontmp6 = ($s$4 = seq) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$s$4).getEmpty() in $ceylontmp6)) {
+        while ((
+            let
+                boolean $ceylontmp6 = ($s$4 = seq) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$s$4).getEmpty()
+            returning $ceylontmp6
+        )) {
             final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $s$5 = (.ceylon.language.Iterable<? extends .ceylon.language.Integer>)$s$4;
             seq = .ceylon.language.$empty.getEmpty();
         }
@@ -30,7 +42,11 @@ class MethodWhile {
     public final void whileIs() {
         .java.lang.Object int = .ceylon.language.Integer.instance(1L);
         .java.lang.Object $i$7;
-        while ((let boolean $ceylontmp9 = ($i$7 = int) instanceof .ceylon.language.Integer in $ceylontmp9)) {
+        while ((
+            let
+                boolean $ceylontmp9 = ($i$7 = int) instanceof .ceylon.language.Integer
+            returning $ceylontmp9
+        )) {
             final long $i$8 = ((.ceylon.language.Integer)$i$7).longValue();
             int = .ceylon.language.String.instance("");
         }

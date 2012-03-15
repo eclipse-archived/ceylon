@@ -35,8 +35,23 @@ final class bug261 {
             }
         }
         final Inner inner = new Inner();
-        inner.setVi((let Inner $ceylontmpopE0 = inner,long $ceylontmpopV1 = 2L in $ceylontmpopE0.setVj($ceylontmpopV1); $ceylontmpopV1));
-        vk = (let long $ceylontmpop2 = 2L in vl = $ceylontmpop2; $ceylontmpop2);
+        inner.setVi((
+            let
+                Inner $ceylontmpopE0 = inner,
+                long $ceylontmpopV1 = 2L
+            in {
+                $ceylontmpopE0.setVj($ceylontmpopV1);
+            }
+            returning $ceylontmpopV1
+        ));
+        vk = (
+            let
+                long $ceylontmpop2 = 2L
+            in {
+                vl = $ceylontmpop2;
+            }
+            returning $ceylontmpop2
+        );
     }
     
     public static void main(.java.lang.String[] args) {

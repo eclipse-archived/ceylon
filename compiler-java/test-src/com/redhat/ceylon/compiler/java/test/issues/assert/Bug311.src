@@ -25,7 +25,15 @@ final class m {
     }
     
     static void m() {
-        (let boolean $arg$0$0 = true,.java.lang.String $arg$0$1 = .com.redhat.ceylon.compiler.java.test.issues.$assert.$assert.assert$impl.assert$message($arg$0$0) in .com.redhat.ceylon.compiler.java.test.issues.$assert.$assert.$assert($arg$0$0, $arg$0$1); null);
+        (
+            let
+                boolean $arg$0$0 = true,
+                .java.lang.String $arg$0$1 = .com.redhat.ceylon.compiler.java.test.issues.$assert.$assert.assert$impl.assert$message($arg$0$0)
+            in {
+                .com.redhat.ceylon.compiler.java.test.issues.$assert.$assert.$assert($arg$0$0, $arg$0$1);
+            }
+            returning null
+        );
     }
     
     public static void main(.java.lang.String[] args) {

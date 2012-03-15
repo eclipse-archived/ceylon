@@ -21,8 +21,10 @@ package com.redhat.ceylon.compiler.java.test;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -311,8 +313,17 @@ public abstract class CompilerTest {
         Assert.assertTrue("Compilation failed", success);
 
         // now look at what we expected
-        String expectedSrc = normalizeLineEndings(readFile(new File(path, java))).trim();
+        File expectedSrcFile = new File(path, java);
+        String expectedSrc = normalizeLineEndings(readFile(expectedSrcFile)).trim();
         String compiledSrc = listener.compilerSrc.trim();
+        
+        // THIS IS FOR INTERNAL USE ONLY!!!
+        // Can be used to do batch updating of known correct tests
+        // Uncomment only when you know what you're doing!
+        //if (expectedSrc != null && compiledSrc != null && !expectedSrc.equals(compiledSrc)) {
+        //    writeFile(expectedSrcFile, compiledSrc);
+        //}
+        
         Assert.assertEquals("Source code differs", expectedSrc, compiledSrc);
     }
 
@@ -329,6 +340,20 @@ public abstract class CompilerTest {
                 reader.close();
             }
             return strbuf.toString();
+        }catch(IOException x){
+            throw new RuntimeException(x);
+        }
+    }
+
+    // THIS IS FOR INTERNAL USE ONLY!!!
+    private void writeFile(File file, String src) {
+        try{
+            Writer writer = new FileWriter(file);
+            try{
+                writer.write(src);
+            }finally{
+                writer.close();
+            }
         }catch(IOException x){
             throw new RuntimeException(x);
         }

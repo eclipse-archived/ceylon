@@ -4,7 +4,22 @@ class Bug406 {
     
     private final void test() {
         final .ceylon.language.Iterable<? extends .ceylon.language.String> full = new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world"));
-        final .ceylon.language.Iterable<? extends .ceylon.language.String> spread1 = (let .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$0 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)full in ; !$spreadTest$0.getEmpty() ? (let .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$1$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$0,int $spread$1$2 = (int)$spread$1$0.getSize(),.ceylon.language.String[] $spread$1$4 = new .ceylon.language.String[$spread$1$2] in for (int $index$2 = 0; $index$2 < $spread$1$2; $index$2++) $spread$1$4[$index$2] = .ceylon.language.String.instance($spread$1$0.item(.ceylon.language.Integer.instance($index$2)).getUppercased());; new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$1$4)) : .ceylon.language.$empty.getEmpty());
+        final .ceylon.language.Iterable<? extends .ceylon.language.String> spread1 = (
+            let
+                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$0 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)full
+            in {
+            }
+            returning !$spreadTest$0.getEmpty() ? (
+                let
+                    .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$1$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$0,
+                    int $spread$1$2 = (int)$spread$1$0.getSize(),
+                    .ceylon.language.String[] $spread$1$4 = new .ceylon.language.String[$spread$1$2]
+                in {
+                    for (int $index$2 = 0; $index$2 < $spread$1$2; $index$2++) $spread$1$4[$index$2] = .ceylon.language.String.instance($spread$1$0.item(.ceylon.language.Integer.instance($index$2)).getUppercased());
+                }
+                returning new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$1$4)
+            ) : .ceylon.language.$empty.getEmpty()
+        );
         .ceylon.language.String $s1s$3;
         if (($s1s$3 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String>)spread1).item(.ceylon.language.Integer.instance(0L))) != null) {
             final .java.lang.String $s1s$4 = $s1s$3.toString();

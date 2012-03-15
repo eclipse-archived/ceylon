@@ -59,20 +59,80 @@ public class LogicalOperators extends .com.redhat.ceylon.compiler.java.test.expr
         setB1(!getB2());
         setB1(true || getB2());
         setB1(false && getB2());
-        setB1((let boolean $ceylontmpop0 = getB1() || getB2() in setB1($ceylontmpop0); $ceylontmpop0));
-        setB1((let boolean $ceylontmpop1 = getB1() && getB2() in setB1($ceylontmpop1); $ceylontmpop1));
-        setB1((let .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators $ceylontmpopE2 = this,boolean $ceylontmpopV3 = $ceylontmpopE2.getB1() || this.getB2() in $ceylontmpopE2.setB1($ceylontmpopV3); $ceylontmpopV3));
-        setB1((let .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators $ceylontmpopE4 = this,boolean $ceylontmpopV5 = $ceylontmpopE4.getB1() && this.getB2() in $ceylontmpopE4.setB1($ceylontmpopV5); $ceylontmpopV5));
+        setB1((
+            let
+                boolean $ceylontmpop0 = getB1() || getB2()
+            in {
+                setB1($ceylontmpop0);
+            }
+            returning $ceylontmpop0
+        ));
+        setB1((
+            let
+                boolean $ceylontmpop1 = getB1() && getB2()
+            in {
+                setB1($ceylontmpop1);
+            }
+            returning $ceylontmpop1
+        ));
+        setB1((
+            let
+                .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators $ceylontmpopE2 = this,
+                boolean $ceylontmpopV3 = $ceylontmpopE2.getB1() || this.getB2()
+            in {
+                $ceylontmpopE2.setB1($ceylontmpopV3);
+            }
+            returning $ceylontmpopV3
+        ));
+        setB1((
+            let
+                .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators $ceylontmpopE4 = this,
+                boolean $ceylontmpopV5 = $ceylontmpopE4.getB1() && this.getB2()
+            in {
+                $ceylontmpopE4.setB1($ceylontmpopV5);
+            }
+            returning $ceylontmpopV5
+        ));
     }
     
     private final void logicalBoxed() {
         setBoxedB1(.ceylon.language.Boolean.instance(!getBoxedB2().booleanValue()));
         setBoxedB1(.ceylon.language.Boolean.instance(true || getBoxedB2().booleanValue()));
         setBoxedB1(.ceylon.language.Boolean.instance(false && getBoxedB2().booleanValue()));
-        setBoxedB1(.ceylon.language.Boolean.instance((let boolean $ceylontmpop6 = getBoxedB1().booleanValue() || getBoxedB2().booleanValue() in setBoxedB1(.ceylon.language.Boolean.instance($ceylontmpop6)); $ceylontmpop6)));
-        setBoxedB1(.ceylon.language.Boolean.instance((let boolean $ceylontmpop7 = getBoxedB1().booleanValue() && getBoxedB2().booleanValue() in setBoxedB1(.ceylon.language.Boolean.instance($ceylontmpop7)); $ceylontmpop7)));
-        setBoxedB1(.ceylon.language.Boolean.instance((let .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators $ceylontmpopE8 = this,boolean $ceylontmpopV9 = $ceylontmpopE8.getBoxedB1().booleanValue() || this.getBoxedB2().booleanValue() in $ceylontmpopE8.setBoxedB1(.ceylon.language.Boolean.instance($ceylontmpopV9)); $ceylontmpopV9)));
-        setBoxedB1(.ceylon.language.Boolean.instance((let .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators $ceylontmpopE10 = this,boolean $ceylontmpopV11 = $ceylontmpopE10.getBoxedB1().booleanValue() && this.getBoxedB2().booleanValue() in $ceylontmpopE10.setBoxedB1(.ceylon.language.Boolean.instance($ceylontmpopV11)); $ceylontmpopV11)));
+        setBoxedB1(.ceylon.language.Boolean.instance((
+            let
+                boolean $ceylontmpop6 = getBoxedB1().booleanValue() || getBoxedB2().booleanValue()
+            in {
+                setBoxedB1(.ceylon.language.Boolean.instance($ceylontmpop6));
+            }
+            returning $ceylontmpop6
+        )));
+        setBoxedB1(.ceylon.language.Boolean.instance((
+            let
+                boolean $ceylontmpop7 = getBoxedB1().booleanValue() && getBoxedB2().booleanValue()
+            in {
+                setBoxedB1(.ceylon.language.Boolean.instance($ceylontmpop7));
+            }
+            returning $ceylontmpop7
+        )));
+        setBoxedB1(.ceylon.language.Boolean.instance((
+            let
+                .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators $ceylontmpopE8 = this,
+                boolean $ceylontmpopV9 = $ceylontmpopE8.getBoxedB1().booleanValue() || this.getBoxedB2().booleanValue()
+            in {
+                $ceylontmpopE8.setBoxedB1(.ceylon.language.Boolean.instance($ceylontmpopV9));
+            }
+            returning $ceylontmpopV9
+        )));
+        setBoxedB1(.ceylon.language.Boolean.instance((
+            let
+                .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators $ceylontmpopE10 = this,
+                boolean $ceylontmpopV11 = $ceylontmpopE10.getBoxedB1().booleanValue() && this.getBoxedB2().booleanValue()
+            in {
+                $ceylontmpopE10.setBoxedB1(.ceylon.language.Boolean.instance($ceylontmpopV11));
+            }
+            returning $ceylontmpopV11
+        )));
     }
     
     public LogicalOperators() {

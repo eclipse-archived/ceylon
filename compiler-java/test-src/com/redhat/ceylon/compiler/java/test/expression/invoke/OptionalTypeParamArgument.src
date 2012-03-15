@@ -22,7 +22,15 @@ final class m {
         final .com.redhat.ceylon.compiler.java.test.expression.invoke.Foo<.java.lang.Object> f = new .com.redhat.ceylon.compiler.java.test.expression.invoke.Foo<.java.lang.Object>();
         final .java.lang.Object o = .ceylon.language.Integer.instance(1L);
         f.bar(o);
-        (let .com.redhat.ceylon.compiler.java.test.expression.invoke.Foo<.java.lang.Object> $arg$0$callable$ = f,.java.lang.Object $arg$0$0 = o in $arg$0$callable$.bar($arg$0$0); null);
+        (
+            let
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foo<.java.lang.Object> $arg$0$callable$ = f,
+                .java.lang.Object $arg$0$0 = o
+            in {
+                $arg$0$callable$.bar($arg$0$0);
+            }
+            returning null
+        );
     }
     
     public static void main(.java.lang.String[] args) {
