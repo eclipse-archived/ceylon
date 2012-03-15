@@ -4,9 +4,12 @@ shared abstract class Array<Element>()
                   FixedSized<Element> &
                   Cloneable<Array<Element>> &
                   Ranged<Integer, Array<Element>> {
-    
+
+    doc "Replaces the existing item at the specified index with
+         the specified element. Does nothing if the index is
+         negative or beyond the array size."
     shared formal void setItem(Integer index, Element? element);
-    
+
     shared actual Boolean equals(Object that) {
         //TODO: copy/pasted from List
         if (is List<Object> that) {
@@ -33,12 +36,12 @@ shared abstract class Array<Element>()
         }
         return false;
     }
-    
+
     shared actual Integer hash {
         //TODO: copy/pasted from List
         return size;
     }
-    
+
 }
 
 shared Array<Element> array<Element>(Element... elements) { throw; }
