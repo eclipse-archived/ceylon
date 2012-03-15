@@ -21,8 +21,7 @@ public final class arrayOfSome {
     @TypeInfo("ceylon.language.Array<Element>&Some<Element>")
     public static <Element> Array<? extends Element> arrayOfSome(
     @Name("elements")
-    @Sequenced
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    @TypeInfo("ceylon.language.Sequence<Element>")
     final ceylon.language.Iterable<? extends Element> elements) {
 		List<Element> list = new ArrayList<Element>();
 		java.lang.Object $tmp;
