@@ -46,6 +46,7 @@ import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
 
+import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.java.util.Util;
@@ -64,15 +65,25 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
     private Options options;
     private RepositoryManager repoManager;
     private RepositoryManager outputRepoManager;
-    private com.redhat.ceylon.cmr.api.Logger cmrLogger;
+    private Logger cmrLogger;
 
     public CeyloncFileManager(Context context, boolean register, Charset charset) {
         super(context, register, charset);
         options = Options.instance(context);
-        jarRepository = new JarOutputRepositoryManager(CeylonLog.instance(context), options, this);
-        cmrLogger = new JavacLogger(options, Log.instance(context));
     }
 
+    private Logger getLogger(){
+        if(cmrLogger == null)
+            cmrLogger = new JavacLogger(options, Log.instance(context));
+        return cmrLogger;
+    }
+    
+    private JarOutputRepositoryManager getJarRepository(){
+        if(jarRepository == null)
+            jarRepository = new JarOutputRepositoryManager(CeylonLog.instance(context), options, this);
+        return jarRepository;
+    }
+    
     public Context getContext() {
         return context;
     }
@@ -152,7 +163,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
             if (sibling != null && sibling instanceof RegularFileObject) {
                 siblingFile = ((RegularFileObject)sibling).getUnderlyingFile();
             }
-            return jarRepository.getFileObject(getOutputRepositoryManager(), currentModule, fileName, siblingFile);
+            return getJarRepository().getFileObject(getOutputRepositoryManager(), currentModule, fileName, siblingFile);
         }else
             return super.getFileForOutput(location, fileName, sibling);
     }
@@ -198,7 +209,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
     @Override
     public void flush() {
         super.flush();
-        jarRepository.flush();
+        getJarRepository().flush();
     }
     
     public void setModule(Module module) {
@@ -216,7 +227,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         String outRepo = getOutputRepoOption();
         if(!userRepos.contains(outRepo))
             userRepos.add(outRepo);
-        repoManager = Util.makeRepositoryManager(userRepos, cmrLogger);
+        repoManager = Util.makeRepositoryManager(userRepos, getLogger());
         return repoManager;
     }
 
@@ -232,7 +243,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         String user = options.get(OptionName.CEYLONUSER);
         String password = options.get(OptionName.CEYLONPASS);
         
-        outputRepoManager = Util.makeOutputRepositoryManager(outRepo, cmrLogger, user, password);
+        outputRepoManager = Util.makeOutputRepositoryManager(outRepo, getLogger(), user, password);
         return outputRepoManager;
     }
 
