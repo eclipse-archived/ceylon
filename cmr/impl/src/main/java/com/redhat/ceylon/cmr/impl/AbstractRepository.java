@@ -44,7 +44,7 @@ public abstract class AbstractRepository implements Repository {
         final List<String> tokens = new ArrayList<String>();
         tokens.addAll(Arrays.asList(name.split("\\.")));
         final String version = context.getVersion();
-        if (RepositoryManager.DEFAULT_MODULE.equals(name) == false)
+        if (RepositoryManager.DEFAULT_MODULE.equals(name) == false && version != null)
             tokens.add(version); // add version
         return tokens;
     }
