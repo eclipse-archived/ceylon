@@ -52,7 +52,7 @@ public class JavacLogger implements Logger {
     @Override
     public void debug(String str) {
         if(debugEnabled)
-            log.printLines(log.errWriter, str);
+            log.printLines(log.errWriter, "["+str+"]");
     }
 
 }

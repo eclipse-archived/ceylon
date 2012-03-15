@@ -474,7 +474,7 @@ public class Util {
             String protocol = url.getProtocol();
             return "http".equals(protocol) || "https".equals(protocol);
         } catch (MalformedURLException e) {
-            log.debug("[Invalid repo URL: "+repo+" (assuming file)]");
+            log.debug("Invalid repo URL: "+repo+" (assuming file)");
             return false;
         }
     }
