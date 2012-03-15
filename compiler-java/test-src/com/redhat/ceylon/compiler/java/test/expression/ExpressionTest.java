@@ -595,10 +595,12 @@ public class ExpressionTest extends CompilerTest {
     public void testOprSpread(){
         compareWithJavaSource("operator/Spread");
     }
+    @Ignore("M3")
     @Test
     public void testOprSpreadMethodReference(){
         compareWithJavaSource("operator/SpreadMethodReference");
     }
+    @Ignore("M3")
     @Test
     public void testOprNullSafeMethodReference(){
         compareWithJavaSource("operator/NullSafeMethodReference");

@@ -52,6 +52,7 @@ import javax.tools.ToolProvider;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
@@ -137,6 +138,7 @@ public class CMRTest extends CompilerTest {
         car.close();
     }
 
+    @Ignore("M3")
     @Test
     public void testMdlCarWithInvalidSHA1() throws IOException{
         compile("module/single/module.ceylon");
@@ -186,6 +188,7 @@ public class CMRTest extends CompilerTest {
         car.close();
     }
 
+    @Ignore("M3")
     @Test
     public void testMdlInterdepModule(){
         // first compile it all from source
