@@ -599,6 +599,10 @@ public class ExpressionTest extends CompilerTest {
     public void testOprSpreadMethodReference(){
         compareWithJavaSource("operator/SpreadMethodReference");
     }
+    @Test
+    public void testOprNullSafeMethodReference(){
+        compareWithJavaSource("operator/NullSafeMethodReference");
+    }
     
     @Test
     public void testStpStringTemplate(){
