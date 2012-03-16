@@ -13,12 +13,14 @@ void callables() {
   assert(testCallable("Hello".initial)=="H", "higher-class 1");
   value ini1 = "Hello".initial;
   assert(testCallable(ini1)=="H", "higher-class 2");
+  /*
   value ini2 = seq[].initial;
   function ini3(Integer i) = ini2;
   String[] ini4(Integer i) = seq[].initial;
   assert(ini3(1) == {"H", "W"}, "higher-class 3 (ceylon-js #53)");
   assert(ini4(1) == {"H", "W"}, "higher-class 4 (ceylon-js #53)");
   assert("Callable" in className(ini2), "Spread Callable className");
+  */
   function ini5(Integer i) = TestCallable("Some string").something;
   assert(ini5(4) == "Some", "higher-class 5");
   assert(testCallable(TestCallable("Moar").something) == "M", "higher-class 6");
