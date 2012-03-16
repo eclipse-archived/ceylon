@@ -1,12 +1,17 @@
-shared interface Set<out Element> 
+doc "A collection of unique elements."
+shared interface Set<out Element>
         satisfies Collection<Element> &
                   Cloneable<Set<Element>>
         given Element satisfies Object {
-    
+
+    doc "Returns 1 if the element is part of this Set, 0 otherwise."
     shared actual default Integer count(Object element) {
         return contains(element) then 1 else 0;
     }
-    
+
+    doc "Determines if this Set is a superset of the specified Set,
+         that is, if this Set contains all of the elements in the
+         specified Set."
     shared default Boolean superset(Set<Object> set) {
         for (element in set) {
             if (!contains(element)) {
@@ -17,7 +22,10 @@ shared interface Set<out Element>
             return true;
         }
     }
-    
+
+    doc "Determines if this Set is a subset of the specified Set,
+         that is, if the specified Set contains all of the
+         elements in this Set."
     shared default Boolean subset(Set<Object> set) {
         for (element in this) {
             if (!set.contains(element)) {
@@ -28,7 +36,9 @@ shared interface Set<out Element>
             return true;
         }
     }
-    
+
+    doc "Two Sets are considered equal if they have the same size
+         and all its elements are equal."
     shared actual default Boolean equals(Object that) {
         if (is Set<Object> that) {
             if (that.size==size) {
@@ -44,21 +54,29 @@ shared interface Set<out Element>
         }
         return false;
     }
-    
+
     shared actual default Integer hash {
         return size;
-    } 
-    
-    shared formal Set<Element|Other> union<Other>(Set<Other> set) 
+    }
+
+    doc "Returns a new Set containing all the elements of this Set
+         and all the elements of the specified Set."
+    shared formal Set<Element|Other> union<Other>(Set<Other> set)
             given Other satisfies Object;
-    
-    shared formal Set<Element&Other> intersection<Other>(Set<Other> set) 
+
+    doc "Returns a new Set containing only the elements contained
+         both in this Set and the specified Set."
+    shared formal Set<Element&Other> intersection<Other>(Set<Other> set)
             given Other satisfies Object;
-    
-    shared formal Set<Element|Other> exclusiveUnion<Other>(Set<Other> set) 
+
+    doc "Returns a new Set containing only the elements contained in
+         this Set or the specified Set, but not both."
+    shared formal Set<Element|Other> exclusiveUnion<Other>(Set<Other> set)
             given Other satisfies Object;
-    
-    shared formal Set<Element> complement<Other>(Set<Other> set) 
+
+    doc "Returns a new set containing all the elements in the specified Set
+         that are not contained in this Set."
+    shared formal Set<Element> complement<Other>(Set<Other> set)
             given Other satisfies Object;
 
 }
