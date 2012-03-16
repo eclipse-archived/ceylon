@@ -221,9 +221,9 @@ void types() {
     Object pairObj = pair;
     assert(is TypesPair<Object, Object> pairObj, "pair type");
     //assert(is TypesPair<String, String> pairObj, "pair type");
-    value zero = TypesComplex(0.0, 0.0);
-    assert(zero.string=="0+0i", "complex.string");
-    assert(zero.pairString=="(0, 0)", "zero.pairString");
+    value almostZero = TypesComplex(0.1, 0.1);
+    assert(almostZero.string=="0.1+0.1i", "complex.string: expected '0.1+0.1i' got " almostZero.string "");
+    assert(almostZero.pairString=="(0.1, 0.1)", "complex.pairString: expected (0.1, 0.1) got " almostZero.pairString "");
     assert(ConcreteTypesList().empty, "concreteList.empty");
     testJsIssue9();
 
