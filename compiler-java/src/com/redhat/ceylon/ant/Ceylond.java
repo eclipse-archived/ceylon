@@ -51,6 +51,22 @@ public class Ceylond extends Task {
     private File executable;
     private boolean includeNonShared;
     private boolean includeSourceCode;
+    private String user;
+    private String pass;
+
+    /**
+     * Sets the user name for the output module repository (HTTP only)
+     */
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    /**
+     * Sets the password for the output module repository (HTTP only)
+     */
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
 
     /**
      * Include even non-shared declarations
@@ -138,6 +154,14 @@ public class Ceylond extends Task {
     private void document() {
         Commandline cmd = new Commandline();
         cmd.setExecutable(getCeylond());
+        if(user != null){
+            cmd.createArgument().setValue("-user");
+            cmd.createArgument().setValue(user);
+        }
+        if(pass != null){
+            cmd.createArgument().setValue("-pass");
+            cmd.createArgument().setValue(pass);
+        }
         if(out != null){
             cmd.createArgument().setValue("-out");
             cmd.createArgument().setValue(out.getAbsolutePath());

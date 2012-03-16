@@ -58,6 +58,22 @@ public class Ceylonc extends Task {
     private List<Module> modules = new LinkedList<Module>();
     private FileSet files;
     private Boolean verbose;
+    private String user;
+    private String pass;
+
+    /**
+     * Sets the user name for the output module repository (HTTP only)
+     */
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    /**
+     * Sets the password for the output module repository (HTTP only)
+     */
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
 
     public void setVerbose(Boolean verbose){
         this.verbose = verbose;
@@ -248,6 +264,14 @@ public class Ceylonc extends Task {
         cmd.setExecutable(getCompiler());
         if(verbose != null && verbose.booleanValue()){
             cmd.createArgument().setValue("-verbose");
+        }
+        if(user != null){
+            cmd.createArgument().setValue("-user");
+            cmd.createArgument().setValue(user);
+        }
+        if(pass != null){
+            cmd.createArgument().setValue("-pass");
+            cmd.createArgument().setValue(pass);
         }
         if(out != null){
             cmd.createArgument().setValue("-out");
