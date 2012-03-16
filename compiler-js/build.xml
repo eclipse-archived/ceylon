@@ -17,7 +17,7 @@
     <property name="jscompiler.jar" value="jscompiler-${module.jscompiler.version}.jar" />
     <property name="jscompiler.lib" location="${build.lib}/${jscompiler.jar}" />
     <property name="jslangfile" value="ceylon.language.js" />
-    <property name="jslangpath" value="ceylon/language/0.1" />
+    <property name="jslangpath" value="ceylon/language/${module.jscompiler.version}" />
     <property name="jslangmodule" value="${jslangpath}/${jslangfile}" />
 	
     <tstamp />
