@@ -43,7 +43,7 @@ public class Main {
         
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
-            int argsLeft = arg.length() - 1 - i;
+            int argsLeft = args.length - 1 - i;
             if ("-h".equals(arg)
                     || "-help".equals(arg)
                     || "--help".equals(arg)) {
