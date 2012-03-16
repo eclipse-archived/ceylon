@@ -284,6 +284,9 @@ String$proto.join = function(strings) {
     return String$(result, isNaN(len)?undefined:len);
 }
 String$proto.split = function(seps, discard) {
+    if (this.getEmpty() === $true) {
+        return Singleton(this);
+    }
     var sepChars = $WS;
     if (seps!==undefined && seps!==null) {
         sepChars = {}
