@@ -8,7 +8,8 @@ The language is elegant, highly readable, extremely typesafe, and makes it easy 
 get things done. And it's easy to learn for programmers who are familiar with 
 mainstream languages used in business computing. Ceylon has a full-featured 
 Eclipse-based development environment, allowing developers to take best advantage 
-of the powerful static type system. Programs written in Ceylon execute on any JVM.
+of the powerful static type system. Programs written in Ceylon execute on any 
+Java 6 compatible JVM.
 
 Read more about Ceylon at <http://ceylon-lang.org>.
 
@@ -63,7 +64,8 @@ To see a list of command line options, type one of:
 
 ## Ant tasks for Ceylon
 
-We include support for Ceylon ant tasks which are documented in `README-ANT.md`.
+We include support for Ceylon ant tasks which are documented on
+at <http://ceylon-lang.org/documentation/1.0/reference/tool/ant/>.
 
 ## Source code
 
@@ -77,8 +79,9 @@ Bugs and suggestions may be reported in GitHub's issue tracker.
 
 ## Systems where Ceylon is known to work
 
-Since Ceylon is running on the JVM it should work on every platform where the JVM
-is supported. However we have tested the following platforms to make sure it works:
+Since Ceylon is running on the JVM it should work on every platform that 
+supports a Java 6 compatible JVM. However we have tested the following 
+platforms to make sure it works:
 
 ### Linux
 
