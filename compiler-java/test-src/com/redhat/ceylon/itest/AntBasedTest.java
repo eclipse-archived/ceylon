@@ -76,7 +76,14 @@ public abstract class AntBasedTest {
         originalBuildfile = new File(buildfileResource);
         String antHome = System.getProperty("ant.home");
         if (antHome == null) {
-            throw new Exception("ant.home not set, cannot run ant integration tests");
+            throw new Exception("ant.home not set, cannot run ant integration tests\n"
+                    +"Find the path to you ant binary: `which ant` (mine is /usr/bin/ant)\n"
+                    +"Check that it's not a symlink: `ls -lsa /usr/bin/ant` (mine points to /usr/share/ant/bin/ant)\n"
+                    +"Remove 'bin/ant' from the end (mine is /usr/share/ant)\n"
+                    +"Set it in Eclipse's Ant run configuration for these tests: \n"
+                    +" Right-click on AntBasedTest.java > Run as > Run configurations...\n"
+                    +" Arguments > VM Arguments: -Dant.home=/usr/share/ant");
+
         }
         File[] antJars = new File(antHome, "lib").listFiles(new FileFilter() {
             
