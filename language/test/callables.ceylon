@@ -25,6 +25,6 @@ void callables() {
   assert(ini5(4) == "Some", "higher-class 5");
   assert(testCallable(TestCallable("Moar").something) == "M", "higher-class 6");
   value tc = TestCallable("Less").something;
-  assert("Callable" in className(tc), "Callable classname");
+  assert("callable" in className(tc).lowercased, "Callable classname");
   assert(testCallable(tc) == "L", "higher-class 7");
 }
