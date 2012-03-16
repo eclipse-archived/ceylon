@@ -35,7 +35,8 @@ jQuery(function(){
    }, 10);
   }
  }catch(error){
-	 if(error instanceof ReferenceError){
+	 if(error instanceof ReferenceError
+			 || error instanceof TypeError){
 		 // ignore this one
 	 } else
 		 throw error;

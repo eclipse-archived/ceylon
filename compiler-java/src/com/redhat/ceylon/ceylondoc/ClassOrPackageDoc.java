@@ -95,8 +95,9 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     }
     
     protected void doc(MethodOrValue d) throws IOException {
-        open("tr class='TableRowColor' id='" + d.getName() + "'");
-        open("td", "code");
+        open("tr class='TableRowColor'");
+        // put the id on the td because IE8 doesn't support id attributes on tr (yeah right) 
+        open("td id='" + d.getName() + "'", "code");
         writeIcon(d);
         around("span class='modifiers'", getModifiers(d));
         write(" ");
