@@ -1,26 +1,32 @@
+doc "An iterator which always returns `exhausted`."
 object emptyIterator satisfies Iterator<Bottom> {
     shared actual Finished next() {
         return exhausted;
     }
 }
 
-shared interface None<out Element> 
+doc "A fixed-size collection with no elements."
+shared interface None<out Element>
         satisfies FixedSized<Element> {
-    
+
+    doc "Returns `null`."
     shared actual Nothing first {
         return null;
     }
-    
+
+    doc "Returns an emptyIterator."
     shared actual default Iterator<Element> iterator {
         return emptyIterator;
     }
-    
-    shared actual default Integer size { 
-        return 0; 
+
+    doc "Returns 0."
+    shared actual default Integer size {
+        return 0;
     }
-    
-    shared actual Boolean empty { 
-        return true; 
+
+    doc "Returns `true`."
+    shared actual Boolean empty {
+        return true;
     }
-    
+
 }

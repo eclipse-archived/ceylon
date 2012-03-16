@@ -1,3 +1,4 @@
+doc "A fixed-size array of elements which may or may not be empty."
 shared abstract class Array<Element>() 
         extends Object()
         satisfies List<Element> & 
@@ -44,6 +45,11 @@ shared abstract class Array<Element>()
 
 }
 
+doc "Creates and returns an array containing the specified elements.
+     If called without any arguments, returns an empty array."
 shared Array<Element> array<Element>(Element... elements) { throw; }
+doc "Returns an empty array."
 shared Array<Element>&None<Element> arrayOfNone<Element>() { throw; }
+doc "Returns an array with the elements in the sequence.
+     This array can never be empty."
 shared Array<Element>&Some<Element> arrayOfSome<Element>(Sequence<Element> elements) { throw; }
