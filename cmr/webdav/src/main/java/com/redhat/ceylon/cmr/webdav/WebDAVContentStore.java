@@ -19,6 +19,7 @@ package com.redhat.ceylon.cmr.webdav;
 import com.googlecode.sardine.DavResource;
 import com.googlecode.sardine.Sardine;
 import com.googlecode.sardine.SardineFactory;
+import com.googlecode.sardine.impl.SardineException;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.impl.URLContentStore;
@@ -86,17 +87,22 @@ public class WebDAVContentStore extends URLContentStore {
     public ContentHandle putContent(Node node, InputStream stream, ContentOptions options) throws IOException {
         final Sardine s = getSardine();
 
-        final Node parent = NodeUtils.firstParent(node);
-        mkdirs(s, parent);
-
-        final String pUrl = getUrlAsString(parent);
-        final String token = s.lock(pUrl); // local parent
-        try {
-            final String url = getUrlAsString(node);
-            s.put(url, stream);
-            return new WebDAVContentHandle(url);
-        } finally {
-            s.unlock(pUrl, token);
+        try{
+            final Node parent = NodeUtils.firstParent(node);
+            mkdirs(s, parent);
+            
+            final String pUrl = getUrlAsString(parent);
+            final String token = s.lock(pUrl); // local parent
+            try {
+                final String url = getUrlAsString(node);
+                s.put(url, stream);
+                return new WebDAVContentHandle(url);
+            } finally {
+                s.unlock(pUrl, token);
+            }
+        }catch(SardineException x){
+            // hide this from callers because its getMessage() is borked
+            throw new IOException(x.getMessage()+": "+x.getResponsePhrase()+" "+x.getStatusCode());
         }
     }
 
