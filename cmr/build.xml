@@ -43,6 +43,7 @@
     <path id="compiler.classpath">
         <pathelement path="${jandex.lib}"/>
         <pathelement path="${sardine.lib}"/>
+        <pathelement path="${httpclient.lib}"/>
     </path>
 
     <path id="test.build.classpath">
@@ -59,6 +60,7 @@
         <pathelement path="${httpcore.lib}"/>
         <pathelement path="${commons-logging.lib}"/>
         <pathelement path="${slf4j.lib}"/>
+        <pathelement path="${slf4j.simple}"/>
     </path>
 
     <!-- ################################################################## -->
