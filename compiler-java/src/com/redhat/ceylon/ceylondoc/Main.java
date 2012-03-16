@@ -166,21 +166,23 @@ public class Main {
         System.err.print(
                 "Usage: ceylond [options...] moduleName[/version]... :\n"
                 +"where possible options include:\n"
-                +"  -out <path>:  Output module repository (default: 'modules')\n"
-                +"  -src <path>:  Source path (default: 'source')\n"
-                +"                You can set this option multiple times\n"
-                +"  -rep <path>:  Module repository\n"
-                +"                You can set this option multiple times\n"
-                +"                Default:\n"
+                +"  -src <directory>:    Path to source files (default: './source')\n"
+                +"                       Can be specified multiple times\n"
+                +"  -out <url>:          Output module repository (default: './modules')\n"
+                +"  -rep <url>:          Module repository\n"
+                +"                       Can be specified multiple times\n"
+                +"                       Default:\n"
         );
         for(String repo : defaultRepositories)
-            System.err.println("                "+repo);
+            System.err.println("                        "+repo);
         System.err.print(
-                 "  -non-shared:  Document non-shared declarations\n"
-                +"  -source-code: Include the source code\n"
-                +"  -d:           Not supported yet\n"
-                +"  -help:        Prints help usage\n"
-                +"  -version:     Prints version number\n"
+                 "  -non-shared:         Document non-shared declarations\n"
+                +"  -source-code:        Include the source code\n"
+                +"  -user <value>:       User name for output repository (HTTP only)\n"
+                +"  -pass <value>:       Password for output repository (HTTP only)\n"
+                +"  -d:                  Not supported yet\n"
+                +"  -help:               Prints help usage\n"
+                +"  -version:            Prints version number\n"
         );
         exit(statusCode);
     }

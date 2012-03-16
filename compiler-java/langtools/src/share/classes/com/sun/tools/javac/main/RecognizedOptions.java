@@ -358,7 +358,7 @@ public class RecognizedOptions {
                 return super.process(options, "-classpath", arg);
             }
         },
-        new COption(CEYLONREPO,             "opt.arg.path",      "opt.ceylonrepo"){
+        new COption(CEYLONREPO,             "opt.arg.url",      "opt.ceylonrepo"){
             @Override
             public boolean process(Options options, String option, String arg) {
                 if(options != null)
@@ -366,10 +366,10 @@ public class RecognizedOptions {
                 return false;
             }
         },
-        new Option(CEYLONUSER,             "opt.arg.path",      "opt.ceylonuser"),
-        new Option(CEYLONPASS,             "opt.arg.path",      "opt.ceylonpass"),
-        new Option(SOURCEPATH,             "opt.arg.path",      "opt.sourcepath"),
-        new COption(CEYLONSOURCEPATH,       "opt.arg.path",      "opt.ceylonsourcepath"){
+        new COption(CEYLONUSER,             "opt.arg.value",     "opt.ceylonuser"),
+        new COption(CEYLONPASS,             "opt.arg.value",     "opt.ceylonpass"),
+        new Option(SOURCEPATH,              "opt.arg.path",      "opt.sourcepath"),
+        new COption(CEYLONSOURCEPATH,       "opt.arg.directory", "opt.ceylonsourcepath"){
             @Override
             public boolean process(Options options, String option, String arg) {
                 return super.process(options, "-sourcepath", arg);
@@ -421,7 +421,7 @@ public class RecognizedOptions {
         new Option(PROCESSOR,           "opt.arg.class.list",   "opt.processor"),
         new Option(PROCESSORPATH,       "opt.arg.path",         "opt.processorpath"),
         new Option(D,                   "opt.arg.directory",    "opt.d"),
-        new COption(CEYLONOUT,           "opt.arg.directory",    "opt.ceylonout"){
+        new COption(CEYLONOUT,           "opt.arg.url",         "opt.ceylonout"){
             @Override
             public boolean process(Options options, String option, String arg) {
                 return super.process(options, "-d", arg);
