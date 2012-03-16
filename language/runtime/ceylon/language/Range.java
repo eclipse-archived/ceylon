@@ -240,22 +240,15 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     public ceylon.language.List<? extends Element> segment(
     		@Name("from") final Integer from, 
     		@Name("length") final Integer length) {
-    	long fromIndex = from.longValue();
-		long resultLength = length.longValue();
-		if (fromIndex>getLastIndex().longValue()||resultLength==0) 
-    		return $empty.getEmpty();
-    	long len = getSize();
-		if (fromIndex+resultLength>len) 
-			    resultLength = len-fromIndex;
-    	Element begin = first;
-    	for (int i=0; i<fromIndex; i++) {
-    		begin = begin.getSuccessor();
-    	}
-    	Element end = begin;
-    	for (int i=0; i<resultLength-1; i++) {
-    		end = end.getSuccessor();
-    	}
-    	return new Range<Element>(begin, end);
+        //only positive length for now
+        if (length.compare(Integer.instance(0)) != larger.getLarger()) return $empty.getEmpty();
+        if (!defines(from)) return $empty.getEmpty();
+        Element x = this.first;
+        for (int i=0; i < from.longValue(); i++) { x = this.next(x); }
+        Element y = x;
+        for (int i=1; i < length.longValue(); i++) { y = this.next(y); }
+        if (!includes(y)) { y = this.last; }
+        return new Range<Element>(x, y);
     }
     
     @Override
@@ -264,20 +257,23 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     		@Name("from") final Integer from,
     		@TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     		@Name("to") final Integer to) {
-		long lastIndex = getLastIndex().longValue();
-    	long fromIndex = from.longValue();
-		long toIndex = to==null ? lastIndex : to.longValue();
-		if (fromIndex>lastIndex||toIndex<fromIndex) 
-    		return $empty.getEmpty();
-    	Element begin = first;
-    	for (int i=0; i<fromIndex; i++) {
-    		begin = begin.getSuccessor();
-    	}
-    	Element end = first;
-    	for (int i=0; i<toIndex; i++) {
-    		end = end.getSuccessor();
-    	}
-    	return new Range<Element>(begin, end);
+    	Integer fromIndex = largest.largest(Integer.instance(0), from);
+        Integer toIndex = to==null ? getLastIndex() : to;
+    	if (!defines(fromIndex)) {
+            //If it's an inverse range, adjust the "from" (upper bound)
+            if (fromIndex.compare(toIndex) == larger.getLarger() && defines(toIndex)) {
+                //Decrease the upper bound
+                while (!defines(fromIndex)) {
+                    fromIndex = fromIndex.getPredecessor();
+                }
+            } else {
+                return $empty.getEmpty();
+            }
+        } else while (!defines(toIndex)) {
+            //decrease the upper bound
+            toIndex = toIndex.getPredecessor();
+        }
+        return new Range<Element>(this.item(fromIndex), this.item(toIndex));
     }
     
     public Sequence<? extends Element> by(
