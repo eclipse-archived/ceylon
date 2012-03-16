@@ -141,7 +141,7 @@ Range<Integer> range {
     assert(r2r.size==r2.size-1, "range.rest.size 2");
     assert(r1r.first?0 == r1.item(1)?1, "range.rest.first 1");
     assert(r2r.first?0 == r2.item(1)?1, "range.rest.first 2");
-    assert(nonempty r4.rest, "nonempty range.rest");
+    assert(!nonempty r4.rest, "nonempty range.rest");
     assert(r1.lastIndex==4, "range.lastIndex 1");
     assert(r2.lastIndex==3, "range.lastIndex 2");
     assert(r1.by(2).string=="{ 1, 3, 5 }", "range.by 1");
