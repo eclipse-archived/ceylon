@@ -422,7 +422,7 @@ public final class String
             @Defaulted
             @Name("discardSeparators") boolean discardSeparators) {
         if (value.isEmpty()) {
-            return new Tokens(value,null,false);
+            return new Singleton<String>(this);
         }
         java.lang.String delims;
         if (separators==null) {
@@ -455,20 +455,6 @@ public final class String
 
         @Override
         public Iterator<? extends String> getIterator() {
-            class EmptyStringIterator implements Iterator<String> {
-                private boolean done = false;
-                @Override
-                public java.lang.Object next() {
-                    java.lang.Object result = done?exhausted.getExhausted():String.instance("");
-                    done=true;
-                    return result;
-                }
-                @Override
-                public java.lang.String toString() {
-                    return "EmptyStringIterator";
-                }
-            };
-
             class TokenIterator implements Iterator<String> {
                 private final StringTokenizer tokens;
 
@@ -488,7 +474,7 @@ public final class String
                 }
             }
             
-            return str.isEmpty()?new EmptyStringIterator():new TokenIterator(new StringTokenizer(str, delims, keepSeparators));
+            return new TokenIterator(new StringTokenizer(str, delims, keepSeparators));
         }
 
         @Override
