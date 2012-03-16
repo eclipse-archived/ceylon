@@ -11,7 +11,13 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT))
 public interface Collection<Element> 
         extends Iterable<Element>, Sized, Category,
-                Cloneable<Collection<Element>> {
+                Cloneable<Collection<? extends Element>> {
+    
+    @Override
+    public boolean getEmpty();
+
+    @Override
+    public boolean contains(@Name("element") java.lang.Object element);
     
     public long count(@Name("element") java.lang.Object element);
     

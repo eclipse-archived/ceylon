@@ -33,7 +33,7 @@ public interface Correspondence<Key,Item> {
     Iterable<? extends Key> keys);
 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
-    public List<? extends Item> items(@Sequenced @Name("keys") 
+    public Iterable<? extends Item> items(@Sequenced @Name("keys") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
     Iterable<? extends Key> keys);
 

@@ -2,6 +2,7 @@ package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -16,9 +17,25 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
                  "ceylon.language.Correspondence<ceylon.language.Object,Item>",
                  "ceylon.language.Cloneable<ceylon.language.Map<Key,Item>>"})
 public interface Map<Key,Item> 
-        extends Correspondence<java.lang.Object,Item>, 
-                Collection<Entry<Key,Item>> {
-	
+        extends Correspondence<java.lang.Object, Item>, 
+                Collection<Entry<? extends Key,? extends Item>> {
+
+    @Override
+    public long count(@Name("element") java.lang.Object element);
+    
+    @Override
+    public boolean equals(@Name("that") java.lang.Object that);
+    
+    @Override
+    public int hashCode();
+    
+    @Override
+    public Set<? extends Key> getKeys();
+    
+    public Collection<? extends Item> getValues();
+    
+    public Map<? extends Item, ? extends Set<? extends Key>> getInverse();
+    
     @Ignore
     public static final class Map$impl {
         public static <Key,Item> long count(final Map<Key,Item> $this, java.lang.Object element) {
@@ -41,7 +58,7 @@ public interface Map<Key,Item>
         		Map other = (Map) that;
         		if (other.getSize()==$this.getSize()) {
                     java.lang.Object elem;
-                    for (ceylon.language.Iterator<? extends Entry<Key,Item>> iter = $this.getIterator(); 
+                    for (ceylon.language.Iterator<? extends Entry<? extends Key,? extends Item>> iter = $this.getIterator(); 
                     		!((elem = iter.next()) instanceof Finished);) {
                     	Entry<Key,Item> entry = (Entry<Key,Item>) elem;
                     	java.lang.Object y = other.item(entry.getKey());
