@@ -25,6 +25,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
@@ -200,5 +201,11 @@ public class IssuesTest extends CompilerTest {
     public void testBug407(){
         // make sure we don't get an NPE error
         assertErrors("Bug407", new CompilerError(25, "specified expression must be assignable to declared type: Set<Map<String,Integer>.Entry<String,Integer>> is not assignable to Iterable<unknown>"));
+    }
+
+    @Ignore("M3")
+    @Test
+    public void testBug441(){
+        compareWithJavaSource("Bug441");
     }
 }
