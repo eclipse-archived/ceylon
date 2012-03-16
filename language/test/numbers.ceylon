@@ -169,9 +169,9 @@ shared void numbers() {
     assert((+0).hash==(-1+(+1))*+100.hash, "integer hash");
     assert((2.2*2.2*2.2).hash==(2.2**3.0).hash, "float hash");
     
-    assert(1.6.integer==2, "1.6.integer is " 1.6.integer " instead of 2");
+    assert(1.6.integer==1, "1.6.integer is " 1.6.integer " instead of 2");
     assert(1.1.integer==1, "1.1.integer is " 1.1.integer " instead of 1");
-    assert((-1.6).integer==-2, "(-1.6).integer is " (-1.6).integer " instead of -2");
+    assert((-1.6).integer==-1, "(-1.6).integer is " (-1.6).integer " instead of -2");
     assert((-1.1).integer==-1, "(-1.1).integer is " (-1.1).integer " instead of -1");
     assert(2.float==2.0, "natural float");
     assert((-3).float==-3.0, "integer float");
