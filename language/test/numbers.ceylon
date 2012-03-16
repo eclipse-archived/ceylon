@@ -169,10 +169,10 @@ shared void numbers() {
     assert((+0).hash==(-1+(+1))*+100.hash, "integer hash");
     assert((2.2*2.2*2.2).hash==(2.2**3.0).hash, "float hash");
     
-    assert(1.6.integer==2, "float natural");
-    assert(1.1.integer==1, "float natural");
-    assert((-1.6).integer==-2, "float integer");
-    assert((-1.1).integer==-1, "float integer");
+    assert(1.6.integer==2, "float natural 1");
+    assert(1.1.integer==1, "float natural 2");
+    assert((-1.6).integer==-2, "float integer 1");
+    assert((-1.1).integer==-1, "float integer 2");
     assert(2.float==2.0, "natural float");
     assert((-3).float==-3.0, "integer float");
     assert(4.integer==+4, "natural integer");
