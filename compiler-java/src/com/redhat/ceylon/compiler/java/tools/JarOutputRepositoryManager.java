@@ -74,22 +74,17 @@ public class JarOutputRepositoryManager {
         return jarFile;
     }
 
-    public void flush(){
-        for(ProgressiveJar jarFile : openJars.values()){
-            flush(jarFile);
+    public void flush() throws IOException {
+        try{
+            for(ProgressiveJar jarFile : openJars.values()){
+                jarFile.close();
+            }
+        }finally{
+            // make sure we clear on return and throw, so we don't try to flush again on throw
+            openJars.clear();
         }
-        openJars.clear();
     }
     
-    private void flush(ProgressiveJar jarFile) {
-        try {
-            jarFile.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
     static class ProgressiveJar {
         private static final String MAPPING_FILE = "META-INF/mapping.txt";
         private File originalJarFile;
@@ -269,14 +264,21 @@ public class JarOutputRepositoryManager {
                 Log.printLines(log.noticeWriter, "[done writing to jar: "+outputFile.getPath()+"]");
             }
             File sha1File = ShaSigner.sign(outputFile, log, options);
-            context.setForceOperation(true);
-            repoManager.putArtifact(context, outputFile);
-            ArtifactContext sha1Context = context.getSha1Context();
-            sha1Context.setForceOperation(true);
-            repoManager.putArtifact(sha1Context, sha1File);
-            // now cleanup
-            outputFile.delete();
-            sha1File.delete();
+            try{
+                context.setForceOperation(true);
+                repoManager.putArtifact(context, outputFile);
+                ArtifactContext sha1Context = context.getSha1Context();
+                sha1Context.setForceOperation(true);
+                repoManager.putArtifact(sha1Context, sha1File);
+            }catch(IOException x){
+                log.error("ceylon", "Failed to write module to repository: "+x.getMessage());
+                // fatal errors go all the way up but don't print anything if we logged an error
+                throw x;
+            }finally{
+                // now cleanup
+                outputFile.delete();
+                sha1File.delete();
+            }
         }
 
         public JavaFileObject getJavaFileObject(String fileName, File sourceFile) {

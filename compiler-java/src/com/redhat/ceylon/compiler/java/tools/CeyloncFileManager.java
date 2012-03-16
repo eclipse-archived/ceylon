@@ -207,7 +207,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
     }
 
     @Override
-    public void flush() {
+    public void flush() throws IOException {
         super.flush();
         getJarRepository().flush();
     }
