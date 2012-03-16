@@ -323,8 +323,9 @@ Range$proto.contains = function(x) {
     return $false;
 }
 Range$proto.getRest = function() {
+    if (this.first.equals(this.last) === $true) return $empty;
     var n = this.next(this.first);
-    return (n.equals(this.last) === getTrue()) ? ArraySequence([]) : Range(n, this.last);
+    return Range(n, this.last);
 }
 Range$proto.by = function(step) {
     if (step.compare(Integer(0)) !== larger) {
@@ -349,7 +350,7 @@ Range$proto.segment = function(from, len) {
     for (var i=0; i < from.value; i++) { x = this.next(x); }
     var y = x;
     for (var i=1; i < len.value; i++) { y = this.next(y); }
-    if (this.includes(y) === getFalse()) { y = this.last; }
+    if (this.includes(y) === $false) { y = this.last; }
     return Range(x, y);
 }
 Range$proto.span = function(from, to) {
@@ -361,7 +362,7 @@ Range$proto.span = function(from, to) {
         //If it's an inverse range, adjust the "from" (upper bound)
         if (from.compare(to) === larger && this.defines(to) === $true) {
             //Decrease the upper bound
-            while (!this.defines(from)) {
+            while (this.defines(from) === $false) {
                 from = from.getPredecessor();
             }
         } else {
