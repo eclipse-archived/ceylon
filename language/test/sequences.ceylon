@@ -41,7 +41,7 @@ void test_singleton() {
     if (exists str=singleton.item(1)) {
         fail("singleton item");
     }
-    
+
     assert(nonempty singleton.span(0, 1), "nonempty singleton span(0,1)");
     assert(nonempty singleton.span(0, 0), "nonempty singleton span(0,0)");
     assert(nonempty singleton.span(0, null), "nonempty singleton span(0, null)");
@@ -55,7 +55,7 @@ void test_singleton() {
     assert(nonempty singleton.span(0, 10), "nonempty singleton span(0,10)");
     assert(!nonempty singleton.segment(0, 0), "!nonempty singleton segment(0,0)");
     assert(!nonempty singleton.segment(0, -1), "!nonempty singleton segment(0,-1)");
-                                
+
     assert(singleton.keys.contains(0), "singleton keys.contains(0)");
     assert(!singleton.keys.contains(1), "!singleton keys.contains(1)");
     assert(!singleton.keys.contains(2), "!singleton keys.contains(2)");
@@ -105,7 +105,7 @@ shared void sequences() {
     assert(!nonempty empty.span(1, null), "empty.span(1,null)");
     assert(!nonempty empty.segment(1, 2), "empty sequence segment");
     assert(empty.string=="{}", "empty.string");
-    
+
     builder.append("hello");
     builder.append("world");
     value result = builder.sequence;
@@ -234,7 +234,7 @@ shared void sequences() {
         i:=i+1;
     }
     assert(i==4, "sequence iteration");
-    
+
     value union = SequenceBuilder<String|Float>();
     union.append("x");
     union.append(5.1);
@@ -265,7 +265,7 @@ shared void sequences() {
         if (exists o) { nonnull++; }
     }
     assert(nonnull==2, "iterate sequence with nulls");
-    
+
     value coalesced = coalesce(nulls);
     assert(coalesced.size==2, "coalesce size");
     assert(coalesced.string=="{ hello, world }", "coalesce.string");
@@ -275,7 +275,7 @@ shared void sequences() {
     assert(coalesced.defines(0)&&coalesced.defines(1)&&!coalesced.defines(2),
            "coalesce defines");
     assert(nonempty coalesced, "nonempty coalesced");
-    
+
     value entriesBuilder = SequenceBuilder<Integer->String>();
     entriesBuilder.append(1->"hello");
     entriesBuilder.append(2->"world");
@@ -288,11 +288,11 @@ shared void sequences() {
         assert(str=="hello"||str=="world", "entry key iteration");
     }
     assert(cntr==2, "entry iteration");
-    
+
     for (name->initial in { "Gavin"->`G`, "Tom"->`T` }) {
         assert(name.initial(1)==initial.string, "entry iteration");
     }
-    
+
     value sequenceEntries = entries("X1", "X2", "X3");
     assert(sequenceEntries.size==3, "entries size");
     assert(nonempty sequenceEntries, "nonempty entries");
@@ -305,12 +305,12 @@ shared void sequences() {
     for (nat->str in sequenceEntries) {
         assert("X"+(nat+1).string==str, "entries iteration");
     }
-        
+
     assert(append({},"foo").string=="{ foo }", "append to empty.string");
     assert(prepend({},"foo").string=="{ foo }", "prepend to empty.string");
     assert(append({1, 2},"foo").string=="{ 1, 2, foo }", "append.string");
     assert(prepend({1, 2},"foo").string=="{ foo, 1, 2 }", "prepend.string");
-        
+
     assert(append({},"foo").size==1, "append to empty.size");
     assert(prepend({},"foo").size==1, "prepend to empty.size");
     assert(append({1, 2},"foo").size==3, "append.size");
