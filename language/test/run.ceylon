@@ -32,6 +32,8 @@ shared void run() {
     misc();
     print("Array/Collection/FixedSized tests");
     testArrays();
+    print("Map tests");
+    testMaps();
     results();
 }
 
