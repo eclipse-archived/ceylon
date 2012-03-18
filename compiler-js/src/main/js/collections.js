@@ -342,7 +342,42 @@ function EmptyArray() {
 initType(EmptyArray, 'ceylon.language.EmptyArray', Array$, None);
 inheritProto(EmptyArray, Array$, '$Array$');
 inheritProto(EmptyArray, None, '$None$');
-//TODO implement setItem
+EmptyArray.$$.prototype.setItem = function(i,e) {}
+EmptyArray.$$.prototype.item = function(x) { return null; }
+exports.EmptyArray=EmptyArray;
 
+function ArrayList(items) {
+    var that = new ArrayList.$$;
+    that.value=items;
+    that.size=new Integer(items.length);
+    return that;
+}
+initType(ArrayList, 'ceylon.language.ArrayList', Array$, List);
+inheritProto(ArrayList, Array$, '$Array$');
+inheritProto(ArrayList, List, '$List$');
+var ArrayList$proto = ArrayList.$$.prototype;
+ArrayList$proto.getSize = function() { return this.size; }
+ArrayList$proto.setItem = function(idx,elem) {
+    if (idx.value >= 0 && idx.value < this.size.value) {
+        this.value[idx.value] = elem;
+    }
+}
+ArrayList$proto.item = function(idx) {
+    if (idx.value >= 0 && idx.value < this.size.value) {
+        return this.value[idx.value];
+    }
+    return null;
+}
 
+exports.ArrayList=ArrayList;
 exports.arrayOfNone=function() { return EmptyArray(); }
+exports.arrayOfSome=function(elems) { //receives an ArraySequence
+    return ArrayList(elems.value);
+}
+exports.array=function(elems) {
+    if (elems === null || elems === undefined || elems.getSize().value === 0) {
+        return EmptyArray();
+    } else {
+        return ArrayList(elems.value);
+    }
+}
