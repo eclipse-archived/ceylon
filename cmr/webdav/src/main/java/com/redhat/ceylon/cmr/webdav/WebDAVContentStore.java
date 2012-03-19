@@ -21,6 +21,7 @@ import com.googlecode.sardine.Sardine;
 import com.googlecode.sardine.SardineFactory;
 import com.googlecode.sardine.impl.SardineException;
 import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.impl.CMRException;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.impl.URLContentStore;
 import com.redhat.ceylon.cmr.spi.ContentHandle;
@@ -68,7 +69,7 @@ public class WebDAVContentStore extends URLContentStore {
             mkdirs(getSardine(), parent);
             return createNode(child);
         } catch (IOException e) {
-            throw new IllegalArgumentException(e);
+            throw convertIOException(e);
         }
     }
 
@@ -101,16 +102,24 @@ public class WebDAVContentStore extends URLContentStore {
             } finally {
                 s.unlock(pUrl, token);
             }
-        }catch(SardineException x){
+        }catch(IOException x){
+            throw convertIOException(x);
+        }
+    }
+
+    public CMRException convertIOException(IOException x) {
+        if(x instanceof SardineException){
             // hide this from callers because its getMessage() is borked
-            throw new IOException(x.getMessage()+": "+x.getResponsePhrase()+" "+x.getStatusCode());
-        }catch(ClientProtocolException x){
+            SardineException sx = (SardineException) x;
+            return new CMRException(sx.getMessage()+": "+sx.getResponsePhrase()+" "+sx.getStatusCode());
+        }
+        if(x instanceof ClientProtocolException){
             // in case of protocol exception (invalid response) we get this sort of
             // chain set up with a null message, so unwrap it for better messages
             if(x.getCause() != null && x.getCause() instanceof ProtocolException)
-                throw new IOException(x.getCause().getMessage());
-            throw x;
+                return new CMRException(x.getCause().getMessage());
         }
+        return new CMRException(x);
     }
 
     protected void mkdirs(Sardine s, Node parent) throws IOException {
