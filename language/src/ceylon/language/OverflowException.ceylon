@@ -1,4 +1,4 @@
-//TODO improve input param and set default message?
+doc "Thrown when a mathematical operation caused a number to overflow from its bounds."
 shared class OverflowException()
-        extends Exception("numeric overflow", null) {
+        extends Exception("Numeric overflow", null) {
 }

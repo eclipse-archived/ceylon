@@ -1,4 +1,4 @@
-//TODO improve input param and set default message?
+doc "Thrown when a negative number is not allowed."
 shared class NegativeNumberException()
-        extends Exception("negative number", null) {
+        extends Exception("Negative number", null) {
 }
