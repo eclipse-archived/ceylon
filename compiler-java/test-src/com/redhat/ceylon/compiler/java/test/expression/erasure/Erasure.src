@@ -514,8 +514,8 @@ class Test {
             it.top();
         }
         long sync;
-        sync = ((.ceylon.language.Sized)naturals).getSize();
-        sync = ((.ceylon.language.Sized)leftsAndRights).getSize();
+        sync = ((.ceylon.language.List)naturals).getSize();
+        sync = ((.ceylon.language.List)leftsAndRights).getSize();
         .ceylon.language.Iterable $naturals$51;
         if (($naturals$51 = naturals) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$naturals$51).getEmpty()) {
             final .ceylon.language.Sequence $naturals$52 = (.ceylon.language.Sequence)$naturals$51;
