@@ -23,11 +23,13 @@ import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
+import javax.xml.bind.DatatypeConverter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Collections;
 
 /**
@@ -39,6 +41,20 @@ public class RemoteContentStore extends URLContentStore {
 
     public RemoteContentStore(String root, Logger log) {
         super(root, log);
+    }
+
+    protected InputStream openStream(URL url) throws IOException {
+        final URLConnection conn = url.openConnection();
+        if (username != null && password != null) {
+            try {
+                String authString = DatatypeConverter.printBase64Binary((username + ":" + password).getBytes());
+                conn.setRequestProperty("Authorization", "Basic " + authString);
+                conn.connect();
+            } catch (Exception e) {
+                throw new IOException("Cannot set basic authorization.", e);
+            }
+        }
+        return conn.getInputStream();
     }
 
     public ContentHandle peekContent(Node node) {
@@ -75,7 +91,7 @@ public class RemoteContentStore extends URLContentStore {
 
         InputStream is = null;
         try {
-            is = url.openStream();
+            is = openStream(url);
             return (is != null); // should this do?
         } catch (IOException ignored) {
             return false;
@@ -108,7 +124,7 @@ public class RemoteContentStore extends URLContentStore {
         public InputStream getBinariesAsStream() throws IOException {
             final URL url = getURL(NodeUtils.getFullPath(node, SEPARATOR));
             log.debug("Fetching resource: " + url);
-            return url.openStream();
+            return openStream(url);
         }
 
         public File getContentAsFile() throws IOException {

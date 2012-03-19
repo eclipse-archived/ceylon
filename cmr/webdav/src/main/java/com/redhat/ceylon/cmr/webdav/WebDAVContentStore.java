@@ -47,8 +47,6 @@ import org.apache.http.client.ClientProtocolException;
 public class WebDAVContentStore extends URLContentStore {
 
     private volatile Sardine sardine;
-    private String username;
-    private String password;
 
     public WebDAVContentStore(String root, Logger log) {
         super(root, log);
@@ -90,10 +88,10 @@ public class WebDAVContentStore extends URLContentStore {
     public ContentHandle putContent(Node node, InputStream stream, ContentOptions options) throws IOException {
         final Sardine s = getSardine();
 
-        try{
+        try {
             final Node parent = NodeUtils.firstParent(node);
             mkdirs(s, parent);
-            
+
             final String pUrl = getUrlAsString(parent);
             final String token = s.lock(pUrl); // local parent
             try {
@@ -169,14 +167,6 @@ public class WebDAVContentStore extends URLContentStore {
             log.debug("Failed to check url: " + url);
             return false;
         }
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     @Override

@@ -31,12 +31,22 @@ import java.net.URL;
 public abstract class URLContentStore extends AbstractRemoteContentStore {
 
     protected final String root;
+    protected String username;
+    protected String password;
 
     protected URLContentStore(String root, Logger log) {
         super(log);
         if (root == null)
             throw new IllegalArgumentException("Null root url");
         this.root = root;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public OpenNode find(Node parent, String child) {
@@ -87,7 +97,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     }
 
     protected abstract boolean urlExists(URL url);
-    
+
     @Override
     public String getDisplayString() {
         return root;
