@@ -40,6 +40,7 @@ import javax.tools.JavaFileObject;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.impl.CMRException;
 import com.redhat.ceylon.compiler.java.util.ShaSigner;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -270,7 +271,12 @@ public class JarOutputRepositoryManager {
                 ArtifactContext sha1Context = context.getSha1Context();
                 sha1Context.setForceOperation(true);
                 repoManager.putArtifact(sha1Context, sha1File);
+            }catch(CMRException x){
+                log.error("ceylon", "Failed to write module to repository: "+x.getMessage());
+                // fatal errors go all the way up but don't print anything if we logged an error
+                throw x;
             }catch(IOException x){
+                // FIXME: remove when all of CMR is using CMRException
                 log.error("ceylon", "Failed to write module to repository: "+x.getMessage());
                 // fatal errors go all the way up but don't print anything if we logged an error
                 throw x;

@@ -43,6 +43,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.impl.CMRException;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
@@ -271,22 +272,38 @@ public class CeylonDocTool {
         // make a destination repo
         RepositoryManager outputRepository = com.redhat.ceylon.compiler.java.util.Util.makeOutputRepositoryManager(this.outputRepository, log, user, pass);
 
-        // document every module
-        boolean documentedOne = false;
-        for(Module module : modules){
-            if(isEmpty(module))
-                log.warning("Module "+module.getNameAsString()+" has no declarations");
-            else
-                documentedOne = true;
-            documentModule(module);
-            ArtifactContext context = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
-            outputRepository.removeArtifact(context);
-            outputRepository.putArtifact(context, getOutputFolder(module));
+        try{
+            // document every module
+            boolean documentedOne = false;
+            for(Module module : modules){
+                if(isEmpty(module))
+                    log.warning("Module "+module.getNameAsString()+" has no declarations");
+                else
+                    documentedOne = true;
+                documentModule(module);
+                ArtifactContext context = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
+                try{
+                    outputRepository.removeArtifact(context);
+                }catch(IOException x){
+                    // FIXME: remove when the whole CMR is using CMRException
+                    throw new CeylondException("Failed to remove artifact "+context+": "+x.getMessage(), x);
+                }catch(CMRException x){
+                    throw new CeylondException("Failed to remove artifact "+context+": "+x.getMessage(), x);
+                }
+                try{
+                    outputRepository.putArtifact(context, getOutputFolder(module));
+                }catch(IOException x){
+                    // FIXME: remove when the whole CMR is using CMRException
+                    throw new CeylondException("Failed to write artifact "+context+" to output repository: "+x.getMessage(), x);
+                }catch(CMRException x){
+                    throw new CeylondException("Failed to write artifact "+context+" to output repository: "+x.getMessage(), x);
+                }
+            }
+            if(!documentedOne)
+                log.warning("Could not find any declaration to document");
+        }finally{
+            Util.delete(tempDestDir);
         }
-        if(!documentedOne)
-            log.warning("Could not find any declaration to document");
-        
-        Util.delete(tempDestDir);
     }
 
     private boolean isEmpty(Module module) {

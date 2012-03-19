@@ -123,6 +123,10 @@ public class Main {
             ceylonDocTool.setIncludeNonShared(includeNonShared);
             ceylonDocTool.setIncludeSourceCode(includeSourceCode);
             ceylonDocTool.makeDoc();
+        }catch(CeylondException x){
+            System.err.println("Error: "+x.getMessage());
+            // no need to print the stack trace
+            exit(SC_ERROR);
         }catch(Exception x){
             System.err.println("Error: "+x.getMessage());
             x.printStackTrace();
