@@ -88,10 +88,10 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
 
     @TypeInfo("ceylon.language.Nothing|Element")
     @Override
-    public Element item(@Name("n") Integer n) {
+    public Element item(@Name("key") Integer key) {
         long index = 0;
         Element x = first;
-        while (index<n.longValue()) {
+        while (index<key.longValue()) {
         	if (x.equals(last)){
         		return null;
         	}
@@ -238,8 +238,8 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
 
     @Override
-    public boolean defines(@Name("index") Integer index) {
-        return List$impl.defines(this, index);
+    public boolean defines(@Name("key") Integer key) {
+        return List$impl.defines(this, key);
     }
 
     @Override

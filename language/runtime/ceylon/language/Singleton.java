@@ -32,7 +32,7 @@ public class Singleton<Element>
 	
 	@Override
 	@TypeInfo("ceylon.language.Nothing|Element")
-	public Element item(@Name("index") Integer key) {
+	public Element item(@Name("key") Integer key) {
 		return key.longValue()==0 ? element : null;
 	}
 	
@@ -96,8 +96,8 @@ public class Singleton<Element>
 	}
 	
 	@Override
-	public boolean defines(@Name("index") Integer index) {
-		return index.longValue()==0;
+	public boolean defines(@Name("key") Integer key) {
+		return key.longValue()==0;
 	}
 	@Override
 	public Iterator<Element> getIterator() {

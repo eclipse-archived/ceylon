@@ -260,8 +260,8 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
 
     @Override
-    public boolean defines(@Name("index") Integer index) {
-        long ind = index.longValue();
+    public boolean defines(@Name("key") Integer key) {
+        long ind = key.longValue();
         return ind >= 0 && ind < getSize();
     }
 
@@ -291,8 +291,8 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 
     @TypeInfo("ceylon.language.Nothing|Element")
     @Override
-    public Element item(@Name("index") Integer index) {
-        long i = index.longValue();
+    public Element item(@Name("key") Integer key) {
+        long i = key.longValue();
         return item((int)i);
     }
 

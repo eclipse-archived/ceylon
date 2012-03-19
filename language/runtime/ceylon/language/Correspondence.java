@@ -55,10 +55,10 @@ public interface Correspondence<Key,Item> {
         public final FixedSized<? extends Item> getRest() {
             return (FixedSized<? extends Item>) $this.items(keys.getRest());
         }
-        public final Item item(Integer index) {
-            Key key = keys.item(index);
-            if (key != null) {
-                return $this.item(key);
+        public final Item item(Integer key) {
+            Key keyFound = keys.item(key);
+            if (keyFound != null) {
+                return $this.item(keyFound);
             }
             else {
                 return null;
@@ -100,8 +100,8 @@ public interface Correspondence<Key,Item> {
             return Sequence$impl.getLast(this);
         }
         @Override
-        public boolean defines(Integer index) {
-            return List$impl.defines(this, index);
+        public boolean defines(Integer key) {
+            return List$impl.defines(this, key);
         }
         @Override
         public Iterator<? extends Item> getIterator() {

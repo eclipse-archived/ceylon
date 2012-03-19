@@ -103,8 +103,8 @@ public class $empty {
         }
 
         @Override
-        public boolean defines(Integer index) {
-            return Empty$impl.defines(this, index);
+        public boolean defines(Integer key) {
+            return Empty$impl.defines(this, key);
         }
         
         public boolean equals(Object that) {

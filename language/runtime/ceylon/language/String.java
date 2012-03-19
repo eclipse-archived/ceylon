@@ -136,7 +136,7 @@ public final class String
     }
 
     @Override
-    public Character item(@Name("index") Integer key) {
+    public Character item(@Name("key") Integer key) {
         int index = (int)key.longValue();
         int length = value.length();
         if (index < 0 || index >= length) {

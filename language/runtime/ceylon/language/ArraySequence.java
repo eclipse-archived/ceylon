@@ -111,8 +111,8 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    public boolean defines(Integer index) {
-        long ind = index.longValue();
+    public boolean defines(Integer key) {
+        long ind = key.longValue();
         return ind>=0 && ind+first<array.length;
     }
 

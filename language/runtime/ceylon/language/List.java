@@ -68,9 +68,9 @@ public interface List<Element>
             return lastIndex==null ? 0 : lastIndex.longValue()+1;
         }
 
-        public static <Element> boolean defines(List<Element> $this, Integer index){
+        public static <Element> boolean defines(List<Element> $this, Integer key){
             Integer lastIndex = $this.getLastIndex();
-            return lastIndex==null ? false : index.longValue() <= lastIndex.longValue();
+            return lastIndex==null ? false : key.longValue() <= lastIndex.longValue();
         }
 
         public static <Element> Iterator<? extends Element> getIterator(final List<Element> $this){

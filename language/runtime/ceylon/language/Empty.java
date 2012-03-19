@@ -61,8 +61,8 @@ public interface Empty
     java.lang.Object element);
 
     @Override
-    public boolean defines(@Name("index") @TypeInfo("ceylon.language.Integer")
-    Integer index);
+    public boolean defines(@Name("key") @TypeInfo("ceylon.language.Integer")
+    Integer key);
 
     @Ignore
     public static final class Empty$impl {
@@ -87,7 +87,7 @@ public interface Empty
         public static boolean contains(Empty $this, java.lang.Object element) {
             return false;
         }
-        public static boolean defines(Empty $this, Integer index) {
+        public static boolean defines(Empty $this, Integer key) {
             return false;
         }
         public static Empty getClone(Empty $this) {
