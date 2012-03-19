@@ -56,7 +56,7 @@ shared class SequenceOperators() {
         Integer[] spreadMemberWithBoxedType = intSequence[].wholePart;
         variable Character?[] spreadInvoke;
         spreadInvoke := sequence[].item(0);
-        spreadInvoke := sequence[].item{index = 0;};
+        spreadInvoke := sequence[].item{key = 0;};
 
         String[] empty = {};
         String[] upperCasedEmpty = empty[].uppercased;
