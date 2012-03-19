@@ -3,20 +3,23 @@ package ceylon.language;
 import java.util.Arrays;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
+import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon
+@Class(extendsType="ceylon.language.Object")
 @TypeParameters(@TypeParameter(value = "Element"))
 @SatisfiedTypes({
     "ceylon.language.List<Element>",
     "ceylon.language.FixedSized<Element>",
-    "ceylon.language.Ranged<ceylon.language.Integer,ceylon.language.Empty|ceylon.language.Array<Element>>",
-    "ceylon.language.Cloneable<ceylon.language.Array<Element>>"
+    "ceylon.language.Cloneable<ceylon.language.Array<Element>>",
+    "ceylon.language.Ranged<ceylon.language.Integer,ceylon.language.Array<Element>>"
 })
 public abstract class Array<Element> implements List<Element>, FixedSized<Element> {
     
@@ -163,6 +166,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
 
     @Override
+    @TypeInfo("ceylon.language.Nothing|Element")
     public Element getFirst() {
         if (getEmpty()) {
             return null;
@@ -172,13 +176,14 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
 
     @Override
-    public FixedSized<? extends Element> span(Integer from, Integer to) {
+    public Array<? extends Element> span(@Name("from") Integer from, 
+            @Name("to") @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer") Integer to) {
         long fromIndex = from.longValue();
         if (fromIndex<0) fromIndex=0;
         long toIndex = to==null ? getSize()-1 : to.longValue();
         long lastIndex = getLastIndex().longValue();
         if (fromIndex>lastIndex||toIndex<fromIndex) {
-            return $empty.getEmpty();
+            return new EmptyArray<Element>();
         } else {
             if (array instanceof char[]) {
                 return new NonemptyArray<Element>(Arrays.copyOfRange((char[])array, (int)fromIndex, (int)toIndex+1));
@@ -205,13 +210,14 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
     
     @Override
-    public FixedSized<? extends Element> segment(Integer from, Integer length) {
+    public Array<? extends Element> segment(@Name("from") Integer from, 
+            @Name("length") Integer length) {
         long fromIndex = from.longValue();
         if (fromIndex<0) fromIndex=0;
         long resultLength = length.longValue();
         long lastIndex = getLastIndex().longValue();
         if (fromIndex>lastIndex||resultLength==0) {
-            return $empty.getEmpty();
+            return new EmptyArray<Element>();
         } else {
             if (array instanceof char[]) {
                 return new NonemptyArray<Element>(Arrays.copyOfRange((char[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
@@ -238,9 +244,9 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
 
     @Override
-    @TypeInfo("ceylon.language.Integer")
+    @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     public Integer getLastIndex() {
-        return Integer.instance(getSize() - 1);
+        return getEmpty() ? null : Integer.instance(getSize() - 1);
     }
 
     @Override
@@ -249,46 +255,45 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
 
     @Override
-    @TypeInfo("ceylon.language.Integer")
     public long getSize() {
         return java.lang.reflect.Array.getLength(array);
     }
 
     @Override
-    public boolean defines(Integer index) {
+    public boolean defines(@Name("index") Integer index) {
         long ind = index.longValue();
         return ind >= 0 && ind < getSize();
     }
 
     @Override
     public Iterator<Element> getIterator() {
+        class ArrayIterator implements Iterator<Element> {
+            private int idx = 0;
+            
+            @Override
+            public java.lang.Object next() {
+                if (idx < getSize()) {
+                    return unsafeItem(idx++);
+                } 
+                else {
+                    return exhausted.getExhausted();
+                }
+            }
+
+            @Override
+            public java.lang.String toString() {
+                return "ArrayIterator";
+            }
+
+        }
         return new ArrayIterator();
     }
 
-    public class ArrayIterator implements Iterator<Element> {
-        private int idx = 0;
-        
-        @Override
-        public java.lang.Object next() {
-            if (idx < getSize()) {
-                return unsafeItem(idx++);
-            } 
-            else {
-                return exhausted.getExhausted();
-            }
-        }
-
-        @Override
-        public java.lang.String toString() {
-            return "ArrayIterator";
-        }
-
-    }
-
+    @TypeInfo("ceylon.language.Nothing|Element")
     @Override
-    public Element item(Integer key) {
-        long index = key.longValue();
-        return item((int)index);
+    public Element item(@Name("index") Integer index) {
+        long i = index.longValue();
+        return item((int)i);
     }
 
     private Element item(int index) {
@@ -320,7 +325,8 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         }
     }
 
-    public void setItem(@Name("index") @TypeInfo("ceylon.language.Integer") long index, @Name("element") @TypeInfo("ceylon.language.Nothing|Element") Element element) {
+    public void setItem(@Name("index") @TypeInfo("ceylon.language.Integer") long index, 
+            @Name("element") @TypeInfo("ceylon.language.Nothing|Element") Element element) {
         int idx = (int) index;
         if (idx>=0 && idx < getSize()) {
             if (array instanceof char[]) {
@@ -358,17 +364,24 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
 
     @Override
-    public boolean definesEvery(Iterable<? extends Integer> keys) {
+    public boolean definesEvery(@Sequenced @Name("keys") 
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
+    Iterable<? extends Integer> keys) {
         return Correspondence$impl.definesEvery(this, keys);
     }
 
     @Override
-    public boolean definesAny(Iterable<? extends Integer> keys) {
+    public boolean definesAny(@Sequenced @Name("keys") 
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
+    Iterable<? extends Integer> keys) {
         return Correspondence$impl.definesAny(this, keys);
     }
 
     @Override
-    public ceylon.language.List<? extends Element> items(Iterable<? extends Integer> keys) {
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
+    public Iterable<? extends Element> items(@Sequenced @Name("keys") 
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
+    Iterable<? extends Integer> keys){
         return Correspondence$impl.items(this, keys);
     }
 
@@ -382,12 +395,14 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         return List$impl.toString(this);
     }
 
+    @Ignore
     public java.lang.Object toArray() {
         return array;
     }
     
     @Override
-    public boolean equals(java.lang.Object that) {
+    public boolean equals(@Name("that") @TypeInfo("ceylon.language.Object") 
+    java.lang.Object that) {
         return List$impl.equals(this, that);
     }
 
@@ -397,7 +412,8 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
     
     @Override
-    public boolean contains(java.lang.Object element) {
+    public boolean contains(@Name("element") @TypeInfo("ceylon.language.Object") 
+    java.lang.Object element) {
         // FIXME Very inefficient for primitive types due to boxing
         Iterator<Element> iter = getIterator();
         java.lang.Object elem;
@@ -410,7 +426,8 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
 
     @Override
-    public long count(java.lang.Object element) {
+    public long count(@Name("element") @TypeInfo("ceylon.language.Object") 
+    java.lang.Object element) {
         // FIXME Very inefficient for primitive types due to boxing
         int count=0;
         Iterator<Element> iter = getIterator();
@@ -424,12 +441,16 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
 
     @Override
-    public boolean containsEvery(Iterable<?> elements) {
+    public boolean containsEvery(@Sequenced @Name("elements") 
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    Iterable<?> elements) {
         return Category$impl.containsEvery(this, elements);
     }
 
     @Override
-    public boolean containsAny(Iterable<?> elements) {
+    public boolean containsAny(@Sequenced @Name("elements") 
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    Iterable<?> elements) {
         return Category$impl.containsAny(this, elements);
     }
 }
