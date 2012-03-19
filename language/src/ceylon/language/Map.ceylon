@@ -45,7 +45,12 @@ shared interface Map<out Key,out Item>
     }
 
     shared actual default Integer hash {
-        return size;
+        variable Integer hashCode := 1;
+        for(Entry<Key,Item> elem in this){
+            hashCode *= 31;
+            hashCode += elem.hash;
+        }
+        return hashCode;
     }
 
     doc "Returns the set of keys contained in this map."

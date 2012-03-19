@@ -111,7 +111,14 @@ shared interface List<out Element>
     }
 
     shared actual default Integer hash {
-        return size;
+        variable Integer hashCode := 1;
+        for(Element elem in this){
+            hashCode *= 31;
+            if(is Object elem){
+                hashCode += elem.hash;
+            }
+        }
+        return hashCode;
     }
 
     shared default actual String string {

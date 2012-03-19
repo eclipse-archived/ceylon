@@ -26,7 +26,7 @@ shared class Entry<out Key, out Item>(Key key, Item item)
         }
     }
 
-    shared actual Integer hash = key.hash/2 + item.hash/2; //TODO: really should be xor
+    shared actual Integer hash = (31 + key.hash) * 31 + item.hash;
 
     doc "Returns a description of the entry in the form `key->item`."
     shared actual String string {

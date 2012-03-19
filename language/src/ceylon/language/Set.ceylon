@@ -56,7 +56,12 @@ shared interface Set<out Element>
     }
 
     shared actual default Integer hash {
-        return size;
+        variable Integer hashCode := 1;
+        for(Element elem in this){
+            hashCode *= 31;
+            hashCode += elem.hash;
+        }
+        return hashCode;
     }
 
     doc "Returns a new Set containing all the elements of this Set
