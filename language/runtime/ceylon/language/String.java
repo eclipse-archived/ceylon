@@ -126,8 +126,8 @@ public final class String
 
     @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     public Integer getLastIndex() {
-        int length = value.length();
-        return length==0 ? null : Integer.instance(length-1);
+        long length = getSize();
+        return (length == 0) ? null : Integer.instance(length - 1);
     }
 
     @Override
@@ -137,18 +137,14 @@ public final class String
 
     @Override
     public Character item(@Name("index") Integer key) {
-        long index = key.longValue();
+        int index = (int)key.longValue();
         int length = value.length();
-        if (index < 0 || index >= length)
+        if (index < 0 || index >= length) {
             return null;
-        //TODO: use Character.offsetByCodePoints
-        for (int offset = 0, i = 0; offset <= length; i++) {
-            int codePoint = value.codePointAt(offset);
-            if (i==index)
-                return new Character(codePoint);
-            offset += java.lang.Character.charCount(codePoint);
         }
-        return null;
+        int offset = value.offsetByCodePoints(0, index);
+        int codePoint = value.codePointAt(offset);
+        return new Character(codePoint);
     }
 
     @Override
@@ -219,7 +215,9 @@ public final class String
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Character>")
     public Iterable<? extends Character> getCharacters() {
         int length = value.length();
-        if (length==0) return $empty.getEmpty();
+        if (length == 0) {
+            return $empty.getEmpty();
+        }
         Character[] chars = new Character[(int)getSize()];
         for (int offset = 0, i = 0; offset < length; i++) {
             int codePoint = value.codePointAt(offset);
@@ -232,36 +230,36 @@ public final class String
     @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     public Integer firstOccurrence(@Name("substring") java.lang.String substring) {
         int index = value.indexOf(substring);
-        return index>=0 ? Integer.instance(index) : null;
+        return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
     }
     
     @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     public Integer lastOccurrence(@Name("substring") java.lang.String substring) {
         int index = value.lastIndexOf(substring);
-        return index>=0 ? Integer.instance(index) : null;
+        return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
     }
     
     @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     public Integer firstCharacterOccurrence(@Name("character") 
     @TypeInfo("ceylon.language.Character") int character) {
         int index = value.indexOf(character);
-        return index>=0 ? Integer.instance(index) : null;
+        return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
     }
     
     @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     public Integer lastCharacterOccurrence(@Name("character") 
     @TypeInfo("ceylon.language.Character") int character) {
         int index = value.lastIndexOf(character);
-        return index>=0 ? Integer.instance(index) : null;
+        return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
     }
     
     @Override
     public boolean contains(@Name("element") java.lang.Object element) {
         if (element instanceof String) {
-            return value.indexOf(((String)element).value)>=0;
+            return value.indexOf(((String)element).value) >= 0;
         }
         else if (element instanceof Character) {
-            return value.indexOf(((Character)element).intValue())>=0;
+            return value.indexOf(((Character)element).intValue()) >= 0;
         }
         else {
             return false;
@@ -297,12 +295,12 @@ public final class String
     
     public boolean longerThan(@TypeInfo("ceylon.language.Integer") 
     @Name("length") long length) {
-        return getSize()>length; //TODO: really inefficient!
+        return getSize() > length;
     }
 
     public boolean shorterThan(@TypeInfo("ceylon.language.Integer") 
     @Name("length") long length) {
-        return getSize()<length; //TODO: really inefficient!
+        return getSize() < length;
     }
     
     public java.lang.String getTrimmed() {
@@ -330,17 +328,27 @@ public final class String
     @TypeInfo("ceylon.language.String")
     public java.lang.String initial(@TypeInfo("ceylon.language.Integer") 
     @Name("length") long length) {
-    	if (length<=0) return "";
-        return length>value.length() ? value : 
-            value.substring(0, (int)length);
+    	if (length <= 0) {
+    	    return "";
+    	} else if (length >= getSize()) {
+            return value; 
+        } else {
+            int offset = value.offsetByCodePoints(0, (int)length);
+            return value.substring(0, (int)offset);
+        }
     }
 
     @TypeInfo("ceylon.language.String")
     public java.lang.String terminal(@TypeInfo("ceylon.language.Integer") 
     @Name("length") long length) {
-    	if (length<=0) return "";
-        return length>value.length() ? value : 
-            value.substring(value.length()-(int) length, value.length());
+    	if (length <= 0) {
+    	    return "";
+    	} else if (length >= getSize()) {
+    	    return value; 
+    	} else {
+            int offset = value.offsetByCodePoints(0, value.length()-(int)length);
+    	    return value.substring(offset, value.length());
+    	}
     }
     
     public java.lang.String join(@Name("strings") @Sequenced
@@ -364,11 +372,16 @@ public final class String
             @Name("length") final Integer length) {
         long fromIndex = from.longValue();
         long resultLength = length.longValue();
-        int len = value.length();
-        if (fromIndex>=len || resultLength==0) return instance("");
-        if (fromIndex+resultLength>len) resultLength = len-fromIndex;
-        return instance(value.substring((int) fromIndex, 
-                (int) (fromIndex+resultLength)));
+        long len = getSize();
+        if (fromIndex >= len || resultLength == 0) {
+            return instance("");
+        }
+        if ((fromIndex + resultLength) > len) {
+            resultLength = len - fromIndex;
+        }
+        int start = value.offsetByCodePoints(0, (int)fromIndex);
+        int end = start + value.offsetByCodePoints(start, (int)(resultLength - 1));
+        return instance(value.substring(start, end));
     }
     
     @Override
@@ -376,21 +389,34 @@ public final class String
     public String span(@Name("from") final Integer from, 
             @Name("to") @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer") 
             final Integer to) {
-        int len = value.length();
-        if (len==0) return instance("");
+        long len = getSize();
+        if (len == 0) {
+            return instance("");
+        }
         long fromIndex = from.longValue();
-        long toIndex = to==null ? len-1 : to.longValue();
-        if (fromIndex>=len||toIndex<fromIndex) return instance("");
-        if (toIndex>=len) toIndex = len-1;
-        return instance(value.substring((int) fromIndex, (int) toIndex+1));
+        long toIndex = (to == null) ? len - 1 : to.longValue();
+        if (fromIndex >= len || toIndex < fromIndex) {
+            return instance("");
+        }
+        if (toIndex >= len) {
+            toIndex = len - 1;
+        }
+        int start = value.offsetByCodePoints(0, (int)fromIndex);
+        int end = start + value.offsetByCodePoints(start, (int)(toIndex - fromIndex));
+        return instance(value.substring(start, end));
     }
     
     public java.lang.String getReversed() {
-        int len = value.length();
-        if (len<2) return value;
+        long len = getSize();
+        if (len < 2) {
+            return value;
+        }
         java.lang.StringBuilder builder = new java.lang.StringBuilder();
-        for (int i=len-1; i>=0; i--) {
-            builder.append(value.charAt(i));
+        int offset = value.length();
+        while (offset > 0) {
+            int c = value.codePointBefore(offset);
+            builder.appendCodePoint(c);
+            offset -= java.lang.Character.charCount(c);
         }
         return builder.toString();
     }
