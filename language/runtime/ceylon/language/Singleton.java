@@ -140,7 +140,7 @@ public class Singleton<Element>
 
 	@Override
 	public java.lang.String toString() {
-		return List$impl.toString(this);
+		return "{ " + getFirst().toString() + " }";
 	}
 
     @Override

@@ -202,17 +202,14 @@ public final class Float
         return (CastValue)this;
     }
     
-    @TypeInfo("ceylon.language.Boolean")
     public boolean getUndefined() {
         return Double.isNaN(this.value);
     }
     
-    @TypeInfo("ceylon.language.Boolean")
     public boolean getInfinite() {
         return Double.isInfinite(this.value);
     }
     
-    @TypeInfo("ceylon.language.Boolean")
     public boolean getFinite() {
         return !Double.isInfinite(this.value) && !getUndefined();
     }

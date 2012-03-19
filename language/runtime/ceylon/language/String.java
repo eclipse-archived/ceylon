@@ -13,12 +13,12 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon
 @Class(extendsType="ceylon.language.Object")
-@SatisfiedTypes({"ceylon.language.Comparable<ceylon.language.String>",
-	             "ceylon.language.List<ceylon.language.Character>",
-	             "ceylon.language.FixedSized<ceylon.language.Character>",
-	             "ceylon.language.Summable<ceylon.language.String>",
-                 "ceylon.language.Castable<ceylon.language.String>",
+@SatisfiedTypes({"ceylon.language.List<ceylon.language.Character>",
+                 "ceylon.language.Comparable<ceylon.language.String>",
                  "ceylon.language.Ranged<ceylon.language.Integer,ceylon.language.String>",
+                 "ceylon.language.FixedSized<ceylon.language.Character>",
+                 "ceylon.language.Summable<ceylon.language.String>",
+                 "ceylon.language.Castable<ceylon.language.String>",
                  "ceylon.language.Cloneable<ceylon.language.String>"})
 public final class String
     implements Comparable<String>, List<Character>,

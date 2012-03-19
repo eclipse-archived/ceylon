@@ -116,12 +116,19 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
             @TypeInfo("Element|ceylon.language.Finished")
         	public java.lang.Object next() {
                 java.lang.Object result = current;
-                if (!(current instanceof Finished) && !current.equals(getLast())) {
-                    current = Range.this.next((Element) current);
-                } else {
-                    current = exhausted.getExhausted();
+                if (!(current instanceof Finished)){
+                    if(current.equals(getLast())) {
+                        current = exhausted.getExhausted();
+                    } else {
+                        current = Range.this.next((Element) current);
+                    }
                 }
                 return result;
+            }
+            
+            @Override
+            public java.lang.String toString() {
+                return "RangeIterator";
             }
         }
         
@@ -129,11 +136,11 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
 
     @Override
-    public final boolean contains(@Name("element") java.lang.Object value) {
+    public final boolean contains(@Name("element") java.lang.Object element) {
         // FIXME
     	try {
-    		return value != null /*&& value instanceof Element*/ ?
-	             includes((Element) value) : false;
+    		return element != null /*&& value instanceof Element*/ ?
+	             includes((Element) element) : false;
     	}
     	catch (ClassCastException cce) { //ugly hack
     		return false;
@@ -141,8 +148,8 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
 
     @Override
-    public final long count(@Name("element") java.lang.Object value) {
-        return contains(value) ? 1 : 0;
+    public final long count(@Name("element") java.lang.Object element) {
+        return contains(element) ? 1 : 0;
     }
     
     public final boolean includes(@Name("x") Element x){
@@ -232,7 +239,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
 
     @Override
     public boolean defines(@Name("index") Integer index) {
-        return Sequence$impl.defines(this, index);
+        return List$impl.defines(this, index);
     }
 
     @Override

@@ -49,7 +49,7 @@ public class $empty {
 
         @Override
         public boolean getEmpty() {
-            return Empty$impl.getEmpty(this);
+            return Collection$impl.getEmpty(this);
         }
 
         @Override
@@ -58,13 +58,13 @@ public class $empty {
         }
 
         @Override
-        public java.lang.Object item(java.lang.Object key) {
-            return Empty$impl.item(this, (Integer)key);
+        public java.lang.Object item(Integer key) {
+            return Empty$impl.item(this, key);
         }
 
         @Override
         public java.lang.Object getFirst() {
-            return Empty$impl.getFirst(this);
+            return None$impl.getFirst(this);
         }
 
         @Override
@@ -72,16 +72,6 @@ public class $empty {
         	return Empty$impl.toString(this);
         }
         
-        @Override
-        public Empty segment(Comparable from, Comparable length) {
-            return Empty$impl.segment(this, from, length);
-        }
-        
-        @Override
-        public Empty span(Comparable from, Comparable to) {
-            return Empty$impl.span(this, from, to);
-        }
-
         @Override
         public Empty span(Integer from, Integer to) {
             return Empty$impl.span(this, from, to);
@@ -103,7 +93,7 @@ public class $empty {
         }
 
         @Override
-        public Cloneable getClone() {
+        public Empty getClone() {
             return Empty$impl.getClone(this);
         }
 
@@ -126,6 +116,22 @@ public class $empty {
         public int hashCode() {
             return 0;
         }
+
+        @Override
+        public java.lang.Object item(java.lang.Object key) {
+            return Empty$impl.item(this, key);
+        }
+
+        @Override
+        public java.lang.Object span(Comparable from, Comparable to) {
+            return Empty$impl.span(this, (Integer)from, (Integer)to);
+        }
+
+        @Override
+        public java.lang.Object segment(Comparable from, Comparable length) {
+            return Empty$impl.segment(this, (Integer)from, (Integer)length);
+        }
+
 
     };
     

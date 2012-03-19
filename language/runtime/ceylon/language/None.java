@@ -12,21 +12,32 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 public interface None<Element> extends FixedSized<Element> {
     
     @TypeInfo("ceylon.language.Nothing")
-    @Override public Element getFirst();
+    @Override
+    public Element getFirst();
+    
+    @TypeInfo("ceylon.language.Iterator<Element>")
+    @Override
+    public Iterator<? extends Element> getIterator();
+    
+    @Override
+    public long getSize();
+    
+    @Override
+    public boolean getEmpty();
     
     @Ignore
     public static final class None$impl {
         public static <Element> Element getFirst(None<Element> $this){
             return null;
         }
+        public static <Element> Iterator<Element> getIterator(None<Element> $this){
+            return emptyIterator.getEmptyIterator();
+        }
         public static <Element> long getSize(None<Element> $this){
             return 0;
         }
         public static <Element> boolean getEmpty(None<Element> $this){
             return true;
-        }
-        public static <Element> Iterator getIterator(None<Element> $this){
-            return emptyIterator.getEmptyIterator();
         }
     }
 

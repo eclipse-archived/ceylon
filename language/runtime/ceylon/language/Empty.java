@@ -17,15 +17,7 @@ public interface Empty
         extends List, None {
 	
     @Override
-    @TypeInfo("ceylon.language.Nothing")
-    public Integer getLastIndex();
-    
-    @Override
-    @TypeInfo("ceylon.language.Integer")
     public long getSize(); 
-    
-    @Override
-    public boolean getEmpty();
     
     @Override
     @TypeInfo("ceylon.language.Nothing")
@@ -33,27 +25,60 @@ public interface Empty
     
     @Override
     @TypeInfo("ceylon.language.Nothing")
-    public java.lang.Object item(@Name("key") java.lang.Object key);
+    public java.lang.Object item(@Name("key") @TypeInfo("ceylon.language.Integer")
+    Integer key);
+
+    @Override
+    @TypeInfo("ceylon.language.Empty")
+    public Empty segment(@Name("from") @TypeInfo("ceylon.language.Integer")
+    Integer from,
+    @Name("length") @TypeInfo("ceylon.language.Integer")
+    Integer length);
+
+    @Override
+    @TypeInfo("ceylon.language.Empty")
+    public Empty span(@Name("from") @TypeInfo("ceylon.language.Integer")
+    Integer from,
+    @Name("to") @TypeInfo("ceylon.language.Integer|ceylon.language.Nothing")
+    Integer length);
+
+    @Override
+    public java.lang.String toString();
     
     @Override
     @TypeInfo("ceylon.language.Nothing")
-    public java.lang.Object getFirst();
+    public Integer getLastIndex();
+
+    @Override
+    public Empty getClone();
     
+    @Override
+    public boolean contains(@Name("element") @TypeInfo("ceylon.language.Object")
+    java.lang.Object element);
+
+    @Override
+    public long count(@Name("element") @TypeInfo("ceylon.language.Object")
+    java.lang.Object element);
+
+    @Override
+    public boolean defines(@Name("index") @TypeInfo("ceylon.language.Integer")
+    Integer index);
+
     @Ignore
     public static final class Empty$impl {
         public static long getSize(Empty $this){
             return 0;
         }
-        public static boolean getEmpty(Empty $this){
-            return true;
+        public static Iterator getIterator(Empty $this){
+            return emptyIterator.getEmptyIterator();
         }
-        public static java.lang.Object item(Empty $this, Integer key){
+        public static java.lang.Object item(Empty $this, java.lang.Object key){
             return null;
         }
-        public static Empty segment(Empty $this, Comparable from, Comparable length) {
+        public static Empty segment(Empty $this, Integer from, Integer length) {
             return $this;
         }
-        public static Empty span(Empty $this, Comparable from, Comparable to) {
+        public static Empty span(Empty $this, Integer from, Integer to) {
             return $this;
         }
         public static long count(Empty $this, java.lang.Object element) {
@@ -65,11 +90,8 @@ public interface Empty
         public static boolean defines(Empty $this, Integer index) {
             return false;
         }
-        public static Cloneable getClone(Empty $this) {
+        public static Empty getClone(Empty $this) {
             return $this;
-        }
-        public static java.lang.Object getFirst(Empty $this){
-            return null;
         }
         public static java.lang.String toString(Empty $this) {
             return "{}";

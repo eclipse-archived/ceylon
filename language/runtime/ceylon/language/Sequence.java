@@ -13,8 +13,8 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @SatisfiedTypes({
     "ceylon.language.List<Element>",
     "ceylon.language.Some<Element>",
-    "ceylon.language.Ranged<ceylon.language.Integer,ceylon.language.Empty|ceylon.language.Sequence<Element>>",
-    "ceylon.language.Cloneable<ceylon.language.Sequence<Element>>"
+    "ceylon.language.Cloneable<ceylon.language.Sequence<Element>>",
+    "ceylon.language.Ranged<ceylon.language.Integer,ceylon.language.Empty|ceylon.language.Sequence<Element>>"
 })
 public interface Sequence<Element> 
         extends List<Element>, Some<Element> {
@@ -24,28 +24,15 @@ public interface Sequence<Element>
     public Integer getLastIndex();
     
     @Override
+    public Element getFirst();
+    
+    public Element getLast();
+
+    @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public FixedSized<? extends Element> getRest();
     
-    public Element getLast();
     
-    //this depends on efficient implementation of rest
-    /*
-    shared actual default object iterator 
-            extends Object()
-            satisfies Iterator<Element> {
-        shared actual Element head { 
-            return first;
-        }
-        shared actual Iterator<Element> tail {
-            return rest.iterator;
-        }
-    }
-    */
-    
-    @Override
-    public java.lang.String toString();
-
     @Ignore
     public static final class Sequence$impl {
 
@@ -58,10 +45,5 @@ public interface Sequence<Element>
                 return $this.getFirst(); //actually never occurs
             } 
         }
-
-        public static <Element> boolean defines(Sequence<Element> $this, Integer index){
-            return index.longValue() <= $this.getLastIndex().longValue();
-        }
-        
     }    
 }

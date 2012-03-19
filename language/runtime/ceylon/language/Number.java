@@ -6,15 +6,12 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @Ceylon
 public interface Number {
     
-    @TypeInfo(value="ceylon.language.Integer")
     public long getInteger();
-    @TypeInfo(value="ceylon.language.Float")
     public double getFloat();
     
     public boolean getPositive();
     public boolean getNegative();
     
-    @TypeInfo(value="ceylon.language.Integer")
     public long getSign();
     
     public Number getMagnitude();    

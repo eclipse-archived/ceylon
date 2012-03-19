@@ -23,18 +23,39 @@ public interface List<Element>
     @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     public Integer getLastIndex();
     
-    public boolean defines(@Name("index") Integer index);
+    @Override
+    public long getSize();
+    
+    public boolean defines(@Name("key") Integer key);
+    
+    @TypeInfo("ceylon.language.Nothing|Element")
+    @Override
+    public Element item(@Name("key") Integer key);
+    
+    @TypeInfo("ceylon.language.Iterator<Element>")
+    @Override
+    public Iterator<? extends Element> getIterator();
     
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public java.lang.Object span(@Name("from") Integer from, 
+    public Iterable<? extends Element> span(@Name("from") Integer from, 
             @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
             @Name("to") Integer to);
     
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public java.lang.Object segment(@Name("from") Integer from, 
+    public Iterable<? extends Element> segment(@Name("from") Integer from, 
             @Name("length") Integer length);
+    
+    @Override
+    public boolean equals(@Name("that") @TypeInfo("ceylon.language.Object")
+    java.lang.Object that);
+    
+    @Override
+    public int hashCode();
+    
+    @Override
+    public java.lang.String toString();
     
     @Ignore
     public static final class List$impl {

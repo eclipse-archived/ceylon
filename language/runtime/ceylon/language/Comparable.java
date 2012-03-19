@@ -1,7 +1,6 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -20,7 +19,7 @@ public interface Comparable<Other extends Comparable<? super Other>> {
     
     public boolean asLargeAs(@Name("other") Other other);
     
-    public boolean asSmallAs(@Name("other") Other other);*/
+    public boolean asSmallAs(@Name("other") Other other);
     
     @Ignore
     public static final class Comparable$impl {
@@ -41,4 +40,5 @@ public interface Comparable<Other extends Comparable<? super Other>> {
         }
 
     }
+     */
 }

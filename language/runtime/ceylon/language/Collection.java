@@ -3,6 +3,7 @@ package ceylon.language;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
@@ -17,9 +18,11 @@ public interface Collection<Element>
     public boolean getEmpty();
 
     @Override
-    public boolean contains(@Name("element") java.lang.Object element);
+    public boolean contains(@Name("element") @TypeInfo("ceylon.language.Object")
+            java.lang.Object element);
     
-    public long count(@Name("element") java.lang.Object element);
+    public long count(@Name("element") @TypeInfo("ceylon.language.Object")
+            java.lang.Object element);
     
     @Ignore
     public static final class Collection$impl {

@@ -50,10 +50,10 @@ public interface Correspondence<Key,Item> {
             return keys.getLastIndex();
         }
         public final Item getFirst() {
-            return $this.item(keys.getFirst());
+            return $this.item((Key)keys.getFirst());
         }
         public final FixedSized<? extends Item> getRest() {
-            return (FixedSized) $this.items(keys.getRest());
+            return (FixedSized<? extends Item>) $this.items(keys.getRest());
         }
         public final Item item(Integer index) {
             Key key = keys.item(index);
@@ -101,14 +101,14 @@ public interface Correspondence<Key,Item> {
         }
         @Override
         public boolean defines(Integer index) {
-            return Sequence$impl.defines(this, index);
+            return List$impl.defines(this, index);
         }
         @Override
         public Iterator<? extends Item> getIterator() {
             return List$impl.getIterator(this);
         }
         @Override
-        public List<? extends Item> segment(Integer from, Integer length) {
+        public Iterable<? extends Item> segment(Integer from, Integer length) {
         	Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.segment(from, length);
         	if (keys.getEmpty()) {
         		return $empty.getEmpty();
@@ -118,7 +118,7 @@ public interface Correspondence<Key,Item> {
         	}
         }
         @Override
-        public List<? extends Item> span(Integer from, Integer to) {
+        public Iterable<? extends Item> span(Integer from, Integer to) {
         	Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.span(from, to);
         	if (keys.getEmpty()) {
         		return $empty.getEmpty();
@@ -149,7 +149,7 @@ public interface Correspondence<Key,Item> {
         }
         @Override
         public int hashCode() {
-            return List$impl.hashCode(this);
+            return keys.hashCode();
         }
     }
     

@@ -12,8 +12,13 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 public interface Some<Element> extends FixedSized<Element> {
     
     @TypeInfo("Element")
-    @Override public Element getFirst();
+    @Override 
+    public Element getFirst();
     
+    @Override
+    public boolean getEmpty();
+    
+    @TypeInfo("ceylon.language.FixedSized<Element>")
     public FixedSized<? extends Element> getRest();
 
     @Ignore

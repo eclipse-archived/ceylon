@@ -16,24 +16,39 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
                  "ceylon.language.Cloneable<ceylon.language.Set<Element>>"})
 public interface Set<Element> 
         extends Collection<Element> {
+    
+    @Override
+    public long count(java.lang.Object element);
 
     public boolean superset(@TypeInfo("ceylon.language.Set<ceylon.language.Object>") 
                             @Name("set") Set<? extends java.lang.Object> set);
+    
     public boolean subset(@TypeInfo("ceylon.language.Set<ceylon.language.Object>") 
                           @Name("set") Set<? extends java.lang.Object> set);
     
+    @Override
+    public boolean equals(@Name("that") @TypeInfo("ceylon.language.Object")
+    java.lang.Object that);
+    
+    @Override
+    public int hashCode();
+    
+    @TypeParameters(@TypeParameter(value = "Other", satisfies = "ceylon.language.Object"))
     @TypeInfo("ceylon.language.Set<Element|Other>")
-    public <Other> Set union(@TypeInfo("ceylon.language.Set<Other>") 
+    public <Other> Set<? extends Object> union(@TypeInfo("ceylon.language.Set<Other>") 
                              @Name("set") Set<? extends Other> set);
     
+    @TypeParameters(@TypeParameter(value = "Other", satisfies = "ceylon.language.Object"))
     @TypeInfo("ceylon.language.Set<Element&Other>")
-    public <Other> Set intersection(@TypeInfo("ceylon.language.Set<Other>") 
+    public <Other> Set<? extends Object> intersection(@TypeInfo("ceylon.language.Set<Other>") 
                                     @Name("set") Set<? extends Other> set);
 
+    @TypeParameters(@TypeParameter(value = "Other", satisfies = "ceylon.language.Object"))
     @TypeInfo("ceylon.language.Set<Element|Other>")
-    public <Other> Set exclusiveUnion(@TypeInfo("ceylon.language.Set<Other>") 
+    public <Other> Set<? extends Object> exclusiveUnion(@TypeInfo("ceylon.language.Set<Other>") 
                                       @Name("set") Set<? extends Other> set);
     
+    @TypeParameters(@TypeParameter(value = "Other", satisfies = "ceylon.language.Object"))
     @TypeInfo("ceylon.language.Set<Element>")
     public <Other> Set<? extends Element> complement(@TypeInfo("ceylon.language.Set<Other>") 
                                       @Name("set") Set<? extends Other> set);
@@ -77,6 +92,7 @@ public interface Set<Element>
         	}
         	return false;
         }
+        
         public static <Element> int hashCode(final Set<Element> $this) {
             return (int) $this.getSize();
         }

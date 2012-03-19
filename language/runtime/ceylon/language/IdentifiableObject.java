@@ -4,13 +4,15 @@ import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon
 @Class(extendsType="ceylon.language.Object")
 public abstract class IdentifiableObject {
 
-    public boolean equals(@Name("that")
+    public boolean equals(@Name("that") @TypeInfo("ceylon.language.Object") 
     java.lang.Object that) {
+        
         if (Util.isIdentifiableObject(that)) {
             return this == that;
         }
