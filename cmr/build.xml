@@ -44,6 +44,7 @@
         <pathelement path="${jandex.lib}"/>
         <pathelement path="${sardine.lib}"/>
         <pathelement path="${httpclient.lib}"/>
+        <pathelement path="${httpcore.lib}"/>
     </path>
 
     <path id="test.build.classpath">

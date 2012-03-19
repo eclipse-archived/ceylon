@@ -36,6 +36,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.http.ProtocolException;
+import org.apache.http.client.ClientProtocolException;
+
 /**
  * WebDAV content store.
  *
@@ -103,6 +106,12 @@ public class WebDAVContentStore extends URLContentStore {
         }catch(SardineException x){
             // hide this from callers because its getMessage() is borked
             throw new IOException(x.getMessage()+": "+x.getResponsePhrase()+" "+x.getStatusCode());
+        }catch(ClientProtocolException x){
+            // in case of protocol exception (invalid response) we get this sort of
+            // chain set up with a null message, so unwrap it for better messages
+            if(x.getCause() != null && x.getCause() instanceof ProtocolException)
+                throw new IOException(x.getCause().getMessage());
+            throw x;
         }
     }
 
