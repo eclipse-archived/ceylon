@@ -22,22 +22,22 @@
 	    classpathref="ant-tasks"/>
 	</target>
 	
-    <target name="default" depends="ceylon-ant-taskdefs, compile, doc, run">
+    <target name="default" depends="doc, run">
     </target>
 
-    <target name="compile">
+    <target name="compile" depends="ceylon-ant-taskdefs">
     	<ceylonc>
     		<module name="com.acme.helloworld"/>
     	</ceylonc>
     </target>
 
-    <target name="doc">
+    <target name="doc" depends="ceylon-ant-taskdefs">
         <ceylond>
             <module name="com.acme.helloworld"/>
         </ceylond>
     </target>
 
-    <target name="run">
+    <target name="run" depends="compile">
         <ceylon module="com.acme.helloworld/1.0.0"/>
     </target>
 
