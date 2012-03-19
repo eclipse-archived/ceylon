@@ -36,7 +36,7 @@ public class Entry<Key, Item> {
 
 	@Override
 	public int hashCode() {
-	    return key.hashCode()/2 + item.hashCode()/2;// TODO: really should be xor
+	    return (31 + key.hashCode()) * 31 + item.hashCode();
 	}
 	
 	@Override

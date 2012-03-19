@@ -94,7 +94,15 @@ public interface Set<Element>
         }
         
         public static <Element> int hashCode(final Set<Element> $this) {
-            return (int) $this.getSize();
+            int hashCode = 1;
+            java.lang.Object elem;
+            for (Iterator<? extends Element> iter=$this.getIterator(); !((elem = iter.next()) instanceof Finished);) {
+                hashCode *= 31;
+                if (elem != null) {
+                    hashCode += elem.hashCode();
+                }
+            }
+            return hashCode;
         }
     }
 

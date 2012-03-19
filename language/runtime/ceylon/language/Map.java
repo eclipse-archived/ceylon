@@ -80,7 +80,15 @@ public interface Map<Key,Item>
         	return false;
         }
         public static <Key,Item> int hashCode(final Map<Key,Item> $this) {
-            return (int) $this.getSize();
+            int hashCode = 1;
+            java.lang.Object elem;
+            for (Iterator<? extends Entry<? extends Key,? extends Item>> iter=$this.getIterator(); !((elem = iter.next()) instanceof Finished);) {
+                hashCode *= 31;
+                if (elem != null) {
+                    hashCode += elem.hashCode();
+                }
+            }
+            return hashCode;
         }
 
         public static <Key,Item> Set<? extends Key> getKeys(final Map<Key,Item> $this){
