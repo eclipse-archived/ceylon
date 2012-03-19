@@ -67,6 +67,11 @@ To see a list of command line options, type one of:
 We include support for Ceylon ant tasks which are documented on
 at <http://ceylon-lang.org/documentation/1.0/reference/tool/ant/>.
 
+To run the "hello world" program using ant, type:
+
+    cd samples/helloworld
+    ant
+
 ## Source code
 
 Source code is available from GitHub:
