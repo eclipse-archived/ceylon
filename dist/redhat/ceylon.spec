@@ -39,10 +39,13 @@ Programs written in Ceylon execute on any JVM.
 
 %build
 export LANG=en_US.UTF-8
-pushd ceylon-spec
+pushd ceylon.language
 ant publish
 popd
-pushd ceylon.language
+pushd ceylon-module-resolver
+ant publish
+popd
+pushd ceylon-spec
 ant publish
 popd
 pushd ceylon-dist
