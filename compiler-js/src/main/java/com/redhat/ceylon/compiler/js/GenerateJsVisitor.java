@@ -1922,10 +1922,14 @@ public class GenerateJsVisitor extends Visitor
 	   String varName = variable.getDeclarationModel().getName();
 
 	   boolean simpleCheck = false;
+	   boolean matchingGetter = false;
 	   Term variableRHS = variable.getSpecifierExpression().getExpression().getTerm();
 	   if (variableRHS instanceof BaseMemberExpression) {
 		   BaseMemberExpression bme = (BaseMemberExpression) variableRHS;
-		   if (bme.getDeclaration().getName().equals(varName)) {
+		   matchingGetter = matchingGetterExists(bme.getDeclaration(),
+		           variable.getDeclarationModel(), condition);
+		   if (bme.getDeclaration().getName().equals(varName)
+		               && (matchingGetter || !accessThroughGetter(bme.getDeclaration()))) {
 			   // the simple case: if/while (is/exists/nonempty x)
 			   simpleCheck = true;
 		   }
@@ -1939,8 +1943,7 @@ public class GenerateJsVisitor extends Visitor
            specialConditionCheck(condition, variableRHS, simpleCheck);
            out(")");
 
-           if (matchingGetterExists(bme.getDeclaration(), variable.getDeclarationModel(),
-                                    condition)) {
+           if (matchingGetter) {
                // a getter for the variable already exists
                block.visit(this);
            } else {
@@ -1949,7 +1952,8 @@ public class GenerateJsVisitor extends Visitor
                function();
                out(getter(variable.getDeclarationModel()));
                out("(){");
-               out("return ", memberName(bme.getDeclaration(), false));
+               out("return ");
+               bme.visit(this);
                out("}");
                endLine();
 
