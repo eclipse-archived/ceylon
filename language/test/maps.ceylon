@@ -228,17 +228,17 @@ class MapTest<Key, Item>(Key->Item... entries)
 
 void testMaps() {
     value m1 = MapTest<Integer, String>(1->"A", 2->"B", 3->"C", 4->"B");
-    assert(m1.count(2->"B")==1, "Map.count 1");
+    assert(m1.count(2->"B")==1, "Map.count(2->B) is " m1.count(2->"B") " instead of 1");
     assert(m1.count(4.2)==0, "Map.count 2");
-    assert(2->"B" in m1, "Map.contains 1");
+    assert(2->"B" in m1, "Map.contains(2->B) should be true");
     assert(!(4.2 in m1), "Map.contains 2");
     assert(!(1->"C" in m1), "Map.contains 3");
     assert(m1.clone == m1, "Map.clone/equals");
     assert(m1 != 5, "Map.equals");
-    assert(m1.defines(4), "Map.defines 1");
+    assert(m1.defines(4), "Map.defines(4) should be true");
     assert(!m1.defines(5), "Map.defines 2");
     assert(!m1.defines("hi"), "Map.defines 3");
-    assert(exists m1[4], "Map.item 1");
+    assert(exists m1[4], "Map.item(4) should exist");
     assert(!exists m1[5], "Map.item 2");
     assert(!exists m1["hi"], "Map.item 3");
     assert(!(is Finished m1.iterator.next()), "Map.iterator");
@@ -248,9 +248,9 @@ void testMaps() {
     }
     assert(m1.keys.size==m1.size, "Map.keys 1");
     for (e in m1) {
-        assert(e.key in m1.keys, "Map.keys 2");
+        assert(e.key in m1.keys, "Map.keys.contains(" e.key ") should be true");
     }
-    assert("B"->SetTest(2, 4) in m1.inverse, "Map.inverse");
+    assert("B"->SetTest(2, 4) in m1.inverse, "Map.inverse should contain B->Set(2,4)");
 }
 
 void testSets() {
