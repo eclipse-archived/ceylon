@@ -32,8 +32,10 @@ shared void run() {
     misc();
     print("Array/Collection/FixedSized tests");
     testArrays();
-    print("Map/Set tests");
+    print("Map tests");
     testMaps();
+    print("Set tests");
+    testSets();
     results();
 }
 

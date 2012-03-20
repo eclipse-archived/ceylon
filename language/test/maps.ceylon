@@ -8,7 +8,7 @@ interface SetTestBase<out Element> satisfies Set<Element>
     shared formal Element[] elements;
 }
 
-abstract class SetTest<Element>(Element... elements)
+class SetTest<Element>(Element... elements)
             satisfies SetTestBase<Element>
             given Element satisfies Object {
     shared actual Element[] elements = elements;
@@ -56,22 +56,66 @@ abstract class SetTest<Element>(Element... elements)
         }
         return true;
     }
-    /*shared actual Set<Element|Other> union<Other>(Set<Other> set)
+    shared actual Set<Element|Other> union<Other>(Set<Other> set)
                 given Other satisfies Object {
-        return bottom; //TODO
+        value sb = SequenceBuilder<Element|Other>();
+        sb.appendAll(elements...);
+        for (e in set) {
+            for (e2 in elements) {
+                if (e2 == e) { break; }
+            } else {
+                sb.append(e);
+            }
+        }
+        return SetTest(sb.sequence...);
     }
     shared actual Set<Element&Other> intersection<Other>(Set<Other> set)
                 given Other satisfies Object {
-        return bottom; //TODO
+        //value sb = SequenceBuilder<Element&Other>();
+        //for (e in set) {
+        //    if (e is Element) {
+        //        for (e2 in elements) {
+        //            if (e2 == e) {
+        //                sb.append(e);
+        //                break;
+        //            }
+        //        }
+        //    }
+        //}
+        //return SetTest(sb.sequence...);
+        return bottom;
     }
     shared actual Set<Element|Other> exclusiveUnion<Other>(Set<Other> set)
                 given Other satisfies Object {
-        return bottom; //TODO
+        value sb = SequenceBuilder<Element|Other>();
+        for (e in elements) {
+            for (e2 in set) {
+                if (e2 == e) { break; }
+            } else {
+                sb.append(e);
+            }
+        }
+        for (e in set) {
+            for (e2 in elements) {
+                if (e2 == e) { break; }
+            } else {
+                sb.append(e);
+            }
+        }
+        return SetTest(sb.sequence...);
     }
     shared actual Set<Element> complement<Other>(Set<Other> set)
                 given Other satisfies Object {
-        return bottom; //TODO
-    }*/
+        value sb = SequenceBuilder<Element>();
+        for (e in elements) {
+            for (e2 in set) {
+                if (e2 == e) { break; }
+            } else {
+                sb.append(e);
+            }
+        }
+        return SetTest(sb.sequence...);
+    }
 }
 
 interface MapTestBase<out Key, out Item> satisfies Map<Key, Item>
@@ -149,7 +193,7 @@ class MapTest<Key, Item>(Key->Item... entries)
     shared actual Set<Key> keys {
         value sb = SequenceBuilder<Key>();
         for (e in entries) { sb.append(e.key); }
-        return bottom; //TODO: SetTest<Key>(sn.sequence...)
+        return SetTest(sb.sequence...);
     }
     shared actual Collection<Item> values {
         value sb = SequenceBuilder<Item>();
@@ -174,11 +218,11 @@ class MapTest<Key, Item>(Key->Item... entries)
                 ++cnt2;
             }
             if (!duplicate) {
-                //TODO: sb.append(e.item->SetTest<Key>(keySB.sequence));
+                sb.append(e.item->SetTest(keySB.sequence...));
             }
             ++count;
         }
-        return bottom; //TODO: TestSet<Key>(sb.sequence)
+        return MapTest(sb.sequence...);
     }
 }
 
@@ -202,4 +246,30 @@ void testMaps() {
     for (e in m1) {
         assert(e.item in m1.values, "Map.values 2");
     }
+    assert(m1.keys.size==m1.size, "Map.keys 1");
+    for (e in m1) {
+        assert(e.key in m1.keys, "Map.keys 2");
+    }
+    assert("B"->SetTest(2, 4) in m1.inverse, "Map.inverse");
+}
+
+void testSets() {
+    value s1 = SetTest<Integer>(1, 2, 3);
+    value emptySet = SetTest<Bottom>();
+    assert(s1.count(2)==1, "Set.count 1");
+    assert(s1.count(4.2)==0, "Set.count 2");
+    assert(2 in s1, "Set.contains 1");
+    assert(!(4.2 in s1), "Set.contains 2");
+    assert(!(4 in s1), "Set.contains 3");
+    assert(s1.clone == s1, "Set.clone/equals");
+    assert(s1 != 5, "Set.equals");
+    assert(!(is Finished s1.iterator.next()), "Set.iterator");
+    assert(emptySet.subset(s1), "Set.subset 1");
+    assert(!s1.subset(emptySet), "Set.subset 2");
+    assert(!emptySet.superset(s1), "Set.superset 1");
+    assert(s1.superset(emptySet), "Set.superset 2");
+    assert(s1.union(emptySet)==s1, "Set.union 1");
+    assert(emptySet.union(s1)==s1, "Set.union 2");
+    assert(s1.complement(emptySet)==s1, "Set.complement 1");
+    assert(emptySet.complement(s1)==emptySet, "Set.complement 2");
 }
