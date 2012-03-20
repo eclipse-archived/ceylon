@@ -2134,8 +2134,10 @@ public class GenerateJsVisitor extends Visitor
 	   SpecifierExpression iterable = foriter.getSpecifierExpression();
 	   boolean hasElse = that.getElseClause() != null && !that.getElseClause().getBlock().getStatements().isEmpty();
 	   //First we need to enclose this inside an anonymous function,
-	   //to avoid problems with repeated iterator variables
-	   out("(function()");
+	   //to avoid problems with repeated iterator variables. We'll catch the return value
+	   //in a tmpvar in case we need to return early
+	   final String loopVar = createTempVariable();
+	   out("var ", loopVar, "=(function()");
 	   beginBlock();
 	   final String iterVar = createTempVariable();
 	   final String itemVar = createTempVariable();
@@ -2189,7 +2191,7 @@ public class GenerateJsVisitor extends Visitor
 		   that.getElseClause().getBlock().visit(this);
 	   }
 	   endBlock();
-	   out("());");
+	   out("()); if (", loopVar, "!==undefined) return ", loopVar, ";");
    }
 
     public void visit(InOp that) {
