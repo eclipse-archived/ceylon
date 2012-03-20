@@ -350,6 +350,7 @@ function ArrayList(items) {
     var that = new ArrayList.$$;
     that.value=items;
     that.size=new Integer(items.length);
+    that.lastIndex=new Integer(items.length-1);
     return that;
 }
 initType(ArrayList, 'ceylon.language.ArrayList', Array$, List);
@@ -367,6 +368,9 @@ ArrayList$proto.item = function(idx) {
         return this.value[idx.value];
     }
     return null;
+}
+ArrayList$proto.getLastIndex = function() {
+    return this.lastIndex;
 }
 
 exports.ArrayList=ArrayList;

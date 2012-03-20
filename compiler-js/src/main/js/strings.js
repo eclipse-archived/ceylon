@@ -3,6 +3,9 @@ function inheritProto(a,b,c,d,e,f,g,h,j,i,k,l);//IGNORE
 function Boolean$(x){}//IGNORE
 function Integer(x){}//IGNORE
 function ArraySequence(x){}//IGNORE
+function Singleton(x){}//IGNORE
+function largest(a,b){}//IGNORE
+function smallest(a,b){}//IGNORE
 var Object$,List,Comparable,Ranged,FixedSized,Summable,Castable,Cloneable,smaller,larger,equal;//IGNORE
 var $true,$false,$empty,$finished,IdentifiableObject,Iterator,exports;//IGNORE
 
