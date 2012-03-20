@@ -90,17 +90,18 @@ platforms to make sure it works:
 
 ### Linux
 
-- Ubuntu "oneiric" 11.10 (64 bit) JDK 1.7.0_147-icedtea, 1.6.0_26
-- Fedora 16 JDK 1.6.0_22-icedtea
+- Ubuntu "oneiric" 11.10 (64 bit) JDK 1.7.0_147 (IcedTea), 1.6.0_26
+- Fedora 16 (64 bit), JDK 1.6.0_24 (IcedTea 6 1.11.1, server VM 20.0-b12)
 
 ### Windows
 
-- Windows 7 (64 bit) JDK 1.7, 1.6.0_30
+- Windows 7 (64 bit) 1.6.0_31
+- Windows 7 (32 bit) JDK 1.6.0_29
 
 ### OSX
 
-- OSX 10 Snow Leopard (10.6.8) JDK 1.7.0-b217, 1.6.0_29, 1.6.0_26
-- OSX 10 Lion (10.7.2) JDK 1.6.0_29
+- OSX 10 Snow Leopard (10.6.8) JDK 1.6.0_26
+- OSX 10 Lion (10.7.3) JDK 1.6.0_29, 1.7.0-internal (OpenJDK)
 
 ## License
 
