@@ -439,7 +439,7 @@ Entry$proto.getString = function() {
 Entry$proto.getKey = function() { return this.key; }
 Entry$proto.getItem = function() { return this.item; }
 Entry$proto.equals = function(other) {
-    return Boolean$(other && this.key.equals(other.key) === getTrue() && this.item.equals(other.item) === getTrue());
+    return Boolean$(other && this.getKey().equals(other.getKey()) === $true && this.getItem().equals(other.getItem()) === $true);
 }
 Entry$proto.getHash = function() { Integer(this.key.getHash().value ^ this.item.getHash().value); }
 

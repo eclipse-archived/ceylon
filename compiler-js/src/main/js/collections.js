@@ -163,7 +163,17 @@ List$proto.equals = function(other) {
     }
     return $false;
 }
-List$proto.getHash = function() { return this.getSize(); }
+List$proto.getHash = function() {
+    var hc=1;
+    var iter=this.getIterator();
+    var e; while ((e = iter.next()) != $finished) {
+        hc*=31;
+        if (e !== null) {
+            hc += e.getHash().value;
+        }
+    }
+    return Integer(hc);
+}
 List$proto.getString = function() {
     var s = '{';
     var first = true;
