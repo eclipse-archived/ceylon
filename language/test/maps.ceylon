@@ -129,6 +129,7 @@ class MapTest<Key, Item>(Key->Item... entries)
             given Key satisfies Object
             given Item satisfies Object {
     shared actual Entry<Key, Item>[] entries = entries;
+    //REMOVE as soon as interfaces can have concrete members
     shared actual Boolean equals(Object other) {
         if (is MapTestBase<Object, Object> other) {
             return other.entries == entries;
@@ -187,6 +188,7 @@ class MapTest<Key, Item>(Key->Item... entries)
         }
         return true;
     }
+    //REMOVE as soon as interfaces can have concrete members
     shared actual Integer count(Object element) {
         return contains(element) then 1 else 0;
     }
