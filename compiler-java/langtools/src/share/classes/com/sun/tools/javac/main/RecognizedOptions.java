@@ -683,11 +683,17 @@ public class RecognizedOptions {
                     File f = new File(s);
                     if (!f.exists()) {
                         if (s.endsWith(".ceylon")) {
-                            String path = options.get("-src");
+                            // -sourcepath not -src because the COption for 
+                            // CEYLONSOURCEPATH puts it in the options map as -sourcepath
+                            String path = options.get("-sourcepath");
                             if (path != null) {
                                 File ff = new File(path + File.separator + s);
                                 if (ff.isFile()) {
                                     helper.addFile(ff);
+                                    return false;
+                                } else if (new File(path + File.separator + s.replace(".", "/")).isDirectory()) {
+                                    // A Ceylon module name that ends with .ceylon
+                                    helper.addClassName(s);
                                     return false;
                                 }
                             }
