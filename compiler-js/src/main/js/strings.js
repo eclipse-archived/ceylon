@@ -65,7 +65,7 @@ String$proto.segment = function(from, len) {
         this.codePoints = count;
         if (fromIndex === 0) {return this;}
     }
-    return String$(this.value.substring(i1, i2));
+    return String$(this.value.substring(i1, i2), count-fromIndex);
 }
 String$proto.getEmpty = function() {
     return Boolean$(this.value.length===0);
