@@ -144,7 +144,7 @@ shared void numbers() {
         exp(0,-2);
         fail("exp(2,-1) should throw");
     } catch (Exception e) {}
-    assert(exp(-1,-2)==1, "exp(-1,-2)==-1");
+    assert(exp(-1,-2)==1, "exp(-1,-2)==1"); //CHECK possible bug should be -1
     try {
         exp(-2,-2);
         fail("exp(-2,-2) should throw");
@@ -169,7 +169,7 @@ shared void numbers() {
     assert((+0).hash==(-1+(+1))*+100.hash, "integer hash");
     assert((2.2*2.2*2.2).hash==(2.2**3.0).hash, "float hash");
     
-    assert(1.6.integer==1, "1.6.integer is " 1.6.integer " instead of 2");
+    assert(1.6.integer==1, "1.6.integer is " 1.6.integer " instead of 1");
     assert(1.1.integer==1, "1.1.integer is " 1.1.integer " instead of 1");
     assert((-1.6).integer==-1, "(-1.6).integer is " (-1.6).integer " instead of -2");
     assert((-1.1).integer==-1, "(-1.1).integer is " (-1.1).integer " instead of -1");
