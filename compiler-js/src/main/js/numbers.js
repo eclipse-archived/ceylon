@@ -99,8 +99,8 @@ Float$proto.compare = function(other) {
     return this.value===other.value ? equal
                                     : (this.value<other.value ? smaller:larger);
 }
-Float$proto.getFloat = function() { return this }
-Float$proto.getInteger = function() { return Integer(parseInt(this.value.toFixed())); }
+Float$proto.getFloat = function() { return this; }
+Float$proto.getInteger = function() { return Integer(this.value >= 0.0 ? Math.floor(this.value) : Math.ceil(this.value)); }
 Float$proto.getWholePart = function() {
     var _p = this.value.toPrecision();
     var dot = _p.indexOf('.');
