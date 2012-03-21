@@ -31,6 +31,6 @@ shared class SequenceTest () extends Test() {
         
         // invoke
         assertEquals({`f`, `b`, `l`}, stringSequence[].item(0));
-        assertEquals({`f`, `b`, `l`}, stringSequence[].item{index = 0;});
+        assertEquals({`f`, `b`, `l`}, stringSequence[].item{key = 0;});
     }
 }
