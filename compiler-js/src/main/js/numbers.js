@@ -3,6 +3,7 @@ function String$(x){};//IGNORE
 function Boolean$(x){};//IGNORE
 function Character(x){};//IGNORE
 function inheritProto(a,b,c,d,e,f,g);//IGNORE
+function Exception$(x){};//IGNORE
 var Object$,Castable,Integral,Numeric,equal,smaller,larger,exports,$true,$false;//IGNORE
 
 function Integer(value) {
@@ -22,8 +23,14 @@ Integer$proto.divided = function(other) {
     return Integer((exact<0) ? Math.ceil(exact) : Math.floor(exact));
 }
 Integer$proto.remainder = function(other) { return Integer(this.value%other.value) }
-Integer$proto.power = function(other) {
-    var exact = Math.pow(this.value, other.value);
+Integer$proto.power = function(exp) {
+    if (exp.getSign().value < 0) {
+        if (this.value===1 || this.value===-1) {
+            return this;
+        }
+        throw Exception(String$("Negative exponent"));
+    }
+    var exact = Math.pow(this.value, exp.value);
     return Integer((exact<0) ? Math.ceil(exact) : Math.floor(exact));
 }
 Integer$proto.getNegativeValue = function() { return Integer(-this.value) }

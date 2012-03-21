@@ -212,11 +212,11 @@ inheritProto(Exception, IdentifiableObject, '$IdentifiableObject$');
 var Exception$proto = Exception.$$.prototype;
 Exception$proto.getCause = function() {return this.cause;}
 Exception$proto.getMessage = function() {
-    return this.description!==null ? this.description
-           : (this.cause!==null ? this.cause.getMessage() : String$("", 0));
+    return this.description ? this.description
+           : (this.cause ? this.cause.getMessage() : String$("", 0));
 }
 Exception$proto.getString = function() {
-    return String$('Exception "' + this.getMessage().value + '"');
+    return String$(className(this).value + ' "' + this.getMessage().value + '"');
 }
 
 //#include numbers.js
@@ -444,9 +444,9 @@ Entry$proto.equals = function(other) {
 Entry$proto.getHash = function() { Integer(this.key.getHash().value ^ this.item.getHash().value); }
 
 
-exports.Exception=Exception; //TODO just to let the compiler finish
+exports.Exception=Exception;
 exports.IdentifiableObject=IdentifiableObject;
-exports.Object=Object$; //TODO just to let the compiler finish
+exports.Object=Object$;
 exports.Boolean=Boolean$;
 exports.Comparison=Comparison;
 exports.getNull=getNull;
