@@ -63,6 +63,12 @@ public class PackageDoc extends ClassOrPackageDoc {
      * methods in the package
      */
     private List<Method> methods;
+    /**
+     * The {@linkplain #shouldInclude(Declaration) visible} 
+     * exceptions in the package
+     */
+    private List<Class> exceptions;
+    
     private final boolean sharingPageWithModule;
 
 	public PackageDoc(CeylonDocTool tool, Writer writer, Package pkg) throws IOException {
@@ -77,18 +83,29 @@ public class PackageDoc extends ClassOrPackageDoc {
         interfaces = new ArrayList<Interface>();
         attributes = new ArrayList<MethodOrValue>();
         methods = new ArrayList<Method>();
+        exceptions = new ArrayList<Class>();
         for (Declaration m : pkg.getMembers()) {
             if (!shouldInclude(m)) {
                 continue;
             }
-            if (m instanceof Interface)
+            if (m instanceof Interface) {
                 interfaces.add((Interface) m);
-            else if (m instanceof Class)
-                classes.add((Class) m);
-            else if (m instanceof Value || m instanceof Getter)
+            }
+            else if (m instanceof Class) {
+                Class c = (Class) m;
+                if( Util.isException(c) ) {
+                    exceptions.add(c);
+                }
+                else {
+                    classes.add(c);
+                }
+            }
+            else if (m instanceof Value || m instanceof Getter) {
                 attributes.add((MethodOrValue) m);
-            else if (m instanceof Method)
+            }
+            else if (m instanceof Method) {
                 methods.add((Method) m);
+            }
         }
         Comparator<Declaration> comparator = new Comparator<Declaration>() {
             @Override
@@ -100,6 +117,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         Collections.sort(interfaces, comparator);
         Collections.sort(attributes, comparator);
         Collections.sort(methods, comparator);
+        Collections.sort(exceptions, comparator);
     }
 
     public void generate() throws IOException {
@@ -115,6 +133,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         methods();
         interfaces();
         classes();
+        exceptions();
         if (!sharingPageWithModule) {
             close("body");
             close("html");
@@ -146,8 +165,9 @@ public class PackageDoc extends ClassOrPackageDoc {
     protected void subMenu() throws IOException {
         if (attributes.isEmpty()
                 && methods.isEmpty()
+                && interfaces.isEmpty()
                 && classes.isEmpty()
-                && interfaces.isEmpty()) {
+                && exceptions.isEmpty()) {
             return;
         }
         open("div class='submenu'");
@@ -157,11 +177,14 @@ public class PackageDoc extends ClassOrPackageDoc {
         if (!methods.isEmpty()) {
             printSubMenuItem("section-methods", getAccessKeyed("Methods", 'M', "Jump to methods"));
         }
+        if (!interfaces.isEmpty()) {
+            printSubMenuItem("section-interfaces", getAccessKeyed("Interfaces", 'I', "Jump to interfaces"));
+        }
         if (!classes.isEmpty()) {
             printSubMenuItem("section-classes", getAccessKeyed("Classes", 'C', "Jump to classes"));
         }
-        if (!interfaces.isEmpty()) {
-            printSubMenuItem("section-interfaces", getAccessKeyed("Interfaces", 'I', "Jump to interfaces"));
+        if (!exceptions.isEmpty()) {
+            printSubMenuItem("section-exceptions", getAccessKeyed("Exceptions", 'E', "Jump to exceptions"));
         }
         close("div");
     }
@@ -209,6 +232,17 @@ public class PackageDoc extends ClassOrPackageDoc {
         }
         close("table");
     }
+    
+    private void exceptions() throws IOException {
+        if (exceptions.isEmpty()) {
+            return;
+        }
+        openTable("section-exceptions", "Exceptions", "Modifier and Type", "Description");
+        for (Class e : exceptions) {
+            doc(e);
+        }
+        close("table");
+    }
 
     private void doc(ClassOrInterface d) throws IOException {
         open("tr class='TableRowColor category'");
@@ -249,11 +283,14 @@ public class PackageDoc extends ClassOrPackageDoc {
         if (!methods.isEmpty()) {
             writeKeyboardShortcut('m', "#section-methods");
         }
+        if (!interfaces.isEmpty()) {
+            writeKeyboardShortcut('i', "#section-interfaces");
+        }
         if (!classes.isEmpty()) {
             writeKeyboardShortcut('c', "#section-classes");
         }
-        if (!interfaces.isEmpty()) {
-            writeKeyboardShortcut('i', "#section-interfaces");
+        if (!exceptions.isEmpty()) {
+            writeKeyboardShortcut('e', "#section-exceptions");
         }
     }
 }

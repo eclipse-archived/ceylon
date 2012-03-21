@@ -408,7 +408,7 @@ $(document).ready(function() {
             selectedTags.push($(this).attr('name'));
         });
         
-        var sections = $('#section-interfaces,#section-classes,#section-attributes,#section-methods');
+        var sections = $('#section-interfaces,#section-classes,#section-exceptions,#section-attributes,#section-methods');
         if( selectedTags.length == 0 ) {
             $('.TableRowColor', sections).show();
             $('#filterDropdownLinkInfo').html('');

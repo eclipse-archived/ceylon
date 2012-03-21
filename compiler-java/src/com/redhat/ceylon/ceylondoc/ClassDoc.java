@@ -80,14 +80,19 @@ public class ClassDoc extends ClassOrPackageDoc {
     private List<Class> satisfyingClasses;
     /**
      * The {@linkplain #shouldInclude(Declaration) visible} 
+     * inner interfaces
+     */
+    private List<Interface> innerInterfaces;
+    /**
+     * The {@linkplain #shouldInclude(Declaration) visible} 
      * inner classes
      */
     private List<Class> innerClasses;
     /**
      * The {@linkplain #shouldInclude(Declaration) visible} 
-     * inner interfaces
+     * inner exceptions
      */
-    private List<Interface> innerInterfaces;
+    private List<Class> innerExceptions;
     /**
      * The {@linkplain #shouldInclude(Declaration) visible} interfaces 
      * that satisfy the key
@@ -174,22 +179,34 @@ public class ClassDoc extends ClassOrPackageDoc {
         satisfyingClasses = new ArrayList<Class>();
         satisfyingInterfaces = new ArrayList<Interface>();
         attributes = new ArrayList<MethodOrValue>();
-        innerClasses = new ArrayList<Class>();
         innerInterfaces = new ArrayList<Interface>();
+        innerClasses = new ArrayList<Class>();
+        innerExceptions = new ArrayList<Class>();
         superClasses = getAncestors(klass);
         superInterfaces = getSuperInterfaces(klass);
         for (Declaration m : klass.getMembers()) {
             if (shouldInclude(m)) {
-                if (m instanceof Value)
+                if (m instanceof Value) {
                     attributes.add((Value) m);
-                else if (m instanceof Getter)
+                }
+                else if (m instanceof Getter) {
                     attributes.add((Getter) m);
-                else if (m instanceof Method)
+                }
+                else if (m instanceof Method) {
                     methods.add((Method) m);
-                else if (m instanceof Class)
-                    innerClasses.add((Class) m);
-                else if (m instanceof Interface)
+                }
+                else if (m instanceof Interface) {
                     innerInterfaces.add((Interface) m);
+                }
+                else if (m instanceof Class) {
+                    Class c = (Class) m;
+                    if( Util.isException(c) ) {
+                        innerExceptions.add(c);
+                    }
+                    else {
+                        innerClasses.add(c);
+                    }
+                }
             }
         }
 
@@ -207,8 +224,9 @@ public class ClassDoc extends ClassOrPackageDoc {
         Collections.sort(satisfyingClasses, comparator);
         Collections.sort(satisfyingInterfaces, comparator);
         Collections.sort(superInterfaces, producedTypeComparator);
-        Collections.sort(innerClasses, comparator);
         Collections.sort(innerInterfaces, comparator);
+        Collections.sort(innerClasses, comparator);
+        Collections.sort(innerExceptions, comparator);
         
         loadSuperclassInheritedMembers(attributeSpecification);
         loadSuperclassInheritedMembers(methodSpecification);
@@ -221,6 +239,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         summary();
         innerInterfaces();
         innerClasses();
+        innerExceptions();
         
         if (hasAnyAttributes()) {
             open("div id='section-attributes'");
@@ -448,26 +467,27 @@ public class ClassDoc extends ClassOrPackageDoc {
         interfaceInheritedMembers.put(memberSpecification, result);
     }
 
-    private void innerClasses() throws IOException {
-        if (innerClasses.isEmpty())
-            return;
-        openTable("section-nested_classes", "Nested Classes", "Modifiers", "Name and Description");
-        for (Class innerClass : innerClasses) {
-            tool.doc(innerClass);
-            doc(innerClass);
-        }
-        close("table");
-    }
-    
     private void innerInterfaces() throws IOException {
-        if (innerInterfaces.isEmpty())
-            return;
-        openTable("section-nested_interfaces", "Nested Interfaces", "Modifiers", "Name and Description");
-        for (Interface innerInterface : innerInterfaces) {
-            tool.doc(innerInterface);
-            doc(innerInterface);
+        innerTypeDeclarations(innerInterfaces, "section-nested_interfaces", "Nested Interfaces");
+    }
+
+    private void innerClasses() throws IOException {
+        innerTypeDeclarations(innerClasses, "section-nested_classes", "Nested Classes");
+    }
+
+    private void innerExceptions() throws IOException {
+        innerTypeDeclarations(innerExceptions, "section-nested_exceptions", "Nested Exceptions");
+    }
+
+    private void innerTypeDeclarations(List<? extends ClassOrInterface> innerTypeDeclarations, String id, String title) throws IOException {
+        if (!innerTypeDeclarations.isEmpty()) {
+            openTable(id, title, "Modifiers", "Name and Description");
+            for (ClassOrInterface innerTypeDeclaration : innerTypeDeclarations) {
+                tool.doc(innerTypeDeclaration);
+                doc(innerTypeDeclaration);
+            }
+            close("table");
         }
-        close("table");
     }
 
     private void doc(ClassOrInterface c) throws IOException {

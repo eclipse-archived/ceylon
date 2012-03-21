@@ -232,6 +232,17 @@ public class Util {
     public static boolean isNullOrEmpty(Collection<? extends Object> collection) {
         return collection == null || collection.isEmpty();
     }
+    
+    public static boolean isException(Class c) {
+        if (c != null) {
+            if ("ceylon.language.Exception".equals(c.getQualifiedNameString())) {
+                return true;
+            } else {
+                return isException(c.getExtendedTypeDeclaration());
+            }
+        }
+        return false;
+    }  
 
     public static void delete(File f){
         if (f.isDirectory()) {

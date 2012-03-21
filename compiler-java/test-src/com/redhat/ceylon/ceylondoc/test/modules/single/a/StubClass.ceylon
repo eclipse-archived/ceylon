@@ -65,4 +65,8 @@ shared class StubClass() satisfies StubInterface {
 
     }
     
+    shared class StubInnerException() extends StubException() {
+
+    }
+    
 }
