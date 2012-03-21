@@ -1,0 +1,131 @@
+/*
+ * Copyright Red Hat Inc. and/or its affiliates and other contributors
+ * as indicated by the authors tag. All rights reserved.
+ *
+ * This copyrighted material is made available to anyone wishing to use,
+ * modify, copy, or redistribute it subject to the terms and conditions
+ * of the GNU General Public License version 2.
+ * 
+ * This particular file is subject to the "Classpath" exception as provided in the 
+ * LICENSE file that accompanied this code.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT A
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License,
+ * along with this distribution; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA  02110-1301, USA.
+ */
+package com.redhat.ceylon.junit;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+
+import org.junit.ComparisonFailure;
+import org.junit.runner.Description;
+import org.junit.runner.notification.Failure;
+import org.junit.runner.notification.RunNotifier;
+import org.junit.runners.ParentRunner;
+import org.junit.runners.model.InitializationError;
+
+public class CeylonTestRunner extends ParentRunner<Method> {
+
+    private Class<?> testClass;
+    
+    private LinkedHashMap<Method, Description> children = new LinkedHashMap<Method, Description>();
+
+    public CeylonTestRunner(Class<?> testClass, List<String> list) throws InitializationError {
+        super(testClass);
+        this.testClass = testClass;
+        for (String method : list) {
+            Method m;
+            try {
+                m = testClass.getMethod(method);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            Description description = Description.createTestDescription(testClass, method);
+            children.put(m, description);
+        }
+    }
+    
+    @Override
+    protected Description describeChild(Method child) {
+        return children.get(child);
+    }
+
+    @Override
+    protected List<Method> getChildren() {
+        return new ArrayList<Method>(this.children.keySet());
+    }
+
+    @Override
+    protected void runChild(Method method, RunNotifier notifier) {
+        Description description = describeChild(method);
+        notifier.fireTestStarted(description);
+        Failure failure = null;
+        try {
+            failure = executeTest(method, description);
+        } finally {
+            if (failure != null) {
+                notifier.fireTestFailure(failure);
+            }
+        }
+        notifier.fireTestFinished(description);
+    }
+
+    private Failure executeTest(Method child, Description description) {
+        Failure failure = null;
+        try {
+            
+            Object instance;
+            if (Modifier.isStatic(child.getModifiers())) {
+                instance = null;
+            } else {
+                instance = testClass.newInstance();
+            }
+            child.invoke(instance);
+            
+        } catch (InvocationTargetException e) {
+            Throwable cause = e.getCause();
+            StackTraceElement[] st = cause.getStackTrace();
+            String prefix = "line " + st[0].getLineNumber() + ": ";
+            if ("com.redhat.ceylon.compiler.java.test.ceylon.AssertionFailed".equals(cause.getClass().getName())) {
+                failure = new Failure(description,
+                        new AssertionError(prefix + cause.getMessage()));
+            } else if ("com.redhat.ceylon.compiler.java.test.ceylon.ComparisonFailed".equals(cause.getClass().getName())) {
+                Object expected = get(cause, "getExpected");
+                Object got = get(cause, "getGot");
+                failure = new Failure(description, 
+                        new ComparisonFailure(prefix + cause.getMessage(), String.valueOf(expected), String.valueOf(got)));
+            } else {
+                failure = new Failure(description, e);
+            }
+        } catch (Exception e) {
+            failure = new Failure(description, e);
+        } catch (AssertionError e) {
+            failure = new Failure(description, e);
+        }
+        return failure;
+    }
+
+    private Object get(Throwable cause, String getter) {
+        try {
+            Method method = cause.getClass().getMethod(getter);
+            Object expected = method.invoke(cause);
+            return expected;
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+    
+    public int testCount() {
+        return this.children.size();
+    }
+    
+}
