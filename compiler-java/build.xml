@@ -394,8 +394,8 @@
       <batchtest fork="yes" todir="${test.reports}">
 
         <zipfileset src="${ceylon-tests.car}">
-          <include name="com/redhat/ceylon/compiler/java/test/ceylon/**/*Test.class"/>
-          <exclude name="com/redhat/ceylon/compiler/java/test/ceylon/Test.class"/>
+          <exclude name="com/redhat/ceylon/compiler/java/test/ceylon/**/*Test.class"/>
+          <include name="com/redhat/ceylon/compiler/java/test/ceylon/**/*Suite.class"/>
         </zipfileset>
       </batchtest>
     </junit>
@@ -446,7 +446,7 @@
     <pathelement path="${junit.lib}"/>
   </path>
 
-  <target name="ceylon-tests.car" depends="publish,test.classes,-test.cond,ant-tasks" unless="dont.test.exec">
+  <target name="ceylon-tests.car" depends="publish,test.classes,-test.cond,-test.prepare,ant-tasks" unless="dont.test.exec">
   	<delete dir="${ceylon-tests.dir}"/>
     <mkdir dir="${ceylon-tests.dir}"/>
     <jar destfile="${ceylon-tests.car}">
@@ -454,15 +454,6 @@
         <include name="com/redhat/ceylon/compiler/java/test/ceylon/**"/>
       </fileset>
     </jar>
-    <ceylonc
-	  classpathRef="ceylon.tests.classpath"
-      executable="${build.bin}/ceylonc"
-      src="${test.src}"
-      out="${build.ceylon.cars}">
-      <files>
-        <include name="com/redhat/ceylon/compiler/java/test/ceylon/*.ceylon"/>
-      </files>
-    </ceylonc>
   </target>
 
   <target name="api" depends="ant-tasks">
