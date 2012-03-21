@@ -40,41 +40,32 @@ String$proto.getSize = function() {
 }
 String$proto.getLastIndex = function() { return this.getSize().equals(Integer(0)) === $true ? null : this.getSize().getPredecessor(); }
 String$proto.span = function(from, to) {
-	var lastIndex = this.getLastIndex();
-	if (!lastIndex) return this; //it's empty
-    var fromIndex = largest(Integer(0),from).value;
-    var toIndex = to === null || to === undefined ? lastIndex.value : smallest(to, lastIndex).value;
-    if (fromIndex === toIndex) {
-		return this.item(from).getString();
-    } else if (toIndex > fromIndex) {
-		//TODO optimize this
-		var s = String$("");
-        for (var i = fromIndex; i <= toIndex; i++) {
-			s = s.plus(this.item(Integer(i)).getString());
-        }
-		return s;
-    } else {
-        //Negative span, reverse seq returned
-        //TODO optimize
-        var s = String$("");
-        for (var i = fromIndex; i >= toIndex; i--) {
-            var x = this.item(Integer(i));
-			if (x !== null) s = s.plus(x.getString());
-        }
-		return s;
+    var fromIndex = from.value;
+    var toIndex = (to===null || to===undefined) ? 0x7fffffff : to.value;
+    if (fromIndex > toIndex) {
+        //TODO: should we return an empty string or a reverse string in this case?
+        return String$("", 0);
     }
+    return this.segment(from, Integer(toIndex-fromIndex+1));
 }
 String$proto.segment = function(from, len) {
-	//TODO optimize
-    var s = String$("");
-    if (len.compare(Integer(0)) === larger) {
-        var stop = from.plus(len).value;
-        for (var i=from.value; i < stop; i++) {
-            var x = this.item(Integer(i));
-            if (x !== null) { s = s.plus(x.getString()); }
-        }
+    var fromIndex = from.value;
+    var maxCount = len.value + fromIndex;
+    if (fromIndex < 0) {fromIndex = 0;}
+    var i1 = 0;
+    var count = 0;
+    for (; i1<this.value.length && count<fromIndex; ++i1, ++count) {
+        if ((this.value.charCodeAt(i1)&0xfc00) === 0xd800) {++i1}
     }
-    return s;
+    var i2 = i1;
+    for (; i2<this.value.length && count<maxCount; ++i2, ++count) {
+        if ((this.value.charCodeAt(i2)&0xfc00) === 0xd800) {++i2}
+    }
+    if (i2 >= this.value.length) {
+        this.codePoints = count;
+        if (fromIndex === 0) {return this;}
+    }
+    return String$(this.value.substring(i1, i2));
 }
 String$proto.getEmpty = function() {
     return Boolean$(this.value.length===0);
