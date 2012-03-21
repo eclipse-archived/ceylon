@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared class FloatTest() extends Test() {
+shared class FloatTest() {
 
     @test
     shared void testEqual() {

@@ -26,7 +26,7 @@ assign numericOperationIncrDecrTestGetter {
     numericOperationIncrDecrTestToplevel := numericOperationIncrDecrTestGetter;
 }
 
-shared abstract class NumericOperationTestParameterized<T>(T init) extends Test(){
+shared abstract class NumericOperationTestParameterized<T>(T init) {
     shared variable T boxedInteger := init;
 }
 

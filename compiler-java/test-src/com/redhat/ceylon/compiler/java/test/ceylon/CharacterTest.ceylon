@@ -17,7 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared class CharacterTest() extends Test() {
+
+shared class CharacterTest() {
 
     @test
     shared void testLowercased() {

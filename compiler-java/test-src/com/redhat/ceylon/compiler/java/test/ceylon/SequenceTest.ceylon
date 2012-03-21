@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared class SequenceTest () extends Test() {
+shared class SequenceTest () {
   
     @test
     shared void test(){

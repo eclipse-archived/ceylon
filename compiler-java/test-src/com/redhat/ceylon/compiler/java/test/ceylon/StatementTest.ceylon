@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared class StatementTest() extends Test() {
+shared class StatementTest() {
   @test
   shared void testIf() {
     if(true){
