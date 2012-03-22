@@ -168,6 +168,14 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/LocalClass");
     }
     @Test
+    public void testKlsDoublyLocalClass(){
+        compareWithJavaSource("klass/DoublyLocalClass");
+    }
+    @Test
+    public void testKlsLocalClassWithLocalObject(){
+        compareWithJavaSource("klass/LocalClassWithLocalObject");
+    }
+    @Test
     public void testKlsPublicClass(){
         compareWithJavaSource("klass/PublicKlass");
     }

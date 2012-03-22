@@ -1,0 +1,28 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class DoublyLocalClass {
+    
+    private final void m() {
+        
+        class LocalClass {
+            
+            class Innermost {
+                
+                Innermost() {
+                }
+            }
+            
+            LocalClass() {
+                final Innermost i = new Innermost();
+            }
+        }
+    }
+    
+    DoublyLocalClass() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.DoublyLocalClass();
+    }
+}
