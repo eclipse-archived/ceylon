@@ -376,7 +376,7 @@
         <fileset dir="${test.src}">
           <include name="**/*Test.java"/>
           <exclude name="com/redhat/ceylon/compiler/java/test/CompilerTest.java"/>
-          <exclude name="com/redhat/ceylon/compiler/java/test/ceylon/**"/>
+          <exclude name="com/redhat/ceylon/compiler/java/test/runtime/**"/>
           <exclude name="com/redhat/ceylon/itest/**"/>
         </fileset>
       </batchtest>
@@ -393,7 +393,7 @@
 
       <batchtest fork="yes" todir="${test.reports}">
         <fileset dir="${test.src}">
-          <include name="**/RuntimeSuite.java"/>
+          <include name="com/redhat/ceylon/compiler/java/test/runtime/RuntimeSuite.java"/>
         </fileset>
       </batchtest>
     </junit>
