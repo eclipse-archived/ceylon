@@ -1306,10 +1306,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                 java.util.List<String> path = new LinkedList<String>();
                 if (!isRecursiveReference(expr)) {
                     path.add(decl.getName());
-                }
-                path.add(decl.getName());
+                } 
                 primaryExpr = null;
-                qualExpr = makeQuotedQualIdent(path);
+                // Only want to quote the method name 
+                // e.g. enum.$enum()
+                qualExpr = makeQuotedQualIdent(makeQualIdent(path), decl.getName());
                 selector = null;
             } else if (decl.isToplevel()) {
                 java.util.List<String> path = new LinkedList<String>();

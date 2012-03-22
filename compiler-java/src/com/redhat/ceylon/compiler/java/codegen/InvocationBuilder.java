@@ -170,7 +170,7 @@ abstract class InvocationBuilder {
                 if (primaryExpr != null) {
                     actualPrimExpr = gen().makeQualIdent(primaryExpr, primaryDeclaration.getName());
                 } else {
-                    actualPrimExpr = gen().makeQuotedIdent(primaryDeclaration.getName());
+                    actualPrimExpr = gen().makeUnquotedIdent(primaryDeclaration.getName());
                 }
                 selector = "$call";
             }
