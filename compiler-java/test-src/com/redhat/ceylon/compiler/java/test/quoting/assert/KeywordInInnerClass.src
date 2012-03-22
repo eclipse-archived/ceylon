@@ -1,0 +1,37 @@
+package com.redhat.ceylon.compiler.java.test.quoting.$assert;
+
+class KeywordInInnerClass {
+    
+    private final void m() {
+        
+        class Inner {
+            private final $transient transient;
+            
+            final class $transient {
+                
+                public final void $enum() {
+                }
+                
+                private $transient() {
+                }
+            }
+            
+            public final $transient getTransient() {
+                return transient;
+            }
+            
+            Inner() {
+                this.transient = new $transient();
+            }
+        }
+        new Inner().getTransient().$enum();
+    }
+    
+    KeywordInInnerClass() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.quoting.$assert.KeywordInInnerClass();
+    }
+}

@@ -1,0 +1,46 @@
+package com.redhat.ceylon.compiler.java.test.quoting.$assert;
+
+class KeywordInCallable {
+    
+    private final void m(final .ceylon.language.Callable<? extends .java.lang.Object> do) {
+        do.$call();
+        
+        final class $enum {
+            
+            private $enum() {
+            }
+            
+            void $enum() {
+                $assert();
+            }
+        }
+        final $enum enum = new $enum();
+        m(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void>"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call() {
+                $assert();
+                return null;
+            }
+        });
+        m(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void>"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call() {
+                enum.$enum();
+                return null;
+            }
+        });
+    }
+    
+    private final void $assert() {
+    }
+    
+    KeywordInCallable() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.quoting.$assert.KeywordInCallable();
+    }
+}

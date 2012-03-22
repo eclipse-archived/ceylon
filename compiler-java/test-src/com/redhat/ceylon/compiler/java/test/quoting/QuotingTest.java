@@ -117,4 +117,14 @@ public class QuotingTest extends CompilerTest {
     public void testMangledToplevelMethod(){
         compareWithJavaSource("assert/MangledToplevelMethod");
     }
+    
+    @Test
+    public void testKeywordInCallable(){
+        compareWithJavaSource("assert/KeywordInCallable");
+    }
+    
+    @Test
+    public void testKeywordInInnerClass(){
+        compareWithJavaSource("assert/KeywordInInnerClass");
+    }
 }
