@@ -266,7 +266,7 @@ public class ClassTransformer extends AbstractTransformer {
         int result = 0;
 
         result |= FINAL;
-        result |= Decl.isShared(cdecl) ? PUBLIC : 0;
+        result |= !Decl.isAncestorLocal(cdecl) && Decl.isShared(cdecl) ? PUBLIC : 0;
 
         return result;
     }
