@@ -838,7 +838,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     private JCExpression getDeclarationName(Declaration decl) {
-        if (Decl.isLocal(decl)) {
+        if (Decl.isAncestorLocal(decl)) {
             return makeQuotedQualIdentFromString(decl.getName());
         } else {
             return makeQuotedFQIdent(decl.getQualifiedNameString());

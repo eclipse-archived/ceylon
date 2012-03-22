@@ -514,7 +514,7 @@ public class ClassTransformer extends AbstractTransformer {
             boolean visible = Decl.isCaptured(def);
             int modifiers = FINAL | ((visible) ? PRIVATE : 0);
             JCExpression type = makeJavaType(def.getType().getTypeModel());
-            JCExpression initialValue = makeNewClass(def.getDeclarationModel().getQualifiedNameString(), true);
+            JCExpression initialValue = makeNewClass(makeJavaType(def.getType().getTypeModel()), List.<JCTree.JCExpression>nil());
             containingClassBuilder.field(modifiers, name, type, initialValue, !visible);
             
             if (visible) {
