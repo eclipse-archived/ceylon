@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.junit;
+package com.redhat.ceylon.compiler.java.test.runtime;
 
 import java.io.File;
 import java.lang.reflect.Method;

@@ -17,15 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.java.test.ceylon;
+package com.redhat.ceylon.compiler.java.test.runtime;
 
 import org.junit.runner.RunWith;
 
-import com.redhat.ceylon.junit.CeylonModuleRunner;
-import com.redhat.ceylon.junit.TestModule;
 
+/**
+ * A placeholder used for executing the runtime tests in /test-runtime
+ * @see CeylonModuleRunner
+ * @author tom
+ */
 @RunWith(CeylonModuleRunner.class)
-@TestModule(srcDirectory="test-src")
-public class CeylonSuite {
+@TestModule(srcDirectory="test-runtime")
+public class RuntimeSuite {
 
 }

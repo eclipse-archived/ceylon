@@ -3,6 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry excluding="**/*.ceylon" kind="src" path="langtools/src/share/classes"/>
 	<classpathentry excluding="**/*.ceylon" kind="src" path="test-src"/>
+	<classpathentry excluding="**/*.ceylon" kind="src" path="test-runtime"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="lib/ant-1.8.2.jar"/>
 	<classpathentry kind="lib" path="lib/markdownj-core-faf3bf83000.jar"/>

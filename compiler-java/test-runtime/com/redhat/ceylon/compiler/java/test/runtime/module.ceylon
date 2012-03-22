@@ -17,21 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.junit;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-/**
- * Annotation used with {@link org.junit.runner.RunWith @RunWith(CeylonModuleRunner.class)}.
- * @author tom
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
-public @interface TestModule {
-
-    String srcDirectory();
-    
+Module module {
+    name = 'com.redhat.ceylon.compiler.java.test.runtime';
+    version = '0.1';
+    doc = "The Ceylon tests.";
+    by = { "Stef Epardaud" };
+    license = 'http://www.gnu.org/licenses/gpl.html';
+    dependencies = {};
 }

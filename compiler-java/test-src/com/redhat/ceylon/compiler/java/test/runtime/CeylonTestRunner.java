@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.junit;
+package com.redhat.ceylon.compiler.java.test.runtime;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -94,15 +94,16 @@ public class CeylonTestRunner extends ParentRunner<Method> {
         } catch (InvocationTargetException e) {
             Throwable cause = e.getCause();
             StackTraceElement[] st = cause.getStackTrace();
-            String prefix = "line " + st[0].getLineNumber() + ": ";
-            if ("com.redhat.ceylon.compiler.java.test.ceylon.AssertionFailed".equals(cause.getClass().getName())) {
-                failure = new Failure(description,
-                        new AssertionError(prefix + cause.getMessage()));
-            } else if ("com.redhat.ceylon.compiler.java.test.ceylon.ComparisonFailed".equals(cause.getClass().getName())) {
+            if ("com.redhat.ceylon.compiler.java.test.runtime.AssertionFailed".equals(cause.getClass().getName())) {
+                AssertionError error = new AssertionError(cause.getMessage());
+                error.setStackTrace(cause.getStackTrace());
+                failure = new Failure(description, error);
+            } else if ("com.redhat.ceylon.compiler.java.test.runtime.ComparisonFailed".equals(cause.getClass().getName())) {
                 Object expected = get(cause, "getExpected");
                 Object got = get(cause, "getGot");
-                failure = new Failure(description, 
-                        new ComparisonFailure(prefix + cause.getMessage(), String.valueOf(expected), String.valueOf(got)));
+                ComparisonFailure error = new ComparisonFailure(cause.getMessage(), String.valueOf(expected), String.valueOf(got));
+                error.setStackTrace(cause.getStackTrace());
+                failure = new Failure(description, error);
             } else {
                 failure = new Failure(description, e);
             }

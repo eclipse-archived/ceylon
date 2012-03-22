@@ -340,11 +340,11 @@
     <condition property="dont.test.ast">
       <contains string="${dont.test}" substring="ast"/>
     </condition>
-    <condition property="dont.test.exec">
-      <contains string="${dont.test}" substring="exec"/>
+    <condition property="dont.test.runtime">
+      <contains string="${dont.test}" substring="runtime"/>
     </condition>
-    <condition property="dont.test.doc">
-      <contains string="${dont.test}" substring="doc"/>
+    <condition property="dont.test.ceylond">
+      <contains string="${dont.test}" substring="ceylond"/>
     </condition>  
   </target>
   
@@ -354,7 +354,7 @@
   	<property name="bootclasspath" refid="test.run.classpath" />
   </target>    
     
-  <target name="test" depends="test.ast,test.exec,test.ceylond"
+  <target name="test" depends="test.ast,test.runtime,test.ceylond"
       description="Runs the tests and generates a test report. The dont.test system property can be used to select which tests to run">
     <junitreport todir="${test.reports}">
       <fileset dir="${test.reports}">
@@ -384,7 +384,7 @@
   </target>
     
   <!-- Runs the JUnit tests which execute generate ceylon classes -->
-  <target name="test.exec" depends="-test.prepare,ceylon-tests.car" unless="dont.test.exec">
+  <target name="test.runtime" depends="-test.prepare" unless="dont.test.runtime">
     <junit printsummary="yes" haltonfailure="no">
       <classpath refid="test.run.classpath"/>
       <jvmarg value="-Xbootclasspath/p:${bootclasspath}"/>
@@ -392,17 +392,15 @@
       <formatter type="xml"/>
 
       <batchtest fork="yes" todir="${test.reports}">
-
-        <zipfileset src="${ceylon-tests.car}">
-          <exclude name="com/redhat/ceylon/compiler/java/test/ceylon/**/*Test.class"/>
-          <include name="com/redhat/ceylon/compiler/java/test/ceylon/**/*Suite.class"/>
-        </zipfileset>
+        <fileset dir="${test.src}">
+          <include name="**/RuntimeSuite.java"/>
+        </fileset>
       </batchtest>
     </junit>
   </target>
 	
   <!-- Runs the JUnit tests for ceylond -->
-  <target name="test.ceylond" depends="-test.prepare" unless="dont.test.doc">
+  <target name="test.ceylond" depends="-test.prepare" unless="dont.test.ceylond">
 	<junit printsummary="yes" haltonfailure="no">
 	  <classpath refid="test.run.classpath"/>
 	  <jvmarg value="-Xbootclasspath/p:${bootclasspath}"/>
@@ -445,16 +443,6 @@
   <path id="ceylon.tests.classpath">
     <pathelement path="${junit.lib}"/>
   </path>
-
-  <target name="ceylon-tests.car" depends="publish,test.classes,-test.cond,-test.prepare,ant-tasks" unless="dont.test.exec">
-  	<delete dir="${ceylon-tests.dir}"/>
-    <mkdir dir="${ceylon-tests.dir}"/>
-    <jar destfile="${ceylon-tests.car}">
-      <fileset dir="${build.classes}">
-        <include name="com/redhat/ceylon/compiler/java/test/ceylon/**"/>
-      </fileset>
-    </jar>
-  </target>
 
   <target name="api" depends="ant-tasks">
     <ceylond
