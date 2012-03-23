@@ -496,6 +496,14 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("instantiation/ClassInstantiation");
     }
     @Test
+    public void testInsSubclassInstantiationVarargs(){
+        compareWithJavaSource("instantiation/SubclassInstantiationVarargs");
+    }
+    @Test
+    public void testInsSubclassInstantiationDefaultParam(){
+        compareWithJavaSource("instantiation/SubclassInstantiationDefaultParam");
+    }
+    @Test
     public void testInsDefaultedParameterClassInstantiation(){
         compareWithJavaSource("instantiation/DefaultedParameterClassInstantiation");
     }
