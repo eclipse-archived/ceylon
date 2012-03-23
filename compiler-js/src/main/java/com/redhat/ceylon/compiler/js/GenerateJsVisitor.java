@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -33,6 +34,7 @@ public class GenerateJsVisitor extends Visitor
     private boolean indent=true;
     private boolean comment=true;
     private int tmpvarCount = 0;
+    private final Stack<Continuation> continues = new Stack<Continuation>();
 
     private final class SuperVisitor extends Visitor {
         private final List<Declaration> decs;
@@ -509,16 +511,13 @@ public class GenerateJsVisitor extends Visitor
             satisfiedTypes = objectDef.getSatisfiedTypes();
         }
 
-        clAlias();
-        out(".initType(", type.getDeclarationModel().getName(), ",'",
+        out(clAlias, ".initType(", type.getDeclarationModel().getName(), ",'",
             type.getDeclarationModel().getQualifiedNameString(), "'");
 
         if (extendedType != null) {
             out(",", initFunctionName(extendedType.getType()));
         } else if (!(type instanceof InterfaceDefinition)) {
-            out(",");
-            clAlias();
-            out(".IdentifiableObject");
+            out(",", clAlias, ".IdentifiableObject");
         }
 
         if (satisfiedTypes != null) {
@@ -653,12 +652,10 @@ public class GenerateJsVisitor extends Visitor
                 suffix = qualifiedPath(type, typeDecl) + '$' + typeDecl.getName() + '$';
             }
 
-            clAlias();
-            out(".inheritProto(", d.getName(), ",", from, ",'", suffix, "'");
+            out(clAlias, ".inheritProto(", d.getName(), ",", from, ",'", suffix, "'");
 
         } else {
-            clAlias();
-            out(".inheritProtoI(", d.getName());
+            out(clAlias, ".inheritProtoI(", d.getName());
         }
 
         if (copyFromSatType) {
@@ -818,8 +815,7 @@ public class GenerateJsVisitor extends Visitor
             if (param.getDefaultArgument() != null || param.getDeclarationModel().isSequenced()) {
                 out("if(", paramName, "===undefined){", paramName, "=");
                 if (param.getDefaultArgument() == null) {
-                    clAlias();
-                    out(".empty");
+                    out(clAlias, ".empty");
                 } else {
                     param.getDefaultArgument().getSpecifierExpression().getExpression().visit(this);
                 }
@@ -983,14 +979,11 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private void clAlias() {
-        out("$$$cl15");
-    }
+    private static final String clAlias="$$$cl15";
 
     @Override
     public void visit(CharLiteral that) {
-        clAlias();
-        out(".Character(");
+        out(clAlias, ".Character(");
         //out(that.getText().replace('`', '"'));
         //TODO: what about escape sequences?
         out(String.valueOf(that.getText().codePointAt(1)));
@@ -1009,8 +1002,7 @@ public class GenerateJsVisitor extends Visitor
         }
         text = that.getText().replaceAll("\n", "\\\\n");
 
-        clAlias();
-        out(".String(");
+        out(clAlias, ".String(");
         out(text);
         if (codepoints >= 0) {
         	out(",");
@@ -1023,10 +1015,7 @@ public class GenerateJsVisitor extends Visitor
     public void visit(StringTemplate that) {
     	List<StringLiteral> literals = that.getStringLiterals();
     	List<Expression> exprs = that.getExpressions();
-    	clAlias();
-    	out(".StringBuilder().appendAll(");
-    	clAlias();
-    	out(".ArraySequence([");
+    	out(clAlias, ".StringBuilder().appendAll(", clAlias, ".ArraySequence([");
     	for (int i = 0; i < literals.size(); i++) {
     		literals.get(i).visit(this);
     		if (i < exprs.size()) {
@@ -1041,14 +1030,12 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(FloatLiteral that) {
-        clAlias();
-        out(".Float(", that.getText(), ")");
+        out(clAlias, ".Float(", that.getText(), ")");
     }
 
     @Override
     public void visit(NaturalLiteral that) {
-        clAlias();
-        out(".Integer(", that.getText(), ")");
+        out(clAlias, ".Integer(", that.getText(), ")");
     }
 
     @Override
@@ -1104,9 +1091,7 @@ public class GenerateJsVisitor extends Visitor
                 String tmp=createTempVariable();
                 out("(function(){var ", tmp, "=");
                 super.visit(that);
-                out("; return ");
-                clAlias();
-                out(".JsCallable(", tmp, ",", tmp, "===null?null:", tmp, ".");
+                out("; return ", clAlias, ".JsCallable(", tmp, ",", tmp, "===null?null:", tmp, ".");
                 qualifiedMemberRHS(that);
                 out(");}())");
             } else {
@@ -1152,9 +1137,7 @@ public class GenerateJsVisitor extends Visitor
         //Iterate
         String elem = createTempVariable();
         out("var ", elem, ";"); endLine();
-        out("while ((", elem, "=", iter, ".next()) !== ");
-        clAlias();
-        out(".getExhausted())");
+        out("while ((", elem, "=", iter, ".next())!==", clAlias, ".getExhausted())");
         beginBlock();
         //Add value or reference to the array
         out(tmplist, ".push(");
@@ -1170,7 +1153,7 @@ public class GenerateJsVisitor extends Visitor
         endBlock();
         //Gather arguments to pass to the callable
         //Return the array of values or a Callable with the arguments
-        out("return "); clAlias();
+        out("return ", clAlias);
         if (isMethod) {
             out(".JsCallableList(", tmplist, ");");
         } else {
@@ -1183,9 +1166,7 @@ public class GenerateJsVisitor extends Visitor
     private void generateCallable(QualifiedMemberOrTypeExpression that, String name) {
         out("(function(){var $=");
         that.getPrimary().visit(this);
-        out(";return ");
-        clAlias();
-        out(".JsCallable($, $.");
+        out(";return ", clAlias, ".JsCallable($, $.");
         if (name == null) {
             qualifiedMemberRHS(that);
         } else {
@@ -1252,8 +1233,7 @@ public class GenerateJsVisitor extends Visitor
                             f.getParameterLists().get(0).getParameters()) {
                             if (!first) out(",");
                             if (p.isSequenced() && that.getNamedArgumentList().getSequencedArgument()==null && that.getNamedArgumentList().getNamedArguments().isEmpty()) {
-                                clAlias();
-                                out(".empty");
+                                out(clAlias, ".empty");
                             } else if (p.isSequenced() || argNames.contains(p.getName())) {
                                 out("$");
                                 out(p.getName());
@@ -1282,8 +1262,7 @@ public class GenerateJsVisitor extends Visitor
                 if (!first) out(",");
                 if (!sequenced && arg.getParameter().isSequenced() && that.getEllipsis() == null) {
                     sequenced=true;
-                    clAlias();
-                    out(".ArraySequence([");
+                    out(clAlias, ".ArraySequence([");
                 }
                 arg.visit(this);
                 first = false;
@@ -1312,8 +1291,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(SequencedArgument that) {
-        clAlias();
-        out(".ArraySequence([");
+        out(clAlias, ".ArraySequence([");
         boolean first=true;
         for (Expression arg: that.getExpressionList().getExpressions()) {
             if (!first) out(",");
@@ -1325,8 +1303,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(SequenceEnumeration that) {
-        clAlias();
-        out(".ArraySequence([");
+        out(clAlias, ".ArraySequence([");
         boolean first=true;
         if (that.getExpressionList() != null) {
             for (Expression arg: that.getExpressionList().getExpressions()) {
@@ -1670,24 +1647,18 @@ public class GenerateJsVisitor extends Visitor
 
     @Override public void visit(SmallerOp that) {
     	leftCompareRight(that);
-    	out(".equals(");
-    	clAlias();
-    	out(".getSmaller())");
+    	out(".equals(", clAlias, ".getSmaller())");
     }
 
     @Override public void visit(LargerOp that) {
     	leftCompareRight(that);
-    	out(".equals(");
-    	clAlias();
-    	out(".getLarger())");
+    	out(".equals(", clAlias, ".getLarger())");
     }
 
     @Override public void visit(SmallAsOp that) {
     	out("(");
     	leftCompareRight(that);
-    	out("!==");
-    	clAlias();
-    	out(".getLarger()");
+    	out("!==", clAlias, ".getLarger()");
     	thenTrueElseFalse();
     	out(")");
     }
@@ -1695,9 +1666,7 @@ public class GenerateJsVisitor extends Visitor
     @Override public void visit(LargeAsOp that) {
     	out("(");
     	leftCompareRight(that);
-    	out("!==");
-    	clAlias();
-    	out(".getSmaller()");
+    	out("!==", clAlias, ".getSmaller()");
     	thenTrueElseFalse();
     	out(")");
     }
@@ -1710,13 +1679,11 @@ public class GenerateJsVisitor extends Visitor
     }
     /** Outputs the CL equivalent of 'true' in JS. */
     private void clTrue() {
-        clAlias();
-        out(".getTrue()");
+        out(clAlias, ".getTrue()");
     }
     /** Outputs the CL equivalent of 'false' in JS. */
     private void clFalse() {
-        clAlias();
-        out(".getFalse()");
+        out(clAlias, ".getFalse()");
     }
     /** Outputs the CL equivalent of '==false' in JS. */
     private void equalsFalse() {
@@ -1764,8 +1731,7 @@ public class GenerateJsVisitor extends Visitor
    }
 
    @Override public void visit(EntryOp that) {
-       clAlias();
-       out(".Entry(");
+       out(clAlias, ".Entry(");
        that.getLeftTerm().visit(this);
        out(",");
        that.getRightTerm().visit(this);
@@ -1852,14 +1818,12 @@ public class GenerateJsVisitor extends Visitor
    }
 
    @Override public void visit(Exists that) {
-       clAlias();
-       out(".exists(");
+       out(clAlias, ".exists(");
        that.getTerm().visit(this);
        out(")");
    }
    @Override public void visit(Nonempty that) {
-       clAlias();
-       out(".nonempty(");
+       out(clAlias, ".nonempty(");
        that.getTerm().visit(this);
        out(")");
    }
@@ -1876,9 +1840,7 @@ public class GenerateJsVisitor extends Visitor
 	   } else {
 	       out("if ((");
 		   condition.visit(this);
-	       out(")===");
-	       clAlias();
-	       out(".getTrue())");
+	       out(")===", clAlias, ".getTrue())");
 	       if (ifBlock != null) {
 	    	   ifBlock.visit(this);
 	       }
@@ -1900,9 +1862,7 @@ public class GenerateJsVisitor extends Visitor
 	   } else {
 		   out("while ((");
 	       condition.visit(this);
-	       out(")===");
-	       clAlias();
-	       out(".getTrue())");
+	       out(")===", clAlias, ".getTrue())");
 	       whileClause.getBlock().visit(this);
 	   }
    }
@@ -1951,8 +1911,7 @@ public class GenerateJsVisitor extends Visitor
                beginBlock();
                function();
                out(getter(variable.getDeclarationModel()));
-               out("(){");
-               out("return ");
+               out("(){return ");
                bme.visit(this);
                out("}");
                endLine();
@@ -1977,17 +1936,12 @@ public class GenerateJsVisitor extends Visitor
 
 		   } else {
 			   beginBlock();
-			   out("var $");
-			   out(varName);
-			   out("=$cond$;");
+			   out("var $", varName, "=$cond$;");
 			   endLine();
 
 			   function();
 			   out(getter(variable.getDeclarationModel()));
-			   out("(){");
-			   out("return $");
-			   out(varName);
-			   out("}");
+			   out("(){return $", varName, "}");
 			   endLine();
 
 			   visitStatements(block.getStatements(), false);
@@ -2004,12 +1958,9 @@ public class GenerateJsVisitor extends Visitor
     private void specialConditionCheck(Condition condition, Term variableRHS, boolean simpleCheck) {
         if (condition instanceof ExistsOrNonemptyCondition) {
             if (condition instanceof NonemptyCondition) {
-                clAlias();
-                out(".nonempty(");
+                out(clAlias, ".nonempty(");
                 specialConditionRHS(variableRHS, simpleCheck);
-                out(")===");
-                clAlias();
-                out(".getTrue()");
+                out(")===", clAlias, ".getTrue()");
             } else {
                 specialConditionRHS(variableRHS, simpleCheck);
                 out("!==null");
@@ -2018,9 +1969,7 @@ public class GenerateJsVisitor extends Visitor
         } else {
             Type type = ((IsCondition) condition).getType();
             generateIsOfType(variableRHS, null, type, simpleCheck);
-            out("===");
-            clAlias();
-            out(".getTrue()");
+            out("===", clAlias, ".getTrue()");
         }
     }
 
@@ -2073,13 +2022,10 @@ public class GenerateJsVisitor extends Visitor
      * checking against all types that Type satisfies (in the case of union types, matching any
      * type will do, and in case of intersection types, all types must be matched). */
     private void generateIsOfType(Term term, String termString, Type type, boolean simpleCheck) {
-        clAlias();
         if (type instanceof SimpleType) {
-            out(".isOfType(");
+            out(clAlias, ".isOfType(");
         } else {
-            out(".Boolean(");
-            clAlias();
-            out(".isOfTypes(");
+            out(clAlias, ".Boolean(", clAlias, ".isOfTypes(");
         }
         if (term != null) {
             specialConditionRHS(term, simpleCheck);
@@ -2093,7 +2039,7 @@ public class GenerateJsVisitor extends Visitor
             out(((SimpleType) type).getDeclarationModel().getQualifiedNameString());
             out("')");
             if (term != null && term.getTypeModel() != null && !term.getTypeModel().getTypeArguments().isEmpty()) {
-                out("/* REIFIED GENERICS SOON!!! ");
+                out("/* REIFIED GENERICS SOON!!!");
                 out(" term " + term.getTypeModel());
                 out(" model " + term.getTypeModel().getTypeArguments());
                 for (ProducedType pt : term.getTypeModel().getTypeArgumentList()) {
@@ -2115,12 +2061,17 @@ public class GenerateJsVisitor extends Visitor
         out("break;");
     }
     @Override public void visit(Continue that) {
-        out("continue;");
+        if (continues.isEmpty()) {
+            out("continue;");
+        } else {
+            Continuation top = continues.peek();
+            out(top.getName(), "=true; return;");
+            top.use();
+        }
     }
 
    @Override public void visit(RangeOp that) {
-	   clAlias();
-	   out(".Range(");
+	   out(clAlias, ".Range(");
 	   that.getLeftTerm().visit(this);
 	   out(",");
 	   that.getRightTerm().visit(this);
@@ -2147,10 +2098,7 @@ public class GenerateJsVisitor extends Visitor
 	   endLine();
 	   out("var ", itemVar, ";");
 	   endLine();
-	   out("while (");
-	   out("(", itemVar, "=", iterVar, ".next()) !== ");
-	   clAlias();
-	   out(".getExhausted())");
+	   out("while ((", itemVar, "=", iterVar, ".next())!==", clAlias, ".getExhausted())");
 	   List<Statement> stmnts = that.getForClause().getBlock().getStatements();
 	   if (stmnts.isEmpty()) {
 		   out("{}");
@@ -2160,15 +2108,15 @@ public class GenerateJsVisitor extends Visitor
 		   if (foriter instanceof ValueIterator) {
 			   Value model = ((ValueIterator)foriter).getVariable().getDeclarationModel();
 			   function();
-			   out(getter(model), "(){ return ", itemVar, "; }");
+			   out(getter(model), "(){return ", itemVar, ";}");
 		   } else if (foriter instanceof KeyValueIterator) {
 			   Value keyModel = ((KeyValueIterator)foriter).getKeyVariable().getDeclarationModel();
 			   Value valModel = ((KeyValueIterator)foriter).getValueVariable().getDeclarationModel();
 			   function();
-			   out(getter(keyModel), "(){ return ", itemVar, ".getKey(); }");
+			   out(getter(keyModel), "(){return ", itemVar, ".getKey();}");
 			   endLine();
 			   function();
-			   out(getter(valModel), "(){ return ", itemVar, ".getItem(); }");
+			   out(getter(valModel), "(){return ", itemVar, ".getItem();}");
 		   }
 		   endLine();
 		   for (int i=0; i<stmnts.size(); i++) {
@@ -2185,9 +2133,7 @@ public class GenerateJsVisitor extends Visitor
 	   out("}");
 	   if (hasElse) {
 		   endLine();
-		   out("if (");
-		   clAlias();
-		   out(".getExhausted() === ", itemVar, ")");
+		   out("if (", clAlias, ".getExhausted() === ", itemVar, ")");
 		   that.getElseClause().getBlock().visit(this);
 	   }
 	   endBlock();
@@ -2219,9 +2165,7 @@ public class GenerateJsVisitor extends Visitor
                 firstCatch = false;
                 out("if(");
                 generateIsOfType(null, "$ex$", variable.getType(), true);
-                out("===");
-                clAlias();
-                out(".getTrue())");
+                out("===", clAlias, ".getTrue())");
 
                 if (catchClause.getBlock().getStatements().isEmpty()) {
                     out("{}");
@@ -2251,8 +2195,7 @@ public class GenerateJsVisitor extends Visitor
         if (that.getExpression() != null) {
             that.getExpression().visit(this);
         } else {
-            clAlias();
-            out(".Exception()");
+            out(clAlias, ".Exception()");
         }
         out(";");
     }
@@ -2278,18 +2221,13 @@ public class GenerateJsVisitor extends Visitor
     public void visit(IndexExpression that) {
         IndexOperator op = that.getIndexOperator();
         if (op instanceof SafeIndexOp) {
-            clAlias();
-            out(".exists(");
+            out(clAlias, ".exists(");
             that.getPrimary().visit(this);
-            out(")===");
-            clAlias();
-            out(".getTrue()?");
+            out(")===", clAlias, ".getTrue()?");
         }
         visitIndex(that);
         if (op instanceof SafeIndexOp) {
-            out(":");
-            clAlias();
-            out(".getNull()");
+            out(":", clAlias, ".getNull()");
         }
     }
 
@@ -2308,8 +2246,7 @@ public class GenerateJsVisitor extends Visitor
         if (item instanceof IsCase) {
             IsCase isCaseItem = (IsCase) item;
             generateIsOfType(null, expvar, isCaseItem.getType(), true);
-            out("===");
-            clAlias(); out(".getTrue()");
+            out("===", clAlias, ".getTrue()");
             Variable caseVar = isCaseItem.getVariable();
             if ((switchTerm instanceof BaseMemberExpression) && (caseVar != null)) {
                 BaseMemberExpression bme = (BaseMemberExpression) switchTerm;
@@ -2345,8 +2282,7 @@ public class GenerateJsVisitor extends Visitor
             //out("function get", decl.getName().substring(0,1).toUpperCase(), decl.getName().substring(1));
             function();
             out(getter(decl));
-            out("(){");
-            out("return ", expvar, "; }");
+            out("(){return ", expvar, ";}");
             endLine();
             visitStatements(cc.getBlock().getStatements(), false);
             endBlock();
@@ -2357,6 +2293,13 @@ public class GenerateJsVisitor extends Visitor
     public void visit(SwitchStatement that) {
         if (comment) out("//Switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
         endLine();
+        //wrap all this shit in a function to avoid contaminating the rest of the code with overwritten functions and shit
+        final String retvar = createTempVariable();
+        final Continuation contvar = new Continuation(createTempVariable());
+        out("var ", contvar.getName(), "=false;"); endLine();
+        out("var ", retvar, "=(function()");
+        continues.push(contvar);
+        beginBlock();
         //Put the expression in a tmp var
         final String expvar = createTempVariable();
         out("var ", expvar, "=");
@@ -2374,7 +2317,24 @@ public class GenerateJsVisitor extends Visitor
             out("else ");
             that.getSwitchCaseList().getElseClause().visit(this);
         }
+        endBlock();
+        out("()); if (", retvar, "!==undefined){return ", retvar, ";}");
+        Continuation _lc = continues.pop();
+        if (_lc.isUsed()) {
+            out("else if (", contvar.getName(), "===true){continue;}");
+        }
         if (comment) out("//End switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
     }
 
+    private class Continuation{
+        private String varname;
+        private boolean used;
+        Continuation(String name) {
+            varname=name;
+        }
+        public String getName() { return varname; }
+        public void use() { used = true; }
+        public boolean isUsed() { return used; }
+    }
 }
+
