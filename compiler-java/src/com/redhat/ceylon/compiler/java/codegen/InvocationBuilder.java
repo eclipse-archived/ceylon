@@ -188,13 +188,16 @@ abstract class InvocationBuilder {
         } else {
             actualPrimExpr = primaryExpr;
         }
-        if (vars != null && !vars.isEmpty() 
-                && primaryExpr != null 
-                && selector != null) {
+        if (callVarName != null) {
             // Prepare the first argument holding the primary for the call
             JCExpression callVarExpr = gen().makeUnquotedIdent(callVarName);
-            ProducedType type = ((Tree.QualifiedMemberOrTypeExpression)primary).getTarget().getQualifyingType();
-            JCVariableDecl callVar = gen().makeVar(callVarName, gen().makeJavaType(type, AbstractTransformer.NO_PRIMITIVES), actualPrimExpr);
+            JCVariableDecl callVar;
+            ProducedType type = ((Tree.MemberOrTypeExpression)primary).getTarget().getQualifyingType();
+            if (primaryExpr != null) {
+                callVar = gen().makeVar(callVarName, gen().makeJavaType(type, AbstractTransformer.NO_PRIMITIVES), actualPrimExpr);
+            } else {
+                callVar = gen().makeVar(callVarName, gen().makeJavaType(type, AbstractTransformer.NO_PRIMITIVES), gen().makeUnquotedIdent("this"));
+            }
             vars.prepend(callVar);
             actualPrimExpr = callVarExpr;
         }
