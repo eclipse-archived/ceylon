@@ -267,6 +267,11 @@ public class ExpressionTest extends CompilerTest {
     public void testInvSequencedTypeParamInvocation(){
         compareWithJavaSource("invoke/SequencedTypeParamInvocation");
     }
+    
+    @Test
+    public void testInvDefaultedAndSequenced(){
+        compareWithJavaSource("invoke/DefaultedAndSequencedParams");
+    }
 
     @Test
     public void testInvToplevelMethodInvocation(){
