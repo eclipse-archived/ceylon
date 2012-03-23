@@ -90,6 +90,10 @@ abstract class InvocationBuilder {
         return result;
     }
     
+    /**
+     * Populates {@link #vars}, {@link #args} and {@link #callVarName}
+     * ready for a call to {@link #build()}
+     */
     protected abstract void compute();
     
     protected final AbstractTransformer gen() {
@@ -387,98 +391,113 @@ abstract class AbstractPositionalInvocationBuilder extends InvocationBuilder {
                 && lastDeclaredParam.isSequenced()
                 && !this.dontBoxSequence() // foo(sequence...) syntax => no need to box
                 && numArguments >= (numParameters -1)) {
-            // => call to a varargs method
-            // first, append the normal args
-            for (int ii = 0; ii < numParameters - 1; ii++) {
-                args.append(this.getTransformedArgumentExpression(ii, isRaw, getTypeArguments()));
-            }
-            JCExpression boxed;
-            // then, box the remaining passed arguments
-            if (numParameters -1 == numArguments) {
-                // box as Empty
-                boxed = gen().makeEmpty();
-            } else {
-                // box with an ArraySequence<T>
-                List<JCExpression> x = List.<JCExpression>nil();
-                for (int ii = numParameters - 1; ii < numArguments; ii++) {
-                    x = x.append(this.getTransformedArgumentExpression(ii, isRaw, getTypeArguments()));
-                }
-                boxed = gen().makeSequenceRaw(x);
-            }
-            args.append(boxed);
+            computeWithSequencedParameter(isRaw, numParameters, numArguments);
         } else if (numArguments < numParameters) {
-            String varBaseName = gen().aliasName("arg");
-            callVarName = varBaseName + "$callable$";
-            boolean needsThis = false;
-            if (Decl.withinClassOrInterface(getPrimaryDeclaration())) {
-                // first append $this
-                ProducedType thisType = gen().getThisType(getPrimaryDeclaration());
-                vars.append(gen().makeVar(varBaseName + "$this$", gen().makeJavaType(thisType, AbstractTransformer.NO_PRIMITIVES), gen().makeUnquotedIdent(callVarName)));
-                needsThis = true;
+            computeWithDefaultedParameters(isRaw, numParameters, numArguments);
+        } else {
+            computeSimple(isRaw);
+        }
+    }
+
+    private void computeWithSequencedParameter(final boolean isRaw,
+            int numParameters, int numArguments) {
+        // => call to a varargs method
+        // first, append the normal args
+        for (int ii = 0; ii < numParameters - 1; ii++) {
+            args.append(this.getTransformedArgumentExpression(ii, isRaw, getTypeArguments()));
+        }
+        JCExpression boxed;
+        // then, box the remaining passed arguments
+        if (numParameters -1 == numArguments) {
+            // box as Empty
+            boxed = gen().makeEmpty();
+        } else {
+            // box with an ArraySequence<T>
+            List<JCExpression> x = List.<JCExpression>nil();
+            for (int ii = numParameters - 1; ii < numArguments; ii++) {
+                x = x.append(this.getTransformedArgumentExpression(ii, isRaw, getTypeArguments()));
             }
-            // append the normal args
-            int idx = 0;
-            for (int ii = 0; ii < this.getNumArguments(); ii++) {
-                gen().at(this.getArgumentExpression(ii));
-                Tree.Expression expr = this.getArgumentExpression(ii);
-                Parameter declaredParam = this.getParameter(ii);
-                int index;
-                BoxingStrategy boxType;
-                ProducedType type;
-                if (declaredParam != null) {
-                    index = getDeclaredParameters().indexOf(declaredParam);
-                    boxType = Util.getBoxingStrategy(declaredParam);
-                    type = gen().getTypeForParameter(declaredParam, isRaw, getTypeArguments());
+            boxed = gen().makeSequenceRaw(x);
+        }
+        args.append(boxed);
+    }
+
+    private void computeSimple(final boolean isRaw) {
+        // append the normal args
+        for (int ii = 0; ii < this.getNumArguments(); ii++) {
+            args.append(this.getTransformedArgumentExpression(ii, 
+                    isRaw, getTypeArguments()));
+        }
+    }
+
+    private void computeWithDefaultedParameters(final boolean isRaw,
+            int numParameters, int numArguments) {
+        String varBaseName = gen().aliasName("arg");
+        callVarName = varBaseName + "$callable$";
+        boolean needsThis = Decl.withinClassOrInterface(getPrimaryDeclaration());
+        if (needsThis) {
+            // first append $this
+            ProducedType thisType = gen().getThisType(getPrimaryDeclaration());
+            vars.append(gen().makeVar(varBaseName + "$this$", 
+                    gen().makeJavaType(thisType, AbstractTransformer.NO_PRIMITIVES), 
+                    gen().makeUnquotedIdent(callVarName)));
+        }
+        // append the normal args
+        int idx = 0;
+        for (int ii = 0; ii < this.getNumArguments(); ii++) {
+            gen().at(this.getArgumentExpression(ii));
+            Tree.Expression expr = this.getArgumentExpression(ii);
+            Parameter declaredParam = this.getParameter(ii);
+            int index;
+            BoxingStrategy boxType;
+            ProducedType type;
+            if (declaredParam != null) {
+                index = getDeclaredParameters().indexOf(declaredParam);
+                boxType = Util.getBoxingStrategy(declaredParam);
+                type = gen().getTypeForParameter(declaredParam, isRaw, getTypeArguments());
+            } else {
+                // Arguments of overloaded methods don't have a reference to parameter
+                index = idx++;
+                boxType = BoxingStrategy.UNBOXED;
+                type = expr.getTypeModel();
+            }
+            String varName = varBaseName + "$" + index;
+            // if we can't pick up on the type from the declaration, revert to the type of the expression
+            if(gen().isTypeParameter(type))
+                type = expr.getTypeModel();
+            JCExpression typeExpr = gen().makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
+            JCExpression argExpr = gen().expressionGen().transformExpression(expr, boxType, type);
+            JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
+            vars.append(varDecl);
+        }
+        if (!Decl.isOverloaded(getPrimaryDeclaration())) {
+            // append any arguments for defaulted parameters
+            for (int ii = numArguments; ii < numParameters; ii++) {
+                Parameter param = getDeclaredParameters().get(ii);
+                String varName = varBaseName + "$" + ii;
+                String methodName = Util.getDefaultedParamMethodName(getPrimaryDeclaration(), param);
+                List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, ii, needsThis);
+                JCExpression argExpr;
+                if (!param.isSequenced()) {
+                    Declaration container = param.getDeclaration().getRefinedDeclaration();
+                    if (!container.isToplevel()) {
+                        container = (Declaration)container.getContainer();
+                    }
+                    String className = Util.getCompanionClassName(container.getName());
+                    argExpr = gen().at(node).Apply(null, gen().makeQuotedQualIdent(gen().makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName), arglist);
                 } else {
-                    // Arguments of overloaded methods don't have a reference to parameter
-                    index = idx++;
-                    boxType = BoxingStrategy.UNBOXED;
-                    type = expr.getTypeModel();
+                    argExpr = gen().makeEmpty();
                 }
-                String varName = varBaseName + "$" + index;
-                // if we can't pick up on the type from the declaration, revert to the type of the expression
-                if(gen().isTypeParameter(type))
-                    type = expr.getTypeModel();
+                BoxingStrategy boxType = Util.getBoxingStrategy(param);
+                ProducedType type = gen().getTypeForParameter(param, isRaw, getTypeArguments());
                 JCExpression typeExpr = gen().makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
-                JCExpression argExpr = gen().expressionGen().transformExpression(expr, boxType, type);
                 JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
                 vars.append(varDecl);
             }
-            if (!Decl.isOverloaded(getPrimaryDeclaration())) {
-                // append any arguments for defaulted parameters
-                for (int ii = numArguments; ii < numParameters; ii++) {
-                    Parameter param = getDeclaredParameters().get(ii);
-                    String varName = varBaseName + "$" + ii;
-                    String methodName = Util.getDefaultedParamMethodName(getPrimaryDeclaration(), param);
-                    List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, ii, needsThis);
-                    JCExpression argExpr;
-                    if (!param.isSequenced()) {
-                        Declaration container = param.getDeclaration().getRefinedDeclaration();
-                        if (!container.isToplevel()) {
-                            container = (Declaration)container.getContainer();
-                        }
-                        String className = Util.getCompanionClassName(container.getName());
-                        argExpr = gen().at(node).Apply(null, gen().makeQuotedQualIdent(gen().makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName), arglist);
-                    } else {
-                        argExpr = gen().makeEmpty();
-                    }
-                    BoxingStrategy boxType = Util.getBoxingStrategy(param);
-                    ProducedType type = gen().getTypeForParameter(param, isRaw, getTypeArguments());
-                    JCExpression typeExpr = gen().makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
-                    JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
-                    vars.append(varDecl);
-                }
-                args.appendList(makeVarRefArgumentList(varBaseName, numParameters));
-            } else {
-                // For overloaded methods (and therefore Java interop) we just pass the arguments we have
-                args.appendList(makeVarRefArgumentList(varBaseName, numArguments));
-            }
+            args.appendList(makeVarRefArgumentList(varBaseName, numParameters));
         } else {
-            // append the normal args
-            for (int ii = 0; ii < this.getNumArguments(); ii++) {
-                args.append(this.getTransformedArgumentExpression(ii, 
-                        isRaw, getTypeArguments()));
-            }
+            // For overloaded methods (and therefore Java interop) we just pass the arguments we have
+            args.appendList(makeVarRefArgumentList(varBaseName, numArguments));
         }
     }
 }
@@ -768,12 +787,13 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
             }
             
             if (!Decl.isOverloaded(getPrimaryDeclaration()) && numPassed < numDeclaredFixed) {
-                boolean needsThis = false;
-                if (Decl.withinClassOrInterface(getPrimaryDeclaration())) {
+                final boolean needsThis = Decl.withinClassOrInterface(getPrimaryDeclaration());
+                if (needsThis) {
                     // first append $this
                     ProducedType thisType = gen().getThisType(getPrimaryDeclaration());
-                    vars.append(gen().makeVar(varBaseName + "$this$", gen().makeJavaType(thisType, AbstractTransformer.NO_PRIMITIVES), gen().makeUnquotedIdent(callVarName)));
-                    needsThis = true;
+                    vars.append(gen().makeVar(varBaseName + "$this$", 
+                            gen().makeJavaType(thisType, AbstractTransformer.NO_PRIMITIVES), 
+                            gen().makeUnquotedIdent(callVarName)));
                 }
                 // append any arguments for defaulted parameters
                 for (int ii = 0; ii < numDeclaredFixed; ii++) {
