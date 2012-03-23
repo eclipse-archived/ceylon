@@ -398,8 +398,6 @@ abstract class AbstractPositionalInvocationBuilder extends InvocationBuilder {
     
     @Override
     protected final void compute() {
-        
-        final boolean isRaw = transformedTypArguments.isEmpty();
         int numParameters = getDeclaredParameters().size();
         int numArguments = this.getNumArguments();
         boolean hasDefaulted = false;
@@ -409,53 +407,50 @@ abstract class AbstractPositionalInvocationBuilder extends InvocationBuilder {
                 break;
             }
         }
-        
-        Parameter lastDeclaredParam = getDeclaredParameters().isEmpty() ? null : getDeclaredParameters().get(getDeclaredParameters().size() - 1);
         if (hasDefaulted) {
-            computeWithDefaultedParameters(isRaw, numParameters, numArguments);
-        } else if (lastDeclaredParam != null 
-                && lastDeclaredParam.isSequenced()
-                && !this.dontBoxSequence() // foo(sequence...) syntax => no need to box
-                && numArguments >= (numParameters -1)) {
-            computeWithSequencedParameter(isRaw, numParameters, numArguments);
+            computeWithDefaultedParameters();
         } else {
-            computeSimple(isRaw);
+            computeWithSequencedParameter();
         }
     }
 
-    private void computeWithSequencedParameter(final boolean isRaw,
-            int numParameters, int numArguments) {
+    private void computeWithSequencedParameter() {
+        final boolean isRaw = transformedTypArguments.isEmpty();
+        int numParameters = getDeclaredParameters().size();
+        int numArguments = getNumArguments();
         // => call to a varargs method
         // first, append the normal args
         for (int ii = 0; ii < numParameters - 1; ii++) {
             args.append(this.getTransformedArgumentExpression(ii, isRaw, getTypeArguments()));
         }
-        JCExpression boxed;
-        // then, box the remaining passed arguments
-        if (numParameters -1 == numArguments) {
-            // box as Empty
-            boxed = gen().makeEmpty();
-        } else {
-            // box with an ArraySequence<T>
-            List<JCExpression> x = List.<JCExpression>nil();
-            for (int ii = numParameters - 1; ii < numArguments; ii++) {
-                x = x.append(this.getTransformedArgumentExpression(ii, isRaw, getTypeArguments()));
+        
+        Parameter lastDeclaredParam = getDeclaredParameters().isEmpty() ? null : getDeclaredParameters().get(getDeclaredParameters().size() - 1);
+        
+        if (lastDeclaredParam != null) {
+            JCExpression boxed;
+            if (!lastDeclaredParam.isSequenced()
+                    || dontBoxSequence()) {
+                // foo(sequence...) syntax => no need to box
+                boxed = this.getTransformedArgumentExpression(numArguments-1, isRaw, getTypeArguments());
+            } else if (numParameters -1 == numArguments) {
+                // box as Empty
+                boxed = gen().makeEmpty();
+            } else {
+                // box with an ArraySequence<T>
+                List<JCExpression> x = List.<JCExpression>nil();
+                for (int ii = numParameters - 1; ii < numArguments; ii++) {
+                    x = x.append(this.getTransformedArgumentExpression(ii, isRaw, getTypeArguments()));
+                }
+                boxed = gen().makeSequenceRaw(x);
             }
-            boxed = gen().makeSequenceRaw(x);
-        }
-        args.append(boxed);
-    }
-
-    private void computeSimple(final boolean isRaw) {
-        // append the normal args
-        for (int ii = 0; ii < this.getNumArguments(); ii++) {
-            args.append(this.getTransformedArgumentExpression(ii, 
-                    isRaw, getTypeArguments()));
+            args.append(boxed);
         }
     }
 
-    private void computeWithDefaultedParameters(final boolean isRaw,
-            int numParameters, int numArguments) {
+    private void computeWithDefaultedParameters() {
+        final boolean isRaw = transformedTypArguments.isEmpty();
+        int numParameters = getDeclaredParameters().size();
+        int numArguments = getNumArguments();
         String varBaseName = gen().aliasName("arg");
         callVarName = varBaseName + "$callable$";
         final boolean needsThis = Decl.withinClassOrInterface(getPrimaryDeclaration());
