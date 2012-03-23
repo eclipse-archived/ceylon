@@ -23,7 +23,6 @@ import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrateg
 import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.TermTransformer;
 import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.java.util.Util;
-import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
@@ -141,16 +140,18 @@ abstract class InvocationBuilder {
         return names;
     }
 
-    protected final boolean appendThis(String varBaseName) {
-        final boolean needsThis = Decl.withinClassOrInterface(getPrimaryDeclaration());
-        if (needsThis) {
-            // first append $this
-            ProducedType thisType = gen().getThisType(getPrimaryDeclaration());
-            vars.append(gen().makeVar(varBaseName + "$this$", 
-                    gen().makeJavaType(thisType, AbstractTransformer.NO_PRIMITIVES), 
-                    gen().makeUnquotedIdent(callVarName)));
+    protected final void appendThis(String varBaseName) {
+        // first append $this
+        String name;
+        if (primary instanceof Tree.BaseMemberOrTypeExpression) {
+            name = "this";
+        } else {
+            name = callVarName;
         }
-        return needsThis;
+        ProducedType thisType = gen().getThisType(getPrimaryDeclaration());
+        vars.append(gen().makeVar(varBaseName + "$this$", 
+                gen().makeJavaType(thisType, AbstractTransformer.NO_PRIMITIVES), 
+                gen().makeUnquotedIdent(name)));
     }
     
     protected JCExpression transformInvocation(JCExpression primaryExpr, String selector) {
@@ -205,15 +206,20 @@ abstract class InvocationBuilder {
         if (callVarName != null) {
             // Prepare the first argument holding the primary for the call
             JCExpression callVarExpr = gen().makeUnquotedIdent(callVarName);
-            JCVariableDecl callVar;
+            JCVariableDecl callVar = null;
             ProducedType type = ((Tree.MemberOrTypeExpression)primary).getTarget().getQualifyingType();
-            if (primaryExpr != null) {
+            if (vars != null 
+                    && !vars.isEmpty() 
+                    && primaryExpr != null
+                    && selector != null) {
                 callVar = gen().makeVar(callVarName, gen().makeJavaType(type, AbstractTransformer.NO_PRIMITIVES), actualPrimExpr);
-            } else {
+            }/*else if () {
                 callVar = gen().makeVar(callVarName, gen().makeJavaType(type, AbstractTransformer.NO_PRIMITIVES), gen().makeUnquotedIdent("this"));
+            }*/
+            if (callVar != null) {
+                vars.prepend(callVar);
+                actualPrimExpr = callVarExpr;
             }
-            vars.prepend(callVar);
-            actualPrimExpr = callVarExpr;
         }
         return actualPrimExpr;
     }
@@ -396,14 +402,22 @@ abstract class AbstractPositionalInvocationBuilder extends InvocationBuilder {
         final boolean isRaw = transformedTypArguments.isEmpty();
         int numParameters = getDeclaredParameters().size();
         int numArguments = this.getNumArguments();
-        Parameter lastDeclaredParam = getDeclaredParameters().isEmpty() ? null : getDeclaredParameters().get(getDeclaredParameters().size() - 1); 
-        if (lastDeclaredParam != null 
+        boolean hasDefaulted = false;
+        for (Parameter param : getDeclaredParameters().subList(Math.min(numArguments, numParameters), numParameters)) {
+            if (param.isDefaulted()) {
+                hasDefaulted = true;
+                break;
+            }
+        }
+        
+        Parameter lastDeclaredParam = getDeclaredParameters().isEmpty() ? null : getDeclaredParameters().get(getDeclaredParameters().size() - 1);
+        if (hasDefaulted) {
+            computeWithDefaultedParameters(isRaw, numParameters, numArguments);
+        } else if (lastDeclaredParam != null 
                 && lastDeclaredParam.isSequenced()
                 && !this.dontBoxSequence() // foo(sequence...) syntax => no need to box
                 && numArguments >= (numParameters -1)) {
             computeWithSequencedParameter(isRaw, numParameters, numArguments);
-        } else if (numArguments < numParameters) {
-            computeWithDefaultedParameters(isRaw, numParameters, numArguments);
         } else {
             computeSimple(isRaw);
         }
@@ -444,7 +458,10 @@ abstract class AbstractPositionalInvocationBuilder extends InvocationBuilder {
             int numParameters, int numArguments) {
         String varBaseName = gen().aliasName("arg");
         callVarName = varBaseName + "$callable$";
-        boolean needsThis = appendThis(varBaseName);
+        final boolean needsThis = Decl.withinClassOrInterface(getPrimaryDeclaration());
+        if (needsThis) { 
+            appendThis(varBaseName);
+        }
         // append the normal args
         int idx = 0;
         for (int ii = 0; ii < this.getNumArguments(); ii++) {
@@ -480,23 +497,24 @@ abstract class AbstractPositionalInvocationBuilder extends InvocationBuilder {
                 String varName = varBaseName + "$" + ii;
                 String methodName = Util.getDefaultedParamMethodName(getPrimaryDeclaration(), param);
                 List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, ii, needsThis);
-                JCExpression argExpr;
-                if (!param.isSequenced()
-                        || hasDefaultArgument(ii)) {
+                JCExpression argExpr = null;
+                if (param.isDefaulted()) {
                     Declaration container = param.getDeclaration().getRefinedDeclaration();
                     if (!container.isToplevel()) {
                         container = (Declaration)container.getContainer();
                     }
                     String className = Util.getCompanionClassName(container.getName());
                     argExpr = gen().at(node).Apply(null, gen().makeQuotedQualIdent(gen().makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName), arglist);
-                } else {
+                } else if (param.isSequenced()) {
                     argExpr = gen().makeEmpty();
                 }
-                BoxingStrategy boxType = Util.getBoxingStrategy(param);
-                ProducedType type = gen().getTypeForParameter(param, isRaw, getTypeArguments());
-                JCExpression typeExpr = gen().makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
-                JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
-                vars.append(varDecl);
+                if (argExpr != null) {
+                    BoxingStrategy boxType = Util.getBoxingStrategy(param);
+                    ProducedType type = gen().getTypeForParameter(param, isRaw, getTypeArguments());
+                    JCExpression typeExpr = gen().makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
+                    JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
+                    vars.append(varDecl);
+                }
             }
             args.appendList(makeVarRefArgumentList(varBaseName, numParameters));
         } else {
@@ -779,6 +797,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
             int numDeclaredFixed = (lastDeclared != null && lastDeclared.isSequenced()) ? numDeclared - 1 : numDeclared;
             int numPassed = namedArguments.size();
             int idx = 0;
+            // Assign vars for each named argument given
             for (Tree.NamedArgument namedArg : namedArguments) {
                 gen().at(namedArg);
                 Tree.Expression expr = ((Tree.SpecifiedArgument)namedArg).getSpecifierExpression().getExpression();
@@ -810,8 +829,14 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 vars.append(varDecl);
             }
             
+            final boolean needsThis = Decl.withinClassOrInterface(getPrimaryDeclaration());
+            boolean hadThis = false;
+            
             if (!Decl.isOverloaded(getPrimaryDeclaration()) && numPassed < numDeclaredFixed) {
-                final boolean needsThis = appendThis(varBaseName);
+                if (needsThis && !hadThis) {
+                    appendThis(varBaseName);
+                    hadThis = true;
+                }
                 // append any arguments for defaulted parameters
                 for (int ii = 0; ii < numDeclaredFixed; ii++) {
                     Parameter param = declaredParams.get(ii);
@@ -841,20 +866,36 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 }
             }
             
+            JCExpression argExpr = null;
             Tree.SequencedArgument sequencedArgument = namedArgumentList.getSequencedArgument();
             if (sequencedArgument != null) {
                 gen().at(sequencedArgument);
-                String varName = varBaseName + "$" + numDeclaredFixed;
-                JCExpression typeExpr = gen().makeJavaType(lastDeclared.getType(), AbstractTransformer.WANT_RAW_TYPE);
-                JCExpression argExpr = gen().makeSequenceRaw(sequencedArgument.getExpressionList().getExpressions());
-                JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
-                vars.append(varDecl);
+                argExpr = gen().makeSequenceRaw(sequencedArgument.getExpressionList().getExpressions());   
             } else if (lastDeclared != null 
                     && lastDeclared.isSequenced() 
                     && !boundSequenced) {
+                if (parameters.get(parameters.size()-1).isDefaulted()) {
+                    if (needsThis && !hadThis) {
+                        appendThis(varBaseName);
+                        hadThis = true;
+                    }
+                    Parameter sequencedParameter = parameters.get(parameters.size()-1);
+                    String methodName = Util.getDefaultedParamMethodName(getPrimaryDeclaration(), sequencedParameter);
+                    List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, numDeclaredFixed, needsThis);
+                    Declaration container = sequencedParameter.getDeclaration().getRefinedDeclaration();
+                    if (!container.isToplevel()) {
+                        container = (Declaration)container.getContainer();
+                    }
+                    String className = Util.getCompanionClassName(container.getName());
+                    argExpr = gen().at(node).Apply(null, gen().makeQuotedQualIdent(gen().makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName), arglist);
+                } else {
+                    argExpr = gen().makeEmpty();
+                }
+            }
+            if (argExpr != null) {
                 String varName = varBaseName + "$" + numDeclaredFixed;
                 JCExpression typeExpr = gen().makeJavaType(lastDeclared.getType(), AbstractTransformer.WANT_RAW_TYPE);
-                JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, gen().makeEmpty());
+                JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
                 vars.append(varDecl);
             }
             
