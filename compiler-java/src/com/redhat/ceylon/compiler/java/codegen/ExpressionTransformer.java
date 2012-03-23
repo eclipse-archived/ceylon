@@ -1020,24 +1020,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         return InvocationBuilder.invocation(this, ce).build();
     }
     
-    // used by ClassDefinitionBuilder too, for super()
-    public JCExpression transformArg(Tree.Term expr, Parameter parameter, boolean isRaw, java.util.List<ProducedType> typeArgumentModels) {
-        if (parameter != null) {
-            ProducedType type = getTypeForParameter(parameter, isRaw, typeArgumentModels);
-            return transformExpression(expr, 
-                    Util.getBoxingStrategy(parameter), 
-                    type);
-        } else {
-            // Overloaded methods don't have a reference to a parameter
-            // so we have to treat them differently. Also knowing it's
-            // overloaded we know we're dealing with Java code so we unbox
-            ProducedType type = expr.getTypeModel();
-            return transformExpression(expr, 
-                    BoxingStrategy.UNBOXED, 
-                    type);
-        }
-    }
-    
     public JCExpression transformFunctional(Tree.Term expr,
             Functional functional) {
         return CallableBuilder.functional(gen(), expr, functional.getParameterLists().get(0)).build();

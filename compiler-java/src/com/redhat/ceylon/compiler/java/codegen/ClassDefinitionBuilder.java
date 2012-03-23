@@ -285,12 +285,8 @@ public class ClassDefinitionBuilder {
 
     public ClassDefinitionBuilder extending(Tree.ExtendedType extendedType) {
         if (extendedType.getInvocationExpression().getPositionalArgumentList() != null) {
-            List<JCExpression> args = List.<JCExpression> nil();
-
-            for (Tree.PositionalArgument arg : extendedType.getInvocationExpression().getPositionalArgumentList().getPositionalArguments())
-                args = args.append(gen.expressionGen().transformArg(arg.getExpression(), arg.getParameter(), false, null));
-
-            superCall = gen.at(extendedType).Exec(gen.make().Apply(List.<JCExpression> nil(), gen.make().Ident(gen.names()._super), args));
+            InvocationBuilder builder = InvocationBuilder.forSuper(gen, extendedType.getInvocationExpression());
+            superCall = gen.at(extendedType).Exec(builder.build());
         }
         return extending(extendedType.getType().getTypeModel());
     }
