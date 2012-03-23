@@ -361,7 +361,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
         } else if (def instanceof MethodDeclaration
                 && ((MethodDeclaration) def).getSpecifierExpression() != null) {
-            InvocationBuilder specifierBuilder = InvocationBuilder.invocationForSpecifier(gen(), ((MethodDeclaration) def).getSpecifierExpression(), def.getDeclarationModel());
+            InvocationBuilder specifierBuilder = InvocationBuilder.forSpecifierInvocation(gen(), ((MethodDeclaration) def).getSpecifierExpression(), def.getDeclarationModel());
             if (gen().isVoid(def.getType().getTypeModel())) {
                 body = List.<JCStatement>of(make().Exec(specifierBuilder.build()));
             } else {

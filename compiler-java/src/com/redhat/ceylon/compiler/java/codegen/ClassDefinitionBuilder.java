@@ -285,7 +285,7 @@ public class ClassDefinitionBuilder {
 
     public ClassDefinitionBuilder extending(Tree.ExtendedType extendedType) {
         if (extendedType.getInvocationExpression().getPositionalArgumentList() != null) {
-            InvocationBuilder builder = InvocationBuilder.forSuper(gen, extendedType.getInvocationExpression());
+            InvocationBuilder builder = InvocationBuilder.forSuperInvocation(gen, extendedType.getInvocationExpression());
             superCall = gen.at(extendedType).Exec(builder.build());
         }
         return extending(extendedType.getType().getTypeModel());
