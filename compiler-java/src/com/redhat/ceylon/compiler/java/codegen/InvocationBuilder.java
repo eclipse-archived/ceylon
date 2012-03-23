@@ -776,108 +776,98 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
     }
     @Override
     protected void compute() {
-        java.util.List<ProducedType> typeArgumentModels = getTypeArguments();
-        boolean isRaw = transformedTypArguments.isEmpty();
-        
         if (getPrimaryDeclaration() != null) {
             java.util.List<ParameterList> paramLists = ((Functional)getPrimaryDeclaration()).getParameterLists();
             java.util.List<Tree.NamedArgument> namedArguments = namedArgumentList.getNamedArguments();
             java.util.List<Parameter> declaredParams = paramLists.get(0).getParameters();
             Parameter lastDeclared = declaredParams.size() > 0 ? declaredParams.get(declaredParams.size() - 1) : null;
-            boolean boundSequenced = false;
             String varBaseName = gen().aliasName("arg");
             callVarName = varBaseName + "$callable$";
             
             int numDeclared = declaredParams.size();
             int numDeclaredFixed = (lastDeclared != null && lastDeclared.isSequenced()) ? numDeclared - 1 : numDeclared;
             int numPassed = namedArguments.size();
-            int idx = 0;
-            // Assign vars for each named argument given
-            for (Tree.NamedArgument namedArg : namedArguments) {
-                gen().at(namedArg);
-                Tree.Expression expr = ((Tree.SpecifiedArgument)namedArg).getSpecifierExpression().getExpression();
-                Parameter declaredParam = namedArg.getParameter();
-                int index;
-                BoxingStrategy boxType;
-                ProducedType type;
-                if (declaredParam != null) {
-                    if (declaredParam.isSequenced()) {
-                        boundSequenced = true;
-                    }
-                    index = declaredParams.indexOf(declaredParam);
-                    boxType = Util.getBoxingStrategy(declaredParam);
-                    type = gen().getTypeForParameter(declaredParam, isRaw, typeArgumentModels);
-                } else {
-                    // Arguments of overloaded methods don't have a reference to parameter
-                    index = idx++;
-                    boxType = BoxingStrategy.UNBOXED;
-                    type = expr.getTypeModel();
-                }
-                String varName = varBaseName + "$" + index;
-                // if we can't pick up on the type from the declaration, revert to the type of the expression
-                if(gen().isTypeParameter(gen().simplifyType(type)))
-                    type = expr.getTypeModel();
-                
-                JCExpression typeExpr = gen().makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
-                JCExpression argExpr = gen().expressionGen().transformExpression(expr, boxType, type);
-                JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
-                vars.append(varDecl);
-            }
-            
             final boolean needsThis = Decl.withinClassOrInterface(getPrimaryDeclaration());
-            boolean hadThis = false;
+            boolean boundSequenced = appendVarsForNamedArguments(namedArguments, declaredParams, varBaseName);
+            boolean hadThis = appendVarsForDefaulted(namedArguments,
+                    declaredParams, varBaseName, numDeclaredFixed, 
+                    needsThis);
+            appendVarsForSequenced(lastDeclared, boundSequenced, varBaseName,
+                    numDeclaredFixed, needsThis, hadThis);
             
-            if (!Decl.isOverloaded(getPrimaryDeclaration()) && numPassed < numDeclaredFixed) {
-                if (needsThis && !hadThis) {
-                    appendThis(varBaseName);
-                    hadThis = true;
-                }
-                // append any arguments for defaulted parameters
-                for (int ii = 0; ii < numDeclaredFixed; ii++) {
-                    Parameter param = declaredParams.get(ii);
-                    if (containsParameter(namedArguments, param)) {
-                        continue;
-                    }
-                    String varName = varBaseName + "$" + ii;
-                    String methodName = Util.getDefaultedParamMethodName(getPrimaryDeclaration(), param);
-                    List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, ii, needsThis);
-                    JCExpression argExpr;
-                    if (!param.isSequenced()
-                            || hasDefaultArgument(ii)) {
-                        Declaration container = param.getDeclaration().getRefinedDeclaration();
-                        if (!container.isToplevel()) {
-                            container = (Declaration)container.getContainer();
-                        }
-                        String className = Util.getCompanionClassName(container.getName());
-                        argExpr = gen().at(node).Apply(null, gen().makeQuotedQualIdent(gen().makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName), arglist);
-                    } else {
-                        argExpr = gen().makeEmpty();
-                    }
-                    BoxingStrategy boxType = Util.getBoxingStrategy(param);
-                    ProducedType type = gen().getTypeForParameter(param, isRaw, typeArgumentModels);
-                    JCExpression typeExpr = gen().makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
-                    JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
-                    vars.append(varDecl);
-                }
+            if (!Decl.isOverloaded(getPrimaryDeclaration())) {
+                args.appendList(makeVarRefArgumentList(varBaseName, numDeclared));
+            } else {
+                // For overloaded methods (and therefore Java interop) we just pass the arguments we have
+                args.appendList(makeVarRefArgumentList(varBaseName, numPassed));
             }
+        }
+    }
+    private boolean appendVarsForNamedArguments(
+            java.util.List<Tree.NamedArgument> namedArguments,
+            java.util.List<Parameter> declaredParams, 
+            String varBaseName) {
+        boolean isRaw = transformedTypArguments.isEmpty();
+        boolean boundSequenced = false;
+        int idx = 0;
+        // Assign vars for each named argument given
+        for (Tree.NamedArgument namedArg : namedArguments) {
+            gen().at(namedArg);
+            Tree.Expression expr = ((Tree.SpecifiedArgument)namedArg).getSpecifierExpression().getExpression();
+            Parameter declaredParam = namedArg.getParameter();
+            int index;
+            BoxingStrategy boxType;
+            ProducedType type;
+            if (declaredParam != null) {
+                if (declaredParam.isSequenced()) {
+                    boundSequenced = true;
+                }
+                index = declaredParams.indexOf(declaredParam);
+                boxType = Util.getBoxingStrategy(declaredParam);
+                type = gen().getTypeForParameter(declaredParam, isRaw, getTypeArguments());
+            } else {
+                // Arguments of overloaded methods don't have a reference to parameter
+                index = idx++;
+                boxType = BoxingStrategy.UNBOXED;
+                type = expr.getTypeModel();
+            }
+            String varName = varBaseName + "$" + index;
+            // if we can't pick up on the type from the declaration, revert to the type of the expression
+            if(gen().isTypeParameter(gen().simplifyType(type)))
+                type = expr.getTypeModel();
             
-            JCExpression argExpr = null;
-            Tree.SequencedArgument sequencedArgument = namedArgumentList.getSequencedArgument();
-            if (sequencedArgument != null) {
-                gen().at(sequencedArgument);
-                argExpr = gen().makeSequenceRaw(sequencedArgument.getExpressionList().getExpressions());   
-            } else if (lastDeclared != null 
-                    && lastDeclared.isSequenced() 
-                    && !boundSequenced) {
-                if (parameters.get(parameters.size()-1).isDefaulted()) {
-                    if (needsThis && !hadThis) {
-                        appendThis(varBaseName);
-                        hadThis = true;
-                    }
-                    Parameter sequencedParameter = parameters.get(parameters.size()-1);
-                    String methodName = Util.getDefaultedParamMethodName(getPrimaryDeclaration(), sequencedParameter);
-                    List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, numDeclaredFixed, needsThis);
-                    Declaration container = sequencedParameter.getDeclaration().getRefinedDeclaration();
+            JCExpression typeExpr = gen().makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
+            JCExpression argExpr = gen().expressionGen().transformExpression(expr, boxType, type);
+            JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
+            vars.append(varDecl);
+        }
+        return boundSequenced;
+    }
+    private boolean appendVarsForDefaulted(
+            java.util.List<Tree.NamedArgument> namedArguments,
+            java.util.List<Parameter> declaredParams, String varBaseName,
+            int numDeclaredFixed, final boolean needsThis) {
+        boolean isRaw = transformedTypArguments.isEmpty();
+        int numPassed = namedArguments.size();
+        boolean hadThis = false;
+        if (!Decl.isOverloaded(getPrimaryDeclaration()) && numPassed < numDeclaredFixed) {
+            if (needsThis && !hadThis) {
+                appendThis(varBaseName);
+                hadThis = true;
+            }
+            // append any arguments for defaulted parameters
+            for (int ii = 0; ii < numDeclaredFixed; ii++) {
+                Parameter param = declaredParams.get(ii);
+                if (containsParameter(namedArguments, param)) {
+                    continue;
+                }
+                String varName = varBaseName + "$" + ii;
+                String methodName = Util.getDefaultedParamMethodName(getPrimaryDeclaration(), param);
+                List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, ii, needsThis);
+                JCExpression argExpr;
+                if (!param.isSequenced()
+                        || hasDefaultArgument(ii)) {
+                    Declaration container = param.getDeclaration().getRefinedDeclaration();
                     if (!container.isToplevel()) {
                         container = (Declaration)container.getContainer();
                     }
@@ -886,20 +876,49 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 } else {
                     argExpr = gen().makeEmpty();
                 }
-            }
-            if (argExpr != null) {
-                String varName = varBaseName + "$" + numDeclaredFixed;
-                JCExpression typeExpr = gen().makeJavaType(lastDeclared.getType(), AbstractTransformer.WANT_RAW_TYPE);
+                BoxingStrategy boxType = Util.getBoxingStrategy(param);
+                ProducedType type = gen().getTypeForParameter(param, isRaw, getTypeArguments());
+                JCExpression typeExpr = gen().makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
                 JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
                 vars.append(varDecl);
             }
-            
-            if (!Decl.isOverloaded(getPrimaryDeclaration())) {
-                args.appendList(makeVarRefArgumentList(varBaseName, numDeclared));
+        }
+        return hadThis;
+    }
+    private void appendVarsForSequenced(Parameter lastDeclared, boolean boundSequenced,
+            String varBaseName, int numDeclaredFixed, final boolean needsThis,
+            boolean hadThis) {
+        JCExpression argExpr = null;
+        Tree.SequencedArgument sequencedArgument = namedArgumentList.getSequencedArgument();
+        if (sequencedArgument != null) {
+            gen().at(sequencedArgument);
+            argExpr = gen().makeSequenceRaw(sequencedArgument.getExpressionList().getExpressions());   
+        } else if (lastDeclared != null 
+                && lastDeclared.isSequenced() 
+                && !boundSequenced) {
+            if (parameters.get(parameters.size()-1).isDefaulted()) {
+                if (needsThis && !hadThis) {
+                    appendThis(varBaseName);
+                    hadThis = true;
+                }
+                Parameter sequencedParameter = parameters.get(parameters.size()-1);
+                String methodName = Util.getDefaultedParamMethodName(getPrimaryDeclaration(), sequencedParameter);
+                List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, numDeclaredFixed, needsThis);
+                Declaration container = sequencedParameter.getDeclaration().getRefinedDeclaration();
+                if (!container.isToplevel()) {
+                    container = (Declaration)container.getContainer();
+                }
+                String className = Util.getCompanionClassName(container.getName());
+                argExpr = gen().at(node).Apply(null, gen().makeQuotedQualIdent(gen().makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName), arglist);
             } else {
-                // For overloaded methods (and therefore Java interop) we just pass the arguments we have
-                args.appendList(makeVarRefArgumentList(varBaseName, numPassed));
+                argExpr = gen().makeEmpty();
             }
+        }
+        if (argExpr != null) {
+            String varName = varBaseName + "$" + numDeclaredFixed;
+            JCExpression typeExpr = gen().makeJavaType(lastDeclared.getType(), AbstractTransformer.WANT_RAW_TYPE);
+            JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
+            vars.append(varDecl);
         }
     }
 
