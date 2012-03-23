@@ -23,6 +23,7 @@ import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrateg
 import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.TermTransformer;
 import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
@@ -33,9 +34,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgumentList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -141,6 +139,18 @@ abstract class InvocationBuilder {
         }
         names = names.appendList(makeVarRefArgumentList(varBaseName, argCount));
         return names;
+    }
+
+    protected final boolean appendThis(String varBaseName) {
+        final boolean needsThis = Decl.withinClassOrInterface(getPrimaryDeclaration());
+        if (needsThis) {
+            // first append $this
+            ProducedType thisType = gen().getThisType(getPrimaryDeclaration());
+            vars.append(gen().makeVar(varBaseName + "$this$", 
+                    gen().makeJavaType(thisType, AbstractTransformer.NO_PRIMITIVES), 
+                    gen().makeUnquotedIdent(callVarName)));
+        }
+        return needsThis;
     }
     
     protected JCExpression transformInvocation(JCExpression primaryExpr, String selector) {
@@ -434,14 +444,7 @@ abstract class AbstractPositionalInvocationBuilder extends InvocationBuilder {
             int numParameters, int numArguments) {
         String varBaseName = gen().aliasName("arg");
         callVarName = varBaseName + "$callable$";
-        boolean needsThis = Decl.withinClassOrInterface(getPrimaryDeclaration());
-        if (needsThis) {
-            // first append $this
-            ProducedType thisType = gen().getThisType(getPrimaryDeclaration());
-            vars.append(gen().makeVar(varBaseName + "$this$", 
-                    gen().makeJavaType(thisType, AbstractTransformer.NO_PRIMITIVES), 
-                    gen().makeUnquotedIdent(callVarName)));
-        }
+        boolean needsThis = appendThis(varBaseName);
         // append the normal args
         int idx = 0;
         for (int ii = 0; ii < this.getNumArguments(); ii++) {
@@ -478,7 +481,8 @@ abstract class AbstractPositionalInvocationBuilder extends InvocationBuilder {
                 String methodName = Util.getDefaultedParamMethodName(getPrimaryDeclaration(), param);
                 List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, ii, needsThis);
                 JCExpression argExpr;
-                if (!param.isSequenced()) {
+                if (!param.isSequenced()
+                        || hasDefaultArgument(ii)) {
                     Declaration container = param.getDeclaration().getRefinedDeclaration();
                     if (!container.isToplevel()) {
                         container = (Declaration)container.getContainer();
@@ -500,21 +504,25 @@ abstract class AbstractPositionalInvocationBuilder extends InvocationBuilder {
             args.appendList(makeVarRefArgumentList(varBaseName, numArguments));
         }
     }
+
+    protected abstract boolean hasDefaultArgument(int ii);
 }
 
 class PositionalInvocationBuilder extends AbstractPositionalInvocationBuilder {
     
-    private final  PositionalArgumentList positional;
+    private final Tree.PositionalArgumentList positional;
     private final java.util.List<Parameter> declaredParameters;
+    private final java.util.List<Parameter> parameters;
     
     public PositionalInvocationBuilder(
             AbstractTransformer gen, 
-            Primary primary,
+            Tree.Primary primary,
             Declaration primaryDeclaration,
             Tree.InvocationExpression invocation,
             ParameterList parameterList) {
         super(gen, primary, primaryDeclaration, invocation.getTypeModel(), invocation);
         positional = invocation.getPositionalArgumentList();
+        parameters = ((Functional)primaryDeclaration).getParameterLists().get(0).getParameters();    
         this.declaredParameters = parameterList.getParameters();
     }
     @Override
@@ -542,6 +550,10 @@ class PositionalInvocationBuilder extends AbstractPositionalInvocationBuilder {
     @Override
     protected boolean dontBoxSequence() {
         return positional.getEllipsis() != null;
+    }
+    @Override
+    protected boolean hasDefaultArgument(int ii) {
+        return parameters.get(ii).isDefaulted();
     }
     
 }
@@ -609,6 +621,11 @@ class CallableInvocationBuilder extends AbstractPositionalInvocationBuilder {
     protected java.util.List<Parameter> getDeclaredParameters() {
         return functionalParameters;
     }
+    @Override
+    protected boolean hasDefaultArgument(int ii) {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }
 
 class StaticSpecifierInvocationBuilder extends AbstractPositionalInvocationBuilder {
@@ -616,7 +633,7 @@ class StaticSpecifierInvocationBuilder extends AbstractPositionalInvocationBuild
     private final Method method;
 
     public StaticSpecifierInvocationBuilder(
-            AbstractTransformer gen, Primary primary,
+            AbstractTransformer gen, Tree.Primary primary,
             Declaration primaryDeclaration,
             Method method, Tree.SpecifierExpression node) {
         super(gen, primary, primaryDeclaration, method.getType(), node);
@@ -666,6 +683,11 @@ class StaticSpecifierInvocationBuilder extends AbstractPositionalInvocationBuild
     @Override
     protected java.util.List<Parameter> getDeclaredParameters() {
         return method.getParameterLists().get(0).getParameters();
+    }
+
+    @Override
+    protected boolean hasDefaultArgument(int ii) {
+        return false;
     }
 }
 
@@ -719,13 +741,15 @@ class CallableSpecifierInvocationBuilder extends InvocationBuilder {
 
 class NamedArgumentInvocationBuilder extends InvocationBuilder {
     
-    private final NamedArgumentList namedArgumentList;
+    private final Tree.NamedArgumentList namedArgumentList;
+    private java.util.List<Parameter> parameters;
     
     public NamedArgumentInvocationBuilder(
-            AbstractTransformer gen, Primary primary,
+            AbstractTransformer gen, Tree.Primary primary,
             Declaration primaryDeclaration,
             Tree.InvocationExpression invocation) {
         super(gen, primary, primaryDeclaration, invocation.getTypeModel(), invocation);
+        parameters = ((Functional)primaryDeclaration).getParameterLists().get(0).getParameters();
         namedArgumentList = invocation.getNamedArgumentList();
     }
     protected boolean containsParameter(java.util.List<Tree.NamedArgument> namedArguments, Parameter param) {
@@ -787,14 +811,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
             }
             
             if (!Decl.isOverloaded(getPrimaryDeclaration()) && numPassed < numDeclaredFixed) {
-                final boolean needsThis = Decl.withinClassOrInterface(getPrimaryDeclaration());
-                if (needsThis) {
-                    // first append $this
-                    ProducedType thisType = gen().getThisType(getPrimaryDeclaration());
-                    vars.append(gen().makeVar(varBaseName + "$this$", 
-                            gen().makeJavaType(thisType, AbstractTransformer.NO_PRIMITIVES), 
-                            gen().makeUnquotedIdent(callVarName)));
-                }
+                final boolean needsThis = appendThis(varBaseName);
                 // append any arguments for defaulted parameters
                 for (int ii = 0; ii < numDeclaredFixed; ii++) {
                     Parameter param = declaredParams.get(ii);
@@ -805,7 +822,8 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                     String methodName = Util.getDefaultedParamMethodName(getPrimaryDeclaration(), param);
                     List<JCExpression> arglist = makeThisVarRefArgumentList(varBaseName, ii, needsThis);
                     JCExpression argExpr;
-                    if (!param.isSequenced()) {
+                    if (!param.isSequenced()
+                            || hasDefaultArgument(ii)) {
                         Declaration container = param.getDeclaration().getRefinedDeclaration();
                         if (!container.isToplevel()) {
                             container = (Declaration)container.getContainer();
@@ -847,5 +865,10 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 args.appendList(makeVarRefArgumentList(varBaseName, numPassed));
             }
         }
+    }
+
+    
+    protected boolean hasDefaultArgument(int ii) {
+        return parameters.get(ii).isDefaulted();
     }
 }
