@@ -100,8 +100,8 @@ class DefaultedAndSequenced {
     private final void namedArgs() {
         (
             let
-                .java.lang.String $arg$6$0 = "",
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$6$this$ = this,
+                .java.lang.String $arg$6$0 = "",
                 long $arg$6$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced.DefaultedAndSequenced$impl.m$i($arg$6$this$, $arg$6$0),
                 .ceylon.language.Iterable $arg$6$2 = .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced.DefaultedAndSequenced$impl.m$b($arg$6$this$, $arg$6$0, $arg$6$1)
             in {
@@ -111,9 +111,9 @@ class DefaultedAndSequenced {
         );
         (
             let
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$7$this$ = this,
                 .java.lang.String $arg$7$0 = "",
                 long $arg$7$1 = 2L,
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$7$this$ = this,
                 .ceylon.language.Iterable $arg$7$2 = .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced.DefaultedAndSequenced$impl.m$b($arg$7$this$, $arg$7$0, $arg$7$1)
             in {
                 m($arg$7$0, $arg$7$1, $arg$7$2);
@@ -146,8 +146,8 @@ class DefaultedAndSequenced {
         (
             let
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$10$callable$ = self(),
-                .java.lang.String $arg$10$0 = "",
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$10$this$ = $arg$10$callable$,
+                .java.lang.String $arg$10$0 = "",
                 long $arg$10$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced.DefaultedAndSequenced$impl.m$i($arg$10$this$, $arg$10$0),
                 .ceylon.language.Iterable $arg$10$2 = .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced.DefaultedAndSequenced$impl.m$b($arg$10$this$, $arg$10$0, $arg$10$1)
             in {
@@ -158,9 +158,9 @@ class DefaultedAndSequenced {
         (
             let
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$11$callable$ = self(),
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$11$this$ = $arg$11$callable$,
                 .java.lang.String $arg$11$0 = "",
                 long $arg$11$1 = 2L,
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$11$this$ = $arg$11$callable$,
                 .ceylon.language.Iterable $arg$11$2 = .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced.DefaultedAndSequenced$impl.m$b($arg$11$this$, $arg$11$0, $arg$11$1)
             in {
                 $arg$11$callable$.m($arg$11$0, $arg$11$1, $arg$11$2);
@@ -195,8 +195,8 @@ class DefaultedAndSequenced {
         (
             let
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$14$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced(),
-                .java.lang.String $arg$14$0 = "",
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$14$this$ = $arg$14$callable$,
+                .java.lang.String $arg$14$0 = "",
                 long $arg$14$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced.DefaultedAndSequenced$impl.m$i($arg$14$this$, $arg$14$0),
                 .ceylon.language.Iterable $arg$14$2 = .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced.DefaultedAndSequenced$impl.m$b($arg$14$this$, $arg$14$0, $arg$14$1)
             in {
@@ -207,9 +207,9 @@ class DefaultedAndSequenced {
         (
             let
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$15$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced(),
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$15$this$ = $arg$15$callable$,
                 .java.lang.String $arg$15$0 = "",
                 long $arg$15$1 = 2L,
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$15$this$ = $arg$15$callable$,
                 .ceylon.language.Iterable $arg$15$2 = .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced.DefaultedAndSequenced$impl.m$b($arg$15$this$, $arg$15$0, $arg$15$1)
             in {
                 $arg$15$callable$.m($arg$15$0, $arg$15$1, $arg$15$2);
