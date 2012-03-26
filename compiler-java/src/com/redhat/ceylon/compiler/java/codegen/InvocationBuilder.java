@@ -97,6 +97,34 @@ abstract class InvocationBuilder {
      */
     protected abstract void compute();
     
+    protected final JCExpression makeDefaultedArgument(int argIndex, Parameter param) {
+        hasDefaultedArguments = true;
+        JCExpression argExpr;
+        String methodName = Util.getDefaultedParamMethodName(getPrimaryDeclaration(), param);
+        List<JCExpression> arglist = makeThisVarRefArgumentList(argIndex);
+        Declaration container = param.getDeclaration().getRefinedDeclaration();
+        if (!container.isToplevel()) {
+            container = (Declaration)container.getContainer();
+        }
+        String className = Util.getCompanionClassName(container.getName());
+        argExpr = gen().at(node).Apply(null, gen().makeQuotedQualIdent(gen().makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName), arglist);
+        return argExpr;
+    }
+    
+    protected final void appendDefaulted(ProducedType type, int argIndex,
+            JCExpression argExpr, int flags) {
+        String varName = varBaseName + "$" + argIndex;
+        JCExpression typeExpr = gen().makeJavaType(type, flags);
+        JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
+        vars.append(varDecl);
+    }
+    
+    protected final void appendDefaulted(Parameter param, int argIndex, boolean isRaw, JCExpression argExpr) {
+        int flags = (Util.getBoxingStrategy(param) == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0;
+        ProducedType type = gen().getTypeForParameter(param, isRaw, getTypeArguments());
+        appendDefaulted(type, argIndex, argExpr, flags);
+    }
+    
     protected final AbstractTransformer gen() {
         return gen;
     }
@@ -519,39 +547,27 @@ class PositionalInvocationBuilder extends SimpleInvocationBuilder {
                 boxType = BoxingStrategy.UNBOXED;
                 type = expr.getTypeModel();
             }
-            String varName = varBaseName + "$" + index;
+            
             // if we can't pick up on the type from the declaration, revert to the type of the expression
             if(gen().isTypeParameter(type))
                 type = expr.getTypeModel();
-            JCExpression typeExpr = gen().makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
+            
+            int flags = (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0;
             JCExpression argExpr = gen().expressionGen().transformExpression(expr, boxType, type);
-            JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
-            vars.append(varDecl);
+            appendDefaulted(type, index, argExpr, flags);
         }
         if (!Decl.isOverloaded(getPrimaryDeclaration())) {
             // append any arguments for defaulted parameters
             for (int ii = numArguments; ii < numParameters; ii++) {
                 Parameter param = getDeclaredParameters().get(ii);
-                String varName = varBaseName + "$" + ii;
-                String methodName = Util.getDefaultedParamMethodName(getPrimaryDeclaration(), param);
-                List<JCExpression> arglist = makeThisVarRefArgumentList(ii);
                 JCExpression argExpr = null;
                 if (param.isDefaulted()) {
-                    Declaration container = param.getDeclaration().getRefinedDeclaration();
-                    if (!container.isToplevel()) {
-                        container = (Declaration)container.getContainer();
-                    }
-                    String className = Util.getCompanionClassName(container.getName());
-                    argExpr = gen().at(node).Apply(null, gen().makeQuotedQualIdent(gen().makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName), arglist);
+                    argExpr = makeDefaultedArgument(ii, param);
                 } else if (param.isSequenced()) {
                     argExpr = gen().makeEmpty();
                 }
                 if (argExpr != null) {
-                    BoxingStrategy boxType = Util.getBoxingStrategy(param);
-                    ProducedType type = gen().getTypeForParameter(param, isRaw, getTypeArguments());
-                    JCExpression typeExpr = gen().makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
-                    JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
-                    vars.append(varDecl);
+                    appendDefaulted(param, ii, isRaw, argExpr);
                 }
             }
             args.appendList(makeVarRefArgumentList(numParameters));
@@ -559,7 +575,8 @@ class PositionalInvocationBuilder extends SimpleInvocationBuilder {
             // For overloaded methods (and therefore Java interop) we just pass the arguments we have
             args.appendList(makeVarRefArgumentList(numArguments));
         }
-    }    
+    }
+    
 }
 
 /**
@@ -840,26 +857,14 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 if (containsParameter(namedArguments, param)) {
                     continue;
                 }
-                String varName = varBaseName + "$" + ii;
-                String methodName = Util.getDefaultedParamMethodName(getPrimaryDeclaration(), param);
-                List<JCExpression> arglist = makeThisVarRefArgumentList(ii);
-                JCExpression argExpr;
+                final JCExpression argExpr;
                 if (!param.isSequenced()
                         || hasDefaultArgument(ii)) {
-                    Declaration container = param.getDeclaration().getRefinedDeclaration();
-                    if (!container.isToplevel()) {
-                        container = (Declaration)container.getContainer();
-                    }
-                    String className = Util.getCompanionClassName(container.getName());
-                    argExpr = gen().at(node).Apply(null, gen().makeQuotedQualIdent(gen().makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName), arglist);
+                    argExpr = makeDefaultedArgument(ii, param);
                 } else {
                     argExpr = gen().makeEmpty();
                 }
-                BoxingStrategy boxType = Util.getBoxingStrategy(param);
-                ProducedType type = gen().getTypeForParameter(param, isRaw, getTypeArguments());
-                JCExpression typeExpr = gen().makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
-                JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
-                vars.append(varDecl);
+                appendDefaulted(param, ii, isRaw, argExpr);
             }
         }
     }
@@ -874,28 +879,16 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 && lastDeclared.isSequenced() 
                 && !boundSequenced) {
             if (parameters.get(parameters.size()-1).isDefaulted()) {
-                hasDefaultedArguments = true;
                 Parameter sequencedParameter = parameters.get(parameters.size()-1);
-                String methodName = Util.getDefaultedParamMethodName(getPrimaryDeclaration(), sequencedParameter);
-                List<JCExpression> arglist = makeThisVarRefArgumentList(numDeclaredFixed);
-                Declaration container = sequencedParameter.getDeclaration().getRefinedDeclaration();
-                if (!container.isToplevel()) {
-                    container = (Declaration)container.getContainer();
-                }
-                String className = Util.getCompanionClassName(container.getName());
-                argExpr = gen().at(node).Apply(null, gen().makeQuotedQualIdent(gen().makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName), arglist);
+                argExpr = makeDefaultedArgument(numDeclaredFixed, sequencedParameter);
             } else {
                 argExpr = gen().makeEmpty();
             }
         }
         if (argExpr != null) {
-            String varName = varBaseName + "$" + numDeclaredFixed;
-            JCExpression typeExpr = gen().makeJavaType(lastDeclared.getType(), AbstractTransformer.WANT_RAW_TYPE);
-            JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
-            vars.append(varDecl);
+            appendDefaulted(lastDeclared.getType(), numDeclaredFixed, argExpr, AbstractTransformer.WANT_RAW_TYPE);
         }
     }
-    
     private boolean hasDefaultArgument(int ii) {
         return parameters.get(ii).isDefaulted();
     }
