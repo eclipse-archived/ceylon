@@ -104,6 +104,14 @@ void testIfExists() {
     } else {
         fail("if (exists x=expr)");
     }
+    variable Integer cnt := 0;
+    String? s5 { ++cnt; return "ok"; }
+    if (exists s5) {
+        assert(s5=="ok", "if (exists x) with getter [value: " s5 "]");
+    } else {
+        fail("if (exists x) with getter [exists]");
+    }
+    assert(cnt==1, "if (exists x) with getter [calls: " cnt "]");
 }
 
 void testWhileExists() {

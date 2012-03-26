@@ -842,8 +842,7 @@ public class GenerateJsVisitor extends Visitor
         Getter d = that.getDeclarationModel();
         if (prototypeStyle&&d.isClassOrInterfaceMember()) return;
         comment(that);
-        function();
-        out(getter(d), "()");
+        out("var ", getter(d), "=function()");
         super.visit(that);
         shareGetter(d);
     }
