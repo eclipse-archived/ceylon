@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -34,7 +33,6 @@ public class GenerateJsVisitor extends Visitor
     private boolean indent=true;
     private boolean comment=true;
     private int tmpvarCount = 0;
-    private final Stack<Continuation> continues = new Stack<Continuation>();
 
     private final class SuperVisitor extends Visitor {
         private final List<Declaration> decs;
@@ -937,19 +935,13 @@ public class GenerateJsVisitor extends Visitor
                 super.visit(that);
                 out(";");
                 endLine();
-                function();
-                out(getter(d));
-                out("()");
-                beginBlock();
-                out("return $", d.getName(), ";");
-                endBlock();
+                out("var ", getter(d),"=function(){return $", d.getName(), ";};");
+                endLine();
                 shareGetter(d);
                 if (d.isVariable()) {
-                    function();
-                    out(setter(d), "(", d.getName(), ")");
-                    beginBlock();
-                    out("$", d.getName(), "=", d.getName(), "; return ", d.getName(), ";");
-                    endBlock();
+                    out("var ", setter(d), "=function(", d.getName(), "){");
+                    out("$", d.getName(), "=", d.getName(), "; return ", d.getName(), ";};");
+                    endLine();
                     shareSetter(d);
                 }
             }
@@ -1909,11 +1901,9 @@ public class GenerateJsVisitor extends Visitor
            } else {
                // no getter exists yet, so define one
                beginBlock();
-               function();
-               out(getter(variable.getDeclarationModel()));
-               out("(){return ");
+               out("var ", getter(variable.getDeclarationModel()), "=function(){return ");
                bme.visit(this);
-               out("}");
+               out("};");
                endLine();
 
                visitStatements(block.getStatements(), false);
@@ -1939,9 +1929,7 @@ public class GenerateJsVisitor extends Visitor
 			   out("var $", varName, "=$cond$;");
 			   endLine();
 
-			   function();
-			   out(getter(variable.getDeclarationModel()));
-			   out("(){return $", varName, "}");
+			   out("var ", getter(variable.getDeclarationModel()), "=function(){return $", varName, "};");
 			   endLine();
 
 			   visitStatements(block.getStatements(), false);
@@ -2061,13 +2049,7 @@ public class GenerateJsVisitor extends Visitor
         out("break;");
     }
     @Override public void visit(Continue that) {
-        if (continues.isEmpty()) {
-            out("continue;");
-        } else {
-            Continuation top = continues.peek();
-            out(top.getName(), "=true; return;");
-            top.use();
-        }
+        out("continue;");
     }
 
    @Override public void visit(RangeOp that) {
@@ -2084,21 +2066,13 @@ public class GenerateJsVisitor extends Visitor
 	   ForIterator foriter = that.getForClause().getForIterator();
 	   SpecifierExpression iterable = foriter.getSpecifierExpression();
 	   boolean hasElse = that.getElseClause() != null && !that.getElseClause().getBlock().getStatements().isEmpty();
-	   //First we need to enclose this inside an anonymous function,
-	   //to avoid problems with repeated iterator variables. We'll catch the return value
-	   //in a tmpvar in case we need to return early
-	   final String loopVar = createTempVariable();
-	   out("var ", loopVar, "=(function()");
-	   beginBlock();
 	   final String iterVar = createTempVariable();
 	   final String itemVar = createTempVariable();
 	   out("var ", iterVar, " = ");
 	   iterable.visit(this);
 	   out(".getIterator();");
 	   endLine();
-	   out("var ", itemVar, ";");
-	   endLine();
-	   out("while ((", itemVar, "=", iterVar, ".next())!==", clAlias, ".getExhausted())");
+	   out("var ", itemVar, ";while ((", itemVar, "=", iterVar, ".next())!==", clAlias, ".getExhausted())");
 	   List<Statement> stmnts = that.getForClause().getBlock().getStatements();
 	   if (stmnts.isEmpty()) {
 		   out("{}");
@@ -2107,16 +2081,13 @@ public class GenerateJsVisitor extends Visitor
 		   beginBlock();
 		   if (foriter instanceof ValueIterator) {
 			   Value model = ((ValueIterator)foriter).getVariable().getDeclarationModel();
-			   function();
-			   out(getter(model), "(){return ", itemVar, ";}");
+			   out("var ", getter(model), "=function(){return ", itemVar, ";};");
 		   } else if (foriter instanceof KeyValueIterator) {
 			   Value keyModel = ((KeyValueIterator)foriter).getKeyVariable().getDeclarationModel();
 			   Value valModel = ((KeyValueIterator)foriter).getValueVariable().getDeclarationModel();
-			   function();
-			   out(getter(keyModel), "(){return ", itemVar, ".getKey();}");
+			   out("var ", getter(keyModel), "=function(){return ", itemVar, ".getKey();};");
 			   endLine();
-			   function();
-			   out(getter(valModel), "(){return ", itemVar, ".getItem();}");
+			   out("var ", getter(valModel), "=function(){return ", itemVar, ".getItem();};");
 		   }
 		   endLine();
 		   for (int i=0; i<stmnts.size(); i++) {
@@ -2136,8 +2107,6 @@ public class GenerateJsVisitor extends Visitor
 		   out("if (", clAlias, ".getExhausted() === ", itemVar, ")");
 		   that.getElseClause().getBlock().visit(this);
 	   }
-	   endBlock();
-	   out("()); if (", loopVar, "!==undefined) return ", loopVar, ";");
    }
 
     public void visit(InOp that) {
@@ -2262,8 +2231,7 @@ public class GenerateJsVisitor extends Visitor
             boolean first = true;
             for (Expression exp : ((MatchCase)item).getExpressionList().getExpressions()) {
                 if (!first) out(" || ");
-                out(expvar);
-                out("==="); //TODO equality?
+                out(expvar, "==="); //TODO equality?
                 /*out(".equals(");*/
                 exp.visit(this);
                 //out(")==="); clAlias(); out(".getTrue()");
@@ -2279,10 +2247,7 @@ public class GenerateJsVisitor extends Visitor
             out("{}");
         } else {
             beginBlock();
-            //out("function get", decl.getName().substring(0,1).toUpperCase(), decl.getName().substring(1));
-            function();
-            out(getter(decl));
-            out("(){return ", expvar, ";}");
+            out("var ", getter(decl), "=function(){return ", expvar, ";};");
             endLine();
             visitStatements(cc.getBlock().getStatements(), false);
             endBlock();
@@ -2293,13 +2258,6 @@ public class GenerateJsVisitor extends Visitor
     public void visit(SwitchStatement that) {
         if (comment) out("//Switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
         endLine();
-        //wrap all this shit in a function to avoid contaminating the rest of the code with overwritten functions and shit
-        final String retvar = createTempVariable();
-        final Continuation contvar = new Continuation(createTempVariable());
-        out("var ", contvar.getName(), "=false;"); endLine();
-        out("var ", retvar, "=(function()");
-        continues.push(contvar);
-        beginBlock();
         //Put the expression in a tmp var
         final String expvar = createTempVariable();
         out("var ", expvar, "=");
@@ -2317,24 +2275,8 @@ public class GenerateJsVisitor extends Visitor
             out("else ");
             that.getSwitchCaseList().getElseClause().visit(this);
         }
-        endBlock();
-        out("()); if (", retvar, "!==undefined){return ", retvar, ";}");
-        Continuation _lc = continues.pop();
-        if (_lc.isUsed()) {
-            out("else if (", contvar.getName(), "===true){continue;}");
-        }
         if (comment) out("//End switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
     }
 
-    private class Continuation{
-        private String varname;
-        private boolean used;
-        Continuation(String name) {
-            varname=name;
-        }
-        public String getName() { return varname; }
-        public void use() { used = true; }
-        public boolean isUsed() { return used; }
-    }
 }
 
