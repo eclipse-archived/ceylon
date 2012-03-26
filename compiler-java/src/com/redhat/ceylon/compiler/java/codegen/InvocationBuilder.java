@@ -321,7 +321,7 @@ abstract class InvocationBuilder {
         if (primary instanceof Tree.MemberOrTypeExpression
                 && ((Tree.MemberOrTypeExpression)primary).getDeclaration() instanceof Functional) {
             Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)primary).getDeclaration();
-            builder = new StaticSpecifierInvocationBuilder(
+            builder = new MethodReferenceSpecifierInvocationBuilder(
                     gen, 
                     primary, 
                     primaryDeclaration,
@@ -345,9 +345,14 @@ abstract class InvocationBuilder {
 
 }
 
-abstract class AbstractPositionalInvocationBuilder extends InvocationBuilder {
+/**
+ * An abstract implementation of InvocationBuilder support invocation 
+ * via positional arguments. Supports with sequenced arguments but not 
+ * defaulted arguments.
+ */
+abstract class SimpleInvocationBuilder extends InvocationBuilder {
 
-    protected AbstractPositionalInvocationBuilder(
+    protected SimpleInvocationBuilder(
             AbstractTransformer gen,
             Tree.Primary primary,
             Declaration primaryDeclaration,
@@ -375,18 +380,9 @@ abstract class AbstractPositionalInvocationBuilder extends InvocationBuilder {
     
     protected abstract java.util.List<Parameter> getDeclaredParameters();
     
-    /**
-     * Gets the parameter for the given argument index
-     */
-    protected abstract Parameter getParameter(int argIndex);
-    
     /** Gets the number of arguments actually being supplied */
     protected abstract int getNumArguments();
-    /** 
-     * Gets the expression supplying the argument value for the 
-     * given argument index 
-     */
-    protected abstract Tree.Expression getArgumentExpression(int argIndex);
+
     /**
      * Gets the transformed expression supplying the argument value for the 
      * given argument index
@@ -396,24 +392,7 @@ abstract class AbstractPositionalInvocationBuilder extends InvocationBuilder {
     protected abstract boolean dontBoxSequence();
     
     @Override
-    protected final void compute() {
-        int numParameters = getDeclaredParameters().size();
-        int numArguments = this.getNumArguments();
-        boolean hasDefaulted = false;
-        for (Parameter param : getDeclaredParameters().subList(Math.min(numArguments, numParameters), numParameters)) {
-            if (param.isDefaulted()) {
-                hasDefaulted = true;
-                break;
-            }
-        }
-        if (hasDefaulted) {
-            computeWithDefaultedParameters();
-        } else {
-            computeWithSequencedParameter();
-        }
-    }
-
-    private void computeWithSequencedParameter() {
+    protected void compute() {
         final boolean isRaw = transformedTypArguments.isEmpty();
         int numParameters = getDeclaredParameters().size();
         int numArguments = getNumArguments();
@@ -443,6 +422,73 @@ abstract class AbstractPositionalInvocationBuilder extends InvocationBuilder {
                 boxed = gen().makeSequenceRaw(x);
             }
             args.append(boxed);
+        }
+    }
+}
+
+/**
+ * InvocationBuilder used for 'normal' method and initializer invocations via 
+ * positional arguments. Supports sequenced and defaulted arguments.
+ */
+class PositionalInvocationBuilder extends SimpleInvocationBuilder {
+    
+    private final Tree.PositionalArgumentList positional;
+    private final java.util.List<Parameter> declaredParameters;
+    private final java.util.List<Parameter> parameters;
+    
+    public PositionalInvocationBuilder(
+            AbstractTransformer gen, 
+            Tree.Primary primary,
+            Declaration primaryDeclaration,
+            Tree.InvocationExpression invocation,
+            ParameterList parameterList) {
+        super(gen, primary, primaryDeclaration, invocation.getTypeModel(), invocation);
+        positional = invocation.getPositionalArgumentList();
+        parameters = ((Functional)primaryDeclaration).getParameterLists().get(0).getParameters();    
+        this.declaredParameters = parameterList.getParameters();
+    }
+    @Override
+    protected java.util.List<Parameter> getDeclaredParameters() {
+        return declaredParameters;
+    }
+    protected Tree.Expression getArgumentExpression(int argIndex) {
+        return positional.getPositionalArguments().get(argIndex).getExpression();
+    }
+    @Override
+    protected JCExpression getTransformedArgumentExpression(int argIndex, boolean isRaw, java.util.List<ProducedType> typeArgumentModels) {
+        return transformArg(
+                getArgumentExpression(argIndex), 
+                getParameter(argIndex), isRaw, typeArgumentModels);
+    }
+    protected Parameter getParameter(int argIndex) {
+        return positional.getPositionalArguments().get(argIndex).getParameter();
+    }
+    @Override
+    protected int getNumArguments() {
+        return positional.getPositionalArguments().size();
+    }
+    @Override
+    protected boolean dontBoxSequence() {
+        return positional.getEllipsis() != null;
+    }
+    protected boolean hasDefaultArgument(int ii) {
+        return parameters.get(ii).isDefaulted();
+    }
+    @Override
+    protected final void compute() {
+        int numParameters = getDeclaredParameters().size();
+        int numArguments = this.getNumArguments();
+        boolean hasDefaulted = false;
+        for (Parameter param : getDeclaredParameters().subList(Math.min(numArguments, numParameters), numParameters)) {
+            if (param.isDefaulted()) {
+                hasDefaulted = true;
+                break;
+            }
+        }
+        if (hasDefaulted) {
+            computeWithDefaultedParameters();
+        } else {
+            super.compute();
         }
     }
 
@@ -513,61 +559,13 @@ abstract class AbstractPositionalInvocationBuilder extends InvocationBuilder {
             // For overloaded methods (and therefore Java interop) we just pass the arguments we have
             args.appendList(makeVarRefArgumentList(numArguments));
         }
-    }
-
-    protected abstract boolean hasDefaultArgument(int ii);
+    }    
 }
 
-class PositionalInvocationBuilder extends AbstractPositionalInvocationBuilder {
-    
-    private final Tree.PositionalArgumentList positional;
-    private final java.util.List<Parameter> declaredParameters;
-    private final java.util.List<Parameter> parameters;
-    
-    public PositionalInvocationBuilder(
-            AbstractTransformer gen, 
-            Tree.Primary primary,
-            Declaration primaryDeclaration,
-            Tree.InvocationExpression invocation,
-            ParameterList parameterList) {
-        super(gen, primary, primaryDeclaration, invocation.getTypeModel(), invocation);
-        positional = invocation.getPositionalArgumentList();
-        parameters = ((Functional)primaryDeclaration).getParameterLists().get(0).getParameters();    
-        this.declaredParameters = parameterList.getParameters();
-    }
-    @Override
-    protected java.util.List<Parameter> getDeclaredParameters() {
-        return declaredParameters;
-    }
-    @Override
-    protected Tree.Expression getArgumentExpression(int argIndex) {
-        return positional.getPositionalArguments().get(argIndex).getExpression();
-    }
-    @Override
-    protected JCExpression getTransformedArgumentExpression(int argIndex, boolean isRaw, java.util.List<ProducedType> typeArgumentModels) {
-        return transformArg(
-                getArgumentExpression(argIndex), 
-                getParameter(argIndex), isRaw, typeArgumentModels);
-    }
-    @Override
-    protected Parameter getParameter(int argIndex) {
-        return positional.getPositionalArguments().get(argIndex).getParameter();
-    }
-    @Override
-    protected int getNumArguments() {
-        return positional.getPositionalArguments().size();
-    }
-    @Override
-    protected boolean dontBoxSequence() {
-        return positional.getEllipsis() != null;
-    }
-    @Override
-    protected boolean hasDefaultArgument(int ii) {
-        return parameters.get(ii).isDefaulted();
-    }
-    
-}
-
+/**
+ * InvocationBuilder used for constructing invocations of {@code super()}
+ * when creating constructors.
+ */
 class SuperInvocationBuilder extends PositionalInvocationBuilder {
     
     SuperInvocationBuilder(AbstractTransformer gen,
@@ -587,7 +585,12 @@ class SuperInvocationBuilder extends PositionalInvocationBuilder {
     }
 }
 
-class CallableInvocationBuilder extends AbstractPositionalInvocationBuilder {
+
+/**
+ * InvocationBuilder for constructing the invocation of a method reference 
+ * used when implementing {@code Callable.call()}
+ */
+class CallableInvocationBuilder extends SimpleInvocationBuilder {
     
     private final java.util.List<Parameter> callableParameters;
     
@@ -602,14 +605,6 @@ class CallableInvocationBuilder extends AbstractPositionalInvocationBuilder {
         functionalParameters = parameterList.getParameters();
         setUnboxed(expr.getUnboxed());
         setBoxingStrategy(BoxingStrategy.BOXED);// Must be boxed because non-primitive return type
-    }
-    @Override
-    protected Tree.Expression getArgumentExpression(int argIndex) {
-        throw new RuntimeException("Defaulted parameters are not defaulted when called via a method reference");
-    }
-    @Override
-    protected Parameter getParameter(int argIndex) {
-        return getDeclaredParameters().get(argIndex);
     }
     @Override
     protected int getNumArguments() {
@@ -631,18 +626,16 @@ class CallableInvocationBuilder extends AbstractPositionalInvocationBuilder {
     protected java.util.List<Parameter> getDeclaredParameters() {
         return functionalParameters;
     }
-    @Override
-    protected boolean hasDefaultArgument(int ii) {
-        // TODO Auto-generated method stub
-        return false;
-    }
 }
 
-class StaticSpecifierInvocationBuilder extends AbstractPositionalInvocationBuilder {
+/**
+ * InvocationBuilder for methods specifierd with a method reference. 
+ */
+class MethodReferenceSpecifierInvocationBuilder extends SimpleInvocationBuilder {
     
     private final Method method;
 
-    public StaticSpecifierInvocationBuilder(
+    public MethodReferenceSpecifierInvocationBuilder(
             AbstractTransformer gen, Tree.Primary primary,
             Declaration primaryDeclaration,
             Method method, Tree.SpecifierExpression node) {
@@ -655,12 +648,6 @@ class StaticSpecifierInvocationBuilder extends AbstractPositionalInvocationBuild
     @Override
     protected int getNumArguments() {
         return getDeclaredParameters().size();
-    }
-    
-    @Override
-    protected Tree.Expression getArgumentExpression(int argIndex) {
-        // TODO Auto-generated method stub
-        return null;
     }
     
     @Override
@@ -679,9 +666,8 @@ class StaticSpecifierInvocationBuilder extends AbstractPositionalInvocationBuild
                 declaredParameter.getType());
         return result;
     }
-    
-    @Override
-    protected Parameter getParameter(int argIndex) {
+
+    private Parameter getParameter(int argIndex) {
         return getDeclaredParameters().get(argIndex);
     }
     
@@ -694,13 +680,11 @@ class StaticSpecifierInvocationBuilder extends AbstractPositionalInvocationBuild
     protected java.util.List<Parameter> getDeclaredParameters() {
         return method.getParameterLists().get(0).getParameters();
     }
-
-    @Override
-    protected boolean hasDefaultArgument(int ii) {
-        return false;
-    }
 }
 
+/**
+ * InvocationBuilder for methods specified with a Callable 
+ */
 class CallableSpecifierInvocationBuilder extends InvocationBuilder {
     
     private final Method method;
@@ -749,6 +733,10 @@ class CallableSpecifierInvocationBuilder extends InvocationBuilder {
     }
 }
 
+/**
+ * InvocationBuilder for 'normal' method and initializer invocations
+ * using named arguments
+ */
 class NamedArgumentInvocationBuilder extends InvocationBuilder {
     
     private final Tree.NamedArgumentList namedArgumentList;
@@ -907,9 +895,8 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
             vars.append(varDecl);
         }
     }
-
     
-    protected boolean hasDefaultArgument(int ii) {
+    private boolean hasDefaultArgument(int ii) {
         return parameters.get(ii).isDefaulted();
     }
 }
