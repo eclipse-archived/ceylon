@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -33,6 +34,7 @@ public class GenerateJsVisitor extends Visitor
     private boolean indent=true;
     private boolean comment=true;
     private int tmpvarCount = 0;
+    private final Stack<Continuation> continues = new Stack<Continuation>();
 
     private final class SuperVisitor extends Visitor {
         private final List<Declaration> decs;
@@ -77,6 +79,8 @@ public class GenerateJsVisitor extends Visitor
     private final Writer out;
     private boolean prototypeStyle;
     private CompilationUnit root;
+    private static final String clAlias="$$$cl15";
+    private static final String function="function ";
 
     @Override
     public void handleException(Exception e, Node that) {
@@ -238,8 +242,10 @@ public class GenerateJsVisitor extends Visitor
         }
         else {
             beginBlock();
+            //beginEnclosingFunction();
             initSelf(that);
             visitStatements(stmnts, false);
+            //endEnclosingFunction();
             endBlock();
         }
     }
@@ -302,10 +308,6 @@ public class GenerateJsVisitor extends Visitor
         share(d);
     }
 
-    private void function() {
-        out("function ");
-    }
-
     private void addInterfaceToPrototype(ClassOrInterface type, InterfaceDefinition interfaceDef) {
         interfaceDefinition(interfaceDef);
         Interface d = interfaceDef.getDeclarationModel();
@@ -324,8 +326,7 @@ public class GenerateJsVisitor extends Visitor
         Interface d = that.getDeclarationModel();
         comment(that);
 
-        function();
-        out(d.getName(), "(");
+        out(function, d.getName(), "(");
         self(d);
         out(")");
         beginBlock();
@@ -388,8 +389,7 @@ public class GenerateJsVisitor extends Visitor
         Class d = that.getDeclarationModel();
         comment(that);
 
-        function();
-        out(d.getName(), "(");
+        out(function, d.getName(), "(");
         for (Parameter p: that.getParameterList().getParameters()) {
             p.visit(this);
             out(", ");
@@ -696,8 +696,7 @@ public class GenerateJsVisitor extends Visitor
         Class c = (Class) d.getTypeDeclaration();
         comment(that);
 
-        function();
-        out(d.getName(), "()");
+        out(function, d.getName(), "()");
         beginBlock();
         instantiateSelf(c);
         referenceOuter(c);
@@ -726,8 +725,7 @@ public class GenerateJsVisitor extends Visitor
             outerSelf(d);
             out(".", getter(d), "=");
         }
-        function();
-        out(getter(d), "()");
+        out(function, getter(d), "()");
         beginBlock();
         out("return ");
         if (addToPrototype) {
@@ -790,8 +788,7 @@ public class GenerateJsVisitor extends Visitor
 
     private void methodDefinition(MethodDefinition that) {
         Method d = that.getDeclarationModel();
-        function();
-        out(memberName(d, false));
+        out(function, memberName(d, false));
 
         //TODO: if there are multiple parameter lists
         //      do the inner function declarations
@@ -843,7 +840,16 @@ public class GenerateJsVisitor extends Visitor
         if (prototypeStyle&&d.isClassOrInterfaceMember()) return;
         comment(that);
         out("var ", getter(d), "=function()");
+        beginBlock();
+        String rval = createTempVariable();
+        out("var ", rval, "=(function()");
         super.visit(that);
+        out("());");
+        endLine();
+        out(getter(d), "=function(){return ", rval, ";};");
+        endLine();
+        out("return ", rval, ";");
+        endBlock();
         shareGetter(d);
     }
 
@@ -852,9 +858,7 @@ public class GenerateJsVisitor extends Visitor
         Getter d = that.getDeclarationModel();
         if (!prototypeStyle||!d.isClassOrInterfaceMember()) return;
         comment(that);
-        out("$proto$.", getter(d), "=");
-        function();
-        out(getter(d), "()");
+        out("$proto$.", getter(d), "=", function, getter(d), "()");
         super.visit(that);
     }
 
@@ -871,8 +875,7 @@ public class GenerateJsVisitor extends Visitor
         Setter d = that.getDeclarationModel();
         if (prototypeStyle&&d.isClassOrInterfaceMember()) return;
         comment(that);
-        function();
-        out(setter(d), "(", d.getName(), ")");
+        out(function, setter(d), "(", d.getName(), ")");
         super.visit(that);
         shareSetter(d);
     }
@@ -882,9 +885,7 @@ public class GenerateJsVisitor extends Visitor
         Setter d = that.getDeclarationModel();
         if (!prototypeStyle || !d.isClassOrInterfaceMember()) return;
         comment(that);
-        out("$proto$.", setter(d), "=");
-        function();
-        out(setter(d), "(", d.getName(), ")");
+        out("$proto$.", setter(d), "=", function, setter(d), "(", d.getName(), ")");
         super.visit(that);
     }
 
@@ -953,24 +954,19 @@ public class GenerateJsVisitor extends Visitor
         if (!prototypeStyle||d.isToplevel()) return;
         if (!d.isFormal()) {
             comment(that);
-            out("$proto$.", getter(d), "=");
-            function();
-            out(getter(d), "()");
+            out("$proto$.", getter(d), "=", function, getter(d), "()");
             beginBlock();
             out("return this.", memberName(d, false), ";");
             endBlock();
             if (d.isVariable()) {
                 out("$proto$.", setter(d), "=");
-                function();
-                out(setter(d), "(", d.getName(), ")");
+                out(function, setter(d), "(", d.getName(), ")");
                 beginBlock();
                 out("this.", memberName(d, false), "=", d.getName(), "; return ", d.getName(), ";");
                 endBlock();
             }
         }
     }
-
-    private static final String clAlias="$$$cl15";
 
     @Override
     public void visit(CharLiteral that) {
@@ -1900,12 +1896,14 @@ public class GenerateJsVisitor extends Visitor
            } else {
                // no getter exists yet, so define one
                beginBlock();
+               //beginEnclosingFunction();
                out("var ", getter(variable.getDeclarationModel()), "=function(){return ");
                bme.visit(this);
                out("};");
                endLine();
 
                visitStatements(block.getStatements(), false);
+               //endEnclosingFunction();
                endBlock();
            }
 
@@ -1925,6 +1923,7 @@ public class GenerateJsVisitor extends Visitor
 
 		   } else {
 			   beginBlock();
+		       //beginEnclosingFunction();
 			   out("var $", varName, "=$cond$;");
 			   endLine();
 
@@ -1932,6 +1931,7 @@ public class GenerateJsVisitor extends Visitor
 			   endLine();
 
 			   visitStatements(block.getStatements(), false);
+		       //endEnclosingFunction();
 			   endBlock();
 		   }
 	   }
@@ -2045,10 +2045,22 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(Break that) {
-        out("break;");
+        if (continues.isEmpty()) {
+            out("break;");
+        } else {
+            Continuation top=continues.peek();
+            top.useBreak();
+            out(top.getBreakName(), "=true; return;");
+        }
     }
     @Override public void visit(Continue that) {
-        out("continue;");
+        if (continues.isEmpty()) {
+            out("continue;");
+        } else {
+            Continuation top=continues.peek();
+            top.useContinue();
+            out(top.getContinueName(), "=true; return;");
+        }
     }
 
    @Override public void visit(RangeOp that) {
@@ -2062,6 +2074,7 @@ public class GenerateJsVisitor extends Visitor
    @Override public void visit(ForStatement that) {
        if (comment) out("//'for' statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
        endLine();
+       //beginEnclosingFunction();
 	   ForIterator foriter = that.getForClause().getForIterator();
 	   SpecifierExpression iterable = foriter.getSpecifierExpression();
 	   boolean hasElse = that.getElseClause() != null && !that.getElseClause().getBlock().getStatements().isEmpty();
@@ -2106,6 +2119,7 @@ public class GenerateJsVisitor extends Visitor
 		   out("if (", clAlias, ".getExhausted() === ", itemVar, ")");
 		   that.getElseClause().getBlock().visit(this);
 	   }
+	   //endEnclosingFunction();
    }
 
     public void visit(InOp that) {
@@ -2139,9 +2153,7 @@ public class GenerateJsVisitor extends Visitor
                     out("{}");
                 } else {
                     beginBlock();
-                    function();
-                    out(getter(variable.getDeclarationModel()));
-                    out("(){return $ex$}");
+                    out(function, getter(variable.getDeclarationModel()), "(){return $ex$}");
                     endLine();
 
                     visitStatements(catchClause.getBlock().getStatements(), false);
@@ -2258,6 +2270,7 @@ public class GenerateJsVisitor extends Visitor
         if (comment) out("//Switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
         endLine();
         //Put the expression in a tmp var
+        //beginEnclosingFunction();
         final String expvar = createTempVariable();
         out("var ", expvar, "=");
         Expression expr = that.getSwitchClause().getExpression();
@@ -2274,7 +2287,41 @@ public class GenerateJsVisitor extends Visitor
             out("else ");
             that.getSwitchCaseList().getElseClause().visit(this);
         }
+        //endEnclosingFunction();
         if (comment) out("//End switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
+    }
+
+    /*private void beginEnclosingFunction() {
+        Continuation c = new Continuation();
+        continues.push(c);
+        out("var ", c.getContinueName(), "=false;"); endLine();
+        out("var ", c.getBreakName(), "=false;"); endLine();
+        out("var ", c.getReturnName(), "=(function()");
+        beginBlock();
+    }
+    private void endEnclosingFunction() {
+        Continuation c = continues.pop();
+        endBlock();
+        out("());if(", c.getReturnName(), "!==undefined){return ", c.getReturnName(), ";}");
+        if (c.isContinued() || c.isBreaked()) {
+            out("else if(", c.getContinueName(),"===true||", c.getBreakName(), "===true){return;}");
+        }
+    }*/
+
+    private static class Continuation {
+        private static int conts=1;
+        private final String cvar = String.format("cntvar$%d", conts);
+        private final String rvar = String.format("retvar$%d", conts);
+        private final String bvar = String.format("brkvar$%d", conts);
+        public Continuation() { conts++; }
+        private boolean cused, bused;
+        public String getContinueName() { return cvar; }
+        public String getBreakName() { return bvar; }
+        public String getReturnName() { return rvar; }
+        public void useContinue() { cused = true; }
+        public void useBreak() { bused=true; }
+        public boolean isContinued() { return cused; }
+        public boolean isBreaked() { return bused; } //"isBroken" sounds really really bad in this case
     }
 
 }
