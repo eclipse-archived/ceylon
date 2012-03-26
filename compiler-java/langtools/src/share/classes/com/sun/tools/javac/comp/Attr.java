@@ -1338,6 +1338,11 @@ public class Attr extends JCTree.Visitor {
                 if (body.stats.head.getTag() == JCTree.EXEC &&
                     ((JCExpressionStatement) body.stats.head).expr == tree)
                     return true;
+                if (body.stats.head.getTag() == JCTree.EXEC &&
+                        (((JCExpressionStatement) body.stats.head).expr instanceof LetExpr) &&
+                        ((LetExpr)((JCExpressionStatement) body.stats.head).expr).stats.head.getTag() == JCTree.EXEC && 
+                        ((JCExpressionStatement)((LetExpr)((JCExpressionStatement) body.stats.head).expr).stats.head).expr == tree)
+                    return true;
             }
             log.error(tree.pos(),"call.must.be.first.stmt.in.ctor",
                       TreeInfo.name(tree.meth));
