@@ -364,12 +364,10 @@ public class StructureTest extends CompilerTest {
     public void testMthSequenceMethodSpecifyingMethodWithVarargs(){
         compareWithJavaSource("method/SequenceMethodSpecifyingMethodWithVarargs");
     }
-    @Ignore("M3")
     @Test
     public void testTwoParamLists(){
         compareWithJavaSource("method/TwoParamLists");
     }
-    @Ignore("M3")
     @Test
     public void testThreeParamLists(){
         compareWithJavaSource("method/ThreeParamLists");
