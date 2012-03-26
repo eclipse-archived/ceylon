@@ -1,0 +1,36 @@
+package com.redhat.ceylon.compiler.java.test.expression.instantiation;
+
+class Foo {
+    
+    Foo(.java.lang.String name) {
+    }
+    
+    static final class Foo$impl {
+        
+        Foo$impl() {
+            super();
+        }
+        
+        static .java.lang.String $init$name() {
+            return "tom";
+        }
+    }
+}
+class Bar extends .com.redhat.ceylon.compiler.java.test.expression.instantiation.Foo {
+    
+    Bar() {
+        (
+            let
+                .java.lang.String $arg$0$0 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.Foo.Foo$impl.$init$name()
+            in {
+                super($arg$0$0);
+            }
+            returning null
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.instantiation.Bar();
+    }
+}
