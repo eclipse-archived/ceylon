@@ -27,4 +27,23 @@ void callables() {
   value tc = TestCallable("Less").something;
   assert("callable" in className(tc).lowercased, "Callable classname");
   assert(testCallable(tc) == "L", "higher-class 7");
+
+  variable Callable<Integer>? f := null;
+  for (i in 1..2) {
+    if (i > 0) {
+      value j = i*2;
+      if (i == 1) {
+        Integer g() { return j; }
+        f := g;
+      }
+    }
+  }
+  void resolve(Integer g()) {
+    assert(g()==2, "resolution of variables inside callables");
+  }
+  if (exists g=f) {
+    resolve(g);
+  } else {
+    fail("WTF this should never happen!");
+  }
 }
