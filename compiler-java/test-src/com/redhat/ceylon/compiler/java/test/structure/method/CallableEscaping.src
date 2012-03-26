@@ -1,0 +1,26 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+class C {
+    
+    private final long call() {
+        return 1L;
+    }
+    
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> bar() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Callable<Integer>"){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call() {
+                return .ceylon.language.Integer.instance(call());
+            }
+        };
+    }
+    
+    C() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.method.C();
+    }
+}
