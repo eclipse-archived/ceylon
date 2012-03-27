@@ -1045,6 +1045,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             String tmpVarName = aliasName("safe");
             JCExpression typeExpr = makeJavaType(expr.getTarget().getQualifyingType(), NO_PRIMITIVES);
             JCExpression transExpr = transformMemberExpression(expr, makeUnquotedIdent(tmpVarName), transformer);
+            if (!isWithinInvocation()
+                    && isCeylonCallable(expr.getTypeModel())) {
+                return transExpr;
+            }
             transExpr = boxUnboxIfNecessary(transExpr, expr, expr.getTarget().getType(), BoxingStrategy.BOXED);
             JCExpression testExpr = make().Binary(JCTree.NE, makeUnquotedIdent(tmpVarName), makeNull());                
             JCExpression condExpr = make().Conditional(testExpr, transExpr, makeNull());
