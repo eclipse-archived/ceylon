@@ -51,6 +51,7 @@ import com.redhat.ceylon.compiler.java.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.java.loader.CeylonEnter;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.loader.model.CompilerModuleManager;
+import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -294,7 +295,7 @@ public class LanguageCompiler extends JavaCompiler {
             module = modules.getDefaultModule();
         else{
             for(Module m : modules.getListOfModules()){
-                if(pkgName.startsWith(m.getNameAsString())){
+                if(Util.isSubPackage(m.getNameAsString(), pkgName)){
                     module = m;
                     break;
                 }
