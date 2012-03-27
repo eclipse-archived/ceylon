@@ -1862,74 +1862,27 @@ public class GenerateJsVisitor extends Visitor
            condition.addUnexpectedError("No support for conditions of type " + condition.getClass().getSimpleName());
            return;
        }
-	   String varName = variable.getDeclarationModel().getName();
-
-	   boolean simpleCheck = false;
-	   boolean matchingGetter = false;
 	   Term variableRHS = variable.getSpecifierExpression().getExpression().getTerm();
-	   if (variableRHS instanceof BaseMemberExpression) {
-		   BaseMemberExpression bme = (BaseMemberExpression) variableRHS;
-		   matchingGetter = matchingGetterExists(bme.getDeclaration(),
-		           variable.getDeclarationModel(), condition);
-		   if (bme.getDeclaration().getName().equals(varName)
-		               && (matchingGetter || !accessThroughGetter(bme.getDeclaration()))) {
-			   // the simple case: if/while (is/exists/nonempty x)
-			   simpleCheck = true;
-	           out(keyword);
-	           out("(");
-	           specialConditionCheck(condition, bme, simpleCheck);
-	           out(")");
-	           if (matchingGetter) {
-	               //The original ref stored was for the BME, now it's for the Variable
-	               String svar = scopeman.get(bme);
-	               if (svar != null) {
-	                   scopeman.store(variable, svar);
-	               }
-	               // a getter for the variable already exists
-	               block.visit(this);
-	           } else {
-	               // no getter exists yet, so define one
-	               beginBlock();
-	               //beginEnclosingFunction();
-	               String vtmp=createTempVariable();
-	               out("var ", vtmp, "=");
-	               bme.visit(this);
-	               out(";");
-	               endLine();
-	               scopeman.store(variable, vtmp);
 
-	               visitStatements(block.getStatements(), false);
-	               //endEnclosingFunction();
-	               endBlock();
-	           }
-		   }
-	   }
+       String tmpvar = createTempVariable();
+       out("var ", tmpvar, ";");
+       endLine();
 
-	   if (!simpleCheck) {
-	       // if/while (is/exists/nonempty x=...)
+       out(keyword);
+       out("(");
+       specialConditionCheck(condition, variableRHS, tmpvar);
+       out(")");
 
-	       out("var $cond$;");
-	       endLine();
-
-	       out(keyword);
-	       out("(");
-	       specialConditionCheck(condition, variableRHS, simpleCheck);
-	       out(")");
-
-	       if (block.getStatements().isEmpty()) {
-	           out("{}");
-	       } else {
-	           beginBlock();
-	           String tmpvar = createTempVariable();
-	           //beginEnclosingFunction();
-	           scopeman.store(variable, tmpvar);
-	           out("var ", tmpvar, "=$cond$;");
-	           endLine();
-	           visitStatements(block.getStatements(), false);
-	           //endEnclosingFunction();
-	           endBlock();
-	       }
-	   }
+       if (block.getStatements().isEmpty()) {
+           out("{}");
+       } else {
+           beginBlock();
+           //beginEnclosingFunction();
+           scopeman.store(variable, tmpvar);
+           visitStatements(block.getStatements(), false);
+           //endEnclosingFunction();
+           endBlock();
+       }
    }
 
    private boolean matchingGetterExists(Declaration outerVar, Declaration innerVar, Node that) {
@@ -1937,39 +1890,39 @@ public class GenerateJsVisitor extends Visitor
                && (qualifiedPath(that, outerVar).length() == 0);
    }
 
-    private void specialConditionCheck(Condition condition, Term variableRHS, boolean simpleCheck) {
+    private void specialConditionCheck(Condition condition, Term variableRHS, String tmpvar) {
         if (condition instanceof ExistsOrNonemptyCondition) {
             if (condition instanceof NonemptyCondition) {
                 out(clAlias, ".nonempty(");
-                specialConditionRHS(variableRHS, simpleCheck);
+                specialConditionRHS(variableRHS, tmpvar);
                 out(")===", clTrue);
             } else {
-                specialConditionRHS(variableRHS, simpleCheck);
+                specialConditionRHS(variableRHS, tmpvar);
                 out("!==null");
             }
 
         } else {
             Type type = ((IsCondition) condition).getType();
-            generateIsOfType(variableRHS, null, type, simpleCheck);
+            generateIsOfType(variableRHS, null, type, tmpvar);
             out("===", clTrue);
         }
     }
 
-    private void specialConditionRHS(Term variableRHS, boolean simple) {
-        if (simple) {
+    private void specialConditionRHS(Term variableRHS, String tmpvar) {
+        if (tmpvar == null) {
             variableRHS.visit(this);
         } else {
-            out("($cond$=");
+            out("(", tmpvar, "=");
             variableRHS.visit(this);
             out(")");
         }
     }
 
-    private void specialConditionRHS(String variableRHS, boolean simple) {
-        if (simple) {
+    private void specialConditionRHS(String variableRHS, String tmpvar) {
+        if (tmpvar == null) {
             out(variableRHS);
         } else {
-            out("($cond$=");
+            out("(", tmpvar, "=");
             out(variableRHS);
             out(")");
         }
@@ -2003,16 +1956,16 @@ public class GenerateJsVisitor extends Visitor
     /** Generates js code to check if a term is of a certain type. We solve this in JS by
      * checking against all types that Type satisfies (in the case of union types, matching any
      * type will do, and in case of intersection types, all types must be matched). */
-    private void generateIsOfType(Term term, String termString, Type type, boolean simpleCheck) {
+    private void generateIsOfType(Term term, String termString, Type type, String tmpvar) {
         if (type instanceof SimpleType) {
             out(clAlias, ".isOfType(");
         } else {
             out(clAlias, ".Boolean(", clAlias, ".isOfTypes(");
         }
         if (term != null) {
-            specialConditionRHS(term, simpleCheck);
+            specialConditionRHS(term, tmpvar);
         } else {
-            specialConditionRHS(termString, simpleCheck);
+            specialConditionRHS(termString, tmpvar);
         }
         out(",");
 
@@ -2036,7 +1989,7 @@ public class GenerateJsVisitor extends Visitor
     }
     @Override
     public void visit(IsOp that) {
-        generateIsOfType(that.getTerm(), null, that.getType(), true); //TODO is it always simple?
+        generateIsOfType(that.getTerm(), null, that.getType(), null);
     }
 
     @Override public void visit(Break that) {
@@ -2142,7 +2095,7 @@ public class GenerateJsVisitor extends Visitor
                 }
                 firstCatch = false;
                 out("if(");
-                generateIsOfType(null, "$ex$", variable.getType(), true);
+                generateIsOfType(null, "$ex$", variable.getType(), null);
                 out("===", clTrue, ")");
 
                 if (catchClause.getBlock().getStatements().isEmpty()) {
@@ -2221,7 +2174,7 @@ public class GenerateJsVisitor extends Visitor
         final CaseItem item = cc.getCaseItem();
         if (item instanceof IsCase) {
             IsCase isCaseItem = (IsCase) item;
-            generateIsOfType(null, expvar, isCaseItem.getType(), true);
+            generateIsOfType(null, expvar, isCaseItem.getType(), null);
             out("===", clTrue);
             Variable caseVar = isCaseItem.getVariable();
             if ((switchTerm instanceof BaseMemberExpression) && (caseVar != null)) {
