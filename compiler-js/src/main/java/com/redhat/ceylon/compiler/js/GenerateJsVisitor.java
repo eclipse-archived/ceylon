@@ -33,8 +33,9 @@ public class GenerateJsVisitor extends Visitor
 
     private boolean indent=true;
     private boolean comment=true;
-    private int tmpvarCount = 0;
+    private static int tmpvarCount = 0;
     private final Stack<Continuation> continues = new Stack<Continuation>();
+    private final ScopedReferenceManager scopeman = new ScopedReferenceManager();
 
     private final class SuperVisitor extends Visitor {
         private final List<Declaration> decs;
@@ -81,6 +82,8 @@ public class GenerateJsVisitor extends Visitor
     private CompilationUnit root;
     private static final String clAlias="$$$cl15";
     private static final String function="function ";
+    private static final String clTrue=String.format("%s.getTrue()", clAlias);
+    private static final String clFalse=String.format("%s.getFalse()", clAlias);
 
     @Override
     public void handleException(Exception e, Node that) {
@@ -928,19 +931,24 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
             else {
-                out("var $", d.getName());
+                String tmpvar = createTempVariable();
+                out("var ", tmpvar);
                 if (that.getSpecifierOrInitializerExpression()!=null) {
                     out("=");
                 }
                 super.visit(that);
                 out(";");
                 endLine();
-                out("var ", getter(d),"=function(){return $", d.getName(), ";};");
-                endLine();
+                if (isCaptured(d)) {
+                    out("var ", getter(d),"=function(){return ", tmpvar, ";};");
+                    endLine();
+                } else {
+                    scopeman.store(that, tmpvar);
+                }
                 shareGetter(d);
                 if (d.isVariable()) {
                     out("var ", setter(d), "=function(", d.getName(), "){");
-                    out("$", d.getName(), "=", d.getName(), "; return ", d.getName(), ";};");
+                    out(tmpvar, "=", d.getName(), "; return ", tmpvar, ";};");
                     endLine();
                     shareSetter(d);
                 }
@@ -1056,10 +1064,14 @@ public class GenerateJsVisitor extends Visitor
         qualify(that, decl);
         if (!accessThroughGetter(decl)) {
             out(memberName(decl, false));
-        }
-        else {
-            out(getter(decl));
-            out("()");
+        } else {
+            String scopedvar = scopeman.get(that);
+            if (scopedvar == null) {
+                out(getter(decl));
+                out("()");
+            } else {
+                out(scopedvar);
+            }
         }
     }
 
@@ -1306,10 +1318,14 @@ public class GenerateJsVisitor extends Visitor
     public void visit(SpecifierStatement that) {
         BaseMemberExpression bme = (Tree.BaseMemberExpression) that.getBaseMemberExpression();
         qualify(that, bme.getDeclaration());
-        if (!(prototypeStyle && bme.getDeclaration().isClassOrInterfaceMember())) {
-            out("$");
+        String svar = scopeman.get(bme);
+        if (svar == null) {
+            svar = memberName(bme.getDeclaration(), false);
+            if (!(prototypeStyle && bme.getDeclaration().isClassOrInterfaceMember())) {
+                out("$");
+            }
         }
-        out(memberName(bme.getDeclaration(), false), "=");
+        out(svar, "=");
         that.getSpecifierExpression().visit(this);
     }
 
@@ -1579,11 +1595,14 @@ public class GenerateJsVisitor extends Visitor
     			lhsPath += '.';
     		}
 
-    		out("(", lhsPath, setter(lhsBME.getDeclaration()), "(", lhsPath,
-		        getter(lhsBME.getDeclaration()), "().", functionName, "(");
-    		that.getRightTerm().visit(this);
-    		out(")),", lhsPath, getter(lhsBME.getDeclaration()), "())");
-
+    		String svar = scopeman.get(lhsBME);
+    		if (svar == null) {
+    		    svar = getter(lhsBME.getDeclaration())+"()";
+    		}
+            out("(", lhsPath, setter(lhsBME.getDeclaration()), "(", lhsPath,
+                    svar, ".", functionName, "(");
+            that.getRightTerm().visit(this);
+            out(")),", lhsPath, svar, ")");
     	} else if (lhs instanceof QualifiedMemberExpression) {
     		QualifiedMemberExpression lhsQME = (QualifiedMemberExpression) lhs;
     		out("(function($1,$2){var $=$1.", getter(lhsQME.getDeclaration()), "().",
@@ -1664,26 +1683,13 @@ public class GenerateJsVisitor extends Visitor
         that.getRightTerm().visit(this);
         out(")");
     }
-    /** Outputs the CL equivalent of 'true' in JS. */
-    private void clTrue() {
-        out(clAlias, ".getTrue()");
-    }
-    /** Outputs the CL equivalent of 'false' in JS. */
-    private void clFalse() {
-        out(clAlias, ".getFalse()");
-    }
     /** Outputs the CL equivalent of '==false' in JS. */
     private void equalsFalse() {
-        out(".equals(");
-        clFalse();
-        out(")");
+        out(".equals(", clFalse, ")");
     }
     /** Outputs the CL equivalent of '?true:false' in JS */
     private void thenTrueElseFalse() {
-    	out("?");
-    	clTrue();
-        out(":");
-        clFalse();
+    	out("?", clTrue, ":", clFalse);
     }
     /** Outputs the CL equivalent of 'a <=> b' in JS. */
    private void leftCompareRight(BinaryOperatorExpression that) {
@@ -1696,23 +1702,15 @@ public class GenerateJsVisitor extends Visitor
    @Override public void visit(AndOp that) {
 	   out("(");
 	   that.getLeftTerm().visit(this);
-	   out("===");
-	   clTrue();
-	   out("?");
+	   out("===", clTrue, "?");
 	   that.getRightTerm().visit(this);
-	   out(":");
-	   clFalse();
-	   out(")");
+	   out(":", clFalse, ")");
    }
 
    @Override public void visit(OrOp that) {
 	   out("(");
 	   that.getLeftTerm().visit(this);
-	   out("===");
-	   clTrue();
-	   out("?");
-	   clTrue();
-	   out(":");
+	   out("===", clTrue, "?", clTrue, ":");
 	   that.getRightTerm().visit(this);
 	   out(")");
    }
@@ -1742,9 +1740,7 @@ public class GenerateJsVisitor extends Visitor
    @Override public void visit(ThenOp that) {
        out("(");
        that.getLeftTerm().visit(this);
-       out("===");
-       clTrue();
-       out("?");
+       out("===", clTrue, "?");
        that.getRightTerm().visit(this);
        out(":null)");
    }
@@ -1766,8 +1762,13 @@ public class GenerateJsVisitor extends Visitor
 		   }
 
 		   out("(", path, setter(bme.getDeclaration()), "(", path);
-		   String bmeGetter = getter(bme.getDeclaration());
-		   out(bmeGetter, "().", functionName, "()),", path, bmeGetter, "())");
+		   String bmeGetter = scopeman.get(bme);
+		   if (bmeGetter == null) {
+		       bmeGetter =  getter(bme.getDeclaration());
+	           out(bmeGetter, "().", functionName, "()),", path, bmeGetter, "())");
+		   } else {
+               out(bmeGetter, ".", functionName, "()),", path, bmeGetter, ")");
+		   }
 	   } else if (term instanceof QualifiedMemberExpression) {
 		   QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
 		   out("function($){var $2=$.", getter(qme.getDeclaration()), "().",
@@ -1793,8 +1794,14 @@ public class GenerateJsVisitor extends Visitor
 			   path += '.';
 		   }
 
+		   String svar=scopeman.get(bme);
 		   out("(function($){", path, setter(bme.getDeclaration()), "($.", functionName,
-	           "());return $}(", path, getter(bme.getDeclaration()), "()))");
+	           "());return $}(", path);
+		   if (svar == null) {
+		       out(getter(bme.getDeclaration()), "()))");
+		   } else {
+		       out(svar, "))");
+		   }
 	   } else if (term instanceof QualifiedMemberExpression) {
 		   QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
 		   out("function($){var $2=$.", getter(qme.getDeclaration()), "();$.",
@@ -1827,7 +1834,7 @@ public class GenerateJsVisitor extends Visitor
 	   } else {
 	       out("if ((");
 		   condition.visit(this);
-	       out(")===", clAlias, ".getTrue())");
+	       out(")===", clTrue, ")");
 	       if (ifBlock != null) {
 	    	   ifBlock.visit(this);
 	       }
@@ -1849,7 +1856,7 @@ public class GenerateJsVisitor extends Visitor
 	   } else {
 		   out("while ((");
 	       condition.visit(this);
-	       out(")===", clAlias, ".getTrue())");
+	       out(")===", clTrue, ")");
 	       whileClause.getBlock().visit(this);
 	   }
    }
@@ -1879,61 +1886,60 @@ public class GenerateJsVisitor extends Visitor
 		               && (matchingGetter || !accessThroughGetter(bme.getDeclaration()))) {
 			   // the simple case: if/while (is/exists/nonempty x)
 			   simpleCheck = true;
+	           out(keyword);
+	           out("(");
+	           specialConditionCheck(condition, bme, simpleCheck);
+	           out(")");
+	           if (matchingGetter) {
+	               //The original ref stored was for the BME, now it's for the Variable
+	               String svar = scopeman.get(bme);
+	               if (svar != null) {
+	                   scopeman.store(variable, svar);
+	               }
+	               // a getter for the variable already exists
+	               block.visit(this);
+	           } else {
+	               // no getter exists yet, so define one
+	               beginBlock();
+	               //beginEnclosingFunction();
+	               String vtmp=createTempVariable();
+	               out("var ", vtmp, "=");
+	               bme.visit(this);
+	               out(";");
+	               endLine();
+	               scopeman.store(variable, vtmp);
+
+	               visitStatements(block.getStatements(), false);
+	               //endEnclosingFunction();
+	               endBlock();
+	           }
 		   }
 	   }
 
-	   if (simpleCheck) {
-	       BaseMemberExpression bme = (BaseMemberExpression) variableRHS;
+	   if (!simpleCheck) {
+	       // if/while (is/exists/nonempty x=...)
 
-		   out(keyword);
-           out("(");
-           specialConditionCheck(condition, variableRHS, simpleCheck);
-           out(")");
+	       out("var $cond$;");
+	       endLine();
 
-           if (matchingGetter) {
-               // a getter for the variable already exists
-               block.visit(this);
-           } else {
-               // no getter exists yet, so define one
-               beginBlock();
-               //beginEnclosingFunction();
-               out("var ", getter(variable.getDeclarationModel()), "=function(){return ");
-               bme.visit(this);
-               out("};");
-               endLine();
+	       out(keyword);
+	       out("(");
+	       specialConditionCheck(condition, variableRHS, simpleCheck);
+	       out(")");
 
-               visitStatements(block.getStatements(), false);
-               //endEnclosingFunction();
-               endBlock();
-           }
-
-	   } else {
-		   // if/while (is/exists/nonempty x=...)
-
-		   out("var $cond$;");
-		   endLine();
-
-		   out(keyword);
-		   out("(");
-		   specialConditionCheck(condition, variableRHS, simpleCheck);
-           out(")");
-
-		   if (block.getStatements().isEmpty()) {
-			   out("{}");
-
-		   } else {
-			   beginBlock();
-		       //beginEnclosingFunction();
-			   out("var $", varName, "=$cond$;");
-			   endLine();
-
-			   out("var ", getter(variable.getDeclarationModel()), "=function(){return $", varName, "};");
-			   endLine();
-
-			   visitStatements(block.getStatements(), false);
-		       //endEnclosingFunction();
-			   endBlock();
-		   }
+	       if (block.getStatements().isEmpty()) {
+	           out("{}");
+	       } else {
+	           beginBlock();
+	           String tmpvar = createTempVariable();
+	           //beginEnclosingFunction();
+	           scopeman.store(variable, tmpvar);
+	           out("var ", tmpvar, "=$cond$;");
+	           endLine();
+	           visitStatements(block.getStatements(), false);
+	           //endEnclosingFunction();
+	           endBlock();
+	       }
 	   }
    }
 
@@ -1947,7 +1953,7 @@ public class GenerateJsVisitor extends Visitor
             if (condition instanceof NonemptyCondition) {
                 out(clAlias, ".nonempty(");
                 specialConditionRHS(variableRHS, simpleCheck);
-                out(")===", clAlias, ".getTrue()");
+                out(")===", clTrue);
             } else {
                 specialConditionRHS(variableRHS, simpleCheck);
                 out("!==null");
@@ -1956,7 +1962,7 @@ public class GenerateJsVisitor extends Visitor
         } else {
             Type type = ((IsCondition) condition).getType();
             generateIsOfType(variableRHS, null, type, simpleCheck);
-            out("===", clAlias, ".getTrue()");
+            out("===", clTrue);
         }
     }
 
@@ -2092,14 +2098,15 @@ public class GenerateJsVisitor extends Visitor
 	   } else {
 		   beginBlock();
 		   if (foriter instanceof ValueIterator) {
-			   Value model = ((ValueIterator)foriter).getVariable().getDeclarationModel();
-			   out("var ", getter(model), "=function(){return ", itemVar, ";};");
+			   scopeman.store(((ValueIterator)foriter).getVariable(), itemVar);
 		   } else if (foriter instanceof KeyValueIterator) {
-			   Value keyModel = ((KeyValueIterator)foriter).getKeyVariable().getDeclarationModel();
-			   Value valModel = ((KeyValueIterator)foriter).getValueVariable().getDeclarationModel();
-			   out("var ", getter(keyModel), "=function(){return ", itemVar, ".getKey();};");
+		       String keyvar = createTempVariable();
+		       String valvar = createTempVariable();
+			   out("var ", keyvar, "=", itemVar, ".getKey();");
 			   endLine();
-			   out("var ", getter(valModel), "=function(){return ", itemVar, ".getItem();};");
+			   out("var ", valvar, "=", itemVar, ".getItem();");
+			   scopeman.store(((KeyValueIterator)foriter).getKeyVariable(), keyvar);
+			   scopeman.store(((KeyValueIterator)foriter).getValueVariable(), valvar);
 		   }
 		   endLine();
 		   for (int i=0; i<stmnts.size(); i++) {
@@ -2147,7 +2154,7 @@ public class GenerateJsVisitor extends Visitor
                 firstCatch = false;
                 out("if(");
                 generateIsOfType(null, "$ex$", variable.getType(), true);
-                out("===", clAlias, ".getTrue())");
+                out("===", clTrue, ")");
 
                 if (catchClause.getBlock().getStatements().isEmpty()) {
                     out("{}");
@@ -2203,7 +2210,7 @@ public class GenerateJsVisitor extends Visitor
         if (op instanceof SafeIndexOp) {
             out(clAlias, ".exists(");
             that.getPrimary().visit(this);
-            out(")===", clAlias, ".getTrue()?");
+            out(")===", clTrue, "?");
         }
         visitIndex(that);
         if (op instanceof SafeIndexOp) {
@@ -2220,19 +2227,18 @@ public class GenerateJsVisitor extends Visitor
     /** Generates code for a case clause, as part of a switch statement. Each case
      * is rendered as an if. */
     private void caseClause(CaseClause cc, String expvar, Term switchTerm) {
-        Declaration decl = null;
         out("if (");
         final CaseItem item = cc.getCaseItem();
         if (item instanceof IsCase) {
             IsCase isCaseItem = (IsCase) item;
             generateIsOfType(null, expvar, isCaseItem.getType(), true);
-            out("===", clAlias, ".getTrue()");
+            out("===", clTrue);
             Variable caseVar = isCaseItem.getVariable();
             if ((switchTerm instanceof BaseMemberExpression) && (caseVar != null)) {
                 BaseMemberExpression bme = (BaseMemberExpression) switchTerm;
                 if (!matchingGetterExists(bme.getDeclaration(),
                         caseVar.getDeclarationModel(), cc)) {
-                    decl = caseVar.getDeclarationModel();
+                    scopeman.store(caseVar, expvar);
                 }
             }
         } else if (item instanceof SatisfiesCase) {
@@ -2252,16 +2258,10 @@ public class GenerateJsVisitor extends Visitor
             cc.addUnexpectedError("support for case of type " + cc.getClass().getSimpleName() + " not yet implemented");
         }
         out(") ");
-        if (decl == null) {
-            cc.getBlock().visit(this);
-        } else if (cc.getBlock().getStatements().isEmpty()) {
+        if (cc.getBlock().getStatements().isEmpty()) {
             out("{}");
         } else {
-            beginBlock();
-            out("var ", getter(decl), "=function(){return ", expvar, ";};");
-            endLine();
-            visitStatements(cc.getBlock().getStatements(), false);
-            endBlock();
+            cc.getBlock().visit(this);
         }
     }
 
