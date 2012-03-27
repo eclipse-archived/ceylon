@@ -227,7 +227,6 @@ public class ExpressionTest extends CompilerTest {
     public void testInvNamedArgumentInvocationLocal(){
         compareWithJavaSource("invoke/NamedArgumentInvocationLocal");
     }
-
     @Test
     public void testInvNamedArgumentWithSequence(){
         compareWithJavaSource("invoke/NamedArgumentWithSequence");
@@ -271,6 +270,10 @@ public class ExpressionTest extends CompilerTest {
     @Test
     public void testInvDefaultedAndSequenced(){
         compareWithJavaSource("invoke/DefaultedAndSequencedParams");
+    }
+    @Test
+    public void testInvDefaultedAndTypeParams(){
+        compareWithJavaSource("invoke/DefaultedAndTypeParams");
     }
 
     @Test
