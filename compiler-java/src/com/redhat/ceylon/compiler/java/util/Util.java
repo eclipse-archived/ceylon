@@ -504,4 +504,9 @@ public class Util {
             return (Package) decl;
         return getPackage(((Declaration)decl).getContainer());
     }
+
+    public static boolean isSubPackage(String moduleName, String pkgName) {
+        return pkgName.equals(moduleName)
+                || pkgName.startsWith(moduleName+".");
+    }
 }

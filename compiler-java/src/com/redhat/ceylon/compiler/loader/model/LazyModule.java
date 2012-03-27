@@ -28,6 +28,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
@@ -139,19 +140,14 @@ public abstract class LazyModule extends Module {
         if(!isJava){
             // Ceylon rules are simple
             // is it the same package as the module, or a subpackage of it?
-            return isSubPackage(moduleName, pkgName);
+            return Util.isSubPackage(moduleName, pkgName);
         }else{
             // special rules for the JDK which we don't load from the repo
             if(moduleName.equals("java")
                     || moduleName.equals("sun"))
-                return isSubPackage(moduleName, pkgName);
+                return Util.isSubPackage(moduleName, pkgName);
             // otherwise we have the list of packages contained in that module jar
             return jarPackages.contains(pkgName);
         }
-    }
-
-    private boolean isSubPackage(String moduleName, String pkgName) {
-        return pkgName.equals(moduleName)
-                || pkgName.startsWith(moduleName+".");
     }
 }
