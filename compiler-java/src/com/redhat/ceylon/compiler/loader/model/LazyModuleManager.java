@@ -84,11 +84,19 @@ public abstract class LazyModuleManager extends ModuleManager {
         Module javaModule = getModelLoader().findOrCreateModule("java.lang");
         // make sure java.lang is available
         getModelLoader().findOrCreatePackage(javaModule, "java.lang");
+        Module languageModule = getContext().getModules().getLanguageModule();
         for(Module m : getContext().getModules().getListOfModules()){
             if(!m.getName().equals("java")){
+                // add java
                 ModuleImport moduleImport = findImport(m, javaModule);
                 if (moduleImport == null) {
                     moduleImport = new ModuleImport(javaModule, false, true);
+                    m.getImports().add(moduleImport);
+                }
+                // add ceylon.language too if required
+                moduleImport = findImport(m, languageModule);
+                if (moduleImport == null) {
+                    moduleImport = new ModuleImport(languageModule, false, true);
                     m.getImports().add(moduleImport);
                 }
             }
