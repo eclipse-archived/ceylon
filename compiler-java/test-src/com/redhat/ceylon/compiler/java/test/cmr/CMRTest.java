@@ -112,6 +112,11 @@ public class CMRTest extends CompilerTest {
     }
 
     @Test
+    public void testMdlWithCeylonImport() throws IOException{
+        compile("module/ceylon_import/module.ceylon", "module/ceylon_import/ImportCeylonLanguage.ceylon");
+    }
+    
+    @Test
     public void testMdlWithCommonPrefix() throws IOException{
         compile("module/depend/prefix/module.ceylon");
         // This is heisenbug https://github.com/ceylon/ceylon-compiler/issues/460 and for some
