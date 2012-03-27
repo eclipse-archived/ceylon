@@ -1132,6 +1132,12 @@ public class ExpressionTransformer extends AbstractTransformer {
         sequenceItemExpr = applyErasureAndBoxing(sequenceItemExpr, srcElementType, true, BoxingStrategy.BOXED, 
                 expr.getTarget().getQualifyingType());
         JCExpression appliedExpr = transformMemberExpression(expr, sequenceItemExpr, transformer);
+        
+        if (!isWithinInvocation()
+                && isCeylonCallable(expr.getTypeModel())) {
+            return appliedExpr;
+        }
+        
         // reset back here after transformMemberExpression
         at(expr);
         // we always need to box to put in array
