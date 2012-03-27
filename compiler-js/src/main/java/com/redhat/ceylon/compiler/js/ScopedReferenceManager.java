@@ -24,9 +24,6 @@ public class ScopedReferenceManager {
             sv = new HashMap<String, String>();
             scopeVars.put(ad.getScope(), sv);
         }
-        if ("$enums".equals(tmpvar)) {
-            System.out.printf("Guardando $enums scope %s name %s%n", ad.getScope(), ad.getDeclarationModel().getName());
-        }
         sv.put(ad.getDeclarationModel().getName(), tmpvar);
     }
 
