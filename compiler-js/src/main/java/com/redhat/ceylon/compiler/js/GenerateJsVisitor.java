@@ -34,6 +34,7 @@ public class GenerateJsVisitor extends Visitor
     private static long tmpvarCount = 0;
     private final Stack<Continuation> continues = new Stack<Continuation>();
     private final ScopedReferenceManager scopeman = new ScopedReferenceManager();
+    private final EnclosingFunctionVisitor encloser = new EnclosingFunctionVisitor();
 
     private final class SuperVisitor extends Visitor {
         private final List<Declaration> decs;
@@ -243,10 +244,8 @@ public class GenerateJsVisitor extends Visitor
         }
         else {
             beginBlock();
-            //beginEnclosingFunction();
             initSelf(that);
             visitStatements(stmnts, false);
-            //endEnclosingFunction();
             endBlock();
         }
     }
@@ -1825,13 +1824,13 @@ public class GenerateJsVisitor extends Visitor
 		   condition.visit(this);
 	       out(")===", clTrue, ")");
 	       if (ifBlock != null) {
-	    	   ifBlock.visit(this);
+               encloseBlockInFunction(ifBlock);
 	       }
 	   }
 
        if (that.getElseClause() != null) {
            out("else ");
-           that.getElseClause().visit(this);
+           encloseBlockInFunction(that.getElseClause().getBlock());
        }
    }
 
@@ -1846,7 +1845,7 @@ public class GenerateJsVisitor extends Visitor
 		   out("while ((");
 	       condition.visit(this);
 	       out(")===", clTrue, ")");
-	       whileClause.getBlock().visit(this);
+           encloseBlockInFunction(whileClause.getBlock());
 	   }
    }
 
@@ -1872,17 +1871,8 @@ public class GenerateJsVisitor extends Visitor
        out("(");
        specialConditionCheck(condition, variableRHS, tmpvar);
        out(")");
-
-       if (block.getStatements().isEmpty()) {
-           out("{}");
-       } else {
-           beginBlock();
-           //beginEnclosingFunction();
-           scopeman.store(variable, tmpvar);
-           visitStatements(block.getStatements(), false);
-           //endEnclosingFunction();
-           endBlock();
-       }
+       scopeman.store(variable, tmpvar);
+       encloseBlockInFunction(block);
    }
 
    private boolean matchingGetterExists(Declaration outerVar, Declaration innerVar, Node that) {
@@ -2022,7 +2012,6 @@ public class GenerateJsVisitor extends Visitor
    @Override public void visit(ForStatement that) {
        if (comment) out("//'for' statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
        endLine();
-       //beginEnclosingFunction();
 	   ForIterator foriter = that.getForClause().getForIterator();
 	   SpecifierExpression iterable = foriter.getSpecifierExpression();
 	   boolean hasElse = that.getElseClause() != null && !that.getElseClause().getBlock().getStatements().isEmpty();
@@ -2066,9 +2055,8 @@ public class GenerateJsVisitor extends Visitor
 	   if (hasElse) {
 		   endLine();
 		   out("if (", clAlias, ".getExhausted() === ", itemVar, ")");
-		   that.getElseClause().getBlock().visit(this);
+           encloseBlockInFunction(that.getElseClause().getBlock());
 	   }
-	   //endEnclosingFunction();
    }
 
     public void visit(InOp that) {
@@ -2080,7 +2068,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override public void visit(TryCatchStatement that) {
         out("try");
-        that.getTryClause().getBlock().visit(this);
+        encloseBlockInFunction(that.getTryClause().getBlock());
 
         if (!that.getCatchClauses().isEmpty()) {
             out("catch($ex0$)");
@@ -2115,7 +2103,7 @@ public class GenerateJsVisitor extends Visitor
 
         if (that.getFinallyClause() != null) {
             out("finally");
-            that.getFinallyClause().getBlock().visit(this);
+            encloseBlockInFunction(that.getFinallyClause().getBlock());
         }
     }
 
@@ -2201,11 +2189,7 @@ public class GenerateJsVisitor extends Visitor
             cc.addUnexpectedError("support for case of type " + cc.getClass().getSimpleName() + " not yet implemented");
         }
         out(") ");
-        if (cc.getBlock().getStatements().isEmpty()) {
-            out("{}");
-        } else {
-            cc.getBlock().visit(this);
-        }
+        encloseBlockInFunction(cc.getBlock());
     }
 
     @Override
@@ -2213,7 +2197,6 @@ public class GenerateJsVisitor extends Visitor
         if (comment) out("//Switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
         endLine();
         //Put the expression in a tmp var
-        //beginEnclosingFunction();
         final String expvar = createTempVariable();
         out("var ", expvar, "=");
         Expression expr = that.getSwitchClause().getExpression();
@@ -2230,26 +2213,30 @@ public class GenerateJsVisitor extends Visitor
             out("else ");
             that.getSwitchCaseList().getElseClause().visit(this);
         }
-        //endEnclosingFunction();
         if (comment) out("//End switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
     }
 
-    /*private void beginEnclosingFunction() {
-        Continuation c = new Continuation();
-        continues.push(c);
-        out("var ", c.getContinueName(), "=false;"); endLine();
-        out("var ", c.getBreakName(), "=false;"); endLine();
-        out("var ", c.getReturnName(), "=(function()");
-        beginBlock();
-    }
-    private void endEnclosingFunction() {
-        Continuation c = continues.pop();
-        endBlock();
-        out("());if(", c.getReturnName(), "!==undefined){return ", c.getReturnName(), ";}");
-        if (c.isContinued() || c.isBreaked()) {
-            out("else if(", c.getContinueName(),"===true||", c.getBreakName(), "===true){return;}");
+    /** Encloses the block in a function, IF NEEDED. */
+    private void encloseBlockInFunction(Block block) {
+        boolean wrap=encloser.encloseBlock(block);
+        if (wrap) {
+            beginBlock();
+            Continuation c = new Continuation();
+            continues.push(c);
+            out("var ", c.getContinueName(), "=false;"); endLine();
+            out("var ", c.getBreakName(), "=false;"); endLine();
+            out("var ", c.getReturnName(), "=(function()");
         }
-    }*/
+        block.visit(this);
+        if (wrap) {
+            Continuation c = continues.pop();
+            out("());if(", c.getReturnName(), "!==undefined){return ", c.getReturnName(), ";}");
+            if (c.isContinued() || c.isBreaked()) {
+                out("else if(", c.getContinueName(),"===true||", c.getBreakName(), "===true){return;}");
+            }
+            endBlock();
+        }
+    }
 
     private static class Continuation {
         private static int conts=1;
