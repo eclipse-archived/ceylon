@@ -114,6 +114,17 @@ void testDefaultedParams() {
     assert(tst.f{i1=1;i3=0;}=="1,2,0", "defaulted method parameters named 3");
 }
 
+shared void testGetterMethodDefinitions() {
+  class GetterTest() {
+    variable Integer i:=0;
+    shared Integer x { return ++i; }
+  }
+  value gt = GetterTest();
+  assert(gt.x==1, "getter defined as method 1");
+  assert(gt.x==2, "getter defined as method 2");
+  assert(gt.x==3, "getter defined as method 3");
+}
+
 shared void test() {
     helloWorld();
     hello("test");
@@ -123,5 +134,6 @@ shared void test() {
     //repeat(5, void p(Integer x) { print(x); });
     testMethodReference();
     testDefaultedParams();
+    testGetterMethodDefinitions();
     results();
 }
