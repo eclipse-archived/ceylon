@@ -110,6 +110,18 @@ public class CMRTest extends CompilerTest {
         // make sure it wasn't created in the home repo
         assertFalse(carFileInHomeRepo.exists());
     }
+
+    @Test
+    public void testMdlWithCommonPrefix() throws IOException{
+        compile("module/depend/prefix/module.ceylon");
+        // This is heisenbug https://github.com/ceylon/ceylon-compiler/issues/460 and for some
+        // reason it only happens _sometimes_, hence the repeats
+        compile("module/depend/prefix_suffix/module.ceylon");
+        compile("module/depend/prefix_suffix/module.ceylon");
+        compile("module/depend/prefix_suffix/module.ceylon");
+        compile("module/depend/prefix_suffix/module.ceylon");
+        compile("module/depend/prefix_suffix/module.ceylon");
+    }
     
     @Test
     public void testMdlModuleFromCompiledModule() throws IOException{
