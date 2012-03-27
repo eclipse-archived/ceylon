@@ -1,31 +1,23 @@
 (function(define) { define(function(require, exports, module) {
-var $$$cl15=require('ceylon/language/0.1/ceylon.language');
+var $$$cl15=require('ceylon/language/0.2/ceylon.language');
 
 //AttributeDeclaration assertionCount at functions.ceylon (1:0-1:34)
-var $assertionCount=$$$cl15.Integer(0);
-function getAssertionCount(){
-    return $assertionCount;
-}
+var tmpvar$41=$$$cl15.Integer(0);
+var getAssertionCount=function(){return tmpvar$41;};
 exports.getAssertionCount=getAssertionCount;
-function setAssertionCount(assertionCount){
-    $assertionCount=assertionCount; return assertionCount;
-}
+var setAssertionCount=function(assertionCount){tmpvar$41=assertionCount; return tmpvar$41;};
 exports.setAssertionCount=setAssertionCount;
 
 //AttributeDeclaration failureCount at functions.ceylon (2:0-2:32)
-var $failureCount=$$$cl15.Integer(0);
-function getFailureCount(){
-    return $failureCount;
-}
+var tmpvar$42=$$$cl15.Integer(0);
+var getFailureCount=function(){return tmpvar$42;};
 exports.getFailureCount=getFailureCount;
-function setFailureCount(failureCount){
-    $failureCount=failureCount; return failureCount;
-}
+var setFailureCount=function(failureCount){tmpvar$42=failureCount; return tmpvar$42;};
 exports.setFailureCount=setFailureCount;
 
 //MethodDefinition assert at functions.ceylon (4:0-10:0)
 function assert(assertion,message){
-    if(message===undefined){message=$$$cl15.String("",0)}
+    if(message===undefined){message=$$$cl15.String("",0);}
     (setAssertionCount(getAssertionCount().plus($$$cl15.Integer(1))),getAssertionCount());
     if ((assertion.equals($$$cl15.getFalse()))===$$$cl15.getTrue()){
         (setFailureCount(getFailureCount().plus($$$cl15.Integer(1))),getFailureCount());
@@ -61,6 +53,7 @@ exports.hello=hello;
 
 //MethodDefinition helloAll at functions.ceylon (30:0-30:39)
 function helloAll(names){
+    if(names===undefined){names=$$$cl15.empty;}
     
 }
 exports.helloAll=helloAll;
@@ -91,20 +84,35 @@ function MySequence(seq, $$mySequence){
     $$$cl15.Sequence($$mySequence);
     
     //AttributeGetterDefinition lastIndex at functions.ceylon (46:4-46:60)
-    function getLastIndex(){
-        return seq.getLastIndex();
+    var getLastIndex=function(){
+        var tmpvar$43=(function(){
+            return seq.getLastIndex();
+        }
+        ());
+        getLastIndex=function(){return tmpvar$43;};
+        return tmpvar$43;
     }
     $$mySequence.getLastIndex=getLastIndex;
     
     //AttributeGetterDefinition first at functions.ceylon (47:4-47:52)
-    function getFirst(){
-        return seq.getFirst();
+    var getFirst=function(){
+        var tmpvar$44=(function(){
+            return seq.getFirst();
+        }
+        ());
+        getFirst=function(){return tmpvar$44;};
+        return tmpvar$44;
     }
     $$mySequence.getFirst=getFirst;
     
     //AttributeGetterDefinition rest at functions.ceylon (48:4-48:52)
-    function getRest(){
-        return seq.getRest();
+    var getRest=function(){
+        var tmpvar$45=(function(){
+            return seq.getRest();
+        }
+        ());
+        getRest=function(){return tmpvar$45;};
+        return tmpvar$45;
     }
     $$mySequence.getRest=getRest;
     
@@ -116,37 +124,52 @@ function MySequence(seq, $$mySequence){
     
     //MethodDefinition span at functions.ceylon (50:4-50:89)
     function span(from,to){
-        return (function(){var $=seq;return $$$cl15.JsCallable($, $.span)})()(from,to);
+        return seq.span(from,to);
     }
     $$mySequence.span=span;
     
     //MethodDefinition segment at functions.ceylon (51:4-51:102)
     function segment(from,length){
-        return (function(){var $=seq;return $$$cl15.JsCallable($, $.segment)})()(from,length);
+        return seq.segment(from,length);
     }
     $$mySequence.segment=segment;
     
     //AttributeGetterDefinition clone at functions.ceylon (52:4-52:59)
-    function getClone(){
-        return $$mySequence;
+    var getClone=function(){
+        var tmpvar$46=(function(){
+            return $$mySequence;
+        }
+        ());
+        getClone=function(){return tmpvar$46;};
+        return tmpvar$46;
     }
     $$mySequence.getClone=getClone;
     
     //AttributeGetterDefinition string at functions.ceylon (53:4-53:53)
-    function getString(){
-        return seq.getString();
+    var getString=function(){
+        var tmpvar$47=(function(){
+            return seq.getString();
+        }
+        ());
+        getString=function(){return tmpvar$47;};
+        return tmpvar$47;
     }
     $$mySequence.getString=getString;
     
     //AttributeGetterDefinition hash at functions.ceylon (54:4-54:50)
-    function getHash(){
-        return seq.getHash();
+    var getHash=function(){
+        var tmpvar$48=(function(){
+            return seq.getHash();
+        }
+        ());
+        getHash=function(){return tmpvar$48;};
+        return tmpvar$48;
     }
     $$mySequence.getHash=getHash;
     
     //MethodDefinition equals at functions.ceylon (55:4-55:75)
     function equals(other){
-        return (function(){var $=seq;return $$$cl15.JsCallable($, $.equals)})()(other);
+        return seq.equals(other);
     }
     $$mySequence.equals=equals;
     return $$mySequence;
@@ -172,43 +195,35 @@ $$$cl15.inheritProto(RefHelper,$$$cl15.IdentifiableObject,'$$$cl15$IdentifiableO
 function testMethodReference(){
     
     //AttributeDeclaration obj1 at functions.ceylon (63:4-63:28)
-    var $obj1=RefHelper();
-    function getObj1(){
-        return $obj1;
-    }
+    var tmpvar$49=RefHelper();
     
     //AttributeDeclaration obj2 at functions.ceylon (64:4-64:43)
-    var $obj2=MySequence/* REIFIED GENERICS SOON!! <ceylon.language.String> */($$$cl15.ArraySequence([$$$cl15.String("hi",2)]));
-    function getObj2(){
-        return $obj2;
-    }
+    var tmpvar$50=MySequence/* REIFIED GENERICS SOON!! <ceylon.language.String> */($$$cl15.ArraySequence([$$$cl15.String("hi",2)]));
     
     //MethodDefinition tst at functions.ceylon (65:4-67:4)
     function tst(x){
         return x($$$cl15.Integer(0));
     }
-    assert(tst((function(){var $=getObj1();return $$$cl15.JsCallable($, $.f)})()),$$$cl15.String("Reference to method",19));
-    assert(tst((function(){var $=getObj2();return $$$cl15.JsCallable($, $.defines)})()),$$$cl15.String("Reference to method from ceylon.language",40));
+    assert(tst((function(){var $=tmpvar$49;return $$$cl15.JsCallable($, $.f)})()),$$$cl15.String("Reference to method",19));
+    assert(tst((function(){var $=tmpvar$50;return $$$cl15.JsCallable($, $.defines)})()),$$$cl15.String("Reference to method from ceylon.language",40));
 }
 
 //MethodDefinition defParamTest at functions.ceylon (72:0-74:0)
 function defParamTest(i1,i2,i3){
-    if(i2===undefined){i2=i1.plus($$$cl15.Integer(1))}
-    if(i3===undefined){i3=i1.plus(i2)}
+    if(i2===undefined){i2=i1.plus($$$cl15.Integer(1));}
+    if(i3===undefined){i3=i1.plus(i2);}
     return $$$cl15.StringBuilder().appendAll($$$cl15.ArraySequence([$$$cl15.String("",0),i1.getString(),$$$cl15.String(",",1),i2.getString(),$$$cl15.String(",",1),i3.getString(),$$$cl15.String("",0)])).getString();
 }
 
 //ClassDefinition DefParamTest1 at functions.ceylon (75:0-77:0)
 function DefParamTest1(i1, i2, i3, $$defParamTest1){
     if ($$defParamTest1===undefined)$$defParamTest1=new DefParamTest1.$$;
-    if(i2===undefined){i2=i1.plus($$$cl15.Integer(1))}
-    if(i3===undefined){i3=i1.plus(i2)}
+    if(i2===undefined){i2=i1.plus($$$cl15.Integer(1));}
+    if(i3===undefined){i3=i1.plus(i2);}
     
     //AttributeDeclaration s at functions.ceylon (76:4-76:44)
-    var $s=$$$cl15.StringBuilder().appendAll($$$cl15.ArraySequence([$$$cl15.String("",0),i1.getString(),$$$cl15.String(",",1),i2.getString(),$$$cl15.String(",",1),i3.getString(),$$$cl15.String("",0)])).getString();
-    function getS(){
-        return $s;
-    }
+    var tmpvar$51=$$$cl15.StringBuilder().appendAll($$$cl15.ArraySequence([$$$cl15.String("",0),i1.getString(),$$$cl15.String(",",1),i2.getString(),$$$cl15.String(",",1),i3.getString(),$$$cl15.String("",0)])).getString();
+    var getS=function(){return tmpvar$51;};
     $$defParamTest1.getS=getS;
     return $$defParamTest1;
 }
@@ -219,9 +234,9 @@ $$$cl15.inheritProto(DefParamTest1,$$$cl15.IdentifiableObject,'$$$cl15$Identifia
 function DefParamTest2(i1, i2, i3, $$defParamTest2){
     if ($$defParamTest2===undefined)$$defParamTest2=new DefParamTest2.$$;
     $$defParamTest2.i1=i1;
-    if(i2===undefined){i2=i1.plus($$$cl15.Integer(1))}
+    if(i2===undefined){i2=i1.plus($$$cl15.Integer(1));}
     $$defParamTest2.i2=i2;
-    if(i3===undefined){i3=i1.plus(i2)}
+    if(i3===undefined){i3=i1.plus(i2);}
     $$defParamTest2.i3=i3;
     
     //MethodDefinition f at functions.ceylon (79:4-79:55)
@@ -240,8 +255,8 @@ function DefParamTest3($$defParamTest3){
     
     //MethodDefinition f at functions.ceylon (82:4-84:4)
     function f(i1,i2,i3){
-        if(i2===undefined){i2=i1.plus($$$cl15.Integer(1))}
-        if(i3===undefined){i3=i1.plus(i2)}
+        if(i2===undefined){i2=i1.plus($$$cl15.Integer(1));}
+        if(i3===undefined){i3=i1.plus(i2);}
         return $$$cl15.StringBuilder().appendAll($$$cl15.ArraySequence([$$$cl15.String("",0),i1.getString(),$$$cl15.String(",",1),i2.getString(),$$$cl15.String(",",1),i3.getString(),$$$cl15.String("",0)])).getString();
     }
     $$defParamTest3.f=f;
@@ -264,24 +279,21 @@ function testDefaultedParams(){
     assert((function (){var $i1=$$$cl15.Integer(1);return DefParamTest1($i1,undefined,undefined)}()).getS().equals($$$cl15.String("1,2,3",5)),$$$cl15.String("defaulted parameters class named 1",34));
     assert((function (){var $i1=$$$cl15.Integer(1);var $i2=$$$cl15.Integer(3);return DefParamTest1($i1,$i2,undefined)}()).getS().equals($$$cl15.String("1,3,4",5)),$$$cl15.String("defaulted parameters class named 2",34));
     assert((function (){var $i1=$$$cl15.Integer(1);var $i3=$$$cl15.Integer(0);return DefParamTest1($i1,undefined,$i3)}()).getS().equals($$$cl15.String("1,2,0",5)),$$$cl15.String("defaulted parameters class named 3",34));
-    assert((function(){var $=DefParamTest2($$$cl15.Integer(1));return $$$cl15.JsCallable($, $.f)})()().equals($$$cl15.String("1,2,3",5)),$$$cl15.String("defaulted parameters class2 1",29));
-    assert((function(){var $=DefParamTest2($$$cl15.Integer(1),$$$cl15.Integer(3));return $$$cl15.JsCallable($, $.f)})()().equals($$$cl15.String("1,3,4",5)),$$$cl15.String("defaulted parameters class2 2",29));
-    assert((function(){var $=DefParamTest2($$$cl15.Integer(1),$$$cl15.Integer(3),$$$cl15.Integer(0));return $$$cl15.JsCallable($, $.f)})()().equals($$$cl15.String("1,3,0",5)),$$$cl15.String("defaulted parameters class2 3",29));
-    assert((function(){var $=(function (){var $i1=$$$cl15.Integer(1);return DefParamTest2($i1,undefined,undefined)}());return $$$cl15.JsCallable($, $.f)})()().equals($$$cl15.String("1,2,3",5)),$$$cl15.String("defaulted parameters class2 named 1",35));
-    assert((function(){var $=(function (){var $i1=$$$cl15.Integer(1);var $i2=$$$cl15.Integer(3);return DefParamTest2($i1,$i2,undefined)}());return $$$cl15.JsCallable($, $.f)})()().equals($$$cl15.String("1,3,4",5)),$$$cl15.String("defaulted parameters class2 named 2",35));
-    assert((function(){var $=(function (){var $i1=$$$cl15.Integer(1);var $i3=$$$cl15.Integer(0);return DefParamTest2($i1,undefined,$i3)}());return $$$cl15.JsCallable($, $.f)})()().equals($$$cl15.String("1,2,0",5)),$$$cl15.String("defaulted parameters class2 named 3",35));
+    assert(DefParamTest2($$$cl15.Integer(1)).f().equals($$$cl15.String("1,2,3",5)),$$$cl15.String("defaulted parameters class2 1",29));
+    assert(DefParamTest2($$$cl15.Integer(1),$$$cl15.Integer(3)).f().equals($$$cl15.String("1,3,4",5)),$$$cl15.String("defaulted parameters class2 2",29));
+    assert(DefParamTest2($$$cl15.Integer(1),$$$cl15.Integer(3),$$$cl15.Integer(0)).f().equals($$$cl15.String("1,3,0",5)),$$$cl15.String("defaulted parameters class2 3",29));
+    assert((function (){var $i1=$$$cl15.Integer(1);return DefParamTest2($i1,undefined,undefined)}()).f().equals($$$cl15.String("1,2,3",5)),$$$cl15.String("defaulted parameters class2 named 1",35));
+    assert((function (){var $i1=$$$cl15.Integer(1);var $i2=$$$cl15.Integer(3);return DefParamTest2($i1,$i2,undefined)}()).f().equals($$$cl15.String("1,3,4",5)),$$$cl15.String("defaulted parameters class2 named 2",35));
+    assert((function (){var $i1=$$$cl15.Integer(1);var $i3=$$$cl15.Integer(0);return DefParamTest2($i1,undefined,$i3)}()).f().equals($$$cl15.String("1,2,0",5)),$$$cl15.String("defaulted parameters class2 named 3",35));
     
     //AttributeDeclaration tst at functions.ceylon (108:4-108:31)
-    var $tst=DefParamTest3();
-    function getTst(){
-        return $tst;
-    }
-    assert((function(){var $=getTst();return $$$cl15.JsCallable($, $.f)})()($$$cl15.Integer(1)).equals($$$cl15.String("1,2,3",5)),$$$cl15.String("defaulted method parameters 1",29));
-    assert((function(){var $=getTst();return $$$cl15.JsCallable($, $.f)})()($$$cl15.Integer(1),$$$cl15.Integer(3)).equals($$$cl15.String("1,3,4",5)),$$$cl15.String("defaulted method parameters 2",29));
-    assert((function(){var $=getTst();return $$$cl15.JsCallable($, $.f)})()($$$cl15.Integer(1),$$$cl15.Integer(3),$$$cl15.Integer(0)).equals($$$cl15.String("1,3,0",5)),$$$cl15.String("defaulted method parameters 3",29));
-    assert((function (){var $i1=$$$cl15.Integer(1);return (function(){var $=getTst();return $$$cl15.JsCallable($, $.f)})()($i1,undefined,undefined)}()).equals($$$cl15.String("1,2,3",5)),$$$cl15.String("defaulted method parameters named 1",35));
-    assert((function (){var $i1=$$$cl15.Integer(1);var $i2=$$$cl15.Integer(3);return (function(){var $=getTst();return $$$cl15.JsCallable($, $.f)})()($i1,$i2,undefined)}()).equals($$$cl15.String("1,3,4",5)),$$$cl15.String("defaulted method parameters named 2",35));
-    assert((function (){var $i1=$$$cl15.Integer(1);var $i3=$$$cl15.Integer(0);return (function(){var $=getTst();return $$$cl15.JsCallable($, $.f)})()($i1,undefined,$i3)}()).equals($$$cl15.String("1,2,0",5)),$$$cl15.String("defaulted method parameters named 3",35));
+    var tmpvar$52=DefParamTest3();
+    assert(tmpvar$52.f($$$cl15.Integer(1)).equals($$$cl15.String("1,2,3",5)),$$$cl15.String("defaulted method parameters 1",29));
+    assert(tmpvar$52.f($$$cl15.Integer(1),$$$cl15.Integer(3)).equals($$$cl15.String("1,3,4",5)),$$$cl15.String("defaulted method parameters 2",29));
+    assert(tmpvar$52.f($$$cl15.Integer(1),$$$cl15.Integer(3),$$$cl15.Integer(0)).equals($$$cl15.String("1,3,0",5)),$$$cl15.String("defaulted method parameters 3",29));
+    assert((function (){var $i1=$$$cl15.Integer(1);return (function(){var $=tmpvar$52;return $$$cl15.JsCallable($, $.f)})()($i1,undefined,undefined)}()).equals($$$cl15.String("1,2,3",5)),$$$cl15.String("defaulted method parameters named 1",35));
+    assert((function (){var $i1=$$$cl15.Integer(1);var $i2=$$$cl15.Integer(3);return (function(){var $=tmpvar$52;return $$$cl15.JsCallable($, $.f)})()($i1,$i2,undefined)}()).equals($$$cl15.String("1,3,4",5)),$$$cl15.String("defaulted method parameters named 2",35));
+    assert((function (){var $i1=$$$cl15.Integer(1);var $i3=$$$cl15.Integer(0);return (function(){var $=tmpvar$52;return $$$cl15.JsCallable($, $.f)})()($i1,undefined,$i3)}()).equals($$$cl15.String("1,2,0",5)),$$$cl15.String("defaulted method parameters named 3",35));
 }
 
 //MethodDefinition test at functions.ceylon (117:0-127:0)

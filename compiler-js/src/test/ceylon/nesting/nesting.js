@@ -1,31 +1,23 @@
 (function(define) { define(function(require, exports, module) {
-var $$$cl15=require('ceylon/language/0.1/ceylon.language');
+var $$$cl15=require('ceylon/language/0.2/ceylon.language');
 
 //AttributeDeclaration assertionCount at nesting.ceylon (1:0-1:34)
-var $assertionCount=$$$cl15.Integer(0);
-function getAssertionCount(){
-    return $assertionCount;
-}
+var tmpvar$131=$$$cl15.Integer(0);
+var getAssertionCount=function(){return tmpvar$131;};
 exports.getAssertionCount=getAssertionCount;
-function setAssertionCount(assertionCount){
-    $assertionCount=assertionCount; return assertionCount;
-}
+var setAssertionCount=function(assertionCount){tmpvar$131=assertionCount; return tmpvar$131;};
 exports.setAssertionCount=setAssertionCount;
 
 //AttributeDeclaration failureCount at nesting.ceylon (2:0-2:32)
-var $failureCount=$$$cl15.Integer(0);
-function getFailureCount(){
-    return $failureCount;
-}
+var tmpvar$132=$$$cl15.Integer(0);
+var getFailureCount=function(){return tmpvar$132;};
 exports.getFailureCount=getFailureCount;
-function setFailureCount(failureCount){
-    $failureCount=failureCount; return failureCount;
-}
+var setFailureCount=function(failureCount){tmpvar$132=failureCount; return tmpvar$132;};
 exports.setFailureCount=setFailureCount;
 
 //MethodDefinition assert at nesting.ceylon (4:0-10:0)
 function assert(assertion,message){
-    if(message===undefined){message=$$$cl15.String("",0)}
+    if(message===undefined){message=$$$cl15.String("",0);}
     (setAssertionCount(getAssertionCount().plus($$$cl15.Integer(1))),getAssertionCount());
     if ((assertion.equals($$$cl15.getFalse()))===$$$cl15.getTrue()){
         (setFailureCount(getFailureCount().plus($$$cl15.Integer(1))),getFailureCount());
@@ -53,17 +45,13 @@ function Outer(name, $$outer){
     $$outer.name=name;
     
     //AttributeDeclaration int at nesting.ceylon (22:4-22:18)
-    var $int=$$$cl15.Integer(10);
-    function getInt(){
-        return $int;
-    }
+    var tmpvar$133=$$$cl15.Integer(10);
+    var getInt=function(){return tmpvar$133;};
     $$outer.getInt=getInt;
     
     //AttributeDeclaration float at nesting.ceylon (23:4-23:34)
-    var $float=getInt().getFloat();
-    function getFloat(){
-        return $float;
-    }
+    var tmpvar$134=getInt().getFloat();
+    var getFloat=function(){return tmpvar$134;};
     $$outer.getFloat=getFloat;
     
     //MethodDefinition noop at nesting.ceylon (24:4-24:17)
@@ -82,20 +70,30 @@ function Outer(name, $$outer){
         }
         
         //AttributeGetterDefinition int at nesting.ceylon (29:8-31:8)
-        function getInt(){
-            return $$outer.getInt();
+        var getInt=function(){
+            var tmpvar$135=(function(){
+                return $$outer.getInt();
+            }
+            ());
+            getInt=function(){return tmpvar$135;};
+            return tmpvar$135;
         }
         $$inner.getInt=getInt;
         
         //AttributeGetterDefinition float at nesting.ceylon (32:8-34:8)
-        function getFloat(){
-            return $$outer.getFloat();
+        var getFloat=function(){
+            var tmpvar$136=(function(){
+                return $$outer.getFloat();
+            }
+            ());
+            getFloat=function(){return tmpvar$136;};
+            return tmpvar$136;
         }
         $$inner.getFloat=getFloat;
         
         //MethodDefinition noop at nesting.ceylon (35:8-37:8)
         function noop(){
-            (function(){var $=$$outer;return $$$cl15.JsCallable($, $.noop)})()();
+            $$outer.noop();
         }
         $$inner.noop=noop;
         return $$inner;
@@ -104,13 +102,10 @@ function Outer(name, $$outer){
     $$$cl15.inheritProto(Inner,$$$cl15.IdentifiableObject,'$$$cl15$IdentifiableObject$');
     
     //AttributeDeclaration inner at nesting.ceylon (39:4-39:25)
-    var $inner=Inner();
-    function getInner(){
-        return $inner;
-    }
-    $$$cl15.print(getInner().getInt());
-    $$$cl15.print(getInner().getFloat());
-    (function(){var $=getInner();return $$$cl15.JsCallable($, $.noop)})()();
+    var tmpvar$137=Inner();
+    $$$cl15.print(tmpvar$137.getInt());
+    $$$cl15.print(tmpvar$137.getFloat());
+    tmpvar$137.noop();
     noop();
     return $$outer;
 }
@@ -122,10 +117,7 @@ $$$cl15.inheritProto(Outer,$$$cl15.IdentifiableObject,'$$$cl15$IdentifiableObjec
 function outr(name){
     
     //AttributeDeclaration uname at nesting.ceylon (49:4-49:34)
-    var $uname=name.getUppercased();
-    function getUname(){
-        return $uname;
-    }
+    var tmpvar$138=name.getUppercased();
     
     //MethodDefinition inr at nesting.ceylon (50:4-52:4)
     function inr(){
@@ -133,23 +125,22 @@ function outr(name){
     }
     
     //AttributeGetterDefinition uinr at nesting.ceylon (53:4-55:4)
-    function getUinr(){
-        return getUname();
+    var getUinr=function(){
+        var tmpvar$139=(function(){
+            return tmpvar$138;
+        }
+        ());
+        getUinr=function(){return tmpvar$139;};
+        return tmpvar$139;
     }
     
     //AttributeDeclaration result at nesting.ceylon (56:4-56:25)
-    var $result=inr();
-    function getResult(){
-        return $result;
-    }
+    var tmpvar$140=inr();
     
     //AttributeDeclaration uresult at nesting.ceylon (57:4-57:25)
-    var $uresult=getUinr();
-    function getUresult(){
-        return $uresult;
-    }
-    $$$cl15.print(getResult());
-    $$$cl15.print(getUresult());
+    var tmpvar$141=getUinr();
+    $$$cl15.print(tmpvar$140);
+    $$$cl15.print(tmpvar$141);
 }
 exports.outr=outr;
 
@@ -165,8 +156,13 @@ function Holder(o, $$holder){
     $$holder.get=get;
     
     //AttributeGetterDefinition string at nesting.ceylon (66:4-68:4)
-    function getString(){
-        return o.getString();
+    var getString=function(){
+        var tmpvar$142=(function(){
+            return o.getString();
+        }
+        ());
+        getString=function(){return tmpvar$142;};
+        return tmpvar$142;
     }
     $$holder.getString=getString;
     return $$holder;
@@ -180,10 +176,8 @@ function Wrapper($$wrapper){
     if ($$wrapper===undefined)$$wrapper=new Wrapper.$$;
     
     //AttributeDeclaration o at nesting.ceylon (72:4-72:18)
-    var $o=$$$cl15.Integer(100);
-    function getO(){
-        return $o;
-    }
+    var tmpvar$143=$$$cl15.Integer(100);
+    var getO=function(){return tmpvar$143;};
     $$wrapper.getO=getO;
     
     //MethodDefinition get at nesting.ceylon (73:4-75:4)
@@ -193,8 +187,13 @@ function Wrapper($$wrapper){
     $$wrapper.get=get;
     
     //AttributeGetterDefinition string at nesting.ceylon (76:4-78:4)
-    function getString(){
-        return getO().getString();
+    var getString=function(){
+        var tmpvar$144=(function(){
+            return getO().getString();
+        }
+        ());
+        getString=function(){return tmpvar$144;};
+        return tmpvar$144;
     }
     $$wrapper.getString=getString;
     return $$wrapper;
@@ -208,10 +207,8 @@ function Unwrapper($$unwrapper){
     if ($$unwrapper===undefined)$$unwrapper=new Unwrapper.$$;
     
     //AttributeDeclaration o at nesting.ceylon (82:4-82:27)
-    var $o=$$$cl15.Float(23.56);
-    function getO(){
-        return $o;
-    }
+    var tmpvar$145=$$$cl15.Float(23.56);
+    var getO=function(){return tmpvar$145;};
     $$unwrapper.getO=getO;
     
     //MethodDefinition get at nesting.ceylon (83:4-85:4)
@@ -221,8 +218,13 @@ function Unwrapper($$unwrapper){
     $$unwrapper.get=get;
     
     //AttributeGetterDefinition string at nesting.ceylon (86:4-88:4)
-    function getString(){
-        return $$unwrapper.getO().getString();
+    var getString=function(){
+        var tmpvar$146=(function(){
+            return $$unwrapper.getO().getString();
+        }
+        ());
+        getString=function(){return tmpvar$146;};
+        return tmpvar$146;
     }
     $$unwrapper.getString=getString;
     return $$unwrapper;
@@ -235,14 +237,11 @@ $$$cl15.inheritProto(Unwrapper,$$$cl15.IdentifiableObject,'$$$cl15$IdentifiableO
 function producer(){
     
     //AttributeDeclaration o at nesting.ceylon (92:4-92:18)
-    var $o=$$$cl15.Integer(123);
-    function getO(){
-        return $o;
-    }
+    var tmpvar$147=$$$cl15.Integer(123);
     
     //MethodDefinition produce at nesting.ceylon (93:4-93:35)
     function produce(){
-        return getO();
+        return tmpvar$147;
     }
     return produce;
 }
@@ -262,10 +261,8 @@ function A($$a){
     if ($$a===undefined)$$a=new A.$$;
     
     //AttributeDeclaration foo at nesting.ceylon (103:4-103:22)
-    var $foo=$$$cl15.String("foo",3);
-    function getFoo(){
-        return $foo;
-    }
+    var tmpvar$148=$$$cl15.String("foo",3);
+    var getFoo=function(){return tmpvar$148;};
     $$a.getFoo=getFoo;
     
     //ClassDefinition B at nesting.ceylon (104:4-114:4)
@@ -273,10 +270,8 @@ function A($$a){
         if ($$b===undefined)$$b=new B.$$;
         
         //AttributeDeclaration qux at nesting.ceylon (105:8-105:26)
-        var $qux=$$$cl15.String("qux",3);
-        function getQux(){
-            return $qux;
-        }
+        var tmpvar$149=$$$cl15.String("qux",3);
+        var getQux=function(){return tmpvar$149;};
         $$b.getQux=getQux;
         
         //ClassDefinition C at nesting.ceylon (106:8-113:8)
@@ -321,7 +316,7 @@ function A($$a){
         }
         $$$cl15.initType(Baz,'nesting.A.baz.Baz',$$$cl15.IdentifiableObject);
         $$$cl15.inheritProto(Baz,$$$cl15.IdentifiableObject,'$$$cl15$IdentifiableObject$');
-        return (function(){var $=Baz();return $$$cl15.JsCallable($, $.get)})()();
+        return Baz().get();
     }
     $$a.baz=baz;
     return $$a;
@@ -334,10 +329,8 @@ function O($$o){
     if ($$o===undefined)$$o=new O.$$;
     
     //AttributeDeclaration s at nesting.ceylon (126:4-126:22)
-    var $s=$$$cl15.String("hello",5);
-    function getS(){
-        return $s;
-    }
+    var tmpvar$150=$$$cl15.String("hello",5);
+    var getS=function(){return tmpvar$150;};
     $$o.getS=getS;
     
     //ClassDefinition InnerClass at nesting.ceylon (127:4-131:4)
@@ -386,13 +379,13 @@ function O($$o){
     
     //MethodDefinition test1 at nesting.ceylon (142:4-144:4)
     function test1(){
-        return (function(){var $=InnerClass();return $$$cl15.JsCallable($, $.f)})()();
+        return InnerClass().f();
     }
     $$o.test1=test1;
     
     //MethodDefinition test2 at nesting.ceylon (145:4-147:4)
     function test2(){
-        return (function(){var $=getInnerObject();return $$$cl15.JsCallable($, $.f)})()();
+        return getInnerObject().f();
     }
     $$o.test2=test2;
     
@@ -411,7 +404,7 @@ function O($$o){
         function getObj(){
             return o$obj;
         }
-        return (function(){var $=getObj();return $$$cl15.JsCallable($, $.f)})()();
+        return getObj().f();
     }
     $$o.test3=test3;
     return $$o;
@@ -447,7 +440,7 @@ function OuterC1($$outerC1){
     
     //MethodDefinition tst at nesting.ceylon (159:4-159:42)
     function tst(){
-        return (function(){var $=B();return $$$cl15.JsCallable($, $.tst)})()();
+        return B().tst();
     }
     $$outerC1.tst=tst;
     return $$outerC1;
@@ -479,7 +472,7 @@ function outerf(){
         return $$b;
     }
     $$$cl15.initType(B,'nesting.outerf.B',A);
-    return (function(){var $=B();return $$$cl15.JsCallable($, $.tst)})()();
+    return B().tst();
 }
 
 //ClassDefinition OuterC2 at nesting.ceylon (170:0-178:0)
@@ -510,7 +503,7 @@ function OuterC2($$outerC2){
             return $$b;
         }
         $$$cl15.initType(B,'nesting.OuterC2.tst.B',A);
-        return (function(){var $=B();return $$$cl15.JsCallable($, $.tst)})()();
+        return B().tst();
     }
     $$outerC2.tst=tst;
     return $$outerC2;
@@ -521,25 +514,25 @@ $$$cl15.inheritProto(OuterC2,$$$cl15.IdentifiableObject,'$$$cl15$IdentifiableObj
 //MethodDefinition test at nesting.ceylon (180:0-204:0)
 function test(){
     outr($$$cl15.String("Hello",5));
-    assert((function(){var $=Holder($$$cl15.String("ok",2));return $$$cl15.JsCallable($, $.get)})()().getString().equals($$$cl15.String("ok",2)),$$$cl15.String("holder(ok)",10));
+    assert(Holder($$$cl15.String("ok",2)).get().getString().equals($$$cl15.String("ok",2)),$$$cl15.String("holder(ok)",10));
     assert(Holder($$$cl15.String("ok",2)).getString().equals($$$cl15.String("ok",2)),$$$cl15.String("holder.string",13));
-    assert((function(){var $=Wrapper();return $$$cl15.JsCallable($, $.get)})()().getString().equals($$$cl15.String("100",3)),$$$cl15.String("wrapper 1",9));
+    assert(Wrapper().get().getString().equals($$$cl15.String("100",3)),$$$cl15.String("wrapper 1",9));
     assert(Wrapper().getString().equals($$$cl15.String("100",3)),$$$cl15.String("wrapper 2",9));
-    assert((function(){var $=Unwrapper();return $$$cl15.JsCallable($, $.get)})()().getString().equals($$$cl15.String("23.56",5)),$$$cl15.String("unwrapper 1",11));
+    assert(Unwrapper().get().getString().equals($$$cl15.String("23.56",5)),$$$cl15.String("unwrapper 1",11));
     assert(Unwrapper().getO().getString().equals($$$cl15.String("23.56",5)),$$$cl15.String("unwrapper 2",11));
     assert(Unwrapper().getString().equals($$$cl15.String("23.56",5)),$$$cl15.String("unwrapper 3",11));
     assert($$$cl15.isOfType(producer()(),'ceylon.language.Integer'),$$$cl15.String("function 2",10));
     assert($$$cl15.Integer(123).equals(producer()()),$$$cl15.String("function 3",10));
     assert($$$cl15.String("something",9).equals(returner($$$cl15.String("something",9))()),$$$cl15.String("function 4",10));
-    assert((function(){var $=A().B().C();return $$$cl15.JsCallable($, $.foobar)})()().equals($$$cl15.String("foo",3)),$$$cl15.String("foobar",6));
-    assert((function(){var $=A().B().C();return $$$cl15.JsCallable($, $.quxx)})()().equals($$$cl15.String("qux",3)),$$$cl15.String("quxx",4));
-    assert((function(){var $=A();return $$$cl15.JsCallable($, $.baz)})()().equals($$$cl15.String("foo",3)),$$$cl15.String("baz",3));
-    assert((function(){var $=O();return $$$cl15.JsCallable($, $.test1)})()().equals($$$cl15.String("hello",5)),$$$cl15.String("method instantiating inner class",32));
-    assert((function(){var $=O();return $$$cl15.JsCallable($, $.test2)})()().equals($$$cl15.String("hello",5)),$$$cl15.String("method accessing inner object",29));
-    assert((function(){var $=O();return $$$cl15.JsCallable($, $.test3)})()().equals($$$cl15.String("hello",5)),$$$cl15.String("method deriving inner interface",31));
-    assert((function(){var $=OuterC1();return $$$cl15.JsCallable($, $.tst)})()().equals($$$cl15.String("OuterC1.A.tst()",15)),$$$cl15.String("",0));
+    assert(A().B().C().foobar().equals($$$cl15.String("foo",3)),$$$cl15.String("foobar",6));
+    assert(A().B().C().quxx().equals($$$cl15.String("qux",3)),$$$cl15.String("quxx",4));
+    assert(A().baz().equals($$$cl15.String("foo",3)),$$$cl15.String("baz",3));
+    assert(O().test1().equals($$$cl15.String("hello",5)),$$$cl15.String("method instantiating inner class",32));
+    assert(O().test2().equals($$$cl15.String("hello",5)),$$$cl15.String("method accessing inner object",29));
+    assert(O().test3().equals($$$cl15.String("hello",5)),$$$cl15.String("method deriving inner interface",31));
+    assert(OuterC1().tst().equals($$$cl15.String("OuterC1.A.tst()",15)),$$$cl15.String("",0));
     assert(outerf().equals($$$cl15.String("outerf.A.tst()",14)),$$$cl15.String("",0));
-    assert((function(){var $=OuterC2();return $$$cl15.JsCallable($, $.tst)})()().equals($$$cl15.String("OuterC2.A.tst()",15)),$$$cl15.String("",0));
+    assert(OuterC2().tst().equals($$$cl15.String("OuterC2.A.tst()",15)),$$$cl15.String("",0));
     Outer($$$cl15.String("Hello",5));
     results();
 }

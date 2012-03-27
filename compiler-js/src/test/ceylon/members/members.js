@@ -1,31 +1,23 @@
 (function(define) { define(function(require, exports, module) {
-var $$$cl15=require('ceylon/language/0.1/ceylon.language');
+var $$$cl15=require('ceylon/language/0.2/ceylon.language');
 
 //AttributeDeclaration assertionCount at members.ceylon (1:0-1:34)
-var $assertionCount=$$$cl15.Integer(0);
-function getAssertionCount(){
-    return $assertionCount;
-}
+var tmpvar$106=$$$cl15.Integer(0);
+var getAssertionCount=function(){return tmpvar$106;};
 exports.getAssertionCount=getAssertionCount;
-function setAssertionCount(assertionCount){
-    $assertionCount=assertionCount; return assertionCount;
-}
+var setAssertionCount=function(assertionCount){tmpvar$106=assertionCount; return tmpvar$106;};
 exports.setAssertionCount=setAssertionCount;
 
 //AttributeDeclaration failureCount at members.ceylon (2:0-2:32)
-var $failureCount=$$$cl15.Integer(0);
-function getFailureCount(){
-    return $failureCount;
-}
+var tmpvar$107=$$$cl15.Integer(0);
+var getFailureCount=function(){return tmpvar$107;};
 exports.getFailureCount=getFailureCount;
-function setFailureCount(failureCount){
-    $failureCount=failureCount; return failureCount;
-}
+var setFailureCount=function(failureCount){tmpvar$107=failureCount; return tmpvar$107;};
 exports.setFailureCount=setFailureCount;
 
 //MethodDefinition assert at members.ceylon (4:0-10:0)
 function assert(assertion,message){
-    if(message===undefined){message=$$$cl15.String("",0)}
+    if(message===undefined){message=$$$cl15.String("",0);}
     (setAssertionCount(getAssertionCount().plus($$$cl15.Integer(1))),getAssertionCount());
     if ((assertion.equals($$$cl15.getFalse()))===$$$cl15.getTrue()){
         (setFailureCount(getFailureCount().plus($$$cl15.Integer(1))),getFailureCount());
@@ -50,23 +42,24 @@ exports.results=results;
 //ClassDefinition Counter at members.ceylon (21:0-35:0)
 function Counter(initialCount, $$counter){
     if ($$counter===undefined)$$counter=new Counter.$$;
-    if(initialCount===undefined){initialCount=$$$cl15.Integer(0)}
+    if(initialCount===undefined){initialCount=$$$cl15.Integer(0);}
     $$counter.initialCount=initialCount;
     
     //AttributeDeclaration currentCount at members.ceylon (22:4-22:45)
-    var $currentCount=initialCount;
-    function getCurrentCount(){
-        return $currentCount;
-    }
+    var tmpvar$108=initialCount;
+    var getCurrentCount=function(){return tmpvar$108;};
     $$counter.getCurrentCount=getCurrentCount;
-    function setCurrentCount(currentCount){
-        $currentCount=currentCount; return currentCount;
-    }
+    var setCurrentCount=function(currentCount){tmpvar$108=currentCount; return tmpvar$108;};
     $$counter.setCurrentCount=setCurrentCount;
     
     //AttributeGetterDefinition count at members.ceylon (23:4-25:4)
-    function getCount(){
-        return getCurrentCount();
+    var getCount=function(){
+        var tmpvar$109=(function(){
+            return getCurrentCount();
+        }
+        ());
+        getCount=function(){return tmpvar$109;};
+        return tmpvar$109;
     }
     $$counter.getCount=getCount;
     
@@ -77,14 +70,24 @@ function Counter(initialCount, $$counter){
     $$counter.inc=inc;
     
     //AttributeGetterDefinition initialCount at members.ceylon (29:4-31:4)
-    function getInitialCount(){
-        return initialCount;
+    var getInitialCount=function(){
+        var tmpvar$110=(function(){
+            return initialCount;
+        }
+        ());
+        getInitialCount=function(){return tmpvar$110;};
+        return tmpvar$110;
     }
     $$counter.getInitialCount=getInitialCount;
     
     //AttributeGetterDefinition string at members.ceylon (32:4-34:4)
-    function getString(){
-        return $$$cl15.String("Counter[",8).plus($$counter.getCount().getString()).plus($$$cl15.String("]",1));
+    var getString=function(){
+        var tmpvar$111=(function(){
+            return $$$cl15.String("Counter[",8).plus($$counter.getCount().getString()).plus($$$cl15.String("]",1));
+        }
+        ());
+        getString=function(){return tmpvar$111;};
+        return tmpvar$111;
     }
     $$counter.getString=getString;
     return $$counter;
@@ -99,24 +102,18 @@ function Issue10C1(arg1, $$issue10C1){
     $$issue10C1.arg1=arg1;
     
     //AttributeDeclaration i1 at members.ceylon (38:4-38:18)
-    var $i1=$$$cl15.Integer(3);
-    function getI1(){
-        return $i1;
-    }
+    var tmpvar$112=$$$cl15.Integer(3);
+    var getI1=function(){return tmpvar$112;};
     $$issue10C1.getI1=getI1;
     
     //AttributeDeclaration i2 at members.ceylon (39:4-39:18)
-    var $i2=$$$cl15.Integer(5);
-    function getI2(){
-        return $i2;
-    }
+    var tmpvar$113=$$$cl15.Integer(5);
+    var getI2=function(){return tmpvar$113;};
     $$issue10C1.getI2=getI2;
     
     //AttributeDeclaration i3 at members.ceylon (40:4-40:33)
-    var $i3=$$$cl15.Integer(7);
-    function getI3(){
-        return $i3;
-    }
+    var tmpvar$114=$$$cl15.Integer(7);
+    var getI3=function(){return tmpvar$114;};
     $$issue10C1.getI3=getI3;
     
     //MethodDefinition f1 at members.ceylon (41:4-41:39)
@@ -188,24 +185,18 @@ function Issue10C2(arg1, $$issue10C2){
     Issue10C1($$$cl15.Integer(1),$$issue10C2);
     
     //AttributeDeclaration i1 at members.ceylon (53:4-53:18)
-    var $i1=$$$cl15.Integer(4);
-    function getI1(){
-        return $i1;
-    }
+    var tmpvar$115=$$$cl15.Integer(4);
+    var getI1=function(){return tmpvar$115;};
     $$issue10C2.getI1=getI1;
     
     //AttributeDeclaration i2 at members.ceylon (54:4-54:25)
-    var $i2=$$$cl15.Integer(6);
-    function getI2(){
-        return $i2;
-    }
+    var tmpvar$116=$$$cl15.Integer(6);
+    var getI2=function(){return tmpvar$116;};
     $$issue10C2.getI2=getI2;
     
     //AttributeDeclaration i3 at members.ceylon (55:4-55:32)
-    var $i3=$$$cl15.Integer(8);
-    function getI3(){
-        return $i3;
-    }
+    var tmpvar$117=$$$cl15.Integer(8);
+    var getI3=function(){return tmpvar$117;};
     $$issue10C2.getI3=getI3;
     
     //MethodDefinition f11 at members.ceylon (56:4-56:40)
@@ -250,24 +241,21 @@ $$$cl15.initType(Issue10C2,'members.Issue10C2',Issue10C1);
 function testIssue10(){
     
     //AttributeDeclaration obj at members.ceylon (65:4-65:28)
-    var $obj=Issue10C2($$$cl15.Integer(2));
-    function getObj(){
-        return $obj;
-    }
-    assert((function(){var $=getObj();return $$$cl15.JsCallable($, $.f1)})()().equals($$$cl15.Integer(1)),$$$cl15.String("Issue #10 (parameter)",21));
-    assert((function(){var $=getObj();return $$$cl15.JsCallable($, $.f11)})()().equals($$$cl15.Integer(2)),$$$cl15.String("Issue #10 (parameter)",21));
-    assert((function(){var $=getObj();return $$$cl15.JsCallable($, $.f2)})()().equals($$$cl15.Integer(3)),$$$cl15.String("Issue #10 (non-shared attribute)",32));
-    assert((function(){var $=getObj();return $$$cl15.JsCallable($, $.f12)})()().equals($$$cl15.Integer(4)),$$$cl15.String("Issue #10 (non-shared attribute)",32));
-    assert((function(){var $=getObj();return $$$cl15.JsCallable($, $.f3)})()().equals($$$cl15.Integer(5)),$$$cl15.String("Issue #10 (non-shared attribute)",32));
-    assert(getObj().getI2().equals($$$cl15.Integer(6)),$$$cl15.String("Issue #10 (shared attribute)",28));
-    assert((function(){var $=getObj();return $$$cl15.JsCallable($, $.f4)})()().equals($$$cl15.Integer(8)),$$$cl15.String("Issue #10 (shared attribute)",28));
-    assert(getObj().getI3().equals($$$cl15.Integer(8)),$$$cl15.String("Issue #10 (shared attribute)",28));
-    assert((function(){var $=getObj();return $$$cl15.JsCallable($, $.f6)})()().equals($$$cl15.Integer(9)),$$$cl15.String("Issue #10 (non-shared method)",29));
-    assert((function(){var $=getObj();return $$$cl15.JsCallable($, $.f13)})()().equals($$$cl15.Integer(10)),$$$cl15.String("Issue #10 (non-shared method)",29));
-    assert((function(){var $=getObj();return $$$cl15.JsCallable($, $.f8)})()().equals($$$cl15.Integer(11)),$$$cl15.String("Issue #10 (non-shared method)",29));
-    assert((function(){var $=getObj();return $$$cl15.JsCallable($, $.f7)})()().equals($$$cl15.Integer(12)),$$$cl15.String("Issue #10 (shared method)",25));
-    assert((function(){var $=getObj();return $$$cl15.JsCallable($, $.f10)})()().equals($$$cl15.Integer(14)),$$$cl15.String("Issue #10 (shared method)",25));
-    assert((function(){var $=getObj();return $$$cl15.JsCallable($, $.f9)})()().equals($$$cl15.Integer(14)),$$$cl15.String("Issue #10 (shared method)",25));
+    var tmpvar$118=Issue10C2($$$cl15.Integer(2));
+    assert(tmpvar$118.f1().equals($$$cl15.Integer(1)),$$$cl15.String("Issue #10 (parameter)",21));
+    assert(tmpvar$118.f11().equals($$$cl15.Integer(2)),$$$cl15.String("Issue #10 (parameter)",21));
+    assert(tmpvar$118.f2().equals($$$cl15.Integer(3)),$$$cl15.String("Issue #10 (non-shared attribute)",32));
+    assert(tmpvar$118.f12().equals($$$cl15.Integer(4)),$$$cl15.String("Issue #10 (non-shared attribute)",32));
+    assert(tmpvar$118.f3().equals($$$cl15.Integer(5)),$$$cl15.String("Issue #10 (non-shared attribute)",32));
+    assert(tmpvar$118.getI2().equals($$$cl15.Integer(6)),$$$cl15.String("Issue #10 (shared attribute)",28));
+    assert(tmpvar$118.f4().equals($$$cl15.Integer(8)),$$$cl15.String("Issue #10 (shared attribute)",28));
+    assert(tmpvar$118.getI3().equals($$$cl15.Integer(8)),$$$cl15.String("Issue #10 (shared attribute)",28));
+    assert(tmpvar$118.f6().equals($$$cl15.Integer(9)),$$$cl15.String("Issue #10 (non-shared method)",29));
+    assert(tmpvar$118.f13().equals($$$cl15.Integer(10)),$$$cl15.String("Issue #10 (non-shared method)",29));
+    assert(tmpvar$118.f8().equals($$$cl15.Integer(11)),$$$cl15.String("Issue #10 (non-shared method)",29));
+    assert(tmpvar$118.f7().equals($$$cl15.Integer(12)),$$$cl15.String("Issue #10 (shared method)",25));
+    assert(tmpvar$118.f10().equals($$$cl15.Integer(14)),$$$cl15.String("Issue #10 (shared method)",25));
+    assert(tmpvar$118.f9().equals($$$cl15.Integer(14)),$$$cl15.String("Issue #10 (shared method)",25));
 }
 
 //ClassDefinition AssignTest at members.ceylon (82:0-86:0)
@@ -275,19 +263,20 @@ function AssignTest($$assignTest){
     if ($$assignTest===undefined)$$assignTest=new AssignTest.$$;
     
     //AttributeDeclaration x at members.ceylon (83:4-83:34)
-    var $x=$$$cl15.Integer(1);
-    function getX(){
-        return $x;
-    }
+    var tmpvar$119=$$$cl15.Integer(1);
+    var getX=function(){return tmpvar$119;};
     $$assignTest.getX=getX;
-    function setX(x){
-        $x=x; return x;
-    }
+    var setX=function(x){tmpvar$119=x; return tmpvar$119;};
     $$assignTest.setX=setX;
     
     //AttributeGetterDefinition y at members.ceylon (84:4-84:33)
-    function getY(){
-        return $$assignTest.getX();
+    var getY=function(){
+        var tmpvar$120=(function(){
+            return $$assignTest.getX();
+        }
+        ());
+        getY=function(){return tmpvar$120;};
+        return tmpvar$120;
     }
     $$assignTest.getY=getY;
     
@@ -305,26 +294,20 @@ $$$cl15.inheritProto(AssignTest,$$$cl15.IdentifiableObject,'$$$cl15$Identifiable
 function test(){
     
     //AttributeDeclaration c at members.ceylon (89:4-89:24)
-    var $c=Counter($$$cl15.Integer(0));
-    function getC(){
-        return $c;
-    }
-    assert(getC().getCount().equals($$$cl15.Integer(0)),$$$cl15.String("counter 1",9));
-    (function(){var $=getC();return $$$cl15.JsCallable($, $.inc)})()();
-    (function(){var $=getC();return $$$cl15.JsCallable($, $.inc)})()();
-    assert(getC().getCount().equals($$$cl15.Integer(2)),$$$cl15.String("counter 2",9));
-    assert(getC().getString().equals($$$cl15.String("Counter[2]",10)),$$$cl15.String("counter.string",14));
+    var tmpvar$121=Counter($$$cl15.Integer(0));
+    assert(tmpvar$121.getCount().equals($$$cl15.Integer(0)),$$$cl15.String("counter 1",9));
+    tmpvar$121.inc();
+    tmpvar$121.inc();
+    assert(tmpvar$121.getCount().equals($$$cl15.Integer(2)),$$$cl15.String("counter 2",9));
+    assert(tmpvar$121.getString().equals($$$cl15.String("Counter[2]",10)),$$$cl15.String("counter.string",14));
     testIssue10();
     
     //AttributeDeclaration at at members.ceylon (97:4-97:27)
-    var $at=AssignTest();
-    function getAt(){
-        return $at;
-    }
-    getAt().setX($$$cl15.Integer(5));
-    assert(getAt().getX().equals($$$cl15.Integer(5)),$$$cl15.String("assign to member",16));
-    getAt().setY($$$cl15.Integer(2));
-    assert(getAt().getY().equals($$$cl15.Integer(2)),$$$cl15.String("assign using setter",19));
+    var tmpvar$122=AssignTest();
+    tmpvar$122.setX($$$cl15.Integer(5));
+    assert(tmpvar$122.getX().equals($$$cl15.Integer(5)),$$$cl15.String("assign to member",16));
+    tmpvar$122.setY($$$cl15.Integer(2));
+    assert(tmpvar$122.getY().equals($$$cl15.Integer(2)),$$$cl15.String("assign using setter",19));
     results();
 }
 exports.test=test;
