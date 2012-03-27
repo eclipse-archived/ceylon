@@ -107,14 +107,17 @@ public class JsCompiler {
         errors.clear();
         try {
             for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
-                if (modulify && !modDone) {
-                    beginWrapper(getWriter(pu));
-                    modDone = true;
-                }
-                compileUnit(pu);
-                if (stopOnError()) {
-                    System.err.println("Errors found. Compilation stopped.");
-                    break;
+                String name = pu.getUnitFile().getName();
+                if (!"module.ceylon".equals(name) && !"package.ceylon".equals(name)) {
+                    if (modulify && !modDone) {
+                        beginWrapper(getWriter(pu));
+                        modDone = true;
+                    }
+                    compileUnit(pu);
+                    if (stopOnError()) {
+                        System.err.println("Errors found. Compilation stopped.");
+                        break;
+                    }
                 }
             }
             if (modulify) {
