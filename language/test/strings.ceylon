@@ -15,15 +15,18 @@ shared void strings() {
     
     assert("abcd".size==4, "string size 3");
     
+    assert("http://foo.com".span(4,null)=="://foo.com", "string span 0");
     assert(hello.span(1,3)=="ell", "string span 1");
     assert(hello.span(1,null)=="ello", "string span 2");
-    assert(hello.span(1,10)=="ello", "string span 3");
-    assert(hello.span(2,1)=="", "string span 4");
-    assert(hello.span(20,10)=="", "string span 5");
+    assert(hello.span(1,hello.size)=="ello", "string span 3");
+    assert(hello.span(1,10)=="ello", "string span 4");
+    assert(hello.span(2,1)=="", "string span 5");
+    assert(hello.span(20,10)=="", "string span 6");
     assert(hello.segment(1,3)=="ell", "string segment 1");
-    assert(hello.segment(1,0)=="", "string segment 2");
-    assert(hello.segment(1,10)=="ello", "string segment 3");
-    assert(hello.segment(10,20)=="", "string segment 4");
+    assert(hello.segment(1,5)=="ello", "string segment 2");
+    assert(hello.segment(1,0)=="", "string segment 3");
+    assert(hello.segment(1,10)=="ello", "string segment 4");
+    assert(hello.segment(10,20)=="", "string segment 5");
     assert("".span(1,3)=="", "empty string span 1");
     assert("".span(1,null)=="", "empty string span 2");
     assert("".segment(1,3)=="", "empty string segment");
