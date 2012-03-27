@@ -968,7 +968,9 @@ public abstract class AbstractTransformer implements Transformation {
         for(ModuleImport dependency : dependencies){
             Module dependencyModule = dependency.getModule();
             // do not include the implicit java module as a dependency
-            if(dependencyModule.getNameAsString().equals("java"))
+            if(dependencyModule.getNameAsString().equals("java")
+                    // nor ceylon.language
+                    || dependencyModule.getNameAsString().equals("ceylon.language"))
                 continue;
             JCExpression dependencyName = make().Assign(makeUnquotedIdent("name"), make().Literal(dependencyModule.getNameAsString()));
             JCExpression dependencyVersion = null;
