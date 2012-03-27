@@ -380,7 +380,7 @@ public final class String
             resultLength = len - fromIndex;
         }
         int start = value.offsetByCodePoints(0, (int)fromIndex);
-        int end = start + value.offsetByCodePoints(start, (int)(resultLength - 1));
+        int end = value.offsetByCodePoints(start, (int)resultLength);
         return instance(value.substring(start, end));
     }
     
@@ -402,7 +402,7 @@ public final class String
             toIndex = len - 1;
         }
         int start = value.offsetByCodePoints(0, (int)fromIndex);
-        int end = start + value.offsetByCodePoints(start, (int)(toIndex - fromIndex));
+        int end = value.offsetByCodePoints(start, (int)(toIndex - fromIndex + 1));
         return instance(value.substring(start, end));
     }
     
