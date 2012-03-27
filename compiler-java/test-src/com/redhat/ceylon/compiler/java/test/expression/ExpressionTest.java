@@ -613,7 +613,6 @@ public class ExpressionTest extends CompilerTest {
     public void testOprSpreadMethodReference(){
         compareWithJavaSource("operator/SpreadMethodReference");
     }
-    @Ignore("M3")
     @Test
     public void testOprNullSafeMethodReference(){
         compareWithJavaSource("operator/NullSafeMethodReference");
