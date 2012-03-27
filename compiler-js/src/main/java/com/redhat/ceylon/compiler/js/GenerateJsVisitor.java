@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.js;
 
-import static java.lang.Character.toUpperCase;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -33,7 +31,7 @@ public class GenerateJsVisitor extends Visitor
 
     private boolean indent=true;
     private boolean comment=true;
-    private static int tmpvarCount = 0;
+    private static long tmpvarCount = 0;
     private final Stack<Continuation> continues = new Stack<Continuation>();
     private final ScopedReferenceManager scopeman = new ScopedReferenceManager();
 
@@ -843,16 +841,7 @@ public class GenerateJsVisitor extends Visitor
         if (prototypeStyle&&d.isClassOrInterfaceMember()) return;
         comment(that);
         out("var ", getter(d), "=function()");
-        beginBlock();
-        String rval = createTempVariable();
-        out("var ", rval, "=(function()");
         super.visit(that);
-        out("());");
-        endLine();
-        out(getter(d), "=function(){return ", rval, ";};");
-        endLine();
-        out("return ", rval, ";");
-        endBlock();
         shareGetter(d);
     }
 
@@ -1491,12 +1480,12 @@ public class GenerateJsVisitor extends Visitor
 
     private String setter(Declaration d) {
     	String name = memberName(d, true);
-        return "set" + toUpperCase(name.charAt(0)) + name.substring(1);
+        return "set" + Character.toUpperCase(name.charAt(0)) + name.substring(1);
     }
 
     private String getter(Declaration d) {
     	String name = memberName(d, true);
-        return "get" + toUpperCase(name.charAt(0)) + name.substring(1);
+        return "get" + Character.toUpperCase(name.charAt(0)) + name.substring(1);
     }
 
     private String memberName(Declaration d, Boolean forGetterSetter) {
@@ -2221,6 +2210,7 @@ public class GenerateJsVisitor extends Visitor
     /** Creates and returns a name for a tmp var. */
     private String createTempVariable() {
         tmpvarCount++;
+        if (tmpvarCount<0) tmpvarCount=0;
         return "tmpvar$" + tmpvarCount;
     }
 
