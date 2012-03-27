@@ -242,7 +242,7 @@ public class LanguageCompiler extends JavaCompiler {
                 return gen.makeJCCompilationUnitPlaceholder(cu, filename, pkgName, phasedUnit);
             }
         } catch (Exception e) {
-            log.error("ceylon", e.getMessage());
+            log.error("ceylon", e);
         }
 
         JCCompilationUnit result = make.TopLevel(List.<JCAnnotation> nil(), null, List.<JCTree> of(make.Erroneous()));
@@ -420,7 +420,10 @@ public class LanguageCompiler extends JavaCompiler {
     private void printError(RecognitionError le, String message, String key, LineMap map) {
         int pos = -1;
         if (le.getLine() > 0) {
-        	pos = map.getStartPosition(le.getLine()) + le.getCharacterInLine();
+            /* does not seem to be a way to determine the max line number so we do an ugly try-catch */
+            try {
+                pos = map.getStartPosition(le.getLine()) + le.getCharacterInLine();
+            } catch (Exception e) { }
         }
         log.error(pos, key, message);
     }
