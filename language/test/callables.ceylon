@@ -28,22 +28,36 @@ void callables() {
   assert("callable" in className(tc).lowercased, "Callable classname");
   assert(testCallable(tc) == "L", "higher-class 7");
 
+  //From #56
+  void resolve(Integer g()) {
+    assert(g()==2, "resolution of variables inside callables");
+  }
   variable Callable<Integer>? f := null;
   for (i in 1..2) {
     if (i > 0) {
       value j = i*2;
       if (i == 1) {
-        Integer g() { return j; }
-        f := g;
+        Integer g1() { return j; } //naming this 'g' along with the next one breaks ceylonjs
+        f := g1;
       }
     }
-  }
-  void resolve(Integer g()) {
-    assert(g()==2, "resolution of variables inside callables");
   }
   if (exists g=f) {
     resolve(g);
   } else {
     fail("WTF this should never happen!");
   }
+  f:=null;
+  for (i in 1..2) {
+    if (i > 0) {
+      variable value j := 0;
+      if (i == 1) {
+        Integer g2() { return j; } //naming this 'g' along with the prev one breaks ceylonjs
+        f := g2;
+      }
+      j := i*2;
+    }
+  }
+  if (exists g=f) { resolve(g); }
+  else { fail("WTF g doesn't exist"); }
 }
