@@ -292,6 +292,12 @@ public class ExpressionTest extends CompilerTest {
     }
     
     @Test
+    public void testCallableAndDefaultedArguments(){
+        compile("invoke/CallableAndDefaultedArguments_foo.ceylon");
+        compareWithJavaSource("invoke/CallableAndDefaultedArguments_bar");
+    }
+    
+    @Test
     public void testCallableArgumentNullary(){
         compareWithJavaSource("invoke/CallableArgumentNullary");
     }
