@@ -21,6 +21,7 @@
 package com.redhat.ceylon.compiler.loader.model;
 
 import java.util.List;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.ModelCompleter;
@@ -29,6 +30,8 @@ import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.DeclarationKind;
+import com.redhat.ceylon.compiler.typechecker.model.DeclarationWithProximity;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
@@ -105,6 +108,12 @@ public class LazyClass extends Class implements LazyContainer {
     public ParameterList getParameterList() {
         load();
         return super.getParameterList();
+    }
+
+    @Override
+    public boolean isStaticallyImportable() {
+        load();
+        return super.isStaticallyImportable();
     }
 
     @Override
@@ -248,12 +257,6 @@ public class LazyClass extends Class implements LazyContainer {
     public Scope getVisibleScope() {
         load();
         return super.getVisibleScope();
-    }
-
-    @Override
-    public boolean isShared() {
-        load();
-        return super.isShared();
     }
 
     @Override

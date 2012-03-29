@@ -211,12 +211,6 @@ public class LazyInterface extends Interface implements LazyContainer {
     }
 
     @Override
-    public boolean isShared() {
-        load();
-        return super.isShared();
-    }
-
-    @Override
     public List<Annotation> getAnnotations() {
         load();
         return super.getAnnotations();

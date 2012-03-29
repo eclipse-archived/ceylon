@@ -164,12 +164,6 @@ public class LazyMethod extends Method implements LazyElement {
     }
 
     @Override
-    public boolean isShared() {
-        load();
-        return super.isShared();
-    }
-
-    @Override
     public List<Annotation> getAnnotations() {
         load();
         return super.getAnnotations();
