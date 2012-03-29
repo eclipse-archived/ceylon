@@ -103,6 +103,12 @@ public class InteropTest extends CompilerTest {
     }
 
     @Test
+    public void testIopCaseMismatch2(){
+        compile("javaCaseMismatch.java");
+        compareWithJavaSource("CaseMismatch2");
+    }
+
+    @Test
     public void testIopCeylonKeywords(){
         compile("satisfies.java");
         compareWithJavaSource("CeylonKeywords");
