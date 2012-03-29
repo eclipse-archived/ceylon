@@ -9,7 +9,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 /**
  * Manages the identifier names in the JavaScript code generated for a Ceylon
@@ -89,6 +88,10 @@ public class JsIdentifierNames {
     public String memberSuffix(TypeDeclaration typeDecl, boolean method) {
         // TODO: we need to take the qualified path into account!
         return String.format(method ? "$%s$" : "$%s", typeDecl.getName());
+    }
+    
+    public void forceName(Declaration decl, String name) {
+        uniqueVarNames.put(decl, name);
     }
     
     private Map<Declaration, String> uniqueVarNames =
