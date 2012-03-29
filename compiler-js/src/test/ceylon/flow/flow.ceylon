@@ -229,5 +229,8 @@ shared void test() {
     testIfExists();
     testWhileExists();
     testIfNonempty();
+    value assertsBefore=assertionCount;
+    testBlocks();
+    assert(assertionCount==assertsBefore+6, "block assertions skipped: " (assertsBefore+6-assertionCount) "");
     results();
 }
