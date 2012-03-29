@@ -23,6 +23,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import static com.sun.tools.javac.code.Flags.FINAL;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -1152,7 +1153,13 @@ public abstract class AbstractTransformer implements Transformation {
     protected List<JCTree.JCAnnotation> makeJavaTypeAnnotations(TypedDeclaration decl) {
         if(decl == null || decl.getType() == null)
             return List.nil();
-        return makeJavaTypeAnnotations(decl.getType(), needsAnnotations(decl));
+        ProducedType type;
+        if (decl instanceof FunctionalParameter) {
+            type = getTypeForParameter((Parameter)decl, false, Collections.<ProducedType>emptyList());
+        } else {
+            type = decl.getType();
+        }
+        return makeJavaTypeAnnotations(type, needsAnnotations(decl));
     }
 
     protected List<JCTree.JCAnnotation> makeJavaTypeAnnotations(ProducedType type, boolean required) {
