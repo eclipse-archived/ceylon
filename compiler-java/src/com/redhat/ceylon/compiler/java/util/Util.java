@@ -336,6 +336,10 @@ public class Util {
             if (file.startsWith(prefix) && prefix.length() > srcDirLength) {
                 srcDirLength = prefix.length();
             }
+            String absPrefix = prefixFile.getAbsolutePath();
+            if (file.startsWith(absPrefix) && absPrefix.length() > srcDirLength) {
+                srcDirLength = absPrefix.length();
+            }
         }
         
         String path = file.substring(srcDirLength);
