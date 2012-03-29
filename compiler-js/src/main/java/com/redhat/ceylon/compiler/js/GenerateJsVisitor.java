@@ -1987,8 +1987,12 @@ public class GenerateJsVisitor extends Visitor
             out("break;");
         } else {
             Continuation top=continues.peek();
-            top.useBreak();
-            out(top.getBreakName(), "=true; return;");
+            if (that.getScope()==top.getScope()) {
+                top.useBreak();
+                out(top.getBreakName(), "=true; return;");
+            } else {
+                out("break;");
+            }
         }
     }
     @Override public void visit(Continue that) {
@@ -1996,8 +2000,12 @@ public class GenerateJsVisitor extends Visitor
             out("continue;");
         } else {
             Continuation top=continues.peek();
-            top.useContinue();
-            out(top.getContinueName(), "=true; return;");
+            if (that.getScope()==top.getScope()) {
+                top.useContinue();
+                out(top.getContinueName(), "=true; return;");
+            } else {
+                out("continue;");
+            }
         }
     }
 
@@ -2221,7 +2229,7 @@ public class GenerateJsVisitor extends Visitor
         boolean wrap=encloser.encloseBlock(block);
         if (wrap) {
             beginBlock();
-            Continuation c = new Continuation();
+            Continuation c = new Continuation(block.getScope());
             continues.push(c);
             out("var ", c.getContinueName(), "=false;"); endLine();
             out("var ", c.getBreakName(), "=false;"); endLine();
@@ -2231,8 +2239,11 @@ public class GenerateJsVisitor extends Visitor
         if (wrap) {
             Continuation c = continues.pop();
             out("());if(", c.getReturnName(), "!==undefined){return ", c.getReturnName(), ";}");
-            if (c.isContinued() || c.isBreaked()) {
-                out("else if(", c.getContinueName(),"===true||", c.getBreakName(), "===true){return;}");
+            if (c.isContinued()) {
+                out("else if(", c.getContinueName(),"===true){continue;}");
+            }
+            if (c.isBreaked()) {
+                out("else if (", c.getBreakName(),"===true){break;}");
             }
             endBlock();
         }
@@ -2243,8 +2254,13 @@ public class GenerateJsVisitor extends Visitor
         private final String cvar = String.format("cntvar$%d", conts);
         private final String rvar = String.format("retvar$%d", conts);
         private final String bvar = String.format("brkvar$%d", conts);
-        public Continuation() { conts++; }
+        private final Scope scope;
         private boolean cused, bused;
+        public Continuation(Scope scope) {
+            this.scope=scope;
+            conts++;
+        }
+        public Scope getScope() { return scope; }
         public String getContinueName() { return cvar; }
         public String getBreakName() { return bvar; }
         public String getReturnName() { return rvar; }
