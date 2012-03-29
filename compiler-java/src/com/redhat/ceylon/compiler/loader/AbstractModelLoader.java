@@ -350,7 +350,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     Class supercls = makeLazyClass(classMirror, null, null, false);
                     supercls.setAbstraction(true);
                     for (MethodMirror constructor : constructors) {
-                        Declaration subdecl = makeLazyClass(classMirror, supercls, constructor, false);
+                        LazyClass subdecl = makeLazyClass(classMirror, supercls, constructor, false);
+                        subdecl.setOverloaded(true);
                         decls.add(subdecl);
                     }
                     decl = supercls;
@@ -421,24 +422,24 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return unit;
     }
 
-    private Declaration makeToplevelAttribute(ClassMirror classMirror) {
-        Value value = new LazyValue(classMirror, this);
+    private LazyValue makeToplevelAttribute(ClassMirror classMirror) {
+        LazyValue value = new LazyValue(classMirror, this);
         return value;
     }
 
-    private Declaration makeToplevelMethod(ClassMirror classMirror) {
+    private LazyMethod makeToplevelMethod(ClassMirror classMirror) {
         LazyMethod method = new LazyMethod(classMirror, this);
         return method;
     }
     
-    private Class makeLazyClass(ClassMirror classMirror, Class superClass, MethodMirror constructor, boolean forTopLevelObject) {
-        Class klass = new LazyClass(classMirror, this, superClass, constructor, forTopLevelObject);
+    private LazyClass makeLazyClass(ClassMirror classMirror, Class superClass, MethodMirror constructor, boolean forTopLevelObject) {
+        LazyClass klass = new LazyClass(classMirror, this, superClass, constructor, forTopLevelObject);
         addInnerClasses(klass, classMirror);
         return klass;
     }
 
-    private Interface makeLazyInterface(ClassMirror classMirror) {
-        Interface iface = new LazyInterface(classMirror, this);
+    private LazyInterface makeLazyInterface(ClassMirror classMirror) {
+        LazyInterface iface = new LazyInterface(classMirror, this);
         addInnerClasses(iface, classMirror);
         return iface;
     }
@@ -580,24 +581,23 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     //
     // Modules
     public Module findOrCreateModule(String pkgName) {
-        java.util.List<String> moduleName;
         boolean isJava = false;
         boolean defaultModule = false;
         // FIXME: this is a rather simplistic view of the world
         if(pkgName == null){
-            moduleName = Arrays.asList(Module.DEFAULT_MODULE_NAME);
+            pkgName = Module.DEFAULT_MODULE_NAME;
             defaultModule = true;
-        }else if(pkgName.startsWith("java.")){
-            moduleName = Arrays.asList("java");
+        } else if(pkgName.startsWith("java.")){
+            pkgName = "java";
             isJava = true;
         } else if(pkgName.startsWith("sun.")){
-            moduleName = Arrays.asList("sun");
+            pkgName = "sun";
             isJava = true;
-        } else if(pkgName.startsWith("ceylon.language."))
-            moduleName = Arrays.asList("ceylon","language");
-        else
-            moduleName = Arrays.asList(pkgName.split("\\."));
+        } else if(pkgName.startsWith("ceylon.language.")){
+            pkgName = "ceylon.language";
+        }
         
+        java.util.List<String> moduleName = Arrays.asList(pkgName.split("\\."));
         Module module = moduleManager.getOrCreateModule(moduleName, null);
         // make sure that when we load the ceylon language module we set it to where
         // the typechecker will look for it
@@ -605,15 +605,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                  && pkgName.startsWith("ceylon.language.")
                  && modules.getLanguageModule() == null){
              modules.setLanguageModule(module);
-         }
+        }
          
-         if (module instanceof LazyModule) {
-             ((LazyModule)module).setJava(isJava);
-         }
-         // FIXME: this can't be that easy.
-         module.setAvailable(true);
-         module.setDefault(defaultModule);
-         return module;
+        // TRICKY We do this only when isJava is true to prevent resetting
+        // the value to false by mistake. LazyModule get's created with
+        // this attribute to false by default, so it should work
+        if (isJava && module instanceof LazyModule) {
+            ((LazyModule)module).setJava(true);
+        }
+        
+        // FIXME: this can't be that easy.
+        module.setAvailable(true);
+        module.setDefault(defaultModule);
+        return module;
     }
 
     public Module loadCompiledModule(String pkgName) {
@@ -800,7 +804,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 String methodName = methodMirror.getName();
                 if(methodMirror.isConstructor()) {
                     if (methodMirror == constructor) {
-                        ((Class)klass).setOverloaded(isOverloaded);
                         if(!(klass instanceof LazyClass) || !((LazyClass)klass).isTopLevelObjectType())
                             setParameters((Class)klass, methodMirror, isCeylon);
                     }
