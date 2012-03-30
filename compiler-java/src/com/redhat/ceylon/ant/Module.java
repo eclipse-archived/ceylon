@@ -19,6 +19,8 @@
  */
 package com.redhat.ceylon.ant;
 
+import java.io.File;
+
 public class Module {
     
     public String name;
@@ -34,5 +36,9 @@ public class Module {
     @Override
     public String toString() {
         return toSpec();
+    }
+    
+    File toDir() {
+        return new File(name.replace(".", "/"));
     }
 }

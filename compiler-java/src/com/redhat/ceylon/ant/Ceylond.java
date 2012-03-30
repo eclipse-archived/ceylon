@@ -27,6 +27,7 @@
 package com.redhat.ceylon.ant;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -34,19 +35,20 @@ import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
-import org.apache.tools.ant.Task;
 import org.apache.tools.ant.taskdefs.Execute;
 import org.apache.tools.ant.taskdefs.LogStreamHandler;
 import org.apache.tools.ant.types.Commandline;
-import org.apache.tools.ant.types.Path;
 
-public class Ceylond extends Task {
+public class Ceylond extends LazyTask {
 
     private static final String FAIL_MSG = "Documentation failed; see the ceylond error output for details.";
+    private static final FileFilter ARTIFACT_FILTER = new FileFilter() {
+        @Override
+        public boolean accept(File pathname) {
+            return true;
+        }
+    };
 
-    private Path src;   
-    private File out;
-    private List<Rep> repositories = new LinkedList<Rep>();
     private List<ModuleAndVersion> modules = new LinkedList<ModuleAndVersion>();
     private File executable;
     private boolean includeNonShared;
@@ -81,26 +83,6 @@ public class Ceylond extends Task {
     public void setIncludeSourceCode(boolean includeSourceCode){
         this.includeSourceCode = includeSourceCode;
     }
-
-	/**
-     * Set the source directories to find the source Java and Ceylon files.
-     * @param src the source directories as a path
-     */
-    public void setSrc(Path src) {
-        if (this.src == null) {
-            this.src = src;
-        } else {
-            this.src.append(src);
-        }
-    }
-
-    /**
-     * Adds a module repository
-     * @param rep the new module repository
-     */
-    public void addRep(Rep rep){
-        repositories.add(rep);
-    }
     
     /**
      * Adds a module to compile
@@ -110,13 +92,15 @@ public class Ceylond extends Task {
         modules.add(module);
     }
     
-    /**
-     * Set the destination directory into which the Java source files should be
-     * compiled.
-     * @param out the destination director
-     */
-    public void setOut(File out) {
-        this.out = out;
+    @Override
+    protected File getArtifactDir(String version, Module module) {
+        File outModuleDir = new File(getOut(), module.toDir().getPath()+"/"+version +"/module-doc");
+        return outModuleDir;
+    }
+    
+    @Override
+    protected FileFilter getArtifactFilter() {
+        return ARTIFACT_FILTER;
     }
 
     /**
@@ -151,7 +135,12 @@ public class Ceylond extends Task {
     /**
      * Perform the compilation.
      */
-    private void document() {
+    private void document() {    
+        if (filterModules(modules)) {
+            log("Everything's up to date");
+            return;
+        }
+        
         Commandline cmd = new Commandline();
         cmd.setExecutable(getCeylond());
         if(user != null){
@@ -162,23 +151,23 @@ public class Ceylond extends Task {
             cmd.createArgument().setValue("-pass");
             cmd.createArgument().setValue(pass);
         }
-        if(out != null){
-            cmd.createArgument().setValue("-out");
-            cmd.createArgument().setValue(out.getAbsolutePath());
-        }
-        if(src != null){
+        
+        cmd.createArgument().setValue("-out");
+        cmd.createArgument().setValue(getOut().getAbsolutePath());
+        
+        for (File src : getSrc()) {
             cmd.createArgument().setValue("-src");
-            cmd.createArgument().setValue(src.toString());
+            cmd.createArgument().setValue(src.getAbsolutePath());
         }
-        if(repositories != null){
-            for(Rep rep : repositories){
-                // skip empty entries
-                if(rep.url == null || rep.url.isEmpty())
-                    continue;
-                cmd.createArgument().setValue("-rep");
-                cmd.createArgument().setValue(Util.quoteParameter(rep.url));
-            }
+        
+        for(Rep rep : getRepositories()){
+            // skip empty entries
+            if(rep.url == null || rep.url.isEmpty())
+                continue;
+            cmd.createArgument().setValue("-rep");
+            cmd.createArgument().setValue(Util.quoteParameter(rep.url));
         }
+        
         if(includeSourceCode)
             cmd.createArgument().setValue("-source-code");
         if(includeNonShared)

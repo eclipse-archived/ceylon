@@ -27,7 +27,9 @@
 package com.redhat.ceylon.ant;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,7 +37,6 @@ import java.util.List;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Project;
-import org.apache.tools.ant.Task;
 import org.apache.tools.ant.taskdefs.Execute;
 import org.apache.tools.ant.taskdefs.LogStreamHandler;
 import org.apache.tools.ant.types.Commandline;
@@ -45,22 +46,28 @@ import org.apache.tools.ant.types.Reference;
 import org.apache.tools.ant.util.GlobPatternMapper;
 import org.apache.tools.ant.util.SourceFileScanner;
 
-public class Ceylonc extends Task {
+public class Ceylonc extends LazyTask {
 
     private static final String FAIL_MSG = "Compile failed; see the compiler error output for details.";
 
-    private Path src;
-    private File out;
-    private File[] compileList;
+    private static final FileFilter ARTIFACT_FILTER = new FileFilter() {
+        @Override
+        public boolean accept(File pathname) {
+            String name = pathname.getName();
+            return name.endsWith(".car")
+                    || name.endsWith(".src")
+                    || name.endsWith(".sha1");
+        }
+    };
+
+    private List<File> compileList = new ArrayList<File>(2);
     private Path classpath;
-    private List<Rep> repositories = new LinkedList<Rep>();
     private File executable;
     private List<Module> modules = new LinkedList<Module>();
     private FileSet files;
     private Boolean verbose;
     private String user;
     private String pass;
-
     /**
      * Sets the user name for the output module repository (HTTP only)
      */
@@ -109,26 +116,6 @@ public class Ceylonc extends Task {
 	}
 
 	/**
-     * Set the source directories to find the source Java and Ceylon files.
-     * @param src the source directories as a path
-     */
-    public void setSrc(Path src) {
-        if (this.src == null) {
-            this.src = src;
-        } else {
-            this.src.append(src);
-        }
-    }
-
-    /**
-     * Adds a module repository
-     * @param rep the new module repository
-     */
-    public void addRep(Rep rep){
-        repositories.add(rep);
-    }
-    
-    /**
      * Adds a module to compile
      * @param module the module name to compile
      */
@@ -142,15 +129,6 @@ public class Ceylonc extends Task {
         }
         this.files = fileset;
     }
-    
-    /**
-     * Set the destination directory into which the Java source files should be
-     * compiled.
-     * @param out the destination director
-     */
-    public void setOut(File out) {
-        this.out = out;
-    }
 
     /**
      * Executes the task.
@@ -162,12 +140,8 @@ public class Ceylonc extends Task {
         resetFileLists();
         
         if (files != null) {
-            if (src == null) {
-                src = new Path(getProject(), "source");
-            }
-            String[] list = src.list();
-            for (int i = 0; i < list.length; i++) {
-                File srcDir = getProject().resolveFile(list[i]);
+            
+            for (File srcDir : getSrc()) {
                 FileSet fs = (FileSet)this.files.clone();
                 fs.setDir(srcDir);
                 if (!srcDir.exists()) {
@@ -177,7 +151,7 @@ public class Ceylonc extends Task {
                 DirectoryScanner ds = fs.getDirectoryScanner(getProject());
                 String[] files = ds.getIncludedFiles();
     
-                scanDir(srcDir, out != null ? out : srcDir, files);
+                scanDir(srcDir, getOut(), files);
             }
         }
 
@@ -195,7 +169,7 @@ public class Ceylonc extends Task {
      * Clear the list of files to be compiled and copied..
      */
     protected void resetFileLists() {
-        compileList = new File[0];
+        compileList.clear();
     }
 
     /**
@@ -227,15 +201,20 @@ public class Ceylonc extends Task {
         m.setTo("*.class");
         SourceFileScanner sfs = new SourceFileScanner(this);
         File[] newFiles = sfs.restrictAsFiles(files, srcDir, destDir, m);
-
-        if (newFiles.length > 0) {
-            File[] newCompileList = new File[compileList.length + newFiles.length];
-            System.arraycopy(compileList, 0, newCompileList, 0, compileList.length);
-            System.arraycopy(newFiles, 0, newCompileList, compileList.length, newFiles.length);
-            compileList = newCompileList;
-        }
+        compileList.addAll(Arrays.asList(newFiles));    
     }
 
+    @Override
+    protected File getArtifactDir(String version, Module module) {
+        File outModuleDir = new File(getOut(), module.toDir().getPath()+"/"+version);
+        return outModuleDir;
+    }
+    
+    @Override
+    protected FileFilter getArtifactFilter() {
+        return ARTIFACT_FILTER;
+    }
+    
     /**
      * Check that all required attributes have been set and nothing silly has
      * been entered.
@@ -250,16 +229,22 @@ public class Ceylonc extends Task {
         // this will check that we have one
         getCompiler();
     }
-
+    
     /**
      * Perform the compilation.
      */
     private void compile() {
-        if (compileList.length == 0 && modules.size() == 0){
+        if (compileList.size() == 0 && modules.size() == 0){
             log("Nothing to compile");
             return;
         }
-
+        
+        if (filterFiles(compileList) 
+                && filterModules(modules)) {
+            log("Everything's up to date");
+            return;
+        }
+        
         Commandline cmd = new Commandline();
         cmd.setExecutable(getCompiler());
         if(verbose != null && verbose.booleanValue()){
@@ -273,25 +258,23 @@ public class Ceylonc extends Task {
             cmd.createArgument().setValue("-pass");
             cmd.createArgument().setValue(pass);
         }
-        if(out != null){
-            cmd.createArgument().setValue("-out");
-            cmd.createArgument().setValue(out.getAbsolutePath());
+        
+        cmd.createArgument().setValue("-out");
+        cmd.createArgument().setValue(getOut().getAbsolutePath());
+        
+        
+        for (File src : getSrc()) {
+            cmd.createArgument().setValue("-src");
+            cmd.createArgument().setValue(src.getAbsolutePath());
         }
-        if(src != null){
-            for (String path : src.list()) {
-                cmd.createArgument().setValue("-src");
-                cmd.createArgument().setValue(path);
-            }
-        }
-        if(repositories != null){
-            for(Rep rep : repositories){
-                // skip empty entries
-                if(rep.url == null || rep.url.isEmpty())
-                    continue;
-                log("Adding repository: "+rep, Project.MSG_VERBOSE);
-                cmd.createArgument().setValue("-rep");
-                cmd.createArgument().setValue(Util.quoteParameter(rep.url));
-            }
+        
+        for(Rep rep : getRepositories()){
+            // skip empty entries
+            if(rep.url == null || rep.url.isEmpty())
+                continue;
+            log("Adding repository: "+rep, Project.MSG_VERBOSE);
+            cmd.createArgument().setValue("-rep");
+            cmd.createArgument().setValue(Util.quoteParameter(rep.url));
         }
         if(classpath != null){
         	String path = classpath.toString();
@@ -299,9 +282,9 @@ public class Ceylonc extends Task {
             cmd.createArgument().setValue(Util.quoteParameter(path));
         }
         // files to compile
-        for (int i = 0; i < compileList.length; i++) {
-            log("Adding source file: "+compileList[i].getAbsolutePath(), Project.MSG_VERBOSE);
-            cmd.createArgument().setValue(compileList[i].getAbsolutePath());
+        for (File file : compileList) {
+            log("Adding source file: "+file.getAbsolutePath(), Project.MSG_VERBOSE);
+            cmd.createArgument().setValue(file.getAbsolutePath());
         }
         // modules to compile
         for (Module module : modules) {
