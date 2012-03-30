@@ -34,7 +34,6 @@ public class GenerateJsVisitor extends Visitor
     private boolean indent=true;
     private boolean comment=true;
     private final Stack<Continuation> continues = new Stack<Continuation>();
-    //private final ScopedReferenceManager scopeman = new ScopedReferenceManager();
     private final EnclosingFunctionVisitor encloser = new EnclosingFunctionVisitor();
     private final JsIdentifierNames names;
     private final Set<Declaration> directAccess = new HashSet<Declaration>();
@@ -533,11 +532,7 @@ public class GenerateJsVisitor extends Visitor
         if (constr.length() > 0) {
             constr += '.';
         }
-        //if (inProto && (constr.length() == 0)) {
-        //    constr += d.getName();
-        //} else {
-            constr += names.name(d);
-        //}
+        constr += names.name(d);
         return constr;
     }
 
@@ -920,7 +915,6 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
             else {
-                //String tmpvar = names.createTempVariable();
                 String tmpvar = names.name(d);
                 out("var ", tmpvar);
                 if (that.getSpecifierOrInitializerExpression()!=null) {
@@ -933,7 +927,6 @@ public class GenerateJsVisitor extends Visitor
                     out("var ", names.getter(d),"=function(){return ", tmpvar, ";};");
                     endLine();
                 } else {
-                    //scopeman.store(that, tmpvar);
                     directAccess.add(d);
                 }
                 shareGetter(d);
@@ -1057,13 +1050,8 @@ public class GenerateJsVisitor extends Visitor
         if (accessDirectly(decl)) {
             out(names.name(decl));
         } else {
-            //String scopedvar = scopeman.get(that);
-            //if (scopedvar == null) {
-                out(names.getter(decl));
-                out("()");
-            //} else {
-            //    out(scopedvar);
-            //}
+            out(names.getter(decl));
+            out("()");
         }
     }
     
@@ -1314,13 +1302,10 @@ public class GenerateJsVisitor extends Visitor
     public void visit(SpecifierStatement that) {
         BaseMemberExpression bme = (Tree.BaseMemberExpression) that.getBaseMemberExpression();
         qualify(that, bme.getDeclaration());
-        //String svar = scopeman.get(bme);
-        //if (svar == null) {
-            String svar = names.name(bme.getDeclaration());
+        String svar = names.name(bme.getDeclaration());
         //    if (!(prototypeStyle && bme.getDeclaration().isClassOrInterfaceMember())) {
         //        out("$");
         //    }
-        //}
         out(svar, "=");
         that.getSpecifierExpression().visit(this);
     }
@@ -1485,31 +1470,6 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    /*private String setter(Declaration d) {
-    	String name = memberName(d, true);
-        return "set" + Character.toUpperCase(name.charAt(0)) + name.substring(1);
-    }
-
-    private String getter(Declaration d) {
-    	String name = memberName(d, true);
-        return "get" + Character.toUpperCase(name.charAt(0)) + name.substring(1);
-    }
-
-    private String memberName(Declaration d, Boolean forGetterSetter) {
-    	String name = d.getName();
-    	Scope container = d.getContainer();
-    	if (prototypeStyle && !d.isShared() && d.isMember()
-    				&& (container instanceof ClassOrInterface)) {
-    		ClassOrInterface parentType = (ClassOrInterface) container;
-    		name += '$' + parentType.getName();
-    		if (forGetterSetter || (d instanceof Method)) {
-    			name += '$';
-    		}
-
-    	}
-    	return name;
-    }*/
-
     private boolean declaredInCL(Declaration typeDecl) {
         return typeDecl.getUnit().getPackage().getQualifiedNameString()
                 .startsWith("ceylon.language");
@@ -1592,10 +1552,6 @@ public class GenerateJsVisitor extends Visitor
     			lhsPath += '.';
     		}
 
-//    		String svar = scopeman.get(lhsBME);
-//    		if (svar == null) {
-//    		    svar = names.getter(lhsBME.getDeclaration())+"()";
-//    		}
     		String svar = accessDirectly(lhsDecl)
     		        ? names.name(lhsDecl) : (names.getter(lhsDecl)+"()");
             out("(", lhsPath, names.setter(lhsDecl), "(", lhsPath,
@@ -1761,8 +1717,6 @@ public class GenerateJsVisitor extends Visitor
 		   }
 
 		   out("(", path, names.setter(bme.getDeclaration()), "(", path);
-		   //String bmeGetter = scopeman.get(bme);
-		   //if (bmeGetter == null) {
 		   if (!accessDirectly(bme.getDeclaration())) {
 		       String bmeGetter = names.getter(bme.getDeclaration());
 	           out(bmeGetter, "().", functionName, "()),", path, bmeGetter, "())");
@@ -1795,10 +1749,8 @@ public class GenerateJsVisitor extends Visitor
 			   path += '.';
 		   }
 
-		   //String svar=scopeman.get(bme);
 		   out("(function($){", path, names.setter(bme.getDeclaration()), "($.", functionName,
 	           "());return $}(", path);
-		   //if (svar == null) {
 		   if (!accessDirectly(bme.getDeclaration())) {
 		       out(names.getter(bme.getDeclaration()), "()))");
 		   } else {
@@ -1877,7 +1829,6 @@ public class GenerateJsVisitor extends Visitor
        }
 	   Term variableRHS = variable.getSpecifierExpression().getExpression().getTerm();
 
-       //String tmpvar = names.createTempVariable();
        String tmpvar = names.name(variable.getDeclarationModel());
        out("var ", tmpvar, ";");
        endLine();
@@ -1886,15 +1837,9 @@ public class GenerateJsVisitor extends Visitor
        out("(");
        specialConditionCheck(condition, variableRHS, tmpvar);
        out(")");
-       //scopeman.store(variable, tmpvar);
        directAccess.add(variable.getDeclarationModel());
        encloseBlockInFunction(block);
    }
-
-//   private boolean matchingGetterExists(Declaration outerVar, Declaration innerVar, Node that) {
-//       return accessThroughGetter(outerVar) && names.getter(outerVar).equals(names.getter(innerVar))
-//               && (qualifiedPath(that, outerVar).length() == 0);
-//   }
 
     private void specialConditionCheck(Condition condition, Term variableRHS, String tmpvar) {
         if (condition instanceof ExistsOrNonemptyCondition) {
@@ -2058,7 +2003,6 @@ public class GenerateJsVisitor extends Visitor
 	   } else {
 		   beginBlock();
 		   if (foriter instanceof ValueIterator) {
-			   //scopeman.store(((ValueIterator)foriter).getVariable(), itemVar);
 			   directAccess.add(((ValueIterator)foriter).getVariable().getDeclarationModel());
 		   } else if (foriter instanceof KeyValueIterator) {
 		       String keyvar = names.name(((KeyValueIterator)foriter).getKeyVariable().getDeclarationModel());
@@ -2066,8 +2010,6 @@ public class GenerateJsVisitor extends Visitor
 			   out("var ", keyvar, "=", itemVar, ".getKey();");
 			   endLine();
 			   out("var ", valvar, "=", itemVar, ".getItem();");
-			   //scopeman.store(((KeyValueIterator)foriter).getKeyVariable(), keyvar);
-			   //scopeman.store(((KeyValueIterator)foriter).getValueVariable(), valvar);
 			   directAccess.add(((KeyValueIterator)foriter).getKeyVariable().getDeclarationModel());
                directAccess.add(((KeyValueIterator)foriter).getValueVariable().getDeclarationModel());
 		   }
@@ -2190,14 +2132,9 @@ public class GenerateJsVisitor extends Visitor
             generateIsOfType(null, expvar, isCaseItem.getType(), null);
             out("===", clTrue);
             Variable caseVar = isCaseItem.getVariable();
-            if (/*(switchTerm instanceof BaseMemberExpression) &&*/ (caseVar != null)) {
-                //BaseMemberExpression bme = (BaseMemberExpression) switchTerm;
-                //if (!matchingGetterExists(bme.getDeclaration(),
-                //        caseVar.getDeclarationModel(), cc)) {
-                    //scopeman.store(caseVar, expvar);
-                    directAccess.add(caseVar.getDeclarationModel());
-                    names.forceName(caseVar.getDeclarationModel(), expvar);
-                //}
+            if (caseVar != null) {
+                directAccess.add(caseVar.getDeclarationModel());
+                names.forceName(caseVar.getDeclarationModel(), expvar);
             }
         } else if (item instanceof SatisfiesCase) {
             item.addError("case(satisfies) not yet supported");
