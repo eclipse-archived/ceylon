@@ -241,4 +241,6 @@ shared void strings() {
     value s1 = "as it should";
     value interp = "String part " 1 " interpolation " 2 " works" s1 "";
     assert(interp=="String part 1 interpolation 2 worksas it should", "String Interpolation");
+    assert("a
+            b".size==3, "multiline string");
 }
