@@ -138,6 +138,9 @@
       <fileset dir="${build.classes}">
         <include name="com/redhat/ceylon/ant/**"/>
       </fileset>
+      <zipfileset src="${ceylon.typechecker.lib}"/>
+      <zipfileset src="${ceylon.module-resolver.lib}"/>
+      <zipfileset src="${antlr.lib}"/>
     </zip>
     <antcall target="sha1sum">
       <param name="file" value="${build.dist}/${ceylon.ant.jar}" />
