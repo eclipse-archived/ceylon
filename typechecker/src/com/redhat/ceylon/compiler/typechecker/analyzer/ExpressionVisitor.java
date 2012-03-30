@@ -2463,6 +2463,24 @@ public class ExpressionVisitor extends Visitor {
         }
     }
         
+    @Override public void visit(Tree.ExtendedTypeExpression that) {
+        super.visit(that);
+        Declaration result = that.getScope().getMemberOrParameter(that.getUnit(), 
+                that.getDeclaration().getName(), that.getSignature());
+        if (!(result instanceof TypeDeclaration)) {
+            return;
+        }
+        TypeDeclaration type = (TypeDeclaration)result;
+        if (type==null) {
+            that.addError("super type does not exist", 100);
+        }
+        else {
+            that.setDeclaration(type);
+            //otherwise infer type arguments later
+            checkOverloadedReference(that);
+        }
+    }
+        
     @Override public void visit(Tree.QualifiedTypeExpression that) {
         super.visit(that);
         /*that.getPrimary().visit(this);
