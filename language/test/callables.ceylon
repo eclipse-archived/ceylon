@@ -30,15 +30,16 @@ void callables() {
 
   //From #56
   void resolve(Integer g()) {
-    assert(g()==2, "resolution of variables inside callables");
+    value which=g();
+    assert(which==2, "closures: callable returns " which " instead of 2");
   }
   variable Callable<Integer>? f := null;
   for (i in 1..2) {
     if (i > 0) {
       value j = i*2;
       if (i == 1) {
-        Integer g1() { return j; } //naming this 'g' along with the next one breaks ceylonjs
-        f := g1;
+        Integer g() { return j; }
+        f := g;
       }
     }
   }
@@ -48,12 +49,12 @@ void callables() {
     fail("WTF this should never happen!");
   }
   f:=null;
-  for (i in 1..2) {
+  for (i in 1..5) {
     if (i > 0) {
       variable value j := 0;
-      if (i == 1) {
-        Integer g2() { return j; } //naming this 'g' along with the prev one breaks ceylonjs
-        f := g2;
+      if (i == 2) {
+        Integer g() { return j/2; }
+        f := g;
       }
       j := i*2;
     }
