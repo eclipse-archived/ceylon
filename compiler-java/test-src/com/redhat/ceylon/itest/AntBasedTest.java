@@ -29,8 +29,10 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Properties;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -106,12 +108,46 @@ public abstract class AntBasedTest {
             antJarUrls[ii] = antJar.toURI().toURL();
             ii++;
         }
-        antJarUrls[antJarUrls.length-1] = new File(System.getProperty("build.lib", "build/lib"), "ant.jar").toURI().toURL();
+        antJarUrls[antJarUrls.length-1] = getCeylonAntJar().toURI().toURL();
         ClassLoader antClassloader = new URLClassLoader(antJarUrls, ClassLoader.getSystemClassLoader().getParent());
         
         Class<?> antMain = antClassloader.loadClass("org.apache.tools.ant.Main");
         mainMethod = antMain.getMethod("main", String[].class);
         securityManagerClass = antClassloader.loadClass("org.apache.tools.ant.util.optional.NoExitSecurityManager");
+    }
+
+    private void search(File file, List<File> matches) {
+        if (file.isDirectory()) {
+            for (File child : file.listFiles()) {
+                search(child, matches);
+            }
+        } else {
+            if (file.getName().contains("ant")
+                    && file.getName().endsWith(".jar")) {
+                matches.add(file);
+            }
+        }
+    }
+    
+    private File getCeylonAntJar() throws Exception {
+        String property = System.getProperty("ceylon.ant.lib");
+        if (property != null) {
+            File possibleResult = new File(property);
+            if (possibleResult.exists()) {
+                return possibleResult;
+            } else {
+                throw new Exception("File specified by ceylon.ant.lib system property " + possibleResult.getAbsolutePath() + " does not exist");
+            }
+        }
+        File dist = new File(System.getProperty("build.dist", "build/dist"));
+        ArrayList<File> matches = new ArrayList<File>(1);
+        search(dist, matches);
+        if (matches.size() == 0) {
+            throw new Exception("Could not *ant*.jar file below " + dist.getAbsolutePath());
+        } else if (matches.size() > 1) {
+            throw new Exception("Found several *ant*.jar files below " + dist.getAbsolutePath());
+        }
+        return matches.get(0);
     }
     
     private boolean isWindows() {

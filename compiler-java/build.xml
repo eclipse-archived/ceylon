@@ -423,7 +423,8 @@
       <classpath refid="integrationtest.run.classpath"/>
       <jvmarg value="-Dant.home=${ant.home}"/>
       <jvmarg value="-Dbuild.bin=${build.bin}"/>
-      <jvmarg value="-Dbuild.lib=${build.lib}"/>
+      <jvmarg value="-Dbuild.dist=${build.dist}"/>
+      <jvmarg value="-Dceylon.ant.lib=${ceylon.ant.lib}"/>
       <formatter type="xml"/>
       <batchtest fork="yes" todir="${test.reports}">
         <fileset dir="${test.src}">
