@@ -1079,7 +1079,12 @@ public class GenerateJsVisitor extends Visitor
 
     private static Declaration getToplevel(Declaration d) {
         while (!d.isToplevel()) {
-            d = (Declaration) d.getContainer();
+            Scope s = d.getContainer();
+            // Skip any non-declaration elements
+            while (!(s instanceof Declaration)) {
+                s = s.getContainer();
+            }
+            d = (Declaration) s;
         }
         return d;
     }
