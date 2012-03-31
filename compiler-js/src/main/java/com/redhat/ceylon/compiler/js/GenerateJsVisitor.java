@@ -919,8 +919,12 @@ public class GenerateJsVisitor extends Visitor
                 out("var ", tmpvar);
                 if (that.getSpecifierOrInitializerExpression()!=null) {
                     out("=");
+                    int boxType = boxStart(that.getSpecifierOrInitializerExpression().getExpression().getTerm());
+                    super.visit(that);
+                    boxUnboxEnd(boxType);
+                } else {
+                    super.visit(that);
                 }
-                super.visit(that);
                 out(";");
                 endLine();
                 if (isCaptured(d)) {
@@ -1583,48 +1587,78 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(SumOp that) {
-        that.getLeftTerm().visit(this);
-        out(".plus(");
-        that.getRightTerm().visit(this);
-        out(")");
+        binaryOp(that, new BinaryOpGenerator() {
+            @Override
+            public void generate(BinaryOpTermGenerator termgen) {
+                termgen.left();
+                out(".plus(");
+                termgen.right();
+                out(")");
+            }
+        });
     }
 
     @Override
     public void visit(DifferenceOp that) {
-        that.getLeftTerm().visit(this);
-        out(".minus(");
-        that.getRightTerm().visit(this);
-        out(")");
+        binaryOp(that, new BinaryOpGenerator() {
+            @Override
+            public void generate(BinaryOpTermGenerator termgen) {
+                termgen.left();
+                out(".minus(");
+                termgen.right();
+                out(")");
+            }
+        });
     }
 
     @Override
     public void visit(ProductOp that) {
-        that.getLeftTerm().visit(this);
-        out(".times(");
-        that.getRightTerm().visit(this);
-        out(")");
+        binaryOp(that, new BinaryOpGenerator() {
+            @Override
+            public void generate(BinaryOpTermGenerator termgen) {
+                termgen.left();
+                out(".times(");
+                termgen.right();
+                out(")");
+            }
+        });
     }
 
     @Override
     public void visit(QuotientOp that) {
-        that.getLeftTerm().visit(this);
-        out(".divided(");
-        that.getRightTerm().visit(this);
-        out(")");
+        binaryOp(that, new BinaryOpGenerator() {
+            @Override
+            public void generate(BinaryOpTermGenerator termgen) {
+                termgen.left();
+                out(".divided(");
+                termgen.right();
+                out(")");
+            }
+        });
     }
 
     @Override public void visit(RemainderOp that) {
-    	that.getLeftTerm().visit(this);
-    	out(".remainder(");
-    	that.getRightTerm().visit(this);
-    	out(")");
+        binaryOp(that, new BinaryOpGenerator() {
+            @Override
+            public void generate(BinaryOpTermGenerator termgen) {
+                termgen.left();
+                out(".remainder(");
+                termgen.right();
+                out(")");
+            }
+        });
     }
 
     @Override public void visit(PowerOp that) {
-    	that.getLeftTerm().visit(this);
-    	out(".power(");
-    	that.getRightTerm().visit(this);
-    	out(")");
+        binaryOp(that, new BinaryOpGenerator() {
+            @Override
+            public void generate(BinaryOpTermGenerator termgen) {
+                termgen.left();
+                out(".power(");
+                termgen.right();
+                out(")");
+            }
+        });
     }
 
     @Override public void visit(AddAssignOp that) {
