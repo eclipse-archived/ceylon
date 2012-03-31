@@ -84,6 +84,7 @@ public class JsCompiler {
             jsv.setAddComments(comment);
             jsv.setIndent(indent);
             pu.getCompilationUnit().visit(jsv);
+            pu.getCompilationUnit().visit(unitVisitor);
         }
         return unitErrors;
     }
