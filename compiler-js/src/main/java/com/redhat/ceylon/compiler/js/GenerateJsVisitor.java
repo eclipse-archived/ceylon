@@ -182,7 +182,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void packageAlias(Package pkg) {
-    	out(names.packageAlias(pkg));
+        out(names.packageAlias(pkg));
     }
 
     private void scriptPath(Package pkg) {
@@ -213,11 +213,11 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void visitStatements(List<Statement> statements, boolean endLastLine) {
-    	for (int i=0; i<statements.size(); i++) {
+        for (int i=0; i<statements.size(); i++) {
             Statement s = statements.get(i);
             s.visit(this);
             if ((endLastLine || (i<statements.size()-1)) &&
-                    	s instanceof ExecutableStatement) {
+                        s instanceof ExecutableStatement) {
                 endLine();
             }
         }
@@ -435,7 +435,7 @@ public class GenerateJsVisitor extends Visitor
                 if (declaredInCL(parentTypeDecl)) {
                     return;
                 }
-            	parentName = parentTypeDecl.getName();
+                parentName = parentTypeDecl.getName();
             }
 
             final List<Declaration> decs = new ArrayList<Declaration>();
@@ -989,27 +989,27 @@ public class GenerateJsVisitor extends Visitor
         out(clAlias, ".String(");
         out(text);
         if (codepoints >= 0) {
-        	out(",");
-        	out(String.valueOf(codepoints));
+            out(",");
+            out(String.valueOf(codepoints));
         }
         out(")");
     }
 
     @Override
     public void visit(StringTemplate that) {
-    	List<StringLiteral> literals = that.getStringLiterals();
-    	List<Expression> exprs = that.getExpressions();
-    	out(clAlias, ".StringBuilder().appendAll(", clAlias, ".ArraySequence([");
-    	for (int i = 0; i < literals.size(); i++) {
-    		literals.get(i).visit(this);
-    		if (i < exprs.size()) {
-    			out(",");
-    			exprs.get(i).visit(this);
-    			out(".getString()");
-    			out(",");
-    		}
-    	}
-    	out("])).getString()");
+        List<StringLiteral> literals = that.getStringLiterals();
+        List<Expression> exprs = that.getExpressions();
+        out(clAlias, ".StringBuilder().appendAll(", clAlias, ".ArraySequence([");
+        for (int i = 0; i < literals.size(); i++) {
+            literals.get(i).visit(this);
+            if (i < exprs.size()) {
+                out(",");
+                exprs.get(i).visit(this);
+                out(".getString()");
+                out(",");
+            }
+        }
+        out("])).getString()");
     }
 
     @Override
@@ -1105,7 +1105,7 @@ public class GenerateJsVisitor extends Visitor
     public void visit(QualifiedMemberExpression that) {
         //Big TODO: make sure the member is actually
         //          refined by the current class!
-    	if (that.getMemberOperator() instanceof SafeMemberOp) {
+        if (that.getMemberOperator() instanceof SafeMemberOp) {
 
             if (that.getDeclaration() instanceof Method) {
                 String tmp=names.createTempVariable();
@@ -1115,18 +1115,18 @@ public class GenerateJsVisitor extends Visitor
                 qualifiedMemberRHS(that);
                 out(");}())");
             } else {
-    		    out("(function($){return $===null?null:$.");
+                out("(function($){return $===null?null:$.");
                 qualifiedMemberRHS(that);
                 out("}(");
                 super.visit(that);
                 out("))");
             }
-    	} else if (that.getMemberOperator() instanceof SpreadOp) {
-    	    generateSpread(that);
+        } else if (that.getMemberOperator() instanceof SpreadOp) {
+            generateSpread(that);
         } else if (that.getDeclaration() instanceof Method && that.getSignature() == null) {
-    	    //TODO right now this causes that all method invocations are done this way
-    	    //we need to filter somehow to only use this pattern when the result is supposed to be a callable
-    	    //looks like checking for signature is a good way (not THE way though; named arg calls don't have signature)
+            //TODO right now this causes that all method invocations are done this way
+            //we need to filter somehow to only use this pattern when the result is supposed to be a callable
+            //looks like checking for signature is a good way (not THE way though; named arg calls don't have signature)
             generateCallable(that, null);
         } else {
             super.visit(that);
@@ -1196,15 +1196,15 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void qualifiedMemberRHS(QualifiedMemberOrTypeExpression that) {
-    	boolean sup = that.getPrimary() instanceof Super;
-    	String postfix = "";
-    	if (sup) {
-    		 ClassOrInterface type = Util.getContainingClassOrInterface(that.getScope());
-    		 ClassOrInterface parentType = type.getExtendedTypeDeclaration();
-    		 if (parentType != null) {
-    			 postfix = '$' + parentType.getName() + '$';
-    		 }
-    	}
+        boolean sup = that.getPrimary() instanceof Super;
+        String postfix = "";
+        if (sup) {
+             ClassOrInterface type = Util.getContainingClassOrInterface(that.getScope());
+             ClassOrInterface parentType = type.getExtendedTypeDeclaration();
+             if (parentType != null) {
+                 postfix = '$' + parentType.getName() + '$';
+             }
+        }
         if (isNative(that.getDeclaration())) {
             out(that.getDeclaration().getName());
         } else if (!accessThroughGetter(that.getDeclaration())) {
@@ -1443,11 +1443,11 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void qualify(Node that, Declaration d) {
-    	String path = qualifiedPath(that, d);
-    	out(path);
-    	if (path.length() > 0) {
-    		out(".");
-    	}
+        String path = qualifiedPath(that, d);
+        out(path);
+        if (path.length() > 0) {
+            out(".");
+        }
     }
 
     private String qualifiedPath(Node that, Declaration d) {
@@ -1552,12 +1552,12 @@ public class GenerateJsVisitor extends Visitor
     public void visit(AnnotationList that) {}
 
     private void self(TypeDeclaration d) {
-    	out(selfString(d));
+        out(selfString(d));
     }
 
     private String selfString(TypeDeclaration d) {
         return "$$" + d.getName().substring(0,1).toLowerCase()
-        		+ d.getName().substring(1);
+                + d.getName().substring(1);
     }
 
     /* * Output the name of a variable that receives the type parameter info, usually in the class constructor. * /
@@ -1662,46 +1662,46 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(AddAssignOp that) {
-    	arithmeticAssignOp(that, "plus");
+        arithmeticAssignOp(that, "plus");
     }
 
     @Override public void visit(SubtractAssignOp that) {
-    	arithmeticAssignOp(that, "minus");
+        arithmeticAssignOp(that, "minus");
     }
 
     @Override public void visit(MultiplyAssignOp that) {
-    	arithmeticAssignOp(that, "times");
+        arithmeticAssignOp(that, "times");
     }
 
     @Override public void visit(DivideAssignOp that) {
-    	arithmeticAssignOp(that, "divided");
+        arithmeticAssignOp(that, "divided");
     }
 
     @Override public void visit(RemainderAssignOp that) {
-    	arithmeticAssignOp(that, "remainder");
+        arithmeticAssignOp(that, "remainder");
     }
 
     private void arithmeticAssignOp(ArithmeticAssignmentOp that,
-    		                        String functionName) {
-    	Term lhs = that.getLeftTerm();
-    	if (lhs instanceof BaseMemberExpression) {
-    		BaseMemberExpression lhsBME = (BaseMemberExpression) lhs;
+                                    String functionName) {
+        Term lhs = that.getLeftTerm();
+        if (lhs instanceof BaseMemberExpression) {
+            BaseMemberExpression lhsBME = (BaseMemberExpression) lhs;
             Declaration lhsDecl = lhsBME.getDeclaration();
-    		String lhsPath = qualifiedPath(lhsBME, lhsDecl);
-    		if (lhsPath.length() > 0) {
-    			lhsPath += '.';
-    		}
+            String lhsPath = qualifiedPath(lhsBME, lhsDecl);
+            if (lhsPath.length() > 0) {
+                lhsPath += '.';
+            }
 
-    		String svar = accessDirectly(lhsDecl)
-    		        ? names.name(lhsDecl) : (names.getter(lhsDecl)+"()");
+            String svar = accessDirectly(lhsDecl)
+                    ? names.name(lhsDecl) : (names.getter(lhsDecl)+"()");
             out("(", lhsPath, names.setter(lhsDecl), "(", lhsPath,
                     svar, ".", functionName, "(");
             that.getRightTerm().visit(this);
             out(")),", lhsPath, svar, ")");
-    	} else if (lhs instanceof QualifiedMemberExpression) {
-    		QualifiedMemberExpression lhsQME = (QualifiedMemberExpression) lhs;
-    		if (isNative(lhsQME)) {
-    		    // ($1.foo = Box($1.foo).operator($2))
+        } else if (lhs instanceof QualifiedMemberExpression) {
+            QualifiedMemberExpression lhsQME = (QualifiedMemberExpression) lhs;
+            if (isNative(lhsQME)) {
+                // ($1.foo = Box($1.foo).operator($2))
                 out("(");
                 lhsQME.getPrimary().visit(this);
                 out(".", lhsQME.getDeclaration().getName());
@@ -1713,18 +1713,18 @@ public class GenerateJsVisitor extends Visitor
                 out(".", functionName, "(");
                 that.getRightTerm().visit(this);
                 out("))");
-    		} else {
-        		out("(function($1,$2){var $=");
-        		out("$1.", names.getter(lhsQME.getDeclaration()), "()");
-    		    out(".", functionName, "($2);");
-    		    out("$1.", names.setter(lhsQME.getDeclaration()), "($)");
-    		    out(";return $}(");
-        		lhsQME.getPrimary().visit(this);
-        		out(",");
-        		that.getRightTerm().visit(this);
-        		out("))");
-    		}
-    	}
+            } else {
+                out("(function($1,$2){var $=");
+                out("$1.", names.getter(lhsQME.getDeclaration()), "()");
+                out(".", functionName, "($2);");
+                out("$1.", names.setter(lhsQME.getDeclaration()), "($)");
+                out(";return $}(");
+                lhsQME.getPrimary().visit(this);
+                out(",");
+                that.getRightTerm().visit(this);
+                out("))");
+            }
+        }
     }
 
     @Override public void visit(NegativeOp that) {
@@ -1748,11 +1748,11 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(EqualOp that) {
-    	leftEqualsRight(that);
+        leftEqualsRight(that);
     }
 
     @Override public void visit(NotEqualOp that) {
-    	leftEqualsRight(that);
+        leftEqualsRight(that);
         equalsFalse();
     }
 
@@ -1781,33 +1781,33 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(CompareOp that) {
-    	leftCompareRight(that);
+        leftCompareRight(that);
     }
 
     @Override public void visit(SmallerOp that) {
-    	leftCompareRight(that);
-    	out(".equals(", clAlias, ".getSmaller())");
+        leftCompareRight(that);
+        out(".equals(", clAlias, ".getSmaller())");
     }
 
     @Override public void visit(LargerOp that) {
-    	leftCompareRight(that);
-    	out(".equals(", clAlias, ".getLarger())");
+        leftCompareRight(that);
+        out(".equals(", clAlias, ".getLarger())");
     }
 
     @Override public void visit(SmallAsOp that) {
-    	out("(");
-    	leftCompareRight(that);
-    	out("!==", clAlias, ".getLarger()");
-    	thenTrueElseFalse();
-    	out(")");
+        out("(");
+        leftCompareRight(that);
+        out("!==", clAlias, ".getLarger()");
+        thenTrueElseFalse();
+        out(")");
     }
 
     @Override public void visit(LargeAsOp that) {
-    	out("(");
-    	leftCompareRight(that);
-    	out("!==", clAlias, ".getSmaller()");
-    	thenTrueElseFalse();
-    	out(")");
+        out("(");
+        leftCompareRight(that);
+        out("!==", clAlias, ".getSmaller()");
+        thenTrueElseFalse();
+        out(")");
     }
     /** Outputs the CL equivalent of 'a==b' in JS. */
     private void leftEqualsRight(BinaryOperatorExpression that) {
@@ -1827,7 +1827,7 @@ public class GenerateJsVisitor extends Visitor
     }
     /** Outputs the CL equivalent of '?true:false' in JS */
     private void thenTrueElseFalse() {
-    	out("?", clTrue, ":", clFalse);
+        out("?", clTrue, ":", clFalse);
     }
     
     interface UnaryOpTermGenerator {
@@ -1926,9 +1926,9 @@ public class GenerateJsVisitor extends Visitor
    }
 
    @Override public void visit(Element that) {
-	   out(".item(");
-	   that.getExpression().visit(this);
-	   out(")");
+       out(".item(");
+       that.getExpression().visit(this);
+       out(")");
    }
 
    @Override public void visit(DefaultOp that) {
@@ -1958,68 +1958,68 @@ public class GenerateJsVisitor extends Visitor
    }
 
    @Override public void visit(IncrementOp that) {
-	   prefixIncrementOrDecrement(that.getTerm(), "getSuccessor");
+       prefixIncrementOrDecrement(that.getTerm(), "getSuccessor");
    }
 
    @Override public void visit(DecrementOp that) {
-	   prefixIncrementOrDecrement(that.getTerm(), "getPredecessor");
+       prefixIncrementOrDecrement(that.getTerm(), "getPredecessor");
    }
 
    private void prefixIncrementOrDecrement(Term term, String functionName) {
-	   if (term instanceof BaseMemberExpression) {
-		   BaseMemberExpression bme = (BaseMemberExpression) term;
-		   String path = qualifiedPath(bme, bme.getDeclaration());
-		   if (path.length() > 0) {
-			   path += '.';
-		   }
+       if (term instanceof BaseMemberExpression) {
+           BaseMemberExpression bme = (BaseMemberExpression) term;
+           String path = qualifiedPath(bme, bme.getDeclaration());
+           if (path.length() > 0) {
+               path += '.';
+           }
 
-		   out("(", path, names.setter(bme.getDeclaration()), "(", path);
-		   if (!accessDirectly(bme.getDeclaration())) {
-		       String bmeGetter = names.getter(bme.getDeclaration());
-	           out(bmeGetter, "().", functionName, "()),", path, bmeGetter, "())");
-		   } else {
-		       String bmeGetter = names.name(bme.getDeclaration());
+           out("(", path, names.setter(bme.getDeclaration()), "(", path);
+           if (!accessDirectly(bme.getDeclaration())) {
+               String bmeGetter = names.getter(bme.getDeclaration());
+               out(bmeGetter, "().", functionName, "()),", path, bmeGetter, "())");
+           } else {
+               String bmeGetter = names.name(bme.getDeclaration());
                out(bmeGetter, ".", functionName, "()),", path, bmeGetter, ")");
-		   }
-	   } else if (term instanceof QualifiedMemberExpression) {
-		   QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
-		   out("function($){var $2=$.", names.getter(qme.getDeclaration()), "().",
-	           functionName, "();$.", names.setter(qme.getDeclaration()), "($2);return $2}(");
-		   qme.getPrimary().visit(this);
-		   out(")");
-	   }
+           }
+       } else if (term instanceof QualifiedMemberExpression) {
+           QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
+           out("function($){var $2=$.", names.getter(qme.getDeclaration()), "().",
+               functionName, "();$.", names.setter(qme.getDeclaration()), "($2);return $2}(");
+           qme.getPrimary().visit(this);
+           out(")");
+       }
    }
 
    @Override public void visit(PostfixIncrementOp that) {
-	   postfixIncrementOrDecrement(that.getTerm(), "getSuccessor");
+       postfixIncrementOrDecrement(that.getTerm(), "getSuccessor");
    }
 
    @Override public void visit(PostfixDecrementOp that) {
-	   postfixIncrementOrDecrement(that.getTerm(), "getPredecessor");
+       postfixIncrementOrDecrement(that.getTerm(), "getPredecessor");
    }
 
    private void postfixIncrementOrDecrement(Term term, String functionName) {
-	   if (term instanceof BaseMemberExpression) {
-		   BaseMemberExpression bme = (BaseMemberExpression) term;
-		   String path = qualifiedPath(bme, bme.getDeclaration());
-		   if (path.length() > 0) {
-			   path += '.';
-		   }
+       if (term instanceof BaseMemberExpression) {
+           BaseMemberExpression bme = (BaseMemberExpression) term;
+           String path = qualifiedPath(bme, bme.getDeclaration());
+           if (path.length() > 0) {
+               path += '.';
+           }
 
-		   out("(function($){", path, names.setter(bme.getDeclaration()), "($.", functionName,
-	           "());return $}(", path);
-		   if (!accessDirectly(bme.getDeclaration())) {
-		       out(names.getter(bme.getDeclaration()), "()))");
-		   } else {
-		       out(names.name(bme.getDeclaration()), "))");
-		   }
-	   } else if (term instanceof QualifiedMemberExpression) {
-		   QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
-		   out("function($){var $2=$.", names.getter(qme.getDeclaration()), "();$.",
-		           names.setter(qme.getDeclaration()), "($2.", functionName, "());return $2}(");
-		   qme.getPrimary().visit(this);
-		   out(")");
-	   }
+           out("(function($){", path, names.setter(bme.getDeclaration()), "($.", functionName,
+               "());return $}(", path);
+           if (!accessDirectly(bme.getDeclaration())) {
+               out(names.getter(bme.getDeclaration()), "()))");
+           } else {
+               out(names.name(bme.getDeclaration()), "))");
+           }
+       } else if (term instanceof QualifiedMemberExpression) {
+           QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
+           out("function($){var $2=$.", names.getter(qme.getDeclaration()), "();$.",
+                   names.setter(qme.getDeclaration()), "($2.", functionName, "());return $2}(");
+           qme.getPrimary().visit(this);
+           out(")");
+       }
    }
 
    @Override public void visit(Exists that) {
@@ -2051,21 +2051,21 @@ public class GenerateJsVisitor extends Visitor
    
    @Override public void visit(IfStatement that) {
 
-	   IfClause ifClause = that.getIfClause();
-	   Block ifBlock = ifClause.getBlock();
-	   Condition condition = ifClause.getCondition();
-	   if ((condition instanceof ExistsOrNonemptyCondition)
-	           || (condition instanceof IsCondition)) {
-		   // if (is/exists/nonempty ...)
-	       specialConditionAndBlock(condition, ifBlock, "if");
-	   } else {
-	       out("if ((");
-		   condition.visit(this);
-	       out(")===", clTrue, ")");
-	       if (ifBlock != null) {
+       IfClause ifClause = that.getIfClause();
+       Block ifBlock = ifClause.getBlock();
+       Condition condition = ifClause.getCondition();
+       if ((condition instanceof ExistsOrNonemptyCondition)
+               || (condition instanceof IsCondition)) {
+           // if (is/exists/nonempty ...)
+           specialConditionAndBlock(condition, ifBlock, "if");
+       } else {
+           out("if ((");
+           condition.visit(this);
+           out(")===", clTrue, ")");
+           if (ifBlock != null) {
                encloseBlockInFunction(ifBlock);
-	       }
-	   }
+           }
+       }
 
        if (that.getElseClause() != null) {
            out("else ");
@@ -2074,18 +2074,18 @@ public class GenerateJsVisitor extends Visitor
    }
 
    @Override public void visit(WhileStatement that) {
-	   WhileClause whileClause = that.getWhileClause();
-	   Condition condition = whileClause.getCondition();
-	   if ((condition instanceof ExistsOrNonemptyCondition)
-	           || (condition instanceof IsCondition)) {
-		   // while (is/exists/nonempty...)
-	       specialConditionAndBlock(condition, whileClause.getBlock(), "while");
-	   } else {
-		   out("while ((");
-	       condition.visit(this);
-	       out(")===", clTrue, ")");
+       WhileClause whileClause = that.getWhileClause();
+       Condition condition = whileClause.getCondition();
+       if ((condition instanceof ExistsOrNonemptyCondition)
+               || (condition instanceof IsCondition)) {
+           // while (is/exists/nonempty...)
+           specialConditionAndBlock(condition, whileClause.getBlock(), "while");
+       } else {
+           out("while ((");
+           condition.visit(this);
+           out(")===", clTrue, ")");
            encloseBlockInFunction(whileClause.getBlock());
-	   }
+       }
    }
 
    // handles an "is", "exists" or "nonempty" condition
@@ -2100,7 +2100,7 @@ public class GenerateJsVisitor extends Visitor
            condition.addUnexpectedError("No support for conditions of type " + condition.getClass().getSimpleName());
            return;
        }
-	   Term variableRHS = variable.getSpecifierExpression().getExpression().getTerm();
+       Term variableRHS = variable.getSpecifierExpression().getExpression().getTerm();
 
        String tmpvar = names.name(variable.getDeclarationModel());
        out("var ", tmpvar, ";");
@@ -2259,51 +2259,51 @@ public class GenerateJsVisitor extends Visitor
    @Override public void visit(ForStatement that) {
        if (comment) out("//'for' statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
        endLine();
-	   ForIterator foriter = that.getForClause().getForIterator();
-	   SpecifierExpression iterable = foriter.getSpecifierExpression();
-	   boolean hasElse = that.getElseClause() != null && !that.getElseClause().getBlock().getStatements().isEmpty();
-	   final String iterVar = names.createTempVariable();
-	   final String itemVar;
-	   if (foriter instanceof ValueIterator) {
-	       itemVar = names.name(((ValueIterator)foriter).getVariable().getDeclarationModel());
-	   } else {
-	       itemVar = names.createTempVariable();
-	   }
-	   out("var ", iterVar, " = ");
-	   iterable.visit(this);
-	   out(".getIterator();");
-	   endLine();
-	   out("var ", itemVar, ";while ((", itemVar, "=", iterVar, ".next())!==", clAlias, ".getExhausted())");
-	   List<Statement> stmnts = that.getForClause().getBlock().getStatements();
-	   beginBlock();
-	   if (foriter instanceof ValueIterator) {
-		   directAccess.add(((ValueIterator)foriter).getVariable().getDeclarationModel());
-	   } else if (foriter instanceof KeyValueIterator) {
-	       String keyvar = names.name(((KeyValueIterator)foriter).getKeyVariable().getDeclarationModel());
-	       String valvar = names.name(((KeyValueIterator)foriter).getValueVariable().getDeclarationModel());
-		   out("var ", keyvar, "=", itemVar, ".getKey();");
-		   endLine();
-		   out("var ", valvar, "=", itemVar, ".getItem();");
-		   directAccess.add(((KeyValueIterator)foriter).getKeyVariable().getDeclarationModel());
+       ForIterator foriter = that.getForClause().getForIterator();
+       SpecifierExpression iterable = foriter.getSpecifierExpression();
+       boolean hasElse = that.getElseClause() != null && !that.getElseClause().getBlock().getStatements().isEmpty();
+       final String iterVar = names.createTempVariable();
+       final String itemVar;
+       if (foriter instanceof ValueIterator) {
+           itemVar = names.name(((ValueIterator)foriter).getVariable().getDeclarationModel());
+       } else {
+           itemVar = names.createTempVariable();
+       }
+       out("var ", iterVar, " = ");
+       iterable.visit(this);
+       out(".getIterator();");
+       endLine();
+       out("var ", itemVar, ";while ((", itemVar, "=", iterVar, ".next())!==", clAlias, ".getExhausted())");
+       List<Statement> stmnts = that.getForClause().getBlock().getStatements();
+       beginBlock();
+       if (foriter instanceof ValueIterator) {
+           directAccess.add(((ValueIterator)foriter).getVariable().getDeclarationModel());
+       } else if (foriter instanceof KeyValueIterator) {
+           String keyvar = names.name(((KeyValueIterator)foriter).getKeyVariable().getDeclarationModel());
+           String valvar = names.name(((KeyValueIterator)foriter).getValueVariable().getDeclarationModel());
+           out("var ", keyvar, "=", itemVar, ".getKey();");
+           endLine();
+           out("var ", valvar, "=", itemVar, ".getItem();");
+           directAccess.add(((KeyValueIterator)foriter).getKeyVariable().getDeclarationModel());
            directAccess.add(((KeyValueIterator)foriter).getValueVariable().getDeclarationModel());
-	   }
-	   endLine();
-	   for (int i=0; i<stmnts.size(); i++) {
-		   Statement s = stmnts.get(i);
-		   s.visit(this);
-		   if (i<stmnts.size()-1 && s instanceof ExecutableStatement) {
-			   endLine();
-		   }
-	   }
-	   //If there's an else block, check for normal termination
-	   indentLevel--;
-	   endLine();
-	   out("}");
-	   if (hasElse) {
-		   endLine();
-		   out("if (", clAlias, ".getExhausted() === ", itemVar, ")");
+       }
+       endLine();
+       for (int i=0; i<stmnts.size(); i++) {
+           Statement s = stmnts.get(i);
+           s.visit(this);
+           if (i<stmnts.size()-1 && s instanceof ExecutableStatement) {
+               endLine();
+           }
+       }
+       //If there's an else block, check for normal termination
+       indentLevel--;
+       endLine();
+       out("}");
+       if (hasElse) {
+           endLine();
+           out("if (", clAlias, ".getExhausted() === ", itemVar, ")");
            encloseBlockInFunction(that.getElseClause().getBlock());
-	   }
+       }
    }
 
     public void visit(InOp that) {
