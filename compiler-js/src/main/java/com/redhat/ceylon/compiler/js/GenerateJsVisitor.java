@@ -2095,29 +2095,24 @@ public class GenerateJsVisitor extends Visitor
 	   endLine();
 	   out("var ", itemVar, ";while ((", itemVar, "=", iterVar, ".next())!==", clAlias, ".getExhausted())");
 	   List<Statement> stmnts = that.getForClause().getBlock().getStatements();
-	   if (stmnts.isEmpty()) {
-		   out("{}");
+	   beginBlock();
+	   if (foriter instanceof ValueIterator) {
+		   directAccess.add(((ValueIterator)foriter).getVariable().getDeclarationModel());
+	   } else if (foriter instanceof KeyValueIterator) {
+	       String keyvar = names.name(((KeyValueIterator)foriter).getKeyVariable().getDeclarationModel());
+	       String valvar = names.name(((KeyValueIterator)foriter).getValueVariable().getDeclarationModel());
+		   out("var ", keyvar, "=", itemVar, ".getKey();");
 		   endLine();
-	   } else {
-		   beginBlock();
-		   if (foriter instanceof ValueIterator) {
-			   directAccess.add(((ValueIterator)foriter).getVariable().getDeclarationModel());
-		   } else if (foriter instanceof KeyValueIterator) {
-		       String keyvar = names.name(((KeyValueIterator)foriter).getKeyVariable().getDeclarationModel());
-		       String valvar = names.name(((KeyValueIterator)foriter).getValueVariable().getDeclarationModel());
-			   out("var ", keyvar, "=", itemVar, ".getKey();");
+		   out("var ", valvar, "=", itemVar, ".getItem();");
+		   directAccess.add(((KeyValueIterator)foriter).getKeyVariable().getDeclarationModel());
+           directAccess.add(((KeyValueIterator)foriter).getValueVariable().getDeclarationModel());
+	   }
+	   endLine();
+	   for (int i=0; i<stmnts.size(); i++) {
+		   Statement s = stmnts.get(i);
+		   s.visit(this);
+		   if (i<stmnts.size()-1 && s instanceof ExecutableStatement) {
 			   endLine();
-			   out("var ", valvar, "=", itemVar, ".getItem();");
-			   directAccess.add(((KeyValueIterator)foriter).getKeyVariable().getDeclarationModel());
-               directAccess.add(((KeyValueIterator)foriter).getValueVariable().getDeclarationModel());
-		   }
-		   endLine();
-		   for (int i=0; i<stmnts.size(); i++) {
-			   Statement s = stmnts.get(i);
-			   s.visit(this);
-			   if (i<stmnts.size()-1 && s instanceof ExecutableStatement) {
-				   endLine();
-			   }
 		   }
 	   }
 	   //If there's an else block, check for normal termination
