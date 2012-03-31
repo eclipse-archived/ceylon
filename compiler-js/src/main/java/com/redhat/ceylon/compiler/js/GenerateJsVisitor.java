@@ -1936,9 +1936,9 @@ public class GenerateJsVisitor extends Visitor
            @Override
            public void generate(BinaryOpTermGenerator termgen) {
                out("function($){return $!==null?$:");
-               termgen.left();
-               out("}(");
                termgen.right();
+               out("}(");
+               termgen.left();
                out(")");
            }
        });
@@ -2310,9 +2310,9 @@ public class GenerateJsVisitor extends Visitor
         binaryOp(that, new BinaryOpGenerator() {
             @Override
             public void generate(BinaryOpTermGenerator termgen) {
-                termgen.left();
-                out(".contains(");
                 termgen.right();
+                out(".contains(");
+                termgen.left();
                 out(")");
             }
         });
