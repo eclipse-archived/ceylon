@@ -1700,12 +1700,30 @@ public class GenerateJsVisitor extends Visitor
             out(")),", lhsPath, svar, ")");
     	} else if (lhs instanceof QualifiedMemberExpression) {
     		QualifiedMemberExpression lhsQME = (QualifiedMemberExpression) lhs;
-    		out("(function($1,$2){var $=$1.", names.getter(lhsQME.getDeclaration()), "().",
-		        functionName, "($2);$1.", names.setter(lhsQME.getDeclaration()), "($);return $}(");
-    		lhsQME.getPrimary().visit(this);
-    		out(",");
-    		that.getRightTerm().visit(this);
-    		out("))");
+    		if (isNative(lhsQME)) {
+    		    // ($1.foo = Box($1.foo).operator($2))
+                out("(");
+                lhsQME.getPrimary().visit(this);
+                out(".", lhsQME.getDeclaration().getName());
+                out("=");
+                int boxType = boxStart(lhsQME);
+                lhsQME.getPrimary().visit(this);
+                out(".", lhsQME.getDeclaration().getName());
+                boxUnboxEnd(boxType);
+                out(".", functionName, "(");
+                that.getRightTerm().visit(this);
+                out("))");
+    		} else {
+        		out("(function($1,$2){var $=");
+        		out("$1.", names.getter(lhsQME.getDeclaration()), "()");
+    		    out(".", functionName, "($2);");
+    		    out("$1.", names.setter(lhsQME.getDeclaration()), "($)");
+    		    out(";return $}(");
+        		lhsQME.getPrimary().visit(this);
+        		out(",");
+        		that.getRightTerm().visit(this);
+        		out("))");
+    		}
     	}
     }
 
