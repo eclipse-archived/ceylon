@@ -1054,8 +1054,10 @@ public class GenerateJsVisitor extends Visitor
     public void visit(BaseMemberExpression that) {
         Declaration decl = that.getDeclaration();
         qualify(that, decl);
-        if (accessDirectly(decl)) {
-            out(names.name(decl));
+        if (isNative(decl)) {
+            out(decl.getName());
+        } else if (accessDirectly(decl)) {
+                out(names.name(decl));
         } else {
             //String scopedvar = scopeman.get(that);
             //if (scopedvar == null) {
@@ -1075,7 +1077,33 @@ public class GenerateJsVisitor extends Visitor
         return !((d instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter)
                   || (d instanceof Method));
     }
+    
+    private static boolean isNative(Term t) {
+        if (t instanceof MemberOrTypeExpression) {
+            return isNative(((MemberOrTypeExpression)t).getDeclaration());
+        }
+        return false;
+    }
+    
+    private static boolean isNative(Declaration d) {
+        return hasAnnotationByName(getToplevel(d), "nativejs");
+    }
 
+    private static Declaration getToplevel(Declaration d) {
+        while (!d.isToplevel()) {
+            d = (Declaration) d.getContainer();
+        }
+        return d;
+    }
+
+    private static boolean hasAnnotationByName(Declaration d, String name){
+        for(com.redhat.ceylon.compiler.typechecker.model.Annotation annotation : d.getAnnotations()){
+            if(annotation.getName().equals(name))
+                return true;
+        }
+        return false;
+    }
+    
     @Override
     public void visit(QualifiedMemberExpression that) {
         //Big TODO: make sure the member is actually
@@ -1180,7 +1208,9 @@ public class GenerateJsVisitor extends Visitor
     			 postfix = '$' + parentType.getName() + '$';
     		 }
     	}
-        if (!accessThroughGetter(that.getDeclaration())) {
+        if (isNative(that.getDeclaration())) {
+            out(that.getDeclaration().getName());
+        } else if (!accessThroughGetter(that.getDeclaration())) {
             out(names.name(that.getDeclaration()), postfix);
         }
         else {
@@ -1225,7 +1255,7 @@ public class GenerateJsVisitor extends Visitor
                         List<String> argNames = that.getNamedArgumentList().getNamedArgumentList().getArgumentNames();
                         boolean first=true;
                         for (com.redhat.ceylon.compiler.typechecker.model.Parameter p:
-                            f.getParameterLists().get(0).getParameters()) {
+                                f.getParameterLists().get(0).getParameters()) {
                             if (!first) out(",");
                             if (p.isSequenced() && that.getNamedArgumentList().getSequencedArgument()==null && that.getNamedArgumentList().getNamedArguments().isEmpty()) {
                                 out(clAlias, ".empty");
@@ -1255,11 +1285,13 @@ public class GenerateJsVisitor extends Visitor
             boolean sequenced=false;
             for (PositionalArgument arg: that.getPositionalArguments()) {
                 if (!first) out(",");
+                int boxType = boxUnboxStart(arg.getExpression().getTerm(), arg.getParameter());
                 if (!sequenced && arg.getParameter().isSequenced() && that.getEllipsis() == null) {
                     sequenced=true;
                     out(clAlias, ".ArraySequence([");
                 }
                 arg.visit(this);
+                boxUnboxEnd(boxType);
                 first = false;
             }
             if (sequenced) {
@@ -1269,6 +1301,55 @@ public class GenerateJsVisitor extends Visitor
         out(")");
     }
 
+    private int boxUnboxStart(Term fromTerm, Term toTerm) {
+        boolean fromNative = isNative(fromTerm);
+        boolean toNative = isNative(toTerm);
+        ProducedType fromType = fromTerm.getTypeModel();
+        ProducedType toType = toTerm.getTypeModel();
+        return boxUnboxStart(fromNative, fromType, toNative, toType);
+    }
+    
+    private int boxUnboxStart(Term fromTerm, com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration toDecl) {
+        boolean fromNative = isNative(fromTerm);
+        boolean toNative = isNative(toDecl);
+        ProducedType fromType = fromTerm.getTypeModel();
+        ProducedType toType = toDecl.getType();
+        return boxUnboxStart(fromNative, fromType, toNative, toType);
+    }
+    
+    private int boxUnboxStart(boolean fromNative, ProducedType fromType, boolean toNative, ProducedType toType) {
+        if (fromNative != toNative) {
+            // Box the value
+            if (fromNative) {
+                if (fromType.getProducedTypeQualifiedName().equals("ceylon.language.String")) {
+                    out(clAlias, ".String(");
+                } else if (fromType.getProducedTypeQualifiedName().equals("ceylon.language.Integer")) {
+                    out(clAlias, ".Integer(");
+                } else if (fromType.getProducedTypeQualifiedName().equals("ceylon.language.Float")) {
+                    out(clAlias, ".Float(");
+                } else if (fromType.getProducedTypeQualifiedName().equals("ceylon.language.Boolean")) {
+                    out(clAlias, ".Boolean(");
+                } else if (fromType.getProducedTypeQualifiedName().equals("ceylon.language.Character")) {
+                    out(clAlias, ".Character(");
+                } else {
+                    return 0;
+                }
+                return 1;
+            } else {
+                return 2;
+            }
+        }
+        return 0;
+    }
+
+    private void boxUnboxEnd(int boxType) {
+        if (boxType== 1) {
+            out(")");
+        } else if (boxType== 2) {
+            out(".value");
+        }
+    }
+    
     @Override
     public void visit(NamedArgumentList that) {
         for (NamedArgument arg: that.getNamedArguments()) {
@@ -1331,17 +1412,29 @@ public class GenerateJsVisitor extends Visitor
         if (that.getLeftTerm() instanceof BaseMemberExpression) {
             BaseMemberExpression bme = (BaseMemberExpression) that.getLeftTerm();
             qualify(that, bme.getDeclaration());
-            out(names.setter(bme.getDeclaration()));
-            out("(");
-            paren = !(bme.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter);
+            if (isNative(bme.getDeclaration())) {
+                out(bme.getDeclaration().getName());
+                out("=");
+            } else {
+                out(names.setter(bme.getDeclaration()));
+                out("(");
+                paren = !(bme.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter);
+            }
         } else if (that.getLeftTerm() instanceof QualifiedMemberExpression) {
             QualifiedMemberExpression qme = (QualifiedMemberExpression)that.getLeftTerm();
             super.visit(qme);
-            out(".", names.setter(qme.getDeclaration()));
-            out("(");
-            paren = true;
+            if (isNative(qme.getDeclaration())) {
+                out(".", qme.getDeclaration().getName());
+                out("=");
+            } else {
+                out(".", names.setter(qme.getDeclaration()));
+                out("(");
+                paren = true;
+            }
         }
+        int boxType = boxUnboxStart(that.getRightTerm(), that.getLeftTerm());
         that.getRightTerm().visit(this);
+        boxUnboxEnd(boxType);
         if (paren) {
             out(")");
         }
