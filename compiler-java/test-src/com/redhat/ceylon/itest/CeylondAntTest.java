@@ -48,6 +48,25 @@ public class CeylondAntTest extends AntBasedTest {
     }
     
     @Test
+    public void testDocumentModuleFooTwice() throws Exception {
+        AntResult result = ant("foo-alone");
+        Assert.assertEquals(0, result.getStatusCode());
+        File index = new File(result.getOut(), "com/example/foo/1.0/module-doc/a/index.html");
+        Assert.assertTrue(index.exists());
+        Assert.assertEquals(1, new File(result.getOut(), "com/example").list().length);
+        assertNotContains(result.getStdout(), "[ceylond] No need to compile com.example.foo, it's up to date");
+        assertNotContains(result.getStdout(), "[ceylond] Everything's up to date");
+        final long lastModified = index.lastModified();
+        
+        result = ant("foo-alone");
+        Assert.assertEquals(0, result.getStatusCode());
+        Assert.assertTrue(index.exists());
+        assertContains(result.getStdout(), "[ceylond] No need to compile com.example.foo, it's up to date");
+        assertContains(result.getStdout(), "[ceylond] Everything's up to date");
+        Assert.assertEquals(lastModified, index.lastModified());
+    }
+    
+    @Test
     public void testDocumentModuleFooAndBarTogether() throws Exception {
         AntResult result = ant("foo-and-bar");
         Assert.assertEquals(0, result.getStatusCode());

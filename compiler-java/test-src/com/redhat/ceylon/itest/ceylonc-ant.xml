@@ -42,6 +42,18 @@
         </files>
     </ceylonc>
   </target>
+  
+  <target name="foo-file-mtime" depends="ant-tasks,foo-alone">
+      <ceylonc
+        executable="${script.ceylonc}"
+        src="${arg.src}"
+        out="${arg.out}"
+        verbose="${arg.verbose}">
+          <files>
+            <include name="com/example/foo/a/foo.ceylon"/>
+          </files>
+      </ceylonc>
+    </target>
 
   <target name="bar-alone" depends="ant-tasks">
     <ceylonc

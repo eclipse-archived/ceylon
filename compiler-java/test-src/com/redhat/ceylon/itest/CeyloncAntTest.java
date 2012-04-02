@@ -53,6 +53,28 @@ public class CeyloncAntTest extends AntBasedTest {
     }
     
     @Test
+    public void testCompileModuleFooTwice() throws Exception {
+        AntResult result = ant("foo-alone");
+        Assert.assertEquals(0, result.getStatusCode());
+        File car = new File(result.getOut(), "com/example/foo/1.0/com.example.foo-1.0.car");
+        Assert.assertTrue(car.exists());
+        Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/com.example.foo-1.0.car.sha1").exists());
+        Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/com.example.foo-1.0.src").exists());
+        Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/com.example.foo-1.0.src.sha1").exists());
+        Assert.assertEquals(1, new File(result.getOut(), "com/example").list().length);
+        assertNotContainsMatch(result.getStdout(), Pattern.compile("^  \\[ceylonc\\] Model tree for .*?com.example.foo.foo\\.ceylon$", Pattern.MULTILINE));
+        assertNotContains(result.getStdout(), "[ceylonc] No need to compile com.example.foo, it's up to date");
+        assertNotContains(result.getStdout(), "[ceylonc] Everything's up to date");
+        final long lastModified = car.lastModified();
+        
+        result = ant("foo-alone");
+        Assert.assertEquals(0, result.getStatusCode());
+        assertContains(result.getStdout(), "[ceylonc] No need to compile com.example.foo, it's up to date");
+        assertContains(result.getStdout(), "[ceylonc] Everything's up to date");
+        Assert.assertEquals(lastModified, car.lastModified());
+    }
+    
+    @Test
     public void testCompileModuleFooVerbosely() throws Exception {
         System.setProperty("arg.verbose", "true");
         
@@ -78,6 +100,24 @@ public class CeyloncAntTest extends AntBasedTest {
     public void testCompileFileFromFoo() throws Exception {
         AntResult result = ant("foo-file");
         Assert.assertEquals(0, result.getStatusCode());
+        Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/com.example.foo-1.0.car").exists());
+    }
+    
+    @Test
+    public void testCompileFileFromFooTwice() throws Exception {
+        AntResult result = ant("foo-file");
+        Assert.assertEquals(0, result.getStatusCode());
+        assertNotContains(result.getStdout(), "[ceylonc] No need to compile com.example.foo, it's up to date");
+        assertNotContains(result.getStdout(), "[ceylonc] Everything's up to date");
+        File car = new File(result.getOut(), "com/example/foo/1.0/com.example.foo-1.0.car");
+        Assert.assertTrue(car.exists());
+        long lastModified = car.lastModified();
+        
+        result = ant("foo-file-mtime");
+        Assert.assertEquals(0, result.getStatusCode());
+        assertContains(result.getStdout(), "[ceylonc] No need to compile /home/tom/ceylon/ceylon-compiler/test-src/com/redhat/ceylon/itest/com/example/foo/a/foo.ceylon, it's up to date");
+        assertContains(result.getStdout(), "[ceylonc] Everything's up to date");
+        Assert.assertEquals(lastModified, car.lastModified());
     }
     
     @Test
