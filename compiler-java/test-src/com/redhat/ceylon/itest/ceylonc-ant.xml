@@ -36,6 +36,7 @@
       executable="${script.ceylonc}"
       src="${arg.src}"
       out="${arg.out}"
+      nomtimecheck="true"
       verbose="${arg.verbose}">
         <files>
           <include name="com/example/foo/a/foo.ceylon"/>
@@ -69,6 +70,7 @@
         executable="${script.ceylonc}"
         src="${arg.src}"
         out="${arg.out}"
+        nomtimecheck="true"
         verbose="${arg.verbose}">
           <module name="com.example.foo"/>
           <files>
