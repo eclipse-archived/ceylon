@@ -429,32 +429,32 @@ public class GenerateJsVisitor extends Visitor
 
     private void copySuperMembers(ExtendedType extType, ClassBody body, Class d) {
         if (!prototypeStyle) {
-            String parentName = "";
+            String parentSuffix = "";
             if (extType != null) {
                 TypeDeclaration parentTypeDecl = extType.getType().getDeclarationModel();
                 if (declaredInCL(parentTypeDecl)) {
                     return;
                 }
-                parentName = parentTypeDecl.getName();
+                parentSuffix = names.memberSuffix(parentTypeDecl);
             }
 
             final List<Declaration> decs = new ArrayList<Declaration>();
             new SuperVisitor(decs).visit(body);
             for (Declaration dec: decs) {
                 if (dec instanceof Value) {
-                    superGetterRef(dec,d,parentName);
+                    superGetterRef(dec,d,parentSuffix);
                     if (((Value) dec).isVariable()) {
-                        superSetterRef(dec,d,parentName);
+                        superSetterRef(dec,d,parentSuffix);
                     }
                 }
                 else if (dec instanceof Getter) {
-                    superGetterRef(dec,d,parentName);
+                    superGetterRef(dec,d,parentSuffix);
                     if (((Getter) dec).isVariable()) {
-                        superSetterRef(dec,d,parentName);
+                        superSetterRef(dec,d,parentSuffix);
                     }
                 }
                 else {
-                    superRef(dec,d,parentName);
+                    superRef(dec,d,parentSuffix);
                 }
             }
         }
@@ -640,7 +640,7 @@ public class GenerateJsVisitor extends Visitor
                 SimpleType type = extType.getType();
                 TypeDeclaration typeDecl = type.getDeclarationModel();
                 from = initFunctionName(type);
-                suffix = qualifiedPath(type, typeDecl) + '$' + typeDecl.getName() + '$';
+                suffix = names.memberSuffix(typeDecl);
             }
 
             out(clAlias, ".inheritProto(", names.name(d), ",", from, ",'", suffix, "'");
@@ -731,30 +731,30 @@ public class GenerateJsVisitor extends Visitor
         addToPrototype(c, that.getClassBody().getStatements());
     }
 
-    private void superRef(Declaration d, Class sub, String parent) {
+    private void superRef(Declaration d, Class sub, String parentSuffix) {
         //if (d.isActual()) {
             self(sub);
-            out(".", names.name(d), "$", parent, "$=");
+            out(".", names.name(d), parentSuffix, "=");
             self(sub);
             out(".", names.name(d), ";");
             endLine();
         //}
     }
 
-    private void superGetterRef(Declaration d, Class sub, String parent) {
+    private void superGetterRef(Declaration d, Class sub, String parentSuffix) {
         //if (d.isActual()) {
             self(sub);
-            out(".", names.getter(d), "$", parent, "$=");
+            out(".", names.getter(d), parentSuffix, "=");
             self(sub);
             out(".", names.getter(d), ";");
             endLine();
         //}
     }
 
-    private void superSetterRef(Declaration d, Class sub, String parent) {
+    private void superSetterRef(Declaration d, Class sub, String parentSuffix) {
         //if (d.isActual()) {
             self(sub);
-            out(".", names.setter(d), "$", parent, "$=");
+            out(".", names.setter(d), parentSuffix, "=");
             self(sub);
             out(".", names.setter(d), ";");
             endLine();
@@ -915,8 +915,8 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
             else {
-                String tmpvar = names.name(d);
-                out("var ", tmpvar);
+                String varName = names.name(d);
+                out("var ", varName);
                 if (that.getSpecifierOrInitializerExpression()!=null) {
                     out("=");
                     int boxType = boxStart(that.getSpecifierOrInitializerExpression().getExpression().getTerm());
@@ -928,15 +928,16 @@ public class GenerateJsVisitor extends Visitor
                 out(";");
                 endLine();
                 if (isCaptured(d)) {
-                    out("var ", names.getter(d),"=function(){return ", tmpvar, ";};");
+                    out("var ", names.getter(d),"=function(){return ", varName, ";};");
                     endLine();
                 } else {
                     directAccess.add(d);
                 }
                 shareGetter(d);
                 if (d.isVariable()) {
-                    out("var ", names.setter(d), "=function(", d.getName(), "){");
-                    out(tmpvar, "=", d.getName(), "; return ", tmpvar, ";};");
+                    String paramVarName = names.createTempVariable(d.getName());
+                    out("var ", names.setter(d), "=function(", paramVarName, "){");
+                    out(varName, "=", paramVarName, "; return ", varName, ";};");
                     endLine();
                     shareSetter(d);
                 }
@@ -956,10 +957,11 @@ public class GenerateJsVisitor extends Visitor
             out("return this.", names.name(d), ";");
             endBlock();
             if (d.isVariable()) {
+                String paramVarName = names.createTempVariable(d.getName());
                 out("$proto$.", names.setter(d), "=");
-                out(function, names.setter(d), "(", d.getName(), ")");
+                out(function, names.setter(d), "(", paramVarName, ")");
                 beginBlock();
-                out("this.", names.name(d), "=", d.getName(), "; return ", d.getName(), ";");
+                out("this.", names.name(d), "=", paramVarName, "; return ", paramVarName, ";");
                 endBlock();
             }
         }
@@ -1202,7 +1204,7 @@ public class GenerateJsVisitor extends Visitor
              ClassOrInterface type = Util.getContainingClassOrInterface(that.getScope());
              ClassOrInterface parentType = type.getExtendedTypeDeclaration();
              if (parentType != null) {
-                 postfix = '$' + parentType.getName() + '$';
+                 postfix = names.memberSuffix(parentType);
              }
         }
         if (isNative(that.getDeclaration())) {
@@ -1257,8 +1259,7 @@ public class GenerateJsVisitor extends Visitor
                             if (p.isSequenced() && that.getNamedArgumentList().getSequencedArgument()==null && that.getNamedArgumentList().getNamedArguments().isEmpty()) {
                                 out(clAlias, ".empty");
                             } else if (p.isSequenced() || argNames.contains(p.getName())) {
-                                out("$");
-                                out(p.getName());
+                                out(names.name(p));
                             } else {
                                 out("undefined");
                             }
@@ -1358,13 +1359,13 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(NamedArgumentList that) {
         for (NamedArgument arg: that.getNamedArguments()) {
-            out("var $", arg.getParameter().getName(), "=");
+            out("var ", names.name(arg.getParameter()), "=");
             arg.visit(this);
             out(";");
         }
         SequencedArgument sarg = that.getSequencedArgument();
         if (sarg!=null) {
-            out("var $", sarg.getParameter().getName(), "=");
+            out("var ", names.name(sarg.getParameter()), "=");
             sarg.visit(this);
             out(";");
         }
@@ -2102,51 +2103,51 @@ public class GenerateJsVisitor extends Visitor
        }
        Term variableRHS = variable.getSpecifierExpression().getExpression().getTerm();
 
-       String tmpvar = names.name(variable.getDeclarationModel());
-       out("var ", tmpvar, ";");
+       String varName = names.name(variable.getDeclarationModel());
+       out("var ", varName, ";");
        endLine();
 
        out(keyword);
        out("(");
-       specialConditionCheck(condition, variableRHS, tmpvar);
+       specialConditionCheck(condition, variableRHS, varName);
        out(")");
        directAccess.add(variable.getDeclarationModel());
        encloseBlockInFunction(block);
    }
 
-    private void specialConditionCheck(Condition condition, Term variableRHS, String tmpvar) {
+    private void specialConditionCheck(Condition condition, Term variableRHS, String varName) {
         if (condition instanceof ExistsOrNonemptyCondition) {
             if (condition instanceof NonemptyCondition) {
                 out(clAlias, ".nonempty(");
-                specialConditionRHS(variableRHS, tmpvar);
+                specialConditionRHS(variableRHS, varName);
                 out(")===", clTrue);
             } else {
-                specialConditionRHS(variableRHS, tmpvar);
+                specialConditionRHS(variableRHS, varName);
                 out("!==null");
             }
 
         } else {
             Type type = ((IsCondition) condition).getType();
-            generateIsOfType(variableRHS, null, type, tmpvar);
+            generateIsOfType(variableRHS, null, type, varName);
             out("===", clTrue);
         }
     }
 
-    private void specialConditionRHS(Term variableRHS, String tmpvar) {
-        if (tmpvar == null) {
+    private void specialConditionRHS(Term variableRHS, String varName) {
+        if (varName == null) {
             variableRHS.visit(this);
         } else {
-            out("(", tmpvar, "=");
+            out("(", varName, "=");
             variableRHS.visit(this);
             out(")");
         }
     }
 
-    private void specialConditionRHS(String variableRHS, String tmpvar) {
-        if (tmpvar == null) {
+    private void specialConditionRHS(String variableRHS, String varName) {
+        if (varName == null) {
             out(variableRHS);
         } else {
-            out("(", tmpvar, "=");
+            out("(", varName, "=");
             out(variableRHS);
             out(")");
         }
