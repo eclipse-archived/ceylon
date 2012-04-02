@@ -62,7 +62,7 @@ public abstract class AntBasedTest {
     protected static final String ARG_SRC = "arg.src";
     protected static final String ARG_OUT = "arg.out";
     
-    protected final Method mainMethod;
+    protected Method mainMethod;
     protected final File originalBuildfile;
     protected File actualBuildFile;
     private Class<?> securityManagerClass;
@@ -73,6 +73,7 @@ public abstract class AntBasedTest {
     private SecurityManager savedSecurityManager;
     private Properties savedProperties;
     private File out;
+    private final URL[] antJarUrls;
 
     public AntBasedTest(String buildfileResource) throws Exception {
         originalBuildfile = new File(buildfileResource);
@@ -102,13 +103,16 @@ public abstract class AntBasedTest {
          * Note this uses the ant.jar from build/lib, so doesn't pick up
          * changes done in eclipse without ant recompiling them
          */
-        URL[] antJarUrls = new URL[antJars.length+1];
+        antJarUrls = new URL[antJars.length+1];
         int ii = 0;
         for (File antJar : antJars) {
             antJarUrls[ii] = antJar.toURI().toURL();
             ii++;
         }
         antJarUrls[antJarUrls.length-1] = getCeylonAntJar().toURI().toURL();
+    }
+    
+    private void initMain() throws Exception {
         ClassLoader antClassloader = new URLClassLoader(antJarUrls, ClassLoader.getSystemClassLoader().getParent());
         
         Class<?> antMain = antClassloader.loadClass("org.apache.tools.ant.Main");
@@ -266,6 +270,7 @@ public abstract class AntBasedTest {
     }
     
     protected AntResult ant(String goal) throws Exception {
+        initMain();
         String[] antArgs = new String[]{
                 "-buildfile", actualBuildFile.getPath(),
                 "-verbose",
