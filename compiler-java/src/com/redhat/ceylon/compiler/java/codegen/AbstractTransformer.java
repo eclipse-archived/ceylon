@@ -701,125 +701,53 @@ public abstract class AbstractTransformer implements Transformation {
             type = typeFact.getBooleanDeclaration().getType();
         }
         
-        JCExpression jt;
+        JCExpression jt = makeErroneous();
         
         ProducedType simpleType = simplifyType(type);
-        TypeDeclaration tdecl = simpleType.getDeclaration();
-        java.util.List<ProducedType> tal = simpleType.getTypeArgumentList();
+        boolean typeOrQualifyingTypeHasTypeParams = false;
+        java.util.List<ProducedType> qualifyingTypes = new java.util.ArrayList<ProducedType>();
+        ProducedType qType = simpleType;
+        while (qType != null) {
+            qualifyingTypes.add(qType);
+            java.util.List<ProducedType> tal = qType.getTypeArgumentList();
+            if (tal != null && !tal.isEmpty()) {
+                typeOrQualifyingTypeHasTypeParams = true;
+            }
+            qType = qType.getQualifyingType();
+        }
         
-        if (((flags & WANT_RAW_TYPE) == 0) && tal != null && !tal.isEmpty()) {
+        if (((flags & WANT_RAW_TYPE) == 0) && typeOrQualifyingTypeHasTypeParams) {
             // GENERIC TYPES
-
-            ListBuffer<JCExpression> typeArgs = new ListBuffer<JCExpression>();
-
-            int idx = 0;
-            for (ProducedType ta : tal) {
-                if (idx > 0 &&
-                        isCeylonCallable(type)) {
-                    // In the runtime Callable only has a single type param
-                    break;
-                }
-                if (isOptional(ta)) {
-                    // For an optional type T?:
-                    // - The Ceylon type Foo<T?> results in the Java type Foo<T>.
-                    ta = typeFact().getDefiniteType(ta);
-                }
-                if (typeFact().isUnion(ta) || typeFact().isIntersection(ta)) {
-                    // For any other union type U|V (U nor V is Optional):
-                    // - The Ceylon type Foo<U|V> results in the raw Java type Foo.
-                    // For any other intersection type U|V:
-                    // - The Ceylon type Foo<U&V> results in the raw Java type Foo.
-                    // A bit ugly, but we need to escape from the loop and create a raw type, no generics
-                    ProducedType iterType = typeFact().getNonemptyIterableType(typeFact().getDefiniteType(ta));
-                    // don't break if the union type is erased to something better than Object
-                    if(iterType == null){
-                        typeArgs = null;
-                        break;
-                    }else
-                        ta = iterType;
-                }
-                JCExpression jta;
-                if (sameType(syms().ceylonVoidType, ta)) {
-                    // For the root type Void:
-                    if ((flags & (SATISFIES | EXTENDS)) != 0) {
-                        // - The Ceylon type Foo<Void> appearing in an extends or satisfies
-                        //   clause results in the Java raw type Foo<Object>
-                        jta = make().Type(syms().objectType);
-                    } else {
-                        // - The Ceylon type Foo<Void> appearing anywhere else results in the Java type
-                        // - Foo<Object> if Foo<T> is invariant in T
-                        // - Foo<?> if Foo<T> is covariant in T, or
-                        // - Foo<Object> if Foo<T> is contravariant in T
-                        TypeParameter tp = tdecl.getTypeParameters().get(idx);
-                        if (tp.isContravariant()) {
-                            jta = make().Type(syms().objectType);
-                        } else if (tp.isCovariant()) {
-                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), makeJavaType(ta, flags));
-                        } else {
-                            jta = make().Type(syms().objectType);
-                        }
-                    }
-                } else if (ta.getDeclaration() instanceof BottomType) {
-                    // For the bottom type Bottom:
-                    if ((flags & (SATISFIES | EXTENDS)) != 0) {
-                        // - The Ceylon type Foo<Bottom> appearing in an extends or satisfies
-                        //   clause results in the Java raw type Foo
-                        // A bit ugly, but we need to escape from the loop and create a raw type, no generics
-                        typeArgs = null;
-                        break;
-                    } else {
-                        // - The Ceylon type Foo<Bottom> appearing anywhere else results in the Java type
-                        // - raw Foo if Foo<T> is invariant in T,
-                        // - raw Foo if Foo<T> is covariant in T, or
-                        // - Foo<?> if Foo<T> is contravariant in T
-                        TypeParameter tp = tdecl.getTypeParameters().get(idx);
-                        if (tp.isContravariant()) {
-                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), makeJavaType(ta));
-                        } else {
-                            // A bit ugly, but we need to escape from the loop and create a raw type, no generics
-                            typeArgs = null;
-                            break;
-                        }
-                    }
+            Collections.reverse(qualifyingTypes);
+            JCExpression baseType = makeErroneous();
+            boolean first = true;
+            for (ProducedType qualifyingType : qualifyingTypes) {
+                TypeDeclaration tdecl = qualifyingType.getDeclaration();
+                ListBuffer<JCExpression> typeArgs = makeTypeArgs( 
+                        qualifyingType, 
+                        //tdecl, 
+                        flags);
+                if (isCeylonCallable(type) && 
+                        (flags & CLASS_NEW) != 0) {
+                    baseType = makeIdent(syms().ceylonAbstractCallableType);
+                } else if (first) {
+                    baseType = getDeclarationName(tdecl);
                 } else {
-                    // For an ordinary class or interface type T:
-                    if ((flags & (SATISFIES | EXTENDS)) != 0) {
-                        // - The Ceylon type Foo<T> appearing in an extends or satisfies clause
-                        //   results in the Java type Foo<T>
-                        jta = makeJavaType(ta, TYPE_ARGUMENT);
-                    } else {
-                        // - The Ceylon type Foo<T> appearing anywhere else results in the Java type
-                        // - Foo<T> if Foo is invariant in T,
-                        // - Foo<? extends T> if Foo is covariant in T, or
-                        // - Foo<? super T> if Foo is contravariant in T
-                        TypeParameter tp = tdecl.getTypeParameters().get(idx);
-                        if (((flags & CLASS_NEW) == 0) && tp.isContravariant()) {
-                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta, TYPE_ARGUMENT));
-                        } else if (((flags & CLASS_NEW) == 0) && tp.isCovariant()) {
-                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), makeJavaType(ta, TYPE_ARGUMENT));
-                        } else {
-                            jta = makeJavaType(ta, TYPE_ARGUMENT);
-                        }
-                    }
+                    baseType = makeSelect(jt, tdecl.getName());
                 }
-                typeArgs.add(jta);
-                idx++;
-            }
-
-            JCExpression baseType;
-            if (isCeylonCallable(type) && 
-                    (flags & CLASS_NEW) != 0) {
-                baseType = makeIdent(syms().ceylonAbstractCallableType);
-            } else {
-                baseType = getDeclarationName(tdecl);
-            }
-            
-            if (typeArgs != null && typeArgs.size() > 0) {
-                jt = make().TypeApply(baseType, typeArgs.toList());
-            } else {
-                jt = baseType;
+                
+                if (typeArgs != null && typeArgs.size() > 0) {
+                    jt = make().TypeApply(baseType, typeArgs.toList());
+                } else {
+                    jt = baseType;
+                }
+                
+                if (first) {
+                    first = false;
+                }
             }
         } else {
+            TypeDeclaration tdecl = simpleType.getDeclaration();            
             // For an ordinary class or interface type T:
             // - The Ceylon type T results in the Java type T
             if(tdecl instanceof TypeParameter)
@@ -832,6 +760,109 @@ public abstract class AbstractTransformer implements Transformation {
         }
         
         return jt;
+    }
+
+    private ListBuffer<JCExpression> makeTypeArgs(
+            ProducedType simpleType, 
+            int flags) {
+        TypeDeclaration tdecl = simpleType.getDeclaration();
+        java.util.List<ProducedType> tal = simpleType.getTypeArgumentList();
+        ListBuffer<JCExpression> typeArgs = new ListBuffer<JCExpression>();
+
+        int idx = 0;
+        for (ProducedType ta : tal) {
+            if (idx > 0 &&
+                    isCeylonCallable(simpleType)) {
+                // In the runtime Callable only has a single type param
+                break;
+            }
+            if (isOptional(ta)) {
+                // For an optional type T?:
+                // - The Ceylon type Foo<T?> results in the Java type Foo<T>.
+                ta = typeFact().getDefiniteType(ta);
+            }
+            if (typeFact().isUnion(ta) || typeFact().isIntersection(ta)) {
+                // For any other union type U|V (U nor V is Optional):
+                // - The Ceylon type Foo<U|V> results in the raw Java type Foo.
+                // For any other intersection type U|V:
+                // - The Ceylon type Foo<U&V> results in the raw Java type Foo.
+                // A bit ugly, but we need to escape from the loop and create a raw type, no generics
+                ProducedType iterType = typeFact().getNonemptyIterableType(typeFact().getDefiniteType(ta));
+                // don't break if the union type is erased to something better than Object
+                if(iterType == null){
+                    typeArgs = null;
+                    break;
+                }else
+                    ta = iterType;
+            }
+            JCExpression jta;
+            if (sameType(syms().ceylonVoidType, ta)) {
+                // For the root type Void:
+                if ((flags & (SATISFIES | EXTENDS)) != 0) {
+                    // - The Ceylon type Foo<Void> appearing in an extends or satisfies
+                    //   clause results in the Java raw type Foo<Object>
+                    jta = make().Type(syms().objectType);
+                } else {
+                    // - The Ceylon type Foo<Void> appearing anywhere else results in the Java type
+                    // - Foo<Object> if Foo<T> is invariant in T
+                    // - Foo<?> if Foo<T> is covariant in T, or
+                    // - Foo<Object> if Foo<T> is contravariant in T
+                    TypeParameter tp = tdecl.getTypeParameters().get(idx);
+                    if (tp.isContravariant()) {
+                        jta = make().Type(syms().objectType);
+                    } else if (tp.isCovariant()) {
+                        jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), makeJavaType(ta, flags));
+                    } else {
+                        jta = make().Type(syms().objectType);
+                    }
+                }
+            } else if (ta.getDeclaration() instanceof BottomType) {
+                // For the bottom type Bottom:
+                if ((flags & (SATISFIES | EXTENDS)) != 0) {
+                    // - The Ceylon type Foo<Bottom> appearing in an extends or satisfies
+                    //   clause results in the Java raw type Foo
+                    // A bit ugly, but we need to escape from the loop and create a raw type, no generics
+                    typeArgs = null;
+                    break;
+                } else {
+                    // - The Ceylon type Foo<Bottom> appearing anywhere else results in the Java type
+                    // - raw Foo if Foo<T> is invariant in T,
+                    // - raw Foo if Foo<T> is covariant in T, or
+                    // - Foo<?> if Foo<T> is contravariant in T
+                    TypeParameter tp = tdecl.getTypeParameters().get(idx);
+                    if (tp.isContravariant()) {
+                        jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), makeJavaType(ta));
+                    } else {
+                        // A bit ugly, but we need to escape from the loop and create a raw type, no generics
+                        typeArgs = null;
+                        break;
+                    }
+                }
+            } else {
+                // For an ordinary class or interface type T:
+                if ((flags & (SATISFIES | EXTENDS)) != 0) {
+                    // - The Ceylon type Foo<T> appearing in an extends or satisfies clause
+                    //   results in the Java type Foo<T>
+                    jta = makeJavaType(ta, TYPE_ARGUMENT);
+                } else {
+                    // - The Ceylon type Foo<T> appearing anywhere else results in the Java type
+                    // - Foo<T> if Foo is invariant in T,
+                    // - Foo<? extends T> if Foo is covariant in T, or
+                    // - Foo<? super T> if Foo is contravariant in T
+                    TypeParameter tp = tdecl.getTypeParameters().get(idx);
+                    if (((flags & CLASS_NEW) == 0) && tp.isContravariant()) {
+                        jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta, TYPE_ARGUMENT));
+                    } else if (((flags & CLASS_NEW) == 0) && tp.isCovariant()) {
+                        jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), makeJavaType(ta, TYPE_ARGUMENT));
+                    } else {
+                        jta = makeJavaType(ta, TYPE_ARGUMENT);
+                    }
+                }
+            }
+            typeArgs.add(jta);
+            idx++;
+        }
+        return typeArgs;
     }
     
     private boolean isJavaString(ProducedType type) {
