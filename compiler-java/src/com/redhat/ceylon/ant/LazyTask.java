@@ -248,8 +248,10 @@ abstract class LazyTask extends Task {
             for (File src : getSrc()) {
                 if (file.getAbsolutePath().startsWith(src.getAbsolutePath())) {
                     while (!file.equals(src)) {
-                        if (file.getName().equals("module.ceylon")) {
-                            String moduleName = file.getParentFile().getAbsolutePath().substring(src.getAbsolutePath().length()+1).replace(File.separator, ".");
+                        File moduleDescriptor = file.isDirectory() ? new File(file, "module.ceylon") : file;
+                        if (moduleDescriptor.exists()
+                                && moduleDescriptor.getName().equals("module.ceylon")) {
+                            String moduleName = moduleDescriptor.getParentFile().getAbsolutePath().substring(src.getAbsolutePath().length()+1).replace(File.separator, ".");
                             Module module = new Module();
                             module.setName(moduleName);
                             return module;
