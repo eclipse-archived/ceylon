@@ -246,6 +246,14 @@ public class StructureTest extends CompilerTest {
     public void testKlsClassInSetter(){
         compareWithJavaSource("klass/KlassInSetter");
     }
+    @Test
+    public void testKlsInnerClassUsingOutersTypeParam(){
+        compareWithJavaSource("klass/InnerClassUsingOutersTypeParam");
+    }
+    @Test
+    public void testKlsInnerClassUsingOutersTypeParam2(){
+        compareWithJavaSource("klass/InnerClassUsingOutersTypeParam2");
+    }
     
     //
     // Methods
