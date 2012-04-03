@@ -88,6 +88,19 @@ public class JsIdentifierNames {
     }
     
     /**
+     * Determine identifier to be used for the self variable of the given type.
+     */
+    public String self(TypeDeclaration d) {
+        String name = d.getName();
+        if (!(d.isShared() || d.isToplevel())) {
+            name = String.format("%s$%d", name, getUID(d));
+        }
+        // TODO: shared or toplevel types probably also need a suffix in some cases
+        return String.format("$$%c%s", Character.toLowerCase(name.charAt(0)),
+                    name.substring(1));
+    }
+    
+    /**
      * Returns a disambiguation suffix for the given type. It is guaranteed that
      * the suffixes generated for two different types are different.
      */
@@ -100,6 +113,7 @@ public class JsIdentifierNames {
         uniqueVarNames.put(decl, name);
     }
     
+    private Map<Declaration, Long> uniqueVarIDs = new HashMap<Declaration, Long>();
     private Map<Declaration, String> uniqueVarNames =
             new HashMap<Declaration, String>();
     
@@ -108,19 +122,22 @@ public class JsIdentifierNames {
         if (!((d.isShared() || d.isToplevel())
                 && (forGetterSetter || (d instanceof Method)
                         || (d instanceof ClassOrInterface)))) {
-        //if (!(forGetterSetter || (d instanceof Parameter) || (d instanceof Method))) {
             name = uniqueVarNames.get(d);
             if (name == null) {
-                name = String.format("%s$%d", d.getName(), nextUID());
-                uniqueVarNames.put(d, name);
+                name = String.format("%s$%d", d.getName(), getUID(d));
             }
-        } /*else if (prototypeStyle && !d.isShared() && d.isMember()
-                    && (container instanceof ClassOrInterface)) {
-            name += memberSuffix((ClassOrInterface) container,
-                    forGetterSetter || (d instanceof Method));
-        }*/
+        }
+        // TODO: shared or toplevel functions/types probably also need a suffix in some cases
         return name;
     }
     
+    private long getUID(Declaration decl) {
+        Long id = uniqueVarIDs.get(decl);
+        if (id == null) {
+            id = nextUID();
+            uniqueVarIDs.put(decl, id);
+        }
+        return id;
+    }
     
 }

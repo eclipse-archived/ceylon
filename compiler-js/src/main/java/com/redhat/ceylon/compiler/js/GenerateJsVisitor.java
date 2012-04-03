@@ -1485,7 +1485,7 @@ public class GenerateJsVisitor extends Visitor
                         if (path.length() > 0) {
                             path += '.';
                         }
-                        path += selfString((TypeDeclaration) scope);
+                        path += names.self((TypeDeclaration) scope);
                     } else {
                         path = "";
                     }
@@ -1502,12 +1502,12 @@ public class GenerateJsVisitor extends Visitor
                 TypeDeclaration id = that.getScope().getInheritingDeclaration(d);
                 if (id==null) {
                     //a shared local declaration
-                    return selfString((TypeDeclaration)d.getContainer());
+                    return names.self((TypeDeclaration)d.getContainer());
                 }
                 else {
                     //an inherited declaration that might be
                     //inherited by an outer scope
-                    return selfString(id);
+                    return names.self(id);
                 }
             }
         }
@@ -1554,12 +1554,7 @@ public class GenerateJsVisitor extends Visitor
     public void visit(AnnotationList that) {}
 
     private void self(TypeDeclaration d) {
-        out(selfString(d));
-    }
-
-    private String selfString(TypeDeclaration d) {
-        return "$$" + d.getName().substring(0,1).toLowerCase()
-                + d.getName().substring(1);
+        out(names.self(d));
     }
 
     /* * Output the name of a variable that receives the type parameter info, usually in the class constructor. * /
