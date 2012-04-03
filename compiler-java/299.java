@@ -14,16 +14,7 @@ final class I$impl<T> {
 
 class CInit<T> {
     CInit(T t){return;}
-    // see comment below (note we have to copy CInit's type parameters) 
-    // static <T> T $init$t() {return null;}
-}
-final class CInit$impl<T> {
-    // This is sub optimal because for a top level there's no
-    // environment to capture yet for consistency with the inner and local class
-    // cases we end up instantiating a $impl needlessly.
-    // We could use a static method to optimize this common case
-    // at the expense of complicating the instantiation. See above.
-    T $init$t() {return null;}
+    final static T $init$t() {return null;}
 }
 
 class f {
@@ -33,7 +24,9 @@ class f {
 
 class OC<T> {
     class IC<U> {
-        void m(T t, U u) {return;}
+        void m(T t, U u) {
+            
+        }
         final T m$t() {return null;}
         final U m$u(T t) {return null;}
     }
@@ -49,10 +42,8 @@ class OC<T> {
     
     class ICInit<U> {
         ICInit(T t, U u) {return;}
-    }
-    final class ICInit$impl<U> {
-        T $init$t() {return null;}
-        U $init$u(T t) {return null;}
+        final static T $init$t() {return null;}
+        final static U $init$u(T t) {return null;}
     }
 }
 
@@ -79,10 +70,8 @@ interface OI<T> {
     
     class ICInit<U> {
         ICInit(T t, U u) {return;}
-    }
-    final class ICInit$impl<U> {
-        T $init$t() {return null;}
-        U $init$u(T t) {return null;}
+        final static T $init$t() {return null;}
+        final static U $init$u(T t) {return null;}
     }
 }
 
@@ -142,18 +131,15 @@ class Local<T> {
         }
         class LCInit<U> {
             LCInit(S s, T t, U u) {return;}
-        }
-        final class LCInit$impl<U> {
-            S $init$s() {return s;}// example use of closure
-            T $init$t(S $s) {return t;}// example use of closure
-            U $init$u(S $s, T $t) {return null;}   
+            final static S $init$s() {return s;}// example use of closure
+            final static T $init$t(S $s) {return t;}// example use of closure
+            final static U $init$u(S $s, T $t) {return null;}   
         }
         // Example instantiation of LCInit (really we use a Let)
         {
-            LCInit$impl<Integer> init = new LCInit$impl<Integer>();
-            S $init$s = init.$init$s();
-            T $init$t = init.$init$t($init$s);
-            Integer $init$u = init.$init$u($init$s, $init$t);
+            S $init$s = LCInit.$init$s();
+            T $init$t = LCInit.$init$t($init$s);
+            Integer $init$u = LCInit.$init$u($init$s, $init$t);
             LCInit<Integer> instance = new LCInit<Integer>($init$s, $init$t, $init$u);
         }
     }
