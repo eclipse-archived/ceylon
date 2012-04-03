@@ -861,7 +861,7 @@ public class GenerateJsVisitor extends Visitor
         Setter d = that.getDeclarationModel();
         if (prototypeStyle&&d.isClassOrInterfaceMember()) return;
         comment(that);
-        out(function, names.setter(d), "(", names.name(d.getParameter()), ")");
+        out(function, names.setter(d.getGetter()), "(", names.name(d.getParameter()), ")");
         super.visit(that);
         shareSetter(d);
     }
@@ -871,8 +871,9 @@ public class GenerateJsVisitor extends Visitor
         Setter d = that.getDeclarationModel();
         if (!prototypeStyle || !d.isClassOrInterfaceMember()) return;
         comment(that);
-        out("$proto$.", names.setter(d), "=",
-                function, names.setter(d), "(", names.name(d.getParameter()), ")");
+        String setterName = names.setter(d.getGetter());
+        out("$proto$.", setterName, "=",
+                function, setterName, "(", names.name(d.getParameter()), ")");
         super.visit(that);
     }
 
