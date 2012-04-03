@@ -7,7 +7,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 
 /**
@@ -18,7 +17,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
  */
 public class JsIdentifierNames {
 
-    private boolean prototypeStyle = false;
+    //private boolean prototypeStyle = false;
     
     private static long uniqueID = 0;
     private static long nextUID() {
@@ -29,7 +28,7 @@ public class JsIdentifierNames {
     }
     
     public JsIdentifierNames(boolean prototypeStyle) {
-        this.prototypeStyle = prototypeStyle;
+        //this.prototypeStyle = prototypeStyle;
     }
     
     /**
@@ -77,17 +76,24 @@ public class JsIdentifierNames {
     /**
      * Creates a new unique identifier.
      */
+    public String createTempVariable(String baseName) {
+        return String.format("%s$%d", baseName, nextUID());
+    }
+    
+    /**
+     * Creates a new unique identifier.
+     */
     public String createTempVariable() {
-        return String.format("tmpvar$%d", nextUID());
+        return createTempVariable("tmpvar");
     }
     
     /**
      * Returns a disambiguation suffix for the given type. It is guaranteed that
      * the suffixes generated for two different types are different.
      */
-    public String memberSuffix(TypeDeclaration typeDecl, boolean method) {
+    public String memberSuffix(TypeDeclaration typeDecl) {
         // TODO: we need to take the qualified path into account!
-        return String.format(method ? "$%s$" : "$%s", typeDecl.getName());
+        return String.format("$%s$", typeDecl.getName());
     }
     
     public void forceName(Declaration decl, String name) {
@@ -99,7 +105,6 @@ public class JsIdentifierNames {
     
     private String getName(Declaration d, boolean forGetterSetter) {
         String name = d.getName();
-        Scope container = d.getContainer();
         if (!((d.isShared() || d.isToplevel())
                 && (forGetterSetter || (d instanceof Method)
                         || (d instanceof ClassOrInterface)))) {
@@ -109,11 +114,11 @@ public class JsIdentifierNames {
                 name = String.format("%s$%d", d.getName(), nextUID());
                 uniqueVarNames.put(d, name);
             }
-        } else if (prototypeStyle && !d.isShared() && d.isMember()
+        } /*else if (prototypeStyle && !d.isShared() && d.isMember()
                     && (container instanceof ClassOrInterface)) {
             name += memberSuffix((ClassOrInterface) container,
                     forGetterSetter || (d instanceof Method));
-        }
+        }*/
         return name;
     }
     
