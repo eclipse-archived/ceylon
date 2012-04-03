@@ -14,7 +14,9 @@ final class I$impl<T> {
 
 class CInit<T> {
     CInit(T t){return;}
-    final static T $init$t() {return null;}
+}
+class CInit$impl {
+    final static <T> T $init$t() {return null;}
 }
 
 class f {
@@ -42,8 +44,10 @@ class OC<T> {
     
     class ICInit<U> {
         ICInit(T t, U u) {return;}
-        final static T $init$t() {return null;}
-        final static U $init$u(T t) {return null;}
+    }
+    static class ICInit$impl<U> {
+        final static <T> T $init$t() {return null;}
+        final static <T,U> U $init$u(T t) {return null;}
     }
 }
 
@@ -70,8 +74,10 @@ interface OI<T> {
     
     class ICInit<U> {
         ICInit(T t, U u) {return;}
-        final static T $init$t() {return null;}
-        final static U $init$u(T t) {return null;}
+    }
+    static class ICInit$impl {
+        final static <T> T $init$t() {return null;}
+        final static <T,U> U $init$u(T t) {return null;}
     }
 }
 
@@ -131,18 +137,21 @@ class Local<T> {
         }
         class LCInit<U> {
             LCInit(S s, T t, U u) {return;}
-            final static S $init$s() {return s;}// example use of closure
-            final static T $init$t(S $s) {return t;}// example use of closure
-            final static U $init$u(S $s, T $t) {return null;}   
         }
         // Example instantiation of LCInit (really we use a Let)
         {
-            S $init$s = LCInit.$init$s();
-            T $init$t = LCInit.$init$t($init$s);
-            Integer $init$u = LCInit.$init$u($init$s, $init$t);
+            S $init$s = Local$local$LCInit$impl.$init$s();
+            T $init$t = Local$local$LCInit$impl.$init$t($init$s);
+            Integer $init$u = Local$local$LCInit$impl.$init$u($init$s, $init$t);
             LCInit<Integer> instance = new LCInit<Integer>($init$s, $init$t, $init$u);
         }
     }
+}
+
+class Local$local$LCInit$impl {
+    final static <S> S $init$s() {return null;}// example use of closure
+    final static <S,T> T $init$t(S $s) {return null;}// example use of closure
+    final static <U,S,T> U $init$u(S $s, T $t) {return null;}   
 }
 
 interface Local$II<S,T,U> {
