@@ -8,15 +8,15 @@ class C<T> {
 interface I<T> {
     void m(T t);
 }
-final class I$impl<T> {
-    T m$t(I<T> $this) {return null;}
+final class I$impl {
+    static final <T> T m$t(I<T> $this) {return null;}
 }
 
 class CInit<T> {
     CInit(T t){return;}
 }
 class CInit$impl {
-    final static <T> T $init$t() {return null;}
+    static final <T> T $init$t() {return null;}
 }
 
 class f {
@@ -26,9 +26,7 @@ class f {
 
 class OC<T> {
     class IC<U> {
-        void m(T t, U u) {
-            
-        }
+        void m(T t, U u) {return;}
         final T m$t() {return null;}
         final U m$u(T t) {return null;}
     }
@@ -37,17 +35,17 @@ class OC<T> {
     //interface II<T,U> {
     //    void m(T t, U u);
     //}
-    final class II$impl<U> {
-        T m$t(OC$II<T,U> $this) {return null;}
-        U m$u(OC$II<T,U> $this, T t) {return null;}
+    static final class II$impl {
+        static final <T,U> T m$t(OC$II<T,U> $this, OC<T> $outer) {return $outer.m();}
+        static final <T,U> U m$u(OC$II<T,U> $this, OC<T> $outer, T t) {return null;}
     }
     
     class ICInit<U> {
         ICInit(T t, U u) {return;}
     }
-    static class ICInit$impl<U> {
-        final static <T> T $init$t() {return m();}
-        final static <T,U> U $init$u(T t) {return null;}
+    static class ICInit$impl {
+        static final <T> T $init$t(OC<T> $outer) {return $outer.m();}
+        static final <T,U> U $init$u(OC<T> $outer, T t) {return null;}
     }
     T m() {return null;}
 }
@@ -61,25 +59,25 @@ interface OI<T> {
     T m();
     class IC<T,U> {
         void m(T t, U u) {return;}
-        final T m$t() {return OI.this.m();}
-        final U m$u(T t) {return null;}
+        final T m$t(OI<T> $outer) {return $outer.m();}
+        final U m$u(OI<T> $outer, T t) {return null;}
     }
     
     //inner interface implicity static, see II$II below
     //interface II<T,U> {
     //    void m(T t, U u);
     //}
-    final class II$impl<T,U> {
-        T m$t(II$II<T,U> $this) {return null;}
-        U m$u(II$II<T,U> $this, T t) {return null;}
+    static final class II$impl {
+        static final <T,U> T m$t(II$II<T,U> $this, OI<T> $outer) {return $outer.m();}
+        static final <T,U> U m$u(II$II<T,U> $this, OI<T> $outer, T t) {return null;}
     }
     
     class ICInit<T,U> {
         ICInit(T t, U u) {return;}
     }
-    final class ICInit$impl<T,U> {
-        T $init$t() {return null;}
-        U $init$u(T t) {return null;}
+    static final class ICInit$impl<T,U> {
+        static final <T> T $init$t(OI<T> $outer) {return $outer.m();}
+        static final <T,U> U $init$u(OI<T> $outer, T t) {return null;}
     }
 }
 
@@ -88,6 +86,7 @@ interface II$II<T,U> {// note we have to copy all the typeparams in sope at the 
 }
 
 class Local<T> {
+    T m() {return null;}
     public <S> void local(final S s, final T t) {
         class LC<U> {
             void m(S s, T t, U u) {return;}
@@ -125,34 +124,36 @@ class Local<T> {
         interface II<S,T,U> {
             void m(T t, U u);
         }*/
-        class II$impl<U> {
-            T m$t(Local$II<S,T,U> $this) {return null;}
-            U m$u(Local$II<S,T,U> $this, T t) {return null;}
-        }
         // Example invocation of Local$II (really we use a Let)
         {
-            Local$II<S,T,Integer> instance = null;
-            II$impl<Integer> impl = new II$impl<Integer>();
-            T m$t = impl.m$t(instance);
-            Integer m$u = impl.m$u(instance, t);
+            Local$II<S,T,Integer> instance = new Local$II<S,T,Integer>() {
+                public void m(T t, Integer u) {}
+            };
+            T m$t = local$II$impl.m$t(instance);
+            Integer m$u = local$II$impl.m$u(instance, t);
             instance.m(m$t, m$u);
         }
         class LCInit<U> {
             LCInit(S s, T t, U u) {return;}
         }
-        final class LCInit$impl<U> {
-            S $init$s() {return s;}// example use of closure
-            T $init$t(S $s) {return t;}// example use of closure
-            U $init$u(S $s, T $t) {return null;}   
-        }
         // Example instantiation of LCInit (really we use a Let)
         {
-            LCInit$impl<Integer> init = new LCInit$impl<Integer>();
-            S $init$s = init.$init$s();
-            T $init$t = init.$init$t($init$s);
-            Integer $init$u = init.$init$u($init$s, $init$t);
+            S $init$s = local$LCInit$impl.$init$s(this);
+            T $init$t = local$LCInit$impl.$init$t(this, $init$s);
+            Integer $init$u = local$LCInit$impl.$init$u(this, $init$s, $init$t);
             LCInit<Integer> instance = new LCInit<Integer>($init$s, $init$t, $init$u);
         }
+    }
+
+    static final class local$II$impl {
+        static final <S,T,U> T m$t(Local$II<S,T,U> $this) {return null;}
+        static final <S,T,U> U m$u(Local$II<S,T,U> $this, T t) {return null;}
+    }
+    
+    static final class local$LCInit$impl {
+        static final <S,T> S $init$s(Local<T> $outer) {return null;}// example use of closure
+        static final <S,T> T $init$t(Local<T> $outer, S $s) {return $outer.m();}// example use of closure
+        static final <U,S,T> U $init$u(Local<T> $outer, S $s, T $t) {return null;}   
     }
 }
 
