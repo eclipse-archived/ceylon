@@ -165,9 +165,9 @@ void testOtherOperators() {
     assert(entry2.item==47->"hi there", "entry item");
             
     String s1 = true then "ok" else "noo";
-    assert(s1=="ok", "then/else");
+    assert(s1=="ok", "then/else 1");
     String s2 = false then "what?" else "great"; 
-    assert(s2=="great", "then/else");
+    assert(s2=="great", "then/else 2");
 }
 
 void testCollectionOperators() {
