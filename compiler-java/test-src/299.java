@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.codegen;
+
 
 class C<T> {
     void m(T t) {return;}
