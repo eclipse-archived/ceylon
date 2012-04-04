@@ -1158,15 +1158,15 @@ public class GenerateJsVisitor extends Visitor
             endLine();
         }
         //Declare an array to store the values/references
-        String tmplist = names.createTempVariable();
+        String tmplist = names.createTempVariable("lst");
         out("var ", tmplist, "=[];"); endLine();
         //Get an iterator
-        String iter = names.createTempVariable();
+        String iter = names.createTempVariable("it");
         out("var ", iter, "=");
         super.visit(that);
         out(".getIterator();"); endLine();
         //Iterate
-        String elem = names.createTempVariable();
+        String elem = names.createTempVariable("elem");
         out("var ", elem, ";"); endLine();
         out("while ((", elem, "=", iter, ".next())!==", clAlias, ".getExhausted())");
         beginBlock();
@@ -2267,12 +2267,12 @@ public class GenerateJsVisitor extends Visitor
        ForIterator foriter = that.getForClause().getForIterator();
        SpecifierExpression iterable = foriter.getSpecifierExpression();
        boolean hasElse = that.getElseClause() != null && !that.getElseClause().getBlock().getStatements().isEmpty();
-       final String iterVar = names.createTempVariable();
+       final String iterVar = names.createTempVariable("it");
        final String itemVar;
        if (foriter instanceof ValueIterator) {
            itemVar = names.name(((ValueIterator)foriter).getVariable().getDeclarationModel());
        } else {
-           itemVar = names.createTempVariable();
+           itemVar = names.createTempVariable("item");
        }
        out("var ", iterVar, " = ");
        iterable.visit(this);
@@ -2328,10 +2328,9 @@ public class GenerateJsVisitor extends Visitor
         encloseBlockInFunction(that.getTryClause().getBlock());
 
         if (!that.getCatchClauses().isEmpty()) {
-            out("catch($ex0$)");
+            String catchVarName = names.createTempVariable("ex");
+            out("catch(", catchVarName, ")");
             beginBlock();
-            out("var $ex$=$ex0$;");
-            endLine();
             boolean firstCatch = true;
             for (CatchClause catchClause : that.getCatchClauses()) {
                 Variable variable = catchClause.getCatchVariable().getVariable();
@@ -2340,21 +2339,21 @@ public class GenerateJsVisitor extends Visitor
                 }
                 firstCatch = false;
                 out("if(");
-                generateIsOfType(null, "$ex$", variable.getType(), null);
+                generateIsOfType(null, catchVarName, variable.getType(), null);
                 out("===", clTrue, ")");
 
                 if (catchClause.getBlock().getStatements().isEmpty()) {
                     out("{}");
                 } else {
                     beginBlock();
-                    out(function, names.getter(variable.getDeclarationModel()), "(){return $ex$}");
-                    endLine();
+                    directAccess.add(variable.getDeclarationModel());
+                    names.forceName(variable.getDeclarationModel(), catchVarName);
 
                     visitStatements(catchClause.getBlock().getStatements(), false);
                     endBlock();
                 }
             }
-            out("else{throw $ex$}");
+            out("else{throw ", catchVarName, "}");
             endBlock();
         }
 
@@ -2444,7 +2443,7 @@ public class GenerateJsVisitor extends Visitor
         if (comment) out("//Switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
         endLine();
         //Put the expression in a tmp var
-        final String expvar = names.createTempVariable();
+        final String expvar = names.createTempVariable("switch");
         out("var ", expvar, "=");
         Expression expr = that.getSwitchClause().getExpression();
         expr.visit(this);
