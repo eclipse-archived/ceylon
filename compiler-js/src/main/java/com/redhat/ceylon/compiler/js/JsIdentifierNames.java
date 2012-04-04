@@ -17,7 +17,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
  */
 public class JsIdentifierNames {
 
-    //private boolean prototypeStyle = false;
+    private boolean prototypeStyle = false;
     
     private static long uniqueID = 0;
     private static long nextUID() {
@@ -28,7 +28,7 @@ public class JsIdentifierNames {
     }
     
     public JsIdentifierNames(boolean prototypeStyle) {
-        //this.prototypeStyle = prototypeStyle;
+        this.prototypeStyle = prototypeStyle;
     }
     
     /**
@@ -64,12 +64,11 @@ public class JsIdentifierNames {
      * an alias for the given package.
      */
     public String packageAlias(Package pkg) {
-        //TODO: improve this! Currently it can give the same result for different packages.
         StringBuilder sb = new StringBuilder("$$$");
         for (String s: pkg.getName()) {
             sb.append(s.substring(0,1));
         }
-        sb.append(pkg.getQualifiedNameString().length());
+        sb.append(getUID(pkg));
         return sb.toString();
     }
     
@@ -113,6 +112,7 @@ public class JsIdentifierNames {
         uniqueVarNames.put(decl, name);
     }
     
+    private Map<Package, Long> packageUIDs = new HashMap<Package, Long>();
     private Map<Declaration, Long> uniqueVarIDs = new HashMap<Declaration, Long>();
     private Map<Declaration, String> uniqueVarNames =
             new HashMap<Declaration, String>();
@@ -124,7 +124,8 @@ public class JsIdentifierNames {
                         || (d instanceof ClassOrInterface)))) {
             name = uniqueVarNames.get(d);
             if (name == null) {
-                name = String.format("%s$%d", d.getName(), getUID(d));
+                String format = (prototypeStyle && d.isMember()) ? "%s$%d$" : "%s$%d";
+                name = String.format(format, d.getName(), getUID(d));
             }
         }
         // TODO: shared or toplevel functions/types probably also need a suffix in some cases
@@ -136,6 +137,15 @@ public class JsIdentifierNames {
         if (id == null) {
             id = nextUID();
             uniqueVarIDs.put(decl, id);
+        }
+        return id;
+    }
+    
+    private long getUID(Package pkg) {
+        Long id = packageUIDs.get(pkg);
+        if (id == null) {
+            id = nextUID();
+            packageUIDs.put(pkg, id);
         }
         return id;
     }
