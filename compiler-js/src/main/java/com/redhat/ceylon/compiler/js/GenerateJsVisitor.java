@@ -81,11 +81,17 @@ public class GenerateJsVisitor extends Visitor
     private final Writer out;
     private boolean prototypeStyle;
     private CompilationUnit root;
-    private static final String clAlias="$$$cl15";
+    private static String clAlias="";
     private static final String function="function ";
-    private static final String clTrue=String.format("%s.getTrue()", clAlias);
-    private static final String clFalse=String.format("%s.getFalse()", clAlias);
+    private static String clTrue="";
+    private static String clFalse="";
 
+    private static void setCLAlias(String alias) {
+        clAlias = alias;
+        clTrue = String.format("%s.getTrue()", clAlias);
+        clFalse = String.format("%s.getFalse()", clAlias);
+    }
+    
     @Override
     public void handleException(Exception e, Node that) {
         that.addUnexpectedError(that.getMessage(e, this));
@@ -163,7 +169,9 @@ public class GenerateJsVisitor extends Visitor
         root = that;
         Module clm = that.getUnit().getPackage().getModule()
                 .getLanguageModule();
-        require(clm.getPackage(clm.getNameAsString()));
+        Package clPackage = clm.getPackage(clm.getNameAsString());
+        setCLAlias(names.packageAlias(clPackage));
+        require(clPackage);
         super.visit(that);
     }
 
@@ -634,8 +642,8 @@ public class GenerateJsVisitor extends Visitor
             String from = null;
             String suffix = null;
             if (extType == null) {
-                from = "$$$cl15.IdentifiableObject";
-                suffix = "$$$cl15$IdentifiableObject$";
+                from = clAlias + ".IdentifiableObject";
+                suffix = clAlias + "$IdentifiableObject$";
             } else {
                 SimpleType type = extType.getType();
                 TypeDeclaration typeDecl = type.getDeclarationModel();
