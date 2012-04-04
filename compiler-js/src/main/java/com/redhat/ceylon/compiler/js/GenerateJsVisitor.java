@@ -2492,7 +2492,7 @@ public class GenerateJsVisitor extends Visitor
         boolean wrap=encloser.encloseBlock(block);
         if (wrap) {
             beginBlock();
-            Continuation c = new Continuation(block.getScope());
+            Continuation c = new Continuation(block.getScope(), names);
             continues.push(c);
             out("var ", c.getContinueName(), "=false;"); endLine();
             out("var ", c.getBreakName(), "=false;"); endLine();
@@ -2513,15 +2513,16 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private static class Continuation {
-        private static int conts=1;
-        private final String cvar = String.format("cntvar$%d", conts);
-        private final String rvar = String.format("retvar$%d", conts);
-        private final String bvar = String.format("brkvar$%d", conts);
+        private final String cvar;
+        private final String rvar;
+        private final String bvar;
         private final Scope scope;
         private boolean cused, bused;
-        public Continuation(Scope scope) {
+        public Continuation(Scope scope, JsIdentifierNames names) {
             this.scope=scope;
-            conts++;
+            cvar = names.createTempVariable("cntvar");
+            rvar = names.createTempVariable("retvar");
+            bvar = names.createTempVariable("brkvar");
         }
         public Scope getScope() { return scope; }
         public String getContinueName() { return cvar; }
