@@ -803,26 +803,23 @@ public class GenerateJsVisitor extends Visitor
             visitStatements(that.getBlock().getStatements(), false);
             endBlock();
         } else {
-            ArrayList<String> rvals = new ArrayList<String>(that.getParameterLists().size());
-            int innerCounter = 0;
+            int count=0;
             for (ParameterList paramList : that.getParameterLists()) {
-                out(function, names.name(d));
-                if (innerCounter > 0) {
-                    out("$inner$", Integer.toString(innerCounter));
+                if (count==0) {
+                    out(function, names.name(d));
+                } else {
+                    out("return function");
                 }
                 paramList.visit(this);
                 beginBlock();
                 initSelf(that.getBlock());
                 initParameters(paramList, null);
-                rvals.add(0, String.format("%s$inner$%s", names.name(d), ++innerCounter));
+                count++;
             }
             visitStatements(that.getBlock().getStatements(), false);
-            rvals.remove(0);
-            for (String rval : rvals) {
-                endBlock();
-                out("return ", rval, ";");
+            for (int i=0; i < count; i++) {
+                endBlock(i==count-1);
             }
-            endBlock();
         }
 
 
