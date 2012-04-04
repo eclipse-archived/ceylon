@@ -782,18 +782,41 @@ public class GenerateJsVisitor extends Visitor
 
     private void methodDefinition(MethodDefinition that) {
         Method d = that.getDeclarationModel();
-        out(function, names.name(d));
 
         //TODO: if there are multiple parameter lists
         //      do the inner function declarations
-        ParameterList paramList = that.getParameterLists().get(0);
-        paramList.visit(this);
+        if (that.getParameterLists().size() == 1) {
+            out(function, names.name(d));
+            ParameterList paramList = that.getParameterLists().get(0);
+            paramList.visit(this);
+            beginBlock();
+            initSelf(that.getBlock());
+            initParameters(paramList, null);
+            visitStatements(that.getBlock().getStatements(), false);
+            endBlock();
+        } else {
+            ArrayList<String> rvals = new ArrayList<String>(that.getParameterLists().size());
+            int innerCounter = 0;
+            for (ParameterList paramList : that.getParameterLists()) {
+                out(function, names.name(d));
+                if (innerCounter > 0) {
+                    out("$inner$", Integer.toString(innerCounter));
+                }
+                paramList.visit(this);
+                beginBlock();
+                initSelf(that.getBlock());
+                initParameters(paramList, null);
+                rvals.add(0, String.format("%s$inner$%s", names.name(d), ++innerCounter));
+            }
+            visitStatements(that.getBlock().getStatements(), false);
+            rvals.remove(0);
+            for (String rval : rvals) {
+                endBlock();
+                out("return ", rval, ";");
+            }
+            endBlock();
+        }
 
-        beginBlock();
-        initSelf(that.getBlock());
-        initParameters(paramList, null);
-        visitStatements(that.getBlock().getStatements(), false);
-        endBlock();
 
         share(d);
     }
@@ -1283,6 +1306,11 @@ public class GenerateJsVisitor extends Visitor
             boolean first=true;
             boolean sequenced=false;
             for (PositionalArgument arg: that.getPositionalArguments()) {
+                if (arg.getParameter() == null) {
+                    //This is temporary, typechecker will give us parameters for multiple parameter lists eventually
+                    that.addError("Multiple parameter lists cannot be invoked yet.");
+                    return;
+                }
                 if (!first) out(",");
                 int boxType = boxUnboxStart(arg.getExpression().getTerm(), arg.getParameter());
                 if (!sequenced && arg.getParameter().isSequenced() && that.getEllipsis() == null) {
