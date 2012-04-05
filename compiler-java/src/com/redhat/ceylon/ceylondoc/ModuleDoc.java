@@ -89,7 +89,7 @@ public class ModuleDoc extends CeylonDoc {
         }
         close("code", "td");
         open("td");
-        write(pkg.getNameAsString());
+        write(Util.getDocFirstLine(pkg));
         close("td");
         close("tr");
     }
