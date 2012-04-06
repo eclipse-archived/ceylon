@@ -7,6 +7,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 
 /**
@@ -89,12 +90,13 @@ public class JsIdentifierNames {
     /**
      * Determine identifier to be used for the self variable of the given type.
      */
-    public String self(TypeDeclaration d) {
-        String name = d.getName();
-        if (!(d.isShared() || d.isToplevel())) {
-            name = String.format("%s$%d", name, getUID(d));
+    public String self(TypeDeclaration decl) {
+        String name = decl.getName();
+        if (!(decl.isShared() || decl.isToplevel())) {
+            name = String.format("%s$%d", name, getUID(decl));
+        } else {
+            name += nestingSuffix(decl);
         }
-        // TODO: shared or toplevel types probably also need a suffix in some cases
         return String.format("$$%c%s", Character.toLowerCase(name.charAt(0)),
                     name.substring(1));
     }
@@ -108,6 +110,21 @@ public class JsIdentifierNames {
         return String.format("$%s$", typeDecl.getName());
     }
     
+    private String nestingSuffix(Declaration decl) {
+        String suffix = "";
+        if (decl instanceof TypeDeclaration) {
+            StringBuilder sb = new StringBuilder();
+            Scope scope = decl.getContainer();
+            while (scope instanceof TypeDeclaration) {
+                sb.append('$');
+                sb.append(((TypeDeclaration) scope).getName());
+                scope = scope.getContainer();
+            }
+            suffix = sb.toString();
+        }
+        return suffix;
+    }
+    
     public void forceName(Declaration decl, String name) {
         uniqueVarNames.put(decl, name);
     }
@@ -117,18 +134,19 @@ public class JsIdentifierNames {
     private Map<Declaration, String> uniqueVarNames =
             new HashMap<Declaration, String>();
     
-    private String getName(Declaration d, boolean forGetterSetter) {
-        String name = d.getName();
-        if (!((d.isShared() || d.isToplevel())
-                && (forGetterSetter || (d instanceof Method)
-                        || (d instanceof ClassOrInterface)))) {
-            name = uniqueVarNames.get(d);
+    private String getName(Declaration decl, boolean forGetterSetter) {
+        String name = decl.getName();
+        if (!((decl.isShared() || decl.isToplevel())
+                && (forGetterSetter || (decl instanceof Method)
+                        || (decl instanceof ClassOrInterface)))) {
+            name = uniqueVarNames.get(decl);
             if (name == null) {
-                String format = (prototypeStyle && d.isMember()) ? "%s$%d$" : "%s$%d";
-                name = String.format(format, d.getName(), getUID(d));
+                String format = (prototypeStyle && decl.isMember()) ? "%s$%d$" : "%s$%d";
+                name = String.format(format, decl.getName(), getUID(decl));
             }
+        } else {
+            name += nestingSuffix(decl);
         }
-        // TODO: shared or toplevel functions/types probably also need a suffix in some cases
         return name;
     }
     
