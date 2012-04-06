@@ -443,7 +443,7 @@ public class GenerateJsVisitor extends Visitor
                 if (declaredInCL(parentTypeDecl)) {
                     return;
                 }
-                parentSuffix = names.memberSuffix(parentTypeDecl);
+                parentSuffix = names.typeSuffix(parentTypeDecl);
             }
 
             final List<Declaration> decs = new ArrayList<Declaration>();
@@ -648,7 +648,7 @@ public class GenerateJsVisitor extends Visitor
                 SimpleType type = extType.getType();
                 TypeDeclaration typeDecl = type.getDeclarationModel();
                 from = initFunctionName(type);
-                suffix = names.memberSuffix(typeDecl);
+                suffix = names.typeSuffix(typeDecl);
             }
 
             out(clAlias, ".inheritProto(", names.name(d), ",", from, ",'", suffix, "'");
@@ -1233,7 +1233,7 @@ public class GenerateJsVisitor extends Visitor
              ClassOrInterface type = Util.getContainingClassOrInterface(that.getScope());
              ClassOrInterface parentType = type.getExtendedTypeDeclaration();
              if (parentType != null) {
-                 postfix = names.memberSuffix(parentType);
+                 postfix = names.typeSuffix(parentType);
              }
         }
         if (isNative(that.getDeclaration())) {

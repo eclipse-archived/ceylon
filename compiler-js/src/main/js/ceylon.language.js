@@ -33,7 +33,8 @@ function initExistingType(type, cons, typeName) {
         for (var $ in superTypes) {cons.T$all[$] = superTypes[$]}
     }
 }
-function inheritProto(type, superType, suffix) {
+function inheritProto(type, superType) {
+    var suffix = '$$' + superType.$$.T$name.replace(/\./g, '$') + '$';
     var proto = type.$$.prototype;
     var superProto = superType.$$.prototype;
     for(var $ in superProto){

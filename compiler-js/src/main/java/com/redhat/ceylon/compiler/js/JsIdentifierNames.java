@@ -105,9 +105,8 @@ public class JsIdentifierNames {
      * Returns a disambiguation suffix for the given type. It is guaranteed that
      * the suffixes generated for two different types are different.
      */
-    public String memberSuffix(TypeDeclaration typeDecl) {
-        // TODO: we need to take the qualified path into account!
-        return String.format("$%s$", typeDecl.getName());
+    public String typeSuffix(TypeDeclaration typeDecl) {
+        return String.format("$$%s$", typeDecl.getQualifiedNameString().replace('.', '$'));
     }
     
     private String nestingSuffix(Declaration decl) {
