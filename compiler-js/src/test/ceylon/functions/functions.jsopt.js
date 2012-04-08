@@ -1,160 +1,337 @@
-var $$$cl15=require('ceylon/language/0.1/ceylon.language');
+(function(define) { define(function(require, exports, module) {
+var $$$cl115=require('ceylon/language/0.2/ceylon.language');
 
-//MethodDefinition expect at functions.ceylon (1:0-8:0)
-function expect(actual,expected,text){
-    if ((actual.equals(expected))===$$$cl15.getTrue()){
-        $$$cl15.print($$$cl15.String("[ok] ",5).plus(text).plus($$$cl15.String(": '",3)).plus(actual.getString()).plus($$$cl15.String("'",1)));
-    }
-    else {
-        $$$cl15.print($$$cl15.String("[NOT OK] ",9).plus(text).plus($$$cl15.String(": actual='",10)).plus(actual.getString()).plus($$$cl15.String("', expected='",13)).plus(expected.getString()).plus($$$cl15.String("'",1)));
+//AttributeDeclaration assertionCount at functions.ceylon (1:0-1:34)
+var assertionCount$116=$$$cl115.Integer(0);
+var getAssertionCount=function(){return assertionCount$116;};
+exports.getAssertionCount=getAssertionCount;
+var setAssertionCount=function(assertionCount$117){assertionCount$116=assertionCount$117; return assertionCount$116;};
+exports.setAssertionCount=setAssertionCount;
+
+//AttributeDeclaration failureCount at functions.ceylon (2:0-2:32)
+var failureCount$118=$$$cl115.Integer(0);
+var getFailureCount=function(){return failureCount$118;};
+exports.getFailureCount=getFailureCount;
+var setFailureCount=function(failureCount$119){failureCount$118=failureCount$119; return failureCount$118;};
+exports.setFailureCount=setFailureCount;
+
+//MethodDefinition assert at functions.ceylon (4:0-10:0)
+function assert(assertion$120,message$121){
+    if(message$121===undefined){message$121=$$$cl115.String("",0);}
+    (setAssertionCount(getAssertionCount().plus($$$cl115.Integer(1))),getAssertionCount());
+    if ((assertion$120.equals($$$cl115.getFalse()))===$$$cl115.getTrue()){
+        (setFailureCount(getFailureCount().plus($$$cl115.Integer(1))),getFailureCount());
+        $$$cl115.print($$$cl115.StringBuilder().appendAll($$$cl115.ArraySequence([$$$cl115.String("assertion failed \""),message$121.getString(),$$$cl115.String("\"")])).getString());
     }
     
 }
+exports.assert=assert;
 
-//MethodDefinition helloWorld at functions.ceylon (10:0-12:0)
+//MethodDefinition fail at functions.ceylon (12:0-14:0)
+function fail(message$122){
+    assert($$$cl115.getFalse(),message$122);
+}
+exports.fail=fail;
+
+//MethodDefinition results at functions.ceylon (16:0-19:0)
+function results(){
+    $$$cl115.print($$$cl115.StringBuilder().appendAll($$$cl115.ArraySequence([$$$cl115.String("assertions ",11),getAssertionCount().getString(),$$$cl115.String(", failures ",11),getFailureCount().getString(),$$$cl115.String("",0)])).getString());
+}
+exports.results=results;
+
+//MethodDefinition helloWorld at functions.ceylon (22:0-24:0)
 function helloWorld(){
-    $$$cl15.print($$$cl15.String("hello world",11));
+    $$$cl115.print($$$cl115.String("hello world",11));
 }
-this.helloWorld=helloWorld;
+exports.helloWorld=helloWorld;
 
-//MethodDefinition hello at functions.ceylon (14:0-16:0)
-function hello(name){
-    $$$cl15.print($$$cl15.String("hello",5).plus(name));
+//MethodDefinition hello at functions.ceylon (26:0-28:0)
+function hello(name$123){
+    $$$cl115.print($$$cl115.String("hello",5).plus(name$123));
 }
-this.hello=hello;
+exports.hello=hello;
 
-//MethodDefinition helloAll at functions.ceylon (18:0-18:39)
-function helloAll(names){}
-this.helloAll=helloAll;
-
-//MethodDefinition toString at functions.ceylon (20:0-22:0)
-function toString(obj){
-    return obj.getString();
+//MethodDefinition helloAll at functions.ceylon (30:0-30:39)
+function helloAll(names$124){
+    if(names$124===undefined){names$124=$$$cl115.empty;}
+    
 }
-this.toString=toString;
+exports.helloAll=helloAll;
 
-//MethodDefinition add at functions.ceylon (24:0-26:0)
-function add(x,y){
-    return x.plus(y);
+//MethodDefinition toString at functions.ceylon (32:0-34:0)
+function toString(obj$125){
+    return obj$125.getString();
 }
-this.add=add;
+exports.toString=toString;
 
-//MethodDefinition repeat at functions.ceylon (28:0-30:0)
-function repeat(times,f){
-    f($$$cl15.Integer(0));
+//MethodDefinition add at functions.ceylon (36:0-38:0)
+function add(x$126,y$127){
+    return x$126.plus(y$127);
 }
-this.repeat=repeat;
+exports.add=add;
 
-//ClassDefinition MySequence at functions.ceylon (32:0-42:0)
-function $MySequence(){}
-for(var $ in CeylonObject.prototype){
-    var $m=CeylonObject.prototype[$];
-    $MySequence.prototype[$]=$m;
-    if($.charAt($.length-1)!=='$'){$MySequence.prototype[$+'$CeylonObject$']=$m}
+//MethodDefinition repeat at functions.ceylon (40:0-42:0)
+function repeat(times$128,f$129){
+    f$129($$$cl115.Integer(0));
 }
-for(var $ in $$$cl15.$Sequence.prototype){
-    var $m=$$$cl15.$Sequence.prototype[$];
-    $MySequence.prototype[$]=$m;
-    if($.charAt($.length-1)!=='$'){$MySequence.prototype[$+'$$$cl15.$Sequence$']=$m}
-}
+exports.repeat=repeat;
 
-//AttributeGetterDefinition lastIndex at functions.ceylon (34:4-34:60)
-$MySequence.prototype.getLastIndex=function getLastIndex(){
-    var $$mySequence=this;
-    return $$mySequence.seq$MySequence.getLastIndex();
-}
-
-//AttributeGetterDefinition first at functions.ceylon (35:4-35:52)
-$MySequence.prototype.getFirst=function getFirst(){
-    var $$mySequence=this;
-    return $$mySequence.seq$MySequence.getFirst();
-}
-
-//AttributeGetterDefinition rest at functions.ceylon (36:4-36:52)
-$MySequence.prototype.getRest=function getRest(){
-    var $$mySequence=this;
-    return $$mySequence.seq$MySequence.getRest();
-}
-
-//MethodDefinition item at functions.ceylon (37:4-37:68)
-$MySequence.prototype.item=function item(index){
-    var $$mySequence=this;
-    return $$mySequence.seq$MySequence.item(index);
-}
-
-//MethodDefinition span at functions.ceylon (38:4-38:89)
-$MySequence.prototype.span=function span(from,to){
-    var $$mySequence=this;
-    return $$mySequence.seq$MySequence.span(from,to);
-}
-
-//MethodDefinition segment at functions.ceylon (39:4-39:102)
-$MySequence.prototype.segment=function segment(from,length){
-    var $$mySequence=this;
-    return $$mySequence.seq$MySequence.segment(from,length);
-}
-
-//AttributeGetterDefinition clone at functions.ceylon (40:4-40:59)
-$MySequence.prototype.getClone=function getClone(){
-    var $$mySequence=this;
+//ClassDefinition MySequence at functions.ceylon (44:0-56:0)
+function MySequence(seq$130$, $$mySequence){
+    /* REIFIED GENERICS SOON! <out Element> */
+    if ($$mySequence===undefined)$$mySequence=new MySequence.$$;
+    $$mySequence.seq$130$=seq$130$;
+    $$$cl115.Sequence($$mySequence);
     return $$mySequence;
 }
+$$$cl115.initTypeProto(MySequence,'functions.MySequence',$$$cl115.IdentifiableObject,$$$cl115.Sequence);
+;(function($proto$){
+    
+    //AttributeGetterDefinition lastIndex at functions.ceylon (46:4-46:60)
+    $proto$.getLastIndex=function getLastIndex(){
+        var $$mySequence=this;
+        return $$mySequence.seq$130$.getLastIndex();
+    }
+    
+    //AttributeGetterDefinition first at functions.ceylon (47:4-47:52)
+    $proto$.getFirst=function getFirst(){
+        var $$mySequence=this;
+        return $$mySequence.seq$130$.getFirst();
+    }
+    
+    //AttributeGetterDefinition rest at functions.ceylon (48:4-48:52)
+    $proto$.getRest=function getRest(){
+        var $$mySequence=this;
+        return $$mySequence.seq$130$.getRest();
+    }
+    
+    //MethodDefinition item at functions.ceylon (49:4-49:68)
+    $proto$.item=function item(index$131){
+        var $$mySequence=this;
+        return $$mySequence.seq$130$.item(index$131);
+    }
+    
+    //MethodDefinition span at functions.ceylon (50:4-50:89)
+    $proto$.span=function span(from$132,to$133){
+        var $$mySequence=this;
+        return $$mySequence.seq$130$.span(from$132,to$133);
+    }
+    
+    //MethodDefinition segment at functions.ceylon (51:4-51:102)
+    $proto$.segment=function segment(from$134,length$135){
+        var $$mySequence=this;
+        return $$mySequence.seq$130$.segment(from$134,length$135);
+    }
+    
+    //AttributeGetterDefinition clone at functions.ceylon (52:4-52:59)
+    $proto$.getClone=function getClone(){
+        var $$mySequence=this;
+        return $$mySequence;
+    }
+    
+    //AttributeGetterDefinition string at functions.ceylon (53:4-53:53)
+    $proto$.getString=function getString(){
+        var $$mySequence=this;
+        return $$mySequence.seq$130$.getString();
+    }
+    
+    //AttributeGetterDefinition hash at functions.ceylon (54:4-54:50)
+    $proto$.getHash=function getHash(){
+        var $$mySequence=this;
+        return $$mySequence.seq$130$.getHash();
+    }
+    
+    //MethodDefinition equals at functions.ceylon (55:4-55:75)
+    $proto$.equals=function equals(other$136){
+        var $$mySequence=this;
+        return $$mySequence.seq$130$.equals(other$136);
+    }
+    
+})(MySequence.$$.prototype);
 
-//AttributeGetterDefinition string at functions.ceylon (41:4-41:53)
-$MySequence.prototype.getString=function getString(){
-    var $$mySequence=this;
-    return $$mySequence.seq$MySequence.getString();
-}
-function MySequence(seq$MySequence, $$mySequence){
-    if ($$mySequence===undefined)$$mySequence=new $MySequence;
-    $$mySequence.seq$MySequence=seq$MySequence;
-    $$$cl15.Sequence($$mySequence);
-    return $$mySequence;
-}
-
-//ClassDefinition RefHelper at functions.ceylon (44:0-46:0)
-function $RefHelper(){}
-for(var $ in CeylonObject.prototype){
-    var $m=CeylonObject.prototype[$];
-    $RefHelper.prototype[$]=$m;
-    if($.charAt($.length-1)!=='$'){$RefHelper.prototype[$+'$CeylonObject$']=$m}
-}
-
-//MethodDefinition f at functions.ceylon (45:4-45:47)
-$RefHelper.prototype.f=function f(i){
-    var $$refHelper=this;
-    return $$$cl15.getTrue();
-}
+//ClassDefinition RefHelper at functions.ceylon (58:0-60:0)
 function RefHelper($$refHelper){
-    if ($$refHelper===undefined)$$refHelper=new $RefHelper;
+    if ($$refHelper===undefined)$$refHelper=new RefHelper.$$;
     return $$refHelper;
 }
+$$$cl115.initTypeProto(RefHelper,'functions.RefHelper',$$$cl115.IdentifiableObject);
+;(function($proto$){
+    
+    //MethodDefinition f at functions.ceylon (59:4-59:47)
+    $proto$.f=function f(i$137){
+        var $$refHelper=this;
+        return $$$cl115.getTrue();
+    }
+    
+})(RefHelper.$$.prototype);
 
-//MethodDefinition testMethodReference at functions.ceylon (48:0-56:0)
+//MethodDefinition testMethodReference at functions.ceylon (62:0-70:0)
 function testMethodReference(){
     
-    //AttributeDeclaration obj1 at functions.ceylon (49:4-49:28)
-    var $obj1=RefHelper();
-    function getObj1(){
-        return $obj1;
-    }
+    //AttributeDeclaration obj1 at functions.ceylon (63:4-63:28)
+    var obj1$138=RefHelper();
     
-    //AttributeDeclaration obj2 at functions.ceylon (50:4-50:43)
-    var $obj2=MySequence($$$cl15.ArraySequence([$$$cl15.String("hi",2)]));
-    function getObj2(){
-        return $obj2;
-    }
+    //AttributeDeclaration obj2 at functions.ceylon (64:4-64:43)
+    var obj2$139=MySequence/* REIFIED GENERICS SOON!! <ceylon.language.String> */($$$cl115.ArraySequence([$$$cl115.String("hi",2)]));
     
-    //MethodDefinition tst at functions.ceylon (51:4-53:4)
-    function tst(x){
-        return x($$$cl15.Integer(0));
+    //MethodDefinition tst at functions.ceylon (65:4-67:4)
+    function tst$140(x$141){
+        return x$141($$$cl115.Integer(0));
     }
-    expect(tst(function(){var $=getObj1();return $.f.apply($,arguments)}),$$$cl15.getTrue(),$$$cl15.String("Reference to method",19));
-    expect(tst(function(){var $=getObj2();return $.defines.apply($,arguments)}),$$$cl15.getTrue(),$$$cl15.String("Reference to method from ceylon.language",40));
+    assert(tst$140((function(){var $=obj1$138;return $$$cl115.JsCallable($, $.f)})()),$$$cl115.String("Reference to method",19));
+    assert(tst$140((function(){var $=obj2$139;return $$$cl115.JsCallable($, $.defines)})()),$$$cl115.String("Reference to method from ceylon.language",40));
 }
 
-//MethodDefinition test at functions.ceylon (58:0-60:0)
-function test(){
-    testMethodReference();
+//MethodDefinition defParamTest at functions.ceylon (72:0-74:0)
+function defParamTest(i1$142,i2$143,i3$144){
+    if(i2$143===undefined){i2$143=i1$142.plus($$$cl115.Integer(1));}
+    if(i3$144===undefined){i3$144=i1$142.plus(i2$143);}
+    return $$$cl115.StringBuilder().appendAll($$$cl115.ArraySequence([$$$cl115.String("",0),i1$142.getString(),$$$cl115.String(",",1),i2$143.getString(),$$$cl115.String(",",1),i3$144.getString(),$$$cl115.String("",0)])).getString();
 }
-this.test=test;
+
+//ClassDefinition DefParamTest1 at functions.ceylon (75:0-77:0)
+function DefParamTest1(i1$145$, i2$146$, i3$147$, $$defParamTest1){
+    if ($$defParamTest1===undefined)$$defParamTest1=new DefParamTest1.$$;
+    if(i2$146$===undefined){i2$146$=i1$145$.plus($$$cl115.Integer(1));}
+    if(i3$147$===undefined){i3$147$=i1$145$.plus(i2$146$);}
+    
+    //AttributeDeclaration s at functions.ceylon (76:4-76:44)
+    $$defParamTest1.s$148$=$$$cl115.StringBuilder().appendAll($$$cl115.ArraySequence([$$$cl115.String("",0),i1$145$.getString(),$$$cl115.String(",",1),i2$146$.getString(),$$$cl115.String(",",1),i3$147$.getString(),$$$cl115.String("",0)])).getString();
+    return $$defParamTest1;
+}
+$$$cl115.initTypeProto(DefParamTest1,'functions.DefParamTest1',$$$cl115.IdentifiableObject);
+;(function($proto$){
+    
+    //AttributeDeclaration s at functions.ceylon (76:4-76:44)
+    $proto$.getS=function getS(){
+        return this.s$148$;
+    }
+    
+})(DefParamTest1.$$.prototype);
+
+//ClassDefinition DefParamTest2 at functions.ceylon (78:0-80:0)
+function DefParamTest2(i1$149$, i2$150$, i3$151$, $$defParamTest2){
+    if ($$defParamTest2===undefined)$$defParamTest2=new DefParamTest2.$$;
+    $$defParamTest2.i1$149$=i1$149$;
+    if(i2$150$===undefined){i2$150$=$$defParamTest2.i1$149$.plus($$$cl115.Integer(1));}
+    $$defParamTest2.i2$150$=i2$150$;
+    if(i3$151$===undefined){i3$151$=$$defParamTest2.i1$149$.plus($$defParamTest2.i2$150$);}
+    $$defParamTest2.i3$151$=i3$151$;
+    return $$defParamTest2;
+}
+$$$cl115.initTypeProto(DefParamTest2,'functions.DefParamTest2',$$$cl115.IdentifiableObject);
+;(function($proto$){
+    
+    //MethodDefinition f at functions.ceylon (79:4-79:55)
+    $proto$.f=function f(){
+        var $$defParamTest2=this;
+        return $$$cl115.StringBuilder().appendAll($$$cl115.ArraySequence([$$$cl115.String("",0),$$defParamTest2.i1$149$.getString(),$$$cl115.String(",",1),$$defParamTest2.i2$150$.getString(),$$$cl115.String(",",1),$$defParamTest2.i3$151$.getString(),$$$cl115.String("",0)])).getString();
+    }
+    
+})(DefParamTest2.$$.prototype);
+
+//ClassDefinition DefParamTest3 at functions.ceylon (81:0-85:0)
+function DefParamTest3($$defParamTest3){
+    if ($$defParamTest3===undefined)$$defParamTest3=new DefParamTest3.$$;
+    return $$defParamTest3;
+}
+$$$cl115.initTypeProto(DefParamTest3,'functions.DefParamTest3',$$$cl115.IdentifiableObject);
+;(function($proto$){
+    
+    //MethodDefinition f at functions.ceylon (82:4-84:4)
+    $proto$.f=function f(i1$152,i2$153,i3$154){
+        var $$defParamTest3=this;
+        if(i2$153===undefined){i2$153=i1$152.plus($$$cl115.Integer(1));}
+        if(i3$154===undefined){i3$154=i1$152.plus(i2$153);}
+        return $$$cl115.StringBuilder().appendAll($$$cl115.ArraySequence([$$$cl115.String("",0),i1$152.getString(),$$$cl115.String(",",1),i2$153.getString(),$$$cl115.String(",",1),i3$154.getString(),$$$cl115.String("",0)])).getString();
+    }
+    
+})(DefParamTest3.$$.prototype);
+
+//MethodDefinition testDefaultedParams at functions.ceylon (86:0-115:0)
+function testDefaultedParams(){
+    assert(defParamTest($$$cl115.Integer(1)).equals($$$cl115.String("1,2,3",5)),$$$cl115.String("defaulted parameters 1",22));
+    assert(defParamTest($$$cl115.Integer(1),$$$cl115.Integer(3)).equals($$$cl115.String("1,3,4",5)),$$$cl115.String("defaulted parameters 2",22));
+    assert(defParamTest($$$cl115.Integer(1),$$$cl115.Integer(3),$$$cl115.Integer(0)).equals($$$cl115.String("1,3,0",5)),$$$cl115.String("defaulted parameters 3",22));
+    assert((function (){var i1$142=$$$cl115.Integer(1);return defParamTest(i1$142,undefined,undefined)}()).equals($$$cl115.String("1,2,3",5)),$$$cl115.String("defaulted parameters named 1",28));
+    assert((function (){var i1$142=$$$cl115.Integer(1);var i2$143=$$$cl115.Integer(3);return defParamTest(i1$142,i2$143,undefined)}()).equals($$$cl115.String("1,3,4",5)),$$$cl115.String("defaulted parameters named 2",28));
+    assert((function (){var i1$142=$$$cl115.Integer(1);var i3$144=$$$cl115.Integer(0);return defParamTest(i1$142,undefined,i3$144)}()).equals($$$cl115.String("1,2,0",5)),$$$cl115.String("defaulted parameters named 3",28));
+    assert(DefParamTest1($$$cl115.Integer(1)).getS().equals($$$cl115.String("1,2,3",5)),$$$cl115.String("defaulted parameters class 1",28));
+    assert(DefParamTest1($$$cl115.Integer(1),$$$cl115.Integer(3)).getS().equals($$$cl115.String("1,3,4",5)),$$$cl115.String("defaulted parameters class 2",28));
+    assert(DefParamTest1($$$cl115.Integer(1),$$$cl115.Integer(3),$$$cl115.Integer(0)).getS().equals($$$cl115.String("1,3,0",5)),$$$cl115.String("defaulted parameters class 3",28));
+    assert((function (){var i1$145$=$$$cl115.Integer(1);return DefParamTest1(i1$145$,undefined,undefined)}()).getS().equals($$$cl115.String("1,2,3",5)),$$$cl115.String("defaulted parameters class named 1",34));
+    assert((function (){var i1$145$=$$$cl115.Integer(1);var i2$146$=$$$cl115.Integer(3);return DefParamTest1(i1$145$,i2$146$,undefined)}()).getS().equals($$$cl115.String("1,3,4",5)),$$$cl115.String("defaulted parameters class named 2",34));
+    assert((function (){var i1$145$=$$$cl115.Integer(1);var i3$147$=$$$cl115.Integer(0);return DefParamTest1(i1$145$,undefined,i3$147$)}()).getS().equals($$$cl115.String("1,2,0",5)),$$$cl115.String("defaulted parameters class named 3",34));
+    assert(DefParamTest2($$$cl115.Integer(1)).f().equals($$$cl115.String("1,2,3",5)),$$$cl115.String("defaulted parameters class2 1",29));
+    assert(DefParamTest2($$$cl115.Integer(1),$$$cl115.Integer(3)).f().equals($$$cl115.String("1,3,4",5)),$$$cl115.String("defaulted parameters class2 2",29));
+    assert(DefParamTest2($$$cl115.Integer(1),$$$cl115.Integer(3),$$$cl115.Integer(0)).f().equals($$$cl115.String("1,3,0",5)),$$$cl115.String("defaulted parameters class2 3",29));
+    assert((function (){var i1$149$=$$$cl115.Integer(1);return DefParamTest2(i1$149$,undefined,undefined)}()).f().equals($$$cl115.String("1,2,3",5)),$$$cl115.String("defaulted parameters class2 named 1",35));
+    assert((function (){var i1$149$=$$$cl115.Integer(1);var i2$150$=$$$cl115.Integer(3);return DefParamTest2(i1$149$,i2$150$,undefined)}()).f().equals($$$cl115.String("1,3,4",5)),$$$cl115.String("defaulted parameters class2 named 2",35));
+    assert((function (){var i1$149$=$$$cl115.Integer(1);var i3$151$=$$$cl115.Integer(0);return DefParamTest2(i1$149$,undefined,i3$151$)}()).f().equals($$$cl115.String("1,2,0",5)),$$$cl115.String("defaulted parameters class2 named 3",35));
+    
+    //AttributeDeclaration tst at functions.ceylon (108:4-108:31)
+    var tst$155=DefParamTest3();
+    assert(tst$155.f($$$cl115.Integer(1)).equals($$$cl115.String("1,2,3",5)),$$$cl115.String("defaulted method parameters 1",29));
+    assert(tst$155.f($$$cl115.Integer(1),$$$cl115.Integer(3)).equals($$$cl115.String("1,3,4",5)),$$$cl115.String("defaulted method parameters 2",29));
+    assert(tst$155.f($$$cl115.Integer(1),$$$cl115.Integer(3),$$$cl115.Integer(0)).equals($$$cl115.String("1,3,0",5)),$$$cl115.String("defaulted method parameters 3",29));
+    assert((function (){var i1$152=$$$cl115.Integer(1);return (function(){var $=tst$155;return $$$cl115.JsCallable($, $.f)})()(i1$152,undefined,undefined)}()).equals($$$cl115.String("1,2,3",5)),$$$cl115.String("defaulted method parameters named 1",35));
+    assert((function (){var i1$152=$$$cl115.Integer(1);var i2$153=$$$cl115.Integer(3);return (function(){var $=tst$155;return $$$cl115.JsCallable($, $.f)})()(i1$152,i2$153,undefined)}()).equals($$$cl115.String("1,3,4",5)),$$$cl115.String("defaulted method parameters named 2",35));
+    assert((function (){var i1$152=$$$cl115.Integer(1);var i3$154=$$$cl115.Integer(0);return (function(){var $=tst$155;return $$$cl115.JsCallable($, $.f)})()(i1$152,undefined,i3$154)}()).equals($$$cl115.String("1,2,0",5)),$$$cl115.String("defaulted method parameters named 3",35));
+}
+
+//MethodDefinition testGetterMethodDefinitions at functions.ceylon (117:0-126:0)
+function testGetterMethodDefinitions(){
+    
+    //ClassDefinition GetterTest at functions.ceylon (118:2-121:2)
+    function GetterTest$156($$getterTest$156){
+        if ($$getterTest$156===undefined)$$getterTest$156=new GetterTest$156.$$;
+        
+        //AttributeDeclaration i at functions.ceylon (119:4-119:25)
+        $$getterTest$156.i$157$=$$$cl115.Integer(0);
+        return $$getterTest$156;
+    }
+    $$$cl115.initTypeProto(GetterTest$156,'functions.testGetterMethodDefinitions.GetterTest',$$$cl115.IdentifiableObject);
+    ;(function($proto$){
+        
+        //AttributeDeclaration i at functions.ceylon (119:4-119:25)
+        $proto$.getI$157$=function getI$157$(){
+            return this.i$157$;
+        }
+        $proto$.setI$157$=function setI$157$(i$158){
+            this.i$157$=i$158; return i$158;
+        }
+        
+        //AttributeGetterDefinition x at functions.ceylon (120:4-120:35)
+        $proto$.getX=function getX(){
+            var $$getterTest$156=this;
+            return ($$getterTest$156.setI$157$($$getterTest$156.getI$157$().getSuccessor()),$$getterTest$156.getI$157$());
+        }
+        
+    })(GetterTest$156.$$.prototype);
+    
+    //AttributeDeclaration gt at functions.ceylon (122:2-122:25)
+    var gt$159=GetterTest$156();
+    assert(gt$159.getX().equals($$$cl115.Integer(1)),$$$cl115.String("getter defined as method 1",26));
+    assert(gt$159.getX().equals($$$cl115.Integer(2)),$$$cl115.String("getter defined as method 2",26));
+    assert(gt$159.getX().equals($$$cl115.Integer(3)),$$$cl115.String("getter defined as method 3",26));
+}
+exports.testGetterMethodDefinitions=testGetterMethodDefinitions;
+
+//MethodDefinition test at functions.ceylon (128:0-139:0)
+function test(){
+    helloWorld();
+    hello($$$cl115.String("test",4));
+    helloAll($$$cl115.ArraySequence([$$$cl115.String("Gavin",5),$$$cl115.String("Enrique",7),$$$cl115.String("Ivo",3)]));
+    assert(toString($$$cl115.Integer(5)).equals($$$cl115.String("5",1)),$$$cl115.String("toString(obj)",13));
+    assert(add($$$cl115.Float(1.5),$$$cl115.Float(2.5)).equals($$$cl115.Float(4.0)),$$$cl115.String("add(Float,Float)",16));
+    testMethodReference();
+    testDefaultedParams();
+    testGetterMethodDefinitions();
+    results();
+}
+exports.test=test;
+});
+}(typeof define==='function' && define.amd ? define : function (factory) {
+if (typeof exports!=='undefined') { factory(require, exports, module);
+} else { throw 'no module loader'; }
+}));
