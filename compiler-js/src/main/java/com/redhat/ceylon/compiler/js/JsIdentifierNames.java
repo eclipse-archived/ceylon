@@ -1,7 +1,9 @@
 package com.redhat.ceylon.compiler.js;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -26,6 +28,70 @@ public class JsIdentifierNames {
             uniqueID = 1;
         }
         return uniqueID;
+    }
+    
+    private static Set<String> reservedWords = new HashSet<String>(); 
+    
+    static {
+        //reservedWords.add("abstract");
+        reservedWords.add("boolean");
+        //reservedWords.add("break");
+        reservedWords.add("byte");
+        //reservedWords.add("case");
+        //reservedWords.add("catch");
+        reservedWords.add("char");
+        //reservedWords.add("class");
+        reservedWords.add("const");
+        //reservedWords.add("continue");
+        reservedWords.add("debugger");
+        reservedWords.add("default");
+        reservedWords.add("delete");
+        reservedWords.add("do");
+        reservedWords.add("double");
+        //reservedWords.add("else");
+        reservedWords.add("enum");
+        reservedWords.add("export");
+        reservedWords.add("extends");
+        reservedWords.add("false");
+        reservedWords.add("final");
+        //reservedWords.add("finally");
+        reservedWords.add("float");
+        //reservedWords.add("for");
+        //reservedWords.add("function");
+        reservedWords.add("goto");
+        //reservedWords.add("if");
+        reservedWords.add("implements");
+        //reservedWords.add("import");
+        //reservedWords.add("in");
+        reservedWords.add("instanceof");
+        reservedWords.add("int");
+        //reservedWords.add("interface");
+        reservedWords.add("long");
+        reservedWords.add("native");
+        reservedWords.add("new");
+        reservedWords.add("null");
+        reservedWords.add("package");
+        reservedWords.add("private");
+        reservedWords.add("protected");
+        reservedWords.add("public");
+        //reservedWords.add("return");
+        reservedWords.add("short");
+        reservedWords.add("static");
+        //reservedWords.add("super");
+        //reservedWords.add("switch");
+        reservedWords.add("synchronized");
+        //reservedWords.add("this");
+        //reservedWords.add("throw");
+        reservedWords.add("throws");
+        reservedWords.add("transient");
+        reservedWords.add("true");
+        //reservedWords.add("try");
+        reservedWords.add("typeof");
+        reservedWords.add("var");
+        //reservedWords.add("void");
+        reservedWords.add("volatile");
+        //reservedWords.add("while");
+        reservedWords.add("with");
     }
     
     public JsIdentifierNames(boolean prototypeStyle) {
@@ -144,7 +210,12 @@ public class JsIdentifierNames {
                 name = String.format(format, decl.getName(), getUID(decl));
             }
         } else {
-            name += nestingSuffix(decl);
+            String suffix = nestingSuffix(decl);
+            if (suffix.length() > 0) {
+                name += suffix;
+            } else if (!forGetterSetter && reservedWords.contains(name)) {
+                name = '$' + name;
+            }
         }
         return name;
     }
