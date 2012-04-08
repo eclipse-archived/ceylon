@@ -676,6 +676,23 @@ public class GenerateJsVisitor extends Visitor
         endLine();
 
         typeInitialization(that);
+        
+//        if (addToPrototype) {
+//            out("$proto$.", names.getter(d), "=");
+//        } else if (d.isShared()) {
+//            outerSelf(d);
+//            out(".", names.getter(d), "=");
+//        }
+//        out(function, names.getter(d), "()");
+//        beginBlock();
+//        out("return ");
+//        if (addToPrototype) {
+//            out("this.");
+//        }
+//        out(names.name(d), ";");
+//        endBlock();
+
+        addToPrototype(c, that.getClassBody().getStatements());
 
         if (!addToPrototype) {
             out("var ", names.name(d), "=",
@@ -683,13 +700,7 @@ public class GenerateJsVisitor extends Visitor
             endLine();
         }
 
-        if (addToPrototype) {
-            out("$proto$.", names.getter(d), "=");
-        } else if (d.isShared()) {
-            outerSelf(d);
-            out(".", names.getter(d), "=");
-        }
-        out(function, names.getter(d), "()");
+        out("var ", names.getter(d), "=function()");
         beginBlock();
         out("return ");
         if (addToPrototype) {
@@ -697,8 +708,15 @@ public class GenerateJsVisitor extends Visitor
         }
         out(names.name(d), ";");
         endBlock();
-
-        addToPrototype(c, that.getClassBody().getStatements());
+        if (addToPrototype || d.isShared()) {
+            if (addToPrototype) {
+                out("$proto$");
+            } else {
+                outerSelf(d);
+            }
+            out(".", names.getter(d), "=", names.getter(d), ";");
+            endLine();
+        }
     }
 
     private void superRef(Declaration d, Class sub, String parentSuffix) {

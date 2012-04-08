@@ -177,6 +177,42 @@ class OuterC2() {
     }
 }
 
+shared class NameTest() {
+    shared String x = "1"; 
+    shared class NameTest() {
+        shared String x = "2";
+        shared String f() {
+            class NameTest() {
+                shared String x = "3";
+                shared class NameTest() {
+                    shared String x = "4";
+                }
+                shared String f() { return x + this.NameTest().x; }
+            }
+            return outer.x + x + NameTest().f();
+        } 
+    }
+    shared String f() { return this.NameTest().f(); }
+}
+
+shared object nameTest {
+    shared String x = "1"; 
+    shared object nameTest {
+        shared String x = "2";
+        shared String f() {
+            object nameTest {
+                shared String x = "3";
+                shared object nameTest {
+                    shared String x = "4";
+                }
+                shared String f() { return x + this.nameTest.x; }
+            }
+            return outer.x + x + nameTest.f();
+        }
+    }
+    shared String f() { return this.nameTest.f(); }
+}
+
 shared void test() {
     outr("Hello");
     assert(Holder("ok").get().string=="ok","holder(ok)");
@@ -200,5 +236,7 @@ shared void test() {
     assert(outerf()=="outerf.A.tst()", "");
     assert(OuterC2().tst()=="OuterC2.A.tst()", "");
     Outer("Hello");
+    assert(NameTest().f()=="1234", "Nested class with same name");
+    assert(nameTest.f()=="1234", "Nested object with same name");
     results();
 }
