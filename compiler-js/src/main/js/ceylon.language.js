@@ -23,6 +23,18 @@ function initType(type, typeName) {
         for (var $ in superTypes) {cons.T$all[$] = superTypes[$]}
     }
 }
+function initTypeProto(type, typeName) {
+    initType.apply(this, arguments);
+    var args = [].slice.call(arguments, 2);
+    args.unshift(type);
+    inheritProto.apply(this, args);
+}
+function initTypeProtoI(type, typeName) {
+    initType.apply(this, arguments);
+    var args = [].slice.call(arguments, 2);
+    args.unshift(type);
+    inheritProtoI.apply(this, args);
+}
 function initExistingType(type, cons, typeName) {
     type.$$ = cons;
     cons.T$name = typeName;
@@ -42,7 +54,7 @@ function inheritProto(type, superType) {
         proto[$] = $m;
         if($.charAt($.length-1)!=='$') {proto[$+suffix] = $m}
     }
-    for (var i=3; i<arguments.length; ++i) {
+    for (var i=2; i<arguments.length; ++i) {
         superProto = arguments[i].$$.prototype;
         for (var $ in superProto) {proto[$] = superProto[$]}
     }
@@ -55,6 +67,9 @@ function inheritProtoI(type) {
     }
 }
 exports.initType=initType;
+exports.initTypeProto=initTypeProto;
+exports.initTypeProtoI=initTypeProtoI;
+exports.initExistingType=initExistingType;
 exports.inheritProto=inheritProto;
 exports.inheritProtoI=inheritProtoI;
 
@@ -65,7 +80,7 @@ initType(Void, 'ceylon.language.Void');
 function Object$(wat) {
     return wat;
 }
-initType(Object$, 'ceylon.language.Object', Void);
+initTypeProto(Object$, 'ceylon.language.Object', Void);
 var Object$proto = Object$.$$.prototype;
 Object$proto.getString=function() { String$(Object.prototype.toString.apply(this)) };
 Object$proto.toString=function() { return this.getString().value };
@@ -75,8 +90,7 @@ function IdentifiableObject(obj) {
     obj.identifiableObjectID=Integer(identifiableObjectID++);
     return obj;
 }
-initType(IdentifiableObject, 'ceylon.language.IdentifiableObject', Object$);
-inheritProto(IdentifiableObject, Object$, '$Object$');
+initTypeProto(IdentifiableObject, 'ceylon.language.IdentifiableObject', Object$);
 var IdentifiableObject$proto = IdentifiableObject.$$.prototype;
 IdentifiableObject$proto.getHash = function() { return this.identifiableObjectID; }
 IdentifiableObject$proto.getString = function() { return String$(className(this).value + "@" + this.getHash().value); }
@@ -189,7 +203,7 @@ exports.Invertable=Invertable;
 function Numeric(wat) {
     return wat;
 }
-initType(Numeric, 'ceylon.language.Numeric', Number$, Comparable, Summable, Invertable);
+initTypeProtoI(Numeric, 'ceylon.language.Numeric', Number$, Comparable, Summable, Invertable);
 exports.Numeric=Numeric;
 function Ordinal(wat) {
     return wat;
@@ -199,7 +213,7 @@ exports.Ordinal=Ordinal;
 function Integral(wat) {
     return wat;
 }
-initType(Integral, 'ceylon.language.Integral', Numeric, Ordinal);
+initTypeProtoI(Integral, 'ceylon.language.Integral', Numeric, Ordinal);
 exports.Integral=Integral;
 
 function Exception(description, cause, wat) {
@@ -208,8 +222,7 @@ function Exception(description, cause, wat) {
     wat.cause = cause;
     return wat;
 }
-initType(Exception, 'ceylon.language.Exception', IdentifiableObject);
-inheritProto(Exception, IdentifiableObject, '$IdentifiableObject$');
+initTypeProto(Exception, 'ceylon.language.Exception', IdentifiableObject);
 var Exception$proto = Exception.$$.prototype;
 Exception$proto.getCause = function() {return this.cause;}
 Exception$proto.getMessage = function() {
@@ -239,7 +252,7 @@ function getNull() { return null }
 //function getFalse() { return $false; }
 function Boolean$(value) {return Boolean(value)}
 initExistingType(Boolean$, Boolean, 'ceylon.language.Boolean', IdentifiableObject);
-inheritProto(Boolean$, IdentifiableObject, '$IdentifiableObject$');
+inheritProto(Boolean$, IdentifiableObject);
 Boolean.prototype.equals = function(other) {return other.constructor===Boolean && other==this;}
 var trueString = String$("true", 4);
 var falseString = String$("false", 5);
@@ -249,8 +262,7 @@ function getFalse() {return false}
 var $true = true;
 var $false = false;
 function Finished() {}
-initType(Finished, 'ceylon.language.Finished', IdentifiableObject);
-inheritProto(Finished, IdentifiableObject, '$IdentifiableObject$');
+initTypeProto(Finished, 'ceylon.language.Finished', IdentifiableObject);
 var $finished = new Finished.$$;
 $finished.string = String$("exhausted", 9);
 $finished.getString = function() { return this.string; }
@@ -261,8 +273,7 @@ function Comparison(name) {
     that.name = String$(name);
     return that;
 }
-initType(Comparison, 'ceylon.language.Comparison', IdentifiableObject);
-inheritProto(Comparison, IdentifiableObject, '$IdentifiableObject$');
+initTypeProto(Comparison, 'ceylon.language.Comparison', IdentifiableObject);
 var Comparison$proto = Comparison.$$.prototype;
 Comparison$proto.getString = function() { return this.name; }
 
@@ -283,10 +294,7 @@ function Range(first, last) {
     that.size = Integer(index+1);
     return that;
 }
-initType(Range, 'ceylon.language.Range', Object$, Sequence, Category);
-inheritProto(Range, Object$, '$Object$');
-inheritProto(Range, Sequence, '$Sequence$');
-inheritProto(Range, Category, '$Category$');
+initTypeProto(Range, 'ceylon.language.Range', Object$, Sequence, Category);
 var Range$proto = Range.$$.prototype;
 Range$proto.getFirst = function() { return this.first; }
 Range$proto.getLast = function() { return this.last; }
@@ -407,8 +415,7 @@ function RangeIterator(range) {
     that.current = range.getFirst();
     return that;
 }
-initType(RangeIterator, 'ceylon.language.RangeIterator', IdentifiableObject, Iterator);
-inheritProto(RangeIterator, IdentifiableObject, '$IdentifiableObject$');
+initTypeProto(RangeIterator, 'ceylon.language.RangeIterator', IdentifiableObject, Iterator);
 var RangeIterator$proto = RangeIterator.$$.prototype;
 RangeIterator$proto.next = function() {
     var rval = this.current;
@@ -431,8 +438,7 @@ function Entry(key, item) {
     that.item = item;
     return that;
 }
-initType(Entry, 'ceylon.language.Entry', Object$);
-inheritProto(Entry, Object$, '$Object$');
+initTypeProto(Entry, 'ceylon.language.Entry', Object$);
 var Entry$proto = Entry.$$.prototype;
 Entry$proto.getString = function() {
     return String$(this.key.getString().value + "->" + this.item.getString().value);

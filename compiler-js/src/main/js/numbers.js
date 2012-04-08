@@ -11,8 +11,7 @@ function Integer(value) {
     that.value = value;
     return that;
 }
-initType(Integer, 'ceylon.language.Integer', Object$, Castable, Integral, Numeric);
-inheritProto(Integer, Object$, '$Object$');
+initTypeProto(Integer, 'ceylon.language.Integer', Object$, Castable, Integral, Numeric);
 var Integer$proto = Integer.$$.prototype;
 Integer$proto.getString = function() { return String$(this.value.toString()) }
 Integer$proto.plus = function(other) { return Integer(this.value+other.value) }
@@ -82,8 +81,7 @@ function Float(value) {
     that.value = value;
     return that;
 }
-initType(Float, 'ceylon.language.Float', Object$, Castable, Numeric);
-inheritProto(Float, Object$, '$Object$');
+initTypeProto(Float, 'ceylon.language.Float', Object$, Castable, Numeric);
 var Float$proto = Float.$$.prototype;
 Float$proto.getString = function() { return String$(this.value.toString()) }
 Float$proto.plus = function(other) { return Float(this.value+other.value) }

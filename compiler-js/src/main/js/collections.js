@@ -12,7 +12,7 @@ var exports,Container,$finished,$false,$true,Cloneable,smaller,larger,Correspond
 function Sized(wat) {
     return wat;
 }
-initType(Sized, 'ceylon.language.Sized', Container);
+initTypeProtoI(Sized, 'ceylon.language.Sized', Container);
 Sized.$$.prototype.getEmpty = function() {
     return Boolean$(this.getSize().value === 0);
 }
@@ -21,7 +21,7 @@ exports.Sized=Sized;
 function Iterable(wat) {
     return wat;
 }
-initType(Iterable, 'ceylon.language.Iterable', Container);
+initTypeProtoI(Iterable, 'ceylon.language.Iterable', Container);
 Iterable.$$.prototype.getEmpty = function() {
     return Boolean$(this.getIterator().next() === $finished);
 }
@@ -58,9 +58,7 @@ exports.Iterator=Iterator;
 function Collection(wat) {
     return wat;
 }
-initType(Collection, 'ceylon.language.Collection', Iterable, Sized, Category, Cloneable);
-inheritProto(Collection, Sized, '$Sized$');
-inheritProto(Collection, Category, '$Category$');
+initTypeProtoI(Collection, 'ceylon.language.Collection', Iterable, Sized, Category, Cloneable);
 var Collection$proto = Collection.$$.prototype;
 Collection$proto.contains = function(obj) {
     var iter = this.getIterator();
@@ -88,8 +86,7 @@ exports.Collection=Collection;
 function FixedSized(wat) {
     return wat;
 }
-initType(FixedSized, 'ceylon.language.FixedSized', Collection);
-inheritProto(FixedSized, Collection, '$Collection$');
+initTypeProtoI(FixedSized, 'ceylon.language.FixedSized', Collection);
 var FixedSized$proto = FixedSized.$$.prototype;
 FixedSized$proto.getFirst = function() {
     var e = this.getIterator().next();
@@ -100,9 +97,7 @@ exports.FixedSized=FixedSized;
 function Some(wat) {
     return wat;
 }
-initType(Some, 'ceylon.language.Some', FixedSized);
-inheritProto(Some, FixedSized, '$FixedSized$');
-//we can skip inheritProto because we override the only inherited method
+initTypeProtoI(Some, 'ceylon.language.Some', FixedSized);
 var $Some = Some.$$;
 $Some.prototype.getFirst = function() {
     var e = this.getIterator().next();
@@ -115,9 +110,7 @@ exports.Some=Some;
 function None(wat) {
     return wat;
 }
-initType(None, 'ceylon.language.None', FixedSized);
-inheritProto(Some, FixedSized, '$FixedSized$');
-//we can skip inheritProto because we override the only inherited method
+initTypeProtoI(None, 'ceylon.language.None', FixedSized);
 var None$proto = None.$$.prototype;
 None$proto.getFirst = function() { return null; }
 None$proto.getIterator = function() { return emptyIterator; }
@@ -134,9 +127,7 @@ exports.Ranged=Ranged;
 function List(wat) {
     return wat;
 }
-initType(List, 'ceylon.language.List', Collection, Correspondence, Ranged, Cloneable);
-inheritProto(List, Collection, '$Collection$');
-inheritProto(List, Correspondence, '$Correspondence$');
+initTypeProtoI(List, 'ceylon.language.List', Collection, Correspondence, Ranged, Cloneable);
 var List$proto = List.$$.prototype;
 List$proto.getSize = function() {
     var li = this.getLastIndex();
@@ -208,7 +199,7 @@ function ListIterator(list) {
     }
     return that;
 }
-initType(ListIterator, 'ceylon.language.ListIterator', Iterator);
+initTypeProtoI(ListIterator, 'ceylon.language.ListIterator', Iterator);
 ListIterator.$$.prototype.next = function() {
     if (this.index <= this.lastIndex) {
         return this.list.item(Integer(this.index++));
@@ -219,9 +210,7 @@ ListIterator.$$.prototype.next = function() {
 function Map(wat) {
     return wat;
 }
-initType(Map, 'ceylon.language.Map', Collection, Correspondence, Cloneable);
-inheritProto(Map, Collection, '$Collection$');
-inheritProto(Map, Correspondence, '$Correspondence$');
+initTypeProtoI(Map, 'ceylon.language.Map', Collection, Correspondence, Cloneable);
 var Map$proto = Map.$$.prototype;
 Map$proto.count = function(elem) {
     if (isOfType(elem,'ceylon.language.Entry') === $true) {
@@ -252,8 +241,7 @@ exports.Map=Map;
 function Set(wat) {
     return wat;
 }
-initType(Set, 'ceylon.language.Set', Collection, Cloneable);
-inheritProto(Set, Collection, '$Collection$');
+initTypeProtoI(Set, 'ceylon.language.Set', Collection, Cloneable);
 var Set$proto = Set.$$.prototype;
 Set$proto.count = function(elem) {
     return this.contains(elem) === $true ? Integer(1) : Integer(0);
@@ -297,10 +285,7 @@ function Array$() {
     var that = new Array$.$$;
     return that;
 }
-initType(Array$, 'ceylon.language.Array', Object$, List, FixedSized, Cloneable, Ranged);
-inheritProto(Array$, Object$, '$Object$');
-inheritProto(Array$, List, '$List$');
-inheritProto(Array$, FixedSized, '$FixedSized$');
+initTypeProto(Array$, 'ceylon.language.Array', Object$, List, FixedSized, Cloneable, Ranged);
 exports.Array=Array$;
 
 function Empty() {
@@ -308,9 +293,7 @@ function Empty() {
     that.value = [];
     return that;
 }
-initType(Empty, 'ceylon.language.Empty', List, None, Ranged, Cloneable);
-inheritProto(Empty, List, '$List$');
-inheritProto(Empty, None, '$None$');
+initTypeProtoI(Empty, 'ceylon.language.Empty', List, None, Ranged, Cloneable);
 var Empty$proto = Empty.$$.prototype;
 Empty$proto.getEmpty = function() { return $true; }
 Empty$proto.defines = function(x) { return $false; }
@@ -336,8 +319,7 @@ function EmptyIterator() {
     var that = new EmptyIterator.$$;
     return that;
 }
-initType(EmptyIterator, 'ceylon.language.EmptyIterator', IdentifiableObject, Iterator);
-inheritProto(EmptyIterator, IdentifiableObject, '$IdentifiableObject$');
+initTypeProto(EmptyIterator, 'ceylon.language.EmptyIterator', IdentifiableObject, Iterator);
 var EmptyIterator$proto = EmptyIterator.$$.prototype;
 EmptyIterator$proto.next = function() { return $finished; }
 var emptyIterator=EmptyIterator();
@@ -349,9 +331,7 @@ function EmptyArray() {
     var that = new EmptyArray.$$;
     return that;
 }
-initType(EmptyArray, 'ceylon.language.EmptyArray', Array$, None);
-inheritProto(EmptyArray, Array$, '$Array$');
-inheritProto(EmptyArray, None, '$None$');
+initTypeProto(EmptyArray, 'ceylon.language.EmptyArray', Array$, None);
 EmptyArray.$$.prototype.setItem = function(i,e) {}
 EmptyArray.$$.prototype.item = function(x) { return null; }
 exports.EmptyArray=EmptyArray;
@@ -363,9 +343,7 @@ function ArrayList(items) {
     that.lastIndex=new Integer(items.length-1);
     return that;
 }
-initType(ArrayList, 'ceylon.language.ArrayList', Array$, List);
-inheritProto(ArrayList, Array$, '$Array$');
-inheritProto(ArrayList, List, '$List$');
+initTypeProto(ArrayList, 'ceylon.language.ArrayList', Array$, List);
 var ArrayList$proto = ArrayList.$$.prototype;
 ArrayList$proto.getSize = function() { return this.size; }
 ArrayList$proto.setItem = function(idx,elem) {

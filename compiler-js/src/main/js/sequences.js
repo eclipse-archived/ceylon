@@ -14,9 +14,7 @@ var IdentifiableObject,Category,Sized;//IGNORE
 function Sequence($$sequence) {
     return $$sequence;
 }
-initType(Sequence, 'ceylon.language.Sequence', List, Some, Cloneable, Ranged);
-inheritProto(Sequence, List, '$List$');
-inheritProto(Sequence, Some, '$Some$');
+initTypeProtoI(Sequence, 'ceylon.language.Sequence', List, Some, Cloneable, Ranged);
 var Sequence$proto = Sequence.$$.prototype;
 Sequence$proto.getLast = function() {
     var last = this.item(this.getLastIndex());
@@ -30,8 +28,7 @@ function ArraySequence(value) {
     that.value = value;
     return that;
 }
-initType(ArraySequence, 'ceylon.language.ArraySequence', IdentifiableObject, Sequence);
-inheritProto(ArraySequence, IdentifiableObject, '$IdentifiableObject$', Sequence);
+initTypeProto(ArraySequence, 'ceylon.language.ArraySequence', IdentifiableObject, Sequence);
 var ArraySequence$proto = ArraySequence.$$.prototype;
 ArraySequence$proto.item = function(index) {
     var result = this.value[index.value];
@@ -98,8 +95,7 @@ function TypeCategory(seq, type) {
     that.seq = seq;
     return that;
 }
-initType(TypeCategory, 'ceylon.language.TypeCategory', IdentifiableObject, Category);
-inheritProto(TypeCategory, IdentifiableObject, '$IdentifiableObject$', Category);
+initTypeProto(TypeCategory, 'ceylon.language.TypeCategory', IdentifiableObject, Category);
 var TypeCategory$proto = TypeCategory.$$.prototype;
 TypeCategory$proto.contains = function(k) {
     return Boolean$(isOfType(k, this.type) === $true && this.seq.defines(k) === $true);
@@ -110,8 +106,7 @@ function SequenceBuilder() {
     that.seq = [];
     return that;
 }
-initType(SequenceBuilder, 'ceylon.language.SequenceBuilder', IdentifiableObject, Sized);
-inheritProto(SequenceBuilder, IdentifiableObject, '$IdentifiableObject$', Sized);
+initTypeProto(SequenceBuilder, 'ceylon.language.SequenceBuilder', IdentifiableObject, Sized);
 var SequenceBuilder$proto = SequenceBuilder.$$.prototype;
 SequenceBuilder$proto.getSequence = function() { return ArraySequence(this.seq); }
 SequenceBuilder$proto.append = function(e) { this.seq.push(e); }
@@ -130,8 +125,7 @@ function SequenceAppender(other) {
 	that.appendAll(other);
 	return that;
 }
-initType(SequenceAppender, 'ceylon.language.SequenceAppender', SequenceBuilder);
-inheritProto(SequenceAppender, SequenceBuilder, '$SequenceBuilder$');
+initTypeProto(SequenceAppender, 'ceylon.language.SequenceAppender', SequenceBuilder);
 
 function Singleton(elem) {
     var that = new Singleton.$$;
@@ -139,8 +133,7 @@ function Singleton(elem) {
     that.elem = elem;
     return that;
 }
-initType(Singleton, 'ceylon.language.Singleton', Object$, Sequence);
-inheritProto(Singleton, Object$, '$Object$', Sequence);
+initTypeProto(Singleton, 'ceylon.language.Singleton', Object$, Sequence);
 var Singleton$proto = Singleton.$$.prototype;
 Singleton$proto.getString = function() { return String$("{ " + this.elem.getString().value + " }") }
 Singleton$proto.item = function(index) {
@@ -172,8 +165,7 @@ function SingletonIterator(elem) {
     that.done = false;
     return that;
 }
-initType(SingletonIterator, 'ceylon.language.SingletonIterator', IdentifiableObject, Iterator);
-inheritProto(SingletonIterator, IdentifiableObject, '$IdentifiableObject$');
+initTypeProto(SingletonIterator, 'ceylon.language.SingletonIterator', IdentifiableObject, Iterator);
 var $SingletonIterator$proto = SingletonIterator.$$.prototype;
 $SingletonIterator$proto.next = function() {
     if (this.done) {
