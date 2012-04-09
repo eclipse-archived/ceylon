@@ -241,6 +241,32 @@ shared void strings() {
     value s1 = "as it should";
     value interp = "String part " 1 " interpolation " 2 " works" s1 "";
     assert(interp=="String part 1 interpolation 2 worksas it should", "String Interpolation");
-    assert("a
-            b".size==3, "multiline string");
+
+    //Lines
+    value mls = "a
+                 b";
+    value lines = mls.lines.iterator;
+    assert(mls.size==3, "multiline.size==3");
+    if (is String _s=lines.next()) {
+        assert(_s=="a", "multiline.lines[0]=='a'");
+    } else { fail("multiline.lines[0]"); }
+    if (is String _s=lines.next()) {
+        assert(_s=="b", "multiline.lines[1]=='b'");
+    } else { fail("multiline.lines[1]"); }
+    assert(mls.normalized=="a b", "multiline.normalized");
+
+    //Occurrences
+    value occurs = hello.occurrences("l").iterator;
+    if (is Integer p=occurs.next()) {
+        assert(p==2, "occurrences[0]");
+    } else { fail("occurrences 1"); }
+    if (is Integer p=occurs.next()) {
+        assert(p==3, "occurrences[1]");
+    } else { fail("occurrences 2"); }
+    if (!is Finished occurs.next()) {
+        fail("occurrences 3");
+    }
+    if (!is Finished hello.occurrences("X").iterator.next()) {
+        fail("occurrences 4");
+    }
 }
