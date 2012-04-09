@@ -85,6 +85,11 @@ class AssignTest() {
     assign y { x := y; }
 }
 
+class Issue50() {
+    shared String z;
+    z = "ok";
+}
+
 shared void test() {
     value c = Counter(0);
     assert(c.count==0,"counter 1");
@@ -99,5 +104,6 @@ shared void test() {
     assert(at.x==5, "assign to member");
     at.y := 2;
     assert(at.y==2, "assign using setter");
+    assert(Issue50().z=="ok", "Issue #50");
     results();
 }

@@ -1394,11 +1394,10 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(SpecifierStatement that) {
         BaseMemberExpression bme = (Tree.BaseMemberExpression) that.getBaseMemberExpression();
-        qualify(that, bme.getDeclaration());
+        if (prototypeStyle) {
+            qualify(that, bme.getDeclaration());
+        }
         String svar = names.name(bme.getDeclaration());
-        //    if (!(prototypeStyle && bme.getDeclaration().isClassOrInterfaceMember())) {
-        //        out("$");
-        //    }
         out(svar, "=");
         that.getSpecifierExpression().visit(this);
     }
