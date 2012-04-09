@@ -231,7 +231,7 @@ String$proto.firstCharacterOccurrence = function(subc) {
         if (((cp&0xfc00) === 0xd800) && i<this.value.length) {
             cp = (cp<<10) + this.value.charCodeAt(i++) - 0x35fdc00;
         }
-        if (cp === subc.value) {return Integer(count)}
+        if (cp === subc.value) {return Integer(count);}
     }
     this.codePoints = count;
     return null;
@@ -243,7 +243,7 @@ String$proto.lastCharacterOccurrence = function(subc) {
            cp = (this.value.charCodeAt(i--)<<10) + cp - 0x35fdc00;
         }
         if (cp === subc.value) {
-            if (this.codePoints === undefined) {this.codePoints = countCodepoints(this.value)}
+            if (this.codePoints === undefined) {this.codePoints = countCodepoints(this.value);}
             return Integer(this.codePoints - count - 1);
         }
     }
@@ -335,6 +335,21 @@ String$proto.repeat = function(times) {
         sb.append(this);
     }
     return sb.getString();
+}
+String$proto.getLines = function() {
+    return this.split(String$("\n", 1), true);
+}
+String$proto.occurrences = function(sub) {
+    if (sub.value.length == 0) {return Integer(0)}
+    var ocs = [];
+    var bound = this.value.length - sub.value.length;
+    for (var i=0, count=0; i<=bound; ++count) {
+        if (cmpSubString(this.value, sub.value, i) === $true) {
+            ocs.push(Integer(count));
+            i+=sub.value.length;
+        } else if ((this.value.charCodeAt(i++)&0xfc00) === 0xd800) {++i;}
+    }
+    return ocs.length > 0 ? ArrayList(ocs) : $empty;
 }
 
 function StringIterator(string) {
