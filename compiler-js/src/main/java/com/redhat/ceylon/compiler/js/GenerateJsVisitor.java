@@ -1518,26 +1518,26 @@ public class GenerateJsVisitor extends Visitor
         out(";");
     }
 
-    @Override
-    public void visit(Expression that) {
-        if (that.getTerm() instanceof QualifiedMemberOrTypeExpression) {
-            QualifiedMemberOrTypeExpression term = (QualifiedMemberOrTypeExpression) that.getTerm();
-            // References to methods of types from other packages always need
-            // special treatment, even if prototypeStyle==false, because they
-            // may have been generated in prototype style. In particular,
-            // ceylon.language is always in prototype style.
-            if ((term.getDeclaration() instanceof Functional)
-                    && (prototypeStyle || !declaredInThisPackage(term.getDeclaration()))) {
-                if (term.getMemberOperator() instanceof SpreadOp) {
-                    generateSpread(term);
-                } else {
-                    generateCallable(term, names.name(term.getDeclaration()));
-                }
-                return;
-            }
-        }
-        super.visit(that);
-    }
+//    @Override
+//    public void visit(Expression that) {
+//        if (that.getTerm() instanceof QualifiedMemberOrTypeExpression) {
+//            QualifiedMemberOrTypeExpression term = (QualifiedMemberOrTypeExpression) that.getTerm();
+//            // References to methods of types from other packages always need
+//            // special treatment, even if prototypeStyle==false, because they
+//            // may have been generated in prototype style. In particular,
+//            // ceylon.language is always in prototype style.
+//            if ((term.getDeclaration() instanceof Functional)
+//                    && (prototypeStyle || !declaredInThisPackage(term.getDeclaration()))) {
+//                if (term.getMemberOperator() instanceof SpreadOp) {
+//                    generateSpread(term);
+//                } else {
+//                    generateCallable(term, names.name(term.getDeclaration()));
+//                }
+//                return;
+//            }
+//        }
+//        super.visit(that);
+//    }
 
     @Override
     public void visit(Return that) {
