@@ -468,6 +468,16 @@ public final class String
         return new Tokens(value, delims, !discardSeparators);
     }
 
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.String>")
+    public Iterable<? extends String> getLines() {
+        return split(instance("\n"), true);
+    }
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
+    public Iterable<? extends Integer> occurrences(
+            @Name("substring") java.lang.String substring) {
+        return new Occurs(value, substring);
+    }
+
     private static final class Tokens implements Iterable<String> {
         private final java.lang.String str;
         private final java.lang.String delims;
@@ -501,6 +511,46 @@ public final class String
             }
             
             return new TokenIterator(new StringTokenizer(str, delims, keepSeparators));
+        }
+
+        @Override
+        public boolean getEmpty() {
+            return getIterator().next() == exhausted.getExhausted();
+        }
+
+        /*@Override
+        public String getFirst() {
+            java.lang.Object result = getIterator().next();
+            return (String) ((result != exhausted.getExhausted()) ? result : null);
+        }*/
+    }
+
+    private static final class Occurs implements Iterable<Integer> {
+        private final java.lang.String str;
+        private final java.lang.String oc;
+        
+        public Occurs(java.lang.String str, java.lang.String oc) {
+            this.str = str;
+            this.oc = oc;
+        }
+
+        @Override
+        public Iterator<? extends Integer> getIterator() {
+            class OccurrenceIterator implements Iterator<Integer> {
+                private int pos=0;
+
+                @Override
+                public java.lang.Object next() {
+                    int idx = str.indexOf(oc, pos);
+                    if (idx >= pos) {
+                        pos = idx+oc.length();
+                        return Integer.instance(idx);
+                    }
+                    return exhausted.getExhausted();
+                }
+            }
+            
+            return new OccurrenceIterator();
         }
 
         @Override
