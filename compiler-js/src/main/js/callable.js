@@ -22,7 +22,7 @@ function JsCallable(o,f) {
         return f.apply(o,al);
     };
     c.getString = function() { return String$('ceylon.language.Callable'); }
-    initType(c, 'ceylon.language.JsCallable', Callable);
+    initTypeProtoI(c, 'ceylon.language.JsCallable', Callable);
     return c;
 }
 
@@ -43,7 +43,7 @@ function JsCallableList(value) {
         return ArraySequence(rval);
     };
     c.getString = function() { return String$('ceylon.language.Callable[]'); }
-    initType(c, 'ceylon.language.JsCallableList', Callable);
+    initTypeProtoI(c, 'ceylon.language.JsCallableList', Callable);
     return c;
 }
 

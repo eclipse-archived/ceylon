@@ -15,9 +15,8 @@ function String$(value,size) {
     that.codePoints = (size===undefined) ? countCodepoints(value) : size;
     return that;
 }
-initType(String$, 'ceylon.language.String', Object$, List, Comparable, Ranged, FixedSized,
+initTypeProto(String$, 'ceylon.language.String', Object$, List, Comparable, Ranged, FixedSized,
     Summable, Castable, Cloneable);
-inheritProto(String$, Object$, '$Object$');
 var String$proto = String$.$$.prototype;
 String$proto.getString = function() { return this }
 String$proto.toString = function() { return this.value }
@@ -344,8 +343,7 @@ function StringIterator(string) {
     that.index = 0;
     return that;
 }
-initType(StringIterator, 'ceylon.language.StringIterator', IdentifiableObject, Iterator);
-inheritProto(StringIterator, IdentifiableObject, '$IdentifiableObject$');
+initTypeProto(StringIterator, 'ceylon.language.StringIterator', IdentifiableObject, Iterator);
 var StringIterator$proto = StringIterator.$$.prototype;
 StringIterator$proto.next = function() {
     if (this.index >= this.string.length) { return $finished }
@@ -382,8 +380,7 @@ function Character(value) {
     that.value = value;
     return that;
 }
-initType(Character, 'ceylon.language.Character', Object$, Comparable);
-inheritProto(Character, Object$, '$Object$');
+initTypeProto(Character, 'ceylon.language.Character', Object$, Comparable);
 var Character$proto = Character.$$.prototype;
 Character$proto.getString = function() { return String$(codepointToString(this.value)) }
 Character$proto.equals = function(other) {
@@ -478,8 +475,7 @@ function StringBuilder() {
     that.value = "";
     return that;
 }
-initType(StringBuilder, 'ceylon.language.StringBuilder', IdentifiableObject);
-inheritProto(StringBuilder, IdentifiableObject, '$IdentifiableObject$');
+initTypeProto(StringBuilder, 'ceylon.language.StringBuilder', IdentifiableObject);
 var StringBuilder$proto = StringBuilder.$$.prototype;
 StringBuilder$proto.getString = function() { return String$(this.value); }
 StringBuilder$proto.append = function(s) {

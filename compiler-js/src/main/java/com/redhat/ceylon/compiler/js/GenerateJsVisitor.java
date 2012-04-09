@@ -312,7 +312,7 @@ public class GenerateJsVisitor extends Visitor
     private void addInterfaceToPrototype(ClassOrInterface type, InterfaceDefinition interfaceDef) {
         interfaceDefinition(interfaceDef);
         Interface d = interfaceDef.getDeclarationModel();
-        out("$proto$.", names.name(d), "=", names.name(d), ";");
+        out(names.self(type), ".", names.name(d), "=", names.name(d), ";");
         endLine();
     }
 
@@ -338,8 +338,7 @@ public class GenerateJsVisitor extends Visitor
         endBlock();
         share(d);
 
-        addTypeInfo(that);
-        copyMembersToPrototype(d, null, that.getSatisfiedTypes());
+        typeInitialization(that);
 
         addToPrototype(d, that.getInterfaceBody().getStatements());
     }
@@ -375,7 +374,7 @@ public class GenerateJsVisitor extends Visitor
     private void addClassToPrototype(ClassOrInterface type, ClassDefinition classDef) {
         classDefinition(classDef);
         Class d = classDef.getDeclarationModel();
-        out("$proto$.", names.name(d), "=", names.name(d), ";");
+        out(names.self(type), ".", names.name(d), "=", names.name(d), ";");
         endLine();
     }
 
@@ -419,8 +418,7 @@ public class GenerateJsVisitor extends Visitor
         endBlock();
         share(d);
 
-        addTypeInfo(that);
-        copyMembersToPrototype(d, that.getExtendedType(), that.getSatisfiedTypes());
+        typeInitialization(that);
 
         addToPrototype(d, that.getClassBody().getStatements());
     }
@@ -443,7 +441,7 @@ public class GenerateJsVisitor extends Visitor
                 if (declaredInCL(parentTypeDecl)) {
                     return;
                 }
-                parentSuffix = names.memberSuffix(parentTypeDecl);
+                parentSuffix = names.typeSuffix(parentTypeDecl);
             }
 
             final List<Declaration> decs = new ArrayList<Declaration>();
@@ -494,38 +492,55 @@ public class GenerateJsVisitor extends Visitor
             }
     }
 
-    private void addTypeInfo(Tree.Declaration type) {
+    private void typeInitialization(Tree.Declaration type) {
 
         ExtendedType extendedType = null;
         SatisfiedTypes satisfiedTypes = null;
+        boolean isInterface = false;
         if (type instanceof ClassDefinition) {
             ClassDefinition classDef = (ClassDefinition) type;
             extendedType = classDef.getExtendedType();
             satisfiedTypes = classDef.getSatisfiedTypes();
         } else if (type instanceof InterfaceDefinition) {
             satisfiedTypes = ((InterfaceDefinition) type).getSatisfiedTypes();
+            isInterface = true;
         } else if (type instanceof ObjectDefinition) {
             ObjectDefinition objectDef = (ObjectDefinition) type;
             extendedType = objectDef.getExtendedType();
             satisfiedTypes = objectDef.getSatisfiedTypes();
+        }
+        
+        boolean inheritProto = prototypeStyle || (extendedType == null)
+                || !declaredInThisPackage(extendedType.getType().getDeclarationModel());       
+        if (!inheritProto && (satisfiedTypes != null)) {
+            for (SimpleType st : satisfiedTypes.getTypes()) {
+                if (!declaredInThisPackage(st.getDeclarationModel())) {
+                    inheritProto = true;
+                    break;
+                }
+            }
+        }
+        String initFuncName = inheritProto ? "initTypeProto" : "initType";
+        if (isInterface) {
+            initFuncName += 'I';
         }
 
         Declaration d = type.getDeclarationModel();
         if (type instanceof ObjectDefinition) {
             d = ((ObjectDefinition) type).getDeclarationModel().getTypeDeclaration();
         }
-        out(clAlias, ".initType(", names.name(d), ",'",
+        out(clAlias, ".", initFuncName, "(", names.name(d), ",'",
             type.getDeclarationModel().getQualifiedNameString(), "'");
 
         if (extendedType != null) {
-            out(",", initFunctionName(extendedType.getType()));
+            out(",", typeFunctionName(extendedType.getType()));
         } else if (!(type instanceof InterfaceDefinition)) {
             out(",", clAlias, ".IdentifiableObject");
         }
 
         if (satisfiedTypes != null) {
             for (SimpleType satType : satisfiedTypes.getTypes()) {
-                out(",", initFunctionName(satType));
+                out(",", typeFunctionName(satType));
             }
         }
 
@@ -533,10 +548,9 @@ public class GenerateJsVisitor extends Visitor
         endLine();
     }
 
-    private String initFunctionName(SimpleType type) {
+    private String typeFunctionName(SimpleType type) {
         TypeDeclaration d = type.getDeclarationModel();
-        boolean inProto = prototypeStyle && d.isClassOrInterfaceMember();
-        String constr = qualifiedPath(type, d, inProto);
+        String constr = qualifiedPath(type, d, true);
         if (constr.length() > 0) {
             constr += '.';
         }
@@ -546,7 +560,7 @@ public class GenerateJsVisitor extends Visitor
 
     private void addToPrototype(ClassOrInterface d, List<Statement> statements) {
         if (prototypeStyle && !statements.isEmpty()) {
-            out(";(function($proto$)");
+            out(";(function(", names.self(d), ")");
             beginBlock();
             for (Statement s: statements) {
                 addToPrototype(d, s);
@@ -616,63 +630,11 @@ public class GenerateJsVisitor extends Visitor
         out(";");
     }
 
-    private void copyMembersToPrototype(Declaration d, ExtendedType extType, SatisfiedTypes satTypes) {
-
-        boolean copyFromExtType = !(d instanceof Interface)
-                && ((extType == null) || prototypeStyle
-                        || declaredInCL(extType.getType().getDeclarationModel()));
-        boolean copyFromSatType = false;
-        if ((satTypes != null) && !satTypes.getTypes().isEmpty()) {
-            if (prototypeStyle) {
-                copyFromSatType = true;
-            } else {
-                for (Tree.SimpleType st: satTypes.getTypes()) {
-                    if (declaredInCL(st.getDeclarationModel())) {
-                        copyFromSatType = true;
-                        break;
-                    }
-                }
-            }
-        }
-        if (!(copyFromExtType || copyFromSatType)) {
-            return;
-        }
-
-        if (copyFromExtType) {
-            String from = null;
-            String suffix = null;
-            if (extType == null) {
-                from = clAlias + ".IdentifiableObject";
-                suffix = clAlias + "$IdentifiableObject$";
-            } else {
-                SimpleType type = extType.getType();
-                TypeDeclaration typeDecl = type.getDeclarationModel();
-                from = initFunctionName(type);
-                suffix = names.memberSuffix(typeDecl);
-            }
-
-            out(clAlias, ".inheritProto(", names.name(d), ",", from, ",'", suffix, "'");
-
-        } else {
-            out(clAlias, ".inheritProtoI(", names.name(d));
-        }
-
-        if (copyFromSatType) {
-            for (Tree.SimpleType st: satTypes.getTypes()) {
-                if (prototypeStyle || declaredInCL(st.getDeclarationModel())) {
-                    out(",", initFunctionName(st));
-                }
-            }
-        }
-        out(");");
-        endLine();
-    }
-
     private void addObjectToPrototype(ClassOrInterface type, ObjectDefinition objDef) {
         objectDefinition(objDef);
         Value d = objDef.getDeclarationModel();
         Class c = (Class) d.getTypeDeclaration();
-        out("$proto$.", names.name(c), "=", names.name(c), ";");
+        out(names.self(type), ".", names.name(c), "=", names.name(c), ";");
         endLine();
     }
 
@@ -712,8 +674,9 @@ public class GenerateJsVisitor extends Visitor
         out("}");
         endLine();
 
-        addTypeInfo(that);
-        copyMembersToPrototype(c, that.getExtendedType(), that.getSatisfiedTypes());
+        typeInitialization(that);
+
+        addToPrototype(c, that.getClassBody().getStatements());
 
         if (!addToPrototype) {
             out("var ", names.name(d), "=",
@@ -721,13 +684,7 @@ public class GenerateJsVisitor extends Visitor
             endLine();
         }
 
-        if (addToPrototype) {
-            out("$proto$.", names.getter(d), "=");
-        } else if (d.isShared()) {
-            outerSelf(d);
-            out(".", names.getter(d), "=");
-        }
-        out(function, names.getter(d), "()");
+        out("var ", names.getter(d), "=function()");
         beginBlock();
         out("return ");
         if (addToPrototype) {
@@ -735,8 +692,11 @@ public class GenerateJsVisitor extends Visitor
         }
         out(names.name(d), ";");
         endBlock();
-
-        addToPrototype(c, that.getClassBody().getStatements());
+        if (addToPrototype || d.isShared()) {
+            outerSelf(d);
+            out(".", names.getter(d), "=", names.getter(d), ";");
+            endLine();
+        }
     }
 
     private void superRef(Declaration d, Class sub, String parentSuffix) {
@@ -847,12 +807,12 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private void addMethodToPrototype(Declaration outer,
+    private void addMethodToPrototype(TypeDeclaration outer,
             MethodDefinition that) {
         Method d = that.getDeclarationModel();
         if (!prototypeStyle||!d.isClassOrInterfaceMember()) return;
         comment(that);
-        out("$proto$.", names.name(d), "=");
+        out(names.self(outer), ".", names.name(d), "=");
         methodDefinition(that);
     }
 
@@ -866,12 +826,12 @@ public class GenerateJsVisitor extends Visitor
         shareGetter(d);
     }
 
-    private void addGetterToPrototype(Declaration outer,
+    private void addGetterToPrototype(TypeDeclaration outer,
             AttributeGetterDefinition that) {
         Getter d = that.getDeclarationModel();
         if (!prototypeStyle||!d.isClassOrInterfaceMember()) return;
         comment(that);
-        out("$proto$.", names.getter(d), "=",
+        out(names.self(outer), ".", names.getter(d), "=",
                 function, names.getter(d), "()");
         super.visit(that);
     }
@@ -894,13 +854,13 @@ public class GenerateJsVisitor extends Visitor
         shareSetter(d);
     }
 
-    private void addSetterToPrototype(Declaration outer,
+    private void addSetterToPrototype(TypeDeclaration outer,
             AttributeSetterDefinition that) {
         Setter d = that.getDeclarationModel();
         if (!prototypeStyle || !d.isClassOrInterfaceMember()) return;
         comment(that);
         String setterName = names.setter(d.getGetter());
-        out("$proto$.", setterName, "=",
+        out(names.self(outer), ".", setterName, "=",
                 function, setterName, "(", names.name(d.getParameter()), ")");
         super.visit(that);
     }
@@ -974,20 +934,20 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private void addGetterAndSetterToPrototype(Declaration outer,
+    private void addGetterAndSetterToPrototype(TypeDeclaration outer,
             AttributeDeclaration that) {
         Value d = that.getDeclarationModel();
         if (!prototypeStyle||d.isToplevel()) return;
         if (!d.isFormal()) {
             comment(that);
-            out("$proto$.", names.getter(d), "=",
+            out(names.self(outer), ".", names.getter(d), "=",
                     function, names.getter(d), "()");
             beginBlock();
             out("return this.", names.name(d), ";");
             endBlock();
             if (d.isVariable()) {
                 String paramVarName = names.createTempVariable(d.getName());
-                out("$proto$.", names.setter(d), "=");
+                out(names.self(outer), ".", names.setter(d), "=");
                 out(function, names.setter(d), "(", paramVarName, ")");
                 beginBlock();
                 out("this.", names.name(d), "=", paramVarName, "; return ", paramVarName, ";");
@@ -1233,7 +1193,7 @@ public class GenerateJsVisitor extends Visitor
              ClassOrInterface type = Util.getContainingClassOrInterface(that.getScope());
              ClassOrInterface parentType = type.getExtendedTypeDeclaration();
              if (parentType != null) {
-                 postfix = names.memberSuffix(parentType);
+                 postfix = names.typeSuffix(parentType);
              }
         }
         if (isNative(that.getDeclaration())) {
@@ -1489,11 +1449,12 @@ public class GenerateJsVisitor extends Visitor
         return qualifiedPath(that, d, false);
     }
 
-    private String qualifiedPath(Node that, Declaration d, boolean inProto) {
+    private String qualifiedPath(Node that, Declaration d, boolean typeInit) {
         if (isImported(that, d)) {
             return names.packageAlias(d.getUnit().getPackage());
         }
-        else if (prototypeStyle) {
+        else if (prototypeStyle &&
+                !(typeInit && (that.getScope().getContainer() instanceof TypeDeclaration))) {
             if (d.isClassOrInterfaceMember() &&
                     !(d instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter &&
                             !d.isCaptured())) {
@@ -1508,7 +1469,7 @@ public class GenerateJsVisitor extends Visitor
                 //}
                 String path = "";
                 Scope scope = that.getScope();
-                if (inProto) {
+                if (typeInit) {
                     while ((scope != null) && (scope instanceof TypeDeclaration)) {
                         scope = scope.getContainer();
                     }
@@ -1562,10 +1523,12 @@ public class GenerateJsVisitor extends Visitor
     public void visit(Expression that) {
         if (that.getTerm() instanceof QualifiedMemberOrTypeExpression) {
             QualifiedMemberOrTypeExpression term = (QualifiedMemberOrTypeExpression) that.getTerm();
-            // references to methods of types from ceylon.language always need
-            // special treatment, even if prototypeStyle==false
+            // References to methods of types from other packages always need
+            // special treatment, even if prototypeStyle==false, because they
+            // may have been generated in prototype style. In particular,
+            // ceylon.language is always in prototype style.
             if ((term.getDeclaration() instanceof Functional)
-                    && (prototypeStyle || declaredInCL(term.getDeclaration()))) {
+                    && (prototypeStyle || !declaredInThisPackage(term.getDeclaration()))) {
                 if (term.getMemberOperator() instanceof SpreadOp) {
                     generateSpread(term);
                 } else {
@@ -1610,9 +1573,13 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private boolean declaredInCL(Declaration typeDecl) {
-        return typeDecl.getUnit().getPackage().getQualifiedNameString()
+    private boolean declaredInCL(Declaration decl) {
+        return decl.getUnit().getPackage().getQualifiedNameString()
                 .startsWith("ceylon.language");
+    }
+    
+    private boolean declaredInThisPackage(Declaration decl) {
+        return decl.getUnit().getPackage().equals(root.getUnit().getPackage());
     }
 
     @Override

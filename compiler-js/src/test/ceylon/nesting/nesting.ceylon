@@ -177,6 +177,67 @@ class OuterC2() {
     }
 }
 
+shared class NameTest() {
+    shared String x = "1"; 
+    shared class NameTest() {
+        shared String x = "2";
+        shared String f() {
+            class NameTest() {
+                shared String x = "3";
+                shared class NameTest() {
+                    shared String x = "4";
+                }
+                shared String f() { return x + this.NameTest().x; }
+            }
+            return outer.x + x + NameTest().f();
+        } 
+    }
+    shared String f() { return this.NameTest().f(); }
+}
+
+shared object nameTest {
+    shared String x = "1"; 
+    shared object nameTest {
+        shared String x = "2";
+        shared String f() {
+            object nameTest {
+                shared String x = "3";
+                shared object nameTest {
+                    shared String x = "4";
+                }
+                shared String f() { return x + this.nameTest.x; }
+            }
+            return outer.x + x + nameTest.f();
+        }
+    }
+    shared String f() { return this.nameTest.f(); }
+}
+
+shared class C1() {
+    shared default String x = "1";
+    shared class C1() {
+        shared default String x = "11"; 
+    }
+    shared class C3() extends C1() {
+        shared actual default String x = "13";
+        shared String f() {
+            return ""outer.x"-"super.x"-"outer.C1().x"-"x"-"C3().x"";
+        }
+    }
+}
+shared class C2() extends C1() {
+    shared actual String x = "2";
+    shared class C2() extends super.C1() {
+        shared actual String x = "22";
+        shared class C2() extends C3() {
+            shared actual String x = "222";
+        }
+        shared String f() {
+            return ""outer.x"-"C1().x"-"x"-"super.x"-"C3().x"-"C2().x"-"C2().f()"-"C3().f()"";
+        }
+    } 
+}
+
 shared void test() {
     outr("Hello");
     assert(Holder("ok").get().string=="ok","holder(ok)");
@@ -200,5 +261,9 @@ shared void test() {
     assert(outerf()=="outerf.A.tst()", "");
     assert(OuterC2().tst()=="OuterC2.A.tst()", "");
     Outer("Hello");
+    assert(NameTest().f()=="1234", "Nested class with same name");
+    assert(nameTest.f()=="1234", "Nested object with same name");
+    assert(C1().C3().f()=="1-11-11-13-13", "Several nested classes with same name (1)");
+    assert(C2().C2().f()=="2-11-22-11-13-222-2-11-11-222-13-2-11-11-13-13", "Several nested classes with same name (2)");
     results();
 }

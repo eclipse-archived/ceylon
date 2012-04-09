@@ -33,4 +33,6 @@ shared void test() {
     Counter c = Counter(0);
     c.inc(); c.inc();
     print(c.count);
+    
+    value v2 = var();
 }

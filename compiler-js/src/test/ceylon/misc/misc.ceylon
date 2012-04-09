@@ -46,3 +46,5 @@ object foob {
 void printAll(String... strings) {}
 
 class F(String name) = Foo;
+
+shared Integer var() { return 5; }
