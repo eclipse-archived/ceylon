@@ -245,7 +245,15 @@ Map$proto.equals = function(other) {
     }
     return $false;
 }
-Map$proto.getHash = function() { return this.getSize(); }
+Map$proto.getHash = function() {
+    var hc=1;
+    var iter=this.getIterator();
+    var elem; while((elem=iter.next())!=$finished) {
+        hc*=31;
+        hc += elem.getHash().value;
+    }
+    return Integer(hc);
+}
 //TODO implement methods: getKeys, getValues, getInverse
 exports.Map=Map;
 
@@ -290,7 +298,15 @@ Set$proto.equals = function(other) {
     }
     return $false;
 }
-Set$proto.getHash = function() { return this.getSize(); }
+Set$proto.getHash = function() {
+    var hc = 1;
+    var iter=this.getIterator();
+    var elem;while((elem=iter.next())!=$finished) {
+        hc*=31;
+        hc+=elem.getHash().value;
+    }
+    return Integer(hc);
+}
 exports.Set=Set;
 
 function Array$() {
