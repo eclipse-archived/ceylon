@@ -18,6 +18,7 @@
 package com.redhat.ceylon.test.smoke.test;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.*;
@@ -232,5 +233,16 @@ public class SmokeTestCase {
         File[] files = manager.resolve("moduletest", "0.1");
         Assert.assertNotNull(files);
         Assert.assertEquals(2, files.length);
+    }
+
+    @Test
+    public void test2ndTry() throws Exception {
+        RepositoryManager manager = getRepositoryManager();
+        ArtifactContext ac = new ArtifactContext("test-jar", "0.1");
+        ArtifactResult result = manager.getArtifactResult(ac);
+        Assert.assertNull(result);
+        ac.setSuffix(ArtifactContext.JAR);
+        result = manager.getArtifactResult(ac);
+        Assert.assertNotNull(result);
     }
 }
