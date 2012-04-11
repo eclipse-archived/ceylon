@@ -116,7 +116,7 @@ public class CeylonDocTool {
         TypeChecker typeChecker = builder.getTypeChecker();
         typeChecker.process();
         if(haltOnError && typeChecker.getErrors() > 0)
-            throw new RuntimeException("Parsing failed with "+typeChecker.getErrors()+" error(s)");
+            throw new RuntimeException(CeylondMessages.msg("error.failedParsing", typeChecker.getErrors()));
         
         this.modules = getModules(modules, typeChecker.getContext().getModules());
         // only for source code mapping
@@ -146,7 +146,7 @@ public class CeylonDocTool {
             if(foundModule != null)
                 documentedModules.add(foundModule);
             else
-                throw new RuntimeException("Can't find module: " + moduleSpec.name + "/" + moduleSpec.version);
+                throw new RuntimeException(CeylondMessages.msg("error.cantFindModule", moduleSpec.name, moduleSpec.version));
         }
         return documentedModules;
     }
@@ -239,7 +239,7 @@ public class CeylonDocTool {
         } else if (obj instanceof Module) {
             return "module";
         }
-        throw new RuntimeException("Unexpected: " + obj);
+        throw new RuntimeException(CeylondMessages.msg("error.unexpected", obj));
     }
 
     File getObjectFile(Object modPgkOrDecl) throws IOException {
@@ -255,7 +255,7 @@ public class CeylonDocTool {
             String filename = "index.html";
             file = new File(getFolder((Package)modPgkOrDecl), filename);
         } else {
-            throw new RuntimeException("Unexpected: " + modPgkOrDecl);
+            throw new RuntimeException(CeylondMessages.msg("error.unexpected", modPgkOrDecl));
         }
         return file.getCanonicalFile();
     }
@@ -277,7 +277,7 @@ public class CeylonDocTool {
             boolean documentedOne = false;
             for(Module module : modules){
                 if(isEmpty(module))
-                    log.warning("Module "+module.getNameAsString()+" has no declarations");
+                    log.warning(CeylondMessages.msg("warn.moduleHasNoDeclaration", module.getNameAsString()));
                 else
                     documentedOne = true;
                 documentModule(module);
@@ -286,21 +286,21 @@ public class CeylonDocTool {
                     outputRepository.removeArtifact(context);
                 }catch(IOException x){
                     // FIXME: remove when the whole CMR is using CMRException
-                    throw new CeylondException("Failed to remove artifact "+context+": "+x.getMessage(), x);
+                    throw new CeylondException("error.failedRemoveArtifact", new Object[]{context, x.getLocalizedMessage()}, x);
                 }catch(CMRException x){
-                    throw new CeylondException("Failed to remove artifact "+context+": "+x.getMessage(), x);
+                    throw new CeylondException("error.failedRemoveArtifact", new Object[]{context, x.getLocalizedMessage()}, x);
                 }
                 try{
                     outputRepository.putArtifact(context, getOutputFolder(module));
                 }catch(IOException x){
                     // FIXME: remove when the whole CMR is using CMRException
-                    throw new CeylondException("Failed to write artifact "+context+" to output repository: "+x.getMessage(), x);
+                    throw new CeylondException("error.failedWriteArtifact", new Object[]{context, x.getLocalizedMessage()}, x);
                 }catch(CMRException x){
-                    throw new CeylondException("Failed to write artifact "+context+" to output repository: "+x.getMessage(), x);
+                    throw new CeylondException("error.failedWriteArtifact", new Object[]{context, x.getLocalizedMessage()}, x);
                 }
             }
             if(!documentedOne)
-                log.warning("Could not find any declaration to document");
+                log.warning(CeylondMessages.msg("warn.couldNotFindAnyDeclaration"));
         }finally{
             Util.delete(tempDestDir);
         }
@@ -405,7 +405,7 @@ public class CeylonDocTool {
             File file = new File(getFolder(pu.getPackage()), pu.getUnitFile().getName()+".html");
             File dir = file.getParentFile();
             if (!dir.exists() && !dir.mkdirs()) {
-                throw new IOException("Couldn't create directory for file: " + file);
+                throw new IOException(CeylondMessages.msg("error.couldNotCreateDirectory", file));
             }
             Writer writer = openWriter(file);
             try {
@@ -601,7 +601,7 @@ public class CeylonDocTool {
     private URI getAbsoluteObjectUrl(Object obj) throws IOException {
         File f = getObjectFile(obj);
         if (f == null) {
-            throw new RuntimeException(obj + " doesn't have a ceylond page");
+            throw new RuntimeException(CeylondMessages.msg("error.noPage", obj));
         }
         return f.toURI();
     }
@@ -626,10 +626,10 @@ public class CeylonDocTool {
      */
     private URI relativize(Module module, URI uri, URI uri2) throws IOException {
         if (!uri.isAbsolute()) {
-            throw new IllegalArgumentException("Expected " + uri + " to be absolute");
+            throw new IllegalArgumentException(CeylondMessages.msg("error.expectedUriToBeAbsolute", uri));
         }
         if (!uri2.isAbsolute()) {
-            throw new IllegalArgumentException("Expected " + uri2 + " to be absolute");
+            throw new IllegalArgumentException(CeylondMessages.msg("error.expectedUriToBeAbsolute", uri2));
         }
         URI baseUrl = getBaseUrl(module);
         StringBuilder sb = new StringBuilder();
@@ -650,7 +650,7 @@ public class CeylonDocTool {
             //throw new RuntimeException("Result not absolute: "+result);
         }
         if (!uri.resolve(result).equals(uri2)) {
-            throw new RuntimeException("Assertion fails: url=\""+uri + "\", uri2=\"" + uri2 + "\", result=\"" + result + "\"");
+            throw new RuntimeException(CeylondMessages.msg("error.failedUriRelativize", uri, uri2, result));
         }
         return result;
     }
@@ -710,7 +710,7 @@ public class CeylonDocTool {
             pkg = moduleDecl.getPackage(pkgName);
             filename = "module.ceylon";
         } else {
-            throw new RuntimeException("Unexpected: " + modPkgOrDecl);
+            throw new RuntimeException(CeylondMessages.msg("error.unexpected", modPkgOrDecl));
         }
 
         File srcFile = new File(getFolder(pkg), filename + ".html").getCanonicalFile();

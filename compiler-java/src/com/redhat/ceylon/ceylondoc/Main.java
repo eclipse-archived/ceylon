@@ -53,7 +53,7 @@ public class Main {
                         || "--version".equals(arg)) {
                 printVersion();
             } else if ("-d".equals(arg)) {
-                System.err.println("-d: option not yet supported (though perhaps you meant -out?)");
+                System.err.println(CeylondMessages.msg("error.optionDnotSupported"));
                 exit(SC_ARGS);
             } else if ("-out".equals(arg)) {
                 if (argsLeft <= 0) {
@@ -85,7 +85,7 @@ public class Main {
                 }
                 pass = args[++i];
             } else if (arg.startsWith("-")) {
-                System.err.println(arg+": unknown option");
+                System.err.println(CeylondMessages.msg("error.optionUnknown", arg));
                 exit(SC_ARGS);
             } else {
                 modules.add(arg);
@@ -94,7 +94,7 @@ public class Main {
         }
         
         if(modules.isEmpty()){
-            System.err.println("No modules specified");
+            System.err.println(CeylondMessages.msg("error.noModulesSpecified"));
             printUsage(SC_ARGS);
         }
         if (destDir == null) {
@@ -110,7 +110,7 @@ public class Main {
             for(String srcDir : sourceDirs){
                 File src = new File(srcDir);
                 if (!src.isDirectory()) {
-                    System.err.println("No such source directory: " + srcDir);
+                    System.err.println(CeylondMessages.msg("error.noSuchSourceDirectory", srcDir));
                     exit(SC_ARGS);
                 }
                 sourceFolders.add(src);
@@ -124,11 +124,11 @@ public class Main {
             ceylonDocTool.setIncludeSourceCode(includeSourceCode);
             ceylonDocTool.makeDoc();
         }catch(CeylondException x){
-            System.err.println("Error: "+x.getMessage());
+            System.err.println(CeylondMessages.msg("error", x.getLocalizedMessage()));
             // no need to print the stack trace
             exit(SC_ERROR);
         }catch(Exception x){
-            System.err.println("Error: "+x.getMessage());
+            System.err.println(CeylondMessages.msg("error", x.getLocalizedMessage()));
             x.printStackTrace();
             exit(SC_ERROR);
         }
@@ -139,7 +139,7 @@ public class Main {
     }
     
     private static void optionMissingArgument(String arg) {
-        System.err.println("Expected an argument for " + arg + " option");
+        System.err.println(CeylondMessages.msg("error.optionMissing", arg));
         exit(SC_ARGS);
     }
 
@@ -161,33 +161,18 @@ public class Main {
     }
 
     private static void printVersion() {
-        System.out.println("Version: ceylond "+CEYLOND_VERSION);
+        System.out.println(CeylondMessages.msg("info.version", CEYLOND_VERSION));
         exit(SC_OK);
     }
 
     private static void printUsage(int statusCode) {
         List<String> defaultRepositories = com.redhat.ceylon.compiler.java.util.Util.addDefaultRepositories(Collections.<String>emptyList());
-        System.err.print(
-                "Usage: ceylond [options...] moduleName[/version]... :\n"
-                +"where possible options include:\n"
-                +"  -src <directory>:    Path to source files (default: './source')\n"
-                +"                       Can be specified multiple times\n"
-                +"  -out <url>:          Output module repository (default: './modules')\n"
-                +"  -rep <url>:          Module repository\n"
-                +"                       Can be specified multiple times\n"
-                +"                       Default:\n"
-        );
-        for(String repo : defaultRepositories)
+        System.err.print(CeylondMessages.msg("info.usage1"));
+        for(String repo : defaultRepositories) {
             System.err.println("                        "+repo);
-        System.err.print(
-                 "  -non-shared:         Document non-shared declarations\n"
-                +"  -source-code:        Include the source code\n"
-                +"  -user <value>:       User name for output repository (HTTP only)\n"
-                +"  -pass <value>:       Password for output repository (HTTP only)\n"
-                +"  -d:                  Not supported yet\n"
-                +"  -help:               Prints help usage\n"
-                +"  -version:            Prints version number\n"
-        );
+        }
+        System.err.print(CeylondMessages.msg("info.usage2"));
         exit(statusCode);
     }
+    
 }

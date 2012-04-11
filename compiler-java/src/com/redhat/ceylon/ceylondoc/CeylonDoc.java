@@ -305,7 +305,7 @@ public abstract class CeylonDoc extends Markup {
             if (add.endsWith(".css")) {
                 tag("link href='" + getResourceUrl(add) + "' rel='stylesheet' type='text/css'");
             } else if (!add.endsWith(".js")) {
-                throw new RuntimeException("Unexpected additional resource " + add);
+                throw new RuntimeException(CeylondMessages.msg("error.unexpectedAdditionalResource", add));
             }
         }
         around("script type='text/javascript' src='" + getResourceUrl("jquery-1.7.min.js") + "'");
@@ -315,7 +315,7 @@ public abstract class CeylonDoc extends Markup {
             if (add.endsWith(".js")) {
                 around("script type='text/javascript' src='" + getResourceUrl(add) + "'");
             } else if (!add.endsWith(".css")) {
-                throw new RuntimeException("Unexpected additional resource " + add);
+                throw new RuntimeException(CeylondMessages.msg("error.unexpectedAdditionalResource", add));
             }
         }
         close("head");

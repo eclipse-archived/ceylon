@@ -19,16 +19,19 @@
  */
 package com.redhat.ceylon.ceylondoc;
 
-public class CeylondException extends RuntimeException {
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
-    private static final long serialVersionUID = 1L;
+public class CeylondMessages {
 
-    public CeylondException(String msgKey, Exception cause) {
-        super(CeylondMessages.msg(msgKey), cause);
-    }
+    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("com.redhat.ceylon.ceylondoc.resources.messages");
 
-    public CeylondException(String msgKey, Object[] msgArgs, Exception cause) {
-        super(CeylondMessages.msg(msgKey, msgArgs), cause);
+    public static String msg(String msgKey, Object... msgArgs) {
+        String msg = RESOURCE_BUNDLE.getString(msgKey);
+        if (msgArgs != null) {
+            msg = MessageFormat.format(msg, msgArgs);
+        }
+        return msg;
     }
 
 }

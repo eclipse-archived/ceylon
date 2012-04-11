@@ -250,6 +250,6 @@ public class Util {
                 delete(c);
         }
         if (!f.delete())
-            throw new RuntimeException("Failed to delete file: " + f);
+            throw new RuntimeException(CeylondMessages.msg("error.failedDeleteFile", f));
     }
 }
