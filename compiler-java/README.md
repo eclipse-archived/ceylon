@@ -16,7 +16,8 @@ License terms for 3rd Party Works
 This software uses a number of other works, the license terms of which are 
 documented in the NOTICE file that accompanied this code.
 
-Directory structure:
+Directory structure
+-------------------
 
 * `bin`       - the Ceylon tools binaries
 * `lib`       - compile/runtime dependencies
