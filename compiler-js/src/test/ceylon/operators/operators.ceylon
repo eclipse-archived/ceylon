@@ -224,6 +224,18 @@ void testNullsafeOperators() {
     Integer? i2 = getNullsafe()?.f();
     assert(!exists i2, "nullsafe invoke 3");
     assert(!exists NullsafeTest().f2(getNullsafe()?.f), "nullsafe method ref 3");
+    NullsafeTest? obj2 = NullsafeTest();
+    if (exists i3 = obj2?.f()) {
+        assert(i3==1, "nullsafe invoke 4 (result)");
+    } else {
+        fail("nullsafe invoke 4 (null)");
+    }
+    Integer? obj2_f() = obj2?.f;
+    if (exists i3 = obj2_f()) {
+        assert(i3==1, "nullsafe method ref 4 (result)");
+    } else {
+        fail("nullsafe method ref 4 (null)");
+    }
 }
 
 void testIncDecOperators() {
