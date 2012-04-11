@@ -53,3 +53,6 @@ shared Array<Element>&None<Element> arrayOfNone<Element>() { throw; }
 doc "Returns an array with the elements in the sequence.
      This array can never be empty."
 shared Array<Element>&Some<Element> arrayOfSome<Element>(Sequence<Element> elements) { throw; }
+doc "Creates and returns an array of the specified size, populating it with the result
+     of calling `init` for each index."
+shared Array<Element> makeArray<Element>(int size, Element init(Integer index)) { throw; }
