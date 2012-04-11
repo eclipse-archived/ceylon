@@ -148,35 +148,8 @@ public class CeylonDocToolTest {
         
         File destDir = getOutputDir(tool, module);
         
-        assertDirectoryExists(destDir, ".resources");
-        assertFileExists(destDir, ".resources/index.js");
-        assertFileExists(destDir, ".resources/icons.png");
-        assertFileExists(destDir, "index.html");
-        assertFileExists(destDir, "search.html");
-        assertFileExists(destDir, "interface_Types.html");
-        assertFileNotExists(destDir, "class_PrivateClass.html");
-        assertFileExists(destDir, "class_SharedClass.html");
-        assertFileExists(destDir, "class_CaseSensitive.html");
-        assertFileExists(destDir, "object_caseSensitive.html");
-        
-        assertMatchInFile(destDir, "index.html", 
-                Pattern.compile("This is a <strong>test</strong> module"));
-        assertMatchInFile(destDir, "index.html", 
-                Pattern.compile("This is a <strong>test</strong> package"));
-        
-        assertMatchInFile(destDir, "class_SharedClass.html", 
-                Pattern.compile("<.*? id='sharedAttribute'.*?>"));
-        assertNoMatchInFile(destDir, "class_SharedClass.html", 
-                Pattern.compile("<.*? id='privateAttribute'.*?>"));
-        assertMatchInFile(destDir, "class_SharedClass.html", 
-                Pattern.compile("<.*? id='sharedGetter'.*?>"));
-        assertNoMatchInFile(destDir, "class_SharedClass.html", 
-                Pattern.compile("<.*? id='privateGetter'.*?>"));
-        assertMatchInFile(destDir, "class_SharedClass.html", 
-                Pattern.compile("<.*? id='sharedMethod'.*?>"));
-        assertNoMatchInFile(destDir, "class_SharedClass.html", 
-                Pattern.compile("<.*? id='privateMethod'.*?>"));
-        
+        assertFileExists(destDir, false);
+        assertBasicContent(destDir, false);
         assertBy(destDir);
         assertThrows(destDir);
         assertSee(destDir);
@@ -185,6 +158,112 @@ public class CeylonDocToolTest {
         assertDeprecated(destDir);
         assertTagged(destDir);
         assertDocumentationOfRefinedMember(destDir);
+    }
+
+    @Test
+    public void moduleAWithPrivate() throws IOException {
+        String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules/single";
+        String testName = "moduleAWithPrivate";
+        CeylonDocTool tool = tool(pathname, testName, "a", true);
+        tool.setIncludeNonShared(true);
+        tool.setIncludeSourceCode(true);
+        tool.makeDoc();
+        
+        Module module = new Module();
+        module.setName(Arrays.asList("a"));
+        module.setVersion("3.1.4");
+    
+        File destDir = getOutputDir(tool, module);
+        
+        assertFileExists(destDir, true);
+        assertBasicContent(destDir, true);
+        assertBy(destDir);
+        assertThrows(destDir);
+        assertSee(destDir);
+        assertIcons(destDir);
+        assertInnerTypesDoc(destDir);
+        assertDeprecated(destDir);
+        assertTagged(destDir);
+        assertDocumentationOfRefinedMember(destDir);
+    }
+
+    @Test
+    public void dependentOnBinaryModule() throws IOException {
+        String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules/dependency";
+        String testName = "dependentOnBinaryModule";
+        
+        // compile the b module
+        compile(pathname+"/b", "b");
+        
+        CeylonDocTool tool = tool(pathname+"/c", testName, "c", true, "build/ceylon-cars");
+        tool.makeDoc();
+    }
+
+    @Test
+    public void ceylonLanguage() throws IOException {
+        String pathname = "../ceylon.language/src";
+        String testName = "ceylon.language";
+        CeylonDocTool tool = tool(pathname, testName, testName, false);
+        tool.setIncludeNonShared(false);
+        tool.setIncludeSourceCode(true);
+        tool.makeDoc();
+        
+        Module module = new Module();
+        module.setName(Arrays.asList("ceylon.language"));
+        module.setVersion(TypeChecker.LANGUAGE_MODULE_VERSION);
+        
+        File destDir = getOutputDir(tool, module);
+        
+        assertFileExists(destDir, "index.html");
+    }
+
+    private void assertFileExists(File destDir, boolean includeNonShared) {
+        assertDirectoryExists(destDir, ".resources");
+        assertFileExists(destDir, ".resources/index.js");
+        assertFileExists(destDir, ".resources/icons.png");
+        assertFileExists(destDir, "index.html");
+        assertFileExists(destDir, "search.html");
+        assertFileExists(destDir, "interface_Types.html");
+        assertFileExists(destDir, "class_SharedClass.html");
+        assertFileExists(destDir, "class_CaseSensitive.html");
+        assertFileExists(destDir, "object_caseSensitive.html");
+        if( includeNonShared ) {
+            assertFileExists(destDir, "class_PrivateClass.html");
+        }
+        else {
+            assertFileNotExists(destDir, "class_PrivateClass.html");
+        }
+    }
+
+    private void assertBasicContent(File destDir, boolean includeNonShared) throws IOException {
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("This is a <strong>test</strong> module"));
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("This is a <strong>test</strong> package"));
+        
+        assertMatchInFile(destDir, "class_SharedClass.html", 
+                Pattern.compile("<.*? id='sharedAttribute'.*?>"));
+        assertMatchInFile(destDir, "class_SharedClass.html", 
+                Pattern.compile("<.*? id='sharedGetter'.*?>"));
+        assertMatchInFile(destDir, "class_SharedClass.html", 
+                Pattern.compile("<.*? id='sharedMethod'.*?>"));
+        
+        if( includeNonShared ) {
+            assertMatchInFile(destDir, "class_SharedClass.html", 
+                    Pattern.compile("<.*? id='privateAttribute'.*?>"));
+            assertMatchInFile(destDir, "class_SharedClass.html", 
+                    Pattern.compile("<.*? id='privateMethod'.*?>"));
+            assertMatchInFile(destDir, "class_SharedClass.html", 
+                    Pattern.compile("<.*? id='privateGetter'.*?>"));
+        }
+        else {
+            assertNoMatchInFile(destDir, "class_SharedClass.html", 
+                    Pattern.compile("<.*? id='privateAttribute'.*?>"));
+            assertNoMatchInFile(destDir, "class_SharedClass.html", 
+                    Pattern.compile("<.*? id='privateMethod'.*?>"));
+            assertNoMatchInFile(destDir, "class_SharedClass.html", 
+                    Pattern.compile("<.*? id='privateGetter'.*?>"));
+        }
     }
 
     private void assertBy(File destDir) throws IOException {
@@ -294,89 +373,6 @@ public class CeylonDocToolTest {
                 "module-doc");
     }
 
-    @Test
-    public void moduleAWithPrivate() throws IOException {
-        String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules/single";
-        String testName = "moduleAWithPrivate";
-        CeylonDocTool tool = tool(pathname, testName, "a", true);
-        tool.setIncludeNonShared(true);
-        tool.setIncludeSourceCode(true);
-        tool.makeDoc();
-        
-        Module module = new Module();
-        module.setName(Arrays.asList("a"));
-        module.setVersion("3.1.4");
-
-        File destDir = getOutputDir(tool, module);
-        
-        assertDirectoryExists(destDir, ".resources");
-        assertFileExists(destDir, ".resources/index.js");
-        assertFileExists(destDir, "index.html");
-        assertFileExists(destDir, "search.html");
-        assertFileExists(destDir, "interface_Types.html");
-        assertFileExists(destDir, "class_PrivateClass.html");
-        assertFileExists(destDir, "class_SharedClass.html");
-        assertFileExists(destDir, "class_CaseSensitive.html");
-        assertFileExists(destDir, "object_caseSensitive.html");
-        
-        assertMatchInFile(destDir, "index.html", 
-                Pattern.compile("This is a <strong>test</strong> module"));
-        assertMatchInFile(destDir, "index.html", 
-                Pattern.compile("This is a <strong>test</strong> package"));
-        
-        assertMatchInFile(destDir, "class_SharedClass.html", 
-                Pattern.compile("<.*? id='sharedAttribute'.*?>"));
-        assertMatchInFile(destDir, "class_SharedClass.html", 
-                Pattern.compile("<.*? id='privateAttribute'.*?>"));
-        assertMatchInFile(destDir, "class_SharedClass.html", 
-                Pattern.compile("<.*? id='sharedGetter'.*?>"));
-        assertMatchInFile(destDir, "class_SharedClass.html", 
-                Pattern.compile("<.*? id='privateGetter'.*?>"));
-        assertMatchInFile(destDir, "class_SharedClass.html", 
-                Pattern.compile("<.*? id='sharedMethod'.*?>"));
-        assertMatchInFile(destDir, "class_SharedClass.html", 
-                Pattern.compile("<.*? id='privateMethod'.*?>"));
-        
-        assertBy(destDir);
-        assertThrows(destDir);
-        assertSee(destDir);
-        assertIcons(destDir);
-        assertInnerTypesDoc(destDir);
-        assertDeprecated(destDir);
-        assertTagged(destDir);
-        assertDocumentationOfRefinedMember(destDir);
-    }
-    
-    @Test
-    public void dependentOnBinaryModule() throws IOException {
-        String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules/dependency";
-        String testName = "dependentOnBinaryModule";
-        
-        // compile the b module
-        compile(pathname+"/b", "b");
-        
-        CeylonDocTool tool = tool(pathname+"/c", testName, "c", true, "build/ceylon-cars");
-        tool.makeDoc();
-    }
-
-    @Test
-    public void ceylonLanguage() throws IOException {
-        String pathname = "../ceylon.language/src";
-        String testName = "ceylon.language";
-        CeylonDocTool tool = tool(pathname, testName, testName, false);
-        tool.setIncludeNonShared(false);
-        tool.setIncludeSourceCode(true);
-        tool.makeDoc();
-        
-        Module module = new Module();
-        module.setName(Arrays.asList("ceylon.language"));
-        module.setVersion(TypeChecker.LANGUAGE_MODULE_VERSION);
-        
-        File destDir = getOutputDir(tool, module);
-        
-        assertFileExists(destDir, "index.html");
-    }
-    
     private void compile(String pathname, String moduleName) throws IOException {
         CeyloncTool compiler = new CeyloncTool();
         List<String> options = Arrays.asList("-src", pathname, "-out", "build/ceylon-cars");
