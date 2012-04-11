@@ -231,7 +231,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     }
     
     protected void writeDeprecated(Declaration decl) throws IOException {
-        Annotation deprecated = Util.getAnnotation(decl, "deprecated");
+        Annotation deprecated = Util.findAnnotation(decl, "deprecated");
         if (deprecated != null) {
             open("div class='deprecated'");
             String text = "__Deprecated:__ ";

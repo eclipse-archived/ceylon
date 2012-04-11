@@ -184,6 +184,7 @@ public class CeylonDocToolTest {
         assertInnerTypesDoc(destDir);
         assertDeprecated(destDir);
         assertTagged(destDir);
+        assertDocumentationOfRefinedMember(destDir);
     }
 
     private void assertBy(File destDir) throws IOException {
@@ -213,14 +214,14 @@ public class CeylonDocToolTest {
     
     private void assertIcons(File destDir) throws IOException {
         assertMatchInFile(destDir, "interface_StubInterface.html", Pattern.compile("Interface <i class='icon-interface'></i><code>StubInterface</code>"));
-        assertMatchInFile(destDir, "interface_StubInterface.html", Pattern.compile("id='defaultMethod'><td><code><i class='icon-shared-member'></i>"));
-        assertMatchInFile(destDir, "interface_StubInterface.html", Pattern.compile("id='formalMethod'><td><code><i class='icon-shared-member'><i class='icon-decoration-formal'></i></i>"));
-        
+        assertMatchInFile(destDir, "interface_StubInterface.html", Pattern.compile("<td id='formalMethodFromStubInterface'><code><i class='icon-shared-member'><i class='icon-decoration-formal'></i></i>"));
+        assertMatchInFile(destDir, "interface_StubInterface.html", Pattern.compile("<td id='defaultDeprecatedMethodFromStubInterface'><code><i class='icon-decoration-deprecated'><i class='icon-shared-member'></i></i>"));
+
         assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<i class='icon-interface'></i><a href='interface_StubClass.StubInnerInterface.html'>StubInnerInterface</a>"));
         assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<i class='icon-class'></i><a href='class_StubClass.StubInnerClass.html'>StubInnerClass</a>"));
         assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<i class='icon-class'></i>StubClass()"));
-        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("id='formalMethod'><td><code><i class='icon-shared-member'><i class='icon-decoration-impl'></i></i>"));
-        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("id='defaultMethod'><td><code><i class='icon-shared-member'><i class='icon-decoration-over'></i></i>"));        
+        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<td id='formalMethodFromStubInterface'><code><i class='icon-shared-member'><i class='icon-decoration-impl'></i></i>"));
+        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<td id='defaultDeprecatedMethodFromStubInterface'><code><i class='icon-decoration-deprecated'><i class='icon-shared-member'><i class='icon-decoration-over'></i></i></i>"));        
     }
     
     private void assertInnerTypesDoc(File destDir) throws IOException {
@@ -276,6 +277,15 @@ public class CeylonDocToolTest {
                 Pattern.compile("<div class='tags'><span class='tagCaption'>Tags: </span><a class='tagLabel' name='stubTag1a' href='search.html\\?q=stubTag1a'>stubTag1a</a><a class='tagLabel' name='stubTag1b' href='search.html\\?q=stubTag1b'>stubTag1b</a><a class='tagLabel' name='stubTagWithVeryLongName ... !!!' href='search.html\\?q=stubTagWithVeryLongName ... !!!'>stubTagWithVeryLongName ... !!!</a></div><div class='description'><div class='doc'><p>This is <code>StubInterface</code></p>"));
         assertMatchInFile(destDir, "index.html", 
                 Pattern.compile("<div class='tags'><span class='tagCaption'>Tags: </span><a class='tagLabel' name='stubTag1' href='search.html\\?q=stubTag1'>stubTag1</a><a class='tagLabel' name='stubTag2' href='search.html\\?q=stubTag2'>stubTag2</a></div><div class='description'><div class='doc'><p>This is <code>StubClass</code></p>"));
+    }
+    
+    private void assertDocumentationOfRefinedMember(File destDir) throws IOException {
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("Description of StubInterface.formalMethodFromStubInterface"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("Description of StubInterface.defaultDeprecatedMethodFromStubInterface"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("Deprecated in StubInterface.defaultDeprecatedMethodFromStubInterface"));
     }
     
     private File getOutputDir(CeylonDocTool tool, Module module) {
@@ -334,6 +344,7 @@ public class CeylonDocToolTest {
         assertInnerTypesDoc(destDir);
         assertDeprecated(destDir);
         assertTagged(destDir);
+        assertDocumentationOfRefinedMember(destDir);
     }
     
     @Test
