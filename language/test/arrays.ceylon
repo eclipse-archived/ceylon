@@ -28,4 +28,16 @@ void testArrays() {
     if (exists i=a3[0]) {
         fail("array.setItem (null) 2");
     }
+    function dot(Integer i) { return "."; }
+    function idx(Integer i) { return "Index " (i+1) ""; }
+    value a4 = makeArray(5, dot);
+    assert(a4.size == 5, "makeArray 1");
+    if (exists i=a4[4]) {
+        assert(i==".", "makeArray 2");
+    } else { fail("makeArray 2"); }
+    value a5 = makeArray(3, idx);
+    assert(a5.size == 3, "makeArray 3");
+    if (exists i=a5[2]) {
+        assert(i=="Index 3", "makeArray 4");
+    } else { fail("makeArray 4"); }
 }
