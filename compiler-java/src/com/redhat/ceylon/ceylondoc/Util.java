@@ -125,10 +125,10 @@ public class Util {
         return text.substring(0, FIRST_LINE_MAX_SIZE-1) + "…";
     }
 
-    public static String getRawDoc(Declaration decl) {
-        for (Annotation a : decl.getAnnotations()) {
-            if (a.getName().equals("doc"))
-                return unquote(a.getPositionalArguments().get(0));
+    private static String getRawDoc(Declaration decl) {
+        Annotation a = findAnnotation(decl, "doc");
+        if (a != null) {
+            return unquote(a.getPositionalArguments().get(0));
         }
         return "";
     }
@@ -139,6 +139,14 @@ public class Util {
                 return a;
         }
         return null;
+    }
+    
+    public static Annotation findAnnotation(Declaration decl, String name) {
+        Annotation a = getAnnotation(decl, name);
+        if (a == null && decl.isActual()) {
+            a = getAnnotation(decl.getRefinedDeclaration(), name);
+        }
+        return a;
     }
 
     public static String unquote(String string) {

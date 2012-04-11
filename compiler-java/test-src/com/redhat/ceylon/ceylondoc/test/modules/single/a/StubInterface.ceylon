@@ -21,8 +21,11 @@ doc "This is `StubInterface`"
 tagged("stubTag1a", "stubTag1b", "stubTagWithVeryLongName ... !!!")
 shared interface StubInterface {
 
-  shared formal void formalMethod();
+  doc "Description of StubInterface.formalMethodFromStubInterface"
+  shared formal void formalMethodFromStubInterface();
   
-  shared default void defaultMethod() {}
+  deprecated "Deprecated in StubInterface.defaultDeprecatedMethodFromStubInterface"
+  doc "Description of StubInterface.defaultDeprecatedMethodFromStubInterface"
+  shared default void defaultDeprecatedMethodFromStubInterface() {}
     
 }

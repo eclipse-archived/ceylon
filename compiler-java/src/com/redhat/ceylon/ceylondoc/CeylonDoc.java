@@ -361,7 +361,7 @@ public abstract class CeylonDoc extends Markup {
     protected void writeIcon(Declaration d) throws IOException {
         List<String> icons = new ArrayList<String>();
         
-        Annotation deprecated = Util.getAnnotation(d, "deprecated");
+        Annotation deprecated = Util.findAnnotation(d, "deprecated");
         if (deprecated != null) {
             icons.add("icon-decoration-deprecated");
         }

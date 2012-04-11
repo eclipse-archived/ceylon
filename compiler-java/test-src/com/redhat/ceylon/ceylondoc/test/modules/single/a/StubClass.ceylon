@@ -46,9 +46,9 @@ shared class StubClass() satisfies StubInterface {
     tagged("stubTag2")
     shared void methodWithTagged() {}
     
-    shared actual void formalMethod() {}
+    shared actual void formalMethodFromStubInterface() {}
     
-    shared actual void defaultMethod() {}
+    shared actual void defaultDeprecatedMethodFromStubInterface() {}
     
     doc "This is `StubInnerInterface`"
     tagged("stubInnerTag1")
