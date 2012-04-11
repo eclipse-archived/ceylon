@@ -56,9 +56,9 @@ To run the tests type
 
 Note that some of the tests currently fail. See more info in README.tests.
 
-Once built, the compiler lives in this jars:
+Once built, the compiler lives in this jar:
 
-    ~/ceylon/repo/com/redhat/ceylon/compiler/java/0.2/com.redhat.ceylon.compiler.java-0.2.jar
+    ~/.ceylon/repo/com/redhat/ceylon/compiler/java/0.2/com.redhat.ceylon.compiler.java-0.2.jar
 
 If you want to build and run the Ceylon compiler in Eclipse
 then please see README.eclipse for setup instructions.
