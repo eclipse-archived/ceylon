@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Collections;
@@ -43,7 +44,7 @@ public class RemoteContentStore extends URLContentStore {
         super(root, log);
     }
 
-    protected InputStream openStream(URL url) throws IOException {
+    protected InputStream openStream(final URL url) throws IOException {
         final URLConnection conn = url.openConnection();
         if (username != null && password != null) {
             try {
@@ -54,7 +55,16 @@ public class RemoteContentStore extends URLContentStore {
                 throw new IOException("Cannot set basic authorization.", e);
             }
         }
-        return conn.getInputStream();
+        InputStream stream = conn.getInputStream();
+        if (conn instanceof HttpURLConnection) {
+            HttpURLConnection huc = (HttpURLConnection) conn;
+            int code = huc.getResponseCode();
+            if (code != -1 && code != 200) {
+                log.info("Got " + code + " for url: " + url);
+                return null;
+            }
+        }
+        return stream;
     }
 
     public ContentHandle peekContent(Node node) {

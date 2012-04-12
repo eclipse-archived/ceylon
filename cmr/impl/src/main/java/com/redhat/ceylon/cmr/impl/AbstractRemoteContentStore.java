@@ -49,12 +49,25 @@ public abstract class AbstractRemoteContentStore extends AbstractContentStore {
     }
 
     protected static class RemoteNode extends DefaultNode {
+        private String cachedString;
+
         public RemoteNode(String label) {
             super(label);
         }
 
         public boolean isRemote() {
             return true;
+        }
+
+        @Override
+        public String toString() {
+            if (cachedString == null) {
+                StringBuilder builder = new StringBuilder("RemoteNode for ");
+                builder.append(findService(ContentStore.class));
+                builder.append(" -> [").append(NodeUtils.getFullPath(this)).append("]");
+                cachedString = builder.toString();
+            }
+            return cachedString;
         }
     }
 
@@ -67,7 +80,7 @@ public abstract class AbstractRemoteContentStore extends AbstractContentStore {
         public boolean equals(Object obj) {
             return (obj == this);
         }
-        
+
         @Override
         public String getDisplayString() {
             return getService(ContentStore.class).getDisplayString();
