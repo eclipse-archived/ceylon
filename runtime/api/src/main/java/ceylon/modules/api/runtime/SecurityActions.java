@@ -17,11 +17,11 @@
 
 package ceylon.modules.api.runtime;
 
-import ceylon.language.descriptor.Module;
-
 import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedExceptionAction;
+
+import ceylon.language.descriptor.Module;
 
 /**
  * Security actions.
@@ -79,9 +79,14 @@ final class SecurityActions {
 
     @SuppressWarnings("UnnecessaryLocalVariable")
     private static void invokeRunInternal(final Class<?> runClass, final String[] args) throws Exception {
-        final Method main = runClass.getDeclaredMethod("main", String[].class);
-        main.setAccessible(true);
-        final Object sfa = args;
-        main.invoke(null, sfa);
+        try {
+            final Method main = runClass.getDeclaredMethod("main", String[].class);
+            main.setAccessible(true);
+            final Object sfa = args;
+            main.invoke(null, sfa);
+        } catch (NoSuchMethodException ex) {
+            // Errors about a missing main() will confuse users, so we throw our own version
+            throw new NoSuchMethodException(runClass.getName() + "(Void)");
+        }
     }
 }
