@@ -26,12 +26,12 @@ import java.io.File;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class FileArtifactResult extends AbstractArtifactResult {
+public class FileArtifactResult extends AbstractCeylonArtifactResult {
 
     private final File file;
 
-    protected FileArtifactResult(RepositoryManager manager, String name, File file) {
-        super(manager, name);
+    protected FileArtifactResult(RepositoryManager manager, String name, String version, File file) {
+        super(manager, name, version);
         this.file = file;
     }
 

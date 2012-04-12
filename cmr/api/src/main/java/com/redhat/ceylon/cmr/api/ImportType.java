@@ -14,36 +14,15 @@
  * limitations under the License.
  */
 
-package com.redhat.ceylon.cmr.impl;
-
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ImportType;
+package com.redhat.ceylon.cmr.api;
 
 /**
- * Abstract artifact result.
+ * ImportType type.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public abstract class AbstractArtifactResult implements ArtifactResult {
-
-    private String name;
-    private String version;
-
-    protected AbstractArtifactResult(String name, String version) {
-        this.name = name;
-        this.version = version;
-    }
-
-    public String name() {
-        return name;
-    }
-
-    public String version() {
-        return version;
-    }
-
-    public ImportType importType() {
-        return ImportType.UNDEFINED;
-    }
+public enum ImportType {
+    UNDEFINED,
+    OPTIONAL,
+    EXPORT
 }
-

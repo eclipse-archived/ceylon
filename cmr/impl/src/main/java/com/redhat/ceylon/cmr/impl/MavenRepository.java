@@ -42,27 +42,37 @@ public class MavenRepository extends AbstractRepository {
     }
 
     protected ArtifactResult getArtifactResultInternal(RepositoryManager manager, final Node node) {
-        return new ArtifactResult() {
-            public ArtifactResultType type() {
-                return ArtifactResultType.MAVEN;
-            }
-
-            public File artifact() throws RepositoryException {
-                try {
-                    return node.getContent(File.class);
-                } catch (IOException e) {
-                    throw new RepositoryException(e);
-                }
-            }
-
-            public List<ArtifactResult> dependencies() throws RepositoryException {
-                return Collections.emptyList(); // dunno how to grab deps
-            }
-        };
+        ArtifactContext context = ArtifactContext.fromNode(node);
+        return new MavenArtifactResult(manager, context.getName(), context.getVersion(), node);
     }
 
     @Override
     public String getDisplayString() {
         return "[Maven] " + super.getDisplayString();
+    }
+
+    private static class MavenArtifactResult extends AbstractCeylonArtifactResult {
+        private Node node;
+
+        private MavenArtifactResult(RepositoryManager manager, String name, String version, Node node) {
+            super(manager, name, version);
+            this.node = node;
+        }
+
+        public ArtifactResultType type() {
+            return ArtifactResultType.MAVEN;
+        }
+
+        public File artifact() throws RepositoryException {
+            try {
+                return node.getContent(File.class);
+            } catch (IOException e) {
+                throw new RepositoryException(e);
+            }
+        }
+
+        public List<ArtifactResult> dependencies() throws RepositoryException {
+            return Collections.emptyList(); // dunno how to grab deps
+        }
     }
 }

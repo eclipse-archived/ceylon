@@ -63,7 +63,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
                     context.setForceOperation(true); // just force the ops
                     final File file = putContent(context, node, node.getInputStream());
                     // we expect the remote nodes to support Ceylon module info                    
-                    return new FileArtifactResult(this, context.getName(), file);
+                    return new FileArtifactResult(this, context.getName(), context.getVersion(), file);
                 } catch (IOException e) {
                     throw new RepositoryException(e);
                 } finally {

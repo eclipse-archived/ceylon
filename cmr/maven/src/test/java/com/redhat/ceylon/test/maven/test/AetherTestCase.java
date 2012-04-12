@@ -16,6 +16,7 @@
 
 package com.redhat.ceylon.test.maven.test;
 
+import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -23,11 +24,13 @@ import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.maven.AetherContentStore;
+import com.redhat.ceylon.cmr.maven.AetherRepository;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Aether tests.
@@ -49,6 +52,27 @@ public class AetherTestCase {
             Assert.assertNotNull(artifact);
             Assert.assertTrue(artifact.exists());
             exists = true;
+        } finally {
+            if (exists) {
+                Assert.assertTrue(artifact.delete()); // delete this one
+            }
+        }
+    }
+
+    @Test
+    public void testAether() throws Throwable {
+        Repository repository = AetherRepository.createRepository(log);
+        RepositoryManager manager = new SimpleRepositoryManager(repository, log);
+        ArtifactResult result = manager.getArtifactResult("org.slf4j.slf4j-api", "1.6.4");
+        Assert.assertNotNull(result);
+        File artifact = result.artifact();
+        boolean exists = false;
+        try {
+            Assert.assertNotNull(artifact);
+            Assert.assertTrue(artifact.exists());
+            exists = true;
+            List<ArtifactResult> deps = result.dependencies();
+            log.debug("deps = " + deps);
         } finally {
             if (exists) {
                 Assert.assertTrue(artifact.delete()); // delete this one

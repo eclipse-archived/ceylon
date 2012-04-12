@@ -46,6 +46,10 @@ public class AetherContentStore extends AbstractContentStore {
         utils = new AetherUtils(log);
     }
 
+    AetherUtils getUtils() {
+        return utils;
+    }
+
     public OpenNode createRoot() {
         return new RootNode(this, this);
     }

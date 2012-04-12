@@ -26,6 +26,27 @@ import java.util.List;
  */
 public interface ArtifactResult {
     /**
+     * Get name.
+     *
+     * @return the artifact name.
+     */
+    String name();
+
+    /**
+     * Get version.
+     *
+     * @return the version.
+     */
+    String version();
+
+    /**
+     * Get import type.
+     *
+     * @return the import type
+     */
+    ImportType importType();
+
+    /**
      * The result type.
      *
      * @return the type

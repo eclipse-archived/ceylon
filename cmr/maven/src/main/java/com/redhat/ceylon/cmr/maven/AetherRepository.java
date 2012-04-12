@@ -17,9 +17,9 @@
 package com.redhat.ceylon.cmr.maven;
 
 import com.redhat.ceylon.cmr.api.*;
+import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
 import com.redhat.ceylon.cmr.impl.MavenRepository;
 import com.redhat.ceylon.cmr.spi.Node;
-import com.redhat.ceylon.cmr.spi.OpenNode;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,12 +34,17 @@ import java.util.List;
 public class AetherRepository extends MavenRepository {
     private final AetherUtils utils;
 
-    public AetherRepository(OpenNode root, Logger log) {
-        super(root);
-        utils = new AetherUtils(log);
+    private AetherRepository(AetherContentStore acs) {
+        super(acs.createRoot());
+        utils = acs.getUtils();
     }
 
-    public ArtifactResult getArtifactResult(RepositoryManager manager, Node node) {
+    public static Repository createRepository(Logger log) {
+        AetherContentStore acs = new AetherContentStore(log);
+        return new AetherRepository(acs);
+    }
+
+    public ArtifactResult getArtifactResultInternal(RepositoryManager manager, Node node) {
         final File[] files = utils.findDependencies(node);
         if (files == null || files.length == 0)
             return null;
@@ -62,14 +67,15 @@ public class AetherRepository extends MavenRepository {
         if (artifact == null)
             throw new IllegalArgumentException("No matching artifact, should not happen: " + name);
 
-        return new AetherArtifactResult(artifact, dependecies);
+        return new AetherArtifactResult(context.getName(), context.getVersion(), artifact, dependecies);
     }
 
-    private static class AetherArtifactResult implements ArtifactResult {
+    private static class AetherArtifactResult extends AbstractArtifactResult {
         private File file;
         private List<ArtifactResult> dependencies;
 
-        private AetherArtifactResult(File file, List<ArtifactResult> dependencies) {
+        private AetherArtifactResult(String name, String version, File file, List<ArtifactResult> dependencies) {
+            super(name, version);
             this.file = file;
             this.dependencies = dependencies;
         }
@@ -87,10 +93,11 @@ public class AetherRepository extends MavenRepository {
         }
     }
 
-    private static class SingleArtifactResult implements ArtifactResult {
+    private static class SingleArtifactResult extends AbstractArtifactResult {
         private File file;
 
         private SingleArtifactResult(File file) {
+            super(parseName(file), parseVersion(file));
             this.file = file;
         }
 
@@ -107,4 +114,27 @@ public class AetherRepository extends MavenRepository {
         }
     }
 
+    // temp massive hack !!
+
+    private static int split(String name) {
+        int p = 0;
+        while (true) {
+            p = name.indexOf("-", p);
+            if (p < 0)
+                throw new IllegalArgumentException("Cannot find name-version split: " + name);
+            if (Character.isDigit(name.charAt(p + 1)))
+                return p;
+            p++;
+        }
+    }
+
+    private static String parseName(File file) {
+        String name = file.getName();
+        return name.substring(0, split(name));
+    }
+
+    private static String parseVersion(File file) {
+        String name = file.getName();
+        return name.substring(split(name) + 1, name.length() - ".jar".length());
+    }
 }

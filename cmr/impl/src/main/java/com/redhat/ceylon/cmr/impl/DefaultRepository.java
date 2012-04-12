@@ -41,12 +41,12 @@ public class DefaultRepository extends AbstractRepository {
         return new DefaultArtifactResult(manager, node);
     }
 
-    private static class DefaultArtifactResult extends AbstractArtifactResult {
+    private static class DefaultArtifactResult extends AbstractCeylonArtifactResult {
 
         private Node node;
 
         private DefaultArtifactResult(RepositoryManager manager, Node node) {
-            super(manager, ArtifactContext.fromNode(node).getName());
+            super(manager, ArtifactContext.fromNode(node).getName(), ArtifactContext.fromNode(node).getVersion());
             this.node = node;
         }
 
