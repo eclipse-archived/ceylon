@@ -21,6 +21,7 @@ import ceylon.modules.spi.ArgumentType;
 import ceylon.modules.spi.Constants;
 import ceylon.modules.spi.Executable;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
@@ -37,8 +38,9 @@ public class Main {
      * Ceylon Runtime main entry point.
      *
      * @param args the args
+     * @throws Throwable 
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Throwable {
         try {
             for (Handler handler : Logger.getLogger("").getHandlers()) {
                 // This is a hack, but at least it works. With a property file our log
@@ -54,7 +56,12 @@ public class Main {
         } catch (CeylonRuntimeException cre) {
             System.err.println("Error: " + cre.getMessage());
         } catch (Throwable t) {
-            throw new RuntimeException("Error using Ceylon Runtime.", t);
+            // Get rid of unwanted stack elements
+            Throwable t2 = (t.getCause() != null) ? t.getCause() : t;
+            if (t2 instanceof InvocationTargetException) {
+                t2 = (t.getCause() != null) ? t2.getCause() : t2;
+            }
+            throw t2;
         }
     }
 
