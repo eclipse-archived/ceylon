@@ -23,8 +23,8 @@ public final class makeArray {
     @TypeInfo("ceylon.language.Integer")
     final Integer size,
     @Name("init")
-    @TypeInfo("ceylon.language.Callable<Element,Integer>")
-    final Callable<? extends Element> init) {
+    @TypeInfo("ceylon.language.Callable<Element,ceylon.language.Integer>")
+    final Callable<Element> init) {
         List<Element> list = new ArrayList<Element>();
         for (int i=0; i<size.value; i++) {
             Element elem = init.$call(Integer.instance(i));
