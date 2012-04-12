@@ -55,22 +55,28 @@ public class RepositoryBuilder {
         }
     }
 
+    protected RepositoryBuilder getDelegate() {
+        if (delegate == null)
+            throw new IllegalArgumentException("Missing method impl / override!");
+        return delegate;
+    }
+
     public RootBuilder rootBuilder() {
-        return delegate.rootBuilder();
+        return getDelegate().rootBuilder();
     }
 
     public RepositoryBuilder mergeStrategy(MergeStrategy strategy) {
-        delegate.mergeStrategy(strategy);
+        getDelegate().mergeStrategy(strategy);
         return this;
     }
 
     public RepositoryBuilder contentTransformer(ContentTransformer transformer) {
-        delegate.contentTransformer(transformer);
+        getDelegate().contentTransformer(transformer);
         return this;
     }
 
     public RepositoryBuilder cacheContent() {
-        delegate.cacheContent();
+        getDelegate().cacheContent();
         return this;
     }
 
@@ -80,7 +86,7 @@ public class RepositoryBuilder {
      * @return this
      */
     public RepositoryBuilder addCeylonHome() {
-        delegate.addCeylonHome();
+        getDelegate().addCeylonHome();
         return this;
     }
 
@@ -90,7 +96,7 @@ public class RepositoryBuilder {
      * @return this
      */
     public RepositoryBuilder addModules() {
-        delegate.addModules();
+        getDelegate().addModules();
         return this;
     }
 
@@ -100,31 +106,31 @@ public class RepositoryBuilder {
      * @return this
      */
     public RepositoryBuilder addModulesCeylonLangOrg() {
-        delegate.addModulesCeylonLangOrg();
+        getDelegate().addModulesCeylonLangOrg();
         return this;
     }
 
     public RepositoryBuilder prependExternalRoot(OpenNode externalRoot) {
-        delegate.prependExternalRoot(externalRoot);
+        getDelegate().prependExternalRoot(externalRoot);
         return this;
     }
 
     public RepositoryBuilder appendExternalRoot(OpenNode externalRoot) {
-        delegate.appendExternalRoot(externalRoot);
+        getDelegate().appendExternalRoot(externalRoot);
         return this;
     }
 
     public RepositoryBuilder prependRepository(Repository external) {
-        delegate.prependRepository(external);
+        getDelegate().prependRepository(external);
         return this;
     }
 
     public RepositoryBuilder appendRepository(Repository external) {
-        delegate.appendRepository(external);
+        getDelegate().appendRepository(external);
         return this;
     }
 
     public RepositoryManager buildRepository() {
-        return delegate.buildRepository();
+        return getDelegate().buildRepository();
     }
 }
