@@ -1,5 +1,5 @@
-function initType(a,b,c,d,e,f,g,h,i,j,k,l);//IGNORE
-function inheritProto(a,b,c,d,e,f,g,h,i,j,k,l);//IGNORE
+function initTypeProto(a,b,c,d,e,f,g,h,i,j,k,l);//IGNORE
+function initTypeProtoI(a,b,c,d,e,f,g,h,i,j,k,l);//IGNORE
 function String$(x){}//IGNORE
 function Boolean$(x){}//IGNORE
 function Character(x){}//IGNORE
