@@ -389,3 +389,12 @@ exports.array=function(elems) {
         return ArrayList(elems.value);
     }
 }
+exports.makeArray=function(size, init) {
+    if (size.value > 0) {
+        var elems = [];
+        for (var i = 0; i < size.value; i++) {
+            elems.push(init(Integer(i)));
+        }
+        return ArrayList(elems);
+    } else return EmptyArray();
+}
