@@ -20,6 +20,7 @@ package com.redhat.ceylon.cmr.impl;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
@@ -56,7 +57,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         setRoot(aaca);
     }
 
-    public ArtifactResult getArtifactResult(ArtifactContext context) throws IOException {
+    public ArtifactResult getArtifactResult(ArtifactContext context) throws RepositoryException {
         final Node node = getLeafNode(context);
         if (node != null) {
             if (node.isRemote()) {
@@ -66,6 +67,8 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
                     final File file = putContent(context, node, node.getInputStream());
                     // we expect the remote nodes to support Ceylon module info                    
                     return new FileArtifactResult(this, context.getName(), file);
+                } catch (IOException e) {
+                    throw new RepositoryException(e);
                 } finally {
                     context.setForceOperation(forceOp);
                 }
@@ -78,7 +81,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
     }
 
     protected File putContent(ArtifactContext context, Node node, InputStream stream) throws IOException {
-        log.debug("Creating local copy of external node: " + node +" at repo: "+fileContentStore.getDisplayString());
+        log.debug("Creating local copy of external node: " + node + " at repo: " + fileContentStore.getDisplayString());
         fileContentStore.putContent(node, stream, context);
         File file = fileContentStore.getFile(node); // re-get
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Red Hat inc. and third party contributors as noted 
+ * Copyright 2011 Red Hat inc. and third party contributors as noted
  * by the author tags.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,33 @@
  * limitations under the License.
  */
 
-package com.redhat.ceylon.cmr.impl;
+package com.redhat.ceylon.cmr.api;
 
-import com.redhat.ceylon.cmr.api.RepositoryException;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.spi.Node;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 /**
- * Existing file.
+ * Helper class.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class FileArtifactResult extends AbstractArtifactResult {
-
-    private final File file;
-
-    protected FileArtifactResult(RepositoryManager manager, String name, File file) {
-        super(manager, name);
-        this.file = file;
+public class Helper {
+    public static InputStream toInputStream(Node node) throws RepositoryException {
+        try {
+            return node.getInputStream();
+        } catch (Exception e) {
+            throw new RepositoryException(e);
+        }
     }
 
-    public File artifact() throws RepositoryException {
-        return file;
+    public static InputStream toInputStream(File file) throws RepositoryException {
+        try {
+            return new FileInputStream(file);
+        } catch (Exception e) {
+            throw new RepositoryException(e);
+        }
     }
 }
-

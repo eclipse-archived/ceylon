@@ -17,8 +17,6 @@
 package com.redhat.ceylon.cmr.api;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,9 +39,9 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
      *
      * @param result the artifact result
      * @return all dependencies
-     * @throws IOException for any I/O error
+     * @throws RepositoryException for any I/O error
      */
-    public static File[] flatten(ArtifactResult result) throws IOException {
+    public static File[] flatten(ArtifactResult result) throws RepositoryException {
         if (result == null)
             return null;
 
@@ -52,70 +50,70 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
         return files.toArray(new File[files.size()]);
     }
 
-    private static void recurse(final List<File> files, final ArtifactResult current) throws IOException {
+    private static void recurse(final List<File> files, final ArtifactResult current) throws RepositoryException {
         files.add(current.artifact());
         for (ArtifactResult ar : current.dependencies())
             recurse(files, ar);
     }
 
-    public File[] resolve(String name, String version) throws IOException {
+    public File[] resolve(String name, String version) throws RepositoryException {
         final ArtifactContext context = new ArtifactContext(name, version);
         return resolve(context);
     }
 
-    public File[] resolve(ArtifactContext context) throws IOException {
+    public File[] resolve(ArtifactContext context) throws RepositoryException {
         final ArtifactResult result = getArtifactResult(context);
         return flatten(result);
     }
 
-    public File getArtifact(String name, String version) throws IOException {
+    public File getArtifact(String name, String version) throws RepositoryException {
         ArtifactContext context = new ArtifactContext();
         context.setName(name);
         context.setVersion(version);
         return getArtifact(context);
     }
 
-    public File getArtifact(ArtifactContext context) throws IOException {
+    public File getArtifact(ArtifactContext context) throws RepositoryException {
         final ArtifactResult result = getArtifactResult(context);
         return (result != null) ? result.artifact() : null;
     }
 
-    public ArtifactResult getArtifactResult(String name, String version) throws IOException {
+    public ArtifactResult getArtifactResult(String name, String version) throws RepositoryException {
         ArtifactContext context = new ArtifactContext();
         context.setName(name);
         context.setVersion(version);
         return getArtifactResult(context);
     }
 
-    public void putArtifact(String name, String version, InputStream content) throws IOException {
+    public void putArtifact(String name, String version, InputStream content) throws RepositoryException {
         ArtifactContext context = new ArtifactContext();
         context.setName(name);
         context.setVersion(version);
         putArtifact(context, content);
     }
 
-    public void putArtifact(String name, String version, File content) throws IOException {
+    public void putArtifact(String name, String version, File content) throws RepositoryException {
         ArtifactContext context = new ArtifactContext();
         context.setName(name);
         context.setVersion(version);
         putArtifact(context, content);
     }
 
-    public void putArtifact(ArtifactContext context, File content) throws IOException {
+    public void putArtifact(ArtifactContext context, File content) throws RepositoryException {
         if (content == null)
             throw new IllegalArgumentException("Null file!");
 
         if (content.isDirectory())
             putFolder(context, content);
         else
-            putArtifact(context, new FileInputStream(content));
+            putArtifact(context, Helper.toInputStream(content));
     }
 
-    protected void putFolder(ArtifactContext context, File folder) throws IOException {
-        throw new IOException("RepositoryManager doesn't support folder [" + folder + "] put: " + context);
+    protected void putFolder(ArtifactContext context, File folder) throws RepositoryException {
+        throw new RepositoryException("RepositoryManager doesn't support folder [" + folder + "] put: " + context);
     }
 
-    public void removeArtifact(String name, String version) throws IOException {
+    public void removeArtifact(String name, String version) throws RepositoryException {
         ArtifactContext context = new ArtifactContext();
         context.setName(name);
         context.setVersion(version);

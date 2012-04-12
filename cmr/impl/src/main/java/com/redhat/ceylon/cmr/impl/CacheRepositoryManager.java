@@ -19,7 +19,6 @@ package com.redhat.ceylon.cmr.impl;
 import com.redhat.ceylon.cmr.api.*;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -47,14 +46,14 @@ public class CacheRepositoryManager extends AbstractRepositoryManager {
         super(log);
     }
 
-    public ArtifactResult getArtifactResult(ArtifactContext context) throws IOException {
+    public ArtifactResult getArtifactResult(ArtifactContext context) throws RepositoryException {
         return null;
     }
 
-    public void putArtifact(ArtifactContext context, InputStream content) throws IOException {
+    public void putArtifact(ArtifactContext context, InputStream content) throws RepositoryException {
     }
 
-    public void removeArtifact(ArtifactContext context) throws IOException {
+    public void removeArtifact(ArtifactContext context) throws RepositoryException {
     }
 
     protected void addRepository(Repository repository) {

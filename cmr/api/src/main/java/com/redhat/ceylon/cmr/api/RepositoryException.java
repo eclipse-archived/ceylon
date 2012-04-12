@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Red Hat inc. and third party contributors as noted 
+ * Copyright 2011 Red Hat inc. and third party contributors as noted
  * by the author tags.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,23 @@
  * limitations under the License.
  */
 
-package com.redhat.ceylon.cmr.impl;
-
-import com.redhat.ceylon.cmr.api.RepositoryException;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-
-import java.io.File;
+package com.redhat.ceylon.cmr.api;
 
 /**
- * Existing file.
+ * Wrap any exception into this runtime exception.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class FileArtifactResult extends AbstractArtifactResult {
-
-    private final File file;
-
-    protected FileArtifactResult(RepositoryManager manager, String name, File file) {
-        super(manager, name);
-        this.file = file;
+public class RepositoryException extends RuntimeException {
+    public RepositoryException(String message) {
+        super(message);
     }
 
-    public File artifact() throws RepositoryException {
-        return file;
+    public RepositoryException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public RepositoryException(Throwable cause) {
+        super(cause);
     }
 }
-

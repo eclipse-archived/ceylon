@@ -17,7 +17,6 @@
 package com.redhat.ceylon.cmr.api;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -37,9 +36,9 @@ public interface ArtifactResult {
      * The requested artifact.
      *
      * @return the requested artifact
-     * @throws IOException for any I/O error
+     * @throws RepositoryException for any I/O error
      */
-    File artifact() throws IOException;
+    File artifact() throws RepositoryException;
 
     /**
      * Dependencies.
@@ -48,7 +47,7 @@ public interface ArtifactResult {
      * or they could be fetched in one go.
      *
      * @return dependencies, empty list if none
-     * @throws IOException for any I/O error
+     * @throws RepositoryException for any I/O error
      */
-    List<ArtifactResult> dependencies() throws IOException;
+    List<ArtifactResult> dependencies() throws RepositoryException;
 }

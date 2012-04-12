@@ -19,7 +19,6 @@ package com.redhat.ceylon.cmr.impl;
 import com.redhat.ceylon.cmr.api.*;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -56,7 +55,7 @@ public class OutputRepositoryManager extends AbstractRepositoryManager {
         this.manager = manager;
     }
 
-    public ArtifactResult getArtifactResult(ArtifactContext context) throws IOException {
+    public ArtifactResult getArtifactResult(ArtifactContext context) throws RepositoryException {
         final ArtifactResult result = output.getArtifactResult(context);
         if (result != null) {
             return result;
@@ -65,15 +64,15 @@ public class OutputRepositoryManager extends AbstractRepositoryManager {
         }
     }
 
-    public void putArtifact(ArtifactContext context, InputStream content) throws IOException {
+    public void putArtifact(ArtifactContext context, InputStream content) throws RepositoryException {
         output.putArtifact(context, content);
     }
 
-    public void putArtifact(ArtifactContext context, File content) throws IOException {
+    public void putArtifact(ArtifactContext context, File content) throws RepositoryException {
         output.putArtifact(context, content);
     }
 
-    public void removeArtifact(ArtifactContext context) throws IOException {
+    public void removeArtifact(ArtifactContext context) throws RepositoryException {
         output.removeArtifact(context);
     }
 

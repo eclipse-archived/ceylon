@@ -18,6 +18,7 @@ package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
@@ -49,8 +50,12 @@ public class DefaultRepository extends AbstractRepository {
             this.node = node;
         }
 
-        public File artifact() throws IOException {
-            return node.getContent(File.class);
+        public File artifact() throws RepositoryException {
+            try {
+                return node.getContent(File.class);
+            } catch (IOException e) {
+                throw new RepositoryException(e);
+            }
         }
     }
 }

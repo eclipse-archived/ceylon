@@ -17,6 +17,11 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import com.redhat.ceylon.cmr.api.*;
+import com.redhat.ceylon.cmr.spi.ContentOptions;
+import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.cmr.spi.OpenNode;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -24,14 +29,6 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import com.redhat.ceylon.cmr.api.AbstractRepositoryManager;
-import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.Logger;
-import com.redhat.ceylon.cmr.spi.ContentOptions;
-import com.redhat.ceylon.cmr.spi.Node;
-import com.redhat.ceylon.cmr.spi.OpenNode;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
@@ -83,26 +80,30 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         return adapter.getArtifactResult(this, node);
     }
 
-    public void putArtifact(ArtifactContext context, InputStream content) throws IOException {
+    public void putArtifact(ArtifactContext context, InputStream content) throws RepositoryException {
         final Node parent = getOrCreateParent(context);
-        log.debug("Adding artifact "+context+" to repository "+root.getDisplayString());
-        log.debug(" -> "+NodeUtils.getFullPath(parent));
+        log.debug("Adding artifact " + context + " to repository " + root.getDisplayString());
+        log.debug(" -> " + NodeUtils.getFullPath(parent));
         final String label = root.getArtifactName(context);
-        if (parent instanceof OpenNode) {
-            final OpenNode on = (OpenNode) parent;
-            if (on.addContent(label, content, context) == null)
+        try {
+            if (parent instanceof OpenNode) {
+                final OpenNode on = (OpenNode) parent;
+                if (on.addContent(label, content, context) == null)
+                    addContent(context, parent, label, content);
+            } else {
                 addContent(context, parent, label, content);
-        } else {
-            addContent(context, parent, label, content);
+            }
+        } catch (IOException e) {
+            throw new RepositoryException(e);
         }
         log.debug(" -> [done]");
     }
 
     @Override
-    protected void putFolder(ArtifactContext context, File folder) throws IOException {
+    protected void putFolder(ArtifactContext context, File folder) throws RepositoryException {
         Node parent = getOrCreateParent(context);
-        log.debug("Adding folder "+context+" to repository "+root.getDisplayString());
-        log.debug(" -> "+NodeUtils.getFullPath(parent));
+        log.debug("Adding folder " + context + " to repository " + root.getDisplayString());
+        log.debug(" -> " + NodeUtils.getFullPath(parent));
         final String label = root.getArtifactName(context);
         if (parent instanceof OpenNode) {
             final OpenNode on = (OpenNode) parent;
@@ -110,12 +111,12 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             try {
                 for (File f : folder.listFiles()) // ignore folder, it should match new root
                     putFiles(curent, f, context);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 removeArtifact(context);
-                throw e;
+                throw new RepositoryException(e);
             }
         } else {
-            throw new IOException("Cannot put folder [" + folder + "] to non-open node: " + context);
+            throw new RepositoryException("Cannot put folder [" + folder + "] to non-open node: " + context);
         }
         log.debug(" -> [done]");
     }
@@ -129,7 +130,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             for (File f : file.listFiles())
                 putFiles(current, f, options);
         } else {
-            log.debug(" Adding file "+file.getPath()+" at "+ NodeUtils.getFullPath(current));
+            log.debug(" Adding file " + file.getPath() + " at " + NodeUtils.getFullPath(current));
             current.addContent(file.getName(), new FileInputStream(file), options);
             log.debug("  -> [done]");
         }
@@ -139,12 +140,16 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         throw new IOException("Cannot add child [" + label + "] content [" + content + "] on parent node: " + parent);
     }
 
-    public void removeArtifact(ArtifactContext context) throws IOException {
+    public void removeArtifact(ArtifactContext context) throws RepositoryException {
         Node parent = getFromRootNode(context, false);
-        log.debug("Remove artifact "+context+" to repository "+root.getDisplayString());
+        log.debug("Remove artifact " + context + " to repository " + root.getDisplayString());
         if (parent != null) {
             final String label = root.getArtifactName(context);
-            removeNode(parent, label);
+            try {
+                removeNode(parent, label);
+            } catch (IOException e) {
+                throw new RepositoryException(e);
+            }
             log.debug(" -> [done]");
         } else {
             log.debug(" -> No such artifact: " + context);
@@ -188,7 +193,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             }
             // check sha
             if (result != null && result == false)
-                throw new InvalidArchiveException("Invalid SHA1 for artifact: " + context, 
+                throw new InvalidArchiveException("Invalid SHA1 for artifact: " + context,
                         NodeUtils.getFullPath(node));
         }
 
@@ -231,9 +236,9 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     }
 
     protected Node fromAdapters(Iterable<Repository> repositories, ArtifactContext context, boolean addLeaf) {
-        log.debug("Looking for "+context);
+        log.debug("Looking for " + context);
         for (Repository repository : repositories) {
-            log.debug(" Trying repository "+repository.getDisplayString());
+            log.debug(" Trying repository " + repository.getDisplayString());
             Node node = repository.findParent(context);
             if (node != null) {
                 if (addLeaf) {
@@ -248,14 +253,14 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
 
                 if (node != null) {
                     NodeUtils.keepRepository(node, repository);
-                    log.debug("  -> Found at "+NodeUtils.getFullPath(node));
+                    log.debug("  -> Found at " + NodeUtils.getFullPath(node));
                     return node;
                 }
             }
             log.debug("  -> Not Found");
         }
 
-        log.debug(" -> Artifact "+context+" not found in any repository");
+        log.debug(" -> Artifact " + context + " not found in any repository");
         return null; // not found
     }
 }

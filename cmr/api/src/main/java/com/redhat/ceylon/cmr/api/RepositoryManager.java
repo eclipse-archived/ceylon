@@ -18,7 +18,6 @@
 package com.redhat.ceylon.cmr.api;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -36,36 +35,36 @@ public interface RepositoryManager {
      * @param name    the module name
      * @param version the module version
      * @return all dependencies, null if they cannot be found
-     * @throws IOException for any I/O error
+     * @throws RepositoryException for any I/O error
      */
-    File[] resolve(String name, String version) throws IOException;
+    File[] resolve(String name, String version) throws RepositoryException;
 
     /**
      * Resolve dependencies for the context.
      *
      * @param context the artifact context to resolve
      * @return all dependencies, null if they cannot be found
-     * @throws IOException for any I/O error
+     * @throws RepositoryException for any I/O error
      */
-    File[] resolve(ArtifactContext context) throws IOException;
+    File[] resolve(ArtifactContext context) throws RepositoryException;
 
-    File getArtifact(String name, String version) throws IOException;
+    File getArtifact(String name, String version) throws RepositoryException;
 
-    File getArtifact(ArtifactContext context) throws IOException;
+    File getArtifact(ArtifactContext context) throws RepositoryException;
 
-    ArtifactResult getArtifactResult(String name, String version) throws IOException;
+    ArtifactResult getArtifactResult(String name, String version) throws RepositoryException;
 
-    ArtifactResult getArtifactResult(ArtifactContext context) throws IOException;
+    ArtifactResult getArtifactResult(ArtifactContext context) throws RepositoryException;
 
-    void putArtifact(String name, String version, InputStream content) throws IOException;
+    void putArtifact(String name, String version, InputStream content) throws RepositoryException;
 
-    void putArtifact(String name, String version, File content) throws IOException;
+    void putArtifact(String name, String version, File content) throws RepositoryException;
 
-    void putArtifact(ArtifactContext context, InputStream content) throws IOException;
+    void putArtifact(ArtifactContext context, InputStream content) throws RepositoryException;
 
-    void putArtifact(ArtifactContext context, File content) throws IOException;
+    void putArtifact(ArtifactContext context, File content) throws RepositoryException;
 
-    void removeArtifact(String name, String version) throws IOException;
+    void removeArtifact(String name, String version) throws RepositoryException;
 
-    void removeArtifact(ArtifactContext context) throws IOException;
+    void removeArtifact(ArtifactContext context) throws RepositoryException;
 }

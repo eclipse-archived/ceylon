@@ -16,10 +16,7 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ArtifactResultType;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.api.*;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
@@ -50,16 +47,20 @@ public class MavenRepository extends AbstractRepository {
                 return ArtifactResultType.MAVEN;
             }
 
-            public File artifact() throws IOException {
-                return node.getContent(File.class);
+            public File artifact() throws RepositoryException {
+                try {
+                    return node.getContent(File.class);
+                } catch (IOException e) {
+                    throw new RepositoryException(e);
+                }
             }
 
-            public List<ArtifactResult> dependencies() throws IOException {
+            public List<ArtifactResult> dependencies() throws RepositoryException {
                 return Collections.emptyList(); // dunno how to grab deps
             }
         };
     }
-    
+
     @Override
     public String getDisplayString() {
         return "[Maven] " + super.getDisplayString();

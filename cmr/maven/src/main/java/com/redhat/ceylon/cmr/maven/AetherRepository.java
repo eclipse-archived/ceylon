@@ -22,7 +22,6 @@ import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -79,11 +78,11 @@ public class AetherRepository extends MavenRepository {
             return ArtifactResultType.MAVEN;
         }
 
-        public File artifact() throws IOException {
+        public File artifact() throws RepositoryException {
             return file;
         }
 
-        public List<ArtifactResult> dependencies() throws IOException {
+        public List<ArtifactResult> dependencies() throws RepositoryException {
             return Collections.unmodifiableList(dependencies);
         }
     }
@@ -99,11 +98,11 @@ public class AetherRepository extends MavenRepository {
             return ArtifactResultType.MAVEN;
         }
 
-        public File artifact() throws IOException {
+        public File artifact() throws RepositoryException {
             return file;
         }
 
-        public List<ArtifactResult> dependencies() throws IOException {
+        public List<ArtifactResult> dependencies() throws RepositoryException {
             return Collections.emptyList();
         }
     }

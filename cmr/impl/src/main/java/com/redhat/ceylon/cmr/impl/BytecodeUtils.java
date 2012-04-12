@@ -42,23 +42,26 @@ public final class BytecodeUtils {
      * Read module info from bytecode.
      *
      * @param moduleName the module name
-     * @param jarFile the module jar file
+     * @param jarFile    the module jar file
      * @return module info list
-     * @throws IOException for any I/O error
      */
-    public static List<ModuleInfo> readModuleInformation(final String moduleName, final File jarFile) throws IOException {
-        // TODO -- remove this with new Jandex release
-        final File indexFile = new File(jarFile.getAbsolutePath().replace(".jar", "-jar") + ".idx");
-        if (indexFile.exists() == false) {
-            JarIndexer.createJarIndex(jarFile, new Indexer(), false, false, false);
-        }
-
+    public static List<ModuleInfo> readModuleInformation(final String moduleName, final File jarFile) {
         final Index index;
-        final InputStream stream = new FileInputStream(indexFile);
         try {
-            index = new IndexReader(stream).read();
-        } finally {
-            stream.close();
+            // TODO -- remove this with new Jandex release
+            final File indexFile = new File(jarFile.getAbsolutePath().replace(".jar", "-jar") + ".idx");
+            if (indexFile.exists() == false) {
+                JarIndexer.createJarIndex(jarFile, new Indexer(), false, false, false);
+            }
+
+            final InputStream stream = new FileInputStream(indexFile);
+            try {
+                index = new IndexReader(stream).read();
+            } finally {
+                stream.close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         final DotName moduleClassName = DotName.createSimple(moduleName + ".module");
@@ -84,7 +87,7 @@ public final class BytecodeUtils {
             final String name = asString(im, "name");
             if (JAVA.equalsIgnoreCase(name) == false) {
                 final ModuleInfo mi = new ModuleInfo(
-                        name, 
+                        name,
                         asString(im, "version"),
                         asBoolean(im, "optional"),
                         asBoolean(im, "export"));

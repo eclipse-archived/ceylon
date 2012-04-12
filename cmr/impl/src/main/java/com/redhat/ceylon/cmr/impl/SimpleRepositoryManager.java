@@ -19,9 +19,8 @@ package com.redhat.ceylon.cmr.impl;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
-
-import java.io.IOException;
 
 /**
  * Simple repository.
@@ -46,7 +45,7 @@ public class SimpleRepositoryManager extends AbstractNodeRepositoryManager {
         setRoot(root);
     }
 
-    public ArtifactResult getArtifactResult(ArtifactContext context) throws IOException {
+    public ArtifactResult getArtifactResult(ArtifactContext context) throws RepositoryException {
         return root.getArtifactResult(this, getLeafNode(context));
     }
 

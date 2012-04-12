@@ -16,12 +16,8 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ArtifactResultType;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.api.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -45,7 +41,7 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
         return ArtifactResultType.CEYLON;
     }
 
-    public List<ArtifactResult> dependencies() throws IOException {
+    public List<ArtifactResult> dependencies() throws RepositoryException {
         List<ModuleInfo> infos = BytecodeUtils.readModuleInformation(name, artifact());
         if (infos.isEmpty())
             return Collections.emptyList();
