@@ -17,6 +17,7 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
@@ -136,7 +137,7 @@ public final class NodeUtils {
     /**
      * Keep the repository info.
      *
-     * @param node    the node
+     * @param node       the node
      * @param repository the repository
      */
     public static void keepRepository(Node node, Repository repository) {

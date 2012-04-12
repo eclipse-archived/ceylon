@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-package com.redhat.ceylon.cmr.impl;
+package com.redhat.ceylon.cmr.api;
 
-import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
@@ -65,7 +62,7 @@ public interface Repository {
      * Get artifact result for node.
      *
      * @param manager the node's owning manager
-     * @param node the node
+     * @param node    the node
      * @return node's artifact result
      */
     ArtifactResult getArtifactResult(RepositoryManager manager, Node node);

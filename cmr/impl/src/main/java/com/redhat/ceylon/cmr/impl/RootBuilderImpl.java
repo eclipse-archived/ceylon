@@ -18,6 +18,7 @@
 package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.RootBuilder;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 
@@ -29,11 +30,15 @@ import java.net.URI;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class RootBuilder {
+class RootBuilderImpl implements RootBuilder {
 
-    private StructureBuilder structureBuilder;
+    private Logger log;
 
-    public RootBuilder(String token, Logger log) throws Exception {
+    RootBuilderImpl(Logger log) {
+        this.log = log;
+    }
+
+    public OpenNode buildRoot(String token) throws Exception {
         if (token == null)
             throw new IllegalArgumentException("Null repository");
 
@@ -42,6 +47,7 @@ public class RootBuilder {
         if (temp != null)
             token = temp;
 
+        StructureBuilder structureBuilder;
         if (token.startsWith("http")) {
             structureBuilder = new RemoteContentStore(token, log);
         } else {
@@ -53,9 +59,6 @@ public class RootBuilder {
 
             structureBuilder = new FileContentStore(file);
         }
-    }
-
-    public OpenNode buildRoot() {
         return structureBuilder.createRoot();
     }
 }

@@ -17,8 +17,7 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.Logger;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.api.*;
 import com.redhat.ceylon.cmr.spi.ContentTransformer;
 import com.redhat.ceylon.cmr.spi.MergeStrategy;
 import com.redhat.ceylon.cmr.spi.OpenNode;
@@ -30,18 +29,18 @@ import java.io.File;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class RepositoryBuilder {
+public class RepositoryBuilderImpl extends RepositoryBuilder {
 
     private RootRepositoryManager repository;
     private Logger log;
 
-    public RepositoryBuilder(Logger log) {
+    public RepositoryBuilderImpl(Logger log) {
         repository = new RootRepositoryManager(log);
         this.log = log;
         init();
     }
 
-    public RepositoryBuilder(File mainRepository, Logger log) {
+    public RepositoryBuilderImpl(File mainRepository, Logger log) {
         repository = new RootRepositoryManager(mainRepository, log);
         this.log = log;
         init();
@@ -55,17 +54,21 @@ public class RepositoryBuilder {
         return repository.getRoot();
     }
 
-    public RepositoryBuilder mergeStrategy(MergeStrategy strategy) {
+    public RootBuilder rootBuilder() {
+        return new RootBuilderImpl(log);
+    }
+
+    public RepositoryBuilderImpl mergeStrategy(MergeStrategy strategy) {
         getRoot().addService(MergeStrategy.class, strategy);
         return this;
     }
 
-    public RepositoryBuilder contentTransformer(ContentTransformer transformer) {
+    public RepositoryBuilderImpl contentTransformer(ContentTransformer transformer) {
         getRoot().addService(ContentTransformer.class, transformer);
         return this;
     }
 
-    public RepositoryBuilder cacheContent() {
+    public RepositoryBuilderImpl cacheContent() {
         getRoot().addService(ContentTransformer.class, new CachingContentTransformer());
         return this;
     }
@@ -75,7 +78,7 @@ public class RepositoryBuilder {
      *
      * @return this
      */
-    public RepositoryBuilder addCeylonHome() {
+    public RepositoryBuilderImpl addCeylonHome() {
         final String ceylonHome = SecurityActions.getProperty("ceylon.home");
         if (ceylonHome != null) {
             final File repo = new File(ceylonHome, "repo");
@@ -92,7 +95,7 @@ public class RepositoryBuilder {
      *
      * @return this
      */
-    public RepositoryBuilder addModules() {
+    public RepositoryBuilderImpl addModules() {
         final File modules = new File("modules");
         if (modules.exists() && modules.isDirectory())
             prependExternalRoot(new FileContentStore(modules).createRoot());
@@ -106,27 +109,27 @@ public class RepositoryBuilder {
      *
      * @return this
      */
-    public RepositoryBuilder addModulesCeylonLangOrg() {
+    public RepositoryBuilderImpl addModulesCeylonLangOrg() {
         appendExternalRoot(new RemoteContentStore(RepositoryManager.MODULES_CEYLON_LANG_ORG, log).createRoot());
         return this;
     }
 
-    public RepositoryBuilder prependExternalRoot(OpenNode externalRoot) {
+    public RepositoryBuilderImpl prependExternalRoot(OpenNode externalRoot) {
         repository.prependRepository(new DefaultRepository(externalRoot));
         return this;
     }
 
-    public RepositoryBuilder appendExternalRoot(OpenNode externalRoot) {
+    public RepositoryBuilderImpl appendExternalRoot(OpenNode externalRoot) {
         repository.appendRepository(new DefaultRepository(externalRoot));
         return this;
     }
 
-    public RepositoryBuilder prependRepository(Repository externalRoot) {
+    public RepositoryBuilderImpl prependRepository(Repository externalRoot) {
         repository.prependRepository(externalRoot);
         return this;
     }
 
-    public RepositoryBuilder appendRepository(Repository externalRoot) {
+    public RepositoryBuilderImpl appendRepository(Repository externalRoot) {
         repository.appendRepository(externalRoot);
         return this;
     }
