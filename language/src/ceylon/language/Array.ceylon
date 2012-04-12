@@ -55,4 +55,4 @@ doc "Returns an array with the elements in the sequence.
 shared Array<Element>&Some<Element> arrayOfSome<Element>(Sequence<Element> elements) { throw; }
 doc "Creates and returns an array of the specified size, populating it with the result
      of calling `init` for each index."
-shared Array<Element> makeArray<Element>(int size, Element init(Integer index)) { throw; }
+shared Array<Element> makeArray<Element>(Integer size, Callable<Element,Integer> init) { throw; }
