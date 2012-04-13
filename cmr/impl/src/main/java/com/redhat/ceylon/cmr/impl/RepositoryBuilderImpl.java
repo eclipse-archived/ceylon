@@ -17,125 +17,55 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.*;
-import com.redhat.ceylon.cmr.spi.ContentTransformer;
-import com.redhat.ceylon.cmr.spi.MergeStrategy;
-import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryBuilder;
+import com.redhat.ceylon.cmr.spi.StructureBuilder;
 
 import java.io.File;
+import java.lang.reflect.Method;
+import java.net.URI;
 
 /**
- * Root repository builder.
+ * Repository builder.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class RepositoryBuilderImpl extends RepositoryBuilder {
+class RepositoryBuilderImpl implements RepositoryBuilder {
 
-    private RootRepositoryManager repository;
     private Logger log;
 
-    public RepositoryBuilderImpl(Logger log) {
-        repository = new RootRepositoryManager(log);
+    RepositoryBuilderImpl(Logger log) {
         this.log = log;
-        init();
     }
 
-    public RepositoryBuilderImpl(File mainRepository, Logger log) {
-        repository = new RootRepositoryManager(mainRepository, log);
-        this.log = log;
-        init();
-    }
+    public Repository buildRepository(String token) throws Exception {
+        if (token == null)
+            throw new IllegalArgumentException("Null repository");
 
-    protected void init() {
-        getRoot().addService(MergeStrategy.class, new DefaultMergeStrategy());
-    }
+        final String key = (token.startsWith("${") ? token.substring(2, token.length() - 1) : token);
+        final String temp = SecurityActions.getProperty(key);
+        if (temp != null)
+            token = temp;
 
-    private OpenNode getRoot() {
-        return repository.getRoot();
-    }
+        StructureBuilder structureBuilder;
+        if (token.startsWith("http")) {
+            structureBuilder = new RemoteContentStore(token, log);
+        } else if (token.startsWith("mvn:")) {
+            return MavenRepositoryHelper.getMavenRepository(token.substring("mvn:".length()), log);
+        } else if (token.equals("aether")) {
+            Class<?> aetherRepositoryClass = getClass().getClassLoader().loadClass("com.redhat.ceylon.cmr.maven.AetherRepository");
+            Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class);
+            return (Repository) createRepository.invoke(null, log);
+        } else {
+            final File file = (token.startsWith("file") ? new File(new URI(token)) : new File(token));
+            if (file.exists() == false)
+                throw new IllegalArgumentException("Directory does not exist: " + token);
+            if (file.isDirectory() == false)
+                throw new IllegalArgumentException("Repository exists but is not a directory: " + token);
 
-    public RootBuilder rootBuilder() {
-        return new RootBuilderImpl(log);
-    }
-
-    public RepositoryBuilderImpl mergeStrategy(MergeStrategy strategy) {
-        getRoot().addService(MergeStrategy.class, strategy);
-        return this;
-    }
-
-    public RepositoryBuilderImpl contentTransformer(ContentTransformer transformer) {
-        getRoot().addService(ContentTransformer.class, transformer);
-        return this;
-    }
-
-    public RepositoryBuilderImpl cacheContent() {
-        getRoot().addService(ContentTransformer.class, new CachingContentTransformer());
-        return this;
-    }
-
-    /**
-     * It prepends ${ceylon.home} directory to roots, if it exists.
-     *
-     * @return this
-     */
-    public RepositoryBuilderImpl addCeylonHome() {
-        final String ceylonHome = SecurityActions.getProperty("ceylon.home");
-        if (ceylonHome != null) {
-            final File repo = new File(ceylonHome, "repo");
-            if (repo.exists() && repo.isDirectory())
-                prependExternalRoot(new FileContentStore(repo).createRoot());
-            else
-                log.warning("Invalid CEYLON_HOME/repo: " + repo);
+            structureBuilder = new FileContentStore(file);
         }
-        return this;
+        return new DefaultRepository(structureBuilder.createRoot());
     }
-
-    /**
-     * It prepends ./modules directory to roots, if it exists.
-     *
-     * @return this
-     */
-    public RepositoryBuilderImpl addModules() {
-        final File modules = new File("modules");
-        if (modules.exists() && modules.isDirectory())
-            prependExternalRoot(new FileContentStore(modules).createRoot());
-        else
-            log.debug("No such ./modules directory: " + modules);
-        return this;
-    }
-
-    /**
-     * It appends http://modules.ceylon-lang.org to roots, if it exists.
-     *
-     * @return this
-     */
-    public RepositoryBuilderImpl addModulesCeylonLangOrg() {
-        appendExternalRoot(new RemoteContentStore(RepositoryManager.MODULES_CEYLON_LANG_ORG, log).createRoot());
-        return this;
-    }
-
-    public RepositoryBuilderImpl prependExternalRoot(OpenNode externalRoot) {
-        repository.prependRepository(new DefaultRepository(externalRoot));
-        return this;
-    }
-
-    public RepositoryBuilderImpl appendExternalRoot(OpenNode externalRoot) {
-        repository.appendRepository(new DefaultRepository(externalRoot));
-        return this;
-    }
-
-    public RepositoryBuilderImpl prependRepository(Repository externalRoot) {
-        repository.prependRepository(externalRoot);
-        return this;
-    }
-
-    public RepositoryBuilderImpl appendRepository(Repository externalRoot) {
-        repository.appendRepository(externalRoot);
-        return this;
-    }
-
-    public RepositoryManager buildRepository() {
-        return repository;
-    }
-
 }

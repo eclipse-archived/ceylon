@@ -136,10 +136,11 @@ public class SmokeTestCase {
 
     @Test
     public void testExternalNodes() throws Exception {
-        RepositoryBuilder builder = new RepositoryBuilder(getRepositoryRoot(), log);
+        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(getRepositoryRoot(), log);
 
         InMemoryContentStore imcs = new InMemoryContentStore();
-        RepositoryManager manager = builder.appendExternalRoot(imcs.createRoot()).buildRepository();
+        Repository repo = new DefaultRepository(imcs.createRoot());
+        RepositoryManager manager = builder.appendRepository(repo).buildRepository();
 
         ByteArrayInputStream baos = new ByteArrayInputStream("qwerty".getBytes());
         String name = "com.redhat.acme";
@@ -185,9 +186,10 @@ public class SmokeTestCase {
             return; // probably not on the internet?
         }
 
-        RepositoryBuilder builder = new RepositoryBuilder(getRepositoryRoot(), log);
+        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(getRepositoryRoot(), log);
         RemoteContentStore rcs = new RemoteContentStore(repoURL, log);
-        RepositoryManager manager = builder.appendExternalRoot(rcs.createRoot()).buildRepository();
+        Repository repo = new DefaultRepository(rcs.createRoot());
+        RepositoryManager manager = builder.appendRepository(repo).buildRepository();
 
         String name = "com.redhat.fizbiz";
         String version = "1.0.0.Beta1";
@@ -211,7 +213,7 @@ public class SmokeTestCase {
 
     @Test
     public void testMavenRemote() throws Exception {
-        RepositoryBuilder builder = new RepositoryBuilder(getRepositoryRoot(), log);
+        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(getRepositoryRoot(), log);
         Repository externalRepo = MavenRepositoryHelper.getMavenRepository("https://repository.jboss.org/nexus/content/groups/public", log);
         builder.prependRepository(externalRepo);
         RepositoryManager manager = builder.buildRepository();

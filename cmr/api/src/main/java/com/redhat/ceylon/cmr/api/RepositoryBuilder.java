@@ -16,121 +16,18 @@
 
 package com.redhat.ceylon.cmr.api;
 
-import com.redhat.ceylon.cmr.spi.ContentTransformer;
-import com.redhat.ceylon.cmr.spi.MergeStrategy;
-import com.redhat.ceylon.cmr.spi.OpenNode;
-
-import java.io.File;
-import java.lang.reflect.Constructor;
-
 /**
- * Repository builder API.
+ * Build repository from token.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class RepositoryBuilder {
-    private final static String DEFAULT_DELEGATE = "com.redhat.ceylon.cmr.impl.RepositoryBuilderImpl";
-    private RepositoryBuilder delegate;
-
-    protected RepositoryBuilder() {
-    }
-
-    public RepositoryBuilder(Logger log) {
-        try {
-            Class<?> clazz = getClass().getClassLoader().loadClass(DEFAULT_DELEGATE);
-            Constructor ctor = clazz.getConstructor(Logger.class);
-            delegate = (RepositoryBuilder) ctor.newInstance(log);
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
-    public RepositoryBuilder(File mainRepository, Logger log) {
-        try {
-            Class<?> clazz = getClass().getClassLoader().loadClass(DEFAULT_DELEGATE);
-            Constructor ctor = clazz.getConstructor(File.class, Logger.class);
-            delegate = (RepositoryBuilder) ctor.newInstance(mainRepository, log);
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
-    protected RepositoryBuilder getDelegate() {
-        if (delegate == null)
-            throw new IllegalArgumentException("Missing method impl / override!");
-        return delegate;
-    }
-
-    public RootBuilder rootBuilder() {
-        return getDelegate().rootBuilder();
-    }
-
-    public RepositoryBuilder mergeStrategy(MergeStrategy strategy) {
-        getDelegate().mergeStrategy(strategy);
-        return this;
-    }
-
-    public RepositoryBuilder contentTransformer(ContentTransformer transformer) {
-        getDelegate().contentTransformer(transformer);
-        return this;
-    }
-
-    public RepositoryBuilder cacheContent() {
-        getDelegate().cacheContent();
-        return this;
-    }
-
+public interface RepositoryBuilder {
     /**
-     * It prepends ${ceylon.home} directory to roots, if it exists.
+     * Build repository.
      *
-     * @return this
+     * @param token the token
+     * @return repository
+     * @throws Exception for any error
      */
-    public RepositoryBuilder addCeylonHome() {
-        getDelegate().addCeylonHome();
-        return this;
-    }
-
-    /**
-     * It prepends ./modules directory to roots, if it exists.
-     *
-     * @return this
-     */
-    public RepositoryBuilder addModules() {
-        getDelegate().addModules();
-        return this;
-    }
-
-    /**
-     * It appends http://modules.ceylon-lang.org to roots, if it exists.
-     *
-     * @return this
-     */
-    public RepositoryBuilder addModulesCeylonLangOrg() {
-        getDelegate().addModulesCeylonLangOrg();
-        return this;
-    }
-
-    public RepositoryBuilder prependExternalRoot(OpenNode externalRoot) {
-        getDelegate().prependExternalRoot(externalRoot);
-        return this;
-    }
-
-    public RepositoryBuilder appendExternalRoot(OpenNode externalRoot) {
-        getDelegate().appendExternalRoot(externalRoot);
-        return this;
-    }
-
-    public RepositoryBuilder prependRepository(Repository external) {
-        getDelegate().prependRepository(external);
-        return this;
-    }
-
-    public RepositoryBuilder appendRepository(Repository external) {
-        getDelegate().appendRepository(external);
-        return this;
-    }
-
-    public RepositoryManager buildRepository() {
-        return getDelegate().buildRepository();
-    }
+    Repository buildRepository(String token) throws Exception;
 }
