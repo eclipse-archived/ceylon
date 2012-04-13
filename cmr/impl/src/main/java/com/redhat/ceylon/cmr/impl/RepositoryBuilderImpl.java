@@ -53,6 +53,8 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
             structureBuilder = new RemoteContentStore(token, log);
         } else if (token.startsWith("mvn:")) {
             return MavenRepositoryHelper.getMavenRepository(token.substring("mvn:".length()), log);
+        } else if (token.equals("mvn")) {
+            return MavenRepositoryHelper.getMavenRepository();
         } else if (token.equals("aether")) {
             Class<?> aetherRepositoryClass = getClass().getClassLoader().loadClass("com.redhat.ceylon.cmr.maven.AetherRepository");
             Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class);
