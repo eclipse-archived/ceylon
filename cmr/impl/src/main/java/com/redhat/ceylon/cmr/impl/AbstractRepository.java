@@ -51,11 +51,11 @@ public abstract class AbstractRepository implements Repository {
     }
 
     protected List<String> getDefaultParentPath(ArtifactContext context) {
-        List<String> tokens = LookupCaching.getTokens();
+        List<String> tokens = LookupCaching.getTokens(getClass());
         if (tokens == null) {
             tokens = getDefaultParentPathInternal(context);
             if (LookupCaching.isEnabled()) {
-                LookupCaching.setTokens(tokens);
+                LookupCaching.setTokens(getClass(), tokens);
             }
         }
         return tokens;

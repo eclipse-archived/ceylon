@@ -16,7 +16,11 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import com.redhat.ceylon.cmr.api.Repository;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Simple thread local caching.
@@ -26,7 +30,7 @@ import java.util.List;
 public final class LookupCaching {
 
     private static final ThreadLocal<Boolean> enabled = new ThreadLocal<Boolean>();
-    private static final ThreadLocal<List<String>> cached = new ThreadLocal<List<String>>();
+    private static final ThreadLocal<Map<Class<? extends Repository>, List<String>>> cached = new ThreadLocal<Map<Class<? extends Repository>, List<String>>>();
 
     public static void enable() {
         enabled.set(Boolean.TRUE);
@@ -41,11 +45,17 @@ public final class LookupCaching {
         enabled.remove();
     }
 
-    public static List<String> getTokens() {
-        return cached.get();
+    public static List<String> getTokens(Class<? extends Repository> repositoryType) {
+        Map<Class<? extends Repository>, List<String>> map = cached.get();
+        return (map != null) ? map.get(repositoryType) : null;
     }
 
-    public static void setTokens(List<String> tokens) {
-        cached.set(tokens);
+    public static void setTokens(Class<? extends Repository> repositoryType, List<String> tokens) {
+        Map<Class<? extends Repository>, List<String>> map = cached.get();
+        if (map == null) {
+            map = new HashMap<Class<? extends Repository>, List<String>>();
+            cached.set(map);
+        }
+        map.put(repositoryType, tokens);
     }
 }
