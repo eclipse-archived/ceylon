@@ -48,7 +48,10 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
 
         final List<ArtifactResult> results = new ArrayList<ArtifactResult>();
         for (ModuleInfo mi : infos) {
-            results.add(new LazyArtifactResult(mi.getName(), mi.getVersion(), mi.isOptional() ? ImportType.OPTIONAL : ImportType.UNDEFINED));
+            results.add(new LazyArtifactResult(
+                    mi.getName(),
+                    mi.getVersion(),
+                    mi.isOptional() ? ImportType.OPTIONAL : (mi.isExport() ? ImportType.EXPORT : ImportType.UNDEFINED)));
         }
         return results;
     }
