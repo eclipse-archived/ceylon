@@ -34,11 +34,19 @@ public class RepositoryManagerBuilder {
     protected RepositoryManagerBuilder() {
     }
 
+    protected Class<? extends RepositoryManagerBuilder> getDelegateClass() throws Exception {
+        ClassLoader classLoader = getClass().getClassLoader();
+        if (classLoader == null)
+            classLoader = ClassLoader.getSystemClassLoader();
+
+        //noinspection unchecked
+        return (Class<? extends RepositoryManagerBuilder>) classLoader.loadClass(DEFAULT_DELEGATE);
+    }
+
     public RepositoryManagerBuilder(Logger log) {
         try {
-            Class<?> clazz = getClass().getClassLoader().loadClass(DEFAULT_DELEGATE);
-            Constructor ctor = clazz.getConstructor(Logger.class);
-            delegate = (RepositoryManagerBuilder) ctor.newInstance(log);
+            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(Logger.class);
+            delegate = ctor.newInstance(log);
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
@@ -46,9 +54,8 @@ public class RepositoryManagerBuilder {
 
     public RepositoryManagerBuilder(File mainRepository, Logger log) {
         try {
-            Class<?> clazz = getClass().getClassLoader().loadClass(DEFAULT_DELEGATE);
-            Constructor ctor = clazz.getConstructor(File.class, Logger.class);
-            delegate = (RepositoryManagerBuilder) ctor.newInstance(mainRepository, log);
+            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(File.class, Logger.class);
+            delegate = ctor.newInstance(mainRepository, log);
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
