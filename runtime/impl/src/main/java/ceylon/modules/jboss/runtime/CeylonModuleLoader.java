@@ -17,12 +17,20 @@
 
 package ceylon.modules.jboss.runtime;
 
-import ceylon.modules.api.runtime.AbstractRuntime;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 import ceylon.modules.api.util.ModuleVersion;
 import ceylon.modules.jboss.repository.ResourceLoaderProvider;
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.compiler.java.metadata.Import;
-import com.redhat.ceylon.compiler.java.metadata.Module;
 import org.jboss.modules.DependencySpec;
 import org.jboss.modules.LocalLoader;
 import org.jboss.modules.ModuleIdentifier;
@@ -32,16 +40,6 @@ import org.jboss.modules.ModuleSpec;
 import org.jboss.modules.ResourceLoader;
 import org.jboss.modules.ResourceLoaderSpec;
 import org.jboss.modules.filter.PathFilters;
-
-import java.io.File;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Ceylon JBoss Module loader.
@@ -160,29 +158,25 @@ public class CeylonModuleLoader extends ModuleLoader {
         unloadModuleLocal(module);
     }
 
-    protected Module readModule(ModuleIdentifier mi, File moduleFile) throws Exception {
-        // TODO -- handle directory
-        final URL url = moduleFile.toURI().toURL();
-        final ClassLoader parent = getClass().getClassLoader();
-        final ClassLoader cl = new URLClassLoader(new URL[]{url}, parent);
-        return AbstractRuntime.loadModule(cl, mi.getName());
+    protected ArtifactResult findArtifact(ModuleIdentifier mi) {
+        final ArtifactContext context = new ArtifactContext(mi.getName(), mi.getSlot(), ArtifactContext.CAR);
+        ArtifactResult result = repository.getArtifactResult(context);
+        if (result == null) {
+            context.setSuffix(ArtifactContext.JAR);
+            result = repository.getArtifactResult(context);
+        }
+        return result;
     }
 
     @Override
     protected ModuleSpec findModule(ModuleIdentifier moduleIdentifier) throws ModuleLoadException {
         try {
-            File moduleFile = repository.getArtifact(moduleIdentifier.getName(), moduleIdentifier.getSlot());
-            if (moduleFile == null)
+            final ArtifactResult artifact = findArtifact(moduleIdentifier);
+            if (artifact == null)
                 return null;
 
+            final File moduleFile = artifact.artifact();
             final boolean isDefault = RepositoryManager.DEFAULT_MODULE.equals(moduleIdentifier.getName());
-
-            Module module = null;
-            if (!isDefault) {
-                module = readModule(moduleIdentifier, moduleFile);
-                if (module == null)
-                    throw new ModuleLoadException("No module descriptor in module: " + moduleFile);
-            }
 
             final List<DependencySpec> deps = new ArrayList<DependencySpec>();
             ModuleSpec.Builder builder = ModuleSpec.build(moduleIdentifier);
@@ -196,15 +190,15 @@ public class CeylonModuleLoader extends ModuleLoader {
             builder.addDependency(lds); // local resources
             deps.add(lds);
 
-            if (module != null) {
-                Node<Import> root = new Node<Import>();
-                for (Import i : module.dependencies()) {
-                    if (i.optional()) {
+            if (isDefault == false) {
+                Node<ArtifactResult> root = new Node<ArtifactResult>();
+                for (ArtifactResult i : artifact.dependencies()) {
+                    if (i.importType() == ImportType.OPTIONAL) {
                         String path = i.name();
-                        Node<Import> current = root;
+                        Node<ArtifactResult> current = root;
                         String[] tokens = path.split("\\.");
                         for (String token : tokens) {
-                            Node<Import> child = current.getChild(token);
+                            Node<ArtifactResult> child = current.getChild(token);
                             if (child == null)
                                 child = current.addChild(token);
                             current = child;
@@ -218,7 +212,7 @@ public class CeylonModuleLoader extends ModuleLoader {
 
                     ModuleIdentifier mi = createModuleIdentifier(i);
                     Graph.Vertex<ModuleIdentifier, Boolean> dv = graph.createVertex(mi, mi);
-                    Graph.Edge.create(i.export(), vertex, dv);
+                    Graph.Edge.create(i.importType() == ImportType.EXPORT, vertex, dv);
                 }
                 if (root.isEmpty() == false) {
                     LocalLoader onDemandLoader = new OnDemandLocalLoader(moduleIdentifier, this, root);
@@ -244,8 +238,6 @@ public class CeylonModuleLoader extends ModuleLoader {
             dependencies.put(moduleIdentifier, deps);
 
             return builder.create();
-        } catch (ModuleLoadException mle) {
-            throw mle;
         } catch (Exception e) {
             throw new ModuleLoadException(e);
         }
@@ -272,18 +264,18 @@ public class CeylonModuleLoader extends ModuleLoader {
      * @param i the import
      * @return new module dependency
      */
-    DependencySpec createModuleDependency(Import i) {
+    DependencySpec createModuleDependency(ArtifactResult i) {
         if (JAVA.equalsIgnoreCase(i.name())) {
             return DependencySpec.createSystemDependencySpec(JAVA_SYSTEM_PATHS);
         } else {
             final ModuleIdentifier mi = createModuleIdentifier(i);
-            final boolean export = i.export();
+            final boolean export = (i.importType() == ImportType.EXPORT);
             return DependencySpec.createModuleDependencySpec(
                     PathFilters.getDefaultImportFilterWithServices(), // import everything?
                     (export ? PathFilters.acceptAll() : PathFilters.rejectAll()),
                     this,
                     mi,
-                    i.optional()
+                    i.importType() == ImportType.OPTIONAL
             );
         }
     }
@@ -294,7 +286,7 @@ public class CeylonModuleLoader extends ModuleLoader {
      * @param i the import
      * @return module identifer
      */
-    static ModuleIdentifier createModuleIdentifier(Import i) {
+    static ModuleIdentifier createModuleIdentifier(ArtifactResult i) {
         return ModuleIdentifier.create(i.name(), i.version());
     }
 

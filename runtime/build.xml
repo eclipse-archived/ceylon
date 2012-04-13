@@ -121,6 +121,7 @@
         <copy file="${jboss-modules.lib}" tofile="${build.dist.lib}/${jboss-modules.jar}"/>
         <!-- Copy the Ceylon runtime dependencies -->
         <copy file="${jboss-modules.lib}" tofile="${build.dist.repo}/${jboss-modules.dir}/main/${jboss-modules.jar}"/>
+        <copy file="${jboss-jandex.lib}" tofile="${build.dist.repo}/${jboss-jandex.dir}/main/${jboss-jandex.jar}"/>
         <copy file="${ceylon.language.lib}" tofile="${build.dist.repo}/${ceylon.language.car}"/>
         <copy file="${ceylon.module-resolver.lib}" tofile="${build.dist.repo}/${ceylon.module-resolver.jar}"/>
         <copy file="${runtime.lib}" tofile="${build.dist}/${ceylon.runtime.jar}"/>

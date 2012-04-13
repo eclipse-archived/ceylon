@@ -17,17 +17,16 @@
 
 package ceylon.modules.jboss.runtime;
 
+import java.util.Collections;
+import java.util.List;
+
+import com.redhat.ceylon.cmr.api.ArtifactResult;
 import org.jboss.modules.DependencySpec;
 import org.jboss.modules.LocalLoader;
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoadException;
 import org.jboss.modules.Resource;
-
-import com.redhat.ceylon.compiler.java.metadata.Import;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Load modules on demand.
@@ -37,16 +36,16 @@ import java.util.List;
 class OnDemandLocalLoader implements LocalLoader {
     private ModuleIdentifier target;
     private CeylonModuleLoader loader;
-    private Node<Import> root;
+    private Node<ArtifactResult> root;
 
-    OnDemandLocalLoader(ModuleIdentifier target, CeylonModuleLoader loader, Node<Import> root) {
+    OnDemandLocalLoader(ModuleIdentifier target, CeylonModuleLoader loader, Node<ArtifactResult> root) {
         this.target = target;
         this.loader = loader;
         this.root = root;
     }
 
     protected LocalLoader doUpdate(String[] tokens) {
-        Node<Import> current = root;
+        Node<ArtifactResult> current = root;
         for (String token : tokens) {
             current = current.getChild(token);
             if (current == null)
@@ -54,7 +53,7 @@ class OnDemandLocalLoader implements LocalLoader {
 
             //noinspection SynchronizationOnLocalVariableOrMethodParameter
             synchronized (current) {
-                Import i = current.getValue();
+                ArtifactResult i = current.getValue();
                 if (i != null) {
                     current.remove(); // remove, so we don't loop; should not happen though
 

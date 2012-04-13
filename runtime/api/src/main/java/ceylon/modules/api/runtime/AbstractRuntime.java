@@ -17,12 +17,15 @@
 
 package ceylon.modules.api.runtime;
 
+import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.logging.Logger;
+
 import ceylon.modules.CeylonRuntimeException;
 import ceylon.modules.Configuration;
 import ceylon.modules.spi.Constants;
 import com.redhat.ceylon.compiler.java.metadata.Module;
-
-import java.util.logging.Logger;
 
 /**
  * Abstract Ceylon Modules runtime.
@@ -52,6 +55,13 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
             return null; // looks like no such module class is available
         }
 
+    }
+
+    protected Module readModule(String name, File moduleFile) throws Exception {
+        final URL url = moduleFile.toURI().toURL();
+        final ClassLoader parent = getClass().getClassLoader();
+        final ClassLoader cl = new URLClassLoader(new URL[]{url}, parent);
+        return loadModule(cl, name);
     }
 
     protected static void invokeRun(ClassLoader cl, String runClassName, final String[] args) throws Exception {
@@ -95,6 +105,10 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
             throw new CeylonRuntimeException("Missing module.class info: " + name); // TODO -- dump some more useful msg
         }
 
+        execute(conf, name, cl);
+    }
+
+    protected void execute(Configuration conf, String name, ClassLoader cl) throws Exception {
         String runClassName = conf.run;
         if (runClassName == null || runClassName.isEmpty()) {
             // "default" is not a package name

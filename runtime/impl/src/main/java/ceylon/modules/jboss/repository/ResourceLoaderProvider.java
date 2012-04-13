@@ -17,14 +17,14 @@
 
 package ceylon.modules.jboss.repository;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.jar.JarFile;
+
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ResourceLoader;
 import org.jboss.modules.ResourceLoaders;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.jar.JarFile;
 
 /**
  * Provide proper resource loader.
@@ -50,7 +50,7 @@ public class ResourceLoaderProvider {
             return new SourceResourceLoader(moduleFile, classesRoot, "");
         } else {
             JarFile jarFile = new JarFile(moduleFile);
-            String rootName = moduleIdentifier + ".car"; // TODO -- ok?
+            String rootName = moduleFile.getName();
             return ResourceLoaders.createJarResourceLoader(rootName, jarFile);
         }
     }
