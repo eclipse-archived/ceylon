@@ -284,18 +284,18 @@ public class CeylonDocTool {
                 ArtifactContext context = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
                 try{
                     outputRepository.removeArtifact(context);
-                }catch(IOException x){
-                    // FIXME: remove when the whole CMR is using CMRException
-                    throw new CeylondException("error.failedRemoveArtifact", new Object[]{context, x.getLocalizedMessage()}, x);
                 }catch(CMRException x){
+                    throw new CeylondException("error.failedRemoveArtifact", new Object[]{context, x.getLocalizedMessage()}, x);
+                }catch(Exception x){
+                    // FIXME: remove when the whole CMR is using CMRException
                     throw new CeylondException("error.failedRemoveArtifact", new Object[]{context, x.getLocalizedMessage()}, x);
                 }
                 try{
                     outputRepository.putArtifact(context, getOutputFolder(module));
-                }catch(IOException x){
-                    // FIXME: remove when the whole CMR is using CMRException
-                    throw new CeylondException("error.failedWriteArtifact", new Object[]{context, x.getLocalizedMessage()}, x);
                 }catch(CMRException x){
+                    throw new CeylondException("error.failedWriteArtifact", new Object[]{context, x.getLocalizedMessage()}, x);
+                }catch(Exception x){
+                    // FIXME: remove when the whole CMR is using CMRException
                     throw new CeylondException("error.failedWriteArtifact", new Object[]{context, x.getLocalizedMessage()}, x);
                 }
             }

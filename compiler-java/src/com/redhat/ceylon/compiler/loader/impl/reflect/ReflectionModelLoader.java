@@ -21,7 +21,6 @@
 package com.redhat.ceylon.compiler.loader.impl.reflect;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -93,12 +92,7 @@ public class ReflectionModelLoader extends AbstractModelLoader {
     public void addModuleToClassPath(Module module, ArtifactResult artifact) {
         if(artifact == null)
             return;
-        File file;
-        try {
-            file = artifact.artifact();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        File file = artifact.artifact();
         String path = file.getAbsolutePath();
         try {
             // FIXME: this will be handled by the module system

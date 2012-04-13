@@ -21,7 +21,6 @@
 package com.redhat.ceylon.compiler.java.loader;
 
 import java.io.File;
-import java.io.IOException;
 
 import javax.tools.JavaFileManager;
 import javax.tools.StandardLocation;
@@ -240,7 +239,7 @@ public class CeylonEnter extends Enter {
         File artifact = null;
         try {
             artifact = result != null ? result.artifact() : null;
-        } catch (IOException e) {
+        } catch (Exception e) {
             String moduleName = module.getNameAsString();
             if(!module.isDefault())
                 moduleName += "/" + module.getVersion();
