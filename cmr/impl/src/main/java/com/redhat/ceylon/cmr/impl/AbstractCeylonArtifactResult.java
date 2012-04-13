@@ -18,6 +18,7 @@ package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.*;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -47,14 +48,45 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
 
         final List<ArtifactResult> results = new ArrayList<ArtifactResult>();
         for (ModuleInfo mi : infos) {
-            final ArtifactContext context = new ArtifactContext(mi.getName(), mi.getVersion());
-            context.setThrowErrorIfMissing(mi.isOptional() == false);
-            final ArtifactResult result = manager.getArtifactResult(context);
-            if (result != null)
-                results.add(result);
+            results.add(new LazyArtifactResult(mi.getName(), mi.getVersion(), mi.isOptional() ? ImportType.OPTIONAL : ImportType.UNDEFINED));
         }
         return results;
     }
 
+    private class LazyArtifactResult extends AbstractArtifactResult {
+        private ArtifactResult delegate;
+        private final ImportType importType;
+
+        private LazyArtifactResult(String name, String version, ImportType importType) {
+            super(name, version);
+            this.importType = importType;
+        }
+
+        private synchronized ArtifactResult getDelegate() {
+            if (delegate == null) {
+                final ArtifactContext context = new ArtifactContext(name(), version());
+                context.setThrowErrorIfMissing(importType() != ImportType.OPTIONAL);
+                delegate = manager.getArtifactResult(context);
+            }
+            return delegate;
+        }
+
+        @Override
+        public ImportType importType() {
+            return importType;
+        }
+
+        public ArtifactResultType type() {
+            return getDelegate().type();
+        }
+
+        public File artifact() throws RepositoryException {
+            return getDelegate().artifact();
+        }
+
+        public List<ArtifactResult> dependencies() throws RepositoryException {
+            return getDelegate().dependencies();
+        }
+    }
 }
 
