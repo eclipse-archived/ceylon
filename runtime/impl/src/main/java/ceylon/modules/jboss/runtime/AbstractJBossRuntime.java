@@ -59,7 +59,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
             } else {
                 hint = " (missing required version, try " + spec + "/version)";
             }
-            final CeylonRuntimeException cre = new CeylonRuntimeException("Could not find module: " + spec + hint);
+            final CeylonRuntimeException cre = new CeylonRuntimeException("Could not create module: " + spec + hint);
             cre.initCause(e);
             throw cre;
         }

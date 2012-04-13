@@ -17,15 +17,15 @@
 
 package ceylon.modules;
 
-import ceylon.modules.spi.ArgumentType;
-import ceylon.modules.spi.Constants;
-import ceylon.modules.spi.Executable;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
+
+import ceylon.modules.spi.ArgumentType;
+import ceylon.modules.spi.Constants;
+import ceylon.modules.spi.Executable;
 
 /**
  * Main Ceylon Modules entry point.
@@ -38,7 +38,7 @@ public class Main {
      * Ceylon Runtime main entry point.
      *
      * @param args the args
-     * @throws Throwable 
+     * @throws Throwable
      */
     public static void main(String[] args) throws Throwable {
         try {
@@ -54,7 +54,7 @@ public class Main {
         try {
             execute(args);
         } catch (CeylonRuntimeException cre) {
-            System.err.println("Error: " + cre.getMessage());
+            System.err.println("Error: " + cre.getMessage() + (cre.getCause() != null ? " [" + cre.getCause().getMessage() + "]" : ""));
         } catch (Throwable t) {
             // Get rid of unwanted stack elements
             Throwable t2 = (t.getCause() != null) ? t.getCause() : t;
