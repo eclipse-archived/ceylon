@@ -1,16 +1,16 @@
 package com.redhat.ceylon.compiler.typechecker;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.impl.RepositoryBuilder;
+import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.io.cmr.impl.LeakingLogger;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Build a TypeChecker using the builder pattern
@@ -99,7 +99,7 @@ public class TypeCheckerBuilder {
     
     public TypeChecker getTypeChecker() {
         if (repositoryManager == null) {
-            repositoryManager = new RepositoryBuilder( new LeakingLogger() ).buildRepository();
+            repositoryManager = new RepositoryManagerBuilder( new LeakingLogger() ).buildRepository();
         }
         return new TypeChecker(vfs, srcDirectories, repositoryManager, verifyDependencies, assertionVisitor, moduleManagerFactory, verbose);
     }

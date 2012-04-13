@@ -96,7 +96,7 @@ public class ModuleValidator {
                         artifact = repositoryManager.getArtifactResult(artifactContext);
                         if(artifact != null) 
                             break;
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         exceptionOnGetArtifact = e;
                     }
                 }

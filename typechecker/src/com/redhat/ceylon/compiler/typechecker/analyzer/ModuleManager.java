@@ -308,7 +308,7 @@ public class ModuleManager {
         ArtifactResult sourceArtifact = null;
         try {
             sourceArtifact = repositoryManager.getArtifactResult(artifactContext);
-        } catch (IOException e) {
+        } catch (Exception e) {
             exceptionOnGetArtifact = e;
         }
         if ( sourceArtifact == null ) {
@@ -323,7 +323,7 @@ public class ModuleManager {
                 modulePhasedUnit.parseUnit(virtualArtifact);
                 //populate module.getDependencies()
                 modulePhasedUnit.visitModules();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 StringBuilder error = new StringBuilder("Unable to read source artifact for ");
                 error.append(artifactContext.toString());
                 error.append( "\ndue to connection error: ").append(e.getMessage());
