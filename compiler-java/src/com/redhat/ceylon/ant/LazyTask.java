@@ -15,7 +15,7 @@ import org.apache.tools.ant.types.Path;
 
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.api.RepositoryBuilder;
+import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -145,7 +145,7 @@ abstract class LazyTask extends Task {
      * @return The module version, or null if no version could be found
      */
     private String getModuleVersion(Module module, File srcDir) {
-        RepositoryBuilder builder = new RepositoryBuilder(new NullLogger());
+        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(new NullLogger());
         RepositoryManager repoManager = builder.buildRepository();
         VFS vfs = new VFS();
         Context context = new Context(repoManager, vfs);

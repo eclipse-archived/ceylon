@@ -33,12 +33,11 @@ import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.api.RepositoryBuilder;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.impl.FileContentStore;
 import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
-import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
@@ -405,7 +404,7 @@ public class Util {
     }
 
     public static RepositoryManager makeRepositoryManager(List<String> userRepos, String outRepo, Logger log) {
-        final RepositoryBuilder builder = new RepositoryBuilder(log);
+        final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(log);
 
         // any user defined repos first
         if(userRepos.isEmpty()){
@@ -422,8 +421,8 @@ public class Util {
                 try {
                     // we need to prepend to bypass the caching repo
                     if(!maven){
-                        OpenNode root = builder.rootBuilder().buildRoot(repo);
-                        builder.prependExternalRoot(root);
+                        Repository root = builder.repositoryBuilder().buildRepository(repo);
+                        builder.prependRepository(root);
                     }else{
                         Repository mvnRepo = MavenRepositoryHelper.getMavenRepository(repo, log);
                         builder.prependRepository(mvnRepo);
@@ -436,8 +435,8 @@ public class Util {
 
         if(outRepo != null){
             try{
-                OpenNode root = builder.rootBuilder().buildRoot(outRepo);
-                builder.prependExternalRoot(root);
+                Repository root = builder.repositoryBuilder().buildRepository(outRepo);
+                builder.prependRepository(root);
             }catch(Exception e){
                 log.debug("Failed to add output repository as input repository (doesn't matter): " + outRepo + ": "+e.getMessage());
             }
