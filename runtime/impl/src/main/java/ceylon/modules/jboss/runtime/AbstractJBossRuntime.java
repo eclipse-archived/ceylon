@@ -24,7 +24,7 @@ import ceylon.modules.api.runtime.AbstractRuntime;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.api.RootBuilder;
+import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.spi.ContentTransformer;
 import com.redhat.ceylon.cmr.spi.MergeStrategy;
@@ -73,17 +73,17 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
      */
     protected RepositoryManager createRepository(Configuration conf) {
         Logger log = new JULLogger();
-        final RepositoryBuilder builder = new RepositoryBuilder(log);
+        final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(log);
 
         // prepend ./modules if no -rep
         if (conf.repositories.isEmpty())
             builder.addModules();
         else {
-            final RootBuilder rb = builder.rootBuilder();
+            final RepositoryBuilder rb = builder.repositoryBuilder();
             // any user defined repos
             for (String token : conf.repositories) {
                 try {
-                    builder.appendExternalRoot(rb.buildRoot(token));
+                    builder.appendRepository(rb.buildRepository(token));
                 } catch (Exception e) {
                     log.warning("Failed to add repository: " + token + ": " + e.getMessage());
                 }
