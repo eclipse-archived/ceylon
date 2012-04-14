@@ -23,27 +23,30 @@ import ceylon.modules.spi.Constants;
 import org.jboss.ceylon.test.modules.ModulesTest;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- * Simple Maven repository is enabled.
+ * Aether enabled tests.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class InteropTestCase extends ModulesTest {
+public class AetherInteropTestCase extends ModulesTest {
+    // Note: for this test to work, you need JBoss VFS and its dependencies in your Maven repository
+    // See: io.xov.yalp.module.java for more details
+
     @Test
-    public void testJarUsage() throws Throwable {
-        JavaArchive module = ShrinkWrap.create(JavaArchive.class, "edu.fri.summer-1.0.0.Beta23.car");
-        module.addClasses(edu.fri.summer.module.class, edu.fri.summer.run.class);
-        // Note: if this test fails, you might be missing JBoss Modules in your Maven repository
-        // See: edu.fri.summer.module.java for more details
+    @Ignore // TODO -- add all Aether CMR deps as modules
+    public void testMultiJarUsage() throws Throwable {
+        JavaArchive module = ShrinkWrap.create(JavaArchive.class, "io.xov.yalp-11.0.2.Final.car");
+        module.addClasses(io.xov.yalp.module.class, io.xov.yalp.run.class);
         testArchive(module);
     }
 
     @Override
     protected void execute(String module, List<String> extra) throws Throwable {
         extra.add(Constants.CEYLON_ARGUMENT_PREFIX + Argument.REPOSITORY.toString());
-        extra.add("mvn"); // enable Maven repository
+        extra.add("aether"); // enable Aether repository
         super.execute(module, extra);
     }
 }
