@@ -64,7 +64,6 @@ public abstract class CompilerTest {
 
     protected final static String dir = "test-src";
     protected final static String destDir = "build/ceylon-cars";
-    private final static String destCar = destDir + "/default/default.car";
     protected final static List<String> defaultOptions = Arrays.asList("-out", destDir, "-rep", destDir);
 
     protected final String path;
@@ -374,7 +373,7 @@ public abstract class CompilerTest {
         compile(ceylon);
         try{
             // make sure we load the stuff from the Car
-            File car = new File(destCar);
+            File car = new File(getDestCar());
             @SuppressWarnings("deprecation")
             URL url = car.toURL();
             
@@ -459,6 +458,10 @@ public abstract class CompilerTest {
         return dir;
     }
 
+    protected String getDestCar() {
+        return destDir + "/default/default.car";
+    }
+    
     protected static File getModuleArchive(String moduleName, String version) {
         return getModuleArchive(moduleName, version, destDir);
     }
