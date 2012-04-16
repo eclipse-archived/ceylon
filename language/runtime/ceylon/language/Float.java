@@ -180,9 +180,6 @@ public final class Float
         if (that instanceof Integer) {
             return value == ((Integer)that).value;
         } 
-        else if (that instanceof Integer) {
-            return value == ((Integer)that).value;
-        } 
         else if (that instanceof Float) {
             return value == ((Float)that).value;
         } 
