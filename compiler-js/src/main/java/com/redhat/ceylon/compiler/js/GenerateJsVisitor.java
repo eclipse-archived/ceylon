@@ -1181,7 +1181,7 @@ public class GenerateJsVisitor extends Visitor
     private void generateCallable(QualifiedMemberOrTypeExpression that, String name) {
         out("(function(){var $=");
         that.getPrimary().visit(this);
-        out(";return ", clAlias, ".JsCallable($, $.");
+        out(";return ", clAlias, ".JsCallable($, $==null?null:$.");
         if (name == null) {
             qualifiedMemberRHS(that);
         } else {
@@ -1208,9 +1208,11 @@ public class GenerateJsVisitor extends Visitor
         else {
             out(names.getter(that.getDeclaration()));
             out(postfix);
-            if (that instanceof QualifiedMemberExpression) {
+            if (that instanceof QualifiedTypeExpression) {
+                //Nothing at the moment
+            } else {
                 out("()");
-            } //QualifiedTypeExpression does not need these final parentheses
+            }
         }
     }
 
@@ -1230,7 +1232,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(QualifiedTypeExpression that) {
         if (that.getMemberOperator() instanceof SafeMemberOp) {
-            generateSafeOp(that);
+            generateCallable(that, names.name(that.getDeclaration()));
         } else {
             super.visit(that);
             out(".", names.name(that.getDeclaration()));
