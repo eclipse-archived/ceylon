@@ -105,5 +105,6 @@ shared void test() {
     at.y := 2;
     assert(at.y==2, "assign using setter");
     assert(Issue50().z=="ok", "Issue #50");
+    test_outer_inner_safety();
     results();
 }
