@@ -1045,7 +1045,7 @@ public class GenerateJsVisitor extends Visitor
         if (isNative(decl)) {
             out(decl.getName());
         } else if (accessDirectly(decl)) {
-                out(names.name(decl));
+            out(names.name(decl));
         } else {
             out(names.getter(decl));
             out("()");
@@ -1091,27 +1091,31 @@ public class GenerateJsVisitor extends Visitor
         }
         return false;
     }
-    
+
+    private void generateSafeOp(QualifiedMemberOrTypeExpression that) {
+        if (that.getDeclaration() instanceof Method) {
+            String tmp=names.createTempVariable();
+            out("(function(){var ", tmp, "=");
+            super.visit(that);
+            out("; return ", clAlias, ".JsCallable(", tmp, ",", tmp, "===null?null:", tmp, ".");
+            qualifiedMemberRHS(that);
+            out(");}())");
+        } else {
+            out("(function($){return $===null?null:$.");
+            qualifiedMemberRHS(that);
+            out("}(");
+            super.visit(that);
+            out("))");
+        }
+    }
+
     @Override
     public void visit(QualifiedMemberExpression that) {
         //Big TODO: make sure the member is actually
         //          refined by the current class!
         if (that.getMemberOperator() instanceof SafeMemberOp) {
 
-            if (that.getDeclaration() instanceof Method) {
-                String tmp=names.createTempVariable();
-                out("(function(){var ", tmp, "=");
-                super.visit(that);
-                out("; return ", clAlias, ".JsCallable(", tmp, ",", tmp, "===null?null:", tmp, ".");
-                qualifiedMemberRHS(that);
-                out(");}())");
-            } else {
-                out("(function($){return $===null?null:$.");
-                qualifiedMemberRHS(that);
-                out("}(");
-                super.visit(that);
-                out("))");
-            }
+            generateSafeOp(that);
         } else if (that.getMemberOperator() instanceof SpreadOp) {
             generateSpread(that);
         } else if (that.getDeclaration() instanceof Method && that.getSignature() == null) {
@@ -1204,7 +1208,9 @@ public class GenerateJsVisitor extends Visitor
         else {
             out(names.getter(that.getDeclaration()));
             out(postfix);
-            out("()");
+            if (that instanceof QualifiedMemberExpression) {
+                out("()");
+            } //QualifiedTypeExpression does not need these final parentheses
         }
     }
 
@@ -1223,8 +1229,12 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(QualifiedTypeExpression that) {
-        super.visit(that);
-        out(".", names.name(that.getDeclaration()));
+        if (that.getMemberOperator() instanceof SafeMemberOp) {
+            generateSafeOp(that);
+        } else {
+            super.visit(that);
+            out(".", names.name(that.getDeclaration()));
+        }
     }
 
     @Override
