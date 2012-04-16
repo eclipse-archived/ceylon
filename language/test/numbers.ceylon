@@ -4,6 +4,7 @@ shared void numbers() {
     assert(+1==+1, "integer equals");
     assert(+1!=+2, "integer not equals");
     assert(1.0==1.0, "float equals");
+    assert(0.0==-0.0 && 0.0.hash==(-0.0).hash, "float equals consistent with hash");
     assert(1.0!=2.0, "float not equals");
     assert(1==+1, "natural equals integer");
     assert(1==1.0, "natural equals float");
