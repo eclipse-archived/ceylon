@@ -398,9 +398,9 @@ public class ClassTransformer extends AbstractTransformer {
         for (Tree.Parameter param : paramList.getParameters()) {
             methodBuilder.parameter(param);
             // Does the parameter have a default value?
-            //if (param.getDefaultArgument() != null &&  param.getDefaultArgument().getSpecifierExpression() != null) {
-                //classBuilder.concreteInterfaceMemberDefs(transformDefaultedParameter(param, def, paramList));
-            //}
+            if (param.getDefaultArgument() != null &&  param.getDefaultArgument().getSpecifierExpression() != null) {
+                classBuilder.concreteInterfaceMemberDefs(transformDefaultedParameter(param, def, paramList));
+            }
         }
         
         if (body != null) {
@@ -448,14 +448,26 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
+        
         for (Tree.Parameter param2 : paramList.getParameters()) {
             if (param2 == param) {
                 break;
-            }
-            overloadBuilder.parameter(param2);
+            }        
             args.add(makeQuotedIdent(param2.getIdentifier().getText()));
+            
+            overloadBuilder.parameter(param2);
         }
-        args.add(expressionGen().transform(param));
+    
+        String methodName = Util.getDefaultedParamMethodName(def.getDeclarationModel(), param.getDeclarationModel());
+        
+        Declaration container = param.getDeclarationModel().getDeclaration().getRefinedDeclaration();
+        if (!container.isToplevel()) {
+            container = (Declaration)container.getContainer();
+        }
+        String className = Util.getCompanionClassName(container.getName());
+        
+        args.add(make().Apply(List.<JCExpression>nil(), gen().makeQuotedQualIdent(gen().makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName), 
+                ListBuffer.<JCExpression>lb().appendList(args).prepend(makeUnquotedIdent("this")).toList()));
         
         // TODO Type args on method call
         JCMethodInvocation call = make().Apply(List.<JCExpression>nil(),
