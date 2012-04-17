@@ -527,4 +527,41 @@ public class StructureTest extends CompilerTest {
     public void testImpImportCeylonLanguageType(){
         compareWithJavaSource("import_/ImportCeylonLanguageType");
     }
+    
+    @Test
+    public void testNstNesting(){
+        compareWithJavaSource("nesting/Nesting");
+    }
+    @Test
+    public void testNstCcc(){
+        compareWithJavaSource("nesting/ccc/CCC");
+    }
+    @Test
+    public void testNstCci(){
+        compareWithJavaSource("nesting/cci/CCI");
+    }
+    @Test
+    public void testNstCic(){
+        compareWithJavaSource("nesting/cic/Cic");
+    }
+    @Test
+    public void testNstCii(){
+        compareWithJavaSource("nesting/cii/Cii");
+    }
+    @Test
+    public void testNstIcc(){
+        compareWithJavaSource("nesting/Icc/Icc");
+    }
+    @Test
+    public void testNstIci(){
+        compareWithJavaSource("nesting/Ici/Ici");
+    }
+    @Test
+    public void testNstIic(){
+        compareWithJavaSource("nesting/Iic/Iic");
+    }
+    @Test
+    public void testNstIii(){
+        compareWithJavaSource("nesting/Iii/Iii");
+    }
 }
