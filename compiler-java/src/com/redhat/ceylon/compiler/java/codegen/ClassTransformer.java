@@ -45,6 +45,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
@@ -343,14 +344,14 @@ public class ClassTransformer extends AbstractTransformer {
         }
     }
 
-    public JCMethodDecl transform(Tree.AnyMethod def, ClassDefinitionBuilder classBuilder) {
+    public List<JCTree> transform(Tree.AnyMethod def, ClassDefinitionBuilder classBuilder) {
         Method model = def.getDeclarationModel();
         
         java.util.List<ParameterList> parameterLists = def.getParameterLists();
         boolean mpl = parameterLists.size() > 1;
         ProducedType innerResultType = model.getType();
         ProducedType resultType = innerResultType;
-        
+        boolean isVoid = gen().isVoid(def.getType().getTypeModel());
         // Transform the method body of the 'inner-most method'
         List<JCStatement> body = null;
         if (def instanceof Tree.MethodDefinition) {
@@ -362,7 +363,7 @@ public class ClassTransformer extends AbstractTransformer {
         } else if (def instanceof MethodDeclaration
                 && ((MethodDeclaration) def).getSpecifierExpression() != null) {
             InvocationBuilder specifierBuilder = InvocationBuilder.forSpecifierInvocation(gen(), ((MethodDeclaration) def).getSpecifierExpression(), def.getDeclarationModel());
-            if (gen().isVoid(def.getType().getTypeModel())) {
+            if (isVoid) {
                 body = List.<JCStatement>of(make().Exec(specifierBuilder.build()));
             } else {
                 body = List.<JCStatement>of(make().Return(specifierBuilder.build()));
@@ -397,9 +398,9 @@ public class ClassTransformer extends AbstractTransformer {
         for (Tree.Parameter param : paramList.getParameters()) {
             methodBuilder.parameter(param);
             // Does the parameter have a default value?
-            if (param.getDefaultArgument() != null &&  param.getDefaultArgument().getSpecifierExpression() != null) {
-                classBuilder.concreteInterfaceMemberDefs(transformDefaultedParameter(param, def, paramList));
-            }
+            //if (param.getDefaultArgument() != null &&  param.getDefaultArgument().getSpecifierExpression() != null) {
+                //classBuilder.concreteInterfaceMemberDefs(transformDefaultedParameter(param, def, paramList));
+            //}
         }
         
         if (body != null) {
@@ -417,7 +418,56 @@ public class ClassTransformer extends AbstractTransformer {
             .isActual(Decl.isActual(def))
             .modelAnnotations(model.getAnnotations());
         
-        return methodBuilder.build();
+        ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
+        
+        for (Tree.Parameter param : paramList.getParameters()) {
+            DefaultArgument defaultArgument = param.getDefaultArgument();
+            if (defaultArgument != null) {
+                JCMethodDecl overloadedMethod = transformForDefaultedParameter(
+                        def, model, isVoid, paramList, param);
+                lb.prepend(overloadedMethod);
+            }
+        }
+        
+        lb.prepend(methodBuilder.build());
+        
+        return lb.toList();
+    }
+
+    private JCMethodDecl transformForDefaultedParameter(Tree.AnyMethod def,
+            Method model, boolean isVoid, ParameterList paramList,
+            Tree.Parameter param) {
+        MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(def), model.isClassOrInterfaceMember(),
+                Util.quoteMethodNameIfProperty(model, gen()));
+        overloadBuilder.modifiers(transformMethodDeclFlags(def) | Flags.FINAL);
+        overloadBuilder.annotations(makeAtIgnore());
+        overloadBuilder.resultType(model);// TODO MPL
+        if (def.getTypeParameterList() != null) {
+            for (Tree.TypeParameterDeclaration t : def.getTypeParameterList().getTypeParameterDeclarations()) {
+                overloadBuilder.typeParameter(t);
+            }
+        }
+        ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
+        for (Tree.Parameter param2 : paramList.getParameters()) {
+            if (param2 == param) {
+                break;
+            }
+            overloadBuilder.parameter(param2);
+            args.add(makeQuotedIdent(param2.getIdentifier().getText()));
+        }
+        args.add(expressionGen().transform(param));
+        
+        // TODO Type args on method call
+        JCMethodInvocation call = make().Apply(List.<JCExpression>nil(),
+                makeQuotedIdent(Util.quoteMethodNameIfProperty(model, gen())), args.toList());
+        if (isVoid) {
+            overloadBuilder.body(make().Exec(call));
+        } else {
+            overloadBuilder.body(make().Return(call));
+        }
+        
+        JCMethodDecl overloadedMethod = overloadBuilder.build();
+        return overloadedMethod;
     }
 
     public JCMethodDecl transformConcreteInterfaceMember(MethodDefinition def, ProducedType type) {
