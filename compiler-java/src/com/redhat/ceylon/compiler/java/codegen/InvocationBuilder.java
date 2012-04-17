@@ -426,6 +426,13 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
         int numArguments = getNumArguments();
         // => call to a varargs method
         // first, append the normal args
+        if (numArguments < numParameters) {
+            // Defaulted parameters
+            for (int ii = 0; ii < numArguments; ii++) {
+                args.append(this.getTransformedArgumentExpression(ii, isRaw, getTypeArguments()));
+            }
+            return;
+        }
         for (int ii = 0; ii < numParameters - 1; ii++) {
             args.append(this.getTransformedArgumentExpression(ii, isRaw, getTypeArguments()));
         }
@@ -513,11 +520,11 @@ class PositionalInvocationBuilder extends SimpleInvocationBuilder {
                 break;
             }
         }
-        if (hasDefaulted) {
-            computeWithDefaultedParameters();
-        } else {
+        //if (hasDefaulted) {
+        //    computeWithDefaultedParameters();
+        //} else {
             super.compute();
-        }
+        //}
     }
 
     private void computeWithDefaultedParameters() {
