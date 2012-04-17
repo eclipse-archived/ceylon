@@ -62,4 +62,9 @@ public class NestingTest extends CompilerTest {
     public void testNstIii(){
         compareWithJavaSource("nesting/iii/III");
     }
+    
+    @Test
+    public void testNstDefaultedParameter(){
+        compareWithJavaSource("nesting/DefaultedParameter");
+    }
 }
