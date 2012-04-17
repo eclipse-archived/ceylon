@@ -47,13 +47,26 @@ public class ModuleManager {
         this.context = context;
     }
     
+    protected Package createPackage(String pkgName, Module module) {
+        final Package pkg = new Package();
+        List<String> name = pkgName.isEmpty() ? Collections.<String>emptyList() : splitModuleName(pkgName); 
+        pkg.setName(name);
+        if (module != null) {
+            module.getPackages().add(pkg);
+            pkg.setModule(module);
+        }
+        return pkg;
+    }
+
     public void initCoreModules() {
+        packageStack.clear();
+        currentModule = null;
+        
         modules = context.getModules();
         if ( modules == null ) {
             modules = new Modules();
             //build empty package
-            final Package emptyPackage = new Package();
-            emptyPackage.setName(Collections.<String>emptyList());
+            final Package emptyPackage = createPackage("", null);
             packageStack.addLast(emptyPackage);
 
             //build default module (module in which packages belong to when not explicitly under a module
@@ -164,20 +177,14 @@ public class ModuleManager {
     }
 
     private void createPackageAndAddToModule(String path) {
-        Package pkg = new Package();
         final Package lastPkg = packageStack.peekLast();
         List<String> parentName = lastPkg.getName();
         final ArrayList<String> name = new ArrayList<String>(parentName.size() + 1);
         name.addAll(parentName);
         name.add(path);
-        pkg.setName(name);
-        if (currentModule != null) {
-            bindPackageToModule(pkg, currentModule);
-        }
-        else {
-            //bind package to defaultModule
-            bindPackageToModule( pkg, modules.getDefaultModule() );
-        }
+        
+        Package pkg = createPackage(formatPath(name), 
+                currentModule != null ? currentModule : modules.getDefaultModule());
         packageStack.addLast(pkg);
     }
 
@@ -315,7 +322,8 @@ public class ModuleManager {
             ModuleHelper.buildErrorOnMissingArtifact(artifactContext, module, moduleImport, dependencyTree, exceptionOnGetArtifact, this);
         }
         else {
-            PhasedUnits modulePhasedUnit = new PhasedUnits(context);
+            
+            PhasedUnits modulePhasedUnit = createPhasedUnits();
             phasedUnitsOfDependencies.add(modulePhasedUnit);
             ClosableVirtualFile virtualArtifact= null;
             try {
@@ -334,6 +342,10 @@ public class ModuleManager {
                 }
             }
         }
+    }
+
+    protected PhasedUnits createPhasedUnits() {
+        return new PhasedUnits(getContext());
     }
 
     public Iterable<String> getSearchedArtifactExtensions() {
