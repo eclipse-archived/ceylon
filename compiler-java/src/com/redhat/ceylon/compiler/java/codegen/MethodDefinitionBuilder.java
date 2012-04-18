@@ -30,8 +30,6 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.tree.JCTree;
@@ -169,26 +167,11 @@ public class MethodDefinitionBuilder {
         return this;
     }
 
-    public MethodDefinitionBuilder typeParameter(String name, java.util.List<ProducedType> satisfiedTypes, boolean covariant, boolean contravariant) {
-        ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
-        for (ProducedType t : satisfiedTypes) {
-            if (!gen.willEraseToObject(t)) {
-                bounds.append(gen.makeJavaType(t, AbstractTransformer.NO_PRIMITIVES));
-            }
-        }
-        typeParams.append(gen.make().TypeParameter(gen.names().fromString(name),
-                bounds.toList()));
-        typeParamAnnotations.append(gen.makeAtTypeParameter(name, satisfiedTypes, covariant, contravariant));
-        return this;
-    }
-
     public MethodDefinitionBuilder typeParameter(Tree.TypeParameterDeclaration param) {
         gen.at(param);
-        TypeParameter declarationModel = param.getDeclarationModel();
-        return typeParameter(declarationModel.getName(), 
-                declarationModel.getSatisfiedTypes(),
-                declarationModel.isCovariant(),
-                declarationModel.isContravariant());
+        typeParams.append(gen.makeTypeParameter(param));
+        typeParamAnnotations.append(gen.makeAtTypeParameter(param));
+        return this;
     }
 
     public MethodDefinitionBuilder parameters(List<JCVariableDecl> decls) {

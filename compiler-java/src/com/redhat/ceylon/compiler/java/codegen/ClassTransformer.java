@@ -58,6 +58,7 @@ import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
@@ -526,21 +527,20 @@ public class ClassTransformer extends AbstractTransformer {
             overloadBuilder.resultType((Method)model);
         }
         // TODO MPL
+        ListBuffer<JCExpression> typeArguments = ListBuffer.<JCExpression>lb();
         if (typeParameterList != null) {
             for (Tree.TypeParameterDeclaration t : typeParameterList.getTypeParameterDeclarations()) {
-                overloadBuilder.typeParameter(t);
+                if (def instanceof Tree.AnyMethod) {
+                    overloadBuilder.typeParameter(t);
+                } else {
+                    // Ceylon doesn't have type params on constructors so no 
+                    // need to parameterise the overloadBuilder
+                    typeArguments.add(gen().makeQuotedIdent(t.getIdentifier().getText()));
+                }
+                
             }
         }
-        ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
-        
-        for (Tree.Parameter param2 : paramList.getParameters()) {
-            if (param2 == param) {
-                break;
-            }        
-            args.add(makeQuotedIdent(param2.getIdentifier().getText()));
-            
-            overloadBuilder.parameter(param2);
-        }
+
         // TODO Some simple default expressions (e.g. literals, null and 
         // base expressions it might be worth inlining the expression rather 
         // than calling the default value method.
@@ -549,30 +549,71 @@ public class ClassTransformer extends AbstractTransformer {
         // (imagine a recursive method with many defaulted parameters -- we're 
         // wasting stack space)
         // TODO This really belongs in the invocation builder
-        String methodName = Util.getDefaultedParamMethodName(def.getDeclarationModel(), param.getDeclarationModel());
-        
         Declaration container = param.getDeclarationModel().getDeclaration().getRefinedDeclaration();
         if (!container.isToplevel()) {
             container = (Declaration)container.getContainer();
         }
         String className = Util.getCompanionClassName(container.getName());
-        JCExpression defaultValueMethodName;
-        if (Decl.defaultParameterMethodOnSelf(def)) {
-            defaultValueMethodName = gen().makeQuotedIdent(methodName);
-        } else {
-            defaultValueMethodName = gen().makeQuotedQualIdent(gen().makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName);
+        
+        ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
+        ListBuffer<JCVariableDecl> vars = ListBuffer.<JCVariableDecl>lb();
+        
+        final String companionInstanceName = tempName("$impl$");
+        if (def instanceof Tree.AnyClass) {
+            
+            JCExpression clazz = makeQuotedFQIdent(Util.getCompanionClassName(def.getDeclarationModel().getQualifiedNameString()));
+            if (!typeArguments.isEmpty()) {
+                clazz = make().TypeApply(clazz, typeArguments.toList());
+            }
+            vars.append(makeVar(companionInstanceName, 
+                    clazz,// TODO FQ 
+                    make().NewClass(null, // TODO encl == null ???
+                            null,
+                            clazz, 
+                                    List.<JCExpression>nil(), null)));
         }
         
-        args.add(make().Apply(List.<JCExpression>nil(), defaultValueMethodName, 
-                ListBuffer.<JCExpression>lb().appendList(args).toList()));
+        boolean useDefault = false;
+        for (Tree.Parameter param2 : paramList.getParameters()) {
+            if (param2 == param) {
+                useDefault = true;
+            }
+            if (useDefault) {
+                String methodName = Util.getDefaultedParamMethodName(def.getDeclarationModel(), param2.getDeclarationModel());
+                JCExpression defaultValueMethodName;
+                if (Decl.defaultParameterMethodOnSelf(def)) {
+                    defaultValueMethodName = gen().makeQuotedIdent(methodName);
+                } else {
+                    defaultValueMethodName = gen().makeQuotedQualIdent(makeQuotedIdent(companionInstanceName), methodName);
+                }
+                String varName = tempName("$"+param2.getIdentifier().getText()+"$");
+                vars.append(makeVar(varName, 
+                        makeJavaType(param2.getDeclarationModel().getType()), 
+                        make().Apply(List.<JCExpression>nil(), defaultValueMethodName, 
+                                ListBuffer.<JCExpression>lb().appendList(args).toList())));
+                args.add(makeUnquotedIdent(varName));
+            } else {
+                overloadBuilder.parameter(param2);
+                args.add(makeQuotedIdent(param2.getIdentifier().getText()));
+            }
+        }
         
         // TODO Type args on method call
-        JCMethodInvocation call = make().Apply(List.<JCExpression>nil(),
-                methName, args.toList());
+        JCExpression invocation;
+        /*if (def instanceof Tree.AnyMethod) {
+            invocation = make().Apply(List.<JCExpression>nil(),
+                    methName, args.toList());
+        } else {*/
+            invocation = make().Apply(List.<JCExpression>nil(),
+                    methName, args.toList());
+            
+        //}
         if (isVoid) {
-            overloadBuilder.body(make().Exec(call));
+            invocation = make().LetExpr(vars.toList(), List.<JCStatement>of(make().Exec(invocation)), makeNull());
+            overloadBuilder.body(make().Exec(invocation));
         } else {
-            overloadBuilder.body(make().Return(call));
+            invocation = make().LetExpr(vars.toList(), invocation);
+            overloadBuilder.body(make().Return(invocation));
         }
         
         return overloadBuilder;

@@ -69,6 +69,7 @@ import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.tree.JCTree.LetExpr;
 import com.sun.tools.javac.tree.TreeMaker;
@@ -1042,7 +1043,7 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtTypeInfoType, List.<JCExpression>of(make().Literal(name)));
     }
 
-    public JCAnnotation makeAtTypeParameter(String name, java.util.List<ProducedType> satisfiedTypes, boolean covariant, boolean contravariant) {
+    public final JCAnnotation makeAtTypeParameter(String name, java.util.List<ProducedType> satisfiedTypes, boolean covariant, boolean contravariant) {
         JCExpression nameAttribute = make().Assign(makeUnquotedIdent("value"), make().Literal(name));
         // variance
         String variance = "NONE";
@@ -1594,6 +1595,34 @@ public abstract class AbstractTransformer implements Transformation {
             }
         }
         return make().Erroneous(errs);
+    }
+
+    public JCTypeParameter makeTypeParameter(String name, java.util.List<ProducedType> satisfiedTypes, boolean covariant, boolean contravariant) {
+        ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
+        for (ProducedType t : satisfiedTypes) {
+            if (!willEraseToObject(t)) {
+                bounds.append(makeJavaType(t, AbstractTransformer.NO_PRIMITIVES));
+            }
+        }
+        return make().TypeParameter(names().fromString(name), bounds.toList());
+    }
+
+    public JCTypeParameter makeTypeParameter(Tree.TypeParameterDeclaration param) {
+        at(param);
+        TypeParameter declarationModel = param.getDeclarationModel();
+        return makeTypeParameter(declarationModel.getName(), 
+                declarationModel.getSatisfiedTypes(),
+                declarationModel.isCovariant(),
+                declarationModel.isContravariant());
+    }
+
+    public JCAnnotation makeAtTypeParameter(Tree.TypeParameterDeclaration param) {
+        at(param);
+        TypeParameter declarationModel = param.getDeclarationModel();
+        return makeAtTypeParameter(declarationModel.getName(), 
+                declarationModel.getSatisfiedTypes(),
+                declarationModel.isCovariant(),
+                declarationModel.isContravariant());
     }
     
     private int getPosition(Node node) {
