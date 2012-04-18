@@ -48,6 +48,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinitio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
@@ -96,6 +97,17 @@ public class ClassTransformer extends AbstractTransformer {
                     classBuilder.concreteInterfaceMemberDefs(transformDefaultedParameter(param, def, paramList));
                 }
             }
+            
+            for (Tree.Parameter param : paramList.getParameters()) {
+                DefaultArgument defaultArgument = param.getDefaultArgument();
+                if (defaultArgument != null) {
+                    MethodDefinitionBuilder overloadBuilder = classBuilder.addConstructor();
+                    transformForDefaultedParameter(
+                            overloadBuilder,
+                            def, def.getDeclarationModel(), true, paramList, param);
+                    
+                }
+            }
         }
         
         CeylonVisitor visitor = new CeylonVisitor(gen(), classBuilder);
@@ -121,6 +133,8 @@ public class ClassTransformer extends AbstractTransformer {
             .init((List<JCStatement>)visitor.getResult().toList())
             .build();
     }
+    
+
 
     public void transform(AttributeDeclaration decl, ClassDefinitionBuilder classBuilder) {
         boolean useField = Decl.isCaptured(decl);
@@ -427,8 +441,10 @@ public class ClassTransformer extends AbstractTransformer {
         for (Tree.Parameter param : paramList.getParameters()) {
             DefaultArgument defaultArgument = param.getDefaultArgument();
             if (defaultArgument != null) {
-                JCMethodDecl overloadedMethod = transformForDefaultedParameter(
-                        def, model, isVoid, paramList, param);
+                MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(def), model.isClassOrInterfaceMember(),
+                        Util.quoteMethodNameIfProperty(model, gen()));
+                JCMethodDecl overloadedMethod = transformForDefaultedParameter(overloadBuilder, 
+                        def, model, isVoid, paramList, param).build();
                 lb.prepend(overloadedMethod);
             }
         }
@@ -437,17 +453,40 @@ public class ClassTransformer extends AbstractTransformer {
         
         return lb.toList();
     }
-
-    private JCMethodDecl transformForDefaultedParameter(Tree.AnyMethod def,
-            Method model, boolean isVoid, ParameterList paramList,
+    
+    private MethodDefinitionBuilder transformForDefaultedParameter(
+            MethodDefinitionBuilder overloadBuilder,
+            Tree.Declaration def,
+            Declaration model, boolean isVoid, ParameterList paramList,
             Tree.Parameter param) {
-        MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(def), model.isClassOrInterfaceMember(),
-                Util.quoteMethodNameIfProperty(model, gen()));
-        overloadBuilder.modifiers(transformMethodDeclFlags(def) | Flags.FINAL);
+        
+        final TypeParameterList typeParameterList;
+        final JCExpression methName;
+        if (def instanceof Tree.AnyMethod) {
+            Tree.AnyMethod meth = (Tree.AnyMethod)def;
+            long mods = transformMethodDeclFlags(meth);
+            if (!Decl.withinInterface(((Method)model).getTypeDeclaration())) {
+                mods |= FINAL;
+            }
+            overloadBuilder.modifiers(mods);
+            typeParameterList = meth.getTypeParameterList();
+            methName = makeQuotedIdent(Util.quoteMethodNameIfProperty((Method)model, gen()));
+        } else if (def instanceof Tree.ClassOrInterface) {
+            Tree.ClassOrInterface typeDecl = (Tree.ClassOrInterface)def;
+            overloadBuilder.modifiers(transformClassDeclFlags(typeDecl) & (PUBLIC | PRIVATE | Flags.PROTECTED));
+            typeParameterList = typeDecl.getTypeParameterList();
+            methName = makeUnquotedIdent("this");
+        } else {
+            throw new RuntimeException();
+        }
+        
         overloadBuilder.annotations(makeAtIgnore());
-        overloadBuilder.resultType(model);// TODO MPL
-        if (def.getTypeParameterList() != null) {
-            for (Tree.TypeParameterDeclaration t : def.getTypeParameterList().getTypeParameterDeclarations()) {
+        if (model instanceof Method) {
+            overloadBuilder.resultType((Method)model);
+        }
+        // TODO MPL
+        if (typeParameterList != null) {
+            for (Tree.TypeParameterDeclaration t : typeParameterList.getTypeParameterDeclarations()) {
                 overloadBuilder.typeParameter(t);
             }
         }
@@ -488,15 +527,14 @@ public class ClassTransformer extends AbstractTransformer {
         
         // TODO Type args on method call
         JCMethodInvocation call = make().Apply(List.<JCExpression>nil(),
-                makeQuotedIdent(Util.quoteMethodNameIfProperty(model, gen())), args.toList());
+                methName, args.toList());
         if (isVoid) {
             overloadBuilder.body(make().Exec(call));
         } else {
             overloadBuilder.body(make().Return(call));
         }
         
-        JCMethodDecl overloadedMethod = overloadBuilder.build();
-        return overloadedMethod;
+        return overloadBuilder;
     }
 
     public JCMethodDecl transformConcreteInterfaceMember(MethodDefinition def, ProducedType type) {
