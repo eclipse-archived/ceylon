@@ -19,6 +19,7 @@ package com.redhat.ceylon.cmr.api;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * RepositoryManager API.
@@ -67,4 +68,11 @@ public interface RepositoryManager {
     void removeArtifact(String name, String version) throws RepositoryException;
 
     void removeArtifact(ArtifactContext context) throws RepositoryException;
+
+    /**
+     * Gather repositories display strings.
+     *
+     * @return the display strings
+     */
+    List<String> getRepositoriesDisplayString();
 }

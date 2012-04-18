@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -78,6 +79,14 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     protected ArtifactResult toArtifactResult(Node node) {
         final Repository adapter = NodeUtils.getRepository(node);
         return adapter.getArtifactResult(this, node);
+    }
+
+    public List<String> getRepositoriesDisplayString() {
+        final List<String> displayStrings = new ArrayList<String>();
+        for (Repository root : roots) {
+            displayStrings.add(root.getDisplayString());
+        }
+        return displayStrings;
     }
 
     public void putArtifact(ArtifactContext context, InputStream content) throws RepositoryException {

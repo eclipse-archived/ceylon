@@ -20,6 +20,8 @@ import com.redhat.ceylon.cmr.api.*;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Output manager.
@@ -53,6 +55,13 @@ public class OutputRepositoryManager extends AbstractRepositoryManager {
 
         this.output = output;
         this.manager = manager;
+    }
+
+    public List<String> getRepositoriesDisplayString() {
+        List<String> displayStrings = new ArrayList<String>();
+        displayStrings.addAll(output.getRepositoriesDisplayString());
+        displayStrings.addAll(manager.getRepositoriesDisplayString());
+        return displayStrings;
     }
 
     public ArtifactResult getArtifactResult(ArtifactContext context) throws RepositoryException {
