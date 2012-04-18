@@ -4,15 +4,21 @@ interface I {
     public void m1();
 }
 class I$impl {
+    private final I $this;
+    I$impl(I $this) {
+        this.$this = $this;
+    }
     void m1() {}
 }
 interface II {// implicitly static, so top level
     public I $outer();
 }
 class II$impl {// $impl class nested in place of its interface
-    private II $this;
-    II$impl(II $this) {
+    private final II $this;
+    private final I $outer;
+    II$impl(II $this, I $outer) {
         this.$this = $this;
+        this.$outer = $outer;
     }
     class IIC {
         private final II $outer;

@@ -4,7 +4,10 @@ interface I {
     public void m1();
 }
 class I$impl {
-    
+    private final I $this;
+    I$impl(I $this) {
+        this.$this = $this;
+    }
 }
 class IC {
     private final I $outer;

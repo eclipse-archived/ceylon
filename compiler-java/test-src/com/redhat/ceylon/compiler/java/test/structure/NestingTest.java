@@ -82,4 +82,9 @@ public class NestingTest extends CompilerTest {
     public void testNstInterfaceMethodDefaultedParameter(){
         compareWithJavaSource("nesting/InterfaceMethodDefaultedParameter");
     }
+    
+    @Test
+    public void testNstNestedInterface(){
+        compareWithJavaSource("nesting/NestedInterface");
+    }
 }
