@@ -145,7 +145,7 @@ public class ClassDefinitionBuilder {
     private void appendDefinitionsTo(ListBuffer<JCTree> defs) {
         defs.appendList(this.defs);
         if ((modifiers & INTERFACE) == 0) {
-            defs.append(createConstructor());
+            defs.append(createConstructor(init.prepend(superCall).toList()));
         }
         defs.appendList(body);
     }
@@ -223,19 +223,22 @@ public class ClassDefinitionBuilder {
         return typesList.toList();
     }
 
-    private JCMethodDecl createConstructor() {
+    private JCMethodDecl createConstructor(List<JCStatement> body) {
         long mods = constructorModifiers;
         if (mods == -1) {
             // The modifiers were never explicitly set
             // so we try to come up with some good defaults
             mods = modifiers & (PUBLIC | PRIVATE | PROTECTED);
         }
+        return createConstructor(mods, params.toList(), body);
+    }
+    
+    public JCMethodDecl createConstructor(long mods, List<JCVariableDecl> parameters, List<JCStatement> body) {
         return MethodDefinitionBuilder
             .constructor(gen, ancestorLocal)
             .modifiers(mods)
-            .parameters(params.toList())
-            .body(superCall)
-            .body(init.toList())
+            .parameters(parameters)
+            .body(body)
             .build();
     }
     
