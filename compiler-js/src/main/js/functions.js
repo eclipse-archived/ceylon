@@ -118,7 +118,6 @@ function nonempty(value) {
 function isOfType(obj, typeName) {
     if (obj === null) return Boolean$(typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void");
     var cons = obj.$$;
-    if (cons === undefined) cons = obj.constructor.$$;
     if (cons === undefined) cons = obj.constructor;
     return Boolean$(typeName in cons.T$all);
 }
@@ -130,7 +129,6 @@ function isOfTypes(obj, types) {
     var inters = true;
     var _ints=false;
     var cons = obj.$$;
-    if (cons === undefined) cons = obj.constructor.$$;
     if (cons === undefined) cons = obj.constructor;
     for (var i = 0; i < types.l.length; i++) {
         var t = types.l[i];
@@ -153,7 +151,6 @@ function isOfTypes(obj, types) {
 function className(obj) {
     if (obj === null) return String$('ceylon.language.Nothing');
     var cons = obj.$$;
-    if (cons === undefined) cons = obj.constructor.$$;
     if (cons === undefined) cons = obj.constructor;
     return String$(cons.T$name);
 }
