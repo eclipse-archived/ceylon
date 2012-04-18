@@ -81,6 +81,7 @@ public class ClassDefinitionBuilder {
     
     private final ListBuffer<JCVariableDecl> params = ListBuffer.lb();
     
+    private final ListBuffer<MethodDefinitionBuilder> constructors = ListBuffer.lb();
     private final ListBuffer<JCTree> defs = ListBuffer.lb();
     private final ListBuffer<JCTree> concreteInterfaceMemberDefs = ListBuffer.lb();
     private final ListBuffer<JCTree> body = ListBuffer.lb();
@@ -145,7 +146,13 @@ public class ClassDefinitionBuilder {
     private void appendDefinitionsTo(ListBuffer<JCTree> defs) {
         defs.appendList(this.defs);
         if ((modifiers & INTERFACE) == 0) {
-            defs.append(createConstructor(init.prepend(superCall).toList()));
+            if (superCall != null) {
+                init.prepend(superCall);
+            }
+            createConstructor(init.toList());
+            for (MethodDefinitionBuilder builder : constructors) {
+                defs.append(builder.build());
+            }
         }
         defs.appendList(body);
     }
@@ -223,23 +230,23 @@ public class ClassDefinitionBuilder {
         return typesList.toList();
     }
 
-    private JCMethodDecl createConstructor(List<JCStatement> body) {
+    private ClassDefinitionBuilder createConstructor(List<JCStatement> body) {
         long mods = constructorModifiers;
         if (mods == -1) {
             // The modifiers were never explicitly set
             // so we try to come up with some good defaults
             mods = modifiers & (PUBLIC | PRIVATE | PROTECTED);
         }
-        return createConstructor(mods, params.toList(), body);
+        addConstructor().modifiers(mods)
+            .parameters(params.toList())
+            .body(body);
+        return this;
     }
     
-    public JCMethodDecl createConstructor(long mods, List<JCVariableDecl> parameters, List<JCStatement> body) {
-        return MethodDefinitionBuilder
-            .constructor(gen, ancestorLocal)
-            .modifiers(mods)
-            .parameters(parameters)
-            .body(body)
-            .build();
+    public MethodDefinitionBuilder addConstructor() {
+        MethodDefinitionBuilder constructor = MethodDefinitionBuilder.constructor(gen, ancestorLocal);
+        this.constructors.append(constructor);
+        return constructor;
     }
     
     /*
