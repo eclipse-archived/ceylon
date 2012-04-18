@@ -931,7 +931,8 @@ public abstract class AbstractTransformer implements Transformation {
         }
         ProducedType type = parameter.getType();
         if(isTypeParameter(type)){
-            TypeParameter tp = (TypeParameter) type.getDeclaration();
+            // TODO This ^^ and this vv is ugly because it doesn't handle unions or intersections properly
+            TypeParameter tp = getTypeParameter(type);
             if(!isRaw && typeArgumentModels != null){
                 // try to use the inferred type if we're not going raw
                 Scope scope = parameter.getContainer();
@@ -1240,7 +1241,17 @@ public abstract class AbstractTransformer implements Transformation {
         return javaExpr;
     }
 
+    protected TypeParameter getTypeParameter(ProducedType type) {
+        if (typeFact().isOptionalType(type)) {
+            type = type.minus(typeFact().getNothingDeclaration());
+        }
+        return (TypeParameter)type.getDeclaration();
+    }
+    
     protected boolean isTypeParameter(ProducedType type) {
+        if (typeFact().isOptionalType(type)) {
+            type = type.minus(typeFact().getNothingDeclaration());
+        }
         return type.getDeclaration() instanceof TypeParameter;
     }
     
