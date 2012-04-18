@@ -74,6 +74,8 @@ public class MethodDefinitionBuilder {
     private ListBuffer<JCStatement> body = ListBuffer.lb();
 
     private boolean ancestorLocal;
+    
+    private boolean built = false;
 
     public static MethodDefinitionBuilder method(AbstractTransformer gen, boolean ancestorLocal, boolean isMember, String name) {
         return new MethodDefinitionBuilder(gen, ancestorLocal, isMember ? Util.quoteMethodName(name) : Util.quoteIfJavaKeyword(name));
@@ -101,7 +103,10 @@ public class MethodDefinitionBuilder {
     }
     
     public JCTree.JCMethodDecl build() {
-        
+        if (built) {
+            throw new IllegalStateException();
+        }
+        built = true;
         if (isActual) {
             this.annotations.appendList(gen.makeAtOverride());
         }
