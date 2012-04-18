@@ -98,7 +98,10 @@ public class DeclarationVisitor extends Visitor {
         }
         //that.setDeclarationModel(model);
         unit.getDeclarations().add(model);
-        scope.getMembers().add(model);
+        if (! (scope instanceof Package)) {
+            scope.getMembers().add(model);
+        }
+
 
         handleDeclarationAnnotations(that, model);        
 
@@ -496,7 +499,10 @@ public class DeclarationVisitor extends Visitor {
         p.setDeclaration(s);
         visitElement(that, p);
         unit.getDeclarations().add(p);
-        scope.getMembers().add(p);
+        if (! (scope instanceof Package)) {
+            scope.getMembers().add(p);
+        }
+        
         s.setParameter(p);
         super.visit(that);
         exitScope(o);
