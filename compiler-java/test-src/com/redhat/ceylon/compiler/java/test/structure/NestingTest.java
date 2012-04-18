@@ -25,7 +25,7 @@ import org.junit.Test;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 
 public class NestingTest extends CompilerTest {
-    
+    /*    
     @Test
     public void testNstNesting(){
         compareWithJavaSource("nesting/Nesting");
@@ -62,9 +62,24 @@ public class NestingTest extends CompilerTest {
     public void testNstIii(){
         compareWithJavaSource("nesting/iii/III");
     }
+    */
+    @Test
+    public void testNstClassMethodDefaultedParameter(){
+        compareWithJavaSource("nesting/ClassMethodDefaultedParameter");
+    }
     
     @Test
-    public void testNstDefaultedParameter(){
-        compareWithJavaSource("nesting/DefaultedParameter");
+    public void testNstFunctionDefaultedParameter(){
+        compareWithJavaSource("nesting/FunctionDefaultedParameter");
+    }
+    
+    @Test
+    public void testNstClassInitDefaultedParameter(){
+        compareWithJavaSource("nesting/ClassInitDefaultedParameter");
+    }
+    
+    @Test
+    public void testNstInterfaceMethodDefaultedParameter(){
+        compareWithJavaSource("nesting/InterfaceMethodDefaultedParameter");
     }
 }
