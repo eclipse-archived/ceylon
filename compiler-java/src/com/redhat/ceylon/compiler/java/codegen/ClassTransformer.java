@@ -111,9 +111,11 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         if (def instanceof Tree.AnyInterface) {
+            // Give the $impl companion a constructor...
             ClassDefinitionBuilder companionBuilder = classBuilder.getCompanionBuilder();
             MethodDefinitionBuilder ctor = companionBuilder.addConstructor();
             
+            // ...with a $this() ctor parameter and field...
             ProducedType thisType = def.getDeclarationModel().getType();
             ctor.parameter(0, "$this", makeJavaType(thisType), null);
             ListBuffer<JCStatement> bodyStatements = ListBuffer.<JCStatement>of(
@@ -126,6 +128,7 @@ public class ClassTransformer extends AbstractTransformer {
                     makeJavaType(thisType), 
                     null, false);
             if (!def.getDeclarationModel().isToplevel()) {
+                // ...and an $outer() ctor parameter and field
                 ProducedType outerType = thisType.getQualifyingType();
                 ctor.parameter(0, "$outer", makeJavaType(outerType), null);
                 bodyStatements.append(
@@ -138,10 +141,14 @@ public class ClassTransformer extends AbstractTransformer {
                         makeJavaType(outerType), 
                         null, false);
                 
+                // Add an $outer() method to the interface
+                MethodDefinitionBuilder outerBuilder = MethodDefinitionBuilder.method(gen(), false, true, "$outer");// TODO ancestorLocal
+                outerBuilder.modifiers(PUBLIC | ABSTRACT);
+                outerBuilder.resultType(null, makeJavaType(outerType));
+                classBuilder.defs(outerBuilder.build());
             }
             ctor.body(bodyStatements.toList());
         }
-        
         
         CeylonVisitor visitor = new CeylonVisitor(gen(), classBuilder);
         def.visitChildren(visitor);
