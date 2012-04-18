@@ -94,7 +94,7 @@ public class ClassTransformer extends AbstractTransformer {
                 classBuilder.parameter(param);
                 // Does the parameter have a default value?
                 if (param.getDefaultArgument() != null &&  param.getDefaultArgument().getSpecifierExpression() != null) {
-                    classBuilder.concreteInterfaceMemberDefs(transformDefaultedParameter(param, def, paramList));
+                    classBuilder.concreteInterfaceMemberDefs(transformDefaultedParameter(false, param, def, paramList));
                 }
             }
             
@@ -414,11 +414,12 @@ public class ClassTransformer extends AbstractTransformer {
             methodBuilder.parameter(param);
             // Does the parameter have a default value?
             if (param.getDefaultArgument() != null &&  param.getDefaultArgument().getSpecifierExpression() != null) {
-                JCMethodDecl defaultValueMethod = transformDefaultedParameter(param, def, paramList);
+                JCMethodDecl defaultValueMethodImpl = transformDefaultedParameter(false, param, def, paramList);
                 if (Decl.defaultParameterMethodOnSelf(def)) {
-                    lb.add(defaultValueMethod);
+                    lb.add(defaultValueMethodImpl);
                 } else {
-                    classBuilder.concreteInterfaceMemberDefs(defaultValueMethod);
+                    lb.add(transformDefaultedParameter(true, param, def, paramList));
+                    classBuilder.concreteInterfaceMemberDefs(defaultValueMethodImpl);
                 }
             }
         }
@@ -465,7 +466,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (def instanceof Tree.AnyMethod) {
             Tree.AnyMethod meth = (Tree.AnyMethod)def;
             long mods = transformMethodDeclFlags(meth);
-            if (!Decl.withinInterface(((Method)model).getTypeDeclaration())) {
+            if (!Decl.withinInterface((model))) {
                 mods |= FINAL;
             }
             overloadBuilder.modifiers(mods);
@@ -567,12 +568,13 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     // Creates a method to retrieve the value for a defaulted parameter
-    private JCMethodDecl transformDefaultedParameter(Tree.Parameter param, Tree.Declaration container, Tree.ParameterList params) {
+    private JCMethodDecl transformDefaultedParameter(boolean abstract_, Tree.Parameter param, 
+            Tree.Declaration container, Tree.ParameterList params) {
         Parameter parameter = param.getDeclarationModel();
         String name = Util.getDefaultedParamMethodName(container.getDeclarationModel(), parameter );
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(param), true, name);
         
-        int modifiers = FINAL;
+        int modifiers = abstract_ ? ABSTRACT : FINAL;
         if (container.getDeclarationModel().isShared()) {
             modifiers |= PUBLIC;
         } else if (!container.getDeclarationModel().isToplevel()){
@@ -591,10 +593,10 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         
-        if (!Decl.defaultParameterMethodOnSelf(container)) {
+        /*if (!Decl.defaultParameterMethodOnSelf(container)) {
             ProducedType thisType = getThisType(container);
             methodBuilder.parameter(0, "$this", makeJavaType(thisType), null);
-        }
+        }*/
         
         // Add any of the preceding parameters as parameters to the method
         for (Tree.Parameter p : params.getParameters()) {
@@ -608,9 +610,11 @@ public class ClassTransformer extends AbstractTransformer {
         methodBuilder.resultType(parameter);
 
         // The implementation of the method
-        JCExpression expr = expressionGen().transform(param);
-        JCBlock body = at(param).Block(0, List.<JCStatement> of(at(param).Return(expr)));
-        methodBuilder.block(body);
+        if (!abstract_) {
+            JCExpression expr = expressionGen().transform(param);
+            JCBlock body = at(param).Block(0, List.<JCStatement> of(at(param).Return(expr)));
+            methodBuilder.block(body);
+        }
 
         return methodBuilder.build();
     }
