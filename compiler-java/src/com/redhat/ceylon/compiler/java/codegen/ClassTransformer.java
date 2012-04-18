@@ -537,7 +537,7 @@ public class ClassTransformer extends AbstractTransformer {
         int modifiers = FINAL;
         if (container.getDeclarationModel().isShared()) {
             modifiers |= PUBLIC;
-        } else {
+        } else if (!container.getDeclarationModel().isToplevel()){
             modifiers |= PRIVATE;
         }
         if (Decl.defaultParameterMethodStatic(container)) {

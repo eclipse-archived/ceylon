@@ -101,20 +101,31 @@ abstract class InvocationBuilder {
         hasDefaultedArguments = true;
         
         String methodName = Util.getDefaultedParamMethodName(getPrimaryDeclaration(), param);
-        List<JCExpression> arglist;
         JCExpression defaultValueMethodName;
-            if (Decl.defaultParameterMethodOnSelf(param)) {
-            arglist = makeThisVarRefArgumentList(argIndex);
+        if (Decl.defaultParameterMethodOnSelf(param)) {
             Declaration container = param.getDeclaration().getRefinedDeclaration();
             if (!container.isToplevel()) {
                 container = (Declaration)container.getContainer();
             }
             String className = Util.getCompanionClassName(container.getName());
             defaultValueMethodName = gen().makeQuotedQualIdent(gen().makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName);
+        } else if (Decl.defaultParameterMethodStatic(param)) {
+            Declaration container = param.getDeclaration().getRefinedDeclaration();
+            if (!container.isToplevel()) {
+                container = (Declaration)container.getContainer();
+            }            
+            defaultValueMethodName = gen().makeQuotedQualIdent(gen().makeQuotedFQIdent(container.getQualifiedNameString()), methodName);
         } else {
-            arglist = makeVarRefArgumentList(argIndex);
             defaultValueMethodName = gen.makeQuotedQualIdent(gen().makeQuotedIdent(varBaseName + "$this$"), methodName);
         }
+        
+        List<JCExpression> arglist;
+        if (Decl.defaultParameterMethodTakesThis(param)) {
+            arglist = makeThisVarRefArgumentList(argIndex);
+        } else {
+            arglist = makeVarRefArgumentList(argIndex);
+        }
+        
         JCExpression argExpr = gen().at(node).Apply(null, defaultValueMethodName, arglist);
         return argExpr;
     }
@@ -188,7 +199,9 @@ abstract class InvocationBuilder {
         } else {
             name = callVarName;
         }
-        ProducedType thisType = gen().getThisType(getPrimaryDeclaration());
+        // TODO Fix this 
+        ProducedType thisType = ((Tree.MemberOrTypeExpression)primary).getTarget().getQualifyingType();
+        //ProducedType thisType = gen().getThisType(getPrimaryDeclaration());
         JCVariableDecl thisDecl = gen().makeVar(varBaseName + "$this$", 
                 gen().makeJavaType(thisType, AbstractTransformer.NO_PRIMITIVES), 
                 gen().makeUnquotedIdent(name));

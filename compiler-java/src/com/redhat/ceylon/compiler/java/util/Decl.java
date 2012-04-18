@@ -27,6 +27,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -254,15 +255,31 @@ public class Decl {
         return decl instanceof FieldValue;
     }
     
+    public static boolean defaultParameterMethodTakesThis(Tree.Declaration decl) {
+        return defaultParameterMethodTakesThis(decl.getDeclarationModel());
+    }
+    
+    public static boolean defaultParameterMethodTakesThis(Declaration decl) {
+        return decl instanceof Method 
+                && decl.isToplevel();
+    }
+    
     public static boolean defaultParameterMethodStatic(Tree.Declaration decl) {
         // Only top-level methods have static default value methods
-        return decl instanceof Tree.AnyMethod 
-                && decl.getDeclarationModel().isToplevel();
+        return defaultParameterMethodStatic(decl.getDeclarationModel());
+    }
+    
+    public static boolean defaultParameterMethodStatic(Declaration decl) {
+        if (decl instanceof Parameter) {
+            decl = ((Parameter) decl).getDeclaration();
+        }
+        // Only top-level methods have static default value methods
+        return decl instanceof Method 
+                && decl.isToplevel();
     }
     
     public static boolean defaultParameterMethodOnSelf(Tree.Declaration decl) {
-        return decl instanceof Tree.AnyMethod 
-                && !Decl.withinInterface(decl);
+        return defaultParameterMethodOnSelf(decl.getDeclarationModel());
     }
     
     public static boolean defaultParameterMethodOnSelf(Declaration decl) {
