@@ -94,7 +94,7 @@ public class ClassTransformer extends AbstractTransformer {
                 classBuilder.parameter(param);
                 // Does the parameter have a default value?
                 if (param.getDefaultArgument() != null &&  param.getDefaultArgument().getSpecifierExpression() != null) {
-                    classBuilder.concreteInterfaceMemberDefs(transformDefaultedParameter(false, param, def, paramList));
+                    classBuilder.getCompanionBuilder().defs(transformDefaultedParameter(false, param, def, paramList));
                 }
             }
             
@@ -109,6 +109,39 @@ public class ClassTransformer extends AbstractTransformer {
                 }
             }
         }
+        
+        if (def instanceof Tree.AnyInterface) {
+            ClassDefinitionBuilder companionBuilder = classBuilder.getCompanionBuilder();
+            MethodDefinitionBuilder ctor = companionBuilder.addConstructor();
+            
+            ProducedType thisType = def.getDeclarationModel().getType();
+            ctor.parameter(0, "$this", makeJavaType(thisType), null);
+            ListBuffer<JCStatement> bodyStatements = ListBuffer.<JCStatement>of(
+                    make().Exec(
+                            make().Assign(
+                                    makeSelect("this", "$this"), 
+                                    makeUnquotedIdent("$this"))));
+            companionBuilder.field(PRIVATE | FINAL, 
+                    "$this", 
+                    makeJavaType(thisType), 
+                    null, false);
+            if (!def.getDeclarationModel().isToplevel()) {
+                ProducedType outerType = thisType.getQualifyingType();
+                ctor.parameter(0, "$outer", makeJavaType(outerType), null);
+                bodyStatements.append(
+                        make().Exec(
+                                make().Assign(
+                                        makeSelect("this", "$outer"), 
+                                        makeUnquotedIdent("$outer"))));
+                companionBuilder.field(PRIVATE | FINAL, 
+                        "$outer", 
+                        makeJavaType(outerType), 
+                        null, false);
+                
+            }
+            ctor.body(bodyStatements.toList());
+        }
+        
         
         CeylonVisitor visitor = new CeylonVisitor(gen(), classBuilder);
         def.visitChildren(visitor);
@@ -419,7 +452,7 @@ public class ClassTransformer extends AbstractTransformer {
                     lb.add(defaultValueMethodImpl);
                 } else {
                     lb.add(transformDefaultedParameter(true, param, def, paramList));
-                    classBuilder.concreteInterfaceMemberDefs(defaultValueMethodImpl);
+                    classBuilder.getCompanionBuilder().defs(defaultValueMethodImpl);
                 }
             }
         }

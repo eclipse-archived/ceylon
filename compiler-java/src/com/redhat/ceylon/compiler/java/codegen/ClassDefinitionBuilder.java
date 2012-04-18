@@ -74,7 +74,6 @@ public class ClassDefinitionBuilder {
     private final ListBuffer<JCExpression> satisfies = ListBuffer.lb();
     private final ListBuffer<JCExpression> caseTypes = ListBuffer.lb();
     private final ListBuffer<JCTypeParameter> typeParams = ListBuffer.lb();
-    private final ListBuffer<JCTypeParameter> implTypeParams = ListBuffer.lb();
     private final ListBuffer<JCExpression> typeParamAnnotations = ListBuffer.lb();
     
     private final ListBuffer<JCAnnotation> annotations = ListBuffer.lb();
@@ -83,11 +82,15 @@ public class ClassDefinitionBuilder {
     
     private final ListBuffer<MethodDefinitionBuilder> constructors = ListBuffer.lb();
     private final ListBuffer<JCTree> defs = ListBuffer.lb();
-    private final ListBuffer<JCTree> concreteInterfaceMemberDefs = ListBuffer.lb();
+    private ClassDefinitionBuilder concreteInterfaceMemberDefs;
     private final ListBuffer<JCTree> body = ListBuffer.lb();
     private final ListBuffer<JCStatement> init = ListBuffer.lb();
 
     private boolean ancestorLocal;
+    
+    private boolean built = false;
+    
+    private boolean isCompanion = false;
 
     public static ClassDefinitionBuilder klass(AbstractTransformer gen, boolean ancestorLocal, String name) {
         return new ClassDefinitionBuilder(gen, ancestorLocal, name);
@@ -113,6 +116,10 @@ public class ClassDefinitionBuilder {
     }
 
     public List<JCTree> build() {
+        if (built) {
+            throw new IllegalStateException();
+        }
+        built = true;
         ListBuffer<JCTree> defs = ListBuffer.lb();
         appendDefinitionsTo(defs);
         if (!typeParamAnnotations.isEmpty()) {
@@ -129,15 +136,8 @@ public class ClassDefinitionBuilder {
                 defs.toList());
         ListBuffer<JCTree> klasses = ListBuffer.<JCTree>of(klass);
         
-        if (!concreteInterfaceMemberDefs.isEmpty()) {
-            JCTree.JCClassDecl concreteInterfaceKlass = gen.make().ClassDef(
-                    gen.make().Modifiers((modifiers & PUBLIC) | FINAL , gen.makeAtIgnore()),
-                    gen.names().fromString(Util.getCompanionClassName(name)),
-                    implTypeParams.toList(),
-                    (JCTree)null,
-                    List.<JCTree.JCExpression>nil(),
-                    concreteInterfaceMemberDefs.toList());
-            klasses.append(concreteInterfaceKlass);
+        if (concreteInterfaceMemberDefs != null) {
+            klasses.appendList(concreteInterfaceMemberDefs.build());
         }
         
         return klasses.toList();
@@ -149,7 +149,9 @@ public class ClassDefinitionBuilder {
             if (superCall != null) {
                 init.prepend(superCall);
             }
-            createConstructor(init.toList());
+            if (!isCompanion) {
+                createConstructor(init.toList());
+            }
             for (MethodDefinitionBuilder builder : constructors) {
                 defs.append(builder.build());
             }
@@ -279,7 +281,6 @@ public class ClassDefinitionBuilder {
             }
         }
         typeParams.append(typeParam(name, bounds));
-        implTypeParams.append(typeParam(name, bounds));
         typeParamAnnotations.append(gen.makeAtTypeParameter(name, satisfiedTypes, covariant, contravariant));
         return this;
     }
@@ -416,10 +417,14 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
-    public ClassDefinitionBuilder concreteInterfaceMemberDefs(
-            JCMethodDecl concreteInterfaceMember) {
-        this.concreteInterfaceMemberDefs.append(concreteInterfaceMember);
-        return this;
+    public ClassDefinitionBuilder getCompanionBuilder() {
+        if (concreteInterfaceMemberDefs == null) {
+            concreteInterfaceMemberDefs = new ClassDefinitionBuilder(gen, ancestorLocal, Util.getCompanionClassName(name))
+                .modifiers((modifiers & PUBLIC) | FINAL)
+                .annotations(gen.makeAtIgnore());
+            concreteInterfaceMemberDefs.isCompanion = true;
+        }
+        return concreteInterfaceMemberDefs;
     }
 
     public ClassDefinitionBuilder field(int modifiers, String attrName, JCExpression type, JCExpression initialValue, boolean isLocal) {
@@ -444,7 +449,7 @@ public class ClassDefinitionBuilder {
         if (method instanceof Tree.MethodDefinition) {
             Tree.MethodDefinition m = (Tree.MethodDefinition)method;
             if (Decl.withinInterface(m) && m.getBlock() != null) {
-                concreteInterfaceMemberDefs(gen.classGen().transformConcreteInterfaceMember(m, ((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)Decl.container(method)).getType()));
+                getCompanionBuilder().defs(gen.classGen().transformConcreteInterfaceMember(m, ((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)Decl.container(method)).getType()));
             }
         }
         return this;
