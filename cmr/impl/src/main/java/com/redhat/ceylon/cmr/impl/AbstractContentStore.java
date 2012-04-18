@@ -34,6 +34,7 @@ public abstract class AbstractContentStore implements ContentStore, StructureBui
     private static final String CAR = ".car";
     private static final String JAR = ".jar";
     private static final String SHA1 = ".sha1";
+    private static final String SRC = ".src";
     private static final String ZIP = ".zip";
 
     protected static final String SEPARATOR = "/";
@@ -47,6 +48,7 @@ public abstract class AbstractContentStore implements ContentStore, StructureBui
         addSuffix(JAR);
         addSuffix(ZIP);
         addSuffix(SHA1);
+        addSuffix(SRC);
     }
 
     public void addSuffix(String suffix) {
