@@ -543,6 +543,15 @@ public class ClassTransformer extends AbstractTransformer {
         if (Decl.defaultParameterMethodStatic(container)) {
             modifiers |= STATIC;
         }
+        methodBuilder.modifiers(modifiers);
+        
+        if (container instanceof Tree.AnyMethod) {
+            if (((Tree.AnyMethod)container).getTypeParameterList() != null) {
+                for (Tree.TypeParameterDeclaration t : ((Tree.AnyMethod)container).getTypeParameterList().getTypeParameterDeclarations()) {
+                    methodBuilder.typeParameter(t);
+                }
+            }
+        }
         
         if (!Decl.defaultParameterMethodOnSelf(container)) {
             ProducedType thisType = getThisType(container);
@@ -565,9 +574,7 @@ public class ClassTransformer extends AbstractTransformer {
         JCBlock body = at(param).Block(0, List.<JCStatement> of(at(param).Return(expr)));
         methodBuilder.block(body);
 
-        return methodBuilder
-            .modifiers(modifiers)
-            .build();
+        return methodBuilder.build();
     }
 
     public List<JCTree> transformObject(Tree.ObjectDefinition def, ClassDefinitionBuilder containingClassBuilder) {
