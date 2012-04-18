@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 
 public class Decl {
     private Decl() {
@@ -131,6 +132,10 @@ public class Decl {
      * @return true if the declaration is within an interface
      */
     public static boolean withinInterface(Tree.Declaration decl) {
+        return container(decl) instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
+    }
+    
+    public static boolean withinInterface(Declaration decl) {
         return container(decl) instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
     }
     
@@ -247,5 +252,21 @@ public class Decl {
 
     public static boolean isJavaField(Declaration decl) {
         return decl instanceof FieldValue;
+    }
+    
+    public static boolean defaultParameterMethodStatic(Tree.Declaration decl) {
+        // Only top-level methods have static default value methods
+        return decl instanceof Tree.AnyMethod 
+                && decl.getDeclarationModel().isToplevel();
+    }
+    
+    public static boolean defaultParameterMethodOnSelf(Tree.Declaration decl) {
+        return decl instanceof Tree.AnyMethod 
+                && !Decl.withinInterface(decl);
+    }
+    
+    public static boolean defaultParameterMethodOnSelf(Declaration decl) {
+        return decl instanceof Method 
+                && !Decl.withinInterface(decl);
     }
 }

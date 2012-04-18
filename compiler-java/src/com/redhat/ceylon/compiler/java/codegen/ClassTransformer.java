@@ -345,6 +345,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     public List<JCTree> transform(Tree.AnyMethod def, ClassDefinitionBuilder classBuilder) {
+        ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
         Method model = def.getDeclarationModel();
         
         java.util.List<ParameterList> parameterLists = def.getParameterLists();
@@ -399,7 +400,12 @@ public class ClassTransformer extends AbstractTransformer {
             methodBuilder.parameter(param);
             // Does the parameter have a default value?
             if (param.getDefaultArgument() != null &&  param.getDefaultArgument().getSpecifierExpression() != null) {
-                classBuilder.concreteInterfaceMemberDefs(transformDefaultedParameter(param, def, paramList));
+                JCMethodDecl defaultValueMethod = transformDefaultedParameter(param, def, paramList);
+                if (Decl.defaultParameterMethodOnSelf(def)) {
+                    lb.add(defaultValueMethod);
+                } else {
+                    classBuilder.concreteInterfaceMemberDefs(defaultValueMethod);
+                }
             }
         }
         
@@ -417,8 +423,6 @@ public class ClassTransformer extends AbstractTransformer {
             .modifiers(transformMethodDeclFlags(def))
             .isActual(Decl.isActual(def))
             .modelAnnotations(model.getAnnotations());
-        
-        ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
         
         for (Tree.Parameter param : paramList.getParameters()) {
             DefaultArgument defaultArgument = param.getDefaultArgument();
@@ -457,7 +461,14 @@ public class ClassTransformer extends AbstractTransformer {
             
             overloadBuilder.parameter(param2);
         }
-    
+        // TODO Some simple default expressions (e.g. literals, null and 
+        // base expressions it might be worth inlining the expression rather 
+        // than calling the default value method.
+        // TODO We should call the no-defaults method directly using a Let
+        // rather than having the overloaded call each other in sequence
+        // (imagine a recursive method with many defaulted parameters -- we're 
+        // wasting stack space)
+        // TODO This really belongs in the invocation builder
         String methodName = Util.getDefaultedParamMethodName(def.getDeclarationModel(), param.getDeclarationModel());
         
         Declaration container = param.getDeclarationModel().getDeclaration().getRefinedDeclaration();
@@ -465,9 +476,15 @@ public class ClassTransformer extends AbstractTransformer {
             container = (Declaration)container.getContainer();
         }
         String className = Util.getCompanionClassName(container.getName());
+        JCExpression defaultValueMethodName;
+        if (Decl.defaultParameterMethodOnSelf(def)) {
+            defaultValueMethodName = gen().makeQuotedIdent(methodName);
+        } else {
+            defaultValueMethodName = gen().makeQuotedQualIdent(gen().makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName);
+        }
         
-        args.add(make().Apply(List.<JCExpression>nil(), gen().makeQuotedQualIdent(gen().makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName), 
-                ListBuffer.<JCExpression>lb().appendList(args).prepend(makeUnquotedIdent("this")).toList()));
+        args.add(make().Apply(List.<JCExpression>nil(), defaultValueMethodName, 
+                ListBuffer.<JCExpression>lb().appendList(args).toList()));
         
         // TODO Type args on method call
         JCMethodInvocation call = make().Apply(List.<JCExpression>nil(),
@@ -517,12 +534,17 @@ public class ClassTransformer extends AbstractTransformer {
         String name = Util.getDefaultedParamMethodName(container.getDeclarationModel(), parameter );
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(param), true, name);
         
-        int modifiers = STATIC;
+        int modifiers = FINAL;
         if (container.getDeclarationModel().isShared()) {
             modifiers |= PUBLIC;
+        } else {
+            modifiers |= PRIVATE;
+        }
+        if (Decl.defaultParameterMethodStatic(container)) {
+            modifiers |= STATIC;
         }
         
-        if (container instanceof Tree.AnyMethod && !container.getDeclarationModel().isToplevel()) {
+        if (!Decl.defaultParameterMethodOnSelf(container)) {
             ProducedType thisType = getThisType(container);
             methodBuilder.parameter(0, "$this", makeJavaType(thisType), null);
         }

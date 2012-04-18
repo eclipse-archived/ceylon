@@ -99,15 +99,23 @@ abstract class InvocationBuilder {
     
     protected final JCExpression makeDefaultedArgument(int argIndex, Parameter param) {
         hasDefaultedArguments = true;
-        JCExpression argExpr;
+        
         String methodName = Util.getDefaultedParamMethodName(getPrimaryDeclaration(), param);
-        List<JCExpression> arglist = makeThisVarRefArgumentList(argIndex);
-        Declaration container = param.getDeclaration().getRefinedDeclaration();
-        if (!container.isToplevel()) {
-            container = (Declaration)container.getContainer();
+        List<JCExpression> arglist;
+        JCExpression defaultValueMethodName;
+            if (Decl.defaultParameterMethodOnSelf(param)) {
+            arglist = makeThisVarRefArgumentList(argIndex);
+            Declaration container = param.getDeclaration().getRefinedDeclaration();
+            if (!container.isToplevel()) {
+                container = (Declaration)container.getContainer();
+            }
+            String className = Util.getCompanionClassName(container.getName());
+            defaultValueMethodName = gen().makeQuotedQualIdent(gen().makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName);
+        } else {
+            arglist = makeVarRefArgumentList(argIndex);
+            defaultValueMethodName = gen.makeQuotedQualIdent(gen().makeQuotedIdent(varBaseName + "$this$"), methodName);
         }
-        String className = Util.getCompanionClassName(container.getName());
-        argExpr = gen().at(node).Apply(null, gen().makeQuotedQualIdent(gen().makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName), arglist);
+        JCExpression argExpr = gen().at(node).Apply(null, defaultValueMethodName, arglist);
         return argExpr;
     }
     
