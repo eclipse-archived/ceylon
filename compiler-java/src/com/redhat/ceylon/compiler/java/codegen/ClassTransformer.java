@@ -40,6 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree.MethodDeclaration;
@@ -101,6 +102,7 @@ public class ClassTransformer extends AbstractTransformer {
                 }
             }
             
+            // Add overloaded constructors for defaulted parameter
             for (Tree.Parameter param : paramList.getParameters()) {
                 DefaultArgument defaultArgument = param.getDefaultArgument();
                 if (defaultArgument != null) {
@@ -111,6 +113,32 @@ public class ClassTransformer extends AbstractTransformer {
                     
                 }
             }
+            
+            // For each satisfied interface, instantiate an instance of the 
+            // companion class in the constructor and assign it to a
+            // $Interface$impl field
+            for (TypeDeclaration decl : def.getDeclarationModel().getSatisfiedTypeDeclarations()) {
+                if (!(decl instanceof Interface)) {
+                    continue;
+                }
+                Interface iface = (Interface)decl;
+                ListBuffer<JCExpression> state = ListBuffer.<JCExpression>of(makeUnquotedIdent("this"));
+                if (!iface.isToplevel()) {
+                    state.append(makeQuotedQualIdent(makeJavaType(iface.getType().getQualifyingType()), "this"));
+                }
+                final String fieldName = "$" + iface.getName() + "$impl";
+                final String companionClassName = Util.getCompanionClassName(iface.getName());
+                classBuilder.init(make().Exec(make().Assign(
+                        makeSelect("this", fieldName),// TODO Use qualified name for quoting? 
+                        make().NewClass(null, 
+                                null, // TODO Type args 
+                                make().TypeApply(makeQuotedIdent(companionClassName), typeParams(def.getDeclarationModel())), 
+                                state.toList(), // TODO Add outer if necessary 
+                                null))));
+                
+                classBuilder.field(PRIVATE | FINAL, fieldName, 
+                        make().TypeApply(makeQuotedIdent(companionClassName), typeParams(def.getDeclarationModel())), null, false);
+            }
         }
         
         if (def instanceof Tree.AnyInterface) {
@@ -118,7 +146,7 @@ public class ClassTransformer extends AbstractTransformer {
             ClassDefinitionBuilder companionBuilder = classBuilder.getCompanionBuilder();
             MethodDefinitionBuilder ctor = companionBuilder.addConstructor();
             
-            // ...with a $this() ctor parameter and field...
+            // ...with a $this ctor parameter and field...
             ProducedType thisType = def.getDeclarationModel().getType();
             ctor.parameter(0, "$this", makeJavaType(thisType), null);
             ListBuffer<JCStatement> bodyStatements = ListBuffer.<JCStatement>of(
@@ -131,7 +159,7 @@ public class ClassTransformer extends AbstractTransformer {
                     makeJavaType(thisType), 
                     null, false);
             if (!def.getDeclarationModel().isToplevel()) {
-                // ...and an $outer() ctor parameter and field
+                // ...and an $outer ctor parameter and field
                 ProducedType outerType = thisType.getQualifyingType();
                 ctor.parameter(0, "$outer", makeJavaType(outerType), null);
                 bodyStatements.append(
@@ -151,6 +179,25 @@ public class ClassTransformer extends AbstractTransformer {
                 classBuilder.defs(outerBuilder.build());
             }
             ctor.body(bodyStatements.toList());
+        }
+        
+        if (def instanceof Tree.AnyClass) {
+            for (TypeDeclaration decl : def.getDeclarationModel().getSatisfiedTypeDeclarations()) {
+                if (!(decl instanceof Interface)
+                        || decl.isToplevel()) {
+                    // TODO What about local interfaces?
+                    continue;
+                }
+                Interface iface = (Interface)decl;
+                
+                // Generate $outer() impl if implementing an inner interface
+                MethodDefinitionBuilder outerBuilder = MethodDefinitionBuilder.method(gen(), true, true, "$outer");// TODO ancestorLocal
+                outerBuilder.annotations(makeAtOverride());
+                outerBuilder.modifiers(FINAL | PUBLIC);
+                outerBuilder.resultType(null, makeJavaType(iface.getType().getQualifyingType()));
+                outerBuilder.body(make().Return(makeQuotedIdent("$outer")));
+                classBuilder.defs(outerBuilder.build());
+            }
         }
         
         CeylonVisitor visitor = new CeylonVisitor(gen(), classBuilder);
@@ -176,8 +223,6 @@ public class ClassTransformer extends AbstractTransformer {
             .init((List<JCStatement>)visitor.getResult().toList())
             .build();
     }
-    
-
 
     public void transform(AttributeDeclaration decl, ClassDefinitionBuilder classBuilder) {
         boolean useField = Decl.isCaptured(decl);
@@ -407,7 +452,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     public List<JCTree> transform(Tree.AnyMethod def, ClassDefinitionBuilder classBuilder) {
         ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
-        Method model = def.getDeclarationModel();
+        final Method model = def.getDeclarationModel();
         
         java.util.List<ParameterList> parameterLists = def.getParameterLists();
         boolean mpl = parameterLists.size() > 1;
@@ -497,9 +542,114 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         
+        // Generate an impl for overloaded methods using the $impl instance
+        // TODO MPL
+        if (Decl.withinInterface(model.getRefinedDeclaration())
+                && !Decl.withinInterface(model)) {
+            java.util.List<Parameter> parameters = model.getParameterLists().get(0).getParameters();
+            for (Parameter p : parameters) {
+                if (p.isDefaulted()) {
+                    classBuilder.defs(transformDefaultValueMethodImpl(model, parameters, p));
+                    classBuilder.defs(overloadMethodImpl(model, parameters, p));
+                }
+            }
+        }
+        
         lb.prepend(methodBuilder.build());
         
         return lb.toList();
+    }
+
+    private JCMethodDecl transformDefaultValueMethodImpl(Method method,
+            java.util.List<Parameter> parameters, Parameter p) {
+        String name = Util.getDefaultedParamMethodName(method, p);
+        MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(gen(), false, true, name);// TODO ancestorLocal
+        overloadBuilder.annotations(makeAtOverride());
+        overloadBuilder.modifiers((transformMethodDeclFlags(method) & (PUBLIC | PRIVATE | Flags.PROTECTED)) | FINAL);
+        for (TypeParameter tp : method.getTypeParameters()) {
+            overloadBuilder.typeParameter(tp);
+        }
+        overloadBuilder.resultType(null, makeJavaType(p.getType()));
+        ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb(); 
+        for (Parameter p2 : parameters.subList(0, parameters.indexOf(p))) {
+            overloadBuilder.parameter(p2);
+            args.append(makeQuotedIdent(p2.getName()));
+        }
+        String ifaceName = ((Interface)method.getRefinedDeclaration().getContainer()).getName();
+        overloadBuilder.body(make().Return(
+                make().Apply(typeParams(method), // TODO type args
+                        makeQuotedQualIdent(makeQuotedIdent("$" + Util.getCompanionClassName(ifaceName)), name), 
+                        args.toList())));
+        return overloadBuilder.build();
+    }
+    
+    private JCMethodDecl overloadMethodImpl(
+            Method method, java.util.List<Parameter> parameters, Parameter p) {
+        MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(gen(), false, true, method.getName());// TODO ancestorLocal
+        overloadBuilder.modifiers((transformMethodDeclFlags(method) & (PUBLIC | PRIVATE | Flags.PROTECTED)) | FINAL);
+        overloadBuilder.annotations(makeAtOverride());
+        overloadBuilder.annotations(makeAtIgnore());
+        for (TypeParameter tp : method.getTypeParameters()) {
+            overloadBuilder.typeParameter(tp);
+        }
+        overloadBuilder.resultType(method);
+        final ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
+        final ListBuffer<JCVariableDecl> vars = ListBuffer.<JCVariableDecl>lb();        
+        boolean seen = false;
+        // TODO This code is very similar to transformForDefaultedParameter() but
+        // operates on model.Parameter not Tree.Parameter
+        
+        for (Parameter p2 : parameters) {
+            if (p2 == p) {
+                seen = true;
+            }
+            if (!seen) {
+                args.append(makeQuotedIdent(p2.getName()));
+                overloadBuilder.parameter(p2);
+            } else {
+                String tempName = tempName(p2.getName());
+                String ifaceName = ((Interface)method.getRefinedDeclaration().getContainer()).getName();
+                
+                vars.append(makeVar(
+                        tempName, 
+                        makeJavaType(p2.getType()), 
+                        make().Apply(typeParams(method),// TODO Type args 
+                            makeQuotedQualIdent(makeUnquotedIdent("$" + Util.getCompanionClassName(ifaceName)), Util.getDefaultedParamMethodName(method, p2)), 
+                            args.toList())));
+                args.append(makeQuotedIdent(tempName));
+            }
+        }
+        
+        JCExpression invocation = make().Apply(
+                typeParams(method), // TODO type args
+                makeQuotedIdent(method.getName()),
+                args.toList());
+        
+        if (isVoid(method.getType())) {
+            invocation = make().LetExpr(vars.toList(), List.<JCStatement>of(make().Exec(invocation)), makeNull());
+            overloadBuilder.body(make().Exec(invocation));
+        } else {
+            invocation = make().LetExpr(vars.toList(), invocation);
+            overloadBuilder.body(make().Return(invocation));
+        }
+        
+        return overloadBuilder.build();
+    }
+
+    private List<JCExpression> typeParams(Method method) {
+        return typeParams(method.getTypeParameters());
+    }
+    
+    private List<JCExpression> typeParams(ClassOrInterface type) {
+        return typeParams(type.getTypeParameters());
+    }
+    
+    private List<JCExpression> typeParams(Iterable<TypeParameter> typeParams) {
+        ListBuffer<JCExpression> typeArgs = ListBuffer.<JCExpression>lb();
+        for (TypeParameter tp : typeParams) {
+            typeArgs.append(makeQuotedIdent(tp.getName()));
+        }
+        return typeArgs.toList();
     }
     
     private MethodDefinitionBuilder transformForDefaultedParameter(
