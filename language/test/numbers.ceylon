@@ -145,7 +145,7 @@ shared void numbers() {
         exp(0,-2);
         fail("exp(2,-1) should throw");
     } catch (Exception e) {}
-    assert(exp(-1,-2)==1, "exp(-1,-2)==1"); //CHECK possible bug should be -1
+    assert(exp(-1,-2)==1, "exp(-1,-2)==1");
     try {
         exp(-2,-2);
         fail("exp(-2,-2) should throw");
