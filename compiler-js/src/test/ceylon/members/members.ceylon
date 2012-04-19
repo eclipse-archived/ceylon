@@ -90,6 +90,19 @@ class Issue50() {
     z = "ok";
 }
 
+class AliasMemberTest() {
+    shared interface I1 {shared String s {return "A";} }
+    shared interface I1Alias = I1;
+    interface I2 {shared String s {return "B";} }
+    interface I2Alias = I2;
+    shared class A() satisfies I1 {}
+    class B() satisfies I2 {}
+    shared class AliasA() = A;
+    class AliasB() = B;
+    shared String b() { return AliasB().s; }
+    
+}
+
 shared void test() {
     value c = Counter(0);
     assert(c.count==0,"counter 1");
@@ -106,5 +119,8 @@ shared void test() {
     assert(at.y==2, "assign using setter");
     assert(Issue50().z=="ok", "Issue #50");
     test_outer_inner_safety();
+    
+    assert(AliasMemberTest().AliasA().s=="A", "shared inner alias class");
+    assert(AliasMemberTest().b()=="B", "non-shared inner alias class");
     results();
 }
