@@ -1,0 +1,27 @@
+package com.redhat.ceylon.compiler.java.test.structure.nesting;
+
+class C {
+    
+    interface I {
+        
+        public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.C $outer();
+    }
+    
+    final class I$impl {
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.C.I $this;
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.C $outer;
+        
+        I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.C.I $this, .com.redhat.ceylon.compiler.java.test.structure.nesting.C $outer) {
+            this.$this = $this;
+            this.$outer = $outer;
+        }
+    }
+    
+    C() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.nesting.C();
+    }
+}

@@ -1,0 +1,314 @@
+package com.redhat.ceylon.compiler.java.test.structure.nesting;
+
+interface I<T> {
+    
+    public abstract void m(final long i);
+    
+    public abstract void m();
+    
+    public abstract long m$i();
+    
+    public abstract long m2(final long i);
+    
+    public abstract long m2();
+    
+    public abstract long m2$i();
+    
+    public abstract long m3(final long i, final long n);
+    
+    public abstract long m3(final long i);
+    
+    public abstract long m3();
+    
+    public abstract long m3$i();
+    
+    public abstract long m3$n(final long i);
+    
+    public abstract long m4(final long i, final long n);
+    
+    public abstract long m4(final long i);
+    
+    public abstract long m4$n(final long i);
+    
+    public abstract <U>long m5(final long i, final T t, final U u);
+    
+    public abstract <U>long m5(final long i, final T t);
+    
+    public abstract <U>long m5(final long i);
+    
+    public abstract <U>T m5$t(final long i);
+    
+    public abstract <U>U m5$u(final long i, final T t);
+}
+final class I$impl<T> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $this;
+    
+    public final long m$i() {
+        return 1L;
+    }
+    
+    public final long m2$i() {
+        return 1L;
+    }
+    
+    public final long m3$i() {
+        return 1L;
+    }
+    
+    public final long m3$n(final long i) {
+        return 2L * i;
+    }
+    
+    public final long m4$n(final long i) {
+        return 2L * i;
+    }
+    
+    public final <U>T m5$t(final long i) {
+        return null;
+    }
+    
+    public final <U>U m5$u(final long i, final T t) {
+        return null;
+    }
+    
+    I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $this) {
+        this.$this = $this;
+    }
+}
+final class positional {
+    
+    private positional() {
+    }
+    
+    static <T>void positional(final .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> i, final .com.redhat.ceylon.compiler.java.test.structure.nesting.I<.ceylon.language.String> i2) {
+        i.m();
+        i2.m(2L);
+        i2.m2();
+        i.m2(2L);
+        i.m3();
+        i.m3(5L);
+        i.m3(4L, 5L);
+        i.m4(5L);
+        i.m4(4L, 5L);
+        i.<.ceylon.language.String>m5(5L);
+        i.<.ceylon.language.String>m5(5L, null);
+        i.<.ceylon.language.String>m5(5L, null, .ceylon.language.String.instance(""));
+    }
+}
+final class named {
+    
+    private named() {
+    }
+    
+    static <T>void named(final .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> i, final .com.redhat.ceylon.compiler.java.test.structure.nesting.I<.ceylon.language.String> i2) {
+        (
+            let
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$16$callable$ = i,
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$16$this$ = $arg$16$callable$,
+                long $arg$16$0 = $arg$16$this$.m$i()
+            in {
+                $arg$16$callable$.m($arg$16$0);
+            }
+            returning null
+        );
+        (
+            let
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<.ceylon.language.String> $arg$17$callable$ = i2,
+                long $arg$17$0 = 2L
+            in {
+                $arg$17$callable$.m($arg$17$0);
+            }
+            returning null
+        );
+        (
+            let
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<.ceylon.language.String> $arg$18$callable$ = i2,
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<.ceylon.language.String> $arg$18$this$ = $arg$18$callable$,
+                long $arg$18$0 = $arg$18$this$.m2$i()
+            returning $arg$18$callable$.m2($arg$18$0)
+        );
+        i.m2(2L);
+        (
+            let
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$19$callable$ = i,
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$19$this$ = $arg$19$callable$,
+                long $arg$19$0 = $arg$19$this$.m3$i(),
+                long $arg$19$1 = $arg$19$this$.m3$n($arg$19$0)
+            returning $arg$19$callable$.m3($arg$19$0, $arg$19$1)
+        );
+        (
+            let
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$20$callable$ = i,
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$20$this$ = $arg$20$callable$,
+                long $arg$20$0 = 5L,
+                long $arg$20$1 = $arg$20$this$.m3$n($arg$20$0)
+            returning $arg$20$callable$.m3($arg$20$0, $arg$20$1)
+        );
+        (
+            let
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$21$callable$ = i,
+                long $arg$21$0 = 4L,
+                long $arg$21$1 = 5L
+            returning $arg$21$callable$.m3($arg$21$0, $arg$21$1)
+        );
+        (
+            let
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$22$callable$ = i,
+                long $arg$22$1 = 5L,
+                long $arg$22$0 = 4L
+            returning $arg$22$callable$.m3($arg$22$0, $arg$22$1)
+        );
+        (
+            let
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$23$callable$ = i,
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$23$this$ = $arg$23$callable$,
+                long $arg$23$1 = 5L,
+                long $arg$23$0 = $arg$23$this$.m3$i()
+            returning $arg$23$callable$.m3($arg$23$0, $arg$23$1)
+        );
+        i.m4(5L);
+        i.m4(4L, 5L);
+        i.<.ceylon.language.String>m5(5L);
+        i.<.ceylon.language.String>m5(5L, null);
+        i.<.ceylon.language.String>m5(5L, null, .ceylon.language.String.instance(""));
+    }
+}
+class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.I$impl<T> $I$impl;
+    
+    @.java.lang.Override
+    public final long m$i() {
+        return $I$impl.m$i();
+    }
+    
+    @.java.lang.Override
+    public final void m() {
+        (
+            let
+                long $ceylontmpi24 = $I$impl.m$i()
+            in {
+                m($ceylontmpi24);
+            }
+            returning null
+        );
+    }
+    
+    @.java.lang.Override
+    public final void m(final long i) {
+    }
+    
+    @.java.lang.Override
+    public final long m2$i() {
+        return $I$impl.m2$i();
+    }
+    
+    @.java.lang.Override
+    public final long m2() {
+        return (
+            let
+                long $ceylontmpi25 = $I$impl.m2$i()
+            returning m2($ceylontmpi25)
+        );
+    }
+    
+    @.java.lang.Override
+    public final long m2(final long i) {
+        return i;
+    }
+    
+    @.java.lang.Override
+    public final long m3$i() {
+        return $I$impl.m3$i();
+    }
+    
+    @.java.lang.Override
+    public final long m3() {
+        return (
+            let
+                long $ceylontmpi26 = $I$impl.m3$i(),
+                long $ceylontmpn27 = $I$impl.m3$n($ceylontmpi26)
+            returning m3($ceylontmpi26, $ceylontmpn27)
+        );
+    }
+    
+    @.java.lang.Override
+    public final long m3$n(final long i) {
+        return $I$impl.m3$n(i);
+    }
+    
+    @.java.lang.Override
+    public final long m3(final long i) {
+        return (
+            let
+                long $ceylontmpn28 = $I$impl.m3$n(i)
+            returning m3(i, $ceylontmpn28)
+        );
+    }
+    
+    @.java.lang.Override
+    public final long m3(final long i, final long n) {
+        return i;
+    }
+    
+    @.java.lang.Override
+    public final long m4$n(final long i) {
+        return $I$impl.m4$n(i);
+    }
+    
+    @.java.lang.Override
+    public final long m4(final long i) {
+        return (
+            let
+                long $ceylontmpn29 = $I$impl.m4$n(i)
+            returning m4(i, $ceylontmpn29)
+        );
+    }
+    
+    @.java.lang.Override
+    public final long m4(final long i, final long n) {
+        return i;
+    }
+    
+    @.java.lang.Override
+    public final <U>T m5$t(final long i) {
+        return $I$impl.<U>m5$t(i);
+    }
+    
+    @.java.lang.Override
+    public final <U>long m5(final long i) {
+        return (
+            let
+                T $ceylontmpt30 = $I$impl.<U>m5$t(i),
+                U $ceylontmpu31 = $I$impl.<U>m5$u(i, $ceylontmpt30)
+            returning <U>m5(i, $ceylontmpt30, $ceylontmpu31)
+        );
+    }
+    
+    @.java.lang.Override
+    public final <U>U m5$u(final long i, final T t) {
+        return $I$impl.<U>m5$u(i, t);
+    }
+    
+    @.java.lang.Override
+    public final <U>long m5(final long i, final T t) {
+        return (
+            let
+                U $ceylontmpu32 = $I$impl.<U>m5$u(i, t)
+            returning <U>m5(i, t, $ceylontmpu32)
+        );
+    }
+    
+    @.java.lang.Override
+    public final <U>long m5(final long i, final T t, final U u) {
+        return i;
+    }
+    
+    C() {
+        this.$I$impl = new .com.redhat.ceylon.compiler.java.test.structure.nesting.I$impl<T>(this);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.nesting.C();
+    }
+}

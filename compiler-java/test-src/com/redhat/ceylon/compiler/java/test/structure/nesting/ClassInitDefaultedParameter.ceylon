@@ -26,5 +26,16 @@ void positional() {
 
 @nomodel
 void named() {
-    // TODO
+    C1{};
+    C1{i=1;};
+    C3{};
+    C3{i=10;};
+    C3{i=10; n=20;};
+    C3{n=20; i=10;};
+    C3{n=10;};
+    C4{n=20; i=10;};
+    C4{i=10; n=20;};
+    C5<String>{i=10;};
+    C5<String>{i=10; u="";};
+    C5<String>{u=""; i=10; };
 }

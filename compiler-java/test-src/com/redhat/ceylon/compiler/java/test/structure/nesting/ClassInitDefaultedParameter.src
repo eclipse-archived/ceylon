@@ -1,0 +1,146 @@
+package com.redhat.ceylon.compiler.java.test.structure.nesting;
+
+class C1 {
+    
+    C1() {
+        (
+            let
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.C1$impl $ceylontmp$impl$0 = new .com.redhat.ceylon.compiler.java.test.structure.nesting.C1$impl(),
+                long $ceylontmp$i$1 = $ceylontmp$impl$0.$init$i()
+            in {
+                this($ceylontmp$i$1);
+            }
+            returning null
+        );
+    }
+    
+    C1(long i) {
+    }
+}
+final class C1$impl {
+    
+    final long $init$i() {
+        return 1L;
+    }
+}
+class C3 {
+    
+    C3() {
+        (
+            let
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.C3$impl $ceylontmp$impl$2 = new .com.redhat.ceylon.compiler.java.test.structure.nesting.C3$impl(),
+                long $ceylontmp$i$3 = $ceylontmp$impl$2.$init$i(),
+                long $ceylontmp$n$4 = $ceylontmp$impl$2.$init$n($ceylontmp$i$3)
+            in {
+                this($ceylontmp$i$3, $ceylontmp$n$4);
+            }
+            returning null
+        );
+    }
+    
+    C3(final long i) {
+        (
+            let
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.C3$impl $ceylontmp$impl$5 = new .com.redhat.ceylon.compiler.java.test.structure.nesting.C3$impl(),
+                long $ceylontmp$n$6 = $ceylontmp$impl$5.$init$n(i)
+            in {
+                this(i, $ceylontmp$n$6);
+            }
+            returning null
+        );
+    }
+    
+    C3(long i, long n) {
+    }
+}
+final class C3$impl {
+    
+    final long $init$i() {
+        return 1L;
+    }
+    
+    final long $init$n(final long i) {
+        return 2L * i;
+    }
+}
+class C4 {
+    
+    C4(final long i) {
+        (
+            let
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.C4$impl $ceylontmp$impl$7 = new .com.redhat.ceylon.compiler.java.test.structure.nesting.C4$impl(),
+                long $ceylontmp$n$8 = $ceylontmp$impl$7.$init$n(i)
+            in {
+                this(i, $ceylontmp$n$8);
+            }
+            returning null
+        );
+    }
+    
+    C4(long i, long n) {
+    }
+}
+final class C4$impl {
+    
+    final long $init$n(final long i) {
+        return 2L * i;
+    }
+}
+class C5<U> {
+    
+    C5(final long i) {
+        (
+            let
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.C5$impl<U> $ceylontmp$impl$9 = new .com.redhat.ceylon.compiler.java.test.structure.nesting.C5$impl<U>(),
+                U $ceylontmp$u$10 = $ceylontmp$impl$9.$init$u(i)
+            in {
+                this(i, $ceylontmp$u$10);
+            }
+            returning null
+        );
+    }
+    
+    C5(long i, U u) {
+    }
+}
+final class C5$impl<U> {
+    
+    final U $init$u(final long i) {
+        return null;
+    }
+}
+final class positional {
+    
+    private positional() {
+    }
+    
+    static void positional() {
+        new .com.redhat.ceylon.compiler.java.test.structure.nesting.C1();
+        new .com.redhat.ceylon.compiler.java.test.structure.nesting.C1(1L);
+        new .com.redhat.ceylon.compiler.java.test.structure.nesting.C3();
+        new .com.redhat.ceylon.compiler.java.test.structure.nesting.C3(1L);
+        new .com.redhat.ceylon.compiler.java.test.structure.nesting.C3(1L, 2L);
+        new .com.redhat.ceylon.compiler.java.test.structure.nesting.C4(1L);
+        new .com.redhat.ceylon.compiler.java.test.structure.nesting.C4(1L, 2L);
+        new .com.redhat.ceylon.compiler.java.test.structure.nesting.C5<.ceylon.language.String>(1L);
+        new .com.redhat.ceylon.compiler.java.test.structure.nesting.C5<.ceylon.language.String>(1L, .ceylon.language.String.instance(""));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.positional.positional();
+    }
+}
+final class named {
+    
+    private named() {
+    }
+    
+    static void named() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.named.named();
+    }
+}

@@ -1,0 +1,138 @@
+package com.redhat.ceylon.compiler.java.test.structure.nesting;
+
+interface I1 {
+    
+    public abstract .java.lang.String m1(final long i, final boolean b);
+    
+    public abstract .java.lang.String m1(final long i);
+    
+    public abstract .java.lang.String m1();
+    
+    public abstract long m1$i();
+    
+    public abstract boolean m1$b(final long i);
+}
+final class I1$impl {
+    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.I1 $this;
+    
+    public final long m1$i() {
+        return 0L;
+    }
+    
+    public final boolean m1$b(final long i) {
+        return false;
+    }
+    
+    I1$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.I1 $this) {
+        this.$this = $this;
+    }
+}
+interface I2 {
+    
+    public abstract .java.lang.String m2(final long i, final boolean b);
+    
+    public abstract .java.lang.String m2(final long i);
+    
+    public abstract .java.lang.String m2();
+    
+    public abstract long m2$i();
+    
+    public abstract boolean m2$b(final long i);
+}
+final class I2$impl {
+    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.I2 $this;
+    
+    public final long m2$i() {
+        return 0L;
+    }
+    
+    public final boolean m2$b(final long i) {
+        return false;
+    }
+    
+    I2$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.I2 $this) {
+        this.$this = $this;
+    }
+}
+class C implements .com.redhat.ceylon.compiler.java.test.structure.nesting.I1, .com.redhat.ceylon.compiler.java.test.structure.nesting.I2 {
+    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.I1$impl $I1$impl;
+    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.I2$impl $I2$impl;
+    
+    @.java.lang.Override
+    public final long m1$i() {
+        return $I1$impl.m1$i();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String m1() {
+        return (
+            let
+                long $ceylontmpi10 = $I1$impl.m1$i(),
+                boolean $ceylontmpb11 = $I1$impl.m1$b($ceylontmpi10)
+            returning m1($ceylontmpi10, $ceylontmpb11)
+        );
+    }
+    
+    @.java.lang.Override
+    public final boolean m1$b(final long i) {
+        return $I1$impl.m1$b(i);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String m1(final long i) {
+        return (
+            let
+                boolean $ceylontmpb12 = $I1$impl.m1$b(i)
+            returning m1(i, $ceylontmpb12)
+        );
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String m1(final long i, final boolean b) {
+        return "";
+    }
+    
+    @.java.lang.Override
+    public final long m2$i() {
+        return $I2$impl.m2$i();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String m2() {
+        return (
+            let
+                long $ceylontmpi13 = $I2$impl.m2$i(),
+                boolean $ceylontmpb14 = $I2$impl.m2$b($ceylontmpi13)
+            returning m2($ceylontmpi13, $ceylontmpb14)
+        );
+    }
+    
+    @.java.lang.Override
+    public final boolean m2$b(final long i) {
+        return $I2$impl.m2$b(i);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String m2(final long i) {
+        return (
+            let
+                boolean $ceylontmpb15 = $I2$impl.m2$b(i)
+            returning m2(i, $ceylontmpb15)
+        );
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String m2(final long i, final boolean b) {
+        return "";
+    }
+    
+    C() {
+        this.$I1$impl = new .com.redhat.ceylon.compiler.java.test.structure.nesting.I1$impl(this);
+        this.$I2$impl = new .com.redhat.ceylon.compiler.java.test.structure.nesting.I2$impl(this);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.nesting.C();
+    }
+}

@@ -87,4 +87,9 @@ public class NestingTest extends CompilerTest {
     public void testNstNestedInterface(){
         compareWithJavaSource("nesting/NestedInterface");
     }
+    
+    @Test
+    public void testNstConcreteInterface(){
+        compareWithJavaSource("nesting/ConcreteInterface");
+    }
 }
