@@ -176,6 +176,7 @@ public class ClassTransformer extends AbstractTransformer {
                 
                 // Add an $outer() method to the interface
                 MethodDefinitionBuilder outerBuilder = MethodDefinitionBuilder.method(gen(), false, true, "$outer");// TODO ancestorLocal
+                outerBuilder.annotations(makeAtIgnore());
                 outerBuilder.modifiers(PUBLIC | ABSTRACT);
                 outerBuilder.resultType(null, makeJavaType(outerType));
                 classBuilder.defs(outerBuilder.build());
@@ -195,6 +196,7 @@ public class ClassTransformer extends AbstractTransformer {
                 // Generate $outer() impl if implementing an inner interface
                 MethodDefinitionBuilder outerBuilder = MethodDefinitionBuilder.method(gen(), true, true, "$outer");// TODO ancestorLocal
                 outerBuilder.annotations(makeAtOverride());
+                outerBuilder.annotations(makeAtIgnore());
                 outerBuilder.modifiers(FINAL | PUBLIC);
                 outerBuilder.resultType(null, makeJavaType(iface.getType().getQualifyingType()));
                 outerBuilder.body(make().Return(makeQuotedIdent("$outer")));
@@ -567,6 +569,7 @@ public class ClassTransformer extends AbstractTransformer {
         String name = Util.getDefaultedParamMethodName(method, p);
         MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(gen(), false, true, name);// TODO ancestorLocal
         overloadBuilder.annotations(makeAtOverride());
+        overloadBuilder.annotations(makeAtIgnore());
         overloadBuilder.modifiers((transformMethodDeclFlags(method) & (PUBLIC | PRIVATE | PROTECTED)) | FINAL);
         for (TypeParameter tp : method.getTypeParameters()) {
             overloadBuilder.typeParameter(tp);
@@ -588,9 +591,10 @@ public class ClassTransformer extends AbstractTransformer {
     private JCMethodDecl overloadMethodImpl(
             Method method, java.util.List<Parameter> parameters, Parameter p) {
         MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(gen(), false, true, method.getName());// TODO ancestorLocal
-        overloadBuilder.modifiers((transformMethodDeclFlags(method) & (PUBLIC | PRIVATE | PROTECTED)) | FINAL);
         overloadBuilder.annotations(makeAtOverride());
         overloadBuilder.annotations(makeAtIgnore());
+        overloadBuilder.modifiers((transformMethodDeclFlags(method) & (PUBLIC | PRIVATE | PROTECTED)) | FINAL);
+        
         for (TypeParameter tp : method.getTypeParameters()) {
             overloadBuilder.typeParameter(tp);
         }
@@ -674,6 +678,8 @@ public class ClassTransformer extends AbstractTransformer {
             Declaration model, boolean isVoid, ParameterList paramList,
             Tree.Parameter param) {
         
+        overloadBuilder.annotations(makeAtIgnore());
+        
         final TypeParameterList typeParameterList;
         final JCExpression methName;
         if (def instanceof Tree.AnyMethod) {
@@ -694,7 +700,6 @@ public class ClassTransformer extends AbstractTransformer {
             throw new RuntimeException();
         }
         
-        overloadBuilder.annotations(makeAtIgnore());
         if (model instanceof Method) {
             overloadBuilder.resultType((Method)model);
         }
