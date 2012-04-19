@@ -24,10 +24,9 @@ Integer$proto.divided = function(other) {
 Integer$proto.remainder = function(other) { return Integer(this.value%other.value) }
 Integer$proto.power = function(exp) {
     if (exp.getSign().value < 0) {
-        if (this.value===1 || this.value===-1) {
-            return this;
+        if (!(this.value===1 || this.value===-1)) {
+            throw Exception(String$("Negative exponent"));
         }
-        throw Exception(String$("Negative exponent"));
     }
     var exact = Math.pow(this.value, exp.value);
     return Integer((exact<0) ? Math.ceil(exact) : Math.floor(exact));
