@@ -136,7 +136,15 @@ public class ClassDefinitionBuilder {
                 defs.toList());
         ListBuffer<JCTree> klasses = ListBuffer.<JCTree>of(klass);
         
-        if (concreteInterfaceMemberDefs != null) {
+        // Generate a companio class if we're building an interface
+        // or the companion actually has some content 
+        // (e.g. initializer with defaulted params)
+        if (concreteInterfaceMemberDefs != null
+                && (((modifiers & INTERFACE) != 0)
+                    || !(concreteInterfaceMemberDefs.defs.isEmpty()
+                    && concreteInterfaceMemberDefs.init.isEmpty()
+                    && concreteInterfaceMemberDefs.body.isEmpty()
+                    && concreteInterfaceMemberDefs.constructors.isEmpty()))) {
             klasses.appendList(concreteInterfaceMemberDefs.build());
         }
         
