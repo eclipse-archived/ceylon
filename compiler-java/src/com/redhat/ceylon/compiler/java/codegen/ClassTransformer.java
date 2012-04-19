@@ -30,8 +30,10 @@ import static com.sun.tools.javac.code.Flags.STATIC;
 import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -267,17 +269,21 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     private int transformMethodDeclFlags(Tree.AnyMethod def) {
+        return transformMethodDeclFlags(def.getDeclarationModel());
+    }
+    
+    private int transformMethodDeclFlags(Method def) {
         int result = 0;
 
-        if (Decl.isToplevel(def)) {
-            result |= Decl.isShared(def) ? PUBLIC : 0;
+        if (def.isToplevel()) {
+            result |= def.isShared() ? PUBLIC : 0;
             result |= STATIC;
         } else if (Decl.isLocal(def)) {
-            result |= Decl.isShared(def) ? PUBLIC : 0;
+            result |= def.isShared() ? PUBLIC : 0;
         } else {
-            result |= Decl.isShared(def) ? PUBLIC : PRIVATE;
-            result |= (Decl.isFormal(def) && !Decl.isDefault(def)) ? ABSTRACT : 0;
-            result |= !(Decl.isFormal(def) || Decl.isDefault(def)) ? FINAL : 0;
+            result |= def.isShared() ? PUBLIC : PRIVATE;
+            result |= def.isFormal() && !def.isDefault() ? ABSTRACT : 0;
+            result |= !(def.isFormal() || def.isDefault()) ? FINAL : 0;
         }
 
         return result;

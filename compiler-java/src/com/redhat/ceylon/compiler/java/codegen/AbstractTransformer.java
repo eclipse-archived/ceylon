@@ -1607,22 +1607,28 @@ public abstract class AbstractTransformer implements Transformation {
         return make().TypeParameter(names().fromString(name), bounds.toList());
     }
 
-    public JCTypeParameter makeTypeParameter(Tree.TypeParameterDeclaration param) {
-        at(param);
-        TypeParameter declarationModel = param.getDeclarationModel();
+    public JCTypeParameter makeTypeParameter(TypeParameter declarationModel) {
         return makeTypeParameter(declarationModel.getName(), 
                 declarationModel.getSatisfiedTypes(),
                 declarationModel.isCovariant(),
                 declarationModel.isContravariant());
     }
-
-    public JCAnnotation makeAtTypeParameter(Tree.TypeParameterDeclaration param) {
+    
+    public JCTypeParameter makeTypeParameter(Tree.TypeParameterDeclaration param) {
         at(param);
-        TypeParameter declarationModel = param.getDeclarationModel();
+        return makeTypeParameter(param.getDeclarationModel());
+    }
+
+    public JCAnnotation makeAtTypeParameter(TypeParameter declarationModel) {
         return makeAtTypeParameter(declarationModel.getName(), 
                 declarationModel.getSatisfiedTypes(),
                 declarationModel.isCovariant(),
                 declarationModel.isContravariant());
+    }
+    
+    public JCAnnotation makeAtTypeParameter(Tree.TypeParameterDeclaration param) {
+        at(param);
+        return makeAtTypeParameter(param.getDeclarationModel());
     }
     
     private int getPosition(Node node) {

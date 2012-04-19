@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.tree.JCTree;
@@ -169,8 +170,16 @@ public class MethodDefinitionBuilder {
 
     public MethodDefinitionBuilder typeParameter(Tree.TypeParameterDeclaration param) {
         gen.at(param);
-        typeParams.append(gen.makeTypeParameter(param));
-        typeParamAnnotations.append(gen.makeAtTypeParameter(param));
+        return typeParameter(gen.makeTypeParameter(param), gen.makeAtTypeParameter(param));
+    }
+    
+    public MethodDefinitionBuilder typeParameter(TypeParameter param) {
+        return typeParameter(gen.makeTypeParameter(param), gen.makeAtTypeParameter(param));
+    }
+    
+    public MethodDefinitionBuilder typeParameter(JCTypeParameter tp, JCAnnotation tpAnno) {
+        typeParams.append(tp);
+        typeParamAnnotations.append(tpAnno);
         return this;
     }
 
