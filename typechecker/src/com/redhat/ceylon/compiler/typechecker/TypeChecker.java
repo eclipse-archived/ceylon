@@ -59,6 +59,11 @@ public class TypeChecker {
         return phasedUnitsOfDependencies;
     }
     
+    public void setPhasedUnitsOfDependencies(
+            List<PhasedUnits> phasedUnitsOfDependencies) {
+        this.phasedUnitsOfDependencies = phasedUnitsOfDependencies;
+    }
+
     public Context getContext() {
         return context;
     }

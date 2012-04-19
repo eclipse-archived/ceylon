@@ -154,7 +154,7 @@ public class ModuleValidator {
         return dupe.getVersion().equals(module.getVersion());
     }
 
-    private void executeExternalModulePhases() {
+    protected void executeExternalModulePhases() {
         //moduleimport phase already done
         //Already called from within verifyModuleDependencyTree
         for (PhasedUnits units : phasedUnitsOfDependencies) {
