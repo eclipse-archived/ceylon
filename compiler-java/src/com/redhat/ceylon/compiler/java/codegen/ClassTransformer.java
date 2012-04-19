@@ -24,6 +24,7 @@ import static com.sun.tools.javac.code.Flags.ABSTRACT;
 import static com.sun.tools.javac.code.Flags.FINAL;
 import static com.sun.tools.javac.code.Flags.INTERFACE;
 import static com.sun.tools.javac.code.Flags.PRIVATE;
+import static com.sun.tools.javac.code.Flags.PROTECTED;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
@@ -57,10 +58,12 @@ import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCTypeApply;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
@@ -126,18 +129,17 @@ public class ClassTransformer extends AbstractTransformer {
                 if (!iface.isToplevel()) {
                     state.append(makeQuotedQualIdent(makeJavaType(iface.getType().getQualifyingType()), "this"));
                 }
-                final String fieldName = "$" + iface.getName() + "$impl";
-                final String companionClassName = Util.getCompanionClassName(iface.getName());
+                final String fieldName = getCompanionFieldName(iface);
                 classBuilder.init(make().Exec(make().Assign(
                         makeSelect("this", fieldName),// TODO Use qualified name for quoting? 
                         make().NewClass(null, 
                                 null, // TODO Type args 
-                                make().TypeApply(makeQuotedIdent(companionClassName), typeParams(def.getDeclarationModel())), 
-                                state.toList(), // TODO Add outer if necessary 
+                                makeCompanionType(iface), 
+                                state.toList(),  
                                 null))));
                 
                 classBuilder.field(PRIVATE | FINAL, fieldName, 
-                        make().TypeApply(makeQuotedIdent(companionClassName), typeParams(def.getDeclarationModel())), null, false);
+                        makeCompanionType(iface), null, false);
             }
         }
         
@@ -565,7 +567,7 @@ public class ClassTransformer extends AbstractTransformer {
         String name = Util.getDefaultedParamMethodName(method, p);
         MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(gen(), false, true, name);// TODO ancestorLocal
         overloadBuilder.annotations(makeAtOverride());
-        overloadBuilder.modifiers((transformMethodDeclFlags(method) & (PUBLIC | PRIVATE | Flags.PROTECTED)) | FINAL);
+        overloadBuilder.modifiers((transformMethodDeclFlags(method) & (PUBLIC | PRIVATE | PROTECTED)) | FINAL);
         for (TypeParameter tp : method.getTypeParameters()) {
             overloadBuilder.typeParameter(tp);
         }
@@ -575,10 +577,10 @@ public class ClassTransformer extends AbstractTransformer {
             overloadBuilder.parameter(p2);
             args.append(makeQuotedIdent(p2.getName()));
         }
-        String ifaceName = ((Interface)method.getRefinedDeclaration().getContainer()).getName();
+        Interface iface = (Interface)method.getRefinedDeclaration().getContainer();
         overloadBuilder.body(make().Return(
-                make().Apply(typeParams(method), // TODO type args
-                        makeQuotedQualIdent(makeQuotedIdent("$" + Util.getCompanionClassName(ifaceName)), name), 
+                make().Apply(typeParams(method), 
+                        makeQuotedQualIdent(makeQuotedIdent(getCompanionFieldName(iface)), name), 
                         args.toList())));
         return overloadBuilder.build();
     }
@@ -586,7 +588,7 @@ public class ClassTransformer extends AbstractTransformer {
     private JCMethodDecl overloadMethodImpl(
             Method method, java.util.List<Parameter> parameters, Parameter p) {
         MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(gen(), false, true, method.getName());// TODO ancestorLocal
-        overloadBuilder.modifiers((transformMethodDeclFlags(method) & (PUBLIC | PRIVATE | Flags.PROTECTED)) | FINAL);
+        overloadBuilder.modifiers((transformMethodDeclFlags(method) & (PUBLIC | PRIVATE | PROTECTED)) | FINAL);
         overloadBuilder.annotations(makeAtOverride());
         overloadBuilder.annotations(makeAtIgnore());
         for (TypeParameter tp : method.getTypeParameters()) {
@@ -613,7 +615,7 @@ public class ClassTransformer extends AbstractTransformer {
                 vars.append(makeVar(
                         tempName, 
                         makeJavaType(p2.getType()), 
-                        make().Apply(typeParams(method),// TODO Type args 
+                        make().Apply(typeParams(method),
                             makeQuotedQualIdent(makeUnquotedIdent("$" + Util.getCompanionClassName(ifaceName)), Util.getDefaultedParamMethodName(method, p2)), 
                             args.toList())));
                 args.append(makeQuotedIdent(tempName));
@@ -621,7 +623,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         JCExpression invocation = make().Apply(
-                typeParams(method), // TODO type args
+                typeParams(method),
                 makeQuotedIdent(method.getName()),
                 args.toList());
         
@@ -652,6 +654,20 @@ public class ClassTransformer extends AbstractTransformer {
         return typeArgs.toList();
     }
     
+    private String getCompanionFieldName(Interface def) {
+        return "$" + Util.getCompanionClassName(def.getName());
+    }
+    
+    private JCExpression makeCompanionType(final ClassOrInterface decl) {
+        String companionClassName = Util.getCompanionClassName(decl.getQualifiedNameString());
+        JCExpression baseName = makeQuotedFQIdent(companionClassName);
+        List<JCExpression> typeArgs = typeParams(decl);
+        if (!typeArgs.isEmpty()) {
+            return make().TypeApply(baseName, typeArgs);
+        }
+        return baseName;
+    }
+    
     private MethodDefinitionBuilder transformForDefaultedParameter(
             MethodDefinitionBuilder overloadBuilder,
             Tree.Declaration def,
@@ -671,7 +687,7 @@ public class ClassTransformer extends AbstractTransformer {
             methName = makeQuotedIdent(Util.quoteMethodNameIfProperty((Method)model, gen()));
         } else if (def instanceof Tree.ClassOrInterface) {
             Tree.ClassOrInterface typeDecl = (Tree.ClassOrInterface)def;
-            overloadBuilder.modifiers(transformClassDeclFlags(typeDecl) & (PUBLIC | PRIVATE | Flags.PROTECTED));
+            overloadBuilder.modifiers(transformClassDeclFlags(typeDecl) & (PUBLIC | PRIVATE | PROTECTED));
             typeParameterList = typeDecl.getTypeParameterList();
             methName = makeUnquotedIdent("this");
         } else {
@@ -683,15 +699,12 @@ public class ClassTransformer extends AbstractTransformer {
             overloadBuilder.resultType((Method)model);
         }
         // TODO MPL
-        ListBuffer<JCExpression> typeArguments = ListBuffer.<JCExpression>lb();
         if (typeParameterList != null) {
             for (Tree.TypeParameterDeclaration t : typeParameterList.getTypeParameterDeclarations()) {
                 if (def instanceof Tree.AnyMethod) {
+                    // Ceylon doesn't have type params on constructors so only 
+                    // need to parameterise the overloadBuilder if a method
                     overloadBuilder.typeParameter(t);
-                } else {
-                    // Ceylon doesn't have type params on constructors so no 
-                    // need to parameterise the overloadBuilder
-                    typeArguments.add(gen().makeQuotedIdent(t.getIdentifier().getText()));
                 }
                 
             }
@@ -700,16 +713,11 @@ public class ClassTransformer extends AbstractTransformer {
         // TODO Some simple default expressions (e.g. literals, null and 
         // base expressions it might be worth inlining the expression rather 
         // than calling the default value method.
-        // TODO We should call the no-defaults method directly using a Let
-        // rather than having the overloaded call each other in sequence
-        // (imagine a recursive method with many defaulted parameters -- we're 
-        // wasting stack space)
         // TODO This really belongs in the invocation builder
         Declaration container = param.getDeclarationModel().getDeclaration().getRefinedDeclaration();
         if (!container.isToplevel()) {
             container = (Declaration)container.getContainer();
         }
-        String className = Util.getCompanionClassName(container.getName());
         
         ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
         ListBuffer<JCVariableDecl> vars = ListBuffer.<JCVariableDecl>lb();
@@ -717,16 +725,12 @@ public class ClassTransformer extends AbstractTransformer {
         final String companionInstanceName = tempName("$impl$");
         if (def instanceof Tree.AnyClass) {
             
-            JCExpression clazz = makeQuotedFQIdent(Util.getCompanionClassName(def.getDeclarationModel().getQualifiedNameString()));
-            if (!typeArguments.isEmpty()) {
-                clazz = make().TypeApply(clazz, typeArguments.toList());
-            }
             vars.append(makeVar(companionInstanceName, 
-                    clazz,// TODO FQ 
+                    makeCompanionType((Class)def.getDeclarationModel()),
                     make().NewClass(null, // TODO encl == null ???
                             null,
-                            clazz, 
-                                    List.<JCExpression>nil(), null)));
+                            makeCompanionType((Class)def.getDeclarationModel()),
+                            List.<JCExpression>nil(), null)));
         }
         
         boolean useDefault = false;
@@ -755,15 +759,9 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         // TODO Type args on method call
-        JCExpression invocation;
-        /*if (def instanceof Tree.AnyMethod) {
-            invocation = make().Apply(List.<JCExpression>nil(),
-                    methName, args.toList());
-        } else {*/
-            invocation = make().Apply(List.<JCExpression>nil(),
-                    methName, args.toList());
-            
-        //}
+        JCExpression invocation = make().Apply(List.<JCExpression>nil(),
+                methName, args.toList());
+           
         if (isVoid) {
             invocation = make().LetExpr(vars.toList(), List.<JCStatement>of(make().Exec(invocation)), makeNull());
             overloadBuilder.body(make().Exec(invocation));
