@@ -1631,6 +1631,52 @@ public abstract class AbstractTransformer implements Transformation {
         return makeAtTypeParameter(param.getDeclarationModel());
     }
     
+    public final List<JCExpression> typeParams(Method method) {
+        return typeParams(method.getTypeParameters());
+    }
+    
+    public final List<JCExpression> typeParams(ClassOrInterface type) {
+        return typeParams(type.getTypeParameters());
+    }
+    
+    public final List<JCExpression> typeParams(Iterable<TypeParameter> typeParams) {
+        ListBuffer<JCExpression> typeArgs = ListBuffer.<JCExpression>lb();
+        for (TypeParameter tp : typeParams) {
+            typeArgs.append(makeQuotedIdent(tp.getName()));
+        }
+        return typeArgs.toList();
+    }
+    
+    public final String getCompanionFieldName(Interface def) {
+        return "$" + Util.getCompanionClassName(def.getName());
+    }
+    
+    public final JCExpression makeDefaultedParamMethodIdent(Method method, Parameter param) {
+        Interface iface = (Interface)method.getRefinedDeclaration().getContainer();
+        return makeQuotedQualIdent(makeQuotedIdent(getCompanionFieldName(iface)), 
+                Util.getDefaultedParamMethodName(method, param));
+    }
+    
+    public final JCExpression makeCompanionType(final ClassOrInterface decl) {
+        return makeCompanionType(decl, decl.getTypeParameters());
+    }
+    
+    public final JCExpression makeCompanionType(final ClassOrInterface decl, Iterable<TypeParameter> typeParameters) {
+        List<JCExpression> typeArgs = typeParams(typeParameters);
+        return makeCompanionType(decl, typeArgs);
+    }
+
+    public final JCExpression makeCompanionType(final ClassOrInterface decl,
+            List<JCExpression> typeArgs) {
+        String companionClassName = Util.getCompanionClassName(decl.getQualifiedNameString());
+        JCExpression baseName = makeQuotedFQIdent(companionClassName);
+        
+        if (!typeArgs.isEmpty()) {
+            return make().TypeApply(baseName, typeArgs);
+        }
+        return baseName;
+    }
+    
     private int getPosition(Node node) {
         int pos = getMap().getStartPosition(node.getToken().getLine())
                 + node.getToken().getCharPositionInLine();

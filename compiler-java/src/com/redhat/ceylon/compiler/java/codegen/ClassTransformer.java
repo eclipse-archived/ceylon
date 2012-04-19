@@ -639,42 +639,7 @@ public class ClassTransformer extends AbstractTransformer {
         return overloadBuilder.build();
     }
     
-    private List<JCExpression> typeParams(Method method) {
-        return typeParams(method.getTypeParameters());
-    }
-    
-    private List<JCExpression> typeParams(ClassOrInterface type) {
-        return typeParams(type.getTypeParameters());
-    }
-    
-    private List<JCExpression> typeParams(Iterable<TypeParameter> typeParams) {
-        ListBuffer<JCExpression> typeArgs = ListBuffer.<JCExpression>lb();
-        for (TypeParameter tp : typeParams) {
-            typeArgs.append(makeQuotedIdent(tp.getName()));
-        }
-        return typeArgs.toList();
-    }
-    
-    private String getCompanionFieldName(Interface def) {
-        return "$" + Util.getCompanionClassName(def.getName());
-    }
-    
-    private JCExpression makeDefaultedParamMethodIdent(Method method, Parameter param) {
-        Interface iface = (Interface)method.getRefinedDeclaration().getContainer();
-        return makeQuotedQualIdent(makeQuotedIdent(getCompanionFieldName(iface)), 
-                Util.getDefaultedParamMethodName(method, param));
-    }
-    
-    private JCExpression makeCompanionType(final ClassOrInterface decl) {
-        String companionClassName = Util.getCompanionClassName(decl.getQualifiedNameString());
-        JCExpression baseName = makeQuotedFQIdent(companionClassName);
-        List<JCExpression> typeArgs = typeParams(decl);
-        if (!typeArgs.isEmpty()) {
-            return make().TypeApply(baseName, typeArgs);
-        }
-        return baseName;
-    }
-    
+
     private MethodDefinitionBuilder transformForDefaultedParameter(
             MethodDefinitionBuilder overloadBuilder,
             Tree.Declaration def,
