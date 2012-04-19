@@ -14,22 +14,47 @@ function Integer(value) {
 initTypeProto(Integer, 'ceylon.language.Integer', Object$, Castable, Integral, Numeric);
 var Integer$proto = Integer.$$.prototype;
 Integer$proto.getString = function() { return String$(this.value.toString()) }
-Integer$proto.plus = function(other) { return Integer(this.value+other.value) }
-Integer$proto.minus = function(other) { return Integer(this.value-other.value) }
-Integer$proto.times = function(other) { return Integer(this.value*other.value) }
+Integer$proto.plus = function(other) {
+    if (isOfType(other, 'ceylon.language.Integer') === $true) {
+        return Integer(this.value+other.value);
+    }
+    return Float(this.value+other.value);
+}
+Integer$proto.minus = function(other) {
+    if (isOfType(other, 'ceylon.language.Integer') === $true) {
+        return Integer(this.value-other.value);
+    }
+    return Float(this.value-other.value);
+}
+Integer$proto.times = function(other) {
+    if (isOfType(other, 'ceylon.language.Integer') === $true) {
+        return Integer(this.value*other.value);
+    }
+    return Float(this.value*other.value);
+}
 Integer$proto.divided = function(other) {
     var exact = this.value/other.value;
-    return Integer((exact<0) ? Math.ceil(exact) : Math.floor(exact));
+    if (isOfType(other, 'ceylon.language.Integer') === $true) {
+        return Integer((exact<0) ? Math.ceil(exact) : Math.floor(exact));
+    }
+    return Float((exact<0) ? Math.ceil(exact) : Math.floor(exact));
 }
 Integer$proto.remainder = function(other) { return Integer(this.value%other.value) }
 Integer$proto.power = function(exp) {
-    if (exp.getSign().value < 0) {
-        if (!(this.value===1 || this.value===-1)) {
-            throw Exception(String$("Negative exponent"));
+    var isint = isOfType(exp, 'ceylon.language.Integer') === $true;
+    if (isint) {
+        if (exp.getSign().value < 0) {
+            if (!(this.value===1 || this.value===-1)) {
+                throw Exception(String$("Negative exponent"));
+            }
         }
     }
     var exact = Math.pow(this.value, exp.value);
-    return Integer((exact<0) ? Math.ceil(exact) : Math.floor(exact));
+    if (isint) {
+        return Integer((exact<0) ? Math.ceil(exact) : Math.floor(exact));
+    } else {
+        return Float(exact);
+    }
 }
 Integer$proto.getNegativeValue = function() { return Integer(-this.value) }
 Integer$proto.getPositiveValue = function() { return this }
