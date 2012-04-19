@@ -278,10 +278,14 @@ public class GenerateJsVisitor extends Visitor
 
     private void share(Declaration d) {
         if (isCaptured(d) && !(prototypeStyle && d.isClassOrInterfaceMember())) {
-            outerSelf(d);
-            out(".", names.name(d), "=", names.name(d), ";");
-            endLine();
+            shareUnconditional(d);
         }
+    }
+    
+    private void shareUnconditional(Declaration d) {
+        outerSelf(d);
+        out(".", names.name(d), "=", names.name(d), ";");
+        endLine();
     }
 
     @Override
@@ -294,7 +298,11 @@ public class GenerateJsVisitor extends Visitor
         qualify(that,dec);
         out(names.name(dec), ";");
         endLine();
-        share(d);
+        if (prototypeStyle) {
+            shareUnconditional(d);
+        } else {
+            share(d);
+        }
     }
 
     @Override
@@ -305,8 +313,13 @@ public class GenerateJsVisitor extends Visitor
         TypeDeclaration dec = that.getTypeSpecifier().getType().getTypeModel()
                 .getDeclaration();
         qualify(that,dec);
-        out(";");
-        share(d);
+        out(names.name(dec), ";");
+        endLine();
+        if (prototypeStyle) {
+            shareUnconditional(d);
+        } else {
+            share(d);
+        }
     }
 
     private void addInterfaceToPrototype(ClassOrInterface type, InterfaceDefinition interfaceDef) {
@@ -1484,6 +1497,11 @@ public class GenerateJsVisitor extends Visitor
                     while ((scope != null) && (scope instanceof TypeDeclaration)) {
                         scope = scope.getContainer();
                     }
+                }
+                if ((scope != null) && ((that instanceof ClassDeclaration)
+                                        || (that instanceof InterfaceDeclaration))) {
+                    // class/interface aliases have no own "this"
+                    scope = scope.getContainer();
                 }
                 while (scope != null) {
                     if (scope instanceof TypeDeclaration) {
