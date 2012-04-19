@@ -580,10 +580,9 @@ public class ClassTransformer extends AbstractTransformer {
             overloadBuilder.parameter(p2);
             args.append(makeQuotedIdent(p2.getName()));
         }
-        Interface iface = (Interface)method.getRefinedDeclaration().getContainer();
         overloadBuilder.body(make().Return(
-                make().Apply(typeParams(method), 
-                        makeQuotedQualIdent(makeQuotedIdent(getCompanionFieldName(iface)), name), 
+                make().Apply(typeParams(method),
+                        makeDefaultedParamMethodIdent(method, p),
                         args.toList())));
         return overloadBuilder.build();
     }
@@ -614,13 +613,11 @@ public class ClassTransformer extends AbstractTransformer {
                 overloadBuilder.parameter(p2);
             } else {
                 String tempName = tempName(p2.getName());
-                String ifaceName = ((Interface)method.getRefinedDeclaration().getContainer()).getName();
-                
                 vars.append(makeVar(
                         tempName, 
                         makeJavaType(p2.getType()), 
                         make().Apply(typeParams(method),
-                            makeQuotedQualIdent(makeUnquotedIdent("$" + Util.getCompanionClassName(ifaceName)), Util.getDefaultedParamMethodName(method, p2)), 
+                                makeDefaultedParamMethodIdent(method, p2), 
                             args.toList())));
                 args.append(makeQuotedIdent(tempName));
             }
@@ -641,7 +638,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         return overloadBuilder.build();
     }
-
+    
     private List<JCExpression> typeParams(Method method) {
         return typeParams(method.getTypeParameters());
     }
@@ -660,6 +657,12 @@ public class ClassTransformer extends AbstractTransformer {
     
     private String getCompanionFieldName(Interface def) {
         return "$" + Util.getCompanionClassName(def.getName());
+    }
+    
+    private JCExpression makeDefaultedParamMethodIdent(Method method, Parameter param) {
+        Interface iface = (Interface)method.getRefinedDeclaration().getContainer();
+        return makeQuotedQualIdent(makeQuotedIdent(getCompanionFieldName(iface)), 
+                Util.getDefaultedParamMethodName(method, param));
     }
     
     private JCExpression makeCompanionType(final ClassOrInterface decl) {
