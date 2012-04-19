@@ -4,5 +4,6 @@ shared void test() {
   testMisc();
   testCollection();
   testFixedSized();
+  test_concrete_members();
   results();
 }
