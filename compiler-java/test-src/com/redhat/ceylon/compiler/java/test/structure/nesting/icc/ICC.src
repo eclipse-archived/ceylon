@@ -1,0 +1,33 @@
+package com.redhat.ceylon.compiler.java.test.structure.nesting.icc;
+
+interface I {
+    
+    public abstract void m1();
+}
+final class I$impl {
+    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.icc.I $this;
+    
+    private final void m1() {
+        $this.m1();
+    }
+    
+    class IC {
+        
+        class ICC {
+            
+            private final void m2() {
+                m1();
+            }
+            
+            ICC() {
+            }
+        }
+        
+        IC() {
+        }
+    }
+    
+    I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.icc.I $this) {
+        this.$this = $this;
+    }
+}

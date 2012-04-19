@@ -1,0 +1,31 @@
+package com.redhat.ceylon.compiler.java.test.structure.nesting.ccc;
+
+class C {
+    
+    private final void m1() {
+    }
+    
+    class CC {
+        
+        class CCC {
+            
+            private final void m2() {
+                m1();
+            }
+            
+            CCC() {
+            }
+        }
+        
+        CC() {
+        }
+    }
+    
+    C() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.nesting.ccc.C();
+    }
+}

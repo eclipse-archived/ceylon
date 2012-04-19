@@ -47,8 +47,16 @@ final class I$impl<T> {
         return 1L;
     }
     
+    private final void m(final long i) {
+        $this.m(i);
+    }
+    
     public final long m2$i() {
         return 1L;
+    }
+    
+    private final long m2(final long i) {
+        return $this.m2(i);
     }
     
     public final long m3$i() {
@@ -59,8 +67,16 @@ final class I$impl<T> {
         return 2L * i;
     }
     
+    private final long m3(final long i, final long n) {
+        return $this.m3(i, n);
+    }
+    
     public final long m4$n(final long i) {
         return 2L * i;
+    }
+    
+    private final long m4(final long i, final long n) {
+        return $this.m4(i, n);
     }
     
     public final <U>T m5$t(final long i) {
@@ -69,6 +85,10 @@ final class I$impl<T> {
     
     public final <U>U m5$u(final long i, final T t) {
         return null;
+    }
+    
+    private final <U>long m5(final long i, final T t, final U u) {
+        return $this.<U>m5(i, t, u);
     }
     
     I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $this) {

@@ -1,0 +1,43 @@
+package com.redhat.ceylon.compiler.java.test.structure.nesting.cci;
+
+interface C$CC$CCI {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.cci.C.CC $outer();
+    
+    public void m2();
+}
+class C {
+    
+    private final void m1() {
+    }
+    
+    class CC {
+        
+        final class C$CC$CCI$impl {
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cci.C$CC$CCI $this;
+            
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cci.C.CC $outer() {
+                return .com.redhat.ceylon.compiler.java.test.structure.nesting.cci.C.CC.this;
+            }
+            
+            public void m2() {
+                m1();
+            }
+            
+            C$CC$CCI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.cci.C$CC$CCI $this) {
+                this.$this = $this;
+            }
+        }
+        
+        CC() {
+        }
+    }
+    
+    C() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.nesting.cci.C();
+    }
+}

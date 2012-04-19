@@ -1,0 +1,45 @@
+package com.redhat.ceylon.compiler.java.test.structure.nesting.ici;
+
+interface I$IC$ICI {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl.IC $outer();
+    
+    public void m2();
+}
+interface I {
+    
+    public abstract void m1();
+}
+final class I$impl {
+    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I $this;
+    
+    private final void m1() {
+        $this.m1();
+    }
+    
+    class IC {
+        
+        final class I$IC$ICI$impl {
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$IC$ICI $this;
+            
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl.IC $outer() {
+                return .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl.IC.this;
+            }
+            
+            public void m2() {
+                m1();
+            }
+            
+            I$IC$ICI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$IC$ICI $this) {
+                this.$this = $this;
+            }
+        }
+        
+        IC() {
+        }
+    }
+    
+    I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I $this) {
+        this.$this = $this;
+    }
+}

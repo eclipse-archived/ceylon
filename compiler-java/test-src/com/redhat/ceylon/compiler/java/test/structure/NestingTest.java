@@ -29,7 +29,7 @@ public class NestingTest extends CompilerTest {
     @Test
     public void testNstNesting(){
         compareWithJavaSource("nesting/Nesting");
-    }
+    }*/
     @Test
     public void testNstCcc(){
         compareWithJavaSource("nesting/ccc/CCC");
@@ -62,7 +62,7 @@ public class NestingTest extends CompilerTest {
     public void testNstIii(){
         compareWithJavaSource("nesting/iii/III");
     }
-    */
+    
     @Test
     public void testNstClassMethodDefaultedParameter(){
         compareWithJavaSource("nesting/ClassMethodDefaultedParameter");
@@ -93,3 +93,34 @@ public class NestingTest extends CompilerTest {
         compareWithJavaSource("nesting/ConcreteInterface");
     }
 }
+
+/*interface I<T> {
+    interface II {
+        interface III {
+            T m();
+        }
+    }
+}
+interface I2 {
+    void m();
+    class C {
+        void m2() {
+            m();
+        }
+    }
+}
+class C {
+    interface CI {
+        interface CII {}
+    }
+}
+class C2 {
+    class CC {
+        interface CCI {}
+    }
+}
+class C3 {
+    void m() {
+        interface I {}
+    }
+}*/

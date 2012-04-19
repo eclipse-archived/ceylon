@@ -19,6 +19,10 @@ class C1 {
 }
 final class C1$impl {
     
+    C1$impl() {
+        super();
+    }
+    
     final long $init$i() {
         return 1L;
     }
@@ -55,6 +59,10 @@ class C3 {
 }
 final class C3$impl {
     
+    C3$impl() {
+        super();
+    }
+    
     final long $init$i() {
         return 1L;
     }
@@ -82,6 +90,10 @@ class C4 {
 }
 final class C4$impl {
     
+    C4$impl() {
+        super();
+    }
+    
     final long $init$n(final long i) {
         return 2L * i;
     }
@@ -104,6 +116,10 @@ class C5<U> {
     }
 }
 final class C5$impl<U> {
+    
+    C5$impl() {
+        super();
+    }
     
     final U $init$u(final long i) {
         return null;
@@ -137,6 +153,81 @@ final class named {
     }
     
     static void named() {
+        (
+            let
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.C1$impl $arg$11$this$ = new .com.redhat.ceylon.compiler.java.test.structure.nesting.C1$impl(),
+                long $arg$11$0 = $arg$11$this$.$init$i()
+            returning new .com.redhat.ceylon.compiler.java.test.structure.nesting.C1($arg$11$0)
+        );
+        (
+            let
+                long $arg$12$0 = 1L
+            returning new .com.redhat.ceylon.compiler.java.test.structure.nesting.C1($arg$12$0)
+        );
+        (
+            let
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.C3$impl $arg$13$this$ = new .com.redhat.ceylon.compiler.java.test.structure.nesting.C3$impl(),
+                long $arg$13$0 = $arg$13$this$.$init$i(),
+                long $arg$13$1 = $arg$13$this$.$init$n($arg$13$0)
+            returning new .com.redhat.ceylon.compiler.java.test.structure.nesting.C3($arg$13$0, $arg$13$1)
+        );
+        (
+            let
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.C3$impl $arg$14$this$ = new .com.redhat.ceylon.compiler.java.test.structure.nesting.C3$impl(),
+                long $arg$14$0 = 10L,
+                long $arg$14$1 = $arg$14$this$.$init$n($arg$14$0)
+            returning new .com.redhat.ceylon.compiler.java.test.structure.nesting.C3($arg$14$0, $arg$14$1)
+        );
+        (
+            let
+                long $arg$15$0 = 10L,
+                long $arg$15$1 = 20L
+            returning new .com.redhat.ceylon.compiler.java.test.structure.nesting.C3($arg$15$0, $arg$15$1)
+        );
+        (
+            let
+                long $arg$16$1 = 20L,
+                long $arg$16$0 = 10L
+            returning new .com.redhat.ceylon.compiler.java.test.structure.nesting.C3($arg$16$0, $arg$16$1)
+        );
+        (
+            let
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.C3$impl $arg$17$this$ = new .com.redhat.ceylon.compiler.java.test.structure.nesting.C3$impl(),
+                long $arg$17$1 = 10L,
+                long $arg$17$0 = $arg$17$this$.$init$i()
+            returning new .com.redhat.ceylon.compiler.java.test.structure.nesting.C3($arg$17$0, $arg$17$1)
+        );
+        (
+            let
+                long $arg$18$1 = 20L,
+                long $arg$18$0 = 10L
+            returning new .com.redhat.ceylon.compiler.java.test.structure.nesting.C4($arg$18$0, $arg$18$1)
+        );
+        (
+            let
+                long $arg$19$0 = 10L,
+                long $arg$19$1 = 20L
+            returning new .com.redhat.ceylon.compiler.java.test.structure.nesting.C4($arg$19$0, $arg$19$1)
+        );
+        (
+            let
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.C5$impl<.ceylon.language.String> $arg$20$this$ = new .com.redhat.ceylon.compiler.java.test.structure.nesting.C5$impl<.ceylon.language.String>(),
+                long $arg$20$0 = 10L,
+                .ceylon.language.String $arg$20$1 = $arg$20$this$.$init$u($arg$20$0)
+            returning new .com.redhat.ceylon.compiler.java.test.structure.nesting.C5<.ceylon.language.String>($arg$20$0, $arg$20$1)
+        );
+        (
+            let
+                long $arg$21$0 = 10L,
+                .ceylon.language.String $arg$21$1 = .ceylon.language.String.instance("")
+            returning new .com.redhat.ceylon.compiler.java.test.structure.nesting.C5<.ceylon.language.String>($arg$21$0, $arg$21$1)
+        );
+        (
+            let
+                .ceylon.language.String $arg$22$1 = .ceylon.language.String.instance(""),
+                long $arg$22$0 = 10L
+            returning new .com.redhat.ceylon.compiler.java.test.structure.nesting.C5<.ceylon.language.String>($arg$22$0, $arg$22$1)
+        );
     }
     
     public static void main(.java.lang.String[] args) {

@@ -1,0 +1,53 @@
+package com.redhat.ceylon.compiler.java.test.structure.nesting.cii;
+
+interface C$CI$CII {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI $outer();
+    
+    public void m2();
+}
+interface C$CI {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C $outer();
+}
+class C {
+    
+    private final void m1() {
+    }
+    
+    final class C$CI$impl {
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI $this;
+        
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C $outer() {
+            return .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C.this;
+        }
+        
+        final class C$CI$CII$impl {
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI$CII $this;
+            
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI $outer() {
+                return $this.$outer();
+            }
+            
+            public void m2() {
+                m1();
+            }
+            
+            C$CI$CII$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI$CII $this) {
+                this.$this = $this;
+            }
+        }
+        
+        C$CI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI $this) {
+            this.$this = $this;
+        }
+    }
+    
+    C() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C();
+    }
+}

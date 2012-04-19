@@ -1,0 +1,43 @@
+package com.redhat.ceylon.compiler.java.test.structure.nesting.iic;
+
+interface I$II {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I $outer();
+}
+interface I {
+    
+    public abstract void m1();
+}
+final class I$impl {
+    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I $this;
+    
+    private final void m1() {
+        $this.m1();
+    }
+    
+    final class I$II$impl {
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I$II $this;
+        
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I $outer() {
+            return $this.$outer();
+        }
+        
+        class IIC {
+            
+            private final void m2() {
+                m1();
+            }
+            
+            IIC() {
+            }
+        }
+        
+        I$II$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I$II $this) {
+            this.$this = $this;
+        }
+    }
+    
+    I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I $this) {
+        this.$this = $this;
+    }
+}

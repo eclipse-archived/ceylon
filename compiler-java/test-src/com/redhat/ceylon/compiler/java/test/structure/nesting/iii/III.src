@@ -1,0 +1,55 @@
+package com.redhat.ceylon.compiler.java.test.structure.nesting.iii;
+
+interface I$II$III {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II $outer();
+    
+    public void m2();
+}
+interface I$II {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I $outer();
+}
+interface I {
+    
+    public abstract void m1();
+}
+final class I$impl {
+    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I $this;
+    
+    private final void m1() {
+        $this.m1();
+    }
+    
+    final class I$II$impl {
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II $this;
+        
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I $outer() {
+            return $this.$outer();
+        }
+        
+        final class I$II$III$impl {
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II$III $this;
+            
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II $outer() {
+                return $this.$outer();
+            }
+            
+            public void m2() {
+                m1();
+            }
+            
+            I$II$III$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II$III $this) {
+                this.$this = $this;
+            }
+        }
+        
+        I$II$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II $this) {
+            this.$this = $this;
+        }
+    }
+    
+    I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I $this) {
+        this.$this = $this;
+    }
+}

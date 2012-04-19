@@ -1,19 +1,20 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting;
 
+interface C$I {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.C $outer();
+}
 class C {
     
-    interface I {
+    final class C$I$impl {
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.C$I $this;
         
-        public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.C $outer();
-    }
-    
-    final class I$impl {
-        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.C.I $this;
-        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.C $outer;
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.C $outer() {
+            return .com.redhat.ceylon.compiler.java.test.structure.nesting.C.this;
+        }
         
-        I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.C.I $this, .com.redhat.ceylon.compiler.java.test.structure.nesting.C $outer) {
+        C$I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.C$I $this) {
             this.$this = $this;
-            this.$outer = $outer;
         }
     }
     

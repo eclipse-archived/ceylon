@@ -1,3 +1,4 @@
+@nomodel
 interface I {
     shared formal void m1();
     interface II {

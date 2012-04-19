@@ -1,3 +1,4 @@
+@nomodel
 class C() {
     void m1(){}
     interface CI {
