@@ -19,18 +19,24 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
+import java.util.Map;
+
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.TermTransformer;
 import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -72,7 +78,7 @@ abstract class InvocationBuilder {
             this.typeArguments = null;
         }
         this.transformedTypArguments = transformTypeArguments(gen, getTypeArguments());
-        needsThis = primaryDeclaration != null ? Decl.withinClassOrInterface(primaryDeclaration) : false;
+        needsThis = primaryDeclaration != null ? Decl.withinClassOrInterface(primaryDeclaration) || primaryDeclaration instanceof Class : false;
     }
     
     static final List<JCExpression> transformTypeArguments(
@@ -193,18 +199,38 @@ abstract class InvocationBuilder {
 
     protected final JCVariableDecl makeThis() {
         // first append $this
-        String name;
-        if (primary instanceof Tree.BaseMemberOrTypeExpression) {
-            name = "this";
+        JCExpression defaultedParameterInstance;
+        // TODO Fix how we figure out the thisType, because it's doesn't 
+        // handle type parameters correctly
+        // we used to use thisType = gen().getThisType(getPrimaryDeclaration());
+        final JCExpression thisType;
+        ProducedReference target = ((Tree.MemberOrTypeExpression)primary).getTarget();
+        if (primary instanceof Tree.BaseMemberExpression) {
+            thisType = gen().makeJavaType(target.getQualifyingType(), AbstractTransformer.NO_PRIMITIVES);
+            defaultedParameterInstance = gen().makeUnquotedIdent("this");
+        } else if (primary instanceof Tree.BaseTypeExpression
+                || primary instanceof Tree.QualifiedTypeExpression) {
+            Map<TypeParameter, ProducedType> typeA = target.getTypeArguments();
+            ListBuffer<JCExpression> typeArgs = ListBuffer.<JCExpression>lb();
+            for (TypeParameter tp : ((TypeDeclaration)target.getDeclaration()).getTypeParameters()) {
+                ProducedType producedType = typeA.get(tp);
+                typeArgs.append(gen().makeJavaType(producedType, gen().TYPE_ARGUMENT));
+            }
+            ClassOrInterface declaration = (ClassOrInterface)((Tree.BaseTypeExpression) primary).getDeclaration();
+            thisType = gen().makeCompanionType(declaration, typeArgs.toList());
+            defaultedParameterInstance = gen().make().NewClass(
+                    null, 
+                    null,
+                    gen().makeCompanionType(declaration, typeArgs.toList()), 
+                    List.<JCExpression>nil(), null);
         } else {
-            name = callVarName;
+            thisType = gen().makeJavaType(target.getQualifyingType(), AbstractTransformer.NO_PRIMITIVES);
+            defaultedParameterInstance = gen().makeUnquotedIdent(callVarName);
         }
-        // TODO Fix this 
-        ProducedType thisType = ((Tree.MemberOrTypeExpression)primary).getTarget().getQualifyingType();
-        //ProducedType thisType = gen().getThisType(getPrimaryDeclaration());
+        
         JCVariableDecl thisDecl = gen().makeVar(varBaseName + "$this$", 
-                gen().makeJavaType(thisType, AbstractTransformer.NO_PRIMITIVES), 
-                gen().makeUnquotedIdent(name));
+                thisType, 
+                defaultedParameterInstance);
         return thisDecl;
     }
     
