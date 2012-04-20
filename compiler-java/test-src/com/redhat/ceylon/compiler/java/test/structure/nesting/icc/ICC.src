@@ -1,22 +1,22 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting.icc;
 
-interface I {
+interface I<T> {
     
-    public abstract void m1();
+    public abstract <U>T m1(final U u);
 }
-final class I$impl {
-    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.icc.I $this;
+final class I$impl<T> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.icc.I<T> $this;
     
-    private final void m1() {
-        $this.m1();
+    private final <U>T m1(final U u) {
+        return $this.<U>m1(u);
     }
     
     class IC {
         
         class ICC {
             
-            private final void m2() {
-                m1();
+            private final T m2() {
+                return m1(null);
             }
             
             ICC() {
@@ -27,7 +27,7 @@ final class I$impl {
         }
     }
     
-    I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.icc.I $this) {
+    I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.icc.I<T> $this) {
         this.$this = $this;
     }
 }

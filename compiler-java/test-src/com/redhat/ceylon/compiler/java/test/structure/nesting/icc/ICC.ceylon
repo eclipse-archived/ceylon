@@ -1,10 +1,10 @@
 @nomodel
-interface I {
-    shared formal void m1();
+interface I<T> {
+    shared formal T m1<U>(U? u);
     class IC() {
         class ICC() {
-            void m2() {
-                m1();
+            T m2() {
+                return m1(null);
             }
         }
     }

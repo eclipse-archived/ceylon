@@ -1,10 +1,10 @@
 @nomodel
-class C() {
-    void m1(){}
+class C<T>() {
+    T m1<U>(U? u){throw;}
     class CC() {
         interface CCI {
-            void m2() {
-                m1();
+            T m2() {
+                return m1(null);
             }
         }
     }

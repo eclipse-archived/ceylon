@@ -1,43 +1,43 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting.iic;
 
-interface I$II {
+interface I$II<T> {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I $outer();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I<T> $outer();
 }
-interface I {
+interface I<T> {
     
-    public abstract void m1();
+    public abstract <U>T m1(final U u);
 }
-final class I$impl {
-    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I $this;
+final class I$impl<T> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I<T> $this;
     
-    private final void m1() {
-        $this.m1();
+    private final <U>T m1(final U u) {
+        return $this.<U>m1(u);
     }
     
     final class I$II$impl {
-        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I$II $this;
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I$II<T> $this;
         
-        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I $outer() {
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I<T> $outer() {
             return $this.$outer();
         }
         
         class IIC {
             
-            private final void m2() {
-                m1();
+            private final T m2() {
+                return m1(null);
             }
             
             IIC() {
             }
         }
         
-        I$II$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I$II $this) {
+        I$II$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I$II<T> $this) {
             this.$this = $this;
         }
     }
     
-    I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I $this) {
+    I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I<T> $this) {
         this.$this = $this;
     }
 }

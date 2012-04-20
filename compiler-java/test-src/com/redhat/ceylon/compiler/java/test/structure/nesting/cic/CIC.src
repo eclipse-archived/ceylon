@@ -1,32 +1,33 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting.cic;
 
-interface C$CI {
+interface C$CI<T> {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.cic.C $outer();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.cic.C<T> $outer();
 }
-class C {
+class C<T> {
     
-    private final void m1() {
+    private final <U>T m1(final U u) {
+        throw new .ceylon.language.Exception(null, null);
     }
     
     final class C$CI$impl {
-        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cic.C$CI $this;
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cic.C$CI<T> $this;
         
-        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cic.C $outer() {
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cic.C<T> $outer() {
             return .com.redhat.ceylon.compiler.java.test.structure.nesting.cic.C.this;
         }
         
         class CIC {
             
-            private final void m2() {
-                m1();
+            private final T m2() {
+                return m1(null);
             }
             
             CIC() {
             }
         }
         
-        C$CI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.cic.C$CI $this) {
+        C$CI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.cic.C$CI<T> $this) {
             this.$this = $this;
         }
     }

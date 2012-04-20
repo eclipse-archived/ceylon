@@ -1,16 +1,17 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting.ccc;
 
-class C {
+class C<T> {
     
-    private final void m1() {
+    private final <U>T m1(final U u) {
+        throw new .ceylon.language.Exception(null, null);
     }
     
     class CC {
         
         class CCC {
             
-            private final void m2() {
-                m1();
+            private final T m2() {
+                return m1(null);
             }
             
             CCC() {

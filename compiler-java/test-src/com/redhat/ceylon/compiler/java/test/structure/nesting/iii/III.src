@@ -1,55 +1,55 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting.iii;
 
-interface I$II$III {
+interface I$II$III<T> {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II $outer();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II<T> $outer();
     
-    public void m2();
+    public T m2();
 }
-interface I$II {
+interface I$II<T> {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I $outer();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I<T> $outer();
 }
-interface I {
+interface I<T> {
     
-    public abstract void m1();
+    public abstract <U>T m1(final U u);
 }
-final class I$impl {
-    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I $this;
+final class I$impl<T> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I<T> $this;
     
-    private final void m1() {
-        $this.m1();
+    private final <U>T m1(final U u) {
+        return $this.<U>m1(u);
     }
     
     final class I$II$impl {
-        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II $this;
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II<T> $this;
         
-        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I $outer() {
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I<T> $outer() {
             return $this.$outer();
         }
         
         final class I$II$III$impl {
-            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II$III $this;
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II$III<T> $this;
             
-            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II $outer() {
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II<T> $outer() {
                 return $this.$outer();
             }
             
-            public void m2() {
-                m1();
+            public T m2() {
+                return m1(null);
             }
             
-            I$II$III$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II$III $this) {
+            I$II$III$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II$III<T> $this) {
                 this.$this = $this;
             }
         }
         
-        I$II$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II $this) {
+        I$II$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II<T> $this) {
             this.$this = $this;
         }
     }
     
-    I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I $this) {
+    I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I<T> $this) {
         this.$this = $this;
     }
 }

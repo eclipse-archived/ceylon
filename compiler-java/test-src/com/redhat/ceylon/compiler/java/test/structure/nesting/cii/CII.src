@@ -1,44 +1,45 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting.cii;
 
-interface C$CI$CII {
+interface C$CI$CII<T> {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI $outer();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI<T> $outer();
     
-    public void m2();
+    public T m2();
 }
-interface C$CI {
+interface C$CI<T> {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C $outer();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C<T> $outer();
 }
-class C {
+class C<T> {
     
-    private final void m1() {
+    private final <U>T m1(final U u) {
+        throw new .ceylon.language.Exception(null, null);
     }
     
     final class C$CI$impl {
-        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI $this;
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI<T> $this;
         
-        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C $outer() {
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C<T> $outer() {
             return .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C.this;
         }
         
         final class C$CI$CII$impl {
-            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI$CII $this;
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI$CII<T> $this;
             
-            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI $outer() {
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI<T> $outer() {
                 return $this.$outer();
             }
             
-            public void m2() {
-                m1();
+            public T m2() {
+                return m1(null);
             }
             
-            C$CI$CII$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI$CII $this) {
+            C$CI$CII$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI$CII<T> $this) {
                 this.$this = $this;
             }
         }
         
-        C$CI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI $this) {
+        C$CI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI<T> $this) {
             this.$this = $this;
         }
     }
