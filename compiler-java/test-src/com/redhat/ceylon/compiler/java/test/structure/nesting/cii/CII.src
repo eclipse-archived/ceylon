@@ -1,32 +1,44 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting.cii;
 
-interface C$CI$CII<T> {
+interface C$CI$CII<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI<T> $outer();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI<? extends T, ? super X> $outer();
     
     public T m2();
 }
-interface C$CI<T> {
+interface C$CI<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C<T> $outer();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C<? extends T, ? super X> $outer();
 }
-class C<T> {
+class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
-    private final <U>T m1(final U u) {
+    private final <U>T m1(final X b, final U u) {
         throw new .ceylon.language.Exception(null, null);
     }
     
+    private final <U>T m1(final X b) {
+        return (
+            let
+                U $ceylontmp$u$1 = m1$u(b)
+            returning m1(b, $ceylontmp$u$1)
+        );
+    }
+    
+    private final <U>U m1$u(final X b) {
+        return null;
+    }
+    
     final class C$CI$impl {
-        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI<T> $this;
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI<? extends T, ? super X> $this;
         
-        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C<T> $outer() {
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C<? extends T, ? super X> $outer() {
             return .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C.this;
         }
         
         final class C$CI$CII$impl {
-            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI$CII<T> $this;
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI$CII<? extends T, ? super X> $this;
             
-            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI<T> $outer() {
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI<? extends T, ? super X> $outer() {
                 return $this.$outer();
             }
             
@@ -34,12 +46,12 @@ class C<T> {
                 return m1(null);
             }
             
-            C$CI$CII$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI$CII<T> $this) {
+            C$CI$CII$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI$CII<? extends T, ? super X> $this) {
                 this.$this = $this;
             }
         }
         
-        C$CI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI<T> $this) {
+        C$CI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI<? extends T, ? super X> $this) {
             this.$this = $this;
         }
     }

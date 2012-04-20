@@ -1,9 +1,21 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting.ccc;
 
-class C<T> {
+class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
-    private final <U>T m1(final U u) {
+    private final <U>T m1(final X b, final U u) {
         throw new .ceylon.language.Exception(null, null);
+    }
+    
+    private final <U>T m1(final X b) {
+        return (
+            let
+                U $ceylontmp$u$1 = m1$u(b)
+            returning m1(b, $ceylontmp$u$1)
+        );
+    }
+    
+    private final <U>U m1$u(final X b) {
+        return null;
     }
     
     class CC {

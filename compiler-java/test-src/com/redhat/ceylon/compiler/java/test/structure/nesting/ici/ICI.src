@@ -1,28 +1,36 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting.ici;
 
-interface I$IC$ICI<T> {
+interface I$IC$ICI<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl<T>.IC $outer();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl<? extends T, ? super X>.IC $outer();
     
     public T m2();
 }
-interface I<T> {
+interface I<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
-    public abstract <U>T m1(final U u);
+    public abstract <U>T m1(final X b, final U u);
+    
+    public abstract <U>T m1(final X b);
+    
+    public abstract <U>U m1$u(final X b);
 }
-final class I$impl<T> {
-    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I<T> $this;
+final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I<? extends T, ? super X> $this;
     
-    private final <U>T m1(final U u) {
-        return $this.<U>m1(u);
+    public final <U>U m1$u(final X b) {
+        return null;
+    }
+    
+    private final <U>T m1(final X b) {
+        return $this.<U>m1(b);
     }
     
     class IC {
         
         final class I$IC$ICI$impl {
-            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$IC$ICI<T> $this;
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$IC$ICI<? extends T, ? super X> $this;
             
-            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl<T>.IC $outer() {
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl<? extends T, ? super X>.IC $outer() {
                 return .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl.IC.this;
             }
             
@@ -30,7 +38,7 @@ final class I$impl<T> {
                 return m1(null);
             }
             
-            I$IC$ICI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$IC$ICI<T> $this) {
+            I$IC$ICI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$IC$ICI<? extends T, ? super X> $this) {
                 this.$this = $this;
             }
         }
@@ -39,7 +47,7 @@ final class I$impl<T> {
         }
     }
     
-    I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I<T> $this) {
+    I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I<? extends T, ? super X> $this) {
         this.$this = $this;
     }
 }

@@ -23,8 +23,12 @@ final class I1$impl {
         return false;
     }
     
-    private final .java.lang.String m1(final long i, final boolean b) {
-        return $this.m1(i, b);
+    private final .java.lang.String m1() {
+        return $this.m1();
+    }
+    
+    private final .java.lang.String m1(final long i) {
+        return $this.m1(i);
     }
     
     I1$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.I1 $this) {
@@ -54,8 +58,12 @@ final class I2$impl {
         return false;
     }
     
-    private final .java.lang.String m2(final long i, final boolean b) {
-        return $this.m2(i, b);
+    private final .java.lang.String m2() {
+        return $this.m2();
+    }
+    
+    private final .java.lang.String m2(final long i) {
+        return $this.m2(i);
     }
     
     I2$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.I2 $this) {
