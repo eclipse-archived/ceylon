@@ -72,7 +72,6 @@ public class ExpressionVisitor extends Visitor {
     private Tree.Type returnType;
     private Declaration returnDeclaration;
     private boolean defaultArgument;
-    private boolean withinAnnotation = false;
 
     private Unit unit;
     
@@ -1680,9 +1679,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.Annotation that) {
-        withinAnnotation=true;
         super.visit(that);
-        withinAnnotation=false;
         Declaration dec = ((Tree.MemberOrTypeExpression) that.getPrimary()).getDeclaration();
         if (dec!=null && !dec.isToplevel()) {
             that.getPrimary().addError("annotation must be a toplevel method reference");
@@ -2465,19 +2462,23 @@ public class ExpressionVisitor extends Visitor {
         
     @Override public void visit(Tree.ExtendedTypeExpression that) {
         super.visit(that);
-        Declaration result = that.getScope().getMemberOrParameter(that.getUnit(), 
-                that.getDeclaration().getName(), that.getSignature());
-        if (!(result instanceof TypeDeclaration)) {
-            return;
-        }
-        TypeDeclaration type = (TypeDeclaration)result;
-        if (type==null) {
-            that.addError("super type does not exist", 100);
-        }
-        else {
-            that.setDeclaration(type);
-            //otherwise infer type arguments later
-            checkOverloadedReference(that);
+        Declaration dec = that.getDeclaration();
+        if (dec instanceof Class) {
+            Class c = (Class) dec;
+            if (c.isAbstraction()) { 
+                //if the constructor is overloaded
+                //resolve the right overloaded version
+                Declaration result = dec.getContainer()
+                        .getMemberOrParameter(that.getUnit(), dec.getName(), that.getSignature());
+                if (result!=null && result!=dec) {
+                    //patch the reference, which was already
+                    //initialized to the abstraction
+                    that.setDeclaration((TypeDeclaration) result);
+                    checkOverloadedReference(that);
+                }
+                //else report to user that we could not
+                //find a matching overloaded constructor
+            }
         }
     }
         

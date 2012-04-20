@@ -567,6 +567,9 @@ public class TypeVisitor extends Visitor {
                     }
                 }
                 if (that.getInvocationExpression()!=null) {
+                    //TODO: it would probably be better to leave
+                    //      all this following  stuff to 
+                    //ExpressionVisitor.visit(ExtendedTypeExpression)
                     Tree.Primary pr = that.getInvocationExpression().getPrimary();
                     if (pr instanceof Tree.ExtendedTypeExpression) {
                         pr.setTypeModel(type);
