@@ -293,7 +293,14 @@ shared void numbers() {
     assert(infinity.infinite, "infinity is infinite");
     assert((-infinity).infinite, "-infinity is infinite");
     assert(!(0.0/0.0).infinite, "NaN not infinite");
-    
+
+    //ArithmeticException
+    try {
+        print(0/0);
+        fail("0/0 should throw");
+    } catch (Exception ex) {
+        assert(true, "ArithmeticException");
+    }    
     // parseInteger()
     assert(parseInteger("-123")?0==-123, "parse integer");
     
