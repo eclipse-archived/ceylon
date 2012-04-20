@@ -35,4 +35,5 @@ shared void test() {
     print(c.count);
     
     value v2 = var();
+    test_objects();
 }
