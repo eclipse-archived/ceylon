@@ -26,11 +26,11 @@ public interface List<Element>
     @Override
     public long getSize();
     
-    public boolean defines(@Name("key") Integer key);
+    public boolean defines(@Name("index") Integer key);
     
     @TypeInfo("ceylon.language.Nothing|Element")
     @Override
-    public Element item(@Name("key") Integer key);
+    public Element item(@Name("index") Integer key);
     
     @TypeInfo("ceylon.language.Iterator<Element>")
     @Override

@@ -136,7 +136,7 @@ public final class String
     }
 
     @Override
-    public Character item(@Name("key") Integer key) {
+    public Character item(@Name("index") Integer key) {
         int index = (int)key.longValue();
         int length = value.length();
         if (index < 0 || index >= length) {
@@ -148,7 +148,7 @@ public final class String
     }
 
     @Override
-    public boolean defines(@Name("key") Integer key) {
+    public boolean defines(@Name("index") Integer key) {
         long index = key.longValue();
         return index >= 0 && index < getSize();
     }
