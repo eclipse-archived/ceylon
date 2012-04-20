@@ -698,7 +698,8 @@ public abstract class AbstractTransformer implements Transformation {
                     return make().TypeIdent(TypeTags.INT);
                 }
             }
-        }else if(isCeylonBoolean(type)){
+        }else if(isCeylonBoolean(type)
+                && (flags & TYPE_ARGUMENT) == 0){
             // special case to get rid of $true and $false types
             type = typeFact.getBooleanDeclaration().getType();
         }
