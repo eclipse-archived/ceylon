@@ -90,10 +90,15 @@ public class ClassTransformer extends AbstractTransformer {
 
     // FIXME: figure out what insertOverloadedClassConstructors does and port it
 
-    public List<JCTree> transform(final Tree.ClassOrInterface def) {
-        String className = def.getIdentifier().getText();
+    public List<JCTree> transform(CeylonVisitor parentVisitor, final Tree.ClassOrInterface def) {
+        final String className;
+        if (def instanceof Tree.AnyInterface) {
+            className = getFQDeclarationName(def.getDeclarationModel()).replaceFirst(".*\\.", "");
+        } else {
+            className = def.getIdentifier().getText();
+        }
         ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder
-                .klass(this, Decl.isAncestorLocal(def), className);
+                .klass(this, parentVisitor.getTopLevelVisitor(), Decl.isAncestorLocal(def), className);
 
         if (def instanceof Tree.AnyClass) {
             ParameterList paramList = ((Tree.AnyClass)def).getParameterList();
@@ -215,7 +220,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         
-        CeylonVisitor visitor = new CeylonVisitor(gen(), classBuilder);
+        CeylonVisitor visitor = new CeylonVisitor(gen(), parentVisitor, classBuilder);
         def.visitChildren(visitor);
 
         // Check if it's a Class without initializer parameters
@@ -341,9 +346,9 @@ public class ClassTransformer extends AbstractTransformer {
         } else if (Decl.isLocal(def)) {
             result |= def.isShared() ? PUBLIC : 0;
         } else {
-            result |= def.isShared() ? PUBLIC : PRIVATE;
+            result |= def.isShared() || def.getContainer() instanceof Interface ? PUBLIC : PRIVATE;
             result |= def.isFormal() && !def.isDefault() ? ABSTRACT : 0;
-            result |= !(def.isFormal() || def.isDefault()) ? FINAL : 0;
+            result |= !(def.isFormal() || def.isDefault() || def.getContainer() instanceof Interface) ? FINAL : 0;
         }
 
         return result;
@@ -866,11 +871,11 @@ public class ClassTransformer extends AbstractTransformer {
         return methodBuilder.build();
     }
 
-    public List<JCTree> transformObject(Tree.ObjectDefinition def, ClassDefinitionBuilder containingClassBuilder) {
+    public List<JCTree> transformObject(CeylonVisitor parentVisitor, Tree.ObjectDefinition def, ClassDefinitionBuilder containingClassBuilder) {
         String name = def.getIdentifier().getText();
         ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.klass(this, Decl.isAncestorLocal(def), name);
         
-        CeylonVisitor visitor = new CeylonVisitor(gen(), objectClassBuilder);
+        CeylonVisitor visitor = new CeylonVisitor(gen(), parentVisitor, objectClassBuilder);
         def.visitChildren(visitor);
 
         TypeDeclaration decl = def.getDeclarationModel().getType().getDeclaration();

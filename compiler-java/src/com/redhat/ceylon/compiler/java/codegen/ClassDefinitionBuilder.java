@@ -92,8 +92,16 @@ public class ClassDefinitionBuilder {
     
     private boolean isCompanion = false;
 
+    private CeylonVisitor topLevelVisitor;
+
     public static ClassDefinitionBuilder klass(AbstractTransformer gen, boolean ancestorLocal, String name) {
         return new ClassDefinitionBuilder(gen, ancestorLocal, name);
+    }
+    
+    public static ClassDefinitionBuilder klass(AbstractTransformer gen, CeylonVisitor topLevelVisitor, boolean ancestorLocal, String name) {
+        ClassDefinitionBuilder b = new ClassDefinitionBuilder(gen, ancestorLocal, name);
+        b.topLevelVisitor = topLevelVisitor;
+        return b;
     }
     
     public static ClassDefinitionBuilder methodWrapper(AbstractTransformer gen, boolean ancestorLocal, String name, boolean shared) {
@@ -126,7 +134,6 @@ public class ClassDefinitionBuilder {
             annotations(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
         }
         
-        
         JCTree.JCClassDecl klass = gen.make().ClassDef(
                 gen.make().Modifiers(modifiers, annotations.toList()),
                 gen.names().fromString(Util.quoteIfJavaKeyword(name)),
@@ -134,9 +141,15 @@ public class ClassDefinitionBuilder {
                 extending,
                 satisfies.toList(),
                 defs.toList());
-        ListBuffer<JCTree> klasses = ListBuffer.<JCTree>of(klass);
+        ListBuffer<JCTree> klasses = ListBuffer.<JCTree>lb();
         
-        // Generate a companio class if we're building an interface
+        if ((modifiers & INTERFACE) != 0) {
+            topLevelVisitor.append(klass);
+        } else {
+            klasses.append(klass);
+        }
+        
+        // Generate a companion class if we're building an interface
         // or the companion actually has some content 
         // (e.g. initializer with defaulted params)
         if (concreteInterfaceMemberDefs != null

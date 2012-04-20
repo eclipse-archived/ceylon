@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -705,19 +706,20 @@ public abstract class AbstractTransformer implements Transformation {
         JCExpression jt = makeErroneous();
         
         ProducedType simpleType = simplifyType(type);
-        boolean typeOrQualifyingTypeHasTypeParams = false;
+        
         java.util.List<ProducedType> qualifyingTypes = new java.util.ArrayList<ProducedType>();
+        java.util.List<ProducedType> qualifyingTypeParameters = new java.util.ArrayList<ProducedType>();
         ProducedType qType = simpleType;
         while (qType != null) {
             qualifyingTypes.add(qType);
-            java.util.List<ProducedType> tal = qType.getTypeArgumentList();
-            if (tal != null && !tal.isEmpty()) {
-                typeOrQualifyingTypeHasTypeParams = true;
+            java.util.List<ProducedType> tal = qType.getTypeArgumentList();    
+            if (tal != null) {
+                qualifyingTypeParameters.addAll(tal);
             }
             qType = qType.getQualifyingType();
         }
         
-        if (((flags & WANT_RAW_TYPE) == 0) && typeOrQualifyingTypeHasTypeParams) {
+        if (((flags & WANT_RAW_TYPE) == 0) && !qualifyingTypeParameters.isEmpty()) {
             // GENERIC TYPES
             Collections.reverse(qualifyingTypes);
             JCExpression baseType = makeErroneous();
@@ -870,12 +872,54 @@ public abstract class AbstractTransformer implements Transformation {
         return "java.lang.String".equals(type.getUnderlyingType());
     }
 
-    private JCExpression getDeclarationName(Declaration decl) {
-        if (Decl.isAncestorLocal(decl)) {
-            return makeQuotedQualIdentFromString(decl.getName());
+    protected String getFQDeclarationName(Declaration decl) {
+        /*while (decl instanceof TypeDeclaration
+                && ((TypeDeclaration) decl).getType().getQualifyingType() != null) {
+            decl = ((TypeDeclaration) decl).getType().getQualifyingType().getDeclaration();
+            String parentName = getFQDeclarationName(decl);
+            if (decl instanceof Interface) {
+                return parentName + "$" + decl.getName();
+            } else {
+                return parentName + "." + decl.getName();
+            }
+        } */
+        if (!decl.isToplevel()) {
+            StringBuilder sb = new StringBuilder();
+            Scope container;
+            if (decl instanceof Class
+                    && decl.getContainer() instanceof Interface) {
+                Interface parent = (Interface)decl.getContainer();
+                sb.append(Util.getCompanionClassName(parent.getName())+"." + decl.getName());
+                container = decl.getContainer().getContainer();
+            } else {
+                sb.append(decl.getName());
+                container = decl.getContainer();
+            }
+            while (container != null) {
+                if (container instanceof Package) {
+                    sb.insert(0, '.');
+                    sb.insert(0, container.getQualifiedNameString());
+                    sb.insert(0, '.');
+                    break;
+                } else if (container instanceof TypeDeclaration){
+                    sb.insert(0, decl instanceof Interface ? '$' : ".");
+                    sb.insert(0, ((TypeDeclaration)container).getName());
+                } else {
+                    // TODO Handle local interfaces
+                    throw new RuntimeException();
+                }
+                container = container.getContainer();
+            }
+            return sb.toString();
+        } else if (Decl.isAncestorLocal(decl)) {
+            return decl.getName();
         } else {
-            return makeQuotedFQIdent(decl.getQualifiedNameString());
+            return "."+decl.getQualifiedNameString();
         }
+    }
+    
+    protected JCExpression getDeclarationName(Declaration decl) {
+        return makeQuotedQualIdentFromString(getFQDeclarationName(decl));
     }
     
     protected ProducedType getThisType(Tree.Declaration decl) {
