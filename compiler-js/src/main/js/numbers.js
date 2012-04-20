@@ -35,6 +35,9 @@ Integer$proto.times = function(other) {
 Integer$proto.divided = function(other) {
     var exact = this.value/other.value;
     if (isOfType(other, 'ceylon.language.Integer') === $true) {
+        if (other.value === 0) {
+            throw Exception("Division by Zero");
+        }
         return Integer((exact<0) ? Math.ceil(exact) : Math.floor(exact));
     }
     return Float((exact<0) ? Math.ceil(exact) : Math.floor(exact));
