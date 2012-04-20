@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-public class MutableList<T> {
+public class InnerClassUsingOutersTypeParam<T> {
     
-    public final T item(final .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell cell) {
+    public final T item(final .com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell cell) {
         return cell.getCar();
     }
     
@@ -12,23 +12,23 @@ public class MutableList<T> {
         public final T getCar() {
             return car;
         }
-        private final .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell cdr;
+        private final .com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell cdr;
         
-        public final .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell getCdr() {
+        public final .com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell getCdr() {
             return cdr;
         }
         
-        public Cell(T car, .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell cdr) {
+        public Cell(T car, .com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell cdr) {
             this.car = car;
             this.cdr = cdr;
         }
     }
     
-    public MutableList() {
+    public InnerClassUsingOutersTypeParam() {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList();
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam();
     }
 }

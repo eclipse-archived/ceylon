@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class C() {
+class SpreadMethodReference() {
     void m(String[] seq) {
         Callable<String[],Integer> f = seq[].initial;
     }

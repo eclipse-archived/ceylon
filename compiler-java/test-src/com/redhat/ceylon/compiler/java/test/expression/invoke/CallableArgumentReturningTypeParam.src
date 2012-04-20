@@ -1,65 +1,65 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class f {
+final class callableArgumentReturningTypeParam_f {
     
-    private f() {
+    private callableArgumentReturningTypeParam_f() {
     }
     
-    static <T extends .ceylon.language.Numeric<T>>void f(final .ceylon.language.Callable<? extends T> foo) {
+    static <T extends .ceylon.language.Numeric<T>>void callableArgumentReturningTypeParam_f(final .ceylon.language.Callable<? extends T> foo) {
     }
 }
-final class bar {
+final class callableArgumentReturningTypeParam_bar {
     
-    private bar() {
+    private callableArgumentReturningTypeParam_bar() {
     }
     
-    static <X>X bar() {
+    static <X>X callableArgumentReturningTypeParam_bar() {
         throw new .ceylon.language.Exception(null, null);
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.bar();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_bar.callableArgumentReturningTypeParam_bar();
     }
 }
-final class baz {
+final class callableArgumentReturningTypeParam_baz {
     
-    private baz() {
+    private callableArgumentReturningTypeParam_baz() {
     }
     
-    static long baz() {
+    static long callableArgumentReturningTypeParam_baz() {
         return 1L;
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.baz.baz();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_baz.callableArgumentReturningTypeParam_baz();
     }
 }
-final class m {
+final class callableArgumentReturningTypeParam_m {
     
-    private m() {
+    private callableArgumentReturningTypeParam_m() {
     }
     
-    static void m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.<.ceylon.language.Integer>f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Callable<Integer>"){
+    static void callableArgumentReturningTypeParam_m() {
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_f.<.ceylon.language.Integer>callableArgumentReturningTypeParam_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Callable<Integer>"){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call() {
-                return .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.<.ceylon.language.Integer>bar();
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_bar.<.ceylon.language.Integer>callableArgumentReturningTypeParam_bar();
             }
         });
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.<.ceylon.language.Integer>f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Callable<Integer>"){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_f.<.ceylon.language.Integer>callableArgumentReturningTypeParam_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Callable<Integer>"){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call() {
-                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.baz.baz());
+                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_baz.callableArgumentReturningTypeParam_baz());
             }
         });
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.m.m();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_m.callableArgumentReturningTypeParam_m();
     }
 }

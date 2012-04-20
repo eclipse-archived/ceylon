@@ -22,7 +22,7 @@ class DefaultedAndTypeParams<X>(X init) {
     shared void m<Y>(Y y, X x = init) {}
 }
 @nomodel
-void m() {
+void defaultedAndTypeParams_m() {
     DefaultedAndTypeParams<Integer> i = DefaultedAndTypeParams<Integer>(1);
     i.m("");
     i.m("", 2);

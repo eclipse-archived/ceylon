@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-final class m {
+final class nullSafeMethodReference {
     
-    private m() {
+    private nullSafeMethodReference() {
     }
     
-    static void m(final .ceylon.language.String s) {
+    static void nullSafeMethodReference(final .ceylon.language.String s) {
         final .ceylon.language.Callable<? extends .ceylon.language.String> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("Callable<String?,Integer>"){
             
             @.java.lang.Override

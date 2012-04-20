@@ -18,15 +18,15 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class C() {
+class CallableArgumentParameterClass() {
 }
 @nomodel
-void f(void foo(C c)) {
+void callableArgumentParameterClass_f(void foo(CallableArgumentParameterClass c)) {
 }
 @nomodel
-void bar(C c) {
+void callableArgumentParameterClass_bar(CallableArgumentParameterClass c) {
 }
 @nomodel
-void m() {
-    f(bar);
+void callableArgumentParameterClass_m() {
+    callableArgumentParameterClass_f(callableArgumentParameterClass_bar);
 }

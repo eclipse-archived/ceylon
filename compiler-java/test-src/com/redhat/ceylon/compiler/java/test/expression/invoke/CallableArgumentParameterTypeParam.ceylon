@@ -18,16 +18,16 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void f<T>(void foo(T t)) {
+void callableArgumentParameterTypeParam_f<T>(void foo(T t)) {
 }
 @nomodel
-void bar<X>(X s) {
+void callableArgumentParameterTypeParam_bar<X>(X s) {
 }
 @nomodel
-void baz(Integer i) {
+void callableArgumentParameterTypeParam_baz(Integer i) {
 }
 @nomodel
-void m() {
-    f<String>(bar<String>);
-    f<Integer>(baz);
+void callableArgumentParameterTypeParam_m() {
+    callableArgumentParameterTypeParam_f<String>(callableArgumentParameterTypeParam_bar<String>);
+    callableArgumentParameterTypeParam_f<Integer>(callableArgumentParameterTypeParam_baz);
 }

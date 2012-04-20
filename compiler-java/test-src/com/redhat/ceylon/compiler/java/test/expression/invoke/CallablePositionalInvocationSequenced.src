@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class f {
+final class callablePositionalInvocationSequenced_f {
     
-    private f() {
+    private callablePositionalInvocationSequenced_f() {
     }
     
-    static void f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
+    static void callablePositionalInvocationSequenced_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
         foo.$call(.ceylon.language.Integer.instance(1L), .ceylon.language.$empty.getEmpty());
         foo.$call(.ceylon.language.Integer.instance(1L), new .ceylon.language.ArraySequence(.ceylon.language.String.instance("")));
         foo.$call(.ceylon.language.Integer.instance(1L), new .ceylon.language.ArraySequence(.ceylon.language.String.instance(""), .ceylon.language.String.instance("")));

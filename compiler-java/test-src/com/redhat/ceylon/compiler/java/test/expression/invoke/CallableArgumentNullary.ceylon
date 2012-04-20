@@ -18,12 +18,12 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void f(void foo()) {
+void callableArgumentNullary_f(void foo()) {
 }
 @nomodel
-void bar() {
+void callableArgumentNullary_bar() {
 }
 @nomodel
-void m() {
-    f(bar);
+void callableArgumentNullary_m() {
+    callableArgumentNullary_f(callableArgumentNullary_bar);
 }

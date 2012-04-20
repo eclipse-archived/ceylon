@@ -1,32 +1,32 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class f {
+final class callableArgumentTernary_f {
     
-    private f() {
+    private callableArgumentTernary_f() {
     }
     
-    static void f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
-    }
-}
-final class bar {
-    
-    private bar() {
-    }
-    
-    static void bar(final long i, final .java.lang.String s, final boolean b) {
+    static void callableArgumentTernary_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
     }
 }
-final class m {
+final class callableArgumentTernary_bar {
     
-    private m() {
+    private callableArgumentTernary_bar() {
     }
     
-    static void m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void,Integer,String,Boolean>"){
+    static void callableArgumentTernary_bar(final long i, final .java.lang.String s, final boolean b) {
+    }
+}
+final class callableArgumentTernary_m {
+    
+    private callableArgumentTernary_m() {
+    }
+    
+    static void callableArgumentTernary_m() {
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentTernary_f.callableArgumentTernary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void,Integer,String,Boolean>"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.bar(((.ceylon.language.Integer)$param$0).longValue(), ((.ceylon.language.String)$param$1).toString(), ((.ceylon.language.Boolean)$param$2).booleanValue());
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentTernary_bar.callableArgumentTernary_bar(((.ceylon.language.Integer)$param$0).longValue(), ((.ceylon.language.String)$param$1).toString(), ((.ceylon.language.Boolean)$param$2).booleanValue());
                 return null;
             }
         });
@@ -34,6 +34,6 @@ final class m {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.m.m();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentTernary_m.callableArgumentTernary_m();
     }
 }

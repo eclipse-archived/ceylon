@@ -1,40 +1,40 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-class C {
+class CallableArgumentReturningClass {
     
-    C() {
+    CallableArgumentReturningClass() {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.C();
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass();
     }
 }
-final class f {
+final class callableArgumentReturningClass_f {
     
-    private f() {
+    private callableArgumentReturningClass_f() {
     }
     
-    static void f(final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.C> foo) {
+    static void callableArgumentReturningClass_f(final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass> foo) {
     }
 }
-final class m {
+final class callableArgumentReturningClass_m {
     
-    private m() {
+    private callableArgumentReturningClass_m() {
     }
     
-    static void m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.C>("Callable<C>"){
+    static void callableArgumentReturningClass_m() {
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningClass_f.callableArgumentReturningClass_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass>("Callable<CallableArgumentReturningClass>"){
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.test.expression.invoke.C $call() {
-                return new .com.redhat.ceylon.compiler.java.test.expression.invoke.C();
+            public .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass $call() {
+                return new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass();
             }
         });
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.m.m();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningClass_m.callableArgumentReturningClass_m();
     }
 }

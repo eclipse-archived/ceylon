@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-shared class KlassMethodTypeParams<U>() {
+shared class GenericMethodInvocationMixedClass<U>() {
     shared U bar<V>(U u, V v) {
         return u;
     }
@@ -27,19 +27,19 @@ shared class KlassMethodTypeParams<U>() {
 @nomodel
 class GenericMethodInvocationMixed<X>(){
     shared String m() {
-        value k = KlassMethodTypeParams<String>();
+        value k = GenericMethodInvocationMixedClass<String>();
         return k.bar<Integer>("hello", 1);
     }
     shared String m2() {
-        value k = KlassMethodTypeParams<String>();
+        value k = GenericMethodInvocationMixedClass<String>();
         return k.bar<Integer>{ u = "hello"; v = 1; };
     }
     shared void m3<Y>(X x, Y y) {
-        value k = KlassMethodTypeParams<X>();
+        value k = GenericMethodInvocationMixedClass<X>();
         k.bar<Y>(x, y);
     }
     shared void m4<Y>(X x, Y y) {
-        value k = KlassMethodTypeParams<X>();
+        value k = GenericMethodInvocationMixedClass<X>();
         k.bar<Y>{ u = x; v = y; };
     }
 }

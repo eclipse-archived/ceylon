@@ -1,24 +1,24 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-final class f {
+final class methodSpecifyingUnaryTopLevel_f {
     
-    private f() {
+    private methodSpecifyingUnaryTopLevel_f() {
     }
     
-    static void f(final .java.lang.String s) {
+    static void methodSpecifyingUnaryTopLevel_f(final .java.lang.String s) {
     }
 }
-class MethodSpecifier {
+class MethodSpecifyingUnaryTopLevel {
     
     private final void foo(final .java.lang.String s) {
-        .com.redhat.ceylon.compiler.java.test.structure.method.f.f(s);
+        .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingUnaryTopLevel_f.methodSpecifyingUnaryTopLevel_f(s);
     }
     
-    MethodSpecifier() {
+    MethodSpecifyingUnaryTopLevel() {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifier();
+        new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingUnaryTopLevel();
     }
 }

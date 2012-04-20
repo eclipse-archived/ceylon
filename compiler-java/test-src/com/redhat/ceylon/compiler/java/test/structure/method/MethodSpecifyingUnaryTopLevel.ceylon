@@ -18,9 +18,9 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void f(String s) {
+void methodSpecifyingUnaryTopLevel_f(String s) {
 }
 @nomodel
-class MethodSpecifier() {
-    void foo(String s) = f;
+class MethodSpecifyingUnaryTopLevel() {
+    void foo(String s) = methodSpecifyingUnaryTopLevel_f;
 }

@@ -18,6 +18,6 @@
  * MA  02110-1301, USA.
  */
 Package package {
-    name = 'b';
+    name = 'com.redhat.ceylon.ceylondoc.test.modules.dependency.b.b';
     shared = true;
 }

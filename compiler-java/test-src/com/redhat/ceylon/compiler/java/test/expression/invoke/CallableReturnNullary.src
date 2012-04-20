@@ -1,29 +1,29 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class foo {
+final class callableReturnNullary_foo {
     
-    private foo() {
+    private callableReturnNullary_foo() {
     }
     
-    static void foo() {
+    static void callableReturnNullary_foo() {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.foo.foo();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnNullary_foo.callableReturnNullary_foo();
     }
 }
-final class bar {
+final class callableReturnNullary_bar {
     
-    private bar() {
+    private callableReturnNullary_bar() {
     }
     
-    static .ceylon.language.Callable<? extends .java.lang.Object> bar() {
+    static .ceylon.language.Callable<? extends .java.lang.Object> callableReturnNullary_bar() {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void>"){
             
             @.java.lang.Override
             public .java.lang.Object $call() {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.foo.foo();
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnNullary_foo.callableReturnNullary_foo();
                 return null;
             }
         };
@@ -31,6 +31,6 @@ final class bar {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.bar();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnNullary_bar.callableReturnNullary_bar();
     }
 }

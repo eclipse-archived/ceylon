@@ -18,9 +18,9 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void foo() {
+void callableReturnNullary_foo() {
 }
 @nomodel
-Callable<Void> bar() {
-    return foo;
+Callable<Void> callableReturnNullary_bar() {
+    return callableReturnNullary_foo;
 }

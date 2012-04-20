@@ -1,32 +1,32 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class f {
+final class callableArgumentUnary_f {
     
-    private f() {
+    private callableArgumentUnary_f() {
     }
     
-    static void f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
-    }
-}
-final class bar {
-    
-    private bar() {
-    }
-    
-    static void bar(final long i) {
+    static void callableArgumentUnary_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
     }
 }
-final class m {
+final class callableArgumentUnary_bar {
     
-    private m() {
+    private callableArgumentUnary_bar() {
     }
     
-    static void m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void,Integer>"){
+    static void callableArgumentUnary_bar(final long i) {
+    }
+}
+final class callableArgumentUnary_m {
+    
+    private callableArgumentUnary_m() {
+    }
+    
+    static void callableArgumentUnary_m() {
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentUnary_f.callableArgumentUnary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void,Integer>"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.bar(((.ceylon.language.Integer)$param$0).longValue());
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentUnary_bar.callableArgumentUnary_bar(((.ceylon.language.Integer)$param$0).longValue());
                 return null;
             }
         });
@@ -34,6 +34,6 @@ final class m {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.m.m();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentUnary_m.callableArgumentUnary_m();
     }
 }

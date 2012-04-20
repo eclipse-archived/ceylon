@@ -22,11 +22,11 @@ String higher(String f(Integer i)) {
   return "";
 }
 @nomodel
-String foo(Integer i) {
+String callableCapture_foo(Integer i) {
     return "";
 }
 @nomodel
-void m() {
-    value bar = foo;
-    Boolean b = higher(bar) == "";
+void callableCapture_m() {
+    value callableCapture_bar = callableCapture_foo;
+    Boolean b = higher(callableCapture_bar) == "";
 }

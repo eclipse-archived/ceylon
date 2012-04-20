@@ -18,6 +18,6 @@
  * MA  02110-1301, USA.
  */
 Module module {
-    name = 'b';
+    name = 'com.redhat.ceylon.ceylondoc.test.modules.dependency.b.b';
     version = '1.0';
 }

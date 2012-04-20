@@ -1,24 +1,24 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class foo {
+final class callableReturnUnary_foo {
     
-    private foo() {
+    private callableReturnUnary_foo() {
     }
     
-    static void foo(final long i) {
+    static void callableReturnUnary_foo(final long i) {
     }
 }
-final class bar {
+final class callableReturnUnary_bar {
     
-    private bar() {
+    private callableReturnUnary_bar() {
     }
     
-    static .ceylon.language.Callable<? extends .java.lang.Object> bar() {
+    static .ceylon.language.Callable<? extends .java.lang.Object> callableReturnUnary_bar() {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void,Integer>"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.foo.foo(((.ceylon.language.Integer)$param$0).longValue());
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnUnary_foo.callableReturnUnary_foo(((.ceylon.language.Integer)$param$0).longValue());
                 return null;
             }
         };
@@ -26,6 +26,6 @@ final class bar {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.bar();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnUnary_bar.callableReturnUnary_bar();
     }
 }

@@ -18,12 +18,12 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void f(void foo(String... s)) {
+void callableArgumentVarargs2_f(void foo(String... s)) {
 }
 @nomodel
-void g(String[] s) {
+void callableArgumentVarargs2_g(String[] s) {
 }
 @nomodel
-void m() {
-    f(g);
+void callableArgumentVarargs2_m() {
+    callableArgumentVarargs2_f(callableArgumentVarargs2_g);
 }

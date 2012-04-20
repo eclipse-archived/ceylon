@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class f {
+final class callableNamedInvocationSequenced_f {
     
-    private f() {
+    private callableNamedInvocationSequenced_f() {
     }
     
-    static void f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
+    static void callableNamedInvocationSequenced_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
         (
             let
                 .ceylon.language.Integer $arg$0$0 = .ceylon.language.Integer.instance(1L),

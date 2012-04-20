@@ -18,18 +18,18 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void f<T>(T foo()) given T satisfies Numeric<T> {
+void callableArgumentReturningTypeParam_f<T>(T foo()) given T satisfies Numeric<T> {
 }
 @nomodel
-X bar<X>() {
+X callableArgumentReturningTypeParam_bar<X>() {
     throw;
 }
 @nomodel
-Integer baz() {
+Integer callableArgumentReturningTypeParam_baz() {
     return 1;
 }
 @nomodel
-void m() {
-    f<Integer>(bar<Integer>);
-    f<Integer>(baz);
+void callableArgumentReturningTypeParam_m() {
+    callableArgumentReturningTypeParam_f<Integer>(callableArgumentReturningTypeParam_bar<Integer>);
+    callableArgumentReturningTypeParam_f<Integer>(callableArgumentReturningTypeParam_baz);
 }

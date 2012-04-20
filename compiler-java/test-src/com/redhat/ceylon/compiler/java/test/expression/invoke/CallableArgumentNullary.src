@@ -1,37 +1,37 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class f {
+final class callableArgumentNullary_f {
     
-    private f() {
+    private callableArgumentNullary_f() {
     }
     
-    static void f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
+    static void callableArgumentNullary_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
     }
 }
-final class bar {
+final class callableArgumentNullary_bar {
     
-    private bar() {
+    private callableArgumentNullary_bar() {
     }
     
-    static void bar() {
+    static void callableArgumentNullary_bar() {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.bar();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentNullary_bar.callableArgumentNullary_bar();
     }
 }
-final class m {
+final class callableArgumentNullary_m {
     
-    private m() {
+    private callableArgumentNullary_m() {
     }
     
-    static void m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void>"){
+    static void callableArgumentNullary_m() {
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentNullary_f.callableArgumentNullary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void>"){
             
             @.java.lang.Override
             public .java.lang.Object $call() {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.bar();
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentNullary_bar.callableArgumentNullary_bar();
                 return null;
             }
         });
@@ -39,6 +39,6 @@ final class m {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.m.m();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentNullary_m.callableArgumentNullary_m();
     }
 }

@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class C() {
+class CallableReturnMethod() {
     Integer f() {
         return 1;
     }
@@ -28,7 +28,7 @@ class C() {
     Callable<Integer> m2() {
         return this.f;
     }
-    Callable<Integer> m3(C c) {
+    Callable<Integer> m3(CallableReturnMethod c) {
         return c.f;
     }
     

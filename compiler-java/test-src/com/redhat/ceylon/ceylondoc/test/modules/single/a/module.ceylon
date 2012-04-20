@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 Module module {
-    name = 'a';
+    name = 'com.redhat.ceylon.ceylondoc.test.modules.single.a';
     version = '3.1.4';
     doc = "This is a **test** module";
     by = { "Tom Bentley" };

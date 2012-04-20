@@ -18,9 +18,9 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void f(void foo()) {
+void callableArgumentPassed_f(void foo()) {
 }
 @nomodel
-void m(void bar()) {
-    f(bar);
+void callableArgumentPassed_m(void bar()) {
+    callableArgumentPassed_f(bar);
 }

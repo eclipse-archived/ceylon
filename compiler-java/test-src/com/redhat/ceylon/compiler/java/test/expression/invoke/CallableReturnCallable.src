@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class f {
+final class callableReturnCallable_f {
     
-    private f() {
+    private callableReturnCallable_f() {
     }
     
-    static .ceylon.language.Callable<? extends .java.lang.Object> f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
+    static .ceylon.language.Callable<? extends .java.lang.Object> callableReturnCallable_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
         return foo;
     }
 }

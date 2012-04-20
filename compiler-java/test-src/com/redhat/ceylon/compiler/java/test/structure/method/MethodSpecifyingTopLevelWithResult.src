@@ -1,30 +1,30 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-final class f {
+final class methodSpecifyingToplevelWithResult_f {
     
-    private f() {
+    private methodSpecifyingToplevelWithResult_f() {
     }
     
-    static long f() {
+    static long methodSpecifyingToplevelWithResult_f() {
         return 1L;
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.method.f.f();
+        .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingToplevelWithResult_f.methodSpecifyingToplevelWithResult_f();
     }
 }
-class MethodSpecifier {
+class MethodSpecifyingToplevelWithResult {
     
     private final long foo() {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.f.f();
+        return .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingToplevelWithResult_f.methodSpecifyingToplevelWithResult_f();
     }
     
-    MethodSpecifier() {
+    MethodSpecifyingToplevelWithResult() {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifier();
+        new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingToplevelWithResult();
     }
 }

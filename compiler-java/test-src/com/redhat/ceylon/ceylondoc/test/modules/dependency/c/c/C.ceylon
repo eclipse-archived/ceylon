@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import b { B }
+import com.redhat.ceylon.ceylondoc.test.modules.dependency.b.b { B }
 
 class C() extends B(){}
 

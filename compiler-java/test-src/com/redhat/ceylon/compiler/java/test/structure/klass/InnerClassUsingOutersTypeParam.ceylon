@@ -1,5 +1,5 @@
 @nomodel
-shared class MutableList<T>(){
+shared class InnerClassUsingOutersTypeParam<T>(){
 
     shared T item(Cell cell) {
         return cell.car;

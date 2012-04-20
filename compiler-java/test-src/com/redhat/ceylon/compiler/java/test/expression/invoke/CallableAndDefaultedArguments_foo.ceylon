@@ -17,4 +17,4 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared void foo(void f(), String? s1 = null, String? s2 = null){}
+shared void callableAndDefaultedArguments_foo(void f(), String? s1 = null, String? s2 = null){}

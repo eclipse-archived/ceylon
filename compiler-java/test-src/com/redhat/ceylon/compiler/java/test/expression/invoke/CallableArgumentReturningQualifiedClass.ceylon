@@ -18,14 +18,14 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class C() {
+class CallableArgumentReturningQualifiedClass() {
     shared class D() {
     }
     @nomodel
-    void f(C.D foo()) {
+    void f(CallableArgumentReturningQualifiedClass.D foo()) {
     }
     @nomodel
     void m() {
-        f(C.D);
+        f(CallableArgumentReturningQualifiedClass.D);
     }
 }

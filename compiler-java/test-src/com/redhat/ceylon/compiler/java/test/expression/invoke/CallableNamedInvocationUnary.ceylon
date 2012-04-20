@@ -18,6 +18,6 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void f(void foo(String s)) {
+void callableNamedInvocationUnary_f(void foo(String s)) {
     foo{s="";};
 }

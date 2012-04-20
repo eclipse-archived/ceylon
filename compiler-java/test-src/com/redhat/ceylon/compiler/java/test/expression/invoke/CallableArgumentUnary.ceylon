@@ -18,12 +18,12 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void f(void foo(Integer i)) {
+void callableArgumentUnary_f(void foo(Integer i)) {
 }
 @nomodel
-void bar(Integer i) {
+void callableArgumentUnary_bar(Integer i) {
 }
 @nomodel
-void m() {
-    f(bar);
+void callableArgumentUnary_m() {
+    callableArgumentUnary_f(callableArgumentUnary_bar);
 }

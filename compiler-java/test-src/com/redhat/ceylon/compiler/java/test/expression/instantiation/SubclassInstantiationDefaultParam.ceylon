@@ -1,5 +1,5 @@
 @nomodel
-class Foo(String name="tom") {
+class SubclassInstantiationDefaultParam(String name="tom") {
 }
 @nomodel
-class Bar() extends Foo() {}
+class SubclassInstantiationDefaultParamSub() extends SubclassInstantiationDefaultParam() {}

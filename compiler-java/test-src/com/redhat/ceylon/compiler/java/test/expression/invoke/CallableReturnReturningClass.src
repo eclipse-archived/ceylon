@@ -1,32 +1,32 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-class C {
+class CallableReturnReturningClass {
     
-    C() {
+    CallableReturnReturningClass() {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.C();
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass();
     }
 }
-final class bar {
+final class callableReturnReturningClass_bar {
     
-    private bar() {
+    private callableReturnReturningClass_bar() {
     }
     
-    static .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.C> bar() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.C>("Callable<C>"){
+    static .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass> callableReturnReturningClass_bar() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass>("Callable<CallableReturnReturningClass>"){
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.test.expression.invoke.C $call() {
-                return new .com.redhat.ceylon.compiler.java.test.expression.invoke.C();
+            public .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass $call() {
+                return new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass();
             }
         };
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.bar();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnReturningClass_bar.callableReturnReturningClass_bar();
     }
 }

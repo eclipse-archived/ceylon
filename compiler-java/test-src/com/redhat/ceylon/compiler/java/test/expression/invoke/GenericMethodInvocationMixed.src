@@ -1,31 +1,31 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-public class KlassMethodTypeParams<U> {
+public class GenericMethodInvocationMixedClass<U> {
     
     public final <V>U bar(final U u, final V v) {
         return u;
     }
     
-    public KlassMethodTypeParams() {
+    public GenericMethodInvocationMixedClass() {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams();
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass();
     }
 }
 class GenericMethodInvocationMixed<X> {
     
     public final .java.lang.String m() {
-        final .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams<.ceylon.language.String> k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams<.ceylon.language.String>();
+        final .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<.ceylon.language.String> k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<.ceylon.language.String>();
         return k.<.ceylon.language.Integer>bar(.ceylon.language.String.instance("hello"), .ceylon.language.Integer.instance(1L)).toString();
     }
     
     public final .java.lang.String m2() {
-        final .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams<.ceylon.language.String> k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams<.ceylon.language.String>();
+        final .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<.ceylon.language.String> k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<.ceylon.language.String>();
         return (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams<.ceylon.language.String> $arg$0$callable$ = k,
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<.ceylon.language.String> $arg$0$callable$ = k,
                 .ceylon.language.String $arg$0$0 = .ceylon.language.String.instance("hello"),
                 .ceylon.language.Integer $arg$0$1 = .ceylon.language.Integer.instance(1L)
             returning $arg$0$callable$.<.ceylon.language.Integer>bar($arg$0$0, $arg$0$1)
@@ -33,15 +33,15 @@ class GenericMethodInvocationMixed<X> {
     }
     
     public final <Y>void m3(final X x, final Y y) {
-        final .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams<X> k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams<X>();
+        final .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<X> k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<X>();
         k.<Y>bar(x, y);
     }
     
     public final <Y>void m4(final X x, final Y y) {
-        final .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams<X> k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams<X>();
+        final .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<X> k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<X>();
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams<X> $arg$1$callable$ = k,
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<X> $arg$1$callable$ = k,
                 X $arg$1$0 = x,
                 Y $arg$1$1 = y
             returning $arg$1$callable$.<Y>bar($arg$1$0, $arg$1$1)

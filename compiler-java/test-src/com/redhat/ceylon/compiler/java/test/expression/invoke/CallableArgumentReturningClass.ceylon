@@ -18,12 +18,12 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class C() {
+class CallableArgumentReturningClass() {
 }
 @nomodel
-void f(C foo()) {
+void callableArgumentReturningClass_f(CallableArgumentReturningClass foo()) {
 }
 @nomodel
-void m() {
-    f(C);
+void callableArgumentReturningClass_m() {
+    callableArgumentReturningClass_f(CallableArgumentReturningClass);
 }

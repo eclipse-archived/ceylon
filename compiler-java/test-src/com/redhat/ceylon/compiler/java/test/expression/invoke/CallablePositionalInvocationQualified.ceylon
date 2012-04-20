@@ -18,8 +18,8 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class C(void f()) {
-    void m(C c) {
+class CallablePositionalInvocationQualified(void f()) {
+    void m(CallablePositionalInvocationQualified c) {
         c.f();
         this.f();
     }

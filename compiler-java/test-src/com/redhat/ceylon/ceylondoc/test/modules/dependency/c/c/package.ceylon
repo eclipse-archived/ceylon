@@ -18,5 +18,5 @@
  * MA  02110-1301, USA.
  */
 Package package {
-    name = 'c';
+    name = 'com.redhat.ceylon.ceylondoc.test.modules.dependency.c.c';
 }

@@ -18,6 +18,6 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void f(void foo(Integer i)) {
+void callablePositionalInvocationUnary_f(void foo(Integer i)) {
     foo(1);
 }

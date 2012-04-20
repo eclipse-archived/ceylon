@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class f {
+final class callablePositionalInvocationNullary_f {
     
-    private f() {
+    private callablePositionalInvocationNullary_f() {
     }
     
-    static void f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
+    static void callablePositionalInvocationNullary_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
         foo.$call();
     }
 }

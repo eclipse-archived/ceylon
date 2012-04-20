@@ -18,8 +18,8 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void bar(){}
+void callableAndDefaultedArguments_bar(){}
 @nomodel
-void m(){
-    foo(bar, "");
+void callableAndDefaultedArguments(){
+    callableAndDefaultedArguments_foo(callableAndDefaultedArguments_bar, "");
 }

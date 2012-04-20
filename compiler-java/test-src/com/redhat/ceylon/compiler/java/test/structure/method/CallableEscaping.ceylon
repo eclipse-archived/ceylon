@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class C() {
+class CE() {
     Integer call() {
         return 1;
     }

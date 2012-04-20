@@ -18,12 +18,12 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void f<T>(T t) given T(String s){
+void callableArgumentParameterCtor_f<T>(T t) given T(String s){
 }
 @nomodel
-class C(String s){
+class CallableArgumentParameterCtor(String s){
 }
 @nomodel
-void m() {
-    f(C);
+void callableArgumentParameterCtor_m() {
+    callableArgumentParameterCtor_f(CallableArgumentParameterCtor);
 }

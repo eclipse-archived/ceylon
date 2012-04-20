@@ -1,24 +1,24 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class foo {
+final class callableReturnTernary_foo {
     
-    private foo() {
+    private callableReturnTernary_foo() {
     }
     
-    static void foo(final long i, final .java.lang.String s, final boolean b) {
+    static void callableReturnTernary_foo(final long i, final .java.lang.String s, final boolean b) {
     }
 }
-final class bar {
+final class callableReturnTernary_bar {
     
-    private bar() {
+    private callableReturnTernary_bar() {
     }
     
-    static .ceylon.language.Callable<? extends .java.lang.Object> bar() {
+    static .ceylon.language.Callable<? extends .java.lang.Object> callableReturnTernary_bar() {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void,Integer,String,Boolean>"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.foo.foo(((.ceylon.language.Integer)$param$0).longValue(), ((.ceylon.language.String)$param$1).toString(), ((.ceylon.language.Boolean)$param$2).booleanValue());
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnTernary_foo.callableReturnTernary_foo(((.ceylon.language.Integer)$param$0).longValue(), ((.ceylon.language.String)$param$1).toString(), ((.ceylon.language.Boolean)$param$2).booleanValue());
                 return null;
             }
         };
@@ -26,6 +26,6 @@ final class bar {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.bar();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnTernary_bar.callableReturnTernary_bar();
     }
 }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-class C {
+class CallableArgumentReturningQualifiedClass {
     
     public class D {
         
@@ -8,24 +8,24 @@ class C {
         }
     }
     
-    private final void f(final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.C.D> foo) {
+    private final void f(final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D> foo) {
     }
     
     private final void m() {
-        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.C.D>("Callable<C.D>"){
+        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D>("Callable<CallableArgumentReturningQualifiedClass.D>"){
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.test.expression.invoke.C.D $call() {
-                return C.this.new D();
+            public .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D $call() {
+                return CallableArgumentReturningQualifiedClass.this.new D();
             }
         });
     }
     
-    C() {
+    CallableArgumentReturningQualifiedClass() {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.C();
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass();
     }
 }

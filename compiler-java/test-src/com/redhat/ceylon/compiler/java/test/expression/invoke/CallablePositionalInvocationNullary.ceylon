@@ -18,6 +18,6 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void f(void foo()) {
+void callablePositionalInvocationNullary_f(void foo()) {
     foo();
 }

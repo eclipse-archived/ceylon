@@ -18,9 +18,9 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void foo(Integer i) {
+void callableReturnUnary_foo(Integer i) {
 }
 @nomodel
-Callable<Void, Integer> bar() {
-    return foo;
+Callable<Void, Integer> callableReturnUnary_bar() {
+    return callableReturnUnary_foo;
 }

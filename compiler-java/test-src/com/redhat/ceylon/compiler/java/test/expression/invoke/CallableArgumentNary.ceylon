@@ -18,12 +18,12 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void f(void foo(Integer i, String s, Boolean b, Character c)) {
+void callableArgumentNary_f(void foo(Integer i, String s, Boolean b, Character c)) {
 }
 @nomodel
-void bar(Integer i, String s, Boolean b, Character c) {
+void callableArgumentNary_bar(Integer i, String s, Boolean b, Character c) {
 }
 @nomodel
-void m() {
-    f(bar);
+void callableArgumentNary_m() {
+    callableArgumentNary_f(callableArgumentNary_bar);
 }

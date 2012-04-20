@@ -1,32 +1,32 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class f {
+final class callableArgumentBinary_f {
     
-    private f() {
+    private callableArgumentBinary_f() {
     }
     
-    static void f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
-    }
-}
-final class bar {
-    
-    private bar() {
-    }
-    
-    static void bar(final long i, final .java.lang.String s) {
+    static void callableArgumentBinary_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
     }
 }
-final class m {
+final class callableArgumentBinary_bar {
     
-    private m() {
+    private callableArgumentBinary_bar() {
     }
     
-    static void m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void,Integer,String>"){
+    static void callableArgumentBinary_bar(final long i, final .java.lang.String s) {
+    }
+}
+final class callableArgumentBinary_m {
+    
+    private callableArgumentBinary_m() {
+    }
+    
+    static void callableArgumentBinary_m() {
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentBinary_f.callableArgumentBinary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void,Integer,String>"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.bar(((.ceylon.language.Integer)$param$0).longValue(), ((.ceylon.language.String)$param$1).toString());
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentBinary_bar.callableArgumentBinary_bar(((.ceylon.language.Integer)$param$0).longValue(), ((.ceylon.language.String)$param$1).toString());
                 return null;
             }
         });
@@ -34,6 +34,6 @@ final class m {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.m.m();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentBinary_m.callableArgumentBinary_m();
     }
 }

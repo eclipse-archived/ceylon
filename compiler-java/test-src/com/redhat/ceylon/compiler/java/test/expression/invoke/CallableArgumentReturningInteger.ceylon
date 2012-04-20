@@ -18,13 +18,13 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void f(Integer foo()) {
+void callableArgumentReturningInteger_f(Integer foo()) {
 }
 @nomodel
-Integer bar() {
+Integer callableArgumentReturningInteger_bar() {
     return 1;
 }
 @nomodel
-void m() {
-    f(bar);
+void callableArgumentReturningInteger_m() {
+    callableArgumentReturningInteger_f(callableArgumentReturningInteger_bar);
 }

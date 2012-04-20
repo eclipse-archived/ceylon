@@ -18,9 +18,9 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class C() {
+class CallableReturnReturningClass() {
 }
 @nomodel
-Callable<C> bar() {
-    return C;
+Callable<CallableReturnReturningClass> callableReturnReturningClass_bar() {
+    return CallableReturnReturningClass;
 }

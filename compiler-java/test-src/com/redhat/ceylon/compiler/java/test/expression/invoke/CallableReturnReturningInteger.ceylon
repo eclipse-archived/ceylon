@@ -18,10 +18,10 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-Integer foo() {
+Integer callableReturnReturningInteger_foo() {
     return 1;
 }
 @nomodel
-Callable<Integer> bar() {
-    return foo;
+Callable<Integer> callableReturnReturningInteger_bar() {
+    return callableReturnReturningInteger_foo;
 }

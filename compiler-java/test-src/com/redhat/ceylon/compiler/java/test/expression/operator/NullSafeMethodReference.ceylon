@@ -18,6 +18,6 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void m(String? s) {
+void nullSafeMethodReference(String? s) {
     value f = s?.initial;
 }

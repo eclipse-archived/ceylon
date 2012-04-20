@@ -18,10 +18,10 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-Integer f() {
+Integer methodSpecifyingToplevelWithResult_f() {
     return 1;
 }
 @nomodel
-class MethodSpecifier() {
-    Integer foo() = f;
+class MethodSpecifyingToplevelWithResult() {
+    Integer foo() = methodSpecifyingToplevelWithResult_f;
 }

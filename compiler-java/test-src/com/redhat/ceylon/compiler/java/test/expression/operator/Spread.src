@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-final class m {
+final class spread {
     
-    private m() {
+    private spread() {
     }
     
-    static void m(final .ceylon.language.Iterable<? extends .ceylon.language.String> seq2) {
+    static void spread(final .ceylon.language.Iterable<? extends .ceylon.language.String> seq2) {
         final .ceylon.language.Sequence<? extends .ceylon.language.String> seq = new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("Hello"), .ceylon.language.String.instance("World"));
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> ini = (
             let

@@ -18,24 +18,24 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void f<S,T>(S foo(S s, T t)) {
+void callableArgumentParameterTypeParamMixed_f<S,T>(S foo(S s, T t)) {
 }
 @nomodel
-U bar<U,V>(U u, V v) {
+U callableArgumentParameterTypeParamMixed_bar<U,V>(U u, V v) {
     return u;
 }
 @nomodel
-Integer baz(Integer i, Boolean b) {
+Integer callableArgumentParameterTypeParamMixed_baz(Integer i, Boolean b) {
     return i;
 }
 @nomodel
-class C<X>() {
+class CallableArgumentParameterTypeParamMixed<X>() {
     void m<Y>() {
-        f<Integer,Boolean>(baz);
-        f<Boolean,Integer>(bar<Boolean,Integer>);
-        f<X,Integer>(bar<X,Integer>);
-        f<X,Y>(bar<X,Y>);
-        f<X&Y,Y>(bar<X&Y,Y>);
-        f<X|Y,Y>(bar<X|Y,Y>);
+        callableArgumentParameterTypeParamMixed_f<Integer,Boolean>(callableArgumentParameterTypeParamMixed_baz);
+        callableArgumentParameterTypeParamMixed_f<Boolean,Integer>(callableArgumentParameterTypeParamMixed_bar<Boolean,Integer>);
+        callableArgumentParameterTypeParamMixed_f<X,Integer>(callableArgumentParameterTypeParamMixed_bar<X,Integer>);
+        callableArgumentParameterTypeParamMixed_f<X,Y>(callableArgumentParameterTypeParamMixed_bar<X,Y>);
+        callableArgumentParameterTypeParamMixed_f<X&Y,Y>(callableArgumentParameterTypeParamMixed_bar<X&Y,Y>);
+        callableArgumentParameterTypeParamMixed_f<X|Y,Y>(callableArgumentParameterTypeParamMixed_bar<X|Y,Y>);
     }
 }

@@ -1,32 +1,32 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class f {
+final class callableArgumentNary_f {
     
-    private f() {
+    private callableArgumentNary_f() {
     }
     
-    static void f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
-    }
-}
-final class bar {
-    
-    private bar() {
-    }
-    
-    static void bar(final long i, final .java.lang.String s, final boolean b, final int c) {
+    static void callableArgumentNary_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
     }
 }
-final class m {
+final class callableArgumentNary_bar {
     
-    private m() {
+    private callableArgumentNary_bar() {
     }
     
-    static void m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void,Integer,String,Boolean,Character>"){
+    static void callableArgumentNary_bar(final long i, final .java.lang.String s, final boolean b, final int c) {
+    }
+}
+final class callableArgumentNary_m {
+    
+    private callableArgumentNary_m() {
+    }
+    
+    static void callableArgumentNary_m() {
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentNary_f.callableArgumentNary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void,Integer,String,Boolean,Character>"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object... $param$0) {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.bar(((.ceylon.language.Integer)$param$0[0]).longValue(), ((.ceylon.language.String)$param$0[1]).toString(), ((.ceylon.language.Boolean)$param$0[2]).booleanValue(), ((.ceylon.language.Character)$param$0[3]).intValue());
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentNary_bar.callableArgumentNary_bar(((.ceylon.language.Integer)$param$0[0]).longValue(), ((.ceylon.language.String)$param$0[1]).toString(), ((.ceylon.language.Boolean)$param$0[2]).booleanValue(), ((.ceylon.language.Character)$param$0[3]).intValue());
                 return null;
             }
         });
@@ -34,6 +34,6 @@ final class m {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.m.m();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentNary_m.callableArgumentNary_m();
     }
 }

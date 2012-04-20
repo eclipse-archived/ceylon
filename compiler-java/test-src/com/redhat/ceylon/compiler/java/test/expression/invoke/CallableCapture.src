@@ -9,33 +9,33 @@ final class higher {
         return "";
     }
 }
-final class foo {
+final class callableCapture_foo {
     
-    private foo() {
+    private callableCapture_foo() {
     }
     
-    static .java.lang.String foo(final long i) {
+    static .java.lang.String callableCapture_foo(final long i) {
         return "";
     }
 }
-final class m {
+final class callableCapture_m {
     
-    private m() {
+    private callableCapture_m() {
     }
     
-    static void m() {
-        final .ceylon.language.Callable<? extends .ceylon.language.String> bar = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("Callable<String,Integer>"){
+    static void callableCapture_m() {
+        final .ceylon.language.Callable<? extends .ceylon.language.String> callableCapture_bar = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("Callable<String,Integer>"){
             
             @.java.lang.Override
             public .ceylon.language.String $call(final .java.lang.Object $param$0) {
-                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.foo.foo(((.ceylon.language.Integer)$param$0).longValue()));
+                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.callableCapture_foo.callableCapture_foo(((.ceylon.language.Integer)$param$0).longValue()));
             }
         };
-        final boolean b = .com.redhat.ceylon.compiler.java.test.expression.invoke.higher.higher(bar).equals("");
+        final boolean b = .com.redhat.ceylon.compiler.java.test.expression.invoke.higher.higher(callableCapture_bar).equals("");
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.m.m();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableCapture_m.callableCapture_m();
     }
 }

@@ -1,42 +1,42 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-class C {
+class CallableArgumentParameterClass {
     
-    C() {
+    CallableArgumentParameterClass() {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.C();
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterClass();
     }
 }
-final class f {
+final class callableArgumentParameterClass_f {
     
-    private f() {
+    private callableArgumentParameterClass_f() {
     }
     
-    static void f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
-    }
-}
-final class bar {
-    
-    private bar() {
-    }
-    
-    static void bar(final .com.redhat.ceylon.compiler.java.test.expression.invoke.C c) {
+    static void callableArgumentParameterClass_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
     }
 }
-final class m {
+final class callableArgumentParameterClass_bar {
     
-    private m() {
+    private callableArgumentParameterClass_bar() {
     }
     
-    static void m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void,C>"){
+    static void callableArgumentParameterClass_bar(final .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterClass c) {
+    }
+}
+final class callableArgumentParameterClass_m {
+    
+    private callableArgumentParameterClass_m() {
+    }
+    
+    static void callableArgumentParameterClass_m() {
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterClass_f.callableArgumentParameterClass_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void,CallableArgumentParameterClass>"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.bar((.com.redhat.ceylon.compiler.java.test.expression.invoke.C)$param$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterClass_bar.callableArgumentParameterClass_bar((.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterClass)$param$0);
                 return null;
             }
         });
@@ -44,6 +44,6 @@ final class m {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.m.m();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterClass_m.callableArgumentParameterClass_m();
     }
 }

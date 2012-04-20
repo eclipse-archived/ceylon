@@ -1,32 +1,32 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class f {
+final class callableArgumentSequenced_f {
     
-    private f() {
+    private callableArgumentSequenced_f() {
     }
     
-    static void f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
-    }
-}
-final class g {
-    
-    private g() {
-    }
-    
-    static void g(final .ceylon.language.Iterable<? extends .ceylon.language.String> s) {
+    static void callableArgumentSequenced_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
     }
 }
-final class m {
+final class callableArgumentSequenced_g {
     
-    private m() {
+    private callableArgumentSequenced_g() {
     }
     
-    static void m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.f.f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void,String[]>"){
+    static void callableArgumentSequenced_g(final .ceylon.language.Iterable<? extends .ceylon.language.String> s) {
+    }
+}
+final class callableArgumentSequenced_m {
+    
+    private callableArgumentSequenced_m() {
+    }
+    
+    static void callableArgumentSequenced_m() {
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_f.callableArgumentSequenced_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void,String[]>"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.g.g((.ceylon.language.Iterable<? extends .ceylon.language.String>)$param$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_g.callableArgumentSequenced_g((.ceylon.language.Iterable<? extends .ceylon.language.String>)$param$0);
                 return null;
             }
         });
@@ -34,6 +34,6 @@ final class m {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.m.m();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_m.callableArgumentSequenced_m();
     }
 }

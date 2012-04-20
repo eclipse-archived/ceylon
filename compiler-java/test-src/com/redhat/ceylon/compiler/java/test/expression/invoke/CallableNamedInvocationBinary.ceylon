@@ -18,6 +18,6 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void f(void foo(String s, Integer i)) {
+void callableNamedInvocationBinary_f(void foo(String s, Integer i)) {
     foo{i=1; s="";};
 }

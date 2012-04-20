@@ -18,11 +18,11 @@
  * MA  02110-1301, USA.
  */
 Module module {
-    name = 'c';
+    name = 'com.redhat.ceylon.ceylondoc.test.modules.dependency.c.c';
     version = '1.0';
     dependencies = {
         Import {
-            name = 'b';
+            name = 'com.redhat.ceylon.ceylondoc.test.modules.dependency.b.b';
             version = '1.0';
         }
     };

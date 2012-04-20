@@ -1,13 +1,13 @@
 package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
-class Foo {
+class SubclassInstantiationDefaultParam {
     
-    Foo(.java.lang.String name) {
+    SubclassInstantiationDefaultParam(.java.lang.String name) {
     }
     
-    static final class Foo$impl {
+    static final class SubclassInstantiationDefaultParam$impl {
         
-        Foo$impl() {
+        SubclassInstantiationDefaultParam$impl() {
             super();
         }
         
@@ -16,12 +16,12 @@ class Foo {
         }
     }
 }
-class Bar extends .com.redhat.ceylon.compiler.java.test.expression.instantiation.Foo {
+class SubclassInstantiationDefaultParamSub extends .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam {
     
-    Bar() {
+    SubclassInstantiationDefaultParamSub() {
         (
             let
-                .java.lang.String $arg$0$0 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.Foo.Foo$impl.$init$name()
+                .java.lang.String $arg$0$0 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam.SubclassInstantiationDefaultParam$impl.$init$name()
             in {
                 super($arg$0$0);
             }
@@ -31,6 +31,6 @@ class Bar extends .com.redhat.ceylon.compiler.java.test.expression.instantiation
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.instantiation.Bar();
+        new .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParamSub();
     }
 }

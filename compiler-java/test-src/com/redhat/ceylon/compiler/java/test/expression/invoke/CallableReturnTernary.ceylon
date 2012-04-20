@@ -18,9 +18,9 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void foo(Integer i, String s, Boolean b) {
+void callableReturnTernary_foo(Integer i, String s, Boolean b) {
 }
 @nomodel
-Callable<Void, Integer, String, Boolean> bar() {
-    return foo;
+Callable<Void, Integer, String, Boolean> callableReturnTernary_bar() {
+    return callableReturnTernary_foo;
 }

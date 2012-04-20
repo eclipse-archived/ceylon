@@ -18,10 +18,10 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-Callable<String,Integer> f() {
+Callable<String,Integer> methodSpecifyingCallable_f() {
     throw;
 }
 @nomodel
-class MethodSpecifierCallable() {
-    String foo(Integer i) = f();
+class MethodSpecifyingCallable() {
+    String foo(Integer i) = methodSpecifyingCallable_f();
 }

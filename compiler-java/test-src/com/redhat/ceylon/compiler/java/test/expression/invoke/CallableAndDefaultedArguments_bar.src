@@ -1,38 +1,38 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class bar {
+final class callableAndDefaultedArguments_bar {
     
-    private bar() {
+    private callableAndDefaultedArguments_bar() {
     }
     
-    static void bar() {
+    static void callableAndDefaultedArguments_bar() {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.bar();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableAndDefaultedArguments_bar.callableAndDefaultedArguments_bar();
     }
 }
-final class m {
+final class callableAndDefaultedArguments {
     
-    private m() {
+    private callableAndDefaultedArguments() {
     }
     
-    static void m() {
+    static void callableAndDefaultedArguments() {
         (
             let
                 .ceylon.language.Callable<? extends .java.lang.Object> $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void>"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call() {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.bar.bar();
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableAndDefaultedArguments_bar.callableAndDefaultedArguments_bar();
                         return null;
                     }
                 },
                 .ceylon.language.String $arg$0$1 = .ceylon.language.String.instance(""),
-                .ceylon.language.String $arg$0$2 = .com.redhat.ceylon.compiler.java.test.expression.invoke.foo.foo$impl.foo$s2($arg$0$0, $arg$0$1)
+                .ceylon.language.String $arg$0$2 = .com.redhat.ceylon.compiler.java.test.expression.invoke.callableAndDefaultedArguments_foo.callableAndDefaultedArguments_foo$impl.callableAndDefaultedArguments_foo$s2($arg$0$0, $arg$0$1)
             in {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.foo.foo($arg$0$0, $arg$0$1, $arg$0$2);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableAndDefaultedArguments_foo.callableAndDefaultedArguments_foo($arg$0$0, $arg$0$1, $arg$0$2);
             }
             returning null
         );
@@ -40,6 +40,6 @@ final class m {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.m.m();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableAndDefaultedArguments.callableAndDefaultedArguments();
     }
 }
