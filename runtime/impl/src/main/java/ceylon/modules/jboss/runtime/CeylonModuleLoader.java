@@ -63,7 +63,7 @@ public class CeylonModuleLoader extends ModuleLoader {
     static {
         final String defaultVersion = System.getProperty("ceylon.version", "0.2");
         LANGUAGE = ModuleIdentifier.create("ceylon.language", defaultVersion);
-        CMR = ModuleIdentifier.create("com.redhat.ceylon.cmr");
+        CMR = ModuleIdentifier.create("com.redhat.ceylon.module-resolver", defaultVersion);
         MODULES = ModuleIdentifier.create("org.jboss.modules");
         RUNTIME = ModuleIdentifier.create("ceylon.runtime");
 
