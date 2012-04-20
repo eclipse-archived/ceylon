@@ -91,9 +91,10 @@ public class ClassTransformer extends AbstractTransformer {
     // FIXME: figure out what insertOverloadedClassConstructors does and port it
 
     public List<JCTree> transform(CeylonVisitor parentVisitor, final Tree.ClassOrInterface def) {
+        final ClassOrInterface model = def.getDeclarationModel();
         final String className;
         if (def instanceof Tree.AnyInterface) {
-            className = getFQDeclarationName(def.getDeclarationModel()).replaceFirst(".*\\.", "");
+            className = getFQDeclarationName(model).replaceFirst(".*\\.", "");
         } else {
             className = def.getIdentifier().getText();
         }
@@ -117,7 +118,7 @@ public class ClassTransformer extends AbstractTransformer {
                     MethodDefinitionBuilder overloadBuilder = classBuilder.addConstructor();
                     transformForDefaultedParameter(
                             overloadBuilder,
-                            def, def.getDeclarationModel(), true, paramList, param);
+                            def, model, true, paramList, param);
                     
                 }
             }
@@ -125,7 +126,7 @@ public class ClassTransformer extends AbstractTransformer {
             // For each satisfied interface, instantiate an instance of the 
             // companion class in the constructor and assign it to a
             // $Interface$impl field
-            for (TypeDeclaration decl : def.getDeclarationModel().getSatisfiedTypeDeclarations()) {
+            for (TypeDeclaration decl : model.getSatisfiedTypeDeclarations()) {
                 if (!(decl instanceof Interface)) {
                     continue;
                 }
@@ -149,9 +150,24 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         if (def instanceof Tree.AnyInterface) {
+            ProducedType type = model.getType().getQualifyingType();
+            while (type != null) {
+                java.util.List<TypeParameter> typeArguments = type.getDeclaration().getTypeParameters();
+                if (typeArguments == null) {
+                    continue;
+                }
+                for (TypeParameter typeArgument : typeArguments) {
+                    classBuilder.typeParameter(typeArgument);
+                }
+                type = type.getQualifyingType();
+            }
+        }
+        
+        if (def instanceof Tree.AnyInterface) {
             // Give the $impl companion a $this field...
             ClassDefinitionBuilder companionBuilder = classBuilder.getCompanionBuilder();
-            ProducedType thisType = def.getDeclarationModel().getType();
+            
+            ProducedType thisType = model.getType();
             companionBuilder.field(PRIVATE | FINAL, 
                     "$this", 
                     makeJavaType(thisType), 
@@ -166,7 +182,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     makeSelect("this", "$this"), 
                                     makeUnquotedIdent("$this"))));
             ctor.body(bodyStatements.toList());
-            if (!def.getDeclarationModel().isToplevel()) {
+            if (!model.isToplevel()) {
                 final ProducedType outerType = thisType.getQualifyingType();
                 // ...add a $outer() method to the impl
                 {
@@ -174,7 +190,7 @@ public class ClassTransformer extends AbstractTransformer {
                     outerBuilder.modifiers(PRIVATE | FINAL);
                     outerBuilder.resultType(null, makeJavaType(outerType));
                     final JCExpression expr;
-                    Scope container = def.getDeclarationModel().getContainer();
+                    Scope container = model.getContainer();
                     if (container instanceof Class) {
                         expr = makeSelect(makeQuotedQualIdentFromString(getFQDeclarationName((Class)container)), "this");
                     } else if (container instanceof Interface) {
@@ -201,7 +217,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         if (def instanceof Tree.AnyClass) {
-            for (TypeDeclaration decl : def.getDeclarationModel().getSatisfiedTypeDeclarations()) {
+            for (TypeDeclaration decl : model.getSatisfiedTypeDeclarations()) {
                 if (!(decl instanceof Interface)
                         || decl.isToplevel()) {
                     // TODO What about local interfaces?
@@ -225,21 +241,21 @@ public class ClassTransformer extends AbstractTransformer {
 
         // Check if it's a Class without initializer parameters
         if (def instanceof Tree.AnyClass && Decl.isToplevel(def) && !Decl.isAbstract(def)) {
-            com.redhat.ceylon.compiler.typechecker.model.Class c = (com.redhat.ceylon.compiler.typechecker.model.Class) def.getDeclarationModel();
+            com.redhat.ceylon.compiler.typechecker.model.Class c = (com.redhat.ceylon.compiler.typechecker.model.Class) model;
             if (c.getParameterList().getParameters().isEmpty()) {
                 // Add a main() method
                 at(null);
                 JCExpression nameId = makeQuotedFQIdent(c.getQualifiedNameString());
                 JCNewClass expr = make().NewClass(null, null, nameId, List.<JCTree.JCExpression>nil(), null);
-                classBuilder.body(makeMainMethod(def.getDeclarationModel(), expr));
+                classBuilder.body(makeMainMethod(model, expr));
             }
         }
         
         return classBuilder
-            .modelAnnotations(def.getDeclarationModel().getAnnotations())
+            .modelAnnotations(model.getAnnotations())
             .modifiers(transformClassDeclFlags(def))
-            .satisfies(def.getDeclarationModel().getSatisfiedTypes())
-            .caseTypes(def.getDeclarationModel().getCaseTypes())
+            .satisfies(model.getSatisfiedTypes())
+            .caseTypes(model.getCaseTypes())
             .init((List<JCStatement>)visitor.getResult().toList())
             .build();
     }

@@ -708,18 +708,41 @@ public abstract class AbstractTransformer implements Transformation {
         ProducedType simpleType = simplifyType(type);
         
         java.util.List<ProducedType> qualifyingTypes = new java.util.ArrayList<ProducedType>();
-        java.util.List<ProducedType> qualifyingTypeParameters = new java.util.ArrayList<ProducedType>();
+        java.util.List<TypeParameter> qualifyingTypeParameters = new java.util.ArrayList<TypeParameter>();
+        java.util.Map<TypeParameter, ProducedType> qualifyingTypeArguments = new java.util.HashMap<TypeParameter, ProducedType>();
         ProducedType qType = simpleType;
         while (qType != null) {
             qualifyingTypes.add(qType);
-            java.util.List<ProducedType> tal = qType.getTypeArgumentList();    
-            if (tal != null) {
-                qualifyingTypeParameters.addAll(tal);
+            Map<TypeParameter, ProducedType> tas = qType.getTypeArguments();
+            java.util.List<TypeParameter> tps = qType.getDeclaration().getTypeParameters();
+            if (tps != null) {
+                qualifyingTypeParameters.addAll(tps);
+                qualifyingTypeArguments.putAll(tas);
             }
             qType = qType.getQualifyingType();
         }
         
-        if (((flags & WANT_RAW_TYPE) == 0) && !qualifyingTypeParameters.isEmpty()) {
+        if (simpleType.getDeclaration() instanceof Interface
+                && ((flags & WANT_RAW_TYPE) == 0) && !qualifyingTypeParameters.isEmpty()) {
+            Collections.reverse(qualifyingTypes);
+            JCExpression baseType = makeErroneous();
+            TypeDeclaration tdecl = simpleType.getDeclaration();
+            ListBuffer<JCExpression> typeArgs = makeTypeArgs(isCeylonCallable(simpleType), 
+                    flags, 
+                    qualifyingTypeArguments, qualifyingTypeParameters);
+            if (isCeylonCallable(type) && 
+                    (flags & CLASS_NEW) != 0) {
+                baseType = makeIdent(syms().ceylonAbstractCallableType);
+            } else {
+                baseType = getDeclarationName(tdecl);
+            }
+            
+            if (typeArgs != null && typeArgs.size() > 0) {
+                jt = make().TypeApply(baseType, typeArgs.toList());
+            } else {
+                jt = baseType;
+            }
+        } else  if (((flags & WANT_RAW_TYPE) == 0) && !qualifyingTypeParameters.isEmpty()) {
             // GENERIC TYPES
             Collections.reverse(qualifyingTypes);
             JCExpression baseType = makeErroneous();
@@ -734,7 +757,11 @@ public abstract class AbstractTransformer implements Transformation {
                         (flags & CLASS_NEW) != 0) {
                     baseType = makeIdent(syms().ceylonAbstractCallableType);
                 } else if (first) {
-                    baseType = getDeclarationName(tdecl);
+                    String name = getFQDeclarationName(tdecl);
+                    if (tdecl instanceof Interface) {
+                        name = Util.getCompanionClassName(name);
+                    }
+                    baseType = makeQuotedQualIdentFromString(name);
                 } else {
                     baseType = makeSelect(jt, tdecl.getName());
                 }
@@ -768,14 +795,22 @@ public abstract class AbstractTransformer implements Transformation {
     private ListBuffer<JCExpression> makeTypeArgs(
             ProducedType simpleType, 
             int flags) {
-        TypeDeclaration tdecl = simpleType.getDeclaration();
-        java.util.List<ProducedType> tal = simpleType.getTypeArgumentList();
-        ListBuffer<JCExpression> typeArgs = new ListBuffer<JCExpression>();
+        Map<TypeParameter, ProducedType> tas = simpleType.getTypeArguments();
+        java.util.List<TypeParameter> tps = simpleType.getDeclaration().getTypeParameters();
+        
 
+        return makeTypeArgs(isCeylonCallable(simpleType), flags, tas, tps);
+    }
+
+    private ListBuffer<JCExpression> makeTypeArgs(boolean isCeylonCallable,
+            int flags, Map<TypeParameter, ProducedType> tas,
+            java.util.List<TypeParameter> tps) {
+        ListBuffer<JCExpression> typeArgs = new ListBuffer<JCExpression>();
         int idx = 0;
-        for (ProducedType ta : tal) {
+        for (TypeParameter tp : tps) {
+            ProducedType ta = tas.get(tp);
             if (idx > 0 &&
-                    isCeylonCallable(simpleType)) {
+                    isCeylonCallable) {
                 // In the runtime Callable only has a single type param
                 break;
             }
@@ -799,6 +834,7 @@ public abstract class AbstractTransformer implements Transformation {
                     ta = iterType;
             }
             JCExpression jta;
+            
             if (sameType(syms().ceylonVoidType, ta)) {
                 // For the root type Void:
                 if ((flags & (SATISFIES | EXTENDS)) != 0) {
@@ -810,7 +846,6 @@ public abstract class AbstractTransformer implements Transformation {
                     // - Foo<Object> if Foo<T> is invariant in T
                     // - Foo<?> if Foo<T> is covariant in T, or
                     // - Foo<Object> if Foo<T> is contravariant in T
-                    TypeParameter tp = tdecl.getTypeParameters().get(idx);
                     if (tp.isContravariant()) {
                         jta = make().Type(syms().objectType);
                     } else if (tp.isCovariant()) {
@@ -832,7 +867,6 @@ public abstract class AbstractTransformer implements Transformation {
                     // - raw Foo if Foo<T> is invariant in T,
                     // - raw Foo if Foo<T> is covariant in T, or
                     // - Foo<?> if Foo<T> is contravariant in T
-                    TypeParameter tp = tdecl.getTypeParameters().get(idx);
                     if (tp.isContravariant()) {
                         jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), makeJavaType(ta));
                     } else {
@@ -852,7 +886,6 @@ public abstract class AbstractTransformer implements Transformation {
                     // - Foo<T> if Foo is invariant in T,
                     // - Foo<? extends T> if Foo is covariant in T, or
                     // - Foo<? super T> if Foo is contravariant in T
-                    TypeParameter tp = tdecl.getTypeParameters().get(idx);
                     if (((flags & CLASS_NEW) == 0) && tp.isContravariant()) {
                         jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta, TYPE_ARGUMENT));
                     } else if (((flags & CLASS_NEW) == 0) && tp.isCovariant()) {

@@ -312,13 +312,16 @@ public class ClassDefinitionBuilder {
                 bounds.toList());
     }
 
-    public ClassDefinitionBuilder typeParameter(Tree.TypeParameterDeclaration param) {
-        gen.at(param);
-        TypeParameter declarationModel = param.getDeclarationModel();
+    public ClassDefinitionBuilder typeParameter(TypeParameter declarationModel) {
         return typeParameter(declarationModel.getName(), 
                 declarationModel.getSatisfiedTypes(),
                 declarationModel.isCovariant(),
                 declarationModel.isContravariant());
+    }
+    
+    public ClassDefinitionBuilder typeParameter(Tree.TypeParameterDeclaration param) {
+        gen.at(param);
+        return typeParameter(param.getDeclarationModel());
     }
 
     public ClassDefinitionBuilder extending(ProducedType extendingType) {
