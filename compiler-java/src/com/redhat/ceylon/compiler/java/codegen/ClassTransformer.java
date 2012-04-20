@@ -144,44 +144,55 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         if (def instanceof Tree.AnyInterface) {
-            // Give the $impl companion a constructor...
+            // Give the $impl companion a $this field...
             ClassDefinitionBuilder companionBuilder = classBuilder.getCompanionBuilder();
+            ProducedType thisType = def.getDeclarationModel().getType();
+            companionBuilder.field(PRIVATE | FINAL, 
+                    "$this", 
+                    makeJavaType(thisType), 
+                    null, false);
             MethodDefinitionBuilder ctor = companionBuilder.addConstructor();
             
-            // ...with a $this ctor parameter and field...
-            ProducedType thisType = def.getDeclarationModel().getType();
+            // ...initialize the $this field from a ctor parameter...
             ctor.parameter(0, "$this", makeJavaType(thisType), null);
             ListBuffer<JCStatement> bodyStatements = ListBuffer.<JCStatement>of(
                     make().Exec(
                             make().Assign(
                                     makeSelect("this", "$this"), 
                                     makeUnquotedIdent("$this"))));
-            companionBuilder.field(PRIVATE | FINAL, 
-                    "$this", 
-                    makeJavaType(thisType), 
-                    null, false);
+            ctor.body(bodyStatements.toList());
             if (!def.getDeclarationModel().isToplevel()) {
-                // ...and an $outer ctor parameter and field
-                ProducedType outerType = thisType.getQualifyingType();
-                ctor.parameter(0, "$outer", makeJavaType(outerType), null);
-                bodyStatements.append(
-                        make().Exec(
-                                make().Assign(
-                                        makeSelect("this", "$outer"), 
-                                        makeUnquotedIdent("$outer"))));
-                companionBuilder.field(PRIVATE | FINAL, 
-                        "$outer", 
-                        makeJavaType(outerType), 
-                        null, false);
+                final ProducedType outerType = thisType.getQualifyingType();
+                // ...add a $outer() method to the impl
+                {
+                    MethodDefinitionBuilder outerBuilder = MethodDefinitionBuilder.method(gen(), false, true, "$outer");// TODO ancestorLocal
+                    outerBuilder.modifiers(PRIVATE | FINAL);
+                    outerBuilder.resultType(null, makeJavaType(outerType));
+                    final JCExpression expr;
+                    Scope container = def.getDeclarationModel().getContainer();
+                    if (container instanceof Class) {
+                        expr = makeSelect(makeQuotedQualIdentFromString(getFQDeclarationName((Class)container)), "this");
+                    } else if (container instanceof Interface) {
+                        expr = make().Apply(null,// TODO Type args
+                                makeSelect("$this", "$outer"),
+                                List.<JCExpression>nil());
+                    } else {
+                        throw new RuntimeException();
+                    }
+                    outerBuilder.body(make().Return(expr));
+                    companionBuilder.defs(outerBuilder.build());
+                }
                 
+                {
                 // Add an $outer() method to the interface
                 MethodDefinitionBuilder outerBuilder = MethodDefinitionBuilder.method(gen(), false, true, "$outer");// TODO ancestorLocal
                 outerBuilder.annotations(makeAtIgnore());
                 outerBuilder.modifiers(PUBLIC | ABSTRACT);
                 outerBuilder.resultType(null, makeJavaType(outerType));
                 classBuilder.defs(outerBuilder.build());
+                }
             }
-            ctor.body(bodyStatements.toList());
+            
         }
         
         if (def instanceof Tree.AnyClass) {
@@ -457,6 +468,7 @@ public class ClassTransformer extends AbstractTransformer {
     public List<JCTree> transform(Tree.AnyMethod def, ClassDefinitionBuilder classBuilder) {
         ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
         final Method model = def.getDeclarationModel();
+        final String methodName = Util.quoteMethodNameIfProperty(model, gen());
         
         java.util.List<ParameterList> parameterLists = def.getParameterLists();
         boolean mpl = parameterLists.size() > 1;
@@ -490,7 +502,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         // Finally construct the outermost method using the body we've built so far
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(def), model.isClassOrInterfaceMember(), 
-                Util.quoteMethodNameIfProperty(model, gen()));
+                methodName);
         
         ParameterList paramList = parameterLists.get(0);
         
@@ -539,7 +551,7 @@ public class ClassTransformer extends AbstractTransformer {
             DefaultArgument defaultArgument = param.getDefaultArgument();
             if (defaultArgument != null) {
                 MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(def), model.isClassOrInterfaceMember(),
-                        Util.quoteMethodNameIfProperty(model, gen()));
+                        methodName);
                 JCMethodDecl overloadedMethod = transformForDefaultedParameter(overloadBuilder, 
                         def, model, isVoid, paramList, param).build();
                 lb.prepend(overloadedMethod);
@@ -557,6 +569,35 @@ public class ClassTransformer extends AbstractTransformer {
                     classBuilder.defs(overloadMethodImpl(model, parameters, p));
                 }
             }
+        }
+        
+        // If 
+        if (Decl.withinInterface(model)
+                && def instanceof MethodDeclaration
+                && ((MethodDeclaration) def).getSpecifierExpression() == null) {
+            MethodDefinitionBuilder delegateBuilder = MethodDefinitionBuilder.method(gen(), false, true, methodName);
+            delegateBuilder.modifiers(PRIVATE | FINAL);
+            if (def.getTypeParameterList() != null) {
+                for (Tree.TypeParameterDeclaration t : def.getTypeParameterList().getTypeParameterDeclarations()) {
+                    delegateBuilder.typeParameter(t);
+                }
+            }
+            delegateBuilder.resultType(model);
+            ListBuffer<JCExpression> arguments = ListBuffer.<JCExpression>lb();
+            for (Tree.Parameter param : paramList.getParameters()) {
+                delegateBuilder.parameter(param);
+                arguments.append(makeQuotedIdent(param.getDeclarationModel().getName()));
+            }
+            JCExpression expr = make().Apply(
+                    typeParams(model),
+                    makeSelect("$this", methodName), 
+                    arguments.toList());
+            if (isVoid) {
+                delegateBuilder.body(make().Exec(expr));
+            } else {
+                delegateBuilder.body(make().Return(expr));
+            }
+            classBuilder.getCompanionBuilder().defs(delegateBuilder.build());
         }
         
         lb.prepend(methodBuilder.build());
@@ -749,8 +790,6 @@ public class ClassTransformer extends AbstractTransformer {
     public JCMethodDecl transformConcreteInterfaceMember(MethodDefinition def, ProducedType type) {
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(def), true, Util.quoteMethodNameIfProperty(def.getDeclarationModel(), gen()));
         
-        JCExpression typeExpr = makeJavaType(type);
-        methodBuilder.parameter(FINAL, "$this", typeExpr, List.<JCTree.JCAnnotation>nil());
         for (Tree.Parameter param : def.getParameterLists().get(0).getParameters()) {
             methodBuilder.parameter(param);
         }
@@ -770,7 +809,7 @@ public class ClassTransformer extends AbstractTransformer {
         methodBuilder.block(body);
                 
         return methodBuilder
-            .modifiers(transformMethodDeclFlags(def) | STATIC)
+            .modifiers(transformMethodDeclFlags(def))
             .isActual(Decl.isActual(def))
             .build();
     }
