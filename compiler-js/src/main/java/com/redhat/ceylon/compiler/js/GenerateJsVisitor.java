@@ -277,20 +277,22 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void share(Declaration d) {
-        if (isCaptured(d) && !(prototypeStyle && d.isClassOrInterfaceMember())) {
-            shareUnconditional(d);
-        }
+        share(d, true);
     }
     
-    private void shareUnconditional(Declaration d) {
-        outerSelf(d);
-        out(".", names.name(d), "=", names.name(d), ";");
-        endLine();
+    private void share(Declaration d, boolean excludeProtoMembers) {
+        if (!(excludeProtoMembers && prototypeStyle && d.isClassOrInterfaceMember())
+                && isCaptured(d)) {
+            outerSelf(d);
+            out(".", names.name(d), "=", names.name(d), ";");
+            endLine();
+        }
     }
 
     @Override
     public void visit(ClassDeclaration that) {
         Class d = that.getDeclarationModel();
+        if (prototypeStyle && d.isClassOrInterfaceMember()) return;
         comment(that);
         var(d);
         TypeDeclaration dec = that.getTypeSpecifier().getType().getTypeModel()
@@ -298,16 +300,25 @@ public class GenerateJsVisitor extends Visitor
         qualify(that,dec);
         out(names.name(dec), ";");
         endLine();
-        if (prototypeStyle) {
-            shareUnconditional(d);
-        } else {
-            share(d);
+        share(d);
+    }
+    
+    private void addClassDeclarationToPrototype(TypeDeclaration outer, ClassDeclaration that) {
+        comment(that);
+        TypeDeclaration dec = that.getTypeSpecifier().getType().getTypeModel().getDeclaration();
+        String path = qualifiedPath(that, dec, true);
+        if (path.length() > 0) {
+            path += '.';
         }
+        out(names.self(outer), ".", names.name(that.getDeclarationModel()), "=",
+                path, names.name(dec), ";");
+        endLine();
     }
 
     @Override
     public void visit(InterfaceDeclaration that) {
         Interface d = that.getDeclarationModel();
+        if (prototypeStyle && d.isClassOrInterfaceMember()) return;
         comment(that);
         var(d);
         TypeDeclaration dec = that.getTypeSpecifier().getType().getTypeModel()
@@ -315,11 +326,19 @@ public class GenerateJsVisitor extends Visitor
         qualify(that,dec);
         out(names.name(dec), ";");
         endLine();
-        if (prototypeStyle) {
-            shareUnconditional(d);
-        } else {
-            share(d);
+        share(d);
+    }
+    
+    private void addInterfaceDeclarationToPrototype(TypeDeclaration outer, InterfaceDeclaration that) {
+        comment(that);
+        TypeDeclaration dec = that.getTypeSpecifier().getType().getTypeModel().getDeclaration();
+        String path = qualifiedPath(that, dec, true);
+        if (path.length() > 0) {
+            path += '.';
         }
+        out(names.self(outer), ".", names.name(that.getDeclarationModel()), "=",
+                path, names.name(dec), ";");
+        endLine();
     }
 
     private void addInterfaceToPrototype(ClassOrInterface type, InterfaceDefinition interfaceDef) {
@@ -563,7 +582,9 @@ public class GenerateJsVisitor extends Visitor
 
     private String typeFunctionName(SimpleType type) {
         TypeDeclaration d = type.getDeclarationModel();
-        String constr = qualifiedPath(type, d, true);
+        boolean inProto = prototypeStyle
+                && (type.getScope().getContainer() instanceof TypeDeclaration);
+        String constr = qualifiedPath(type, d, inProto);
         if (constr.length() > 0) {
             constr += '.';
         }
@@ -603,6 +624,10 @@ public class GenerateJsVisitor extends Visitor
             addInterfaceToPrototype(d, (InterfaceDefinition) s);
         } else if (s instanceof ObjectDefinition) {
             addObjectToPrototype(d, (ObjectDefinition) s);
+        } else if (s instanceof ClassDeclaration) {
+            addClassDeclarationToPrototype(d, (ClassDeclaration) s);
+        } else if (s instanceof InterfaceDeclaration) {
+            addInterfaceDeclarationToPrototype(d, (InterfaceDeclaration) s);
         }
         prototypeOwner = oldPrototypeOwner;
     }
@@ -750,9 +775,10 @@ public class GenerateJsVisitor extends Visitor
             that.getSpecifierExpression().getExpression().visit(this);
             out(";");
             endLine();
+            share(that.getDeclarationModel(), false);
         }
     }
-
+    
     @Override
     public void visit(MethodDefinition that) {
         if (!(prototypeStyle && that.getDeclarationModel().isClassOrInterfaceMember())) {
@@ -1473,12 +1499,11 @@ public class GenerateJsVisitor extends Visitor
         return qualifiedPath(that, d, false);
     }
 
-    private String qualifiedPath(Node that, Declaration d, boolean typeInit) {
+    private String qualifiedPath(Node that, Declaration d, boolean inProto) {
         if (isImported(that, d)) {
             return names.packageAlias(d.getUnit().getPackage());
         }
-        else if (prototypeStyle &&
-                !(typeInit && (that.getScope().getContainer() instanceof TypeDeclaration))) {
+        else if (prototypeStyle && !inProto) {
             if (d.isClassOrInterfaceMember() &&
                     !(d instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter &&
                             !d.isCaptured())) {
@@ -1493,11 +1518,11 @@ public class GenerateJsVisitor extends Visitor
                 //}
                 String path = "";
                 Scope scope = that.getScope();
-                if (typeInit) {
-                    while ((scope != null) && (scope instanceof TypeDeclaration)) {
-                        scope = scope.getContainer();
-                    }
-                }
+//                if (inProto) {
+//                    while ((scope != null) && (scope instanceof TypeDeclaration)) {
+//                        scope = scope.getContainer();
+//                    }
+//                }
                 if ((scope != null) && ((that instanceof ClassDeclaration)
                                         || (that instanceof InterfaceDeclaration))) {
                     // class/interface aliases have no own "this"
@@ -1520,18 +1545,16 @@ public class GenerateJsVisitor extends Visitor
                 return path;
             }
         }
-        else {
-            if (d.isShared() && d.isClassOrInterfaceMember()) {
-                TypeDeclaration id = that.getScope().getInheritingDeclaration(d);
-                if (id==null) {
-                    //a shared local declaration
-                    return names.self((TypeDeclaration)d.getContainer());
-                }
-                else {
-                    //an inherited declaration that might be
-                    //inherited by an outer scope
-                    return names.self(id);
-                }
+        else if ((d.isShared() || inProto) && d.isClassOrInterfaceMember()) {
+            TypeDeclaration id = that.getScope().getInheritingDeclaration(d);
+            if (id==null) {
+                //a shared local declaration
+                return names.self((TypeDeclaration)d.getContainer());
+            }
+            else {
+                //an inherited declaration that might be
+                //inherited by an outer scope
+                return names.self(id);
             }
         }
         return "";

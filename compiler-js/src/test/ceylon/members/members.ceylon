@@ -90,17 +90,22 @@ class Issue50() {
     z = "ok";
 }
 
+class Util() {
+    shared String s = "123";
+}
 class AliasMemberTest() {
     shared interface I1 {shared String s {return "A";} }
     shared interface I1Alias = I1;
     interface I2 {shared String s {return "B";} }
     interface I2Alias = I2;
-    shared class A() satisfies I1 {}
-    class B() satisfies I2 {}
+    shared class A() satisfies I1Alias {}
+    class B() satisfies I2Alias {}
     shared class AliasA() = A;
     class AliasB() = B;
     shared String b() { return AliasB().s; }
-    
+ 
+    shared Util f1() = Util;   
+    shared A f2() = AliasA;
 }
 
 shared void test() {
@@ -122,5 +127,7 @@ shared void test() {
     
     assert(AliasMemberTest().AliasA().s=="A", "shared inner alias class");
     assert(AliasMemberTest().b()=="B", "non-shared inner alias class");
+    assert(AliasMemberTest().f1().s=="123", "alias method member 1");
+    assert(AliasMemberTest().f2().s=="A", "alias method member 2");
     results();
 }
