@@ -938,25 +938,19 @@ public abstract class AbstractTransformer implements Transformation {
         return result;
     }
     
-    protected String getFQDeclarationName(Declaration decl) {
-        /*while (decl instanceof TypeDeclaration
-                && ((TypeDeclaration) decl).getType().getQualifyingType() != null) {
-            decl = ((TypeDeclaration) decl).getType().getQualifyingType().getDeclaration();
-            String parentName = getFQDeclarationName(decl);
-            if (decl instanceof Interface) {
-                return parentName + "$" + decl.getName();
-            } else {
-                return parentName + "." + decl.getName();
-            }
-        } */
+    protected String getFQDeclarationName(final Declaration decl) {
         if (!decl.isToplevel()) {
             StringBuilder sb = new StringBuilder();
             Scope container;
             if (decl instanceof Class
                     && decl.getContainer() instanceof Interface) {
                 Interface parent = (Interface)decl.getContainer();
-                sb.append(Util.getCompanionClassName(parent.getName())+"." + decl.getName());
-                container = decl.getContainer().getContainer();
+                if (Decl.isLocal((Interface)decl.getContainer())) {
+                    return decl.getName();
+                } else {
+                    sb.append(Util.getCompanionClassName(parent.getName())+"." + decl.getName());
+                    container = decl.getContainer().getContainer();
+                }
             } else {
                 sb.append(decl.getName());
                 container = decl.getContainer();
@@ -972,7 +966,11 @@ public abstract class AbstractTransformer implements Transformation {
                     sb.insert(0, ((TypeDeclaration)container).getName());
                 } else {
                     // A local
-                    break;
+                    if (!(decl instanceof Interface)) {
+                        break;
+                    }
+                    sb.insert(0, '$');
+                    sb.insert(0, getLocalId(container));
                 }
                 container = container.getContainer();
             }

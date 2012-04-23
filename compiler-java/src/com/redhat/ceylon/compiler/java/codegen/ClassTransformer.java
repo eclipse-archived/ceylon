@@ -90,6 +90,8 @@ public class ClassTransformer extends AbstractTransformer {
         super(context);
     }
 
+
+    
     // FIXME: figure out what insertOverloadedClassConstructors does and port it
 
     public List<JCTree> transform(final Tree.ClassOrInterface def) {
@@ -243,12 +245,27 @@ public class ClassTransformer extends AbstractTransformer {
                                 makeUnquotedIdent("$this"))));
         ctor.body(bodyStatements.toList());
         if (!model.isToplevel()) {
-            final ProducedType outerType = thisType.getQualifyingType();
+            // interfaces inner to local types have a different type in the 
+            // interface and on the $impl because the real outer type is not 
+            // visible because the interfaces is hoisted to top level
+            final ProducedType outerTypeInterface;
+            final ProducedType outerTypeCompanion;
+            if (Decl.isAncestorLocal(model)) {
+                Scope container = Decl.container(model);
+                while (!(container instanceof TypeDeclaration)) {
+                    container = container.getContainer();
+                }
+                outerTypeCompanion = ((TypeDeclaration)container).getType();
+                outerTypeInterface = typeFact().getObjectDeclaration().getType();
+            } else {
+                outerTypeInterface = thisType.getQualifyingType();
+                outerTypeCompanion = outerTypeInterface;
+            }
             // ...add a $outer() method to the impl
             {
                 MethodDefinitionBuilder outerBuilder = MethodDefinitionBuilder.method(gen(), false, true, "$outer");// TODO ancestorLocal
                 outerBuilder.modifiers(PRIVATE | FINAL);
-                JCExpression jt = makeJavaType(outerType);
+                JCExpression jt = makeJavaType(outerTypeCompanion);
                 outerBuilder.resultType(null, jt);
                 final JCExpression expr;
                 Scope container = model.getContainer();
@@ -259,12 +276,18 @@ public class ClassTransformer extends AbstractTransformer {
                             makeSelect("$this", "$outer"),
                             List.<JCExpression>nil());
                 } else if (Decl.isLocal((model))) {
-                    // TODO Make this work in nested statements
-                    expr = makeSelect(makeQuotedQualIdentFromString(getFQDeclarationName((TypedDeclaration)container)), "this");
+                    while (!(container instanceof TypeDeclaration)) {
+                        container = container.getContainer();
+                    }
+                    expr = makeSelect(
+                                    makeQuotedQualIdentFromString(getFQDeclarationName((TypeDeclaration)container)), 
+                                    "this");
                 } else {
                     throw new RuntimeException();
                 }
-                outerBuilder.body(make().Return(expr));
+                outerBuilder.body(make().Return(
+                        make().TypeCast(makeJavaType(outerTypeCompanion), 
+                                expr)));
                 companionBuilder.defs(outerBuilder.build());
             }
             
@@ -273,7 +296,7 @@ public class ClassTransformer extends AbstractTransformer {
             MethodDefinitionBuilder outerBuilder = MethodDefinitionBuilder.method(gen(), false, true, "$outer");// TODO ancestorLocal
             outerBuilder.annotations(makeAtIgnore());
             outerBuilder.modifiers(PUBLIC | ABSTRACT);
-            outerBuilder.resultType(null, makeJavaType(outerType));
+            outerBuilder.resultType(null, makeJavaType(outerTypeInterface));
             classBuilder.defs(outerBuilder.build());
             }
         }
@@ -344,8 +367,6 @@ public class ClassTransformer extends AbstractTransformer {
             .setterBlock(body)
             .build();
     }
-
-
 
     public List<JCTree> transform(AttributeGetterDefinition decl) {
         String name = decl.getIdentifier().getText();
@@ -617,6 +638,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (Decl.withinInterface(model)
                 && def instanceof MethodDeclaration
                 && ((MethodDeclaration) def).getSpecifierExpression() == null) {
+            
             for (Tree.Parameter param : paramList.getParameters()) {
                 if (param.getDefaultArgument() != null
                         || paramList.getParameters().indexOf(param) == paramList.getParameters().size()) {
@@ -775,10 +797,6 @@ public class ClassTransformer extends AbstractTransformer {
         // base expressions it might be worth inlining the expression rather 
         // than calling the default value method.
         // TODO This really belongs in the invocation builder
-        Declaration container = param.getDeclarationModel().getDeclaration().getRefinedDeclaration();
-        if (!container.isToplevel()) {
-            container = (Declaration)container.getContainer();
-        }
         
         ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
         ListBuffer<JCVariableDecl> vars = ListBuffer.<JCVariableDecl>lb();
