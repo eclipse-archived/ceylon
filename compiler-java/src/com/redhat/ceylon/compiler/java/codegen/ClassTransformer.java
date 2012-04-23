@@ -125,11 +125,16 @@ public class ClassTransformer extends AbstractTransformer {
                 DefaultArgument defaultArgument = param.getDefaultArgument();
                 if (defaultArgument != null) {
                     MethodDefinitionBuilder overloadBuilder = classBuilder.addConstructor();
-                    transformForDefaultedParameter(
+                    transformForDefaultedParameter(true,
                             overloadBuilder,
                             def, model, true, paramList, param);
                     
                 }
+            }
+            
+            if (model.getType().getQualifyingType() != null
+                    && model.getType().getQualifyingType().getDeclaration() instanceof Interface) {
+                // TODO 
             }
             
             // For each satisfied interface, instantiate an instance of the 
@@ -141,9 +146,9 @@ public class ClassTransformer extends AbstractTransformer {
                 }
                 Interface iface = (Interface)decl;
                 ListBuffer<JCExpression> state = ListBuffer.<JCExpression>of(makeUnquotedIdent("this"));
-                if (!iface.isToplevel()) {
-                    state.append(makeQuotedQualIdent(makeJavaType(iface.getType().getQualifyingType()), "this"));
-                }
+                //if (!iface.isToplevel()) {
+                //    state.append(makeQualIdent(makeJavaType(iface.getType().getQualifyingType()), "this"));
+                //}
                 final String fieldName = getCompanionFieldName(iface);
                 classBuilder.init(make().Exec(make().Assign(
                         makeSelect("this", fieldName),// TODO Use qualified name for quoting? 
@@ -193,7 +198,14 @@ public class ClassTransformer extends AbstractTransformer {
                 outerBuilder.annotations(makeAtIgnore());
                 outerBuilder.modifiers(FINAL | PUBLIC);
                 outerBuilder.resultType(null, makeJavaType(iface.getType().getQualifyingType()));
-                outerBuilder.body(make().Return(makeQuotedIdent("$outer")));
+                Scope container = model.getContainer();
+                final JCExpression expr;
+                if (container instanceof Class) {
+                    expr = makeSelect(makeQuotedQualIdentFromString(getFQDeclarationName((Class)container)), "this");
+                } else {
+                    expr = makeNull();//TODO makeQuotedIdent("$outer");// TODO Need to have a $outer field and pass in the outer instance to the ctor
+                }
+                outerBuilder.body(make().Return(expr));
                 classBuilder.defs(outerBuilder.build());
             }
             at(def);
@@ -616,9 +628,9 @@ public class ClassTransformer extends AbstractTransformer {
             if (defaultArgument != null) {
                 MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(def), model.isClassOrInterfaceMember(),
                         methodName);
-                JCMethodDecl overloadedMethod = transformForDefaultedParameter(overloadBuilder, 
+                JCMethodDecl overloadedMethod = transformForDefaultedParameter(!Decl.withinInterface(model), overloadBuilder, 
                         def, model, isVoid, paramList, param).build();
-                lb.prepend(overloadedMethod);
+                lb.prepend(overloadedMethod);    
             }
         }
         
@@ -754,6 +766,7 @@ public class ClassTransformer extends AbstractTransformer {
     
 
     private MethodDefinitionBuilder transformForDefaultedParameter(
+            boolean body,
             MethodDefinitionBuilder overloadBuilder,
             Tree.Declaration def,
             Declaration model, boolean isVoid, ParameterList paramList,
@@ -841,15 +854,19 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         // TODO Type args on method call
-        JCExpression invocation = make().Apply(List.<JCExpression>nil(),
-                methName, args.toList());
-           
-        if (isVoid) {
-            invocation = make().LetExpr(vars.toList(), List.<JCStatement>of(make().Exec(invocation)), makeNull());
-            overloadBuilder.body(make().Exec(invocation));
+        if (body) {
+            JCExpression invocation = make().Apply(List.<JCExpression>nil(),
+                    methName, args.toList());
+               
+            if (isVoid) {
+                invocation = make().LetExpr(vars.toList(), List.<JCStatement>of(make().Exec(invocation)), makeNull());
+                overloadBuilder.body(make().Exec(invocation));
+            } else {
+                invocation = make().LetExpr(vars.toList(), invocation);
+                overloadBuilder.body(make().Return(invocation));
+            }
         } else {
-            invocation = make().LetExpr(vars.toList(), invocation);
-            overloadBuilder.body(make().Return(invocation));
+            overloadBuilder.noBody();
         }
         
         return overloadBuilder;
@@ -889,10 +906,11 @@ public class ClassTransformer extends AbstractTransformer {
         String name = Util.getDefaultedParamMethodName(container.getDeclarationModel(), parameter );
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(param), true, name);
         
-        int modifiers = abstract_ ? ABSTRACT : FINAL;
+        int modifiers = abstract_ ? PUBLIC | ABSTRACT : FINAL;
         if (container.getDeclarationModel().isShared()) {
             modifiers |= PUBLIC;
-        } else if (!container.getDeclarationModel().isToplevel()){
+        } else if (!container.getDeclarationModel().isToplevel()
+                && !abstract_){
             modifiers |= PRIVATE;
         }
         if (Decl.defaultParameterMethodStatic(container)) {

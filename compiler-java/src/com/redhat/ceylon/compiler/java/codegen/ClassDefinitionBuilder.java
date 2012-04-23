@@ -370,7 +370,7 @@ public class ClassDefinitionBuilder {
     
     public ClassDefinitionBuilder satisfies(java.util.List<ProducedType> satisfies) {
         this.satisfies.addAll(transformTypesList(satisfies));
-        this.defs.addAll(appendConcreteInterfaceMembers(satisfies));
+        //this.defs.addAll(appendConcreteInterfaceMembers(satisfies));
         annotations(gen.makeAtSatisfiedTypes(satisfies));
         return this;
     }

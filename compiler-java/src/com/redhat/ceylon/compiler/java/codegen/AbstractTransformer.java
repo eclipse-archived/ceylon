@@ -939,6 +939,10 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     protected String getFQDeclarationName(final Declaration decl) {
+        return getFQDeclarationName(decl, true);
+    }
+    
+    protected String getFQDeclarationName(final Declaration decl, boolean fq) {
         if (!decl.isToplevel()) {
             StringBuilder sb = new StringBuilder();
             Scope container;
@@ -969,8 +973,17 @@ public abstract class AbstractTransformer implements Transformation {
                     if (!(decl instanceof Interface)) {
                         break;
                     }
-                    sb.insert(0, '$');
+                    sb.insert(0, decl instanceof Interface ? '$' : ".");
                     sb.insert(0, getLocalId(container));
+                    if (!fq) {
+                        container = container.getContainer();
+                        while (container instanceof TypeDeclaration) {
+                            sb.insert(0, decl instanceof Interface ? '$' : ".");
+                            sb.insert(0, ((TypeDeclaration)container).getName());
+                            container = container.getContainer();
+                        }
+                        break;
+                    }
                 }
                 container = container.getContainer();
             }
@@ -987,7 +1000,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     public String getCompanionClassName(Declaration decl){
-        return getFQDeclarationName(decl) + "$impl";
+        return getFQDeclarationName(decl, false) + "$impl";
     }
     
     protected ProducedType getThisType(Tree.Declaration decl) {
