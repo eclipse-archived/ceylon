@@ -43,9 +43,6 @@ import com.sun.tools.javac.comp.Env;
 import com.sun.tools.javac.jvm.*;
 import com.sun.tools.javac.model.*;
 import com.sun.tools.javac.tree.JCTree;
-import com.sun.tools.javac.tree.TreeMaker;
-import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCNewClass;
 
 import static com.sun.tools.javac.code.Flags.*;
 import static com.sun.tools.javac.code.Kinds.*;
@@ -986,7 +983,6 @@ public abstract class Symbol implements Element {
             assert !(data instanceof Env<?>) : this;
             this.data = data;
         }
-
     }
 
     /** A class for method symbols.
@@ -1257,7 +1253,6 @@ public abstract class Symbol implements Element {
         public List<Type> getThrownTypes() {
             return asType().getThrownTypes();
         }
-
     }
 
     /** A class for predefined operators.

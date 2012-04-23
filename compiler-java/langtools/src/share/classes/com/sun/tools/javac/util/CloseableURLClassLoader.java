@@ -81,7 +81,7 @@ class CloseableURLClassLoader
             throw e;
         }
     }
-
+    
     private ArrayList<?> getLoaders()
             throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException
     {
@@ -92,7 +92,7 @@ class CloseableURLClassLoader
         Field loadersField = urlClassPath.getClass().getDeclaredField("loaders");
         return (ArrayList<?>) getField(urlClassPath, loadersField);
     }
-
+    
     private Object getField(Object o, Field f)
             throws IllegalArgumentException, IllegalAccessException {
         boolean prev = f.isAccessible();
@@ -103,5 +103,5 @@ class CloseableURLClassLoader
             f.setAccessible(prev);
         }
     }
-
+    
 }

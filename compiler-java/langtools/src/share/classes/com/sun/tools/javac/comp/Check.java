@@ -26,12 +26,12 @@
 package com.sun.tools.javac.comp;
 
 import java.util.*;
+import java.util.Set;
 
 import com.sun.tools.javac.code.*;
 import com.sun.tools.javac.jvm.*;
 import com.sun.tools.javac.tree.*;
 import com.sun.tools.javac.util.*;
-import com.sun.tools.javac.util.Context.SourceLanguage;
 import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
 import com.sun.tools.javac.util.List;
 

@@ -26,13 +26,13 @@
 package com.sun.tools.javac.comp;
 
 import java.util.*;
+import java.util.Set;
 import javax.lang.model.element.ElementKind;
 import javax.tools.JavaFileObject;
 
 import com.sun.tools.javac.code.*;
 import com.sun.tools.javac.jvm.*;
 import com.sun.tools.javac.tree.*;
-import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.*;
 import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
 import com.sun.tools.javac.util.List;
@@ -46,7 +46,6 @@ import com.sun.source.tree.IdentifierTree;
 import com.sun.source.tree.MemberSelectTree;
 import com.sun.source.tree.TreeVisitor;
 import com.sun.source.util.SimpleTreeVisitor;
-import com.sun.source.util.Trees;
 
 import static com.sun.tools.javac.code.Flags.*;
 import static com.sun.tools.javac.code.Kinds.*;
@@ -731,7 +730,6 @@ public class Attr extends JCTree.Visitor {
                     v.pos = tree.pos;
                 }
             }
-
             result = tree.type = v.type;
             chk.validateAnnotations(tree.mods.annotations, v);
         }
@@ -1357,10 +1355,6 @@ public class Attr extends JCTree.Visitor {
         }
 
     public void visitNewClass(JCNewClass tree) {
-        visitNewClassImpl(tree);
-    }
-
-    private void visitNewClassImpl(JCNewClass tree) {
         Type owntype = syms.errType;
 
         // The local environment of a class creation is
@@ -1403,9 +1397,6 @@ public class Attr extends JCTree.Visitor {
 //          System.out.println(clazz + " generated.");//DEBUG
         }
 
-        // Range objects from "for (X x in y..z)" constructs need their type arguments setting.
-        List<Type> argtypes = null;
-
         // Attribute clazz expression and store
         // symbol + type back into the attributed tree.
         Type clazztype = chk.checkClassType(
@@ -1431,8 +1422,7 @@ public class Attr extends JCTree.Visitor {
         }
 
         // Attribute constructor arguments.
-        if (argtypes == null)
-            argtypes = attribArgs(tree.args, localEnv);
+        List<Type> argtypes = attribArgs(tree.args, localEnv);
         List<Type> typeargtypes = attribTypes(tree.typeargs, localEnv);
 
         // If we have made no mistakes in the class type...
@@ -1895,8 +1885,7 @@ public class Attr extends JCTree.Visitor {
 
         // Determine the symbol represented by the selection.
         env.info.varArgs = false;
-        Symbol sym;
-            sym = selectSym(tree, site, env, pt, pkind);
+        Symbol sym = selectSym(tree, site, env, pt, pkind);
         if (sym.exists() && !isType(sym) && (pkind & (PCK | TYP)) != 0) {
             site = capture(site);
             sym = selectSym(tree, site, env, pt, pkind);

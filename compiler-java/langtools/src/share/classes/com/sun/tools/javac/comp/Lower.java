@@ -27,8 +27,6 @@ package com.sun.tools.javac.comp;
 
 import java.util.*;
 
-import com.sun.source.tree.Tree.Kind;
-
 import com.sun.tools.javac.code.*;
 import com.sun.tools.javac.jvm.*;
 import com.sun.tools.javac.tree.*;
