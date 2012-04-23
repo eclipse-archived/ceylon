@@ -20,7 +20,11 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import java.util.Map;
+
 import com.redhat.ceylon.compiler.java.util.Decl;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -35,7 +39,6 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     
     private final ToplevelAttributesDefinitionBuilder topattrBuilder;
     private final ClassDefinitionBuilder classBuilder;
-    private CeylonVisitor parentVisitor;
     
     /** For expressions and statements */
     public CeylonVisitor(CeylonTransformer ceylonTransformer) {
@@ -54,9 +57,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
     
     /** For class/interface/object members */
-    public CeylonVisitor(CeylonTransformer ceylonTransformer, CeylonVisitor parentVisitor, ClassDefinitionBuilder classBuilder) {
+    public CeylonVisitor(CeylonTransformer ceylonTransformer, ClassDefinitionBuilder classBuilder) {
         this.gen = ceylonTransformer;
-        this.parentVisitor = parentVisitor;
         this.defs = new ListBuffer<JCTree>();
         this.topattrBuilder = null;
         this.classBuilder = classBuilder;
@@ -81,23 +83,15 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         
         if (Decl.withinClassOrInterface(decl)) {
             if (Decl.withinInterface(decl)
-                    && parentVisitor != null) {
-                classBuilder.getCompanionBuilder().defs(gen.classGen().transform(this, decl));
+                    && !Decl.isToplevel(decl)) {
+                classBuilder.getCompanionBuilder().defs(gen.classGen().transform(decl));
             } else {
-                classBuilder.defs(gen.classGen().transform(this, decl));
+                classBuilder.defs(gen.classGen().transform(decl));
             }
         } else {
-            appendList(gen.classGen().transform(this, decl));
+            appendList(gen.classGen().transform(decl));
         }
         gen.resetCompilerAnnotations(annots);
-    }
-
-    public CeylonVisitor getTopLevelVisitor() {
-        CeylonVisitor topLevelVisitor = this;
-        while (topLevelVisitor.parentVisitor != null) {
-            topLevelVisitor = topLevelVisitor.parentVisitor;
-        }
-        return topLevelVisitor;
     }
 
     private boolean hasClassErrors(Tree.ClassOrInterface decl) {
@@ -110,9 +104,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             return;
         boolean annots = gen.checkCompilerAnnotations(decl);
         if (Decl.withinClass(decl)) {
-            classBuilder.defs(gen.classGen().transformObject(this, decl, classBuilder));
+            classBuilder.defs(gen.classGen().transformObject(decl, classBuilder));
         } else {
-            appendList(gen.classGen().transformObject(this, decl, null));
+            appendList(gen.classGen().transformObject(decl, null));
         }
         gen.resetCompilerAnnotations(annots);
     }

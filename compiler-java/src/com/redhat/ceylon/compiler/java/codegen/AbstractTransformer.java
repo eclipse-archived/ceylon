@@ -908,6 +908,36 @@ public abstract class AbstractTransformer implements Transformation {
         return "java.lang.String".equals(type.getUnderlyingType());
     }
 
+    protected java.util.Map<Scope, Integer> locals;
+    
+    protected void resetLocals() {
+        gen().locals = new java.util.HashMap<Scope, Integer>();
+    }
+    
+    protected void local(Scope decl) {
+        gen().locals.put(decl, gen().locals.size());
+    }
+    
+    public int getLocalId(Scope decl) {
+        Integer id = gen().locals.get(decl);
+        if (id == null) {
+            throw new RuntimeException(decl + " has no local id");
+        }
+        return id;
+    }
+    
+    protected ClassDefinitionBuilder ccdb;
+    
+    public ClassDefinitionBuilder current() {
+        return gen().ccdb; 
+    }
+    
+    public ClassDefinitionBuilder replace(ClassDefinitionBuilder ccdb) {
+        ClassDefinitionBuilder result = gen().ccdb;
+        gen().ccdb = ccdb;
+        return result;
+    }
+    
     protected String getFQDeclarationName(Declaration decl) {
         /*while (decl instanceof TypeDeclaration
                 && ((TypeDeclaration) decl).getType().getQualifyingType() != null) {

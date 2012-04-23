@@ -40,6 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
+import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
@@ -84,6 +85,7 @@ public class ClassDefinitionBuilder {
     private final ListBuffer<JCTree> defs = ListBuffer.lb();
     private ClassDefinitionBuilder concreteInterfaceMemberDefs;
     private final ListBuffer<JCTree> body = ListBuffer.lb();
+    private final ListBuffer<JCTree> also = ListBuffer.lb();
     private final ListBuffer<JCStatement> init = ListBuffer.lb();
 
     private boolean ancestorLocal;
@@ -92,16 +94,13 @@ public class ClassDefinitionBuilder {
     
     private boolean isCompanion = false;
 
-    private CeylonVisitor topLevelVisitor;
+    private ClassDefinitionBuilder containingClassBuilder;
 
     public static ClassDefinitionBuilder klass(AbstractTransformer gen, boolean ancestorLocal, String name) {
-        return new ClassDefinitionBuilder(gen, ancestorLocal, name);
-    }
-    
-    public static ClassDefinitionBuilder klass(AbstractTransformer gen, CeylonVisitor topLevelVisitor, boolean ancestorLocal, String name) {
-        ClassDefinitionBuilder b = new ClassDefinitionBuilder(gen, ancestorLocal, name);
-        b.topLevelVisitor = topLevelVisitor;
-        return b;
+        ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, ancestorLocal, name);
+        builder.containingClassBuilder = gen.current();
+        gen.replace(builder);
+        return builder;
     }
     
     public static ClassDefinitionBuilder methodWrapper(AbstractTransformer gen, boolean ancestorLocal, String name, boolean shared) {
@@ -123,6 +122,14 @@ public class ClassDefinitionBuilder {
         }
     }
 
+    private ClassDefinitionBuilder getTopLevelBuilder() {
+        ClassDefinitionBuilder result = this;
+        while (result.containingClassBuilder != null) {
+            result = result.containingClassBuilder;
+        }
+        return result;
+    }
+    
     public List<JCTree> build() {
         if (built) {
             throw new IllegalStateException();
@@ -143,25 +150,48 @@ public class ClassDefinitionBuilder {
                 defs.toList());
         ListBuffer<JCTree> klasses = ListBuffer.<JCTree>lb();
         
-        if ((modifiers & INTERFACE) != 0) {
-            topLevelVisitor.append(klass);
-        } else {
-            klasses.append(klass);
-        }
-        
         // Generate a companion class if we're building an interface
         // or the companion actually has some content 
         // (e.g. initializer with defaulted params)
-        if (concreteInterfaceMemberDefs != null
+        
+        
+        if ((modifiers & INTERFACE) != 0) {
+            if (this == getTopLevelBuilder()) {
+                klasses.appendList(also.toList());
+                klasses.append(klass);
+                if (hasCompanion()) {
+                    klasses.appendList(concreteInterfaceMemberDefs.build());
+                }
+            } else {
+                if (hasCompanion()) {
+                    klasses.appendList(concreteInterfaceMemberDefs.build());
+                }
+                getTopLevelBuilder().also(klass);
+            }
+        } else {
+            klasses.appendList(also.toList());
+            if (hasCompanion()) {
+                klasses.appendList(concreteInterfaceMemberDefs.build());
+            }
+            klasses.append(klass);
+        }
+        
+        gen.replace(containingClassBuilder);
+        
+        return klasses.toList();
+    }
+
+    private boolean hasCompanion() {
+        return concreteInterfaceMemberDefs != null
                 && (((modifiers & INTERFACE) != 0)
                     || !(concreteInterfaceMemberDefs.defs.isEmpty()
                     && concreteInterfaceMemberDefs.init.isEmpty()
                     && concreteInterfaceMemberDefs.body.isEmpty()
-                    && concreteInterfaceMemberDefs.constructors.isEmpty()))) {
-            klasses.appendList(concreteInterfaceMemberDefs.build());
-        }
-        
-        return klasses.toList();
+                    && concreteInterfaceMemberDefs.constructors.isEmpty()));
+    }
+
+    private void also(JCTree also) {
+        this.also.append(also);
     }
 
     private void appendDefinitionsTo(ListBuffer<JCTree> defs) {
