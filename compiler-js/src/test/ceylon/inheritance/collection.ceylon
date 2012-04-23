@@ -1,3 +1,5 @@
+import assert {...}
+
 class TestColl(Integer... elements) satisfies Collection<Integer> {
 
   shared actual TestColl clone { return TestColl(elements...); }

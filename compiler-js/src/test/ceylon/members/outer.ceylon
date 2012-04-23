@@ -1,3 +1,5 @@
+import assert {...}
+
 void test_outer_inner_safety() {
   class Outer() {
     shared class Inner() { }

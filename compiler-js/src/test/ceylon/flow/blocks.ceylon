@@ -1,3 +1,5 @@
+import assert { ... }
+
 void testBlocks() {
   value x=1;
   variable Integer ran:=-1;

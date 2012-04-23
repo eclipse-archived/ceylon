@@ -1,3 +1,5 @@
+import assert {...}
+
 shared void test() {
   testIdentifiable();
   testCorrespondence();

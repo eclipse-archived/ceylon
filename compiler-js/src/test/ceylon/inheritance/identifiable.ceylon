@@ -1,3 +1,5 @@
+import assert {...}
+
 class SubIdent1() extends IdentifiableObject(){}
 class SubIdent2(Integer x) extends IdentifiableObject(){
   shared actual String string = "subident2";

@@ -1,3 +1,5 @@
+import assert {...}
+
 interface Concrete {
   shared String hi() {
     return "hi";

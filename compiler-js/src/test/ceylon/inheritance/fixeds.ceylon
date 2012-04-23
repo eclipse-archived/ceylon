@@ -1,3 +1,5 @@
+import assert {...}
+
 class TestNone() satisfies None<Integer> {
   shared actual TestNone clone { return this; }
 }

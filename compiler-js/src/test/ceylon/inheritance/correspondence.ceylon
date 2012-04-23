@@ -1,3 +1,5 @@
+import assert {...}
+
 class TestCorresp() satisfies Correspondence<Integer, String> {
 
   shared actual String? item(Integer key) {

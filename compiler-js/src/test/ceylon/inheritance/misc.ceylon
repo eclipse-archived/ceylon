@@ -1,3 +1,5 @@
+import assert {...}
+
 //Miscellaneous inheritance tests (for very simple interfaces)
 class TestSized(Integer size) satisfies Sized {
   shared actual Integer size = size;
