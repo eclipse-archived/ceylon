@@ -267,7 +267,8 @@ public class ClassTransformer extends AbstractTransformer {
                 outerBuilder.modifiers(PRIVATE | FINAL);
                 JCExpression jt = makeJavaType(outerTypeCompanion);
                 outerBuilder.resultType(null, jt);
-                final JCExpression expr;
+                boolean requiresCast = false;
+                JCExpression expr = makeErroneous();
                 Scope container = model.getContainer();
                 if (container instanceof Class) {
                     expr = makeSelect(makeQuotedQualIdentFromString(getFQDeclarationName((Class)container)), "this");
@@ -275,6 +276,7 @@ public class ClassTransformer extends AbstractTransformer {
                     expr = make().Apply(null,// TODO Type args
                             makeSelect("$this", "$outer"),
                             List.<JCExpression>nil());
+                    requiresCast = Decl.isLocal((Interface)container);
                 } else if (Decl.isLocal((model))) {
                     while (!(container instanceof TypeDeclaration)) {
                         container = container.getContainer();
@@ -285,9 +287,10 @@ public class ClassTransformer extends AbstractTransformer {
                 } else {
                     throw new RuntimeException();
                 }
-                outerBuilder.body(make().Return(
-                        make().TypeCast(makeJavaType(outerTypeCompanion), 
-                                expr)));
+                if (requiresCast) {
+                    expr = make().TypeCast(makeJavaType(outerTypeCompanion), expr);
+                }
+                outerBuilder.body(make().Return(expr));
                 companionBuilder.defs(outerBuilder.build());
             }
             
