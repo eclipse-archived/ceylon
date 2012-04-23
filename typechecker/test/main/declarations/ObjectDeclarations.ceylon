@@ -24,3 +24,13 @@ class Z() extends X<Integer>(1) {
 String method() {
     return x.val;
 }
+
+shared class TypeParameterResolving<A>(A a) {
+    shared object innerObject {
+        shared A val = a;
+    }
+}
+
+void method2() {
+    String s = TypeParameterResolving("hello").innerObject.val;
+}
