@@ -251,6 +251,9 @@ public class ClassTransformer extends AbstractTransformer {
                     expr = make().Apply(null,// TODO Type args
                             makeSelect("$this", "$outer"),
                             List.<JCExpression>nil());
+                } else if (Decl.isLocal((model))) {
+                    // TODO Make this work in nested statements
+                    expr = makeSelect(makeQuotedQualIdentFromString(getFQDeclarationName((TypedDeclaration)container)), "this");
                 } else {
                     throw new RuntimeException();
                 }

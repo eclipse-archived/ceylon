@@ -113,7 +113,7 @@ abstract class InvocationBuilder {
             if (!container.isToplevel()) {
                 container = (Declaration)container.getContainer();
             }
-            String className = Util.getCompanionClassName(container.getName());
+            String className = gen().getCompanionClassName(container);
             defaultValueMethodName = gen().makeQuotedQualIdent(gen().makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName);
         } else if (Decl.defaultParameterMethodStatic(param)) {
             Declaration container = param.getDeclaration().getRefinedDeclaration();

@@ -758,9 +758,11 @@ public abstract class AbstractTransformer implements Transformation {
                         (flags & CLASS_NEW) != 0) {
                     baseType = makeIdent(syms().ceylonAbstractCallableType);
                 } else if (first) {
-                    String name = getFQDeclarationName(tdecl);
+                    String name;
                     if (tdecl instanceof Interface) {
-                        name = Util.getCompanionClassName(name);
+                        name = getCompanionClassName(tdecl);
+                    } else {
+                        name = getFQDeclarationName(tdecl);
                     }
                     baseType = makeQuotedQualIdentFromString(name);
                 } else {
@@ -939,8 +941,8 @@ public abstract class AbstractTransformer implements Transformation {
                     sb.insert(0, decl instanceof Interface ? '$' : ".");
                     sb.insert(0, ((TypeDeclaration)container).getName());
                 } else {
-                    // TODO Handle local interfaces
-                    throw new RuntimeException();
+                    // A local
+                    break;
                 }
                 container = container.getContainer();
             }
@@ -954,6 +956,10 @@ public abstract class AbstractTransformer implements Transformation {
     
     protected JCExpression getDeclarationName(Declaration decl) {
         return makeQuotedQualIdentFromString(getFQDeclarationName(decl));
+    }
+    
+    public String getCompanionClassName(Declaration decl){
+        return getFQDeclarationName(decl) + "$impl";
     }
     
     protected ProducedType getThisType(Tree.Declaration decl) {
@@ -1746,8 +1752,8 @@ public abstract class AbstractTransformer implements Transformation {
 
     public final JCExpression makeCompanionType(final ClassOrInterface decl,
             List<JCExpression> typeArgs) {
-        String companionClassName = Util.getCompanionClassName(decl.getQualifiedNameString());
-        JCExpression baseName = makeQuotedFQIdent(companionClassName);
+        String companionClassName = getCompanionClassName(decl);
+        JCExpression baseName = makeQuotedQualIdentFromString(companionClassName);
         
         if (!typeArgs.isEmpty()) {
             return make().TypeApply(baseName, typeArgs);

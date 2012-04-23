@@ -216,6 +216,14 @@ public class Util {
         return getSetterName(decl.getName());
     }
 
+    /**
+     * Deprecated in favour of 
+     * {@link AbstractTransformer#getCompanionClassName(Declaration)} which 
+     * understands interface renaming and local types.
+     * @param name
+     * @return
+     */
+    @Deprecated
     public static String getCompanionClassName(String name){
         return name + "$impl";
     }
