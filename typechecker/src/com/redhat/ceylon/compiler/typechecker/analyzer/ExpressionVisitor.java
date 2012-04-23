@@ -796,6 +796,15 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    private ProducedType denotableType(ProducedType pt) {
+        if ( pt.getDeclaration().isAnonymous() ) {
+            return pt.getSupertype(pt.getDeclaration().getExtendedTypeDeclaration());
+        }
+        else {
+            return pt;
+        }
+    }
+    
     private void inferType(Tree.TypedDeclaration that, 
             Tree.SpecifierOrInitializerExpression spec) {
         if (that.getType() instanceof Tree.LocalModifier) {
@@ -984,14 +993,14 @@ public class ExpressionVisitor extends Visitor {
     private void setType(Tree.LocalModifier local, 
             Tree.SpecifierOrInitializerExpression s, 
             Tree.TypedDeclaration that) {
-        ProducedType t = s.getExpression().getTypeModel();
+        ProducedType t = denotableType(s.getExpression().getTypeModel());
         local.setTypeModel(t);
         that.getDeclarationModel().setType(t);
     }
         
     private void setFunctionType(Tree.FunctionModifier local, 
             Tree.SpecifierExpression s, Tree.TypedDeclaration that) {
-        ProducedType t = s.getExpression().getTypeModel();
+        ProducedType t = denotableType(s.getExpression().getTypeModel());
         //TODO: validate that t is really Callable
         t = t.getTypeArgumentList().get(0);
         local.setTypeModel(t);
@@ -1032,26 +1041,31 @@ public class ExpressionVisitor extends Visitor {
                             returnDeclaration.getName());
                 }
                 else if (returnType instanceof Tree.LocalModifier) {
-                    if (at!=null) {
-                        if (et==null || et.isSubtypeOf(at)) {
-                            returnType.setTypeModel(at);
-                        }
-                        else {
-                            if (!at.isSubtypeOf(et)) {
-                                UnionType ut = new UnionType(unit);
-                                List<ProducedType> list = new ArrayList<ProducedType>();
-                                addToUnion(list, et);
-                                addToUnion(list, at);
-                                ut.setCaseTypes(list);
-                                returnType.setTypeModel( ut.getType() );
-                            }
-                        }
-                    }
+                    inferReturnType(et, at);
                 }
                 else {
                     checkAssignable(at, et, that.getExpression(), 
                             "returned expression must be assignable to return type of " +
                             returnDeclaration.getName());
+                }
+            }
+        }
+    }
+
+    private void inferReturnType(ProducedType et, ProducedType at) {
+        if (at!=null) {
+            at = denotableType(at);
+            if (et==null || et.isSubtypeOf(at)) {
+                returnType.setTypeModel(at);
+            }
+            else {
+                if (!at.isSubtypeOf(et)) {
+                    UnionType ut = new UnionType(unit);
+                    List<ProducedType> list = new ArrayList<ProducedType>();
+                    addToUnion(list, et);
+                    addToUnion(list, at);
+                    ut.setCaseTypes(list);
+                    returnType.setTypeModel( ut.getType() );
                 }
             }
         }
@@ -1312,7 +1326,7 @@ public class ExpressionVisitor extends Visitor {
             ProducedType argType, List<TypeParameter> visited) {
         if (paramType!=null) {
             if (paramType.getDeclaration().equals(tp)) {
-                return argType;
+                return denotableType(argType);
             }
             else if (paramType.getDeclaration() instanceof UnionType) {
                 List<ProducedType> list = new ArrayList<ProducedType>();

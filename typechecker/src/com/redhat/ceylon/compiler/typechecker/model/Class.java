@@ -10,18 +10,19 @@ import java.util.List;
 public class Class extends ClassOrInterface implements Functional {
 
     private boolean abstr;
-    //private boolean formal;    
     private ParameterList parameterList;
     private boolean overloaded;
     private boolean abstraction;
+    private boolean anonymous;
 
-    /*public boolean isFormal() {
-         return formal;
-     }
+    @Override
+    public boolean isAnonymous() {
+        return anonymous;
+    }
 
-     public void setFormal(boolean formal) {
-         this.formal = formal;
-     }*/
+    public void setAnonymous(boolean anonymous) {
+        this.anonymous = anonymous;
+    }
 
     @Override
     public boolean isAbstract() {

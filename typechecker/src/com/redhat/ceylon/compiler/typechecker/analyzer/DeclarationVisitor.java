@@ -406,6 +406,7 @@ public class DeclarationVisitor extends Visitor {
             that.addError("missing object body");
         }*/
         Class c = new Class();
+        c.setAnonymous(true);
         visitDeclaration(that, c);
         Value v = new Value();
         that.setDeclarationModel(v);
@@ -423,6 +424,7 @@ public class DeclarationVisitor extends Visitor {
             that.addError("missing named argument body");
         }*/
         Class c = new Class();
+        c.setAnonymous(true);
         visitArgument(that, c);
         Value v = new Value();
         that.setDeclarationModel(v);

@@ -75,8 +75,7 @@ public class Util {
     static boolean isResolvable(Declaration declaration) {
         return declaration.getName()!=null &&
             !(declaration instanceof Setter) && //return getters, not setters
-            !(declaration instanceof Class && 
-                    Character.isLowerCase(declaration.getName().charAt(0))); //don't return the type associated with an object dec 
+            !declaration.isAnonymous(); //don't return the type associated with an object dec 
     }
     
     static boolean isParameter(Declaration d) {

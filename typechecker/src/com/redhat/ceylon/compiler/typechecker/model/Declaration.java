@@ -248,6 +248,10 @@ public abstract class Declaration extends Element {
         }
     }
     
+    public boolean isAnonymous() {
+        return false;
+    }
+    
     public abstract DeclarationKind getDeclarationKind();
     
 }

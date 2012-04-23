@@ -23,8 +23,9 @@ class TypeArgInference() {
     @type["String"] first{ u="hello"; v="world"; };
     @type["Integer|TypeArgInference.X<String>"] first{ u=+1; v=X{ t="hello"; s="world"; }; };
     
-    @type["TypeArgInference.X<t|s>"] X { object t {} object s {} }; 
+    @type["TypeArgInference.X<IdentifiableObject>"] X { object t {} object s {} }; 
     @type["TypeArgInference.X<Float>"] X { Float t { return 1.0; } Float s { return -1.0; } }; 
+    @type["TypeArgInference.X<Boolean>"] X(true, false);
     
     @error X x = X(1,2);
     

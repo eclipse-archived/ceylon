@@ -351,10 +351,10 @@ class Assignability() {
     w({"foo", "bar"}...);
     
     object o { shared String hello = "hello"; }
-    @type["Assignability.o"] value oo = o;
+    @type["IdentifiableObject"] value oo = o;
     Object ooo = o;
     @type["String"] value so = o.hello;
-    @type["String"] value soo = oo.hello;
+    @error value soo = oo.hello;
     
     object x extends X() {}
     X xx = x;
