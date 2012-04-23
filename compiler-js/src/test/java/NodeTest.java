@@ -14,7 +14,7 @@ public class NodeTest {
     private static class JsExtFilter implements FilenameFilter {
         @Override
         public boolean accept(File arg0, String name) {
-            return name.endsWith(".js");
+            return name.endsWith(".js") && !name.equals("assert.js");
         }
     }
 
