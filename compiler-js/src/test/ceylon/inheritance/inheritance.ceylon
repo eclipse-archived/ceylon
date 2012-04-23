@@ -5,5 +5,6 @@ shared void test() {
   testCollection();
   testFixedSized();
   test_concrete_members();
+  testMultipleInheritance();
   results();
 }
