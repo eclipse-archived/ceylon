@@ -1,4 +1,8 @@
-doc "Represents a collection in which every element has a unique index."
+doc "Represents a collection in which every element has a 
+     unique non-negative integer index.
+     
+     A |List| is a |Collection| of its elements, and a 
+     |Correspondence| from indices to elements."
 shared interface List<out Element>
         satisfies Collection<Element> &
                   Correspondence<Integer, Element> &

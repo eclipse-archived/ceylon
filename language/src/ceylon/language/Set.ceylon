@@ -1,4 +1,6 @@
-doc "A collection of unique elements."
+doc "A collection of unique elements.
+
+     A |Set| is a |Collection| of its elements."
 shared interface Set<out Element>
         satisfies Collection<Element> &
                   Cloneable<Set<Element>>
