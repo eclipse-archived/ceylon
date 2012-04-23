@@ -9,4 +9,5 @@ class TestWildcard() {
     d.hello();
     String hello = a;
     @error d.goodbye();
+    String hi = singleton.hello;
 }

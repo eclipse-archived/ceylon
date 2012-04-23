@@ -1,5 +1,5 @@
 import imports.package { 
-    method, attribute,
+    method, attribute, singleton,
     Class, Interface, Dupe, Alias,
     @error Class
 }
@@ -15,4 +15,5 @@ class Test() {
     @error d.goodbye();
     Alias strings = { "hello", "world" };
     for (String s in strings) {}
+    String hi = singleton.hello;
 }

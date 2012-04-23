@@ -1,6 +1,7 @@
 import imports.package { 
     m=method, 
-    a=attribute, 
+    a=attribute,
+    sing = singleton /*{ hi=hello }*/,
     C=Class { i=count, 
               In=Inner, 
               m=method }, 
@@ -24,4 +25,5 @@ class TestAliases() {
     Dupe dupe = Dupe();
     dupe.goodbye();
     o(1);
+    String hi = sing.hello;
 }

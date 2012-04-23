@@ -81,7 +81,8 @@ public class TypeVisitor extends Visitor {
     private void importAllMembers(Package importedPackage, Set<String> ignoredMembers, 
             ImportList il) {
         for (Declaration dec: importedPackage.getMembers()) {
-            if (dec.isShared() && !ignoredMembers.contains(dec.getName())) {
+            if (dec.isShared() && !dec.isAnonymous() && 
+                    !ignoredMembers.contains(dec.getName())) {
                 Import i = new Import();
                 i.setAlias(dec.getName());
                 i.setDeclaration(dec);
