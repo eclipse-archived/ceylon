@@ -1,0 +1,449 @@
+package com.redhat.ceylon.compiler.java.test.structure.nesting;
+
+interface Local$0$LC$LCI {
+    
+    public abstract .java.lang.Object $outer();
+    
+    public long m();
+}
+interface Local$1$LI$LII {
+    
+    public abstract .java.lang.Object $outer();
+    
+    public long m();
+}
+interface Local$1$LI {
+    
+    public abstract .java.lang.Object $outer();
+}
+interface Local$C$1$CL$LCI {
+    
+    public abstract .java.lang.Object $outer();
+    
+    public long m();
+}
+interface Local$I$2$IL$ICI {
+    
+    public abstract .java.lang.Object $outer();
+    
+    public long m();
+}
+interface Local$I {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.Local $outer();
+    
+    public void local3(final long i);
+    
+    public void local3();
+    
+    public abstract long local3$i();
+}
+class Local {
+    
+    private final long mLocal() {
+        return 0L;
+    }
+    
+    private final void local(final long i) {
+        
+        final class LC$impl {
+            
+            private final long $init$j() {
+                return 0L;
+            }
+        }
+        
+        class LC {
+            private final long j;
+            
+            final class Local$0$LC$LCI$impl {
+                private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$0$LC$LCI $this;
+                
+                private final LC $outer() {
+                    return LC.this;
+                }
+                
+                public long m() {
+                    return mLocal() + i + j;
+                }
+                
+                Local$0$LC$LCI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$0$LC$LCI $this) {
+                    this.$this = $this;
+                }
+            }
+            
+            final class LCC$impl {
+                
+                private final long $init$k() {
+                    return 0L;
+                }
+            }
+            
+            class LCC implements .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$0$LC$LCI {
+                private final long k;
+                private final Local$0$LC$LCI$impl $LCI$impl;
+                
+                public final LC $outer() {
+                    return LC.this;
+                }
+                
+                @.java.lang.Override
+                public final long m() {
+                    return mLocal() + i + j + k;
+                }
+                
+                LCC() {
+                    (
+                        let
+                            LC.LCC$impl $ceylontmp$impl$2 = new LC.LCC$impl(),
+                            long $ceylontmp$k$3 = $ceylontmp$impl$2.$init$k()
+                        in {
+                            this($ceylontmp$k$3);
+                        }
+                        returning null
+                    );
+                }
+                
+                LCC(long k) {
+                    this.k = k;
+                    this.$LCI$impl = new Local$0$LC$LCI$impl(this);
+                }
+            }
+            
+            LC() {
+                (
+                    let
+                        LC$impl $ceylontmp$impl$0 = new LC$impl(),
+                        long $ceylontmp$j$1 = $ceylontmp$impl$0.$init$j()
+                    in {
+                        this($ceylontmp$j$1);
+                    }
+                    returning null
+                );
+            }
+            
+            LC(long j) {
+                this.j = j;
+            }
+        }
+        
+        final class Local$1$LI$impl {
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$1$LI $this;
+            
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local $outer() {
+                return .com.redhat.ceylon.compiler.java.test.structure.nesting.Local.this;
+            }
+            
+            final class Local$1$LI$LII$impl {
+                private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$1$LI$LII $this;
+                
+                private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$1$LI $outer() {
+                    return (.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$1$LI)$this.$outer();
+                }
+                
+                public long m() {
+                    return mLocal() + i;
+                }
+                
+                Local$1$LI$LII$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$1$LI$LII $this) {
+                    this.$this = $this;
+                }
+            }
+            
+            final class LIC$impl {
+                
+                private final long $init$j() {
+                    return 0L;
+                }
+            }
+            
+            class LIC implements .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$1$LI$LII {
+                private final long j;
+                private final Local$1$LI$LII$impl $LII$impl;
+                
+                public final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$1$LI $outer() {
+                    return null;
+                }
+                
+                @.java.lang.Override
+                public final long m() {
+                    return mLocal() + i + j;
+                }
+                
+                LIC() {
+                    (
+                        let
+                            LIC$impl $ceylontmp$impl$4 = new LIC$impl(),
+                            long $ceylontmp$j$5 = $ceylontmp$impl$4.$init$j()
+                        in {
+                            this($ceylontmp$j$5);
+                        }
+                        returning null
+                    );
+                }
+                
+                LIC(long j) {
+                    this.j = j;
+                    this.$LII$impl = new Local$1$LI$LII$impl(this);
+                }
+            }
+            
+            Local$1$LI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$1$LI $this) {
+                this.$this = $this;
+            }
+        }
+    }
+    
+    private final void local() {
+        (
+            let
+                long $ceylontmp$i$7 = local$i()
+            in {
+                local($ceylontmp$i$7);
+            }
+            returning null
+        );
+    }
+    
+    private final long local$i() {
+        return 0L;
+    }
+    
+    final class C$impl {
+        
+        C$impl() {
+            super();
+        }
+        
+        private final long $init$i() {
+            return 0L;
+        }
+    }
+    
+    class C {
+        private final long i;
+        
+        private final void local2(final long j) {
+            
+            final class CL$impl {
+                
+                private final long $init$k() {
+                    return 0L;
+                }
+            }
+            
+            class CL {
+                private final long k;
+                
+                final class Local$C$1$CL$LCI$impl {
+                    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$C$1$CL$LCI $this;
+                    
+                    private final CL $outer() {
+                        return CL.this;
+                    }
+                    
+                    public long m() {
+                        return mLocal() + i + j + k;
+                    }
+                    
+                    Local$C$1$CL$LCI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$C$1$CL$LCI $this) {
+                        this.$this = $this;
+                    }
+                }
+                
+                final class CLC$impl {
+                    
+                    private final long $init$l() {
+                        return 0L;
+                    }
+                }
+                
+                class CLC implements .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$C$1$CL$LCI {
+                    private final long l;
+                    private final Local$C$1$CL$LCI$impl $LCI$impl;
+                    
+                    public final CL $outer() {
+                        return CL.this;
+                    }
+                    
+                    @.java.lang.Override
+                    public final long m() {
+                        return mLocal() + i + j + k + l;
+                    }
+                    
+                    CLC() {
+                        (
+                            let
+                                CL.CLC$impl $ceylontmp$impl$12 = new CL.CLC$impl(),
+                                long $ceylontmp$l$13 = $ceylontmp$impl$12.$init$l()
+                            in {
+                                this($ceylontmp$l$13);
+                            }
+                            returning null
+                        );
+                    }
+                    
+                    CLC(long l) {
+                        this.l = l;
+                        this.$LCI$impl = new Local$C$1$CL$LCI$impl(this);
+                    }
+                }
+                
+                CL() {
+                    (
+                        let
+                            CL$impl $ceylontmp$impl$10 = new CL$impl(),
+                            long $ceylontmp$k$11 = $ceylontmp$impl$10.$init$k()
+                        in {
+                            this($ceylontmp$k$11);
+                        }
+                        returning null
+                    );
+                }
+                
+                CL(long k) {
+                    this.k = k;
+                }
+            }
+        }
+        
+        private final void local2() {
+            (
+                let
+                    long $ceylontmp$j$15 = local2$j()
+                in {
+                    local2($ceylontmp$j$15);
+                }
+                returning null
+            );
+        }
+        
+        private final long local2$j() {
+            return 0L;
+        }
+        
+        C() {
+            (
+                let
+                    .com.redhat.ceylon.compiler.java.test.structure.nesting.Local.C$impl $ceylontmp$impl$8 = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Local.C$impl(),
+                    long $ceylontmp$i$9 = $ceylontmp$impl$8.$init$i()
+                in {
+                    this($ceylontmp$i$9);
+                }
+                returning null
+            );
+        }
+        
+        C(long i) {
+            this.i = i;
+        }
+    }
+    
+    final class Local$I$impl {
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I $this;
+        
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local $outer() {
+            return .com.redhat.ceylon.compiler.java.test.structure.nesting.Local.this;
+        }
+        
+        private final long local3$i() {
+            return 0L;
+        }
+        
+        public void local3(final long i) {
+            
+            final class IL$impl {
+                
+                private final long $init$j() {
+                    return 0L;
+                }
+            }
+            
+            class IL {
+                private final long j;
+                
+                final class Local$I$2$IL$ICI$impl {
+                    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I$2$IL$ICI $this;
+                    
+                    private final IL $outer() {
+                        return IL.this;
+                    }
+                    
+                    public long m() {
+                        return mLocal() + i + j;
+                    }
+                    
+                    Local$I$2$IL$ICI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I$2$IL$ICI $this) {
+                        this.$this = $this;
+                    }
+                }
+                
+                final class ILC$impl {
+                    
+                    private final long $init$k() {
+                        return 0L;
+                    }
+                }
+                
+                class ILC implements .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I$2$IL$ICI {
+                    private final long k;
+                    private final Local$I$2$IL$ICI$impl $ICI$impl;
+                    
+                    public final IL $outer() {
+                        return IL.this;
+                    }
+                    
+                    @.java.lang.Override
+                    public final long m() {
+                        return mLocal() + i + j + k;
+                    }
+                    
+                    ILC() {
+                        (
+                            let
+                                IL.ILC$impl $ceylontmp$impl$20 = new IL.ILC$impl(),
+                                long $ceylontmp$k$21 = $ceylontmp$impl$20.$init$k()
+                            in {
+                                this($ceylontmp$k$21);
+                            }
+                            returning null
+                        );
+                    }
+                    
+                    ILC(long k) {
+                        this.k = k;
+                        this.$ICI$impl = new Local$I$2$IL$ICI$impl(this);
+                    }
+                }
+                
+                IL() {
+                    (
+                        let
+                            IL$impl $ceylontmp$impl$18 = new IL$impl(),
+                            long $ceylontmp$j$19 = $ceylontmp$impl$18.$init$j()
+                        in {
+                            this($ceylontmp$j$19);
+                        }
+                        returning null
+                    );
+                }
+                
+                IL(long j) {
+                    this.j = j;
+                }
+            }
+        }
+        
+        Local$I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I $this) {
+            this.$this = $this;
+        }
+    }
+    
+    Local() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.nesting.Local();
+    }
+}

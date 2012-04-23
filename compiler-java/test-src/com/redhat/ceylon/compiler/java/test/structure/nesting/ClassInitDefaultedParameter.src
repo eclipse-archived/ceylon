@@ -1,5 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting;
 
+final class C1$impl {
+    
+    C1$impl() {
+        super();
+    }
+    
+    final long $init$i() {
+        return 1L;
+    }
+}
 class C1 {
     
     C1() {
@@ -17,14 +27,18 @@ class C1 {
     C1(long i) {
     }
 }
-final class C1$impl {
+final class C3$impl {
     
-    C1$impl() {
+    C3$impl() {
         super();
     }
     
     final long $init$i() {
         return 1L;
+    }
+    
+    final long $init$n(final long i) {
+        return 2L * i;
     }
 }
 class C3 {
@@ -57,14 +71,10 @@ class C3 {
     C3(long i, long n) {
     }
 }
-final class C3$impl {
+final class C4$impl {
     
-    C3$impl() {
+    C4$impl() {
         super();
-    }
-    
-    final long $init$i() {
-        return 1L;
     }
     
     final long $init$n(final long i) {
@@ -88,14 +98,14 @@ class C4 {
     C4(long i, long n) {
     }
 }
-final class C4$impl {
+final class C5$impl<U> {
     
-    C4$impl() {
+    C5$impl() {
         super();
     }
     
-    final long $init$n(final long i) {
-        return 2L * i;
+    final U $init$u(final long i) {
+        return null;
     }
 }
 class C5<U> {
@@ -113,16 +123,6 @@ class C5<U> {
     }
     
     C5(long i, U u) {
-    }
-}
-final class C5$impl<U> {
-    
-    C5$impl() {
-        super();
-    }
-    
-    final U $init$u(final long i) {
-        return null;
     }
 }
 final class positional {
