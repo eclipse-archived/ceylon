@@ -993,10 +993,10 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCExpression transform(Tree.Parameter param) {
         // Transform the expression marking that we're inside a defaulted parameter for $this-handling
-        needDollarThis  = true;
+        //needDollarThis  = true;
         SpecifierExpression spec = param.getDefaultArgument().getSpecifierExpression();
         JCExpression expr = expressionGen().transformExpression(spec.getExpression(), Util.getBoxingStrategy(param.getDeclarationModel()), param.getDeclarationModel().getType());
-        needDollarThis = false;
+        //needDollarThis = false;
         return expr;
     }
     
