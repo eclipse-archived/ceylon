@@ -1022,9 +1022,12 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(CharLiteral that) {
         out(clAlias, ".Character(");
-        //out(that.getText().replace('`', '"'));
-        //TODO: what about escape sequences?
-        out(String.valueOf(that.getText().codePointAt(1)));
+        if (that.getText().codePointAt(1) == 92) {
+            //TODO check for Unicode literals
+            out(clAlias, ".codepointFromString('", that.getText().substring(1, that.getText().length()-1), "', 0)");
+        } else {
+            out(String.valueOf(that.getText().codePointAt(1)));
+        }
         out(")");
     }
 
