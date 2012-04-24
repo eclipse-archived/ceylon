@@ -44,6 +44,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.code.TypeTags;
@@ -994,8 +995,17 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.Parameter param) {
         // Transform the expression marking that we're inside a defaulted parameter for $this-handling
         //needDollarThis  = true;
-        SpecifierExpression spec = param.getDefaultArgument().getSpecifierExpression();
-        JCExpression expr = expressionGen().transformExpression(spec.getExpression(), Util.getBoxingStrategy(param.getDeclarationModel()), param.getDeclarationModel().getType());
+        JCExpression expr;
+        at(param);
+        DefaultArgument defaultArgument = param.getDefaultArgument();
+        if (defaultArgument != null) {
+            SpecifierExpression spec = defaultArgument.getSpecifierExpression();
+            expr = expressionGen().transformExpression(spec.getExpression(), Util.getBoxingStrategy(param.getDeclarationModel()), param.getDeclarationModel().getType());
+        } else if (param.getDeclarationModel().isSequenced()) {
+            expr = makeEmpty();
+        } else {
+            expr = makeErroneous(param, "No default and not sequenced");
+        }
         //needDollarThis = false;
         return expr;
     }

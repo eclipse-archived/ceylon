@@ -116,10 +116,9 @@ public class ClassTransformer extends AbstractTransformer {
             for (Tree.Parameter param : paramList.getParameters()) {
                 classBuilder.parameter(param);
                 DefaultArgument defaultArgument = param.getDefaultArgument();
-                if (defaultArgument != null) {
-                    if (param.getDefaultArgument().getSpecifierExpression() != null) {
-                        classBuilder.getCompanionBuilder().defs(makeParamDefaultValueMethod(false, def, paramList, param));
-                    }    
+                if (defaultArgument != null
+                        || param.getDeclarationModel().isSequenced()) {
+                    classBuilder.getCompanionBuilder().defs(makeParamDefaultValueMethod(false, def, paramList, param));
                     // Add overloaded constructors for defaulted parameter
                     MethodDefinitionBuilder overloadBuilder = classBuilder.addConstructor();
                     makeOverloadsForDefaultedParameter(true,
@@ -606,15 +605,15 @@ public class ClassTransformer extends AbstractTransformer {
             methodBuilder.parameter(param);
             DefaultArgument defaultArgument = param.getDefaultArgument();
                 
-            if (defaultArgument != null) {
-                if (param.getDefaultArgument().getSpecifierExpression() != null) {
-                    JCMethodDecl defaultValueMethodImpl = makeParamDefaultValueMethod(false, def, paramList, param);
-                    if (Decl.defaultParameterMethodOnSelf(def)) {
-                        lb.add(defaultValueMethodImpl);
-                    } else {
-                        lb.add(makeParamDefaultValueMethod(true, def, paramList, param));
-                        classBuilder.getCompanionBuilder().defs(defaultValueMethodImpl);
-                    }
+            if (defaultArgument != null
+                    || param.getDeclarationModel().isSequenced()) {
+                
+                JCMethodDecl defaultValueMethodImpl = makeParamDefaultValueMethod(false, def, paramList, param);
+                if (Decl.defaultParameterMethodOnSelf(def)) {
+                    lb.add(defaultValueMethodImpl);
+                } else {
+                    lb.add(makeParamDefaultValueMethod(true, def, paramList, param));
+                    classBuilder.getCompanionBuilder().defs(defaultValueMethodImpl);
                 }
                 
                 MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(def), model.isClassOrInterfaceMember(),
@@ -660,9 +659,10 @@ public class ClassTransformer extends AbstractTransformer {
                 && !Decl.withinInterface(model)) {
             java.util.List<Parameter> parameters = model.getParameterLists().get(0).getParameters();
             for (Parameter p : parameters) {
-                if (p.isDefaulted()) {
-                    classBuilder.defs(transformDefaultValueMethodImpl(model, parameters, p));
-                    classBuilder.defs(overloadMethodImpl(model, parameters, p));
+                if (p.isDefaulted() 
+                        || p.isSequenced()) {
+                    classBuilder.defs(transformDefaultValueMethodImpl(def, parameters, p));
+                    classBuilder.defs(overloadMethodImpl(def, parameters, p));
                 }
             }
         }
