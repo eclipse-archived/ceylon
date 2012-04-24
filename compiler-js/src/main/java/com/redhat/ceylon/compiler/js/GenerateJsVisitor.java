@@ -362,8 +362,6 @@ public class GenerateJsVisitor extends Visitor
         share(d);
 
         typeInitialization(that);
-
-        addToPrototype(d, that.getInterfaceBody().getStatements());
     }
 
     /** Add a comment to the generated code with info about the type parameters. */
@@ -445,8 +443,6 @@ public class GenerateJsVisitor extends Visitor
         share(d);
 
         typeInitialization(that);
-
-        addToPrototype(d, that.getClassBody().getStatements());
     }
 
     private void referenceOuter(TypeDeclaration d) {
@@ -588,12 +584,18 @@ public class GenerateJsVisitor extends Visitor
 
         out(");");
         endBlock();
+        //The class definition needs to be inside the init function if we want forwards decls to work in prototype style
+        if (prototypeStyle && (d instanceof ClassOrInterface)) {
+            if (type instanceof ClassDefinition) {
+                addToPrototype(((ClassDefinition)type).getDeclarationModel(), ((ClassDefinition)type).getClassBody().getStatements());
+            } else  if (type instanceof InterfaceDefinition) {
+                addToPrototype(((InterfaceDefinition)type).getDeclarationModel(), ((InterfaceDefinition)type).getInterfaceBody().getStatements());
+            }
+        }
         out("return ", names.name(d), ";");
         endBlock();
         //If it's nested, share the init function
-        if (!(prototypeStyle && d.isClassOrInterfaceMember())
-                && isCaptured(d)) {
-            outerSelf(d);
+        if (outerSelf(d)) {
             out(".$init$", names.name(d), "=$init$", names.name(d), ";");
             endLine();
         }
@@ -814,8 +816,6 @@ public class GenerateJsVisitor extends Visitor
     private void methodDefinition(MethodDefinition that) {
         Method d = that.getDeclarationModel();
 
-        //TODO: if there are multiple parameter lists
-        //      do the inner function declarations
         if (that.getParameterLists().size() == 1) {
             out(function, names.name(d));
             ParameterList paramList = that.getParameterLists().get(0);
@@ -1643,13 +1643,16 @@ public class GenerateJsVisitor extends Visitor
         out("$$");
     }*/
 
-    private void outerSelf(Declaration d) {
+    private boolean outerSelf(Declaration d) {
         if (d.isToplevel()) {
             out("exports");
+            return true;
         }
         else if (d.isClassOrInterfaceMember()) {
             self((TypeDeclaration)d.getContainer());
+            return true;
         }
+        return false;
     }
 
     private boolean declaredInCL(Declaration decl) {
