@@ -50,8 +50,6 @@ public class Infer {
 
     Symtab syms;
     Types types;
-    Check chk;
-    Resolve rs;
 
     public static Infer instance(Context context) {
         Infer instance = context.get(inferKey);
@@ -64,8 +62,6 @@ public class Infer {
         context.put(inferKey, this);
         syms = Symtab.instance(context);
         types = Types.instance(context);
-        chk = Check.instance(context);
-        rs = Resolve.instance(context);
     }
 
     public static class NoInstanceException extends RuntimeException {
@@ -99,7 +95,6 @@ public class Infer {
             return diagnostic;
         }
     }
-
     private final NoInstanceException ambiguousNoInstanceException =
         new NoInstanceException(true);
     private final NoInstanceException unambiguousNoInstanceException =
@@ -278,6 +273,7 @@ public class Infer {
         List<Type> targs = Type.map(undetvars, getInstFun);
         targs = types.subst(targs, that.tvars, targs);
         checkWithinBounds(that.tvars, targs, warn);
+
         return getInstFun.apply(qtype1);
     }
 
@@ -293,6 +289,7 @@ public class Infer {
         //-System.err.println("instantiateMethod(" + tvars + ", " + mt + ", " + argtypes + ")"); //DEBUG
         List<Type> undetvars = Type.map(tvars, fromTypeVarFun);
         List<Type> formals = mt.argtypes;
+
         // instantiate all polymorphic argument types and
         // set up lower bounds constraints for undetvars
         Type varargsFormal = useVarargs ? formals.last() : null;
@@ -303,8 +300,8 @@ public class Infer {
                 at = instantiateArg((ForAll) at, ft, tvars, warn);
             Type sft = types.subst(ft, tvars, undetvars);
             boolean works = allowBoxing
-                    ? types.isConvertible(at, sft, warn)
-                    : types.isSubtypeUnchecked(at, sft, warn);
+                ? types.isConvertible(at, sft, warn)
+                : types.isSubtypeUnchecked(at, sft, warn);
             if (!works) {
                 throw unambiguousNoInstanceException
                     .setMessage("no.conforming.assignment.exists",
@@ -373,7 +370,7 @@ public class Infer {
                                 new ForAll(restvars.toList(), mt.restype),
                                 mt.thrown, syms.methodClass);
         }
-        
+
         // return instantiated version of method type
         return types.subst(mt, tvars, insttypes.toList());
     }

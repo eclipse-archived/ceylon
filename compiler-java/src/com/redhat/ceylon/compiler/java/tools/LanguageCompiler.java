@@ -67,6 +67,7 @@ import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
+import com.sun.tools.javac.code.Symbol.ClassSymbol;
 import com.sun.tools.javac.code.Symbol.CompletionFailure;
 import com.sun.tools.javac.comp.AttrContext;
 import com.sun.tools.javac.comp.Env;
@@ -513,4 +514,13 @@ public class LanguageCompiler extends JavaCompiler {
         // don't do anything, which will leave the "processAnnotations" field to false
     }
 
+    @Override
+    public void complete(ClassSymbol c) throws CompletionFailure {
+        try {
+            Context.SourceLanguage.push(Language.JAVA);
+            super.complete(c);
+        } finally {
+            Context.SourceLanguage.pop();
+        }
+    }
 }

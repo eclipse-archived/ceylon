@@ -82,8 +82,8 @@ class CloseableURLClassLoader
         }
     }
     
-    private ArrayList<?> getLoaders()
-            throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException
+    private ArrayList<?> getLoaders() 
+            throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException 
     {
         Field ucpField = URLClassLoader.class.getDeclaredField("ucp");
         Object urlClassPath = getField(this, ucpField);
@@ -93,7 +93,7 @@ class CloseableURLClassLoader
         return (ArrayList<?>) getField(urlClassPath, loadersField);
     }
     
-    private Object getField(Object o, Field f)
+    private Object getField(Object o, Field f) 
             throws IllegalArgumentException, IllegalAccessException {
         boolean prev = f.isAccessible();
         try {

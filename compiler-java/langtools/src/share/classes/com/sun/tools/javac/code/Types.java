@@ -27,8 +27,6 @@ package com.sun.tools.javac.code;
 
 import java.util.*;
 
-import javax.tools.JavaFileObject;
-
 import com.sun.tools.javac.util.*;
 import com.sun.tools.javac.util.List;
 
@@ -275,7 +273,7 @@ public class Types {
         return tPrimitive
             ? isSubtype(boxedClass(t).type, s)
             : isSubtype(unboxedType(t), s);
-     }
+    }
 
     /**
      * Is t a subtype of or convertiable via boxing/unboxing

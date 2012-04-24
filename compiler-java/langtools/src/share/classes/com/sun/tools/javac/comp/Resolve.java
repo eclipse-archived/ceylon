@@ -330,11 +330,11 @@ public class Resolve {
                                     allowBoxing,
                                     useVarargs,
                                     warn);
-        if (argumentsAcceptable(argtypes, mt.getParameterTypes(),
-                                allowBoxing, useVarargs, warn))
-            return mt;
-
-        return null;
+        return
+            argumentsAcceptable(argtypes, mt.getParameterTypes(),
+                                allowBoxing, useVarargs, warn)
+            ? mt
+            : null;
     }
 
     /** Same but returns null instead throwing a NoInstanceException
