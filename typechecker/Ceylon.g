@@ -2817,8 +2817,7 @@ EscapeSequence
         |   '"'
         |   '\''
         |   '`'
-        |   'u' HexDigits
-        |   'U' HexDigits HexDigits
+        |   '{' HexDigits HexDigits? '}'
         )
     ;
 

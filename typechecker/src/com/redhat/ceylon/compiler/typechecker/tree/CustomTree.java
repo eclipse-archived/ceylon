@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.tree;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.antlr.runtime.Token;
 
 public class CustomTree extends Tree {
@@ -240,6 +243,19 @@ public class CustomTree extends Tree {
         }
     }
     
+    public static class CharLiteral
+            extends Tree.CharLiteral {
+        public CharLiteral(Token token) {
+            super(token);
+        }
+        @Override
+        public String getText() {
+            StringBuilder result = new StringBuilder(super.getText());
+            interpolateUnicodeEscapes(result, this);
+            return result.toString();
+        }
+    }
+    
     public static class StringLiteral
             extends Tree.StringLiteral {
         public StringLiteral(Token token) {
@@ -247,34 +263,62 @@ public class CustomTree extends Tree {
         }
         @Override
         public String getText() {
-            int start = getToken().getCharPositionInLine()+1;
             StringBuilder result = new StringBuilder();
-            int num = 0;
-            for (String line: super.getText().split("\n|\r\n?")) {
-                if (num++==0 || line.length()<start) {
-                    result.append(line);
-                }
-                else {
-                    boolean trimIndent = true;
-                    for (int i=0; i<start; i++) {
-                        if (line.charAt(i)!=' ') {
-                            trimIndent = false;
-                            break;
-                        }
-                    }
-                    if (trimIndent) {
-                        result.append(line.substring(start));
-                    }
-                    else {
-                        result.append(line);
-                    }
-                }
-                result.append("\n");
-            }
-            result.setLength(result.length()-1);
+            stripIndent(super.getText(), getToken().getCharPositionInLine()+1, result);
+            interpolateUnicodeEscapes(result, this);
             return result.toString();
         }
-        
+    }
+    
+    private static void stripIndent(final String text, final int start, 
+            final StringBuilder result) {
+        int num = 0;
+        for (String line: text.split("\n|\r\n?")) {
+            if (num++==0 || line.length()<start) {
+                result.append(line);
+            }
+            else {
+                boolean trimIndent = true;
+                for (int i=0; i<start; i++) {
+                    if (line.charAt(i)!=' ') {
+                        trimIndent = false;
+                        break;
+                    }
+                }
+                if (trimIndent) {
+                    result.append(line.substring(start));
+                }
+                else {
+                    result.append(line);
+                }
+            }
+            result.append("\n");
+        }
+        result.setLength(result.length()-1);
+    }
+    
+    private static Pattern re = Pattern.compile("\\\\\\{(\\w*)\\}");
+    
+    private static void interpolateUnicodeEscapes(final StringBuilder result, Node node) {
+        Matcher m;
+        while ((m = re.matcher(result)).find()) {
+            String hex = m.group(1);
+            if (hex.length()!=4 && hex.length()!=8) {
+                node.addError("illegal unicode escape sequence: must consist of 4 or 8 digits");
+            }
+            else {
+                int codePoint=0;
+                try {
+                    codePoint = Integer.parseInt(hex, 16);
+                }
+                catch (NumberFormatException nfe) {
+                    node.addError("illegal unicode escape sequence: " + 
+                            nfe.getMessage());
+                }
+                result.replace(m.start(), m.end(), 
+                        new String(Character.toChars(codePoint)));
+            }
+        }
     }
     
     public static class NaturalLiteral
