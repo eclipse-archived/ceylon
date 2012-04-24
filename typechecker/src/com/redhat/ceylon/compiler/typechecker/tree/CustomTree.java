@@ -252,7 +252,7 @@ public class CustomTree extends Tree {
         public String getText() {
             StringBuilder result = new StringBuilder(super.getText());
             interpolateUnicodeEscapes(result, this);
-            return interpolateBacktick(result.toString());
+            return interpolateEscapes(result.toString());
         }
     }
     
@@ -266,7 +266,7 @@ public class CustomTree extends Tree {
             StringBuilder result = new StringBuilder();
             stripIndent(super.getText(), getToken().getCharPositionInLine()+1, result);
             interpolateUnicodeEscapes(result, this);
-            return interpolateBacktick(result.toString());
+            return interpolateEscapes(result.toString());
         }
     }
     
@@ -297,8 +297,16 @@ public class CustomTree extends Tree {
         result.setLength(result.length()-1);
     }
     
-    private static String interpolateBacktick(final String string) {
-        return string.replace("\\`", "`");
+    private static String interpolateEscapes(final String string) {
+        return string.replace("\\`", "`")
+                .replace("\\b", "\b")
+                .replace("\\t", "\t")
+                .replace("\\n", "\n")
+                .replace("\\f", "\f")
+                .replace("\\r", "\r")
+                .replace("\\\\", "\\")
+                .replace("\\'", "'")
+                .replace("\\\"", "\"");
     }
     
     private static Pattern re = Pattern.compile("\\\\\\{(\\w*)\\}");
