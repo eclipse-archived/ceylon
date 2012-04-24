@@ -581,11 +581,7 @@ public class ClassTransformer extends AbstractTransformer {
             methodBuilder.resultType(model);
         }
         
-        if (def.getTypeParameterList() != null) {
-            for (Tree.TypeParameterDeclaration t : def.getTypeParameterList().getTypeParameterDeclarations()) {
-                methodBuilder.typeParameter(t);
-            }
-        }
+        copyTypeParameters(def, methodBuilder);
         
         for (Tree.Parameter param : paramList.getParameters()) {
             methodBuilder.parameter(param);
@@ -675,11 +671,7 @@ public class ClassTransformer extends AbstractTransformer {
         final Method model = def.getDeclarationModel();
         MethodDefinitionBuilder delegateBuilder = MethodDefinitionBuilder.method(gen(), false, true, methodName);
         delegateBuilder.modifiers(PRIVATE | FINAL);
-        if (def.getTypeParameterList() != null) {
-            for (Tree.TypeParameterDeclaration t : def.getTypeParameterList().getTypeParameterDeclarations()) {
-                delegateBuilder.typeParameter(t);
-            }
-        }
+        copyTypeParameters(def, delegateBuilder);
         delegateBuilder.resultType(model);
         ListBuffer<JCExpression> arguments = ListBuffer.<JCExpression>lb();
         for (Tree.Parameter p : paramList.getParameters().subList(0, paramList.getParameters().indexOf(param))) {
@@ -812,14 +804,8 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         // TODO MPL
-        if (typeParameterList != null) {
-            for (Tree.TypeParameterDeclaration t : typeParameterList.getTypeParameterDeclarations()) {
-                if (def instanceof Tree.AnyMethod) {
-                    // Ceylon doesn't have type params on constructors so only 
-                    // need to parameterise the overloadBuilder if a method
-                    overloadBuilder.typeParameter(t);
-                }   
-            }
+        if (def instanceof Tree.AnyMethod) {
+            copyTypeParameters((Tree.AnyMethod)def, overloadBuilder);
         }
 
         // TODO Some simple default expressions (e.g. literals, null and 
@@ -885,6 +871,14 @@ public class ClassTransformer extends AbstractTransformer {
         return overloadBuilder;
     }
 
+    void copyTypeParameters(Tree.AnyMethod def, MethodDefinitionBuilder methodBuilder) {
+        if (def.getTypeParameterList() != null) {
+            for (Tree.TypeParameterDeclaration t : def.getTypeParameterList().getTypeParameterDeclarations()) {
+                methodBuilder.typeParameter(t);
+            }
+        }
+    }
+    
     public JCMethodDecl transformConcreteInterfaceMember(MethodDefinition def, ProducedType type) {
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(def), true, Util.quoteMethodNameIfProperty(def.getDeclarationModel(), gen()));
         
@@ -892,13 +886,9 @@ public class ClassTransformer extends AbstractTransformer {
             methodBuilder.parameter(param);
         }
 
-        if (def.getTypeParameterList() != null) {
-            for (Tree.TypeParameterDeclaration t : def.getTypeParameterList().getTypeParameterDeclarations()) {
-                methodBuilder.typeParameter(t);
-            }
-        }
-
-        if (!(def.getType() instanceof VoidModifier)) {
+        copyTypeParameters(def, methodBuilder);
+        
+        if (!isVoid(def)) {
             methodBuilder.resultType(def.getDeclarationModel());
         }
         
@@ -932,11 +922,7 @@ public class ClassTransformer extends AbstractTransformer {
         methodBuilder.modifiers(modifiers);
         
         if (container instanceof Tree.AnyMethod) {
-            if (((Tree.AnyMethod)container).getTypeParameterList() != null) {
-                for (Tree.TypeParameterDeclaration t : ((Tree.AnyMethod)container).getTypeParameterList().getTypeParameterDeclarations()) {
-                    methodBuilder.typeParameter(t);
-                }
-            }
+            copyTypeParameters((Tree.AnyMethod)container, methodBuilder);
         }
         
         // Add any of the preceding parameters as parameters to the method
