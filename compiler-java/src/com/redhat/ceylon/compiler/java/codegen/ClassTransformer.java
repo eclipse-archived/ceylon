@@ -322,7 +322,11 @@ public class ClassTransformer extends AbstractTransformer {
         // and if a captured class parameter exists with the same name we skip this part as well
         Parameter p = findParamForAttr(decl);
         boolean createField = (p == null) || (useField && !p.isCaptured());
-        if (!Decl.isFormal(decl) && createField) {
+        boolean concrete = Decl.withinInterface(decl)
+                && decl.getSpecifierOrInitializerExpression() != null;
+        if (concrete || 
+                (!Decl.isFormal(decl) 
+                        && createField)) {
             JCExpression initialValue = null;
             if (decl.getSpecifierOrInitializerExpression() != null) {
                 Value declarationModel = decl.getDeclarationModel();
@@ -339,15 +343,25 @@ public class ClassTransformer extends AbstractTransformer {
             JCExpression type = makeJavaType(nonWideningType.getType(), flags);
 
             int modifiers = (useField) ? transformAttributeFieldDeclFlags(decl) : transformLocalDeclFlags(decl);
-            classBuilder.field(modifiers, attrName, type, initialValue, !useField);
+            if (concrete) {
+                classBuilder.getCompanionBuilder().field(modifiers, attrName, type, initialValue, !useField);
+            } else {
+                classBuilder.field(modifiers, attrName, type, initialValue, !useField);
+            }
         }
 
         if (useField) {
-            classBuilder.defs(makeGetter(decl));
-            if (Decl.isMutable(decl)) {
-                classBuilder.defs(makeSetter(decl));
+            classBuilder.defs(makeGetter(decl, false));
+            if (Decl.withinInterface(decl)) {
+                classBuilder.getCompanionBuilder().defs(makeGetter(decl, true));
             }
-        }        
+            if (Decl.isMutable(decl)) {
+                classBuilder.defs(makeSetter(decl, false));
+                if (Decl.withinInterface(decl)) {
+                    classBuilder.getCompanionBuilder().defs(makeSetter(decl, true));
+                }
+            }
+        }
     }
     
     private Parameter findParamForAttr(AttributeDeclaration decl) {
@@ -374,7 +388,7 @@ public class ClassTransformer extends AbstractTransformer {
                  * declaration we can use to make sure we're not widening the attribute type.
                  */
             .setter(this, name, decl.getDeclarationModel().getGetter())
-            .modifiers(transformAttributeGetSetDeclFlags(decl))
+            .modifiers(transformAttributeGetSetDeclFlags(decl, false))
             .isActual(isActual(decl))
             .setterBlock(body)
             .build();
@@ -383,9 +397,10 @@ public class ClassTransformer extends AbstractTransformer {
     public List<JCTree> transform(AttributeGetterDefinition decl) {
         String name = decl.getIdentifier().getText();
         JCBlock body = statementGen().transform(decl.getBlock());
+        // TODO Support concrete getters on interfaces
         return AttributeDefinitionBuilder
             .getter(this, name, decl.getDeclarationModel())
-            .modifiers(transformAttributeGetSetDeclFlags(decl))
+            .modifiers(transformAttributeGetSetDeclFlags(decl, false))
             .isActual(Decl.isActual(decl))
             .getterBlock(body)
             .build();
@@ -456,7 +471,7 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
 
-    private int transformAttributeGetSetDeclFlags(Tree.TypedDeclaration cdecl) {
+    private int transformAttributeGetSetDeclFlags(Tree.TypedDeclaration cdecl, boolean forCompanion) {
         TypedDeclaration tdecl = cdecl.getDeclarationModel();
         if (tdecl instanceof Setter) {
             // Spec says: A setter may not be annotated shared, default or 
@@ -468,8 +483,8 @@ public class ClassTransformer extends AbstractTransformer {
         int result = 0;
 
         result |= tdecl.isShared() ? PUBLIC : PRIVATE;
-        result |= (tdecl.isFormal() && !tdecl.isDefault()) ? ABSTRACT : 0;
-        result |= !(tdecl.isFormal() || tdecl.isDefault()) ? FINAL : 0;
+        result |= (tdecl.isFormal() && !tdecl.isDefault() && !forCompanion) ? ABSTRACT : 0;
+        result |= !(tdecl.isFormal() || tdecl.isDefault()) || forCompanion ? FINAL : 0;
 
         return result;
     }
@@ -483,26 +498,54 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
 
-    private List<JCTree> makeGetter(Tree.AttributeDeclaration decl) {
+    private List<JCTree> makeGetterOrSetter(Tree.AttributeDeclaration decl, boolean forCompanion, AttributeDefinitionBuilder builder, boolean isGetter) {
         at(decl);
-        String atrrName = decl.getIdentifier().getText();
-        return AttributeDefinitionBuilder
-            .getter(this, atrrName, decl.getDeclarationModel())
-            .modifiers(transformAttributeGetSetDeclFlags(decl))
-            .isActual(Decl.isActual(decl))
-            .isFormal(Decl.isFormal(decl))
+        if (forCompanion) {
+            if (decl.getSpecifierOrInitializerExpression() != null) {
+                // TODO Concrete attributes 
+                builder.getterBlock(make().Block(0, List.<JCStatement>of(make().Return(makeErroneous()))));
+            } else {
+                String accessorName = isGetter ? 
+                        Util.getGetterName(decl.getDeclarationModel()) :
+                        Util.getSetterName(decl.getDeclarationModel());
+                
+                if (isGetter) {
+                    builder.getterBlock(make().Block(0, List.<JCStatement>of(make().Return(
+                            make().Apply(
+                                    null,// TODO Typeargs 
+                                    makeSelect("$this", accessorName), 
+                                    List.<JCExpression>nil())))));
+                } else {
+                    List<JCExpression> args = List.<JCExpression>of(makeQuotedIdent(decl.getIdentifier().getText()));
+                    builder.setterBlock(make().Block(0, List.<JCStatement>of(make().Exec(
+                            make().Apply(
+                                    null,// TODO Typeargs 
+                                    makeSelect("$this", accessorName), 
+                                    args)))));
+                }
+                
+            }
+        }
+        return builder
+            .modifiers(transformAttributeGetSetDeclFlags(decl, forCompanion))
+            .isActual(Decl.isActual(decl) && !forCompanion)
+            .isFormal(Decl.isFormal(decl) && !forCompanion)
             .build();
     }
-
-    private List<JCTree> makeSetter(Tree.AttributeDeclaration decl) {
+    
+    private List<JCTree> makeGetter(Tree.AttributeDeclaration decl, boolean forCompanion) {
         at(decl);
         String attrName = decl.getIdentifier().getText();
-        return AttributeDefinitionBuilder
-            .setter(this, attrName, decl.getDeclarationModel())
-            .modifiers(transformAttributeGetSetDeclFlags(decl))
-            .isActual(isActual(decl))
-            .isFormal(Decl.isFormal(decl))
-            .build();
+        AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
+            .getter(this, attrName, decl.getDeclarationModel());
+        return makeGetterOrSetter(decl, forCompanion, getter, true);
+    }
+
+    private List<JCTree> makeSetter(Tree.AttributeDeclaration decl, boolean forCompanion) {
+        at(decl);
+        String attrName = decl.getIdentifier().getText();
+        AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, attrName, decl.getDeclarationModel());
+        return makeGetterOrSetter(decl, forCompanion, setter, false);
     }
 
     private boolean isActual(Tree.TypedDeclaration decl) {
@@ -991,7 +1034,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (visible) {
                 result = result.appendList(AttributeDefinitionBuilder
                     .getter(this, name, def.getDeclarationModel())
-                    .modifiers(transformAttributeGetSetDeclFlags(def))
+                    .modifiers(transformAttributeGetSetDeclFlags(def, false))
                     .isActual(Decl.isActual(def))
                     .build());
             }

@@ -182,7 +182,7 @@ public class AttributeDefinitionBuilder {
                 List.<JCTree.JCStatement>of(owner.make().Exec(init)));
     }
 
-    public JCTree.JCBlock generateDefaultGetterBlock() {
+    private JCTree.JCBlock generateDefaultGetterBlock() {
         JCExpression returnExpr = owner.makeUnquotedIdent(fieldName);
         return owner.make().Block(0L, List.<JCTree.JCStatement>of(owner.make().Return(returnExpr)));
     }
