@@ -350,6 +350,10 @@ public class Check {
      *  @param s             The scope.
      */
     void checkTransparentClass(DiagnosticPosition pos, ClassSymbol c, Scope s) {
+        // Ceylon allows inner classes to have the same name as outer classes
+        if(Context.isCeylon())
+            return;
+
         if (s.next != null) {
             for (Scope.Entry e = s.next.lookup(c.name);
                  e.scope != null && e.sym.owner == c.owner;
@@ -378,10 +382,13 @@ public class Check {
                 return false;
             }
         }
-        for (Symbol sym = s.owner; sym != null; sym = sym.owner) {
-            if (sym.kind == TYP && sym.name == name && sym.name != names.error) {
-                duplicateError(pos, sym);
-                return true;
+        // Ceylon allows inner classes to have the same name as outer classes
+        if(!Context.isCeylon()){
+            for (Symbol sym = s.owner; sym != null; sym = sym.owner) {
+                if (sym.kind == TYP && sym.name == name && sym.name != names.error) {
+                    duplicateError(pos, sym);
+                    return true;
+                }
             }
         }
         return true;
@@ -924,7 +931,7 @@ public class Check {
             implicit |= sym.owner.flags_field & STRICTFP;
             break;
         default:
-            throw new AssertionError();
+            throw new AssertionError("Unknown symbol type "+sym+" kind: "+sym.kind);
         }
         long illegal = flags & StandardFlags & ~mask;
         if (illegal != 0) {
@@ -2207,7 +2214,8 @@ public class Check {
                 if (oldit != null) {
                     List<Type> oldparams = oldit.allparams();
                     List<Type> newparams = it.allparams();
-                    if (!types.containsTypeEquivalent(oldparams, newparams))
+                    if (!Context.isCeylon()
+                            && !types.containsTypeEquivalent(oldparams, newparams))
                         log.error(pos, "cant.inherit.diff.arg",
                                   it.tsym, Type.toString(oldparams),
                                   Type.toString(newparams));

@@ -496,6 +496,8 @@ public abstract class JCTree implements Tree, Cloneable, DiagnosticPosition {
         public int getTag() {
             return TOPLEVEL;
         }
+
+        public boolean isCeylonProgram;
     }
 
     /**
@@ -2074,9 +2076,15 @@ public abstract class JCTree implements Tree, Cloneable, DiagnosticPosition {
     public static class LetExpr extends JCExpression {
         public List<JCVariableDecl> defs;
         public JCTree expr;
+        public List<JCStatement> stats;
         protected LetExpr(List<JCVariableDecl> defs, JCTree expr) {
             this.defs = defs;
             this.expr = expr;
+        }
+        public LetExpr(List<JCVariableDecl> defs, List<JCStatement> stats, JCTree expr) {
+            this.defs = defs;
+            this.expr = expr;
+            this.stats = stats;
         }
         @Override
         public void accept(Visitor v) { v.visitLetExpr(this); }

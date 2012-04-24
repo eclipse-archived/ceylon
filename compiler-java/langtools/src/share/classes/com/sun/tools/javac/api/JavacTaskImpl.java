@@ -70,12 +70,12 @@ public class JavacTaskImpl extends JavacTask {
     private JavaCompiler compiler;
     private Locale locale;
     private String[] args;
-    private Context context;
+    protected Context context;
     private List<JavaFileObject> fileObjects;
     private Map<JavaFileObject, JCCompilationUnit> notYetEntered;
     private ListBuffer<Env<AttrContext>> genList;
-    private TaskListener taskListener;
-    private AtomicBoolean used = new AtomicBoolean();
+    protected TaskListener taskListener;
+    protected AtomicBoolean used = new AtomicBoolean();
     private Iterable<? extends Processor> processors;
 
     private Integer result = null;
@@ -96,7 +96,7 @@ public class JavacTaskImpl extends JavacTask {
         fileObjects.getClass();
     }
 
-    JavacTaskImpl(Main compilerMain,
+    protected JavacTaskImpl(Main compilerMain,
                 Iterable<String> flags,
                 Context context,
                 Iterable<String> classes,
@@ -177,7 +177,7 @@ public class JavacTaskImpl extends JavacTask {
         }
     }
 
-    private void initContext() {
+    protected void initContext() {
         context.put(JavacTaskImpl.class, this);
         if (context.get(TaskListener.class) != null)
             context.put(TaskListener.class, (TaskListener)null);

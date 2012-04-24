@@ -517,8 +517,11 @@ public class MemberEnter extends JCTree.Visitor implements Completer {
         // process package annotations
         annotateLater(tree.packageAnnotations, env, tree.packge);
 
-        // Import-on-demand java.lang.
-        importAll(tree.pos, reader.enterPackage(names.java_lang), env);
+        // Import-on-demand java.lang or ceylon.language.
+        if (tree.isCeylonProgram)
+            importAll(tree.pos, reader.enterPackage(names.ceylon_language), env);
+        else
+            importAll(tree.pos, reader.enterPackage(names.java_lang), env);
 
         // Process all import clauses.
         memberEnter(tree.defs, env);
@@ -658,6 +661,22 @@ public class MemberEnter extends JCTree.Visitor implements Completer {
         v.pos = tree.pos;
     }
 
+    /**
+     * Added for Ceylon, to make sure we attribute variables defined in Let expressions in
+     * class field initialisers
+     */
+    public void visitLetExpr(LetExpr that) {
+        // visit the var defs
+        for(JCVariableDecl varDecl : that.defs){
+            visitVarDef(varDecl);
+            // make sure we mark the variables as static if we're in a static context
+            // otherwise we get a resolving error later on
+            if(env.info.staticLevel > 0){
+                varDecl.sym.flags_field |= Flags.STATIC;
+            }
+        }
+    }
+    
     /** Create a fresh environment for a variable's initializer.
      *  If the variable is a field, the owner of the environment's scope
      *  is be the variable itself, otherwise the owner is the method

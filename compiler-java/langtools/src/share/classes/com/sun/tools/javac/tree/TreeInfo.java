@@ -152,6 +152,10 @@ public class TreeInfo {
                 Name mname = TreeInfo.name(((JCMethodInvocation) exec.expr).meth);
                 return mname;
             }
+            if (exec.expr.getTag() == JCTree.LETEXPR) {
+                LetExpr let = (LetExpr)exec.expr;
+                return calledMethodName(let.stats.head);
+            }
         }
         return null;
     }

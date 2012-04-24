@@ -94,7 +94,7 @@ public class JavacFileManager extends BaseFileManager implements StandardJavaFil
 
     private final File uninited = new File("U N I N I T E D");
 
-    private final Set<JavaFileObject.Kind> sourceOrClass =
+    protected final Set<JavaFileObject.Kind> sourceOrClass =
         EnumSet.of(JavaFileObject.Kind.SOURCE, JavaFileObject.Kind.CLASS);
 
     /** The standard output directory, primarily used for classes.
@@ -102,7 +102,8 @@ public class JavacFileManager extends BaseFileManager implements StandardJavaFil
      *  If classOutDir = null, files are written into same directory as the sources
      *  they were generated from.
      */
-    private File classOutDir = uninited;
+    // Ceylon: made protected
+    protected File classOutDir = uninited;
 
     /** The output directory, used when generating sources while processing annotations.
      *  Initialized by the "-s" option.
@@ -580,7 +581,7 @@ public class JavacFileManager extends BaseFileManager implements StandardJavaFil
 
     /** Flush any output resources.
      */
-    public void flush() {
+    public void flush() throws IOException {
         contentCache.clear();
     }
 
@@ -704,7 +705,7 @@ public class JavacFileManager extends BaseFileManager implements StandardJavaFil
         return getFileForInput(location, name);
     }
 
-    private JavaFileObject getFileForInput(Location location, RelativeFile name) throws IOException {
+    protected JavaFileObject getFileForInput(Location location, RelativeFile name) throws IOException {
         Iterable<? extends File> path = getLocation(location);
         if (path == null)
             return null;
@@ -761,7 +762,7 @@ public class JavacFileManager extends BaseFileManager implements StandardJavaFil
         return getFileForOutput(location, name, sibling);
     }
 
-    private JavaFileObject getFileForOutput(Location location,
+    protected JavaFileObject getFileForOutput(Location location,
                                             RelativeFile fileName,
                                             FileObject sibling)
         throws IOException
@@ -863,7 +864,7 @@ public class JavacFileManager extends BaseFileManager implements StandardJavaFil
             return paths.getPathForLocation(location);
     }
 
-    private File getClassOutDir() {
+    protected File getClassOutDir() {
         if (classOutDir == uninited)
             classOutDir = getOutputLocation(null, D);
         return classOutDir;

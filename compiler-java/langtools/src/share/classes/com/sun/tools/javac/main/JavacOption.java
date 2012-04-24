@@ -72,6 +72,7 @@ public interface JavacOption {
     OptionName getName();
 
     enum OptionKind {
+        CEYLON,
         NORMAL,
         EXTENDED,
         HIDDEN,
@@ -177,7 +178,7 @@ public interface JavacOption {
         /** Print a line of documentation describing this option, if standard.
          * @param out the stream to which to write the documentation
          */
-        void help(PrintWriter out) {
+        public void help(PrintWriter out) {
             String s = "  " + helpSynopsis();
             out.print(s);
             for (int j = Math.min(s.length(), 28); j < 29; j++) out.print(" ");
@@ -208,10 +209,14 @@ public interface JavacOption {
             return sb.toString();
         }
 
+        /** Print a line of documentation describing this option, if Ceylon.
+         */
+        public void chelp(PrintWriter out) {}
+
         /** Print a line of documentation describing this option, if non-standard.
          *  @param out the stream to which to write the documentation
          */
-        void xhelp(PrintWriter out) {}
+        public void xhelp(PrintWriter out) {}
 
         /** Process the option (with arg). Return true if error detected.
          */
@@ -255,6 +260,21 @@ public interface JavacOption {
         public OptionName getName() { return name; }
     };
 
+    /** A Ceylon option
+     */
+    static class COption extends Option {
+        COption(OptionName name, String argsNameKey, String descrKey) {
+            super(name, argsNameKey, descrKey);
+        }
+        COption(OptionName name, String descrKey) {
+            this(name, null, descrKey);
+        }
+        public void help(PrintWriter out) { }
+        public void chelp(PrintWriter out) { super.help(out); }
+        public void xhelp(PrintWriter out) { }
+        public OptionKind getKind() { return OptionKind.CEYLON; }
+    };
+
     /** A nonstandard or extended (-X) option
      */
     static class XOption extends Option {
@@ -271,9 +291,11 @@ public interface JavacOption {
             super(name, descrKey, kind, choices);
         }
         @Override
-        void help(PrintWriter out) {}
+        public void help(PrintWriter out) {}
         @Override
-        void xhelp(PrintWriter out) { super.help(out); }
+        public void chelp(PrintWriter out) {}
+        @Override
+        public void xhelp(PrintWriter out) { super.help(out); }
         @Override
         public OptionKind getKind() { return OptionKind.EXTENDED; }
     };
@@ -288,9 +310,11 @@ public interface JavacOption {
             super(name, argsNameKey, null);
         }
         @Override
-        void help(PrintWriter out) {}
+        public void help(PrintWriter out) {}
         @Override
-        void xhelp(PrintWriter out) {}
+        public void chelp(PrintWriter out) {}
+        @Override
+        public void xhelp(PrintWriter out) {}
         @Override
         public OptionKind getKind() { return OptionKind.HIDDEN; }
     };

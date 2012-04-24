@@ -102,6 +102,10 @@ public class Main {
             help();
         }
 
+        public void printJhelp() {
+            help();
+        }
+
         public void printXhelp() {
             xhelp();
         }
@@ -581,7 +585,7 @@ public class Main {
     }
 
     private static final String javacBundleName =
-        "com.sun.tools.javac.resources.javac";
+        "com.sun.tools.javac.resources.ceylonc";
 
     private static JavacMessages messages;
 }

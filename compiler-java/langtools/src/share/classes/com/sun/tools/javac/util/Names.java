@@ -150,6 +150,9 @@ public class Names {
     public final Name close;
     public final Name addSuppressed;
 
+    // Ceylon additions
+    public final Name ceylon_language;
+
     public final Name.Table table;
 
     public Names(Context context) {
@@ -266,6 +269,9 @@ public class Names {
         java_lang_AutoCloseable = fromString("java.lang.AutoCloseable");
         close = fromString("close");
         addSuppressed = fromString("addSuppressed");
+
+        // Ceylon additions
+        ceylon_language = fromString("ceylon.language");
     }
 
     protected Name.Table createTable(Options options) {

@@ -599,6 +599,15 @@ public class Infer {
             if (args.head instanceof UndetVar ||
                     tvars.head.getUpperBound().isErroneous()) continue;
             List<Type> bounds = types.subst(types.getBounds((TypeVar)tvs.head), tvars, arguments);
+            /**
+             * In Ceylon if we want to add a type cast due to erasure to a parameter of a method, we must cast it
+             * to the first type of the bounds in order for it to work, since in Java we can't produce a type cast
+             * to multiple bounds (A&B), so we limit the check here to the first bound, which is how it is erased
+             * for raw types anyways.
+             * See https://github.com/ceylon/ceylon-compiler/issues/193
+             */
+            if(Context.isCeylon() && bounds.size() > 1)
+                bounds = List.of(bounds.head);
             if (!types.isSubtypeUnchecked(args.head, bounds, warn))
                 throw invalidInstanceException
                     .setMessage("inferred.do.not.conform.to.bounds",

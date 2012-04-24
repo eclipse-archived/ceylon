@@ -513,6 +513,18 @@ public class TreeMaker implements JCTree.Factory {
         return tree;
     }
 
+    public LetExpr LetExpr(JCVariableDecl def, List<JCStatement> stats, JCTree expr) {
+        LetExpr tree = new LetExpr(List.of(def), stats, expr);
+        tree.pos = pos;
+        return tree;
+    }
+
+    public LetExpr LetExpr(List<JCVariableDecl> defs, List<JCStatement> stats, JCTree expr) {
+        LetExpr tree = new LetExpr(defs, stats, expr);
+        tree.pos = pos;
+        return tree;
+    }
+
     /** Create an identifier from a symbol.
      */
     public JCIdent Ident(Symbol sym) {

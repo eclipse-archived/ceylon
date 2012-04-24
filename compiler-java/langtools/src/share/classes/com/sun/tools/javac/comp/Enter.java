@@ -106,18 +106,22 @@ public class Enter extends JCTree.Visitor {
     JavaFileManager fileManager;
     PkgInfo pkginfoOpt;
 
-    private final Todo todo;
+    private Todo todo;
 
     public static Enter instance(Context context) {
         Enter instance = context.get(enterKey);
-        if (instance == null)
+        if (instance == null){
             instance = new Enter(context);
+            instance.init(context);
+        }
         return instance;
     }
 
     protected Enter(Context context) {
         context.put(enterKey, this);
+    }
 
+    protected void init(Context context){
         log = Log.instance(context);
         reader = ClassReader.instance(context);
         make = TreeMaker.instance(context);
@@ -251,7 +255,7 @@ public class Enter extends JCTree.Visitor {
      *  @param tree    The tree to be visited.
      *  @param env     The environment visitor argument.
      */
-    Type classEnter(JCTree tree, Env<AttrContext> env) {
+    protected Type classEnter(JCTree tree, Env<AttrContext> env) {
         Env<AttrContext> prevEnv = this.env;
         try {
             this.env = env;
@@ -349,7 +353,8 @@ public class Enter extends JCTree.Visitor {
                 q.flags_field |= EXISTS;
             c = reader.enterClass(tree.name, packge);
             packge.members().enterIfAbsent(c);
-            if ((tree.mods.flags & PUBLIC) != 0 && !classNameMatchesFileName(c, env)) {
+            if ((tree.mods.flags & PUBLIC) != 0 && !classNameMatchesFileName(c, env)
+                    && !Context.isCeylon()) {
                 log.error(tree.pos(),
                           "class.public.should.be.in.file", tree.name);
             }
@@ -383,7 +388,9 @@ public class Enter extends JCTree.Visitor {
             return;
         }
         chk.compiled.put(c.flatname, c);
-        enclScope.enter(c);
+        // CEYLON(stef): don't add anonymous classes to the environment 
+        if(tree.name.length() != 0)
+            enclScope.enter(c);
 
         // Set up an environment for class block and store in `typeEnvs'
         // table, to be retrieved later in memberEnter and attribution.

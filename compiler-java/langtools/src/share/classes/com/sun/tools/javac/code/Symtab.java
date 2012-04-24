@@ -34,6 +34,7 @@ import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.code.Symbol.*;
 import com.sun.tools.javac.code.Type.*;
 import com.sun.tools.javac.jvm.*;
+import com.sun.tools.javac.main.OptionName;
 
 import static com.sun.tools.javac.jvm.ByteCodes.*;
 import static com.sun.tools.javac.code.Flags.*;
@@ -123,6 +124,12 @@ public class Symtab {
     public final Type stringType;
     public final Type stringBufferType;
     public final Type stringBuilderType;
+    public final Type booleanObjectType;    
+    public final Type integerObjectType;
+    public final Type longObjectType;
+    public final Type floatObjectType;
+    public final Type doubleObjectType;
+    public final Type characterObjectType;
     public final Type cloneableType;
     public final Type serializableType;
     public final Type methodHandleType;
@@ -156,6 +163,57 @@ public class Symtab {
     public final Type systemType;
     public final Type autoCloseableType;
     public final Type trustMeType;
+
+    public  Type ceylonSmallType;
+    public  Type ceylonAnyType;
+    public  Type ceylonVoidType;
+    public  Type ceylonNothingType;
+    public  Type ceylonObjectType;
+    public  Type ceylonIdentifiableObjectType;
+    public  Type ceylonFloatType;
+    public  Type ceylonIntegerType;
+    public  Type ceylonStringType;
+    public  Type ceylonQuotedType;
+    public  Type ceylonMethodType;
+    public  Type ceylonSequenceType;
+    public  Type ceylonArrayType;
+    public  Type ceylonArraySequenceType;
+    public  Type ceylonCharacterType;
+    public  Type ceylonBooleanType;
+    public  Type ceylonIteratorType;
+    public  Type ceylonFinishedType;
+    public  Type ceylonRangeType;
+    public  Type ceylonEntryType;
+    public  Type ceylonContainerType;
+    public  Type ceylonNamedArgumentCall;
+    public  Type ceylonExceptionType;
+    public  Type ceylonEnumeratedTypeErrorType;
+    public  Type ceylonCallableType;
+    public  Type ceylonAbstractCallableType;
+    
+    public final Type ceylonAtCeylonType;
+    public final Type ceylonAtModuleType;
+    public final Type ceylonAtPackageType;
+    public final Type ceylonAtImportType;
+    public final Type ceylonAtNameType;
+    public final Type ceylonAtSequencedType;
+    public final Type ceylonAtDefaultedType;
+    public final Type ceylonAtTypeInfoType;
+    public final Type ceylonAtAttributeType;
+    public final Type ceylonAtMethodType;
+    public final Type ceylonAtObjectType;
+    public final Type ceylonAtClassType;
+    public final Type ceylonAtSatisfiedTypes;
+    public final Type ceylonAtCaseTypes;
+    public final Type ceylonAtIgnore;
+    public final Type ceylonVarianceType;
+    public final Type ceylonAtTypeParameters;
+    public final Type ceylonAtTypeParameter;
+    public final Type ceylonAtAnnotationsType;
+    public final Type ceylonAtAnnotationType;
+    public final Type ceylonAtNamedArgumentType;
+
+    public final Type ceylonUtilType;
 
     /** The symbol representing the length field of an array.
      */
@@ -431,6 +489,12 @@ public class Symtab {
         stringType = enterClass("java.lang.String");
         stringBufferType = enterClass("java.lang.StringBuffer");
         stringBuilderType = enterClass("java.lang.StringBuilder");
+        booleanObjectType = enterClass("java.lang.Boolean");
+        integerObjectType = enterClass("java.lang.Integer");
+        longObjectType = enterClass("java.lang.Long");
+        floatObjectType = enterClass("java.lang.Float");
+        doubleObjectType = enterClass("java.lang.Double");
+        characterObjectType = enterClass("java.lang.Character");
         cloneableType = enterClass("java.lang.Cloneable");
         throwableType = enterClass("java.lang.Throwable");
         serializableType = enterClass("java.io.Serializable");
@@ -477,6 +541,35 @@ public class Symtab {
                                             List.of(exceptionType), methodClass),
                              autoCloseableType.tsym);
         trustMeType = enterClass("java.lang.SafeVarargs");
+        
+        // Only load the ceylon symbols from class files if we're not boostrapping it
+        if(Options.instance(context).get(OptionName.BOOTSTRAPCEYLON) == null){
+            loadCeylonSymbols();
+        }
+        
+        ceylonAtCeylonType = enterClass("com.redhat.ceylon.compiler.java.metadata.Ceylon");
+        ceylonAtImportType = enterClass("com.redhat.ceylon.compiler.java.metadata.Import");
+        ceylonAtModuleType = enterClass("com.redhat.ceylon.compiler.java.metadata.Module");
+        ceylonAtPackageType = enterClass("com.redhat.ceylon.compiler.java.metadata.Package");
+        ceylonAtNameType = enterClass("com.redhat.ceylon.compiler.java.metadata.Name");
+        ceylonAtSequencedType = enterClass("com.redhat.ceylon.compiler.java.metadata.Sequenced");
+        ceylonAtDefaultedType = enterClass("com.redhat.ceylon.compiler.java.metadata.Defaulted");
+        ceylonAtTypeInfoType = enterClass("com.redhat.ceylon.compiler.java.metadata.TypeInfo");
+        ceylonAtAttributeType = enterClass("com.redhat.ceylon.compiler.java.metadata.Attribute");
+        ceylonAtMethodType = enterClass("com.redhat.ceylon.compiler.java.metadata.Method");
+        ceylonAtObjectType = enterClass("com.redhat.ceylon.compiler.java.metadata.Object");
+        ceylonAtClassType = enterClass("com.redhat.ceylon.compiler.java.metadata.Class");
+        ceylonAtSatisfiedTypes = enterClass("com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes");
+        ceylonAtCaseTypes = enterClass("com.redhat.ceylon.compiler.java.metadata.CaseTypes");
+        ceylonAtIgnore = enterClass("com.redhat.ceylon.compiler.java.metadata.Ignore");
+        ceylonVarianceType = enterClass("com.redhat.ceylon.compiler.java.metadata.Variance");
+        ceylonAtTypeParameter = enterClass("com.redhat.ceylon.compiler.java.metadata.TypeParameter");
+        ceylonAtTypeParameters = enterClass("com.redhat.ceylon.compiler.java.metadata.TypeParameters");
+        ceylonAtAnnotationsType = enterClass("com.redhat.ceylon.compiler.java.metadata.Annotations");
+        ceylonAtAnnotationType = enterClass("com.redhat.ceylon.compiler.java.metadata.Annotation");
+        ceylonAtNamedArgumentType = enterClass("com.redhat.ceylon.compiler.java.metadata.NamedArgument");
+        
+        ceylonUtilType = enterClass("com.redhat.ceylon.compiler.java.Util");
 
         synthesizeEmptyInterfaceIfMissing(autoCloseableType);
         synthesizeEmptyInterfaceIfMissing(cloneableType);
@@ -675,5 +768,34 @@ public class Symtab {
 
         enterBinop("&&", booleanType, booleanType, booleanType, bool_and);
         enterBinop("||", booleanType, booleanType, booleanType, bool_or);
+    }
+
+    public void loadCeylonSymbols() {
+        ceylonSmallType = enterClass("ceylon.language.Small");
+        ceylonAnyType = enterClass("ceylon.language.Any");
+        ceylonVoidType = enterClass("ceylon.language.Void");
+        ceylonNothingType = enterClass("ceylon.language.Nothing");
+        ceylonObjectType = enterClass("ceylon.language.Object");
+        ceylonIdentifiableObjectType = enterClass("ceylon.language.IdentifiableObject");
+        ceylonFloatType = enterClass("ceylon.language.Float");
+        ceylonIntegerType = enterClass("ceylon.language.Integer");
+        ceylonStringType = enterClass("ceylon.language.String");
+        ceylonQuotedType = enterClass("ceylon.language.Quoted");
+        ceylonMethodType = enterClass("ceylon.language.Method");
+        ceylonSequenceType = enterClass("ceylon.language.Sequence");
+        ceylonArrayType = enterClass("ceylon.language.Array");
+        ceylonArraySequenceType = enterClass("ceylon.language.ArraySequence");
+        ceylonCharacterType = enterClass("ceylon.language.Character");
+        ceylonBooleanType = enterClass("ceylon.language.Boolean");
+        ceylonIteratorType = enterClass("ceylon.language.Iterator");
+        ceylonFinishedType = enterClass("ceylon.language.Finished");
+        ceylonRangeType = enterClass("ceylon.language.Range");
+        ceylonEntryType = enterClass("ceylon.language.Entry");
+        ceylonContainerType = enterClass("ceylon.language.Container");
+        ceylonNamedArgumentCall = enterClass("ceylon.language.NamedArgumentCall");
+        ceylonExceptionType = enterClass("ceylon.language.Exception");
+        ceylonEnumeratedTypeErrorType = enterClass("com.redhat.ceylon.compiler.java.language.EnumeratedTypeError");
+        ceylonCallableType = enterClass("ceylon.language.Callable");
+        ceylonAbstractCallableType = enterClass("com.redhat.ceylon.compiler.java.language.AbstractCallable");
     }
 }

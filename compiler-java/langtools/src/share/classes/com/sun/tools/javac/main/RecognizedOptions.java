@@ -31,6 +31,7 @@ import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.jvm.Target;
 import com.sun.tools.javac.main.JavacOption.HiddenOption;
 import com.sun.tools.javac.main.JavacOption.Option;
+import com.sun.tools.javac.main.JavacOption.COption;
 import com.sun.tools.javac.main.JavacOption.XOption;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Options;
@@ -42,6 +43,8 @@ import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
+
 import javax.lang.model.SourceVersion;
 
 import static com.sun.tools.javac.main.OptionName.*;
@@ -69,6 +72,8 @@ public class RecognizedOptions {
         void printFullVersion();
 
         void printHelp();
+
+        void printJhelp();
 
         void printXhelp();
 
@@ -100,6 +105,10 @@ public class RecognizedOptions {
             throw new IllegalArgumentException();
         }
 
+        public void printJhelp() {
+            throw new IllegalArgumentException();
+        }
+
         public void printXhelp() {
             throw new IllegalArgumentException();
         }
@@ -122,10 +131,15 @@ public class RecognizedOptions {
         XLINT_CUSTOM,
         NOWARN,
         VERBOSE,
+        VERBOSE_CUSTOM,
         DEPRECATION,
         CLASSPATH,
         CP,
+        CEYLONREPO,
+        CEYLONUSER,
+        CEYLONPASS,
         SOURCEPATH,
+        CEYLONSOURCEPATH,
         BOOTCLASSPATH,
         XBOOTCLASSPATH_PREPEND,
         XBOOTCLASSPATH_APPEND,
@@ -138,6 +152,7 @@ public class RecognizedOptions {
         PROCESSOR,
         PROCESSORPATH,
         D,
+        CEYLONOUT,
         S,
         IMPLICIT,
         ENCODING,
@@ -147,6 +162,7 @@ public class RecognizedOptions {
         FULLVERSION,
         DIAGS,
         HELP,
+        JHELP,
         A,
         X,
         J,
@@ -169,12 +185,19 @@ public class RecognizedOptions {
         XJCOV,
         XD,
         AT,
-        SOURCEFILE);
+        SOURCEFILE,
+        SRC,
+        BOOTSTRAPCEYLON,
+        CEYLONALLOWWARNINGS);
 
     static Set<OptionName> javacFileManagerOptions = EnumSet.of(
         CLASSPATH,
         CP,
+        CEYLONREPO,
+        CEYLONUSER,
+        CEYLONPASS,
         SOURCEPATH,
+        CEYLONSOURCEPATH,
         BOOTCLASSPATH,
         XBOOTCLASSPATH_PREPEND,
         XBOOTCLASSPATH_APPEND,
@@ -185,9 +208,11 @@ public class RecognizedOptions {
         DJAVA_ENDORSED_DIRS,
         PROCESSORPATH,
         D,
+        CEYLONOUT,
         S,
         ENCODING,
-        SOURCE);
+        SOURCE,
+        SRC);
 
     static Set<OptionName> javacToolOptions = EnumSet.of(
         G,
@@ -197,6 +222,7 @@ public class RecognizedOptions {
         XLINT_CUSTOM,
         NOWARN,
         VERBOSE,
+        VERBOSE_CUSTOM,
         DEPRECATION,
         PROC,
         PROCESSOR,
@@ -226,9 +252,11 @@ public class RecognizedOptions {
         XPREFER,
         O,
         XJCOV,
-        XD);
+        XD,
+        BOOTSTRAPCEYLON,
+        CEYLONALLOWWARNINGS);
 
-    static Option[] getJavaCompilerOptions(OptionHelper helper) {
+    public static Option[] getJavaCompilerOptions(OptionHelper helper) {
         return getOptions(helper, javacOptions);
     }
 
@@ -281,6 +309,22 @@ public class RecognizedOptions {
         },
 
         new Option(VERBOSE,                                     "opt.verbose"),
+        new Option(VERBOSE_CUSTOM,                              "opt.verbose.suboptlist") {
+            public boolean matches(String s) {
+                return s.startsWith("-verbose:");
+            }
+            public boolean process(Options options, String option) {
+                String suboptions = option.substring(9);
+                options.put("-verbose:", suboptions);
+                // enter all the -verbose suboptions as "-verbose:suboption"
+                for (StringTokenizer t = new StringTokenizer(suboptions, ","); t.hasMoreTokens(); ) {
+                    String tok = t.nextToken();
+                    String opt = "-verbose:" + tok;
+                    options.put(opt, opt);
+                }
+                return false;
+            }
+        },
 
         // -deprecation is retained for command-line backward compatibility
         new Option(DEPRECATION,                                 "opt.deprecation") {
@@ -298,7 +342,23 @@ public class RecognizedOptions {
                 return super.process(options, "-classpath", arg);
             }
         },
-        new Option(SOURCEPATH,             "opt.arg.path",      "opt.sourcepath"),
+        new COption(CEYLONREPO,             "opt.arg.url",      "opt.ceylonrepo"){
+            @Override
+            public boolean process(Options options, String option, String arg) {
+                if(options != null)
+                    options.addMulti(CEYLONREPO, arg);
+                return false;
+            }
+        },
+        new COption(CEYLONUSER,             "opt.arg.value",     "opt.ceylonuser"),
+        new COption(CEYLONPASS,             "opt.arg.value",     "opt.ceylonpass"),
+        new Option(SOURCEPATH,              "opt.arg.path",      "opt.sourcepath"),
+        new COption(CEYLONSOURCEPATH,       "opt.arg.directory", "opt.ceylonsourcepath"){
+            @Override
+            public boolean process(Options options, String option, String arg) {
+                return super.process(options, "-sourcepath", arg);
+            }
+        },
         new Option(BOOTCLASSPATH,          "opt.arg.path",      "opt.bootclasspath") {
             @Override
             public boolean process(Options options, String option, String arg) {
@@ -336,6 +396,12 @@ public class RecognizedOptions {
         new Option(PROCESSOR,           "opt.arg.class.list",   "opt.processor"),
         new Option(PROCESSORPATH,       "opt.arg.path",         "opt.processorpath"),
         new Option(D,                   "opt.arg.directory",    "opt.d"),
+        new COption(CEYLONOUT,           "opt.arg.url",         "opt.ceylonout"){
+            @Override
+            public boolean process(Options options, String option, String arg) {
+                return super.process(options, "-d", arg);
+            } 
+        },
         new Option(S,                   "opt.arg.directory",    "opt.sourceDest"),
         new Option(IMPLICIT,                                    "opt.implicit",
                 Option.ChoiceKind.ONEOF, "none", "class"),
@@ -362,7 +428,7 @@ public class RecognizedOptions {
                 return super.process(options, option, operand);
             }
         },
-        new Option(VERSION,                                     "opt.version") {
+        new COption(VERSION,                                     "opt.version") {
             @Override
             public boolean process(Options options, String option) {
                 helper.printVersion();
@@ -391,10 +457,17 @@ public class RecognizedOptions {
                     return false;
             }
         },
-        new Option(HELP,                                        "opt.help") {
+        new COption(HELP,                                        "opt.help") {
             @Override
             public boolean process(Options options, String option) {
                 helper.printHelp();
+                return super.process(options, option);
+            }
+        },
+        new COption(JHELP,                                       "opt.jhelp") {
+            @Override
+            public boolean process(Options options, String option) {
+                helper.printJhelp();
                 return super.process(options, option);
             }
         },
@@ -470,6 +543,13 @@ public class RecognizedOptions {
         // treat warnings as errors
         new Option(WERROR,                                      "opt.Werror"),
 
+
+        new Option(SRC,                     "opt.arg.src",      "opt.src") {
+            public boolean process(Options options, String option, String arg) {
+                return super.process(options, "-src", arg);
+            }
+        },
+
         // use complex inference from context in the position of a method call argument
         new HiddenOption(COMPLEXINFERENCE),
 
@@ -497,6 +577,12 @@ public class RecognizedOptions {
         // output source after type erasure
         // new Option("-s",                                     "opt.s"),
         new HiddenOption(PRINTSOURCE),
+
+        // allow us to compile ceylon.language
+        new HiddenOption(BOOTSTRAPCEYLON),
+
+        // do not halt on typechecker warnings
+        new HiddenOption(CEYLONALLOWWARNINGS),
 
         // output shrouded class files
         // new Option("-scramble",                              "opt.scramble"),
@@ -595,13 +681,34 @@ public class RecognizedOptions {
             public boolean matches(String s) {
                 this.s = s;
                 return s.endsWith(".java")  // Java source file
-                    || SourceVersion.isName(s);   // Legal type name
+                        || s.endsWith(".ceylon") // FIXME: Should be a FileManager query
+                        || "default".equals(s) // FIX for ceylon because default is not a valid name for Java
+                        || SourceVersion.isName(s);   // Legal type name
             }
             @Override
             public boolean process(Options options, String option) {
-                if (s.endsWith(".java") ) {
+                if (s.endsWith(".java")
+                        || s.endsWith(".ceylon") // FIXME: Should be a FileManager query
+                ) {
                     File f = new File(s);
                     if (!f.exists()) {
+                        if (s.endsWith(".ceylon")) {
+                            // -sourcepath not -src because the COption for 
+                            // CEYLONSOURCEPATH puts it in the options map as -sourcepath
+                            String path = options.get("-sourcepath");
+                            if (path != null) {
+                                File ff = new File(path + File.separator + s);
+                                if (ff.isFile()) {
+                                    helper.addFile(ff);
+                                    return false;
+                                } else if (new File(path + File.separator + s.replace(".", "/")).isDirectory()) {
+                                    // A Ceylon module name that ends with .ceylon
+                                    helper.addClassName(s);
+                                    return false;
+                                }
+                            }
+                        }
+
                         helper.error("err.file.not.found", f);
                         return true;
                     }
@@ -616,7 +723,7 @@ public class RecognizedOptions {
                 return false;
             }
         },
-    };
+        };
     }
 
     public enum PkgInfo {

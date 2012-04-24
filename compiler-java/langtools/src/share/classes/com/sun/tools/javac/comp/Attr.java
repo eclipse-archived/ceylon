@@ -1555,6 +1555,11 @@ public class Attr extends JCTree.Visitor {
                 if (body.stats.head.getTag() == JCTree.EXEC &&
                     ((JCExpressionStatement) body.stats.head).expr == tree)
                     return true;
+                if (body.stats.head.getTag() == JCTree.EXEC &&
+                        (((JCExpressionStatement) body.stats.head).expr instanceof LetExpr) &&
+                        ((LetExpr)((JCExpressionStatement) body.stats.head).expr).stats.head.getTag() == JCTree.EXEC && 
+                        ((JCExpressionStatement)((LetExpr)((JCExpressionStatement) body.stats.head).expr).stats.head).expr == tree)
+                    return true;
             }
             log.error(tree.pos(),"call.must.be.first.stmt.in.ctor",
                       TreeInfo.name(tree.meth));
@@ -3041,6 +3046,59 @@ public class Attr extends JCTree.Visitor {
         result = tree.type = syms.errType;
     }
 
+    /* Added for Ceylon, required by the ExpressionTransformer */
+    @Override
+    public void visitLetExpr(LetExpr tree) {
+        Scope scope;
+        if (env.info.scope.owner.kind == Kinds.VAR) {
+            // for field initialisers we must access the parent scope, otherwise we get
+            // a DelegateScope which doesn't allow us to declare new variables
+            scope = env.info.scope.next;
+        }else
+            scope = env.info.scope;
+        
+        // make a new environment which captures the current one
+        Env<AttrContext> localEnv =
+                env.dup(tree, env.info.dup(scope.dup()));
+
+        // Field initialisers have not been entered yet, so we need to do it now:
+        if (localEnv.info.scope.owner.kind == Kinds.TYP) {
+            memberEnter.memberEnter(tree, localEnv);
+            annotate.flush();
+        }
+        
+        // find the lint
+        Env<AttrContext> lintEnv = env;
+        while (lintEnv.info.lint == null)
+            lintEnv = lintEnv.next;
+
+        // Having found the enclosing lint value, we can initialize the lint value for this let
+        localEnv.info.lint = lintEnv.info.lint;
+        Lint prevLint = chk.setLint(env.info.lint);
+        
+        try{
+            // visit each var def in this new env (side note: this is not a real LET since in theory each
+            // new variable should see the ones defined previously)
+            for(JCVariableDecl def : tree.defs){
+                // we don't expect any result type from these var defs
+                attribTree(def, localEnv, NIL, Type.noType);
+            }
+            // do statements if we have any
+            if(tree.stats != null)
+                attribStats(tree.stats, localEnv);
+            // now attribute the expression with the LET expected type (pt)
+            attribExpr(tree.expr, localEnv, pt);
+            // the type of the LET is the type of the expression
+            tree.type = tree.expr.type;
+            
+        }finally{
+            // exit the LET scope
+            localEnv.info.scope.leave();
+            // restore the previous lint
+            chk.setLint(prevLint);
+        }
+    }
+    
     public void visitErroneous(JCErroneous tree) {
         if (tree.errs != null)
             for (JCTree err : tree.errs)

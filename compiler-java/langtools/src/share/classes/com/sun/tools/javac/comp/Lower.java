@@ -3596,6 +3596,7 @@ public class Lower extends TreeTranslator {
 
     public void visitLetExpr(LetExpr tree) {
         tree.defs = translateVarDefs(tree.defs);
+        tree.stats = translate(tree.stats);
         tree.expr = translate(tree.expr, tree.type);
         result = tree;
     }

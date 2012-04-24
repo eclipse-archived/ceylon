@@ -43,10 +43,15 @@ public enum OptionName {
     DIAGS("-XDdiags="),
     NOWARN("-nowarn"),
     VERBOSE("-verbose"),
+    VERBOSE_CUSTOM("-verbose:{loader,ast,code,cmr}"),
     DEPRECATION("-deprecation"),
     CLASSPATH("-classpath"),
     CP("-cp"),
+    CEYLONREPO("-rep"),
+    CEYLONUSER("-user"),
+    CEYLONPASS("-pass"),
     SOURCEPATH("-sourcepath"),
+    CEYLONSOURCEPATH("-src"),
     BOOTCLASSPATH("-bootclasspath"),
     XBOOTCLASSPATH_PREPEND("-Xbootclasspath/p:"),
     XBOOTCLASSPATH_APPEND("-Xbootclasspath/a:"),
@@ -59,6 +64,7 @@ public enum OptionName {
     PROCESSOR("-processor"),
     PROCESSORPATH("-processorpath"),
     D("-d"),
+    CEYLONOUT("-out"),
     S("-s"),
     IMPLICIT("-implicit:"),
     ENCODING("-encoding"),
@@ -67,6 +73,7 @@ public enum OptionName {
     VERSION("-version"),
     FULLVERSION("-fullversion"),
     HELP("-help"),
+    JHELP("-jhelp"),
     A("-A"),
     X("-X"),
     J("-J"),
@@ -89,7 +96,10 @@ public enum OptionName {
     XJCOV("-Xjcov"),
     XD("-XD"),
     AT("@"),
-    SOURCEFILE("sourcefile");
+    SOURCEFILE("sourcefile"),
+    SRC("-src"),
+    BOOTSTRAPCEYLON("-Xbootstrapceylon"),
+    CEYLONALLOWWARNINGS("-Xceylonallowwarnings");
 
     public final String optionName;
 

@@ -65,7 +65,7 @@ import com.sun.tools.javac.util.Pair;
  *
  * @author Peter von der Ah\u00e9
  */
-public final class JavacTool implements JavaCompiler {
+public class JavacTool implements JavaCompiler {
     private final List<Pair<String,String>> options
         = new ArrayList<Pair<String,String>>();
     private final Context dummyContext = new Context();
@@ -204,7 +204,7 @@ public final class JavacTool implements JavaCompiler {
         }
     }
 
-    private static void processOptions(Context context,
+    protected static void processOptions(Context context,
                                        JavaFileManager fileManager,
                                        Iterable<String> options)
     {

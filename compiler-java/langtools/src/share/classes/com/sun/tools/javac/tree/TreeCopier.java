@@ -409,8 +409,9 @@ public class TreeCopier<P> implements TreeVisitor<JCTree,P> {
             case JCTree.LETEXPR: {
                 LetExpr t = (LetExpr) node;
                 List<JCVariableDecl> defs = copy(t.defs, p);
+                List<JCStatement> stats = copy(t.stats, p);
                 JCTree expr = copy(t.expr, p);
-                return M.at(t.pos).LetExpr(defs, expr);
+                return M.at(t.pos).LetExpr(defs, stats, expr);
             }
             default:
                 throw new AssertionError("unknown tree tag: " + tree.getTag());

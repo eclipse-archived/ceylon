@@ -186,6 +186,9 @@ public class Pretty extends JCTree.Visitor {
             printExpr(trees.head);
             for (List<T> l = trees.tail; l.nonEmpty(); l = l.tail) {
                 print(sep);
+                if (sep.endsWith("\n")) {
+                    align();
+                }
                 printExpr(l.head);
             }
         }
@@ -1219,7 +1222,30 @@ public class Pretty extends JCTree.Visitor {
 
     public void visitLetExpr(LetExpr tree) {
         try {
-            print("(let " + tree.defs + " in " + tree.expr + ")");
+            print("(");
+            println();
+            indent();
+            align();
+            print("let");
+            println();
+            indent();
+            align();
+            printExprs(tree.defs, ",\n");
+            println();
+            undent();
+            if (tree.stats != null) {
+                align();
+                print("in ");
+                printBlock(tree.stats);
+                println();
+            }
+            align();
+            print("returning ");
+            printExpr(tree.expr);
+            println();
+            undent();
+            align();
+            print(")");
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -1238,9 +1264,25 @@ public class Pretty extends JCTree.Visitor {
         try {
             print("@");
             printExpr(tree.annotationType);
-            print("(");
-            printExprs(tree.args);
-            print(")");
+            if (tree.args.length() > 0) {
+	            print("(");
+	            if (tree.args.length() == 1) {
+	                JCExpression annot = tree.args.head;
+	                if (annot instanceof JCAssign) {
+	                    JCAssign assign = (JCAssign)annot;
+	                    if ("value".equals(assign.lhs.toString())) {
+                            printExpr(assign.rhs);
+	                    } else {
+	                        printExpr(assign);
+	                    }
+	                } else {
+	                    printExpr(annot);
+	                }
+	            } else {
+	                printExprs(tree.args);
+	            }
+	            print(")");
+            }
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

@@ -119,7 +119,7 @@ public class Paths {
      */
     private boolean isDefaultBootClassPath;
 
-    Path getPathForLocation(Location location) {
+    public Path getPathForLocation(Location location) {
         Path path = pathsForLocation.get(location);
         if (path == null)
             setPathForLocation(location, null);
@@ -225,7 +225,7 @@ public class Paths {
         return entries;
     }
 
-    private class Path extends LinkedHashSet<File> {
+    public class Path extends LinkedHashSet<File> {
         private static final long serialVersionUID = 0;
 
         private boolean expandJarClassPaths = false;
@@ -432,8 +432,9 @@ public class Paths {
 
     private Path computeSourcePath() {
         String sourcePathArg = options.get(SOURCEPATH);
+        // Ceylon: default source path
         if (sourcePathArg == null)
-            return null;
+            sourcePathArg = "source";
 
         return new Path().addFiles(sourcePathArg);
     }

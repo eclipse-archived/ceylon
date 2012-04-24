@@ -114,6 +114,10 @@ public class TransTypes extends TreeTranslator {
         return tree;
     }
 
+    private JCFieldAccess makeSelect(JCExpression s1, String s2) {
+        return make.Select(s1, names.fromString(s2));
+    }
+
     /** Construct an attributed tree to coerce an expression to some erased
      *  target type, unless the expression is already assignable to that type.
      *  If target type is a constant type, use its base type instead.
