@@ -133,4 +133,21 @@ class Primaries() {
     @type["Empty|Sequence<String>"] String[] noStrings = {};
     @type["Empty"] value none = {};
     
+    @type["Sequence<Boolean>"] value p100 = { true };
+    @type["Sequence<Boolean>"] value p101 = { true, false };
+    @type["Sequence<Nothing|Boolean>"] value p102 = { null, true, false };
+    
+    object idobj satisfies G&H {}
+    object obj extends Object() satisfies G&H {
+        shared actual Boolean equals(Object other) {
+            return false;
+        }
+        shared actual Integer hash = 0;
+        shared actual String string = "";
+    }
+    
+    @type["Sequence<IdentifiableObject&Primaries.G&Primaries.H>"] value p103 = { idobj };
+    @type["Sequence<Primaries.G&Primaries.H>"] value p104 = { obj };
+    @type["Sequence<Primaries.G&Primaries.H>"] value p105 = { obj, idobj };
+    
 }
