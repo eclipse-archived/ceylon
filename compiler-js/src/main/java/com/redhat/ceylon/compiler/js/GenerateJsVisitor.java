@@ -430,6 +430,9 @@ public class GenerateJsVisitor extends Visitor
             out("*/");
             endLine();
         }
+        //This takes care of top-level attributes defined before the class definition
+        out("$init$", names.name(d), "();");
+        endLine();
         declareSelf(d);
         referenceOuter(d);
         initParameters(that.getParameterList(), d);
