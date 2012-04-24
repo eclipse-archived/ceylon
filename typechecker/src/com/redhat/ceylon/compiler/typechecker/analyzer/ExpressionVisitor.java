@@ -757,8 +757,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         endReturnDeclaration(od);
         endReturnScope(rt, null);
-        Class c = (Class) that.getDeclarationModel().getTypeDeclaration();
-        validateEnumeratedSupertypes(that, c);
+        validateEnumeratedSupertypes(that, that.getAnonymousClass());
     }
 
     @Override public void visit(Tree.ObjectArgument that) {
@@ -767,8 +766,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         endReturnDeclaration(od);
         endReturnScope(rt, null);
-        Class c = (Class) that.getDeclarationModel().getTypeDeclaration();
-        validateEnumeratedSupertypes(that, c);
+        validateEnumeratedSupertypes(that, that.getAnonymousClass());
     }
 
     @Override public void visit(Tree.ClassDeclaration that) {

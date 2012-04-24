@@ -15,6 +15,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
+import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.ImportList;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -228,10 +229,15 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.TypeParameterList that) {
+        super.visit(that);
+        ((Generic) declaration).setTypeParameters(getTypeParameters(that));
+    }    
+    
+    @Override
     public void visit(Tree.TypeDeclaration that) {
         super.visit(that);
         TypeDeclaration d = that.getDeclarationModel();
-        d.setTypeParameters(getTypeParameters(that.getTypeParameterList()));
         if (d.isClassOrInterfaceMember()) {
             for (TypeParameter tp: d.getTypeParameters()) {
                 if (tp.isSequenced()) {
@@ -321,7 +327,6 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
         checkMethodParameters(that);
-        m.setTypeParameters(getTypeParameters(that.getTypeParameterList()));
         if (that.getType() instanceof Tree.ValueModifier) {
             that.getType().addError("methods may not be declared using the keyword value");
         }
@@ -407,6 +412,7 @@ public class DeclarationVisitor extends Visitor {
         }*/
         Class c = new Class();
         c.setAnonymous(true);
+        that.setAnonymousClass(c);
         visitDeclaration(that, c);
         Value v = new Value();
         that.setDeclarationModel(v);
@@ -425,6 +431,7 @@ public class DeclarationVisitor extends Visitor {
         }*/
         Class c = new Class();
         c.setAnonymous(true);
+        that.setAnonymousClass(c);
         visitArgument(that, c);
         Value v = new Value();
         that.setDeclarationModel(v);

@@ -423,14 +423,14 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.ObjectDefinition that) {
         defaultSuperclass(that.getExtendedType(), 
-                that.getDeclarationModel().getTypeDeclaration());
+                that.getAnonymousClass());
         super.visit(that);
     }
 
     @Override 
     public void visit(Tree.ObjectArgument that) {
         defaultSuperclass(that.getExtendedType(), 
-                that.getDeclarationModel().getTypeDeclaration());
+                that.getAnonymousClass());
         super.visit(that);
     }
 

@@ -118,8 +118,7 @@ public class SelfReferenceVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ObjectDefinition that) {
-        TypeDeclaration dec = that.getDeclarationModel().getTypeDeclaration();
-        if (dec==typeDeclaration) {
+        if (that.getAnonymousClass()==typeDeclaration) {
             nestedLevel=0;
             super.visit(that);
             nestedLevel=-1;
@@ -136,7 +135,7 @@ public class SelfReferenceVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ObjectArgument that) {
-        if (that.getDeclarationModel().getTypeDeclaration()==typeDeclaration) {
+        if (that.getAnonymousClass()==typeDeclaration) {
             nestedLevel=0;
             super.visit(that);
             nestedLevel=-1;

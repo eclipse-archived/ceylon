@@ -143,7 +143,8 @@
     EXTENDED_TYPE?
     SATISFIED_TYPES?
     CLASS_BODY
-    Value declarationModel;)
+    Value declarationModel;
+    Class anonymousClass;)
 
 ^(PARAMETER_LIST 
     PARAMETER*(VALUE_PARAMETER_DECLARATION FUNCTIONAL_PARAMETER_DECLARATION))
@@ -645,7 +646,8 @@ argument list."
     EXTENDED_TYPE?
     SATISFIED_TYPES?
     CLASS_BODY
-    Value declarationModel;)
+    Value declarationModel;
+    Class anonymousClass;)
 
 ^(abstract SPECIFIER_OR_INITIALIZER_EXPRESSION EXPRESSION)
 
