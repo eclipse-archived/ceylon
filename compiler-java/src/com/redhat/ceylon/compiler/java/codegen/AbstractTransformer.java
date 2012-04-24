@@ -1756,18 +1756,18 @@ public abstract class AbstractTransformer implements Transformation {
         return makeAtTypeParameter(param.getDeclarationModel());
     }
     
-    public final List<JCExpression> typeParams(Method method) {
-        return typeParams(method.getTypeParameters());
+    public final List<JCExpression> typeArguments(Tree.AnyMethod method) {
+        return typeArguments(method.getDeclarationModel().getTypeParameters(), method.getType().getTypeModel().getTypeArguments());
     }
     
-    public final List<JCExpression> typeParams(ClassOrInterface type) {
-        return typeParams(type.getTypeParameters());
+    public final List<JCExpression> typeArguments(Tree.ClassOrInterface type) {
+        return typeArguments(type.getDeclarationModel().getTypeParameters(), type.getDeclarationModel().getType().getTypeArguments());
     }
     
-    public final List<JCExpression> typeParams(Iterable<TypeParameter> typeParams) {
+    public final List<JCExpression> typeArguments(java.util.List<TypeParameter> typeParameters, Map<TypeParameter, ProducedType> typeArguments) {
         ListBuffer<JCExpression> typeArgs = ListBuffer.<JCExpression>lb();
-        for (TypeParameter tp : typeParams) {
-            typeArgs.append(makeQuotedIdent(tp.getName()));
+        for (TypeParameter tp : typeParameters) {
+            typeArgs.append(makeJavaType(typeArguments.get(tp)));
         }
         return typeArgs.toList();
     }
@@ -1782,12 +1782,8 @@ public abstract class AbstractTransformer implements Transformation {
                 Util.getDefaultedParamMethodName(method, param));
     }
     
-    public final JCExpression makeCompanionType(final ClassOrInterface decl) {
-        return makeCompanionType(decl, decl.getTypeParameters());
-    }
-    
-    public final JCExpression makeCompanionType(final ClassOrInterface decl, Iterable<TypeParameter> typeParameters) {
-        List<JCExpression> typeArgs = typeParams(typeParameters);
+    public final JCExpression makeCompanionType(final ClassOrInterface decl, Map<TypeParameter, ProducedType> typeParameters) {
+        List<JCExpression> typeArgs = typeArguments(decl.getTypeParameters(), typeParameters);
         return makeCompanionType(decl, typeArgs);
     }
 
