@@ -17,6 +17,9 @@ void characters() {
     assert(`\t`.integer==9, "escaped characters 1");
     assert(`\\`.integer==92, "escaped characters 2");
     assert(`\``.integer==96, "escaped characters 3");
+    assert(`\n`.integer==10, "escaped characters 4");
+    assert(`\"`.integer==34, "escaped characters 5");
+    assert(`\{00E5}`.integer==229, "Unicode escape");
     
     variable value i:=0;
     for (x in `a`..`z`) {
