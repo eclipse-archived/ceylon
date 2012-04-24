@@ -137,7 +137,7 @@ public class ClassDefinitionBuilder {
                     gen.make().Modifiers((modifiers & PUBLIC) | FINAL | STATIC, gen.makeAtIgnore()),
                     gen.names().fromString(Util.getCompanionClassName(name)),
                     List.<JCTree.JCTypeParameter>nil(),
-                    (JCTree)null,
+                    (JCTree.JCExpression)null,
                     List.<JCTree.JCExpression>nil(),
                     concreteInterfaceMemberDefs.toList());
             defs.append(concreteInterfaceKlass);

@@ -53,7 +53,9 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.JavacFileManager;
+import com.sun.tools.javac.file.JavacFileManager;
+import com.sun.tools.javac.file.RegularFileObject;
+import com.sun.tools.javac.file.RelativePath.RelativeFile;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Options;
@@ -94,7 +96,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         super.setContext(context);
     }
 
-    protected JavaFileObject.Kind getKind(String extension) {
+    public JavaFileObject.Kind getKind(String extension) {
         if (extension.equals(JavaFileObject.Kind.CLASS.extension))
             return JavaFileObject.Kind.CLASS;
         else if (/*extension.equals(JavaFileObject.Kind.SOURCE.extension) || */extension.equals(".ceylon"))
@@ -110,7 +112,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
      */
     public static void preRegister(final Context context) {
         context.put(JavaFileManager.class, new Context.Factory<JavaFileManager>() {
-            public JavaFileManager make() {
+            public JavaFileManager make(Context context) {
                 return new CeyloncFileManager(context, true, null);
             }
         });
@@ -152,18 +154,18 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
     }
 
     @Override
-    protected JavaFileObject getFileForOutput(Location location, String fileName, FileObject sibling) throws IOException {
+    protected JavaFileObject getFileForOutput(Location location, RelativeFile fileName, FileObject sibling) throws IOException {
         if (sibling instanceof CeylonFileObject) {
             sibling = ((CeylonFileObject) sibling).getFile();
         }
-        fileName = quoteKeywordsInFilename(fileName);
+        String quotedFileName = quoteKeywordsInFilename(fileName.basename());
         
         if(location == StandardLocation.CLASS_OUTPUT){
             File siblingFile = null;
             if (sibling != null && sibling instanceof RegularFileObject) {
                 siblingFile = ((RegularFileObject)sibling).getUnderlyingFile();
             }
-            return getJarRepository().getFileObject(getOutputRepositoryManager(), currentModule, fileName, siblingFile);
+            return getJarRepository().getFileObject(getOutputRepositoryManager(), currentModule, quotedFileName, siblingFile);
         }else
             return super.getFileForOutput(location, fileName, sibling);
     }
@@ -187,9 +189,8 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         nullCheck(kind);
         if (!sourceOrClass.contains(kind))
             throw new IllegalArgumentException("Invalid kind " + kind);
-        String fileName = externalizeFileName(className, kind);
-        JavaFileObject file = getFileForInput(location, fileName);
-        if (file != null && fileName.endsWith(".ceylon")) {
+        JavaFileObject file = getFileForInput(location, forClass(className, kind));
+        if (file != null && file.getName().endsWith(".ceylon")) {
             return new CeylonFileObject(file);
         } else {
             return file;
@@ -197,13 +198,13 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
 
     }
 
-    private String externalizeFileName(String className, JavaFileObject.Kind kind){
+    static RelativeFile forClass(CharSequence className, JavaFileObject.Kind kind) {
         String extension;
         if(kind == Kind.SOURCE)
             extension = ".ceylon";
         else
             extension = kind.extension;
-        return externalizeFileName(className) + extension;
+        return new RelativeFile(className.toString().replace('.', '/') + extension);
     }
 
     @Override

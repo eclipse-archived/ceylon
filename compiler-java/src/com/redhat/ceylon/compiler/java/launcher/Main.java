@@ -58,11 +58,12 @@ import com.sun.tools.javac.processing.AnnotationProcessingError;
 import com.sun.tools.javac.util.ClientCodeException;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.FatalError;
-import com.sun.tools.javac.util.JavacFileManager;
+import com.sun.tools.javac.util.JavacMessages;
+import com.sun.tools.javac.file.JavacFileManager;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Log;
-import com.sun.tools.javac.util.Messages;
+import com.sun.tools.javac.api.Messages;
 import com.sun.tools.javac.util.Options;
 import com.sun.tools.javac.util.PropagatedException;
 
@@ -571,7 +572,7 @@ public class Main extends com.sun.tools.javac.main.Main {
                                                                           // private
         try {
             if (messages == null)
-                messages = new Messages(javacBundleName);
+                messages = new JavacMessages(javacBundleName);
             return messages.getLocalizedString("javac." + key, args);
         } catch (MissingResourceException e) {
             throw new Error("Fatal Error: Resource for javac is missing", e);
@@ -580,19 +581,20 @@ public class Main extends com.sun.tools.javac.main.Main {
 
     public static void useRawMessages(boolean enable) {
         if (enable) {
-            messages = new Messages(javacBundleName) {
+            messages = new JavacMessages(javacBundleName) {
+                @Override
                 public String getLocalizedString(String key, Object... args) {
                     return key;
                 }
             };
         } else {
-            messages = new Messages(javacBundleName);
+            messages = new JavacMessages(javacBundleName);
         }
     }
 
     private static final String javacBundleName = "com.sun.tools.javac.resources.ceylonc";
 
-    private static Messages messages;
+    private static JavacMessages messages;
     
     
 }

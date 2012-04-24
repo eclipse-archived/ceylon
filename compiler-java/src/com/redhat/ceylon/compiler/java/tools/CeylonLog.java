@@ -24,7 +24,7 @@ import javax.tools.JavaFileObject;
 import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.JCDiagnostic;
-import com.sun.tools.javac.util.JCDiagnostic.DiagnosticSource;
+import com.sun.tools.javac.util.DiagnosticSource;
 import com.sun.tools.javac.util.JCDiagnostic.DiagnosticType;
 import com.sun.tools.javac.util.Log;
 
@@ -43,8 +43,9 @@ public class CeylonLog extends Log {
      */
     public static void preRegister(final Context context) {
         context.put(logKey, new Context.Factory<Log>() {
-            public Log make() {
-                return new CeylonLog(context);
+            @Override
+            public Log make(Context c) {
+                return new CeylonLog(c);
             }
         });
     }

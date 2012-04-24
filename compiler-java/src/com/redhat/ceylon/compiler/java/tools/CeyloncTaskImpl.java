@@ -33,14 +33,13 @@ package com.redhat.ceylon.compiler.java.tools;
 import javax.tools.JavaFileObject;
 
 import com.sun.tools.javac.api.JavacTaskImpl;
-import com.sun.tools.javac.api.JavacTool;
 import com.sun.tools.javac.main.Main;
 import com.sun.tools.javac.util.Context;
 
 public class CeyloncTaskImpl extends JavacTaskImpl {
 
     // we're just making this constructor visible here
-    CeyloncTaskImpl(JavacTool tool, Main compilerMain, Iterable<String> flags, Context context, Iterable<String> classes, Iterable<? extends JavaFileObject> fileObjects) {
-        super(tool, compilerMain, flags, context, classes, fileObjects);
+    CeyloncTaskImpl(Main compilerMain, Iterable<String> flags, Context context, Iterable<String> classes, Iterable<? extends JavaFileObject> fileObjects) {
+        super(compilerMain, flags, context, classes, fileObjects);
     }
 }

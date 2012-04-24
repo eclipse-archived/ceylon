@@ -26,7 +26,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.tree.JCTree.Factory;
-import com.sun.tools.javac.util.Name;
+import com.sun.tools.javac.util.Names;
 
 public interface Transformation {
 
@@ -36,7 +36,7 @@ public interface Transformation {
 
     public abstract Symtab syms();
 
-    public abstract Name.Table names();
+    public abstract Names names();
 
     public abstract CeylonModelLoader loader();
 

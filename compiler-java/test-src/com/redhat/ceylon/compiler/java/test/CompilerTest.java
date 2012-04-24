@@ -58,7 +58,7 @@ import com.sun.source.util.TaskEvent;
 import com.sun.source.util.TaskEvent.Kind;
 import com.sun.source.util.TaskListener;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
-import com.sun.tools.javac.zip.ZipFileIndex;
+import com.sun.tools.javac.file.ZipFileIndexCache;
 
 public abstract class CompilerTest {
 
@@ -433,7 +433,7 @@ public abstract class CompilerTest {
     protected CeyloncTaskImpl getCompilerTask(List<String> initialOptions, DiagnosticListener<? super FileObject> diagnosticListener, 
             String... sourcePaths){
         // make sure we get a fresh jar cache for each compiler run
-        ZipFileIndex.clearCache();
+        ZipFileIndexCache.getSharedInstance().clearCache();
         java.util.List<File> sourceFiles = new ArrayList<File>(sourcePaths.length);
         for(String file : sourcePaths){
             sourceFiles.add(new File(path, file));
@@ -447,7 +447,7 @@ public abstract class CompilerTest {
 
         List<String> options = new LinkedList<String>();
         options.addAll(initialOptions);
-        options.addAll(Arrays.asList("-src", getSourcePath(), "-verbose:ast,code"));
+        options.addAll(Arrays.asList("-src", getSourcePath(), "-verbose"));
         Iterable<? extends JavaFileObject> compilationUnits1 =
                 runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
         return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, diagnosticListener, 

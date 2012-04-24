@@ -45,9 +45,13 @@ import com.redhat.ceylon.compiler.java.launcher.Main;
 import com.sun.source.util.JavacTask;
 import com.sun.tools.javac.api.JavacTool;
 import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.JavacFileManager;
+import com.sun.tools.javac.file.JavacFileManager;
 import com.sun.tools.javac.util.Log;
 
+/**
+ * @deprecated apparently JavacTool is deprecated, we need to find what to replace it with
+ */
+@Deprecated
 public class CeyloncTool extends JavacTool implements JavaCompiler {
 
     @Override
@@ -96,6 +100,6 @@ public class CeyloncTool extends JavacTool implements JavaCompiler {
         context.put(JavaFileManager.class, fileManager);
         processOptions(context, fileManager, options);
         Main compiler = new Main("ceyloncTask", context.get(Log.outKey));
-        return new CeyloncTaskImpl(this, compiler, options, context, classes, compilationUnits);
+        return new CeyloncTaskImpl(compiler, options, context, classes, compilationUnits);
     }
 }

@@ -76,7 +76,7 @@ import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Log;
-import com.sun.tools.javac.util.Name;
+import com.sun.tools.javac.util.Names;
 import com.sun.tools.javac.util.Position;
 import com.sun.tools.javac.util.Position.LineMap;
 
@@ -86,7 +86,7 @@ import com.sun.tools.javac.util.Position.LineMap;
 public abstract class AbstractTransformer implements Transformation {
     private Context context;
     private TreeMaker make;
-    private Name.Table names;
+    private Names names;
     private Symtab syms;
     private CeylonModelLoader loader;
     private TypeFactory typeFact;
@@ -95,7 +95,7 @@ public abstract class AbstractTransformer implements Transformation {
     public AbstractTransformer(Context context) {
         this.context = context;
         make = TreeMaker.instance(context);
-        names = Name.Table.instance(context);
+        names = Names.instance(context);
         syms = Symtab.instance(context);
         loader = CeylonModelLoader.instance(context);
         typeFact = TypeFactory.instance(context);
@@ -141,7 +141,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     @Override
-    public Name.Table names() {
+    public Names names() {
         return names;
     }
 

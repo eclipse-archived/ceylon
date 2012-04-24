@@ -54,13 +54,13 @@ import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Convert;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Name;
-import com.sun.tools.javac.util.Name.Table;
+import com.sun.tools.javac.util.Names;
 import com.sun.tools.javac.util.Options;
 
 public class CeylonModelLoader extends AbstractModelLoader {
     
     private Symtab symtab;
-    private Table names;
+    private Names names;
     private ClassReader reader;
     private PhasedUnits phasedUnits;
     private com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
@@ -81,7 +81,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
         phasedUnits = LanguageCompiler.getPhasedUnitsInstance(context);
         ceylonContext = LanguageCompiler.getCeylonContextInstance(context);
         symtab = Symtab.instance(context);
-        names = Name.Table.instance(context);
+        names = Names.instance(context);
         reader = CeylonClassReader.instance(context);
         log = CeylonLog.instance(context);
         types = Types.instance(context);

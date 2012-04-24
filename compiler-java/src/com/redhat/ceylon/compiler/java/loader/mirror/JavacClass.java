@@ -71,7 +71,7 @@ public class JavacClass implements ClassMirror {
     @Override
     public String getQualifiedName() {
         // as taken from ClassSymbol.className():
-        if(classSymbol.name.len == 0)
+        if(classSymbol.name.length() == 0)
             return classSymbol.flatname.toString();
         else
             return classSymbol.getQualifiedName().toString();

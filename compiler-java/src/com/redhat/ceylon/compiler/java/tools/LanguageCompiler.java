@@ -82,7 +82,7 @@ import com.sun.tools.javac.tree.TreeInfo;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Context.SourceLanguage.Language;
 import com.sun.tools.javac.util.Convert;
-import com.sun.tools.javac.util.JavacFileManager;
+import com.sun.tools.javac.file.JavacFileManager;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Options;
@@ -228,7 +228,7 @@ public class LanguageCompiler extends JavaCompiler {
                 log.error("ceylon.parser.failed");
             } else {
                 ModuleManager moduleManager = phasedUnits.getModuleManager();
-                File sourceFile = new File(filename.toString());
+                File sourceFile = new File(filename.getName());
                 // FIXME: temporary solution
                 VirtualFile file = vfs.getFromFile(sourceFile);
                 VirtualFile srcDir = vfs.getFromFile(getSrcDir(sourceFile));
@@ -252,8 +252,7 @@ public class LanguageCompiler extends JavaCompiler {
     }
 
     @Override
-    public List<JCCompilationUnit> parseFiles(List<JavaFileObject> fileObjects)
-            throws IOException {
+    public List<JCCompilationUnit> parseFiles(Iterable<JavaFileObject> fileObjects) {
         List<JCCompilationUnit> trees = super.parseFiles(fileObjects);
         LinkedList<JCCompilationUnit> moduleTrees = new LinkedList<JCCompilationUnit>();
         loadCompiledModules(trees, moduleTrees);
@@ -509,8 +508,7 @@ public class LanguageCompiler extends JavaCompiler {
     }
 
     @Override
-    public void initProcessAnnotations(Iterable<? extends Processor> processors)
-            throws IOException {
+    public void initProcessAnnotations(Iterable<? extends Processor> processors) {
         // don't do anything, which will leave the "processAnnotations" field to false
     }
 
