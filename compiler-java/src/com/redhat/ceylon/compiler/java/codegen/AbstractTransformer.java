@@ -1045,7 +1045,7 @@ public abstract class AbstractTransformer implements Transformation {
         return typeModel.getTypeArgumentList().get(0);
     }
     
-    protected ProducedType getTypeForParameter(Parameter parameter, boolean isRaw, java.util.List<ProducedType> typeArgumentModels) {
+    protected ProducedType getTypeForParameter(Parameter parameter, boolean isRaw, java.util.Map<TypeParameter, ProducedType> typeArgumentModels) {
         if (parameter instanceof FunctionalParameter) {
             FunctionalParameter fp = (FunctionalParameter)parameter;
             java.util.List<ProducedType> typeArgs = new ArrayList<ProducedType>(fp.getTypeParameters().size());
@@ -1061,10 +1061,10 @@ public abstract class AbstractTransformer implements Transformation {
             TypeParameter tp = getTypeParameter(type);
             if(!isRaw && typeArgumentModels != null){
                 // try to use the inferred type if we're not going raw
-                Scope scope = parameter.getContainer();
-                int typeParamIndex = getTypeParameterIndex(scope, tp);
-                if(typeParamIndex != -1)
-                    return typeArgumentModels.get(typeParamIndex);
+                ProducedType producedType = typeArgumentModels.get(tp);
+                if (producedType != null) {
+                    return producedType;
+                }
             }
             if(tp.getSatisfiedTypes().size() >= 1){
                 // try the first satisfied type
@@ -1313,7 +1313,7 @@ public abstract class AbstractTransformer implements Transformation {
             return List.nil();
         ProducedType type;
         if (decl instanceof FunctionalParameter) {
-            type = getTypeForParameter((Parameter)decl, false, Collections.<ProducedType>emptyList());
+            type = getTypeForParameter((Parameter)decl, false, Collections.<TypeParameter, ProducedType>emptyMap());
         } else {
             type = decl.getType();
         }

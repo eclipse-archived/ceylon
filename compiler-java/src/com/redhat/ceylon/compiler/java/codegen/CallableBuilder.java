@@ -23,6 +23,7 @@ import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrateg
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
@@ -145,7 +146,7 @@ public class CallableBuilder {
     
     public static JCExpression unpickCallableParameter(AbstractTransformer gen,
             boolean isRaw,
-            java.util.List<ProducedType> typeArgumentModels,
+            java.util.Map<TypeParameter, ProducedType> typeArgumentModels,
             Parameter param,
             ProducedType argType, 
             int argIndex,
