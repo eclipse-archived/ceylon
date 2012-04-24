@@ -31,6 +31,7 @@ import static com.sun.tools.javac.code.Flags.STATIC;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.util.Decl;
+import com.redhat.ceylon.compiler.java.util.Strategy;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -215,15 +216,9 @@ public class ClassTransformer extends AbstractTransformer {
         def.visitChildren(visitor);
 
         // Check if it's a Class without initializer parameters
-        if (def instanceof Tree.AnyClass && Decl.isToplevel(def) && !Decl.isAbstract(def)) {
-            com.redhat.ceylon.compiler.typechecker.model.Class c = (com.redhat.ceylon.compiler.typechecker.model.Class) model;
-            if (c.getParameterList().getParameters().isEmpty()) {
-                // Add a main() method
-                at(null);
-                JCExpression nameId = makeQuotedFQIdent(c.getQualifiedNameString());
-                JCNewClass expr = make().NewClass(null, null, nameId, List.<JCTree.JCExpression>nil(), null);
-                classBuilder.body(makeMainMethod(model, expr));
-            }
+        if (Strategy.generateMain(def)) {
+            // Add a main() method
+            classBuilder.body(makeMainForClass(model));
         }
         
         return classBuilder
@@ -515,30 +510,28 @@ public class ClassTransformer extends AbstractTransformer {
     public List<JCTree> transformWrappedMethod(Tree.AnyMethod def) {
         // Generate a wrapper class for the method
         String name = def.getIdentifier().getText();
-        JCExpression nameId = makeQuotedIdent(name);
         ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, Decl.isAncestorLocal(def), name, Decl.isShared(def));
         builder.body(classGen().transform(def, builder));
+        
+        // Toplevel method
+        if (Strategy.generateMain(def)) {
+            // Add a main() method
+            builder.body(makeMainForFunction(def.getDeclarationModel()));
+        }
+        
+        List<JCTree> result = builder.build();
+        
         if (Decl.isLocal(def)) {
             // Inner method
-            List<JCTree> result = builder.build();
+            JCExpression nameId = makeQuotedIdent(name);
             JCVariableDecl call = at(def).VarDef(
                     make().Modifiers(FINAL),
                     names().fromString(name),
                     nameId,
                     makeNewClass(name, false));
-            return result.append(call);
-        } else {
-            // Toplevel method
-            if (!def.getParameterLists().isEmpty() && def.getParameterLists().get(0).getParameters().isEmpty()) {
-                // Add a main() method
-                at(null);
-                String path = def.getDeclarationModel().getQualifiedNameString();
-                path += "." + name;
-                JCExpression qualifiedName = makeQuotedFQIdent(path);
-                builder.body(makeMainMethod(def.getDeclarationModel(), make().Apply(null, qualifiedName, List.<JCTree.JCExpression>nil())));
-            }
-            return builder.build();                
-        }
+            result = result.append(call);
+        } 
+        return result;
     }
 
     public List<JCTree> transform(Tree.AnyMethod def, ClassDefinitionBuilder classBuilder) {
@@ -1008,6 +1001,37 @@ public class ClassTransformer extends AbstractTransformer {
         return defs;
     }
     
+    /**
+     * Makes a {@code main()} method which calls the given top-level method
+     * @param def
+     */
+    private JCMethodDecl makeMainForClass(final ClassOrInterface model) {
+        at(null);
+        JCExpression nameId = makeQuotedFQIdent(model.getQualifiedNameString());
+        JCNewClass expr = make().NewClass(null, null, nameId, List.<JCTree.JCExpression>nil(), null);
+        return makeMainMethod(model, expr);
+    }
+    
+    /**
+     * Makes a {@code main()} method which calls the given top-level method
+     * @param method
+     */
+    private JCMethodDecl makeMainForFunction(Method method) {
+        at(null);
+        String name = method.getName();
+        String path = method.getQualifiedNameString();
+        path += "." + name;
+        JCExpression qualifiedName = makeQuotedFQIdent(path);
+        JCMethodDecl mainMethod = makeMainMethod(method, make().Apply(null, qualifiedName, List.<JCTree.JCExpression>nil()));
+        return mainMethod;
+    }
+    
+    /** 
+     * Makes a {@code main()} method which calls the given callee 
+     * (a no-args method or class)
+     * @param decl
+     * @param callee
+     */
     private JCMethodDecl makeMainMethod(Declaration decl, JCExpression callee) {
         // Add a main() method
         MethodDefinitionBuilder methbuilder = MethodDefinitionBuilder
