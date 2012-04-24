@@ -294,8 +294,14 @@ public class ExpressionTransformer extends AbstractTransformer {
         // FIXME: this is appalling
         String value = string
                 .getText()
-                .substring(1, string.getText().length() - 1)
-                .replace("\r\n", "\n")
+                .substring(1, string.getText().length() - 1);
+        value = replacements(value);
+        at(string);
+        return ceylonLiteral(value);
+    }
+
+    private String replacements(String value) {
+        value = value.replace("\r\n", "\n")
                 .replace("\r", "\n")
                 .replace("\\b", "\b")
                 .replace("\\t", "\t")
@@ -304,10 +310,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 .replace("\\r", "\r")
                 .replace("\\\\", "\\")
                 .replace("\\\"", "\"")
-                .replace("\\'", "'")
-                .replace("\\`", "`");
-        at(string);
-        return ceylonLiteral(value);
+                .replace("\\'", "'");
+        return value;
     }
 
     public JCExpression transform(Tree.QuotedLiteral string) {
@@ -320,7 +324,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCExpression transform(Tree.CharLiteral lit) {
         // FIXME: go unicode, but how?
-        JCExpression expr = make().Literal(TypeTags.CHAR, (int) lit.getText().charAt(1));
+        JCExpression expr = make().Literal(TypeTags.CHAR, (int) replacements(lit.getText()).charAt(1));
         // XXX make().Literal(lit.value) doesn't work here... something
         // broken in javac?
         return expr;
