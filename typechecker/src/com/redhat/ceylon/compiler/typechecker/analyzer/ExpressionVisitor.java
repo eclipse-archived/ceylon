@@ -796,7 +796,14 @@ public class ExpressionVisitor extends Visitor {
     
     private ProducedType denotableType(ProducedType pt) {
         if ( pt.getDeclaration().isAnonymous() ) {
-            return pt.getSupertype(pt.getDeclaration().getExtendedTypeDeclaration());
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            addToIntersection(list, pt.getSupertype(pt.getDeclaration().getExtendedTypeDeclaration()), unit);
+            for (TypeDeclaration td: pt.getDeclaration().getSatisfiedTypeDeclarations()) {
+                addToIntersection(list, pt.getSupertype(td), unit);
+            }
+            IntersectionType it = new IntersectionType(unit);
+            it.setSatisfiedTypes(list);
+            return it.getType();
         }
         else {
             return pt;
@@ -2690,7 +2697,7 @@ public class ExpressionVisitor extends Visitor {
             List<ProducedType> list = new ArrayList<ProducedType>();
             for (Tree.Expression e: that.getExpressionList().getExpressions()) {
                 if (e.getTypeModel()!=null) {
-                    addToUnion(list, e.getTypeModel());
+                    addToUnion(list, denotableType(e.getTypeModel()));
                 }
             }
             if (list.isEmpty()) {
