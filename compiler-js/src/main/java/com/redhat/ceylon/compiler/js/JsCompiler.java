@@ -76,11 +76,11 @@ public class JsCompiler {
 
     /** Compile one phased unit.
      * @return The errors found for the unit. */
-    public List<Message> compileUnit(PhasedUnit pu) throws IOException {
+    public List<Message> compileUnit(PhasedUnit pu, JsIdentifierNames names) throws IOException {
         unitErrors.clear();
         pu.getCompilationUnit().visit(unitVisitor);
         if (errCount == 0 || !stopOnErrors) {
-            GenerateJsVisitor jsv = new GenerateJsVisitor(getWriter(pu),optimize);
+            GenerateJsVisitor jsv = new GenerateJsVisitor(getWriter(pu), optimize, names);
             jsv.setAddComments(comment);
             jsv.setIndent(indent);
             pu.getCompilationUnit().visit(jsv);
@@ -107,6 +107,7 @@ public class JsCompiler {
         boolean modDone = false;
         errors.clear();
         try {
+            JsIdentifierNames names = new JsIdentifierNames(optimize);
             for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
                 String name = pu.getUnitFile().getName();
                 if (!"module.ceylon".equals(name) && !"package.ceylon".equals(name)) {
@@ -114,7 +115,7 @@ public class JsCompiler {
                         beginWrapper(getWriter(pu));
                         modDone = true;
                     }
-                    compileUnit(pu);
+                    compileUnit(pu, names);
                     if (stopOnError()) {
                         System.err.println("Errors found. Compilation stopped.");
                         break;

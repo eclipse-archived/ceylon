@@ -97,10 +97,10 @@ public class GenerateJsVisitor extends Visitor
         that.addUnexpectedError(that.getMessage(e, this));
     }
 
-    public GenerateJsVisitor(Writer out, boolean prototypeStyle) {
+    public GenerateJsVisitor(Writer out, boolean prototypeStyle, JsIdentifierNames names) {
         this.out = out;
         this.prototypeStyle=prototypeStyle;
-        names = new JsIdentifierNames(prototypeStyle);
+        this.names = names;
     }
 
     /** Tells the receiver whether to add comments to certain declarations. Default is true. */
@@ -175,32 +175,23 @@ public class GenerateJsVisitor extends Visitor
         super.visit(that);
     }
 
-    @Override
     public void visit(Import that) {
-        require(that.getImportList().getImportedPackage());
+        Package pkg = that.getImportList().getImportedPackage();
+        require(pkg);
     }
 
     private void require(Package pkg) {
-        out("var ");
-        packageAlias(pkg);
-        out("=require('");
-        scriptPath(pkg);
-        out("');");
+        out("var ", names.packageAlias(pkg), "=require('", scriptPath(pkg), "');");
         endLine();
     }
 
-    private void packageAlias(Package pkg) {
-        out(names.packageAlias(pkg));
-    }
-
-    private void scriptPath(Package pkg) {
-        out(pkg.getModule().getNameAsString().replace('.', '/'));
-        out("/");
+    private String scriptPath(Package pkg) {
+        StringBuilder path = new StringBuilder(pkg.getModule().getNameAsString().replace('.', '/')).append('/');
         if (!pkg.getModule().isDefault()) {
-            out(pkg.getModule().getVersion());
-            out("/");
+            path.append(pkg.getModule().getVersion()).append('/');
         }
-        out(pkg.getNameAsString());
+        path.append(pkg.getNameAsString());
+        return path.toString();
     }
 
     @Override
@@ -561,27 +552,57 @@ public class GenerateJsVisitor extends Visitor
         if (type instanceof ObjectDefinition) {
             d = ((ObjectDefinition) type).getDeclarationModel().getTypeDeclaration();
         }
+        out("function $init$", names.name(d), "()");
+        beginBlock();
+        out("if (", names.name(d), ".$$===undefined)");
+        beginBlock();
         out(clAlias, ".", initFuncName, "(", names.name(d), ",'",
             type.getDeclarationModel().getQualifiedNameString(), "'");
 
         if (extendedType != null) {
-            out(",", typeFunctionName(extendedType.getType()));
+            out(",", typeFunctionName(extendedType.getType(), false));
         } else if (!(type instanceof InterfaceDefinition)) {
             out(",", clAlias, ".IdentifiableObject");
         }
 
         if (satisfiedTypes != null) {
             for (SimpleType satType : satisfiedTypes.getTypes()) {
-                out(",", typeFunctionName(satType));
+                String fname = typeFunctionName(satType, true);
+                //Actually it could be "if not in same module"
+                if (declaredInCL(satType.getDeclarationModel())) {
+                    out(",", fname);
+                } else {
+                    int idx = fname.lastIndexOf('.');
+                    if (idx > 0) {
+                        fname = fname.substring(0, idx+1) + "$init$" + fname.substring(idx+1);
+                    } else {
+                        fname = "$init$" + fname;
+                    }
+                    out(",", fname, "()");
+                }
             }
         }
 
         out(");");
+        endBlock();
+        out("return ", names.name(d), ";");
+        endBlock();
+        //If it's nested, share the init function
+        if (!(prototypeStyle && d.isClassOrInterfaceMember())
+                && isCaptured(d)) {
+            outerSelf(d);
+            out(".$init$", names.name(d), "=$init$", names.name(d), ";");
+            endLine();
+        }
+        out("$init$", names.name(d), "();");
         endLine();
     }
 
-    private String typeFunctionName(SimpleType type) {
+    private String typeFunctionName(SimpleType type, boolean removeAlias) {
         TypeDeclaration d = type.getDeclarationModel();
+        if (removeAlias && d.isAlias()) {
+            d = d.getExtendedTypeDeclaration();
+        }
         boolean inProto = prototypeStyle
                 && (type.getScope().getContainer() instanceof TypeDeclaration);
         String constr = qualifiedPath(type, d, inProto);
