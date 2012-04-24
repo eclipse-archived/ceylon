@@ -1,9 +1,9 @@
 package com.redhat.ceylon.compiler.java.util;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree.MethodDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 
 public class Strategy {
     private Strategy() {}
@@ -35,6 +35,10 @@ public class Strategy {
         return Decl.withinInterface(def.getDeclarationModel())
             && def instanceof MethodDeclaration
             && ((MethodDeclaration) def).getSpecifierExpression() == null;
+    }
+
+    public static boolean needsOuterMethodInCompanion(ClassOrInterface model) {
+        return !model.isToplevel();
     }
     
 }
