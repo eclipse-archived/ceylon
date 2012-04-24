@@ -208,9 +208,9 @@
         
         <programlisting>Character: ~("`" | "\") | EscapeSequence</programlisting>
         
-        <programlisting>EscapeSequence: "\" ("b" | "t" | "n" | "f" | "r" | "\" | "&quot;" | "'" | "`" | CharacterCode)</programlisting>
+        <programlisting>EscapeSequence: "\" ("b" | "t" | "n" | "f" | "r" | "\" | "&quot;" | "'" | "`" | "{" CharacterCode "}")</programlisting>
         
-        <programlisting>CharacterCode: "u" HexDigit{4} | "U" HexDigit{8}</programlisting>
+        <programlisting>CharacterCode: HexDigit{4} | HexDigit{8}</programlisting>
                 
         <programlisting>HexDigit: "0".."9" | "A".."F"</programlisting>
         
@@ -220,10 +220,10 @@
         <programlisting>`#`</programlisting>
         <programlisting>` `</programlisting>
         <programlisting>`\n`</programlisting>
-        <programlisting>`\u212B`</programlisting>
+        <programlisting>`\{212B}`</programlisting>
         
         <comment><para>TODO: should we support an escape sequence for Unicode character names
-        <literal>\N{name}</literal> like Python does?</para></comment>
+        <literal>\{LATIN SMALL LETTER A}</literal> like Python does?</para></comment>
         
     </section>
     
@@ -240,7 +240,7 @@
         <para>The following are legal strings:</para>
         
         <programlisting>"Hello!"</programlisting>
-        <programlisting>"\u00E5ngstr\u00F6ms"</programlisting>
+        <programlisting>"\{00E5}ngstr\{00F6}ms"</programlisting>
         <programlisting>" \t\n\f\r,;:"</programlisting>
     
     </section>
