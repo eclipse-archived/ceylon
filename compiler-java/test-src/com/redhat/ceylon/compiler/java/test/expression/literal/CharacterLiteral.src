@@ -5,7 +5,9 @@ class CharacterLiteral {
     public final void m() {
         final int c1 = 'a';
         final int c2 = 'I';
-        final int c3 = '\\';
+        final int c3 = '`';
+        final int c4 = '\\';
+        final int c5 = '\t';
     }
     
     CharacterLiteral() {

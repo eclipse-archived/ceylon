@@ -23,5 +23,7 @@ class CharacterLiteral(){
         Character c1 = `a`;
         Character c2 = `I`;
         Character c3 = `\``;
+        Character c4 = `\\`;
+        Character c5 = `\t`;
     }
 }
