@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -120,12 +120,12 @@ public abstract class Configuration {
     /**
      * The list of doc-file subdirectories to exclude
      */
-    protected Set excludedDocFileDirs;
+    protected Set<String> excludedDocFileDirs;
 
     /**
      * The list of qualifiers to exclude
      */
-    protected Set excludedQualifiers;
+    protected Set<String> excludedQualifiers;
 
     /**
      * The Root of the generated Program Structure from the Doclet API.
@@ -255,8 +255,8 @@ public abstract class Configuration {
         message =
             new MessageRetriever(this,
             "com.sun.tools.doclets.internal.toolkit.resources.doclets");
-        excludedDocFileDirs = new HashSet();
-        excludedQualifiers = new HashSet();
+        excludedDocFileDirs = new HashSet<String>();
+        excludedQualifiers = new HashSet<String>();
     }
 
     /**
@@ -329,14 +329,14 @@ public abstract class Configuration {
         DocErrorReporter reporter);
 
     private void initPackageArray() {
-        Set set = new HashSet(Arrays.asList(root.specifiedPackages()));
+        Set<PackageDoc> set = new HashSet<PackageDoc>(Arrays.asList(root.specifiedPackages()));
         ClassDoc[] classes = root.specifiedClasses();
         for (int i = 0; i < classes.length; i++) {
             set.add(classes[i].containingPackage());
         }
-        ArrayList results = new ArrayList(set);
+        ArrayList<PackageDoc> results = new ArrayList<PackageDoc>(set);
         Collections.sort(results);
-        packages = (PackageDoc[]) results.toArray(new PackageDoc[] {});
+        packages = results.toArray(new PackageDoc[] {});
     }
 
     /**
@@ -345,7 +345,7 @@ public abstract class Configuration {
      * @param options the two dimensional array of options.
      */
     public void setOptions(String[][] options) {
-        LinkedHashSet customTagStrs = new LinkedHashSet();
+        LinkedHashSet<String[]> customTagStrs = new LinkedHashSet<String[]>();
         for (int oi = 0; oi < options.length; ++oi) {
             String[] os = options[oi];
             String opt = os[0].toLowerCase();
@@ -419,7 +419,7 @@ public abstract class Configuration {
             docencoding = encoding;
         }
 
-        classDocCatalog = new ClassDocCatalog(root.specifiedClasses());
+        classDocCatalog = new ClassDocCatalog(root.specifiedClasses(), this);
         initTagletManager(customTagStrs);
     }
 
@@ -441,13 +441,13 @@ public abstract class Configuration {
      * @param customTagStrs the set two dimentional arrays of strings.  These arrays contain
      * either -tag or -taglet arguments.
      */
-    private void initTagletManager(Set customTagStrs) {
+    private void initTagletManager(Set<String[]> customTagStrs) {
         tagletManager = tagletManager == null ?
             new TagletManager(nosince, showversion, showauthor, message) :
             tagletManager;
         String[] args;
-        for (Iterator it = customTagStrs.iterator(); it.hasNext(); ) {
-            args = (String[]) it.next();
+        for (Iterator<String[]> it = customTagStrs.iterator(); it.hasNext(); ) {
+            args = it.next();
             if (args[0].equals("-taglet")) {
                 tagletManager.addCustomTag(args[1], tagletpath);
                 continue;
@@ -476,7 +476,7 @@ public abstract class Configuration {
         }
     }
 
-    private void addToSet(Set s, String str){
+    private void addToSet(Set<String> s, String str){
         StringTokenizer st = new StringTokenizer(str, ":");
         String current;
         while(st.hasMoreTokens()){
@@ -677,15 +677,18 @@ public abstract class Configuration {
     }
 
     /**
-     * Return true if the doc element is getting documented, depending upon
-     * -nodeprecated option and @deprecated tag used. Return true if
-     * -nodeprecated is not used or @deprecated tag is not used.
+     * Return true if the ClassDoc element is getting documented, depending upon
+     * -nodeprecated option and the deprecation information. Return true if
+     * -nodeprecated is not used. Return false if -nodeprecated is used and if
+     * either ClassDoc element is deprecated or the containing package is deprecated.
+     *
+     * @param cd the ClassDoc for which the page generation is checked
      */
-    public boolean isGeneratedDoc(Doc doc) {
+    public boolean isGeneratedDoc(ClassDoc cd) {
         if (!nodeprecated) {
             return true;
         }
-        return (doc.tags("deprecated")).length == 0;
+        return !(Util.isDeprecated(cd) || Util.isDeprecated(cd.containingPackage()));
     }
 
     /**
@@ -707,10 +710,15 @@ public abstract class Configuration {
     }
 
     /**
+     * Return the Locale for this document.
+     */
+    public abstract Locale getLocale();
+
+    /**
      * Return the comparator that will be used to sort member documentation.
      * To no do any sorting, return null.
      *
      * @return the {@link java.util.Comparator} used to sort members.
      */
-    public abstract Comparator getMemberComparator();
+    public abstract Comparator<ProgramElementDoc> getMemberComparator();
 }

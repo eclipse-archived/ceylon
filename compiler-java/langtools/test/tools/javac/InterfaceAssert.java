@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -23,9 +23,11 @@
 
 /*
  * @test
- * @bug 4399129
+ * @bug 4399129 6980724
  * @summary Check that assertions compile properly when nested in an interface
  * @author gafter
+ * @compile InterfaceAssert.java
+ * @run main InterfaceAssert
  */
 
 /*

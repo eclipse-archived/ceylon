@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2008, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -32,10 +32,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Utility class to determine if a service can be found on the
@@ -59,12 +55,12 @@ class ServiceProxy {
 
     private static final String prefix = "META-INF/services/";
 
-    private static void fail(Class service, String msg)
+    private static void fail(Class<?> service, String msg)
             throws ServiceConfigurationError {
         throw new ServiceConfigurationError(service.getName() + ": " + msg);
     }
 
-    private static void fail(Class service, URL u, int line, String msg)
+    private static void fail(Class<?> service, URL u, int line, String msg)
             throws ServiceConfigurationError {
         fail(service, u + ":" + line + ": " + msg);
     }
@@ -85,7 +81,7 @@ class ServiceProxy {
      *         If an I/O error occurs while reading from the given URL, or
      *         if a configuration-file format error is detected
      */
-    private static boolean parse(Class service, URL u) throws ServiceConfigurationError {
+    private static boolean parse(Class<?> service, URL u) throws ServiceConfigurationError {
         InputStream in = null;
         BufferedReader r = null;
         try {

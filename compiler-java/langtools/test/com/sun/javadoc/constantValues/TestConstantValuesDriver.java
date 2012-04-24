@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -22,7 +22,7 @@
  */
 
 /*
- * @test   @(#)TestConstantValuesDriver.java    1.1 02/11/03
+ * @test
  * @bug 4504730 4526070 5077317
  * @summary Test the generation of constant-values.html.
  * @author jamieh
@@ -51,7 +51,7 @@ public class TestConstantValuesDriver extends JavadocTester {
             tests[i][1] = "TEST"+(i+1)+"PASSES";
         }
         tests[tests.length-1][0] = BUG_ID + FS + "constant-values.html";
-        tests[tests.length-1][1] = "<CODE>\"&lt;Hello World&gt;\"</CODE>";
+        tests[tests.length-1][1] = "<code>\"&lt;Hello World&gt;\"</code>";
         TestConstantValuesDriver tester = new TestConstantValuesDriver();
         run(tester, ARGS, tests, NO_TEST);
         tester.printSummary();

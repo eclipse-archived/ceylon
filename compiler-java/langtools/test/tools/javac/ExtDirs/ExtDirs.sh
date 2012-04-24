@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-# Copyright (c) 1999, 2004, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 1999, 2011, Oracle and/or its affiliates. All rights reserved.
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 #
 # This code is free software; you can redistribute it and/or modify it
@@ -85,15 +85,15 @@ for i in 1 2 3; do
 done
 
 echo "Test 1"
-$javac ${TESTTOOLVMOPTS} -d . -extdirs ext1 "${TESTSRC}${FS}ExtDirTest_1.java"
+"$javac" ${TESTTOOLVMOPTS} -d . -extdirs ext1 "${TESTSRC}${FS}ExtDirTest_1.java"
 if [ $? -ne 0 ] ; then fail ; fi
 
 echo "Test 2"
-$javac ${TESTTOOLVMOPTS} -d . -extdirs ext1${PS}ext2 "${TESTSRC}${FS}ExtDirTest_2.java"
+"$javac" ${TESTTOOLVMOPTS} -d . -extdirs ext1${PS}ext2 "${TESTSRC}${FS}ExtDirTest_2.java"
 if [ $? -ne 0 ] ; then fail ; fi
 
 echo "Test 3"
-$javac ${TESTTOOLVMOPTS} -d . -extdirs ext3 "${TESTSRC}${FS}ExtDirTest_3.java"
+"$javac" ${TESTTOOLVMOPTS} -d . -extdirs ext3 "${TESTSRC}${FS}ExtDirTest_3.java"
 if [ $? -ne 0 ] ; then fail ; fi
 
 echo PASS: all tests gave expected results

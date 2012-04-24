@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,16 +25,12 @@
 
 package com.sun.tools.javac.parser;
 
-import java.io.*;
 import java.nio.*;
-import java.nio.ByteBuffer;
-import java.nio.charset.*;
-import java.nio.channels.*;
-import java.util.regex.*;
-
-import com.sun.tools.javac.util.*;
 
 import com.sun.tools.javac.code.Source;
+import com.sun.tools.javac.file.JavacFileManager;
+import com.sun.tools.javac.util.*;
+
 
 import static com.sun.tools.javac.parser.Token.*;
 import static com.sun.tools.javac.util.LayoutCharacters.*;
@@ -51,48 +47,6 @@ public class Scanner implements Lexer {
 
     private static boolean scannerDebug = false;
 
-    /** A factory for creating scanners. */
-    public static class Factory {
-        /** The context key for the scanner factory. */
-        public static final Context.Key<Scanner.Factory> scannerFactoryKey =
-            new Context.Key<Scanner.Factory>();
-
-        /** Get the Factory instance for this context. */
-        public static Factory instance(Context context) {
-            Factory instance = context.get(scannerFactoryKey);
-            if (instance == null)
-                instance = new Factory(context);
-            return instance;
-        }
-
-        final Log log;
-        final Name.Table names;
-        final Source source;
-        final Keywords keywords;
-
-        /** Create a new scanner factory. */
-        protected Factory(Context context) {
-            context.put(scannerFactoryKey, this);
-            this.log = Log.instance(context);
-            this.names = Name.Table.instance(context);
-            this.source = Source.instance(context);
-            this.keywords = Keywords.instance(context);
-        }
-
-        public Scanner newScanner(CharSequence input) {
-            if (input instanceof CharBuffer) {
-                return new Scanner(this, (CharBuffer)input);
-            } else {
-                char[] array = input.toString().toCharArray();
-                return newScanner(array, array.length);
-            }
-        }
-
-        public Scanner newScanner(char[] input, int inputLength) {
-            return new Scanner(this, input, inputLength);
-        }
-    }
-
     /* Output variables; set by nextToken():
      */
 
@@ -103,6 +57,18 @@ public class Scanner implements Lexer {
     /** Allow hex floating-point literals.
      */
     private boolean allowHexFloats;
+
+    /** Allow binary literals.
+     */
+    private boolean allowBinaryLiterals;
+
+    /** Allow underscores in literals.
+     */
+    private boolean allowUnderscoresInLiterals;
+
+    /** The source language setting.
+     */
+    private Source source;
 
     /** The token's position, 0-based offset from beginning of text.
      */
@@ -159,17 +125,20 @@ public class Scanner implements Lexer {
     private final Log log;
 
     /** The name table. */
-    private final Name.Table names;
+    private final Names names;
 
     /** The keyword table. */
     private final Keywords keywords;
 
     /** Common code for constructors. */
-    private Scanner(Factory fac) {
-        this.log = fac.log;
-        this.names = fac.names;
-        this.keywords = fac.keywords;
-        this.allowHexFloats = fac.source.allowHexFloats();
+    private Scanner(ScannerFactory fac) {
+        log = fac.log;
+        names = fac.names;
+        keywords = fac.keywords;
+        source = fac.source;
+        allowBinaryLiterals = source.allowBinaryLiterals();
+        allowHexFloats = source.allowHexFloats();
+        allowUnderscoresInLiterals = source.allowUnderscoresInLiterals();
     }
 
     private static final boolean hexFloatsWork = hexFloatsWork();
@@ -185,7 +154,7 @@ public class Scanner implements Lexer {
     /** Create a scanner from the input buffer.  buffer must implement
      *  array() and compact(), and remaining() must be less than limit().
      */
-    protected Scanner(Factory fac, CharBuffer buffer) {
+    protected Scanner(ScannerFactory fac, CharBuffer buffer) {
         this(fac, JavacFileManager.toArray(buffer), buffer.limit());
     }
 
@@ -200,7 +169,7 @@ public class Scanner implements Lexer {
      * @param inputLength the size of the input.
      * Must be positive and less than or equal to input.length.
      */
-    protected Scanner(Factory fac, char[] input, int inputLength) {
+    protected Scanner(ScannerFactory fac, char[] input, int inputLength) {
         this(fac);
         eofPos = inputLength;
         if (inputLength == input.length) {
@@ -313,12 +282,6 @@ public class Scanner implements Lexer {
         sbuf[sp++] = ch;
     }
 
-    /** For debugging purposes: print character.
-     */
-    private void dch() {
-        System.err.print(ch); System.out.flush();
-    }
-
     /** Read next character in character or string literal and copy into sbuf.
      */
     private void scanLitChar() {
@@ -370,23 +333,42 @@ public class Scanner implements Lexer {
         }
     }
 
+    private void scanDigits(int digitRadix) {
+        char saveCh;
+        int savePos;
+        do {
+            if (ch != '_') {
+                putChar(ch);
+            } else {
+                if (!allowUnderscoresInLiterals) {
+                    lexError("unsupported.underscore.lit", source.name);
+                    allowUnderscoresInLiterals = true;
+                }
+            }
+            saveCh = ch;
+            savePos = bp;
+            scanChar();
+        } while (digit(digitRadix) >= 0 || ch == '_');
+        if (saveCh == '_')
+            lexError(savePos, "illegal.underscore");
+    }
+
     /** Read fractional part of hexadecimal floating point number.
      */
     private void scanHexExponentAndSuffix() {
         if (ch == 'p' || ch == 'P') {
             putChar(ch);
             scanChar();
+            skipIllegalUnderscores();
             if (ch == '+' || ch == '-') {
                 putChar(ch);
                 scanChar();
             }
+            skipIllegalUnderscores();
             if ('0' <= ch && ch <= '9') {
-                do {
-                    putChar(ch);
-                    scanChar();
-                } while ('0' <= ch && ch <= '9');
+                scanDigits(10);
                 if (!allowHexFloats) {
-                    lexError("unsupported.fp.lit");
+                    lexError("unsupported.fp.lit", source.name);
                     allowHexFloats = true;
                 }
                 else if (!hexFloatsWork)
@@ -412,23 +394,22 @@ public class Scanner implements Lexer {
     /** Read fractional part of floating point number.
      */
     private void scanFraction() {
-        while (digit(10) >= 0) {
-            putChar(ch);
-            scanChar();
+        skipIllegalUnderscores();
+        if ('0' <= ch && ch <= '9') {
+            scanDigits(10);
         }
         int sp1 = sp;
         if (ch == 'e' || ch == 'E') {
             putChar(ch);
             scanChar();
+            skipIllegalUnderscores();
             if (ch == '+' || ch == '-') {
                 putChar(ch);
                 scanChar();
             }
+            skipIllegalUnderscores();
             if ('0' <= ch && ch <= '9') {
-                do {
-                    putChar(ch);
-                    scanChar();
-                } while ('0' <= ch && ch <= '9');
+                scanDigits(10);
                 return;
             }
             lexError("malformed.fp.lit");
@@ -458,13 +439,13 @@ public class Scanner implements Lexer {
      */
     private void scanHexFractionAndSuffix(boolean seendigit) {
         this.radix = 16;
-        assert ch == '.';
+        Assert.check(ch == '.');
         putChar(ch);
         scanChar();
-        while (digit(16) >= 0) {
+        skipIllegalUnderscores();
+        if (digit(16) >= 0) {
             seendigit = true;
-            putChar(ch);
-            scanChar();
+            scanDigits(16);
         }
         if (!seendigit)
             lexError("invalid.hex.number");
@@ -472,28 +453,35 @@ public class Scanner implements Lexer {
             scanHexExponentAndSuffix();
     }
 
+    private void skipIllegalUnderscores() {
+        if (ch == '_') {
+            lexError(bp, "illegal.underscore");
+            while (ch == '_')
+                scanChar();
+        }
+    }
+
     /** Read a number.
-     *  @param radix  The radix of the number; one of 8, 10, 16.
+     *  @param radix  The radix of the number; one of 2, j8, 10, 16.
      */
     private void scanNumber(int radix) {
         this.radix = radix;
         // for octal, allow base-10 digit in case it's a float literal
-        int digitRadix = (radix <= 10) ? 10 : 16;
+        int digitRadix = (radix == 8 ? 10 : radix);
         boolean seendigit = false;
-        while (digit(digitRadix) >= 0) {
+        if (digit(digitRadix) >= 0) {
             seendigit = true;
-            putChar(ch);
-            scanChar();
+            scanDigits(digitRadix);
         }
         if (radix == 16 && ch == '.') {
             scanHexFractionAndSuffix(seendigit);
         } else if (seendigit && radix == 16 && (ch == 'p' || ch == 'P')) {
             scanHexExponentAndSuffix();
-        } else if (radix <= 10 && ch == '.') {
+        } else if (digitRadix == 10 && ch == '.') {
             putChar(ch);
             scanChar();
             scanFractionAndSuffix();
-        } else if (radix <= 10 &&
+        } else if (digitRadix == 10 &&
                    (ch == 'e' || ch == 'E' ||
                     ch == 'f' || ch == 'F' ||
                     ch == 'd' || ch == 'D')) {
@@ -795,6 +783,7 @@ public class Scanner implements Lexer {
                     scanChar();
                     if (ch == 'x' || ch == 'X') {
                         scanChar();
+                        skipIllegalUnderscores();
                         if (ch == '.') {
                             scanHexFractionAndSuffix(false);
                         } else if (digit(16) < 0) {
@@ -802,8 +791,29 @@ public class Scanner implements Lexer {
                         } else {
                             scanNumber(16);
                         }
+                    } else if (ch == 'b' || ch == 'B') {
+                        if (!allowBinaryLiterals) {
+                            lexError("unsupported.binary.lit", source.name);
+                            allowBinaryLiterals = true;
+                        }
+                        scanChar();
+                        skipIllegalUnderscores();
+                        if (digit(2) < 0) {
+                            lexError("invalid.binary.number");
+                        } else {
+                            scanNumber(2);
+                        }
                     } else {
                         putChar('0');
+                        if (ch == '_') {
+                            int savePos = bp;
+                            do {
+                                scanChar();
+                            } while (ch == '_');
+                            if (digit(10) < 0) {
+                                lexError(savePos, "illegal.underscore");
+                            }
+                        }
                         scanNumber(8);
                     }
                     return;

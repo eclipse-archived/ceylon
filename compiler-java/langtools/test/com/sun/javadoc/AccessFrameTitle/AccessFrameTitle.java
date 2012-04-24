@@ -22,7 +22,7 @@
  */
 
 /*
- * @test   @(#)AccessFrameTitle.java    1.2 02/07/29
+ * @test
  * @bug 4636655
  * @summary  Add title attribute to <FRAME> tags for accessibility
  * @author dkramer

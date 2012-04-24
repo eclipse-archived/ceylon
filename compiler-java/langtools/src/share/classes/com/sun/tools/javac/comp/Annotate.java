@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -55,7 +55,7 @@ public class Annotate {
     final TreeMaker make;
     final Log log;
     final Symtab syms;
-    final Name.Table names;
+    final Names names;
     final Resolve rs;
     final Types types;
     final ConstFold cfolder;
@@ -67,7 +67,7 @@ public class Annotate {
         make = TreeMaker.instance(context);
         log = Log.instance(context);
         syms = Symtab.instance(context);
-        names = Name.Table.instance(context);
+        names = Names.instance(context);
         rs = Resolve.instance(context);
         types = Types.instance(context);
         cfolder = ConstFold.instance(context);
@@ -168,11 +168,11 @@ public class Annotate {
             }
             JCIdent left = (JCIdent)assign.lhs;
             Symbol method = rs.resolveQualifiedMethod(left.pos(),
-                                                      env,
-                                                      a.type,
-                                                      left.name,
-                                                      List.<Type>nil(),
-                                                      null);
+                                                          env,
+                                                          a.type,
+                                                          left.name,
+                                                          List.<Type>nil(),
+                                                          null);
             left.sym = method;
             left.type = method.type;
             if (method.owner != a.type.tsym)
@@ -182,6 +182,7 @@ public class Annotate {
             if (!method.type.isErroneous())
                 buf.append(new Pair<MethodSymbol,Attribute>
                            ((MethodSymbol)method, value));
+            t.type = result;
         }
         return new Attribute.Compound(a.type, buf.toList());
     }
@@ -189,6 +190,15 @@ public class Annotate {
     Attribute enterAttributeValue(Type expected,
                                   JCExpression tree,
                                   Env<AttrContext> env) {
+        //first, try completing the attribution value sym - if a completion
+        //error is thrown, we should recover gracefully, and display an
+        //ordinary resolution diagnostic.
+        try {
+            expected.tsym.complete();
+        } catch(CompletionFailure e) {
+            log.error(tree.pos(), "cant.resolve", Kinds.kindName(e.sym), e.sym);
+            return new Attribute.Error(expected);
+        }
         if (expected.isPrimitive() || types.isSameType(expected, syms.stringType)) {
             Type result = attr.attribExpr(tree, env, expected);
             if (result.isErroneous())
@@ -234,6 +244,7 @@ public class Annotate {
                                                l.head,
                                                env));
             }
+            na.type = expected;
             return new Attribute.
                 Array(expected, buf.toArray(new Attribute[buf.length()]));
         }

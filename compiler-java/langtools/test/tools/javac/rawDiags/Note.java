@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,7 +25,7 @@
  * @test
  * @bug 6177732
  * @summary add hidden option to have compiler generate diagnostics in more machine-readable form
- * @compile/ref=Note.out -XDrawDiagnostics -XDstdout Note.java
+ * @compile/ref=Note.out -XDrawDiagnostics Note.java
  */
 class Note
 {

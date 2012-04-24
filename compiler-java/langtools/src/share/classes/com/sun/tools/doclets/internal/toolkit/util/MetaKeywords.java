@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2008, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -68,7 +68,7 @@ public class MetaKeywords {
      * definitions are on separate pages.
      */
     public String[] getMetaKeywords(ClassDoc classdoc) {
-        ArrayList results = new ArrayList();
+        ArrayList<String> results = new ArrayList<String>();
 
         // Add field and method keywords only if -keywords option is used
         if( configuration.keywords ) {
@@ -76,16 +76,16 @@ public class MetaKeywords {
             results.addAll(getMemberKeywords(classdoc.fields()));
             results.addAll(getMemberKeywords(classdoc.methods()));
         }
-        return (String[]) results.toArray(new String[]{});
+        return results.toArray(new String[]{});
     }
 
     /**
      * Get the current class for a meta tag keyword, as the first
      * and only element of an array list.
      */
-    protected ArrayList getClassKeyword(ClassDoc classdoc) {
+    protected ArrayList<String> getClassKeyword(ClassDoc classdoc) {
         String cltypelower = classdoc.isInterface() ? "interface" : "class";
-        ArrayList metakeywords = new ArrayList(1);
+        ArrayList<String> metakeywords = new ArrayList<String>(1);
         metakeywords.add(classdoc.qualifiedName() + " " + cltypelower);
         return metakeywords;
     }
@@ -127,8 +127,8 @@ public class MetaKeywords {
      *
      * @param memberdocs  array of MemberDoc objects to be added to keywords
      */
-    protected ArrayList getMemberKeywords(MemberDoc[] memberdocs) {
-        ArrayList results = new ArrayList();
+    protected ArrayList<String> getMemberKeywords(MemberDoc[] memberdocs) {
+        ArrayList<String> results = new ArrayList<String>();
         String membername;
         for (int i=0; i < memberdocs.length; i++) {
             membername = memberdocs[i].name()

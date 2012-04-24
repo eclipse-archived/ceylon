@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2002, 2004, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -23,15 +23,15 @@
 
 /**
  * <pre>
- *	This source
- * 	is indented
- * 	with tabs.
+ *\tThis source
+ * \tis indented
+ * \twith tabs.
  * </pre>
  */
 public class C {
-    
-	//This source
-	//is indented
-	//with tabs.
-    
+
+\t//This source
+\t//is indented
+\t//with tabs.
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -67,11 +67,13 @@ public abstract class AbstractMemberBuilder extends AbstractBuilder {
     /**
      * Build the sub component if there is anything to document.
      *
-     * @param elements {@inheritDoc}
+     * @param node the XML element that specifies which components to document.
+     * @param contentTree content tree to which the documentation will be added
      */
-    public void build(List elements) {
+    @Override
+    public void build(XMLNode node, Content contentTree) {
         if (hasMembersToDocument()) {
-            super.build(elements);
+            super.build(node, contentTree);
         }
     }
 

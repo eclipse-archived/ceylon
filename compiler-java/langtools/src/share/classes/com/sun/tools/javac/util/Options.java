@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,9 +25,9 @@
 
 package com.sun.tools.javac.util;
 
-import com.sun.tools.javac.main.OptionName;
-import java.util.List;
 import java.util.*;
+import com.sun.tools.javac.main.OptionName;
+import static com.sun.tools.javac.main.OptionName.*;
 
 /** A table of all command-line options.
  *  If an option has an argument, the option name is mapped to the argument.
@@ -46,7 +46,6 @@ public class Options {
         new Context.Key<Options>();
 
     private LinkedHashMap<String,String> values;
-    private LinkedHashMap<String,List<String>> multiValues;
 
     /** Get the Options instance for this context. */
     public static Options instance(Context context) {
@@ -59,26 +58,79 @@ public class Options {
     protected Options(Context context) {
 // DEBUGGING -- Use LinkedHashMap for reproducability
         values = new LinkedHashMap<String,String>();
-        multiValues = new LinkedHashMap<String,List<String>>();
         context.put(optionsKey, this);
     }
 
+    /**
+     * Get the value for an undocumented option.
+     */
     public String get(String name) {
         return values.get(name);
     }
 
-    public List<String> getMulti(String name) {
-        if(multiValues.containsKey(name))
-            return multiValues.get(name);
-        return Collections.emptyList();
-    }
-
+    /**
+     * Get the value for an option.
+     */
     public String get(OptionName name) {
         return values.get(name.optionName);
     }
 
-    public List<String> getMulti(OptionName name) {
-        return getMulti(name.optionName);
+    /**
+     * Get the boolean value for an option, patterned after Boolean.getBoolean,
+     * essentially will return true, iff the value exists and is set to "true".
+     */
+    public boolean getBoolean(String name) {
+        return getBoolean(name, false);
+    }
+
+    /**
+     * Get the boolean with a default value if the option is not set.
+     */
+    public boolean getBoolean(String name, boolean defaultValue) {
+        String value = get(name);
+        return (value == null) ? defaultValue : Boolean.parseBoolean(value);
+    }
+
+    /**
+     * Check if the value for an undocumented option has been set.
+     */
+    public boolean isSet(String name) {
+        return (values.get(name) != null);
+    }
+
+    /**
+     * Check if the value for an option has been set.
+     */
+    public boolean isSet(OptionName name) {
+        return (values.get(name.optionName) != null);
+    }
+
+    /**
+     * Check if the value for a choice option has been set to a specific value.
+     */
+    public boolean isSet(OptionName name, String value) {
+        return (values.get(name.optionName + value) != null);
+    }
+
+    /**
+     * Check if the value for an undocumented option has not been set.
+     */
+    public boolean isUnset(String name) {
+        return (values.get(name) == null);
+    }
+
+    /**
+     * Check if the value for an option has not been set.
+     */
+    public boolean isUnset(OptionName name) {
+        return (values.get(name.optionName) == null);
+    }
+
+    /**
+     * Check if the value for a choice option has not been set to a specific value.
+     */
+    public boolean isUnset(OptionName name, String value) {
+        return (values.get(name.optionName + value) == null);
     }
 
     public void put(String name, String value) {
@@ -87,20 +139,6 @@ public class Options {
 
     public void put(OptionName name, String value) {
         values.put(name.optionName, value);
-    }
-
-    public void addMulti(String name, String value) {
-        List<String> list = multiValues.get(name);
-        if(list == null){
-            list = new LinkedList<String>();
-            multiValues.put(name, list);
-        }
-        if(!list.contains(value))
-            list.add(value);
-    }
-
-    public void addMulti(OptionName name, String value) {
-        addMulti(name.optionName, value);
     }
 
     public void putAll(Options options) {
@@ -119,16 +157,14 @@ public class Options {
         return values.size();
     }
 
-    static final String LINT = "-Xlint";
-
     /** Check for a lint suboption. */
     public boolean lint(String s) {
         // return true if either the specific option is enabled, or
         // they are all enabled without the specific one being
         // disabled
         return
-            get(LINT + ":" + s)!=null ||
-            (get(LINT)!=null || get(LINT + ":all")!=null) &&
-                get(LINT+":-"+s)==null;
+            isSet(XLINT_CUSTOM, s) ||
+            (isSet(XLINT) || isSet(XLINT_CUSTOM, "all")) &&
+                isUnset(XLINT_CUSTOM, "-" + s);
     }
 }

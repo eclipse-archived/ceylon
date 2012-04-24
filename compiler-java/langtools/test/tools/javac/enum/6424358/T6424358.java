@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -34,13 +34,12 @@ import java.util.Set;
 import javax.annotation.processing.*;
 import javax.lang.model.element.*;
 import javax.lang.model.util.*;
+import javax.lang.model.SourceVersion;
 import static javax.tools.Diagnostic.Kind.*;
-import static javax.lang.model.SourceVersion.RELEASE_6;
 
 @interface TestMe {}
 
 @SupportedAnnotationTypes("*")
-@SupportedSourceVersion(RELEASE_6)
 public class T6424358 extends AbstractProcessor {
     @TestMe enum Test { FOO; }
 
@@ -49,7 +48,7 @@ public class T6424358 extends AbstractProcessor {
         final Messager log = processingEnv.getMessager();
         final Elements elements = processingEnv.getElementUtils();
         final TypeElement testMe = elements.getTypeElement("TestMe");
-        class Scan extends ElementScanner6<Void,Void> {
+        class Scan extends ElementScanner7<Void,Void> {
             @Override
             public Void visitExecutable(ExecutableElement e, Void p) {
                 System.err.println("Looking at " + e);
@@ -65,5 +64,10 @@ public class T6424358 extends AbstractProcessor {
         for (Element e : roundEnvironment.getElementsAnnotatedWith(testMe))
             scan.scan(e);
         return true;
+    }
+
+    @Override
+    public SourceVersion getSupportedSourceVersion() {
+        return SourceVersion.latest();
     }
 }

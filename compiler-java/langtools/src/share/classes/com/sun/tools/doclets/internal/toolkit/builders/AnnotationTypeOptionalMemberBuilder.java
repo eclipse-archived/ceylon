@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,12 +25,10 @@
 
 package com.sun.tools.doclets.internal.toolkit.builders;
 
-
+import java.util.*;
 import com.sun.tools.doclets.internal.toolkit.util.*;
 import com.sun.tools.doclets.internal.toolkit.*;
 import com.sun.javadoc.*;
-import java.util.*;
-import java.lang.reflect.*;
 
 /**
  * Builds documentation for optional annotation type members.
@@ -40,6 +38,7 @@ import java.lang.reflect.*;
  * Do not use it as an API
  *
  * @author Jamie Ho
+ * @author Bhavesh Patel (Modified)
  * @since 1.5
  */
 public class AnnotationTypeOptionalMemberBuilder extends
@@ -73,7 +72,7 @@ public class AnnotationTypeOptionalMemberBuilder extends
         builder.writer = writer;
         builder.visibleMemberMap = new VisibleMemberMap(classDoc,
             VisibleMemberMap.ANNOTATION_TYPE_MEMBER_OPTIONAL, configuration.nodeprecated);
-        builder.members = new ArrayList(
+        builder.members = new ArrayList<ProgramElementDoc>(
             builder.visibleMemberMap.getMembersFor(classDoc));
         if (configuration.getMemberComparator() != null) {
             Collections.sort(builder.members,
@@ -85,51 +84,37 @@ public class AnnotationTypeOptionalMemberBuilder extends
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getName() {
         return "AnnotationTypeOptionalMemberDetails";
     }
 
     /**
-     * Build the member documentation.
+     * Build the annotation type optional member documentation.
      *
-     * @param elements the XML elements that specify how to construct this
-     *                documentation.
+     * @param node the XML element that specifies which components to document
+     * @param memberDetailsTree the content tree to which the documentation will be added
      */
-    public void buildAnnotationTypeOptionalMember(List elements) {
-        if (writer == null) {
-            return;
-        }
-        for (currentMemberIndex = 0; currentMemberIndex < members.size();
-            currentMemberIndex++) {
-            build(elements);
-        }
+    public void buildAnnotationTypeOptionalMember(XMLNode node, Content memberDetailsTree) {
+        buildAnnotationTypeMember(node, memberDetailsTree);
+    }
+
+    /**
+     * Build the default value for this optional member.
+     *
+     * @param node the XML element that specifies which components to document
+     * @param annotationDocTree the content tree to which the documentation will be added
+     */
+    public void buildDefaultValueInfo(XMLNode node, Content annotationDocTree) {
+        ((AnnotationTypeOptionalMemberWriter) writer).addDefaultValueInfo(
+                (MemberDoc) members.get(currentMemberIndex),
+                annotationDocTree);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void invokeMethod(String methodName, Class[] paramClasses,
-            Object[] params)
-    throws Exception {
-        if (DEBUG) {
-            configuration.root.printError("DEBUG: " + this.getClass().getName()
-                + "." + methodName);
-        }
-        Method method = this.getClass().getMethod(methodName, paramClasses);
-        method.invoke(this, params);
-    }
-
-    /**
-     * Document the default value for this optional member.
-     */
-    public void buildDefaultValueInfo() {
-        ((AnnotationTypeOptionalMemberWriter) writer).writeDefaultValueInfo(
-            (MemberDoc) members.get(currentMemberIndex));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public AnnotationTypeRequiredMemberWriter getWriter() {
         return writer;
     }

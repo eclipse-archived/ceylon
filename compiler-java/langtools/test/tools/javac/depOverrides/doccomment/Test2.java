@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,10 +26,10 @@
  * @bug 5086088
  * @summary check warnings generated when overriding deprecated methods
  *
- * @compile/ref=empty   -XDstdout -XDrawDiagnostics -Xlint:deprecation P.java
- * @compile/ref=Test2Q.out -XDstdout -XDrawDiagnostics -Xlint:deprecation Q.java
- * @compile/ref=Test2R.out -XDstdout -XDrawDiagnostics -Xlint:deprecation R.java
- * @compile/ref=empty   -XDstdout -XDrawDiagnostics -Xlint:deprecation Test2.java
+ * @compile/ref=empty   -XDrawDiagnostics -Xlint:deprecation P.java
+ * @compile/ref=Test2Q.out -XDrawDiagnostics -Xlint:deprecation Q.java
+ * @compile/ref=Test2R.out -XDrawDiagnostics -Xlint:deprecation R.java
+ * @compile/ref=empty   -XDrawDiagnostics -Xlint:deprecation Test2.java
  */
 
 

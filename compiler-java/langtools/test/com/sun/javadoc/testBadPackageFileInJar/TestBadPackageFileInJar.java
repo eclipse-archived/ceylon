@@ -22,7 +22,7 @@
  */
 
 /*
- * @test   @(#)TestBadPackageFileInJar.java 1.4 02/10/25
+ * @test
  * @bug 4691095 6306394
  * @summary Test to make sure that Javadoc emits a useful warning
  * when a bad package.html file is in the JAR.

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-# Copyright (c) 2004, 2007, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2004, 2009, Oracle and/or its affiliates. All rights reserved.
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 #
 # This code is free software; you can redistribute it and/or modify it
@@ -72,7 +72,7 @@ case "${OS}" in
 esac
 
 
-APT="${TESTJAVA}/bin/apt ${TESTTOOLVMOPTS} "
+APT="${TESTJAVA}/bin/apt ${TESTTOOLVMOPTS} -XDsuppress-tool-api-removal-message "
 JAVA="${TESTJAVA}/bin/java ${TESTVMOPTS} "
 JAVAC="${TESTJAVA}/bin/javac ${TESTTOOLVMOPTS} "
 

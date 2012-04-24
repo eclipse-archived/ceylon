@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2008, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -67,6 +67,7 @@ public class Main {
      *  to instantiate doclets will be created without specifying a parent
      *  class loader.
      * @return The return code.
+     * @since 1.7
      */
     public static int execute(ClassLoader docletParentClassLoader, String... args) {
         Start jdoc = new Start(docletParentClassLoader);
@@ -93,6 +94,7 @@ public class Main {
      *  to instantiate doclets will be created without specifying a parent
      *  class loader.
      * @return The return code.
+     * @since 1.7
      */
     public static int execute(String programName, ClassLoader docletParentClassLoader, String... args) {
         Start jdoc = new Start(programName, docletParentClassLoader);
@@ -123,6 +125,7 @@ public class Main {
      *  class loader.
      * @param args   The command line parameters.
      * @return The return code.
+     * @since 1.7
      */
     public static int execute(String programName,
                               String defaultDocletClassName,
@@ -167,6 +170,7 @@ public class Main {
      *  class loader.
      * @param args   The command line parameters.
      * @return The return code.
+     * @since 1.7
      */
     public static int execute(String programName,
                               PrintWriter errWriter,

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,6 +26,8 @@
  * @bug     6362178
  * @summary MirroredType[s]Exception shouldn't be created too eagerly
  * @author  Scott Seligman
+ * @library ../../../../lib
+ * @build JavacTestingAbstractProcessor
  * @compile -g OverEager.java
  * @compile -processor OverEager -proc:only OverEager.java
  */
@@ -38,20 +40,9 @@ import javax.lang.model.type.*;
 import javax.lang.model.util.*;
 import static javax.lang.model.util.ElementFilter.*;
 
-@SupportedSourceVersion(SourceVersion.RELEASE_6)
 @SupportedAnnotationTypes("IAm")
 @IAm(OverEager.class)
-public class OverEager extends AbstractProcessor {
-
-    Elements elements;
-    Types types;
-
-    public void init(ProcessingEnvironment penv) {
-        super.init(penv);
-        elements = penv.getElementUtils();
-        types =  penv.getTypeUtils();
-    }
-
+public class OverEager extends JavacTestingAbstractProcessor {
     public boolean process(Set<? extends TypeElement> annoTypes,
                            RoundEnvironment round) {
         if (!round.processingOver())

@@ -32,10 +32,9 @@ import java.util.HashSet;
 /**
  * Source versions of the Java&trade; programming language.
  *
- * See <a
- * href="http://java.sun.com/docs/books/jls/">http://java.sun.com/docs/books/jls/</a>
- * for information on editions of <i>The Java&trade; Language
- * Specification</i>, including updates and clarifications.
+ * See the appropriate edition of
+ * <cite>The Java&trade; Language Specification</cite>
+ * for information about a particular source version.
  *
  * <p>Note that additional source version constants will be added to
  * model future releases of the language.
@@ -59,17 +58,16 @@ public enum SourceVersion {
     /**
      * The original version.
      *
-     * The language described in the first edition of <i>The
-     * Java&trade; Language Specification</i>.
+     * The language described in
+     * <cite>The Java&trade; Language Specification, First Edition</cite>.
      */
     RELEASE_0,
 
     /**
      * The version recognized by the Java Platform 1.1.
      *
-     * The language is {@code RELEASE_0} <a
-     * href="http://java.sun.com/docs/books/jls/first_edition/html/1.1Update.html">augmented</a>
-     * with nested classes.
+     * The language is {@code RELEASE_0} augmented with nested classes as described in the 1.1 update to
+     * <cite>The Java&trade; Language Specification, First Edition</cite>.
      */
     RELEASE_1,
 
@@ -77,8 +75,9 @@ public enum SourceVersion {
      * The version recognized by the Java 2 Platform, Standard Edition,
      * v 1.2.
      *
-     * The language described in <i>The Java&trade; Language
-     * Specification, Second Edition</i>, which includes the {@code
+     * The language described in
+     * <cite>The Java&trade; Language Specification,
+     * Second Edition</cite>, which includes the {@code
      * strictfp} modifier.
      */
     RELEASE_2,
@@ -103,8 +102,9 @@ public enum SourceVersion {
      * The version recognized by the Java 2 Platform, Standard
      * Edition 5.0.
      *
-     * The language described in <i>The Java&trade; Language
-     * Specification, Third Edition</i>.  First release to support
+     * The language described in
+     * <cite>The Java&trade; Language Specification,
+     * Third Edition</cite>.  First release to support
      * generics, annotations, autoboxing, var-args, enhanced {@code
      * for} loop, and hexadecimal floating-point literals.
      */
@@ -116,7 +116,15 @@ public enum SourceVersion {
      *
      * No major changes from {@code RELEASE_5}.
      */
-    RELEASE_6;
+    RELEASE_6,
+
+    /**
+     * The version recognized by the Java Platform, Standard Edition
+     * 7.
+     *
+     * @since 1.7
+     */
+    RELEASE_7;
 
     // Note that when adding constants for newer releases, the
     // behavior of latest() and latestSupported() must be updated too.
@@ -127,7 +135,7 @@ public enum SourceVersion {
      * @return the latest source version that can be modeled
      */
     public static SourceVersion latest() {
-        return RELEASE_6;
+        return RELEASE_7;
     }
 
     private static final SourceVersion latestSupported = getLatestSupported();
@@ -135,7 +143,9 @@ public enum SourceVersion {
     private static SourceVersion getLatestSupported() {
         try {
             String specVersion = System.getProperty("java.specification.version");
-            if ("1.6".equals(specVersion))
+            if ("1.7".equals(specVersion))
+                return RELEASE_7;
+            else if ("1.6".equals(specVersion))
                 return RELEASE_6;
         } catch (SecurityException se) {}
 
@@ -200,7 +210,7 @@ public enum SourceVersion {
      * @param name the string to check
      * @return {@code true} if this string is a
      * syntactically valid name, {@code false} otherwise.
-     * @jls3 6.2 Names and Identifiers
+     * @jls 6.2 Names and Identifiers
      */
     public static boolean isName(CharSequence name) {
         String id = name.toString();

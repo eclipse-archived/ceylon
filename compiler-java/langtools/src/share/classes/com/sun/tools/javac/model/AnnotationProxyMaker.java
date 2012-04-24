@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,6 +26,8 @@
 package com.sun.tools.javac.model;
 
 import com.sun.tools.javac.util.*;
+import java.io.ObjectInputStream;
+import java.io.IOException;
 import java.lang.annotation.*;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
@@ -49,7 +51,7 @@ import com.sun.tools.javac.code.Type.ArrayType;
  * the form used by sun.reflect.annotation.AnnotationInvocationHandler.
  *
  * <p><b>This is NOT part of any supported API.
- * you write code that depends on this, you do so at your own risk.
+ * If you write code that depends on this, you do so at your own risk.
  * This code and its internal interfaces are subject to change or
  * deletion without notice.</b>
  */
@@ -179,16 +181,16 @@ public class AnnotationProxyMaker {
         }
 
         public void visitArray(Attribute.Array a) {
-            Name elemName = ((ArrayType) a.type).elemtype.tsym.name;
+            Name elemName = ((ArrayType) a.type).elemtype.tsym.getQualifiedName();
 
-            if (elemName == elemName.table.java_lang_Class) {   // Class[]
+            if (elemName.equals(elemName.table.names.java_lang_Class)) {   // Class[]
                 // Construct a proxy for a MirroredTypesException
-                List<TypeMirror> elems = List.nil();
+                ListBuffer<TypeMirror> elems = new ListBuffer<TypeMirror>();
                 for (Attribute value : a.values) {
                     Type elem = ((Attribute.Class) value).type;
-                    elems.add(elem);
+                    elems.append(elem);
                 }
-                value = new MirroredTypesExceptionProxy(elems);
+                value = new MirroredTypesExceptionProxy(elems.toList());
 
             } else {
                 int len = a.values.length;
@@ -215,15 +217,15 @@ public class AnnotationProxyMaker {
             }
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings({"unchecked", "rawtypes"})
         public void visitEnum(Attribute.Enum e) {
             if (returnClass.isEnum()) {
                 String constName = e.value.toString();
                 try {
-                    value = Enum.valueOf((Class) returnClass, constName);
+                    value = Enum.valueOf((Class)returnClass, constName);
                 } catch (IllegalArgumentException ex) {
                     value = new EnumConstantNotPresentExceptionProxy(
-                                        (Class) returnClass, constName);
+                                        (Class<Enum<?>>) returnClass, constName);
                 }
             } else {
                 value = null;   // indicates a type mismatch
@@ -248,9 +250,13 @@ public class AnnotationProxyMaker {
         /**
          * Sets "value" to an ExceptionProxy indicating a type mismatch.
          */
-        private void typeMismatch(final Method method, final Attribute attr) {
-            value = new ExceptionProxy() {
+        private void typeMismatch(Method method, final Attribute attr) {
+            class AnnotationTypeMismatchExceptionProxy extends ExceptionProxy {
                 static final long serialVersionUID = 269;
+                transient final Method method;
+                AnnotationTypeMismatchExceptionProxy(Method method) {
+                    this.method = method;
+                }
                 public String toString() {
                     return "<error>";   // eg:  @Anno(value=<error>)
                 }
@@ -258,7 +264,8 @@ public class AnnotationProxyMaker {
                     return new AnnotationTypeMismatchException(method,
                                 attr.type.toString());
                 }
-            };
+            }
+            value = new AnnotationTypeMismatchExceptionProxy(method);
         }
     }
 
@@ -268,10 +275,10 @@ public class AnnotationProxyMaker {
      * The toString, hashCode, and equals methods foward to the underlying
      * type.
      */
-    private static class MirroredTypeExceptionProxy extends ExceptionProxy {
+    private static final class MirroredTypeExceptionProxy extends ExceptionProxy {
         static final long serialVersionUID = 269;
 
-        private transient final TypeMirror type;
+        private transient TypeMirror type;
         private final String typeString;
 
         MirroredTypeExceptionProxy(TypeMirror t) {
@@ -296,6 +303,13 @@ public class AnnotationProxyMaker {
         protected RuntimeException generateException() {
             return new MirroredTypeException(type);
         }
+
+        // Explicitly set all transient fields.
+        private void readObject(ObjectInputStream s)
+            throws IOException, ClassNotFoundException {
+            s.defaultReadObject();
+            type = null;
+        }
     }
 
 
@@ -304,10 +318,10 @@ public class AnnotationProxyMaker {
      * The toString, hashCode, and equals methods foward to the underlying
      * types.
      */
-    private static class MirroredTypesExceptionProxy extends ExceptionProxy {
+    private static final class MirroredTypesExceptionProxy extends ExceptionProxy {
         static final long serialVersionUID = 269;
 
-        private transient final List<TypeMirror> types;
+        private transient List<TypeMirror> types;
         private final String typeStrings;
 
         MirroredTypesExceptionProxy(List<TypeMirror> ts) {
@@ -332,6 +346,13 @@ public class AnnotationProxyMaker {
 
         protected RuntimeException generateException() {
             return new MirroredTypesException(types);
+        }
+
+        // Explicitly set all transient fields.
+        private void readObject(ObjectInputStream s)
+            throws IOException, ClassNotFoundException {
+            s.defaultReadObject();
+            types = null;
         }
     }
 }

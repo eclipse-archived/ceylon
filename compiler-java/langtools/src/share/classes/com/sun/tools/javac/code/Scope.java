@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -31,7 +31,8 @@ import java.util.Iterator;
 /** A scope represents an area of visibility in a Java program. The
  *  Scope class is a container for symbols which provides
  *  efficient access to symbols given their names. Scopes are implemented
- *  as hash tables. Scopes can be nested; the next field of a scope points
+ *  as hash tables with "open addressing" and "double hashing".
+ *  Scopes can be nested; the next field of a scope points
  *  to its next outer scope. Nested scopes can share their hash tables.
  *
  *  <p><b>This is NOT part of any supported API.
@@ -55,7 +56,7 @@ public class Scope {
 
     /** A hash table for the scope's entries.
      */
-    public Entry[] table;
+    Entry[] table;
 
     /** Mask for hash codes, always equal to (table.length - 1).
      */
@@ -67,10 +68,16 @@ public class Scope {
     public Entry elems;
 
     /** The number of elements in this scope.
+     * This includes deleted elements, whose value is the sentinel.
      */
-    public int nelems = 0;
+    int nelems = 0;
 
-    /** Every hash bucket is a list of Entry's which ends in sentinel.
+    /** A list of scopes to be notified if items are to be removed from this scope.
+     */
+    List<ScopeListener> listeners = List.nil();
+
+    /** Use as a "not-found" result for lookup.
+     * Also used to mark deleted entries in the table.
      */
     private static final Entry sentinel = new Entry(null, null, null, null);
 
@@ -85,15 +92,18 @@ public class Scope {
     /** Construct a new scope, within scope next, with given owner, using
      *  given table. The table's length must be an exponent of 2.
      */
-    Scope(Scope next, Symbol owner, Entry[] table) {
+    private Scope(Scope next, Symbol owner, Entry[] table) {
         this.next = next;
-        assert emptyScope == null || owner != null;
+        Assert.check(emptyScope == null || owner != null);
         this.owner = owner;
         this.table = table;
         this.hashMask = table.length - 1;
-        this.elems = null;
-        this.nelems = 0;
-        this.shared = 0;
+    }
+
+    /** Convenience constructor used for dup and dupUnshared. */
+    private Scope(Scope next, Symbol owner, Entry[] table, int nelems) {
+        this(next, owner, table);
+        this.nelems = nelems;
     }
 
     /** Construct a new scope, within scope next, with given owner,
@@ -101,7 +111,6 @@ public class Scope {
      */
     public Scope(Symbol owner) {
         this(null, owner, new Entry[INITIAL_SIZE]);
-        for (int i = 0; i < INITIAL_SIZE; i++) table[i] = sentinel;
     }
 
     /** Construct a fresh scope within this scope, with same owner,
@@ -110,11 +119,7 @@ public class Scope {
      *  of fresh tables.
      */
     public Scope dup() {
-        Scope result = new Scope(this, this.owner, this.table);
-        shared++;
-        // System.out.println("====> duping scope " + this.hashCode() + " owned by " + this.owner + " to " + result.hashCode());
-        // new Error().printStackTrace(System.out);
-        return result;
+        return dup(this.owner);
     }
 
     /** Construct a fresh scope within this scope, with new owner,
@@ -123,7 +128,7 @@ public class Scope {
      *  of fresh tables.
      */
     public Scope dup(Symbol newOwner) {
-        Scope result = new Scope(this, newOwner, this.table);
+        Scope result = new Scope(this, newOwner, this.table, this.nelems);
         shared++;
         // System.out.println("====> duping scope " + this.hashCode() + " owned by " + newOwner + " to " + result.hashCode());
         // new Error().printStackTrace(System.out);
@@ -135,24 +140,25 @@ public class Scope {
      *  the table of its outer scope.
      */
     public Scope dupUnshared() {
-        return new Scope(this, this.owner, this.table.clone());
+        return new Scope(this, this.owner, this.table.clone(), this.nelems);
     }
 
     /** Remove all entries of this scope from its table, if shared
      *  with next.
      */
     public Scope leave() {
-        assert shared == 0;
+        Assert.check(shared == 0);
         if (table != next.table) return next;
         while (elems != null) {
-            int hash = elems.sym.name.index & hashMask;
+            int hash = getIndex(elems.sym.name);
             Entry e = table[hash];
-            assert e == elems : elems.sym;
+            Assert.check(e == elems, elems.sym);
             table[hash] = elems.shadowed;
             elems = elems.sibling;
         }
-        assert next.shared > 0;
+        Assert.check(next.shared > 0);
         next.shared--;
+        next.nelems = nelems;
         // System.out.println("====> leaving scope " + this.hashCode() + " owned by " + this.owner + " to " + next.hashCode());
         // new Error().printStackTrace(System.out);
         return next;
@@ -161,35 +167,33 @@ public class Scope {
     /** Double size of hash table.
      */
     private void dble() {
-        assert shared == 0;
+        Assert.check(shared == 0);
         Entry[] oldtable = table;
         Entry[] newtable = new Entry[oldtable.length * 2];
         for (Scope s = this; s != null; s = s.next) {
             if (s.table == oldtable) {
-                assert s == this || s.shared != 0;
+                Assert.check(s == this || s.shared != 0);
                 s.table = newtable;
                 s.hashMask = newtable.length - 1;
             }
         }
-        for (int i = 0; i < newtable.length; i++) newtable[i] = sentinel;
-        for (int i = 0; i < oldtable.length; i++) copy(oldtable[i]);
-    }
-
-    /** Copy the given entry and all entries shadowed by it to table
-     */
-    private void copy(Entry e) {
-        if (e.sym != null) {
-            copy(e.shadowed);
-            int hash = e.sym.name.index & hashMask;
-            e.shadowed = table[hash];
-            table[hash] = e;
+        int n = 0;
+        for (int i = oldtable.length; --i >= 0; ) {
+            Entry e = oldtable[i];
+            if (e != null && e != sentinel) {
+                table[getIndex(e.sym.name)] = e;
+                n++;
+            }
         }
+        // We don't need to update nelems for shared inherited scopes,
+        // since that gets handled by leave().
+        nelems = n;
     }
 
     /** Enter symbol sym in this scope.
      */
     public void enter(Symbol sym) {
-        assert shared == 0;
+        Assert.check(shared == 0);
         enter(sym, this);
     }
 
@@ -203,33 +207,52 @@ public class Scope {
      * arguments are only used in import scopes.
      */
     public void enter(Symbol sym, Scope s, Scope origin) {
-        assert shared == 0;
-        // Temporarily disabled (bug 6460352):
-        // if (nelems * 3 >= hashMask * 2) dble();
-        int hash = sym.name.index & hashMask;
-        Entry e = makeEntry(sym, table[hash], elems, s, origin);
+        Assert.check(shared == 0);
+        if (nelems * 3 >= hashMask * 2)
+            dble();
+        int hash = getIndex(sym.name);
+        Entry old = table[hash];
+        if (old == null) {
+            old = sentinel;
+            nelems++;
+        }
+        Entry e = makeEntry(sym, old, elems, s, origin);
         table[hash] = e;
         elems = e;
-        nelems++;
+
+        //notify listeners
+        for (List<ScopeListener> l = listeners; l.nonEmpty(); l = l.tail) {
+            l.head.symbolAdded(sym, this);
+        }
     }
 
     Entry makeEntry(Symbol sym, Entry shadowed, Entry sibling, Scope scope, Scope origin) {
         return new Entry(sym, shadowed, sibling, scope);
     }
 
+
+    public interface ScopeListener {
+        public void symbolAdded(Symbol sym, Scope s);
+        public void symbolRemoved(Symbol sym, Scope s);
+    }
+
+    public void addScopeListener(ScopeListener sl) {
+        listeners = listeners.prepend(sl);
+    }
+
     /** Remove symbol from this scope.  Used when an inner class
      *  attribute tells us that the class isn't a package member.
      */
     public void remove(Symbol sym) {
-        assert shared == 0;
+        Assert.check(shared == 0);
         Entry e = lookup(sym.name);
-        while (e.scope == this && e.sym != sym) e = e.next();
         if (e.scope == null) return;
 
         // remove e from table and shadowed list;
-        Entry te = table[sym.name.index & hashMask];
+        int i = getIndex(sym.name);
+        Entry te = table[i];
         if (te == e)
-            table[sym.name.index & hashMask] = e.shadowed;
+            table[i] = e.shadowed;
         else while (true) {
             if (te.shadowed == e) {
                 te.shadowed = e.shadowed;
@@ -249,12 +272,17 @@ public class Scope {
             }
             te = te.sibling;
         }
+
+        //notify listeners
+        for (List<ScopeListener> l = listeners; l.nonEmpty(); l = l.tail) {
+            l.head.symbolRemoved(sym, this);
+        }
     }
 
     /** Enter symbol sym in this scope if not already there.
      */
     public void enterIfAbsent(Symbol sym) {
-        assert shared == 0;
+        Assert.check(shared == 0);
         Entry e = lookup(sym.name);
         while (e.scope == this && e.sym.kind != sym.kind) e = e.next();
         if (e.scope != this) enter(sym);
@@ -272,6 +300,12 @@ public class Scope {
         return false;
     }
 
+    static final Filter<Symbol> noFilter = new Filter<Symbol>() {
+        public boolean accepts(Symbol s) {
+            return true;
+        }
+    };
+
     /** Return the entry associated with given name, starting in
      *  this scope and proceeding outwards. If no entry was found,
      *  return the sentinel, which is characterized by having a null in
@@ -279,13 +313,58 @@ public class Scope {
      *  for regular entries.
      */
     public Entry lookup(Name name) {
-        Entry e = table[name.index & hashMask];
-        while (e.scope != null && e.sym.name != name)
+        return lookup(name, noFilter);
+    }
+    public Entry lookup(Name name, Filter<Symbol> sf) {
+        Entry e = table[getIndex(name)];
+        if (e == null || e == sentinel)
+            return sentinel;
+        while (e.scope != null && (e.sym.name != name || !sf.accepts(e.sym)))
             e = e.shadowed;
         return e;
     }
 
+    /*void dump (java.io.PrintStream out) {
+        out.println(this);
+        for (int l=0; l < table.length; l++) {
+            Entry le = table[l];
+            out.print("#"+l+": ");
+            if (le==sentinel) out.println("sentinel");
+            else if(le == null) out.println("null");
+            else out.println(""+le+" s:"+le.sym);
+        }
+    }*/
+
+    /** Look for slot in the table.
+     *  We use open addressing with double hashing.
+     */
+    int getIndex (Name name) {
+        int h = name.hashCode();
+        int i = h & hashMask;
+        // The expression below is always odd, so it is guaranteed
+        // to be mutually prime with table.length, a power of 2.
+        int x = hashMask - ((h + (h >> 16)) << 1);
+        int d = -1; // Index of a deleted item.
+        for (;;) {
+            Entry e = table[i];
+            if (e == null)
+                return d >= 0 ? d : i;
+            if (e == sentinel) {
+                // We have to keep searching even if we see a deleted item.
+                // However, remember the index in case we fail to find the name.
+                if (d < 0)
+                    d = i;
+            } else if (e.sym.name == name)
+                return i;
+            i = (i + x) & hashMask;
+        }
+    }
+
     public Iterable<Symbol> getElements() {
+        return getElements(noFilter);
+    }
+
+    public Iterable<Symbol> getElements(final Filter<Symbol> sf) {
         return new Iterable<Symbol>() {
             public Iterator<Symbol> iterator() {
                 return new Iterator<Symbol>() {
@@ -301,7 +380,9 @@ public class Scope {
 
                     public Symbol next() {
                         Symbol sym = (currEntry == null ? null : currEntry.sym);
-                        currEntry = currEntry.sibling;
+                        if (currEntry != null) {
+                            currEntry = currEntry.sibling;
+                        }
                         update();
                         return sym;
                     }
@@ -311,15 +392,48 @@ public class Scope {
                     }
 
                     private void update() {
+                        skipToNextMatchingEntry();
                         while (currEntry == null && currScope.next != null) {
                             currScope = currScope.next;
                             currEntry = currScope.elems;
+                            skipToNextMatchingEntry();
+                        }
+                    }
+
+                    void skipToNextMatchingEntry() {
+                        while (currEntry != null && !sf.accepts(currEntry.sym)) {
+                            currEntry = currEntry.sibling;
                         }
                     }
                 };
             }
         };
+    }
 
+    public Iterable<Symbol> getElementsByName(Name name) {
+        return getElementsByName(name, noFilter);
+    }
+
+    public Iterable<Symbol> getElementsByName(final Name name, final Filter<Symbol> sf) {
+        return new Iterable<Symbol>() {
+            public Iterator<Symbol> iterator() {
+                 return new Iterator<Symbol>() {
+                    Scope.Entry currentEntry = lookup(name, sf);
+
+                    public boolean hasNext() {
+                        return currentEntry.scope != null;
+                    }
+                    public Symbol next() {
+                        Scope.Entry prevEntry = currentEntry;
+                        currentEntry = currentEntry.next(sf);
+                        return prevEntry.sym;
+                    }
+                    public void remove() {
+                        throw new UnsupportedOperationException();
+                    }
+                };
+            }
+        };
     }
 
     public String toString() {
@@ -371,10 +485,12 @@ public class Scope {
          *  outwards if not found in this scope.
          */
         public Entry next() {
-            Entry e = shadowed;
-            while (e.scope != null && e.sym.name != sym.name)
-                e = e.shadowed;
-            return e;
+            return shadowed;
+        }
+
+        public Entry next(Filter<Symbol> sf) {
+            if (shadowed.sym == null || sf.accepts(shadowed.sym)) return shadowed;
+            else return shadowed.next(sf);
         }
 
         public Scope getOrigin() {
@@ -399,27 +515,6 @@ public class Scope {
             return new ImportEntry(sym, shadowed, sibling, scope, origin);
         }
 
-        public Entry lookup(Name name) {
-            Entry e = table[name.index & hashMask];
-            while (e.scope != null &&
-                   (e.sym.name != name ||
-                    /* Since an inner class will show up in package and
-                     * import scopes until its inner class attribute has
-                     * been processed, we have to weed it out here.  This
-                     * is done by comparing the owners of the entry's
-                     * scope and symbol fields.  The scope field's owner
-                     * points to where the class originally was imported
-                     * from.  The symbol field's owner points to where the
-                     * class is situated now.  This can change when an
-                     * inner class is read (see ClassReader.enterClass).
-                     * By comparing the two fields we make sure that we do
-                     * not accidentally import an inner class that started
-                     * life as a flat class in a package. */
-                    e.sym.owner != e.scope.owner))
-                e = e.shadowed;
-            return e;
-        }
-
         static class ImportEntry extends Entry {
             private Scope origin;
 
@@ -427,18 +522,31 @@ public class Scope {
                 super(sym, shadowed, sibling, scope);
                 this.origin = origin;
             }
-            public Entry next() {
-                Entry e = super.shadowed;
-                while (e.scope != null &&
-                       (e.sym.name != sym.name ||
-                        e.sym.owner != e.scope.owner)) // see lookup()
-                    e = e.shadowed;
-                return e;
-            }
 
             @Override
             public Scope getOrigin() { return origin; }
         }
+    }
+
+    public static class StarImportScope extends ImportScope implements ScopeListener {
+
+        public StarImportScope(Symbol owner) {
+            super(owner);
+        }
+
+        public void importAll (Scope fromScope) {
+            for (Scope.Entry e = fromScope.elems; e != null; e = e.sibling) {
+                if (e.sym.kind == Kinds.TYP && !includes(e.sym))
+                    enter(e.sym, fromScope);
+            }
+            // Register to be notified when imported items are removed
+            fromScope.addScopeListener(this);
+        }
+
+        public void symbolRemoved(Symbol sym, Scope s) {
+            remove(sym);
+        }
+        public void symbolAdded(Symbol sym, Scope s) { }
     }
 
     /** An empty scope, into which you can't place anything.  Used for
@@ -472,6 +580,151 @@ public class Scope {
         }
         public Entry lookup(Name name) {
             return delegatee.lookup(name);
+        }
+    }
+
+    /** A class scope adds capabilities to keep track of changes in related
+     *  class scopes - this allows client to realize whether a class scope
+     *  has changed, either directly (because a new member has been added/removed
+     *  to this scope) or indirectly (i.e. because a new member has been
+     *  added/removed into a supertype scope)
+     */
+    public static class CompoundScope extends Scope implements ScopeListener {
+
+        public static final Entry[] emptyTable = new Entry[0];
+
+        private List<Scope> subScopes = List.nil();
+        private int mark = 0;
+
+        public CompoundScope(Symbol owner) {
+            super(null, owner, emptyTable);
+        }
+
+        public void addSubScope(Scope that) {
+           if (that != null) {
+                subScopes = subScopes.prepend(that);
+                that.addScopeListener(this);
+                mark++;
+                for (ScopeListener sl : listeners) {
+                    sl.symbolAdded(null, this); //propagate upwards in case of nested CompoundScopes
+                }
+           }
+         }
+
+        public void symbolAdded(Symbol sym, Scope s) {
+            mark++;
+            for (ScopeListener sl : listeners) {
+                sl.symbolAdded(sym, s);
+            }
+        }
+
+        public void symbolRemoved(Symbol sym, Scope s) {
+            mark++;
+            for (ScopeListener sl : listeners) {
+                sl.symbolRemoved(sym, s);
+            }
+        }
+
+        public int getMark() {
+            return mark;
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder buf = new StringBuilder();
+            buf.append("CompoundScope{");
+            String sep = "";
+            for (Scope s : subScopes) {
+                buf.append(sep);
+                buf.append(s);
+                sep = ",";
+            }
+            buf.append("}");
+            return buf.toString();
+        }
+
+        @Override
+        public Iterable<Symbol> getElements(final Filter<Symbol> sf) {
+            return new Iterable<Symbol>() {
+                public Iterator<Symbol> iterator() {
+                    return new CompoundScopeIterator(subScopes) {
+                        Iterator<Symbol> nextIterator(Scope s) {
+                            return s.getElements(sf).iterator();
+                        }
+                    };
+                }
+            };
+        }
+
+        @Override
+        public Iterable<Symbol> getElementsByName(final Name name, final Filter<Symbol> sf) {
+            return new Iterable<Symbol>() {
+                public Iterator<Symbol> iterator() {
+                    return new CompoundScopeIterator(subScopes) {
+                        Iterator<Symbol> nextIterator(Scope s) {
+                            return s.getElementsByName(name, sf).iterator();
+                        }
+                    };
+                }
+            };
+        }
+
+        abstract class CompoundScopeIterator implements Iterator<Symbol> {
+
+            private Iterator<Symbol> currentIterator;
+            private List<Scope> scopesToScan;
+
+            public CompoundScopeIterator(List<Scope> scopesToScan) {
+                this.scopesToScan = scopesToScan;
+                update();
+            }
+
+            abstract Iterator<Symbol> nextIterator(Scope s);
+
+            public boolean hasNext() {
+                return currentIterator != null;
+            }
+
+            public Symbol next() {
+                Symbol sym = currentIterator.next();
+                if (!currentIterator.hasNext()) {
+                    update();
+                }
+                return sym;
+            }
+
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+
+            private void update() {
+                while (scopesToScan.nonEmpty()) {
+                    currentIterator = nextIterator(scopesToScan.head);
+                    scopesToScan = scopesToScan.tail;
+                    if (currentIterator.hasNext()) return;
+                }
+                currentIterator = null;
+            }
+        }
+
+        @Override
+        public Entry lookup(Name name, Filter<Symbol> sf) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public Scope dup(Symbol newOwner) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void enter(Symbol sym, Scope s, Scope origin) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void remove(Symbol sym) {
+            throw new UnsupportedOperationException();
         }
     }
 

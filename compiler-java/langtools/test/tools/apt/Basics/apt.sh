@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-# Copyright (c) 2004, 2007, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2004, 2009, Oracle and/or its affiliates. All rights reserved.
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 #
 # This code is free software; you can redistribute it and/or modify it
@@ -42,7 +42,7 @@ case "${OS}" in
 esac
 
 # Construct path to apt executable
-APT="${TESTJAVA}/bin/apt ${TESTTOOLVMOPTS}"
+APT="${TESTJAVA}/bin/apt ${TESTTOOLVMOPTS} -XDsuppress-tool-api-removal-message "
 
 printf "%s\n" "-classpath ${TESTCLASSES}"                    > options
 printf "%s\n" "-factorypath ./nullap.jar"                   >> options
@@ -56,6 +56,7 @@ printf "%s\n" "-sourcepath ${TESTSRC} "                     >> options1
 printf "%s\n" "-nocompile"                                  >> options1
 printf "%s\n" "-XListAnnotationTypes"                       >> options1
 printf "%s\n" "-XclassesAsDecls"                            >> options1
+
 
 # Construct path to javac executable
 JAVAC="${TESTJAVA}/bin/javac ${TESTTOOLVMOPTS} -source 1.5 -sourcepath ${TESTSRC} -classpath ${TESTJAVA}/lib/tools.jar -d . "

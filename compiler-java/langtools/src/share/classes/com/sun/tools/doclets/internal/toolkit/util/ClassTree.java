@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -49,35 +49,35 @@ public class ClassTree {
      * List of baseclasses. Contains only java.lang.Object. Can be used to get
      * the mapped listing of sub-classes.
      */
-    private List baseclasses = new ArrayList();
+    private List<ClassDoc> baseclasses = new ArrayList<ClassDoc>();
 
     /**
     * Mapping for each Class with their SubClasses
     */
-    private Map subclasses = new HashMap();
+    private Map<ClassDoc,List<ClassDoc>> subclasses = new HashMap<ClassDoc,List<ClassDoc>>();
 
     /**
      * List of base-interfaces. Contains list of all the interfaces who do not
      * have super-interfaces. Can be used to get the mapped listing of
      * sub-interfaces.
      */
-    private List baseinterfaces = new ArrayList();
+    private List<ClassDoc> baseinterfaces = new ArrayList<ClassDoc>();
 
     /**
     * Mapping for each Interface with their SubInterfaces
     */
-    private Map subinterfaces = new HashMap();
+    private Map<ClassDoc,List<ClassDoc>> subinterfaces = new HashMap<ClassDoc,List<ClassDoc>>();
 
-    private List baseEnums = new ArrayList();
-    private Map subEnums = new HashMap();
+    private List<ClassDoc> baseEnums = new ArrayList<ClassDoc>();
+    private Map<ClassDoc,List<ClassDoc>> subEnums = new HashMap<ClassDoc,List<ClassDoc>>();
 
-    private List baseAnnotationTypes = new ArrayList();
-    private Map subAnnotationTypes = new HashMap();
+    private List<ClassDoc> baseAnnotationTypes = new ArrayList<ClassDoc>();
+    private Map<ClassDoc,List<ClassDoc>> subAnnotationTypes = new HashMap<ClassDoc,List<ClassDoc>>();
 
     /**
     * Mapping for each Interface with classes who implement it.
     */
-    private Map implementingclasses = new HashMap();
+    private Map<ClassDoc,List<ClassDoc>> implementingclasses = new HashMap<ClassDoc,List<ClassDoc>>();
 
     /**
      * Constructor. Build the Tree using the Root of this Javadoc run.
@@ -122,8 +122,12 @@ public class ClassTree {
      */
     private void buildTree(ClassDoc[] classes, Configuration configuration) {
         for (int i = 0; i < classes.length; i++) {
+            // In the tree page (e.g overview-tree.html) do not include
+            // information of classes which are deprecated or are a part of a
+            // deprecated package.
             if (configuration.nodeprecated &&
-                    classes[i].tags("deprecated").length > 0) {
+                    (Util.isDeprecated(classes[i]) ||
+                    Util.isDeprecated(classes[i].containingPackage()))) {
                 continue;
             }
             if (classes[i].isEnum()) {
@@ -132,7 +136,7 @@ public class ClassTree {
                 processType(classes[i], configuration, baseclasses, subclasses);
             } else if (classes[i].isInterface()) {
                 processInterface(classes[i]);
-                List list  = (List)implementingclasses.get(classes[i]);
+                List<ClassDoc> list = implementingclasses.get(classes[i]);
                 if (list != null) {
                     Collections.sort(list);
                 }
@@ -143,11 +147,11 @@ public class ClassTree {
         }
 
         Collections.sort(baseinterfaces);
-        for (Iterator it = subinterfaces.values().iterator(); it.hasNext(); ) {
-            Collections.sort((List)it.next());
+        for (Iterator<List<ClassDoc>> it = subinterfaces.values().iterator(); it.hasNext(); ) {
+            Collections.sort(it.next());
         }
-        for (Iterator it = subclasses.values().iterator(); it.hasNext(); ) {
-            Collections.sort((List)it.next());
+        for (Iterator<List<ClassDoc>> it = subclasses.values().iterator(); it.hasNext(); ) {
+            Collections.sort(it.next());
         }
     }
 
@@ -164,7 +168,7 @@ public class ClassTree {
      * @param configuration the current configurtation of the doclet.
      */
     private void processType(ClassDoc cd, Configuration configuration,
-            List bases, Map subs) {
+            List<ClassDoc> bases, Map<ClassDoc,List<ClassDoc>> subs) {
         ClassDoc superclass = Util.getFirstVisibleSuperClassCD(cd, configuration);
         if (superclass != null) {
             if (!add(subs, superclass, cd)) {
@@ -177,9 +181,9 @@ public class ClassTree {
                 bases.add(cd);
             }
         }
-        List intfacs = Util.getAllInterfaces(cd, configuration);
-        for (Iterator iter = intfacs.iterator(); iter.hasNext();) {
-            add(implementingclasses, ((Type) iter.next()).asClassDoc(), cd);
+        List<Type> intfacs = Util.getAllInterfaces(cd, configuration);
+        for (Iterator<Type> iter = intfacs.iterator(); iter.hasNext();) {
+            add(implementingclasses, iter.next().asClassDoc(), cd);
         }
     }
 
@@ -219,10 +223,10 @@ public class ClassTree {
      * @param cd sub-interface to be mapped.
      * @returns boolean true if class added, false if class already processed.
      */
-    private boolean add(Map map, ClassDoc superclass, ClassDoc cd) {
-        List list = (List)map.get(superclass);
+    private boolean add(Map<ClassDoc,List<ClassDoc>> map, ClassDoc superclass, ClassDoc cd) {
+        List<ClassDoc> list = map.get(superclass);
         if (list == null) {
-            list = new ArrayList();
+            list = new ArrayList<ClassDoc>();
             map.put(superclass, list);
         }
         if (list.contains(cd)) {
@@ -241,10 +245,10 @@ public class ClassTree {
      * @param cd class for which the sub-class list is requested.
      * @returns List Sub-Class list for the class passed.
      */
-    private List get(Map map, ClassDoc cd) {
-        List list = (List)map.get(cd);
+    private List<ClassDoc> get(Map<ClassDoc,List<ClassDoc>> map, ClassDoc cd) {
+        List<ClassDoc> list = map.get(cd);
         if (list == null) {
-            return new ArrayList();
+            return new ArrayList<ClassDoc>();
         }
         return list;
     }
@@ -254,7 +258,7 @@ public class ClassTree {
      *
      * @param cd class whose sub-class list is required.
      */
-    public List subclasses(ClassDoc cd) {
+    public List<ClassDoc> subclasses(ClassDoc cd) {
         return get(subclasses, cd);
     }
 
@@ -263,7 +267,7 @@ public class ClassTree {
      *
      * @param cd interface whose sub-interface list is required.
      */
-    public List subinterfaces(ClassDoc cd) {
+    public List<ClassDoc> subinterfaces(ClassDoc cd) {
         return get(subinterfaces, cd);
     }
 
@@ -272,19 +276,19 @@ public class ClassTree {
      *
      * @param cd interface whose implementing-classes list is required.
      */
-    public List implementingclasses(ClassDoc cd) {
-        List result = get(implementingclasses, cd);
-        List subinterfaces = allSubs(cd, false);
+    public List<ClassDoc> implementingclasses(ClassDoc cd) {
+        List<ClassDoc> result = get(implementingclasses, cd);
+        List<ClassDoc> subinterfaces = allSubs(cd, false);
 
         //If class x implements a subinterface of cd, then it follows
         //that class x implements cd.
-        Iterator implementingClassesIter, subInterfacesIter = subinterfaces.listIterator();
+        Iterator<ClassDoc> implementingClassesIter, subInterfacesIter = subinterfaces.listIterator();
         ClassDoc c;
         while(subInterfacesIter.hasNext()){
-            implementingClassesIter = implementingclasses((ClassDoc)
+            implementingClassesIter = implementingclasses(
                     subInterfacesIter.next()).listIterator();
             while(implementingClassesIter.hasNext()){
-                c = (ClassDoc)implementingClassesIter.next();
+                c = implementingClassesIter.next();
                 if(! result.contains(c)){
                     result.add(c);
                 }
@@ -301,7 +305,7 @@ public class ClassTree {
      * @param isEnum true if the subclasses should be forced to come from the
      * enum tree.
      */
-    public List subs(ClassDoc cd, boolean isEnum) {
+    public List<ClassDoc> subs(ClassDoc cd, boolean isEnum) {
         if (isEnum) {
             return get(subEnums, cd);
         } else if (cd.isAnnotationType()) {
@@ -324,13 +328,13 @@ public class ClassTree {
      * @param isEnum true if the subclasses should be forced to come from the
      * enum tree.
      */
-    public List allSubs(ClassDoc cd, boolean isEnum) {
-        List list = subs(cd, isEnum);
+    public List<ClassDoc> allSubs(ClassDoc cd, boolean isEnum) {
+        List<ClassDoc> list = subs(cd, isEnum);
         for (int i = 0; i < list.size(); i++) {
-            cd = (ClassDoc)list.get(i);
-            List tlist = subs(cd, isEnum);
+            cd = list.get(i);
+            List<ClassDoc> tlist = subs(cd, isEnum);
             for (int j = 0; j < tlist.size(); j++) {
-                ClassDoc tcd = (ClassDoc)tlist.get(j);
+                ClassDoc tcd = tlist.get(j);
                 if (!list.contains(tcd)) {
                     list.add(tcd);
                 }
@@ -345,7 +349,7 @@ public class ClassTree {
      *  thw classdoc for java.lang.Object, since this is the base class for all
      *  classes.
      */
-    public List baseclasses() {
+    public List<ClassDoc> baseclasses() {
         return baseclasses;
     }
 
@@ -353,7 +357,7 @@ public class ClassTree {
      *  Return the list of base interfaces. This is the list of interfaces
      *  which do not have super-interface.
      */
-    public List baseinterfaces() {
+    public List<ClassDoc> baseinterfaces() {
         return baseinterfaces;
     }
 
@@ -361,7 +365,7 @@ public class ClassTree {
      *  Return the list of base enums. This is the list of enums
      *  which do not have super-enums.
      */
-    public List baseEnums() {
+    public List<ClassDoc> baseEnums() {
         return baseEnums;
     }
 
@@ -369,7 +373,7 @@ public class ClassTree {
      *  Return the list of base annotation types. This is the list of
      *  annotation types which do not have super-annotation types.
      */
-    public List baseAnnotationTypes() {
+    public List<ClassDoc> baseAnnotationTypes() {
         return baseAnnotationTypes;
     }
 }

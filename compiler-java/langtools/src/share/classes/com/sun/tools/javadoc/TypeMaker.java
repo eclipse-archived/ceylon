@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -27,15 +27,12 @@ package com.sun.tools.javadoc;
 
 import com.sun.javadoc.*;
 
-import static com.sun.javadoc.LanguageVersion.*;
-
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Type.ClassType;
 import com.sun.tools.javac.code.Type.TypeVar;
 import com.sun.tools.javac.code.Type.ArrayType;
-import com.sun.tools.javac.code.Types;
 import com.sun.tools.javac.util.List;
 
 import static com.sun.tools.javac.code.TypeTags.*;
@@ -51,6 +48,7 @@ public class TypeMaker {
      * @param errToClassDoc  if true, ERROR type results in a ClassDoc;
      *          false preserves legacy behavior
      */
+    @SuppressWarnings("fallthrough")
     public static com.sun.javadoc.Type getType(DocEnv env, Type t,
                                                boolean errToClassDoc) {
         if (env.legacyDoclet) {
@@ -108,12 +106,13 @@ public class TypeMaker {
     public static String getTypeName(Type t, boolean full) {
         switch (t.tag) {
         case ARRAY:
-            StringBuffer dimension = new StringBuffer();
+            StringBuilder s = new StringBuilder();
             while (t.tag == ARRAY) {
-                dimension = dimension.append("[]");
+                s.append("[]");
                 t = ((ArrayType)t).elemtype;
             }
-            return getTypeName(t, full) + dimension;
+            s.insert(0, getTypeName(t, full));
+            return s.toString();
         case CLASS:
             return ClassDocImpl.getClassName((ClassSymbol)t.tsym, full);
         default:
@@ -129,12 +128,13 @@ public class TypeMaker {
     static String getTypeString(DocEnv env, Type t, boolean full) {
         switch (t.tag) {
         case ARRAY:
-            StringBuffer dimension = new StringBuffer();
+            StringBuilder s = new StringBuilder();
             while (t.tag == ARRAY) {
-                dimension = dimension.append("[]");
+                s.append("[]");
                 t = env.types.elemtype(t);
             }
-            return getTypeString(env, t, full) + dimension;
+            s.insert(0, getTypeString(env, t, full));
+            return s.toString();
         case CLASS:
             return ParameterizedTypeImpl.
                         parameterizedTypeToString(env, (ClassType)t, full);
@@ -156,7 +156,7 @@ public class TypeMaker {
         if (env.legacyDoclet || sym.type.getTypeArguments().isEmpty()) {
             return "";
         }
-        StringBuffer s = new StringBuffer();
+        StringBuilder s = new StringBuilder();
         for (Type t : sym.type.getTypeArguments()) {
             s.append(s.length() == 0 ? "<" : ", ");
             s.append(TypeVariableImpl.typeVarToString(env, (TypeVar)t, full));
@@ -174,7 +174,7 @@ public class TypeMaker {
         if (env.legacyDoclet || cl.getTypeArguments().isEmpty()) {
             return "";
         }
-        StringBuffer s = new StringBuffer();
+        StringBuilder s = new StringBuilder();
         for (Type t : cl.getTypeArguments()) {
             s.append(s.length() == 0 ? "<" : ", ");
             s.append(getTypeString(env, t, full));
@@ -212,9 +212,9 @@ public class TypeMaker {
          * For example, a two dimensional array of String returns '[][]'.
          */
         public String dimension() {
-            StringBuffer dimension = new StringBuffer();
+            StringBuilder dimension = new StringBuilder();
             for (Type t = arrayType; t.tag == ARRAY; t = env.types.elemtype(t)) {
-                dimension = dimension.append("[]");
+                dimension.append("[]");
             }
             return dimension.toString();
         }
@@ -303,6 +303,7 @@ public class TypeMaker {
          *
          * @return name of type including any dimension information.
          */
+        @Override
         public String toString() {
             return qualifiedTypeName() + dimension();
         }

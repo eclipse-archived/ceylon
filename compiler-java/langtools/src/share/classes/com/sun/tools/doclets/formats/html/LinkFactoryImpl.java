@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -69,9 +69,6 @@ public class LinkFactoryImpl extends LinkFactory {
         StringBuffer label = new StringBuffer(
             classLinkInfo.getClassLinkLabel(m_writer.configuration));
         classLinkInfo.displayLength += label.length();
-        if (noLabel && classLinkInfo.excludeTypeParameterLinks) {
-            label.append(getTypeParameterLinks(linkInfo).toString());
-        }
         Configuration configuration = ConfigurationImpl.getInstance();
         LinkOutputImpl linkOutput = new LinkOutputImpl();
         if (classDoc.isIncluded()) {
@@ -79,9 +76,9 @@ public class LinkFactoryImpl extends LinkFactory {
                 String filename = pathString(classLinkInfo);
                 if (linkInfo.linkToSelf ||
                                 !(linkInfo.classDoc.name() + ".html").equals(m_writer.filename)) {
-                        linkOutput.append(m_writer.getHyperLink(filename,
+                        linkOutput.append(m_writer.getHyperLinkString(filename,
                             classLinkInfo.where, label.toString(),
-                            classLinkInfo.isBold, classLinkInfo.styleName,
+                            classLinkInfo.isStrong, classLinkInfo.styleName,
                             title, classLinkInfo.target));
                         if (noLabel && !classLinkInfo.excludeTypeParameterLinks) {
                             linkOutput.append(getTypeParameterLinks(linkInfo).toString());
@@ -92,7 +89,7 @@ public class LinkFactoryImpl extends LinkFactory {
         } else {
             String crossLink = m_writer.getCrossClassLink(
                 classDoc.qualifiedName(), classLinkInfo.where,
-                label.toString(), classLinkInfo.isBold, classLinkInfo.styleName,
+                label.toString(), classLinkInfo.isStrong, classLinkInfo.styleName,
                 true);
             if (crossLink != null) {
                 linkOutput.append(crossLink);

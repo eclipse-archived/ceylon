@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -49,7 +49,7 @@ import com.sun.tools.javac.util.Pair;
  * <p> The "dynamic proxy return form" of an attribute element value is
  * the form used by sun.reflect.annotation.AnnotationInvocationHandler.
  */
-
+@SuppressWarnings("deprecation")
 class AnnotationProxyMaker {
 
     private final AptEnv env;
@@ -217,7 +217,7 @@ class AnnotationProxyMaker {
             }
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings({"unchecked", "rawtypes"})
         public void visitEnum(Attribute.Enum e) {
             if (runtimeType.isEnum()) {
                 String constName = e.value.toString();
@@ -225,7 +225,7 @@ class AnnotationProxyMaker {
                     value = Enum.valueOf((Class)runtimeType, constName);
                 } catch (IllegalArgumentException ex) {
                     value = new EnumConstantNotPresentExceptionProxy(
-                                                        (Class)runtimeType, constName);
+                                                        (Class<Enum<?>>)runtimeType, constName);
                 }
             } else {
                 value = null;   // indicates a type mismatch
@@ -250,8 +250,13 @@ class AnnotationProxyMaker {
         /**
          * Sets "value" to an ExceptionProxy indicating a type mismatch.
          */
-        private void typeMismatch(final Method method, final Attribute attr) {
-            value = new ExceptionProxy() {
+        private void typeMismatch(Method method, final Attribute attr) {
+            class AnnotationTypeMismatchExceptionProxy extends ExceptionProxy {
+                private static final long serialVersionUID = 8473323277815075163L;
+                transient final Method method;
+                AnnotationTypeMismatchExceptionProxy(Method method) {
+                    this.method = method;
+                }
                 public String toString() {
                     return "<error>";   // eg:  @Anno(value=<error>)
                 }
@@ -259,7 +264,8 @@ class AnnotationProxyMaker {
                     return new AnnotationTypeMismatchException(method,
                                 attr.type.toString());
                 }
-            };
+            }
+            value = new AnnotationTypeMismatchExceptionProxy(method);
         }
     }
 
@@ -269,7 +275,8 @@ class AnnotationProxyMaker {
      * The toString, hashCode, and equals methods foward to the underlying
      * type.
      */
-    private static class MirroredTypeExceptionProxy extends ExceptionProxy {
+    private static final class MirroredTypeExceptionProxy extends ExceptionProxy {
+        private static final long serialVersionUID = 6662035281599933545L;
 
         private MirroredTypeException ex;
 
@@ -310,7 +317,8 @@ class AnnotationProxyMaker {
      * The toString, hashCode, and equals methods foward to the underlying
      * types.
      */
-    private static class MirroredTypesExceptionProxy extends ExceptionProxy {
+    private static final class MirroredTypesExceptionProxy extends ExceptionProxy {
+        private static final long serialVersionUID = -6670822532616693951L;
 
         private MirroredTypesException ex;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2009, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -21,4 +21,11 @@
  * questions.
  */
 
-package pkg;/** * Line 1 * Line 2 */public class MyClass {}
+package pkg;
+
+/**
+ * Line 1
+ * Line 2
+ */
+public class MyClass {}
+

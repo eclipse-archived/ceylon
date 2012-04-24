@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -30,7 +30,6 @@ import java.util.Map;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.AnnotationValueVisitor;
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.DeclaredType;
 import com.sun.tools.javac.code.Symbol.*;
 import com.sun.tools.javac.util.*;
@@ -167,7 +166,7 @@ public abstract class Attribute implements AnnotationValue {
                     first = false;
 
                     Name name = value.fst.name;
-                    if (len > 1 || name != name.table.value) {
+                    if (len > 1 || name != name.table.names.value) {
                         buf.append(name);
                         buf.append('=');
                     }
@@ -241,8 +240,7 @@ public abstract class Attribute implements AnnotationValue {
         public VarSymbol value;
         public Enum(Type type, VarSymbol value) {
             super(type);
-            assert value != null;
-            this.value = value;
+            this.value = Assert.checkNonNull(value);
         }
         public void accept(Visitor v) { v.visitEnum(this); }
         public String toString() {
@@ -280,5 +278,12 @@ public abstract class Attribute implements AnnotationValue {
         void visitArray(Attribute.Array array);
         void visitEnum(Attribute.Enum e);
         void visitError(Attribute.Error e);
+    }
+
+    /** A mirror of java.lang.annotation.RetentionPolicy. */
+    public static enum RetentionPolicy {
+        SOURCE,
+        CLASS,
+        RUNTIME
     }
 }

@@ -26,16 +26,10 @@ import javax.lang.model.*;
 import javax.lang.model.element.*;
 import java.util.Set;
 
-@SupportedAnnotationTypes("*")
-@SupportedSourceVersion(javax.lang.model.SourceVersion.RELEASE_6)
-public class DummyProcessor extends  AbstractProcessor {
+public class DummyProcessor extends JavacTestingAbstractProcessor {
    public boolean process(Set<? extends TypeElement> annotations,
                   RoundEnvironment roundEnv) {
        return true;
    }
-    @Override
-    public SourceVersion getSupportedSourceVersion() {
-        return SourceVersion.latest();
-    }
 }
 

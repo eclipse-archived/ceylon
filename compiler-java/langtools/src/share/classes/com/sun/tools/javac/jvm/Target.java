@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -31,6 +31,8 @@ import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.util.*;
 
+import static com.sun.tools.javac.main.OptionName.*;
+
 /** The classfile version target.
  *
  *  <p><b>This is NOT part of any supported API.
@@ -61,7 +63,10 @@ public enum Target {
     JDK1_5("1.5", 49, 0),
 
     /** JDK 6. */
-    JDK1_6("1.6", 50, 0);
+    JDK1_6("1.6", 50, 0),
+
+    /** JDK 7. */
+    JDK1_7("1.7", 51, 0);
 
     private static final Context.Key<Target> targetKey =
         new Context.Key<Target>();
@@ -70,7 +75,7 @@ public enum Target {
         Target instance = context.get(targetKey);
         if (instance == null) {
             Options options = Options.instance(context);
-            String targetString = options.get("-target");
+            String targetString = options.get(TARGET);
             if (targetString != null) instance = lookup(targetString);
             if (instance == null) instance = DEFAULT;
             context.put(targetKey, instance);
@@ -93,6 +98,7 @@ public enum Target {
         }
         tab.put("5", JDK1_5);
         tab.put("6", JDK1_6);
+        tab.put("7", JDK1_7);
     }
 
     public final String name;
@@ -104,7 +110,7 @@ public enum Target {
         this.minorVersion = minorVersion;
     }
 
-    public static final Target DEFAULT = JDK1_6;
+    public static final Target DEFAULT = JDK1_7;
 
     public static Target lookup(String name) {
         return tab.get(name);
@@ -247,6 +253,20 @@ public enum Target {
      */
     public boolean hasClassLiterals() {
         return compareTo(JDK1_5) >= 0;
+    }
+
+    /** Does the VM support an invokedynamic instruction?
+     */
+    public boolean hasInvokedynamic() {
+        return compareTo(JDK1_7) >= 0;
+    }
+
+    /** Does the VM support polymorphic method handle invocation?
+     *  Affects the linkage information output to the classfile.
+     *  An alias for {@code hasInvokedynamic}, since all the JSR 292 features appear together.
+     */
+    public boolean hasMethodHandles() {
+        return hasInvokedynamic();
     }
 
     /** Although we may not have support for class literals, should we

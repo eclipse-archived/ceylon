@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -57,23 +57,23 @@ public class Messager extends Log implements DocErrorReporter {
         return (Messager)instance;
     }
 
-    public static void preRegister(final Context context,
+    public static void preRegister(Context context,
                                    final String programName) {
         context.put(logKey, new Context.Factory<Log>() {
-            public Log make() {
-                return new Messager(context,
+            public Log make(Context c) {
+                return new Messager(c,
                                     programName);
             }
         });
     }
-    public static void preRegister(final Context context,
+    public static void preRegister(Context context,
                                    final String programName,
                                    final PrintWriter errWriter,
                                    final PrintWriter warnWriter,
                                    final PrintWriter noticeWriter) {
         context.put(logKey, new Context.Factory<Log>() {
-            public Log make() {
-                return new Messager(context,
+            public Log make(Context c) {
+                return new Messager(c,
                                     programName,
                                     errWriter,
                                     warnWriter,
@@ -86,7 +86,7 @@ public class Messager extends Log implements DocErrorReporter {
         private static final long serialVersionUID = 0;
     }
 
-    private final String programName;
+    final String programName;
 
     private ResourceBundle messageRB = null;
 
@@ -111,6 +111,7 @@ public class Messager extends Log implements DocErrorReporter {
      * @param warnWriter   Stream for warnings
      * @param noticeWriter Stream for other messages
      */
+    @SuppressWarnings("deprecation")
     protected Messager(Context context,
                        String programName,
                        PrintWriter errWriter,
@@ -118,6 +119,16 @@ public class Messager extends Log implements DocErrorReporter {
                        PrintWriter noticeWriter) {
         super(context, errWriter, warnWriter, noticeWriter);
         this.programName = programName;
+    }
+
+    @Override
+    protected int getDefaultMaxErrors() {
+        return Integer.MAX_VALUE;
+    }
+
+    @Override
+    protected int getDefaultMaxWarnings() {
+        return Integer.MAX_VALUE;
     }
 
     /**
@@ -132,11 +143,9 @@ public class Messager extends Log implements DocErrorReporter {
      * if needed.
      */
     private String getString(String key) {
-        ResourceBundle messageRB = this.messageRB;
         if (messageRB == null) {
             try {
-                this.messageRB = messageRB =
-                    ResourceBundle.getBundle(
+                messageRB = ResourceBundle.getBundle(
                           "com.sun.tools.javadoc.resources.javadoc");
             } catch (MissingResourceException e) {
                 throw new Error("Fatal: Resource for javadoc is missing");
@@ -230,11 +239,13 @@ public class Messager extends Log implements DocErrorReporter {
      * @param msg message to print
      */
     public void printError(SourcePosition pos, String msg) {
-        String prefix = (pos == null) ? programName : pos.toString();
-        errWriter.println(prefix + ": " + getText("javadoc.error") + " - " + msg);
-        errWriter.flush();
-        prompt();
-        nerrors++;
+        if (nerrors < MaxErrors) {
+            String prefix = (pos == null) ? programName : pos.toString();
+            errWriter.println(prefix + ": " + getText("javadoc.error") + " - " + msg);
+            errWriter.flush();
+            prompt();
+            nerrors++;
+        }
     }
 
     /**
@@ -255,10 +266,12 @@ public class Messager extends Log implements DocErrorReporter {
      * @param msg message to print
      */
     public void printWarning(SourcePosition pos, String msg) {
-        String prefix = (pos == null) ? programName : pos.toString();
-        warnWriter.println(prefix +  ": " + getText("javadoc.warning") +" - " + msg);
-        warnWriter.flush();
-        nwarnings++;
+        if (nwarnings < MaxWarnings) {
+            String prefix = (pos == null) ? programName : pos.toString();
+            warnWriter.println(prefix +  ": " + getText("javadoc.warning") +" - " + msg);
+            warnWriter.flush();
+            nwarnings++;
+        }
     }
 
     /**
@@ -441,8 +454,6 @@ public class Messager extends Log implements DocErrorReporter {
      * Print exit message.
      */
     public void exitNotice() {
-        int nerrors = nerrors();
-        int nwarnings = nwarnings();
         if (nerrors > 0) {
             notice((nerrors > 1) ? "main.errors" : "main.error",
                    "" + nerrors);

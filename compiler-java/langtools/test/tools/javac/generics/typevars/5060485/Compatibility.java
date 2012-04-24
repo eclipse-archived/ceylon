@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,7 +26,7 @@
  * @bug     5060485
  * @summary The scope of a class type parameter is too wide
  * @author  Peter von der Ah\u00e9
- * @compile/fail Compatibility.java
+ * @compile/fail/ref=Compatibility.out -XDrawDiagnostics Compatibility.java
  */
 
 class NumberList<T extends Number> {}

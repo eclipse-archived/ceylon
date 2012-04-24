@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,8 +26,6 @@
 package com.sun.tools.javac.processing;
 
 import java.lang.annotation.Annotation;
-import com.sun.tools.javac.util.*;
-import com.sun.tools.javac.comp.*;
 import com.sun.tools.javac.tree.JCTree.*;
 import javax.annotation.processing.*;
 import javax.lang.model.element.*;
@@ -38,6 +36,9 @@ import java.util.*;
 
 /**
  * Object providing state about a prior round of annotation processing.
+ *
+ * <p>The methods in this class do not take type annotations into account,
+ * as target types, not java elements.
  *
  * <p><b>This is NOT part of any supported API.
  * If you write code that depends on this, you do so at your own risk.
@@ -113,6 +114,7 @@ public class JavacRoundEnvironment implements RoundEnvironment {
      */
     public Set<? extends Element> getElementsAnnotatedWith(TypeElement a) {
         Set<Element> result = Collections.emptySet();
+        Types typeUtil = processingEnv.getTypeUtils();
         if (a.getKind() != ElementKind.ANNOTATION_TYPE)
             throw new IllegalArgumentException(NOT_AN_ANNOTATION_TYPE + a);
 
@@ -123,8 +125,8 @@ public class JavacRoundEnvironment implements RoundEnvironment {
         else
             throw new AssertionError("Bad implementation type for " + tm);
 
-        ElementScanner6<Set<Element>, DeclaredType> scanner =
-            new AnnotationSetScanner(result);
+        ElementScanner7<Set<Element>, DeclaredType> scanner =
+            new AnnotationSetScanner(result, typeUtil);
 
         for (Element element : rootElements)
             result = scanner.scan(element, annotationTypeElement);
@@ -134,12 +136,14 @@ public class JavacRoundEnvironment implements RoundEnvironment {
 
     // Could be written as a local class inside getElementsAnnotatedWith
     private class AnnotationSetScanner extends
-        ElementScanner6<Set<Element>, DeclaredType> {
+        ElementScanner7<Set<Element>, DeclaredType> {
         // Insertion-order preserving set
         Set<Element> annotatedElements = new LinkedHashSet<Element>();
+        Types typeUtil;
 
-        AnnotationSetScanner(Set<Element> defaultSet) {
+        AnnotationSetScanner(Set<Element> defaultSet, Types typeUtil) {
             super(defaultSet);
+            this.typeUtil = typeUtil;
         }
 
         @Override
@@ -147,7 +151,7 @@ public class JavacRoundEnvironment implements RoundEnvironment {
             java.util.List<? extends AnnotationMirror> annotationMirrors =
                 processingEnv.getElementUtils().getAllAnnotationMirrors(e);
             for (AnnotationMirror annotationMirror : annotationMirrors) {
-                if (annotationMirror.getAnnotationType().equals(p))
+                if (typeUtil.isSameType(annotationMirror.getAnnotationType(), p))
                     annotatedElements.add(e);
             }
             e.accept(this, p);

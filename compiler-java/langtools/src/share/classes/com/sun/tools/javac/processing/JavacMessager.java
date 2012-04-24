@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -27,15 +27,12 @@ package com.sun.tools.javac.processing;
 
 import com.sun.tools.javac.model.JavacElements;
 import com.sun.tools.javac.util.*;
-import com.sun.tools.javac.comp.*;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.*;
-import com.sun.tools.javac.util.Position;
 import javax.lang.model.element.*;
 import javax.tools.JavaFileObject;
 import javax.tools.Diagnostic;
 import javax.annotation.processing.*;
-import java.util.*;
 
 /**
  * An implementation of the Messager built on top of log.
@@ -49,6 +46,7 @@ public class JavacMessager implements Messager {
     Log log;
     JavacProcessingEnvironment processingEnv;
     int errorCount = 0;
+    int warningCount = 0;
 
     JavacMessager(Context context, JavacProcessingEnvironment processingEnv) {
         log = Log.instance(context);
@@ -119,10 +117,12 @@ public class JavacMessager implements Messager {
                 break;
 
             case WARNING:
+                warningCount++;
                 log.warning(pos, "proc.messager", msg.toString());
                 break;
 
             case MANDATORY_WARNING:
+                warningCount++;
                 log.mandatoryWarning(pos, "proc.messager", msg.toString());
                 break;
 
@@ -168,6 +168,10 @@ public class JavacMessager implements Messager {
 
     public int errorCount() {
         return errorCount;
+    }
+
+    public int warningCount() {
+        return warningCount;
     }
 
     public void newRound(Context context) {

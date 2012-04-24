@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2003, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -22,7 +22,7 @@
  */
 
 /*
- * @test @(#)AuthorDD.java      1.1 02/04/20
+ * @test
  * @bug 4651598
  * @summary Javadoc wrongly inserts </DD> tags when using multiple @author tags
  * @author dkramer
@@ -86,12 +86,12 @@ public class AuthorDD
 
              // Test single @since tag:
 
-            { "<DT><B>Since:</B></DT>"+NL+"  <DD>JDK 1.0</DD>",
+            { "<dt><span class=\"strong\">Since:</span></dt>"+NL+"  <dd>JDK 1.0</dd>",
                                   BUGID + FS + "p1" + FS + "C1.html" },
 
             // Test multiple @author tags:
 
-            { "<DT><B>Author:</B></DT>"+NL+"  <DD>Doug Kramer, Jamie, Neal</DD>"+NL,
+            { "<dt><span class=\"strong\">Author:</span></dt>"+NL+"  <dd>Doug Kramer, Jamie, Neal</dd>",
                                   BUGID + FS + "p1" + FS + "C1.html" },
 
         };

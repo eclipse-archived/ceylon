@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2003, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2008, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -56,11 +56,11 @@ public class ParamTaglet extends BaseTaglet implements InheritableTaglet {
      *               check.
      * @return a name-rank number map.
      */
-    private static Map getRankMap(Object[] params){
+    private static Map<String,String> getRankMap(Object[] params){
         if (params == null) {
             return null;
         }
-        HashMap result = new HashMap();
+        HashMap<String,String> result = new HashMap<String,String>();
         for (int i = 0; i < params.length; i++) {
             String name = params[i] instanceof Parameter ?
                 ((Parameter) params[i]).name() :
@@ -100,7 +100,7 @@ public class ParamTaglet extends BaseTaglet implements InheritableTaglet {
         }
         ParamTag[] tags = input.isTypeVariableParamTag ?
             input.method.typeParamTags() : input.method.paramTags();
-        Map rankMap = getRankMap(input.isTypeVariableParamTag ?
+        Map<String, String> rankMap = getRankMap(input.isTypeVariableParamTag ?
             (Object[]) input.method.typeParameters() :
             (Object[]) input.method.parameters());
         for (int i = 0; i < tags.length; i++) {
@@ -192,7 +192,7 @@ public class ParamTaglet extends BaseTaglet implements InheritableTaglet {
     private TagletOutput getTagletOutput(boolean isNonTypeParams, Doc holder,
             TagletWriter writer, Object[] formalParameters, ParamTag[] paramTags) {
         TagletOutput result = writer.getOutputInstance();
-        Set alreadyDocumented = new HashSet();
+        Set<String> alreadyDocumented = new HashSet<String>();
         if (paramTags.length > 0) {
             result.appendOutput(
                 processParamTags(isNonTypeParams, paramTags,
@@ -214,7 +214,7 @@ public class ParamTaglet extends BaseTaglet implements InheritableTaglet {
      */
     private TagletOutput getInheritedTagletOutput(boolean isNonTypeParams, Doc holder,
             TagletWriter writer, Object[] formalParameters,
-            Set alreadyDocumented) {
+            Set<String> alreadyDocumented) {
         TagletOutput result = writer.getOutputInstance();
         if ((! alreadyDocumented.contains(null)) &&
                 holder instanceof MethodDoc) {
@@ -262,8 +262,8 @@ public class ParamTaglet extends BaseTaglet implements InheritableTaglet {
      * @return the TagletOutput representation of this <code>Tag</code>.
      */
     private TagletOutput processParamTags(boolean isNonTypeParams,
-            ParamTag[] paramTags, Map rankMap, TagletWriter writer,
-            Set alreadyDocumented) {
+            ParamTag[] paramTags, Map<String, String> rankMap, TagletWriter writer,
+            Set<String> alreadyDocumented) {
         TagletOutput result = writer.getOutputInstance();
         if (paramTags.length > 0) {
             for (int i = 0; i < paramTags.length; ++i) {
@@ -277,7 +277,7 @@ public class ParamTaglet extends BaseTaglet implements InheritableTaglet {
                             "doclet.Type_Parameters_warn",
                         paramName);
                 }
-                String rank = (String) rankMap.get(pt.parameterName());
+                String rank = rankMap.get(pt.parameterName());
                 if (rank != null && alreadyDocumented.contains(rank)) {
                     writer.getMsgRetriever().warning(pt.position(),
                        isNonTypeParams ?

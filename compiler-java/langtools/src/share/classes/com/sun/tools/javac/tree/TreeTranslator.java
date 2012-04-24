@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -212,6 +212,7 @@ public class TreeTranslator extends JCTree.Visitor {
     }
 
     public void visitTry(JCTry tree) {
+        tree.resources = translate(tree.resources);
         tree.body = translate(tree.body);
         tree.catchers = translateCatchers(tree.catchers);
         tree.finalizer = translate(tree.finalizer);
@@ -362,6 +363,11 @@ public class TreeTranslator extends JCTree.Visitor {
         result = tree;
     }
 
+    public void visitTypeUnion(JCTypeUnion tree) {
+        tree.alternatives = translate(tree.alternatives);
+        result = tree;
+    }
+
     public void visitTypeParameter(JCTypeParameter tree) {
         tree.bounds = translate(tree.bounds);
         result = tree;
@@ -385,7 +391,6 @@ public class TreeTranslator extends JCTree.Visitor {
 
     public void visitLetExpr(LetExpr tree) {
         tree.defs = translateVarDefs(tree.defs);
-        tree.stats = translate(tree.stats);
         tree.expr = translate(tree.expr);
         result = tree;
     }

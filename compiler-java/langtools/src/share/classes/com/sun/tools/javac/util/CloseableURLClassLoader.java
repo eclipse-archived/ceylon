@@ -45,9 +45,9 @@ import java.util.jar.JarFile;
  *  This code and its internal interfaces are subject to change or
  *  deletion without notice.</b>
  */
-class CloseableURLClassLoader
+public class CloseableURLClassLoader
         extends URLClassLoader implements Closeable {
-    CloseableURLClassLoader(URL[] urls, ClassLoader parent) throws Error {
+    public CloseableURLClassLoader(URL[] urls, ClassLoader parent) throws Error {
         super(urls, parent);
         try {
             getLoaders(); //proactive check that URLClassLoader is as expected
@@ -63,6 +63,7 @@ class CloseableURLClassLoader
      * @throws java.io.IOException if the jar files cannot be found for any
      * reson, or if closing the jar file itself causes an IOException.
      */
+    @Override
     public void close() throws IOException {
         try {
             for (Object l: getLoaders()) {
@@ -81,9 +82,9 @@ class CloseableURLClassLoader
             throw e;
         }
     }
-    
-    private ArrayList<?> getLoaders() 
-            throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException 
+
+    private ArrayList<?> getLoaders()
+            throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException
     {
         Field ucpField = URLClassLoader.class.getDeclaredField("ucp");
         Object urlClassPath = getField(this, ucpField);
@@ -92,8 +93,8 @@ class CloseableURLClassLoader
         Field loadersField = urlClassPath.getClass().getDeclaredField("loaders");
         return (ArrayList<?>) getField(urlClassPath, loadersField);
     }
-    
-    private Object getField(Object o, Field f) 
+
+    private Object getField(Object o, Field f)
             throws IllegalArgumentException, IllegalAccessException {
         boolean prev = f.isAccessible();
         try {
@@ -103,5 +104,5 @@ class CloseableURLClassLoader
             f.setAccessible(prev);
         }
     }
-    
+
 }

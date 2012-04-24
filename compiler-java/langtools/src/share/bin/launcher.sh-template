@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-# Copyright (c) 2006, 2009, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2006, 2011, Oracle and/or its affiliates. All rights reserved.
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 #
 # This code is free software; you can redistribute it and/or modify it
@@ -26,7 +26,12 @@
 #
 
 mydir="`dirname $0`"
-mylib="`dirname $mydir`"/lib
+case `uname -s` in
+    CYGWIN*)
+      mydir=`cygpath -m $mydir`
+      ;;
+esac
+mylib="$mydir/../lib"
 
 # By default, put the jar file and its dependencies on the bootclasspath.
 # This is always required on a Mac, because the system langtools classes
@@ -40,8 +45,8 @@ mylib="`dirname $mydir`"/lib
 if [ "$LANGTOOLS_USE_BOOTCLASSPATH" != "no" ]; then
    cp=`unzip -c "$mylib/#PROGRAM#.jar" META-INF/MANIFEST.MF |
        grep "Class-Path:" |
-       sed -e 's|Class-Path: *||' -e 's|\([a-z]*\.jar\) *|'"$mylib"'/\1:|g'`
-   bcp="$mylib/#PROGRAM#.jar":$cp 
+       sed -e 's|Class-Path: *||' -e 's|\([a-z]*\.jar\) *|'"$mylib"'/\1#PS#|g'`
+   bcp="$mylib/#PROGRAM#.jar#PS#$cp"
 fi
 
 # tools currently assumes that assertions are enabled in the launcher
@@ -67,4 +72,4 @@ done
 unset DUALCASE
 
 IFS=$nl
-"#TARGET_JAVA#" "${bcp:+-Xbootclasspath/p:"$bcp"}" ${ea} ${javaOpts} -jar "${mydir}"/../lib/#PROGRAM#.jar ${toolOpts}
+"#TARGET_JAVA#" "${bcp:+-Xbootclasspath/p:"$bcp"}" ${ea} ${javaOpts} -jar "${mylib}/#PROGRAM#.jar" ${toolOpts}

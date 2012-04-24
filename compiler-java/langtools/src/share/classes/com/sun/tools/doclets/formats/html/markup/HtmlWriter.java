@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,9 +25,10 @@
 
 package com.sun.tools.doclets.formats.html.markup;
 
+import java.io.*;
+
 import com.sun.tools.doclets.internal.toolkit.*;
 import com.sun.tools.doclets.internal.toolkit.util.*;
-import java.io.*;
 
 /**
  * Class for the Html format code generation.
@@ -36,6 +37,7 @@ import java.io.*;
  *
  * @since 1.2
  * @author Atul M Dambalkar
+ * @author Bhavesh Patel (Modified)
  */
 public class HtmlWriter extends PrintWriter {
 
@@ -53,12 +55,98 @@ public class HtmlWriter extends PrintWriter {
      * URL file separator string("/").
      */
     public static final String fileseparator =
-         DirectoryManager.URL_FILE_SEPERATOR;
+         DirectoryManager.URL_FILE_SEPARATOR;
 
     /**
      * The configuration
      */
     protected Configuration configuration;
+
+    /**
+     * The flag to indicate whether a member details list is printed or not.
+     */
+    protected boolean memberDetailsListPrinted;
+
+    /**
+     * Header for tables displaying packages and description..
+     */
+    protected final String[] packageTableHeader;
+
+    /**
+     * Summary for use tables displaying class and package use.
+     */
+    protected final String useTableSummary;
+
+    /**
+     * Column header for class docs displaying Modifier and Type header.
+     */
+    protected final String modifierTypeHeader;
+
+    public final Content overviewLabel;
+
+    public final Content defaultPackageLabel;
+
+    public final Content packageLabel;
+
+    public final Content useLabel;
+
+    public final Content prevLabel;
+
+    public final Content nextLabel;
+
+    public final Content prevclassLabel;
+
+    public final Content nextclassLabel;
+
+    public final Content summaryLabel;
+
+    public final Content detailLabel;
+
+    public final Content framesLabel;
+
+    public final Content noframesLabel;
+
+    public final Content treeLabel;
+
+    public final Content classLabel;
+
+    public final Content deprecatedLabel;
+
+    public final Content deprecatedPhrase;
+
+    public final Content allclassesLabel;
+
+    public final Content indexLabel;
+
+    public final Content helpLabel;
+
+    public final Content seeLabel;
+
+    public final Content descriptionLabel;
+
+    public final Content prevpackageLabel;
+
+    public final Content nextpackageLabel;
+
+    public final Content packagesLabel;
+
+    public final Content methodDetailsLabel;
+
+    public final Content annotationTypeDetailsLabel;
+
+    public final Content fieldDetailsLabel;
+
+    public final Content constructorDetailsLabel;
+
+    public final Content enumConstantsDetailsLabel;
+
+    public final Content specifiedByLabel;
+
+    public final Content overridesLabel;
+
+    public final Content descfrmClassLabel;
+
+    public final Content descfrmInterfaceLabel;
 
     /**
      * Constructor.
@@ -79,13 +167,90 @@ public class HtmlWriter extends PrintWriter {
         super(Util.genWriter(configuration, path, filename, docencoding));
         this.configuration = configuration;
         htmlFilename = filename;
+        this.memberDetailsListPrinted = false;
+        packageTableHeader = new String[] {
+            configuration.getText("doclet.Package"),
+            configuration.getText("doclet.Description")
+        };
+        useTableSummary = configuration.getText("doclet.Use_Table_Summary",
+                configuration.getText("doclet.packages"));
+        modifierTypeHeader = configuration.getText("doclet.0_and_1",
+                configuration.getText("doclet.Modifier"),
+                configuration.getText("doclet.Type"));
+        overviewLabel = getResource("doclet.Overview");
+        defaultPackageLabel = new RawHtml(
+                DocletConstants.DEFAULT_PACKAGE_NAME);
+        packageLabel = getResource("doclet.Package");
+        useLabel = getResource("doclet.navClassUse");
+        prevLabel = getResource("doclet.Prev");
+        nextLabel = getResource("doclet.Next");
+        prevclassLabel = getResource("doclet.Prev_Class");
+        nextclassLabel = getResource("doclet.Next_Class");
+        summaryLabel = getResource("doclet.Summary");
+        detailLabel = getResource("doclet.Detail");
+        framesLabel = getResource("doclet.Frames");
+        noframesLabel = getResource("doclet.No_Frames");
+        treeLabel = getResource("doclet.Tree");
+        classLabel = getResource("doclet.Class");
+        deprecatedLabel = getResource("doclet.navDeprecated");
+        deprecatedPhrase = getResource("doclet.Deprecated");
+        allclassesLabel = getResource("doclet.All_Classes");
+        indexLabel = getResource("doclet.Index");
+        helpLabel = getResource("doclet.Help");
+        seeLabel = getResource("doclet.See");
+        descriptionLabel = getResource("doclet.Description");
+        prevpackageLabel = getResource("doclet.Prev_Package");
+        nextpackageLabel = getResource("doclet.Next_Package");
+        packagesLabel = getResource("doclet.Packages");
+        methodDetailsLabel = getResource("doclet.Method_Detail");
+        annotationTypeDetailsLabel = getResource("doclet.Annotation_Type_Member_Detail");
+        fieldDetailsLabel = getResource("doclet.Field_Detail");
+        constructorDetailsLabel = getResource("doclet.Constructor_Detail");
+        enumConstantsDetailsLabel = getResource("doclet.Enum_Constant_Detail");
+        specifiedByLabel = getResource("doclet.Specified_By");
+        overridesLabel = getResource("doclet.Overrides");
+        descfrmClassLabel = getResource("doclet.Description_From_Class");
+        descfrmInterfaceLabel = getResource("doclet.Description_From_Interface");
+    }
+
+    /**
+     * Get the configuration string as a content.
+     *
+     * @param key the key to look for in the configuration file
+     * @return a content tree for the text
+     */
+    public Content getResource(String key) {
+        return new StringContent(configuration.getText(key));
+    }
+
+    /**
+     * Get the configuration string as a content.
+     *
+     * @param key the key to look for in the configuration file
+     * @param a1 string argument added to configuration text
+     * @return a content tree for the text
+     */
+    public Content getResource(String key, String a1) {
+        return new RawHtml(configuration.getText(key, a1));
+    }
+
+    /**
+     * Get the configuration string as a content.
+     *
+     * @param key the key to look for in the configuration file
+     * @param a1 string argument added to configuration text
+     * @param a2 string argument added to configuration text
+     * @return a content tree for the text
+     */
+    public Content getResource(String key, String a1, String a2) {
+        return new RawHtml(configuration.getText(key, a1, a2));
     }
 
     /**
      * Print &lt;HTML&gt; tag. Add a newline character at the end.
      */
     public void html() {
-        println("<HTML>");
+        println("<HTML lang=\"" + configuration.getLocale().getLanguage() + "\">");
     }
 
     /**
@@ -111,6 +276,48 @@ public class HtmlWriter extends PrintWriter {
             noScript();
             noScriptEnd();
         }
+    }
+
+    /**
+     * Returns an HtmlTree for the SCRIPT tag.
+     *
+     * @return an HtmlTree for the SCRIPT tag
+     */
+    protected HtmlTree getWinTitleScript(){
+        HtmlTree script = new HtmlTree(HtmlTag.SCRIPT);
+        if(winTitle != null && winTitle.length() > 0) {
+            script.addAttr(HtmlAttr.TYPE, "text/javascript");
+            String scriptCode = "<!--" + DocletConstants.NL +
+                    "    if (location.href.indexOf('is-external=true') == -1) {" + DocletConstants.NL +
+                    "        parent.document.title=\"" + winTitle + "\";" + DocletConstants.NL +
+                    "    }" + DocletConstants.NL +
+                    "//-->" + DocletConstants.NL;
+            RawHtml scriptContent = new RawHtml(scriptCode);
+            script.addContent(scriptContent);
+        }
+        return script;
+    }
+
+    /**
+     * Returns a content tree for the SCRIPT tag for the main page(index.html).
+     *
+     * @return a content for the SCRIPT tag
+     */
+    protected Content getFramesetJavaScript(){
+        HtmlTree script = new HtmlTree(HtmlTag.SCRIPT);
+        script.addAttr(HtmlAttr.TYPE, "text/javascript");
+        String scriptCode = DocletConstants.NL + "    targetPage = \"\" + window.location.search;" + DocletConstants.NL +
+                "    if (targetPage != \"\" && targetPage != \"undefined\")" + DocletConstants.NL +
+                "        targetPage = targetPage.substring(1);" + DocletConstants.NL +
+                "    if (targetPage.indexOf(\":\") != -1)" + DocletConstants.NL +
+                "        targetPage = \"undefined\";" + DocletConstants.NL +
+                "    function loadFrames() {" + DocletConstants.NL +
+                "        if (targetPage != \"\" && targetPage != \"undefined\")" + DocletConstants.NL +
+                "             top.classFrame.location = top.targetPage;" + DocletConstants.NL +
+                "    }" + DocletConstants.NL;
+        RawHtml scriptContent = new RawHtml(scriptCode);
+        script.addContent(scriptContent);
+        return script;
     }
 
     /**
@@ -172,6 +379,28 @@ public class HtmlWriter extends PrintWriter {
     }
 
     /**
+     * Returns an HtmlTree for the BODY tag.
+     *
+     * @param includeScript  set true if printing windowtitle script
+     * @param title title for the window
+     * @return an HtmlTree for the BODY tag
+     */
+    public HtmlTree getBody(boolean includeScript, String title) {
+        HtmlTree body = new HtmlTree(HtmlTag.BODY);
+        // Set window title string which is later printed
+        this.winTitle = title;
+        // Don't print windowtitle script for overview-frame, allclasses-frame
+        // and package-frame
+        if (includeScript) {
+            body.addContent(getWinTitleScript());
+            Content noScript = HtmlTree.NOSCRIPT(
+                    HtmlTree.DIV(getResource("doclet.No_Script_Message")));
+            body.addContent(noScript);
+        }
+        return body;
+    }
+
+    /**
      * Print &lt;/BODY&gt; tag. Add a newline character at the end.
      */
     public void bodyEnd() {
@@ -196,6 +425,15 @@ public class HtmlWriter extends PrintWriter {
         title();
     }
 
+    /**
+     * Returns an HtmlTree for the TITLE tag.
+     *
+     * @return an HtmlTree for the TITLE tag
+     */
+    public HtmlTree getTitle() {
+        HtmlTree title = HtmlTree.TITLE(new StringContent(winTitle));
+        return title;
+    }
 
     /**
      * Print &lt;/TITLE&gt; tag. Add a newline character at the end.
@@ -433,46 +671,46 @@ public class HtmlWriter extends PrintWriter {
     }
 
     /**
-     * Get the "&lt;B&gt;" string.
+     * Get the "&lt;STRONG&gt;" string.
      *
-     * @return String Return String "&lt;B&gt;";
+     * @return String Return String "&lt;STRONG&gt;";
      */
-    public String getBold() {
-        return "<B>";
+    public String getStrong() {
+        return "<STRONG>";
     }
 
     /**
-     * Get the "&lt;/B&gt;" string.
+     * Get the "&lt;/STRONG&gt;" string.
      *
-     * @return String Return String "&lt;/B&gt;";
+     * @return String Return String "&lt;/STRONG&gt;";
      */
-    public String getBoldEnd() {
-        return "</B>";
+    public String getStrongEnd() {
+        return "</STRONG>";
     }
 
     /**
-     * Print &lt;B&gt; tag.
+     * Print &lt;STRONG&gt; tag.
      */
-    public void bold() {
-        print("<B>");
+    public void strong() {
+        print("<STRONG>");
     }
 
     /**
-     * Print &lt;/B&gt; tag.
+     * Print &lt;/STRONG&gt; tag.
      */
-    public void boldEnd() {
-        print("</B>");
+    public void strongEnd() {
+        print("</STRONG>");
     }
 
     /**
-     * Print text passed, in bold format using &lt;B&gt; and &lt;/B&gt; tags.
+     * Print text passed, in strong format using &lt;STRONG&gt; and &lt;/STRONG&gt; tags.
      *
-     * @param text String to be printed in between &lt;B&gt; and &lt;/B&gt; tags.
+     * @param text String to be printed in between &lt;STRONG&gt; and &lt;/STRONG&gt; tags.
      */
-    public void bold(String text) {
-        bold();
+    public void strong(String text) {
+        strong();
         print(text);
-        boldEnd();
+        strongEnd();
     }
 
     /**
@@ -487,17 +725,17 @@ public class HtmlWriter extends PrintWriter {
     }
 
     /**
-     * Return, text passed, with Italics &lt;I&gt; and &lt;/I&gt; tags, surrounding it.
-     * So if the text passed is "Hi", then string returned will be "&lt;I&gt;Hi&lt;/I&gt;".
+     * Return, text passed, with Italics &lt;i&gt; and &lt;/i&gt; tags, surrounding it.
+     * So if the text passed is "Hi", then string returned will be "&lt;i&gt;Hi&lt;/i&gt;".
      *
      * @param text String to be printed in between &lt;I&gt; and &lt;/I&gt; tags.
      */
     public String italicsText(String text) {
-        return "<I>" + text + "</I>";
+        return "<i>" + text + "</i>";
     }
 
     public String codeText(String text) {
-        return "<CODE>" + text + "</CODE>";
+        return "<code>" + text + "</code>";
     }
 
     /**
@@ -505,6 +743,13 @@ public class HtmlWriter extends PrintWriter {
      */
     public void space() {
         print("&nbsp;");
+    }
+
+    /**
+     * Return "&#38;nbsp;", non-breaking space.
+     */
+    public Content getSpace() {
+        return RawHtml.nbsp;
     }
 
     /**
@@ -529,7 +774,14 @@ public class HtmlWriter extends PrintWriter {
     }
 
     /**
-     * Print &lt;DT&gt; tag.
+     * Print &lt;/DT&gt; tag.
+     */
+    public void dtEnd() {
+        print("</DT>");
+    }
+
+    /**
+     * Print &lt;DD&gt; tag.
      */
     public void dd() {
         print("<DD>");
@@ -789,6 +1041,26 @@ public class HtmlWriter extends PrintWriter {
     }
 
     /**
+     * Print HTML &lt;TABLE BORDER="border" WIDTH="width"
+     * CELLPADDING="cellpadding" CELLSPACING="cellspacing" SUMMARY="summary"&gt; tag.
+     *
+     * @param border       Border size.
+     * @param width        Width of the table.
+     * @param cellpadding  Cellpadding for the table cells.
+     * @param cellspacing  Cellspacing for the table cells.
+     * @param summary      Table summary.
+     */
+    public void table(int border, String width, int cellpadding,
+                      int cellspacing, String summary) {
+        println(DocletConstants.NL +
+                "<TABLE BORDER=\"" + border +
+                "\" WIDTH=\"" + width +
+                "\" CELLPADDING=\"" + cellpadding +
+                "\" CELLSPACING=\"" + cellspacing +
+                "\" SUMMARY=\"" + summary + "\">");
+    }
+
+    /**
      * Print HTML &lt;TABLE BORDER="border" CELLPADDING="cellpadding"
      * CELLSPACING="cellspacing"&gt; tag.
      *
@@ -802,6 +1074,23 @@ public class HtmlWriter extends PrintWriter {
                 "\" CELLPADDING=\"" + cellpadding +
                 "\" CELLSPACING=\"" + cellspacing +
                 "\" SUMMARY=\"\">");
+    }
+
+    /**
+     * Print HTML &lt;TABLE BORDER="border" CELLPADDING="cellpadding"
+     * CELLSPACING="cellspacing" SUMMARY="summary"&gt; tag.
+     *
+     * @param border       Border size.
+     * @param cellpadding  Cellpadding for the table cells.
+     * @param cellspacing  Cellspacing for the table cells.
+     * @param summary      Table summary.
+     */
+    public void table(int border, int cellpadding, int cellspacing, String summary) {
+        println(DocletConstants.NL +
+                "<TABLE BORDER=\"" + border +
+                "\" CELLPADDING=\"" + cellpadding +
+                "\" CELLSPACING=\"" + cellspacing +
+                "\" SUMMARY=\"" + summary + "\">");
     }
 
     /**
@@ -899,6 +1188,23 @@ public class HtmlWriter extends PrintWriter {
     }
 
     /**
+     * Print &lt;CAPTION CLASS="stylename"&gt; tag. Adds a newline character
+     * at the end.
+     *
+     * @param stylename style to be applied.
+     */
+    public void captionStyle(String stylename) {
+        println("<CAPTION CLASS=\"" + stylename + "\">");
+    }
+
+    /**
+     * Print &lt;/CAPTION&gt; tag. Add a newline character at the end.
+     */
+    public void captionEnd() {
+        println("</CAPTION>");
+    }
+
+    /**
      * Print &lt;TR BGCOLOR="color" CLASS="stylename"&gt; tag. Adds a newline character
      * at the end.
      *
@@ -936,6 +1242,23 @@ public class HtmlWriter extends PrintWriter {
      */
     public void thAlign(String align) {
         print("<TH ALIGN=\"" + align + "\">");
+    }
+
+    /**
+     * Print &lt;TH CLASS="stylename" SCOPE="scope" NOWRAP&gt; tag.
+     *
+     * @param stylename style to be applied.
+     * @param scope the scope attribute.
+     */
+    public void thScopeNoWrap(String stylename, String scope) {
+        print("<TH CLASS=\"" + stylename + "\" SCOPE=\"" + scope + "\" NOWRAP>");
+    }
+
+    /*
+     * Returns a header for Modifier and Type column of a table.
+     */
+    public String getModifierTypeHeader() {
+        return modifierTypeHeader;
     }
 
     /**
@@ -1072,21 +1395,21 @@ public class HtmlWriter extends PrintWriter {
     }
 
     /**
-     * Get the "&lt;CODE&gt;" string.
+     * Get the "&lt;code&gt;" string.
      *
-     * @return String Return String "&lt;CODE>";
+     * @return String Return String "&lt;code&gt;";
      */
     public String getCode() {
-        return "<CODE>";
+        return "<code>";
     }
 
     /**
-     * Get the "&lt;/CODE&gt;" string.
+     * Get the "&lt;/code&gt;" string.
      *
-     * @return String Return String "&lt;/CODE&gt;";
+     * @return String Return String "&lt;/code&gt;";
      */
     public String getCodeEnd() {
-        return "</CODE>";
+        return "</code>";
     }
 
     /**

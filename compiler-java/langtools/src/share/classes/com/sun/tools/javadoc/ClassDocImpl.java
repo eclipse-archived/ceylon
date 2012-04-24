@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,44 +25,46 @@
 
 package com.sun.tools.javadoc;
 
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Modifier;
+import java.net.URI;
+import java.util.HashSet;
+import java.util.Set;
+import javax.tools.FileObject;
+import javax.tools.JavaFileManager.Location;
+import javax.tools.StandardJavaFileManager;
+import javax.tools.StandardLocation;
 
 import com.sun.javadoc.*;
 
 import static com.sun.javadoc.LanguageVersion.*;
 
-import com.sun.tools.javac.util.List;
-import com.sun.tools.javac.util.ListBuffer;
-import com.sun.tools.javac.util.Name;
-import com.sun.tools.javac.util.Position;
-
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.Kinds;
-import com.sun.tools.javac.code.TypeTags;
-import com.sun.tools.javac.code.Type;
-import com.sun.tools.javac.code.Types;
-import com.sun.tools.javac.code.Type.ClassType;
 import com.sun.tools.javac.code.Scope;
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Symbol.*;
+import com.sun.tools.javac.code.Type;
+import com.sun.tools.javac.code.Type.ClassType;
+import com.sun.tools.javac.code.TypeTags;
 
 import com.sun.tools.javac.comp.AttrContext;
 import com.sun.tools.javac.comp.Env;
 
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCImport;
-import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.TreeInfo;
 
-import static com.sun.tools.javac.code.Flags.*;
-import static com.sun.tools.javac.code.Kinds.*;
-import static com.sun.tools.javac.code.TypeTags.*;
+import com.sun.tools.javac.util.List;
+import com.sun.tools.javac.util.ListBuffer;
+import com.sun.tools.javac.util.Name;
+import com.sun.tools.javac.util.Names;
+import com.sun.tools.javac.util.Position;
 
-import java.io.File;
-import java.util.Set;
-import java.util.HashSet;
-import java.lang.reflect.Modifier;
+import static com.sun.tools.javac.code.Kinds.*;
 
 /**
  * Represents a java class and provides access to information
@@ -144,6 +146,7 @@ public class ClassDocImpl extends ProgramElementDocImpl implements ClassDoc {
     /**
      * Return true if this is a class, not an interface.
      */
+    @Override
     public boolean isClass() {
         return !Modifier.isInterface(getModifiers());
     }
@@ -152,6 +155,7 @@ public class ClassDocImpl extends ProgramElementDocImpl implements ClassDoc {
      * Return true if this is a ordinary class,
      * not an enumeration, exception, an error, or an interface.
      */
+    @Override
     public boolean isOrdinaryClass() {
         if (isEnum() || isInterface() || isAnnotationType()) {
             return false;
@@ -169,6 +173,7 @@ public class ClassDocImpl extends ProgramElementDocImpl implements ClassDoc {
      * Return true if this is an enumeration.
      * (For legacy doclets, return false.)
      */
+    @Override
     public boolean isEnum() {
         return (getFlags() & Flags.ENUM) != 0
                &&
@@ -179,6 +184,7 @@ public class ClassDocImpl extends ProgramElementDocImpl implements ClassDoc {
      * Return true if this is an interface, but not an annotation type.
      * Overridden by AnnotationTypeDocImpl.
      */
+    @Override
     public boolean isInterface() {
         return Modifier.isInterface(getModifiers());
     }
@@ -186,6 +192,7 @@ public class ClassDocImpl extends ProgramElementDocImpl implements ClassDoc {
     /**
      * Return true if this is an exception class
      */
+    @Override
     public boolean isException() {
         if (isEnum() || isInterface() || isAnnotationType()) {
             return false;
@@ -201,6 +208,7 @@ public class ClassDocImpl extends ProgramElementDocImpl implements ClassDoc {
     /**
      * Return true if this is an error class
      */
+    @Override
     public boolean isError() {
         if (isEnum() || isInterface() || isAnnotationType()) {
             return false;
@@ -272,18 +280,44 @@ public class ClassDocImpl extends ProgramElementDocImpl implements ClassDoc {
     /**
      * Return the package that this class is contained in.
      */
+    @Override
     public PackageDoc containingPackage() {
         PackageDocImpl p = env.getPackageDoc(tsym.packge());
-        SourcePosition po = position();
-        if (po != null && p.setDocPath == false && p.zipDocPath == null) {
-            //Set the package path if possible
-            File packageDir = po.file().getParentFile();
-            if (packageDir != null
-                && (new File(packageDir, "package.html")).exists()) {
-                p.setDocPath(packageDir.getPath());
-            } else {
-                p.setDocPath(null);
+        if (p.setDocPath == false) {
+            FileObject docPath;
+            try {
+                Location location = env.fileManager.hasLocation(StandardLocation.SOURCE_PATH)
+                    ? StandardLocation.SOURCE_PATH : StandardLocation.CLASS_PATH;
+
+                docPath = env.fileManager.getFileForInput(
+                        location, p.qualifiedName(), "package.html");
+            } catch (IOException e) {
+                docPath = null;
             }
+
+            if (docPath == null) {
+                // fall back on older semantics of looking in same directory as
+                // source file for this class
+                SourcePosition po = position();
+                if (env.fileManager instanceof StandardJavaFileManager &&
+                        po instanceof SourcePositionImpl) {
+                    URI uri = ((SourcePositionImpl) po).filename.toUri();
+                    if ("file".equals(uri.getScheme())) {
+                        File f = new File(uri);
+                        File dir = f.getParentFile();
+                        if (dir != null) {
+                            File pf = new File(dir, "package.html");
+                            if (pf.exists()) {
+                                StandardJavaFileManager sfm = (StandardJavaFileManager) env.fileManager;
+                                docPath = sfm.getJavaFileObjects(pf).iterator().next();
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            p.setDocPath(docPath);
         }
         return p;
     }
@@ -346,6 +380,7 @@ public class ClassDocImpl extends ProgramElementDocImpl implements ClassDoc {
      * Return the qualified name and any type parameters.
      * Each parameter is a type variable with optional bounds.
      */
+    @Override
     public String toString() {
         return classToString(env, tsym, true);
     }
@@ -373,7 +408,7 @@ public class ClassDocImpl extends ProgramElementDocImpl implements ClassDoc {
      * qualified by their enclosing class(es) only.
      */
     static String classToString(DocEnv env, ClassSymbol c, boolean full) {
-        StringBuffer s = new StringBuffer();
+        StringBuilder s = new StringBuilder();
         if (!c.isInner()) {             // if c is not an inner class
             s.append(getClassName(c, full));
         } else {
@@ -421,10 +456,12 @@ public class ClassDocImpl extends ProgramElementDocImpl implements ClassDoc {
      * Return the modifier string for this class. If it's an interface
      * exclude 'abstract' keyword from the modifier string
      */
+    @Override
     public String modifiers() {
         return Modifier.toString(modifierSpecifier());
     }
 
+    @Override
     public int modifierSpecifier() {
         int modifiers = getModifiers();
         return (isInterface() || isAnnotationType())
@@ -549,7 +586,7 @@ public class ClassDocImpl extends ProgramElementDocImpl implements ClassDoc {
      * methods in this class.  Does not include constructors.
      */
     public MethodDoc[] methods(boolean filter) {
-        Name.Table names = tsym.name.table;
+        Names names = tsym.name.table.names;
         List<MethodDocImpl> methods = List.nil();
         for (Scope.Entry e = tsym.members().elems; e != null; e = e.sibling) {
             if (e.sym != null &&
@@ -582,7 +619,7 @@ public class ClassDocImpl extends ProgramElementDocImpl implements ClassDoc {
      * constructors in this class.
      */
     public ConstructorDoc[] constructors(boolean filter) {
-        Name.Table names = tsym.name.table;
+        Names names = tsym.name.table.names;
         List<ConstructorDocImpl> constructors = List.nil();
         for (Scope.Entry e = tsym.members().elems; e != null; e = e.sibling) {
             if (e.sym != null &&
@@ -696,7 +733,7 @@ public class ClassDocImpl extends ProgramElementDocImpl implements ClassDoc {
     }
 
     private ClassDoc searchClass(String className) {
-        Name.Table names = tsym.name.table;
+        Names names = tsym.name.table.names;
 
         // search by qualified name first
         ClassDoc cd = env.lookupClass(className);
@@ -822,6 +859,12 @@ public class ClassDocImpl extends ProgramElementDocImpl implements ClassDoc {
                                        String[] paramTypes, Set<ClassDocImpl> searched) {
         //### Note that this search is not necessarily what the compiler would do!
 
+        Names names = tsym.name.table.names;
+        // do not match constructors
+        if (names.init.contentEquals(methodName)) {
+            return null;
+        }
+
         ClassDocImpl cdi;
         MethodDocImpl mdi;
 
@@ -848,7 +891,6 @@ public class ClassDocImpl extends ProgramElementDocImpl implements ClassDoc {
          *---------------------------------*/
 
         // search current class
-        Name.Table names = tsym.name.table;
         Scope.Entry e = tsym.members().lookup(names.fromString(methodName));
 
         //### Using modifier filter here isn't really correct,
@@ -936,7 +978,7 @@ public class ClassDocImpl extends ProgramElementDocImpl implements ClassDoc {
      */
     public ConstructorDoc findConstructor(String constrName,
                                           String[] paramTypes) {
-        Name.Table names = tsym.name.table;
+        Names names = tsym.name.table.names;
         for (Scope.Entry e = tsym.members().lookup(names.fromString("<init>")); e.scope != null; e = e.next()) {
             if (e.sym.kind == Kinds.MTH) {
                 if (hasParameterTypes((MethodSymbol)e.sym, paramTypes)) {
@@ -973,7 +1015,7 @@ public class ClassDocImpl extends ProgramElementDocImpl implements ClassDoc {
     }
 
     private FieldDocImpl searchField(String fieldName, Set<ClassDocImpl> searched) {
-        Name.Table names = tsym.name.table;
+        Names names = tsym.name.table.names;
         if (searched.contains(this)) {
             return null;
         }
@@ -1040,7 +1082,7 @@ public class ClassDocImpl extends ProgramElementDocImpl implements ClassDoc {
         Env<AttrContext> compenv = env.enter.getEnv(tsym);
         if (compenv == null) return new ClassDocImpl[0];
 
-        Name asterisk = tsym.name.table.asterisk;
+        Name asterisk = tsym.name.table.names.asterisk;
         for (JCTree t : compenv.toplevel.defs) {
             if (t.getTag() == JCTree.IMPORT) {
                 JCTree imp = ((JCImport) t).qualid;
@@ -1076,7 +1118,7 @@ public class ClassDocImpl extends ProgramElementDocImpl implements ClassDoc {
         ListBuffer<PackageDocImpl> importedPackages = new ListBuffer<PackageDocImpl>();
 
         //### Add the implicit "import java.lang.*" to the result
-        Name.Table names = tsym.name.table;
+        Names names = tsym.name.table.names;
         importedPackages.append(env.getPackageDoc(env.reader.enterPackage(names.java_lang)));
 
         Env<AttrContext> compenv = env.enter.getEnv(tsym);
@@ -1252,9 +1294,10 @@ public class ClassDocImpl extends ProgramElementDocImpl implements ClassDoc {
      * Return the source position of the entity, or null if
      * no position is available.
      */
+    @Override
     public SourcePosition position() {
         if (tsym.sourcefile == null) return null;
-        return SourcePositionImpl.make(tsym.sourcefile.toString(),
+        return SourcePositionImpl.make(tsym.sourcefile,
                                        (tree==null) ? Position.NOPOS : tree.pos,
                                        lineMap);
     }

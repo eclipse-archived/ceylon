@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -29,6 +29,8 @@
  *
  * @run compile/fail ThrowsIntersection_4.java
  */
+
+package ThrowsIntersection_4;
 
 // Note:  This is the test that actually failed for 4042259.  The others are for completeness.
 

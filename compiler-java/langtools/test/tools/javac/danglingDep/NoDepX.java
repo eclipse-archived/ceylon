@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,7 +25,7 @@
  * control test (1): verify that compiler handles (lack of) at-deprecated correctly
  * @test
  * @clean NoDepX X RefX
- * @compile/ref=NoDepX.out -XDstdout -XDrawDiagnostics NoDepX.java RefX.java
+ * @compile/ref=NoDepX.out -XDrawDiagnostics NoDepX.java RefX.java
  */
 class NoDepX
 {

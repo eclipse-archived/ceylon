@@ -26,12 +26,18 @@
  */
 
 @AnnotatedElementInfo(annotationName="java.lang.SuppressWarnings",
-                      expectedSize=2,
+                      expectedSize=4,
                       names={"foo",
-                             "bar"})
+                             "bar",
+                             "<init>"})
 public class BuriedAnnotations {
+    @SuppressWarnings("")
+    private BuriedAnnotations() {}
 
     class Nested {
+        @SuppressWarnings("")
+        private Nested() {}
+
         @SuppressWarnings("")
         private void foo() {return;};
 

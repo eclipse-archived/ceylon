@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -23,9 +23,11 @@
 
 /*
  * @test
- * @bug 6380018 6392177
+ * @bug 6380018 6392177 6993311
  * @summary Test the ability to create and process package-info.java files
  * @author  Joseph D. Darcy
+ * @library ../../lib
+ * @build   JavacTestingAbstractProcessor
  * @compile TestPackageInfo.java
  * @compile -processor TestPackageInfo -proc:only foo/bar/package-info.java TestPackageInfo.java
  */
@@ -49,13 +51,7 @@ import java.io.*;
  * 1) Visibility of package-info files from the command line
  * 2) Visibility of generated package-info.java source files
  */
-@SupportedAnnotationTypes("*")
-public class TestPackageInfo extends AbstractProcessor {
-    private Elements eltUtils;
-    private Messager messager;
-    private Filer filer;
-    private Map<String,String> options;
-
+public class TestPackageInfo extends JavacTestingAbstractProcessor {
     private int round = 0;
 
     public boolean process(Set<? extends TypeElement> annotations,
@@ -64,11 +60,7 @@ public class TestPackageInfo extends AbstractProcessor {
 
         // Verify annotations are as expected
         Set<TypeElement> expectedAnnotations = new HashSet<TypeElement>();
-        if (round == 1)
-            expectedAnnotations.add(eltUtils.
-                                    getTypeElement("javax.annotation.processing.SupportedAnnotationTypes"));
-        expectedAnnotations.add(eltUtils.
-                                getTypeElement("java.lang.SuppressWarnings"));
+        expectedAnnotations.add(eltUtils.getTypeElement("java.lang.Deprecated"));
 
         if (!roundEnv.processingOver()) {
             System.out.println("\nRound " + round);
@@ -98,7 +90,7 @@ public class TestPackageInfo extends AbstractProcessor {
                     } catch(FilerException fe) {}
 
                     PrintWriter pw = new PrintWriter(filer.createSourceFile("foo.package-info").openWriter());
-                    pw.println("@SuppressWarnings(\"\")");
+                    pw.println("@Deprecated");
                     pw.println("package foo;");
                     pw.close();
 
@@ -126,17 +118,5 @@ public class TestPackageInfo extends AbstractProcessor {
             }
         }
         return false;
-    }
-
-    public SourceVersion getSupportedSourceVersion() {
-        return SourceVersion.latest();
-    }
-
-    public void init(ProcessingEnvironment processingEnv) {
-        super.init(processingEnv);
-        eltUtils = processingEnv.getElementUtils();
-        messager = processingEnv.getMessager();
-        filer    = processingEnv.getFiler();
-        options  = processingEnv.getOptions();
     }
 }

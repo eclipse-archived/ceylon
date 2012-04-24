@@ -22,7 +22,7 @@
  */
 
 /*
- * @test @(#)Basic.java 1.1 03/04/21
+ * @test
  * @bug 4851039
  * @summary explicit type arguments
  * @author gafter

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -39,9 +39,17 @@ public interface LayoutCharacters {
      */
     final static int TabInc = 8;
 
+    /** Standard indentation for subdiagnostics
+     */
+    final static int DiagInc = 4;
+
+    /** Standard indentation for additional diagnostic lines
+     */
+    final static int DetailsInc = 2;
+
     /** Tabulator character.
      */
-    final static byte TAB   = 0x8;
+    final static byte TAB   = 0x9;
 
     /** Line feed character.
      */

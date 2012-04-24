@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,12 +25,12 @@
 
 package javax.lang.model.type;
 
-
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
-
+import java.io.ObjectInputStream;
+import java.io.IOException;
 import javax.lang.model.element.Element;
 
 
@@ -49,8 +49,17 @@ public class MirroredTypesException extends RuntimeException {
 
     private static final long serialVersionUID = 269;
 
-    // Should this be non-final for a custum readObject method?
-    private final transient List<? extends TypeMirror> types;   // cannot be serialized
+    transient List<? extends TypeMirror> types; // cannot be serialized
+
+    /*
+     * Trusted constructor to be called by MirroredTypeException.
+     */
+    MirroredTypesException(String message, TypeMirror type) {
+        super(message);
+        List<TypeMirror> tmp = (new ArrayList<TypeMirror>());
+        tmp.add(type);
+        types = Collections.unmodifiableList(tmp);
+    }
 
     /**
      * Constructs a new MirroredTypesException for the specified types.
@@ -58,7 +67,9 @@ public class MirroredTypesException extends RuntimeException {
      * @param types  the types being accessed
      */
     public MirroredTypesException(List<? extends TypeMirror> types) {
-        super("Attempt to access Class objects for TypeMirrors " + types);
+        super("Attempt to access Class objects for TypeMirrors " +
+              (types = // defensive copy
+               new ArrayList<TypeMirror>(types)).toString() );
         this.types = Collections.unmodifiableList(types);
     }
 
@@ -71,5 +82,14 @@ public class MirroredTypesException extends RuntimeException {
      */
     public List<? extends TypeMirror> getTypeMirrors() {
         return types;
+    }
+
+    /**
+     * Explicitly set all transient fields.
+     */
+    private void readObject(ObjectInputStream s)
+        throws IOException, ClassNotFoundException {
+        s.defaultReadObject();
+        types = null;
     }
 }

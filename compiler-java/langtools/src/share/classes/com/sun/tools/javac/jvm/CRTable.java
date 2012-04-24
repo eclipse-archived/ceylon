@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -101,7 +101,7 @@ implements CRTFlags {
                 continue;
 
             SourceRange pos = positions.get(entry.tree);
-            assert pos != null : "CRT: tree source positions are undefined";
+            Assert.checkNonNull(pos, "CRT: tree source positions are undefined");
             if ((pos.startPos == Position.NOPOS) || (pos.endPos == Position.NOPOS))
                 continue;
 
@@ -325,6 +325,7 @@ implements CRTFlags {
 
         public void visitTry(JCTry tree) {
             SourceRange sr = new SourceRange(startPos(tree), endPos(tree));
+            sr.mergeWith(csp(tree.resources));
             sr.mergeWith(csp(tree.body));
             sr.mergeWith(cspCatchers(tree.catchers));
             sr.mergeWith(csp(tree.finalizer));
@@ -516,7 +517,7 @@ implements CRTFlags {
         }
 
         public void visitTree(JCTree tree) {
-            assert false;
+            Assert.error();
         }
 
         /** The start position of given tree.

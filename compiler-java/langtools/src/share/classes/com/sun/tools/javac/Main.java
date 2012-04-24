@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -43,12 +43,6 @@ import java.lang.reflect.*;
  */
 public class Main {
 
-    static {
-        ClassLoader loader = Main.class.getClassLoader();
-        if (loader != null)
-            loader.setPackageAssertionStatus("com.sun.tools.javac", true);
-    }
-
     /** Unsupported command line interface.
      * @param args   The command line parameters.
      */
@@ -56,7 +50,7 @@ public class Main {
       if (args.length > 0 && args[0].equals("-Xjdb")) {
         String[] newargs = new String[args.length + 2];
         Class<?> c = Class.forName("com.sun.tools.example.debug.tty.TTY");
-        Method method = c.getDeclaredMethod ("main", new Class[] {args.getClass()});
+        Method method = c.getDeclaredMethod ("main", new Class<?>[] {args.getClass()});
         method.setAccessible(true);
         System.arraycopy(args, 1, newargs, 3, args.length - 1);
         newargs[0] = "-connect";

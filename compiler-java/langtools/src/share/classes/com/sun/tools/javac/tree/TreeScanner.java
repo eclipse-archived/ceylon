@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -146,6 +146,7 @@ public class TreeScanner extends Visitor {
     }
 
     public void visitTry(JCTry tree) {
+        scan(tree.resources);
         scan(tree.body);
         scan(tree.catchers);
         scan(tree.finalizer);
@@ -192,6 +193,7 @@ public class TreeScanner extends Visitor {
     }
 
     public void visitApply(JCMethodInvocation tree) {
+        scan(tree.typeargs);
         scan(tree.meth);
         scan(tree.args);
     }
@@ -199,6 +201,7 @@ public class TreeScanner extends Visitor {
     public void visitNewClass(JCNewClass tree) {
         scan(tree.encl);
         scan(tree.clazz);
+        scan(tree.typeargs);
         scan(tree.args);
         scan(tree.def);
     }
@@ -269,6 +272,10 @@ public class TreeScanner extends Visitor {
         scan(tree.arguments);
     }
 
+    public void visitTypeUnion(JCTypeUnion tree) {
+        scan(tree.alternatives);
+    }
+
     public void visitTypeParameter(JCTypeParameter tree) {
         scan(tree.bounds);
     }
@@ -298,11 +305,10 @@ public class TreeScanner extends Visitor {
 
     public void visitLetExpr(LetExpr tree) {
         scan(tree.defs);
-        scan(tree.stats);
         scan(tree.expr);
     }
 
     public void visitTree(JCTree tree) {
-        assert false;
+        Assert.error();
     }
 }

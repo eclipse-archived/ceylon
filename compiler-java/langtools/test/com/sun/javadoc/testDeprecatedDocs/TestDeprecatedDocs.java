@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -27,8 +27,7 @@
  * @summary  <DESC>
  * @author   jamieh
  * @library  ../lib/
- * @build    JavadocTester
- * @build    TestDeprecatedDocs
+ * @build    JavadocTester TestDeprecatedDocs
  * @run main TestDeprecatedDocs
  */
 
@@ -76,25 +75,21 @@ public class TestDeprecatedDocs extends JavadocTester {
         {TARGET_FILE, "pkg.DeprecatedClassByAnnotation.method()"},
         {TARGET_FILE, "pkg.DeprecatedClassByAnnotation.field"},
 
-        {TARGET_FILE2, "<B>Deprecated.</B>" + NL +
-                "<P>" + NL +
-            "<DL>" + NL +
-            "<DT><PRE><FONT SIZE=\"-1\">@Deprecated" + NL +
-            "</FONT>public class <B>DeprecatedClassByAnnotation</B>"},
+        {TARGET_FILE2, "<pre>@Deprecated" + NL +
+                 "public class <span class=\"strong\">DeprecatedClassByAnnotation</span>" + NL +
+                 "extends java.lang.Object</pre>"},
 
-        {TARGET_FILE2, "public int <B>field</B></PRE>" + NL +
-            "<DL>" + NL +
-            "<DD><B>Deprecated.</B>&nbsp;<DL>"},
+        {TARGET_FILE2, "<pre>@Deprecated" + NL +
+                 "public&nbsp;int field</pre>" + NL +
+                 "<div class=\"block\"><span class=\"strong\">Deprecated.</span>&nbsp;</div>"},
 
-        {TARGET_FILE2, "<FONT SIZE=\"-1\">@Deprecated" + NL +
-            "</FONT>public <B>DeprecatedClassByAnnotation</B>()</PRE>" + NL +
-            "<DL>" + NL +
-            "<DD><B>Deprecated.</B>"},
+        {TARGET_FILE2, "<pre>@Deprecated" + NL +
+                 "public&nbsp;DeprecatedClassByAnnotation()</pre>" + NL +
+                 "<div class=\"block\"><span class=\"strong\">Deprecated.</span>&nbsp;</div>"},
 
-        {TARGET_FILE2, "<FONT SIZE=\"-1\">@Deprecated" + NL +
-            "</FONT>public void <B>method</B>()</PRE>" + NL +
-            "<DL>" + NL +
-            "<DD><B>Deprecated.</B>"},
+        {TARGET_FILE2, "<pre>@Deprecated" + NL +
+                 "public&nbsp;void&nbsp;method()</pre>" + NL +
+                 "<div class=\"block\"><span class=\"strong\">Deprecated.</span>&nbsp;</div>"},
     };
 
     private static final String[][] NEGATED_TEST = NO_TEST;

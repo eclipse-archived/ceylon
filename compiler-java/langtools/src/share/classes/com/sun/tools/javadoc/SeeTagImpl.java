@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -33,7 +33,6 @@ import com.sun.javadoc.*;
  * Represents a see also documentation tag.
  * The @see tag can be plain text, or reference a class or member.
  *
- * @version 06/10/97
  * @author Kaiyang Liu (original)
  * @author Robert Field (rewrite)
  * @author Atul M Dambalkar
@@ -350,23 +349,23 @@ class SeeTagImpl extends TagImpl implements SeeTag, LayoutCharacters {
     // (int i, String s) ==> [0] = "int",  [1] = String
     // (int[][], String[]) ==> [0] = "int[][]" // [1] = "String[]"
     class ParameterParseMachine {
-        final int START = 0;
-        final int TYPE = 1;
-        final int NAME = 2;
-        final int TNSPACE = 3;  // space between type and name
-        final int ARRAYDECORATION = 4;
-        final int ARRAYSPACE = 5;
+        static final int START = 0;
+        static final int TYPE = 1;
+        static final int NAME = 2;
+        static final int TNSPACE = 3;  // space between type and name
+        static final int ARRAYDECORATION = 4;
+        static final int ARRAYSPACE = 5;
 
         String parameters;
 
-        StringBuffer typeId;
+        StringBuilder typeId;
 
         ListBuffer<String> paramList;
 
         ParameterParseMachine(String parameters) {
             this.parameters = parameters;
             this.paramList = new ListBuffer<String>();
-            typeId = new StringBuffer();
+            typeId = new StringBuilder();
         }
 
         public String[] parseParameters() {
@@ -451,7 +450,7 @@ class SeeTagImpl extends TagImpl implements SeeTag, LayoutCharacters {
             if (typeId.length() > 0) {
                 paramList.append(typeId.toString());
             }
-            return (String[])paramList.toArray(new String[paramList.length()]);
+            return paramList.toArray(new String[paramList.length()]);
         }
 
         void addTypeToParamList() {
@@ -465,6 +464,7 @@ class SeeTagImpl extends TagImpl implements SeeTag, LayoutCharacters {
     /**
      * Return the kind of this tag.
      */
+    @Override
     public String kind() {
         return "@see";
     }

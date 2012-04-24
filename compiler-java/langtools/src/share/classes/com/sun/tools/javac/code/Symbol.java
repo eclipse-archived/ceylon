@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,13 +25,9 @@
 
 package com.sun.tools.javac.code;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import javax.lang.model.element.*;
-import javax.lang.model.type.ReferenceType;
-import javax.lang.model.type.TypeMirror;
 import javax.tools.JavaFileObject;
 
 import com.sun.tools.javac.util.*;
@@ -85,8 +81,7 @@ public abstract class Symbol implements Element {
      *  method to make sure that the class symbol is loaded.
      */
     public List<Attribute.Compound> getAnnotationMirrors() {
-        assert attributes_field != null;
-        return attributes_field;
+        return Assert.checkNonNull(attributes_field);
     }
 
     /** Fetch a particular annotation from a symbol. */
@@ -136,6 +131,10 @@ public abstract class Symbol implements Element {
         throw new AssertionError();
     }
 
+    public <R, P> R accept(Symbol.Visitor<R, P> v, P p) {
+        return v.visitSymbol(this, p);
+    }
+
     /** The Java source which this symbol represents.
      *  A description of this symbol; overrides Object.
      */
@@ -144,25 +143,27 @@ public abstract class Symbol implements Element {
     }
 
     /** A Java source description of the location of this symbol; used for
-     *  error reporting.  Use of this method may result in the loss of the
-     *  symbol's description.
+     *  error reporting.
+     *
+     * @return null if the symbol is a package or a toplevel class defined in
+     * the default package; otherwise, the owner symbol is returned
      */
-    public String location() {
-        if (owner.name == null || (owner.name.len == 0 && owner.kind != PCK)) {
-            return "";
+    public Symbol location() {
+        if (owner.name == null || (owner.name.isEmpty() && owner.kind != PCK && owner.kind != TYP)) {
+            return null;
         }
-        return owner.toString();
+        return owner;
     }
 
-    public String location(Type site, Types types) {
-        if (owner.name == null || owner.name.len == 0) {
+    public Symbol location(Type site, Types types) {
+        if (owner.name == null || owner.name.isEmpty()) {
             return location();
         }
         if (owner.type.tag == CLASS) {
             Type ownertype = types.asOuterSuper(site, owner);
-            if (ownertype != null) return ownertype.toString();
+            if (ownertype != null) return ownertype.tsym;
         }
-        return owner.toString();
+        return owner;
     }
 
     /** The symbol's erased type.
@@ -179,7 +180,7 @@ public abstract class Symbol implements Element {
      */
     public Type externalType(Types types) {
         Type t = erasure(types);
-        if (name == name.table.init && owner.hasOuterInstance()) {
+        if (name == name.table.names.init && owner.hasOuterInstance()) {
             Type outerThisType = types.erasure(owner.type.getEnclosingType());
             return new MethodType(t.getParameterTypes().prepend(outerThisType),
                                   t.getReturnType(),
@@ -200,6 +201,16 @@ public abstract class Symbol implements Element {
         return (flags() & INTERFACE) != 0;
     }
 
+    /** Recognize if this symbol was marked @PolymorphicSignature in the source. */
+    public boolean isPolymorphicSignatureGeneric() {
+        return (flags() & (POLYMORPHIC_SIGNATURE | HYPOTHETICAL)) == POLYMORPHIC_SIGNATURE;
+    }
+
+    /** Recognize if this symbol was split from a @PolymorphicSignature symbol in the source. */
+    public boolean isPolymorphicSignatureInstance() {
+        return (flags() & (POLYMORPHIC_SIGNATURE | HYPOTHETICAL)) == (POLYMORPHIC_SIGNATURE | HYPOTHETICAL);
+    }
+
     /** Is this symbol declared (directly or indirectly) local
      *  to a method or variable initializer?
      *  Also includes fields of inner classes which are in
@@ -211,10 +222,17 @@ public abstract class Symbol implements Element {
             (owner.kind == TYP && owner.isLocal());
     }
 
+    /** Has this symbol an empty name? This includes anonymous
+     *  inner classses.
+     */
+    public boolean isAnonymous() {
+        return name.isEmpty();
+    }
+
     /** Is this symbol a constructor?
      */
     public boolean isConstructor() {
-        return name == name.table.init;
+        return name == name.table.names.init;
     }
 
     /** The fully qualified name of this symbol.
@@ -359,6 +377,8 @@ public abstract class Symbol implements Element {
             for (Symbol sup = clazz;
                  sup != null && sup != this.owner;
                  sup = types.supertype(sup.type).tsym) {
+                while (sup.type.tag == TYPEVAR)
+                    sup = sup.type.getUpperBound().tsym;
                 if (sup.type.isErroneous())
                     return true; // error recovery
                 if ((sup.flags() & COMPOUND) != 0)
@@ -455,8 +475,8 @@ public abstract class Symbol implements Element {
             this.other = other;
         }
         public String toString() { return other.toString(); }
-        public String location() { return other.location(); }
-        public String location(Type site, Types types) { return other.location(site, types); }
+        public Symbol location() { return other.location(); }
+        public Symbol location(Type site, Types types) { return other.location(site, types); }
         public Type erasure(Types types) { return other.erasure(types); }
         public Type externalType(Types types) { return other.externalType(types); }
         public boolean isLocal() { return other.isLocal(); }
@@ -478,6 +498,10 @@ public abstract class Symbol implements Element {
 
         public <R, P> R accept(ElementVisitor<R, P> v, P p) {
             return other.accept(v, p);
+        }
+
+        public <R, P> R accept(Symbol.Visitor<R, P> v, P p) {
+            return v.visitSymbol(other, p);
         }
     }
 
@@ -503,7 +527,7 @@ public abstract class Symbol implements Element {
                  || (owner.kind == TYP && owner.type.tag == TYPEVAR)
                  )) return name;
             Name prefix = owner.getQualifiedName();
-            if (prefix == null || prefix == prefix.table.empty)
+            if (prefix == null || prefix == prefix.table.names.empty)
                 return name;
             else return prefix.append('.', name);
         }
@@ -518,7 +542,7 @@ public abstract class Symbol implements Element {
                 ) return name;
             char sep = owner.kind == TYP ? '$' : '.';
             Name prefix = owner.flatName();
-            if (prefix == null || prefix == prefix.table.empty)
+            if (prefix == null || prefix == prefix.table.names.empty)
                 return name;
             else return prefix.append(sep, name);
         }
@@ -552,6 +576,9 @@ public abstract class Symbol implements Element {
 
         public java.util.List<Symbol> getEnclosedElements() {
             List<Symbol> list = List.nil();
+            if (kind == TYP && type.tag == TYPEVAR) {
+                return list;
+            }
             for (Scope.Entry e = members().elems; e != null; e = e.sibling) {
                 if (e.sym != null && (e.sym.flags() & SYNTHETIC) == 0 && e.sym.owner == this)
                     list = list.prepend(e.sym);
@@ -568,8 +595,12 @@ public abstract class Symbol implements Element {
         }
 
         public <R, P> R accept(ElementVisitor<R, P> v, P p) {
-            assert type.tag == TYPEVAR; // else override will be invoked
+            Assert.check(type.tag == TYPEVAR); // else override will be invoked
             return v.visitTypeParameter(this, p);
+        }
+
+        public <R, P> R accept(Symbol.Visitor<R, P> v, P p) {
+            return v.visitTypeSymbol(this, p);
         }
 
         public List<Type> getBounds() {
@@ -638,8 +669,7 @@ public abstract class Symbol implements Element {
                 if (attributes_field.isEmpty())
                     attributes_field = package_info.attributes_field;
             }
-            assert attributes_field != null;
-            return attributes_field;
+            return Assert.checkNonNull(attributes_field);
         }
 
         /** A package "exists" if a type or package that exists has
@@ -659,6 +689,10 @@ public abstract class Symbol implements Element {
 
         public <R, P> R accept(ElementVisitor<R, P> v, P p) {
             return v.visitPackage(this, p);
+        }
+
+        public <R, P> R accept(Symbol.Visitor<R, P> v, P p) {
+            return v.visitPackageSymbol(this, p);
         }
     }
 
@@ -732,8 +766,7 @@ public abstract class Symbol implements Element {
 
         public List<Attribute.Compound> getAnnotationMirrors() {
             if (completer != null) complete();
-            assert attributes_field != null;
-            return attributes_field;
+            return Assert.checkNonNull(attributes_field);
         }
 
         public Type erasure(Types types) {
@@ -744,7 +777,7 @@ public abstract class Symbol implements Element {
         }
 
         public String className() {
-            if (name.len == 0)
+            if (name.isEmpty())
                 return
                     Log.getLocalizedString("anonymous.class", flatname);
             else
@@ -783,7 +816,7 @@ public abstract class Symbol implements Element {
             } catch (CompletionFailure ex) {
                 // quiet error recovery
                 flags_field |= (PUBLIC|STATIC);
-                this.type = new ErrorType(this);
+                this.type = new ErrorType(this, Type.noType);
                 throw ex;
             }
         }
@@ -794,6 +827,8 @@ public abstract class Symbol implements Element {
                 ClassType t = (ClassType)type;
                 if (t.interfaces_field == null) // FIXME: shouldn't be null
                     t.interfaces_field = List.nil();
+                if (t.all_interfaces_field != null)
+                    return Type.getModelTypes(t.all_interfaces_field);
                 return t.interfaces_field;
             } else {
                 return List.nil();
@@ -809,7 +844,7 @@ public abstract class Symbol implements Element {
                 // An interface has no superclass; its supertype is Object.
                 return t.isInterface()
                     ? Type.noType
-                    : t.supertype_field;
+                    : t.supertype_field.getModelType();
             } else {
                 return Type.noType;
             }
@@ -849,6 +884,10 @@ public abstract class Symbol implements Element {
 
         public <R, P> R accept(ElementVisitor<R, P> v, P p) {
             return v.visitType(this, p);
+        }
+
+        public <R, P> R accept(Symbol.Visitor<R, P> v, P p) {
+            return v.visitClassSymbol(this, p);
         }
     }
 
@@ -908,6 +947,8 @@ public abstract class Symbol implements Element {
                 return ElementKind.ENUM_CONSTANT;
             } else if (owner.kind == TYP || owner.kind == ERR) {
                 return ElementKind.FIELD;
+            } else if (isResourceVariable()) {
+                return ElementKind.RESOURCE_VARIABLE;
             } else {
                 return ElementKind.LOCAL_VARIABLE;
             }
@@ -922,29 +963,12 @@ public abstract class Symbol implements Element {
         }
 
         public void setLazyConstValue(final Env<AttrContext> env,
-                                      final Log log,
                                       final Attr attr,
                                       final JCTree.JCExpression initializer)
         {
             setData(new Callable<Object>() {
                 public Object call() {
-                    JavaFileObject source = log.useSource(env.toplevel.sourcefile);
-                    try {
-                        // In order to catch self-references, we set
-                        // the variable's declaration position to
-                        // maximal possible value, effectively marking
-                        // the variable as undefined.
-                        int pos = VarSymbol.this.pos;
-                        VarSymbol.this.pos = Position.MAXPOS;
-                        Type itype = attr.attribExpr(initializer, env, type);
-                        VarSymbol.this.pos = pos;
-                        if (itype.constValue() != null)
-                            return attr.coerce(itype, type).constValue();
-                        else
-                            return null;
-                    } finally {
-                        log.useSource(source);
-                    }
+                    return attr.attribLazyConstantValue(env, initializer, type);
                 }
             });
         }
@@ -961,12 +985,17 @@ public abstract class Symbol implements Element {
             return data == ElementKind.EXCEPTION_PARAMETER;
         }
 
+        public boolean isResourceVariable() {
+            return data == ElementKind.RESOURCE_VARIABLE;
+        }
+
         public Object getConstValue() {
             // TODO: Consider if getConstValue and getConstantValue can be collapsed
-            if (data == ElementKind.EXCEPTION_PARAMETER) {
+            if (data == ElementKind.EXCEPTION_PARAMETER ||
+                data == ElementKind.RESOURCE_VARIABLE) {
                 return null;
             } else if (data instanceof Callable<?>) {
-                // In this case, this is final a variable, with an as
+                // In this case, this is a final variable, with an as
                 // yet unevaluated initializer.
                 Callable<?> eval = (Callable<?>)data;
                 data = null; // to make sure we don't evaluate this twice.
@@ -980,8 +1009,12 @@ public abstract class Symbol implements Element {
         }
 
         public void setData(Object data) {
-            assert !(data instanceof Env<?>) : this;
+            Assert.check(!(data instanceof Env<?>), this);
             this.data = data;
+        }
+
+        public <R, P> R accept(Symbol.Visitor<R, P> v, P p) {
+            return v.visitVarSymbol(this, p);
         }
     }
 
@@ -1008,7 +1041,7 @@ public abstract class Symbol implements Element {
          */
         public MethodSymbol(long flags, Name name, Type type, Symbol owner) {
             super(MTH, flags, name, type, owner);
-            assert owner.type.tag != TYPEVAR : owner + "." + name;
+            if (owner.type.tag == TYPEVAR) Assert.error(owner + "." + name);
         }
 
         /** Clone this symbol with new owner.
@@ -1025,7 +1058,7 @@ public abstract class Symbol implements Element {
             if ((flags() & BLOCK) != 0) {
                 return owner.name.toString();
             } else {
-                String s = (name == name.table.init)
+                String s = (name == name.table.names.init)
                     ? owner.name.toString()
                     : name.toString();
                 if (type != null) {
@@ -1047,18 +1080,24 @@ public abstract class Symbol implements Element {
                  impl == null && is.nonEmpty();
                  is = is.tail) {
                 TypeSymbol i = is.head.tsym;
-                for (Scope.Entry e = i.members().lookup(name);
-                     impl == null && e.scope != null;
-                     e = e.next()) {
-                    if (this.overrides(e.sym, (TypeSymbol)owner, types, true) &&
-                        // FIXME: I suspect the following requires a
-                        // subst() for a parametric return type.
-                        types.isSameType(type.getReturnType(),
-                                         types.memberType(owner.type, e.sym).getReturnType())) {
-                        impl = e.sym;
-                    }
-                    if (impl == null)
-                        impl = implemented(i, types);
+                impl = implementedIn(i, types);
+                if (impl == null)
+                    impl = implemented(i, types);
+            }
+            return impl;
+        }
+
+        public Symbol implementedIn(TypeSymbol c, Types types) {
+            Symbol impl = null;
+            for (Scope.Entry e = c.members().lookup(name);
+                 impl == null && e.scope != null;
+                 e = e.next()) {
+                if (this.overrides(e.sym, (TypeSymbol)owner, types, true) &&
+                    // FIXME: I suspect the following requires a
+                    // subst() for a parametric return type.
+                    types.isSameType(type.getReturnType(),
+                                     types.memberType(owner.type, e.sym).getReturnType())) {
+                    impl = e.sym;
                 }
             }
             return impl;
@@ -1149,7 +1188,7 @@ public abstract class Symbol implements Element {
         }
 
         private boolean isOverridableIn(TypeSymbol origin) {
-            // JLS3 8.4.6.1
+            // JLS 8.4.6.1
             switch ((int)(flags_field & Flags.AccessFlags)) {
             case Flags.PRIVATE:
                 return false;
@@ -1173,19 +1212,20 @@ public abstract class Symbol implements Element {
          *  as possible implementations.
          */
         public MethodSymbol implementation(TypeSymbol origin, Types types, boolean checkResult) {
-            for (Type t = origin.type; t.tag == CLASS; t = types.supertype(t)) {
-                TypeSymbol c = t.tsym;
-                for (Scope.Entry e = c.members().lookup(name);
-                     e.scope != null;
-                     e = e.next()) {
-                    if (e.sym.kind == MTH) {
-                        MethodSymbol m = (MethodSymbol) e.sym;
-                        if (m.overrides(this, origin, types, checkResult) &&
-                            (m.flags() & SYNTHETIC) == 0)
-                            return m;
-                    }
+            return implementation(origin, types, checkResult, implementation_filter);
+        }
+        // where
+            private static final Filter<Symbol> implementation_filter = new Filter<Symbol>() {
+                public boolean accepts(Symbol s) {
+                    return s.kind == Kinds.MTH &&
+                            (s.flags() & SYNTHETIC) == 0;
                 }
-            }
+            };
+
+        public MethodSymbol implementation(TypeSymbol origin, Types types, boolean checkResult, Filter<Symbol> implFilter) {
+            MethodSymbol res = types.implementation(this, origin, checkResult, implFilter);
+            if (res != null)
+                return res;
             // if origin is derived from a raw type, we might have missed
             // an implementation because we do not know enough about instantiations.
             // in this case continue with the supertype as origin.
@@ -1198,23 +1238,56 @@ public abstract class Symbol implements Element {
         public List<VarSymbol> params() {
             owner.complete();
             if (params == null) {
-                List<Name> names = savedParameterNames;
+                // If ClassReader.saveParameterNames has been set true, then
+                // savedParameterNames will be set to a list of names that
+                // matches the types in type.getParameterTypes().  If any names
+                // were not found in the class file, those names in the list will
+                // be set to the empty name.
+                // If ClassReader.saveParameterNames has been set false, then
+                // savedParameterNames will be null.
+                List<Name> paramNames = savedParameterNames;
                 savedParameterNames = null;
-                if (names == null) {
-                    names = List.nil();
-                    int i = 0;
-                    for (Type t : type.getParameterTypes())
-                        names = names.prepend(name.table.fromString("arg" + i++));
-                    names = names.reverse();
-                }
+                // discard the provided names if the list of names is the wrong size.
+                if (paramNames == null || paramNames.size() != type.getParameterTypes().size())
+                    paramNames = List.nil();
                 ListBuffer<VarSymbol> buf = new ListBuffer<VarSymbol>();
+                List<Name> remaining = paramNames;
+                // assert: remaining and paramNames are both empty or both
+                // have same cardinality as type.getParameterTypes()
+                int i = 0;
                 for (Type t : type.getParameterTypes()) {
-                    buf.append(new VarSymbol(PARAMETER, names.head, t, this));
-                    names = names.tail;
+                    Name paramName;
+                    if (remaining.isEmpty()) {
+                        // no names for any parameters available
+                        paramName = createArgName(i, paramNames);
+                    } else {
+                        paramName = remaining.head;
+                        remaining = remaining.tail;
+                        if (paramName.isEmpty()) {
+                            // no name for this specific parameter
+                            paramName = createArgName(i, paramNames);
+                        }
+                    }
+                    buf.append(new VarSymbol(PARAMETER, paramName, t, this));
+                    i++;
                 }
                 params = buf.toList();
             }
             return params;
+        }
+
+        // Create a name for the argument at position 'index' that is not in
+        // the exclude list. In normal use, either no names will have been
+        // provided, in which case the exclude list is empty, or all the names
+        // will have been provided, in which case this method will not be called.
+        private Name createArgName(int index, List<Name> exclude) {
+            String prefix = "arg";
+            while (true) {
+                Name argName = name.table.fromString(prefix + index);
+                if (!exclude.contains(argName))
+                    return argName;
+                prefix += "$";
+            }
         }
 
         public Symbol asMemberOf(Type site, Types types) {
@@ -1222,9 +1295,9 @@ public abstract class Symbol implements Element {
         }
 
         public ElementKind getKind() {
-            if (name == name.table.init)
+            if (name == name.table.names.init)
                 return ElementKind.CONSTRUCTOR;
-            else if (name == name.table.clinit)
+            else if (name == name.table.names.clinit)
                 return ElementKind.STATIC_INIT;
             else
                 return ElementKind.METHOD;
@@ -1246,6 +1319,10 @@ public abstract class Symbol implements Element {
             return v.visitExecutable(this, p);
         }
 
+        public <R, P> R accept(Symbol.Visitor<R, P> v, P p) {
+            return v.visitMethodSymbol(this, p);
+        }
+
         public Type getReturnType() {
             return asType().getReturnType();
         }
@@ -1265,6 +1342,10 @@ public abstract class Symbol implements Element {
             super(PUBLIC | STATIC, name, type, owner);
             this.opcode = opcode;
         }
+
+        public <R, P> R accept(Symbol.Visitor<R, P> v, P p) {
+            return v.visitOperatorSymbol(this, p);
+        }
     }
 
     /** Symbol completer interface.
@@ -1277,8 +1358,14 @@ public abstract class Symbol implements Element {
         private static final long serialVersionUID = 0;
         public Symbol sym;
 
-        /** A localized string describing the failure.
+        /** A diagnostic object describing the failure
          */
+        public JCDiagnostic diag;
+
+        /** A localized string describing the failure.
+         * @deprecated Use {@code getDetail()} or {@code getMessage()}
+         */
+        @Deprecated
         public String errmsg;
 
         public CompletionFailure(Symbol sym, String errmsg) {
@@ -1287,8 +1374,26 @@ public abstract class Symbol implements Element {
 //          this.printStackTrace();//DEBUG
         }
 
+        public CompletionFailure(Symbol sym, JCDiagnostic diag) {
+            this.sym = sym;
+            this.diag = diag;
+//          this.printStackTrace();//DEBUG
+        }
+
+        public JCDiagnostic getDiagnostic() {
+            return diag;
+        }
+
+        @Override
         public String getMessage() {
-            return errmsg;
+            if (diag != null)
+                return diag.getMessage(null);
+            else
+                return errmsg;
+        }
+
+        public Object getDetailValue() {
+            return (diag != null ? diag : errmsg);
         }
 
         @Override
@@ -1297,5 +1402,29 @@ public abstract class Symbol implements Element {
             return this;
         }
 
+    }
+
+    /**
+     * A visitor for symbols.  A visitor is used to implement operations
+     * (or relations) on symbols.  Most common operations on types are
+     * binary relations and this interface is designed for binary
+     * relations, that is, operations on the form
+     * Symbol&nbsp;&times;&nbsp;P&nbsp;&rarr;&nbsp;R.
+     * <!-- In plain text: Type x P -> R -->
+     *
+     * @param <R> the return type of the operation implemented by this
+     * visitor; use Void if no return type is needed.
+     * @param <P> the type of the second argument (the first being the
+     * symbol itself) of the operation implemented by this visitor; use
+     * Void if a second argument is not needed.
+     */
+    public interface Visitor<R,P> {
+        R visitClassSymbol(ClassSymbol s, P arg);
+        R visitMethodSymbol(MethodSymbol s, P arg);
+        R visitPackageSymbol(PackageSymbol s, P arg);
+        R visitOperatorSymbol(OperatorSymbol s, P arg);
+        R visitVarSymbol(VarSymbol s, P arg);
+        R visitTypeSymbol(TypeSymbol s, P arg);
+        R visitSymbol(Symbol s, P arg);
     }
 }

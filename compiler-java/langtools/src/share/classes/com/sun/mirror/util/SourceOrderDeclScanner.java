@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -42,10 +42,17 @@ import java.util.TreeSet;
  * are scanned; the postprocessing visitor is called after the
  * contained declarations are scanned.
  *
+ * @deprecated All components of this API have been superseded by the
+ * standardized annotation processing API.  The replacement for the
+ * functionality of this class is {@link
+ * javax.lang.model.util.SimpleElementVisitor6}.
+ *
  * @author Joseph D. Darcy
  * @author Scott Seligman
  * @since 1.5
  */
+@Deprecated
+@SuppressWarnings("deprecation")
 class SourceOrderDeclScanner extends DeclarationScanner {
     static class SourceOrderComparator implements java.util.Comparator<Declaration> {
         SourceOrderComparator(){}
@@ -95,7 +102,7 @@ class SourceOrderDeclScanner extends DeclarationScanner {
         @SuppressWarnings("cast")
         private int compareEqualPosition(Declaration d1, Declaration d2) {
             assert
-                (d1.getPosition() == d2.getPosition()) || // Handles d1 == d2 == null
+                (d1.getPosition() == d2.getPosition()) || // Handles two null positions.
                 (d1.getPosition().file().compareTo(d2.getPosition().file()) == 0 &&
                  d1.getPosition().line()   == d2.getPosition().line() &&
                  d1.getPosition().column() == d2.getPosition().column());

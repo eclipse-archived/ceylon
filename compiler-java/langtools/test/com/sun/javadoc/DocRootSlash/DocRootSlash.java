@@ -22,7 +22,7 @@
  */
 
 /*
- * @test @(#)DocRootSlash.java  1.3     02/04/17
+ * @test
  * @bug 4524350 4662945 4633447
  * @summary stddoclet: {@docRoot} inserts an extra trailing "/"
  * @author dkramer

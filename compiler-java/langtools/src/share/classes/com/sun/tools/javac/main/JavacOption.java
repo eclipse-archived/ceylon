@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2008, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,9 +25,11 @@
 
 package com.sun.tools.javac.main;
 
+import java.io.PrintWriter;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Options;
-import java.io.PrintWriter;
 
 /**
  * TODO: describe com.sun.tools.javac.main.JavacOption
@@ -41,29 +43,43 @@ public interface JavacOption {
 
     OptionKind getKind();
 
-    /** Does this option take a (separate) operand? */
+    /** Does this option take a (separate) operand?
+     *  @return true if this option takes a separate operand
+     */
     boolean hasArg();
 
     /** Does argument string match option pattern?
-     *  @param arg        The command line argument string.
+     *  @param arg   the command line argument string
+     *  @return true if {@code arg} matches this option
      */
     boolean matches(String arg);
 
-    /** Process the option (with arg). Return true if error detected.
+    /** Process an option with an argument.
+     *  @param options the accumulated set of analyzed options
+     *  @param option  the option to be processed
+     *  @param arg     the arg for the option to be processed
+     *  @return true if an error was detected
      */
     boolean process(Options options, String option, String arg);
 
-    /** Process the option (without arg). Return true if error detected.
+    /** Process the option with no argument.
+     *  @param options the accumulated set of analyzed options
+     *  @param option  the option to be processed
+     *  @return true if an error was detected
      */
     boolean process(Options options, String option);
 
     OptionName getName();
 
     enum OptionKind {
-        CEYLON,
         NORMAL,
         EXTENDED,
         HIDDEN,
+    }
+
+    enum ChoiceKind {
+        ONEOF,
+        ANYOF
     }
 
     /** This class represents an option recognized by the main program
@@ -86,6 +102,15 @@ public interface JavacOption {
          */
         boolean hasSuffix;
 
+        /** The kind of choices for this option, if any.
+         */
+        ChoiceKind choiceKind;
+
+        /** The choices for this option, if any, and whether or not the choices
+         *  are hidden
+         */
+        Map<String,Boolean> choices;
+
         Option(OptionName name, String argsNameKey, String descrKey) {
             this.name = name;
             this.argsNameKey = argsNameKey;
@@ -93,55 +118,126 @@ public interface JavacOption {
             char lastChar = name.optionName.charAt(name.optionName.length()-1);
             hasSuffix = lastChar == ':' || lastChar == '=';
         }
+
         Option(OptionName name, String descrKey) {
             this(name, null, descrKey);
         }
 
+        Option(OptionName name, String descrKey, ChoiceKind choiceKind, String... choices) {
+            this(name, descrKey, choiceKind, createChoices(choices));
+        }
+
+        private static Map<String,Boolean> createChoices(String... choices) {
+            Map<String,Boolean> map = new LinkedHashMap<String,Boolean>();
+            for (String c: choices)
+                map.put(c, false);
+            return map;
+        }
+
+        Option(OptionName name, String descrKey, ChoiceKind choiceKind,
+                Map<String,Boolean> choices) {
+            this(name, null, descrKey);
+            if (choiceKind == null || choices == null)
+                throw new NullPointerException();
+            this.choiceKind = choiceKind;
+            this.choices = choices;
+        }
+
+        @Override
         public String toString() {
             return name.optionName;
         }
 
-        /** Does this option take a (separate) operand?
-         */
         public boolean hasArg() {
             return argsNameKey != null && !hasSuffix;
         }
 
-        /** Does argument string match option pattern?
-         *  @param arg        The command line argument string.
-         */
-        public boolean matches(String arg) {
-            return hasSuffix ? arg.startsWith(name.optionName) : arg.equals(name.optionName);
+        public boolean matches(String option) {
+            if (!hasSuffix)
+                return option.equals(name.optionName);
+
+            if (!option.startsWith(name.optionName))
+                return false;
+
+            if (choices != null) {
+                String arg = option.substring(name.optionName.length());
+                if (choiceKind == ChoiceKind.ONEOF)
+                    return choices.keySet().contains(arg);
+                else {
+                    for (String a: arg.split(",+")) {
+                        if (!choices.keySet().contains(a))
+                            return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         /** Print a line of documentation describing this option, if standard.
+         * @param out the stream to which to write the documentation
          */
-        public void help(PrintWriter out) {
+        void help(PrintWriter out) {
             String s = "  " + helpSynopsis();
             out.print(s);
-            for (int j = s.length(); j < 29; j++) out.print(" ");
+            for (int j = Math.min(s.length(), 28); j < 29; j++) out.print(" ");
             Log.printLines(out, Main.getLocalizedString(descrKey));
         }
+
         String helpSynopsis() {
-            return name +
-                (argsNameKey == null ? "" :
-                 ((hasSuffix ? "" : " ") +
-                  Main.getLocalizedString(argsNameKey)));
+            StringBuilder sb = new StringBuilder();
+            sb.append(name);
+            if (argsNameKey == null) {
+                if (choices != null) {
+                    String sep = "{";
+                    for (Map.Entry<String,Boolean> e: choices.entrySet()) {
+                        if (!e.getValue()) {
+                            sb.append(sep);
+                            sb.append(e.getKey());
+                            sep = ",";
+                        }
+                    }
+                    sb.append("}");
+                }
+            } else {
+                if (!hasSuffix)
+                    sb.append(" ");
+                sb.append(Main.getLocalizedString(argsNameKey));
+            }
+
+            return sb.toString();
         }
 
-        /** Print a line of documentation describing this option, if Ceylon.
-         */
-        public void chelp(PrintWriter out) {}
-
         /** Print a line of documentation describing this option, if non-standard.
+         *  @param out the stream to which to write the documentation
          */
-        public void xhelp(PrintWriter out) {}
+        void xhelp(PrintWriter out) {}
 
         /** Process the option (with arg). Return true if error detected.
          */
         public boolean process(Options options, String option, String arg) {
-            if (options != null)
+            if (options != null) {
+                if (choices != null) {
+                    if (choiceKind == ChoiceKind.ONEOF) {
+                        // some clients like to see just one of option+choice set
+                        for (String s: choices.keySet())
+                            options.remove(option + s);
+                        String opt = option + arg;
+                        options.put(opt, opt);
+                        // some clients like to see option (without trailing ":")
+                        // set to arg
+                        String nm = option.substring(0, option.length() - 1);
+                        options.put(nm, arg);
+                    } else {
+                        // set option+word for each word in arg
+                        for (String a: arg.split(",+")) {
+                            String opt = option + a;
+                            options.put(opt, opt);
+                        }
+                    }
+                }
                 options.put(option, arg);
+            }
             return false;
         }
 
@@ -159,21 +255,6 @@ public interface JavacOption {
         public OptionName getName() { return name; }
     };
 
-    /** A Ceylon option
-     */
-    static class COption extends Option {
-        COption(OptionName name, String argsNameKey, String descrKey) {
-            super(name, argsNameKey, descrKey);
-        }
-        COption(OptionName name, String descrKey) {
-            this(name, null, descrKey);
-        }
-        public void help(PrintWriter out) { }
-        public void chelp(PrintWriter out) { super.help(out); }
-        public void xhelp(PrintWriter out) { }
-        public OptionKind getKind() { return OptionKind.CEYLON; }
-    };
-
     /** A nonstandard or extended (-X) option
      */
     static class XOption extends Option {
@@ -183,9 +264,17 @@ public interface JavacOption {
         XOption(OptionName name, String descrKey) {
             this(name, null, descrKey);
         }
-        public void help(PrintWriter out) {}
-        public void chelp(PrintWriter out) {}
-        public void xhelp(PrintWriter out) { super.help(out); }
+        XOption(OptionName name, String descrKey, ChoiceKind kind, String... choices) {
+            super(name, descrKey, kind, choices);
+        }
+        XOption(OptionName name, String descrKey, ChoiceKind kind, Map<String,Boolean> choices) {
+            super(name, descrKey, kind, choices);
+        }
+        @Override
+        void help(PrintWriter out) {}
+        @Override
+        void xhelp(PrintWriter out) { super.help(out); }
+        @Override
         public OptionKind getKind() { return OptionKind.EXTENDED; }
     };
 
@@ -198,9 +287,11 @@ public interface JavacOption {
         HiddenOption(OptionName name, String argsNameKey) {
             super(name, argsNameKey, null);
         }
-        public void help(PrintWriter out) {}
-        public void chelp(PrintWriter out) {}
-        public void xhelp(PrintWriter out) {}
+        @Override
+        void help(PrintWriter out) {}
+        @Override
+        void xhelp(PrintWriter out) {}
+        @Override
         public OptionKind getKind() { return OptionKind.HIDDEN; }
     };
 

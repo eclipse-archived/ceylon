@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -31,14 +31,13 @@ import static com.sun.javadoc.LanguageVersion.*;
 
 import com.sun.tools.javac.util.List;
 
-import java.net.*;
+import java.io.File;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.net.URLClassLoader;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.StringTokenizer;
 
 /**
  * Class creates, controls and invokes doclets.
@@ -46,7 +45,7 @@ import java.util.StringTokenizer;
  */
 public class DocletInvoker {
 
-    private final Class docletClass;
+    private final Class<?> docletClass;
 
     private final String docletClassName;
 
@@ -81,17 +80,14 @@ public class DocletInvoker {
         cpString = appendPath(System.getProperty("env.class.path"), cpString);
         cpString = appendPath(System.getProperty("java.class.path"), cpString);
         cpString = appendPath(docletPath, cpString);
-        URL[] urls = pathToURLs(cpString);
-        if (docletParentClassLoader == null) {
-            appClassLoader =
-                new URLClassLoader(urls,
-                                   getDelegationClassLoader(docletClassName));
-        } else {
+        URL[] urls = com.sun.tools.javac.file.Paths.pathToURLs(cpString);
+        if (docletParentClassLoader == null)
+            appClassLoader = new URLClassLoader(urls, getDelegationClassLoader(docletClassName));
+        else
             appClassLoader = new URLClassLoader(urls, docletParentClassLoader);
-        }
 
         // attempt to find doclet
-        Class dc = null;
+        Class<?> dc = null;
         try {
             dc = appClassLoader.loadClass(docletClassName);
         } catch (ClassNotFoundException exc) {
@@ -153,14 +149,13 @@ public class DocletInvoker {
     }
 
     /**
-     * Generate documentation here.  Return true on success.  */
+     * Generate documentation here.  Return true on success.
+     */
     public boolean start(RootDoc root) {
         Object retVal;
         String methodName = "start";
-        Class[] paramTypes = new Class[1];
-        Object[] params = new Object[1];
-        paramTypes[0] = RootDoc.class;
-        params[0] = root;
+        Class<?>[] paramTypes = { RootDoc.class };
+        Object[] params = { root };
         try {
             retVal = invoke(methodName, null, paramTypes, params);
         } catch (DocletInvokeException exc) {
@@ -183,10 +178,8 @@ public class DocletInvoker {
     public int optionLength(String option) {
         Object retVal;
         String methodName = "optionLength";
-        Class[] paramTypes = new Class[1];
-        Object[] params = new Object[1];
-        paramTypes[0] = option.getClass();
-        params[0] = option;
+        Class<?>[] paramTypes = { String.class };
+        Object[] params = { option };
         try {
             retVal = invoke(methodName, new Integer(0), paramTypes, params);
         } catch (DocletInvokeException exc) {
@@ -210,12 +203,8 @@ public class DocletInvoker {
         String options[][] = optlist.toArray(new String[optlist.length()][]);
         String methodName = "validOptions";
         DocErrorReporter reporter = messager;
-        Class[] paramTypes = new Class[2];
-        Object[] params = new Object[2];
-        paramTypes[0] = options.getClass();
-        paramTypes[1] = DocErrorReporter.class;
-        params[0] = options;
-        params[1] = reporter;
+        Class<?>[] paramTypes = { String[][].class, DocErrorReporter.class };
+        Object[] params = { options, reporter };
         try {
             retVal = invoke(methodName, Boolean.TRUE, paramTypes, params);
         } catch (DocletInvokeException exc) {
@@ -238,7 +227,7 @@ public class DocletInvoker {
         try {
             Object retVal;
             String methodName = "languageVersion";
-            Class[] paramTypes = new Class[0];
+            Class<?>[] paramTypes = new Class<?>[0];
             Object[] params = new Object[0];
             try {
                 retVal = invoke(methodName, JAVA_1_1, paramTypes, params);
@@ -261,7 +250,7 @@ public class DocletInvoker {
      * Utility method for calling doclet functionality
      */
     private Object invoke(String methodName, Object returnValueIfNonExistent,
-                          Class[] paramTypes, Object[] params)
+                          Class<?>[] paramTypes, Object[] params)
         throws DocletInvokeException {
             Method meth;
             try {
@@ -314,59 +303,5 @@ public class DocletInvoker {
             } finally {
                 Thread.currentThread().setContextClassLoader(savedCCL);
             }
-    }
-
-    /**
-     * Utility method for converting a search path string to an array
-     * of directory and JAR file URLs.
-     *
-     * @param path the search path string
-     * @return the resulting array of directory and JAR file URLs
-     */
-    static URL[] pathToURLs(String path) {
-        StringTokenizer st = new StringTokenizer(path, File.pathSeparator);
-        URL[] urls = new URL[st.countTokens()];
-        int count = 0;
-        while (st.hasMoreTokens()) {
-            URL url = fileToURL(new File(st.nextToken()));
-            if (url != null) {
-                urls[count++] = url;
-            }
-        }
-        if (urls.length != count) {
-            URL[] tmp = new URL[count];
-            System.arraycopy(urls, 0, tmp, 0, count);
-            urls = tmp;
-        }
-        return urls;
-    }
-
-    /**
-     * Returns the directory or JAR file URL corresponding to the specified
-     * local file name.
-     *
-     * @param file the File object
-     * @return the resulting directory or JAR file URL, or null if unknown
-     */
-    static URL fileToURL(File file) {
-        String name;
-        try {
-            name = file.getCanonicalPath();
-        } catch (IOException e) {
-            name = file.getAbsolutePath();
-        }
-        name = name.replace(File.separatorChar, '/');
-        if (!name.startsWith("/")) {
-            name = "/" + name;
-        }
-        // If the file does not exist, then assume that it's a directory
-        if (!file.isFile()) {
-            name = name + "/";
-        }
-        try {
-            return new URL("file", "", name);
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException("file");
-        }
     }
 }

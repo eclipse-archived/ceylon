@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2007, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2007, 2010, Oracle and/or its affiliates. All rights reserved.
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 #
 # This code is free software; you can redistribute it and/or modify it
@@ -134,6 +134,23 @@ ifdef ALT_BOOTDIR
   ANT_JAVA_HOME = JAVA_HOME=$(ALT_BOOTDIR)
 endif
 
+# To facilitate bootstrapping, much of langtools can be compiled with (just)
+# a boot JDK. However, some source files need to be compiled against 
+# new JDK API. In a bootstrap build, an import JDK may not be available,
+# so build.xml can also build against the source files in a jdk repo,
+# in which case it will automatically generate stub files for the new JDK API.
+ifdef JDK_TOPDIR
+  ANT_OPTIONS += -Dimport.jdk=$(JDK_TOPDIR)
+else 
+  ifdef ALT_JDK_TOPDIR
+    ANT_OPTIONS += -Dimport.jdk=$(ALT_JDK_TOPDIR)
+  else 
+    ifdef ALT_JDK_IMPORT_PATH
+      ANT_OPTIONS += -Dimport.jdk=$(ALT_JDK_IMPORT_PATH)
+    endif
+  endif
+endif
+
 ifdef ALT_OUTPUTDIR
   OUTPUTDIR = $(ALT_OUTPUTDIR)
   ANT_OPTIONS += -Dbuild.dir=$(ALT_OUTPUTDIR)/build
@@ -170,7 +187,7 @@ all: build
 clobber: clean
 
 # All ant targets of interest
-ANT_TARGETS = build clean sanity post-sanity diagnostics # for now
+ANT_TARGETS = build clean sanity post-sanity diagnostics build-all-tools  # for now
 
 # Create diagnostics log (careful, ant 1.8.0 -diagnostics always does an exit 1)
 $(OUTPUTDIR)/build/ant-diagnostics.log:

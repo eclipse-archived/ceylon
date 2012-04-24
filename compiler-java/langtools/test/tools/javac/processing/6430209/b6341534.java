@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -22,6 +22,7 @@
  */
 
 import javax.annotation.processing.*;
+import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
 import javax.lang.model.util.*;
 import static javax.lang.model.util.ElementFilter.*;
@@ -29,17 +30,9 @@ import static javax.tools.Diagnostic.Kind.*;
 import java.util.*;
 import java.util.Set;
 
-@SupportedAnnotationTypes({"*"})
-@SupportedSourceVersion(javax.lang.model.SourceVersion.RELEASE_6)
-public class b6341534 extends AbstractProcessor {
+public class b6341534 extends JavacTestingAbstractProcessor {
     static int r = 0;
-    static Elements E = null;
-    static Messager msgr = null;
-    public void init(ProcessingEnvironment penv)  {
-        processingEnv = penv;
-        msgr = penv.getMessager();
-        E = penv.getElementUtils();
-    }
+
     //Create directory 'dir1' and a test class in dir1
     public boolean process(Set<? extends TypeElement> tes, RoundEnvironment renv)
     {
@@ -49,17 +42,24 @@ public class b6341534 extends AbstractProcessor {
                 System.out.println("Round"+r+ ": " + t.toString());
 
             try {
-                PackageElement PE = E.getPackageElement("dir1");
+                PackageElement PE = eltUtils.getPackageElement("dir1");
                 List<? extends Element> LEE = PE.getEnclosedElements();    /* <=This line elicits the error message.  */
-                for(Element e : LEE)    System.out.println("found " + e.toString() + " in dir1.");
+                for(Element e : LEE)
+                    System.out.println("found " + e.toString() + " in dir1.");
             }
             catch(NullPointerException npe) {
-                msgr.printMessage(ERROR,npe.toString());
+                messager.printMessage(ERROR,npe.toString());
                 //npe.printStackTrace();
                 return false;
             }
         }
-        if( renv.errorRaised() ) {      msgr.printMessage(ERROR, "FAILED");}
+        // on round 1, expect errorRaised == false && processingOver == false
+        // on round 2, expect errorRaised == true && processingOver == true
+        if( renv.errorRaised() != renv.processingOver()) {
+            messager.printMessage(ERROR, "FAILED: round:" + r
+                + ", errorRaised:" + renv.errorRaised()
+                + ", processingOver:" + renv.processingOver());
+        }
         return true;
     }
 }

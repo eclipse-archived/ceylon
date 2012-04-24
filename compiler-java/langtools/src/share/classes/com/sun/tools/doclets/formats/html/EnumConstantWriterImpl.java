@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,22 +25,21 @@
 
 package com.sun.tools.doclets.formats.html;
 
-import com.sun.tools.doclets.internal.toolkit.*;
-import com.sun.tools.doclets.internal.toolkit.taglets.*;
-import com.sun.tools.doclets.internal.toolkit.util.*;
-import com.sun.javadoc.*;
-
 import java.io.*;
+
+import com.sun.javadoc.*;
+import com.sun.tools.doclets.formats.html.markup.*;
+import com.sun.tools.doclets.internal.toolkit.*;
+import com.sun.tools.doclets.internal.toolkit.util.*;
 
 /**
  * Writes enum constant documentation in HTML format.
  *
  * @author Jamie Ho
+ * @author Bhavesh Patel (Modified)
  */
 public class EnumConstantWriterImpl extends AbstractMemberWriter
     implements EnumConstantWriter, MemberSummaryWriter {
-
-    private boolean printedSummaryHeader = false;
 
     public EnumConstantWriterImpl(SubWriterHolderWriter writer,
         ClassDoc classdoc) {
@@ -52,141 +51,98 @@ public class EnumConstantWriterImpl extends AbstractMemberWriter
     }
 
     /**
-     * Write the enum constant summary header for the given class.
-     *
-     * @param classDoc the class the summary belongs to.
+     * {@inheritDoc}
      */
-    public void writeMemberSummaryHeader(ClassDoc classDoc) {
-        printedSummaryHeader = true;
-        writer.println("<!-- =========== ENUM CONSTANT SUMMARY =========== -->");
-        writer.println();
-        writer.printSummaryHeader(this, classDoc);
-    }
-
-    /**
-     * Write the enum constant summary footer for the given class.
-     *
-     * @param classDoc the class the summary belongs to.
-     */
-    public void writeMemberSummaryFooter(ClassDoc classDoc) {
-        writer.printSummaryFooter(this, classDoc);
-    }
-
-    /**
-     * Write the inherited enum constant summary header for the given class.
-     *
-     * @param classDoc the class the summary belongs to.
-     */
-    public void writeInheritedMemberSummaryHeader(ClassDoc classDoc) {
-        if(! printedSummaryHeader){
-            //We don't want inherited summary to not be under heading.
-            writeMemberSummaryHeader(classDoc);
-            writeMemberSummaryFooter(classDoc);
-            printedSummaryHeader = true;
-        }
-        writer.printInheritedSummaryHeader(this, classDoc);
+    public Content getMemberSummaryHeader(ClassDoc classDoc,
+            Content memberSummaryTree) {
+        memberSummaryTree.addContent(HtmlConstants.START_OF_ENUM_CONSTANT_SUMMARY);
+        Content memberTree = writer.getMemberTreeHeader();
+        writer.addSummaryHeader(this, classDoc, memberTree);
+        return memberTree;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void writeInheritedMemberSummary(ClassDoc classDoc,
-        ProgramElementDoc enumConstant, boolean isFirst, boolean isLast) {
-        writer.printInheritedSummaryMember(this, classDoc, enumConstant, isFirst);
-    }
-
-    /**
-     * Write the inherited enum constant summary footer for the given class.
-     *
-     * @param classDoc the class the summary belongs to.
-     */
-    public void writeInheritedMemberSummaryFooter(ClassDoc classDoc) {
-        writer.printInheritedSummaryFooter(this, classDoc);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void writeHeader(ClassDoc classDoc, String header) {
-        writer.println();
-        writer.println("<!-- ============ ENUM CONSTANT DETAIL =========== -->");
-        writer.println();
-        writer.anchor("enum_constant_detail");
-        writer.printTableHeadingBackground(header);
-        writer.println();
+    public Content getEnumConstantsDetailsTreeHeader(ClassDoc classDoc,
+            Content memberDetailsTree) {
+        memberDetailsTree.addContent(HtmlConstants.START_OF_ENUM_CONSTANT_DETAILS);
+        Content enumConstantsDetailsTree = writer.getMemberTreeHeader();
+        enumConstantsDetailsTree.addContent(writer.getMarkerAnchor("enum_constant_detail"));
+        Content heading = HtmlTree.HEADING(HtmlConstants.DETAILS_HEADING,
+                writer.enumConstantsDetailsLabel);
+        enumConstantsDetailsTree.addContent(heading);
+        return enumConstantsDetailsTree;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void writeEnumConstantHeader(FieldDoc enumConstant, boolean isFirst) {
-        if (! isFirst) {
-            writer.printMemberHeader();
-            writer.println("");
-        }
-        writer.anchor(enumConstant.name());
-        writer.h3();
-        writer.print(enumConstant.name());
-        writer.h3End();
+    public Content getEnumConstantsTreeHeader(FieldDoc enumConstant,
+            Content enumConstantsDetailsTree) {
+        enumConstantsDetailsTree.addContent(
+                writer.getMarkerAnchor(enumConstant.name()));
+        Content enumConstantsTree = writer.getMemberTreeHeader();
+        Content heading = new HtmlTree(HtmlConstants.MEMBER_HEADING);
+        heading.addContent(enumConstant.name());
+        enumConstantsTree.addContent(heading);
+        return enumConstantsTree;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void writeSignature(FieldDoc enumConstant) {
-        writer.pre();
-        writer.writeAnnotationInfo(enumConstant);
-        printModifiers(enumConstant);
-        writer.printLink(new LinkInfoImpl(LinkInfoImpl.CONTEXT_MEMBER,
-            enumConstant.type()));
-        print(' ');
+    public Content getSignature(FieldDoc enumConstant) {
+        Content pre = new HtmlTree(HtmlTag.PRE);
+        writer.addAnnotationInfo(enumConstant, pre);
+        addModifiers(enumConstant, pre);
+        Content enumConstantLink = new RawHtml(writer.getLink(new LinkInfoImpl(LinkInfoImpl.CONTEXT_MEMBER,
+                enumConstant.type())));
+        pre.addContent(enumConstantLink);
+        pre.addContent(" ");
         if (configuration().linksource) {
-            writer.printSrcLink(enumConstant, enumConstant.name());
+            Content enumConstantName = new StringContent(enumConstant.name());
+            writer.addSrcLink(enumConstant, enumConstantName, pre);
         } else {
-            bold(enumConstant.name());
+            addName(enumConstant.name(), pre);
         }
-        writer.preEnd();
-        writer.dl();
+        return pre;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void writeDeprecated(FieldDoc enumConstant) {
-        print(((TagletOutputImpl)
-            (new DeprecatedTaglet()).getTagletOutput(enumConstant,
-            writer.getTagletWriterInstance(false))).toString());
+    public void addDeprecated(FieldDoc enumConstant, Content enumConstantsTree) {
+        addDeprecatedInfo(enumConstant, enumConstantsTree);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void writeComments(FieldDoc enumConstant) {
-        if (enumConstant.inlineTags().length > 0) {
-            writer.dd();
-            writer.printInlineComment(enumConstant);
-        }
+    public void addComments(FieldDoc enumConstant, Content enumConstantsTree) {
+        addComment(enumConstant, enumConstantsTree);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void writeTags(FieldDoc enumConstant) {
-        writer.printTags(enumConstant);
+    public void addTags(FieldDoc enumConstant, Content enumConstantsTree) {
+        writer.addTagsInfo(enumConstant, enumConstantsTree);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void writeEnumConstantFooter() {
-        writer.dlEnd();
+    public Content getEnumConstantsDetails(Content enumConstantsDetailsTree) {
+        return getMemberTree(enumConstantsDetailsTree);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void writeFooter(ClassDoc classDoc) {
-        //No footer to write for enum constant documentation
+    public Content getEnumConstants(Content enumConstantsTree,
+            boolean isLastContent) {
+        return getMemberTree(enumConstantsTree, isLastContent);
     }
 
     /**
@@ -200,60 +156,127 @@ public class EnumConstantWriterImpl extends AbstractMemberWriter
         return VisibleMemberMap.ENUM_CONSTANTS;
     }
 
-    public void printSummaryLabel(ClassDoc cd) {
-        writer.boldText("doclet.Enum_Constant_Summary");
+    /**
+     * {@inheritDoc}
+     */
+    public void addSummaryLabel(Content memberTree) {
+        Content label = HtmlTree.HEADING(HtmlConstants.SUMMARY_HEADING,
+                writer.getResource("doclet.Enum_Constant_Summary"));
+        memberTree.addContent(label);
     }
 
-    public void printSummaryAnchor(ClassDoc cd) {
-        writer.anchor("enum_constant_summary");
+    /**
+     * {@inheritDoc}
+     */
+    public String getTableSummary() {
+        return configuration().getText("doclet.Member_Table_Summary",
+                configuration().getText("doclet.Enum_Constant_Summary"),
+                configuration().getText("doclet.enum_constants"));
     }
 
-    public void printInheritedSummaryAnchor(ClassDoc cd) {
-    }   // no such
-
-    public void printInheritedSummaryLabel(ClassDoc cd) {
-        // no such
+    /**
+     * {@inheritDoc}
+     */
+    public String getCaption() {
+        return configuration().getText("doclet.Enum_Constants");
     }
 
-    protected void writeSummaryLink(int context, ClassDoc cd, ProgramElementDoc member) {
-        writer.bold();
-        writer.printDocLink(context, (MemberDoc) member, member.name(), false);
-        writer.boldEnd();
+    /**
+     * {@inheritDoc}
+     */
+    public String[] getSummaryTableHeader(ProgramElementDoc member) {
+        String[] header = new String[] {
+            configuration().getText("doclet.0_and_1",
+                    configuration().getText("doclet.Enum_Constant"),
+                    configuration().getText("doclet.Description"))
+        };
+        return header;
     }
 
-    protected void writeInheritedSummaryLink(ClassDoc cd,
-            ProgramElementDoc member) {
-        writer.printDocLink(LinkInfoImpl.CONTEXT_MEMBER, (MemberDoc)member,
-            member.name(), false);
+    /**
+     * {@inheritDoc}
+     */
+    public void addSummaryAnchor(ClassDoc cd, Content memberTree) {
+        memberTree.addContent(writer.getMarkerAnchor("enum_constant_summary"));
     }
 
-    protected void printSummaryType(ProgramElementDoc member) {
+    /**
+     * {@inheritDoc}
+     */
+    public void addInheritedSummaryAnchor(ClassDoc cd, Content inheritedTree) {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addInheritedSummaryLabel(ClassDoc cd, Content inheritedTree) {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected void addSummaryLink(int context, ClassDoc cd, ProgramElementDoc member,
+            Content tdSummary) {
+        Content strong = HtmlTree.STRONG(new RawHtml(
+                writer.getDocLink(context, (MemberDoc) member, member.name(), false)));
+        Content code = HtmlTree.CODE(strong);
+        tdSummary.addContent(code);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSummaryColumnStyle(HtmlTree tdTree) {
+        tdTree.addStyle(HtmlStyle.colOne);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected void addInheritedSummaryLink(ClassDoc cd,
+            ProgramElementDoc member, Content linksTree) {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected void addSummaryType(ProgramElementDoc member, Content tdSummaryType) {
         //Not applicable.
     }
 
-    protected void writeDeprecatedLink(ProgramElementDoc member) {
-        writer.printDocLink(LinkInfoImpl.CONTEXT_MEMBER,
-            (MemberDoc) member, ((FieldDoc)member).qualifiedName(), false);
+    /**
+     * {@inheritDoc}
+     */
+    protected Content getDeprecatedLink(ProgramElementDoc member) {
+        return writer.getDocLink(LinkInfoImpl.CONTEXT_MEMBER,
+                (MemberDoc) member, ((FieldDoc)member).qualifiedName());
     }
 
-    protected void printNavSummaryLink(ClassDoc cd, boolean link) {
+    /**
+     * {@inheritDoc}
+     */
+    protected Content getNavSummaryLink(ClassDoc cd, boolean link) {
         if (link) {
-            writer.printHyperLink("", (cd == null)?
-                        "enum_constant_summary":
-                        "enum_constants_inherited_from_class_" +
-                        configuration().getClassName(cd),
-                    configuration().getText("doclet.navEnum"));
+            return writer.getHyperLink("", (cd == null)?
+                "enum_constant_summary":
+                "enum_constants_inherited_from_class_" +
+                configuration().getClassName(cd),
+                writer.getResource("doclet.navEnum"));
         } else {
-            writer.printText("doclet.navEnum");
+            return writer.getResource("doclet.navEnum");
         }
     }
 
-    protected void printNavDetailLink(boolean link) {
+    /**
+     * {@inheritDoc}
+     */
+    protected void addNavDetailLink(boolean link, Content liNav) {
         if (link) {
-            writer.printHyperLink("", "enum_constant_detail",
-                configuration().getText("doclet.navEnum"));
+            liNav.addContent(writer.getHyperLink("", "enum_constant_detail",
+                    writer.getResource("doclet.navEnum")));
         } else {
-            writer.printText("doclet.navEnum");
+            liNav.addContent(writer.getResource("doclet.navEnum"));
         }
     }
 }

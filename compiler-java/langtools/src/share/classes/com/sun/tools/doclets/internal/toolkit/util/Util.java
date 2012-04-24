@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,10 +25,11 @@
 
 package com.sun.tools.doclets.internal.toolkit.util;
 
+import java.io.*;
+import java.util.*;
+
 import com.sun.javadoc.*;
 import com.sun.tools.doclets.internal.toolkit.*;
-import java.util.*;
-import java.io.*;
 
 /**
  * Utilities Class for Doclets.
@@ -48,6 +49,11 @@ public class Util {
      */
     public static final String[][] HTML_ESCAPE_CHARS =
     {{"&", "&amp;"}, {"<", "&lt;"}, {">", "&gt;"}};
+
+    /**
+     * Name of the resource directory.
+     */
+    public static final String RESOURCESDIR = "resources";
 
     /**
      * Return array of class members whose documentation is to be generated.
@@ -73,9 +79,9 @@ public class Util {
      * @return List       List of eligible members for whom
      *                    documentation is getting generated.
      */
-    public static List excludeDeprecatedMembersAsList(
+    public static List<ProgramElementDoc> excludeDeprecatedMembersAsList(
         ProgramElementDoc[] members) {
-        List list = new ArrayList();
+        List<ProgramElementDoc> list = new ArrayList<ProgramElementDoc>();
         for (int i = 0; i < members.length; i++) {
             if (members[i].tags("deprecated").length == 0) {
                 list.add(members[i]);
@@ -88,10 +94,10 @@ public class Util {
     /**
      * Return the list of ProgramElementDoc objects as Array.
      */
-    public static ProgramElementDoc[] toProgramElementDocArray(List list) {
+    public static ProgramElementDoc[] toProgramElementDocArray(List<ProgramElementDoc> list) {
         ProgramElementDoc[] pgmarr = new ProgramElementDoc[list.size()];
         for (int i = 0; i < list.size(); i++) {
-            pgmarr[i] = (ProgramElementDoc)(list.get(i));
+            pgmarr[i] = list.get(i);
         }
         return pgmarr;
     }
@@ -169,8 +175,9 @@ public class Util {
     }
 
     /**
-     * According to the Java Language Specifications, all the outer classes
-     * and static inner classes are core classes.
+     * According to
+     * <cite>The Java&trade; Language Specification</cite>,
+     * all the outer classes and static inner classes are core classes.
      */
     public static boolean isCoreClass(ClassDoc cd) {
         return cd.containingClass() == null || cd.isStatic();
@@ -205,14 +212,14 @@ public class Util {
         try {
             while ((len = input.read(bytearr)) != -1) {
                 output.write(bytearr, 0, len);
-            }
+                }
         } catch (FileNotFoundException exc) {
         } catch (SecurityException exc) {
-        } finally {
+            } finally {
             input.close();
             output.close();
+            }
         }
-    }
 
     /**
      * Copy the given directory contents from the source package directory
@@ -235,8 +242,8 @@ public class Util {
         String destname = configuration.docFileDestDirName;
         File srcdir = new File(path + dir);
         if (destname.length() > 0 && !destname.endsWith(
-               DirectoryManager.URL_FILE_SEPERATOR)) {
-            destname += DirectoryManager.URL_FILE_SEPERATOR;
+               DirectoryManager.URL_FILE_SEPARATOR)) {
+            destname += DirectoryManager.URL_FILE_SEPARATOR;
         }
         String dest = destname + dir;
         try {
@@ -262,7 +269,7 @@ public class Util {
                         && ! configuration.shouldExcludeDocFileDir(
                           srcfile.getName())){
                         copyDocFiles(configuration, path, dir +
-                                    DirectoryManager.URL_FILE_SEPERATOR + srcfile.getName(),
+                                    DirectoryManager.URL_FILE_SEPARATOR + srcfile.getName(),
                                 overwrite);
                     }
                 }
@@ -321,28 +328,64 @@ public class Util {
      *                       it already exists.
      */
     public static void copyResourceFile(Configuration configuration,
-            String resourcefile,
-            boolean overwrite) {
-        String destdir = configuration.destDirName;
-        String destresourcesdir = destdir + "resources";
-        DirectoryManager.createDirectory(configuration, destresourcesdir);
-        File destfile = new File(destresourcesdir, resourcefile);
+            String resourcefile, boolean overwrite) {
+        String destresourcesdir = configuration.destDirName + RESOURCESDIR;
+        copyFile(configuration, resourcefile, RESOURCESDIR, destresourcesdir,
+                overwrite, false);
+    }
+
+    /**
+     * Copy a file from a source directory to a destination directory
+     * (if it is not there already). If <code>overwrite</code> is true and
+     * the destination file already exists, overwrite it.
+     *
+     * @param configuration Holds the error message
+     * @param file The name of the file to copy
+     * @param source The source directory
+     * @param destination The destination directory where the file needs to be copied
+     * @param overwrite A flag to indicate whether the file in the
+     *                  destination directory will be overwritten if
+     *                  it already exists.
+     * @param replaceNewLine true if the newline needs to be replaced with platform-
+     *                  specific newline.
+     */
+    public static void copyFile(Configuration configuration, String file, String source,
+            String destination, boolean overwrite, boolean replaceNewLine) {
+        DirectoryManager.createDirectory(configuration, destination);
+        File destfile = new File(destination, file);
         if(destfile.exists() && (! overwrite)) return;
         try {
-
             InputStream in = Configuration.class.getResourceAsStream(
-                "resources/" + resourcefile);
-
+                    source + DirectoryManager.URL_FILE_SEPARATOR + file);
             if(in==null) return;
-
             OutputStream out = new FileOutputStream(destfile);
-            byte[] buf = new byte[2048];
-            int n;
-            while((n = in.read(buf))>0) out.write(buf,0,n);
-
-            in.close();
-            out.close();
-        } catch(Throwable t) {}
+            try {
+                if (!replaceNewLine) {
+                    byte[] buf = new byte[2048];
+                    int n;
+                    while((n = in.read(buf))>0) out.write(buf,0,n);
+                } else {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
+                    try {
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            writer.write(line);
+                            writer.write(DocletConstants.NL);
+                        }
+                    } finally {
+                        reader.close();
+                        writer.close();
+                    }
+                }
+            } finally {
+                in.close();
+                out.close();
+            }
+        } catch (IOException ie) {
+            ie.printStackTrace(System.err);
+            throw new DocletAbortException();
+        }
     }
 
     /**
@@ -356,13 +399,13 @@ public class Util {
         try{
             String pkgPath = DirectoryManager.getDirectoryPath(pkgDoc);
             String completePath = new SourcePath(configuration.sourcepath).
-                getDirectory(pkgPath) + DirectoryManager.URL_FILE_SEPERATOR;
-            //Make sure that both paths are using the same seperators.
+                getDirectory(pkgPath) + DirectoryManager.URL_FILE_SEPARATOR;
+            //Make sure that both paths are using the same separators.
             completePath = Util.replaceText(completePath, File.separator,
-                    DirectoryManager.URL_FILE_SEPERATOR);
+                    DirectoryManager.URL_FILE_SEPARATOR);
             pkgPath = Util.replaceText(pkgPath, File.separator,
-                    DirectoryManager.URL_FILE_SEPERATOR);
-            return completePath.substring(0, completePath.indexOf(pkgPath));
+                    DirectoryManager.URL_FILE_SEPARATOR);
+            return completePath.substring(0, completePath.lastIndexOf(pkgPath));
         } catch (Exception e){
             return "";
         }
@@ -372,10 +415,10 @@ public class Util {
      * We want the list of types in alphabetical order.  However, types are not
      * comparable.  We need a comparator for now.
      */
-    private static class TypeComparator implements Comparator {
-        public int compare(Object type1, Object type2) {
-            return ((Type) type1).qualifiedTypeName().toLowerCase().compareTo(
-                ((Type) type2).qualifiedTypeName().toLowerCase());
+    private static class TypeComparator implements Comparator<Type> {
+        public int compare(Type type1, Type type2) {
+            return type1.qualifiedTypeName().toLowerCase().compareTo(
+                type2.qualifiedTypeName().toLowerCase());
         }
     }
 
@@ -391,9 +434,9 @@ public class Util {
      * @param  sort if true, return list of interfaces sorted alphabetically.
      * @return List of all the required interfaces.
      */
-    public static List getAllInterfaces(Type type,
+    public static List<Type> getAllInterfaces(Type type,
             Configuration configuration, boolean sort) {
-        Map results = sort ? new TreeMap() : new LinkedHashMap();
+        Map<ClassDoc,Type> results = sort ? new TreeMap<ClassDoc,Type>() : new LinkedHashMap<ClassDoc,Type>();
         Type[] interfaceTypes = null;
         Type superType = null;
         if (type instanceof ParameterizedType) {
@@ -416,14 +459,14 @@ public class Util {
                 continue;
             }
             results.put(interfaceClassDoc, interfaceType);
-            List superInterfaces = getAllInterfaces(interfaceType, configuration, sort);
-            for (Iterator iter = superInterfaces.iterator(); iter.hasNext(); ) {
-                Type t = (Type) iter.next();
+            List<Type> superInterfaces = getAllInterfaces(interfaceType, configuration, sort);
+            for (Iterator<Type> iter = superInterfaces.iterator(); iter.hasNext(); ) {
+                Type t = iter.next();
                 results.put(t.asClassDoc(), t);
             }
         }
         if (superType == null)
-            return new ArrayList(results.values());
+            return new ArrayList<Type>(results.values());
         //Try walking the tree.
         addAllInterfaceTypes(results,
             superType,
@@ -431,18 +474,18 @@ public class Util {
                 ((ClassDoc) superType).interfaceTypes() :
                 ((ParameterizedType) superType).interfaceTypes(),
             false, configuration);
-        List resultsList = new ArrayList(results.values());
+        List<Type> resultsList = new ArrayList<Type>(results.values());
         if (sort) {
                 Collections.sort(resultsList, new TypeComparator());
         }
         return resultsList;
     }
 
-    public static List getAllInterfaces(Type type, Configuration configuration) {
+    public static List<Type> getAllInterfaces(Type type, Configuration configuration) {
         return getAllInterfaces(type, configuration, true);
     }
 
-    private static void findAllInterfaceTypes(Map results, ClassDoc c, boolean raw,
+    private static void findAllInterfaceTypes(Map<ClassDoc,Type> results, ClassDoc c, boolean raw,
             Configuration configuration) {
         Type superType = c.superclassType();
         if (superType == null)
@@ -454,7 +497,7 @@ public class Util {
                 raw, configuration);
     }
 
-    private static void findAllInterfaceTypes(Map results, ParameterizedType p,
+    private static void findAllInterfaceTypes(Map<ClassDoc,Type> results, ParameterizedType p,
             Configuration configuration) {
         Type superType = p.superclassType();
         if (superType == null)
@@ -466,7 +509,7 @@ public class Util {
                 false, configuration);
     }
 
-    private static void addAllInterfaceTypes(Map results, Type type,
+    private static void addAllInterfaceTypes(Map<ClassDoc,Type> results, Type type,
             Type[] interfaceTypes, boolean raw,
             Configuration configuration) {
         for (int i = 0; i < interfaceTypes.length; i++) {
@@ -480,9 +523,9 @@ public class Util {
             if (raw)
                 interfaceType = interfaceType.asClassDoc();
             results.put(interfaceClassDoc, interfaceType);
-            List superInterfaces = getAllInterfaces(interfaceType, configuration);
-            for (Iterator iter = superInterfaces.iterator(); iter.hasNext(); ) {
-                Type superInterface = (Type) iter.next();
+            List<Type> superInterfaces = getAllInterfaces(interfaceType, configuration);
+            for (Iterator<Type> iter = superInterfaces.iterator(); iter.hasNext(); ) {
+                Type superInterface = iter.next();
                 results.put(superInterface.asClassDoc(), superInterface);
             }
         }
@@ -492,15 +535,6 @@ public class Util {
             findAllInterfaceTypes(results, (ClassDoc) type, raw, configuration);
         else
             findAllInterfaceTypes(results, (ClassDoc) type, true, configuration);
-    }
-
-
-    public static List asList(ProgramElementDoc[] members) {
-        List list = new ArrayList();
-        for (int i = 0; i < members.length; i++) {
-            list.add(members[i]);
-        }
-        return list;
     }
 
     /**
@@ -541,14 +575,7 @@ public class Util {
         if (oldStr == null || newStr == null || oldStr.equals(newStr)) {
             return originalStr;
         }
-        StringBuffer result = new StringBuffer(originalStr);
-        int startIndex = 0;
-        while ((startIndex = result.indexOf(oldStr, startIndex)) != -1) {
-            result = result.replace(startIndex, startIndex + oldStr.length(),
-                    newStr);
-            startIndex += newStr.length();
-        }
-        return result.toString();
+        return originalStr.replace(oldStr, newStr);
     }
 
     /**
@@ -571,6 +598,24 @@ public class Util {
     }
 
     /**
+     * Given a string, strips all html characters and
+     * return the result.
+     *
+     * @param rawString The string to check.
+     * @return the original string with all of the HTML characters
+     * stripped.
+     *
+     */
+    public static String stripHtml(String rawString) {
+        // remove HTML tags
+        rawString = rawString.replaceAll("\\<.*?>", " ");
+        // consolidate multiple spaces between a word to a single space
+        rawString = rawString.replaceAll("\\b\\s{2,}\\b", " ");
+        // remove extra whitespaces
+        return rawString.trim();
+    }
+
+    /**
      * Create the directory path for the file to be generated, construct
      * FileOutputStream and OutputStreamWriter depending upon docencoding.
      *
@@ -579,7 +624,7 @@ public class Util {
      * @param docencoding Encoding to be used for this file.
      * @exception IOException Exception raised by the FileWriter is passed on
      * to next level.
-     * @exception UnSupportedEncodingException Exception raised by the
+     * @exception UnsupportedEncodingException Exception raised by the
      * OutputStreamWriter is passed on to next level.
      * @return Writer Writer for the file getting generated.
      * @see java.io.FileOutputStream
@@ -598,9 +643,7 @@ public class Util {
             fos = new FileOutputStream(filename);
         }
         if (docencoding == null) {
-            OutputStreamWriter oswriter = new OutputStreamWriter(fos);
-            docencoding = oswriter.getEncoding();
-            return oswriter;
+            return new OutputStreamWriter(fos);
         } else {
             return new OutputStreamWriter(fos, docencoding);
         }
@@ -639,7 +682,7 @@ public class Util {
      * @return an array of tokens.
      */
     public static String[] tokenize(String s, char separator, int maxTokens) {
-        List tokens = new ArrayList();
+        List<String> tokens = new ArrayList<String>();
         StringBuilder  token = new StringBuilder ();
         boolean prevIsEscapeChar = false;
         for (int i = 0; i < s.length(); i += Character.charCount(i)) {
@@ -663,7 +706,7 @@ public class Util {
         if (token.length() > 0) {
             tokens.add(token.toString());
         }
-        return (String[]) tokens.toArray(new String[] {});
+        return tokens.toArray(new String[] {});
     }
 
     /**
@@ -775,19 +818,17 @@ public class Util {
      * @param tabLength the length of each tab.
      * @param s the String to scan.
      */
-    public static void replaceTabs(int tabLength, StringBuffer s) {
-        int index, col;
-        StringBuffer whitespace;
-        while ((index = s.indexOf("\t")) != -1) {
-            whitespace = new StringBuffer();
-            col = index;
-            do {
-                whitespace.append(" ");
-                col++;
-            } while ((col%tabLength) != 0);
-            s.replace(index, index+1, whitespace.toString());
+    public static void replaceTabs(int tabLength, StringBuilder s) {
+        if (whitespace == null || whitespace.length() < tabLength)
+            whitespace = String.format("%" + tabLength + "s", " ");
+        int index = 0;
+        while ((index = s.indexOf("\t", index)) != -1) {
+            int spaceCount = tabLength - index % tabLength;
+            s.replace(index, index+1, whitespace.substring(0, spaceCount));
+            index += spaceCount;
         }
     }
+    private static String whitespace;
 
     /**
      * The documentation for values() and valueOf() in Enums are set by the
@@ -820,11 +861,15 @@ public class Util {
      * @param doc the Doc to check.
      * @return true if the given Doc is deprecated.
      */
-    public static boolean isDeprecated(ProgramElementDoc doc) {
+    public static boolean isDeprecated(Doc doc) {
         if (doc.tags("deprecated").length > 0) {
             return true;
         }
-        AnnotationDesc[] annotationDescList = doc.annotations();
+        AnnotationDesc[] annotationDescList;
+        if (doc instanceof PackageDoc)
+            annotationDescList = ((PackageDoc)doc).annotations();
+        else
+            annotationDescList = ((ProgramElementDoc)doc).annotations();
         for (int i = 0; i < annotationDescList.length; i++) {
             if (annotationDescList[i].annotationType().qualifiedName().equals(
                    java.lang.Deprecated.class.getName())){

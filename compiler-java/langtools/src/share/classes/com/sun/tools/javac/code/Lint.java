@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -119,6 +119,7 @@ public class Lint
         this.suppressedValues = other.suppressedValues.clone();
     }
 
+    @Override
     public String toString() {
         return "Lint:[values" + values + " suppressedValues" + suppressedValues + "]";
     }
@@ -131,6 +132,11 @@ public class Lint
          * Warn about use of unnecessary casts.
          */
         CAST("cast"),
+
+        /**
+         * Warn about issues related to classfile contents
+         */
+        CLASSFILE("classfile"),
 
         /**
          * Warn about use of deprecated items.
@@ -164,6 +170,11 @@ public class Lint
         FINALLY("finally"),
 
         /**
+         * Warn about issues relating to use of command line options
+         */
+        OPTIONS("options"),
+
+        /**
          * Warn about issues regarding method overrides.
          */
         OVERRIDES("overrides"),
@@ -176,17 +187,52 @@ public class Lint
         PATH("path"),
 
         /**
+         * Warn about issues regarding annotation processing.
+         */
+        PROCESSING("processing"),
+
+        /**
+         * Warn about unchecked operations on raw types.
+         */
+        RAW("rawtypes"),
+
+        /**
          * Warn about Serializable classes that do not provide a serial version ID.
          */
         SERIAL("serial"),
 
         /**
+         * Warn about issues relating to use of statics
+         */
+        STATIC("static"),
+
+        /**
+         * Warn about proprietary API that may be removed in a future release.
+         */
+        SUNAPI("sunapi", true),
+
+        /**
+         * Warn about issues relating to use of try blocks (i.e. try-with-resources)
+         */
+        TRY("try"),
+
+        /**
          * Warn about unchecked operations on raw types.
          */
-        UNCHECKED("unchecked");
+        UNCHECKED("unchecked"),
+
+        /**
+         * Warn about potentially unsafe vararg methods
+         */
+        VARARGS("varargs");
 
         LintCategory(String option) {
+            this(option, false);
+        }
+
+        LintCategory(String option, boolean hidden) {
             this.option = option;
+            this.hidden = hidden;
             map.put(option, this);
         }
 
@@ -194,7 +240,8 @@ public class Lint
             return map.get(option);
         }
 
-        private final String option;
+        public final String option;
+        public final boolean hidden;
     };
 
     /**

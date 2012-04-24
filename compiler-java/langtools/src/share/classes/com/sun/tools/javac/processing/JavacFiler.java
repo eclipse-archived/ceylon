@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,34 +25,35 @@
 
 package com.sun.tools.javac.processing;
 
-import com.sun.tools.javac.util.*;
-import javax.annotation.processing.*;
-import javax.lang.model.SourceVersion;
-import javax.lang.model.element.NestingKind;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.Element;
-import java.util.*;
-
 import java.io.Closeable;
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.FilterOutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.io.FilterWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
-import java.net.URI;
-import javax.tools.FileObject;
+import java.util.*;
 
-import javax.tools.*;
 import static java.util.Collections.*;
 
+import javax.annotation.processing.*;
+import javax.lang.model.SourceVersion;
+import javax.lang.model.element.NestingKind;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.Element;
+import javax.tools.*;
 import javax.tools.JavaFileManager.Location;
+
 import static javax.tools.StandardLocation.SOURCE_OUTPUT;
 import static javax.tools.StandardLocation.CLASS_OUTPUT;
+
+import com.sun.tools.javac.code.Lint;
+import com.sun.tools.javac.util.*;
+
+import static com.sun.tools.javac.code.Lint.LintCategory.PROCESSING;
 
 /**
  * The FilerImplementation class must maintain a number of
@@ -369,7 +370,7 @@ public class JavacFiler implements Filer, Closeable {
         aggregateGeneratedSourceNames = new LinkedHashSet<String>();
         aggregateGeneratedClassNames  = new LinkedHashSet<String>();
 
-        lint = (Options.instance(context)).lint("processing");
+        lint = (Lint.instance(context)).isEnabled(PROCESSING);
     }
 
     public JavaFileObject createSourceFile(CharSequence name,
@@ -383,6 +384,15 @@ public class JavacFiler implements Filer, Closeable {
     }
 
     private JavaFileObject createSourceOrClassFile(boolean isSourceFile, String name) throws IOException {
+        if (lint) {
+            int periodIndex = name.lastIndexOf(".");
+            if (periodIndex != -1) {
+                String base = name.substring(periodIndex);
+                String extn = (isSourceFile ? ".java" : ".class");
+                if (base.equals(extn))
+                    log.warning("proc.suspicious.class.name", name, extn);
+            }
+        }
         checkNameAndExistence(name, isSourceFile);
         Location loc = (isSourceFile ? SOURCE_OUTPUT : CLASS_OUTPUT);
         JavaFileObject.Kind kind = (isSourceFile ?
@@ -445,10 +455,15 @@ public class JavacFiler implements Filer, Closeable {
         // TODO: Only support reading resources in selected output
         // locations?  Only allow reading of non-source, non-class
         // files from the supported input locations?
-        FileObject fileObject = fileManager.getFileForOutput(location,
-                                                             pkg.toString(),
-                                                             relativeName.toString(),
-                                                             null);
+        FileObject fileObject = fileManager.getFileForInput(location,
+                    pkg.toString(),
+                    relativeName.toString());
+        if (fileObject == null) {
+            String name = (pkg.length() == 0)
+                    ? relativeName.toString() : (pkg + "/" + relativeName);
+            throw new FileNotFoundException(name);
+        }
+
         // If the path was already opened for writing, throw an exception.
         checkFileReopening(fileObject, false);
         return new FilerInputFileObject(fileObject);
@@ -534,11 +549,14 @@ public class JavacFiler implements Filer, Closeable {
     /**
      * Update internal state for a new round.
      */
-    public void newRound(Context context, boolean lastRound) {
+    public void newRound(Context context) {
         this.context = context;
         this.log = Log.instance(context);
-        this.lastRound = lastRound;
         clearRoundState();
+    }
+
+    void setLastRound(boolean lastRound) {
+        this.lastRound = lastRound;
     }
 
     public void close() {

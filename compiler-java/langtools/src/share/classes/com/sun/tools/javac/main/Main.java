@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,21 +25,27 @@
 
 package com.sun.tools.javac.main;
 
-import com.sun.tools.javac.util.Options;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
 import java.util.MissingResourceException;
+import javax.tools.JavaFileManager;
+import javax.tools.JavaFileObject;
+import javax.annotation.processing.Processor;
 
 import com.sun.tools.javac.code.Source;
+import com.sun.tools.javac.file.CacheFSInfo;
+import com.sun.tools.javac.file.JavacFileManager;
 import com.sun.tools.javac.jvm.Target;
 import com.sun.tools.javac.main.JavacOption.Option;
 import com.sun.tools.javac.main.RecognizedOptions.OptionHelper;
 import com.sun.tools.javac.util.*;
 import com.sun.tools.javac.processing.AnnotationProcessingError;
-import javax.tools.JavaFileManager;
-import javax.tools.JavaFileObject;
-import javax.annotation.processing.Processor;
+
+import static com.sun.tools.javac.main.OptionName.*;
 
 /** This class provides a commandline interface to the GJC compiler.
  *
@@ -59,9 +65,11 @@ public class Main {
     PrintWriter out;
 
     /**
-     * If true, any command line arg errors will cause an exception.
+     * If true, certain errors will cause an exception, such as command line
+     * arg errors, or exceptions in user provided code.
      */
-    boolean fatalErrors;
+    boolean apiMode;
+
 
     /** Result codes.
      */
@@ -91,10 +99,6 @@ public class Main {
         }
 
         public void printHelp() {
-            help();
-        }
-
-        public void printJhelp() {
             help();
         }
 
@@ -161,7 +165,7 @@ public class Main {
     /** Report a usage error.
      */
     void error(String key, Object... args) {
-        if (fatalErrors) {
+        if (apiMode) {
             String msg = getLocalizedString(key, args);
             throw new PropagatedException(new IllegalStateException(msg));
         }
@@ -190,8 +194,8 @@ public class Main {
         this.options = options;
     }
 
-    public void setFatalErrors(boolean fatalErrors) {
-        this.fatalErrors = fatalErrors;
+    public void setAPIMode(boolean apiMode) {
+        this.apiMode = apiMode;
     }
 
     /** Process command line arguments: store all command line options
@@ -204,20 +208,26 @@ public class Main {
             String flag = flags[ac];
             ac++;
 
-            int j;
-            // quick hack to speed up file processing:
-            // if the option does not begin with '-', there is no need to check
-            // most of the compiler options.
-            int firstOptionToCheck = flag.charAt(0) == '-' ? 0 : recognizedOptions.length-1;
-            for (j=firstOptionToCheck; j<recognizedOptions.length; j++)
-                if (recognizedOptions[j].matches(flag)) break;
+            Option option = null;
 
-            if (j == recognizedOptions.length) {
+            if (flag.length() > 0) {
+                // quick hack to speed up file processing:
+                // if the option does not begin with '-', there is no need to check
+                // most of the compiler options.
+                int firstOptionToCheck = flag.charAt(0) == '-' ? 0 : recognizedOptions.length-1;
+                for (int j=firstOptionToCheck; j<recognizedOptions.length; j++) {
+                    if (recognizedOptions[j].matches(flag)) {
+                        option = recognizedOptions[j];
+                        break;
+                    }
+                }
+            }
+
+            if (option == null) {
                 error("err.invalid.flag", flag);
                 return null;
             }
 
-            Option option = recognizedOptions[j];
             if (option.hasArg()) {
                 if (ac == flags.length) {
                     error("err.req.arg", flag);
@@ -233,16 +243,16 @@ public class Main {
             }
         }
 
-        if (!checkDirectory("-d"))
+        if (!checkDirectory(D))
             return null;
-        if (!checkDirectory("-s"))
+        if (!checkDirectory(S))
             return null;
 
-        String sourceString = options.get("-source");
+        String sourceString = options.get(SOURCE);
         Source source = (sourceString != null)
             ? Source.lookup(sourceString)
             : Source.DEFAULT;
-        String targetString = options.get("-target");
+        String targetString = options.get(TARGET);
         Target target = (targetString != null)
             ? Target.lookup(targetString)
             : Target.DEFAULT;
@@ -265,18 +275,29 @@ public class Main {
                     }
                     return null;
                 } else {
-                    options.put("-target", source.requiredTarget().name);
+                    target = source.requiredTarget();
+                    options.put("-target", target.name);
                 }
             } else {
                 if (targetString == null && !source.allowGenerics()) {
-                    options.put("-target", Target.JDK1_4.name);
+                    target = Target.JDK1_4;
+                    options.put("-target", target.name);
                 }
             }
         }
+
+        // handle this here so it works even if no other options given
+        String showClass = options.get("showClass");
+        if (showClass != null) {
+            if (showClass.equals("showClass")) // no value given for option
+                showClass = "com.sun.tools.javac.Main";
+            showClass(showClass);
+        }
+
         return filenames.toList();
     }
     // where
-        private boolean checkDirectory(String optName) {
+        private boolean checkDirectory(OptionName optName) {
             String value = options.get(optName);
             if (value == null)
                 return true;
@@ -335,20 +356,24 @@ public class Main {
                 return EXIT_CMDERR;
             }
 
-            List<File> filenames;
+            List<File> files;
             try {
-                filenames = processArgs(CommandLine.parse(args));
-                if (filenames == null) {
+                files = processArgs(CommandLine.parse(args));
+                if (files == null) {
                     // null signals an error in options, abort
                     return EXIT_CMDERR;
-                } else if (filenames.isEmpty() && fileObjects.isEmpty() && classnames.isEmpty()) {
+                } else if (files.isEmpty() && fileObjects.isEmpty() && classnames.isEmpty()) {
                     // it is allowed to compile nothing if just asking for help or version info
-                    if (options.get("-help") != null
-                        || options.get("-X") != null
-                        || options.get("-version") != null
-                        || options.get("-fullversion") != null)
+                    if (options.isSet(HELP)
+                        || options.isSet(X)
+                        || options.isSet(VERSION)
+                        || options.isSet(FULLVERSION))
                         return EXIT_OK;
-                    error("err.no.source.files");
+                    if (JavaCompiler.explicitAnnotationProcessingRequested(options)) {
+                        error("err.no.source.files.classes");
+                    } else {
+                        error("err.no.source.files");
+                    }
                     return EXIT_CMDERR;
                 }
             } catch (java.io.FileNotFoundException e) {
@@ -358,7 +383,7 @@ public class Main {
                 return EXIT_SYSERR;
             }
 
-            boolean forceStdOut = options.get("stdout") != null;
+            boolean forceStdOut = options.isSet("stdout");
             if (forceStdOut) {
                 out.flush();
                 out = new PrintWriter(System.out, true);
@@ -366,17 +391,25 @@ public class Main {
 
             context.put(Log.outKey, out);
 
+            // allow System property in following line as a Mustang legacy
+            boolean batchMode = (options.isUnset("nonBatchMode")
+                        && System.getProperty("nonBatchMode") == null);
+            if (batchMode)
+                CacheFSInfo.preRegister(context);
+
             fileManager = context.get(JavaFileManager.class);
 
             comp = JavaCompiler.instance(context);
             if (comp == null) return EXIT_SYSERR;
 
-            if (!filenames.isEmpty()) {
+            Log log = Log.instance(context);
+
+            if (!files.isEmpty()) {
                 // add filenames to fileObjects
                 comp = JavaCompiler.instance(context);
                 List<JavaFileObject> otherFiles = List.nil();
                 JavacFileManager dfm = (JavacFileManager)fileManager;
-                for (JavaFileObject fo : dfm.getJavaFileObjectsFromFiles(filenames))
+                for (JavaFileObject fo : dfm.getJavaFileObjectsFromFiles(files))
                     otherFiles = otherFiles.prepend(fo);
                 for (JavaFileObject fo : otherFiles)
                     fileObjects = fileObjects.prepend(fo);
@@ -384,6 +417,16 @@ public class Main {
             comp.compile(fileObjects,
                          classnames.toList(),
                          processors);
+
+            if (log.expectDiagKeys != null) {
+                if (log.expectDiagKeys.isEmpty()) {
+                    Log.printLines(log.noticeWriter, "all expected diagnostics found");
+                    return EXIT_OK;
+                } else {
+                    Log.printLines(log.noticeWriter, "expected diagnostic keys not found: " + log.expectDiagKeys);
+                    return EXIT_ERROR;
+                }
+            }
 
             if (comp.errorCount() != 0)
                 return EXIT_ERROR;
@@ -399,7 +442,9 @@ public class Main {
         } catch (FatalError ex) {
             feMessage(ex);
             return EXIT_SYSERR;
-        } catch(AnnotationProcessingError ex) {
+        } catch (AnnotationProcessingError ex) {
+            if (apiMode)
+                throw new RuntimeException(ex.getCause());
             apMessage(ex);
             return EXIT_SYSERR;
         } catch (ClientCodeException ex) {
@@ -413,11 +458,17 @@ public class Main {
             // for buggy compiler error recovery by swallowing thrown
             // exceptions.
             if (comp == null || comp.errorCount() == 0 ||
-                options == null || options.get("dev") != null)
+                options == null || options.isSet("dev"))
                 bugMessage(ex);
             return EXIT_ABNORMAL;
         } finally {
-            if (comp != null) comp.close();
+            if (comp != null) {
+                try {
+                    comp.close();
+                } catch (ClientCodeException ex) {
+                    throw new RuntimeException(ex.getCause());
+                }
+            }
             filenames = null;
             options = null;
         }
@@ -432,10 +483,13 @@ public class Main {
         ex.printStackTrace(out);
     }
 
-    /** Print a message reporting an fatal error.
+    /** Print a message reporting a fatal error.
      */
     void feMessage(Throwable ex) {
         Log.printLines(out, ex.getMessage());
+        if (ex.getCause() != null && options.isSet("dev")) {
+            ex.getCause().printStackTrace(out);
+        }
     }
 
     /** Print a message reporting an input/output error.
@@ -459,7 +513,38 @@ public class Main {
     void apMessage(AnnotationProcessingError ex) {
         Log.printLines(out,
                        getLocalizedString("msg.proc.annotation.uncaught.exception"));
-        ex.getCause().printStackTrace();
+        ex.getCause().printStackTrace(out);
+    }
+
+    /** Display the location and checksum of a class. */
+    void showClass(String className) {
+        out.println("javac: show class: " + className);
+        URL url = getClass().getResource('/' + className.replace('.', '/') + ".class");
+        if (url == null)
+            out.println("  class not found");
+        else {
+            out.println("  " + url);
+            try {
+                final String algorithm = "MD5";
+                byte[] digest;
+                MessageDigest md = MessageDigest.getInstance(algorithm);
+                DigestInputStream in = new DigestInputStream(url.openStream(), md);
+                try {
+                    byte[] buf = new byte[8192];
+                    int n;
+                    do { n = in.read(buf); } while (n > 0);
+                    digest = md.digest();
+                } finally {
+                    in.close();
+                }
+                StringBuilder sb = new StringBuilder();
+                for (byte b: digest)
+                    sb.append(String.format("%02x", b));
+                out.println("  " + algorithm + " checksum: " + sb);
+            } catch (Exception e) {
+                out.println("  cannot compute digest: " + e);
+            }
+        }
     }
 
     private JavaFileManager fileManager;
@@ -474,7 +559,7 @@ public class Main {
     public static String getLocalizedString(String key, Object... args) { // FIXME sb private
         try {
             if (messages == null)
-                messages = new Messages(javacBundleName);
+                messages = new JavacMessages(javacBundleName);
             return messages.getLocalizedString("javac." + key, args);
         }
         catch (MissingResourceException e) {
@@ -484,18 +569,19 @@ public class Main {
 
     public static void useRawMessages(boolean enable) {
         if (enable) {
-            messages = new Messages(javacBundleName) {
+            messages = new JavacMessages(javacBundleName) {
+                    @Override
                     public String getLocalizedString(String key, Object... args) {
                         return key;
                     }
                 };
         } else {
-            messages = new Messages(javacBundleName);
+            messages = new JavacMessages(javacBundleName);
         }
     }
 
     private static final String javacBundleName =
-        "com.sun.tools.javac.resources.ceylonc";
+        "com.sun.tools.javac.resources.javac";
 
-    private static Messages messages;
+    private static JavacMessages messages;
 }

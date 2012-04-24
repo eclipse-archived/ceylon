@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,8 +25,9 @@
 
 package com.sun.tools.javac.jvm;
 
-import com.sun.tools.javac.code.*;
-import com.sun.tools.javac.util.*;
+import com.sun.tools.javac.code.Type;
+import com.sun.tools.javac.util.Name;
+
 
 /** A JVM class file.
  *
@@ -79,12 +80,27 @@ public class ClassFile {
     public final static int CONSTANT_Methodref = 10;
     public final static int CONSTANT_InterfaceMethodref = 11;
     public final static int CONSTANT_NameandType = 12;
+    public final static int CONSTANT_MethodHandle = 15;
+    public final static int CONSTANT_MethodType = 16;
+    public final static int CONSTANT_InvokeDynamic = 18;
 
     public final static int MAX_PARAMETERS = 0xff;
     public final static int MAX_DIMENSIONS = 0xff;
     public final static int MAX_CODE = 0xffff;
     public final static int MAX_LOCALS = 0xffff;
     public final static int MAX_STACK = 0xffff;
+
+    public enum Version {
+        V45_3(45, 3), // base level for all attributes
+        V49(49, 0),   // JDK 1.5: enum, generics, annotations
+        V50(50, 0),   // JDK 1.6: stackmaps
+        V51(51, 0);   // JDK 1.7
+        Version(int major, int minor) {
+            this.major = major;
+            this.minor = minor;
+        }
+        public final int major, minor;
+    }
 
 
 /************************************************************************
@@ -108,7 +124,7 @@ public class ClassFile {
      *  converting '/' to '.'.
      */
     public static byte[] internalize(Name name) {
-        return internalize(name.table.names, name.index, name.len);
+        return internalize(name.getByteArray(), name.getByteOffset(), name.getByteLength());
     }
 
     /** Return external representation of buf[offset..offset+len-1],
@@ -128,7 +144,7 @@ public class ClassFile {
      *  converting '/' to '.'.
      */
     public static byte[] externalize(Name name) {
-        return externalize(name.table.names, name.index, name.len);
+        return externalize(name.getByteArray(), name.getByteOffset(), name.getByteLength());
     }
 
 /************************************************************************

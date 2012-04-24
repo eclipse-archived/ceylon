@@ -38,7 +38,7 @@ public class T6759996 {
     public static void main(String[] args) throws Exception {
         new T6759996().run();
     }
-    
+
     void run() throws IOException, InterruptedException {
         String PS = File.pathSeparator;
         write(new File("A.java"), "class A { }");
@@ -47,7 +47,7 @@ public class T6759996 {
         // should not mask the presence of the "." element on the path
         javac("-verbose", "-sourcepath", "" + PS + ".", "B.java");
     }
-    
+
     void javac(String... args) throws IOException, InterruptedException {
         StringWriter sw = new StringWriter();
         PrintWriter out = new PrintWriter(sw);
@@ -57,7 +57,7 @@ public class T6759996 {
             throw new Error("javac failed: rc=" + rc);
 
     }
-    
+
     void write(File to, String body) throws IOException {
         System.err.println("write " + to);
         File toDir = to.getParentFile();

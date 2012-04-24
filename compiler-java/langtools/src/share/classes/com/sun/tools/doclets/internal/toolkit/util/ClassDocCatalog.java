@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,8 +25,9 @@
 
 package com.sun.tools.doclets.internal.toolkit.util;
 
-import com.sun.javadoc.*;
 import java.util.*;
+import com.sun.javadoc.*;
+import com.sun.tools.doclets.internal.toolkit.Configuration;
 
 /**
  * This class acts as an artificial PackageDoc for classes specified
@@ -49,52 +50,55 @@ import java.util.*;
       * Stores the set of packages that the classes specified on the command line
       * belong to.  Note that the default package is "".
       */
-     private Set packageSet;
+     private Set<String> packageSet;
 
 
      /**
       * Stores all classes for each package
       */
-     private Map allClasses;
+     private Map<String,Set<ClassDoc>> allClasses;
 
      /**
       * Stores ordinary classes (excluding Exceptions and Errors) for each
       * package
       */
-     private Map ordinaryClasses;
+     private Map<String,Set<ClassDoc>> ordinaryClasses;
 
      /**
       * Stores exceptions for each package
       */
-     private Map exceptions;
+     private Map<String,Set<ClassDoc>> exceptions;
 
     /**
      * Stores enums for each package.
      */
-    private Map enums;
+    private Map<String,Set<ClassDoc>> enums;
 
     /**
      * Stores annotation types for each package.
      */
-    private Map annotationTypes;
+    private Map<String,Set<ClassDoc>> annotationTypes;
 
      /**
       * Stores errors for each package
       */
-     private Map errors;
+     private Map<String,Set<ClassDoc>> errors;
 
      /**
       * Stores interfaces for each package
       */
-     private Map interfaces;
+     private Map<String,Set<ClassDoc>> interfaces;
+
+     private Configuration configuration;
 
      /**
       * Construct a new ClassDocCatalog.
       *
       * @param classdocs the array of ClassDocs to catalog
       */
-     public ClassDocCatalog (ClassDoc[] classdocs) {
+     public ClassDocCatalog (ClassDoc[] classdocs, Configuration config) {
          init();
+         this.configuration = config;
          for (int i = 0; i < classdocs.length; i++) {
              addClassDoc(classdocs[i]);
          }
@@ -109,14 +113,14 @@ import java.util.*;
      }
 
      private void init() {
-         allClasses = new HashMap();
-         ordinaryClasses = new HashMap();
-         exceptions = new HashMap();
-         enums = new HashMap();
-         annotationTypes = new HashMap();
-         errors = new HashMap();
-         interfaces = new HashMap();
-         packageSet = new HashSet();
+         allClasses = new HashMap<String,Set<ClassDoc>>();
+         ordinaryClasses = new HashMap<String,Set<ClassDoc>>();
+         exceptions = new HashMap<String,Set<ClassDoc>>();
+         enums = new HashMap<String,Set<ClassDoc>>();
+         annotationTypes = new HashMap<String,Set<ClassDoc>>();
+         errors = new HashMap<String,Set<ClassDoc>>();
+         interfaces = new HashMap<String,Set<ClassDoc>>();
+         packageSet = new HashSet<String>();
      }
 
      /**
@@ -148,31 +152,32 @@ import java.util.*;
        * @param classdoc the ClassDoc to add to the catelog.
        * @param map the Map to add the ClassDoc to.
        */
-      private void addClass(ClassDoc classdoc, Map map) {
+      private void addClass(ClassDoc classdoc, Map<String,Set<ClassDoc>> map) {
 
           PackageDoc pkg = classdoc.containingPackage();
-          if (pkg.isIncluded()) {
-              //No need to catalog this class since it's package is
-              //included on the command line
+          if (pkg.isIncluded() || (configuration.nodeprecated && Util.isDeprecated(pkg))) {
+              //No need to catalog this class if it's package is
+              //included on the command line or if -nodeprecated option is set
+              // and the containing package is marked as deprecated.
               return;
           }
           String key = Util.getPackageName(pkg);
-          Set s = (Set) map.get(key);
+          Set<ClassDoc> s = map.get(key);
           if (s == null) {
               packageSet.add(key);
-              s = new HashSet();
+              s = new HashSet<ClassDoc>();
           }
           s.add(classdoc);
           map.put(key, s);
 
       }
 
-      private ClassDoc[] getArray(Map m, String key) {
-          Set s = (Set) m.get(key);
+      private ClassDoc[] getArray(Map<String,Set<ClassDoc>> m, String key) {
+          Set<ClassDoc> s = m.get(key);
           if (s == null) {
               return new ClassDoc[] {};
           } else {
-              return (ClassDoc[]) s.toArray(new ClassDoc[] {});
+              return s.toArray(new ClassDoc[] {});
           }
       }
 
@@ -202,7 +207,7 @@ import java.util.*;
       * ClassDocs for.
       */
      public String[] packageNames() {
-         return (String[]) packageSet.toArray(new String[] {});
+         return packageSet.toArray(new String[] {});
      }
 
      /**

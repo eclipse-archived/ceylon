@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2008, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,9 +25,6 @@
 
 package com.sun.tools.javac;
 
-import com.sun.tools.javac.main.JavacOption.Option;
-import com.sun.tools.javac.main.RecognizedOptions.GrumpyHelper;
-import com.sun.tools.javac.main.RecognizedOptions;
 import java.io.*;
 import java.net.*;
 import java.util.*;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,6 +25,8 @@
 
 package com.sun.tools.javadoc;
 
+import java.lang.reflect.Modifier;
+
 import com.sun.javadoc.*;
 
 import static com.sun.javadoc.LanguageVersion.*;
@@ -37,9 +39,6 @@ import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 
 import com.sun.tools.javac.util.Position;
-
-import java.lang.reflect.Modifier;
-
 
 /**
  * Represents a field in a java class.
@@ -143,7 +142,7 @@ public class FieldDocImpl extends MemberDocImpl implements FieldDoc {
             return v + (suffix == 'f' || suffix == 'F' ? "" + suffix : "");
         }
         private static String sourceForm(char c) {
-            StringBuffer buf = new StringBuffer(8);
+            StringBuilder buf = new StringBuilder(8);
             buf.append('\'');
             sourceChar(c, buf);
             buf.append('\'');
@@ -153,7 +152,7 @@ public class FieldDocImpl extends MemberDocImpl implements FieldDoc {
             return "0x" + Integer.toString(c & 0xff, 16);
         }
         private static String sourceForm(String s) {
-            StringBuffer buf = new StringBuffer(s.length() + 5);
+            StringBuilder buf = new StringBuilder(s.length() + 5);
             buf.append('\"');
             for (int i=0; i<s.length(); i++) {
                 char c = s.charAt(i);
@@ -162,7 +161,7 @@ public class FieldDocImpl extends MemberDocImpl implements FieldDoc {
             buf.append('\"');
             return buf.toString();
         }
-        private static void sourceChar(char c, StringBuffer buf) {
+        private static void sourceChar(char c, StringBuilder buf) {
             switch (c) {
             case '\b': buf.append("\\b"); return;
             case '\t': buf.append("\\t"); return;
@@ -180,7 +179,7 @@ public class FieldDocImpl extends MemberDocImpl implements FieldDoc {
                 return;
             }
         }
-        private static void unicodeEscape(char c, StringBuffer buf) {
+        private static void unicodeEscape(char c, StringBuilder buf) {
             final String chars = "0123456789abcdef";
             buf.append("\\u");
             buf.append(chars.charAt(15 & (c>>12)));
@@ -202,6 +201,7 @@ public class FieldDocImpl extends MemberDocImpl implements FieldDoc {
     /**
      * Is this Doc item a field (but not an enum constant?
      */
+    @Override
     public boolean isField() {
         return !isEnumConstant();
     }
@@ -210,6 +210,7 @@ public class FieldDocImpl extends MemberDocImpl implements FieldDoc {
      * Is this Doc item an enum constant?
      * (For legacy doclets, return false.)
      */
+    @Override
     public boolean isEnumConstant() {
         return (getFlags() & Flags.ENUM) != 0 &&
                !env.legacyDoclet;
@@ -258,9 +259,10 @@ public class FieldDocImpl extends MemberDocImpl implements FieldDoc {
      * Return the source position of the entity, or null if
      * no position is available.
      */
+    @Override
     public SourcePosition position() {
         if (sym.enclClass().sourcefile == null) return null;
-        return SourcePositionImpl.make(sym.enclClass().sourcefile.toString(),
+        return SourcePositionImpl.make(sym.enclClass().sourcefile,
                                        (tree==null) ? 0 : tree.pos,
                                        lineMap);
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2008, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,7 +25,7 @@
  * @test
  * @bug 4984158
  * @summary two inherited methods with same signature
- * @author gafter
+ * @author gafter, Maurizio Cimadamore
  *
  * @compile/fail  InheritanceConflict.java
  */
@@ -34,8 +34,11 @@ package inheritance.conflict;
 
 class A<T> {
     void f(String s) {}
+}
+
+class B<T> extends A<T> {
     void f(T t) {}
 }
 
-class B extends A<String> {
+class C extends B<String> {
 }

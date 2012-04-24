@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -32,7 +32,6 @@ import static javax.lang.model.element.ElementKind.*;
 import static javax.lang.model.element.NestingKind.*;
 import javax.lang.model.type.*;
 import javax.lang.model.util.*;
-import static javax.lang.model.util.ElementFilter.*;
 
 import java.io.PrintWriter;
 import java.io.Writer;
@@ -49,7 +48,8 @@ import java.util.*;
  * deletion without notice.</b>
  */
 @SupportedAnnotationTypes("*")
-@SupportedSourceVersion(SourceVersion.RELEASE_6)
+// TODO: Change to version 7 based visitors when available
+@SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class PrintingProcessor extends AbstractProcessor {
     PrintWriter writer;
 
@@ -83,7 +83,7 @@ public class PrintingProcessor extends AbstractProcessor {
      * Used for the -Xprint option and called by Elements.printElements
      */
     public static class PrintingElementVisitor
-        extends SimpleElementVisitor6<PrintingElementVisitor, Boolean> {
+        extends SimpleElementVisitor7<PrintingElementVisitor, Boolean> {
         int indentation; // Indentation level;
         final PrintWriter writer;
         final Elements elementUtils;
@@ -117,7 +117,7 @@ public class PrintingProcessor extends AbstractProcessor {
                     enclosing != null &&
                     NestingKind.ANONYMOUS ==
                     // Use an anonymous class to determine anonymity!
-                    (new SimpleElementVisitor6<NestingKind, Void>() {
+                    (new SimpleElementVisitor7<NestingKind, Void>() {
                         @Override
                         public NestingKind visitType(TypeElement e, Void p) {
                             return e.getNestingKind();
@@ -126,7 +126,7 @@ public class PrintingProcessor extends AbstractProcessor {
                     return this;
 
                 defaultAction(e, true);
-                printFormalTypeParameters(e);
+                printFormalTypeParameters(e, true);
 
                 switch(kind) {
                     case CONSTRUCTOR:
@@ -208,7 +208,7 @@ public class PrintingProcessor extends AbstractProcessor {
                 writer.print(" ");
                 writer.print(e.getSimpleName());
 
-                printFormalTypeParameters(e);
+                printFormalTypeParameters(e, false);
 
                 // Print superclass information if informative
                 if (kind == CLASS) {
@@ -366,16 +366,9 @@ public class PrintingProcessor extends AbstractProcessor {
             }
         }
 
-        private void printFormalTypeParameters(ExecutableElement executable) {
-            printFormalTypeParameters(executable.getTypeParameters(), true);
-        }
-
-        private void printFormalTypeParameters(TypeElement type) {
-            printFormalTypeParameters(type.getTypeParameters(), false);
-        }
-
-        private void printFormalTypeParameters(List<? extends TypeParameterElement> typeParams,
+        private void printFormalTypeParameters(Parameterizable e,
                                                boolean pad) {
+            List<? extends TypeParameterElement> typeParams = e.getTypeParameters();
             if (typeParams.size() > 0) {
                 writer.print("<");
 
@@ -383,6 +376,7 @@ public class PrintingProcessor extends AbstractProcessor {
                 for(TypeParameterElement tpe: typeParams) {
                     if (!first)
                         writer.print(", ");
+                    printAnnotationsInline(tpe);
                     writer.print(tpe.toString());
                     first = false;
                 }

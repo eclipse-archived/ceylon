@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -30,7 +30,7 @@
  * @compile -Werror -Xlint:unchecked  Casting4.java
  */
 
-package test.tools.javac.generics.Casting4;
+package Casting4;
 
 class Casting4 {
     <M> Integer f(Comparable<M> c) {

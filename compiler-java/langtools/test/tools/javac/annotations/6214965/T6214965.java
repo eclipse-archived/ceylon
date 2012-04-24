@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2007, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -27,5 +27,5 @@
  * @summary Compiler crash on redefing nested annotation types
  * @compile CompilerAnnotationTest.java CompilerAnnotationTest2.java
  * @compile CompilerAnnotationTest2bad.java
- * @compile/ref=T6214965.out -XDstdout -XDrawDiagnostics CompilerAnnotationTest2bad.java
+ * @compile/ref=T6214965.out -XDrawDiagnostics CompilerAnnotationTest2bad.java
  */

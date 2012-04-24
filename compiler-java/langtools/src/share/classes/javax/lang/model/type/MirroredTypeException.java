@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,7 +25,8 @@
 
 package javax.lang.model.type;
 
-
+import java.io.ObjectInputStream;
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import javax.lang.model.element.Element;
 
@@ -41,7 +42,7 @@ import javax.lang.model.element.Element;
  * @see Element#getAnnotation(Class)
  * @since 1.6
  */
-public class MirroredTypeException extends RuntimeException {
+public class MirroredTypeException extends MirroredTypesException {
 
     private static final long serialVersionUID = 269;
 
@@ -53,7 +54,7 @@ public class MirroredTypeException extends RuntimeException {
      * @param type  the type being accessed
      */
     public MirroredTypeException(TypeMirror type) {
-        super("Attempt to access Class object for TypeMirror " + type);
+        super("Attempt to access Class object for TypeMirror " + type.toString(), type);
         this.type = type;
     }
 
@@ -66,5 +67,15 @@ public class MirroredTypeException extends RuntimeException {
      */
     public TypeMirror getTypeMirror() {
         return type;
+    }
+
+    /**
+     * Explicitly set all transient fields.
+     */
+    private void readObject(ObjectInputStream s)
+        throws IOException, ClassNotFoundException {
+        s.defaultReadObject();
+        type = null;
+        types = null;
     }
 }

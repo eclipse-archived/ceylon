@@ -27,8 +27,8 @@
  * @summary javac should accept class files with major version of the next release
  * @author  Wei Tao
  * @clean T1 T2
- * @compile T1.java
- * @compile T2.java
+ * @compile -target 7 T1.java
+ * @compile -target 7 T2.java
  * @run main/othervm T6330997
  */
 

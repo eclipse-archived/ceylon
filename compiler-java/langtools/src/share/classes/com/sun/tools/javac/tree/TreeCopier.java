@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,12 +25,10 @@
 
 package com.sun.tools.javac.tree;
 
-import com.sun.source.tree.Tree;
 import com.sun.source.tree.*;
 import com.sun.tools.javac.tree.JCTree.*;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
-import java.util.Map;
 
 /**
  * Creates a copy of a tree, using a given TreeMaker.
@@ -137,7 +135,7 @@ public class TreeCopier<P> implements TreeVisitor<JCTree,P> {
         JCClassDecl t = (JCClassDecl) node;
         JCModifiers mods = copy(t.mods, p);
         List<JCTypeParameter> typarams = copy(t.typarams, p);
-        JCTree extending = copy(t.extending, p);
+        JCExpression extending = copy(t.extending, p);
         List<JCExpression> implementing = copy(t.implementing, p);
         List<JCTree> defs = copy(t.defs, p);
         return M.at(t.pos).ClassDef(mods, t.name, typarams, extending, implementing, defs);
@@ -326,10 +324,11 @@ public class TreeCopier<P> implements TreeVisitor<JCTree,P> {
 
     public JCTree visitTry(TryTree node, P p) {
         JCTry t = (JCTry) node;
+        List<JCTree> resources = copy(t.resources, p);
         JCBlock body = copy(t.body, p);
         List<JCCatch> catchers = copy(t.catchers, p);
         JCBlock finalizer = copy(t.finalizer, p);
-        return M.at(t.pos).Try(body, catchers, finalizer);
+        return M.at(t.pos).Try(resources, body, catchers, finalizer);
     }
 
     public JCTree visitParameterizedType(ParameterizedTypeTree node, P p) {
@@ -337,6 +336,12 @@ public class TreeCopier<P> implements TreeVisitor<JCTree,P> {
         JCExpression clazz = copy(t.clazz, p);
         List<JCExpression> arguments = copy(t.arguments, p);
         return M.at(t.pos).TypeApply(clazz, arguments);
+    }
+
+    public JCTree visitUnionType(UnionTypeTree node, P p) {
+        JCTypeUnion t = (JCTypeUnion) node;
+        List<JCExpression> components = copy(t.alternatives, p);
+        return M.at(t.pos).TypeUnion(components);
     }
 
     public JCTree visitArrayType(ArrayTypeTree node, P p) {
@@ -360,7 +365,7 @@ public class TreeCopier<P> implements TreeVisitor<JCTree,P> {
     public JCTree visitTypeParameter(TypeParameterTree node, P p) {
         JCTypeParameter t = (JCTypeParameter) node;
         List<JCExpression> bounds = copy(t.bounds, p);
-        return M.at(t.pos).TypeParameter(t.name, t.bounds);
+        return M.at(t.pos).TypeParameter(t.name, bounds);
     }
 
     public JCTree visitInstanceOf(InstanceOfTree node, P p) {
@@ -404,9 +409,8 @@ public class TreeCopier<P> implements TreeVisitor<JCTree,P> {
             case JCTree.LETEXPR: {
                 LetExpr t = (LetExpr) node;
                 List<JCVariableDecl> defs = copy(t.defs, p);
-                List<JCStatement> stats = copy(t.stats, p);
                 JCTree expr = copy(t.expr, p);
-                return M.at(t.pos).LetExpr(defs, stats, expr);
+                return M.at(t.pos).LetExpr(defs, expr);
             }
             default:
                 throw new AssertionError("unknown tree tag: " + tree.getTag());

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -45,8 +45,8 @@ public class LayoutParser extends DefaultHandler {
     /**
      * The map of XML elements that have been parsed.
      */
-    private Map xmlElementsMap;
-
+    private Map<String,XMLNode> xmlElementsMap;
+    private XMLNode currentNode;
     private Configuration configuration;
     private static LayoutParser instance;
     private String currentRoot;
@@ -56,7 +56,7 @@ public class LayoutParser extends DefaultHandler {
      * This class is a singleton.
      */
     private LayoutParser(Configuration configuration) {
-        xmlElementsMap = new HashMap();
+        xmlElementsMap = new HashMap<String,XMLNode>();
         this.configuration = configuration;
     }
 
@@ -76,22 +76,20 @@ public class LayoutParser extends DefaultHandler {
     /**
      * Parse the XML specifying the layout of the documentation.
      *
-     * @return List the list of XML elements parsed.
+     * @return the list of XML elements parsed.
      */
-    public List parseXML(String root) {
+    public XMLNode parseXML(String root) {
         if (xmlElementsMap.containsKey(root)) {
-            return (List) xmlElementsMap.get(root);
+            return xmlElementsMap.get(root);
         }
         try {
-            List xmlElements = new ArrayList();
-            xmlElementsMap.put(root, xmlElements);
             currentRoot = root;
             isParsing = false;
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
             InputStream in = configuration.getBuilderXML();
             saxParser.parse(in, this);
-            return xmlElements;
+            return xmlElementsMap.get(root);
         } catch (Throwable t) {
             t.printStackTrace();
             throw new DocletAbortException();
@@ -101,39 +99,30 @@ public class LayoutParser extends DefaultHandler {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void startElement(String namespaceURI, String sName, String qName,
         Attributes attrs)
     throws SAXException {
         if (isParsing || qName.equals(currentRoot)) {
             isParsing = true;
-            List xmlElements = (List) xmlElementsMap.get(currentRoot);
-            xmlElements.add(qName);
+            currentNode = new XMLNode(currentNode, qName);
+            for (int i = 0; i < attrs.getLength(); i++)
+                currentNode.attrs.put(attrs.getLocalName(i), attrs.getValue(i));
+            if (qName.equals(currentRoot))
+                xmlElementsMap.put(qName, currentNode);
         }
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void endElement(String namespaceURI, String sName, String qName)
     throws SAXException {
         if (! isParsing) {
-            isParsing = false;
             return;
         }
-        List xmlElements = (List) xmlElementsMap.get(currentRoot);
-        if (xmlElements.get(xmlElements.size()-1).equals(qName)) {
-            return;
-        } else {
-            List subElements = new ArrayList();
-            int targetIndex = xmlElements.indexOf(qName);
-            int size = xmlElements.size();
-            for (int i = targetIndex; i < size; i++) {
-                subElements.add(xmlElements.get(targetIndex));
-                xmlElements.remove(targetIndex);
-            }
-            //Save the sub elements as a list.
-            xmlElements.add(subElements);
-        }
+        currentNode = currentNode.parent;
         isParsing = ! qName.equals(currentRoot);
     }
 }

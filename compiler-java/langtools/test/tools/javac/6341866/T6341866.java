@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -97,7 +97,7 @@ public class T6341866 {
         processorServices.delete();
 
         List<String> opts = new ArrayList<String>();
-        opts.addAll(Arrays.asList("-d", ".", "-sourcepath", testSrc, "-classpath", testClasses));
+        opts.addAll(Arrays.asList("-d", ".", "-sourcepath", testSrc, "-classpath", testClasses, "-source", "1.6", "-Xlint:-options"));
         if (implicitType.opt != null)
             opts.add(implicitType.opt);
 
@@ -186,7 +186,7 @@ public class T6341866 {
     }
 
     static void error(String msg) {
-        System.err.println(msg);
+        System.err.println("ERROR: " + msg);
     }
 
     static File services(Class<?> service) {

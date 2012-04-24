@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -39,7 +39,6 @@ import static javax.lang.model.util.ElementFilter.*;
 
 
 @SupportedAnnotationTypes("*")
-@SupportedSourceVersion(SourceVersion.RELEASE_6 )
 public class T6439826 extends AbstractProcessor {
     public static void main(String... args) {
         String testSrc = System.getProperty("test.src", ".");
@@ -73,6 +72,11 @@ public class T6439826 extends AbstractProcessor {
                 writeBadFile();
         }
         return false;
+    }
+
+    @Override
+    public SourceVersion getSupportedSourceVersion() {
+        return SourceVersion.latest();
     }
 
     private void writeBadFile() {

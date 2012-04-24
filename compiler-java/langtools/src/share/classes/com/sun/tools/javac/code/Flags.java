@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,6 +25,7 @@
 
 package com.sun.tools.javac.code;
 
+import java.util.EnumSet;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -42,37 +43,48 @@ public class Flags {
     private Flags() {} // uninstantiable
 
     public static String toString(long flags) {
-        StringBuffer buf = new StringBuffer();
-        if ((flags&PUBLIC) != 0) buf.append("public ");
-        if ((flags&PRIVATE) != 0) buf.append("private ");
-        if ((flags&PROTECTED) != 0) buf.append("protected ");
-        if ((flags&STATIC) != 0) buf.append("static ");
-        if ((flags&FINAL) != 0) buf.append("final ");
-        if ((flags&SYNCHRONIZED) != 0) buf.append("synchronized ");
-        if ((flags&VOLATILE) != 0) buf.append("volatile ");
-        if ((flags&TRANSIENT) != 0) buf.append("transient ");
-        if ((flags&NATIVE) != 0) buf.append("native ");
-        if ((flags&INTERFACE) != 0) buf.append("interface ");
-        if ((flags&ABSTRACT) != 0) buf.append("abstract ");
-        if ((flags&STRICTFP) != 0) buf.append("strictfp ");
-        if ((flags&BRIDGE) != 0) buf.append("bridge ");
-        if ((flags&SYNTHETIC) != 0) buf.append("synthetic ");
-        if ((flags&DEPRECATED) != 0) buf.append("deprecated ");
-        if ((flags&HASINIT) != 0) buf.append("hasinit ");
-        if ((flags&ENUM) != 0) buf.append("enum ");
-        if ((flags&IPROXY) != 0) buf.append("iproxy ");
-        if ((flags&NOOUTERTHIS) != 0) buf.append("noouterthis ");
-        if ((flags&EXISTS) != 0) buf.append("exists ");
-        if ((flags&COMPOUND) != 0) buf.append("compound ");
-        if ((flags&CLASS_SEEN) != 0) buf.append("class_seen ");
-        if ((flags&SOURCE_SEEN) != 0) buf.append("source_seen ");
-        if ((flags&LOCKED) != 0) buf.append("locked ");
-        if ((flags&UNATTRIBUTED) != 0) buf.append("unattributed ");
-        if ((flags&ANONCONSTR) != 0) buf.append("anonconstr ");
-        if ((flags&ACYCLIC) != 0) buf.append("acyclic ");
-        if ((flags&PARAMETER) != 0) buf.append("parameter ");
-        if ((flags&VARARGS) != 0) buf.append("varargs ");
+        StringBuilder buf = new StringBuilder();
+        String sep = "";
+        for (Flag s : asFlagSet(flags)) {
+            buf.append(sep);
+            buf.append(s);
+            sep = " ";
+        }
         return buf.toString();
+    }
+
+    public static EnumSet<Flag> asFlagSet(long mask) {
+        EnumSet<Flag> flags = EnumSet.noneOf(Flag.class);
+        if ((mask&PUBLIC) != 0) flags.add(Flag.PUBLIC);
+        if ((mask&PRIVATE) != 0) flags.add(Flag.PRIVATE);
+        if ((mask&PROTECTED) != 0) flags.add(Flag.PROTECTED);
+        if ((mask&STATIC) != 0) flags.add(Flag.STATIC);
+        if ((mask&FINAL) != 0) flags.add(Flag.FINAL);
+        if ((mask&SYNCHRONIZED) != 0) flags.add(Flag.SYNCHRONIZED);
+        if ((mask&VOLATILE) != 0) flags.add(Flag.VOLATILE);
+        if ((mask&TRANSIENT) != 0) flags.add(Flag.TRANSIENT);
+        if ((mask&NATIVE) != 0) flags.add(Flag.NATIVE);
+        if ((mask&INTERFACE) != 0) flags.add(Flag.INTERFACE);
+        if ((mask&ABSTRACT) != 0) flags.add(Flag.ABSTRACT);
+        if ((mask&STRICTFP) != 0) flags.add(Flag.STRICTFP);
+        if ((mask&BRIDGE) != 0) flags.add(Flag.BRIDGE);
+        if ((mask&SYNTHETIC) != 0) flags.add(Flag.SYNTHETIC);
+        if ((mask&DEPRECATED) != 0) flags.add(Flag.DEPRECATED);
+        if ((mask&HASINIT) != 0) flags.add(Flag.HASINIT);
+        if ((mask&ENUM) != 0) flags.add(Flag.ENUM);
+        if ((mask&IPROXY) != 0) flags.add(Flag.IPROXY);
+        if ((mask&NOOUTERTHIS) != 0) flags.add(Flag.NOOUTERTHIS);
+        if ((mask&EXISTS) != 0) flags.add(Flag.EXISTS);
+        if ((mask&COMPOUND) != 0) flags.add(Flag.COMPOUND);
+        if ((mask&CLASS_SEEN) != 0) flags.add(Flag.CLASS_SEEN);
+        if ((mask&SOURCE_SEEN) != 0) flags.add(Flag.SOURCE_SEEN);
+        if ((mask&LOCKED) != 0) flags.add(Flag.LOCKED);
+        if ((mask&UNATTRIBUTED) != 0) flags.add(Flag.UNATTRIBUTED);
+        if ((mask&ANONCONSTR) != 0) flags.add(Flag.ANONCONSTR);
+        if ((mask&ACYCLIC) != 0) flags.add(Flag.ACYCLIC);
+        if ((mask&PARAMETER) != 0) flags.add(Flag.PARAMETER);
+        if ((mask&VARARGS) != 0) flags.add(Flag.VARARGS);
+        return flags;
     }
 
     /* Standard Java flags.
@@ -101,6 +113,7 @@ public class Flags {
     public static final int ENUM         = 1<<14;
 
     public static final int StandardFlags = 0x0fff;
+    public static final int ModifierFlags = StandardFlags & ~INTERFACE;
 
     // Because the following access flags are overloaded with other
     // bit positions, we translate them when reading and writing class
@@ -217,6 +230,33 @@ public class Flags {
      */
     public static final long PROPRIETARY = 1L<<38;
 
+    /**
+     * Flag that marks a a multi-catch parameter
+     */
+    public static final long UNION = 1L<<39;
+
+    /**
+     * Flag that marks a signature-polymorphic invoke method.
+     * (These occur inside java.lang.invoke.MethodHandle.)
+     */
+    public static final long POLYMORPHIC_SIGNATURE = 1L<<40;
+
+    /**
+     * Flag that marks a special kind of bridge methods (the ones that
+     * come from restricted supertype bounds)
+     */
+    public static final long OVERRIDE_BRIDGE = 1L<<41;
+
+    /**
+     * Flag that marks an 'effectively final' local variable
+     */
+    public static final long EFFECTIVELY_FINAL = 1L<<42;
+
+    /**
+     * Flag that marks non-override equivalent methods with the same signature
+     */
+    public static final long CLASH = 1L<<43;
+
     /** Modifier masks.
      */
     public static final int
@@ -270,5 +310,49 @@ public class Flags {
 
     public static boolean isConstant(Symbol.VarSymbol symbol) {
         return symbol.getConstValue() != null;
+    }
+
+    public enum Flag {
+
+        PUBLIC("public"),
+        PRIVATE("private"),
+        PROTECTED("protected"),
+        STATIC("static"),
+        FINAL("final"),
+        SYNCHRONIZED("synchronized"),
+        VOLATILE("volatile"),
+        TRANSIENT("transient"),
+        NATIVE("native"),
+        INTERFACE("interface"),
+        ABSTRACT("abstract"),
+        STRICTFP("strictfp"),
+        BRIDGE("bridge"),
+        SYNTHETIC("synthetic"),
+        DEPRECATED("deprecated"),
+        HASINIT("hasinit"),
+        ENUM("enum"),
+        IPROXY("iproxy"),
+        NOOUTERTHIS("noouterthis"),
+        EXISTS("exists"),
+        COMPOUND("compound"),
+        CLASS_SEEN("class_seen"),
+        SOURCE_SEEN("source_seen"),
+        LOCKED("locked"),
+        UNATTRIBUTED("unattributed"),
+        ANONCONSTR("anonconstr"),
+        ACYCLIC("acyclic"),
+        PARAMETER("parameter"),
+        VARARGS("varargs"),
+        PACKAGE("package");
+
+        String name;
+
+        Flag(String name) {
+            this.name = name;
+        }
+
+        public String toString() {
+            return name;
+        }
     }
 }

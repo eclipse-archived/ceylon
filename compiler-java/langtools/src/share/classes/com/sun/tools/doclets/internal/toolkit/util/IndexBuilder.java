@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -49,7 +49,7 @@ public class IndexBuilder {
      * Mapping of each Unicode Character with the member list containing
      * members with names starting with it.
      */
-    private Map indexmap = new HashMap();
+    private Map<Character,List<Doc>> indexmap = new HashMap<Character,List<Doc>>();
 
     /**
      * Don't generate deprecated information if true.
@@ -68,10 +68,10 @@ public class IndexBuilder {
      * A comparator used to sort classes and members.
      * Note:  Maybe this compare code belongs in the tool?
      */
-    private class DocComparator implements Comparator {
-        public int compare(Object d1, Object d2) {
-            String doc1 = (((Doc) d1).name());
-            String doc2 = (((Doc) d2).name());
+    private class DocComparator implements Comparator<Doc> {
+        public int compare(Doc d1, Doc d2) {
+            String doc1 = d1.name();
+            String doc2 = d2.name();
             int compareResult;
             if ((compareResult = doc1.compareToIgnoreCase(doc2)) != 0) {
                 return compareResult;
@@ -114,7 +114,7 @@ public class IndexBuilder {
         this.noDeprecated = noDeprecated;
         this.classesOnly = classesOnly;
         buildIndexMap(configuration.root);
-        Set set = indexmap.keySet();
+        Set<Character> set = indexmap.keySet();
         elements =  set.toArray();
         Arrays.sort(elements);
     }
@@ -124,8 +124,8 @@ public class IndexBuilder {
      * sort each element which is a list.
      */
     protected void sortIndexMap() {
-        for (Iterator it = indexmap.values().iterator(); it.hasNext(); ) {
-            Collections.sort((List)it.next(), new DocComparator());
+        for (Iterator<List<Doc>> it = indexmap.values().iterator(); it.hasNext(); ) {
+            Collections.sort(it.next(), new DocComparator());
         }
     }
 
@@ -141,7 +141,7 @@ public class IndexBuilder {
         ClassDoc[] classes = root.classes();
         if (!classesOnly) {
             if (packages.length == 0) {
-                Set set = new HashSet();
+                Set<PackageDoc> set = new HashSet<PackageDoc>();
                 PackageDoc pd;
                 for (int i = 0; i < classes.length; i++) {
                     pd = classes[i].containingPackage();
@@ -149,7 +149,7 @@ public class IndexBuilder {
                         set.add(pd);
                     }
                 }
-                adjustIndexMap((PackageDoc[]) set.toArray(packages));
+                adjustIndexMap(set.toArray(packages));
             } else {
                 adjustIndexMap(packages);
             }
@@ -193,9 +193,9 @@ public class IndexBuilder {
                     '*' :
                     Character.toUpperCase(name.charAt(0));
                 Character unicode = new Character(ch);
-                List list = (List)indexmap.get(unicode);
+                List<Doc> list = indexmap.get(unicode);
                 if (list == null) {
-                    list = new ArrayList();
+                    list = new ArrayList<Doc>();
                     indexmap.put(unicode, list);
                 }
                 list.add(elements[i]);
@@ -207,7 +207,17 @@ public class IndexBuilder {
      * Should this doc element be added to the index map?
      */
     protected boolean shouldAddToIndexMap(Doc element) {
-        return !(noDeprecated && element.tags("deprecated").length > 0);
+        if (element instanceof PackageDoc)
+            // Do not add to index map if -nodeprecated option is set and the
+            // package is marked as deprecated.
+            return !(noDeprecated && Util.isDeprecated(element));
+        else
+            // Do not add to index map if -nodeprecated option is set and if the
+            // Doc is marked as deprecated or the containing package is marked as
+            // deprecated.
+            return !(noDeprecated &&
+                    (Util.isDeprecated(element) ||
+                    Util.isDeprecated(((ProgramElementDoc)element).containingPackage())));
     }
 
     /**
@@ -215,7 +225,7 @@ public class IndexBuilder {
      *
      * @return Map index map.
      */
-    public Map getIndexMap() {
+    public Map<Character,List<Doc>> getIndexMap() {
         return indexmap;
     }
 
@@ -225,8 +235,8 @@ public class IndexBuilder {
      * @param index index Unicode character.
      * @return List member list for specific Unicode character.
      */
-    public List getMemberList(Character index) {
-        return (List)indexmap.get(index);
+    public List<Doc> getMemberList(Character index) {
+        return indexmap.get(index);
     }
 
     /**

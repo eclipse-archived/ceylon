@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2004, 2006, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2004, 2011, Oracle and/or its affiliates. All rights reserved.
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 #
 # This code is free software; you can redistribute it and/or modify it
@@ -24,16 +24,15 @@
 # @test
 # @bug 4981566 5028634 5094412 6304984
 # @summary Check interpretation of -target and -source options
-#
 # @build CheckClassFileVersion
-# @run shell check.sh
+# @run shell check.sh 
 
 TESTJAVA=${TESTJAVA:?}
 TC=${TESTCLASSES-.}
 
 J="$TESTJAVA/bin/java" 
 JC="$TESTJAVA/bin/javac" 
-CFV="$J ${TESTVMOPTS} -cp $TC CheckClassFileVersion"
+CFV="${TESTVMOPTS} -cp $TC CheckClassFileVersion"
 
 rm -f $TC/X.java $TC/X.java
 echo 'public class X { }' > $TC/X.java
@@ -45,25 +44,36 @@ echo 'public enum Y { }' > $TC/Y.java
 check() {
   V=$1; shift
   echo "+ javac $* [$V]"
-  $JC ${TESTTOOLVMOPTS} -d $TC $* $TC/X.java && $CFV $TC/X.class $V || exit 2
+  "$JC" ${TESTTOOLVMOPTS} -d $TC $* $TC/X.java && "$J" $CFV $TC/X.class $V || exit 2
 }
 
-check 50.0
 check 48.0 -source 1.4
+
 check 49.0 -source 1.4 -target 1.5
-check 49.0 -target 1.5
-check 50.0 -source 1.5
-check 50.0 -target 1.6
-check 50.0 -target 6
-check 50.0 -source 1.6
-check 50.0 -source 6
+check 49.0 -source 1.5 -target 1.5
+
+check 50.0 -source 1.4 -target 1.6
+check 50.0 -source 1.5 -target 1.6
+check 50.0 -source 1.6 -target 1.6
+check 50.0 -source 1.6 -target 6
+check 50.0 -source 6 -target 1.6
+check 50.0 -source 6 -target 6
+
+check 51.0
+check 51.0 -source 1.5
+check 51.0 -source 1.6
+check 51.0 -source 6
+check 51.0 -source 1.7
+check 51.0 -source 7
+check 51.0 -target 1.7
+check 51.0 -target 7
 
 
 # Check source versions
 
 fail() {
   echo "+ javac $*"
-  if $JC ${TESTTOOLVMOPTS} -d $TC $*; then
+  if "$JC" ${TESTTOOLVMOPTS} -d $TC $*; then
     echo "-- did not fail as expected"
     exit 3
   else
@@ -73,7 +83,7 @@ fail() {
 
 pass() {
   echo "+ javac $*"
-  if $JC ${TESTTOOLVMOPTS} -d $TC $*; then
+  if "$JC" ${TESTTOOLVMOPTS} -d $TC $*; then
     echo "-- passed"
   else
     echo "-- failed"
@@ -81,21 +91,30 @@ pass() {
   fi
 }
 
+# the following need to be updated when -source 7 features are available
 checksrc14() { pass $* $TC/X.java; fail $* $TC/Y.java; }
 checksrc15() { pass $* $TC/X.java; pass $* $TC/Y.java; }
 checksrc16() { checksrc15 $* ; }
+checksrc17() { checksrc15 $* ; }
 
 checksrc14 -source 1.4
 checksrc14 -source 1.4 -target 1.5
 
-checksrc15
-checksrc15 -target 1.5
 checksrc15 -source 1.5
+checksrc15 -source 1.5 -target 1.5
 
-checksrc16 -target 1.6
-checksrc16 -target 6
 checksrc16 -source 1.6
 checksrc16 -source 6
+checksrc16 -source 1.6 -target 1.6
+checksrc16 -source 6 -target 6
+
+checksrc17
+checksrc17 -target 1.7
+checksrc17 -target 7
+checksrc17 -source 1.7
+checksrc17 -source 7
+checksrc17 -source 1.7 -target 1.7
+checksrc17 -source 7 -target 7
 
 fail -source 1.5 -target 1.4 $TC/X.java
 fail -source 1.6 -target 1.4 $TC/X.java

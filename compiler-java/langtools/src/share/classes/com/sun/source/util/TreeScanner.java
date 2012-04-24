@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -140,6 +140,7 @@ public class TreeScanner<R,P> implements TreeVisitor<R,P> {
         r = scanAndReduce(node.getParameters(), p, r);
         r = scanAndReduce(node.getThrows(), p, r);
         r = scanAndReduce(node.getBody(), p, r);
+        r = scanAndReduce(node.getDefaultValue(), p, r);
         return r;
     }
 
@@ -208,7 +209,8 @@ public class TreeScanner<R,P> implements TreeVisitor<R,P> {
     }
 
     public R visitTry(TryTree node, P p) {
-        R r = scan(node.getBlock(), p);
+        R r = scan(node.getResources(), p);
+        r = scanAndReduce(node.getBlock(), p, r);
         r = scanAndReduce(node.getCatches(), p, r);
         r = scanAndReduce(node.getFinallyBlock(), p, r);
         return r;
@@ -353,8 +355,13 @@ public class TreeScanner<R,P> implements TreeVisitor<R,P> {
         return r;
     }
 
+    public R visitUnionType(UnionTypeTree node, P p) {
+        return scan(node.getTypeAlternatives(), p);
+    }
+
     public R visitTypeParameter(TypeParameterTree node, P p) {
-        return scan(node.getBounds(), p);
+        R r = scan(node.getBounds(), p);
+        return r;
     }
 
     public R visitWildcard(WildcardTree node, P p) {

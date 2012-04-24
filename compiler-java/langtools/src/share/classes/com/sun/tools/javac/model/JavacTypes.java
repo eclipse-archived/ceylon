@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -47,41 +47,40 @@ public class JavacTypes implements javax.lang.model.util.Types {
     private Symtab syms;
     private Types types;
 
-    private static final Context.Key<JavacTypes> KEY =
-            new Context.Key<JavacTypes>();
-
     public static JavacTypes instance(Context context) {
-        JavacTypes instance = context.get(KEY);
-        if (instance == null) {
+        JavacTypes instance = context.get(JavacTypes.class);
+        if (instance == null)
             instance = new JavacTypes(context);
-            context.put(KEY, instance);
-        }
         return instance;
     }
 
     /**
      * Public for use only by JavacProcessingEnvironment
      */
-    // TODO JavacTypes constructor should be protected
-    public JavacTypes(Context context) {
+    protected JavacTypes(Context context) {
         setContext(context);
     }
 
     /**
      * Use a new context.  May be called from outside to update
      * internal state for a new annotation-processing round.
-     * This instance is *not* then registered with the new context.
      */
     public void setContext(Context context) {
+        context.put(JavacTypes.class, this);
         syms = Symtab.instance(context);
         types = Types.instance(context);
     }
 
     public Element asElement(TypeMirror t) {
-        Type type = cast(Type.class, t);
-        if (type.tag != TypeTags.CLASS && type.tag != TypeTags.TYPEVAR)
-            return null;
-        return type.asElement();
+        switch (t.getKind()) {
+            case DECLARED:
+            case ERROR:
+            case TYPEVAR:
+                Type type = cast(Type.class, t);
+                return type.asElement();
+            default:
+                return null;
+        }
     }
 
     public boolean isSameType(TypeMirror t1, TypeMirror t2) {
@@ -103,7 +102,7 @@ public class JavacTypes implements javax.lang.model.util.Types {
     public boolean contains(TypeMirror t1, TypeMirror t2) {
         validateTypeNotIn(t1, EXEC_OR_PKG);
         validateTypeNotIn(t2, EXEC_OR_PKG);
-        return ((Type) t1).contains((Type) t2);
+        return types.containsType((Type) t1, (Type) t2);
     }
 
     public boolean isSubsignature(ExecutableType m1, ExecutableType m2) {

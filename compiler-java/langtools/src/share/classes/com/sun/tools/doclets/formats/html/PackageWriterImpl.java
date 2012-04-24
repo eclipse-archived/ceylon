@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,12 +25,12 @@
 
 package com.sun.tools.doclets.formats.html;
 
-import com.sun.tools.doclets.internal.toolkit.*;
-import com.sun.tools.doclets.internal.toolkit.util.*;
-
-import com.sun.javadoc.*;
 import java.io.*;
 import java.util.*;
+import com.sun.javadoc.*;
+import com.sun.tools.doclets.internal.toolkit.*;
+import com.sun.tools.doclets.internal.toolkit.util.*;
+import com.sun.tools.doclets.formats.html.markup.*;
 
 /**
  * Class to generate file for each package contents in the right-hand
@@ -38,6 +38,7 @@ import java.util.*;
  * class-kind will update the frame with the clicked class-kind page.
  *
  * @author Atul M Dambalkar
+ * @author Bhavesh Patel (Modified)
  */
 public class PackageWriterImpl extends HtmlDocletWriter
     implements PackageSummaryWriter {
@@ -97,179 +98,229 @@ public class PackageWriterImpl extends HtmlDocletWriter
     /**
      * {@inheritDoc}
      */
-    public void writeSummaryHeader() {}
+    public Content getPackageHeader(String heading) {
+        String pkgName = packageDoc.name();
+        Content bodyTree = getBody(true, getWindowTitle(pkgName));
+        addTop(bodyTree);
+        addNavLinks(true, bodyTree);
+        HtmlTree div = new HtmlTree(HtmlTag.DIV);
+        div.addStyle(HtmlStyle.header);
+        Content annotationContent = new HtmlTree(HtmlTag.P);
+        addAnnotationInfo(packageDoc, annotationContent);
+        div.addContent(annotationContent);
+        Content tHeading = HtmlTree.HEADING(HtmlConstants.TITLE_HEADING, true,
+                HtmlStyle.title, packageLabel);
+        tHeading.addContent(getSpace());
+        Content packageHead = new RawHtml(heading);
+        tHeading.addContent(packageHead);
+        div.addContent(tHeading);
+        addDeprecationInfo(div);
+        if (packageDoc.inlineTags().length > 0 && ! configuration.nocomment) {
+            HtmlTree docSummaryDiv = new HtmlTree(HtmlTag.DIV);
+            docSummaryDiv.addStyle(HtmlStyle.docSummary);
+            addSummaryComment(packageDoc, docSummaryDiv);
+            div.addContent(docSummaryDiv);
+            Content space = getSpace();
+            Content descLink = getHyperLink("", "package_description",
+                    descriptionLabel, "", "");
+            Content descPara = new HtmlTree(HtmlTag.P, seeLabel, space, descLink);
+            div.addContent(descPara);
+        }
+        bodyTree.addContent(div);
+        return bodyTree;
+    }
 
     /**
      * {@inheritDoc}
      */
-    public void writeSummaryFooter() {}
+    public Content getContentHeader() {
+        HtmlTree div = new HtmlTree(HtmlTag.DIV);
+        div.addStyle(HtmlStyle.contentContainer);
+        return div;
+    }
+
+    /**
+     * Add the package deprecation information to the documentation tree.
+     *
+     * @param div the content tree to which the deprecation information will be added
+     */
+    public void addDeprecationInfo(Content div) {
+        Tag[] deprs = packageDoc.tags("deprecated");
+        if (Util.isDeprecated(packageDoc)) {
+            HtmlTree deprDiv = new HtmlTree(HtmlTag.DIV);
+            deprDiv.addStyle(HtmlStyle.deprecatedContent);
+            Content deprPhrase = HtmlTree.SPAN(HtmlStyle.strong, deprecatedPhrase);
+            deprDiv.addContent(deprPhrase);
+            if (deprs.length > 0) {
+                Tag[] commentTags = deprs[0].inlineTags();
+                if (commentTags.length > 0) {
+                    addInlineDeprecatedComment(packageDoc, deprs[0], deprDiv);
+                }
+            }
+            div.addContent(deprDiv);
+        }
+    }
 
     /**
      * {@inheritDoc}
      */
-    public void writeClassesSummary(ClassDoc[] classes, String label) {
+    public Content getSummaryHeader() {
+        HtmlTree ul = new HtmlTree(HtmlTag.UL);
+        ul.addStyle(HtmlStyle.blockList);
+        return ul;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addClassesSummary(ClassDoc[] classes, String label,
+            String tableSummary, String[] tableHeader, Content summaryContentTree) {
         if(classes.length > 0) {
             Arrays.sort(classes);
-            tableIndexSummary();
-            boolean printedHeading = false;
+            Content caption = getTableCaption(label);
+            Content table = HtmlTree.TABLE(HtmlStyle.packageSummary, 0, 3, 0,
+                    tableSummary, caption);
+            table.addContent(getSummaryTableHeader(tableHeader, "col"));
+            Content tbody = new HtmlTree(HtmlTag.TBODY);
             for (int i = 0; i < classes.length; i++) {
-                if (!printedHeading) {
-                    printFirstRow(label);
-                    printedHeading = true;
-                }
                 if (!Util.isCoreClass(classes[i]) ||
                     !configuration.isGeneratedDoc(classes[i])) {
                     continue;
                 }
-                trBgcolorStyle("white", "TableRowColor");
-                summaryRow(15);
-                bold();
-                printLink(new LinkInfoImpl(LinkInfoImpl.CONTEXT_PACKAGE,
-                    classes[i], false));
-                boldEnd();
-                summaryRowEnd();
-                summaryRow(0);
+                Content classContent = new RawHtml(getLink(new LinkInfoImpl(
+                        LinkInfoImpl.CONTEXT_PACKAGE, classes[i], false)));
+                Content tdClass = HtmlTree.TD(HtmlStyle.colFirst, classContent);
+                HtmlTree tr = HtmlTree.TR(tdClass);
+                if (i%2 == 0)
+                    tr.addStyle(HtmlStyle.altColor);
+                else
+                    tr.addStyle(HtmlStyle.rowColor);
+                HtmlTree tdClassDescription = new HtmlTree(HtmlTag.TD);
+                tdClassDescription.addStyle(HtmlStyle.colLast);
                 if (Util.isDeprecated(classes[i])) {
-                    boldText("doclet.Deprecated");
+                    tdClassDescription.addContent(deprecatedLabel);
                     if (classes[i].tags("deprecated").length > 0) {
-                        space();
-                        printSummaryDeprecatedComment(classes[i],
-                            classes[i].tags("deprecated")[0]);
+                        addSummaryDeprecatedComment(classes[i],
+                            classes[i].tags("deprecated")[0], tdClassDescription);
                     }
-                } else {
-                    printSummaryComment(classes[i]);
                 }
-                summaryRowEnd();
-                trEnd();
+                else
+                    addSummaryComment(classes[i], tdClassDescription);
+                tr.addContent(tdClassDescription);
+                tbody.addContent(tr);
             }
-            tableEnd();
-            println("&nbsp;");
-            p();
+            table.addContent(tbody);
+            Content li = HtmlTree.LI(HtmlStyle.blockList, table);
+            summaryContentTree.addContent(li);
         }
-    }
-
-    /**
-     * Print the table heading for the class-listing.
-     *
-     * @param label Label for the Class kind listing.
-     */
-    protected void printFirstRow(String label) {
-        tableHeaderStart("#CCCCFF");
-        bold(label);
-        tableHeaderEnd();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void writePackageDescription() {
+    public void addPackageDescription(Content packageContentTree) {
         if (packageDoc.inlineTags().length > 0) {
-            anchor("package_description");
-            h2(configuration.getText("doclet.Package_Description", packageDoc.name()));
-            p();
-            printInlineComment(packageDoc);
-            p();
+            packageContentTree.addContent(getMarkerAnchor("package_description"));
+            Content h2Content = new StringContent(
+                    configuration.getText("doclet.Package_Description",
+                    packageDoc.name()));
+            packageContentTree.addContent(HtmlTree.HEADING(HtmlConstants.PACKAGE_HEADING,
+                    true, h2Content));
+            addInlineComment(packageDoc, packageContentTree);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public void writePackageTags() {
-        printTags(packageDoc);
+    public void addPackageTags(Content packageContentTree) {
+        addTagsInfo(packageDoc, packageContentTree);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void writePackageHeader(String heading) {
-        String pkgName = packageDoc.name();
-        printHtmlHeader(pkgName,
-            configuration.metakeywords.getMetaKeywords(packageDoc), true);
-        printTop();
-        navLinks(true);
-        hr();
-        writeAnnotationInfo(packageDoc);
-        h2(configuration.getText("doclet.Package") + " " + heading);
-        if (packageDoc.inlineTags().length > 0 && ! configuration.nocomment) {
-            printSummaryComment(packageDoc);
-            p();
-            bold(configuration.getText("doclet.See"));
-            br();
-            printNbsps();
-            printHyperLink("", "package_description",
-                configuration.getText("doclet.Description"), true);
-            p();
-        }
+    public void addPackageFooter(Content contentTree) {
+        addNavLinks(false, contentTree);
+        addBottom(contentTree);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void writePackageFooter() {
-        hr();
-        navLinks(false);
-        printBottom();
-        printBodyHtmlEnd();
+    public void printDocument(Content contentTree) {
+        printHtmlDocument(configuration.metakeywords.getMetaKeywords(packageDoc),
+                true, contentTree);
     }
 
     /**
-     * Print "Use" link for this pacakge in the navigation bar.
+     * Get "Use" link for this pacakge in the navigation bar.
+     *
+     * @return a content tree for the class use link
      */
-    protected void navLinkClassUse() {
-        navCellStart();
-        printHyperLink("package-use.html", "", configuration.getText("doclet.navClassUse"),
-                       true, "NavBarFont1");
-        navCellEnd();
+    protected Content getNavLinkClassUse() {
+        Content useLink = getHyperLink("package-use.html", "",
+                useLabel, "", "");
+        Content li = HtmlTree.LI(useLink);
+        return li;
     }
 
     /**
-     * Print "PREV PACKAGE" link in the navigation bar.
+     * Get "PREV PACKAGE" link in the navigation bar.
+     *
+     * @return a content tree for the previous link
      */
-    protected void navLinkPrevious() {
+    public Content getNavLinkPrevious() {
+        Content li;
         if (prev == null) {
-            printText("doclet.Prev_Package");
+            li = HtmlTree.LI(prevpackageLabel);
         } else {
             String path = DirectoryManager.getRelativePath(packageDoc.name(),
                                                            prev.name());
-            printHyperLink(path + "package-summary.html", "",
-                configuration.getText("doclet.Prev_Package"), true);
+            li = HtmlTree.LI(getHyperLink(path + "package-summary.html", "",
+                prevpackageLabel, "", ""));
         }
+        return li;
     }
 
     /**
-     * Print "NEXT PACKAGE" link in the navigation bar.
+     * Get "NEXT PACKAGE" link in the navigation bar.
+     *
+     * @return a content tree for the next link
      */
-    protected void navLinkNext() {
+    public Content getNavLinkNext() {
+        Content li;
         if (next == null) {
-            printText("doclet.Next_Package");
+            li = HtmlTree.LI(nextpackageLabel);
         } else {
             String path = DirectoryManager.getRelativePath(packageDoc.name(),
                                                            next.name());
-            printHyperLink(path + "package-summary.html", "",
-                configuration.getText("doclet.Next_Package"), true);
+            li = HtmlTree.LI(getHyperLink(path + "package-summary.html", "",
+                nextpackageLabel, "", ""));
         }
+        return li;
     }
 
     /**
-     * Print "Tree" link in the navigation bar. This will be link to the package
+     * Get "Tree" link in the navigation bar. This will be link to the package
      * tree file.
+     *
+     * @return a content tree for the tree link
      */
-    protected void navLinkTree() {
-        navCellStart();
-        printHyperLink("package-tree.html", "", configuration.getText("doclet.Tree"),
-                       true, "NavBarFont1");
-        navCellEnd();
+    protected Content getNavLinkTree() {
+        Content useLink = getHyperLink("package-tree.html", "",
+                treeLabel, "", "");
+        Content li = HtmlTree.LI(useLink);
+        return li;
     }
 
     /**
      * Highlight "Package" in the navigation bar, as this is the package page.
+     *
+     * @return a content tree for the package link
      */
-    protected void navLinkPackage() {
-        navCellRevStart();
-        fontStyle("NavBarFont1Rev");
-        boldText("doclet.Package");
-        fontEnd();
-        navCellEnd();
+    protected Content getNavLinkPackage() {
+        Content li = HtmlTree.LI(HtmlStyle.navBarCell1Rev, packageLabel);
+        return li;
     }
 }

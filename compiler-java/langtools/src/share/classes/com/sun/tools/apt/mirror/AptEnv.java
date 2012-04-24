@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2008, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -33,16 +33,16 @@ import com.sun.tools.javac.code.Symbol.CompletionFailure;
 import com.sun.tools.javac.comp.Attr;
 import com.sun.tools.javac.comp.Enter;
 import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.Name;
+import com.sun.tools.javac.util.Names;
 
 
 /**
  * The environment for a run of apt.
  */
-
+@SuppressWarnings("deprecation")
 public class AptEnv {
 
-    public Name.Table names;            // javac's name table
+    public Names names;                 // javac's name table
     public Symtab symtab;               // javac's predefined symbols
     public Types jctypes;               // javac's type utilities
     public Enter enter;                 // javac's enter phase
@@ -66,7 +66,7 @@ public class AptEnv {
     private AptEnv(Context context) {
         context.put(aptEnvKey, this);
 
-        names = Name.Table.instance(context);
+        names = Names.instance(context);
         symtab = Symtab.instance(context);
         jctypes = Types.instance(context);
         enter = Enter.instance(context);

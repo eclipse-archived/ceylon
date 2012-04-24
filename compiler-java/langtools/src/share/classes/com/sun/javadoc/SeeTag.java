@@ -37,7 +37,6 @@ package com.sun.javadoc;
  * "@see", depending on the tag.
  * Method <code>kind()</code> returns "@see" for both tags.
  *
- * @version 06/10/97
  * @author Kaiyang Liu (original)
  * @author Robert Field (rewrite)
  * @author Atul M Dambalkar

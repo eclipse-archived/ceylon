@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -37,24 +37,16 @@ package com.sun.tools.javac.main;
 public enum OptionName {
     G("-g"),
     G_NONE("-g:none"),
-    G_CUSTOM("-g:{lines,vars,source}"),
+    G_CUSTOM("-g:"),
     XLINT("-Xlint"),
-    XLINT_CUSTOM("-Xlint:{"
-                 + "all,"
-                 + "cast,deprecation,divzero,empty,unchecked,fallthrough,path,serial,finally,overrides,"
-                 + "-cast,-deprecation,-divzero,-empty,-unchecked,-fallthrough,-path,-serial,-finally,-overrides,"
-                 + "none}"),
+    XLINT_CUSTOM("-Xlint:"),
+    DIAGS("-XDdiags="),
     NOWARN("-nowarn"),
     VERBOSE("-verbose"),
-    VERBOSE_CUSTOM("-verbose:{loader,ast,code,cmr}"),
     DEPRECATION("-deprecation"),
     CLASSPATH("-classpath"),
     CP("-cp"),
-    CEYLONREPO("-rep"),
-    CEYLONUSER("-user"),
-    CEYLONPASS("-pass"),
     SOURCEPATH("-sourcepath"),
-    CEYLONSOURCEPATH("-src"),
     BOOTCLASSPATH("-bootclasspath"),
     XBOOTCLASSPATH_PREPEND("-Xbootclasspath/p:"),
     XBOOTCLASSPATH_APPEND("-Xbootclasspath/a:"),
@@ -63,20 +55,18 @@ public enum OptionName {
     DJAVA_EXT_DIRS("-Djava.ext.dirs="),
     ENDORSEDDIRS("-endorseddirs"),
     DJAVA_ENDORSED_DIRS("-Djava.endorsed.dirs="),
-    PROC_CUSTOM("-proc:{none,only}"),
+    PROC("-proc:"),
     PROCESSOR("-processor"),
     PROCESSORPATH("-processorpath"),
     D("-d"),
-    CEYLONOUT("-out"),
     S("-s"),
-    IMPLICIT("-implicit:{none,class}"),
+    IMPLICIT("-implicit:"),
     ENCODING("-encoding"),
     SOURCE("-source"),
     TARGET("-target"),
     VERSION("-version"),
     FULLVERSION("-fullversion"),
     HELP("-help"),
-    JHELP("-jhelp"),
     A("-A"),
     X("-X"),
     J("-J"),
@@ -90,17 +80,16 @@ public enum OptionName {
     XMAXERRS("-Xmaxerrs"),
     XMAXWARNS("-Xmaxwarns"),
     XSTDOUT("-Xstdout"),
+    XPKGINFO("-Xpkginfo:"),
     XPRINT("-Xprint"),
     XPRINTROUNDS("-XprintRounds"),
     XPRINTPROCESSORINFO("-XprintProcessorInfo"),
-    XPREFER("-Xprefer:{source,newer}"),
+    XPREFER("-Xprefer:"),
     O("-O"),
     XJCOV("-Xjcov"),
     XD("-XD"),
-    SOURCEFILE("sourcefile"),
-    SRC("-src"),
-    BOOTSTRAPCEYLON("-Xbootstrapceylon"),
-    CEYLONALLOWWARNINGS("-Xceylonallowwarnings");
+    AT("@"),
+    SOURCEFILE("sourcefile");
 
     public final String optionName;
 

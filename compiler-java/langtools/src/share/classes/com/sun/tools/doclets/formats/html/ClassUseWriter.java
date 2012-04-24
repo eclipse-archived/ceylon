@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,46 +25,56 @@
 
 package com.sun.tools.doclets.formats.html;
 
-import com.sun.tools.doclets.internal.toolkit.util.*;
-import com.sun.javadoc.*;
 import java.io.*;
 import java.util.*;
+import com.sun.javadoc.*;
+import com.sun.tools.doclets.internal.toolkit.util.*;
+import com.sun.tools.doclets.formats.html.markup.*;
+import com.sun.tools.doclets.internal.toolkit.*;
 
 /**
  * Generate class usage information.
  *
  * @author Robert G. Field
+ * @author Bhavesh Patel (Modified)
  */
 public class ClassUseWriter extends SubWriterHolderWriter {
 
     final ClassDoc classdoc;
-    Set pkgToPackageAnnotations = null;
-    final Map pkgToClassTypeParameter;
-    final Map pkgToClassAnnotations;
-    final Map pkgToMethodTypeParameter;
-    final Map pkgToMethodArgTypeParameter;
-    final Map pkgToMethodReturnTypeParameter;
-    final Map pkgToMethodAnnotations;
-    final Map pkgToMethodParameterAnnotations;
-    final Map pkgToFieldTypeParameter;
-    final Map pkgToFieldAnnotations;
-    final Map pkgToSubclass;
-    final Map pkgToSubinterface;
-    final Map pkgToImplementingClass;
-    final Map pkgToField;
-    final Map pkgToMethodReturn;
-    final Map pkgToMethodArgs;
-    final Map pkgToMethodThrows;
-    final Map pkgToConstructorAnnotations;
-    final Map pkgToConstructorParameterAnnotations;
-    final Map pkgToConstructorArgs;
-    final Map pkgToConstructorArgTypeParameter;
-    final Map pkgToConstructorThrows;
-    final SortedSet pkgSet;
+    Set<PackageDoc> pkgToPackageAnnotations = null;
+    final Map<String,List<ProgramElementDoc>> pkgToClassTypeParameter;
+    final Map<String,List<ProgramElementDoc>> pkgToClassAnnotations;
+    final Map<String,List<ProgramElementDoc>> pkgToMethodTypeParameter;
+    final Map<String,List<ProgramElementDoc>> pkgToMethodArgTypeParameter;
+    final Map<String,List<ProgramElementDoc>> pkgToMethodReturnTypeParameter;
+    final Map<String,List<ProgramElementDoc>> pkgToMethodAnnotations;
+    final Map<String,List<ProgramElementDoc>> pkgToMethodParameterAnnotations;
+    final Map<String,List<ProgramElementDoc>> pkgToFieldTypeParameter;
+    final Map<String,List<ProgramElementDoc>> pkgToFieldAnnotations;
+    final Map<String,List<ProgramElementDoc>> pkgToSubclass;
+    final Map<String,List<ProgramElementDoc>> pkgToSubinterface;
+    final Map<String,List<ProgramElementDoc>> pkgToImplementingClass;
+    final Map<String,List<ProgramElementDoc>> pkgToField;
+    final Map<String,List<ProgramElementDoc>> pkgToMethodReturn;
+    final Map<String,List<ProgramElementDoc>> pkgToMethodArgs;
+    final Map<String,List<ProgramElementDoc>> pkgToMethodThrows;
+    final Map<String,List<ProgramElementDoc>> pkgToConstructorAnnotations;
+    final Map<String,List<ProgramElementDoc>> pkgToConstructorParameterAnnotations;
+    final Map<String,List<ProgramElementDoc>> pkgToConstructorArgs;
+    final Map<String,List<ProgramElementDoc>> pkgToConstructorArgTypeParameter;
+    final Map<String,List<ProgramElementDoc>> pkgToConstructorThrows;
+    final SortedSet<PackageDoc> pkgSet;
     final MethodWriterImpl methodSubWriter;
     final ConstructorWriterImpl constrSubWriter;
     final FieldWriterImpl fieldSubWriter;
     final NestedClassWriterImpl classSubWriter;
+    // Summary for various use tables.
+    final String classUseTableSummary;
+    final String subclassUseTableSummary;
+    final String subinterfaceUseTableSummary;
+    final String fieldUseTableSummary;
+    final String methodUseTableSummary;
+    final String constructorUseTableSummary;
 
 
     /**
@@ -81,9 +91,9 @@ public class ClassUseWriter extends SubWriterHolderWriter {
         super(configuration, path, filename, relpath);
         this.classdoc = classdoc;
         if (mapper.classToPackageAnnotations.containsKey(classdoc.qualifiedName()))
-                pkgToPackageAnnotations = new HashSet((List) mapper.classToPackageAnnotations.get(classdoc.qualifiedName()));
+                pkgToPackageAnnotations = new HashSet<PackageDoc>(mapper.classToPackageAnnotations.get(classdoc.qualifiedName()));
         configuration.currentcd = classdoc;
-        this.pkgSet = new TreeSet();
+        this.pkgSet = new TreeSet<PackageDoc>();
         this.pkgToClassTypeParameter = pkgDivide(mapper.classToClassTypeParam);
         this.pkgToClassAnnotations = pkgDivide(mapper.classToClassAnnotations);
         this.pkgToMethodTypeParameter = pkgDivide(mapper.classToExecMemberDocTypeParam);
@@ -116,6 +126,18 @@ public class ClassUseWriter extends SubWriterHolderWriter {
         constrSubWriter = new ConstructorWriterImpl(this);
         fieldSubWriter = new FieldWriterImpl(this);
         classSubWriter = new NestedClassWriterImpl(this);
+        classUseTableSummary = configuration.getText("doclet.Use_Table_Summary",
+                configuration.getText("doclet.classes"));
+        subclassUseTableSummary = configuration.getText("doclet.Use_Table_Summary",
+                configuration.getText("doclet.subclasses"));
+        subinterfaceUseTableSummary = configuration.getText("doclet.Use_Table_Summary",
+                configuration.getText("doclet.subinterfaces"));
+        fieldUseTableSummary = configuration.getText("doclet.Use_Table_Summary",
+                configuration.getText("doclet.fields"));
+        methodUseTableSummary = configuration.getText("doclet.Use_Table_Summary",
+                configuration.getText("doclet.methods"));
+        constructorUseTableSummary = configuration.getText("doclet.Use_Table_Summary",
+                configuration.getText("doclet.constructors"));
     }
 
     /**
@@ -127,27 +149,36 @@ public class ClassUseWriter extends SubWriterHolderWriter {
         ClassUseMapper mapper = new ClassUseMapper(configuration.root, classtree);
         ClassDoc[] classes = configuration.root.classes();
         for (int i = 0; i < classes.length; i++) {
-            ClassUseWriter.generate(configuration, mapper, classes[i]);
+            // If -nodeprecated option is set and the containing package is marked
+            // as deprecated, do not generate the class-use page. We will still generate
+            // the class-use page if the class is marked as deprecated but the containing
+            // package is not since it could still be linked from that package-use page.
+            if (!(configuration.nodeprecated &&
+                    Util.isDeprecated(classes[i].containingPackage())))
+                ClassUseWriter.generate(configuration, mapper, classes[i]);
         }
         PackageDoc[] pkgs = configuration.packages;
         for (int i = 0; i < pkgs.length; i++) {
-            PackageUseWriter.generate(configuration, mapper, pkgs[i]);
+            // If -nodeprecated option is set and the package is marked
+            // as deprecated, do not generate the package-use page.
+            if (!(configuration.nodeprecated && Util.isDeprecated(pkgs[i])))
+                PackageUseWriter.generate(configuration, mapper, pkgs[i]);
         }
     }
 
-    private Map pkgDivide(Map classMap) {
-        Map map = new HashMap();
-        List list= (List)classMap.get(classdoc.qualifiedName());
+    private Map<String,List<ProgramElementDoc>> pkgDivide(Map<String,? extends List<? extends ProgramElementDoc>> classMap) {
+        Map<String,List<ProgramElementDoc>> map = new HashMap<String,List<ProgramElementDoc>>();
+        List<? extends ProgramElementDoc> list= classMap.get(classdoc.qualifiedName());
         if (list != null) {
             Collections.sort(list);
-            Iterator it = list.iterator();
+            Iterator<? extends ProgramElementDoc> it = list.iterator();
             while (it.hasNext()) {
-                ProgramElementDoc doc = (ProgramElementDoc)it.next();
+                ProgramElementDoc doc = it.next();
                 PackageDoc pkg = doc.containingPackage();
                 pkgSet.add(pkg);
-                List inPkg = (List)map.get(pkg.name());
+                List<ProgramElementDoc> inPkg = map.get(pkg.name());
                 if (inPkg == null) {
-                    inPkg = new ArrayList();
+                    inPkg = new ArrayList<ProgramElementDoc>();
                     map.put(pkg.name(), inPkg);
                 }
                 inPkg.add(doc);
@@ -187,270 +218,294 @@ public class ClassUseWriter extends SubWriterHolderWriter {
     }
 
     /**
-     * Print the class use list.
+     * Generate the class use list.
      */
     protected void generateClassUseFile() throws IOException {
-
-        printClassUseHeader();
-
+        Content body = getClassUseHeader();
+        HtmlTree div = new HtmlTree(HtmlTag.DIV);
+        div.addStyle(HtmlStyle.classUseContainer);
         if (pkgSet.size() > 0) {
-            generateClassUse();
+            addClassUse(div);
         } else {
-            printText("doclet.ClassUse_No.usage.of.0",
-                      classdoc.qualifiedName());
-            p();
+            div.addContent(getResource("doclet.ClassUse_No.usage.of.0",
+                    classdoc.qualifiedName()));
         }
-
-        printClassUseFooter();
+        body.addContent(div);
+        addNavLinks(false, body);
+        addBottom(body);
+        printHtmlDocument(null, true, body);
     }
 
-    protected void generateClassUse() throws IOException {
+    /**
+     * Add the class use documentation.
+     *
+     * @param contentTree the content tree to which the class use information will be added
+     */
+    protected void addClassUse(Content contentTree) throws IOException {
+        HtmlTree ul = new HtmlTree(HtmlTag.UL);
+        ul.addStyle(HtmlStyle.blockList);
         if (configuration.packages.length > 1) {
-            generatePackageList();
-            generatePackageAnnotationList();
+            addPackageList(ul);
+            addPackageAnnotationList(ul);
         }
-        generateClassList();
+        addClassList(ul);
+        contentTree.addContent(ul);
     }
 
-    protected void generatePackageList() throws IOException {
-        tableIndexSummary();
-        tableHeaderStart("#CCCCFF");
-        printText("doclet.ClassUse_Packages.that.use.0",
-            getLink(new LinkInfoImpl(LinkInfoImpl.CONTEXT_CLASS_USE_HEADER, classdoc,
-                false)));
-        tableHeaderEnd();
-
-        for (Iterator it = pkgSet.iterator(); it.hasNext();) {
-            PackageDoc pkg = (PackageDoc)it.next();
-            generatePackageUse(pkg);
+    /**
+     * Add the packages list that use the given class.
+     *
+     * @param contentTree the content tree to which the packages list will be added
+     */
+    protected void addPackageList(Content contentTree) throws IOException {
+        Content table = HtmlTree.TABLE(0, 3, 0, useTableSummary,
+                getTableCaption(configuration().getText(
+                "doclet.ClassUse_Packages.that.use.0",
+                getLink(new LinkInfoImpl(LinkInfoImpl.CONTEXT_CLASS_USE_HEADER, classdoc,
+                false)))));
+        table.addContent(getSummaryTableHeader(packageTableHeader, "col"));
+        Content tbody = new HtmlTree(HtmlTag.TBODY);
+        Iterator<PackageDoc> it = pkgSet.iterator();
+        for (int i = 0; it.hasNext(); i++) {
+            PackageDoc pkg = it.next();
+            HtmlTree tr = new HtmlTree(HtmlTag.TR);
+            if (i % 2 == 0) {
+                tr.addStyle(HtmlStyle.altColor);
+            } else {
+                tr.addStyle(HtmlStyle.rowColor);
+            }
+            addPackageUse(pkg, tr);
+            tbody.addContent(tr);
         }
-        tableEnd();
-        space();
-        p();
+        table.addContent(tbody);
+        Content li = HtmlTree.LI(HtmlStyle.blockList, table);
+        contentTree.addContent(li);
     }
 
-    protected void generatePackageAnnotationList() throws IOException {
-        if ((! classdoc.isAnnotationType()) ||
-               pkgToPackageAnnotations == null ||
-               pkgToPackageAnnotations.size() == 0)
+    /**
+     * Add the package annotation list.
+     *
+     * @param contentTree the content tree to which the package annotation list will be added
+     */
+    protected void addPackageAnnotationList(Content contentTree) throws IOException {
+        if ((!classdoc.isAnnotationType()) ||
+                pkgToPackageAnnotations == null ||
+                pkgToPackageAnnotations.size() == 0) {
             return;
-        tableIndexSummary();
-        tableHeaderStart("#CCCCFF");
-        printText("doclet.ClassUse_PackageAnnotation",
-            getLink(new LinkInfoImpl(LinkInfoImpl.CONTEXT_CLASS_USE_HEADER, classdoc,
-                false)));
-        tableHeaderEnd();
-        for (Iterator it = pkgToPackageAnnotations.iterator(); it.hasNext();) {
-            PackageDoc pkg = (PackageDoc)it.next();
-            trBgcolorStyle("white", "TableRowColor");
-            summaryRow(0);
-            //Just want an anchor here.
-            printPackageLink(pkg, pkg.name(), true);
-            summaryRowEnd();
-            summaryRow(0);
-            printSummaryComment(pkg);
-            space();
-            summaryRowEnd();
-            trEnd();
         }
-        tableEnd();
-        space();
-        p();
+        Content table = HtmlTree.TABLE(0, 3, 0, useTableSummary,
+                getTableCaption(configuration().getText(
+                "doclet.ClassUse_PackageAnnotation",
+                getLink(new LinkInfoImpl(LinkInfoImpl.CONTEXT_CLASS_USE_HEADER, classdoc,
+                false)))));
+        table.addContent(getSummaryTableHeader(packageTableHeader, "col"));
+        Content tbody = new HtmlTree(HtmlTag.TBODY);
+        Iterator<PackageDoc> it = pkgToPackageAnnotations.iterator();
+        for (int i = 0; it.hasNext(); i++) {
+            PackageDoc pkg = it.next();
+            HtmlTree tr = new HtmlTree(HtmlTag.TR);
+            if (i % 2 == 0) {
+                tr.addStyle(HtmlStyle.altColor);
+            } else {
+                tr.addStyle(HtmlStyle.rowColor);
+            }
+            Content tdFirst = HtmlTree.TD(HtmlStyle.colFirst,
+                    getPackageLink(pkg, new StringContent(pkg.name())));
+            tr.addContent(tdFirst);
+            HtmlTree tdLast = new HtmlTree(HtmlTag.TD);
+            tdLast.addStyle(HtmlStyle.colLast);
+            addSummaryComment(pkg, tdLast);
+            tr.addContent(tdLast);
+            tbody.addContent(tr);
+        }
+        table.addContent(tbody);
+        Content li = HtmlTree.LI(HtmlStyle.blockList, table);
+        contentTree.addContent(li);
     }
 
-    protected void generateClassList() throws IOException {
-        for (Iterator it = pkgSet.iterator(); it.hasNext();) {
-            PackageDoc pkg = (PackageDoc)it.next();
-            anchor(pkg.name());
-            tableIndexSummary();
-            tableHeaderStart("#CCCCFF");
-            printText("doclet.ClassUse_Uses.of.0.in.1",
-                getLink(new LinkInfoImpl(LinkInfoImpl.CONTEXT_CLASS_USE_HEADER,
+    /**
+     * Add the class list that use the given class.
+     *
+     * @param contentTree the content tree to which the class list will be added
+     */
+    protected void addClassList(Content contentTree) throws IOException {
+        HtmlTree ul = new HtmlTree(HtmlTag.UL);
+        ul.addStyle(HtmlStyle.blockList);
+        for (Iterator<PackageDoc> it = pkgSet.iterator(); it.hasNext();) {
+            PackageDoc pkg = it.next();
+            Content li = HtmlTree.LI(HtmlStyle.blockList, getMarkerAnchor(pkg.name()));
+            Content link = new RawHtml(
+                    configuration.getText("doclet.ClassUse_Uses.of.0.in.1",
+                    getLink(new LinkInfoImpl(LinkInfoImpl.CONTEXT_CLASS_USE_HEADER,
                     classdoc, false)),
-                getPackageLink(pkg, Util.getPackageName(pkg), false));
-            tableHeaderEnd();
-            tableEnd();
-            space();
-            p();
-            generateClassUse(pkg);
+                    getPackageLinkString(pkg, Util.getPackageName(pkg), false)));
+            Content heading = HtmlTree.HEADING(HtmlConstants.SUMMARY_HEADING, link);
+            li.addContent(heading);
+            addClassUse(pkg, li);
+            ul.addContent(li);
         }
+        Content li = HtmlTree.LI(HtmlStyle.blockList, ul);
+        contentTree.addContent(li);
     }
 
     /**
-     * Print the package use list.
+     * Add the package use information.
+     *
+     * @param pkg the package that uses the given class
+     * @param contentTree the content tree to which the package use information will be added
      */
-    protected void generatePackageUse(PackageDoc pkg) throws IOException {
-        trBgcolorStyle("white", "TableRowColor");
-        summaryRow(0);
-        //Just want an anchor here.
-        printHyperLink("", pkg.name(), Util.getPackageName(pkg), true);
-        summaryRowEnd();
-        summaryRow(0);
-        printSummaryComment(pkg);
-        space();
-        summaryRowEnd();
-        trEnd();
+    protected void addPackageUse(PackageDoc pkg, Content contentTree) throws IOException {
+        Content tdFirst = HtmlTree.TD(HtmlStyle.colFirst,
+                getHyperLink("", pkg.name(), new StringContent(Util.getPackageName(pkg))));
+        contentTree.addContent(tdFirst);
+        HtmlTree tdLast = new HtmlTree(HtmlTag.TD);
+        tdLast.addStyle(HtmlStyle.colLast);
+        addSummaryComment(pkg, tdLast);
+        contentTree.addContent(tdLast);
     }
 
     /**
-     * Print the class use list.
+     * Add the class use information.
+     *
+     * @param pkg the package that uses the given class
+     * @param contentTree the content tree to which the class use information will be added
      */
-    protected void generateClassUse(PackageDoc pkg) throws IOException {
+    protected void addClassUse(PackageDoc pkg, Content contentTree) throws IOException {
         String classLink = getLink(new LinkInfoImpl(
             LinkInfoImpl.CONTEXT_CLASS_USE_HEADER, classdoc, false));
-        String pkgLink = getPackageLink(pkg, Util.getPackageName(pkg), false);
-        classSubWriter.printUseInfo(pkgToClassAnnotations.get(pkg.name()),
-            configuration.getText("doclet.ClassUse_Annotation", classLink,
-            pkgLink));
-
-        classSubWriter.printUseInfo(pkgToClassTypeParameter.get(pkg.name()),
-            configuration.getText("doclet.ClassUse_TypeParameter", classLink,
-            pkgLink));
-        classSubWriter.printUseInfo(pkgToSubclass.get(pkg.name()),
-            configuration.getText("doclet.ClassUse_Subclass", classLink,
-            pkgLink));
-        classSubWriter.printUseInfo(pkgToSubinterface.get(pkg.name()),
-                                    configuration.getText("doclet.ClassUse_Subinterface",
-                                            classLink,
-                                            pkgLink));
-        classSubWriter.printUseInfo(pkgToImplementingClass.get(pkg.name()),
-                                    configuration.getText("doclet.ClassUse_ImplementingClass",
-                                            classLink,
-                                            pkgLink));
-        fieldSubWriter.printUseInfo(pkgToField.get(pkg.name()),
-                                    configuration.getText("doclet.ClassUse_Field",
-                                            classLink,
-                                            pkgLink));
-        fieldSubWriter.printUseInfo(pkgToFieldAnnotations.get(pkg.name()),
-            configuration.getText("doclet.ClassUse_FieldAnnotations",
-            classLink,
-            pkgLink));
-        fieldSubWriter.printUseInfo(pkgToFieldTypeParameter.get(pkg.name()),
-            configuration.getText("doclet.ClassUse_FieldTypeParameter",
-            classLink,
-            pkgLink));
-        methodSubWriter.printUseInfo(pkgToMethodAnnotations.get(pkg.name()),
-            configuration.getText("doclet.ClassUse_MethodAnnotations", classLink,
-            pkgLink));
-        methodSubWriter.printUseInfo(pkgToMethodParameterAnnotations.get(pkg.name()),
-            configuration.getText("doclet.ClassUse_MethodParameterAnnotations", classLink,
-            pkgLink));
-        methodSubWriter.printUseInfo(pkgToMethodTypeParameter.get(pkg.name()),
-            configuration.getText("doclet.ClassUse_MethodTypeParameter", classLink,
-            pkgLink));
-        methodSubWriter.printUseInfo(pkgToMethodReturn.get(pkg.name()),
-                                     configuration.getText("doclet.ClassUse_MethodReturn",
-                                             classLink,
-                                             pkgLink));
-        methodSubWriter.printUseInfo(pkgToMethodReturnTypeParameter.get(pkg.name()),
-            configuration.getText("doclet.ClassUse_MethodReturnTypeParameter", classLink,
-            pkgLink));
-        methodSubWriter.printUseInfo(pkgToMethodArgs.get(pkg.name()),
-                                     configuration.getText("doclet.ClassUse_MethodArgs",
-                                             classLink,
-                                             pkgLink));
-        methodSubWriter.printUseInfo(pkgToMethodArgTypeParameter.get(pkg.name()),
-            configuration.getText("doclet.ClassUse_MethodArgsTypeParameters",
-            classLink,
-            pkgLink));
-        methodSubWriter.printUseInfo(pkgToMethodThrows.get(pkg.name()),
-                                     configuration.getText("doclet.ClassUse_MethodThrows",
-                                             classLink,
-                                             pkgLink));
-        constrSubWriter.printUseInfo(pkgToConstructorAnnotations.get(pkg.name()),
-            configuration.getText("doclet.ClassUse_ConstructorAnnotations",
-                classLink,
-                pkgLink));
-        constrSubWriter.printUseInfo(pkgToConstructorParameterAnnotations.get(pkg.name()),
-            configuration.getText("doclet.ClassUse_ConstructorParameterAnnotations",
-                classLink,
-                pkgLink));
-        constrSubWriter.printUseInfo(pkgToConstructorArgs.get(pkg.name()),
-                                     configuration.getText("doclet.ClassUse_ConstructorArgs",
-                                             classLink,
-                                             pkgLink));
-        constrSubWriter.printUseInfo(pkgToConstructorArgTypeParameter.get(pkg.name()),
-            configuration.getText("doclet.ClassUse_ConstructorArgsTypeParameters",
-            classLink,
-            pkgLink));
-        constrSubWriter.printUseInfo(pkgToConstructorThrows.get(pkg.name()),
-                                     configuration.getText("doclet.ClassUse_ConstructorThrows",
-                                             classLink,
-                                             pkgLink));
+        String pkgLink = getPackageLinkString(pkg, Util.getPackageName(pkg), false);
+        classSubWriter.addUseInfo(pkgToClassAnnotations.get(pkg.name()),
+                configuration.getText("doclet.ClassUse_Annotation", classLink,
+                pkgLink), classUseTableSummary, contentTree);
+        classSubWriter.addUseInfo(pkgToClassTypeParameter.get(pkg.name()),
+                configuration.getText("doclet.ClassUse_TypeParameter", classLink,
+                pkgLink), classUseTableSummary, contentTree);
+        classSubWriter.addUseInfo(pkgToSubclass.get(pkg.name()),
+                configuration.getText("doclet.ClassUse_Subclass", classLink,
+                pkgLink), subclassUseTableSummary, contentTree);
+        classSubWriter.addUseInfo(pkgToSubinterface.get(pkg.name()),
+                configuration.getText("doclet.ClassUse_Subinterface", classLink,
+                pkgLink), subinterfaceUseTableSummary, contentTree);
+        classSubWriter.addUseInfo(pkgToImplementingClass.get(pkg.name()),
+                configuration.getText("doclet.ClassUse_ImplementingClass", classLink,
+                pkgLink), classUseTableSummary, contentTree);
+        fieldSubWriter.addUseInfo(pkgToField.get(pkg.name()),
+                configuration.getText("doclet.ClassUse_Field", classLink,
+                pkgLink), fieldUseTableSummary, contentTree);
+        fieldSubWriter.addUseInfo(pkgToFieldAnnotations.get(pkg.name()),
+                configuration.getText("doclet.ClassUse_FieldAnnotations", classLink,
+                pkgLink), fieldUseTableSummary, contentTree);
+        fieldSubWriter.addUseInfo(pkgToFieldTypeParameter.get(pkg.name()),
+                configuration.getText("doclet.ClassUse_FieldTypeParameter", classLink,
+                pkgLink), fieldUseTableSummary, contentTree);
+        methodSubWriter.addUseInfo(pkgToMethodAnnotations.get(pkg.name()),
+                configuration.getText("doclet.ClassUse_MethodAnnotations", classLink,
+                pkgLink), methodUseTableSummary, contentTree);
+        methodSubWriter.addUseInfo(pkgToMethodParameterAnnotations.get(pkg.name()),
+                configuration.getText("doclet.ClassUse_MethodParameterAnnotations", classLink,
+                pkgLink), methodUseTableSummary, contentTree);
+        methodSubWriter.addUseInfo(pkgToMethodTypeParameter.get(pkg.name()),
+                configuration.getText("doclet.ClassUse_MethodTypeParameter", classLink,
+                pkgLink), methodUseTableSummary, contentTree);
+        methodSubWriter.addUseInfo(pkgToMethodReturn.get(pkg.name()),
+                configuration.getText("doclet.ClassUse_MethodReturn", classLink,
+                pkgLink), methodUseTableSummary, contentTree);
+        methodSubWriter.addUseInfo(pkgToMethodReturnTypeParameter.get(pkg.name()),
+                configuration.getText("doclet.ClassUse_MethodReturnTypeParameter", classLink,
+                pkgLink), methodUseTableSummary, contentTree);
+        methodSubWriter.addUseInfo(pkgToMethodArgs.get(pkg.name()),
+                configuration.getText("doclet.ClassUse_MethodArgs", classLink,
+                pkgLink), methodUseTableSummary, contentTree);
+        methodSubWriter.addUseInfo(pkgToMethodArgTypeParameter.get(pkg.name()),
+                configuration.getText("doclet.ClassUse_MethodArgsTypeParameters", classLink,
+                pkgLink), methodUseTableSummary, contentTree);
+        methodSubWriter.addUseInfo(pkgToMethodThrows.get(pkg.name()),
+                configuration.getText("doclet.ClassUse_MethodThrows", classLink,
+                pkgLink), methodUseTableSummary, contentTree);
+        constrSubWriter.addUseInfo(pkgToConstructorAnnotations.get(pkg.name()),
+                configuration.getText("doclet.ClassUse_ConstructorAnnotations", classLink,
+                pkgLink), constructorUseTableSummary, contentTree);
+        constrSubWriter.addUseInfo(pkgToConstructorParameterAnnotations.get(pkg.name()),
+                configuration.getText("doclet.ClassUse_ConstructorParameterAnnotations", classLink,
+                pkgLink), constructorUseTableSummary, contentTree);
+        constrSubWriter.addUseInfo(pkgToConstructorArgs.get(pkg.name()),
+                configuration.getText("doclet.ClassUse_ConstructorArgs", classLink,
+                pkgLink), constructorUseTableSummary, contentTree);
+        constrSubWriter.addUseInfo(pkgToConstructorArgTypeParameter.get(pkg.name()),
+                configuration.getText("doclet.ClassUse_ConstructorArgsTypeParameters", classLink,
+                pkgLink), constructorUseTableSummary, contentTree);
+        constrSubWriter.addUseInfo(pkgToConstructorThrows.get(pkg.name()),
+                configuration.getText("doclet.ClassUse_ConstructorThrows", classLink,
+                pkgLink), constructorUseTableSummary, contentTree);
     }
 
     /**
-     * Print the header for the class use Listing.
+     * Get the header for the class use Listing.
+     *
+     * @return a content tree representing the class use header
      */
-    protected void printClassUseHeader() {
+    protected Content getClassUseHeader() {
         String cltype = configuration.getText(classdoc.isInterface()?
-                                    "doclet.Interface":
-                                    "doclet.Class");
+            "doclet.Interface":"doclet.Class");
         String clname = classdoc.qualifiedName();
-        printHtmlHeader(configuration.getText("doclet.Window_ClassUse_Header",
-                            cltype, clname), null, true);
-        printTop();
-        navLinks(true);
-        hr();
-        center();
-        h2();
-        boldText("doclet.ClassUse_Title", cltype, clname);
-        h2End();
-        centerEnd();
+        String title = configuration.getText("doclet.Window_ClassUse_Header",
+                cltype, clname);
+        Content bodyTree = getBody(true, getWindowTitle(title));
+        addTop(bodyTree);
+        addNavLinks(true, bodyTree);
+        Content headContent = getResource("doclet.ClassUse_Title", cltype, clname);
+        Content heading = HtmlTree.HEADING(HtmlConstants.CLASS_PAGE_HEADING,
+                true, HtmlStyle.title, headContent);
+        Content div = HtmlTree.DIV(HtmlStyle.header, heading);
+        bodyTree.addContent(div);
+        return bodyTree;
     }
 
     /**
-     * Print the footer for the class use Listing.
+     * Get this package link.
+     *
+     * @return a content tree for the package link
      */
-    protected void printClassUseFooter() {
-        hr();
-        navLinks(false);
-        printBottom();
-        printBodyHtmlEnd();
-    }
-
-
-    /**
-     * Print this package link
-     */
-    protected void navLinkPackage() {
-        navCellStart();
-        printHyperLink("../package-summary.html", "",
-                       configuration.getText("doclet.Package"), true, "NavBarFont1");
-        navCellEnd();
+    protected Content getNavLinkPackage() {
+        Content linkContent = getHyperLink("../package-summary.html", "",
+                packageLabel);
+        Content li = HtmlTree.LI(linkContent);
+        return li;
     }
 
     /**
-     * Print class page indicator
+     * Get class page link.
+     *
+     * @return a content tree for the class page link
      */
-    protected void navLinkClass() {
-        navCellStart();
-        printLink(new LinkInfoImpl(LinkInfoImpl.CONTEXT_CLASS_USE_HEADER, classdoc, "",
-            configuration.getText("doclet.Class"), true, "NavBarFont1"));
-        navCellEnd();
+    protected Content getNavLinkClass() {
+        Content linkContent = new RawHtml(getLink(new LinkInfoImpl(
+                LinkInfoImpl.CONTEXT_CLASS_USE_HEADER, classdoc, "",
+                configuration.getText("doclet.Class"), false)));
+        Content li = HtmlTree.LI(linkContent);
+        return li;
     }
 
     /**
-     * Print class use link
+     * Get the use link.
+     *
+     * @return a content tree for the use link
      */
-    protected void navLinkClassUse() {
-        navCellRevStart();
-        fontStyle("NavBarFont1Rev");
-        boldText("doclet.navClassUse");
-        fontEnd();
-        navCellEnd();
+    protected Content getNavLinkClassUse() {
+        Content li = HtmlTree.LI(HtmlStyle.navBarCell1Rev, useLabel);
+        return li;
     }
 
-    protected void navLinkTree() {
-        navCellStart();
-        if (classdoc.containingPackage().isIncluded()) {
-            printHyperLink("../package-tree.html", "",
-                configuration.getText("doclet.Tree"), true, "NavBarFont1");
-        } else {
-            printHyperLink(relativePath + "overview-tree.html", "",
-                configuration.getText("doclet.Tree"), true, "NavBarFont1");
-        }
-        navCellEnd();
+    /**
+     * Get the tree link.
+     *
+     * @return a content tree for the tree link
+     */
+    protected Content getNavLinkTree() {
+        Content linkContent = classdoc.containingPackage().isIncluded() ?
+            getHyperLink("../package-tree.html", "", treeLabel) :
+            getHyperLink(relativePath + "overview-tree.html", "", treeLabel);
+        Content li = HtmlTree.LI(linkContent);
+        return li;
     }
-
 }

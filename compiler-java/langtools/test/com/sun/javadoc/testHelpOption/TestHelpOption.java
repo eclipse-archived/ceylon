@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -23,20 +23,19 @@
 
 /*
  * @test
- * @bug      4934778 4777599
+ * @bug      4934778 4777599 6553182
  * @summary  Make sure that the -help option works properly.  Make sure
  *           the help link appears in the documentation.
  * @author   jamieh
  * @library  ../lib/
- * @build    JavadocTester
- * @build    TestHelpOption
+ * @build    JavadocTester TestHelpOption
  * @run main TestHelpOption
  */
 
 public class TestHelpOption extends JavadocTester {
 
     //Test information.
-    private static final String BUG_ID = "4934778-4777599";
+    private static final String BUG_ID = "4934778-4777599-6553182";
 
     //Javadoc arguments.
     private static final String[] ARGS = new String[] {
@@ -79,6 +78,7 @@ public class TestHelpOption extends JavadocTester {
         {STANDARD_OUTPUT, "-tag "},
         {STANDARD_OUTPUT, "-taglet "},
         {STANDARD_OUTPUT, "-tagletpath "},
+        {STANDARD_OUTPUT, "-Xdocrootparent "},
         {STANDARD_OUTPUT, "-charset "},
         {STANDARD_OUTPUT, "-helpfile "},
         {STANDARD_OUTPUT, "-linksource "},
@@ -91,7 +91,7 @@ public class TestHelpOption extends JavadocTester {
 
     private static final String[][] TEST2 = {
         {BUG_ID + FS + "TestHelpOption.html",
-            "<A HREF=\"help-doc.html\"><FONT CLASS=\"NavBarFont1\">" +            "<B>Help</B></FONT></A>"
+            "<li><a href=\"help-doc.html\">Help</a></li>"
         },
     };
     private static final String[][] NEGATED_TEST2 = NO_TEST;

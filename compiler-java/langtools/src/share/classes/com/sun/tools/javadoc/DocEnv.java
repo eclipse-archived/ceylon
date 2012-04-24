@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2010, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,23 +25,20 @@
 
 package com.sun.tools.javadoc;
 
-import java.util.*;
 import java.lang.reflect.Modifier;
+import java.util.*;
+import javax.tools.JavaFileManager;
 
 import com.sun.javadoc.*;
 
 import com.sun.tools.javac.code.*;
 import com.sun.tools.javac.code.Symbol.*;
 import com.sun.tools.javac.code.Type.ClassType;
-import com.sun.tools.javac.code.Type.TypeVar;
-import com.sun.tools.javac.comp.Attr;
 import com.sun.tools.javac.comp.Check;
 import com.sun.tools.javac.tree.JCTree.*;
 import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.List;
-import com.sun.tools.javac.util.Name;
+import com.sun.tools.javac.util.Names;
 import com.sun.tools.javac.util.Position;
-
 
 /**
  * Holds the environment for a run of javadoc.
@@ -75,15 +72,11 @@ public class DocEnv {
     /** Referenced directly in RootDocImpl. */
     JavadocClassReader reader;
 
-    /** The compiler's attribution phase (needed to evaluate
-     *  constant initializers). */
-    Attr attr;
-
     /** Javadoc's own version of the compiler's enter phase. */
     JavadocEnter enter;
 
     /** The name table. */
-    Name.Table names;
+    Names names;
 
     /** The encoding name. */
     private String encoding;
@@ -92,8 +85,6 @@ public class DocEnv {
 
     /** Access filter (public, protected, ...).  */
     ModifierFilter showAccess;
-
-    private ClassDocImpl runtimeException;
 
     /** True if we are using a sentence BreakIterator. */
     boolean breakiterator;
@@ -105,6 +96,7 @@ public class DocEnv {
 
     Check chk;
     Types types;
+    JavaFileManager fileManager;
 
     /** Allow documenting from class files? */
     boolean docClasses = false;
@@ -130,11 +122,11 @@ public class DocEnv {
         syms = Symtab.instance(context);
         reader = JavadocClassReader.instance0(context);
         enter = JavadocEnter.instance0(context);
-        attr = Attr.instance(context);
-        names = Name.Table.instance(context);
+        names = Names.instance(context);
         externalizableSym = reader.enterClass(names.fromString("java.io.Externalizable"));
         chk = Check.instance(context);
         types = Types.instance(context);
+        fileManager = context.get(JavaFileManager.class);
 
         // Default.  Should normally be reset with setLocale.
         this.doclocale = new DocLocale(this, "", breakiterator);
@@ -645,6 +637,7 @@ public class DocEnv {
      * Should be called only on symbols representing methods.
      */
     public MethodDocImpl getMethodDoc(MethodSymbol meth) {
+        assert !meth.isConstructor() : "not expecting a constructor symbol";
         MethodDocImpl result = (MethodDocImpl)methodMap.get(meth);
         if (result != null) return result;
         result = new MethodDocImpl(this, meth);
@@ -673,6 +666,7 @@ public class DocEnv {
      * Should be called only on symbols representing constructors.
      */
     public ConstructorDocImpl getConstructorDoc(MethodSymbol meth) {
+        assert meth.isConstructor() : "expecting a constructor symbol";
         ConstructorDocImpl result = (ConstructorDocImpl)methodMap.get(meth);
         if (result != null) return result;
         result = new ConstructorDocImpl(this, meth);

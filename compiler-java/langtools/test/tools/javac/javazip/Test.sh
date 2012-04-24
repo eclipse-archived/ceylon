@@ -1,7 +1,7 @@
 #! /bin/sh -f
 
 #
-# Copyright (c) 2005, 2006, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 #
 # This code is free software; you can redistribute it and/or modify it
@@ -66,8 +66,8 @@ check() {
     # clean old classes
     rm -f ${TC}${FS}*.class 
 
-    echo "$*"
-    if $* 2>&1 ; then
+    echo "$@"
+    if "$@" 2>&1 ; then
       actual=ok
     else
       actual=err

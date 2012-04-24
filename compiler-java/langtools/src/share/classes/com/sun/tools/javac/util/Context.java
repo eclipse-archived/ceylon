@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,7 +25,6 @@
 
 package com.sun.tools.javac.util;
 
-import com.sun.tools.javac.Main;
 import java.util.*;
 
 /**
@@ -109,7 +108,7 @@ public class Context {
      * instance.
      */
     public static interface Factory<T> {
-        T make();
+        T make(Context c);
     };
 
     /**
@@ -117,7 +116,7 @@ public class Context {
      * We maintain the invariant that this table contains only
      * mappings of the form
      * Key<T> -> T or Key<T> -> Factory<T> */
-    private Map<Key,Object> ht = new HashMap<Key,Object>();
+    private Map<Key<?>,Object> ht = new HashMap<Key<?>,Object>();
 
     /** Set the factory for the key in this context. */
     public <T> void put(Key<T> key, Factory<T> fac) {
@@ -125,15 +124,17 @@ public class Context {
         Object old = ht.put(key, fac);
         if (old != null)
             throw new AssertionError("duplicate context value");
+        checkState(ft);
+        ft.put(key, fac); // cannot be duplicate if unique in ht
     }
 
     /** Set the value for the key in this context. */
     public <T> void put(Key<T> key, T data) {
-        if (data instanceof Factory)
+        if (data instanceof Factory<?>)
             throw new AssertionError("T extends Context.Factory");
         checkState(ht);
         Object old = ht.put(key, data);
-        if (old != null && !(old instanceof Factory) && old != data && data != null)
+        if (old != null && !(old instanceof Factory<?>) && old != data && data != null)
             throw new AssertionError("duplicate context value");
     }
 
@@ -141,12 +142,12 @@ public class Context {
     public <T> T get(Key<T> key) {
         checkState(ht);
         Object o = ht.get(key);
-        if (o instanceof Factory) {
-            Factory fac = (Factory)o;
-            o = fac.make();
-            if (o instanceof Factory)
+        if (o instanceof Factory<?>) {
+            Factory<?> fac = (Factory<?>)o;
+            o = fac.make(this);
+            if (o instanceof Factory<?>)
                 throw new AssertionError("T extends Context.Factory");
-            assert ht.get(key) == o;
+            Assert.check(ht.get(key) == o);
         }
 
         /* The following cast can't fail unless there was
@@ -159,6 +160,20 @@ public class Context {
 
     public Context() {}
 
+    /**
+     * The table of preregistered factories.
+     */
+    private Map<Key<?>,Factory<?>> ft = new HashMap<Key<?>,Factory<?>>();
+
+    public Context(Context prev) {
+        kt.putAll(prev.kt);     // retain all implicit keys
+        ft.putAll(prev.ft);     // retain all factory objects
+        ht.putAll(prev.ft);     // init main table with factories
+    }
+
+    /*
+     * The key table, providing a unique Key<T> for each Class<T>.
+     */
     private Map<Class<?>, Key<?>> kt = new HashMap<Class<?>, Key<?>>();
 
     private <T> Key<T> key(Class<T> clss) {
@@ -199,45 +214,11 @@ public class Context {
     public void clear() {
         ht = null;
         kt = null;
+        ft = null;
     }
 
     private static void checkState(Map<?,?> t) {
         if (t == null)
             throw new IllegalStateException();
     }
-
-
-    public static class SourceLanguage {
-        public enum Language {
-            JAVA, CEYLON
-        }
-
-        private static ThreadLocal<ArrayList<Language>> theStack =
-            new ThreadLocal<ArrayList<Language>> () {
-            protected ArrayList<Language> initialValue() {
-                ArrayList<Language> l = new ArrayList<Language>();
-                l.add(Language.JAVA);
-                return l;
-            }
-        };
-
-        private static ArrayList<Language> stack() {
-            return theStack.get();
-        }
-
-        public static void push(final Language lang) {
-            stack().add(lang);
-        }
-        public static Language pop() {
-            return stack().remove(stack().size() - 1);
-        }
-        public static Language current() {
-            return stack().get(stack().size() - 1);
-        }
-    }
-
-    public static boolean isCeylon() {
-        return SourceLanguage.current() == SourceLanguage.Language.CEYLON;
-    }
-
 }
