@@ -44,8 +44,6 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.NestingKind;
 import javax.tools.JavaFileObject;
 
-import com.sun.tools.javac.util.BaseFileManager;
-
 
 /**
  *  Implementation of JavaFileObject using java.nio.file API.
@@ -153,7 +151,7 @@ abstract class PathFileObject implements JavaFileObject {
 
     @Override
     public Kind getKind() {
-        return BaseFileManager.getKind(path.getFileName().toString());
+        return fileManager.getKind(path.getFileName().toString());
     }
 
     @Override

@@ -39,8 +39,6 @@ import javax.tools.JavaFileObject;
 
 import static javax.tools.JavaFileObject.Kind.*;
 
-import com.sun.tools.javac.util.BaseFileManager;
-
 /**
  * <p><b>This is NOT part of any supported API.
  * If you write code that depends on this, you do so at your own risk.
@@ -75,8 +73,8 @@ public abstract class BaseFileObject implements JavaFileObject {
 
     protected abstract String inferBinaryName(Iterable<? extends File> path);
 
-    protected static JavaFileObject.Kind getKind(String filename) {
-        return BaseFileManager.getKind(filename);
+    protected JavaFileObject.Kind getKind(String filename) {
+        return fileManager.getKind(filename);
     }
 
     protected static String removeExtension(String fileName) {

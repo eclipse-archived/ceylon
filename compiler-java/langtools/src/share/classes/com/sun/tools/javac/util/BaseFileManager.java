@@ -334,7 +334,7 @@ public abstract class BaseFileManager {
             = new HashMap<JavaFileObject, SoftReference<CharBuffer>>();
     // </editor-fold>
 
-    public static Kind getKind(String name) {
+    public Kind getKind(String name) {
         if (name.endsWith(Kind.CLASS.extension))
             return Kind.CLASS;
         else if (name.endsWith(Kind.SOURCE.extension))
