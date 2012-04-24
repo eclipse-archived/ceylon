@@ -14,6 +14,9 @@ void characters() {
     assert(`a`<`z`, "char order");
     assert(`a`.successor==`b`, "char successor");
     assert(`Z`.predecessor==`Y`, "char predecessor");
+    assert(`\t`.integer==9, "escaped characters 1");
+    assert(`\\`.integer==92, "escaped characters 2");
+    assert(`\``.integer==96, "escaped characters 3");
     
     variable value i:=0;
     for (x in `a`..`z`) {
