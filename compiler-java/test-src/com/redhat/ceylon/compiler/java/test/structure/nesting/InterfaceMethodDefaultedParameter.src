@@ -63,12 +63,12 @@ final class I$impl<T> {
         return 1L;
     }
     
-    public final long m3$n(final long i) {
-        return 2L * i;
-    }
-    
     private final long m3() {
         return $this.m3();
+    }
+    
+    public final long m3$n(final long i) {
+        return 2L * i;
     }
     
     private final long m3(final long i) {
@@ -87,12 +87,12 @@ final class I$impl<T> {
         return null;
     }
     
-    public final <U>U m5$u(final long i, final T t) {
-        return null;
-    }
-    
     private final <U>long m5(final long i) {
         return $this.<U>m5(i);
+    }
+    
+    public final <U>U m5$u(final long i, final T t) {
+        return null;
     }
     
     private final <U>long m5(final long i, final T t) {

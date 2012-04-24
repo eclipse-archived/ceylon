@@ -19,12 +19,12 @@ final class I1$impl {
         return 0L;
     }
     
-    public final boolean m1$b(final long i) {
-        return false;
-    }
-    
     private final .java.lang.String m1() {
         return $this.m1();
+    }
+    
+    public final boolean m1$b(final long i) {
+        return false;
     }
     
     private final .java.lang.String m1(final long i) {
@@ -54,12 +54,12 @@ final class I2$impl {
         return 0L;
     }
     
-    public final boolean m2$b(final long i) {
-        return false;
-    }
-    
     private final .java.lang.String m2() {
         return $this.m2();
+    }
+    
+    public final boolean m2$b(final long i) {
+        return false;
     }
     
     private final .java.lang.String m2(final long i) {
