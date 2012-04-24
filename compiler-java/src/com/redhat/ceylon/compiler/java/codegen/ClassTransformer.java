@@ -605,12 +605,13 @@ public class ClassTransformer extends AbstractTransformer {
             methodBuilder.parameter(param);
             DefaultArgument defaultArgument = param.getDefaultArgument();
                 
-            if (defaultArgument != null
-                    || param.getDeclarationModel().isSequenced()) {
+            if (model.getRefinedDeclaration() == model 
+                    && (defaultArgument != null
+                        || param.getDeclarationModel().isSequenced())) {
                 
                 JCMethodDecl defaultValueMethodImpl = makeParamDefaultValueMethod(false, def, paramList, param);
                 if (Decl.defaultParameterMethodOnSelf(def)) {
-                    lb.add(defaultValueMethodImpl);
+                    lb.add(defaultValueMethodImpl);    
                 } else {
                     lb.add(makeParamDefaultValueMethod(true, def, paramList, param));
                     classBuilder.getCompanionBuilder().defs(defaultValueMethodImpl);
