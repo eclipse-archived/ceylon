@@ -34,6 +34,7 @@ is required before building the compiler and typechecker), type:
 
 Other commands:
 
+* `ant clean`        - clean the build (might be needed before `publish`)
 * `ant test`         - run the tests         
 * `ant clean.repo`   - clean local repository
 * `ant publish`      - publish module `ceylon.language` 
@@ -42,3 +43,6 @@ Other commands:
 Alternatively you can build this project using Maven:
 
     mvn install
+
+But the maven build is known to not work on every system, prefer `ant clean publish`
+to build the project.
