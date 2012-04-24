@@ -6,3 +6,5 @@ interface Inter2 {
 class Impl1() satisfies Inter1 {
   shared actual String b() { return a()+"b"; }
 }
+
+Impl2 impl2 = Impl2();
