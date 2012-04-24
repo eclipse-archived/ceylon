@@ -26,7 +26,6 @@
 package com.sun.tools.javac.main;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedHashMap;

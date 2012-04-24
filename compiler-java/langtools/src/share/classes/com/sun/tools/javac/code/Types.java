@@ -266,7 +266,7 @@ public class Types {
      * Is t a subtype of or convertiable via boxing/unboxing
      * convertions to s?
      */
-    private boolean isConvertibleNotOptional(Type t, Type s, Warner warn) {
+    public boolean isConvertible(Type t, Type s, Warner warn) {
         boolean tPrimitive = t.isPrimitive();
         boolean sPrimitive = s.isPrimitive();
         if (tPrimitive == sPrimitive)
@@ -276,13 +276,6 @@ public class Types {
             ? isSubtype(boxedClass(t).type, s)
             : isSubtype(unboxedType(t), s);
      }
-
-    public boolean isConvertible(Type t, Type s, Warner warn) {
-        if (isConvertibleNotOptional(t, s, warn))
-            return true;
-
-        return false;
-    }
 
     /**
      * Is t a subtype of or convertiable via boxing/unboxing
@@ -339,14 +332,6 @@ public class Types {
 
         if (s.tag >= firstPartialTag)
             return isSuperType(s, t);
-
-        if (s.isCompound()) {
-            for (Type s2 : interfaces(s).prepend(supertype(s))) {
-                if (!isSubtype(t, s2, capture))
-                    return false;
-            }
-            return true;
-        }
 
         Type lower = lowerBound(s);
         if (s != lower)
@@ -2783,14 +2768,6 @@ public class Types {
     /**
      * Capture conversion as specified by JLS 3rd Ed.
      */
-
-    public List<Type> capture(List<Type> ts) {
-        List<Type> buf = List.nil();
-        for (Type t : ts) {
-            buf = buf.prepend(capture(t));
-        }
-        return buf.reverse();
-    }
     public Type capture(Type t) {
         if (t.tag != CLASS)
             return t;

@@ -279,7 +279,7 @@ public class Resolve {
                         boolean allowBoxing,
                         boolean useVarargs,
                         Warner warn)
-        throws Infer.InferenceException {
+        throws Infer.NoInstanceException {
         if (useVarargs && (m.flags() & VARARGS) == 0) return null;
         Type mt = types.memberType(site, m);
 
@@ -350,7 +350,7 @@ public class Resolve {
         try {
             return rawInstantiate(env, site, m, argtypes, typeargtypes,
                                   allowBoxing, useVarargs, warn);
-        } catch (Infer.InferenceException ex) {
+        } catch (Infer.NoInstanceException ex) {
             return null;
         }
     }
@@ -562,7 +562,7 @@ public class Resolve {
                 default: return bestSoFar;
                 }
             }
-        } catch (Infer.InferenceException ex) {
+        } catch (Infer.NoInstanceException ex) {
             switch (bestSoFar.kind) {
             case ABSENT_MTH:
                 return wrongMethod.setWrongSym(sym, ex.getDiagnostic());
@@ -1209,30 +1209,19 @@ public class Resolve {
      *  @param typeargtypes  The types of the invocation's type arguments.
      */
     Symbol resolveQualifiedMethod(DiagnosticPosition pos, Env<AttrContext> env,
-            Type site, Name name, List<Type> argtypes,
-            List<Type> typeargtypes) {
-        Symbol sym = resolveQualifiedMethod(env,
-                site,
-                name,
-                argtypes,
-                typeargtypes);
-        if (sym.kind >= AMBIGUOUS) {
-            sym = access(sym, pos, site, name, true, argtypes, typeargtypes);
-        }
-        return sym;
-    }
-
-    public Symbol resolveQualifiedMethod(Env<AttrContext> env,
-            Type site, Name name, List<Type> argtypes,
-            List<Type> typeargtypes) {
+                                  Type site, Name name, List<Type> argtypes,
+                                  List<Type> typeargtypes) {
         Symbol sym = findMethod(env, site, name, argtypes, typeargtypes, false,
-                env.info.varArgs=false, false);
+                                env.info.varArgs=false, false);
         if (varargsEnabled && sym.kind >= WRONG_MTHS) {
             sym = findMethod(env, site, name, argtypes, typeargtypes, true,
-                    false, false);
+                             false, false);
             if (sym.kind >= WRONG_MTHS)
                 sym = findMethod(env, site, name, argtypes, typeargtypes, true,
-                        env.info.varArgs=true, false);
+                                 env.info.varArgs=true, false);
+        }
+        if (sym.kind >= AMBIGUOUS) {
+            sym = access(sym, pos, site, name, true, argtypes, typeargtypes);
         }
         return sym;
     }
