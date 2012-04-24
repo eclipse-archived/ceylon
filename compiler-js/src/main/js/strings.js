@@ -389,6 +389,7 @@ function codepointFromString(str, index) {
     var second = str.charCodeAt(index+1);
     return isNaN(second) ? first : ((first<<10) + second - 0x35fdc00);
 }
+exports.codepointFromString=codepointFromString;
 
 function Character(value) {
     var that = new Character.$$;
