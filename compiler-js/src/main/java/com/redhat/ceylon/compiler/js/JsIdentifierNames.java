@@ -111,6 +111,7 @@ public class JsIdentifierNames {
      * for the getter of the given declaration.
      */
     public String getter(Declaration decl) {
+        if (decl == null) { return ""; }
         String name = getName(decl, true);
         return String.format("get%c%s", Character.toUpperCase(name.charAt(0)),
                 name.substring(1));
@@ -200,6 +201,7 @@ public class JsIdentifierNames {
             new HashMap<Declaration, String>();
     
     private String getName(Declaration decl, boolean forGetterSetter) {
+        if (decl == null) { return null; }
         String name = decl.getName();
         if (!((decl.isShared() || decl.isToplevel())
                 && (forGetterSetter || (decl instanceof Method)

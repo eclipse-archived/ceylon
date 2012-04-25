@@ -1135,7 +1135,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private static Declaration getToplevel(Declaration d) {
-        while (!d.isToplevel()) {
+        while (d != null && !d.isToplevel()) {
             Scope s = d.getContainer();
             // Skip any non-declaration elements
             while (!(s instanceof Declaration)) {
@@ -1147,9 +1147,11 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private static boolean hasAnnotationByName(Declaration d, String name){
-        for(com.redhat.ceylon.compiler.typechecker.model.Annotation annotation : d.getAnnotations()){
-            if(annotation.getName().equals(name))
-                return true;
+        if (d != null) {
+            for(com.redhat.ceylon.compiler.typechecker.model.Annotation annotation : d.getAnnotations()){
+                if(annotation.getName().equals(name))
+                    return true;
+            }
         }
         return false;
     }
@@ -1342,17 +1344,17 @@ public class GenerateJsVisitor extends Visitor
     public void visit(PositionalArgumentList that) {
         out("(");
         if (!that.getPositionalArguments().isEmpty()) {
+            if (that.getPositionalArguments().size() > 1) {
+                //This is temporary, typechecker will give us parameters for multiple parameter lists eventually
+                that.addError("Functions with multiple parameter lists cannot be invoked yet");
+                return;
+            }
             boolean first=true;
             boolean sequenced=false;
             for (PositionalArgument arg: that.getPositionalArguments()) {
-                if (arg.getParameter() == null) {
-                    //This is temporary, typechecker will give us parameters for multiple parameter lists eventually
-                    that.addError("Multiple parameter lists cannot be invoked yet.");
-                    return;
-                }
                 if (!first) out(",");
                 int boxType = boxUnboxStart(arg.getExpression().getTerm(), arg.getParameter());
-                if (!sequenced && arg.getParameter().isSequenced() && that.getEllipsis() == null) {
+                if (!sequenced && arg.getParameter() != null && arg.getParameter().isSequenced() && that.getEllipsis() == null) {
                     sequenced=true;
                     out(clAlias, ".ArraySequence([");
                 }
@@ -1568,7 +1570,7 @@ public class GenerateJsVisitor extends Visitor
                 return path;
             }
         }
-        else if ((d.isShared() || inProto) && d.isClassOrInterfaceMember()) {
+        else if (d != null && (d.isShared() || inProto) && d.isClassOrInterfaceMember()) {
             TypeDeclaration id = that.getScope().getInheritingDeclaration(d);
             if (id==null) {
                 //a shared local declaration
@@ -1584,8 +1586,12 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private boolean isImported(Node that, Declaration d) {
-        return !d.getUnit().getPackage()
-                .equals(that.getUnit().getPackage());
+        if (d == null) {
+            return false;
+        }
+        Package p1 = d.getUnit().getPackage();
+        Package p2 = that.getUnit().getPackage();
+        return !p1.equals(p2);
     }
 
     @Override
