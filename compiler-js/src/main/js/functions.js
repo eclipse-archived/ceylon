@@ -116,7 +116,9 @@ function nonempty(value) {
 }
 
 function isOfType(obj, typeName) {
-    if (obj === null) return Boolean$(typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void");
+    if (obj === null) {
+        return Boolean$(typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void");
+    }
     if (typeof obj === 'function') {
         return Boolean$(typeName === 'ceylon.language.Callable');
     }
@@ -125,7 +127,7 @@ function isOfType(obj, typeName) {
     return Boolean$(typeName in cons.T$all);
 }
 function isOfTypes(obj, types) {
-    if (obj===null) { //TODO check if this is right
+    if (obj===null) {
         return types.l.indexOf('ceylon.language.Nothing')>=0 || types.l.indexOf('ceylon.language.Void')>=0;
     }
     if (typeof obj === 'function') {
@@ -158,6 +160,9 @@ function className(obj) {
     if (obj === null) return String$('ceylon.language.Nothing');
     var cons = obj.$$;
     if (cons === undefined) cons = obj.constructor;
+    if (cons.T$name === undefined) {
+        return String$('ceylon.language.Callable');
+    }
     return String$(cons.T$name);
 }
 
