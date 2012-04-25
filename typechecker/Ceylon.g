@@ -1490,10 +1490,12 @@ positionalArgument returns [PositionalArgument positionalArgument]
     @init { FunctionArgument fa = new FunctionArgument(null);
             fa.setType(new FunctionModifier(null));
             PositionalArgument pa = new PositionalArgument(null); }
-    : (FUNCTION_MODIFIER|parametersStart)=>
+    : (FUNCTION_MODIFIER|VOID_MODIFIER|parametersStart)=>
       (
         FUNCTION_MODIFIER 
         { fa.setType(new FunctionModifier($FUNCTION_MODIFIER)); }
+      | VOID_MODIFIER
+         { fa.setType(new FunctionModifier($VOID_MODIFIER)); }
       )?
       p1=parameters
       { fa.addParameterList($p1.parameterList); }
@@ -1505,12 +1507,12 @@ positionalArgument returns [PositionalArgument positionalArgument]
       expression
       { fa.setExpression($expression.expression); 
         $positionalArgument = fa; }
-    | VALUE_MODIFIER
+    /*| VALUE_MODIFIER
       { fa.setType(new FunctionModifier($VALUE_MODIFIER)); } 
       expression
       { fa.addParameterList(new ParameterList(null));
         fa.setExpression($expression.expression); 
-        $positionalArgument = fa; }
+        $positionalArgument = fa; }*/
     | expression
       { pa.setExpression($expression.expression);
         $positionalArgument = pa; }
