@@ -301,16 +301,6 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private String replacements(String value) {
-        value = value.replace("\r\n", "\n")
-                .replace("\r", "\n")
-                .replace("\\b", "\b")
-                .replace("\\t", "\t")
-                .replace("\\n", "\n")
-                .replace("\\f", "\f")
-                .replace("\\r", "\r")
-                .replace("\\\\", "\\")
-                .replace("\\\"", "\"")
-                .replace("\\'", "'");
         return value;
     }
 
