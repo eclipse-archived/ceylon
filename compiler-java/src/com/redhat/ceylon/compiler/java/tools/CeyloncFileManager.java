@@ -99,7 +99,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
     public JavaFileObject.Kind getKind(String name) {
         if (name.endsWith(JavaFileObject.Kind.CLASS.extension))
             return JavaFileObject.Kind.CLASS;
-        else if (/*name.endsWith(JavaFileObject.Kind.SOURCE.extension) || */name.endsWith(".ceylon"))
+        else if (name.endsWith(JavaFileObject.Kind.SOURCE.extension) || name.endsWith(".ceylon"))
             return JavaFileObject.Kind.SOURCE;
         else if (name.endsWith(JavaFileObject.Kind.HTML.extension))
             return JavaFileObject.Kind.HTML;
