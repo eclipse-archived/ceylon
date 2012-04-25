@@ -96,12 +96,12 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         super.setContext(context);
     }
 
-    public JavaFileObject.Kind getKind(String extension) {
-        if (extension.equals(JavaFileObject.Kind.CLASS.extension))
+    public JavaFileObject.Kind getKind(String name) {
+        if (name.endsWith(JavaFileObject.Kind.CLASS.extension))
             return JavaFileObject.Kind.CLASS;
-        else if (/*extension.equals(JavaFileObject.Kind.SOURCE.extension) || */extension.equals(".ceylon"))
+        else if (/*name.endsWith(JavaFileObject.Kind.SOURCE.extension) || */name.endsWith(".ceylon"))
             return JavaFileObject.Kind.SOURCE;
-        else if (extension.equals(JavaFileObject.Kind.HTML.extension))
+        else if (name.endsWith(JavaFileObject.Kind.HTML.extension))
             return JavaFileObject.Kind.HTML;
         else
             return JavaFileObject.Kind.OTHER;
