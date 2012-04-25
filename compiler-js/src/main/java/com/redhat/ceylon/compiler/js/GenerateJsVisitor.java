@@ -583,15 +583,17 @@ public class GenerateJsVisitor extends Visitor
         }
 
         out(");");
-        endBlock();
+        
         //The class definition needs to be inside the init function if we want forwards decls to work in prototype style
         if (prototypeStyle && (d instanceof ClassOrInterface)) {
+            endLine();
             if (type instanceof ClassDefinition) {
                 addToPrototype(((ClassDefinition)type).getDeclarationModel(), ((ClassDefinition)type).getClassBody().getStatements());
-            } else  if (type instanceof InterfaceDefinition) {
+            } else if (type instanceof InterfaceDefinition) {
                 addToPrototype(((InterfaceDefinition)type).getDeclarationModel(), ((InterfaceDefinition)type).getInterfaceBody().getStatements());
             }
         }
+        endBlock();
         out("return ", names.name(d), ";");
         endBlock();
         //If it's nested, share the init function
@@ -620,7 +622,7 @@ public class GenerateJsVisitor extends Visitor
 
     private void addToPrototype(ClassOrInterface d, List<Statement> statements) {
         if (prototypeStyle && !statements.isEmpty()) {
-            out(";(function(", names.self(d), ")");
+            out("(function(", names.self(d), ")");
             beginBlock();
             for (Statement s: statements) {
                 addToPrototype(d, s);
