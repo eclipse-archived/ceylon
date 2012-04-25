@@ -36,7 +36,6 @@ import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -291,17 +290,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.StringLiteral string) {
-        // FIXME: this is appalling
         String value = string
                 .getText()
                 .substring(1, string.getText().length() - 1);
-        value = replacements(value);
         at(string);
         return ceylonLiteral(value);
-    }
-
-    private String replacements(String value) {
-        return value;
     }
 
     public JCExpression transform(Tree.QuotedLiteral string) {
@@ -313,8 +306,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.CharLiteral lit) {
-        // FIXME: go unicode, but how?
-        JCExpression expr = make().Literal(TypeTags.CHAR, (int) replacements(lit.getText()).charAt(1));
+        JCExpression expr = make().Literal(TypeTags.CHAR, (int) lit.getText().charAt(1));
         // XXX make().Literal(lit.value) doesn't work here... something
         // broken in javac?
         return expr;
