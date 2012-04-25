@@ -376,7 +376,7 @@ public class DeclarationVisitor extends Visitor {
         endDeclaration(d);
         exitScope(o);
         checkFunctionArgumentParameters(that);
-        that.addWarning("inline functions not yet supported");
+        //that.addWarning("inline functions not yet supported");
     }
 
     private static void checkMethodParameters(Tree.AnyMethod that) {
@@ -384,18 +384,18 @@ public class DeclarationVisitor extends Visitor {
             that.addError("missing parameter list in method declaration: " + 
                     name(that.getIdentifier()), 1000 );
         }
-        if ( that.getParameterLists().size()>1 ) {
+        /*if ( that.getParameterLists().size()>1 ) {
             that.addWarning("higher-order methods are not yet supported");
-        }
+        }*/
     }
 
     private static void checkFunctionArgumentParameters(Tree.FunctionArgument that) {
         if (that.getParameterLists().isEmpty()) {
             that.addError("missing parameter list in functional argument declaration");
         }
-        if ( that.getParameterLists().size()>1 ) {
+        /*if ( that.getParameterLists().size()>1 ) {
             that.addWarning("higher-order methods are not yet supported");
-        }
+        }*/
     }
 
     private static void checkMethodArgumentParameters(Tree.MethodArgument that) {
