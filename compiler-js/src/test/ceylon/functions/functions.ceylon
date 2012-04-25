@@ -117,5 +117,6 @@ shared void test() {
     testDefaultedParams();
     testGetterMethodDefinitions();
     testMultipleParamLists();
+    testAnonymous();
     results();
 }
