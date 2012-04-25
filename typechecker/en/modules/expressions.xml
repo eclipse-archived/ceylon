@@ -1131,7 +1131,7 @@ value comp = order(1,-1);</programlisting>
             <para>An instantiation expression for the type <literal>Sequence</literal> may
             be written in an abbreviated form where the type name is eliminated.</para>
         
-            <programlisting>SequenceInstantiation = "{" Sequence? "}"</programlisting>
+            <programlisting>SequenceInstantiation: "{" Sequence? "}"</programlisting>
             
             <para>The following expression:</para>
             
@@ -1164,7 +1164,8 @@ value comp = order(1,-1);</programlisting>
         
         <para>When arguments are listed, the arguments list is enclosed in parentheses.</para>
             
-        <programlisting>PositionalArguments: "(" Expression ("," Expression)* ("," Sequence)? | Sequence? ")"</programlisting>
+        <programlisting>PositionalArguments: "(" PositionalArgument ("," PositionalArgument)* ("," Sequence)? | Sequence? ")"</programlisting>
+        <programlisting>PositionalArgument: Expression | FunctionalArgument</programlisting>
         
         <para>Positional arguments must be listed in the same order as the corresponding
         parameters.</para>
@@ -1192,9 +1193,8 @@ value comp = order(1,-1);</programlisting>
         <para>For example:</para>
         
         <programlisting>(getProduct(id), 1)</programlisting>
+        <programlisting>((Float x, Float y) x+y)</programlisting>
         
-        <para>TODO: syntax for inline functions.</para>
-                
         </section>
         
         <section id="namedarguments">
@@ -1328,6 +1328,29 @@ value comp = order(1,-1);</programlisting>
         
         </section>
 
+        <section id="functionalarguments">
+            <title>Inline functional arguments</title>
+            
+            <para>A positional argument list may contain an inline anonymous method
+            definition.</para>
+            
+            <programlisting>FunctionalArgument: ("function" | "void")? Params+ Expression</programlisting>
+            
+            <para>The parameters are the parameters of the method. The expression is 
+            the return value of the method, and the type of the expression is the 
+            return type of the method, unless the method is explicitly declared using 
+            the <literal>void</literal> keyword.</para>
+            
+            <para>For example:</para>
+            
+            <programlisting>() say("Hello")</programlisting>
+                    
+            <programlisting>(Value x, Value y) x&lt;=&gt;y</programlisting>
+
+            <programlisting>void (String name) print(name)</programlisting>
+        
+        </section>
+        
         <section id="sequencedarguments">
             <title>Sequenced and tuple arguments</title>
             
