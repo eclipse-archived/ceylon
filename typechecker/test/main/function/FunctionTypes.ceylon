@@ -81,9 +81,9 @@ void method() {
     @error String worst() = X;
     @error void broke() = noop();
     
-    String s1 = pass(function (String s) s, "hello");
-    String s2 = pass(function (Float f) f.string, 1.0);
-    @error String s3 = pass(function (Float f) f.string, "hello");
+    String s1 = pass((String s) s, "hello");
+    String s2 = pass((Float f) f.string, 1.0);
+    @error String s3 = pass((Float f) f.string, "hello");
     
     higher2 { 
         strings = {"goodbye"};
@@ -122,12 +122,19 @@ void method() {
     function zero() { return 0.0; }
     @type["Entry<Float,String>"] generic(str,zero);
     @type["Entry<Float,String>"] generic(str,bottom);
-    @type["Entry<Object,Object>"] generic(function (Object obj) obj, function () "hello");
-    @type["Entry<Object,String>"] generic(function (Object obj) obj.string, function () "hello");
-    @type["Entry<String,String>"] generic(function (String str) str, function () "hello");
+    @type["Entry<Object,Object>"] generic((Object obj) obj, () "hello");
+    @type["Entry<Object,String>"] generic((Object obj) obj.string, () "hello");
+    @type["Entry<String,String>"] generic((String str) str, () "hello");
 }
 
 class Outer() {
     class Inner() {}
     Outer.Inner oi = Outer.Inner();
+}
+
+Comparison multiCompare()(Integer x, Integer y) {
+    return x<=>y;
+}
+void testMultiCompare() {
+    multiCompare()(1,1);
 }

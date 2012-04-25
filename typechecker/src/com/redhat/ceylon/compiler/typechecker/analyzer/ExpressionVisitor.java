@@ -1456,7 +1456,7 @@ public class ExpressionVisitor extends Visitor {
         if (prf==null || !prf.isFunctional()) {
             ProducedType pt = that.getPrimary().getTypeModel();
             if (pt!=null) {
-                if (unit.getCallableDeclaration().equals(pt.getDeclaration())) {
+                if (pt.getDeclaration().getQualifiedNameString().equals("ceylon.language.Callable")) { //yuck!!
                     List<ProducedType> typeArgs = pt.getTypeArgumentList();
                     if (!typeArgs.isEmpty()) {
                         that.setTypeModel(typeArgs.get(0));
