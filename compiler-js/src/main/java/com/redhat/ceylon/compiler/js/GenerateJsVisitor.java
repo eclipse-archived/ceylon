@@ -1030,7 +1030,7 @@ public class GenerateJsVisitor extends Visitor
     public void visit(StringLiteral that) {
 
         StringBuilder text = new StringBuilder(that.getText());
-        final int slen = text.length()-2;
+        final int slen = text.codePointCount(1, text.length()-1);
         //Escape special chars
         for (int i=1; i < text.length()-1;i++) {
             switch(text.charAt(i)) {
