@@ -1,9 +1,11 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
 
 import com.redhat.ceylon.compiler.js.JsCompiler;
@@ -33,7 +35,7 @@ public class MainForJsTest {
             file.getParentFile().mkdirs();
             if (file.exists()) file.delete();
             file.createNewFile();
-            return new FileWriter(file);
+            return new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
         }
 
     }
@@ -91,7 +93,7 @@ public class MainForJsTest {
                 count++;
             }
         }
-        System.out.println("ran " + count + " tests");
+        System.out.printf("ran %d tests%n", count);
     }
     
     private static String toOutputPath(Package pkg) {
