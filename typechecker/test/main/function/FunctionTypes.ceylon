@@ -37,6 +37,13 @@ Float curried(Integer x)(Float y) {
     return x+y;
 }
 
+X->Y generic<X,Y>(Y f(X x), X x()) 
+        given X satisfies Object 
+        given Y satisfies Object { 
+    X xx = x();
+    return xx->f(xx);
+}
+
 void method() {
     Callable<String,String> upperRef = upper;
     Callable<Void,String> printRef = print;    
@@ -110,6 +117,14 @@ void method() {
     @error curried(2)();
     @error curried(2)(2.0, "foo");
     //Float t1 = p1(2.0);
+    
+    function str(Float f) { return f.string; }
+    function zero() { return 0.0; }
+    @type["Entry<Float,String>"] generic(str,zero);
+    @type["Entry<Float,String>"] generic(str,bottom);
+    @type["Entry<Object,Object>"] generic(function (Object obj) obj, function () "hello");
+    @type["Entry<Object,String>"] generic(function (Object obj) obj.string, function () "hello");
+    @type["Entry<String,String>"] generic(function (String str) str, function () "hello");
 }
 
 class Outer() {

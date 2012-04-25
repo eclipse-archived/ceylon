@@ -26,6 +26,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -153,6 +154,12 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         ProducedType t = that.getExpression().getTypeModel();
         that.getDeclarationModel().setType(t);
+        /*List<ProducedType> list = new ArrayList<ProducedType>();
+        for (Parameter p: that.getDeclarationModel().getParameterLists().get(0)
+                .getParameters()) {
+            list.add(p.getType());
+        }
+        ProducedType ft = unit.getCallableDeclaration().getProducedType(null, list);*/
         that.getType().setTypeModel(t);
     }
     
@@ -1298,11 +1305,26 @@ public class ExpressionVisitor extends Visitor {
                     break;
                 }
                 else {
-                    ProducedType argType = args.getPositionalArguments().get(i)
-                            .getExpression().getTypeModel();
-                    if (argType!=null) {
-                        addToUnion(inferredTypes, inferTypeArg(tp, parameter.getType(), 
-                                argType, new ArrayList<TypeParameter>()));
+                    PositionalArgument a = args.getPositionalArguments().get(i);
+                    if (a.getExpression()!=null) {
+                        ProducedType pt;
+                        if (parameter instanceof FunctionalParameter) {
+                            //TODO: this is very incomplete!
+                            List<ProducedType> list = new ArrayList<ProducedType>();
+                            list.add(parameter.getType());
+                            for (Parameter p: ((FunctionalParameter) parameter).getParameterLists().get(0)
+                                    .getParameters()) {
+                                list.add(p.getType());
+                            }
+                            pt = unit.getCallableDeclaration().getProducedType(null, list);
+                        }
+                        else {
+                            pt = parameter.getType();
+                        }
+
+                        addToUnion(inferredTypes, inferTypeArg(tp, pt, 
+                                getPositionalArgumentType(a), 
+                                new ArrayList<TypeParameter>()));
                     }
                 }
             }
@@ -1711,23 +1733,24 @@ public class ExpressionVisitor extends Visitor {
     private void checkPositionalArgument(Parameter p, ProducedReference pr,
             Tree.PositionalArgument a, ProducedType paramType) {
         a.setParameter(p);
-        Tree.Expression e = a.getExpression();
-        if (e==null) {
+        if (a.getExpression()==null) {
             //TODO: this case is temporary until we get support for SPECIAL_ARGUMENTs
         }
         else {
-            ProducedType et;
-            if (a instanceof Tree.FunctionArgument) {
-                et = ((Tree.FunctionArgument) a).getDeclarationModel()
-                        .getProducedTypedReference(null, Collections.<ProducedType>emptyList())
-                        .getFullType();
-            }
-            else {
-                et = e.getTypeModel();
-            }
-            checkAssignable(et, paramType, a, 
+            checkAssignable(getPositionalArgumentType(a), paramType, a, 
                     "argument must be assignable to parameter " + 
                     p.getName() + " of " + pr.getDeclaration().getName());
+        }
+    }
+
+    private ProducedType getPositionalArgumentType(Tree.PositionalArgument a) {
+        if (a instanceof Tree.FunctionArgument) {
+            return ((Tree.FunctionArgument) a).getDeclarationModel()
+                    .getProducedTypedReference(null, Collections.<ProducedType>emptyList())
+                    .getFullType();
+        }
+        else {
+            return a.getExpression().getTypeModel();
         }
     }
     
