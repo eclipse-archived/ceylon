@@ -1022,34 +1022,30 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(CharLiteral that) {
         out(clAlias, ".Character(");
-        if (that.getText().codePointAt(1) == 92) {
-            //TODO check for Unicode literals
-            out(clAlias, ".codepointFromString('", that.getText().substring(1, that.getText().length()-1), "', 0)");
-        } else {
-            out(String.valueOf(that.getText().codePointAt(1)));
-        }
+        out(String.valueOf(that.getText().codePointAt(1)));
         out(")");
     }
 
     @Override
     public void visit(StringLiteral that) {
 
-        String text = that.getText();
-        // pre-calculate string length
-        // TODO: also for strings that contain escape sequences
-        int codepoints = -1;
-        if (text.indexOf('\\') < 0) {
-            codepoints = text.codePointCount(0, text.length()) - 2;
+        StringBuilder text = new StringBuilder(that.getText());
+        final int slen = text.length()-2;
+        //Escape special chars
+        for (int i=1; i < text.length()-1;i++) {
+            switch(text.charAt(i)) {
+            case 8:text.replace(i, i+1, "\\b"); i++; break;
+            case 9:text.replace(i, i+1, "\\t"); i++; break;
+            case 10:text.replace(i, i+1, "\\n"); i++; break;
+            case 12:text.replace(i, i+1, "\\f"); i++; break;
+            case 13:text.replace(i, i+1, "\\r"); i++; break;
+            case 34:text.replace(i, i+1, "\\\""); i++; break;
+            case 39:text.replace(i, i+1, "\\'"); i++; break;
+            case 92:text.replace(i, i+1, "\\\\"); i++; break;
+            }
         }
-        text = that.getText().replaceAll("\n", "\\\\n");
 
-        out(clAlias, ".String(");
-        out(text);
-        if (codepoints >= 0) {
-            out(",");
-            out(String.valueOf(codepoints));
-        }
-        out(")");
+        out(clAlias, ".String(", text.toString(), ",", Integer.toString(slen), ")");
     }
 
     @Override
