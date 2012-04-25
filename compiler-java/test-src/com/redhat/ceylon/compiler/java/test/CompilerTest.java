@@ -187,8 +187,20 @@ public abstract class CompilerTest {
 
         Assert.assertFalse("Compilation succeeded", success);
         
-        Assert.assertEquals("Errors different from expected", new TreeSet<CompilerError>(Arrays.asList(expectedErrors)), actualErrors);
-        
+        TreeSet<CompilerError> expectedErrorSet = new TreeSet<CompilerError>(Arrays.asList(expectedErrors));
+        // shortcut for simple cases
+        if(expectedErrorSet.size() == 1 && actualErrors.size() == 1){
+            Assert.assertEquals("Error mismatch", expectedErrorSet.first().toString(), actualErrors.first().toString());
+        }else{
+            // make sure we have all those we expect
+            for(CompilerError expectedError : expectedErrorSet){
+                Assert.assertTrue("Missing expected error: "+expectedError, actualErrors.contains(expectedError));
+            }
+            //  make sure we don't have unexpected ones
+            for(CompilerError actualError : actualErrors){
+                Assert.assertTrue("Unexpected error: "+actualError, expectedErrorSet.contains(actualError));
+            }
+        }
     }
     
     protected void compareWithJavaSourceWithPositions(String name) {
