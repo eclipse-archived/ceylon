@@ -1006,21 +1006,28 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     public List<JCTree> transformObject(Tree.ObjectDefinition def, ClassDefinitionBuilder containingClassBuilder) {
+        final Value model = def.getDeclarationModel();
+        if (model.isToplevel()) {
+            resetLocals();
+        } else if (Decl.isLocal(model)){
+            local(model.getContainer());
+        }
+        
         String name = def.getIdentifier().getText();
         ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.klass(this, Decl.isAncestorLocal(def), name);
         
         CeylonVisitor visitor = new CeylonVisitor(gen(), objectClassBuilder);
         def.visitChildren(visitor);
 
-        TypeDeclaration decl = def.getDeclarationModel().getType().getDeclaration();
+        TypeDeclaration decl = model.getType().getDeclaration();
 
         if (Decl.isToplevel(def)) {
-            objectClassBuilder.body(makeObjectGlobal(def, def.getDeclarationModel().getQualifiedNameString()).toList());
+            objectClassBuilder.body(makeObjectGlobal(def, model.getQualifiedNameString()).toList());
         }
 
         List<JCTree> result = objectClassBuilder
             .annotations(makeAtObject())
-            .modelAnnotations(def.getDeclarationModel().getAnnotations())
+            .modelAnnotations(model.getAnnotations())
             .modifiers(transformObjectDeclFlags(def))
             .constructorModifiers(PRIVATE)
             .satisfies(decl.getSatisfiedTypes())
@@ -1038,7 +1045,7 @@ public class ClassTransformer extends AbstractTransformer {
             
             if (visible) {
                 result = result.appendList(AttributeDefinitionBuilder
-                    .getter(this, name, def.getDeclarationModel())
+                    .getter(this, name, model)
                     .modifiers(transformAttributeGetSetDeclFlags(def, false))
                     .isActual(Decl.isActual(def))
                     .build());

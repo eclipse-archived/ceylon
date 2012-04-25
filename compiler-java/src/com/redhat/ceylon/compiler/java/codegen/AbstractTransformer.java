@@ -915,7 +915,8 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     protected void local(Scope decl) {
-        gen().locals.put(decl, gen().locals.size());
+        Map<Scope, Integer> locals = gen().locals;
+        locals.put(decl, locals.size());
     }
     
     public int getLocalId(Scope decl) {
