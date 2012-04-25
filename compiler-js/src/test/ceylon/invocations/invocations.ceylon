@@ -15,4 +15,5 @@ shared void test() {
         print(i);
     }
     repeat(10,p);
+    print("OK");
 }
