@@ -1076,7 +1076,7 @@ value comp = order(1,-1);</programlisting>
             <programlisting>log.info("Hello world!")</programlisting>
             <programlisting>log.info { message = "Hello world!"; }</programlisting>
             <programlisting>printer.print { join = ", "; "Gavin", "Emmanuel", "Max", "Steve" }</programlisting>
-            <programlisting>printer.print { "Names: ", from (Person p in people) select (p.name) }</programlisting>
+            <!--programlisting>printer.print { "Names: ", from (Person p in people) select (p.name) }</programlisting-->
             <programlisting>hash(default, firstName, initial, lastName)</programlisting>
             <programlisting>hash { algorithm=default; firstName, initial, lastName }</programlisting>
 
