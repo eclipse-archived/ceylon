@@ -259,7 +259,7 @@ class DefaultedAndSequenced {
         }
         
         static .ceylon.language.Iterable<? extends .ceylon.language.Boolean> m$b(.com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $this, final .java.lang.String s, final long i) {
-            return new .ceylon.language.ArraySequence(.ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(false));
+            return new .ceylon.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(false));
         }
     }
 }
