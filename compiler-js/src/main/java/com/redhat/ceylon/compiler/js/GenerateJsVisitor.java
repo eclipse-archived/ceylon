@@ -1344,11 +1344,6 @@ public class GenerateJsVisitor extends Visitor
     public void visit(PositionalArgumentList that) {
         out("(");
         if (!that.getPositionalArguments().isEmpty()) {
-            if (that.getPositionalArguments().size() > 1) {
-                //This is temporary, typechecker will give us parameters for multiple parameter lists eventually
-                that.addError("Functions with multiple parameter lists cannot be invoked yet");
-                return;
-            }
             boolean first=true;
             boolean sequenced=false;
             for (PositionalArgument arg: that.getPositionalArguments()) {
