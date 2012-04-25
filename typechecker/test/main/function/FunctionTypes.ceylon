@@ -138,3 +138,11 @@ Comparison multiCompare()(Integer x, Integer y) {
 void testMultiCompare() {
     multiCompare()(1,1);
 }
+
+Callable<String> tester() {
+    String f() { return "ok"; }
+    return f;
+}
+void runTester() {
+    print(tester()());
+}
