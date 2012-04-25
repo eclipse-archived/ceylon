@@ -49,6 +49,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseItem;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifiedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
@@ -1191,8 +1192,7 @@ public class ExpressionVisitor extends Visitor {
             visitInvocation(that, ((Tree.ExtendedTypeExpression) pr).getTarget());
         }
         else {
-            //TODO: fix this
-            that.addWarning("direct invocation of Callable objects not yet supported");
+            visitInvocation(that, null);
         }
     }
 
@@ -1431,15 +1431,22 @@ public class ExpressionVisitor extends Visitor {
     }*/
 
     private void visitInvocation(Tree.InvocationExpression that, ProducedReference prf) {
-        if (prf==null) {
-            //that.addError("could not determine if receiving expression can be invoked");
-        }
-        else if (!prf.isFunctional()) {
-            //TODO: this is temporary and should be removed, once we
-            //      can typecheck parameters using the type args of
-            //      Callable
-            that.addError("receiving expression cannot be invoked: " + 
-                    prf.getDeclaration().getName() + " is not a method or class");
+        if (prf==null || !prf.isFunctional()) {
+            ProducedType pt = that.getPrimary().getTypeModel();
+            if (pt!=null) {
+                if (unit.getCallableDeclaration().equals(pt.getDeclaration())) {
+                    List<ProducedType> typeArgs = pt.getTypeArgumentList();
+                    if (!typeArgs.isEmpty()) {
+                        that.setTypeModel(typeArgs.get(0));
+                    }
+                    //typecheck arguments using the type args of Callable
+                    checkIndirectInvocationArguments(that, typeArgs);
+                }
+                else {
+                    that.addError("invoked expression must be callable: " + 
+                        pt.getDeclaration().getName() + " is not a subtype of Callable");
+                }
+            }
         }
         else {
             Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
@@ -1455,7 +1462,7 @@ public class ExpressionVisitor extends Visitor {
                 //pull the return type out of the Callable
                 that.setTypeModel(ct.getTypeArgumentList().get(0));
             }
-            if(that.getNamedArgumentList() != null){
+            if (that.getNamedArgumentList() != null) {
                 List<ParameterList> parameterLists = dec.getParameterLists();
                 if(!parameterLists.isEmpty()
                         && !parameterLists.get(0).isNamedParametersSupported()) {
@@ -1467,14 +1474,41 @@ public class ExpressionVisitor extends Visitor {
                 //that.addError("no matching overloaded declaration");
             }
             else {
+                //typecheck arguments using the parameter list
+                //of the target declaration
                 checkInvocationArguments(that, prf, dec);
+            }
+        }
+    }
+
+    private void checkIndirectInvocationArguments(
+            Tree.InvocationExpression that, List<ProducedType> typeArgs) {
+        if (that.getNamedArgumentList() != null) {
+            that.addError("named arguments not supported for indirect invocations");
+        }
+        if (that.getPositionalArgumentList() != null) {
+            List<PositionalArgument> args = that.getPositionalArgumentList()
+                    .getPositionalArguments();
+            int argCount = args.size();
+            int paramCount = typeArgs.size()-1;
+            if (argCount<paramCount) {
+                that.addError("not enough arguments: " + 
+                         paramCount + " arguments required");
+            }
+            if (argCount>paramCount) {
+                that.addError("too many arguments: " + 
+                         paramCount + " arguments required");
+            }
+            for (int i=0; i<paramCount && i<argCount; i++) {
+                checkAssignable(args.get(i).getExpression().getTypeModel(), 
+                        typeArgs.get(i+1), that, 
+                        "argument must be assignable to parameter");
             }
         }
     }
 
     private void checkInvocationArguments(Tree.InvocationExpression that,
             ProducedReference prf, Functional dec) {
-        //TODO: typecheck parameters using the type args of Callable
         List<ParameterList> pls = dec.getParameterLists();
         if (pls.isEmpty()) {
             if (dec instanceof TypeDeclaration) {

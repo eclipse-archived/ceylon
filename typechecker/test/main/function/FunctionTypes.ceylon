@@ -105,6 +105,10 @@ void method() {
     @type["Callable<Float,Float>"] value p1 = curried(1);
     Float three = plus1(2.0);
     Float four = curried(2)(2.0);
+    @error curried(2)("foo");
+    @error curried("foo")(2.0);
+    @error curried(2)();
+    @error curried(2)(2.0, "foo");
     //Float t1 = p1(2.0);
 }
 
