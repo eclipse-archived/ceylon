@@ -75,7 +75,7 @@ public class NodeTest {
             }
             byte[] b1 = new byte[16834];
             byte[] b2 = new byte[16834];
-            String eval = String.format("require('%s/%s').test();", dir.getName(), jsf.getName());
+            String eval = String.format("require('%s/%s').test();setTimeout(function(){}, 50);", dir.getName(), jsf.getName());
             Process proc = new ProcessBuilder(nodePath, "-e", eval).directory(dir.getParentFile()).start();
             ReadStream readOut = new ReadStream(proc.getInputStream(), b1);
             ReadStream readErr = new ReadStream(proc.getErrorStream(), b2);
