@@ -229,7 +229,7 @@ shared void test() {
     assert(Unwrapper().get().string=="23.56","unwrapper 1");
     assert(Unwrapper().o.string=="23.56","unwrapper 2");
     assert(Unwrapper().string=="23.56","unwrapper 3");
-    //assert(is Callable<Integer> producer(), "function 1");
+    assert(is Callable<Integer> producer(), "function 1");
     assert(is Integer producer()(), "function 2");
     assert(123==producer()(), "function 3");
     assert("something"==returner("something")(), "function 4");
