@@ -14,12 +14,26 @@ void characters() {
     assert(`a`<`z`, "char order");
     assert(`a`.successor==`b`, "char successor");
     assert(`Z`.predecessor==`Y`, "char predecessor");
-    assert(`\t`.integer==9, "escaped characters 1");
-    assert(`\\`.integer==92, "escaped characters 2");
-    assert(`\``.integer==96, "escaped characters 3");
-    assert(`\n`.integer==10, "escaped characters 4");
-    assert(`\"`.integer==34, "escaped characters 5");
-    assert(`\{00E5}`.integer==229, "Unicode escape");
+    assert(`\b`.integer==8,  "escaped chars 1");
+    assert(`\t`.integer==9,  "escaped chars 2");
+    assert(`\n`.integer==10, "escaped chars 3");
+    assert(`\f`.integer==12, "escaped chars 4");
+    assert(`\r`.integer==13, "escaped chars 5");
+    assert(`\\`.integer==92, "escaped chars 6");
+    assert(`\``.integer==96, "escaped chars 7");
+    assert(`\"`.integer==34, "escaped chars 8");
+    assert(`\'`.integer==39, "escaped chars 9");
+    assert(`\{00E5}`.integer==229, "Unicode escape 1");
+    assert(`\{0008}`==`\b`, "Unicode escape 2");
+    assert(`\{0009}`==`\t`, "Unicode escape 3");
+    assert(`\{000A}`==`\n`, "Unicode escape 4");
+    assert(`\{000C}`==`\f`, "Unicode escape 5");
+    assert(`\{000D}`==`\r`, "Unicode escape 6");
+    assert(`\{005C}`==`\\`, "Unicode escape 7");
+    //print(`\{005C}`.integer);
+    assert(`\{0060}`==`\``, "Unicode escape 8");
+    assert(`\{0022}`==`\"`, "Unicode escape 9");
+    assert(`\{0027}`==`\'`, "Unicode escape 10");
     
     variable value i:=0;
     for (x in `a`..`z`) {

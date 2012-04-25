@@ -269,4 +269,20 @@ shared void strings() {
     if (!is Finished hello.occurrences("X").iterator.next()) {
         fail("occurrences 4");
     }
+    //Unicode escapes
+    value ucs = "\{00E5}";
+    assert(ucs.size==1, "Unicode escape 0");
+    if (exists c=ucs[0]) {
+        assert(c.integer==229, "Unicode escape 1.1");
+    } else { fail("Unicode escape 1.2"); }
+    assert("\{0008}"=="\b", "Unicode escape 2");
+    assert("\{0009}"=="\t", "Unicode escape 3");
+    assert("\{000A}"=="\n", "Unicode escape 4");
+    assert("\{000C}"=="\f", "Unicode escape 5");
+    assert("\{000D}"=="\r", "Unicode escape 6");
+    assert("\{005C}"=="\\", "Unicode escape 7");
+    assert("\{0060}"=="\`", "Unicode escape 8");
+    assert("\{0022}"=="\"", "Unicode escape 9");
+    assert("\{0027}"=="\'", "Unicode escape 10");
+
 }
