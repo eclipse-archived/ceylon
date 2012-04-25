@@ -1768,7 +1768,12 @@ public abstract class AbstractTransformer implements Transformation {
     public final List<JCExpression> typeArguments(java.util.List<TypeParameter> typeParameters, Map<TypeParameter, ProducedType> typeArguments) {
         ListBuffer<JCExpression> typeArgs = ListBuffer.<JCExpression>lb();
         for (TypeParameter tp : typeParameters) {
-            typeArgs.append(makeJavaType(typeArguments.get(tp)));
+            ProducedType type = typeArguments.get(tp);
+            if (type != null) {
+                typeArgs.append(makeJavaType(type, TYPE_ARGUMENT));
+            } else {
+                typeArgs.append(makeJavaType(tp.getType(), TYPE_ARGUMENT));
+            }
         }
         return typeArgs.toList();
     }
