@@ -116,6 +116,6 @@ shared void test() {
     testMethodReference();
     testDefaultedParams();
     testGetterMethodDefinitions();
-    //testMultipleParamLists();
+    testMultipleParamLists();
     results();
 }
