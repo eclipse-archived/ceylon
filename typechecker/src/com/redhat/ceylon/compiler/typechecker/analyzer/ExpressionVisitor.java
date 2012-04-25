@@ -1509,6 +1509,9 @@ public class ExpressionVisitor extends Visitor {
             that.addError("named arguments not supported for indirect invocations");
         }
         if (that.getPositionalArgumentList() != null) {
+            if (that.getPositionalArgumentList().getEllipsis()!=null) {
+                that.addError("sequenced arguments not supported for indirect invocations");
+            }
             List<PositionalArgument> args = that.getPositionalArgumentList()
                     .getPositionalArguments();
             int argCount = args.size();
