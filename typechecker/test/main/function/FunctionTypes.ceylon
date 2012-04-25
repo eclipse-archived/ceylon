@@ -33,6 +33,10 @@ void higher2(String[] strings, void f(String str)) {
 
 String str(Float f) { return f.string; }
 
+Float curried(Integer x)(Float y) {
+    return x+y;
+}
+
 void method() {
     Callable<String,String> upperRef = upper;
     Callable<Void,String> printRef = print;    
@@ -95,6 +99,13 @@ void method() {
     higher2({"goodbye"}, function (String s) print(s));
     
     @error print(s);
+    
+    @type["Callable<Float,Float>"] curried(1);
+    Float plus1(Float x) = curried(1);
+    @type["Callable<Float,Float>"] value p1 = curried(1);
+    Float three = plus1(2.0);
+    Float four = curried(2)(2.0);
+    //Float t1 = p1(2.0);
 }
 
 class Outer() {
