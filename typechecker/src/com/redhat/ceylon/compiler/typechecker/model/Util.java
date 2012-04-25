@@ -109,8 +109,11 @@ public class Util {
                         for (int i=0; i<params.size(); i++) {
                             //ignore optionality for resolving overloads, since
                             //all all Java method params are treated as optional
-                            ProducedType paramType = d.getUnit().getDefiniteType(params.get(i).getType());
-                            ProducedType sigType = d.getUnit().getDefiniteType(signature.get(i));
+                            ProducedType pdt = params.get(i).getType();
+                            ProducedType sdt = signature.get(i);
+                            if (pdt==null || sdt==null) return false;
+                            ProducedType paramType = d.getUnit().getDefiniteType(pdt);
+                            ProducedType sigType = d.getUnit().getDefiniteType(sdt);
                             TypeDeclaration paramTypeDec = paramType.getDeclaration();
                             TypeDeclaration sigTypeDec = sigType.getDeclaration();
                             if (sigTypeDec==null || paramTypeDec==null) return false;
