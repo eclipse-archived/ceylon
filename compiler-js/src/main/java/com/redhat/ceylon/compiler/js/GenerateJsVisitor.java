@@ -37,7 +37,7 @@ public class GenerateJsVisitor extends Visitor
     private final EnclosingFunctionVisitor encloser = new EnclosingFunctionVisitor();
     private final JsIdentifierNames names;
     private final Set<Declaration> directAccess = new HashSet<Declaration>();
-    
+
     private final class SuperVisitor extends Visitor {
         private final List<Declaration> decs;
 
@@ -91,7 +91,7 @@ public class GenerateJsVisitor extends Visitor
         clTrue = String.format("%s.getTrue()", clAlias);
         clFalse = String.format("%s.getFalse()", clAlias);
     }
-    
+
     @Override
     public void handleException(Exception e, Node that) {
         that.addUnexpectedError(that.getMessage(e, this));
@@ -270,7 +270,7 @@ public class GenerateJsVisitor extends Visitor
     private void share(Declaration d) {
         share(d, true);
     }
-    
+
     private void share(Declaration d, boolean excludeProtoMembers) {
         if (!(excludeProtoMembers && prototypeStyle && d.isClassOrInterfaceMember())
                 && isCaptured(d)) {
@@ -293,7 +293,7 @@ public class GenerateJsVisitor extends Visitor
         endLine();
         share(d);
     }
-    
+
     private void addClassDeclarationToPrototype(TypeDeclaration outer, ClassDeclaration that) {
         comment(that);
         TypeDeclaration dec = that.getTypeSpecifier().getType().getTypeModel().getDeclaration();
@@ -319,7 +319,7 @@ public class GenerateJsVisitor extends Visitor
         endLine();
         share(d);
     }
-    
+
     private void addInterfaceDeclarationToPrototype(TypeDeclaration outer, InterfaceDeclaration that) {
         comment(that);
         TypeDeclaration dec = that.getTypeSpecifier().getType().getTypeModel().getDeclaration();
@@ -531,9 +531,9 @@ public class GenerateJsVisitor extends Visitor
             extendedType = objectDef.getExtendedType();
             satisfiedTypes = objectDef.getSatisfiedTypes();
         }
-        
+
         boolean inheritProto = prototypeStyle || (extendedType == null)
-                || !declaredInThisPackage(extendedType.getType().getDeclarationModel());       
+                || !declaredInThisPackage(extendedType.getType().getDeclarationModel());
         if (!inheritProto && (satisfiedTypes != null)) {
             for (SimpleType st : satisfiedTypes.getTypes()) {
                 if (!declaredInThisPackage(st.getDeclarationModel())) {
@@ -804,7 +804,7 @@ public class GenerateJsVisitor extends Visitor
             share(that.getDeclarationModel(), false);
         }
     }
-    
+
     @Override
     public void visit(MethodDefinition that) {
         if (!(prototypeStyle && that.getDeclarationModel().isClassOrInterfaceMember())) {
@@ -1113,7 +1113,7 @@ public class GenerateJsVisitor extends Visitor
             out("()");
         }
     }
-    
+
     private boolean accessDirectly(Declaration d) {
         return !accessThroughGetter(d) || directAccess.contains(d);
     }
@@ -1122,14 +1122,14 @@ public class GenerateJsVisitor extends Visitor
         return !((d instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter)
                   || (d instanceof Method));
     }
-    
+
     private static boolean isNative(Term t) {
         if (t instanceof MemberOrTypeExpression) {
             return isNative(((MemberOrTypeExpression)t).getDeclaration());
         }
         return false;
     }
-    
+
     private static boolean isNative(Declaration d) {
         return hasAnnotationByName(getToplevel(d), "nativejs");
     }
@@ -1371,7 +1371,7 @@ public class GenerateJsVisitor extends Visitor
         ProducedType fromType = fromTerm.getTypeModel();
         return boxUnboxStart(fromNative, fromType, toNative);
     }
-    
+
     // Make sure fromTerm is compatible with toTerm by boxing or unboxing it when necessary
     private int boxUnboxStart(Term fromTerm, Term toTerm) {
         boolean fromNative = isNative(fromTerm);
@@ -1379,7 +1379,7 @@ public class GenerateJsVisitor extends Visitor
         ProducedType fromType = fromTerm.getTypeModel();
         return boxUnboxStart(fromNative, fromType, toNative);
     }
-    
+
     // Make sure fromTerm is compatible with toDecl by boxing or unboxing it when necessary
     private int boxUnboxStart(Term fromTerm, com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration toDecl) {
         boolean fromNative = isNative(fromTerm);
@@ -1387,7 +1387,7 @@ public class GenerateJsVisitor extends Visitor
         ProducedType fromType = fromTerm.getTypeModel();
         return boxUnboxStart(fromNative, fromType, toNative);
     }
-    
+
     private int boxUnboxStart(boolean fromNative, ProducedType fromType, boolean toNative) {
         if (fromNative != toNative) {
             // Box the value
@@ -1420,7 +1420,7 @@ public class GenerateJsVisitor extends Visitor
             out(".value");
         }
     }
-    
+
     @Override
     public void visit(NamedArgumentList that) {
         for (NamedArgument arg: that.getNamedArguments()) {
@@ -1656,7 +1656,7 @@ public class GenerateJsVisitor extends Visitor
         return decl.getUnit().getPackage().getQualifiedNameString()
                 .startsWith("ceylon.language");
     }
-    
+
     private boolean declaredInThisPackage(Declaration decl) {
         return decl.getUnit().getPackage().equals(root.getUnit().getPackage());
     }
@@ -1905,7 +1905,7 @@ public class GenerateJsVisitor extends Visitor
     private void thenTrueElseFalse() {
         out("?", clTrue, ":", clFalse);
     }
-    
+
     interface UnaryOpTermGenerator {
         void term();
     }
@@ -1923,7 +1923,7 @@ public class GenerateJsVisitor extends Visitor
             }
         });
     }
-    
+
     interface BinaryOpTermGenerator {
         void left();
         void right();
@@ -1948,7 +1948,7 @@ public class GenerateJsVisitor extends Visitor
             }
         });
     }
-    
+
     /** Outputs the CL equivalent of 'a <=> b' in JS. */
     private void leftCompareRight(BinaryOperatorExpression that) {
         binaryOp(that, new BinaryOpGenerator() {
@@ -2124,7 +2124,7 @@ public class GenerateJsVisitor extends Visitor
        super.visit(that);
        boxUnboxEnd(boxType);
    }
-   
+
    @Override public void visit(IfStatement that) {
 
        IfClause ifClause = that.getIfClause();
@@ -2533,6 +2533,55 @@ public class GenerateJsVisitor extends Visitor
         if (comment) out("//End switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
     }
 
+    /** Generates the code for an anonymous function defined inside an argument list */
+    @Override
+    public void visit(final FunctionArgument that) {
+        generateParameterLists(that.getParameterLists(), new ParameterListCallback() {
+            @Override
+            public void completeFunction() {
+                out("{return ");
+                that.getExpression().visit(GenerateJsVisitor.this);
+                out("}");
+            }
+        });
+    }
+
+    @Override
+    public void visit(final MethodArgument that) {
+        generateParameterLists(that.getParameterLists(), new ParameterListCallback() {
+            @Override
+            public void completeFunction() {
+                that.getBlock().visit(GenerateJsVisitor.this);
+            }
+        });
+    }
+
+    /** Generates the code for single or multiple parameter lists, with a callback function to generate the function blocks. */
+    private void generateParameterLists(List<ParameterList> plist, ParameterListCallback callback) {
+        if (plist.size() == 1) {
+            out(function);
+            ParameterList paramList = plist.get(0);
+            paramList.visit(this);
+            callback.completeFunction();
+        } else {
+            int count=0;
+            for (ParameterList paramList : plist) {
+                if (count==0) {
+                    out(function);
+                } else {
+                    out("return function");
+                }
+                paramList.visit(this);
+                out("{");
+                count++;
+            }
+            callback.completeFunction();
+            for (int i=0; i < count; i++) {
+                endBlock(i==count-1);
+            }
+        }
+    }
+
     /** Encloses the block in a function, IF NEEDED. */
     private void encloseBlockInFunction(Block block) {
         boolean wrap=encloser.encloseBlock(block);
@@ -2580,5 +2629,8 @@ public class GenerateJsVisitor extends Visitor
         public boolean isBreaked() { return bused; } //"isBroken" sounds really really bad in this case
     }
 
+    private static interface ParameterListCallback {
+        void completeFunction();
+    }
 }
 
