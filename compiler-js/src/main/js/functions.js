@@ -129,7 +129,7 @@ function isOfTypes(obj, types) {
         return types.l.indexOf('ceylon.language.Nothing')>=0 || types.l.indexOf('ceylon.language.Void')>=0;
     }
     if (typeof obj === 'function') {
-        return Boolean$(typeName === 'ceylon.language.Callable');
+        return Boolean$(types.l.indexOf('ceylon.language.Callable')>=0);
     }
     var unions = false;
     var inters = true;
