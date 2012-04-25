@@ -322,12 +322,13 @@ public class Unit {
     		//with inferred type TODO: something better
     		return new UnknownType(this).getType();
     	}
-    	List<ProducedType> args = new ArrayList<ProducedType>();
-    	args.add(rt);
-    	if ( ref.getDeclaration() instanceof Functional) {
-    	    for (ParameterList pl: ((Functional) ref.getDeclaration()).getParameterLists()) {
-    	    	//TODO: support multiple parameter lists!!
-    	    	for (Parameter p: pl.getParameters()) {
+    	ProducedType result = rt;
+    	if (ref.getDeclaration() instanceof Functional) {
+    	    List<ParameterList> pls = ((Functional) ref.getDeclaration()).getParameterLists();
+            for (int i=pls.size()-1; i>=0; i--) {
+    	        List<ProducedType> args = new ArrayList<ProducedType>();
+    	        args.add(result);
+    	    	for (Parameter p: pls.get(i).getParameters()) {
     	    		ProducedTypedReference np = ref.getTypedParameter(p);
     	    		if (np.getDeclaration() instanceof Functional) {
     	    			args.add(getCallableType(np, np.getType()));
@@ -336,9 +337,10 @@ public class Unit {
 					    args.add(np.getType());
     	    		}
     	    	}
+    	    	result = getCallableDeclaration().getProducedType(null, args);
     	    }
     	}
-    	return getCallableDeclaration().getProducedType(null, args);
+    	return result;
     }
     
     public ProducedType getEmptyType(ProducedType pt) {
