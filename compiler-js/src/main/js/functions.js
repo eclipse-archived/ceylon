@@ -117,6 +117,9 @@ function nonempty(value) {
 
 function isOfType(obj, typeName) {
     if (obj === null) return Boolean$(typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void");
+    if (typeof obj === 'function') {
+        return Boolean$(typeName === 'ceylon.language.Callable');
+    }
     var cons = obj.$$;
     if (cons === undefined) cons = obj.constructor;
     return Boolean$(typeName in cons.T$all);
@@ -124,6 +127,9 @@ function isOfType(obj, typeName) {
 function isOfTypes(obj, types) {
     if (obj===null) { //TODO check if this is right
         return types.l.indexOf('ceylon.language.Nothing')>=0 || types.l.indexOf('ceylon.language.Void')>=0;
+    }
+    if (typeof obj === 'function') {
+        return Boolean$(typeName === 'ceylon.language.Callable');
     }
     var unions = false;
     var inters = true;
