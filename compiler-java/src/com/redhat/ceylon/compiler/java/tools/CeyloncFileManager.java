@@ -158,7 +158,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         if (sibling instanceof CeylonFileObject) {
             sibling = ((CeylonFileObject) sibling).getFile();
         }
-        String quotedFileName = quoteKeywordsInFilename(fileName.basename());
+        String quotedFileName = quoteKeywordsInFilename(fileName);
         
         if(location == StandardLocation.CLASS_OUTPUT){
             File siblingFile = null;
@@ -170,9 +170,11 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
             return super.getFileForOutput(location, fileName, sibling);
     }
 
-    private String quoteKeywordsInFilename(String fileName) {
+    private String quoteKeywordsInFilename(RelativeFile fileName) {
+        // internally, RelativeFile.path always uses '/' and not the platform separator
+        String path = fileName.getPath();
         StringBuilder sb = new StringBuilder();
-        String[] parts = fileName.split("\\"+File.separatorChar);
+        String[] parts = path.split("/");
         for (String part : parts) {
             sb.append(Util.quoteIfJavaKeyword(part)).append(File.separatorChar);
         }
