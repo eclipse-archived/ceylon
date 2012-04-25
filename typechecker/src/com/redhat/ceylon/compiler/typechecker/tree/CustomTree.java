@@ -251,8 +251,8 @@ public class CustomTree extends Tree {
         @Override
         public String getText() {
             StringBuilder result = new StringBuilder(super.getText());
-            interpolateUnicodeEscapes(result, this);
-            return interpolateEscapes(result.toString());
+            interpolateEscapes(result, this);
+            return result.toString();
         }
     }
     
@@ -265,8 +265,8 @@ public class CustomTree extends Tree {
         public String getText() {
             StringBuilder result = new StringBuilder();
             stripIndent(super.getText(), getToken().getCharPositionInLine()+1, result);
-            interpolateUnicodeEscapes(result, this);
-            return interpolateEscapes(result.toString());
+            interpolateEscapes(result, this);
+            return result.toString();
         }
     }
     
@@ -297,39 +297,45 @@ public class CustomTree extends Tree {
         result.setLength(result.length()-1);
     }
     
-    private static String interpolateEscapes(final String string) {
-        return string.replace("\\`", "`")
-                .replace("\\b", "\b")
-                .replace("\\t", "\t")
-                .replace("\\n", "\n")
-                .replace("\\f", "\f")
-                .replace("\\r", "\r")
-                .replace("\\\\", "\\")
-                .replace("\\'", "'")
-                .replace("\\\"", "\"");
-    }
+    private static Pattern re = Pattern.compile("\\\\(\\{(\\w*)\\}|(b|t|n|f|r|`|'|\"|\\\\))");
     
-    private static Pattern re = Pattern.compile("\\\\\\{(\\w*)\\}");
-    
-    private static void interpolateUnicodeEscapes(final StringBuilder result, Node node) {
+    private static void interpolateEscapes(final StringBuilder result, Node node) {
         Matcher m;
-        while ((m = re.matcher(result)).find()) {
-            String hex = m.group(1);
-            if (hex.length()!=4 && hex.length()!=8) {
-                node.addError("illegal unicode escape sequence: must consist of 4 or 8 digits");
+        int start=0;
+        while ((m = re.matcher(result)).find(start)) {
+            String hex = m.group(2);
+            if (hex!=null) {
+                if (hex.length()!=4 && hex.length()!=8) {
+                    node.addError("illegal unicode escape sequence: must consist of 4 or 8 digits");
+                }
+                else {
+                    int codePoint=0;
+                    try {
+                        codePoint = Integer.parseInt(hex, 16);
+                    }
+                    catch (NumberFormatException nfe) {
+                        node.addError("illegal unicode escape sequence: " + 
+                                nfe.getMessage());
+                    }
+                    result.replace(m.start(), m.end(), 
+                            new String(Character.toChars(codePoint)));
+                }
             }
             else {
-                int codePoint=0;
-                try {
-                    codePoint = Integer.parseInt(hex, 16);
-                }
-                catch (NumberFormatException nfe) {
-                    node.addError("illegal unicode escape sequence: " + 
-                            nfe.getMessage());
+                char escape = m.group(3).charAt(0);
+                char ch;
+                switch (escape) {
+                    case 'b': ch = '\b'; break;
+                    case 't': ch = '\t'; break;
+                    case 'n': ch = '\n'; break;
+                    case 'f': ch = '\f'; break;
+                    case 'r': ch = '\r'; break;
+                    default: ch = escape;
                 }
                 result.replace(m.start(), m.end(), 
-                        new String(Character.toChars(codePoint)));
+                        Character.toString(ch));
             }
+            start = m.start()+1;
         }
     }
     
