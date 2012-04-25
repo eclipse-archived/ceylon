@@ -28,6 +28,7 @@ import static com.sun.tools.javac.code.Flags.PROTECTED;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.util.Decl;
@@ -139,13 +140,24 @@ public class ClassTransformer extends AbstractTransformer {
                     if (!(decl instanceof Interface)) {
                         continue;
                     }
+                    boolean goRaw = false;
                     Interface iface = (Interface)decl;
+                    Map<TypeDeclaration, java.util.List<ProducedType>> m = new HashMap<TypeDeclaration, java.util.List<ProducedType>>();
+                    for (ProducedType t : model.getType().getSupertypes()) {
+                        TypeDeclaration declaration = t.getDeclaration();
+                        java.util.List<ProducedType> typeArguments = t.getTypeArgumentList();
+                        java.util.List<ProducedType> existingTypeArgs = m.put(declaration, typeArguments);
+                        if (existingTypeArgs != null) {
+                            goRaw = true;
+                            break;
+                        }
+                    }
                     
                     // For each satisfied interface, instantiate an instance of the 
                     // companion class in the constructor and assign it to a
                     // $Interface$impl field
                     transformInstantiateCompanions(classBuilder,
-                            satisfiedType, iface);
+                            satisfiedType, iface, goRaw);
                     
                     if (!decl.isToplevel()) {// TODO What about local interfaces?
                         // Generate $outer() impl if implementing an inner interface
@@ -195,7 +207,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     private void transformInstantiateCompanions(
             ClassDefinitionBuilder classBuilder, Tree.SimpleType satisfiedType,
-            Interface iface) {
+            Interface iface, boolean goRaw) {
         at(satisfiedType);
         final ListBuffer<JCExpression> state = ListBuffer.<JCExpression>of(makeUnquotedIdent("this"));
         //if (!iface.isToplevel()) {
@@ -207,12 +219,12 @@ public class ClassTransformer extends AbstractTransformer {
                 makeSelect("this", fieldName),// TODO Use qualified name for quoting? 
                 make().NewClass(null, 
                         null, // TODO Type args 
-                        makeCompanionType(iface, typeArguments), 
+                        makeCompanionType(iface, typeArguments, goRaw),
                         state.toList(),  
                         null))));
         
         classBuilder.field(PRIVATE | FINAL, fieldName, 
-                makeCompanionType(iface, typeArguments), null, false);
+                makeCompanionType(iface, typeArguments, false), null, false);
     }
 
     private JCMethodDecl makeOuterImpl(final ClassOrInterface model,
@@ -571,6 +583,12 @@ public class ClassTransformer extends AbstractTransformer {
     }
     
     public List<JCTree> transformWrappedMethod(Tree.AnyMethod def) {
+        final Method model = def.getDeclarationModel();
+        if (model.isToplevel()) {
+            resetLocals();
+        } else if (Decl.isLocal(model)){
+            local(model.getContainer());
+        }
         // Generate a wrapper class for the method
         String name = def.getIdentifier().getText();
         ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, Decl.isAncestorLocal(def), name, Decl.isShared(def));
@@ -579,7 +597,7 @@ public class ClassTransformer extends AbstractTransformer {
         // Toplevel method
         if (Strategy.generateMain(def)) {
             // Add a main() method
-            builder.body(makeMainForFunction(def.getDeclarationModel()));
+            builder.body(makeMainForFunction(model));
         }
         
         List<JCTree> result = builder.build();
@@ -876,13 +894,17 @@ public class ClassTransformer extends AbstractTransformer {
         final String companionInstanceName = tempName("$impl$");
         if (def instanceof Tree.AnyClass) {
             
+            Class classModel = (Class)def.getDeclarationModel();
+            Map<TypeParameter, ProducedType> typeArguments = classModel.getType().getTypeArguments();
             vars.append(makeVar(companionInstanceName, 
-                    makeCompanionType((Class)def.getDeclarationModel(),
-                            ((Tree.AnyClass)def).getDeclarationModel().getType().getTypeArguments()),
+                    makeCompanionType(classModel,
+                            typeArguments, 
+                            false),
                     make().NewClass(null, // TODO encl == null ???
                             null,
-                            makeCompanionType((Class)def.getDeclarationModel(),
-                                    ((Tree.AnyClass)def).getDeclarationModel().getType().getTypeArguments()),
+                            makeCompanionType(classModel,
+                                    typeArguments,
+                                    false),
                             List.<JCExpression>nil(), null)));
         }
         

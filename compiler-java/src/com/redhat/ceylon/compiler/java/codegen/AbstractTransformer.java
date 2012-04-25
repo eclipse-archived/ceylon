@@ -1788,8 +1788,13 @@ public abstract class AbstractTransformer implements Transformation {
                 Util.getDefaultedParamMethodName(method, param));
     }
     
-    public final JCExpression makeCompanionType(final ClassOrInterface decl, Map<TypeParameter, ProducedType> typeParameters) {
-        List<JCExpression> typeArgs = typeArguments(decl.getTypeParameters(), typeParameters);
+    public final JCExpression makeCompanionType(final ClassOrInterface decl, Map<TypeParameter, ProducedType> typeParameters, boolean goRaw) {
+        List<JCExpression> typeArgs;
+        if (goRaw) {
+            typeArgs = List.<JCExpression>nil();
+        } else {
+            typeArgs = typeArguments(decl.getTypeParameters(), typeParameters);
+        }
         return makeCompanionType(decl, typeArgs);
     }
 
