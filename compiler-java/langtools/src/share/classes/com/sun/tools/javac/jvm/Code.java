@@ -1441,7 +1441,7 @@ public class Code {
         State newState = state;
         for (; chain != null; chain = chain.next) {
             Assert.check(state != chain.state
-                    && (target > chain.pc || state.stacksize == 0));
+                    && (target > chain.pc || state.stacksize == chain.state.stacksize));
             if (target >= cp) {
                 target = cp;
             } else if (get1(target) == goto_) {
