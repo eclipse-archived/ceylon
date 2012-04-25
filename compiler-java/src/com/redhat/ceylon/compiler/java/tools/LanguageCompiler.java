@@ -465,8 +465,8 @@ public class LanguageCompiler extends JavaCompiler {
     }
 
     private JavaFileObject genCodeUnlessError(Env<AttrContext> env, JCClassDecl cdef) throws IOException {
+        CeylonFileObject sourcefile = (CeylonFileObject) env.toplevel.sourcefile;
         try {
-            CeylonFileObject sourcefile = (CeylonFileObject) env.toplevel.sourcefile;
             // do not look at the global number of errors but only those for this file
             if (super.gen.genClass(env, cdef) && sourcefile.errors == 0)
                 return writer.writeClass(cdef.sym);
@@ -477,6 +477,8 @@ public class LanguageCompiler extends JavaCompiler {
                     ex.value.substring(0, 20));
         } catch (CompletionFailure ex) {
             chk.completionError(cdef.pos(), ex);
+        } catch (AssertionError e) {
+            throw new RuntimeException("Error generating bytecode for " + sourcefile.getName(), e);
         }
         return null;
     }
