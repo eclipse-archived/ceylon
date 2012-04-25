@@ -459,7 +459,7 @@ public abstract class CompilerTest {
 
         List<String> options = new LinkedList<String>();
         options.addAll(initialOptions);
-        options.addAll(Arrays.asList("-src", getSourcePath(), "-verbose"));
+        options.addAll(Arrays.asList("-src", getSourcePath(), "-verbose:ast,code"));
         Iterable<? extends JavaFileObject> compilationUnits1 =
                 runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
         return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, diagnosticListener, 
