@@ -964,8 +964,8 @@ public class ClassTransformer extends AbstractTransformer {
         at(currentParam);
         Parameter parameter = currentParam.getDeclarationModel();
         String name = Util.getDefaultedParamMethodName(container.getDeclarationModel(), parameter );
-        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(currentParam), true, name);
-        
+        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(container), true, name);
+        methodBuilder.annotations(makeAtIgnore());
         int modifiers = noBody ? PUBLIC | ABSTRACT : FINAL;
         if (container.getDeclarationModel().isShared()) {
             modifiers |= PUBLIC;
