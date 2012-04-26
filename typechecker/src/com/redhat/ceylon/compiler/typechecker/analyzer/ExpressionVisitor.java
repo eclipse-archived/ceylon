@@ -596,23 +596,10 @@ public class ExpressionVisitor extends Visitor {
     private void checkFunctionType(ProducedType declaredType, 
             Tree.SpecifierExpression sie, Tree.Type that) {
         if (sie!=null && sie.getExpression()!=null) {
-            //TODO: validate that expression type really is Callable
             ProducedType rt = sie.getExpression().getTypeModel()
                     .getTypeArgumentList().get(0);
             checkAssignable(rt, declaredType, that, 
                     "specified reference return type must be assignable to declared return type");
-        }
-    }
-
-    private void checkParameterType(int i, Parameter p, 
-            Tree.SpecifierExpression sie, Tree.Type that) {
-        if (sie!=null && sie.getExpression()!=null) {
-            //TODO: validate that expression type really is Callable
-            ProducedType rt = sie.getExpression().getTypeModel()
-                    .getTypeArgumentList().get(i+1);
-            checkIsExactly(rt, p.getType(), that, 
-                    "specified reference parameter type must be exactly the same as declared type of parameter " + 
-                    p.getName());
         }
     }
 
@@ -687,35 +674,46 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
         SpecifierExpression se = that.getSpecifierExpression();
-        if (se!=null) {
+        if (se!=null && se.getExpression()!=null) {
             ProducedType et = se.getExpression().getTypeModel();
-            //TODO: yew, fix this:
-            if (et==null || !et.getDeclaration().getQualifiedNameString()
-                    .equals("ceylon.language.Callable")) {
-                se.addError("specified value must be a reference to a function or class: " + 
-                        et.getDeclaration().getName() + " is not a subtype of Callable");
-            }
-            else {                    
+            if (isCallableType(et)) { //inferFunctionType() and checkFunctionType() assume that the SE has type Callable
                 inferFunctionType(that, se);
                 if (that.getType()!=null) {
                     checkFunctionType(that.getType().getTypeModel(), se, that.getType());
                 }
-                for (Tree.ParameterList pl: that.getParameterLists()) {
-                    //TODO: support multiple parameter lists!
-                    if (et!=null) {
-                        if (pl.getParameters().size()+1==et.getTypeArgumentList().size()) {
-                            int i=0;
-                            for (Tree.Parameter p: pl.getParameters()) {
-                                checkParameterType(i++, p.getDeclarationModel(), se, p.getType());
-                            }
-                        }
-                        else {
-                            se.addError("specified reference must have the same number of parameters");
+            }
+            for (Tree.ParameterList pl: that.getParameterLists()) {   
+                if (et==null || !isCallableType(et)) {
+                    se.addError("specified value must be a reference to a function or class: " + 
+                            et.getDeclaration().getName() + " is not a subtype of Callable");
+                    break;
+                }
+                else {                    
+                    if (pl.getParameters().size()+1==et.getTypeArgumentList().size()) {
+                        int i=0;
+                        for (Tree.Parameter p: pl.getParameters()) {
+                            i++;
+                            ProducedType rt = et.getTypeArgumentList().get(i);
+                            ProducedType pt = p.getDeclarationModel().getProducedTypedReference(null, 
+                                    Collections.<ProducedType>emptyList()).getFullType();
+                            checkIsExactly(rt, pt, p.getType(), 
+                                    "specified reference parameter type must be exactly the same as declared type of parameter " + 
+                                    p.getDeclarationModel().getName());
                         }
                     }
+                    else {
+                        se.addError("specified reference must have the same number of parameters");
+                    }
+                    et = et.getTypeArgumentList().get(0);
                 }
             }
         }
+    }
+
+    private boolean isCallableType(ProducedType et) {
+        //TODO: yew, fix this:
+        return et.getDeclaration().getQualifiedNameString()
+                .equals("ceylon.language.Callable");
     }
 
     @Override public void visit(Tree.MethodDefinition that) {
@@ -1014,7 +1012,6 @@ public class ExpressionVisitor extends Visitor {
     private void setFunctionType(Tree.FunctionModifier local, 
             Tree.SpecifierExpression s, Tree.TypedDeclaration that) {
         ProducedType t = denotableType(s.getExpression().getTypeModel());
-        //TODO: validate that t is really Callable
         t = t.getTypeArgumentList().get(0);
         local.setTypeModel(t);
         that.getDeclarationModel().setType(t);
@@ -1456,7 +1453,7 @@ public class ExpressionVisitor extends Visitor {
         if (prf==null || !prf.isFunctional()) {
             ProducedType pt = that.getPrimary().getTypeModel();
             if (pt!=null) {
-                if (pt.getDeclaration().getQualifiedNameString().equals("ceylon.language.Callable")) { //yuck!!
+                if (isCallableType(pt)) {
                     List<ProducedType> typeArgs = pt.getTypeArgumentList();
                     if (!typeArgs.isEmpty()) {
                         that.setTypeModel(typeArgs.get(0));
@@ -1615,7 +1612,7 @@ public class ExpressionVisitor extends Visitor {
         }
         else if (a instanceof Tree.TypedArgument) {
             TypedArgument ta = (Tree.TypedArgument) a;
-            argType = ta.getDeclarationModel().getProducedReference(null,
+            argType = ta.getDeclarationModel().getProducedTypedReference(null,
                      //assuming an argument can't have type params 
                     Collections.<ProducedType>emptyList()).getFullType();
             //argType = ta.getType().getTypeModel();
