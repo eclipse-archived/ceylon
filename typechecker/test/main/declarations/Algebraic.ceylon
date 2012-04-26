@@ -51,6 +51,17 @@ void ij<T>(T k) given T of I|J {
     else {}
 }
 
+void testij() {
+    object i satisfies I {}
+    object j satisfies J {}
+    object k satisfies I&J {}
+    ij(i);
+    ij(j);
+    ij(k);
+    @error ij("hello");
+    @error ij(1);
+}
+
 abstract class XXX<out T>() of YYY<T> | ZZZ<T> {}
 
 class YYY<out T>() extends XXX<T>() {}
@@ -65,5 +76,18 @@ void switchit(XXX<String> x) {
     }
     case (is ZZZ<String>) { 
         print("zzz"); 
+    }
+}
+
+Integer fib(Integer n) {
+    switch (n<=>0)
+    case (equal) {
+        return 1;
+    }
+    case (larger) {
+        return n*fib(n-1);
+    }
+    case (smaller) {
+        throw;
     }
 }

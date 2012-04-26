@@ -120,4 +120,11 @@ class Intersection() {
     @type["Integer&Sequence<String>"] intersect(1, {"hello"});
     @type["Bottom"] intersect(I({"hello"}), I({}));
     
+    interface I1 {} 
+    interface I2 {}
+
+    void meth(I1[]&I2[] seq) {
+        @type["Nothing|Intersection.I1&Intersection.I2"] value item = seq[4];
+    } 
+    
 }

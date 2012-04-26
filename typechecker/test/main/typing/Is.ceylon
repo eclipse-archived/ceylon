@@ -64,4 +64,12 @@ class Is() {
         process.writeLine(s);
     }
     else {}
+    
+    void m(String s) {
+        @error if (is String s) { }
+        @error if (is Integer s) { }
+        @error value b = is String s;
+        @error value c = is Integer s;
+    }
+    
 }
