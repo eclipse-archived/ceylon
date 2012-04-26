@@ -8,6 +8,7 @@ class CharacterLiteral {
         final int c3 = '`';
         final int c4 = '\\';
         final int c5 = '\t';
+        final int c6 = '\n';
     }
     
     CharacterLiteral() {
