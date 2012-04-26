@@ -74,6 +74,7 @@ public class ClassDefinitionBuilder {
     private final ListBuffer<JCExpression> satisfies = ListBuffer.lb();
     private final ListBuffer<JCExpression> caseTypes = ListBuffer.lb();
     private final ListBuffer<JCTypeParameter> typeParams = ListBuffer.lb();
+    private final ListBuffer<JCTypeParameter> implTypeParams = ListBuffer.lb();
     private final ListBuffer<JCExpression> typeParamAnnotations = ListBuffer.lb();
     
     private final ListBuffer<JCAnnotation> annotations = ListBuffer.lb();
@@ -116,6 +117,8 @@ public class ClassDefinitionBuilder {
         if (!typeParamAnnotations.isEmpty()) {
             annotations(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
         }
+        
+        
         JCTree.JCClassDecl klass = gen.make().ClassDef(
                 gen.make().Modifiers(modifiers, annotations.toList()),
                 gen.names().fromString(Util.quoteIfJavaKeyword(name)),
@@ -123,7 +126,20 @@ public class ClassDefinitionBuilder {
                 extending,
                 satisfies.toList(),
                 defs.toList());
-        return List.<JCTree>of(klass);
+        ListBuffer<JCTree> klasses = ListBuffer.<JCTree>of(klass);
+        
+        if (!concreteInterfaceMemberDefs.isEmpty()) {
+            JCTree.JCClassDecl concreteInterfaceKlass = gen.make().ClassDef(
+                    gen.make().Modifiers((modifiers & PUBLIC) | FINAL , gen.makeAtIgnore()),
+                    gen.names().fromString(Util.getCompanionClassName(name)),
+                    implTypeParams.toList(),
+                    (JCTree)null,
+                    List.<JCTree.JCExpression>nil(),
+                    concreteInterfaceMemberDefs.toList());
+            klasses.append(concreteInterfaceKlass);
+        }
+        
+        return klasses.toList();
     }
 
     private void appendDefinitionsTo(ListBuffer<JCTree> defs) {
@@ -132,16 +148,6 @@ public class ClassDefinitionBuilder {
             defs.append(createConstructor());
         }
         defs.appendList(body);
-        if (!concreteInterfaceMemberDefs.isEmpty()) {
-            JCTree.JCClassDecl concreteInterfaceKlass = gen.make().ClassDef(
-                    gen.make().Modifiers((modifiers & PUBLIC) | FINAL | STATIC, gen.makeAtIgnore()),
-                    gen.names().fromString(Util.getCompanionClassName(name)),
-                    List.<JCTree.JCTypeParameter>nil(),
-                    (JCTree.JCExpression)null,
-                    List.<JCTree.JCExpression>nil(),
-                    concreteInterfaceMemberDefs.toList());
-            defs.append(concreteInterfaceKlass);
-        }
     }
 
     private List<JCTree> appendConcreteInterfaceMembers(java.util.List<ProducedType> satisfies) {
@@ -262,10 +268,16 @@ public class ClassDefinitionBuilder {
                 bounds.append(gen.makeJavaType(t, AbstractTransformer.NO_PRIMITIVES));
             }
         }
-        typeParams.append(gen.make().TypeParameter(gen.names().fromString(name),
-                bounds.toList()));
+        typeParams.append(typeParam(name, bounds));
+        implTypeParams.append(typeParam(name, bounds));
         typeParamAnnotations.append(gen.makeAtTypeParameter(name, satisfiedTypes, covariant, contravariant));
         return this;
+    }
+
+    private JCTypeParameter typeParam(String name,
+            ListBuffer<JCExpression> bounds) {
+        return gen.make().TypeParameter(gen.names().fromString(name),
+                bounds.toList());
     }
 
     public ClassDefinitionBuilder typeParameter(Tree.TypeParameterDeclaration param) {
