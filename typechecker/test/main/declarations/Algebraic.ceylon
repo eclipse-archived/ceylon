@@ -222,6 +222,39 @@ void switchInterface(Interface i) {
         
 }
 
+void switchUnion1(Class2|Class3|String val) {
+    switch (val)
+    case (is Class2) {}
+    case (is Class3) {}
+    case (is String) {}
+    switch (val)
+    case (is Class2) {}
+    else {}
+    @error switch (val)
+    case (is Class2) {}
+    case (is Class3) {}
+    @error switch (val)
+    case (is Class2) {}
+    case (is Class3) {}
+    case (is String) {}
+    case (is Integer) {}
+}
+
+void switchUnion2(Class1|String val) {
+    switch (val)
+    case (is Class3) {}
+    case (object1) {}
+    case (is String) {}
+    @error switch (val)
+    case (is Class1) {}
+    case (object1) {}
+    case (is String) {}
+    @error switch (val)
+    case (is Class1) {}
+    case (is Class3) {}
+    case (is String) {}
+}
+
 @error class NonAbstract() of SubtypeOfNonAbstract {}
 class SubtypeOfNonAbstract() extends NonAbstract() {}
 
