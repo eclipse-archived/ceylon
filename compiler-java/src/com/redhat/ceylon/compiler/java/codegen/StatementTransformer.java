@@ -479,7 +479,7 @@ public class StatementTransformer extends AbstractTransformer {
     JCStatement transform(SwitchStatement stmt) {
 
         SwitchClause switchClause = stmt.getSwitchClause();
-        JCExpression selectorExpr = expressionGen().transformExpression(switchClause.getExpression(), BoxingStrategy.UNBOXED, switchClause.getExpression().getTypeModel());
+        JCExpression selectorExpr = expressionGen().transformExpression(switchClause.getExpression(), BoxingStrategy.BOXED, switchClause.getExpression().getTypeModel());
         String selectorAlias = aliasName("sel");
         JCVariableDecl selector = makeVar(selectorAlias, make().Type(syms().objectType), selectorExpr);
         SwitchCaseList caseList = stmt.getSwitchCaseList();
