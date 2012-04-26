@@ -78,6 +78,12 @@ class Lambdas() {
     String n2(String last) = name("Gavin")("A");
     String n1(String middle)(String last) = name("Gavin");
     
+    @type["String"] function nm2(String middle)(String last) = name("Gavin");
+    @type["String"] function nm1(String last) = name("Gavin")("A");
+    
+    @type["Callable<Callable<String,String>,String>"] value nmv2 = name("Gavin");
+    @type["Callable<String,String>"] value nmv1 = name("Gavin")("A");
+    
     void noop(String x)(Integer y)(Float z) {}
     noop("")(1)(1.0);
     @error noop("")(1.0)(1.0);
