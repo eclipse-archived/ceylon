@@ -133,8 +133,18 @@ public class IssuesTest extends CompilerTest {
     }
     
     @Test
+    public void testBug291(){
+        compareWithJavaSource("Bug291");
+    }
+    
+    @Test
     public void testBug298(){
         compareWithJavaSource("Bug298");
+    }
+    
+    @Test
+    public void testBug299(){
+        compareWithJavaSource("Bug299");
     }
     
     @Test

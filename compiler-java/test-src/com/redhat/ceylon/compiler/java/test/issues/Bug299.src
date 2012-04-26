@@ -1,0 +1,105 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+class Bug299 {
+    
+    final class Inner$impl {
+        
+        Inner$impl() {
+            super();
+        }
+        
+        private final .java.lang.String $init$s() {
+            return "a";
+        }
+    }
+    
+    class Inner {
+        
+        private final void m(final .java.lang.String s) {
+        }
+        
+        private final void m() {
+            (
+                let
+                    .java.lang.String $ceylontmp$s$3 = m$s()
+                in {
+                    m($ceylontmp$s$3);
+                }
+                returning null
+            );
+        }
+        
+        private final .java.lang.String m$s() {
+            return "b";
+        }
+        
+        Inner() {
+            (
+                let
+                    .com.redhat.ceylon.compiler.java.test.issues.Bug299.Inner$impl $ceylontmp$impl$0 = new .com.redhat.ceylon.compiler.java.test.issues.Bug299.Inner$impl(),
+                    .java.lang.String $ceylontmp$s$1 = $ceylontmp$impl$0.$init$s()
+                in {
+                    this($ceylontmp$s$1);
+                }
+                returning null
+            );
+        }
+        
+        Inner(.java.lang.String s) {
+        }
+    }
+    
+    private final void m() {
+        
+        final class Inner$impl {
+            
+            private final .java.lang.String $init$s() {
+                return "a";
+            }
+        }
+        
+        class Inner {
+            
+            private final void m(final .java.lang.String s) {
+            }
+            
+            private final void m() {
+                (
+                    let
+                        .java.lang.String $ceylontmp$s$7 = m$s()
+                    in {
+                        m($ceylontmp$s$7);
+                    }
+                    returning null
+                );
+            }
+            
+            private final .java.lang.String m$s() {
+                return "b";
+            }
+            
+            Inner() {
+                (
+                    let
+                        Inner$impl $ceylontmp$impl$4 = new Inner$impl(),
+                        .java.lang.String $ceylontmp$s$5 = $ceylontmp$impl$4.$init$s()
+                    in {
+                        this($ceylontmp$s$5);
+                    }
+                    returning null
+                );
+            }
+            
+            Inner(.java.lang.String s) {
+            }
+        }
+    }
+    
+    Bug299() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug299();
+    }
+}
