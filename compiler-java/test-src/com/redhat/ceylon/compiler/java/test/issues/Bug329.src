@@ -4,6 +4,17 @@ interface Bug329_Something {
     
     public abstract .java.lang.Object getSomething();
 }
+final class Bug329_Something$impl {
+    private final .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something $this;
+    
+    public final .java.lang.Object getSomething() {
+        return $this.getSomething();
+    }
+    
+    Bug329_Something$impl(.com.redhat.ceylon.compiler.java.test.issues.Bug329_Something $this) {
+        this.$this = $this;
+    }
+}
 final class bug329_se implements .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something {
     private final .ceylon.language.String something;
     

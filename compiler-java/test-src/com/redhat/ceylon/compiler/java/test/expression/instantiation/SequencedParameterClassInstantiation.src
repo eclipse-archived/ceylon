@@ -2,10 +2,25 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
 class SequencedParameterClassInstantiation {
     
+    static final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $init$args(final long a) {
+        return .ceylon.language.$empty.getEmpty();
+    }
+    
     public final void m() {
-        final .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation a = new .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation(1L, .ceylon.language.$empty.getEmpty());
+        final .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation a = new .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation(1L);
         final .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation b = new .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation(1L, new .ceylon.language.ArraySequence(.ceylon.language.Integer.instance(2L)));
         final .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation c = new .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation(1L, new .ceylon.language.ArraySequence(.ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
+    }
+    
+    SequencedParameterClassInstantiation(final long a) {
+        (
+            let
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$args$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation.$init$args(a)
+            in {
+                this(a, $ceylontmp$args$1);
+            }
+            returning null
+        );
     }
     
     SequencedParameterClassInstantiation(long a, .ceylon.language.Iterable<? extends .ceylon.language.Integer> args) {

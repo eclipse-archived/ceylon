@@ -6,7 +6,7 @@ public final class mangledToplevelMethod {
     }
     
     public static void mangledToplevelMethod() {
-        final .ceylon.language.Array arr = .ceylon.language.$array.array(.ceylon.language.$empty.getEmpty());
+        final .ceylon.language.Array arr = .ceylon.language.$array.array();
     }
     
     public static void main(.java.lang.String[] args) {

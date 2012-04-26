@@ -5,6 +5,21 @@ class SequenceMethodSpecifyingMethodWithVarargs {
     private final void foo(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
     }
     
+    private final void foo() {
+        (
+            let
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$1 = foo$seq()
+            in {
+                foo($ceylontmp$seq$1);
+            }
+            returning null
+        );
+    }
+    
+    private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> foo$seq() {
+        return .ceylon.language.$empty.getEmpty();
+    }
+    
     private final void bar(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> ints) {
         foo(ints);
     }

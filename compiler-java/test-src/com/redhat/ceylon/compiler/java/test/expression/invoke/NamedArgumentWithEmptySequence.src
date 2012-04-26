@@ -5,12 +5,27 @@ class NamedArgumentWithEmptySequence {
     private final void m(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> b) {
     }
     
+    private final void m() {
+        (
+            let
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$b$1 = m$b()
+            in {
+                m($ceylontmp$b$1);
+            }
+            returning null
+        );
+    }
+    
+    private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> m$b() {
+        return .ceylon.language.$empty.getEmpty();
+    }
+    
     NamedArgumentWithEmptySequence() {
         (
             let
-                .ceylon.language.Iterable $arg$0$0 = .ceylon.language.$empty.getEmpty()
+                .ceylon.language.Iterable $arg$2$0 = .ceylon.language.$empty.getEmpty()
             in {
-                m($arg$0$0);
+                m($arg$2$0);
             }
             returning null
         );

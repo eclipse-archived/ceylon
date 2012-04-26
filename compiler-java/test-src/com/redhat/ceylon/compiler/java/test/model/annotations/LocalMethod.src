@@ -14,6 +14,21 @@ public class LocalMethod {
             
             void m2(final long i1, final .ceylon.language.Iterable<? extends .ceylon.language.String> s) {
             }
+            
+            final void m2(final long i1) {
+                (
+                    let
+                        .ceylon.language.Iterable<? extends .ceylon.language.String> $ceylontmp$s$1 = m2$s(i1)
+                    in {
+                        m2(i1, $ceylontmp$s$1);
+                    }
+                    returning null
+                );
+            }
+            
+            private final .ceylon.language.Iterable<? extends .ceylon.language.String> m2$s(final long i1) {
+                return .ceylon.language.$empty.getEmpty();
+            }
         }
         final m2 m2 = new m2();
     }

@@ -24,6 +24,21 @@ public class LocalKlass {
             public final void m2(final long arg1, final .ceylon.language.Iterable<? extends T> t) {
             }
             
+            public final void m2(final long arg1) {
+                (
+                    let
+                        .ceylon.language.Iterable<? extends T> $ceylontmp$t$1 = m2$t(arg1)
+                    in {
+                        m2(arg1, $ceylontmp$t$1);
+                    }
+                    returning null
+                );
+            }
+            
+            public final .ceylon.language.Iterable<? extends T> m2$t(final long arg1) {
+                return .ceylon.language.$empty.getEmpty();
+            }
+            
             @.java.lang.Override
             public final long getSize() {
                 return 0L;

@@ -5,7 +5,7 @@ class LocalClassWithLocalObject {
     private final void m() {
         
         class Inner {
-            private final o o;
+            private final Inner.o o;
             
             final class o {
                 
@@ -13,12 +13,12 @@ class LocalClassWithLocalObject {
                 }
             }
             
-            public final o getO() {
+            public final Inner.o getO() {
                 return o;
             }
             
             Inner() {
-                this.o = new o();
+                this.o = new Inner.o();
             }
         }
     }

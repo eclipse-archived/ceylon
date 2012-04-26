@@ -8,15 +8,19 @@ public final class $assert {
     public static void $assert(final boolean assertion, final .java.lang.String message) {
     }
     
-    public static final class assert$impl {
-        
-        public assert$impl() {
-            super();
-        }
-        
-        public static .java.lang.String assert$message(final boolean assertion) {
-            return "";
-        }
+    public static final void $assert(final boolean assertion) {
+        (
+            let
+                .java.lang.String $ceylontmp$message$1 = assert$message(assertion)
+            in {
+                $assert(assertion, $ceylontmp$message$1);
+            }
+            returning null
+        );
+    }
+    
+    public static final .java.lang.String assert$message(final boolean assertion) {
+        return "";
     }
 }
 final class m {
@@ -25,15 +29,7 @@ final class m {
     }
     
     static void m() {
-        (
-            let
-                boolean $arg$0$0 = true,
-                .java.lang.String $arg$0$1 = .com.redhat.ceylon.compiler.java.test.issues.$assert.$assert.assert$impl.assert$message($arg$0$0)
-            in {
-                .com.redhat.ceylon.compiler.java.test.issues.$assert.$assert.$assert($arg$0$0, $arg$0$1);
-            }
-            returning null
-        );
+        .com.redhat.ceylon.compiler.java.test.issues.$assert.$assert.$assert(true);
     }
     
     public static void main(.java.lang.String[] args) {

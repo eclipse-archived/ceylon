@@ -8,15 +8,19 @@ public final class f1 {
     public static void f1(final long n) {
     }
     
-    public static final class f1$impl {
-        
-        public f1$impl() {
-            super();
-        }
-        
-        public static long f1$n() {
-            return 5L;
-        }
+    public static final void f1() {
+        (
+            let
+                long $ceylontmp$n$1 = f1$n()
+            in {
+                f1($ceylontmp$n$1);
+            }
+            returning null
+        );
+    }
+    
+    public static final long f1$n() {
+        return 5L;
     }
 }
 public final class f2 {
@@ -27,15 +31,19 @@ public final class f2 {
     public static void f2(final long n, final .java.lang.String s) {
     }
     
-    public static final class f2$impl {
-        
-        public f2$impl() {
-            super();
-        }
-        
-        public static .java.lang.String f2$s(final long n) {
-            return "test";
-        }
+    public static final void f2(final long n) {
+        (
+            let
+                .java.lang.String $ceylontmp$s$3 = f2$s(n)
+            in {
+                f2(n, $ceylontmp$s$3);
+            }
+            returning null
+        );
+    }
+    
+    public static final .java.lang.String f2$s(final long n) {
+        return "test";
     }
 }
 public final class f3 {
@@ -46,19 +54,35 @@ public final class f3 {
     public static void f3(final long n, final long m) {
     }
     
-    public static final class f3$impl {
-        
-        public f3$impl() {
-            super();
-        }
-        
-        public static long f3$n() {
-            return 5L;
-        }
-        
-        public static long f3$m(final long n) {
-            return n;
-        }
+    public static final void f3(final long n) {
+        (
+            let
+                long $ceylontmp$m$8 = f3$m(n)
+            in {
+                f3(n, $ceylontmp$m$8);
+            }
+            returning null
+        );
+    }
+    
+    public static final void f3() {
+        (
+            let
+                long $ceylontmp$n$5 = f3$n(),
+                long $ceylontmp$m$6 = f3$m($ceylontmp$n$5)
+            in {
+                f3($ceylontmp$n$5, $ceylontmp$m$6);
+            }
+            returning null
+        );
+    }
+    
+    public static final long f3$n() {
+        return 5L;
+    }
+    
+    public static final long f3$m(final long n) {
+        return n;
     }
 }
 public final class f4 {
@@ -69,19 +93,35 @@ public final class f4 {
     public static void f4(final long n, final long m) {
     }
     
-    public static final class f4$impl {
-        
-        public f4$impl() {
-            super();
-        }
-        
-        public static long f4$n() {
-            return 5L;
-        }
-        
-        public static long f4$m(final long n) {
-            return n + 1L;
-        }
+    public static final void f4(final long n) {
+        (
+            let
+                long $ceylontmp$m$13 = f4$m(n)
+            in {
+                f4(n, $ceylontmp$m$13);
+            }
+            returning null
+        );
+    }
+    
+    public static final void f4() {
+        (
+            let
+                long $ceylontmp$n$10 = f4$n(),
+                long $ceylontmp$m$11 = f4$m($ceylontmp$n$10)
+            in {
+                f4($ceylontmp$n$10, $ceylontmp$m$11);
+            }
+            returning null
+        );
+    }
+    
+    public static final long f4$n() {
+        return 5L;
+    }
+    
+    public static final long f4$m(final long n) {
+        return n + 1L;
     }
 }
 public final class f5 {
@@ -92,15 +132,35 @@ public final class f5 {
     public static void f5(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
     }
     
-    public static final class f5$impl {
-        
-        public f5$impl() {
-            super();
-        }
-        
-        public static long f5$n() {
-            return 5L;
-        }
+    public static final void f5(final long n) {
+        (
+            let
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$18 = f5$seq(n)
+            in {
+                f5(n, $ceylontmp$seq$18);
+            }
+            returning null
+        );
+    }
+    
+    public static final void f5() {
+        (
+            let
+                long $ceylontmp$n$15 = f5$n(),
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$16 = f5$seq($ceylontmp$n$15)
+            in {
+                f5($ceylontmp$n$15, $ceylontmp$seq$16);
+            }
+            returning null
+        );
+    }
+    
+    public static final long f5$n() {
+        return 5L;
+    }
+    
+    public static final .ceylon.language.Iterable<? extends .ceylon.language.Integer> f5$seq(final long n) {
+        return .ceylon.language.$empty.getEmpty();
     }
 }
 final class test {
@@ -109,73 +169,18 @@ final class test {
     }
     
     static void test() {
-        (
-            let
-                long $arg$0$0 = .com.redhat.ceylon.compiler.java.test.expression.invoke.f1.f1$impl.f1$n()
-            in {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.f1.f1($arg$0$0);
-            }
-            returning null
-        );
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f1.f1();
         .com.redhat.ceylon.compiler.java.test.expression.invoke.f1.f1(6L);
-        (
-            let
-                long $arg$1$0 = 6L,
-                .java.lang.String $arg$1$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.f2.f2$impl.f2$s($arg$1$0)
-            in {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.f2.f2($arg$1$0, $arg$1$1);
-            }
-            returning null
-        );
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f2.f2(6L);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.f2.f2(6L, "foo");
-        (
-            let
-                long $arg$2$0 = .com.redhat.ceylon.compiler.java.test.expression.invoke.f3.f3$impl.f3$n(),
-                long $arg$2$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.f3.f3$impl.f3$m($arg$2$0)
-            in {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.f3.f3($arg$2$0, $arg$2$1);
-            }
-            returning null
-        );
-        (
-            let
-                long $arg$3$0 = 6L,
-                long $arg$3$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.f3.f3$impl.f3$m($arg$3$0)
-            in {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.f3.f3($arg$3$0, $arg$3$1);
-            }
-            returning null
-        );
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f3.f3();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f3.f3(6L);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.f3.f3(6L, 9L);
-        (
-            let
-                long $arg$4$0 = .com.redhat.ceylon.compiler.java.test.expression.invoke.f4.f4$impl.f4$n(),
-                long $arg$4$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.f4.f4$impl.f4$m($arg$4$0)
-            in {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.f4.f4($arg$4$0, $arg$4$1);
-            }
-            returning null
-        );
-        (
-            let
-                long $arg$5$0 = 6L,
-                long $arg$5$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.f4.f4$impl.f4$m($arg$5$0)
-            in {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.f4.f4($arg$5$0, $arg$5$1);
-            }
-            returning null
-        );
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f4.f4();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f4.f4(6L);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.f4.f4(6L, 9L);
-        (
-            let
-                long $arg$6$0 = .com.redhat.ceylon.compiler.java.test.expression.invoke.f5.f5$impl.f5$n(),
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$6$1 = .ceylon.language.$empty.getEmpty()
-            in {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.f5.f5($arg$6$0, $arg$6$1);
-            }
-            returning null
-        );
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.f5.f5(6L, .ceylon.language.$empty.getEmpty());
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f5.f5();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f5.f5(6L);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.f5.f5(6L, new .ceylon.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
     }
     

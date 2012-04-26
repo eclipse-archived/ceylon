@@ -19,23 +19,14 @@ final class callableAndDefaultedArguments {
     }
     
     static void callableAndDefaultedArguments() {
-        (
-            let
-                .ceylon.language.Callable<? extends .java.lang.Object> $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void>"){
-                    
-                    @.java.lang.Override
-                    public .java.lang.Object $call() {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableAndDefaultedArguments_bar.callableAndDefaultedArguments_bar();
-                        return null;
-                    }
-                },
-                .ceylon.language.String $arg$0$1 = .ceylon.language.String.instance(""),
-                .ceylon.language.String $arg$0$2 = .com.redhat.ceylon.compiler.java.test.expression.invoke.callableAndDefaultedArguments_foo.callableAndDefaultedArguments_foo$impl.callableAndDefaultedArguments_foo$s2($arg$0$0, $arg$0$1)
-            in {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableAndDefaultedArguments_foo.callableAndDefaultedArguments_foo($arg$0$0, $arg$0$1, $arg$0$2);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableAndDefaultedArguments_foo.callableAndDefaultedArguments_foo(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void>"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call() {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableAndDefaultedArguments_bar.callableAndDefaultedArguments_bar();
+                return null;
             }
-            returning null
-        );
+        }, .ceylon.language.String.instance(""));
     }
     
     public static void main(.java.lang.String[] args) {

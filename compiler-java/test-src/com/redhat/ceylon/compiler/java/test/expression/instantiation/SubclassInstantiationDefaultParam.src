@@ -2,31 +2,28 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
 class SubclassInstantiationDefaultParam {
     
-    SubclassInstantiationDefaultParam(.java.lang.String name) {
+    static final .java.lang.String $init$name() {
+        return "tom";
     }
     
-    static final class SubclassInstantiationDefaultParam$impl {
-        
-        SubclassInstantiationDefaultParam$impl() {
-            super();
-        }
-        
-        static .java.lang.String $init$name() {
-            return "tom";
-        }
+    SubclassInstantiationDefaultParam() {
+        (
+            let
+                .java.lang.String $ceylontmp$name$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam.$init$name()
+            in {
+                this($ceylontmp$name$1);
+            }
+            returning null
+        );
+    }
+    
+    SubclassInstantiationDefaultParam(.java.lang.String name) {
     }
 }
 class SubclassInstantiationDefaultParamSub extends .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam {
     
     SubclassInstantiationDefaultParamSub() {
-        (
-            let
-                .java.lang.String $arg$0$0 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam.SubclassInstantiationDefaultParam$impl.$init$name()
-            in {
-                super($arg$0$0);
-            }
-            returning null
-        );
+        super();
     }
     
     public static void main(.java.lang.String[] args) {

@@ -5,6 +5,21 @@ class NamedArgumentSequencedTypeParamInvocation<T> {
     public final void algo(final .ceylon.language.Iterable<? extends T> strings) {
     }
     
+    public final void algo() {
+        (
+            let
+                .ceylon.language.Iterable<? extends T> $ceylontmp$strings$1 = algo$strings()
+            in {
+                algo($ceylontmp$strings$1);
+            }
+            returning null
+        );
+    }
+    
+    public final .ceylon.language.Iterable<? extends T> algo$strings() {
+        return .ceylon.language.$empty.getEmpty();
+    }
+    
     NamedArgumentSequencedTypeParamInvocation() {
     }
     
@@ -21,10 +36,10 @@ final class foo {
     static void foo() {
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation<.ceylon.language.String> $arg$0$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation<.ceylon.language.String>(),
-                .ceylon.language.Iterable $arg$0$0 = new .ceylon.language.ArraySequence(.ceylon.language.String.instance("x"), .ceylon.language.String.instance("y"))
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation<.ceylon.language.String> $arg$2$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation<.ceylon.language.String>(),
+                .ceylon.language.Iterable $arg$2$0 = new .ceylon.language.ArraySequence(.ceylon.language.String.instance("x"), .ceylon.language.String.instance("y"))
             in {
-                $arg$0$callable$.algo($arg$0$0);
+                $arg$2$callable$.algo($arg$2$0);
             }
             returning null
         );

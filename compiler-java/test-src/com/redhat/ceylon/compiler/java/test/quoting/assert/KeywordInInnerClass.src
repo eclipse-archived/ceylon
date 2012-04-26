@@ -5,7 +5,7 @@ class KeywordInInnerClass {
     private final void m() {
         
         class Inner {
-            private final $transient transient;
+            private final Inner.$transient transient;
             
             final class $transient {
                 
@@ -16,12 +16,12 @@ class KeywordInInnerClass {
                 }
             }
             
-            public final $transient getTransient() {
+            public final Inner.$transient getTransient() {
                 return transient;
             }
             
             Inner() {
-                this.transient = new $transient();
+                this.transient = new Inner.$transient();
             }
         }
         new Inner().getTransient().$enum();

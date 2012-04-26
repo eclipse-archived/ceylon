@@ -2,6 +2,21 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
 class Foo {
     
+    static final .ceylon.language.Iterable<? extends .ceylon.language.String> $init$name() {
+        return .ceylon.language.$empty.getEmpty();
+    }
+    
+    Foo() {
+        (
+            let
+                .ceylon.language.Iterable<? extends .ceylon.language.String> $ceylontmp$name$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.Foo.$init$name()
+            in {
+                this($ceylontmp$name$1);
+            }
+            returning null
+        );
+    }
+    
     Foo(.ceylon.language.Iterable<? extends .ceylon.language.String> name) {
     }
 }

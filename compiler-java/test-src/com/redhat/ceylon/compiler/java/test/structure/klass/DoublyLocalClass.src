@@ -13,7 +13,7 @@ class DoublyLocalClass {
             }
             
             LocalClass() {
-                final Innermost i = new Innermost();
+                final LocalClass.Innermost i = new LocalClass.Innermost();
             }
         }
     }

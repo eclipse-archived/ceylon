@@ -10,7 +10,27 @@ interface SatisfiesWithMembers {
     
     public abstract void m();
 }
+final class SatisfiesWithMembers$impl {
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers $this;
+    
+    public final boolean getB() {
+        return $this.getB();
+    }
+    
+    public final boolean getB2() {
+        return $this.getB2();
+    }
+    
+    public final void setB2(boolean b2) {
+        $this.setB2(b2);
+    }
+    
+    SatisfiesWithMembers$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers $this) {
+        this.$this = $this;
+    }
+}
 class SatisfiesWithMembersClass implements .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers {
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers$impl $SatisfiesWithMembers$impl;
     private final boolean b;
     
     @.java.lang.Override
@@ -35,6 +55,7 @@ class SatisfiesWithMembersClass implements .com.redhat.ceylon.compiler.java.test
     }
     
     SatisfiesWithMembersClass() {
+        this.$SatisfiesWithMembers$impl = new .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers$impl(this);
         this.b = true;
         this.b2 = false;
     }

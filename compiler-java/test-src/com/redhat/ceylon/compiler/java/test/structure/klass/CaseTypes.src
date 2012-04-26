@@ -62,7 +62,28 @@ public class Bar extends .com.redhat.ceylon.compiler.java.test.structure.klass.C
 }
 public interface ICaseTypes {
 }
+public final class ICaseTypes$impl {
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes $this;
+    
+    public ICaseTypes$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes $this) {
+        this.$this = $this;
+    }
+}
 public interface IFoo extends .com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes {
 }
+public final class IFoo$impl {
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.IFoo $this;
+    
+    public IFoo$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.IFoo $this) {
+        this.$this = $this;
+    }
+}
 public interface IBar extends .com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes {
+}
+public final class IBar$impl {
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.IBar $this;
+    
+    public IBar$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.IBar $this) {
+        this.$this = $this;
+    }
 }
