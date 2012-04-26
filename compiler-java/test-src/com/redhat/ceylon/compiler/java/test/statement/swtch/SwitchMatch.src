@@ -50,10 +50,26 @@ class SwitchMatch {
     private final void onBoolean() {
         final boolean b = true;
         {
-            .java.lang.Object $sel$1 = b;
+            .java.lang.Object $sel$1 = .ceylon.language.Boolean.instance(b);
             if ($sel$1 == .ceylon.language.Boolean.instance(true)) {
                 .ceylon.language.print.print(.ceylon.language.String.instance("true"));
             } else if ($sel$1 == .ceylon.language.Boolean.instance(false)) {
+                .ceylon.language.print.print(.ceylon.language.String.instance("false"));
+            } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+        }
+    }
+    
+    private final <T>T box(final T t) {
+        return t;
+    }
+    
+    private final void onBoxedBoolean() {
+        final boolean b = true;
+        {
+            .java.lang.Object $sel$2 = <.ceylon.language.Boolean>box(.ceylon.language.Boolean.instance(b));
+            if ($sel$2 == .ceylon.language.Boolean.instance(true)) {
+                .ceylon.language.print.print(.ceylon.language.String.instance("true"));
+            } else if ($sel$2 == .ceylon.language.Boolean.instance(false)) {
                 .ceylon.language.print.print(.ceylon.language.String.instance("false"));
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }

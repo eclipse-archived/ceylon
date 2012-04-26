@@ -36,7 +36,16 @@ class SwitchMatch() {
     }
     void onBoolean() {
         Boolean b = true;
-        switch (b) 
+        switch (b)
+        case (true) { print("true"); }
+        case (false) { print("false"); }
+    }
+    
+    T box<T>(T t){ return t; }
+    
+    void onBoxedBoolean() {
+        Boolean b = true;
+        switch (box(b)) 
         case (true) { print("true"); }
         case (false) { print("false"); }
     }
