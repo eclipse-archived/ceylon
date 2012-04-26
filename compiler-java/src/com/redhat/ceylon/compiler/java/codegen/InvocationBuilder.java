@@ -83,7 +83,7 @@ abstract class InvocationBuilder {
             this.primaryTypeArguments = transformTypeArguments(gen, null);
         }
         
-        needsThis = primaryDeclaration != null ? Decl.withinClassOrInterface(primaryDeclaration) || primaryDeclaration instanceof Class : false;
+        needsThis = !Decl.defaultParameterMethodStatic(primaryDeclaration);
     }
     
     static final List<JCExpression> transformTypeArguments(

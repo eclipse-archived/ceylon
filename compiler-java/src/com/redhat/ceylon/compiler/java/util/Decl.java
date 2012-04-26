@@ -21,6 +21,7 @@
 package com.redhat.ceylon.compiler.java.util;
 
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -265,7 +266,8 @@ public class Decl {
     }
     
     public static boolean defaultParameterMethodStatic(Tree.Declaration decl) {
-        // Only top-level methods have static default value methods
+        // Only top-level methods and top-level class initializers 
+        // have static default value methods
         return defaultParameterMethodStatic(decl.getDeclarationModel());
     }
     
@@ -274,7 +276,7 @@ public class Decl {
             decl = ((Parameter) decl).getDeclaration();
         }
         // Only top-level methods have static default value methods
-        return decl instanceof Method 
+        return (decl instanceof Method || decl instanceof Class) 
                 && decl.isToplevel();
     }
     

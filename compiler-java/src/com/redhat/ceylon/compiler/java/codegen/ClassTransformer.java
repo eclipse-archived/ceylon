@@ -117,7 +117,13 @@ public class ClassTransformer extends AbstractTransformer {
                 DefaultArgument defaultArgument = param.getDefaultArgument();
                 if (defaultArgument != null
                         || param.getDeclarationModel().isSequenced()) {
-                    classBuilder.getCompanionBuilder().defs(makeParamDefaultValueMethod(false, def, paramList, param));
+                    ClassDefinitionBuilder cbForDevaultValues;
+                    if (Decl.defaultParameterMethodStatic(model)) {
+                        cbForDevaultValues = classBuilder;
+                    } else {
+                        cbForDevaultValues = classBuilder.getCompanionBuilder();
+                    }
+                    cbForDevaultValues.defs(makeParamDefaultValueMethod(false, def, paramList, param));
                     // Add overloaded constructors for defaulted parameter
                     MethodDefinitionBuilder overloadBuilder = classBuilder.addConstructor();
                     makeOverloadsForDefaultedParameter(true,
@@ -907,7 +913,8 @@ public class ClassTransformer extends AbstractTransformer {
         ListBuffer<JCVariableDecl> vars = ListBuffer.<JCVariableDecl>lb();
         
         final String companionInstanceName = tempName("$impl$");
-        if (def instanceof Tree.AnyClass) {
+        if (def instanceof Tree.AnyClass
+                && !Decl.defaultParameterMethodStatic(model)) {
             
             Class classModel = (Class)def.getDeclarationModel();
             Map<TypeParameter, ProducedType> typeArguments = classModel.getType().getTypeArguments();
@@ -931,15 +938,24 @@ public class ClassTransformer extends AbstractTransformer {
             if (useDefault) {
                 String methodName = Util.getDefaultedParamMethodName(def.getDeclarationModel(), param2.getDeclarationModel());
                 JCExpression defaultValueMethodName;
+                List<JCExpression> typeArguments = List.<JCExpression>nil();
                 if (Decl.defaultParameterMethodOnSelf(def)) {
                     defaultValueMethodName = gen().makeQuotedIdent(methodName);
+                } else if (Decl.defaultParameterMethodStatic(def)){
+                    defaultValueMethodName = gen().makeQuotedQualIdent(makeQuotedQualIdentFromString(getFQDeclarationName(model)), methodName);
+                    if (def instanceof Tree.AnyClass) {
+                        typeArguments = typeArguments((Tree.AnyClass)def);
+                    } else if (def instanceof Tree.AnyMethod) {
+                        typeArguments = typeArguments((Tree.AnyMethod)def);
+                    }
                 } else {
                     defaultValueMethodName = gen().makeQuotedQualIdent(makeQuotedIdent(companionInstanceName), methodName);
                 }
                 String varName = tempName("$"+param2.getIdentifier().getText()+"$");
                 vars.append(makeVar(varName, 
                         makeJavaType(param2.getDeclarationModel().getType()), 
-                        make().Apply(List.<JCExpression>nil(), defaultValueMethodName, 
+                        make().Apply(typeArguments, 
+                                defaultValueMethodName, 
                                 ListBuffer.<JCExpression>lb().appendList(args).toList())));
                 args.add(makeUnquotedIdent(varName));
             } else {
@@ -1017,6 +1033,9 @@ public class ClassTransformer extends AbstractTransformer {
         
         if (container instanceof Tree.AnyMethod) {
             copyTypeParameters((Tree.AnyMethod)container, methodBuilder);
+        } else if (Decl.isToplevel(container)
+                && container instanceof Tree.AnyClass) {
+            copyTypeParameters((Tree.AnyClass)container, methodBuilder);
         }
         
         // Add any of the preceding parameters as parameters to the method
@@ -1147,6 +1166,14 @@ public class ClassTransformer extends AbstractTransformer {
     }
     
     void copyTypeParameters(Tree.AnyMethod def, MethodDefinitionBuilder methodBuilder) {
+        if (def.getTypeParameterList() != null) {
+            for (Tree.TypeParameterDeclaration t : def.getTypeParameterList().getTypeParameterDeclarations()) {
+                methodBuilder.typeParameter(t);
+            }
+        }
+    }
+    
+    void copyTypeParameters(Tree.AnyClass def, MethodDefinitionBuilder methodBuilder) {
         if (def.getTypeParameterList() != null) {
             for (Tree.TypeParameterDeclaration t : def.getTypeParameterList().getTypeParameterDeclarations()) {
                 methodBuilder.typeParameter(t);
