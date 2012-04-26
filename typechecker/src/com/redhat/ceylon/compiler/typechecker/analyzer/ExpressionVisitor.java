@@ -593,12 +593,9 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void checkFunctionType(ProducedType declaredType, 
-            Tree.SpecifierExpression sie, Tree.Type that) {
-        if (sie!=null && sie.getExpression()!=null) {
-            ProducedType rt = sie.getExpression().getTypeModel()
-                    .getTypeArgumentList().get(0);
-            checkAssignable(rt, declaredType, that, 
+    private void checkFunctionType(ProducedType et, Tree.Type that) {
+        if (et!=null) {
+            checkAssignable(et, that.getTypeModel(), that, 
                     "specified reference return type must be assignable to declared return type");
         }
     }
@@ -676,17 +673,11 @@ public class ExpressionVisitor extends Visitor {
         SpecifierExpression se = that.getSpecifierExpression();
         if (se!=null && se.getExpression()!=null) {
             ProducedType et = se.getExpression().getTypeModel();
-            if (isCallableType(et)) { //inferFunctionType() and checkFunctionType() assume that the SE has type Callable
-                inferFunctionType(that, se);
-                if (that.getType()!=null) {
-                    checkFunctionType(that.getType().getTypeModel(), se, that.getType());
-                }
-            }
             for (Tree.ParameterList pl: that.getParameterLists()) {   
                 if (et==null || !isCallableType(et)) {
                     se.addError("specified value must be a reference to a function or class: " + 
                             et.getDeclaration().getName() + " is not a subtype of Callable");
-                    break;
+                    return; //NOTE EARLY EXIT!!!
                 }
                 else {                    
                     if (pl.getParameters().size()+1==et.getTypeArgumentList().size()) {
@@ -706,6 +697,10 @@ public class ExpressionVisitor extends Visitor {
                     }
                     et = et.getTypeArgumentList().get(0);
                 }
+            }
+            inferFunctionType(that, et);
+            if (that.getType()!=null) {
+                checkFunctionType(et, that.getType());
             }
         }
     }
@@ -830,12 +825,11 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void inferFunctionType(Tree.TypedDeclaration that, 
-            Tree.SpecifierExpression spec) {
+    private void inferFunctionType(Tree.TypedDeclaration that, ProducedType et) {
         if (that.getType() instanceof Tree.FunctionModifier) {
             Tree.FunctionModifier local = (Tree.FunctionModifier) that.getType();
-            if (spec!=null) {
-                setFunctionType(local, spec, that);
+            if (et!=null) {
+                setFunctionType(local, et, that);
             }
         }
     }
@@ -1010,9 +1004,8 @@ public class ExpressionVisitor extends Visitor {
     }
         
     private void setFunctionType(Tree.FunctionModifier local, 
-            Tree.SpecifierExpression s, Tree.TypedDeclaration that) {
-        ProducedType t = denotableType(s.getExpression().getTypeModel());
-        t = t.getTypeArgumentList().get(0);
+            ProducedType et, Tree.TypedDeclaration that) {
+        ProducedType t = denotableType(et);
         local.setTypeModel(t);
         that.getDeclarationModel().setType(t);
     }
