@@ -312,6 +312,9 @@ public class ClassDefinitionBuilder {
             mods |= mod;
         }
         this.modifiers = mods;
+        if (this.concreteInterfaceMemberDefs != null) {
+            this.concreteInterfaceMemberDefs.modifiers((mods & PUBLIC) | FINAL);
+        }
         return this;
     }
 
@@ -474,7 +477,6 @@ public class ClassDefinitionBuilder {
     public ClassDefinitionBuilder getCompanionBuilder() {
         if (concreteInterfaceMemberDefs == null) {
             concreteInterfaceMemberDefs = new ClassDefinitionBuilder(gen, ancestorLocal, Util.getCompanionClassName(name))
-                .modifiers((modifiers & PUBLIC) | FINAL)
                 .annotations(gen.makeAtIgnore());
             concreteInterfaceMemberDefs.isCompanion = true;
         }

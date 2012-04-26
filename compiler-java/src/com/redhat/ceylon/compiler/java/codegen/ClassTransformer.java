@@ -279,7 +279,7 @@ public class ClassTransformer extends AbstractTransformer {
                 makeJavaType(thisType), 
                 null, false);
         MethodDefinitionBuilder ctor = companionBuilder.addConstructor();
-        
+        ctor.modifiers(model.isShared() ? PUBLIC : 0);
         // ...initialize the $this field from a ctor parameter...
         ctor.parameter(0, "$this", makeJavaType(thisType), null);
         ListBuffer<JCStatement> bodyStatements = ListBuffer.<JCStatement>of(
