@@ -201,6 +201,8 @@ class Operators() {
     @error nn+=1;
     @error nn++;
     
+    String->Entry<Boolean,String> ent = "hello"->(true->"hello");
+    
     @error X()[].doIt();
     @error X()?.doIt();
     

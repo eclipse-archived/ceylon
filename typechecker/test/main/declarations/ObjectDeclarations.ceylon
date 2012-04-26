@@ -34,3 +34,24 @@ shared class TypeParameterResolving<A>(A a) {
 void method2() {
     String s = TypeParameterResolving("hello").innerObject.val;
 }
+
+
+interface Something {
+    shared formal Object something;
+}
+
+object se1 satisfies Something {
+    shared actual String something = "something";
+}
+
+object se2 satisfies Something {
+    shared actual String something { 
+        return "something"; 
+    }
+}
+
+void testSomething(Something s) {
+    @type["Object"] value ss = s.something;
+    @type["String"] value ss1 = se1.something;
+    @type["String"] value ss2 = se2.something;
+}

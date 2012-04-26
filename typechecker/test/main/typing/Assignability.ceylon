@@ -393,9 +393,11 @@ class Assignability() {
     Void v = null;
     if (exists v) {
         @type["Object"] value val = v;
+        print(v.string);
     }
     if (is String v) {
         @type["String"] value val = v;
+        print(v.size.string);
     }
     
     Object? mo = null;

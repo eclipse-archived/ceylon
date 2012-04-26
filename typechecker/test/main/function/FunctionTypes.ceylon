@@ -146,3 +146,19 @@ Callable<String> tester() {
 void runTester() {
     print(tester()());
 }
+
+void moreTests() {
+    void callFunction(String f(Integer i)) {
+        print(f(0));
+    }
+    function f(Integer i) { 
+        return (i+12).string;
+    }
+    callFunction(f);
+    callFunction((Integer i) (i*3).string);
+    callFunction {
+        function f(Integer i) { 
+            return (i**2).string;
+        }
+    };
+}

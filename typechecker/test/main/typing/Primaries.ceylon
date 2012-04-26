@@ -150,4 +150,6 @@ class Primaries() {
     @type["Sequence<Primaries.G&Primaries.H>"] value p104 = { obj };
     @type["Sequence<Primaries.G&Primaries.H>"] value p105 = { obj, idobj };
     
+    String angstroms = "\{00E5}ngstr\{00F6}ms";
+    
 }
