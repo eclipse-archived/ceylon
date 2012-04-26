@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
@@ -17,6 +18,11 @@ public final class $array {
 
     private $array() {}
 
+    @Ignore
+    public static <Element> Array<? extends Element> array() {
+        return arrayOfNone.<Element>arrayOfNone();
+    }
+    
     @TypeParameters(@TypeParameter(value="Element"))
     @TypeInfo("ceylon.language.Array<Element>")
     public static <Element> Array<? extends Element> array(

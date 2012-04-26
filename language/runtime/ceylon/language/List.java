@@ -1,7 +1,6 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -57,82 +56,4 @@ public interface List<Element>
     @Override
     public java.lang.String toString();
     
-    @Ignore
-    public static final class List$impl {
-        public static <Element> boolean getEmpty(List<Element> $this){
-            return false;
-        }
-
-        public static <Element> long getSize(List<Element> $this){
-            Integer lastIndex = $this.getLastIndex();
-            return lastIndex==null ? 0 : lastIndex.longValue()+1;
-        }
-
-        public static <Element> boolean defines(List<Element> $this, Integer key){
-            Integer lastIndex = $this.getLastIndex();
-            return lastIndex==null ? false : key.longValue() <= lastIndex.longValue();
-        }
-
-        public static <Element> Iterator<? extends Element> getIterator(final List<Element> $this){
-            class ListIterator implements Iterator<Element> {
-                private long index=0;
-                public final java.lang.Object next() { 
-                    Integer lastIndex = $this.getLastIndex();
-                    if (lastIndex!=null && index <= lastIndex.longValue()) {
-                        return $this.item(Integer.instance(index++));
-                    } 
-                    else {
-                        return exhausted.getExhausted();
-                    }
-                }
-                public final java.lang.String toString() {
-                    return "listIterator";
-                }
-            }
-            return new ListIterator();
-        }
-        
-        public static <Element> boolean equals(final List<Element> $this, java.lang.Object that) {
-        	if (that instanceof List) {
-        		List other = (List) that;
-        		if (other.getSize()==$this.getSize()) {
-        			for (int i=0; i<$this.getSize(); i++) {
-        				Element x = $this.item(Integer.instance(i));
-        				java.lang.Object y = ((List) that).item(Integer.instance(i));
-        				if (x==y || x!=null && y!=null && x.equals(y)) {
-        					continue;
-        				}
-        				return false;
-        			}
-        			return true;
-        		}
-        	}
-        	return false;
-        }
-        
-        public static <Element> int hashCode(final List<Element> $this) {
-            int hashCode = 1;
-            java.lang.Object elem;
-            for (Iterator<? extends Element> iter=$this.getIterator(); !((elem = iter.next()) instanceof Finished);) {
-                hashCode *= 31;
-                if (elem != null) {
-                    hashCode += elem.hashCode();
-                }
-            }
-            return hashCode;
-        }
-        
-        public static <Element> java.lang.String toString(List<Element> $this) {
-            java.lang.StringBuilder result = new java.lang.StringBuilder("{ ");
-            java.lang.Object elem;
-            for (Iterator<? extends Element> iter=$this.getIterator(); !((elem = iter.next()) instanceof Finished);) {
-                if (result.length() > 2) {
-                    result.append(", ");
-                }
-                result.append(elem);
-            }
-            result.append(" }");
-            return result.toString();
-        }
-    }    
 }

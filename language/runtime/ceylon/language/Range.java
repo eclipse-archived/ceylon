@@ -170,13 +170,13 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
             return $that.getFirst().equals(getFirst()) && $that.getLast().equals(getLast());
         }
         else {
-            return List$impl.equals(this, that);
+            return List$impl._equals(this, that);
         }
     }
     
     @Override
     public int hashCode(){
-        return List$impl.hashCode(this);
+        return List$impl._hashCode(this);
     }
     
     @Override
@@ -191,21 +191,21 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
 
     @Override
     public Category getKeys() {
-        return Correspondence$impl.getKeys(this);
+        return Correspondence$impl._getKeys(this);
     }
 
     @Override
     public boolean definesEvery(@Sequenced @Name("keys") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
-        return Correspondence$impl.definesEvery(this, keys);
+        return Correspondence$impl._definesEvery(this, keys);
     }
 
     @Override
     public boolean definesAny(@Sequenced @Name("keys") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
-        return Correspondence$impl.definesAny(this, keys);
+        return Correspondence$impl._definesAny(this, keys);
     }
 
     @Override
@@ -213,7 +213,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     public ceylon.language.List<? extends Element> items(@Sequenced @Name("keys") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer")
     Iterable<? extends Integer> keys) {
-        return Correspondence$impl.items(this, keys);
+        return Correspondence$impl._items(this, keys);
     }
 
     //TODO: @TypeInfo
@@ -221,7 +221,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     public boolean containsEvery(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
     Iterable<?> elements) {
-        return Category$impl.containsEvery(this, elements);
+        return Category$impl._containsEvery(this, elements);
     }
 
     //TODO: @TypeInfo
@@ -229,17 +229,17 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     public boolean containsAny(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
     Iterable<?> elements) {
-        return Category$impl.containsAny(this, elements);
+        return Category$impl._containsAny(this, elements);
     }
 
     @Override
     public boolean getEmpty() {
-        return Some$impl.getEmpty(this);
+        return Some$impl._getEmpty(this);
     }
 
     @Override
     public boolean defines(@Name("key") Integer key) {
-        return List$impl.defines(this, key);
+        return List$impl._defines(this, key);
     }
 
     @Override

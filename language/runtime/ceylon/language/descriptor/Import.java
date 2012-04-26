@@ -56,27 +56,18 @@ public class Import {
     }
     
     @Ignore
-    public static final class Import$impl {
-        
-        @TypeInfo("ceylon.language.Boolean")
-        public static boolean $init$optional(@Name("name")
-        @TypeInfo("ceylon.language.Quoted")
-        final ceylon.language.Quoted name, @Name("version")
-        @TypeInfo("ceylon.language.Quoted")
-        final ceylon.language.Quoted version) {
-            return false;
-        }
-        
-        @TypeInfo("ceylon.language.Boolean")
-        public static boolean $init$export(@Name("name")
-        @TypeInfo("ceylon.language.Quoted")
-        final ceylon.language.Quoted name, @Name("version")
-        @TypeInfo("ceylon.language.Quoted")
-        final ceylon.language.Quoted version, @Name("optional")
-        @Defaulted
-        @TypeInfo("ceylon.language.Boolean")
-        final boolean optional) {
-            return false;
-        }
+    public static boolean $init$optional(
+    final ceylon.language.Quoted name,
+    final ceylon.language.Quoted version) {
+        return false;
     }
+    
+    @Ignore
+    public static boolean $init$export(
+    final ceylon.language.Quoted name, 
+    final ceylon.language.Quoted version, 
+    final boolean optional) {
+        return false;
+    }
+
 }

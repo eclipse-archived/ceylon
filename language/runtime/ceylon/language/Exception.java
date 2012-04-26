@@ -57,12 +57,11 @@ public class Exception extends RuntimeException {
     }
 
     @Ignore
-    public static final class Exception$impl {
-        public static ceylon.language.String $init$description(){
-            return null;
-        }
-        public static java.lang.Throwable $init$cause(ceylon.language.String description){
-            return null;
-        }
+    public static ceylon.language.String $init$description(){
+        return null;
+    }
+    @Ignore
+    public static java.lang.Throwable $init$cause(ceylon.language.String description){
+        return null;
     }
 }

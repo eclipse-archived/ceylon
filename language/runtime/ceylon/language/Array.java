@@ -360,21 +360,21 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 
     @Override
     public Category getKeys() {
-        return Correspondence$impl.getKeys(this);
+        return Correspondence$impl._getKeys(this);
     }
 
     @Override
     public boolean definesEvery(@Sequenced @Name("keys") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
-        return Correspondence$impl.definesEvery(this, keys);
+        return Correspondence$impl._definesEvery(this, keys);
     }
 
     @Override
     public boolean definesAny(@Sequenced @Name("keys") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
-        return Correspondence$impl.definesAny(this, keys);
+        return Correspondence$impl._definesAny(this, keys);
     }
 
     @Override
@@ -382,7 +382,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     public Iterable<? extends Element> items(@Sequenced @Name("keys") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
     Iterable<? extends Integer> keys){
-        return Correspondence$impl.items(this, keys);
+        return Correspondence$impl._items(this, keys);
     }
 
     @Override
@@ -392,7 +392,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     
     @Override
     public java.lang.String toString() {
-        return List$impl.toString(this);
+        return List$impl._toString(this);
     }
 
     @Ignore
@@ -403,12 +403,12 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Override
     public boolean equals(@Name("that") @TypeInfo("ceylon.language.Object") 
     java.lang.Object that) {
-        return List$impl.equals(this, that);
+        return List$impl._equals(this, that);
     }
 
     @Override
     public int hashCode() {
-        return List$impl.hashCode(this);
+        return List$impl._hashCode(this);
     }
     
     @Override
@@ -444,14 +444,14 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     public boolean containsEvery(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
     Iterable<?> elements) {
-        return Category$impl.containsEvery(this, elements);
+        return Category$impl._containsEvery(this, elements);
     }
 
     @Override
     public boolean containsAny(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
     Iterable<?> elements) {
-        return Category$impl.containsAny(this, elements);
+        return Category$impl._containsAny(this, elements);
     }
 }
 

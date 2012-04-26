@@ -150,22 +150,22 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Override
     public Category getKeys() {
-        return Correspondence$impl.getKeys(this);
+        return Correspondence$impl._getKeys(this);
     }
 
     @Override
     public boolean definesEvery(Iterable<? extends Integer> keys) {
-        return Correspondence$impl.definesEvery(this, keys);
+        return Correspondence$impl._definesEvery(this, keys);
     }
 
     @Override
     public boolean definesAny(Iterable<? extends Integer> keys) {
-        return Correspondence$impl.definesAny(this, keys);
+        return Correspondence$impl._definesAny(this, keys);
     }
 
     @Override
     public ceylon.language.List<? extends Element> items(Iterable<? extends Integer> keys) {
-        return Correspondence$impl.items(this, keys);
+        return Correspondence$impl._items(this, keys);
     }
 
     @Override
@@ -175,7 +175,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     
     @Override
     public java.lang.String toString() {
-        return List$impl.toString(this);
+        return List$impl._toString(this);
     }
 
     public Element[] toArray() {
@@ -184,12 +184,12 @@ public class ArraySequence<Element> implements Sequence<Element> {
     
     @Override
     public boolean equals(java.lang.Object that) {
-        return List$impl.equals(this, that);
+        return List$impl._equals(this, that);
     }
 
     @Override
     public int hashCode() {
-        return List$impl.hashCode(this);
+        return List$impl._hashCode(this);
     }
     
     @Override
@@ -211,11 +211,11 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Override
     public boolean containsEvery(Iterable<?> elements) {
-        return Category$impl.containsEvery(this, elements);
+        return Category$impl._containsEvery(this, elements);
     }
 
     @Override
     public boolean containsAny(Iterable<?> elements) {
-        return Category$impl.containsAny(this, elements);
+        return Category$impl._containsAny(this, elements);
     }
 }

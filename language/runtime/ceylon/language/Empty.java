@@ -1,7 +1,6 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -64,40 +63,4 @@ public interface Empty
     public boolean defines(@Name("key") @TypeInfo("ceylon.language.Integer")
     Integer key);
 
-    @Ignore
-    public static final class Empty$impl {
-        public static long getSize(Empty $this){
-            return 0;
-        }
-        public static Iterator getIterator(Empty $this){
-            return emptyIterator.getEmptyIterator();
-        }
-        public static java.lang.Object item(Empty $this, java.lang.Object key){
-            return null;
-        }
-        public static Empty segment(Empty $this, Integer from, Integer length) {
-            return $this;
-        }
-        public static Empty span(Empty $this, Integer from, Integer to) {
-            return $this;
-        }
-        public static long count(Empty $this, java.lang.Object element) {
-            return 0;
-        }
-        public static boolean contains(Empty $this, java.lang.Object element) {
-            return false;
-        }
-        public static boolean defines(Empty $this, Integer key) {
-            return false;
-        }
-        public static Empty getClone(Empty $this) {
-            return $this;
-        }
-        public static java.lang.String toString(Empty $this) {
-            return "{}";
-        }
-        public static Integer getLastIndex(Empty $this){
-            return null;
-        }
-    }
 }

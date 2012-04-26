@@ -1,7 +1,6 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -24,21 +23,5 @@ public interface None<Element> extends FixedSized<Element> {
     
     @Override
     public boolean getEmpty();
-    
-    @Ignore
-    public static final class None$impl {
-        public static <Element> Element getFirst(None<Element> $this){
-            return null;
-        }
-        public static <Element> Iterator<Element> getIterator(None<Element> $this){
-            return emptyIterator.getEmptyIterator();
-        }
-        public static <Element> long getSize(None<Element> $this){
-            return 0;
-        }
-        public static <Element> boolean getEmpty(None<Element> $this){
-            return true;
-        }
-    }
 
 }

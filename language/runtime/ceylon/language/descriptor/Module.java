@@ -77,42 +77,28 @@ public class Module {
     }
     
     @Ignore
-    public static final class Module$impl {
-        
-        @TypeInfo("ceylon.language.String")
-        public static java.lang.String $init$doc(@Name("name")
-        @TypeInfo("ceylon.language.Quoted")
-        final ceylon.language.Quoted name, @Name("version")
-        @TypeInfo("ceylon.language.Quoted")
-        final ceylon.language.Quoted version) {
-            return "";
-        }
-        
-        @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
-        public static ceylon.language.Iterable<? extends ceylon.language.String> $init$by(@Name("name")
-        @TypeInfo("ceylon.language.Quoted")
-        final ceylon.language.Quoted name, @Name("version")
-        @TypeInfo("ceylon.language.Quoted")
-        final ceylon.language.Quoted version, @Name("doc")
-        @Defaulted
-        @TypeInfo("ceylon.language.String")
-        final java.lang.String doc) {
-            return ceylon.language.$empty.getEmpty();
-        }
-        
-        @TypeInfo("ceylon.language.Nothing|ceylon.language.Quoted")
-        public static ceylon.language.Quoted $init$license(@Name("name")
-        @TypeInfo("ceylon.language.Quoted")
-        final ceylon.language.Quoted name, @Name("version")
-        @TypeInfo("ceylon.language.Quoted")
-        final ceylon.language.Quoted version, @Name("doc")
-        @Defaulted
-        @TypeInfo("ceylon.language.String")
-        final java.lang.String doc, @Name("by")
-        @Defaulted
-        @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
-        final ceylon.language.Iterable<? extends ceylon.language.String> by) {
-            return null;
-        }
+    public static final java.lang.String $init$doc(
+    final ceylon.language.Quoted name,
+    final ceylon.language.Quoted version) {
+        return "";
     }
+    
+    @Ignore
+    public static final ceylon.language.Iterable<? extends ceylon.language.String> $init$by(
+    final ceylon.language.Quoted name, 
+    final ceylon.language.Quoted version, 
+    final java.lang.String doc) {
+        return ceylon.language.$empty.getEmpty();
+    }
+    
+    @Ignore
+    public static final ceylon.language.Quoted $init$license(
+    final ceylon.language.Quoted name, 
+    final ceylon.language.Quoted version, 
+    final java.lang.String doc, 
+    final ceylon.language.Iterable<? extends ceylon.language.String> by) {
+        return null;
+    }
+
 }
+

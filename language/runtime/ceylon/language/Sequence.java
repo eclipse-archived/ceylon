@@ -1,7 +1,6 @@
  package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
@@ -32,18 +31,4 @@ public interface Sequence<Element>
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public FixedSized<? extends Element> getRest();
     
-    
-    @Ignore
-    public static final class Sequence$impl {
-
-        public static <Element> Element getLast(Sequence<Element> $this){
-            Element x = $this.item(Integer.instance($this.getLastIndex().longValue()));
-            if (x != null) {
-                return x;
-            }
-            else {
-                return $this.getFirst(); //actually never occurs
-            } 
-        }
-    }    
 }

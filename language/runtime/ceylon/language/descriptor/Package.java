@@ -60,36 +60,23 @@ public class Package {
     }
     
     @Ignore
-    public static final class Package$impl {
-        
-        @TypeInfo("ceylon.language.Boolean")
-        public static boolean $init$shared(@Name("name")
-        @TypeInfo("ceylon.language.Quoted")
-        final ceylon.language.Quoted name) {
-            return false;
-        }
-        
-        @TypeInfo("ceylon.language.String")
-        public static java.lang.String $init$doc(@Name("name")
-        @TypeInfo("ceylon.language.Quoted")
-        final ceylon.language.Quoted name, @Name("shared")
-        @Defaulted
-        @TypeInfo("ceylon.language.Boolean")
-        final boolean shared) {
-            return "";
-        }
-        
-        @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
-        public static ceylon.language.Iterable<? extends ceylon.language.String> $init$by(@Name("name")
-        @TypeInfo("ceylon.language.Quoted")
-        final ceylon.language.Quoted name, @Name("shared")
-        @Defaulted
-        @TypeInfo("ceylon.language.Boolean")
-        final boolean shared, @Name("doc")
-        @Defaulted
-        @TypeInfo("ceylon.language.String")
-        final java.lang.String doc) {
-            return ceylon.language.$empty.getEmpty();
-        }
+    public static boolean $init$shared(
+    final ceylon.language.Quoted name) {
+        return false;
+    }
+    
+    @Ignore
+    public static java.lang.String $init$doc(
+    final ceylon.language.Quoted name, 
+    final boolean shared) {
+        return "";
+    }
+    
+    @Ignore
+    public static ceylon.language.Iterable<? extends ceylon.language.String> $init$by(
+    final ceylon.language.Quoted name, 
+    final boolean shared, 
+    final java.lang.String doc) {
+        return ceylon.language.$empty.getEmpty();
     }
 }

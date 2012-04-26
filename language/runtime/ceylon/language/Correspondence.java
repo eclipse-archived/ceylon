@@ -66,30 +66,30 @@ public interface Correspondence<Key,Item> {
         }
         @Override
         public java.lang.String toString() {
-            return List$impl.toString(this);		
+            return List$impl._toString(this);		
         }
         public final Sequence<Item> getClone() {
             return this;
         }
         @Override
         public Category getKeys() {
-            return Correspondence$impl.getKeys(this);
+            return Correspondence$impl._getKeys(this);
         }
         @Override
         public boolean definesEvery(Iterable<? extends Integer> keys) {
-            return Correspondence$impl.definesEvery(this, keys);
+            return Correspondence$impl._definesEvery(this, keys);
         }
         @Override
         public boolean definesAny(Iterable<? extends Integer> keys) {
-            return Correspondence$impl.definesAny(this, keys);
+            return Correspondence$impl._definesAny(this, keys);
         }
         @Override
         public List<? extends Item> items(Iterable<? extends Integer> keys) {
-            return Correspondence$impl.items(this, keys);
+            return Correspondence$impl._items(this, keys);
         }
         @Override
         public boolean getEmpty() {
-            return Some$impl.getEmpty(this);
+            return Some$impl._getEmpty(this);
         }
         @Override
         public long getSize() {
@@ -97,15 +97,15 @@ public interface Correspondence<Key,Item> {
         }
         @Override
         public Item getLast() {
-            return Sequence$impl.getLast(this);
+            return Sequence$impl._getLast(this);
         }
         @Override
         public boolean defines(Integer key) {
-            return List$impl.defines(this, key);
+            return List$impl._defines(this, key);
         }
         @Override
         public Iterator<? extends Item> getIterator() {
-            return List$impl.getIterator(this);
+            return List$impl._getIterator(this);
         }
         @Override
         public Iterable<? extends Item> segment(Integer from, Integer length) {
@@ -129,92 +129,27 @@ public interface Correspondence<Key,Item> {
         }
         @Override
         public boolean contains(java.lang.Object element) {
-            return Collection$impl.contains(this, element);
+            return Collection$impl._contains(this, element);
         }
         @Override
         public long count(java.lang.Object element) {
-            return Collection$impl.count(this, element);
+            return Collection$impl._count(this, element);
         }
         @Override
         public boolean containsEvery(Iterable<?> elements) {
-            return Category$impl.containsEvery(this, elements);
+            return Category$impl._containsEvery(this, elements);
         }
         @Override
         public boolean containsAny(Iterable<?> elements) {
-            return Category$impl.containsAny(this, elements);
+            return Category$impl._containsAny(this, elements);
         }
         @Override
         public boolean equals(java.lang.Object obj) {
-            return List$impl.equals(this, obj);
+            return List$impl._equals(this, obj);
         }
         @Override
         public int hashCode() {
             return keys.hashCode();
-        }
-    }
-    
-    @Ignore
-    public static final class Correspondence$impl {
-
-        public static <Key,Item> boolean defines(Correspondence<Key,Item> $this, Key key){
-            return $this.item(key) != null;
-        }
-
-        public static <Key,Item> Category getKeys(final Correspondence<Key,Item> $this){
-            Category keys = new Category() {
-                public boolean contains(java.lang.Object value) {
-                    // FIXME
-                    if (true/*value instanceof Key*/) {
-                        return $this.defines((Key)value);
-                    }
-                    else {
-                        return false;
-                    }
-                }
-
-                @Override
-                public boolean containsEvery(ceylon.language.Iterable<?> elements) {
-                    return Category$impl.containsEvery(this, elements);
-                }
-
-                @Override
-                public boolean containsAny(ceylon.language.Iterable<?> elements) {
-                    return Category$impl.containsAny(this, elements);
-                }
-            };
-            return keys;
-        }
-
-        public static <Key,Item> boolean definesEvery(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys){
-            java.lang.Object elem;
-            for (ceylon.language.Iterator<? extends Key> $key$iter$0 = keys.getIterator(); !((elem = $key$iter$0.next()) instanceof Finished);) {
-                final Key key = (Key) elem;
-                if (!$this.defines(key)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        public static <Key,Item> boolean definesAny(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys) {
-            java.lang.Object elem;
-            for (ceylon.language.Iterator<? extends Key> $key$iter$0 = keys.getIterator(); !((elem = $key$iter$0.next()) instanceof Finished);) {
-                final Key key = (Key) elem;
-                if ($this.defines(key)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public static <Key,Item> ceylon.language.List<? extends Item> items(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys) {
-            if (keys instanceof Sequence) {
-                final ceylon.language.Sequence<? extends Key> $keys$1 = (Sequence<? extends Key>)keys;
-                return new Correspondence.Items($this, (Sequence<? extends Key>)$keys$1.getClone());
-            }
-            else {
-                return $empty.getEmpty();
-            }
         }
     }
 }

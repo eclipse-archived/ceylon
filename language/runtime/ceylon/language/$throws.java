@@ -22,12 +22,8 @@ public class $throws
     private $throws(){}
     
     @Ignore
-    public static final class $throws$impl {
-        @TypeInfo("ceylon.language.Nothing|ceylon.language.String")
-        public static java.lang.String $init$when(
-        @Name("type") @TypeInfo("ceylon.language.Void") 
-        final Object type) {
-            return null;
-        }
+    public static java.lang.String $init$when(final Object type) {
+        return null;
     }
+    
 }

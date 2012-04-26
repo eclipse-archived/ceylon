@@ -20,10 +20,8 @@ public final class deprecated
     private deprecated(){}
     
     @Ignore
-    public static final class deprecated$impl {
-        @TypeInfo("ceylon.language.Nothing|ceylon.language.String")
-        public static java.lang.String $init$reason() {
-            return null;
-        }
+    public static java.lang.String $init$reason() {
+        return null;
     }
+    
 }

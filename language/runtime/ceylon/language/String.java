@@ -155,7 +155,7 @@ public final class String
 
     @Override
     public Category getKeys() {
-        return Correspondence$impl.getKeys(this);
+        return Correspondence$impl._getKeys(this);
     }
 
     @Override
@@ -164,7 +164,7 @@ public final class String
     Iterable<? extends Integer> keys) {
         //TODO: inefficient ... better to cache the result
         //      of getSize()
-        return Correspondence$impl.definesEvery(this, keys);
+        return Correspondence$impl._definesEvery(this, keys);
     }
 
     @Override
@@ -173,7 +173,7 @@ public final class String
     Iterable<? extends Integer> keys) {
         //TODO: inefficient ... better to cache the result
         //      of getSize()
-        return Correspondence$impl.definesAny(this, keys);
+        return Correspondence$impl._definesAny(this, keys);
     }
 
     @Override
@@ -181,7 +181,7 @@ public final class String
     public List<? extends Character> items(@Name("keys") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
-        return Correspondence$impl.items(this, keys);
+        return Correspondence$impl._items(this, keys);
     }
 
     @Override
@@ -209,7 +209,7 @@ public final class String
 
     @Override
     public Character getFirst() {
-        return FixedSized$impl.getFirst(this);
+        return FixedSized$impl._getFirst(this);
     }
 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Character>")
@@ -283,14 +283,14 @@ public final class String
     public boolean containsAny(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
     Iterable<?> elements) {
-        return Category$impl.containsAny(this, elements);
+        return Category$impl._containsAny(this, elements);
     }
 
     @Override
     public boolean containsEvery(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
     Iterable<?> elements) {
-        return Category$impl.containsEvery(this, elements);
+        return Category$impl._containsEvery(this, elements);
     }
     
     public boolean longerThan(@TypeInfo("ceylon.language.Integer") 
@@ -571,12 +571,12 @@ public final class String
     }
 
     @Ignore
-    public static class String$impl {
-        public static Iterable<? extends Character> split$separators(String $this){
-            return null;
-        }
-        public static boolean split$discardSeparators(String $this, Iterable<? extends Character> separators){
-            return false;
-        }
+    public Iterable<? extends Character> split$separators(){
+        return null;
     }
+    @Ignore
+    public boolean split$discardSeparators(Iterable<? extends Character> separators){
+        return false;
+    }
+
 }
