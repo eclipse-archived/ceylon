@@ -49,4 +49,12 @@ class SwitchMatch() {
         case (true) { print("true"); }
         case (false) { print("false"); }
     }
+
+    void onNullableType() {
+        Boolean? b = true;
+        switch (b)
+        case (true) { print("true"); }
+        case (false) { print("false"); }
+        case (null) { print("null"); }
+    }
 }

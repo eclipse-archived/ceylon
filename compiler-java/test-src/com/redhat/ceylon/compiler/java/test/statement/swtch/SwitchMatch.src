@@ -75,6 +75,20 @@ class SwitchMatch {
         }
     }
     
+    private final void onNullableType() {
+        final .ceylon.language.Boolean b = .ceylon.language.Boolean.instance(true);
+        {
+            .java.lang.Object $sel$3 = b;
+            if ($sel$3 == .ceylon.language.Boolean.instance(true)) {
+                .ceylon.language.print.print(.ceylon.language.String.instance("true"));
+            } else if ($sel$3 == .ceylon.language.Boolean.instance(false)) {
+                .ceylon.language.print.print(.ceylon.language.String.instance("false"));
+            } else if ($sel$3 == null) {
+                .ceylon.language.print.print(.ceylon.language.String.instance("null"));
+            } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+        }
+    }
+    
     SwitchMatch() {
     }
     
