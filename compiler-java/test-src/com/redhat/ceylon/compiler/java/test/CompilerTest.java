@@ -383,16 +383,36 @@ public abstract class CompilerTest {
 
     protected void compileAndRun(String main, String... ceylon) {
         compile(ceylon);
+        run(main);
+    }
+
+    protected void run(String main) {
+        File car = new File(getDestCar());
+        run(main, car);
+    }
+    
+    protected void run(String main, File... cars) {
         try{
             // make sure we load the stuff from the Car
-            File car = new File(getDestCar());
-            @SuppressWarnings("deprecation")
-            URL url = car.toURL();
             
-            NonCachingURLClassLoader loader = new NonCachingURLClassLoader(new URL[] { url  });
+            @SuppressWarnings("deprecation")
+            List<URL> urls = new ArrayList<URL>(cars.length);
+            for (File car : cars) {
+                Assert.assertTrue("Car exists", car.exists());
+                URL url = car.toURL();
+                urls.add(url);
+            }
+            System.err.println("Running " + main +" with classpath" + urls);
+            NonCachingURLClassLoader loader = new NonCachingURLClassLoader(urls.toArray(new URL[urls.size()]));
             java.lang.Class<?> klass = java.lang.Class.forName(main, true, loader);
-            Method m = klass.getMethod(klass.getSimpleName());
-            m.invoke(null);
+            if (Character.isLowerCase(klass.getSimpleName().charAt(0))) {
+                // A main method
+                Method m = klass.getMethod(klass.getSimpleName());
+                m.invoke(null);
+            } else {
+                // A main class
+                klass.newInstance();
+            }
             
             loader.clearCache();
         }catch(Exception x){
