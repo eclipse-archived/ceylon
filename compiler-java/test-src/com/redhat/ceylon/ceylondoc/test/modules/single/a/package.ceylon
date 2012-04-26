@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 Package package {
-    name = 'com.redhat.ceylon.ceylondoc.test.modules.single.a';
+    name = 'a';
     shared = true;
     doc = "This is a **test** package";
     
