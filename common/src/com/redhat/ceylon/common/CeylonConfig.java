@@ -2,9 +2,12 @@ package com.redhat.ceylon.common;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class CeylonConfig {
     private static HashMap<String, String[]> options;
+    private static HashMap<String, HashSet<String>> sectionNames;
+    private static HashMap<String, HashSet<String>> optionNames;
     
     private CeylonConfig() {}
     
@@ -12,10 +15,58 @@ public class CeylonConfig {
         if (options == null) {
             try {
                 options = (new ConfigParser()).parse();
+                sectionNames = new HashMap<String, HashSet<String>>();
+                optionNames = new HashMap<String, HashSet<String>>();
+                initLookups();
             } catch (IOException e) {
                 System.err.println(e.getMessage());
                 options = new HashMap<String, String[]>();
             }
+        }
+    }
+    
+    private static void initLookups() {
+        for (String key : options.keySet()) {
+            initLookupKey(key);
+        }
+    }
+
+    private static void initLookupKey(String key) {
+        String[] parts = key.split("\\.");
+        
+        String subsectionName = parts[parts.length - 2]; 
+        String optionName = parts[parts.length - 1];
+        String sectionName;
+        String parentSectionName = "";
+        if (parts.length > 2) {
+            for (int i = 0; i < parts.length - 2; i++) {
+                if (i > 0) {
+                    parentSectionName += '.';
+                }
+                parentSectionName += parts[i];
+            }
+            if (parts.length > 3) {
+                initLookupKey(parentSectionName + ".#");
+            }
+            sectionName = parentSectionName + '.' + subsectionName;
+        } else {
+            sectionName = subsectionName;
+        }
+        
+        HashSet<String> sn = sectionNames.get(parentSectionName);
+        if (sn == null) {
+            sn = new HashSet<String>();
+            sectionNames.put(parentSectionName, sn);
+        }
+        sn.add(subsectionName);
+        
+        if (!"#".equals(optionName)) {
+            HashSet<String> on = optionNames.get(sectionName);
+            if (on == null) {
+                on = new HashSet<String>();
+                optionNames.put(sectionName, on);
+            }
+            on.add(optionName);
         }
     }
     
@@ -94,5 +145,22 @@ public class CeylonConfig {
     
     public static void setBoolOption(String key, boolean value) {
         setOption(key, Boolean.toString(value));
+    }
+    
+    public static String[] getSectionNames(String section) {
+        if (options == null) load();
+        if (section == null) {
+            section = "";
+        }
+        HashSet<String> sn = sectionNames.get(section);
+        String[] res = new String[sn.size()];
+        return sn.toArray(res);
+    }
+    
+    public static String[] getOptionNames(String section) {
+        if (options == null) load();
+        HashSet<String> on = sectionNames.get(section);
+        String[] res = new String[on.size()];
+        return on.toArray(res);
     }
 }

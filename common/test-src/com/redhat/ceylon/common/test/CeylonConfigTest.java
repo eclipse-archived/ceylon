@@ -1,5 +1,7 @@
 package com.redhat.ceylon.common.test;
 
+import java.util.Arrays;
+
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -93,15 +95,21 @@ public class CeylonConfigTest {
         Assert.assertTrue(compareStringArrays(new String[]{"aap", "noot", "mies"}, CeylonConfig.getOptionValues("test.multiple.strings")));
     }
     
+    @Test
+    public void testSectionNames() {
+        Assert.assertTrue(compareStringArraysSorted(new String[]{"test"}, CeylonConfig.getSectionNames(null)));
+        Assert.assertTrue(compareStringArraysSorted(new String[]{"test"}, CeylonConfig.getSectionNames("")));
+        Assert.assertTrue(compareStringArraysSorted(new String[]{"commented", "multiple", "section"}, CeylonConfig.getSectionNames("test")));
+        Assert.assertTrue(compareStringArraysSorted(new String[]{"Aap", "Noot", "Mies"}, CeylonConfig.getSectionNames("test.section")));
+    }
+    
     private boolean compareStringArrays(String[] one, String[] two) {
-        if (one.length == two.length) {
-            for (int i = 0; i < one.length; i++) {
-                if (!one[i].equals(two[i])) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        return false;
+        return Arrays.equals(one, two);
+    }
+    
+    private boolean compareStringArraysSorted(String[] one, String[] two) {
+        Arrays.sort(one);
+        Arrays.sort(two);
+        return Arrays.equals(one, two);
     }
 }

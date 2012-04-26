@@ -114,7 +114,6 @@ public class ConfigParser {
             value = "true";
         }
         String optName = section + "." + option;
-System.err.println("XXX " + optName + "=" + value);
         String[] oldval = options.get(optName);
         if (oldval == null) {
             options.put(optName, new String[] { value });
