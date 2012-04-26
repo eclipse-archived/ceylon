@@ -51,13 +51,13 @@ class Lambdas() {
     @type["Float"] apply(2.0)(sqrt);
     @type["Float"] apply<Float>(2.0)((Float x) x**3);
     
-    function applyToTwo(Float f(Float x)) = apply(2.0);
+    @type["Float"] function applyToTwo(Float f(Float x)) = apply(2.0);
     applyToTwo(sqrt);
     applyToTwo((Float x) x**3);
     
-    value applyToOne = apply(1.0);
-    applyToOne(sqrt);
-    applyToOne((Float x) x**3);
+    @type["Callable<Float,Callable<Float,Float>>"] value applyToOne = apply(1.0);
+    @type["Float"] applyToOne(sqrt);
+    @type["Float"] applyToOne((Float x) x**3);
     
     void exec(Callable<Void> run) {
         run();
