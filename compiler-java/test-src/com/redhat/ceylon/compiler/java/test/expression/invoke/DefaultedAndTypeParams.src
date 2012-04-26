@@ -1,0 +1,64 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+class DefaultedAndTypeParams<X> {
+    private final X init;
+    
+    public final <Y>void m(final Y y, final X x) {
+    }
+    
+    public final <Y>void m(final Y y) {
+        (
+            let
+                X $ceylontmp$x$1 = m$x(y)
+            in {
+                m(y, $ceylontmp$x$1);
+            }
+            returning null
+        );
+    }
+    
+    public final <Y>X m$x(final Y y) {
+        return init;
+    }
+    
+    DefaultedAndTypeParams(X init) {
+        this.init = init;
+    }
+}
+final class defaultedAndTypeParams_m {
+    
+    private defaultedAndTypeParams_m() {
+    }
+    
+    static void defaultedAndTypeParams_m() {
+        final .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndTypeParams<.ceylon.language.Integer> i = new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndTypeParams<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L));
+        i.<.ceylon.language.String>m(.ceylon.language.String.instance(""));
+        i.<.ceylon.language.String>m(.ceylon.language.String.instance(""), .ceylon.language.Integer.instance(2L));
+        (
+            let
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndTypeParams<.ceylon.language.Integer> $arg$2$callable$ = i,
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndTypeParams<.ceylon.language.Integer> $arg$2$this$ = $arg$2$callable$,
+                .ceylon.language.String $arg$2$0 = .ceylon.language.String.instance(""),
+                .ceylon.language.Integer $arg$2$1 = $arg$2$this$.m$x($arg$2$0)
+            in {
+                $arg$2$callable$.<.ceylon.language.String>m($arg$2$0, $arg$2$1);
+            }
+            returning null
+        );
+        (
+            let
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndTypeParams<.ceylon.language.Integer> $arg$3$callable$ = i,
+                .ceylon.language.Integer $arg$3$1 = .ceylon.language.Integer.instance(2L),
+                .ceylon.language.String $arg$3$0 = .ceylon.language.String.instance("")
+            in {
+                $arg$3$callable$.<.ceylon.language.String>m($arg$3$0, $arg$3$1);
+            }
+            returning null
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultedAndTypeParams_m.defaultedAndTypeParams_m();
+    }
+}
