@@ -71,6 +71,23 @@ class WWW() extends XXX<Bottom>() {}
 object yyy extends YYY<String>() {}
 
 void switchit(XXX<String> x) {
+    switch (x) 
+    case (is YYY<String>) { 
+        print("yyy"); 
+    }
+    case (is ZZZ<String>) { 
+        print("zzz"); 
+    }
+    case (is WWW) {
+        print("www");
+    }
+
+    switch (x) 
+    case (is YYY<String>) { 
+        print("yyy"); 
+    }
+    else {}
+
     @error switch (x) 
     case (is YYY<String>) { 
         print("yyy"); 
@@ -79,8 +96,30 @@ void switchit(XXX<String> x) {
         print("zzz"); 
     }
     
-    switch (x) 
-    case (is YYY<String>) { 
+    @error switch (x) 
+    case (is YYY<Object>) { 
+        print("yyy"); 
+    }
+    case (is ZZZ<String>) { 
+        print("zzz"); 
+    }
+    case (is WWW) {
+        print("www");
+    }
+
+    @error switch (x) 
+    case (is YYY<Bottom>) { 
+        print("yyy"); 
+    }
+    case (is ZZZ<String>) { 
+        print("zzz"); 
+    }
+    case (is WWW) {
+        print("www");
+    }
+
+    @error switch (x) 
+    case (is YYY<Integer>) { 
         print("yyy"); 
     }
     case (is ZZZ<String>) { 
@@ -156,6 +195,23 @@ void switchInterface(Interface i) {
     }
     
     switch(i)
+    case (is Class1) {}
+    case (is Class2) {}
+        
+    switch(i)
+    case (is Class1) {}
+    else {}
+        
+    @error switch(i)
+    case (is Class1) {}
+    case (is Class2) {}
+    else {}
+        
+    @error switch(i)
+    case (is Class1) {}
+        
+    @error switch(i)
+    case (is String) {}
     case (is Class1) {}
     case (is Class2) {}
         
