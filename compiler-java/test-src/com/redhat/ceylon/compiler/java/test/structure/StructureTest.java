@@ -528,10 +528,10 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("import_/ImportCeylonLanguageType");
     }
     
-    @Test
+    /*@Test
     public void testNstNesting(){
         compareWithJavaSource("nesting/Nesting");
-    }
+    }*/
     @Test
     public void testNstCcc(){
         compareWithJavaSource("nesting/ccc/CCC");
@@ -542,26 +542,61 @@ public class StructureTest extends CompilerTest {
     }
     @Test
     public void testNstCic(){
-        compareWithJavaSource("nesting/cic/Cic");
+        compareWithJavaSource("nesting/cic/CIC");
     }
     @Test
     public void testNstCii(){
-        compareWithJavaSource("nesting/cii/Cii");
+        compareWithJavaSource("nesting/cii/CII");
     }
     @Test
     public void testNstIcc(){
-        compareWithJavaSource("nesting/Icc/Icc");
+        compareWithJavaSource("nesting/icc/ICC");
     }
     @Test
     public void testNstIci(){
-        compareWithJavaSource("nesting/Ici/Ici");
+        compareWithJavaSource("nesting/ici/ICI");
     }
     @Test
     public void testNstIic(){
-        compareWithJavaSource("nesting/Iic/Iic");
+        compareWithJavaSource("nesting/iic/IIC");
     }
     @Test
     public void testNstIii(){
-        compareWithJavaSource("nesting/Iii/Iii");
+        compareWithJavaSource("nesting/iii/III");
     }
+    @Test
+    public void testNstLocals(){
+        compareWithJavaSource("nesting/Locals");
+    }
+    
+    @Test
+    public void testNstClassMethodDefaultedParameter(){
+        compareWithJavaSource("nesting/ClassMethodDefaultedParameter");
+    }
+    
+    @Test
+    public void testNstFunctionDefaultedParameter(){
+        compareWithJavaSource("nesting/FunctionDefaultedParameter");
+    }
+    
+    @Test
+    public void testNstClassInitDefaultedParameter(){
+        compareWithJavaSource("nesting/ClassInitDefaultedParameter");
+    }
+    
+    @Test
+    public void testNstInterfaceMethodDefaultedParameter(){
+        compareWithJavaSource("nesting/InterfaceMethodDefaultedParameter");
+    }
+
+    @Test
+    public void testNstConcreteInterface(){
+        compareWithJavaSource("nesting/ConcreteInterface");
+    }
+    
+    @Test
+    public void testNstNestedInterface(){
+        compareWithJavaSource("nesting/NestedInterface");
+    }
+
 }
