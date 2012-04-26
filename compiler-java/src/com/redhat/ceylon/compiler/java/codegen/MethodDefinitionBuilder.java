@@ -116,7 +116,7 @@ public class MethodDefinitionBuilder {
             annotations(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
 
         return gen.make().MethodDef(
-                gen.make().Modifiers(modifiers, annotations.toList()), 
+                gen.make().Modifiers(modifiers, gen.filterAnnotations(annotations)), 
                 makeName(name),
                 resultTypeExpr,
                 typeParams.toList(), 

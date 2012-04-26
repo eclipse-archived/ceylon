@@ -1831,4 +1831,25 @@ public abstract class AbstractTransformer implements Transformation {
                 log.useSource(gen().getFileObject());
         return pos;
     }
+
+    /**
+     * Returns a copy of the given annotations, unless {@code @Ignore} is present, 
+     * in which case returns a singleton containing {@code @Ignore}. 
+     */
+    List<JCAnnotation> filterAnnotations(
+            ListBuffer<JCAnnotation> annotations) {
+        ListBuffer<JCAnnotation> lb = ListBuffer.<JCAnnotation>lb();
+        for (JCAnnotation anno : annotations) {
+            JCTree type = anno.getAnnotationType();
+            if (type instanceof JCFieldAccess
+                    && ((JCFieldAccess)type).sym != null
+                    && ((JCFieldAccess)type).sym.type == syms().ceylonAtIgnore) {
+                lb.clear();
+                lb.add(anno);
+                break;
+            }
+            lb.add(anno);
+        }
+        return lb.toList();
+    }
 }

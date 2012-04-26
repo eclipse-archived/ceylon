@@ -142,7 +142,7 @@ public class ClassDefinitionBuilder {
         }
         
         JCTree.JCClassDecl klass = gen.make().ClassDef(
-                gen.make().Modifiers(modifiers, annotations.toList()),
+                gen.make().Modifiers(modifiers, gen.filterAnnotations(annotations)),
                 gen.names().fromString(Util.quoteIfJavaKeyword(name)),
                 typeParams.toList(),
                 extending,
