@@ -55,4 +55,31 @@ class Lambdas() {
     applyToTwo(sqrt);
     applyToTwo((Float x) x**3);
     
+    value applyToOne = apply(1.0);
+    applyToOne(sqrt);
+    applyToOne((Float x) x**3);
+    
+    void exec(Callable<Void> run) {
+        run();
+    }
+    
+    Callable<String> lazy(String s) {
+        function result() {
+            return s;
+        }
+        return result;
+    }
+    @type["String"] lazy("hello")();
+    
+    function name(String first)(String middle)(String last) {
+        return "" first " " middle " " last "";
+    }
+    String n3 = name("Gavin")("A")("King");
+    String n2(String last) = name("Gavin")("A");
+    String n1(String middle)(String last) = name("Gavin");
+    
+    void noop(String x)(Integer y)(Float z) {}
+    noop("")(1)(1.0);
+    @error noop("")(1.0)(1.0);
+    @error noop("")(1)(1);
 }
