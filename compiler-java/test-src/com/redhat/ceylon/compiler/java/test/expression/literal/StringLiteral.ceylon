@@ -26,6 +26,6 @@ class StringLiteral(){
 is
 another
 test";
-        String s4 = "\b\t\n\f\r\'\"\`\\";
+        String s4 = "\\\b\t\n\f\r\'\"\`\\b";
     }
 }
