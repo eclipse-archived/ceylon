@@ -41,4 +41,18 @@ class Lambdas() {
     @error baz((Float qux(Float x)) qux(1.0).integer);
     @error baz((Float qux(Integer x)) qux(1));
     @error baz((Integer qux(Float x)) qux(1.0).float);
+    
+    function apply<X>(X x)(X f(X x)) {
+        return f(x);
+    }
+    
+    function sqrt(Float x) { return x**0.5; }
+    
+    @type["Float"] apply(2.0)(sqrt);
+    @type["Float"] apply<Float>(2.0)((Float x) x**3);
+    
+    function applyToTwo(Float f(Float x)) = apply(2.0);
+    applyToTwo(sqrt);
+    applyToTwo((Float x) x**3);
+    
 }
