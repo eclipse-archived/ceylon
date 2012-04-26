@@ -62,20 +62,32 @@ void testij() {
     @error ij(1);
 }
 
-abstract class XXX<out T>() of YYY<T> | ZZZ<T> {}
+abstract class XXX<out T>() of YYY<T> | ZZZ<T> | WWW {}
 
 class YYY<out T>() extends XXX<T>() {}
 class ZZZ<out T>() extends XXX<T>() {}
+class WWW() extends XXX<Bottom>() {}
 
 object yyy extends YYY<String>() {}
 
 void switchit(XXX<String> x) {
+    @error switch (x) 
+    case (is YYY<String>) { 
+        print("yyy"); 
+    }
+    case (is ZZZ<String>) { 
+        print("zzz"); 
+    }
+    
     switch (x) 
     case (is YYY<String>) { 
         print("yyy"); 
     }
     case (is ZZZ<String>) { 
         print("zzz"); 
+    }
+    case (is WWW) {
+        print("www");
     }
 }
 
@@ -91,3 +103,73 @@ Integer fib(Integer n) {
         throw;
     }
 }
+
+    interface Association 
+        of OneToOne | OneToMany { }
+    interface OneTo satisfies Association {}
+    class OneToOne() satisfies OneTo {}
+    class OneToMany() satisfies OneTo {}
+    @error class Broken() satisfies Association {}
+    
+    
+interface Anything of SomethingUsual | SomethingElse {}
+interface SomethingUsual satisfies Anything {
+    shared formal String something;
+}
+interface SomethingElse satisfies Anything {
+    shared formal Object somethingElse;
+}
+
+void switchAnything(Anything any) {
+    switch (any)
+    case (is SomethingUsual) { 
+        print("something");
+        print(any.something); 
+    }
+    case (is SomethingElse) { 
+        print("something else"); 
+        print(any.somethingElse); 
+    }
+}
+
+interface Interface of Class1 | Class2 {}
+abstract class Class1() of Class3 | object1 satisfies Interface {}
+class Class2() satisfies Interface & Sized {
+    shared actual Integer size = 1;
+    shared actual Boolean empty = false;
+}
+class Class3() extends Class1() {}
+object object1 extends Class1() {}
+
+void switchInterface(Interface i) {
+    
+    if (is Sized i) {
+        @type["Interface&Sized"] value ii = i;
+        print(i.size);
+        switch(i)
+        case (is Class1&Sized) {
+            print(i.size);
+        }
+        case (is Class2) {
+            print(i.size);
+        }
+    }
+    
+    switch(i)
+    case (is Class1) {}
+    case (is Class2) {}
+        
+    switch(i)
+    case (is Class3) {}
+    case (object1) {}
+    case (is Class2) {}
+        
+}
+
+@error class NonAbstract() of SubtypeOfNonAbstract {}
+class SubtypeOfNonAbstract() extends NonAbstract() {}
+
+@error abstract class Abstract() of NonSubtypeOfAbstract {}
+class NonSubtypeOfAbstract() {}
+ 
+
