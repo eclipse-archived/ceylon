@@ -1522,9 +1522,9 @@ public class ExpressionVisitor extends Visitor {
                          paramCount + " arguments required");
             }
             for (int i=0; i<paramCount && i<argCount; i++) {
-                checkAssignable(args.get(i).getExpression().getTypeModel(), 
+                checkAssignable(getPositionalArgumentType(args.get(i)), 
                         typeArgs.get(i+1), that, 
-                        "argument must be assignable to parameter");
+                        "argument must be assignable to parameter type");
             }
         }
     }
