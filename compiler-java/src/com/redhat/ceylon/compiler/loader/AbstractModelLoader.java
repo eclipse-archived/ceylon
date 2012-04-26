@@ -456,7 +456,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if (languageModuleDeclaration != null) {
                 return languageModuleDeclaration;
             }
-            throw new RuntimeException("Failed to resolve "+typeName);
+            throw new ModelResolutionException("Failed to resolve "+typeName);
         }
         return convertToDeclaration(classMirror, declarationType);
     }
@@ -464,7 +464,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected TypeParameter safeLookupTypeParameter(Scope scope, String name) {
         TypeParameter param = lookupTypeParameter(scope, name);
         if(param == null)
-            throw new RuntimeException("Type param "+name+" not found in "+scope);
+            throw new ModelResolutionException("Type param "+name+" not found in "+scope);
         return param;
     }
     
@@ -496,7 +496,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 return null;
             }
         }else
-            throw new RuntimeException("Type param "+name+" lookup not supported for scope "+scope);
+            throw new ModelResolutionException("Type param "+name+" lookup not supported for scope "+scope);
     }
     
     //
@@ -985,7 +985,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private Declaration findRefinedDeclaration(ClassOrInterface decl, String name, List<ProducedType> signature) {
         Declaration refinedDeclaration = decl.getRefinedMember(name, signature);
         if(refinedDeclaration == null)
-            throw new RuntimeException("Failed to find refined declaration for "+name);
+            throw new ModelResolutionException("Failed to find refined declaration for "+name);
         return refinedDeclaration;
     }
 
@@ -1226,7 +1226,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         }
         if(meth == null || meth.getReturnType() == null)
-            throw new RuntimeException("Failed to find toplevel attribute "+value.getName());
+            throw new ModelResolutionException("Failed to find toplevel attribute "+value.getName());
         
         value.setType(obtainType(meth.getReturnType(), meth, null));
         setAnnotations(value, meth);
@@ -1248,7 +1248,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         }
         if(meth == null || meth.getReturnType() == null)
-            throw new RuntimeException("Failed to find toplevel method "+method.getName());
+            throw new ModelResolutionException("Failed to find toplevel method "+method.getName());
         
         // type params first
         setTypeParameters(method, meth);

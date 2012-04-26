@@ -34,6 +34,8 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.java.util.Strategy;
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.loader.ModelResolutionException;
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -98,11 +100,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     public List<JCTree> transform(final Tree.ClassOrInterface def) {
         final ClassOrInterface model = def.getDeclarationModel();
-        if (model.isToplevel()) {
-            resetLocals();
-        } else if (Decl.isLocal(model)){
-            local(model.getContainer());
-        }
+        noteDecl(model);
         final String className;
         if (def instanceof Tree.AnyInterface) {
             className = getFQDeclarationName(model).replaceFirst(".*\\.", "");
@@ -142,6 +140,7 @@ public class ClassTransformer extends AbstractTransformer {
                     }
                     boolean goRaw = false;
                     Interface iface = (Interface)decl;
+
                     Map<TypeDeclaration, java.util.List<ProducedType>> m = new HashMap<TypeDeclaration, java.util.List<ProducedType>>();
                     for (ProducedType t : model.getType().getSupertypes()) {
                         TypeDeclaration declaration = t.getDeclaration();
@@ -152,12 +151,17 @@ public class ClassTransformer extends AbstractTransformer {
                             break;
                         }
                     }
-                    
-                    // For each satisfied interface, instantiate an instance of the 
-                    // companion class in the constructor and assign it to a
-                    // $Interface$impl field
-                    transformInstantiateCompanions(classBuilder,
-                            satisfiedType, iface, goRaw);
+
+                    // If there is no $impl (e.g. implementing a Java interface) 
+                    // then don't instantiate it...
+                    if (hasImpl(iface)) {
+                        // ... otherwise for each satisfied interface, 
+                        // instantiate an instance of the 
+                        // companion class in the constructor and assign it to a
+                        // $Interface$impl field
+                        transformInstantiateCompanions(classBuilder,
+                                satisfiedType, iface, goRaw);
+                    }
                     
                     if (!decl.isToplevel()) {// TODO What about local interfaces?
                         // Generate $outer() impl if implementing an inner interface
@@ -203,6 +207,21 @@ public class ClassTransformer extends AbstractTransformer {
             .caseTypes(model.getCaseTypes())
             .init((List<JCStatement>)visitor.getResult().toList())
             .build();
+    }
+
+    private Boolean hasImpl(Interface iface) {
+        // If we're already transformed the interface then it will have a $impl
+        if (gen().interfaces != null && gen().interfaces.contains(iface)) {
+            return true;
+        }
+        // Otherwise, ask the model loader
+        try {
+            Declaration implDecl = gen().loader().convertToDeclaration(gen().getCompanionClassName(iface), 
+                    com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType.TYPE);
+            return implDecl != null;
+        } catch (ModelResolutionException e) {
+            return false;
+        }
     }
 
     private void transformInstantiateCompanions(
@@ -584,11 +603,7 @@ public class ClassTransformer extends AbstractTransformer {
     
     public List<JCTree> transformWrappedMethod(Tree.AnyMethod def) {
         final Method model = def.getDeclarationModel();
-        if (model.isToplevel()) {
-            resetLocals();
-        } else if (Decl.isLocal(model)){
-            local(model.getContainer());
-        }
+        noteDecl(model);
         // Generate a wrapper class for the method
         String name = def.getIdentifier().getText();
         ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, Decl.isAncestorLocal(def), name, Decl.isShared(def));
@@ -1029,11 +1044,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     public List<JCTree> transformObject(Tree.ObjectDefinition def, ClassDefinitionBuilder containingClassBuilder) {
         final Value model = def.getDeclarationModel();
-        if (model.isToplevel()) {
-            resetLocals();
-        } else if (Decl.isLocal(model)){
-            local(model.getContainer());
-        }
+        noteDecl(model);
         
         String name = def.getIdentifier().getText();
         ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.klass(this, Decl.isAncestorLocal(def), name);

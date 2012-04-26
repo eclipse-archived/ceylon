@@ -25,6 +25,7 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -909,6 +910,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     protected java.util.Map<Scope, Integer> locals;
+    protected java.util.Set<Interface> interfaces;
     
     protected void resetLocals() {
         gen().locals = new java.util.HashMap<Scope, Integer>();
@@ -917,6 +919,20 @@ public abstract class AbstractTransformer implements Transformation {
     protected void local(Scope decl) {
         Map<Scope, Integer> locals = gen().locals;
         locals.put(decl, locals.size());
+    }
+    
+    protected void noteDecl(Declaration decl) {
+        if (decl.isToplevel()) {
+            resetLocals();
+        } else if (Decl.isLocal(decl)){
+            local(decl.getContainer());
+        }
+        if (decl instanceof Interface) {
+            if (gen().interfaces == null) {
+                gen().interfaces = new HashSet<Interface>();
+            }
+            gen().interfaces.add((Interface)decl);
+        }
     }
     
     public int getLocalId(Scope decl) {
