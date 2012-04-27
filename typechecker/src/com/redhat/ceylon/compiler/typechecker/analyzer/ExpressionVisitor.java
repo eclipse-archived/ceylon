@@ -425,9 +425,16 @@ public class ExpressionVisitor extends Visitor {
             Tree.SpecifierExpression se) {
         if (v.getType() instanceof Tree.SyntheticVariable) {
             Tree.BaseMemberExpression ref = (Tree.BaseMemberExpression) se.getExpression().getTerm();
-            if (ref.getDeclaration()!=null) {
-                if ( ( (TypedDeclaration) ref.getDeclaration() ).isVariable() ) {
-                    ref.addError("referenced value is variable");
+            Declaration d = ref.getDeclaration();
+            if (d!=null) {
+                if (d instanceof Getter) {
+                    ref.addError("referenced value is a getter: " + d.getName());
+                }
+                if ( ( (TypedDeclaration) d ).isVariable() ) {
+                    ref.addError("referenced value is variable: " + d.getName());
+                }
+                if ( d.isDefault() ) {
+                    ref.addError("referenced value is default and may be refined: " + d.getName());
                 }
             }
         }
