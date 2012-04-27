@@ -803,6 +803,7 @@ public class ExpressionVisitor extends Visitor {
                 Parameter ap = alias.getParameterList().getParameters().get(i);
                 Parameter cp = c.getParameterList().getParameters().get(i);
                 ProducedType pt = at.getTypedParameter(cp).getType();
+                ap.setAliasedParameter(cp);
                 //TODO: properly check type of functional parameters!!
                 checkAssignable(ap.getType(), pt, that, "alias parameter " + 
                         ap.getName() + " must be assignable to corresponding class parameter " +
@@ -1626,8 +1627,8 @@ public class ExpressionVisitor extends Visitor {
                     Collections.<ProducedType>emptyList()).getFullType();
             //argType = ta.getType().getTypeModel();
         }
-        checkAssignable(argType, pr.getTypedParameter(p).getFullType(), a,
-                "named argument must be assignable to parameter " + 
+        checkAssignable(argType, pr.getTypedParameter(p.getAliasedParameter()).getFullType(), 
+                a, "named argument must be assignable to parameter " + 
                 p.getName() + " of " + pr.getDeclaration().getName());
     }
     
@@ -1635,7 +1636,8 @@ public class ExpressionVisitor extends Visitor {
             Parameter p) {
         a.setParameter(p);
         for (Tree.Expression e: a.getExpressionList().getExpressions()) {
-            ProducedType paramType = pr.getTypedParameter(p).getFullType();
+            ProducedType paramType = pr.getTypedParameter(p.getAliasedParameter())
+                    .getFullType();
             if (paramType==null) {
                 paramType = new UnknownType(a.getUnit()).getType();
             }
@@ -1684,7 +1686,8 @@ public class ExpressionVisitor extends Visitor {
                 }
             } 
             else {
-                ProducedType paramType = pr.getTypedParameter(p).getFullType();
+                ProducedType paramType = pr.getTypedParameter(p.getAliasedParameter())
+                        .getFullType();
                 if (p.isSequenced() && pal.getEllipsis()==null) {
                     checkSequencedPositionalArgument(p, pr, pal, i, paramType);
                     return;

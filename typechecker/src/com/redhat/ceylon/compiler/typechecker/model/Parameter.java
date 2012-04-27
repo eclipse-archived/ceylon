@@ -8,6 +8,7 @@ public abstract class Parameter extends TypedDeclaration {
     private Declaration declaration;
     private boolean captured = false;
     private boolean unresolvable;
+    private Parameter aliasedParameter = this;
     
     @Override
     public boolean isCaptured() {
@@ -48,6 +49,14 @@ public abstract class Parameter extends TypedDeclaration {
     
     public void setUnresolvable(boolean unresolvable) {
         this.unresolvable = unresolvable;
+    }
+    
+    public Parameter getAliasedParameter() {
+        return aliasedParameter;
+    }
+    
+    public void setAliasedParameter(Parameter parameter) {
+        this.aliasedParameter = parameter;
     }
     
     @Override
