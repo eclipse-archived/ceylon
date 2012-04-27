@@ -276,7 +276,7 @@ public class SpecificationVisitor extends Visitor {
 	                            member.getName(), 802);
 	            }
 	            else if (cannotSpecify) {
-	                that.addError("cannot specify value from here: " + 
+	                that.addError("cannot specify non-variable value from here: " + 
 	                        member.getName());
 	            }
 	            else if (specified.possibly) {
