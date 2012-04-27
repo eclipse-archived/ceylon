@@ -259,36 +259,5 @@ public class Decl {
         return decl instanceof FieldValue;
     }
     
-    public static boolean defaultParameterMethodTakesThis(Tree.Declaration decl) {
-        return defaultParameterMethodTakesThis(decl.getDeclarationModel());
-    }
-    
-    public static boolean defaultParameterMethodTakesThis(Declaration decl) {
-        return decl instanceof Method 
-                && decl.isToplevel();
-    }
-    
-    public static boolean defaultParameterMethodStatic(Tree.Declaration decl) {
-        // Only top-level methods and top-level class initializers 
-        // have static default value methods
-        return defaultParameterMethodStatic(decl.getDeclarationModel());
-    }
-    
-    public static boolean defaultParameterMethodStatic(Declaration decl) {
-        if (decl instanceof Parameter) {
-            decl = ((Parameter) decl).getDeclaration();
-        }
-        // Only top-level methods have static default value methods
-        return (decl instanceof Method || decl instanceof Class) 
-                && decl.isToplevel();
-    }
-    
-    public static boolean defaultParameterMethodOnSelf(Tree.Declaration decl) {
-        return defaultParameterMethodOnSelf(decl.getDeclarationModel());
-    }
-    
-    public static boolean defaultParameterMethodOnSelf(Declaration decl) {
-        return decl instanceof Method 
-                && !Decl.withinInterface(decl);
-    }
+
 }

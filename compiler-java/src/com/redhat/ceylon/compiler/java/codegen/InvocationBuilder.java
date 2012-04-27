@@ -24,6 +24,7 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.TermTransformer;
 import com.redhat.ceylon.compiler.java.util.Decl;
+import com.redhat.ceylon.compiler.java.util.Strategy;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -83,7 +84,7 @@ abstract class InvocationBuilder {
             this.primaryTypeArguments = transformTypeArguments(gen, null);
         }
         
-        needsThis = !Decl.defaultParameterMethodStatic(primaryDeclaration);
+        needsThis = !Strategy.defaultParameterMethodStatic(primaryDeclaration);
     }
     
     static final List<JCExpression> transformTypeArguments(
@@ -113,14 +114,14 @@ abstract class InvocationBuilder {
         
         String methodName = Util.getDefaultedParamMethodName(getPrimaryDeclaration(), param);
         JCExpression defaultValueMethodName;
-        if (Decl.defaultParameterMethodOnSelf(param)) {
+        if (Strategy.defaultParameterMethodOnSelf(param)) {
             Declaration container = param.getDeclaration().getRefinedDeclaration();
             if (!container.isToplevel()) {
                 container = (Declaration)container.getContainer();
             }
             String className = gen().getCompanionClassName(container);
             defaultValueMethodName = gen().makeQuotedQualIdent(gen().makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName);
-        } else if (Decl.defaultParameterMethodStatic(param)) {
+        } else if (Strategy.defaultParameterMethodStatic(param)) {
             Declaration container = param.getDeclaration().getRefinedDeclaration();
             if (!container.isToplevel()) {
                 container = (Declaration)container.getContainer();
@@ -131,7 +132,7 @@ abstract class InvocationBuilder {
         }
         
         List<JCExpression> arglist;
-        if (Decl.defaultParameterMethodTakesThis(param)) {
+        if (Strategy.defaultParameterMethodTakesThis(param)) {
             arglist = makeThisVarRefArgumentList(argIndex);
         } else {
             arglist = makeVarRefArgumentList(argIndex);

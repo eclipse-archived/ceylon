@@ -21,6 +21,9 @@ package com.redhat.ceylon.compiler.java.util;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree.MethodDeclaration;
 
@@ -30,6 +33,39 @@ import com.redhat.ceylon.compiler.typechecker.tree.CustomTree.MethodDeclaration;
  */
 public class Strategy {
     private Strategy() {}
+    
+    public static boolean defaultParameterMethodTakesThis(Tree.Declaration decl) {
+        return defaultParameterMethodTakesThis(decl.getDeclarationModel());
+    }
+    
+    public static boolean defaultParameterMethodTakesThis(Declaration decl) {
+        return decl instanceof Method 
+                && decl.isToplevel();
+    }
+    
+    public static boolean defaultParameterMethodStatic(Tree.Declaration decl) {
+        // Only top-level methods and top-level class initializers 
+        // have static default value methods
+        return defaultParameterMethodStatic(decl.getDeclarationModel());
+    }
+    
+    public static boolean defaultParameterMethodStatic(Declaration decl) {
+        if (decl instanceof Parameter) {
+            decl = ((Parameter) decl).getDeclaration();
+        }
+        // Only top-level methods have static default value methods
+        return (decl instanceof Method || decl instanceof Class) 
+                && decl.isToplevel();
+    }
+    
+    public static boolean defaultParameterMethodOnSelf(Tree.Declaration decl) {
+        return defaultParameterMethodOnSelf(decl.getDeclarationModel());
+    }
+    
+    public static boolean defaultParameterMethodOnSelf(Declaration decl) {
+        return decl instanceof Method 
+                && !Decl.withinInterface(decl);
+    }
     
     /**
      * Determines whether the given Class def should have a {@code main()} method generated.

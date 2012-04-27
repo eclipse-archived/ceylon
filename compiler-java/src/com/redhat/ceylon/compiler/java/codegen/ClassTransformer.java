@@ -118,7 +118,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if (defaultArgument != null
                         || param.getDeclarationModel().isSequenced()) {
                     ClassDefinitionBuilder cbForDevaultValues;
-                    if (Decl.defaultParameterMethodStatic(model)) {
+                    if (Strategy.defaultParameterMethodStatic(model)) {
                         cbForDevaultValues = classBuilder;
                     } else {
                         cbForDevaultValues = classBuilder.getCompanionBuilder();
@@ -133,10 +133,6 @@ public class ClassTransformer extends AbstractTransformer {
                 }
             }
             
-            if (model.getType().getQualifyingType() != null
-                    && model.getType().getQualifyingType().getDeclaration() instanceof Interface) {
-                // TODO 
-            }
             
             if (def.getSatisfiedTypes() != null) {
                 for (Tree.SimpleType satisfiedType : def.getSatisfiedTypes().getTypes()) {
@@ -693,7 +689,7 @@ public class ClassTransformer extends AbstractTransformer {
                         || param.getDeclarationModel().isSequenced())) {
                 
                 JCMethodDecl defaultValueMethodImpl = makeParamDefaultValueMethod(false, def, paramList, param);
-                if (Decl.defaultParameterMethodOnSelf(def)) {
+                if (Strategy.defaultParameterMethodOnSelf(def)) {
                     lb.add(defaultValueMethodImpl);    
                 } else {
                     lb.add(makeParamDefaultValueMethod(true, def, paramList, param));
@@ -914,7 +910,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         final String companionInstanceName = tempName("$impl$");
         if (def instanceof Tree.AnyClass
-                && !Decl.defaultParameterMethodStatic(model)) {
+                && !Strategy.defaultParameterMethodStatic(model)) {
             
             Class classModel = (Class)def.getDeclarationModel();
             Map<TypeParameter, ProducedType> typeArguments = classModel.getType().getTypeArguments();
@@ -939,9 +935,9 @@ public class ClassTransformer extends AbstractTransformer {
                 String methodName = Util.getDefaultedParamMethodName(def.getDeclarationModel(), param2.getDeclarationModel());
                 JCExpression defaultValueMethodName;
                 List<JCExpression> typeArguments = List.<JCExpression>nil();
-                if (Decl.defaultParameterMethodOnSelf(def)) {
+                if (Strategy.defaultParameterMethodOnSelf(def)) {
                     defaultValueMethodName = gen().makeQuotedIdent(methodName);
-                } else if (Decl.defaultParameterMethodStatic(def)){
+                } else if (Strategy.defaultParameterMethodStatic(def)){
                     defaultValueMethodName = gen().makeQuotedQualIdent(makeQuotedQualIdentFromString(getFQDeclarationName(model)), methodName);
                     if (def instanceof Tree.AnyClass) {
                         typeArguments = typeArguments((Tree.AnyClass)def);
@@ -1026,7 +1022,7 @@ public class ClassTransformer extends AbstractTransformer {
                 && !noBody){
             modifiers |= PRIVATE;
         }
-        if (Decl.defaultParameterMethodStatic(container)) {
+        if (Strategy.defaultParameterMethodStatic(container)) {
             modifiers |= STATIC;
         }
         methodBuilder.modifiers(modifiers);
