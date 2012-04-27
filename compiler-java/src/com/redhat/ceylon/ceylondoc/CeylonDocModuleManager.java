@@ -19,24 +19,36 @@
  */
 package com.redhat.ceylon.ceylondoc;
 
+import java.util.Collections;
 import java.util.List;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.impl.reflect.ReflectionModelLoader;
+import com.redhat.ceylon.compiler.loader.impl.reflect.model.ReflectionModule;
 import com.redhat.ceylon.compiler.loader.impl.reflect.model.ReflectionModuleManager;
+import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
+import com.redhat.ceylon.compiler.loader.model.LazyPackage;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 
 public class CeylonDocModuleManager extends ReflectionModuleManager {
 
     private List<ModuleSpec> modulesSpecs;
     private Logger log;
+    private CeylonDocTool tool;
 
-    public CeylonDocModuleManager(Context context, List<ModuleSpec> modules, Logger log) {
+    public CeylonDocModuleManager(CeylonDocTool tool, Context context, List<ModuleSpec> modules, Logger log) {
         super(context);
         this.modulesSpecs = modules;
         this.log = log;
+        this.tool = tool;
     }
 
     @Override
@@ -51,6 +63,15 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
     @Override
     protected AbstractModelLoader createModelLoader(Modules modules) {
         return new ReflectionModelLoader(this, modules){
+            @Override
+            public ClassMirror lookupNewClassMirror(String name) {
+                // don't load it from class if we are compiling it
+                if(tool.getCompiledClasses().contains(name)){
+                    logVerbose("Not loading "+name+" from class because we are typechecking them");
+                    return null;
+                }
+                return super.lookupNewClassMirror(name);
+            }
             @Override
             protected void logError(String message) {
                 log.error(message);

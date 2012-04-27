@@ -111,7 +111,7 @@ public class CeylonDocTool {
         builder.moduleManagerFactory(new ModuleManagerFactory(){
             @Override
             public ModuleManager createModuleManager(Context context) {
-                return new CeylonDocModuleManager(context, modules, log);
+                return new CeylonDocModuleManager(CeylonDocTool.this, context, modules, log);
             }
         });
         
