@@ -1020,11 +1020,10 @@ TypeConstraints?
                     <emphasis>TODO: remove this restriction</emphasis></para>
                 </listitem>
                 <listitem>
-                    <para>the built-in numeric types: <literal>Integer</literal> and 
-                    <literal>Float</literal>,</para>
+                    <para><literal>Boolean</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para><literal>Boolean</literal>,</para>
+                    <para><literal>Integer</literal> and  <literal>Float</literal>,</para>
                 </listitem>
                 <listitem>
                     <para><literal>Character</literal>,</para>

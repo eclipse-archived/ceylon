@@ -504,10 +504,10 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
     
     <para>Ceylon's numeric type system is much simpler than C, C# or Java, with
     exactly two built-in numeric types (compared to six in Java and eleven in 
-    C#). The built-in types are classes representing integers, floating point 
-    numbers. <literal>Integer</literal>, and <literal>Float</literal> values 
-    are 64 bit by default, and may be optimized for 32 bit architectures via 
-    use of the <literal>small</literal> annotation.</para>
+    C#). The built-in types are classes representing integers and floating point 
+    numbers. <literal>Integer</literal> and <literal>Float</literal> values are 
+    64 bit by default, and may be optimized for 32 bit architectures via use of 
+    the <literal>small</literal> annotation.</para>
     
     <para>The module <literal>ceylon.math</literal> provides two additonal
     numeric types representing arbitrary precision integers and arbitrary 
