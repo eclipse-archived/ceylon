@@ -86,4 +86,23 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
             }
         };
     }
+
+    @Override
+    protected Package createPackage(String pkgName, Module module) {
+        final Package pkg = new LazyPackage(getModelLoader());
+        List<String> name = pkgName.isEmpty() ? Collections.<String>emptyList() : splitModuleName(pkgName); 
+        pkg.setName(name);
+        if (module != null) {
+            module.getPackages().add(pkg);
+            pkg.setModule(module);
+        }
+        return pkg;
+    }
+
+    @Override
+    protected Module createModule(List<String> moduleName) {
+        Module module = new ReflectionModule(this);
+        module.setName(moduleName);
+        return module;
+    }
 }
