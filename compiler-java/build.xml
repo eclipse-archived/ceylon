@@ -18,6 +18,7 @@
   <property name="javac.src" location="langtools/src/share/classes"/>
   <property name="ceylonc.src" location="src"/>
   <property name="test.src" location="test-src"/>
+  <property name="test.ceylond.src" location="test-ceylondoc-src"/>
 
   <!-- Directories everything gets built into -->
   <property name="build" location="build"/>
@@ -285,8 +286,16 @@
        classpathref="test.compile.classpath"
        includeantruntime="false">
       <include name="com/redhat/ceylon/compiler/java/test/**"/>
-      <include name="com/redhat/ceylon/ceylondoc/test/**"/>
       <include name="com/redhat/ceylon/itest/**"/>
+    </javac>
+    <javac
+       srcdir="${test.ceylond.src}"
+       destdir="${build.classes}"
+       debug="true"
+       encoding="UTF-8"
+       classpathref="test.compile.classpath"
+       includeantruntime="false">
+      <include name="com/redhat/ceylon/ceylondoc/test/**"/>
     </javac>
   </target>
 
@@ -409,7 +418,7 @@
 	  <jvmarg value="-Xbootclasspath/p:${bootclasspath}"/>
 	  <formatter type="xml"/>
 	  <batchtest fork="yes" todir="${test.reports}">
-	    <fileset dir="${test.src}">
+	    <fileset dir="${test.ceylond.src}">
 	      <include name="com/redhat/ceylon/ceylondoc/test/**/*Test.java"/>
 	    </fileset>
 	  </batchtest>
