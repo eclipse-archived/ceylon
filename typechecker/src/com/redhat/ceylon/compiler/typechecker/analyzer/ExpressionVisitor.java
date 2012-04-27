@@ -678,36 +678,45 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
         SpecifierExpression se = that.getSpecifierExpression();
-        if (se!=null && se.getExpression()!=null) {
-            ProducedType et = se.getExpression().getTypeModel();
-            for (Tree.ParameterList pl: that.getParameterLists()) {   
-                if (et==null || !isCallableType(et)) {
-                    se.addError("specified value must be a reference to a function or class: " + 
-                            et.getDeclaration().getName() + " is not a subtype of Callable");
-                    return; //NOTE EARLY EXIT!!!
-                }
-                else {                    
-                    if (pl.getParameters().size()+1==et.getTypeArgumentList().size()) {
-                        int i=0;
-                        for (Tree.Parameter p: pl.getParameters()) {
-                            i++;
-                            ProducedType rt = et.getTypeArgumentList().get(i);
-                            ProducedType pt = p.getDeclarationModel().getProducedTypedReference(null, 
-                                    Collections.<ProducedType>emptyList()).getFullType();
-                            checkIsExactly(rt, pt, p.getType(), 
-                                    "specified reference parameter type must be exactly the same as declared type of parameter " + 
-                                    p.getDeclarationModel().getName());
-                        }
+        if (se!=null) {
+            Expression e = se.getExpression();
+            if (e!=null) {
+                ProducedType et = e.getTypeModel();
+                for (Tree.ParameterList pl: that.getParameterLists()) {   
+                    if (et==null || !isCallableType(et)) {
+                        se.addError("specified value must be a reference to a function or class: " + 
+                                et.getDeclaration().getName() + " is not a subtype of Callable");
+                        return; //NOTE EARLY EXIT!!!
                     }
                     else {
-                        se.addError("specified reference must have the same number of parameters");
+                        /*if (e.getTerm() instanceof MemberOrTypeExpression) {
+                            Declaration d = ((MemberOrTypeExpression) e.getTerm()).getDeclaration();
+                            if (d instanceof Class && ((Class) d).isAbstract()) {
+                                se.addError("specified reference is to an abstract class: " + d.getName());
+                            }
+                        }*/
+                        if (pl.getParameters().size()+1==et.getTypeArgumentList().size()) {
+                            int i=0;
+                            for (Tree.Parameter p: pl.getParameters()) {
+                                i++;
+                                ProducedType rt = et.getTypeArgumentList().get(i);
+                                ProducedType pt = p.getDeclarationModel().getProducedTypedReference(null, 
+                                        Collections.<ProducedType>emptyList()).getFullType();
+                                checkIsExactly(rt, pt, p.getType(), 
+                                        "specified reference parameter type must be exactly the same as declared type of parameter " + 
+                                        p.getDeclarationModel().getName());
+                            }
+                        }
+                        else {
+                            se.addError("specified reference must have the same number of parameters");
+                        }
+                        et = et.getTypeArgumentList().get(0);
                     }
-                    et = et.getTypeArgumentList().get(0);
                 }
-            }
-            inferFunctionType(that, et);
-            if (that.getType()!=null) {
-                checkFunctionType(et, that.getType());
+                inferFunctionType(that, et);
+                if (that.getType()!=null) {
+                    checkFunctionType(et, that.getType());
+                }
             }
         }
     }
@@ -2399,9 +2408,6 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.BaseMemberExpression that) {
-        //TODO: this does not correctly handle methods
-        //      and classes which are not subsequently 
-        //      invoked (should return the callable type)
         /*if (that.getTypeArgumentList()!=null)
             that.getTypeArgumentList().visit(this);*/
         super.visit(that);
@@ -2644,7 +2650,10 @@ public class ExpressionVisitor extends Visitor {
         ProducedType receiverType = unwrap(receivingType, that);
         if (acceptsTypeArguments(receiverType, type, typeArgs, tal, that)) {
             ProducedType t = receiverType.getTypeMember(type, typeArgs);
-            that.setTypeModel(t.getFullType(wrap(t, receivingType, that)));
+            ProducedType ft = isAbstractType(t) ?
+                    unit.getVoidDeclaration().getType() : 
+                    t.getFullType(wrap(t, receivingType, that));
+            that.setTypeModel(ft);
             that.setTarget(t);
         }
     }
@@ -2660,8 +2669,23 @@ public class ExpressionVisitor extends Visitor {
             type = t.getDeclaration();
         }
         if ( acceptsTypeArguments(type, typeArgs, tal, that) ) {
-            that.setTypeModel(t.getFullType());
+            ProducedType ft = isAbstractType(t) ?
+                    unit.getVoidDeclaration().getType() : 
+                    t.getFullType();
+            that.setTypeModel(ft);
             that.setTarget(t);
+        }
+    }
+
+    private boolean isAbstractType(ProducedType t) {
+        if (t.getDeclaration() instanceof Class) {
+            return ((Class) t.getDeclaration()).isAbstract();
+        }
+        else if (t.getDeclaration() instanceof TypeParameter) {
+            return ((TypeParameter) t.getDeclaration()).getParameterList()==null;
+        }
+        else {
+            return true;
         }
     }
 
