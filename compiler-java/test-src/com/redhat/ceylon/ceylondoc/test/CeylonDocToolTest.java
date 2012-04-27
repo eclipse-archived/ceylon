@@ -216,6 +216,15 @@ public class CeylonDocToolTest {
     }
 
     @Test
+    public void documentSingleModule() throws IOException {
+        String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules/multi";
+        String testName = "a";
+        
+        CeylonDocTool tool = tool(pathname, testName, testName, true, "build/ceylon-cars");
+        tool.makeDoc();
+    }
+
+    @Test
     public void ceylonLanguage() throws IOException {
         String pathname = "../ceylon.language/src";
         String testName = "ceylon.language";
