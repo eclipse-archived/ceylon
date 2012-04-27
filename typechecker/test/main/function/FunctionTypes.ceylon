@@ -9,6 +9,8 @@ class X(String s) {
     shared void hello() {}
 }
 
+abstract class Z() {} 
+
 void noop() {}
 
 void higher1(String[] strings, Callable<Void,String> f) {
@@ -43,6 +45,8 @@ X->Y generic<X,Y>(Y f(X x), X x())
     X xx = x();
     return xx->f(xx);
 }
+
+T do<T>(T f()) { return f(); }
 
 void method() {
     Callable<String,String> upperRef = upper;
@@ -80,6 +84,9 @@ void method() {
     @error String worse(String s) = X;
     @error String worst() = X;
     @error void broke() = noop();
+    @error Z moreBroke() = Z;
+    @error do(Z);
+    @type["Void"] function z() { return Z; }
     
     String s1 = pass((String s) s, "hello");
     String s2 = pass((Float f) f.string, 1.0);
