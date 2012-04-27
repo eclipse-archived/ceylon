@@ -166,6 +166,9 @@ public class TypeVisitor extends Visitor {
             member.getIdentifier().addError("imported declaration not found: " + 
                     name, 100);
         }
+        else if ("java.lang.Object".equals(d.getQualifiedNameString())) {
+            member.getIdentifier().addError("root type may not be imported");
+        }
         else {
             if (!d.isShared()) {
                 member.getIdentifier().addError("imported declaration is not shared: " +
