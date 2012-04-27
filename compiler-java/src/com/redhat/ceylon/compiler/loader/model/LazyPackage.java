@@ -20,6 +20,8 @@
 
 package com.redhat.ceylon.compiler.loader.model;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.lookupMember;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -34,10 +36,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
-
-import static com.redhat.ceylon.compiler.typechecker.model.Util.lookupMember;
 
 /**
  * Represents a lazy Package declaration.
@@ -107,7 +106,8 @@ public class LazyPackage extends Package {
 
     private Declaration getDirectMemberFromSource(String name) {
         for (Declaration d: super.getMembers()) {
-            if (isResolvable(d) && /*d.isShared() &&*/ isNamed(name, d)) {
+            if (com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable(d) /* && d.isShared() */ 
+            && com.redhat.ceylon.compiler.typechecker.model.Util.isNamed(name, d)) {
                 return d;
             }
         }
@@ -166,17 +166,4 @@ public class LazyPackage extends Package {
             super.removeUnit(unit);
         }
     }
-
-    // FIXME: remove those two when they are public in typechecker's model.Util
-    static boolean isResolvable(Declaration declaration) {
-        return declaration.getName()!=null &&
-            !(declaration instanceof Setter) && //return getters, not setters
-            !(declaration instanceof Class && 
-                    Character.isLowerCase(declaration.getName().charAt(0))); //don't return the type associated with an object dec 
-    }
-    
-    static boolean isNamed(String name, Declaration d) {
-        return d.getName()!=null && d.getName().equals(name);
-    }
-    
 }
