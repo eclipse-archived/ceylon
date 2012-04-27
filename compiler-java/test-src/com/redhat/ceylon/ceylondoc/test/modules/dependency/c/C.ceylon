@@ -17,13 +17,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-Module module {
-    name = 'c';
-    version = '1.0';
-    dependencies = {
-        Import {
-            name = 'b';
-            version = '1.0';
+import com.redhat.ceylon.ceylondoc.test.modules.dependency.b { B }
+
+class C() extends B(){}
+
+doc "The classic Hello World program"
+shared void helloworld() {
+    if (nonempty args=process.arguments) {
+        process.write("Hello ");
+        for (String arg in args) {
+            process.write(arg);
+            process.write(" ");
         }
-    };
+        process.write("\n");
+    } else {
+        process.writeLine("Hello World");
+    }
+}
+
+shared void run(){
+    helloworld();
 }

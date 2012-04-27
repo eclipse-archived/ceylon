@@ -144,14 +144,16 @@ public class CeylonDocToolTest {
     
     @Test
     public void moduleA() throws IOException {
-        String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules/single";
-        CeylonDocTool tool = tool(pathname, "a", true);
+        String pathname = "test-src";
+        String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.single";
+
+        CeylonDocTool tool = tool(pathname, moduleName, true);
         tool.setIncludeNonShared(false);
         tool.setIncludeSourceCode(true);
         tool.makeDoc();
         
         Module module = new Module();
-        module.setName(Arrays.asList("a"));
+        module.setName(Arrays.asList(moduleName));
         module.setVersion("3.1.4");
         
         File destDir = getOutputDir(tool, module);
@@ -170,14 +172,16 @@ public class CeylonDocToolTest {
 
     @Test
     public void moduleAWithPrivate() throws IOException {
-        String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules/single";
-        CeylonDocTool tool = tool(pathname, "a", true);
+        String pathname = "test-src";
+        String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.single";
+        
+        CeylonDocTool tool = tool(pathname, moduleName, true);
         tool.setIncludeNonShared(true);
         tool.setIncludeSourceCode(true);
         tool.makeDoc();
         
         Module module = new Module();
-        module.setName(Arrays.asList("a"));
+        module.setName(Arrays.asList(moduleName));
         module.setVersion("3.1.4");
     
         File destDir = getOutputDir(tool, module);
@@ -196,22 +200,22 @@ public class CeylonDocToolTest {
 
     @Test
     public void dependentOnBinaryModule() throws IOException {
-        String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules/dependency";
+        String pathname = "test-src";
         
         // compile the b module
-        compile(pathname+"/b", "b");
+        compile(pathname, "com.redhat.ceylon.ceylondoc.test.modules.dependency.b");
         
-        CeylonDocTool tool = tool(pathname+"/c", "c", true, "build/ceylon-cars");
+        CeylonDocTool tool = tool(pathname, "com.redhat.ceylon.ceylondoc.test.modules.dependency.c", true, "build/ceylon-cars");
         tool.makeDoc();
     }
 
     @Test
     public void containsJavaCode() throws IOException {
-        String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules/java";
-        String moduleName = "mixed";
+        String pathname = "test-src";
+        String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.mixed";
         
         // compile the java code first
-        compileJavaModule(pathname, "mixed/Java.java");
+        compileJavaModule(pathname, "com/redhat/ceylon/ceylondoc/test/modules/mixed/Java.java");
         
         CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
         tool.makeDoc();
@@ -219,15 +223,15 @@ public class CeylonDocToolTest {
 
     @Test
     public void documentSingleModule() throws IOException {
-        String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules/multi";
-        String moduleName = "a";
+        String pathname = "test-src";
+        String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.multi.a";
         
         CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
         tool.makeDoc();
 
-        Module a = makeModule("a", "1");
+        Module a = makeModule("com.redhat.ceylon.ceylondoc.test.modules.multi.a", "1");
         File destDirA = getOutputDir(tool, a);
-        Module b = makeModule("b", "1");
+        Module b = makeModule("com.redhat.ceylon.ceylondoc.test.modules.multi.b", "1");
         File destDirB = getOutputDir(tool, b);
         Module def = makeDefaultModule();
         File destDirDef = getOutputDir(tool, def);
@@ -239,14 +243,14 @@ public class CeylonDocToolTest {
 
     @Test
     public void documentPackage() throws IOException {
-        String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules/multi";
-        String moduleName = "a.sub";
+        String pathname = "test-src";
+        String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.multi.a.sub";
         
         try{
             CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
             tool.makeDoc();
         }catch(RuntimeException x){
-            Assert.assertEquals("Can't find module: a.sub", x.getMessage());
+            Assert.assertEquals("Can't find module: com.redhat.ceylon.ceylondoc.test.modules.multi.a.sub", x.getMessage());
             return;
         }
         Assert.fail("Expected exception");
@@ -254,15 +258,15 @@ public class CeylonDocToolTest {
 
     @Test
     public void documentDefaultModule() throws IOException {
-        String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules/multi";
+        String pathname = "test-src";
         String moduleName = "default";
         
         CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
         tool.makeDoc();
 
-        Module a = makeModule("a", "1");
+        Module a = makeModule("com.redhat.ceylon.ceylondoc.test.modules.multi.a", "1");
         File destDirA = getOutputDir(tool, a);
-        Module b = makeModule("b", "1");
+        Module b = makeModule("com.redhat.ceylon.ceylondoc.test.modules.multi.b", "1");
         File destDirB = getOutputDir(tool, b);
         Module def = makeDefaultModule();
         File destDirDef = getOutputDir(tool, def);
@@ -270,8 +274,8 @@ public class CeylonDocToolTest {
         assertFileNotExists(destDirA, "index.html");
         assertFileNotExists(destDirB, "index.html");
         assertFileExists(destDirDef, "index.html");
-        assertFileExists(destDirDef, "goes/into/object_bar.html");
-        assertFileExists(destDirDef, "goes/into/defaultmodule/object_foo.html");
+        assertFileExists(destDirDef, "com/redhat/ceylon/ceylondoc/test/modules/multi/goes/into/object_bar.html");
+        assertFileExists(destDirDef, "com/redhat/ceylon/ceylondoc/test/modules/multi/goes/into/defaultmodule/object_foo.html");
     }
 
     @Test

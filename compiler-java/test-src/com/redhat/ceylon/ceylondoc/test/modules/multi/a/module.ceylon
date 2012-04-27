@@ -1,4 +1,4 @@
 Module module {
-    name = 'a';
+    name = 'com.redhat.ceylon.ceylondoc.test.modules.multi.a';
     version = '1';
 }
