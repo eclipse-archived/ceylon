@@ -318,6 +318,7 @@ public class ControlFlowVisitor extends Visitor {
             that.getForClause().visit(this);
         }
         boolean definitelyDoesNotExitFromFor = !exitedFromLoop;
+        that.setExits(exitedFromLoop);
         endLoop(b);
         endDefiniteReturnScope(d);
         
