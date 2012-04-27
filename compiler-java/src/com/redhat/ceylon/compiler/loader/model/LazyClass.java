@@ -21,7 +21,6 @@
 package com.redhat.ceylon.compiler.loader.model;
 
 import java.util.List;
-import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.ModelCompleter;
@@ -30,8 +29,6 @@ import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.DeclarationKind;
-import com.redhat.ceylon.compiler.typechecker.model.DeclarationWithProximity;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
@@ -66,7 +63,6 @@ public class LazyClass extends Class implements LazyContainer {
         this.forTopLevelObject = forTopLevelObject;
         this.realName = classMirror.getSimpleName();
         setName(Util.strip(this.realName));
-        setAnonymous(Character.isLowerCase(getName().charAt(0)));
         setAbstract(classMirror.isAbstract());
     }
 
