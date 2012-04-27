@@ -32,8 +32,11 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 
+/**
+ * Utility functions telling you about Ceylon declarations
+ * @see Strategy
+ */
 public class Decl {
     private Decl() {
     }
