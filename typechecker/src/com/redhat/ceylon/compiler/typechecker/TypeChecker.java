@@ -127,6 +127,7 @@ public class TypeChecker {
 
         phasedUnits.getModuleManager().prepareForTypeChecking();
         phasedUnits.visitModules();
+        phasedUnits.getModuleManager().modulesVisited();
 
         //By now le language module version should be known (as local)
         //or we should use the default one.

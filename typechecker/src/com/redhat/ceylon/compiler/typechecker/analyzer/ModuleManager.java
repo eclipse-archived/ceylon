@@ -366,4 +366,8 @@ public class ModuleManager {
 
     public void addImplicitImports() {
     }
+
+    public void modulesVisited() {
+        // to be overridden by subclasses
+    }
 }
