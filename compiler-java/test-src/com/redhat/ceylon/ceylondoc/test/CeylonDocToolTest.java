@@ -227,9 +227,12 @@ public class CeylonDocToolTest {
         File destDirA = getOutputDir(tool, a);
         Module b = makeModule("b", "1");
         File destDirB = getOutputDir(tool, b);
+        Module def = makeDefaultModule();
+        File destDirDef = getOutputDir(tool, def);
         
         assertFileExists(destDirA, "index.html");
         assertFileNotExists(destDirB, "index.html");
+        assertFileNotExists(destDirDef, "index.html");
     }
 
     @Test
@@ -248,6 +251,28 @@ public class CeylonDocToolTest {
     }
 
     @Test
+    public void documentDefaultModule() throws IOException {
+        String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules/multi";
+        String testName = "default";
+        
+        CeylonDocTool tool = tool(pathname, testName, testName, true, "build/ceylon-cars");
+        tool.makeDoc();
+
+        Module a = makeModule("a", "1");
+        File destDirA = getOutputDir(tool, a);
+        Module b = makeModule("b", "1");
+        File destDirB = getOutputDir(tool, b);
+        Module def = makeDefaultModule();
+        File destDirDef = getOutputDir(tool, def);
+        
+        assertFileNotExists(destDirA, "index.html");
+        assertFileNotExists(destDirB, "index.html");
+        assertFileExists(destDirDef, "index.html");
+        assertFileExists(destDirDef, "goes/into/object_bar.html");
+        assertFileExists(destDirDef, "goes/into/defaultmodule/object_foo.html");
+    }
+
+    @Test
     public void ceylonLanguage() throws IOException {
         String pathname = "../ceylon.language/src";
         String testName = "ceylon.language";
@@ -260,6 +285,13 @@ public class CeylonDocToolTest {
         File destDir = getOutputDir(tool, module);
         
         assertFileExists(destDir, "index.html");
+    }
+
+    private Module makeDefaultModule() {
+        Module module = new Module();
+        module.setName(Arrays.asList(Module.DEFAULT_MODULE_NAME));
+        module.setDefault(true);
+        return module;
     }
 
     private Module makeModule(String name, String version) {
