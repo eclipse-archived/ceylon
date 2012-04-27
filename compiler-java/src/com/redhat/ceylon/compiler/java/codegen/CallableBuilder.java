@@ -99,7 +99,7 @@ public class CallableBuilder {
         callMethod.isActual(true);
         callMethod.modifiers(Flags.PUBLIC);
         ProducedType returnType = gen.getCallableReturnType(typeModel);
-        callMethod.resultType(gen.makeJavaType(returnType, AbstractTransformer.EXTENDS), null);
+        callMethod.resultType(gen.makeJavaType(returnType, AbstractTransformer.EXTENDS | AbstractTransformer.NO_PRIMITIVES), null);
         // Now append formal parameters
         int numParams = paramLists.getParameters().size();
         switch (numParams) {
