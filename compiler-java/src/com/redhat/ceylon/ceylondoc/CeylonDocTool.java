@@ -115,6 +115,13 @@ public class CeylonDocTool {
             }
         });
         
+        // only parse what we asked for
+        List<String> moduleFilters = new LinkedList<String>();
+        for(ModuleSpec spec : modules){
+            moduleFilters.add(spec.name);
+        }
+        builder.setModuleFilters(moduleFilters);
+        
         TypeChecker typeChecker = builder.getTypeChecker();
         // collect all units we are typechecking
         collectTypeCheckedUnits(typeChecker);
