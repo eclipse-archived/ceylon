@@ -65,6 +65,7 @@ public class ModuleManager {
         modules = context.getModules();
         if ( modules == null ) {
             modules = new Modules();
+            context.setModules(modules);
             //build empty package
             final Package emptyPackage = createPackage("", null);
             packageStack.addLast(emptyPackage);
@@ -89,7 +90,6 @@ public class ModuleManager {
             modules.getListOfModules().add(languageModule);
             defaultModule.getImports().add(new ModuleImport(languageModule, false, false));
             defaultModule.setLanguageModule(languageModule);
-            context.setModules(modules);
         }
         else {
             modules = context.getModules();
