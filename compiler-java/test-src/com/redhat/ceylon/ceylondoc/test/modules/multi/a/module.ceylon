@@ -1,4 +1,4 @@
 Module module {
-    name = 'multi.a';
+    name = 'a';
     version = '1';
 }

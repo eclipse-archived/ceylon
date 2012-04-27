@@ -1,4 +1,6 @@
 Module module {
-    name = 'multi.b';
+    name = 'b';
     version = '1';
 }
+
+A B B ERROR

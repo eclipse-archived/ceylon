@@ -222,7 +222,15 @@ public class CeylonDocToolTest {
         
         CeylonDocTool tool = tool(pathname, testName, testName, true, "build/ceylon-cars");
         tool.makeDoc();
-    }
+
+        Module a = makeModule("a", "1");
+        File destDirA = getOutputDir(tool, a);
+        Module b = makeModule("b", "1");
+        File destDirB = getOutputDir(tool, b);
+        
+        assertFileExists(destDirA, "index.html");
+        assertFileNotExists(destDirB, "index.html");
+}
 
     @Test
     public void ceylonLanguage() throws IOException {
@@ -233,13 +241,17 @@ public class CeylonDocToolTest {
         tool.setIncludeSourceCode(true);
         tool.makeDoc();
         
-        Module module = new Module();
-        module.setName(Arrays.asList("ceylon.language"));
-        module.setVersion(TypeChecker.LANGUAGE_MODULE_VERSION);
-        
+        Module module = makeModule("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION);
         File destDir = getOutputDir(tool, module);
         
         assertFileExists(destDir, "index.html");
+    }
+
+    private Module makeModule(String name, String version) {
+        Module module = new Module();
+        module.setName(Arrays.asList(name.split("\\.")));
+        module.setVersion(version);
+        return module;
     }
 
     private void assertFileExists(File destDir, boolean includeNonShared) {
