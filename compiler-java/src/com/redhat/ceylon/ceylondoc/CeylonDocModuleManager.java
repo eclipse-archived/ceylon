@@ -105,4 +105,20 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
         module.setName(moduleName);
         return module;
     }
+    
+    @Override
+    public void modulesVisited() {
+        for(Module module : getContext().getModules().getListOfModules()){
+            if(isModuleLoadedFromSource(module.getNameAsString())){
+                addOutputModuleToClassPath(module);
+            }
+        }
+    }
+
+    private void addOutputModuleToClassPath(Module module) {
+        ArtifactContext ctx = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);
+        ArtifactResult result = getContext().getRepositoryManager().getArtifactResult(ctx);
+        if(result != null)
+            getModelLoader().addModuleToClassPath(module, result);
+    }
 }
