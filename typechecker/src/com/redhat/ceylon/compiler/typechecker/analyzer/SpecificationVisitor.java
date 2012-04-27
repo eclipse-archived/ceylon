@@ -485,9 +485,9 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ClassBody that) {
-        Tree.Statement les = getLastExecutableStatement(that);
         Tree.Declaration d = getDeclaration(that);
         if (d!=null) {
+            Tree.Statement les = getLastExecutableStatement(that);
             declarationSection = les==null;
             lastExecutableStatement = les;
             super.visit(that);        
@@ -517,7 +517,12 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.Statement that) {
         super.visit(that);
-        declarationSection = declarationSection || that==lastExecutableStatement;
+        checkDeclarationSection(that);
+    }
+
+    private void checkDeclarationSection(Tree.Statement that) {
+        declarationSection = declarationSection || 
+                that==lastExecutableStatement;
     }
     
     @Override
@@ -595,6 +600,8 @@ public class SpecificationVisitor extends Visitor {
         
         specified.definitely = specified.definitely || (definitelyAssignedByIfClause && definitelyAssignedByElseClause);
         specified.possibly = specified.possibly || possiblyAssignedByIfClause || possiblyAssignedByElseClause;
+        
+        checkDeclarationSection(that);
     }
     
     @Override
@@ -641,6 +648,8 @@ public class SpecificationVisitor extends Visitor {
         specified.possibly = specified.possibly || possiblyAssignedByFinallyClause;
         specified.definitely = specified.definitely || definitelyAssignedByFinallyClause
                 || (definitelyAssignedByTryClause && definitelyAssignedByEveryCatchClause);
+        
+        checkDeclarationSection(that);
     }
     
     @Override
@@ -673,6 +682,8 @@ public class SpecificationVisitor extends Visitor {
 
         specified.possibly = specified.possibly || possiblyAssignedBySomeCaseClause;
         specified.definitely = specified.definitely || definitelyAssignedByEveryCaseClause;
+        
+        checkDeclarationSection(that);
     }
     
     @Override
@@ -693,6 +704,8 @@ public class SpecificationVisitor extends Visitor {
         endSpecificationScope(as);
         
         specified.possibly = specified.possibly || possiblyAssignedByWhileClause;
+        
+        checkDeclarationSection(that);
     }
     
     /*@Override
@@ -749,6 +762,8 @@ public class SpecificationVisitor extends Visitor {
         
         specified.definitely = specified.definitely || (!possiblyExitedFromForClause && definitelyAssignedByElseClause);
         specified.possibly = specified.possibly || possiblyAssignedByForClause || possiblyAssignedByElseClause;
+        
+        checkDeclarationSection(that);
     }
       
 }
