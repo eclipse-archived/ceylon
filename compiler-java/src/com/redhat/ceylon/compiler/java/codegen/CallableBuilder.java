@@ -36,6 +36,11 @@ import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Name;
 
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.EXTENDS;
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.TYPE_ARGUMENT;
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.NO_PRIMITIVES;
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.CLASS_NEW;
+
 public class CallableBuilder {
 
     private final AbstractTransformer gen;
@@ -83,7 +88,7 @@ public class CallableBuilder {
             JCExpression init = unpickCallableParameter(gen, true, null, p, null, ii, parameterList.getParameters().size());
             JCVariableDecl varDef = gen.make().VarDef(gen.make().Modifiers(Flags.FINAL), 
                     gen.names().fromString(p.getName()), 
-                    gen.makeJavaType(p.getType(), AbstractTransformer.NO_PRIMITIVES), 
+                    gen.makeJavaType(p.getType(), NO_PRIMITIVES), 
                     init);
             body = body.prepend(varDef);
             ii++;
@@ -99,7 +104,7 @@ public class CallableBuilder {
         callMethod.isActual(true);
         callMethod.modifiers(Flags.PUBLIC);
         ProducedType returnType = gen.getCallableReturnType(typeModel);
-        callMethod.resultType(gen.makeJavaType(returnType, AbstractTransformer.EXTENDS | AbstractTransformer.NO_PRIMITIVES), null);
+        callMethod.resultType(gen.makeJavaType(returnType, EXTENDS | NO_PRIMITIVES), null);
         // Now append formal parameters
         int numParams = paramLists.getParameters().size();
         switch (numParams) {
@@ -125,7 +130,7 @@ public class CallableBuilder {
         
         JCNewClass instance = gen.make().NewClass(null, 
                 null, 
-                gen.makeJavaType(typeModel, AbstractTransformer.EXTENDS | AbstractTransformer.CLASS_NEW), 
+                gen.makeJavaType(typeModel, EXTENDS | CLASS_NEW), 
                 List.<JCExpression>of(gen.make().Literal(typeModel.getProducedTypeName())), 
                 classDef);
         return instance;
@@ -170,7 +175,7 @@ public class CallableBuilder {
         } else {
             castType = gen.getTypeForParameter(param, isRaw, typeArgumentModels);
         }
-        JCTypeCast cast = gen.make().TypeCast(gen.makeJavaType(castType, AbstractTransformer.NO_PRIMITIVES), argExpr);
+        JCTypeCast cast = gen.make().TypeCast(gen.makeJavaType(castType, NO_PRIMITIVES), argExpr);
         // TODO Should this be calling applyErasureAndBoxing() instead?
         BoxingStrategy boxingStrategy;
         if (param.getUnboxed() == null) {
