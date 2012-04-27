@@ -1016,13 +1016,12 @@ TypeConstraints?
             
             <itemizedlist>
                 <listitem>
-                    <para><literal>Gettable</literal> and <literal>Settable</literal>,
-                    <emphasis>TODO: is this correct?</emphasis></para>
+                    <para><literal>Callable</literal>,
+                    <emphasis>TODO: remove this restriction</emphasis></para>
                 </listitem>
                 <listitem>
-                    <para>the built-in numeric types: <literal>Integer</literal>,
-                    <literal>Integer</literal>, <literal>Float</literal>, <literal>Whole</literal>, 
-                    and <literal>Decimal</literal>,</para>
+                    <para>the built-in numeric types: <literal>Integer</literal> and 
+                    <literal>Float</literal>,</para>
                 </listitem>
                 <listitem>
                     <para><literal>Boolean</literal>,</para>

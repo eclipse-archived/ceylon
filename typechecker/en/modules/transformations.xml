@@ -180,14 +180,14 @@
                    <para><literal>Boolean?</literal> with
                    <literal>java.lang.Boolean</literal>,</para>
                </listitem>
-               <listitem>
+               <!--listitem>
                    <para><literal>Whole</literal> with
                    <literal>java.math.BigInteger</literal>,</para>
                </listitem>
                <listitem>
                    <para><literal>Decimal</literal> with
                    <literal>java.math.BigDecimal</literal>,</para>
-               </listitem>
+               </listitem-->
            </itemizedlist>
            
            <para>and then, finally replacing:</para>
@@ -373,14 +373,14 @@
                    <para><literal>java.lang.Boolean</literal> with
                    <literal>Boolean?</literal>,</para>
                </listitem>
-               <listitem>
+               <!--listitem>
                    <para><literal>java.math.BigInteger</literal> with
                    <literal>Whole</literal>, and</para>
                </listitem>
                <listitem>
                    <para><literal>java.math.BigDecimal</literal> with
                    <literal>Decimal</literal>.</para>
-               </listitem>
+               </listitem-->
            </itemizedlist>
            
         </section>
