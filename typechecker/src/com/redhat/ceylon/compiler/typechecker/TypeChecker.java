@@ -36,7 +36,8 @@ public class TypeChecker {
 
     //package level
     TypeChecker(VFS vfs, List<VirtualFile> srcDirectories, RepositoryManager repositoryManager, boolean verifyDependencies,
-            AssertionVisitor assertionVisitor, ModuleManagerFactory moduleManagerFactory, boolean verbose) {
+            AssertionVisitor assertionVisitor, ModuleManagerFactory moduleManagerFactory, boolean verbose,
+            List<String> moduleFilters) {
         long start = System.nanoTime();
         this.srcDirectories = srcDirectories;
         this.verbose = verbose;
@@ -45,6 +46,7 @@ public class TypeChecker {
         this.verifyDependencies = verifyDependencies;
         this.assertionVisitor = assertionVisitor;
         statsVisitor = new StatisticsVisitor();
+        phasedUnits.setModuleFilters(moduleFilters);
         phasedUnits.parseUnits(srcDirectories);
         long time = System.nanoTime()-start;
         if(verbose)

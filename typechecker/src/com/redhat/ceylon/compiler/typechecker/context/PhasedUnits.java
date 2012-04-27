@@ -12,6 +12,8 @@ import org.antlr.runtime.CommonTokenStream;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
@@ -30,6 +32,7 @@ public class PhasedUnits {
     private Map<String, PhasedUnit> phasedUnitPerRelativePath = new HashMap<String, PhasedUnit>();
     private final Context context;
     private final ModuleManager moduleManager;
+    private List<String> moduleFilters;
 
     public PhasedUnits(Context context) {
         this.context = context;
@@ -45,6 +48,10 @@ public class PhasedUnits {
             this.moduleManager = new ModuleManager(context);
         }
         this.moduleManager.initCoreModules();
+    }
+    
+    public void setModuleFilters(List<String> moduleFilters){
+        this.moduleFilters = moduleFilters;
     }
     
     public void addPhasedUnit(VirtualFile unitFile, PhasedUnit phasedUnit) {
@@ -159,18 +166,81 @@ public class PhasedUnits {
 
     private void processDirectory(VirtualFile dir, VirtualFile srcDir) throws Exception {
         moduleManager.push(dir.getName());
+        
+        // See if we're defining a new module
         final List<VirtualFile> files = dir.getChildren();
+        boolean definesModule = false;
         for (VirtualFile file : files) {
             if (ModuleManager.MODULE_FILE.equals(file.getName())) {
-                moduleManager.visitModuleFile();
+                definesModule = true;
+                break;
             }
         }
-        for (VirtualFile file : files) {
-            parseFileOrDirectory(file, srcDir);
+
+        if(checkModuleFilters(definesModule)){
+            if(definesModule)
+                moduleManager.visitModuleFile();
+            for (VirtualFile file : files) {
+                parseFileOrDirectory(file, srcDir);
+            }
         }
         moduleManager.pop();
     }
     
+    private boolean checkModuleFilters(boolean definesModule) {
+        if(moduleFilters == null || moduleFilters.isEmpty())
+            return true;
+        Package pkg = moduleManager.getCurrentPackage();
+        String pkgName = pkg.getNameAsString();
+        /*
+            ; filter example syntax:
+            module-list+ (wanted-modules+) -> allowed-paths*
+        
+            ; Filter unwanted modules
+            a, a.b, aa, b (a) -> a, a.b
+        
+            ; Filter unwanted longer-named modules 
+            a.b.c, a.b.d (a.b) -> 
+        
+            ; Allow going to the module we're looking for
+            a, a.b, a.b.c (a.b.c) -> a, a.b, a.b.c
+        
+            ; Allow any package in the default module
+            a, b, c (default) -> a, b, c
+        */
+        for(String module : moduleFilters){
+            // Are we looking for the default module?
+            if(module.equals(Module.DEFAULT_MODULE_NAME)){
+                // Allow anything for the default module if it's not owned by another module
+                // and we're not defining a new module.
+                if(pkg.getModule().isDefault() && !definesModule){
+                    return true;
+                }
+                // None of the other rules apply to the default module.
+                continue;
+            }
+            // Allow module folder.
+            // We don't check for the presence of a module declaration here, we asked for this module so
+            // if we're not defining it we will just have to deal with the error elsewhere (its absence).
+            if(pkgName.equals(module)){
+                return true;
+            }
+            // Allow sub-packages, but only if they are actually contained by the module itself
+            // and not accidental modules with longer names.
+            // We don't check for the presence of a module declaration here since that will generate
+            // an error later because a module can't contain another module
+            if(pkgName.startsWith(module + ".") && pkg.getModule().getNameAsString().equals(module)){
+                return true;
+            }
+            // Allow the path that leads to the modules we're looking for, as long as they are in the default module
+            // and we're not defining a new module
+            if(module.startsWith(pkgName + ".") && pkg.getModule().isDefault() && !definesModule){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void visitModules() {
         List<PhasedUnit> listOfUnits = getPhasedUnits();
         for (PhasedUnit pu : listOfUnits) {
