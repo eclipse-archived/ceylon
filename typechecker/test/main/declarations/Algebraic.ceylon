@@ -261,4 +261,9 @@ class SubtypeOfNonAbstract() extends NonAbstract() {}
 @error abstract class Abstract() of NonSubtypeOfAbstract {}
 class NonSubtypeOfAbstract() {}
  
-
+/*interface Indirect of Abstract1 | Abstract2 {}
+abstract class Abstract1() {}
+abstract class Abstract2() {}
+class Concrete1() extends Abstract1() satisfies Indirect {}
+class Concrete2() satisfies Indirect {}
+class Concrete3() extends Abstract1() {}*/
