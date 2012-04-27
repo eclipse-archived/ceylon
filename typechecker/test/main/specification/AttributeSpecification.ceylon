@@ -15,4 +15,8 @@ class Hello(String? name) {
        shared void printMessage(String message) {
            print(message);
        }
+       
+       shared Hello thiz {
+           return this;
+       }
 }
