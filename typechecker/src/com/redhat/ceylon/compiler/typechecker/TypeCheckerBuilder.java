@@ -35,6 +35,7 @@ public class TypeCheckerBuilder {
     };
     private ModuleManagerFactory moduleManagerFactory;
     private RepositoryManager repositoryManager;
+    private List<String> moduleFilters = new ArrayList<String>();
 
     public TypeCheckerBuilder() {
     }
@@ -60,6 +61,12 @@ public class TypeCheckerBuilder {
         this.repositoryManager = repositoryManager;
     }
 
+    public TypeCheckerBuilder setModuleFilters(List<String> moduleFilters){
+        this.moduleFilters.clear();
+        this.moduleFilters.addAll(moduleFilters);
+        return this;
+    }
+    
     /**
      * @deprecated this is bad and a temporary hack
      *
@@ -101,7 +108,7 @@ public class TypeCheckerBuilder {
         if (repositoryManager == null) {
             repositoryManager = new RepositoryManagerBuilder( new LeakingLogger() ).buildRepository();
         }
-        return new TypeChecker(vfs, srcDirectories, repositoryManager, verifyDependencies, assertionVisitor, moduleManagerFactory, verbose);
+        return new TypeChecker(vfs, srcDirectories, repositoryManager, verifyDependencies, assertionVisitor, moduleManagerFactory, verbose, moduleFilters);
     }
 
 }
