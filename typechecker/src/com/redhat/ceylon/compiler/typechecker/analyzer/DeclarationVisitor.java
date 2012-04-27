@@ -466,6 +466,14 @@ public class DeclarationVisitor extends Visitor {
         if ( that.getDeclarationModel().isFormal() && that.getSpecifierExpression()!=null ) {
             that.addError("formal methods may not have a method reference");
         }
+        //note hacky solution to work around problem that
+        //parameters wind up in scope in the specifier
+        //expression of a method defined by reference
+        for (Tree.ParameterList pl: that.getParameterLists()) {
+            for (Tree.Parameter p: pl.getParameters()) {
+                p.getDeclarationModel().setUnresolvable(true);
+            }
+        }
     }
     
     @Override

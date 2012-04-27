@@ -7,6 +7,7 @@ public abstract class Parameter extends TypedDeclaration {
 	private boolean sequenced;
     private Declaration declaration;
     private boolean captured = false;
+    private boolean unresolvable;
     
     @Override
     public boolean isCaptured() {
@@ -39,6 +40,14 @@ public abstract class Parameter extends TypedDeclaration {
     
     public void setDeclaration(Declaration declaration) {
         this.declaration = declaration;
+    }
+    
+    public boolean isUnresolvable() {
+        return unresolvable;
+    }
+    
+    public void setUnresolvable(boolean unresolvable) {
+        this.unresolvable = unresolvable;
     }
     
     @Override
