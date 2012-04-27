@@ -248,7 +248,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         at(stmt);
         List<JCStatement> outer = List.<JCStatement> nil();
-        if (stmt.getElseClause() != null) {
+        if (stmt.getExits() && stmt.getElseClause() != null) {
             // boolean $doforelse$X = true;
             JCVariableDecl failtest_decl = make().VarDef(make().Modifiers(0), names().fromString(aliasName("doforelse")), make().TypeIdent(TypeTags.BOOLEAN), make().Literal(TypeTags.BOOLEAN, 1));
             outer = outer.append(failtest_decl);
@@ -346,9 +346,13 @@ public class StatementTransformer extends AbstractTransformer {
             // The user-supplied contents of fail block
             List<JCStatement> failblock = transformStmts(stmt.getElseClause().getBlock().getStatements());
             
-            // if ($doforelse$X) ...
-            JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
-            outer = outer.append(at(stmt).If(failtest_id, at(stmt).Block(0, failblock), null));
+            if (stmt.getExits()) {
+                // if ($doforelse$X) ...
+                JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
+                outer = outer.append(at(stmt).If(failtest_id, at(stmt).Block(0, failblock), null));
+            } else {
+                outer = outer.appendList(failblock);
+            }
         }
         currentForFailVariable = tempForFailVariable;
 
