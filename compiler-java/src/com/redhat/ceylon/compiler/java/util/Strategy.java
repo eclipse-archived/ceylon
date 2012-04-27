@@ -25,7 +25,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.CustomTree.MethodDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 
 /**
  * Utility functions telling you about code generation strategies
