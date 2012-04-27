@@ -2830,7 +2830,7 @@ HexDigits
 
 fragment
 HexDigit
-    : '0'..'9' | 'A'..'F'
+    : '0'..'9' | 'A'..'F' | 'a'..'f'
     ;
 
 WS  

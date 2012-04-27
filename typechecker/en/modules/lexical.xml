@@ -212,7 +212,7 @@
         
         <programlisting>CharacterCode: HexDigit{4} | HexDigit{8}</programlisting>
                 
-        <programlisting>HexDigit: "0".."9" | "A".."F"</programlisting>
+        <programlisting>HexDigit: "0".."9" | "A".."F" | "a".."f"</programlisting>
         
         <para>The following are legal character literals:</para>
         
