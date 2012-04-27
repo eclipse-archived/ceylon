@@ -1309,18 +1309,23 @@ else {
                     to the given statement or declaration,</para>
                 </listitem>
                 <listitem>
-                    <para>the statement does not (indirectly) occur in the <literal>else</literal> block of 
-                    a <literal>for</literal> loop with a <literal>for</literal> block that possibly 
+                    <para>the statement does not (indirectly) occur in the <literal>for</literal> block or
+                    <literal>else</literal> block of a <literal>for</literal> loop with a <literal>for</literal> 
+                    block that possibly initializes it,</para>
+                </listitem>
+                <listitem>
+                    <para>the statement does not (indirectly) occur in the <literal>while</literal> block of 
+                    a <literal>while</literal> loop with a <literal>while</literal> block that possibly 
                     initializes it,</para>
                 </listitem>
                 <listitem>
                     <para>the statement does not (indirectly) occur in a <literal>catch</literal> block 
-                    of a <literal>try/catch</literal> exception manager with a <literal>for</literal> block 
+                    of a <literal>try/catch</literal> exception manager with a <literal>try</literal> block 
                     that possibly initializes it, and</para>
                 </listitem>
                 <listitem>
                     <para>the statement does not (indirectly) occur in the <literal>finally</literal> block 
-                    of a <literal>try/catch</literal> exception manager with a <literal>for</literal> block 
+                    of a <literal>try/catch</literal> exception manager with a <literal>try</literal> block 
                     or <literal>catch</literal> block that possibly initializes it.</para>
                 </listitem>
             </itemizedlist>
