@@ -27,10 +27,13 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.tools.JavaFileObject;
 
 import junit.framework.Assert;
 
@@ -42,6 +45,7 @@ import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.source.util.JavacTask;
+import com.sun.tools.javac.file.JavacFileManager;
 
 public class CeylonDocToolTest {
 
@@ -196,6 +200,18 @@ public class CeylonDocToolTest {
         compile(pathname+"/b", "b");
         
         CeylonDocTool tool = tool(pathname+"/c", testName, "c", true, "build/ceylon-cars");
+        tool.makeDoc();
+    }
+
+    @Test
+    public void containsJavaCode() throws IOException {
+        String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules/java";
+        String testName = "mixed";
+        
+        // compile the java code first
+        compileJavaModule(pathname, "mixed/Java.java");
+        
+        CeylonDocTool tool = tool(pathname, testName, testName, true, "build/ceylon-cars");
         tool.makeDoc();
     }
 
@@ -382,6 +398,20 @@ public class CeylonDocToolTest {
         CeyloncTool compiler = new CeyloncTool();
         List<String> options = Arrays.asList("-src", pathname, "-out", "build/ceylon-cars");
         JavacTask task = compiler.getTask(null, null, null, options, Arrays.asList(moduleName), null);
+        Boolean ret = task.call();
+        Assert.assertEquals("Compilation failed", Boolean.TRUE, ret);
+    }
+
+    private void compileJavaModule(String pathname, String... fileNames) throws IOException {
+        CeyloncTool compiler = new CeyloncTool();
+        List<String> options = Arrays.asList("-src", pathname, "-out", "build/ceylon-cars");
+        JavacFileManager fileManager = compiler.getStandardFileManager(null, null, null);
+        List<String> qualifiedNames = new ArrayList<String>(fileNames.length);
+        for(String name : fileNames){
+            qualifiedNames.add(pathname + File.separator + name);
+        }
+        Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjectsFromStrings(qualifiedNames);
+        JavacTask task = compiler.getTask(null, null, null, options, null, fileObjects);
         Boolean ret = task.call();
         Assert.assertEquals("Compilation failed", Boolean.TRUE, ret);
     }
