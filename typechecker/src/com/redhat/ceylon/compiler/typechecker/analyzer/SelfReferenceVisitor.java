@@ -98,8 +98,9 @@ public class SelfReferenceVisitor extends Visitor {
     public void visit(Tree.IsCondition that) {
         super.visit(that);
         if ( inBody() ) {
-            if (that.getVariable().getSpecifierExpression()!=null) {
-                Tree.Term term = that.getVariable().getSpecifierExpression()
+            Tree.Variable v = that.getVariable();
+            if (v!=null && v.getSpecifierExpression()!=null) {
+                Tree.Term term = v.getSpecifierExpression()
                         .getExpression().getTerm();
                 if (directlyInBody() && term instanceof Tree.Super) {
                     term.addError("narrows super");
