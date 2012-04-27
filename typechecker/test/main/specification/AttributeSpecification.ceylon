@@ -1,5 +1,13 @@
 class Hello(String? name) {
 
+       shared Hello brokenSelfRef {
+           @error return this;
+       }
+       
+       shared void brokenForwardRef() {
+           @error printMessage("foo");
+       }
+
        String greeting;
        if (exists name) {
            greeting = "Hi " + name;
