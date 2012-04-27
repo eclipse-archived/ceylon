@@ -1,0 +1,33 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+final class bug494 {
+    
+    private bug494() {
+    }
+    
+    static void bug494() {
+        
+        final class indice {
+            
+            private indice() {
+            }
+            
+            .java.lang.String indice(final long i) {
+                return .ceylon.language.Integer.instance(i).toString();
+            }
+        }
+        final indice indice = new indice();
+        final .ceylon.language.Array<.ceylon.language.String> a2 = .ceylon.language.makeArray.<.ceylon.language.String>makeArray(.ceylon.language.Integer.instance(20L), new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("Callable<String,Integer>"){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+                return .ceylon.language.String.instance(indice.indice(((.ceylon.language.Integer)$param$0).longValue()));
+            }
+        });
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug494.bug494();
+    }
+}
