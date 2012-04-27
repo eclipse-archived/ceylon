@@ -23,6 +23,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import com.redhat.ceylon.compiler.java.test.bc.BcTests;
 import com.redhat.ceylon.compiler.java.test.cmr.CMRTest;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest;
 import com.redhat.ceylon.compiler.java.test.interop.InteropTest;
@@ -53,7 +54,8 @@ import com.redhat.ceylon.compiler.java.test.structure.StructureTest;
 	TypeParserTest.class,
 	QuotingTest.class,
 	CMRTest.class,
-	RuntimeSuite.class
+	RuntimeSuite.class,
+	BcTests.class
 })
 public class AllTests {
 }
