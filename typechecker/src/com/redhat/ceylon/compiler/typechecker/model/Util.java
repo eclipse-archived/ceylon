@@ -72,7 +72,7 @@ public class Util {
         return declaration.getProducedType(null, Arrays.asList(typeArguments));
     }
 
-    static boolean isResolvable(Declaration declaration) {
+    public static boolean isResolvable(Declaration declaration) {
         return declaration.getName()!=null &&
             !(declaration instanceof Setter) && //return getters, not setters
             !(declaration instanceof Parameter && 
