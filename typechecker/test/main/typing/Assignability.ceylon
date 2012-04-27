@@ -154,7 +154,7 @@ class Assignability() {
     
     @error if (something) {}
         
-    if (exists nothing) {
+    @error if (exists nothing) {
         print(nothing.hello);
     }
     
