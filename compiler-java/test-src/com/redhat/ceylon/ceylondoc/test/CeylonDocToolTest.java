@@ -230,7 +230,22 @@ public class CeylonDocToolTest {
         
         assertFileExists(destDirA, "index.html");
         assertFileNotExists(destDirB, "index.html");
-}
+    }
+
+    @Test
+    public void documentPackage() throws IOException {
+        String pathname = "test-src/com/redhat/ceylon/ceylondoc/test/modules/multi";
+        String testName = "a.sub";
+        
+        try{
+            CeylonDocTool tool = tool(pathname, testName, testName, true, "build/ceylon-cars");
+            tool.makeDoc();
+        }catch(RuntimeException x){
+            Assert.assertEquals("Can't find module: a.sub", x.getMessage());
+            return;
+        }
+        Assert.fail("Expected exception");
+    }
 
     @Test
     public void ceylonLanguage() throws IOException {
