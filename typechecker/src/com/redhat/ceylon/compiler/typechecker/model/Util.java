@@ -172,7 +172,7 @@ public class Util {
         return false;
     }
 
-    static boolean isNamed(String name, Declaration d) {
+    public static boolean isNamed(String name, Declaration d) {
         String dname = d.getName();
         return dname!=null && dname.equals(name);
     }
