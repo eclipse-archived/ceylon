@@ -1880,7 +1880,7 @@ else {
 
         <para>is equivalent to the following:</para>
 
-        <programlisting>Calable&lt;Comparison,Integer,Integer> getOrder() {
+        <programlisting>Callable&lt;Comparison,Integer,Integer&gt; getOrder() {
     Comparison order(Integer x, Integer y) { return x&lt;=&gt;y; }
     return order;
 }</programlisting>
@@ -1915,7 +1915,7 @@ else {
         <para>This method declaration:</para>
         
         <programlisting>function fullName(String firstName)(String middleName)(String lastName) {
-    return firstName + " " + middleName + " " lastName;
+    return firstName + " " + middleName + " " + lastName;
 }</programlisting>
         
         <para>Is equivalent to:</para>
