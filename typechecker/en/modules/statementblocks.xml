@@ -499,10 +499,6 @@
 
         <programlisting>Float y { return x; }</programlisting>
         
-        <comment><para>TODO: Actually the compiler would currently require that the two 
-        declarations occur in separate compilation units. Who is wrong, spec or 
-        compiler?</para></comment>
-
         <para>This code is not legal, since the body of a method is an ordinary block:</para>
     
         <programlisting>Float->Float xy() {

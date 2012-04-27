@@ -5,7 +5,6 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecut
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -198,7 +197,8 @@ public class SpecificationVisitor extends Visitor {
 
     private boolean inDeclarationSection() {
         return declarationSection || 
-            declaration.getContainer() instanceof Interface;
+                declaration.isToplevel() ||
+                declaration.isInterfaceMember();
     }
     
     @Override
