@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.petebevin.markdown.MarkdownProcessor;
+import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -251,5 +252,23 @@ public class Util {
         }
         if (!f.delete())
             throw new RuntimeException(CeylondMessages.msg("error.failedDeleteFile", f));
+    }
+
+    public static String getUnitPackageName(PhasedUnit unit) {
+        String path = unit.getPathRelativeToSrcDir();
+        String file = unit.getUnitFile().getName();
+        if(!path.endsWith(file)){
+            throw new RuntimeException("Unit relative path does not end with unit file name: "+path+" and "+file);
+        }
+        path = path.substring(0, path.length() - file.length());
+        if(path.endsWith(File.separator))
+            path = path.substring(0, path.length() - 1);
+        return path.replace(File.separatorChar, '.');
+    }
+
+    public static String getQuotedFQN(String pkgName, com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration decl) {
+        String name = decl.getIdentifier().getText();
+        String qualifiedName = pkgName.isEmpty() ? name : pkgName + "." + name;
+        return com.redhat.ceylon.compiler.java.util.Util.quoteJavaKeywords(qualifiedName);
     }
 }

@@ -44,6 +44,7 @@ import java.util.Map;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.CMRException;
+import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
@@ -91,6 +92,7 @@ public class CeylonDocTool {
     private Map<Declaration, Node> sourceLocations = new HashMap<Declaration, Node>();
     private File tempDestDir;
     private CeylondLogger log;
+    private List<String> compiledClasses = new LinkedList<String>();
 
     public CeylonDocTool(List<File> sourceFolders, List<String> repositories, List<String> moduleSpecs,
             boolean haltOnError) {
@@ -114,6 +116,8 @@ public class CeylonDocTool {
         });
         
         TypeChecker typeChecker = builder.getTypeChecker();
+        // collect all units we are typechecking
+        collectTypeCheckedUnits(typeChecker);
         typeChecker.process();
         if(haltOnError && typeChecker.getErrors() > 0)
             throw new RuntimeException(CeylondMessages.msg("error.failedParsing", typeChecker.getErrors()));
@@ -130,6 +134,19 @@ public class CeylonDocTool {
         }
         tempDestDir.delete();
         tempDestDir.mkdirs();
+    }
+
+    private void collectTypeCheckedUnits(TypeChecker typeChecker) {
+        for(PhasedUnit unit : typeChecker.getPhasedUnits().getPhasedUnits()){
+            // obtain the unit container path
+            final String pkgName = Util.getUnitPackageName(unit); 
+            unit.getCompilationUnit().visit(new SourceDeclarationVisitor(){
+                @Override
+                public void loadFromSource(com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration decl) {
+                    compiledClasses.add(Util.getQuotedFQN(pkgName, decl));
+                }
+            });
+        }
     }
 
     private List<Module> getModules(List<ModuleSpec> moduleSpecs, Modules modules){
@@ -166,6 +183,10 @@ public class CeylonDocTool {
         this.pass = pass;
     }
 
+    public List<String> getCompiledClasses(){
+        return compiledClasses;
+    }
+    
     public String getOutputRepository() {
         return outputRepository;
     }
