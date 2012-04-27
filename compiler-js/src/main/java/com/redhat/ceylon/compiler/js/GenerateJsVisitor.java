@@ -1140,7 +1140,7 @@ public class GenerateJsVisitor extends Visitor
         while (d != null && !d.isToplevel()) {
             Scope s = d.getContainer();
             // Skip any non-declaration elements
-            while (!(s instanceof Declaration)) {
+            while (s != null && !(s instanceof Declaration)) {
                 s = s.getContainer();
             }
             d = (Declaration) s;
@@ -2535,7 +2535,7 @@ public class GenerateJsVisitor extends Visitor
         if (comment) out("//End switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
     }
 
-    /** Generates the code for an anonymous function defined inside an argument list */
+    /** Generates the code for an anonymous function defined inside an argument list. */
     @Override
     public void visit(final FunctionArgument that) {
         generateParameterLists(that.getParameterLists(), new ParameterListCallback() {
@@ -2548,6 +2548,7 @@ public class GenerateJsVisitor extends Visitor
         });
     }
 
+    /** Generates the code for a function in a named argument list. */
     @Override
     public void visit(final MethodArgument that) {
         generateParameterLists(that.getParameterLists(), new ParameterListCallback() {
