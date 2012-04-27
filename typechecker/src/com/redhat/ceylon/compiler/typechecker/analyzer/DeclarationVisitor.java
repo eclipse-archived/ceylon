@@ -739,7 +739,12 @@ public class DeclarationVisitor extends Visitor {
         }
         if (hasAnnotation(al, "abstract")) {
             if (model instanceof Class) {
-                ((Class) model).setAbstract(true);
+                if (model instanceof ClassAlias) {
+                    that.addError("aliases may not be annotated abstract");
+                }
+                else {
+                    ((Class) model).setAbstract(true);
+                }
             }
             else {
                 that.addError("declaration is not a class, and may not be abstract");
