@@ -1,10 +1,10 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -60,8 +60,8 @@ public class ValueVisitor extends Visitor {
                 if (d instanceof Value) {
                     ((Value) d).setCaptured(true);
                 }
-                else if (d instanceof ValueParameter) {
-                    ((ValueParameter) d).setCaptured(true);
+                else if (d instanceof Parameter) {
+                    ((Parameter) d).setCaptured(true);
                 }
                 /*if (d.isVariable() && !d.isClassMember() && !d.isToplevel()) {
                     that.addError("access to variable local from capturing scope: " + declaration.getName());

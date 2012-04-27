@@ -260,5 +260,11 @@ class Capture() {
          }
      }
 
+    class C(@captured void f(), @captured void g()) {
+        void m(C c) {
+            c.f();
+            this.g();
+        }
+    }
     
 }

@@ -6,6 +6,16 @@ public abstract class Parameter extends TypedDeclaration {
 	private boolean defaulted;
 	private boolean sequenced;
     private Declaration declaration;
+    private boolean captured = false;
+    
+    @Override
+    public boolean isCaptured() {
+        return captured;
+    }
+    
+    public void setCaptured(boolean local) {
+        this.captured = local;
+    }
     
     public boolean isDefaulted() {
         return defaulted;
