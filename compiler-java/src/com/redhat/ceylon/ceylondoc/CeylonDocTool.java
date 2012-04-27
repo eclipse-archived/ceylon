@@ -169,8 +169,10 @@ public class CeylonDocTool {
             }
             if(foundModule != null)
                 documentedModules.add(foundModule);
-            else
+            else if(moduleSpec.version != null)
                 throw new RuntimeException(CeylondMessages.msg("error.cantFindModule", moduleSpec.name, moduleSpec.version));
+            else
+                throw new RuntimeException(CeylondMessages.msg("error.cantFindModuleNoVersion", moduleSpec.name));
         }
         return documentedModules;
     }
