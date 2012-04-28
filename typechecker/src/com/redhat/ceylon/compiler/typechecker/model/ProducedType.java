@@ -532,50 +532,160 @@ public class ProducedType extends ProducedReference {
             return qualifiedByDeclaringType();
         }
         if ( isWellDefined() && Util.addToSupertypes(list, this) ) {
-            //search for the most-specific supertype 
-            //for the given declaration
-            ProducedType result = null;
-            ProducedType extendedType = getInternalExtendedType();
-            if (extendedType!=null) {
-                ProducedType possibleResult = extendedType.getSupertype(c, list, 
-                                ignoringSelfType);
-                if (possibleResult!=null) {
+            //now let's call the two most difficult methods
+            //in the whole code base:
+            ProducedType result = getPrincipalInstantiation(c, list,
+                    ignoringSelfType);
+            result = getPrincipalInstantiationFromCases(c, list,
+                    ignoringSelfType, result);
+            return result;
+        }
+        else {
+            return null;
+        }
+    }
+    
+    private ProducedType getPrincipalInstantiationFromCases(final Criteria c,
+            List<ProducedType> list, final TypeDeclaration ignoringSelfType,
+            ProducedType result) {
+        if (getDeclaration() instanceof UnionType) {
+            //trying to infer supertypes of algebraic
+            //types from their cases was resulting in
+            //stack overflows and is not currently 
+            //required by the spec
+            final List<ProducedType> caseTypes = getInternalCaseTypes();
+            if (caseTypes!=null && !caseTypes.isEmpty()) {
+                //first find a common superclass or superinterface 
+                //declaration that satisfies the criteria, ignoring
+                //type arguments for now
+                Criteria c2 = new Criteria() {
+                    @Override
+                    public boolean satisfies(TypeDeclaration type) {
+                        if ( c.satisfies(type) ) {
+                            for (ProducedType ct: caseTypes) {
+                                if (ct.getSupertype(type, ignoringSelfType)==null) {
+                                    return false;
+                                }
+                            }
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                };
+                ProducedType stc = caseTypes.get(0).getSupertype(c2, list, 
+                        ignoringSelfType);
+                if (stc!=null) {
+                    //we found the declaration, now try to construct a 
+                    //produced type that is a true common supertype
+                    ProducedType candidateResult = getCommonSupertype(caseTypes, 
+                            stc.getDeclaration(), ignoringSelfType);
+                    if (candidateResult!=null && (result==null || 
+                            candidateResult.isSubtypeOf(result, ignoringSelfType))) {
+                        result = candidateResult;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    private ProducedType getPrincipalInstantiation(final Criteria c,
+            List<ProducedType> list, final TypeDeclaration ignoringSelfType) {
+        //search for the most-specific supertype 
+        //for the given declaration
+        
+        ProducedType result = null;
+        
+        ProducedType extendedType = getInternalExtendedType();
+        if (extendedType!=null) {
+            ProducedType possibleResult = extendedType.getSupertype(c, list, 
+                            ignoringSelfType);
+            if (possibleResult!=null) {
+                result = possibleResult;
+            }
+        }
+        
+        for (ProducedType dst: getInternalSatisfiedTypes()) {
+            ProducedType possibleResult = dst.getSupertype(c, list, 
+                            ignoringSelfType);
+            if (possibleResult!=null) {
+                if (result==null || possibleResult.isSubtypeOf(result, ignoringSelfType)) {
+                    result = possibleResult;
+                }
+                else if ( !result.isSubtypeOf(possibleResult, ignoringSelfType) ) {
+                    //TODO: this is still needed even though we keep intersections 
+                    //      in canonical form because you can have stuff like
+                    //      empty of Iterable<String>&Sized
+                    TypeDeclaration rd = result.getDeclaration();
+                    TypeDeclaration prd = possibleResult.getDeclaration();
+                    if (rd.equals(prd)) {
+                        List<ProducedType> args = constructPrincipalInstantiation(
+                                rd, result, possibleResult);
+                        //TODO: broken for member types! ugh :-(
+                        result = rd.getProducedType(result.getQualifyingType(), args);
+                    }
+                    else {
+                        //ambiguous! we can't decide between the two 
+                        //supertypes which both satisfy the criteria
+                        result = new UnknownType(getDeclaration().getUnit()).getType();
+                    }
+                }
+            }
+        }
+        
+        if (!getDeclaration().equals(ignoringSelfType)) {
+            ProducedType selfType = getInternalSelfType();
+            if (selfType!=null) {
+                ProducedType possibleResult = selfType.getSupertype(c, list, 
+                            ignoringSelfType);
+                if (possibleResult!=null && (result==null || 
+                        possibleResult.isSubtypeOf(result, ignoringSelfType))) {
                     result = possibleResult;
                 }
             }
-            for (ProducedType dst: getInternalSatisfiedTypes()) {
-                ProducedType possibleResult = dst.getSupertype(c, list, 
-                                ignoringSelfType);
-                if (possibleResult!=null) {
-                    if (result==null || possibleResult.isSubtypeOf(result, ignoringSelfType)) {
-                        result = possibleResult;
-                    }
-                    else if ( !result.isSubtypeOf(possibleResult, ignoringSelfType) ) {
-                        //TODO: this is still needed even though we keep intersections 
-                        //      in canonical form because you can have stuff like
-                        //      empty of Iterable<String>&Sized
-                        List<ProducedType> args = new ArrayList<ProducedType>();
-                        TypeDeclaration dec = result.getDeclaration(); //TODO; get this from the Criteria?
-                        for (TypeParameter tp: dec.getTypeParameters()) {
-                            List<ProducedType> l = new ArrayList<ProducedType>();
-                            Unit unit = getDeclaration().getUnit();
-                            ProducedType arg;
-                            ProducedType rta = result.getTypeArguments().get(tp);
-                            ProducedType prta = possibleResult.getTypeArguments().get(tp);
-                            if (tp.isContravariant()) {
-                                addToUnion(l, rta);
-                                addToUnion(l, prta);
-                                UnionType ut = new UnionType(unit);
-                                ut.setCaseTypes(l);
-                                arg = ut.getType();
-                            }
-                            else {//if (tp.isCovariant()) {
-                                addToIntersection(l, rta, unit);
-                                addToIntersection(l, prta, unit);
-                                IntersectionType it = new IntersectionType(unit);
-                                it.setSatisfiedTypes(l);
-                                arg = it.canonicalize().getType();
-                            }
+        }
+        
+        return result;
+    }
+
+    /**
+     * Given two instantiations of the same type declaration,
+     * construct a principal instantiation that is a supertype
+     * of both. This is impossible in the following special
+     * cases:
+     * 
+     * - an abstract class which does not obey the principal
+     *   instantiation inheritance rule
+     * - an intersection between two instantiations of the
+     *   same type where one argument is a type parameter
+     * 
+     * Nevertheless, we give it our best shot!
+     */
+    private List<ProducedType> constructPrincipalInstantiation(
+            TypeDeclaration dec, ProducedType first, ProducedType second) {
+        List<ProducedType> args = new ArrayList<ProducedType>();
+        for (TypeParameter tp: dec.getTypeParameters()) {
+            List<ProducedType> l = new ArrayList<ProducedType>();
+            Unit unit = getDeclaration().getUnit();
+            ProducedType arg;
+            ProducedType rta = first.getTypeArguments().get(tp);
+            ProducedType prta = second.getTypeArguments().get(tp);
+            if (tp.isContravariant()) {
+                addToUnion(l, rta);
+                addToUnion(l, prta);
+                UnionType ut = new UnionType(unit);
+                ut.setCaseTypes(l);
+                arg = ut.getType();
+            }
+            else {//if (tp.isCovariant()) {
+                addToIntersection(l, rta, unit);
+                addToIntersection(l, prta, unit);
+                IntersectionType it = new IntersectionType(unit);
+                it.setSatisfiedTypes(l);
+                arg = it.canonicalize().getType();
+            }
 //                            else {
 //                                if (rta.isExactly(prta)) {
 //                                    arg = rta;
@@ -585,69 +695,9 @@ public class ProducedType extends ProducedReference {
 //                                    return null;
 //                                }
 //                            }
-                            args.add(arg);
-                        }
-                        //TODO: broken for member types! ugh :-(
-                        result = dec.getProducedType(result.getQualifyingType(), args);
-                    }
-                }
-            }
-            if (!getDeclaration().equals(ignoringSelfType)) {
-                ProducedType selfType = getInternalSelfType();
-                if (selfType!=null) {
-                    ProducedType possibleResult = selfType.getSupertype(c, list, 
-                                ignoringSelfType);
-                    if (possibleResult!=null && (result==null || 
-                            possibleResult.isSubtypeOf(result, ignoringSelfType))) {
-                        result = possibleResult;
-                    }
-                }
-            }
-            if (getDeclaration() instanceof UnionType) {
-                //trying to infer supertypes of algebraic
-                //types from their cases was resulting in
-                //stack overflows and is not currently 
-                //required by the spec
-                final List<ProducedType> caseTypes = getInternalCaseTypes();
-                if (caseTypes!=null && !caseTypes.isEmpty()) {
-                    //first find a common superclass or superinterface 
-                    //declaration that satisfies the criteria, ignoring
-                    //type arguments for now
-                    Criteria c2 = new Criteria() {
-                        @Override
-                        public boolean satisfies(TypeDeclaration type) {
-                            if ( c.satisfies(type) ) {
-                                for (ProducedType ct: caseTypes) {
-                                    if (ct.getSupertype(type, ignoringSelfType)==null) {
-                                        return false;
-                                    }
-                                }
-                                return true;
-                            }
-                            else {
-                                return false;
-                            }
-                        }
-                    };
-                    ProducedType stc = caseTypes.get(0).getSupertype(c2, list, 
-                            ignoringSelfType);
-                    if (stc!=null) {
-                        //we found the declaration, now try to construct a 
-                        //produced type that is a true common supertype
-                        ProducedType candidateResult = getCommonSupertype(caseTypes, 
-                                stc.getDeclaration(), ignoringSelfType);
-                        if (candidateResult!=null && (result==null || 
-                                candidateResult.isSubtypeOf(result, ignoringSelfType))) {
-                            result = candidateResult;
-                        }
-                    }
-                }
-            }
-            return result;
+            args.add(arg);
         }
-        else {
-            return null;
-        }
+        return args;
     }
     
     private ProducedType qualifiedByDeclaringType() {
