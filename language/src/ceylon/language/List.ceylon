@@ -63,7 +63,7 @@ shared interface List<out Element>
          sequence."
     shared formal Sequence<Element> reversed;*/
 
-    doc "Select the elements between the given indexes. If 
+    /*doc "Select the elements between the given indexes. If 
          the start index is the same as the end index,
          return a list with a single element. If the start 
          index is larger than the end index, return the
@@ -80,7 +80,7 @@ shared interface List<out Element>
     doc "Returns a list containing the elements beginning 
          from the given index, with the given length."
     shared actual formal List<Element> segment(Integer from,
-                                           Integer length);
+                                           Integer length);*/
 
     doc "Two `List`s are considered equal if they have the 
          same size and for every index have equal elements."

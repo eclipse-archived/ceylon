@@ -1,8 +1,8 @@
 doc "A nonempty sequence of values."
 by "Gavin"
 shared interface Sequence<out Element>
-        satisfies Ranged<Integer,Element[]> &
-                  List<Element> & Some<Element> &
+        satisfies List<Element> & Some<Element> &
+                  Ranged<Integer,Element[]> &
                   Cloneable<Sequence<Element>> {
     
     doc "The index of the last element of the sequence."
@@ -28,11 +28,11 @@ shared interface Sequence<out Element>
          element."
     shared actual formal Element[] rest;
         
-    shared actual formal Element[] span(Integer from,
+    /*shared actual formal Element[] span(Integer from,
                                         Integer? to);
                                         
     shared actual formal Element[] segment(Integer from,
-                                           Integer length);
+                                           Integer length);*/
                                            
     /*shared formal Sequence<Value> append<Value>(Value... elements)
             given Value abstracts Element;
