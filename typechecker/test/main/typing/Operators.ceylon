@@ -251,6 +251,10 @@ class Operators() {
     String str1 = null ? null ? "hello";
     String str2 = null else null else "hello";
     
+    Void vd = null;
+    @type["Object"] value vd1 = vd ? 1;
+    @type["Object"] value vd2 = vd ? "hello";
+    
     Float ff = null?1.0 + null?2.0;
     
     variable Ordinal<Integer> oi:=0;

@@ -2118,7 +2118,7 @@ public class ExpressionVisitor extends Visitor {
             }
             List<ProducedType> list = new ArrayList<ProducedType>();
             addToUnion(list, rhst);
-            addToUnion(list, lhst.minus(unit.getNothingDeclaration()));
+            addToUnion(list, unit.getDefiniteType(lhst));
             if (list.size()==1) {
                 that.setTypeModel(list.get(0));
             }
