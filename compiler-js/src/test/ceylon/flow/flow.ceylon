@@ -88,12 +88,12 @@ void testIfExists() {
     }
     variable Integer cnt := 0;
     String? s5 { ++cnt; return "ok"; }
-    if (exists s5) {
-        assert(s5=="ok", "if (exists x) with getter [value: " s5 "]");
+    if (exists x = s5) {
+        assert(x=="ok", "if (exists x=y) with getter [value: " x "]");
     } else {
-        fail("if (exists x) with getter [exists]");
+        fail("if (exists x=y) with getter [exists]");
     }
-    assert(cnt==1, "if (exists x) with getter [calls: " cnt "]");
+    assert(cnt==1, "if (exists x=y) with getter [calls: " cnt "]");
 }
 
 void testWhileExists() {
