@@ -202,7 +202,8 @@ void switchInterface(Interface i) {
     case (is Class1) {}
     else {}
         
-    @error switch(i)
+    //@error 
+    switch(i)
     case (is Class1) {}
     case (is Class2) {}
     else {}
