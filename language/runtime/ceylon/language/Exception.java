@@ -27,6 +27,16 @@ public class Exception extends RuntimeException {
         super(description==null ? null : description.toString(), cause);
         this.description = description;
     }
+    
+    @Ignore
+    public Exception(String description) {
+        this(description, $init$cause(description));
+    }
+    
+    @Ignore
+    public Exception() {
+        this($init$description());
+    }
         
     @TypeInfo("ceylon.language.Exception|ceylon.language.Nothing")
     public java.lang.Throwable getCause() {
