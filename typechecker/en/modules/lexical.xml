@@ -94,14 +94,13 @@
         
         <para>The Ceylon lexer distinguishes identifiers which begin with an initial 
         uppercase character from identifiers which begin with an initial lowercase
-        character or underscore. Additionally, both identifier types may be qualified
-	explicitly using a prefix to disambiguate them from keywords or to specify an
-	identifier name not obeying ceylon's conventions.</para>
+        character or underscore. Additionally, an identifier may be qualified using 
+        the prefix <literal>\i</literal> or <literal>\I</literal> to disambiguate it 
+        from a reserved word or to explicitly specify whether it should be considered
+        an uppercase or lowercase identifier.</para>
         
-        <programlisting>LIdentifier: LowercaseChar IdentifierChar* | LIdentifierPrefix IdentifierChar+</programlisting>
-        <programlisting>UIdentifier: UppercaseChar IdentifierChar* | UIdentifierPrefix IdentifierChar+</programlisting>
-	<programlisting>LIdentifierPrefix: "\i"</programlisting>
-	<programlisting>UIdentifierPrefix: "\I"</programlisting>
+        <programlisting>LIdentifier: LowercaseChar IdentifierChar* | "\i" IdentifierChar+</programlisting>
+        <programlisting>UIdentifier: UppercaseChar IdentifierChar* | "\I" IdentifierChar+</programlisting>
 
         <para>The following examples are legal identifiers:</para>
         
@@ -112,18 +111,21 @@
         <programlisting>x2</programlisting>
         <programlisting>\I_id</programlisting>
         <programlisting>\Iobject</programlisting>
-	<programlisting>\iObject</programlisting>
+        <programlisting>\iObject</programlisting>
+        <programlisting>\iclass</programlisting>
 
-	<para>The prefix is not considered part of the identifier name. <literal>\iperson</literal>
-	is equal to <literal>person</literal>. However, while <literal>\Iperson</literal>
-	would also equal <literal>person</literal> and <literal>\iperson</literal>, it is considered an
-	<programlisting>UIdentifier</programlisting> and may not be lexed so it could compare.</para>
+        <para>The prefix <literal>\I</literal> or <literal>\i</literal> is not 
+        considered part of the identifier name. Therefore, <literal>\iperson</literal>
+        is just a lowercase identifier named <literal>person</literal> and
+        <literal>\Iperson</literal> is an <emphasis>uppercase</emphasis> identifier 
+        named <literal>person</literal>.</para>
         
         <para>Package and module names are built from all-lowercase identifier names.</para>
         
         <programlisting>PIdentifier: LIdentifierPrefix? LowercaseChar+</programlisting>
         
-        <para>The following reserved words are not legal identifiers:</para>
+        <para>The following reserved words are not legal identifier names unless they 
+        appear escaped using <literal>\i</literal> or <literal>\I</literal>:</para>
         
         <para><literal>
         import
@@ -135,13 +137,7 @@
         this outer super
         is exists nonempty
         </literal></para>
-
-	<para>However, they are legal identifier names which need to be qualified.
-	Example: <literal>\ielse</literal></para>
-
-        <para>The following are <emphasis>not</emphasis> legal identifiers:</para>
-	
-	<para><literal>\i\iperson \i \I else el\Ie</literal></para> 
+        
     </section>
     
     <section id="literals">
