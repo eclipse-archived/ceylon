@@ -86,7 +86,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
         if (fromIndex<0) fromIndex=0;
         long resultLength = length.longValue();
         long lastIndex = getLastIndex().longValue();
-        if (fromIndex>lastIndex||resultLength==0) {
+        if (fromIndex>lastIndex||resultLength<=0) {
             return $empty.getEmpty();
         }
         else if (fromIndex+resultLength>lastIndex) {

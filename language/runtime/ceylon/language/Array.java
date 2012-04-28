@@ -216,7 +216,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         if (fromIndex<0) fromIndex=0;
         long resultLength = length.longValue();
         long lastIndex = getLastIndex().longValue();
-        if (fromIndex>lastIndex||resultLength==0) {
+        if (fromIndex>lastIndex||resultLength<=0) {
             return new EmptyArray<Element>();
         } else {
             if (array instanceof char[]) {

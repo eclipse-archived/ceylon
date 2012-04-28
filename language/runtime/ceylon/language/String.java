@@ -373,7 +373,7 @@ public final class String
         long fromIndex = from.longValue();
         long resultLength = length.longValue();
         long len = getSize();
-        if (fromIndex >= len || resultLength == 0) {
+        if (fromIndex >= len || resultLength <= 0) {
             return instance("");
         }
         if ((fromIndex + resultLength) > len) {
