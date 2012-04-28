@@ -369,9 +369,9 @@ public final class String
     @Override
     @TypeInfo("ceylon.language.String")
     public String segment(@Name("from") final Integer from, 
-            @Name("length") final Integer length) {
+            @Name("length") final long length) {
         long fromIndex = from.longValue();
-        long resultLength = length.longValue();
+        long resultLength = length;
         long len = getSize();
         if (fromIndex >= len || resultLength <= 0) {
             return instance("");

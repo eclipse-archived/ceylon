@@ -108,7 +108,7 @@ public interface Correspondence<Key,Item> {
             return List$impl._getIterator(this);
         }
         @Override
-        public List<? extends Item> segment(Integer from, Integer length) {
+        public List<? extends Item> segment(Integer from, long length) {
         	Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.segment(from, length);
         	if (keys.getEmpty()) {
         		return $empty.getEmpty();

@@ -32,7 +32,7 @@ public interface Empty
     public Empty segment(@Name("from") @TypeInfo("ceylon.language.Integer")
     Comparable from,
     @Name("length") @TypeInfo("ceylon.language.Integer")
-    Comparable length);
+    long length);
 
     @Override
     @TypeInfo("ceylon.language.Empty")

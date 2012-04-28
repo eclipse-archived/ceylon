@@ -118,8 +118,8 @@ public class $empty {
         }
 
         @Override
-        public Empty segment(Comparable from, Comparable length) {
-            return Empty$impl._segment(this, (Integer)from, (Integer)length);
+        public Empty segment(Comparable from, long length) {
+            return Empty$impl._segment(this, (Integer)from, length);
         }
 
     };

@@ -30,10 +30,10 @@ public final class Empty$impl {
         return null;
     }
     
-    public Empty segment(Integer from, Integer length) {
+    public Empty segment(Integer from, long length) {
         return _segment($this, from, length);
     }
-    static Empty _segment(Empty $this, Integer from, Integer length) {
+    static Empty _segment(Empty $this, Integer from, long length) {
         return $this;
     }
     

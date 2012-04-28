@@ -18,6 +18,6 @@ public interface Ranged<Index extends Comparable<? super Index>, Span> {
 	public Span span(@Name("from") Index from, 
 			@Name("to") @TypeInfo("ceylon.language.Nothing|Index") Index to);
     
-	public Span segment(@Name("from") Index from, @Name("length") Index length);
+	public Span segment(@Name("from") Index from, @Name("length") long length);
 	
 }

@@ -246,14 +246,14 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public ceylon.language.List<? extends Element> segment(
     		@Name("from") final Integer from, 
-    		@Name("length") final Integer length) {
+    		@Name("length") final long length) {
         //only positive length for now
-        if (length.compare(Integer.instance(0)) != larger.getLarger()) return $empty.getEmpty();
+        if (length<=0) return $empty.getEmpty();
         if (!defines(from)) return $empty.getEmpty();
         Element x = this.first;
         for (int i=0; i < from.longValue(); i++) { x = this.next(x); }
         Element y = x;
-        for (int i=1; i < length.longValue(); i++) { y = this.next(y); }
+        for (int i=1; i < length; i++) { y = this.next(y); }
         if (!includes(y)) { y = this.last; }
         return new Range<Element>(x, y);
     }

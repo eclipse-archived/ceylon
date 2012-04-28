@@ -12,6 +12,6 @@ shared interface Ranged<in Index, out Span>
     doc "Obtain a segment containing the mapped values
          starting from the given index, with the given 
          length."
-    shared formal Span segment(Index from, Index length);
+    shared formal Span segment(Index from, Integer length);
     
 }

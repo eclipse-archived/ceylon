@@ -81,10 +81,10 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
     
     @Override
-    public List<? extends Element> segment(Integer from, Integer length) {
+    public List<? extends Element> segment(Integer from, long length) {
         long fromIndex = from.longValue();
         if (fromIndex<0) fromIndex=0;
-        long resultLength = length.longValue();
+        long resultLength = length;
         long lastIndex = getLastIndex().longValue();
         if (fromIndex>lastIndex||resultLength<=0) {
             return $empty.getEmpty();

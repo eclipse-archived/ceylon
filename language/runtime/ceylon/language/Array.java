@@ -211,10 +211,10 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     
     @Override
     public Array<? extends Element> segment(@Name("from") Integer from, 
-            @Name("length") Integer length) {
+            @Name("length") long length) {
         long fromIndex = from.longValue();
         if (fromIndex<0) fromIndex=0;
-        long resultLength = length.longValue();
+        long resultLength = length;
         long lastIndex = getLastIndex().longValue();
         if (fromIndex>lastIndex||resultLength<=0) {
             return new EmptyArray<Element>();

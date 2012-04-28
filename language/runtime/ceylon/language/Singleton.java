@@ -123,8 +123,8 @@ public class Singleton<Element>
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public List<? extends Element> segment(@Name("from") Integer from, 
-    		@Name("length") Integer length) {
-    	return from.longValue()==0 && length.longValue()>0 ? this : $empty.getEmpty();
+    		@Name("length") long length) {
+    	return from.longValue()==0 && length>0 ? this : $empty.getEmpty();
     }
     
     @Override
