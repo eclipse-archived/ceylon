@@ -7,9 +7,9 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon
 @SatisfiedTypes({
+    "ceylon.language.Ranged<ceylon.language.Integer,ceylon.language.Empty>",
     "ceylon.language.List<ceylon.language.Bottom>",
     "ceylon.language.None<ceylon.language.Bottom>",
-    "ceylon.language.Ranged<ceylon.language.Integer,ceylon.language.Empty>",
     "ceylon.language.Cloneable<ceylon.language.Empty>"
 })
 public interface Empty 

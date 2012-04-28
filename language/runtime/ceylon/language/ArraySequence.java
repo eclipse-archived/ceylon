@@ -63,7 +63,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    public Iterable<? extends Element> span(Integer from, Integer to) {
+    public List<? extends Element> span(Integer from, Integer to) {
         long fromIndex = from.longValue();
         if (fromIndex<0) fromIndex=0;
         long toIndex = to==null ? array.length-1 : to.longValue();
@@ -81,7 +81,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
     
     @Override
-    public Iterable<? extends Element> segment(Integer from, Integer length) {
+    public List<? extends Element> segment(Integer from, Integer length) {
         long fromIndex = from.longValue();
         if (fromIndex<0) fromIndex=0;
         long resultLength = length.longValue();

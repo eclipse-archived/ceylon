@@ -46,7 +46,7 @@ shared abstract class String()
     doc "This string, with the characters in reverse order."
     shared formal String reversed;
     
-    /*doc "Select the characters between the given indexes.
+    doc "Select the characters between the given indexes.
          If the start index is the same as the end index,
          return a string with a single character.
          If the start index larger than the end index, 
@@ -68,7 +68,7 @@ shared abstract class String()
          index is larger than the last index of the string,
          return the empty string."
     shared formal actual String segment(Integer from, 
-                                        Integer length);*/
+                                        Integer length);
     
     doc "Select the first characters of this string, 
          returning a string no longer than the given 

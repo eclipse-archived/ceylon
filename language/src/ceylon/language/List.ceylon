@@ -63,29 +63,27 @@ shared interface List<out Element>
          sequence."
     shared formal Sequence<Element> reversed;*/
 
-    doc "Select the elements between the given indexes.
-         If the start index is the same as the end index,
-         return a sequence with a single element. If the
-         start index larger than the end index, return the
+    doc "Select the elements between the given indexes. If 
+         the start index is the same as the end index,
+         return a list with a single element. If the start 
+         index is larger than the end index, return the
          elements in the reverse order from the order in
-         which they appear in this sequence. If both the
+         which they appear in this list. If both the
          start index and the end index are larger than the
-         last index in the sequence, return an `Empty`
-         sequence. Otherwise, if the last index is larger
-         than the last index in the sequence, return all
-         elements from the start index to last element of
-         the sequence."
-    shared actual formal Element[] span(Integer from,
+         last index in the list, return an empty list. 
+         Otherwise, if the last index is larger than the 
+         last index in the list, return all elements from 
+         the start index to last element of the list."
+    shared actual formal List<Element> span(Integer from,
                                         Integer? to);
 
-    doc "Returns a sequence containing the elements
-         beginning from the given index, with the given
-         length."
-    shared actual formal Element[] segment(Integer from,
+    doc "Returns a list containing the elements beginning 
+         from the given index, with the given length."
+    shared actual formal List<Element> segment(Integer from,
                                            Integer length);
 
-    doc "Two Lists are considered equal if they have the same
-         size and for every index both have equal elements."
+    doc "Two `List`s are considered equal if they have the 
+         same size and for every index have equal elements."
     shared actual default Boolean equals(Object that) {
         if (is List<Void> that) {
             if (that.size==size) {

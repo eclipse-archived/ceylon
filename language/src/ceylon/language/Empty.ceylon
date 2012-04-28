@@ -2,8 +2,8 @@ doc "A sequence with no elements. The type of the expression
      `{}`."
 see (Sequence)
 shared interface Empty
-           satisfies List<Bottom> & None<Bottom> &
-                     Ranged<Integer,Empty> &
+           satisfies Ranged<Integer,Empty> &
+                     List<Bottom> & None<Bottom> &
                      Cloneable<Empty> {
 
     doc "Returns 0."
