@@ -18,7 +18,8 @@ public class ClassAlias extends Class {
     
     @Override
     public boolean isAbstract() {
-        return getExtendedTypeDeclaration().isAbstract();
+        Class etd = getExtendedTypeDeclaration();
+        return etd!=null && etd.isAbstract();
     }
     
 }
