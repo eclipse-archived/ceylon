@@ -27,19 +27,19 @@ public interface Empty
     public java.lang.Object item(@Name("key") @TypeInfo("ceylon.language.Integer")
     Integer key);
 
-    /*@Override
+    @Override
     @TypeInfo("ceylon.language.Empty")
     public Empty segment(@Name("from") @TypeInfo("ceylon.language.Integer")
-    Integer from,
+    Comparable from,
     @Name("length") @TypeInfo("ceylon.language.Integer")
-    Integer length);
+    Comparable length);
 
     @Override
     @TypeInfo("ceylon.language.Empty")
     public Empty span(@Name("from") @TypeInfo("ceylon.language.Integer")
-    Integer from,
+    Comparable from,
     @Name("to") @TypeInfo("ceylon.language.Integer|ceylon.language.Nothing")
-    Integer length);*/
+    Comparable length);
 
     @Override
     public java.lang.String toString();
