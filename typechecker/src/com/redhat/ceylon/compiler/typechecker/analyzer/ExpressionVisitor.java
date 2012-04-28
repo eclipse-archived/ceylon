@@ -1831,6 +1831,12 @@ public class ExpressionVisitor extends Visitor {
                                     er.getUpperBound(), 
                                     "upper bound must be assignable to index type");
                         }
+                        if (er.getLength()!=null) {
+                            checkAssignable(er.getLength().getTypeModel(), 
+                                    unit.getIntegerDeclaration().getType(),
+                                    er.getLength(), 
+                                    "length must be an integer");
+                        }
                         that.setTypeModel(rt);
                     }
                 }
@@ -1944,6 +1950,22 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType pt = producedType(unit.getRangeDeclaration(), 
                         ct.getTypeArgumentList().get(0));
                 that.setTypeModel(pt);
+            }
+        }
+    }
+    
+    private void visitSegmentOperator(Tree.SegmentOp that) {
+        ProducedType lhst = leftType(that);
+        ProducedType rhst = rightType(that);
+        if ( rhst!=null && lhst!=null ) {
+            ProducedType ot = checkOperandType(lhst, unit.getOrdinalDeclaration(), 
+                    that, "left operand must be of ordinal type");
+            checkAssignable(rhst, unit.getIntegerDeclaration().getType(), 
+                    that, "right operand must be an integer");
+            if (ot!=null) {
+                ProducedType ta = ot.getTypeArgumentList().get(0);
+                ProducedType rt = unit.getEmptyType(unit.getSequenceType(ta));
+                that.setTypeModel(rt);
             }
         }
     }
@@ -2362,6 +2384,11 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.RangeOp that) {
         super.visit(that);
         visitRangeOperator(that);
+    }
+        
+    @Override public void visit(Tree.SegmentOp that) {
+        super.visit(that);
+        visitSegmentOperator(that);
     }
         
     @Override public void visit(Tree.EntryOp that) {

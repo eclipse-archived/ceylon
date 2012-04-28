@@ -1275,6 +1275,11 @@ indexOrIndexRange returns [ElementOrRange elementOrRange]
         $elementOrRange = er2;
         er2.setLowerBound($l.expression); 
         er2.setUpperBound($u.expression); }
+      | ':' s=index 
+      { ElementRange er3 = new ElementRange(null);
+        $elementOrRange = er3;
+        er3.setLowerBound($l.expression); 
+        er3.setLength($s.expression); }
     )
     ;
 
@@ -1764,6 +1769,8 @@ rangeIntervalEntryExpression returns [Term term]
 rangeIntervalEntryOperator returns [BinaryOperatorExpression operator]
     : RANGE_OP 
       { $operator = new RangeOp($RANGE_OP); }
+    | SEGMENT_OP
+      { $operator = new SegmentOp($SEGMENT_OP); }
     | ENTRY_OP
       { $operator = new EntryOp($ENTRY_OP); }
     ;
@@ -3005,10 +3012,16 @@ WHILE_CLAUSE
     ;
 
 ELLIPSIS
-    :   '...';
+    :   '...'
+    ;
 
 RANGE_OP
-    :   '..';
+    :   '..'
+    ;
+
+SEGMENT_OP
+    :   ':'
+    ;
 
 MEMBER_OP
     :   '.' ;
