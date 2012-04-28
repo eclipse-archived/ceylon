@@ -10,6 +10,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
@@ -2429,8 +2430,7 @@ public class ExpressionVisitor extends Visitor {
     //Atoms:
     
     private void checkOverloadedReference(Tree.MemberOrTypeExpression that) {
-        if (that.getDeclaration() instanceof Functional &&
-                ((Functional)that.getDeclaration()).isAbstraction() &&
+        if (isAbstraction(that.getDeclaration()) &&
                 that.getSignature() != null) {
             that.addError("ambiguous reference to overloaded method or class: " +
                     that.getDeclaration().getName());

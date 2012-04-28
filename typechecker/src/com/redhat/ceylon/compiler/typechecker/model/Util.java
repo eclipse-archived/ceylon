@@ -85,6 +85,11 @@ public class Util {
                 || d instanceof TypeParameter;
     }
 
+    public static boolean isAbstraction(Declaration d) {
+        return d instanceof Functional && 
+                ((Functional) d).isAbstraction();
+    }
+
     static boolean notOverloaded(Declaration d) {
         return !(d instanceof Functional) || 
                 !((Functional) d).isOverloaded() ||

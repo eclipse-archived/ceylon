@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
 
@@ -371,7 +372,7 @@ public abstract class TypeDeclaration extends Declaration
             //looking for, return it
             //TODO: should also return it if we're 
             //      calling from local scope!
-            if(isAbstraction(d)){
+            if (isAbstraction(d)){
                 // look for a supertype decl that matches the signature better
                 Declaration s = getSupertypeDeclaration(name, signature);
                 if (s!=null && !isAbstraction(s)) {
@@ -393,10 +394,6 @@ public abstract class TypeDeclaration extends Declaration
         return d;
     }
     
-    private boolean isAbstraction(Declaration d) {
-        return d instanceof Functional && ((Functional)d).isAbstraction();
-    }
-
     /**
      * Get the parameter or most-refined member with the 
      * given name, searching this type first, followed by 
@@ -497,7 +494,7 @@ public abstract class TypeDeclaration extends Declaration
                 Declaration d = type.getDirectMember(name, signature);
                 if (d!=null && d.isShared()) {
                     // only accept abstractions if we don't have a signature
-                    return !isAbstraction(d) || signature == null;
+                    return !Util.isAbstraction(d) || signature == null;
                 }
                 else {
                     return false;
