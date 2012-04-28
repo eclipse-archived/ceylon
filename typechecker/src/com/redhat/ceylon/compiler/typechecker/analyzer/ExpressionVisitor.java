@@ -2416,7 +2416,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         TypedDeclaration member = getBaseDeclaration(that, that.getSignature());
         if (member==null) {
-            that.addError("method or attribute does not exist: " +
+            that.addError("method or attribute does not exist or is ambiguous: " +
                     name(that.getIdentifier()), 100);
             unit.getUnresolvedReferences().add(that.getIdentifier());
         }
@@ -2450,7 +2450,7 @@ public class ExpressionVisitor extends Visitor {
             TypedDeclaration member = (TypedDeclaration) d.getMember(name(that.getIdentifier()), 
                     unit, that.getSignature());
             if (member==null) {
-                that.addError("member method or attribute does not exist: " +
+                that.addError("member method or attribute does not exist or is ambiguous: " +
                         name(that.getIdentifier()) + 
                         " in type " + d.getName(), 100);
                 unit.getUnresolvedReferences().add(that.getIdentifier());
@@ -2528,7 +2528,7 @@ public class ExpressionVisitor extends Visitor {
             that.getTypeArgumentList().visit(this);*/
         TypeDeclaration type = getBaseDeclaration(that, that.getSignature());
         if (type==null) {
-            that.addError("type does not exist: " + 
+            that.addError("type does not exist or is ambiguous: " + 
                     name(that.getIdentifier()), 100);
             unit.getUnresolvedReferences().add(that.getIdentifier());
         }
@@ -2583,7 +2583,7 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration type = (TypeDeclaration) d.getMember(name(that.getIdentifier()), 
                     unit, that.getSignature());
             if (type==null) {
-                that.addError("member type does not exist: " +
+                that.addError("member type does not exist or is ambiguous: " +
                         name(that.getIdentifier()) +
                         " in type " + d.getName(), 100);
                 unit.getUnresolvedReferences().add(that.getIdentifier());

@@ -288,7 +288,7 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         TypeDeclaration type = getBaseDeclaration(that);
         if (type==null) {
-            that.addError("type declaration not found: " + 
+            that.addError("type declaration does not exist or is ambiguous: " + 
                     name(that.getIdentifier()), 100);
             unit.getUnresolvedReferences().add(that.getIdentifier());
         }
@@ -322,7 +322,7 @@ public class TypeVisitor extends Visitor {
             TypeDeclaration d = pt.getDeclaration();
 			TypeDeclaration type = (TypeDeclaration) d.getMember(name(that.getIdentifier()), unit, null);
             if (type==null) {
-                that.addError("member type declaration does not exist: " + 
+                that.addError("member type declaration does not exist or is ambiguous: " + 
                         name(that.getIdentifier()) +
                         " in type " + d.getName(), 100);
                 unit.getUnresolvedReferences().add(that.getIdentifier());
