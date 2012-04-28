@@ -484,7 +484,7 @@ public abstract class TypeDeclaration extends Declaration
 
     /**
      * Get the supertype which defines the most-refined
-     * member with the given name. 
+     * member with the given name.
      * @param signature 
      */
     private Declaration getSupertypeDeclaration(final String name, final List<ProducedType> signature) {
@@ -492,7 +492,7 @@ public abstract class TypeDeclaration extends Declaration
             @Override
             public boolean satisfies(TypeDeclaration type) {
                 // do not look in ourselves
-                if(type == TypeDeclaration.this)
+                if (type == TypeDeclaration.this)
                     return false;
                 Declaration d = type.getDirectMember(name, signature);
                 if (d!=null && d.isShared()) {
