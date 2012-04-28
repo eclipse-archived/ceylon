@@ -7,9 +7,9 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon
 @SatisfiedTypes({
-    "ceylon.language.Ranged<ceylon.language.Integer,ceylon.language.Empty>",
     "ceylon.language.List<ceylon.language.Bottom>",
     "ceylon.language.None<ceylon.language.Bottom>",
+    "ceylon.language.Ranged<ceylon.language.Integer,ceylon.language.Empty>",
     "ceylon.language.Cloneable<ceylon.language.Empty>"
 })
 public interface Empty 
@@ -27,7 +27,7 @@ public interface Empty
     public java.lang.Object item(@Name("key") @TypeInfo("ceylon.language.Integer")
     Integer key);
 
-    @Override
+    /*@Override
     @TypeInfo("ceylon.language.Empty")
     public Empty segment(@Name("from") @TypeInfo("ceylon.language.Integer")
     Integer from,
@@ -39,7 +39,7 @@ public interface Empty
     public Empty span(@Name("from") @TypeInfo("ceylon.language.Integer")
     Integer from,
     @Name("to") @TypeInfo("ceylon.language.Integer|ceylon.language.Nothing")
-    Integer length);
+    Integer length);*/
 
     @Override
     public java.lang.String toString();

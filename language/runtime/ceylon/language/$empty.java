@@ -73,16 +73,6 @@ public class $empty {
         }
         
         @Override
-        public Empty span(Integer from, Integer to) {
-            return Empty$impl._span(this, from, to);
-        }
-
-        @Override
-        public Empty segment(Integer from, Integer length) {
-            return Empty$impl._segment(this, from, length);
-        }
-
-        @Override
         public boolean contains(java.lang.Object element) {
             return Empty$impl._contains(this, element);
         }
@@ -123,15 +113,14 @@ public class $empty {
         }
 
         @Override
-        public java.lang.Object span(Comparable from, Comparable to) {
+        public Empty span(Comparable from, Comparable to) {
             return Empty$impl._span(this, (Integer)from, (Integer)to);
         }
 
         @Override
-        public java.lang.Object segment(Comparable from, Comparable length) {
+        public Empty segment(Comparable from, Comparable length) {
             return Empty$impl._segment(this, (Integer)from, (Integer)length);
         }
-
 
     };
     
