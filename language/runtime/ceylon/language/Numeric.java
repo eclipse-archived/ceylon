@@ -9,18 +9,13 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 @Ceylon
 @TypeParameters(@TypeParameter(value = "Other",
     		satisfies="ceylon.language.Numeric<Other>"))
-@SatisfiedTypes({"ceylon.language.Number",
-		         "ceylon.language.Summable<Other>",
+@SatisfiedTypes({"ceylon.language.Summable<Other>",
 		         "ceylon.language.Invertable<Other>"})
 public interface Numeric<Other extends Numeric<Other>> 
-    extends Number, Summable<Other>, Invertable<Other> {
+    extends Summable<Other>, Invertable<Other> {
 	
 	public Other minus(@Name("other") Other number);
     public Other times(@Name("other") Other number);
     public Other divided(@Name("other") Other number);
-    
-    public Other getMagnitude();
-    public Other getFractionalPart();
-    public Other getWholePart();
     
 }

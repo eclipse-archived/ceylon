@@ -6,8 +6,7 @@ doc "Abstraction of numeric types supporting addition,
 see (Integer, Float)
 by "Gavin"
 shared interface Numeric<Other> of Other
-        satisfies Summable<Other> & Invertable<Other> & 
-                  Number
+        satisfies Summable<Other> & Invertable<Other>
         given Other satisfies Numeric<Other> {
 
     doc "The difference between this number and the given 
@@ -22,20 +21,6 @@ shared interface Numeric<Other> of Other
          operation results in a remainder."
     see (Integral)
     shared formal Other divided(Other other);
-
-    doc "The magnitude of this number."
-    shared actual formal Other magnitude;
-        
-    doc "The fractional part of the number, after truncation 
-         of the integral part. For integral numeric types,
-         the fractional part is always zero."
-    shared actual formal Other fractionalPart;
-    
-    doc "The integral value of the number after truncation 
-         of the fractional part. For integral numeric types,
-         the integral value of a number is the number 
-         itself."
-    shared actual formal Other wholePart;
 
 }
 

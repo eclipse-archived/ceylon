@@ -1,9 +1,9 @@
 doc "A 64-bit integer."
 shared abstract class Integer()
         extends Object()
-        satisfies Castable<Integer|Float> & 
-                  Comparable<Integer> & Integral<Integer> &
-                  Exponentiable<Integer,Integer> {
+        satisfies Scalar<Integer> & Integral<Integer> &
+                  Exponentiable<Integer,Integer> & 
+                  Castable<Integer|Float> {
     shared formal Character character;
 }
 

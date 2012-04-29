@@ -10,13 +10,13 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @Ceylon
 @Class(extendsType="ceylon.language.Object")
 @SatisfiedTypes({
-    "ceylon.language.Castable<ceylon.language.Float>",
-    "ceylon.language.Comparable<ceylon.language.Float>",
-    "ceylon.language.Exponentiable<ceylon.language.Float,ceylon.language.Float>"
+    "ceylon.language.Scalar<ceylon.language.Float>",
+    "ceylon.language.Exponentiable<ceylon.language.Float,ceylon.language.Float>",
+    "ceylon.language.Castable<ceylon.language.Float>"
 })
 public final class Float
-    implements Castable<Float>, Comparable<Float>, 
-               Exponentiable<Float,Float> {
+    implements Scalar<Float>, Exponentiable<Float,Float>,
+               Castable<Float> {
     
     final double value;
     private Float(double d) {
