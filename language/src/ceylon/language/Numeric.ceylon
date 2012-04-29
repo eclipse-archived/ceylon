@@ -23,10 +23,6 @@ shared interface Numeric<Other> of Other
     see (Integral)
     shared formal Other divided(Other other);
 
-    doc "The result of raising this number to the given
-         power."
-    shared formal Other power(Other other);
-    
     doc "The magnitude of this number."
     shared actual formal Other magnitude;
         

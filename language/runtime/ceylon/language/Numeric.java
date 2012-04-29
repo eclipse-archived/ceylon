@@ -20,7 +20,6 @@ public interface Numeric<Other extends Numeric<Other>>
 	public Other minus(@Name("other") Other number);
     public Other times(@Name("other") Other number);
     public Other divided(@Name("other") Other number);
-    public Other power(@Name("other") Other number);
     
     public Other getMagnitude();
     public Other getFractionalPart();

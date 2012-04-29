@@ -11,11 +11,12 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @SatisfiedTypes({
     "ceylon.language.Castable<ceylon.language.Integer|ceylon.language.Float>",
     "ceylon.language.Integral<ceylon.language.Integer>",
-    "ceylon.language.Numeric<ceylon.language.Integer>"
+    "ceylon.language.Exponentiable<ceylon.language.Integer,ceylon.language.Integer>"
 })
 @Class(extendsType="ceylon.language.Object")
 public final class Integer
-    implements Castable<Numeric>, Integral<Integer>, Numeric<Integer> {
+    implements Castable<Numeric>, Integral<Integer>, 
+               Exponentiable<Integer,Integer> {
     
     final long value;
     private Integer(long l) {

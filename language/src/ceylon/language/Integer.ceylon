@@ -3,7 +3,7 @@ shared abstract class Integer()
         extends Object()
         satisfies Castable<Integer|Float> &
                   Integral<Integer> &
-                  Numeric<Integer> {
+                  Exponentiable<Integer,Integer> {
     shared formal Character character;
 }
 

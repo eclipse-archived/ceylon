@@ -5,7 +5,7 @@ doc "A 64-bit floating point number."
 shared abstract class Float()
         extends Object()
         satisfies Castable<Float> &
-                  Numeric<Float> {
+                  Exponentiable<Float,Float> {
 
     doc "Determines whether this value is undefined (Not a Number)."
     shared Boolean undefined {
