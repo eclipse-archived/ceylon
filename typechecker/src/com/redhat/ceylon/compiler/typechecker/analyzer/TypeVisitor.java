@@ -108,17 +108,15 @@ public class TypeVisitor extends Visitor {
         if (path!=null && !path.getIdentifiers().isEmpty()) {
             String nameToImport = formatPath(path.getIdentifiers());
             Module module = unit.getPackage().getModule();
-            Package pkg = module.getPackage(nameToImport, Module.Visibility.VISIBLE);
-            if (pkg==null) {
-                pkg = module.getPackage(nameToImport, Module.Visibility.ALL);
-                if (pkg==null) {
-                    path.addError("package not found in dependent modules: " + nameToImport);
+            Package pkg = module.getPackage(nameToImport);
+            if (pkg != null) {
+                if (!pkg.getModule().equals(module) && !pkg.isShared()) {
+                    path.addError("imported package is not shared: " + 
+                            nameToImport);
                 }
-                else {
-                    path.addError("imported package is not shared: " + nameToImport);
-                }
+                return pkg; 
             }
-            return pkg;
+            path.addError("package not found in dependent modules: " + nameToImport);
         }
         return null;
     }
