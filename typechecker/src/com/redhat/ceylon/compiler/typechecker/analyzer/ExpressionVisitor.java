@@ -2001,13 +2001,13 @@ public class ExpressionVisitor extends Visitor {
                 //can be widened, according to Castable
                 ProducedType rt;
                 ProducedType st;
-                if (//lhst.isSubtypeOf(unit.getCastableType(lhst)) &&
+                if (lhst.isSubtypeOf(unit.getCastableType(lhst)) &&
                         rhst.isSubtypeOf(unit.getCastableType(lhst))) {
                     //the lhs has a wider type
                     rt = lhst;
                     st = lhsst;
                 }
-                else if (//lhst.isSubtypeOf(unit.getCastableType(rhst)) && 
+                else if (lhst.isSubtypeOf(unit.getCastableType(rhst)) && 
                         rhst.isSubtypeOf(unit.getCastableType(rhst))) {
                     //the rhs has a wider type
                     rt = rhst;
