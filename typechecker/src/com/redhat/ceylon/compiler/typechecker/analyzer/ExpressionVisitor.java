@@ -3265,6 +3265,13 @@ public class ExpressionVisitor extends Visitor {
                     if (type!=null) {
                         checkAssignable(type, td.getType(), t, 
                                 "case type must be a subtype of enumerated type");
+                        //note: this is a better, faster way to call 
+                        //      validateEnumeratedSupertypeArguments()
+                        //      but unfortunately it winds up displaying
+                        //      the error on the wrong node, confusing
+                        //      the user
+                        /*ProducedType supertype = type.getDeclaration().getType().getSupertype(td);
+                        validateEnumeratedSupertypeArguments(t, type.getDeclaration(), supertype);*/
                     }
                 }
             }
@@ -3362,6 +3369,9 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void validateEnumeratedSupertypeArguments(Node that, ClassOrInterface d) {
+        //note: I hate doing the whole traversal here, but it is the
+        //      only way to get the error in the right place (see
+        //      the note in visit(CaseTypes) for more)
         ProducedType type = d.getType();
         for (ProducedType supertype: type.getSupertypes()) { //traverse the entire supertype hierarchy of the declaration
             if (!type.isExactly(supertype)) {
@@ -3378,7 +3388,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void validateEnumeratedSupertypeArguments(Node that, ClassOrInterface d, 
+    private void validateEnumeratedSupertypeArguments(Node that, TypeDeclaration d, 
             ProducedType supertype) {
         for (TypeParameter p: supertype.getDeclaration().getTypeParameters()) {
             ProducedType arg = supertype.getTypeArguments().get(p); //the type argument that the declaration (indirectly) passes to the enumerated supertype
@@ -3388,7 +3398,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void validateEnumeratedSupertypeArgument(Node that, ClassOrInterface d, 
+    private void validateEnumeratedSupertypeArgument(Node that, TypeDeclaration d, 
             ProducedType supertype, TypeParameter p, ProducedType arg) {
         TypeDeclaration td = arg.getDeclaration();
         if (td instanceof TypeParameter) {
