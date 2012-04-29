@@ -8,7 +8,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon
 @TypeParameters({@TypeParameter(value = "This",
-    		satisfies="ceylon.language.Exponentiable<This>"),
+    		satisfies="ceylon.language.Exponentiable<This,Other>"),
     		    @TypeParameter(value = "Other",
             satisfies="ceylon.language.Numeric<Other>")})
 @SatisfiedTypes("ceylon.language.Numeric<This>")

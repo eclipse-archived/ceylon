@@ -6,8 +6,8 @@ doc "Abstraction of numeric types supporting addition,
 see (Integer, Float)
 by "Gavin"
 shared interface Numeric<Other> of Other
-        satisfies Number & Comparable<Other> & 
-                  Summable<Other> & Invertable<Other>
+        satisfies Summable<Other> & Invertable<Other> & 
+                  Number
         given Other satisfies Numeric<Other> {
 
     doc "The difference between this number and the given 
