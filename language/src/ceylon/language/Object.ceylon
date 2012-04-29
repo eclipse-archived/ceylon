@@ -20,9 +20,15 @@ shared abstract class Object()
          hash-based map. Implementations must respect the
          constraint that if `x==y` then `x.hash==y.hash`."
     shared formal Integer hash;
-
+    
     doc "A developer-friendly string representing the 
-         instance."
-    shared formal String string;
+         instance. Concatenates the name of the concrete 
+         class of the instance with the `hash` of the 
+         instance. Subclasses are encouraged to refine this 
+         implementation to produce a more meaningful 
+         representation."
+    shared default String string {
+        return className(this) + "@" + hash.string;
+    }
     
 }
