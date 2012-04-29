@@ -15,10 +15,10 @@ import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 public class Util {
     
     /**
-     * Returns true if the given object extends ceylon.language.IdentifiableObject
+     * Returns true if the given object satisfies ceylon.language.Identifiable
      */
-    public static boolean isIdentifiableObject(java.lang.Object o){
-        return extendsClass(o, "ceylon.language.IdentifiableObject");
+    public static boolean isIdentifiable(java.lang.Object o){
+        return satisfiesInterface(o, "ceylon.language.Identifiable");
     }
     
     /**

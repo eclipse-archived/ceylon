@@ -13,10 +13,10 @@ public final class identical {
     }
     
     public static boolean identical(@Name("x")
-    @TypeInfo("ceylon.language.IdentifiableObject")
+    @TypeInfo("ceylon.language.Identifiable")
     final java.lang.Object x, 
     @Name("y")
-    @TypeInfo("ceylon.language.IdentifiableObject")
+    @TypeInfo("ceylon.language.Identifiable")
     final java.lang.Object y) {
         return x==y;
     }

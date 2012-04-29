@@ -1,33 +1,26 @@
 package ceylon.language;
 
-import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon
 @Class(extendsType="ceylon.language.Object")
-public abstract class IdentifiableObject {
+@SatisfiedTypes("ceylon.language.Identifiable")
+public abstract class IdentifiableObject implements Identifiable {
 
+    @Override //@Ignore
     public boolean equals(@Name("that") @TypeInfo("ceylon.language.Object") 
     java.lang.Object that) {
-        
-        if (Util.isIdentifiableObject(that)) {
-            return this == that;
-        }
-        else {
-            return false;
-        }
+        return Identifiable$impl._equals(this, that);
     }
     
-    @Override
+    @Override //@Ignore
     public int hashCode() {
         return super.hashCode();
     }
     
-    @Override
-    public java.lang.String toString() {
-        return super.toString();
-    }
 }
