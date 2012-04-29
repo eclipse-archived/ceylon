@@ -77,5 +77,47 @@ void test() {
     case (clubs) {}
     case (spades) {}
     
+    variable Suit ss := clubs;
+    
+    switch (ss)
+    case (hearts) {}
+    case (diamonds) {}
+    case (clubs) {}
+    case (spades) {}
+    
+    variable Suit? mss := null;
+    
+    @error switch (mss)
+    case (is Suit) {}
+    case (is Nothing) {}
+    
+    Suit sss { return spades; }
+    
+    switch (sss)
+    case (hearts) {}
+    case (diamonds) {}
+    case (clubs) {}
+    case (spades) {}    
+    
+    Suit? msss { return null; }
+    
+    @error switch (msss)
+    case (is Suit) {}
+    case (is Nothing) {}
+    
+    switch (s!=hearts then s)
+    case (hearts) {}
+    case (diamonds) {}
+    case (clubs) {}
+    case (spades) {}
+    case (null) {}
+    
+    @error switch (s!=hearts then s)
+    case (hearts) {}
+    case (diamonds) {}
+    case (clubs) {}
+    case (spades) {}
+    case (is Nothing) {}
+    
     
 }

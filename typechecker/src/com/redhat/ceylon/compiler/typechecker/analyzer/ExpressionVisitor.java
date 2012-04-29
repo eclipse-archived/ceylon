@@ -48,16 +48,6 @@ import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseItem;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PowerOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifiedArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -426,18 +416,21 @@ public class ExpressionVisitor extends Visitor {
     private void checkReferenceIsNonVariable(Tree.Variable v,
             Tree.SpecifierExpression se) {
         if (v.getType() instanceof Tree.SyntheticVariable) {
-            Tree.BaseMemberExpression ref = (Tree.BaseMemberExpression) se.getExpression().getTerm();
-            Declaration d = ref.getDeclaration();
-            if (d!=null) {
-                if (d instanceof Getter) {
-                    ref.addError("referenced value is a getter: " + d.getName());
-                }
-                if ( ( (TypedDeclaration) d ).isVariable() ) {
-                    ref.addError("referenced value is variable: " + d.getName());
-                }
-                if ( d.isDefault() ) {
-                    ref.addError("referenced value is default and may be refined: " + d.getName());
-                }
+            checkReferenceIsNonVariable((Tree.BaseMemberExpression) se.getExpression().getTerm());
+        }
+    }
+
+    private void checkReferenceIsNonVariable(Tree.BaseMemberExpression ref) {
+        Declaration d = ref.getDeclaration();
+        if (d!=null) {
+            if (d instanceof Getter) {
+                ref.addError("referenced value is a getter: " + d.getName());
+            }
+            if ( ( (TypedDeclaration) d ).isVariable() ) {
+                ref.addError("referenced value is variable: " + d.getName());
+            }
+            if ( d.isDefault() ) {
+                ref.addError("referenced value is default and may be refined: " + d.getName());
             }
         }
     }
@@ -566,10 +559,10 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.Parameter that) {
         super.visit(that);
-        SpecifierExpression se = that.getDefaultArgument()==null ?
+        Tree.SpecifierExpression se = that.getDefaultArgument()==null ?
                 null :
                 that.getDefaultArgument().getSpecifierExpression();
-        Type tt = that.getType();
+        Tree.Type tt = that.getType();
         if (tt!=null) {
             checkType(tt.getTypeModel(), se);
             //TODO: do we really need this check?!
@@ -679,9 +672,9 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
-        SpecifierExpression se = that.getSpecifierExpression();
+        Tree.SpecifierExpression se = that.getSpecifierExpression();
         if (se!=null) {
-            Expression e = se.getExpression();
+            Tree.Expression e = se.getExpression();
             if (e!=null) {
                 ProducedType et = e.getTypeModel();
                 for (Tree.ParameterList pl: that.getParameterLists()) {   
@@ -1314,7 +1307,7 @@ public class ExpressionVisitor extends Visitor {
                     break;
                 }
                 else {
-                    PositionalArgument a = args.getPositionalArguments().get(i);
+                    Tree.PositionalArgument a = args.getPositionalArguments().get(i);
                     if (a.getExpression()!=null) {
                         ProducedType pt;
                         if (parameter instanceof FunctionalParameter) {
@@ -1521,7 +1514,7 @@ public class ExpressionVisitor extends Visitor {
             if (that.getPositionalArgumentList().getEllipsis()!=null) {
                 that.addError("sequenced arguments not supported for indirect invocations");
             }
-            List<PositionalArgument> args = that.getPositionalArgumentList()
+            List<Tree.PositionalArgument> args = that.getPositionalArgumentList()
                     .getPositionalArguments();
             int argCount = args.size();
             int paramCount = typeArgs.size()-1;
@@ -1619,11 +1612,11 @@ public class ExpressionVisitor extends Visitor {
         a.setParameter(p);
         ProducedType argType = null;
         if (a instanceof Tree.SpecifiedArgument) {
-            SpecifiedArgument sa = (Tree.SpecifiedArgument) a;
+            Tree.SpecifiedArgument sa = (Tree.SpecifiedArgument) a;
             argType = sa.getSpecifierExpression().getExpression().getTypeModel();
         }
         else if (a instanceof Tree.TypedArgument) {
-            TypedArgument ta = (Tree.TypedArgument) a;
+            Tree.TypedArgument ta = (Tree.TypedArgument) a;
             argType = ta.getDeclarationModel().getProducedTypedReference(null,
                      //assuming an argument can't have type params 
                     Collections.<ProducedType>emptyList()).getFullType();
@@ -2298,7 +2291,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.ArithmeticOp that) {
         super.visit(that);
-        if (that instanceof PowerOp) {
+        if (that instanceof Tree.PowerOp) {
             visitPowerOperator(that);
         }
         else {
@@ -2860,7 +2853,7 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.CatchVariable that) {
         super.visit(that);
-        Variable var = that.getVariable();
+        Tree.Variable var = that.getVariable();
         if (var!=null) {
             ProducedType et = unit.getExceptionDeclaration().getType();
             if (var.getType() instanceof Tree.LocalModifier) {
@@ -2943,7 +2936,7 @@ public class ExpressionVisitor extends Visitor {
         if (t!=null) {
             t.visit(this);
         }
-        Variable v = that.getVariable();
+        Tree.Variable v = that.getVariable();
         if (v!=null) {
             v.visit(this);
             if (t!=null) {
@@ -2959,15 +2952,19 @@ public class ExpressionVisitor extends Visitor {
     @Override
     public void visit(Tree.SwitchStatement that) {
         super.visit(that);
-        Expression e = that.getSwitchClause().getExpression();
+        Tree.Expression e = that.getSwitchClause().getExpression();
         if (e!=null) {
-            ProducedType switchType = e.getTypeModel().getUnionOfCases(true);            
-            for (CaseClause cc: that.getSwitchCaseList().getCaseClauses()) {
+            ProducedType switchType = e.getTypeModel().getUnionOfCases(true);
+            boolean hasIsCase = false;
+            for (Tree.CaseClause cc: that.getSwitchCaseList().getCaseClauses()) {
+                if (cc.getCaseItem() instanceof Tree.IsCase) {
+                    hasIsCase = true;
+                }
                 ProducedType ct = getType(cc);
                 if (ct!=null) {
                     checkAssignable(ct, switchType, cc, 
                             "case type must be a case of the switch type");
-                    for (CaseClause occ: that.getSwitchCaseList().getCaseClauses()) {
+                    for (Tree.CaseClause occ: that.getSwitchCaseList().getCaseClauses()) {
                         if (occ==cc) break;
                         ProducedType oct = getType(occ);
                         if (oct!=null) {
@@ -2982,10 +2979,18 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
             }
+            if (hasIsCase) {
+                if (e.getTerm() instanceof Tree.BaseMemberExpression) {
+                    checkReferenceIsNonVariable((Tree.BaseMemberExpression) e.getTerm());
+                }
+                else {
+                    e.addError("switch expression must be a value reference in switch with type cases");
+                }
+            }
             
             if (that.getSwitchCaseList().getElseClause()==null) {
                 List<ProducedType> list = new ArrayList<ProducedType>();
-                for (CaseClause cc: that.getSwitchCaseList().getCaseClauses()) {
+                for (Tree.CaseClause cc: that.getSwitchCaseList().getCaseClauses()) {
                     ProducedType ct = getType(cc);
                     if (ct!=null) {
                         addToUnion(list, ct);
@@ -3000,9 +3005,9 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private ProducedType getType(Tree.CaseClause cc) {
-        CaseItem ci = cc.getCaseItem();
+        Tree.CaseItem ci = cc.getCaseItem();
         if (ci instanceof Tree.IsCase) {
-            Type t = ((Tree.IsCase) ci).getType();
+            Tree.Type t = ((Tree.IsCase) ci).getType();
             if (t!=null) {
                 return t.getTypeModel().getUnionOfCases(true);
             }
