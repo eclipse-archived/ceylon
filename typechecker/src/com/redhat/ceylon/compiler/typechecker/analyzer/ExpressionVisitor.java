@@ -3412,17 +3412,18 @@ public class ExpressionVisitor extends Visitor {
         }
         else if (p.isCovariant()) {
             if (!(td instanceof BottomType)) {
+                //TODO: let it be the union of the lower bounds on p
                 that.addError("argument to covariant type parameter of enumerated supertype must be a type parameter or Bottom: " + 
                         p.getName() + " of "+ supertype.getDeclaration().getName());
             }
         }
-        //TODO!!!!!
-        /*else if (p.isContravariant()) {
-            if (!(arg.isExactly(intersection of p.getSatisfiedTypes())) {
-                that.addError("argument to contravariant type parameter of supertype must be a type parameter or ..." + 
+        else if (p.isContravariant()) {
+            if (!(td.equals(unit.getVoidDeclaration()))) {
+                //TODO: let it be the intersection of the upper bounds on p
+                that.addError("argument to contravariant type parameter of enumerated supertype must be a type parameter or Void" + 
                         p.getName() + " of "+ supertype.getProducedTypeName());
             }
-        }*/
+        }
         else {
             that.addError("argument to type parameter of enumerated supertype must be a type parameter: " + 
                     p.getName() + " of "+ supertype.getDeclaration().getName());
