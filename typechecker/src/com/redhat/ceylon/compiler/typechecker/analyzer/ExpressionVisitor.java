@@ -3363,52 +3363,69 @@ public class ExpressionVisitor extends Visitor {
 
     private void validateEnumeratedSupertypeArguments(Node that, ClassOrInterface d) {
         ProducedType type = d.getType();
-        for (ProducedType supertype: type.getSupertypes()) {
+        for (ProducedType supertype: type.getSupertypes()) { //traverse the entire supertype hierarchy of the declaration
             if (!type.isExactly(supertype)) {
                 List<TypeDeclaration> ctds = supertype.getDeclaration().getCaseTypeDeclarations();
                 if (ctds!=null) {
                     for (TypeDeclaration ct: ctds) {
-                        if (ct.equals(d)) {
-                            List<TypeParameter> params = supertype.getDeclaration().getTypeParameters();
-                            for (int i=0; i<params.size(); i++) {
-                                TypeParameter p = params.get(i);
-                                ProducedType arg = supertype.getTypeArguments().get(p);
-                                if (arg!=null) {
-                                    TypeDeclaration td = arg.getDeclaration();
-                                    if (td instanceof TypeParameter && ((TypeParameter) td).getDeclaration().equals(d)) {
-                                        if (p.isCovariant() && !((TypeParameter) td).isCovariant()) {
-                                            that.addError("argument to covariant type parameter of supertype must be covariant: " + 
-                                                    p.getName() + " of "+ supertype.getDeclaration().getName());
-                                        }
-                                        if (p.isContravariant() && !((TypeParameter) td).isContravariant()) {
-                                            that.addError("argument to contravariant type parameter of supertype must be contravariant: " + 
-                                                    p.getName() + " of "+ supertype.getDeclaration().getName());
-                                        }
-                                    }
-                                    else if (p.isCovariant()) {
-                                        if (!(td instanceof BottomType)) {
-                                            that.addError("argument to covariant type parameter of supertype must be a type parameter or Bottom: " + 
-                                                    p.getName() + " of "+ supertype.getDeclaration().getName());
-                                        }
-                                    }
-                                    //TODO!!!!!
-                                    /*else if (p.isContravariant()) {
-                                    if (!(arg.isExactly(intersection of p.getSatisfiedTypes())) {
-                                        that.addError("argument to covariant type parameter of supertype must be a type parameter or ..." + 
-                                                p.getName() + " of "+ supertype.getProducedTypeName());
-                                    }
-                                }*/
-                                    else {
-                                        that.addError("argument to type parameter of supertype must be a type parameter: " + 
-                                                p.getName() + " of "+ supertype.getDeclaration().getName());
-                                    }
-                                }
-                            }
+                        if (ct.equals(d)) { //the declaration is a case of the current enumerated supertype
+                            validateEnumeratedSupertypeArguments(that, d, supertype);
                             break;
                         }
                     }
                 }
             }
+        }
+    }
+
+    private void validateEnumeratedSupertypeArguments(Node that, ClassOrInterface d, 
+            ProducedType supertype) {
+        for (TypeParameter p: supertype.getDeclaration().getTypeParameters()) {
+            ProducedType arg = supertype.getTypeArguments().get(p); //the type argument that the declaration (indirectly) passes to the enumerated supertype
+            if (arg!=null) {
+                validateEnumeratedSupertypeArgument(that, d, supertype, p, arg);
+            }
+        }
+    }
+
+    private void validateEnumeratedSupertypeArgument(Node that, ClassOrInterface d, 
+            ProducedType supertype, TypeParameter p, ProducedType arg) {
+        TypeDeclaration td = arg.getDeclaration();
+        if (td instanceof TypeParameter) {
+            TypeParameter tp = (TypeParameter) td;
+            if (tp.getDeclaration().equals(d)) { //the argument is a type parameter of the declaration
+                //check that the variance of the argument type parameter is
+                //the same as the type parameter of the enumerated supertype
+                if (p.isCovariant() && !tp.isCovariant()) {
+                    that.addError("argument to covariant type parameter of supertype must be covariant: " + 
+                            p.getName() + " of "+ supertype.getDeclaration().getName());
+                }
+                if (p.isContravariant() && !tp.isContravariant()) {
+                    that.addError("argument to contravariant type parameter of supertype must be contravariant: " + 
+                            p.getName() + " of "+ supertype.getDeclaration().getName());
+                }
+            }
+            else {
+                that.addError("argument to type parameter of enumerated supertype must be a type parameter of " +
+                        d.getName() + ": " + p.getName() + " of "+ supertype.getDeclaration().getName());
+            }
+        }
+        else if (p.isCovariant()) {
+            if (!(td instanceof BottomType)) {
+                that.addError("argument to covariant type parameter of enumerated supertype must be a type parameter or Bottom: " + 
+                        p.getName() + " of "+ supertype.getDeclaration().getName());
+            }
+        }
+        //TODO!!!!!
+        /*else if (p.isContravariant()) {
+            if (!(arg.isExactly(intersection of p.getSatisfiedTypes())) {
+                that.addError("argument to contravariant type parameter of supertype must be a type parameter or ..." + 
+                        p.getName() + " of "+ supertype.getProducedTypeName());
+            }
+        }*/
+        else {
+            that.addError("argument to type parameter of enumerated supertype must be a type parameter: " + 
+                    p.getName() + " of "+ supertype.getDeclaration().getName());
         }
     }
     
