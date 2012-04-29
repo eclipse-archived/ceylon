@@ -2353,7 +2353,7 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.IdenticalOp that) {
         super.visit(that);
-        visitComparisonOperator(that, unit.getIdentifiableObjectDeclaration());
+        visitComparisonOperator(that, unit.getIdentifiableDeclaration());
     }
 
     @Override public void visit(Tree.CompareOp that) {

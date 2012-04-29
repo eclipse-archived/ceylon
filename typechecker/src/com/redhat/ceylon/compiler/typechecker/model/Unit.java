@@ -194,6 +194,10 @@ public class Unit {
         return (Class) getLanguageModuleDeclaration("IdentifiableObject");
     }
     
+    public Interface getIdentifiableDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("Identifiable");
+    }
+    
     public Class getExceptionDeclaration() {
         return (Class) getLanguageModuleDeclaration("Exception");
     }
