@@ -46,7 +46,7 @@ class Is() {
     if (is Sized&Iterable<String> e) {
         String? s = e[0];
         Integer size = e.size;
-        Boolean empty = e.empty;
+        @error Boolean empty = e.empty;
         for (String str in e) {} 
         @type["Correspondence<Integer,String>&Sized&Iterable<String>"] value ee = e;
     }

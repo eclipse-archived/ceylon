@@ -80,10 +80,10 @@ class GenericRefinement() {
     	abstract class WithNumber() {
     		shared formal Number num;
     	}
-    	class WithNumeric<T>(Numeric<T> n) 
+    	class WithNumeric<T>(Scalar<T> n) 
     	        extends WithNumber() 
-    	        given T satisfies Numeric<T> {
-    		shared actual default Numeric<T> num = n;
+    	        given T satisfies Scalar<T> {
+    		shared actual default Scalar<T> num = n;
     	}
     	class WithFloat(Float f) 
     	        extends WithNumeric<Float>(f) {
