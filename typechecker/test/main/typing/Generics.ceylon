@@ -455,4 +455,24 @@ class Generics() {
             T t = foo.get();
         }
     }
+    
+    interface Enumerated<out U, in V, W> 
+            of E0<U,V,W> | E1<U,V,W> | E2<U,V,W> | E3<U,V,W> | E4<V,W> | E5<U,W> | E6<U,V,W> {}
+    @error interface E0<out U, in V, out W> satisfies Enumerated<U,V,W> {}
+    @error interface E1<out U, in V, in W> satisfies Enumerated<U,V,W> {}
+    @error interface E2<U, in V, W> satisfies Enumerated<U,V,W> {}
+    @error interface E3<out U, V, W> satisfies Enumerated <U,V,W>{}
+    interface E4<in V, W> satisfies Enumerated<Bottom,V,W> {}
+    interface E5<out U, W> satisfies Enumerated<U,Void,W> {}
+    interface E6<out U, in V, W> satisfies Enumerated<U,V,W> {}
+
+    abstract class Algebraic<out U, in V, W>() 
+            of A0<U,V,W> | A1<U,V,W> | A2<U,V,W> | A3<U,V,W> | A4<V,W> | A5<U,W> | A6<U,V,W> {}
+    @error class A0<out U, in V, out W>() extends Algebraic<U,V,W>() {}
+    @error class A1<out U, in V, in W>() extends Algebraic<U,V,W>() {}
+    @error class A2<U, in V, W>() extends Algebraic<U,V,W>() {}
+    @error class A3<out U, V, W>() extends Algebraic<U,V,W>() {}
+    class A4<in V, W>() extends Algebraic<Bottom,V,W>() {}
+    class A5<out U, W>() extends Algebraic<U,Void,W>() {}
+    class A6<out U, in V, W>() extends Algebraic<U,V,W>() {}
 }
