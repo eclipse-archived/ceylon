@@ -77,10 +77,12 @@ shared void numbers() {
     assert(2.0.sign==+1, "integer sign");
     assert((-3.0).sign==-1, "integer sign");
     
-    function add<T>(T x, T y) given T satisfies Numeric<T> {
+    function add<T>(T x, T y) 
+            given T satisfies Numeric<T> {
         return x.plus(y);
     }
-    function exp<T>(T x, T y) given T satisfies Numeric<T> {
+    function exp<T>(T x, T y) 
+            given T satisfies Exponentiable<T,T> {
         return x.power(y);
     }
     
@@ -399,6 +401,6 @@ shared void numbers() {
     assert(is Integer obj(1/1), "int/int Integer");
     assert(is Float   obj(1/1.0), "int/float Float");
     assert(is Integer obj(2**2), "2**2 Integer");
-    assert(is Float   obj(2**2.0), "2**2.0 Float");
+    //assert(is Float   obj(2**2.0), "2**2.0 Float");
     assert(is Float   obj(2.0**2), "2.0**2 Float");
 }
