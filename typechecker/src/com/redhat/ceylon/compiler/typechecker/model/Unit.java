@@ -255,6 +255,10 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Invertable");
     }
         
+    public Interface getExponentiableDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("Exponentiable");
+    }
+        
     public Interface getSetDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Set");
     }

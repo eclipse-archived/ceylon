@@ -52,6 +52,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseItem;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PowerOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifiedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
@@ -2000,13 +2001,13 @@ public class ExpressionVisitor extends Visitor {
                 //can be widened, according to Castable
                 ProducedType rt;
                 ProducedType st;
-                if (lhst.isSubtypeOf(unit.getCastableType(lhst)) && 
+                if (//lhst.isSubtypeOf(unit.getCastableType(lhst)) &&
                         rhst.isSubtypeOf(unit.getCastableType(lhst))) {
                     //the lhs has a wider type
                     rt = lhst;
                     st = lhsst;
                 }
-                else if (lhst.isSubtypeOf(unit.getCastableType(rhst)) && 
+                else if (//lhst.isSubtypeOf(unit.getCastableType(rhst)) && 
                         rhst.isSubtypeOf(unit.getCastableType(rhst))) {
                     //the rhs has a wider type
                     rt = rhst;
@@ -2033,6 +2034,29 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    private void visitPowerOperator(Tree.BinaryOperatorExpression that) {
+        ProducedType lhst = leftType(that);
+        ProducedType rhst = rightType(that);
+        if ( rhst!=null && lhst!=null ) {
+            ProducedType lhsst = checkOperandType(lhst, unit.getExponentiableDeclaration(), 
+                    that.getLeftTerm(), "operand expression must be of exponentiable type");
+            /*ProducedType rhsst = checkOperandType(rhst, unit.getNumericDeclaration(), 
+                    that.getRightTerm(), "operand expression must be of numeric type");*/
+            if (/*rhsst!=null &&*/lhsst!=null) {
+                //rhst = rhsst.getTypeArgumentList().get(0);
+                lhst = lhsst.getTypeArgumentList().get(0);
+                that.setTypeModel(lhst);
+                ProducedType powt = lhsst.getTypeArgumentList().get(1);
+                if (!rhst.isSubtypeOf(unit.getCastableType(powt)) &&
+                        !rhst.isSubtypeOf(powt)) { //note the language spec does not actually bless this
+                    that.getRightTerm().addError("operand expression must be promotable to exponent type: " + 
+                            rhst.getProducedTypeName() + " is not promotable to " +
+                            powt.getProducedTypeName());
+                }
+            }
+        }
+    }
+
     private void visitArithmeticAssignOperator(Tree.BinaryOperatorExpression that, 
             TypeDeclaration type) {
         ProducedType lhst = leftType(that);
@@ -2045,7 +2069,7 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType t = nt.getTypeArgumentList().get(0);
                 //that.setTypeModel(t); //stef requests lhst to make it easier on backend
                 if (!rhst.isSubtypeOf(unit.getCastableType(t)) &&
-                        !rhst.isExactly(lhst)) { //note the language spec does not actually bless this
+                        !rhst.isSubtypeOf(lhst)) { //note the language spec does not actually bless this
                     that.getRightTerm().addError("operand expression must be promotable to declared type: " + 
                             rhst.getProducedTypeName() + " is not promotable to " +
                             nt.getProducedTypeName());
@@ -2274,7 +2298,12 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.ArithmeticOp that) {
         super.visit(that);
-        visitArithmeticOperator(that, getArithmeticDeclaration(that));
+        if (that instanceof PowerOp) {
+            visitPowerOperator(that);
+        }
+        else {
+            visitArithmeticOperator(that, getArithmeticDeclaration(that));
+        }
     }
 
     private Interface getArithmeticDeclaration(Tree.ArithmeticOp that) {
