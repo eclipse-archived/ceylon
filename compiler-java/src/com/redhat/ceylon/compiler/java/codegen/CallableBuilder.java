@@ -75,6 +75,24 @@ public class CallableBuilder {
         return cb;
     }
     
+    public static CallableBuilder anonymous(
+            CeylonTransformer gen, Tree.Term expr, ParameterList parameterList, ProducedType callableTypeModel) {
+        JCExpression fnCall;
+        CallableBuilder cb = new CallableBuilder(gen);
+        cb.paramLists = parameterList;
+        cb.typeModel = callableTypeModel;
+        ProducedType returnType = gen.getCallableReturnType(cb.typeModel);
+        fnCall = gen.expressionGen().transformExpression(expr);
+        if (gen.isVoid(returnType)) {
+            cb.body = List.<JCStatement>of(gen.make().Exec(fnCall), gen.make().Return(gen.makeNull()));
+        } else {
+            cb.body = List.<JCStatement>of(gen.make().Return(fnCall));
+        }
+        cb.body = prependVarsForArgs(gen, parameterList, cb.body);
+        
+        return cb;
+    }
+    
     public static CallableBuilder mpl(
             CeylonTransformer gen,
             ProducedType typeModel,
@@ -83,6 +101,14 @@ public class CallableBuilder {
 
         CallableBuilder cb = new CallableBuilder(gen);
         cb.paramLists = parameterList;
+        body = prependVarsForArgs(gen, parameterList, body);
+        cb.typeModel = typeModel;
+        cb.body = body;
+        return cb;
+    }
+
+    private static List<JCStatement> prependVarsForArgs(CeylonTransformer gen,
+            ParameterList parameterList, List<JCStatement> body) {
         int ii =0;
         for (Parameter p : parameterList.getParameters()) {
             JCExpression init = unpickCallableParameter(gen, true, null, p, null, ii, parameterList.getParameters().size());
@@ -93,9 +119,7 @@ public class CallableBuilder {
             body = body.prepend(varDef);
             ii++;
         }
-        cb.typeModel = typeModel;
-        cb.body = body;
-        return cb;
+        return body;
     }
     
     public JCNewClass build() {
@@ -189,7 +213,5 @@ public class CallableBuilder {
                 param.getType(), boxingStrategy);
         return boxed;
     }
-
-    
     
 }

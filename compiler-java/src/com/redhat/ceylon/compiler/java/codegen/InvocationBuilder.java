@@ -40,6 +40,9 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -544,6 +547,21 @@ class PositionalInvocationBuilder extends SimpleInvocationBuilder {
     }
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex, boolean isRaw, java.util.Map<TypeParameter, ProducedType> typeArgumentModels) {
+        PositionalArgument arg = positional.getPositionalArguments().get(argIndex);
+        if (arg instanceof FunctionArgument) {
+            FunctionArgument farg = (FunctionArgument)arg;
+            Method model = farg.getDeclarationModel();
+            java.util.List<com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList> parameterLists = farg.getParameterLists();
+            LocalModifier type = farg.getType();
+            ProducedType callableType = gen().typeFact().getCallableType(model.getType());
+            // TODO MPL
+            CallableBuilder callableBuilder = CallableBuilder.anonymous(
+                    gen().gen(),
+                    farg.getExpression(),
+                    model.getParameterLists().get(0),
+                    callableType);
+            return callableBuilder.build();
+        }
         return transformArg(
                 getArgumentExpression(argIndex), 
                 getParameter(argIndex), isRaw, typeArgumentModels);
