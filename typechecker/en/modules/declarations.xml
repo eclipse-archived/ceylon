@@ -1311,6 +1311,11 @@ TypeConstraints?
          is annotated <literal>variable</literal>, the class is a <literal>variable</literal> 
          class.--></para>
          
+         <para>This class never appears in types inferred by local declaration type 
+         inference or generic type argument inference. Instead, occurrences of the class 
+         are replaced with the intersection of the extended type with all satisfied
+         types.</para>
+         
          <para>An <literal>object</literal> attribute:</para>
          
          <itemizedlist>
