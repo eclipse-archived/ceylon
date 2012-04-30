@@ -542,7 +542,8 @@ argument list."
 ^(abstract MEMBER_OR_TYPE_EXPRESSION:PRIMARY
     ProducedReference target;
     Declaration declaration;
-    List<ProducedType> signature;)
+    List<ProducedType> signature;
+    boolean directlyInvoked;)
 
 ^(EXTENDED_TYPE_EXPRESSION:MEMBER_OR_TYPE_EXPRESSION)
 

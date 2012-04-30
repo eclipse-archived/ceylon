@@ -1182,6 +1182,9 @@ public class ExpressionVisitor extends Visitor {
         if (that.getNamedArgumentList()!=null) {
             that.getNamedArgumentList().visit(this);
         }
+        if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
+            ((Tree.MemberOrTypeExpression) that.getPrimary()).setDirectlyInvoked(true);
+        }
         that.getPrimary().visit(this);
         
         Tree.Primary pr = that.getPrimary();
@@ -2488,7 +2491,7 @@ public class ExpressionVisitor extends Visitor {
         else {
             that.setDeclaration(member);
             Tree.TypeArguments tal = that.getTypeArguments();
-            if (explicitTypeArguments(member, tal)) {
+            if (explicitTypeArguments(member, tal, that)) {
                 List<ProducedType> ta = getTypeArguments(tal);
                 tal.setTypeModels(ta);
                 visitBaseMemberExpression(that, member, ta, tal);
@@ -2535,7 +2538,7 @@ public class ExpressionVisitor extends Visitor {
                             " of type " + d.getName());
                 }
                 Tree.TypeArguments tal = that.getTypeArguments();
-                if (explicitTypeArguments(member,tal)) {
+                if (explicitTypeArguments(member,tal, that)) {
                     List<ProducedType> ta = getTypeArguments(tal);
                     tal.setTypeModels(ta);
                     visitQualifiedMemberExpression(that, member, ta, tal);
@@ -2600,7 +2603,7 @@ public class ExpressionVisitor extends Visitor {
         else {
             that.setDeclaration(type);
             Tree.TypeArguments tal = that.getTypeArguments();
-            if (explicitTypeArguments(type, tal)) {
+            if (explicitTypeArguments(type, tal, that)) {
                 List<ProducedType> ta = getTypeArguments(tal);
                 tal.setTypeModels(ta);
                 visitBaseTypeExpression(that, type, ta, tal);
@@ -2668,7 +2671,7 @@ public class ExpressionVisitor extends Visitor {
                             " of type " + d.getName());
                 }
                 Tree.TypeArguments tal = that.getTypeArguments();
-                if (explicitTypeArguments(type, tal)) {
+                if (explicitTypeArguments(type, tal, that)) {
                     List<ProducedType> ta = getTypeArguments(tal);
                     tal.setTypeModels(ta);
                     visitQualifiedTypeExpression(that, pt, type, ta, tal);
@@ -2693,8 +2696,14 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private boolean explicitTypeArguments(Declaration dec, Tree.TypeArguments tal) {
-        return !dec.isParameterized() || tal instanceof Tree.TypeArgumentList;
+    private boolean explicitTypeArguments(Declaration dec, Tree.TypeArguments tal, 
+            Tree.MemberOrTypeExpression that) {
+        return !dec.isParameterized() || 
+                tal instanceof Tree.TypeArgumentList;
+                //TODO: enable this line to enable
+                //      typechecking of references
+                //      without type arguments
+                //|| !that.getDirectlyInvoked();
     }
     
     @Override public void visit(Tree.SimpleType that) {
