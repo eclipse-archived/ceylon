@@ -44,6 +44,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
@@ -813,33 +814,53 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         // Assign vars for each named argument given
         for (Tree.NamedArgument namedArg : namedArguments) {
             gen().at(namedArg);
-            Tree.Expression expr = ((Tree.SpecifiedArgument)namedArg).getSpecifierExpression().getExpression();
-            Parameter declaredParam = namedArg.getParameter();
-            int index;
-            BoxingStrategy boxType;
-            ProducedType type;
-            if (declaredParam != null) {
-                if (declaredParam.isSequenced()) {
-                    boundSequenced = true;
+            if (namedArg instanceof Tree.SpecifiedArgument) {             
+                Tree.SpecifiedArgument specifiedArg = (Tree.SpecifiedArgument)namedArg;
+                Tree.Expression expr = specifiedArg.getSpecifierExpression().getExpression();
+                Parameter declaredParam = namedArg.getParameter();
+                int index;
+                BoxingStrategy boxType;
+                ProducedType type;
+                if (declaredParam != null) {
+                    if (declaredParam.isSequenced()) {
+                        boundSequenced = true;
+                    }
+                    index = declaredParams.indexOf(declaredParam);
+                    boxType = Util.getBoxingStrategy(declaredParam);
+                    type = gen().getTypeForParameter(declaredParam, isRaw, getTypeArguments());
+                } else {
+                    // Arguments of overloaded methods don't have a reference to parameter
+                    index = idx++;
+                    boxType = BoxingStrategy.UNBOXED;
+                    type = expr.getTypeModel();
                 }
-                index = declaredParams.indexOf(declaredParam);
-                boxType = Util.getBoxingStrategy(declaredParam);
-                type = gen().getTypeForParameter(declaredParam, isRaw, getTypeArguments());
+                String varName = varBaseName + "$" + index;
+                // if we can't pick up on the type from the declaration, revert to the type of the expression
+                if(gen().isTypeParameter(gen().simplifyType(type)))
+                    type = expr.getTypeModel();
+                
+                JCExpression typeExpr = gen().makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
+                JCExpression argExpr = gen().expressionGen().transformExpression(expr, boxType, type);
+                JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
+                vars.append(varDecl);
+            } else if (namedArg instanceof Tree.MethodArgument) {
+                Tree.MethodArgument methodArg = (Tree.MethodArgument)namedArg;
+                // TODO MPL
+                Method model = methodArg.getDeclarationModel();
+                ProducedType callableType = gen().typeFact().getCallableType(model.getType());
+                CallableBuilder callableBuilder = CallableBuilder.methodArgument(gen().gen(), 
+                        callableType, 
+                        model.getParameterLists().get(0), 
+                        gen().statementGen().transform(methodArg.getBlock()).getStatements());
+                JCNewClass callable = callableBuilder.build();
+                int index = idx++;
+                String varName = varBaseName + "$" + index;
+                JCExpression typeExpr = gen().makeJavaType(callableType);
+                JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, callable);
+                vars.append(varDecl);
             } else {
-                // Arguments of overloaded methods don't have a reference to parameter
-                index = idx++;
-                boxType = BoxingStrategy.UNBOXED;
-                type = expr.getTypeModel();
+                throw new RuntimeException("" + namedArg);
             }
-            String varName = varBaseName + "$" + index;
-            // if we can't pick up on the type from the declaration, revert to the type of the expression
-            if(gen().isTypeParameter(gen().simplifyType(type)))
-                type = expr.getTypeModel();
-            
-            JCExpression typeExpr = gen().makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
-            JCExpression argExpr = gen().expressionGen().transformExpression(expr, boxType, type);
-            JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
-            vars.append(varDecl);
         }
         return boundSequenced;
     }

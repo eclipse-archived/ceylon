@@ -37,7 +37,6 @@ import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Name;
 
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.EXTENDS;
-import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.TYPE_ARGUMENT;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.NO_PRIMITIVES;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.CLASS_NEW;
 
@@ -82,20 +81,29 @@ public class CallableBuilder {
      * Constructs an {@code AbstractCallable} suitable for an anonymous function.
      */
     public static CallableBuilder anonymous(
-            CeylonTransformer gen, Tree.Term expr, ParameterList parameterList, ProducedType callableTypeModel) {
-        JCExpression fnCall;
+            CeylonTransformer gen, Tree.Expression expr, ParameterList parameterList, 
+            ProducedType callableTypeModel) {
+        ProducedType returnType = gen.getCallableReturnType(callableTypeModel);
+        JCExpression transformedExpr = gen.expressionGen().transformExpression(expr);
+        final List<JCStatement> stmts;
+        if (gen.isVoid(returnType)) {
+            stmts = List.<JCStatement>of(gen.make().Exec(transformedExpr), gen.make().Return(gen.makeNull()));
+        } else {
+            stmts = List.<JCStatement>of(gen.make().Return(transformedExpr));
+        }
+        
+        return methodArgument(gen, callableTypeModel, parameterList, stmts);
+    }
+    
+    public static CallableBuilder methodArgument(
+            CeylonTransformer gen,
+            ProducedType callableTypeModel,
+            ParameterList parameterList,
+            List<JCStatement> stmts) {
         CallableBuilder cb = new CallableBuilder(gen);
         cb.paramLists = parameterList;
         cb.typeModel = callableTypeModel;
-        ProducedType returnType = gen.getCallableReturnType(cb.typeModel);
-        fnCall = gen.expressionGen().transformExpression(expr);
-        if (gen.isVoid(returnType)) {
-            cb.body = List.<JCStatement>of(gen.make().Exec(fnCall), gen.make().Return(gen.makeNull()));
-        } else {
-            cb.body = List.<JCStatement>of(gen.make().Return(fnCall));
-        }
-        cb.body = prependVarsForArgs(gen, parameterList, cb.body);
-        
+        cb.body = prependVarsForArgs(gen, parameterList, stmts);
         return cb;
     }
     
