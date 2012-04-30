@@ -1,0 +1,14 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+class CallablePositionalInvocationQualified {
+    private final .ceylon.language.Callable<? extends .java.lang.Object> f;
+    
+    private final void m(final .com.redhat.ceylon.compiler.java.test.expression.invoke.CallablePositionalInvocationQualified c) {
+        c.f.$call();
+        this.f.$call();
+    }
+    
+    CallablePositionalInvocationQualified(.ceylon.language.Callable<? extends .java.lang.Object> f) {
+        this.f = f;
+    }
+}

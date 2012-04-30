@@ -457,7 +457,6 @@ public class ExpressionTest extends CompilerTest {
     }
     
     @Test
-    @Ignore("Awaiting fix for ceylon-spec#218")
     public void testCallablePositionalInvocationQualified(){
         compareWithJavaSource("invoke/CallablePositionalInvocationQualified");
     }
