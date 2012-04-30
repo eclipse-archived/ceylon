@@ -1,0 +1,33 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class anonymousArgument {
+    
+    private anonymousArgument() {
+    }
+    
+    static void anonymousArgument() {
+        
+        final class callFunction {
+            
+            private callFunction() {
+            }
+            
+            void callFunction(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
+            }
+        }
+        final callFunction callFunction = new callFunction();
+        callFunction.callFunction(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("Callable<String>"){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+                final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
+                return .ceylon.language.String.instance(i.times(.ceylon.language.Integer.instance(3L)).toString());
+            }
+        });
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.anonymousArgument.anonymousArgument();
+    }
+}

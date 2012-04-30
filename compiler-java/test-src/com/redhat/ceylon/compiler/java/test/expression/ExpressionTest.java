@@ -163,6 +163,34 @@ public class ExpressionTest extends CompilerTest {
     // Method invocation
 
     @Test
+    public void testInvAnonymousFunctionPositionalInvocation(){
+        compareWithJavaSource("invoke/AnonymousFunctionPositionalInvocation");
+    }
+    @Test
+    public void testInvAnonymousFunctionPositionalInvocation2(){
+        compareWithJavaSource("invoke/AnonymousFunctionPositionalInvocation2");
+    }
+    @Test
+    public void testInvMethodArgumentNamedInvocation(){
+        compareWithJavaSource("invoke/MethodArgumentNamedInvocation");
+    }
+    
+    @Test
+    public void testInvMethodArgumentNamedInvocation2(){
+        compareWithJavaSource("invoke/MethodArgumentNamedInvocation2");
+    }
+    
+    @Test
+    public void testInvObjectArgumentNamedInvocation(){
+        compareWithJavaSource("invoke/ObjectArgumentNamedInvocation");
+    }
+    
+    @Test
+    public void testInvGetterArgumentNamedInvocation(){
+        compareWithJavaSource("invoke/GetterArgumentNamedInvocation");
+    }
+    
+    @Test
     public void testInvChainedInvocations(){
         compareWithJavaSource("invoke/ChainedInvocations");
     }
