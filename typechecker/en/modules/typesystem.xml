@@ -1167,7 +1167,7 @@ Item item = comp;</programlisting>
         
     </section>
     
-    <section>
+    <section id="gadts">
         <title>PROPOSAL: Generalized algebraic types</title>
         
         <comment><para>NOTE: Generalized algebraic types are a proposed feature 
@@ -1806,7 +1806,51 @@ shared class LinkedList<Element>(Element... elements)
         <para>These rules apply to members declared by the type, and to members inherited from 
         supertypes.</para>
         -->
-            
+        
+        </section>
+        
+        <section id="typeparametersandenumeratedtypes">
+            <title>Type parameters and enumerated types</title>
+        
+        <para>If an enumerated type <literal>T&lt;X&gt;</literal> has a case type 
+        which is a produced type of <literal>U</literal> then either:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>U</literal> is parameterized by a type parameter
+                <literal>X</literal> and <literal>U&lt;X&gt;</literal> is an 
+                invariant subtype of <literal>T&lt;X&gt;</literal>,
+                </para>
+            </listitem>
+            <listitem>
+                <para><literal>T&lt;X&gt;</literal> is covariant in <literal>X</literal>
+                and <literal>U</literal> is an invariant subtype of 
+                <literal>T&lt;Bottom&gt;</literal>, or</para>
+            </listitem>
+            <listitem>
+                <para><literal>T&lt;X&gt;</literal> is contravariant in <literal>X</literal>
+                and <literal>U</literal> is an invariant subtype of 
+                <literal>T&lt;Void&gt;</literal>. 
+                <emphasis>(TODO: should be the intersection of upper bounds.)</emphasis></para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>If <literal>U&lt;X&gt;</literal> is a case of an enumerated type
+        <literal>T&lt;X&gt;</literal>, then <literal>U&lt;X&gt;</literal> must be 
+        an invariant subtype of <literal>T&lt;X&gt;</literal> and:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>if <literal>T&lt;X&gt;</literal> is covariant in <literal>X</literal>
+                then <literal>U&lt;Y&gt;</literal> must be covariant in <literal>Y</literal>, 
+                and</para>
+            </listitem>
+            <listitem>
+                <para>if <literal>T&lt;X&gt;</literal> is contravariant in <literal>X</literal>
+                then <literal>U&lt;Y&gt;</literal> must be contravariant in <literal>Y</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
         </section>
         
         <section id="sequencedtypeparameters">
