@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-class C {
+class CE {
     
     private final long call() {
         return 1L;
@@ -16,11 +16,11 @@ class C {
         };
     }
     
-    C() {
+    CE() {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.method.C();
+        new .com.redhat.ceylon.compiler.java.test.structure.method.CE();
     }
 }
