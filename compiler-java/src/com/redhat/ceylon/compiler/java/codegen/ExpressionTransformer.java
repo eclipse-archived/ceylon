@@ -1019,7 +1019,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     public JCExpression transformFunctional(Tree.Term expr,
             Functional functional) {
-        return CallableBuilder.functional(gen(), expr, functional.getParameterLists().get(0)).build();
+        return CallableBuilder.methodReference(gen(), expr, functional.getParameterLists().get(0)).build();
     }
 
     //

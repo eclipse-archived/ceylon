@@ -52,7 +52,10 @@ public class CallableBuilder {
         this.gen = gen;
     }
     
-    public static CallableBuilder functional(CeylonTransformer gen, Tree.Term expr, ParameterList parameterList) {
+    /**
+     * Constructs an {@code AbstractCallable} suitable for wrapping a method reference.
+     */
+    public static CallableBuilder methodReference(CeylonTransformer gen, Tree.Term expr, ParameterList parameterList) {
         JCExpression fnCall;
         InvocationBuilder invocationBuilder = InvocationBuilder.forCallableInvocation(gen, expr, parameterList);
         gen.expressionGen().setWithinCallableInvocation(true);
@@ -75,6 +78,9 @@ public class CallableBuilder {
         return cb;
     }
     
+    /**
+     * Constructs an {@code AbstractCallable} suitable for an anonymous function.
+     */
     public static CallableBuilder anonymous(
             CeylonTransformer gen, Tree.Term expr, ParameterList parameterList, ProducedType callableTypeModel) {
         JCExpression fnCall;
@@ -93,6 +99,10 @@ public class CallableBuilder {
         return cb;
     }
     
+    /**
+     * Constructs an {@code AbstractCallable} suitable for use in a method 
+     * definition with a multiple parameter list.
+     */
     public static CallableBuilder mpl(
             CeylonTransformer gen,
             ProducedType typeModel,
@@ -107,6 +117,11 @@ public class CallableBuilder {
         return cb;
     }
 
+    /**
+     * Prepends variable declarations for the callable arguments arg0, arg1 
+     * etc so that references to the actual variables in the body of the 
+     * method work.
+     */
     private static List<JCStatement> prependVarsForArgs(CeylonTransformer gen,
             ParameterList parameterList, List<JCStatement> body) {
         int ii =0;

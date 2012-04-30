@@ -551,8 +551,6 @@ class PositionalInvocationBuilder extends SimpleInvocationBuilder {
         if (arg instanceof FunctionArgument) {
             FunctionArgument farg = (FunctionArgument)arg;
             Method model = farg.getDeclarationModel();
-            java.util.List<com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList> parameterLists = farg.getParameterLists();
-            LocalModifier type = farg.getType();
             ProducedType callableType = gen().typeFact().getCallableType(model.getType());
             // TODO MPL
             CallableBuilder callableBuilder = CallableBuilder.anonymous(
