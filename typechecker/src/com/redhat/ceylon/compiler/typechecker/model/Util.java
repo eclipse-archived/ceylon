@@ -75,8 +75,6 @@ public class Util {
     public static boolean isResolvable(Declaration declaration) {
         return declaration.getName()!=null &&
             !(declaration instanceof Setter) && //return getters, not setters
-            !(declaration instanceof Parameter && 
-                    ((Parameter) declaration).isUnresolvable()) && //don't return parameters of method defined by ref
             !declaration.isAnonymous(); //don't return the type associated with an object dec 
     }
     

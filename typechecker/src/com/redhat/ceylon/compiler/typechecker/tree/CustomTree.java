@@ -56,6 +56,42 @@ public class CustomTree extends Tree {
         }
     }
     
+    public static class MethodDeclaration
+            extends Tree.MethodDeclaration {
+        public MethodDeclaration(Token token) {
+            super(token);
+        }
+        @Override
+        public void visit(Visitor visitor) {
+            if (visitor instanceof NaturalVisitor) {
+                super.visit(visitor);
+            }
+            else {
+                if (getSpecifierExpression()!=null)
+                    getSpecifierExpression().visit(visitor);
+                super.visit(visitor);
+            }
+        }
+        @Override
+        public void visitChildren(Visitor visitor) {
+            if (visitor instanceof NaturalVisitor) {
+                super.visitChildren(visitor);
+            }
+            else {
+                if (getTypeParameterList()!=null)
+                    getTypeParameterList().visit(visitor);
+                if (getTypeConstraintList()!=null)
+                    getTypeConstraintList().visit(visitor);
+                Walker.walkTypedDeclaration(visitor, this);
+                for (Tree.ParameterList subnode: getParameterLists())
+                    subnode.visit(visitor);
+            }
+        }
+        @Override public String getNodeType() {
+            return MethodDeclaration.class.getSimpleName();
+        }
+    }
+    
     public static class MethodDefinition 
             extends Tree.MethodDefinition {
         public MethodDefinition(Token token) {

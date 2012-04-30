@@ -13,3 +13,11 @@ class DefaultedAndSequenced() {
     m("hello", 2, true);
     m("hello", 2, true, false);
 }
+
+interface Barface {
+    shared formal Integer prop;
+    shared formal void f1(Integer n = 5);
+    shared formal void f2(Integer n, String s = "test");
+    shared formal void f3(Integer n = 5, Integer m = n);
+    shared formal void f4(Integer n = 5, Integer m = n + 1);
+}
