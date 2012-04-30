@@ -15,9 +15,11 @@ import java.util.Map;
  */
 public abstract class TypedDeclaration extends Declaration {
 
-    ProducedType type;
-
-    TypedDeclaration originalDeclaration;
+    private ProducedType type;
+    private boolean uncheckedNullType = false;
+    private Boolean unboxed;
+    
+    private TypedDeclaration originalDeclaration;
     
     public TypeDeclaration getTypeDeclaration() {
     	if (type==null) {
@@ -111,8 +113,20 @@ public abstract class TypedDeclaration extends Declaration {
         this.originalDeclaration = originalDeclaration;
     }
 
-    private Boolean unboxed;
-    public Boolean getUnboxed() { return unboxed; }
-    public void setUnboxed(Boolean value) { unboxed = value; }
+    public Boolean getUnboxed() { 
+        return unboxed; 
+    }
+
+    public void setUnboxed(Boolean value) { 
+        unboxed = value; 
+    }
+
+    public boolean hasUncheckedNullType() {
+        return uncheckedNullType;
+    }
+    
+    public void setUncheckedNullType(boolean uncheckedNullType) {
+        this.uncheckedNullType = uncheckedNullType;
+    }
 
 }

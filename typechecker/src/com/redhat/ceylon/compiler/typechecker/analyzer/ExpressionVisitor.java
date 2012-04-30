@@ -362,6 +362,7 @@ public class ExpressionVisitor extends Visitor {
         //(nor is it possible to infer the variable type)
         ProducedType t = null;
         Node n = that;
+        Tree.Term term = null;
         Tree.Variable v = that.getVariable();
         if (v!=null) {
             //v.getType().visit(this);
@@ -381,6 +382,7 @@ public class ExpressionVisitor extends Visitor {
                 n = v;
                 checkReferenceIsNonVariable(v, se);
                 initOriginalDeclaration(v);
+                term = se.getExpression().getTerm();
             }
         }
         else if (that.getExpression()!=null) {
@@ -388,6 +390,7 @@ public class ExpressionVisitor extends Visitor {
             //      erroneous syntax elegantly
             that.getExpression().visit(this);
             t = that.getExpression().getTypeModel();
+            term = that.getExpression().getTerm();
         }
         /*Tree.Expression e = that.getExpression();
         if (e!=null) {
@@ -396,7 +399,7 @@ public class ExpressionVisitor extends Visitor {
             n = e;
         }*/
         if (that instanceof Tree.ExistsCondition) {
-            checkOptional(t, n);
+            checkOptional(t, term, n);
         }
         else if (that instanceof Tree.NonemptyCondition) {
             checkEmpty(t, n);
@@ -444,12 +447,27 @@ public class ExpressionVisitor extends Visitor {
                     t.getProducedTypeName() + " is not a supertype of FixedSized");
         }
     }
+    
+    private boolean hasUncheckedNulls(Tree.Term term) {
+        if (term instanceof Tree.MemberOrTypeExpression) {
+            Declaration d = ((Tree.MemberOrTypeExpression) term).getDeclaration();
+            return d instanceof TypedDeclaration && 
+                    ((TypedDeclaration) d).hasUncheckedNullType();
+        }
+        else if (term instanceof Tree.InvocationExpression) {
+            return hasUncheckedNulls(((Tree.InvocationExpression) term).getPrimary());
+        }
+        else {
+            return false;
+        }
+    }
 
-    private void checkOptional(ProducedType t, Node n) {
+    private void checkOptional(ProducedType t, Tree.Term term, Node n) {
         if (t==null) {
             n.addError("expression must be of optional type: type not known");
         }
-        else if (!unit.isOptionalType(t)) {
+        else if (!unit.isOptionalType(t) && 
+                !hasUncheckedNulls(term)) {
             n.addError("expression must be of optional type: " +
                     t.getProducedTypeName() + " is not a supertype of Nothing");
         }
@@ -2131,9 +2149,7 @@ public class ExpressionVisitor extends Visitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            if (!unit.isOptionalType(lhst)) {
-                that.getLeftTerm().addError("must be of optional type");
-            }
+            checkOptional(lhst, that.getLeftTerm(), that.getLeftTerm());
             List<ProducedType> list = new ArrayList<ProducedType>();
             addToUnion(list, rhst);
             addToUnion(list, unit.getDefiniteType(lhst));
@@ -2201,7 +2217,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void visitExistsOperator(Tree.Exists that) {
-        checkOptional(type(that), that);
+        checkOptional(type(that), that.getTerm(), that);
         that.setTypeModel(unit.getBooleanDeclaration().getType());
     }
     
@@ -2954,6 +2970,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         Tree.Expression e = that.getSwitchClause().getExpression();
         if (e!=null) {
+            boolean hasUncheckedNull = hasUncheckedNulls(e.getTerm());
             ProducedType switchType = e.getTypeModel().getUnionOfCases(true);
             boolean hasIsCase = false;
             for (Tree.CaseClause cc: that.getSwitchCaseList().getCaseClauses()) {
@@ -2962,8 +2979,10 @@ public class ExpressionVisitor extends Visitor {
                 }
                 ProducedType ct = getType(cc);
                 if (ct!=null) {
-                    checkAssignable(ct, switchType, cc, 
-                            "case type must be a case of the switch type");
+                    if (!hasUncheckedNull || !isNullCase(ct)) {
+                        checkAssignable(ct, switchType, cc, 
+                                "case type must be a case of the switch type");
+                    }
                     for (Tree.CaseClause occ: that.getSwitchCaseList().getCaseClauses()) {
                         if (occ==cc) break;
                         ProducedType oct = getType(occ);
@@ -3002,6 +3021,13 @@ public class ExpressionVisitor extends Visitor {
                         "case types must cover all cases of the switch type or an else clause must appear");
             }
         }
+    }
+
+    private boolean isNullCase(ProducedType ct) {
+        TypeDeclaration d = ct.getDeclaration();
+        return d!=null &&
+                d.equals(unit.getNothingDeclaration()) &&
+                d.equals(unit.getNullDeclaration());
     }
 
     private ProducedType getType(Tree.CaseClause cc) {

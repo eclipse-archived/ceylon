@@ -26,15 +26,7 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
      public void setFormal(boolean formal) {
          this.formal = formal;
      }*/
-
-    public ProducedType getType() {
-        return type;
-    }
-
-    public void setType(ProducedType type) {
-        this.type = type;
-    }
-
+    
     @Override
     public boolean isParameterized() {
         return !typeParameters.isEmpty();
