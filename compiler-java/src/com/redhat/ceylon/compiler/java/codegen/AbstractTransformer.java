@@ -1658,7 +1658,7 @@ public abstract class AbstractTransformer implements Transformation {
                 return makeUtilInvocation("isEquality", List.of(varExpr));
             } else if (type.isExactly(typeFact().getIdentifiableObjectDeclaration().getType())){
                 // it's erased
-                return makeUtilInvocation("isIdentifiableObject", List.of(varExpr));
+                return makeUtilInvocation("isIdentifiable", List.of(varExpr));
             } else if (type.getDeclaration() instanceof BottomType){
                 // nothing is Bottom
                 return makeIgnoredEvalAndReturn(varExpr, makeBoolean(false));
