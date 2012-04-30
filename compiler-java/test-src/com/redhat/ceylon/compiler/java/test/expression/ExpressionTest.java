@@ -298,6 +298,15 @@ public class ExpressionTest extends CompilerTest {
     }
     
     @Test
+    public void testCallableArgumentWithDefaultedArguments(){
+        compareWithJavaSource("invoke/CallableArgumentWithDefaulted");
+        // Note we want to run it as well, because one of the problems 
+        // is not found at compile time (#512)
+        compileAndRun("com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentWithDefaulted_main", 
+                "invoke/CallableArgumentWithDefaulted");
+    }
+    
+    @Test
     public void testCallableArgumentNullary(){
         compareWithJavaSource("invoke/CallableArgumentNullary");
     }
