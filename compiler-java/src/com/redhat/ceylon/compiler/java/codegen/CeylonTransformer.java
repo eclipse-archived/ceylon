@@ -235,13 +235,13 @@ public class CeylonTransformer extends AbstractTransformer {
 
         if (declarationModel instanceof Setter
                 || declarationModel instanceof Parameter) {
-            // For inner setters
+            // For local setters
             JCBlock setterBlock = make().Block(0, statementGen().transformStmts(block.getStatements()));
             builder.setterBlock(setterBlock);
             builder.skipGetter();
         } else {
             if (declarationModel instanceof Value) {
-                // For inner and toplevel value attributes
+                // For local and toplevel value attributes
                 if (!declarationModel.isVariable()) {
                     builder.immutable();
                 }
@@ -252,12 +252,12 @@ public class CeylonTransformer extends AbstractTransformer {
                             declarationModel.getType()));
                 }
             } else {
-                // For inner and toplevel getters
+                // For local and toplevel getters
                 JCBlock getterBlock = make().Block(0, statementGen().transformStmts(block.getStatements()));
                 builder.getterBlock(getterBlock);
                 
                 if (Decl.isLocal(declarationModel)) {
-                    // For inner getters
+                    // For local getters
                     builder.immutable();
                 } else {
                     // For toplevel getters
