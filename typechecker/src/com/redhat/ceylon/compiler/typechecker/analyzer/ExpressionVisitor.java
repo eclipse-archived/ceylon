@@ -49,6 +49,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -544,39 +545,8 @@ public class ExpressionVisitor extends Visitor {
             checkType(that.getType().getTypeModel(), 
                     that.getSpecifierOrInitializerExpression());
         }
-        validateHiddenAttribute(that);
     }
-
-    //TODO: the name and half the implementation of this 
-    //      method is now obsolete!
-    private void validateHiddenAttribute(Tree.AnyAttribute that) {
-        TypedDeclaration dec = that.getDeclarationModel();
-        if (dec!=null) {
-            Scope s = dec.getContainer();
-            if (s instanceof Functional) {
-                Parameter param = ((Functional) s).getParameter( dec.getName() );
-                if (param instanceof ValueParameter && 
-                        ((ValueParameter) param).isHidden()) {
-                    param.setType(dec.getType());
-                }
-                //TODO: obsolete!
-                else if (param!=null && dec.isClassMember()) {
-                    //that.addError("no longer supported!");
-                    //if it duplicates a parameter, then it must be non-variable
-                    if ( dec.isVariable()) {
-                        that.addError("member hidden by parameter may not be variable: " + 
-                                dec.getName());
-                    }
-                    //if it duplicates a parameter, then it must have the same type
-                    //as the parameter
-                    checkIsExactly(dec.getType(), param.getType(), that, 
-                            "member hidden by parameter must have same type as parameter " +
-                            param.getName());
-                }
-            }
-        }
-    }
-
+    
     @Override public void visit(Tree.SpecifierStatement that) {
         super.visit(that);
         if (!(that.getBaseMemberExpression() instanceof Tree.BaseMemberExpression)) {
@@ -676,7 +646,6 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         endReturnScope(rt, that.getDeclarationModel());
         endReturnDeclaration(od);
-        validateHiddenAttribute(that);
         Setter setter = that.getDeclarationModel().getSetter();
         if (setter!=null) {
             setter.getParameter().setType(that.getDeclarationModel().getType());

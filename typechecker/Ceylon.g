@@ -803,14 +803,17 @@ parameterRef returns [Parameter parameter]
     ;
 
 parameterDeclaration returns [Parameter parameter]
-    : (LIDENTIFIER (SPECIFY|COMMA|RPAREN)) =>
-      r=parameterRef
-      { $parameter=$r.parameter; }
-    | compilerAnnotations
-      annotations 
-      p=parameter
-      { $parameter=$p.parameter;
-        $parameter.setAnnotationList($annotations.annotationList); }
+    : compilerAnnotations
+      (
+        (LIDENTIFIER (SPECIFY|COMMA|RPAREN)) =>
+        r=parameterRef
+        { $parameter=$r.parameter; }
+      | 
+        annotations 
+        p=parameter
+        { $parameter=$p.parameter;
+          $parameter.setAnnotationList($annotations.annotationList); }
+      )
       { if ($parameter!=null)
         $parameter.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
     ;

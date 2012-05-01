@@ -171,16 +171,6 @@ public class DeclarationVisitor extends Visitor {
                     }
                 }
             }
-            else if ((model instanceof Getter || model instanceof Value) 
-                        && model.isClassMember()) {
-                //a getter or simple attribute is allowed to have the 
-                //same name as a class initialization parameter
-                Declaration member = model.getContainer().getDirectMember(model.getName(), null);
-                if (member!=null) {
-                    that.addError("duplicate declaration name: " + model.getName());
-                    model.getUnit().getDuplicateDeclarations().add(member);
-                }
-            }
             else {
                 Scope s = model.getContainer();
                 boolean isControl;

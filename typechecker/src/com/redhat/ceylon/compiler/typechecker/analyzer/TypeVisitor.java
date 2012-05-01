@@ -17,13 +17,16 @@ import java.util.Set;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Import;
 import com.redhat.ceylon.compiler.typechecker.model.ImportList;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -536,9 +539,23 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);
-        if (that.getSpecifierOrInitializerExpression()==null
-                && that.getType() instanceof Tree.ValueModifier) {
+        Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
+        if (sie==null && that.getType() instanceof Tree.ValueModifier) {
             that.getType().addError("attribute must specify an explicit type or definition", 200);
+        }
+        TypedDeclaration dec = that.getDeclarationModel();
+        if (dec!=null) {
+            Scope s = dec.getContainer();
+            if (s instanceof Functional) {
+                Parameter param = ((Functional) s).getParameter( dec.getName() );
+                if (param instanceof ValueParameter && 
+                        ((ValueParameter) param).isHidden()) {
+                    param.setType(dec.getType());
+                    if (sie!=null) {
+                        sie.addError("has matching initializer parameter: " + dec.getName());
+                    }
+                }
+            }
         }
     }
     
