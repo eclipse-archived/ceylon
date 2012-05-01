@@ -96,7 +96,7 @@ public class ClassTransformer extends AbstractTransformer {
         noteDecl(model);
         final String className;
         if (def instanceof Tree.AnyInterface) {
-            className = getFQDeclarationName(model).replaceFirst(".*\\.", "");
+            className = getDeclarationName(model, true, false);
         } else {
             className = def.getIdentifier().getText();
         }

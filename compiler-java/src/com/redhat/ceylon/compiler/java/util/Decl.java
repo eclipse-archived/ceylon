@@ -212,8 +212,12 @@ public class Decl {
      * @return true if the declaration is local
      */
     public static boolean isLocal(Declaration decl) {
-        return decl.getContainer() instanceof MethodOrValue 
-                || decl.getContainer() instanceof ControlBlock;
+        return isLocalScope(decl.getContainer());
+    }
+    
+    public static boolean isLocalScope(Scope scope) {
+        return scope instanceof MethodOrValue 
+                || scope instanceof ControlBlock;
     }
     
     /**
