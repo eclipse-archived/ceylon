@@ -598,5 +598,10 @@ public class StructureTest extends CompilerTest {
     public void testNstNestedInterface(){
         compareWithJavaSource("nesting/NestedInterface");
     }
+    
+    @Test
+    public void testNstObjects(){
+        compareWithJavaSource("nesting/Objects");
+    }
 
 }

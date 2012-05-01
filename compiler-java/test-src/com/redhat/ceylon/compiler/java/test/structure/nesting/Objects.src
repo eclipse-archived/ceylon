@@ -1,0 +1,128 @@
+package com.redhat.ceylon.compiler.java.test.structure.nesting;
+
+interface Objects$objects_o$DummyI {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o $outer();
+}
+interface Objects$ObjectsI {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects $outer();
+}
+class Objects {
+    
+    abstract class Dummy {
+        
+        Dummy() {
+        }
+    }
+    
+    final class objects_o extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy {
+        
+        class DummyC {
+            
+            DummyC() {
+            }
+        }
+        
+        final class Objects$objects_o$DummyI$impl {
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$objects_o$DummyI $this;
+            
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o $outer() {
+                return .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o.this;
+            }
+            
+            Objects$objects_o$DummyI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$objects_o$DummyI $this) {
+                this.$this = $this;
+            }
+        }
+        
+        private objects_o() {
+            super();
+        }
+    }
+    
+    class ObjectsC {
+        
+        final class objectsc_o extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy {
+            
+            private objectsc_o() {
+                super();
+            }
+        }
+        
+        class ObjectsCC {
+            
+            final class objectscc_o extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy {
+                
+                private objectscc_o() {
+                    super();
+                }
+            }
+            
+            ObjectsCC() {
+                final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.objectscc_o objectscc_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.objectscc_o();
+            }
+        }
+        
+        ObjectsC() {
+            final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.objectsc_o objectsc_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.objectsc_o();
+        }
+    }
+    
+    final class Objects$ObjectsI$impl {
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$ObjectsI $this;
+        
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects $outer() {
+            return .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.this;
+        }
+        
+        class ObjectsIC {
+            
+            final class objectsic_o extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy {
+                
+                private objectsic_o() {
+                    super();
+                }
+            }
+            
+            ObjectsIC() {
+                final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Objects$ObjectsI$impl.ObjectsIC.objectsic_o objectsic_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Objects$ObjectsI$impl.ObjectsIC.objectsic_o();
+            }
+        }
+        
+        Objects$ObjectsI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$ObjectsI $this) {
+            this.$this = $this;
+        }
+    }
+    
+    private final void local() {
+        
+        final class local_o extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy {
+            
+            private local_o() {
+                super();
+            }
+        }
+        final local_o local_o = new local_o();
+        try {
+            
+            final class local_o2 extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy {
+                
+                private local_o2() {
+                    super();
+                }
+            }
+            final local_o2 local_o2 = new local_o2();
+        } finally {
+        }
+    }
+    
+    Objects() {
+        final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o objects_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects();
+    }
+}
