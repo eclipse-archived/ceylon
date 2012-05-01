@@ -1,5 +1,5 @@
-class Branch<T>(Tree<T> left, Tree<T> right) 
+class Branch<T>(left, right) 
         extends Tree<T>() {
-    shared Tree<T> left = left;
-    shared Tree<T> right = right;
+    shared Tree<T> left;
+    shared Tree<T> right;
 }

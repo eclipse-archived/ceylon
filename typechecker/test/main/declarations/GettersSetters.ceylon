@@ -8,7 +8,7 @@ interface GettersSetters {
     }
     
     class SettersWithDupeParams(String hi, String howdy) {
-        String hi { return "hi"; }
+        @error String hi { return "hi"; }
         @error assign howdy {  }
     }
     

@@ -9,9 +9,9 @@ shared abstract class Comparable2<in Other>() of Other
     
 }
 
-class Foo(Integer i)
+class Foo(i)
         extends Comparable2<Foo>() {
-    value i = i;
+    Integer i;
     shared actual Integer compare(Foo that) {
         return this.i - that.i;
     }

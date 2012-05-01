@@ -1,7 +1,7 @@
 interface ParameterHiding {
 
     class Super(String name) {
-        shared String name = name;
+        @error shared String name = name;
         class Nested1(Sequence<Character> name) {
             @type["Sequence<Character>"] value n = name;
         }
@@ -17,12 +17,12 @@ interface ParameterHiding {
     }
 
     class Hiding(String name) {
-        shared String name = name;
+        @error shared String name = name;
     }
     
     class HidingWithTypeConstraint<T>(String name)
             given T(String name) {
-        shared String name = name;
+        @error shared String name = name;
         shared T t = T(name);
     }
     

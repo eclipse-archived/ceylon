@@ -9,8 +9,8 @@ class InheritanceConsistency() {
     }
 
     //formal from interface and superclass not implemented
-    @error class Human(Integer age) extends Animal() satisfies Named {
-        shared Integer age = age;
+    @error class Human(age) extends Animal() satisfies Named {
+        shared Integer age;
     }
 
     //formal from interface not implemented
@@ -18,8 +18,8 @@ class InheritanceConsistency() {
     }
 
     //formal from superclass not implemented
-    @error class Lion(Integer age) extends Animal() {
-        shared Integer age = age;
+    @error class Lion(age) extends Animal() {
+        shared Integer age;
     }
 
     class Computer(String hostname) satisfies Named {

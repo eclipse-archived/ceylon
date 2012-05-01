@@ -141,9 +141,9 @@ class Union() {
     @type["String|Integer|Float"] value ff2 = first({"hello", "world"}, {+1, -1, 1.0}).first;
     
     class Outer<out T>() {
-        shared default class Inner<out U>(U u) {
+        shared default class Inner<out U>(u) {
             shared String hello = "hello";
-            shared U u = u;
+            shared U u;
             shared Inner<U> get {
                 return this;
             }

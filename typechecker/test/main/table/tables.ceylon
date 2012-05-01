@@ -16,8 +16,8 @@ class Cell(String... content) {
     }
 }
 
-class Row(Cell... cells) {
-    shared Cell[] cells = cells;
+class Row(Cell... cell) {
+    shared Cell[] cells = cell;
     shared actual String string {
         value result = StringBuilder();
         result.append("|");

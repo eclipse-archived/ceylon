@@ -86,8 +86,8 @@ class Optional() {
         }
     }*/
     
-    class WithOptional<T>(T? val) {
-        shared T? val = val;
+    class WithOptional<T>(val) {
+        shared T? val;
         shared T[]? seq;
         if (exists val) {
             seq = {val};

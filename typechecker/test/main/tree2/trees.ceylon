@@ -12,17 +12,17 @@ void printTree<T>(Tree<T> tree)
     }
 }
 
-class ConcreteBranch(Tree<String> left, Tree<String> right) 
+class ConcreteBranch(left, right) 
         satisfies Branch<String> {
-    shared actual Tree<String> left = left;
-    shared actual Tree<String> right = right;
+    shared actual Tree<String> left;
+    shared actual Tree<String> right;
 }
 
 @error
-class BrokenBranch(Tree<String> left, Tree<String> right) 
+class BrokenBranch(left, right) 
         satisfies AbstractBranch<String> {
-    shared actual Tree<String> left = left;
-    shared actual Tree<String> right = right;
+    shared actual Tree<String> left;
+    shared actual Tree<String> right;
 }
 
 class ConcreteLeaf(String s)
@@ -31,10 +31,10 @@ class ConcreteLeaf(String s)
 }
 
 @error
-class BrokenLeafBranch(Tree<String> left, Tree<String> right, String s) 
+class BrokenLeafBranch(left, right, String s) 
         satisfies Branch<String> & Leaf<String> {
-    shared actual Tree<String> left = left;
-    shared actual Tree<String> right = right;
+    shared actual Tree<String> left;
+    shared actual Tree<String> right;
     shared actual String val { return s; }    
 }
 
