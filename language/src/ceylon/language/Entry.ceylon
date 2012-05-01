@@ -2,16 +2,16 @@ doc "A key, together with a value associated with the key,
      called the item. Used primarily to represent the
      elements of a `Map`."
 by "Gavin"
-shared class Entry<out Key, out Item>(Key key, Item item)
+shared class Entry<out Key, out Item>(key, item)
         extends Object()
         given Key satisfies Object
         given Item satisfies Object {
 
     doc "The key used to access the entry."
-    shared Key key = key;
+    shared Key key;
 
     doc "The value associated with the key."
-    shared Item item = item;
+    shared Item item;
 
     doc "Determines if the this entry is equal to the given
          entry. Two entries are equal if they have the same
@@ -28,7 +28,8 @@ shared class Entry<out Key, out Item>(Key key, Item item)
 
     shared actual Integer hash = (31 + key.hash) * 31 + item.hash;
 
-    doc "Returns a description of the entry in the form `key->item`."
+    doc "Returns a description of the entry in the form 
+         `key->item`."
     shared actual String string {
         return key.string + "->" + item.string;
     }

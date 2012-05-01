@@ -7,17 +7,17 @@ doc "Represents the range of totally ordered, ordinal values
      one element. The range is always nonempty, containing 
      at least one value."
 by "Gavin"
-shared class Range<Element>(Element first, Element last) 
+shared class Range<Element>(first, last) 
         extends Object() 
         satisfies Sequence<Element> & Category
         given Element satisfies Ordinal<Element> & 
                                 Comparable<Element> { 
     
     doc "The start of the range."
-    shared actual Element first = first;
+    shared actual Element first;
     
     doc "The end of the range."
-    shared actual Element last = last;
+    shared actual Element last;
 
     shared actual String string {
         return first.string + ".." + last.string;

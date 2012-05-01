@@ -4,15 +4,14 @@ doc "The supertype of all exceptions. A subclass represents
      problems of that kind."
 by "Gavin"
    "Tom"
-shared class Exception(
-        doc "A description of the problem."
-        String? description=null,
-        doc "The underlying cause of this exception."
-        Exception? cause=null) 
+shared class Exception(description=null, cause=null) 
         extends IdentifiableObject() {
     
     doc "The underlying cause of this exception."
-    shared Exception? cause = cause;
+    shared Exception? cause;
+    
+    doc "A description of the problem."
+    String? description;
     
     //shared StackTrace stackTrace { throw; }
     
