@@ -3149,9 +3149,9 @@ createItemMethod.intercept()
             <entry><literal>lhs ? rhs</literal></entry>
             <entry>default</entry>
             <entry><literal>if (exists lhs) lhs else rhs</literal></entry>
-            <entry><literal>U? given U satisfies Object</literal></entry>
+            <entry><literal>U</literal> such that <literal>null is U</literal></entry>
             <entry><literal>V</literal></entry>
-            <entry><literal>U|V</literal></entry>
+            <entry><literal>U&amp;Object|V</literal></entry>
         </row>
        
         <!--
@@ -3531,9 +3531,9 @@ createItemMethod.intercept()
             <entry><literal>lhs else rhs</literal></entry>
             <entry>else</entry>
             <entry><literal>if (exists lhs) then lhs else rhs</literal></entry>
-            <entry><literal>U? given U satisfies Object</literal></entry>
+            <entry><literal>U</literal> such that <literal>null is U</literal></entry>
             <entry><literal>V</literal></entry>
-            <entry><literal>U|V</literal></entry>
+            <entry><literal>U&amp;Object|V</literal></entry>
         </row>
         
     </tbody>
