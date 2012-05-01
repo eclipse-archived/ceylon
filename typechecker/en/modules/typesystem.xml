@@ -1141,10 +1141,8 @@ Item item = comp;</programlisting>
             </listitem>
             <listitem>
                 <para>the name specified in the <literal>object</literal> 
-                declaration of a toplevel anonymous class that extends the class
-                <literal>Case</literal> defined in <literal>ceylon.language</literal> 
-                and is a subtype of the interface or <literal>abstract</literal> 
-                class.</para>
+                declaration of a toplevel anonymous class that is a subtype of 
+                the interface or <literal>abstract</literal> class.</para>
             </listitem>
         </itemizedlist>
         
@@ -1164,8 +1162,8 @@ Item item = comp;</programlisting>
         <para>Therefore, the <literal>of</literal> declaration is used to simulate 
         enumerated types and algebraic types.</para>
         
-        <comment><para>A class or interface may not be a subtype of more than one
-        case of an enumerated type.</para></comment>
+        <para>A class or interface may not be a subtype of more than one case of an 
+        enumerated type.</para>
         
     </section>
     
