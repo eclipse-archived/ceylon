@@ -49,8 +49,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
 
 /**
  * Third and final phase of type analysis.
@@ -586,6 +586,17 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    @Override
+    public void visit(Tree.ValueParameterDeclaration that) {
+        if (that.getType() instanceof LocalModifier) {
+            ValueParameter d = that.getDeclarationModel();
+            if (d!=null) {
+                that.getType().setTypeModel(d.getType());
+            }
+        }
+        super.visit(that);
+    }
+    
     private void checkType(ProducedType declaredType, 
             Tree.SpecifierOrInitializerExpression sie) {
         if (sie!=null && sie.getExpression()!=null) {
