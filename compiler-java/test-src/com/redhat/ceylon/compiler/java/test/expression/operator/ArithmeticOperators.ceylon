@@ -23,7 +23,8 @@
 abstract class MyInteger()
         extends Object()
         satisfies Castable<MyInteger|Float> &
-                  Integral<MyInteger> {}
+                  Integral<MyInteger> &
+                  Exponentiable<MyInteger, MyInteger>{}
 
 @nomodel
 variable Integer toplevelN1 := 0;

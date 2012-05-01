@@ -26,7 +26,8 @@ interface BasicOperatorsB {}
 shared abstract class EqualityAndComparisonInteger()
         extends Object()
         satisfies Castable<EqualityAndComparisonInteger|Integer|Float> &
-                  Integral<EqualityAndComparisonInteger> {}
+                  Integral<EqualityAndComparisonInteger> &
+                  Comparable<EqualityAndComparisonInteger> {}
 
 @nomodel
 shared class EqualityAndComparisonOperators() {

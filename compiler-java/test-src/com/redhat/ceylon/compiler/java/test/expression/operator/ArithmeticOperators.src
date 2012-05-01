@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-abstract class MyInteger extends .java.lang.Object implements .ceylon.language.Castable, .ceylon.language.Integral<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> {
+abstract class MyInteger extends .java.lang.Object implements .ceylon.language.Castable, .ceylon.language.Integral<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>, .ceylon.language.Exponentiable<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> {
     
     MyInteger() {
         super();
