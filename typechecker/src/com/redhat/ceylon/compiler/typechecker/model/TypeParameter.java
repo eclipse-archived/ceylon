@@ -112,5 +112,10 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     public boolean isAbstraction() {
         return false;
     }
+    
+    @Override
+    public List<Declaration> getOverloads() {
+        return null;
+    }
 
 }

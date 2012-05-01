@@ -40,4 +40,9 @@ public class FunctionalParameter extends Parameter implements Scope, Functional 
         return false;
     }
     
+    @Override
+    public List<Declaration> getOverloads() {
+        return null;
+    }
+    
 }

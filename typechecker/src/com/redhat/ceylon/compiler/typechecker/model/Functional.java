@@ -29,5 +29,7 @@ public interface Functional {
     public boolean isOverloaded();
     
     public boolean isAbstraction();
+    
+    public List<Declaration> getOverloads();
 
 }
