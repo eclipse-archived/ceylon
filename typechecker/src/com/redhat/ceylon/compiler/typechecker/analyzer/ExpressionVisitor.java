@@ -46,6 +46,7 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -546,22 +547,32 @@ public class ExpressionVisitor extends Visitor {
         validateHiddenAttribute(that);
     }
 
+    //TODO: the name and half the implementation of this 
+    //      method is now obsolete!
     private void validateHiddenAttribute(Tree.AnyAttribute that) {
         TypedDeclaration dec = that.getDeclarationModel();
-        if (dec!=null && dec.isClassMember()) {
-            Class c = (Class) dec.getContainer();
-            Parameter param = (Parameter) c.getParameter( dec.getName() );
-            if ( param!=null ) {
-                //if it duplicates a parameter, then it must be is non-variable
-                if ( dec.isVariable()) {
-                    that.addError("member hidden by parameter may not be variable: " + 
-                            dec.getName());
+        if (dec!=null) {
+            Scope s = dec.getContainer();
+            if (s instanceof Functional) {
+                Parameter param = ((Functional) s).getParameter( dec.getName() );
+                if (param instanceof ValueParameter && 
+                        ((ValueParameter) param).isHidden()) {
+                    param.setType(dec.getType());
                 }
-                //if it duplicates a parameter, then it must have the same type
-                //as the parameter
-                checkIsExactly(dec.getType(), param.getType(), that, 
-                        "member hidden by parameter must have same type as parameter " +
-                        param.getName());
+                //TODO: obsolete!
+                else if (param!=null && dec.isClassMember()) {
+                    //that.addError("no longer supported!");
+                    //if it duplicates a parameter, then it must be non-variable
+                    if ( dec.isVariable()) {
+                        that.addError("member hidden by parameter may not be variable: " + 
+                                dec.getName());
+                    }
+                    //if it duplicates a parameter, then it must have the same type
+                    //as the parameter
+                    checkIsExactly(dec.getType(), param.getType(), that, 
+                            "member hidden by parameter must have same type as parameter " +
+                            param.getName());
+                }
             }
         }
     }

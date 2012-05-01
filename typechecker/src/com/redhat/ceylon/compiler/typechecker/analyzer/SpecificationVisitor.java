@@ -6,8 +6,10 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecut
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -384,6 +386,18 @@ public class SpecificationVisitor extends Visitor {
         super.visit(that);
         if (that.getDeclarationModel()==declaration) {
             specify();
+        }
+    }
+    
+    @Override
+    public void visit(Tree.ValueParameterDeclaration that) {
+        super.visit(that);
+        if (that.getType() instanceof LocalModifier) {
+            ValueParameter d = that.getDeclarationModel();
+            Declaration a = that.getScope().getDirectMember(d.getName(), null);
+            if (a!=null && a==declaration) {
+                specify();
+            }
         }
     }
     

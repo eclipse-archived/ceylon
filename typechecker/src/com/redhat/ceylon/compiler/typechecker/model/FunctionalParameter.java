@@ -45,4 +45,9 @@ public class FunctionalParameter extends Parameter implements Scope, Functional 
         return null;
     }
     
+    @Override
+    public Parameter getParameter(String name) {
+        return null;
+    }
+
 }

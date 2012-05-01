@@ -761,11 +761,11 @@ parameter returns [Parameter parameter]
             FunctionalParameterDeclaration fp = new FunctionalParameterDeclaration(null); 
             $parameter = vp; }
     : parameterType
-      { vp.setType($parameterType.type); }
-      { fp.setType($parameterType.type); }
+      { vp.setType($parameterType.type);
+        fp.setType($parameterType.type); }
       memberName
-      { vp.setIdentifier($memberName.identifier); }
-      { fp.setIdentifier($memberName.identifier); }
+      { vp.setIdentifier($memberName.identifier);
+        fp.setIdentifier($memberName.identifier); }
       (
         (
           valueParameter
@@ -788,8 +788,25 @@ parameter returns [Parameter parameter]
       )?
     ;
 
+parameterRef returns [Parameter parameter]
+    @init { ValueParameterDeclaration vp = new ValueParameterDeclaration(null);
+            vp.setType(new ValueModifier(null));
+            $parameter = vp; }
+    : memberName
+      { vp.setIdentifier($memberName.identifier); }
+      (
+        specifier
+        { DefaultArgument da = new DefaultArgument(null);
+          $parameter.setDefaultArgument(da);
+          da.setSpecifierExpression($specifier.specifierExpression); }
+      )?
+    ;
+
 parameterDeclaration returns [Parameter parameter]
-    : compilerAnnotations
+    : (LIDENTIFIER (SPECIFY|COMMA|RPAREN)) =>
+      r=parameterRef
+      { $parameter=$r.parameter; }
+    | compilerAnnotations
       annotations 
       p=parameter
       { $parameter=$p.parameter;

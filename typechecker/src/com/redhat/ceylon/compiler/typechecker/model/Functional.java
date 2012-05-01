@@ -23,6 +23,8 @@ public interface Functional {
     public ProducedType getType();
 
     public String getName();
+    
+    public Parameter getParameter(String name);
 
     public List<TypeParameter> getTypeParameters();
     

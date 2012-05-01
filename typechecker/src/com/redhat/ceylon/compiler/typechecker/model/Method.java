@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isParameter;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -76,6 +79,15 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     
     public void setOverloads(List<Declaration> overloads) {
         this.overloads = overloads;
+    }
+    
+    public Parameter getParameter(String name) {
+        for (Declaration d : getMembers()) {
+            if (isParameter(d) && isNamed(name, d)) {
+                return (Parameter) d;
+            }
+        }
+        return null;
     }
     
 }

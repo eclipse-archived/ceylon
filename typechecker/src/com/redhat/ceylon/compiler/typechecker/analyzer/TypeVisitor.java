@@ -29,10 +29,12 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrTypeList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
 
 /**
  * Second phase of type analysis.
@@ -66,7 +68,7 @@ public class TypeVisitor extends Visitor {
             il.setContainer(that.getUnit().getPackage());
             that.setImportList(il);
             Set<String> names = new HashSet<String>();
-            ImportMemberOrTypeList imtl = that.getImportMemberOrTypeList();
+            Tree.ImportMemberOrTypeList imtl = that.getImportMemberOrTypeList();
             if (imtl!=null) {
                 for (Tree.ImportMemberOrType member: imtl.getImportMemberOrTypes()) {
                     names.add(importMember(member, importedPackage, il));
@@ -182,7 +184,7 @@ public class TypeVisitor extends Visitor {
             member.setDeclarationModel(d);
             addImport(member, il, i);
         }
-        ImportMemberOrTypeList imtl = member.getImportMemberOrTypeList();
+        Tree.ImportMemberOrTypeList imtl = member.getImportMemberOrTypeList();
         if (imtl!=null) {
         	if (d instanceof TypeDeclaration) {
         		for (Tree.ImportMemberOrType submember: imtl.getImportMemberOrTypes()) {
@@ -725,6 +727,21 @@ public class TypeVisitor extends Visitor {
                     that.addError("non-abstract class has enumerated subtypes: " + td.getName(), 900);
                 }
                 td.setCaseTypes(list);
+            }
+        }
+    }
+    
+    @Override
+    public void visit(Tree.ValueParameterDeclaration that) {
+        super.visit(that);
+        if (that.getType() instanceof LocalModifier) {
+            ValueParameter d = that.getDeclarationModel();
+            Declaration a = that.getScope().getDirectMember(d.getName(), null);
+            if (a==null) {
+                that.addError("attribute does not exist: " + d.getName());
+            }
+            else if (!(a instanceof Value)) {
+                that.addError("not a simple attribute: " + d.getName());
             }
         }
     }

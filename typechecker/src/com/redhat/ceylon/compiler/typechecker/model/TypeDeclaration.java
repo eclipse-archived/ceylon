@@ -306,7 +306,6 @@ public abstract class TypeDeclaration extends Declaration
      * Return the least-refined (i.e. the non-actual member)
      * with the given name, by reversing the usual search
      * order and searching supertypes first.
-     * @param signature TODO
      */
     public Declaration getRefinedMember(String name, 
             List<ProducedType> signature) {
@@ -342,7 +341,6 @@ public abstract class TypeDeclaration extends Declaration
      * Get the most-refined member with the given name,
      * searching this type first, taking aliases into
      * account, followed by supertypes.
-     * @param signature TODO
      */
     public Declaration getMember(String name, Unit unit, 
             List<ProducedType> signature) {

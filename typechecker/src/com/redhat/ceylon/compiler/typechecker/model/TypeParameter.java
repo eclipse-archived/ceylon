@@ -117,5 +117,10 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     public List<Declaration> getOverloads() {
         return null;
     }
+    
+    @Override
+    public Parameter getParameter(String name) {
+        return null;
+    }
 
 }

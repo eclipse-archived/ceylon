@@ -34,7 +34,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -511,7 +510,7 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.Parameter that) {
         super.visit(that);
-        SpecifierExpression se = that.getDefaultArgument()==null ?
+        Tree.SpecifierExpression se = that.getDefaultArgument()==null ?
                 null :
                 that.getDefaultArgument().getSpecifierExpression();
        if (se!=null) {
@@ -541,6 +540,7 @@ public class DeclarationVisitor extends Visitor {
         p.setDeclaration(declaration);
         p.setDefaulted(that.getDefaultArgument()!=null);
         p.setSequenced(that.getType() instanceof Tree.SequencedType);
+        p.setHidden(that.getType() instanceof Tree.LocalModifier);
         that.setDeclarationModel(p);
         visitDeclaration(that, p);
         super.visit(that);
