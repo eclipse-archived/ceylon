@@ -43,6 +43,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
@@ -62,6 +63,7 @@ abstract class InvocationBuilder {
     protected BoxingStrategy boxingStrategy;
     
     protected final ListBuffer<JCVariableDecl> vars = ListBuffer.lb();
+    protected final ListBuffer<JCStatement> prestmts = ListBuffer.lb();
     protected final ListBuffer<JCExpression> args = ListBuffer.lb();
     protected final Map<TypeParameter, ProducedType> typeArguments;
     protected String callVarName;
@@ -275,10 +277,16 @@ abstract class InvocationBuilder {
         if (vars != null && !vars.isEmpty()) {
             if (returnType == null || gen().isVoid(returnType)) {
                 // void methods get wrapped like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1); null)
-                resultExpr = gen().make().LetExpr(vars.toList(), List.<JCStatement>of(gen().make().Exec(resultExpr)), gen().makeNull());
+                resultExpr = gen().make().LetExpr(prestmts.toList(), 
+                        vars.toList(), 
+                        List.<JCStatement>of(gen().make().Exec(resultExpr)), 
+                        gen().makeNull());
             } else {
                 // all other methods like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1))
-                resultExpr = gen().make().LetExpr(vars.toList(), resultExpr);
+                resultExpr = gen().make().LetExpr(prestmts.toList(), 
+                        vars.toList(), 
+                        List.<JCStatement>nil(),
+                        resultExpr);
             }
         }
         return resultExpr;
@@ -858,6 +866,28 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 JCExpression typeExpr = gen().makeJavaType(callableType);
                 JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, callable);
                 vars.append(varDecl);
+            } else if (namedArg instanceof Tree.ObjectArgument) {
+                Tree.ObjectArgument objectArg = (Tree.ObjectArgument)namedArg;
+                objectArg.getAnonymousClass();
+                objectArg.getDeclarationModel();
+                objectArg.getExtendedType();
+                objectArg.getIdentifier();
+                objectArg.getSatisfiedTypes();
+                ClassTransformer ct = ClassTransformer.getInstance(gen().getContext());
+                List<JCTree> object = ct.transformObjectArgument(objectArg);
+                if (object.size() != 1
+                        || !(object.head instanceof JCStatement)) {
+                    throw new RuntimeException();
+                }
+                prestmts.append((JCStatement)object.head);
+                
+                int index = idx++;
+                String varName = varBaseName + "$" + index;
+                JCVariableDecl varDecl = gen().makeLocalIdentityInstance(varName, "o", false);
+                vars.append(varDecl);
+            } else if (namedArg instanceof Tree.AttributeArgument) {
+                Tree.AttributeArgument attrArg = (Tree.AttributeArgument)namedArg;
+                throw new RuntimeException("AttributeArgument");
             } else {
                 throw new RuntimeException("" + namedArg);
             }
