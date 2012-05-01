@@ -486,7 +486,7 @@ public class TreeMaker implements JCTree.Factory {
         return tree;
     }
 
-    public LetExpr LetExpr(List<JCVariableDecl> defs, JCTree expr) {
+    public LetExpr LetExpr(List<JCStatement> defs, JCTree expr) {
         LetExpr tree = new LetExpr(defs, expr);
         tree.pos = pos;
         return tree;
@@ -508,19 +508,29 @@ public class TreeMaker implements JCTree.Factory {
     }
 
     public LetExpr LetExpr(JCVariableDecl def, JCTree expr) {
-        LetExpr tree = new LetExpr(List.of(def), expr);
+        LetExpr tree = new LetExpr(List.<JCStatement>of(def), expr);
         tree.pos = pos;
         return tree;
     }
 
     public LetExpr LetExpr(JCVariableDecl def, List<JCStatement> stats, JCTree expr) {
-        LetExpr tree = new LetExpr(List.of(def), stats, expr);
+        LetExpr tree = new LetExpr(ListBuffer.<JCStatement>lb().append(def).appendList(stats).toList(), expr);
         tree.pos = pos;
         return tree;
     }
 
     public LetExpr LetExpr(List<JCVariableDecl> defs, List<JCStatement> stats, JCTree expr) {
-        LetExpr tree = new LetExpr(defs, stats, expr);
+        LetExpr tree = new LetExpr(ListBuffer.<JCStatement>lb().appendList((List)defs).appendList(stats).toList(), expr);
+        tree.pos = pos;
+        return tree;
+    }
+    
+    public LetExpr LetExpr(List<JCStatement> prestats, List<JCVariableDecl> defs, List<JCStatement> stats, JCTree expr) {
+        LetExpr tree = new LetExpr(ListBuffer.<JCStatement>lb()
+                    .appendList(prestats)
+                    .appendList((List)defs)
+                    .appendList(stats).toList(), 
+                expr);
         tree.pos = pos;
         return tree;
     }

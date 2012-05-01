@@ -1228,20 +1228,16 @@ public class Pretty extends JCTree.Visitor {
             align();
             print("let");
             println();
-            indent();
             align();
-            printExprs(tree.defs, ",\n");
-            println();
-            undent();
-            if (tree.stats != null) {
-                align();
-                print("in ");
+            if (tree.stats != null
+                    && !tree.stats.isEmpty()) {
                 printBlock(tree.stats);
                 println();
             }
             align();
             print("returning ");
             printExpr(tree.expr);
+            print(";");
             println();
             undent();
             align();

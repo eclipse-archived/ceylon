@@ -3079,10 +3079,6 @@ public class Attr extends JCTree.Visitor {
         try{
             // visit each var def in this new env (side note: this is not a real LET since in theory each
             // new variable should see the ones defined previously)
-            for(JCVariableDecl def : tree.defs){
-                // we don't expect any result type from these var defs
-                attribTree(def, localEnv, NIL, Type.noType);
-            }
             // do statements if we have any
             if(tree.stats != null)
                 attribStats(tree.stats, localEnv);

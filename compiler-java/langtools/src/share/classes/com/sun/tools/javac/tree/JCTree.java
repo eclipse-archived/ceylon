@@ -2074,18 +2074,13 @@ public abstract class JCTree implements Tree, Cloneable, DiagnosticPosition {
 
     /** (let int x = 3; in x+2) */
     public static class LetExpr extends JCExpression {
-        public List<JCVariableDecl> defs;
         public JCTree expr;
         public List<JCStatement> stats;
-        protected LetExpr(List<JCVariableDecl> defs, JCTree expr) {
-            this.defs = defs;
-            this.expr = expr;
-        }
-        public LetExpr(List<JCVariableDecl> defs, List<JCStatement> stats, JCTree expr) {
-            this.defs = defs;
-            this.expr = expr;
+        protected LetExpr(List<JCStatement> stats, JCTree expr) {
             this.stats = stats;
+            this.expr = expr;
         }
+        
         @Override
         public void accept(Visitor v) { v.visitLetExpr(this); }
 
@@ -2187,7 +2182,7 @@ public abstract class JCTree implements Tree, Cloneable, DiagnosticPosition {
         JCAnnotation Annotation(JCTree annotationType, List<JCExpression> args);
         JCModifiers Modifiers(long flags, List<JCAnnotation> annotations);
         JCErroneous Erroneous(List<? extends JCTree> errs);
-        LetExpr LetExpr(List<JCVariableDecl> defs, JCTree expr);
+        LetExpr LetExpr(List<JCStatement> defs, JCTree expr);
     }
 
     /** A generic visitor class for trees.

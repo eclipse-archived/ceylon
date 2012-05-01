@@ -667,7 +667,11 @@ public class MemberEnter extends JCTree.Visitor implements Completer {
      */
     public void visitLetExpr(LetExpr that) {
         // visit the var defs
-        for(JCVariableDecl varDecl : that.defs){
+        for(JCStatement stmt : that.stats){
+            if (!(stmt instanceof JCVariableDecl)) {
+                continue;
+            }
+            JCVariableDecl varDecl = (JCVariableDecl)stmt;
             visitVarDef(varDecl);
             // make sure we mark the variables as static if we're in a static context
             // otherwise we get a resolving error later on
