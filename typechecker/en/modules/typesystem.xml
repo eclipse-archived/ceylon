@@ -1065,6 +1065,9 @@ shared interface ElementwiseEquality
         </listitem>
         </itemizedlist>
         
+        <para>A type declaration with an <literal>of</literal> clause is called an
+        <emphasis>enumerated type</emphasis>.</para>
+        
         <programlisting>CaseTypes: "of" CaseType ("|" CaseType)*</programlisting>
         
         <para>The <literal>of</literal> clause may specify multiple types, called
@@ -1161,9 +1164,8 @@ Item item = comp;</programlisting>
         <para>Therefore, the <literal>of</literal> declaration is used to simulate 
         enumerated types and algebraic types.</para>
         
-        <comment><para>TODO: We've decided to have the compiler restrict the 
-        inheritance hierarchy so that cases of a type are always disjoint. We
-        need to write down the exact rules!</para></comment>
+        <comment><para>A class or interface may not be a subtype of more than one
+        case of an enumerated type.</para></comment>
         
     </section>
     

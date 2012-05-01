@@ -1651,69 +1651,48 @@ if (is Usable tx) { ... }</programlisting>
         <section id="exhaustivecaselists">
             <title>Exhaustive lists of cases</title>
             
-            <para>A <literal>switch</literal> may or may not have an <emphasis>exhaustive list of 
-            cases</emphasis> of a certain type.</para>
+            <para>A <literal>switch</literal> statement may be <emphasis>exhaustive</emphasis>. 
+            To determine if a <literal>switch</literal> is exhaustive, we consider the 
+            <emphasis>exhaustive list of cases</emphasis> of the <literal>switch</literal>
+            expression type.</para>
             
-            <para>A <literal>switch</literal> has an <emphasis>exhaustive list of cases of a type</emphasis> 
-            <literal>T</literal> with an enumerated list of cases if:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>every case of <literal>T</literal> which is an anonymous class directly or
-                    indirectly extends the class <literal>Case</literal> defined in 
-                    <literal>ceylon.language</literal> and is explicitly listed as an ordinary 
-                    <literal>case</literal> value of the <literal>switch</literal>, and</para>
-                </listitem>
-                <listitem>
-                    <para>for every other case <literal>U</literal> of the type (every named class or 
-                    interface), either <literal>U</literal> is explicitly listed as a 
-                    <literal>case (is U)</literal> assignability condition, or, if <literal>U</literal> 
-                    is also a type with an enumerated list of cases, the <literal>switch</literal> has 
-                    an exhaustive list of cases of <literal>U</literal>.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <para>A <literal>switch</literal> has an <emphasis>exhaustive list of cases of a union 
-            type</emphasis> <literal>T|U|V|...</literal> if:</para>
+            <para>The <emphasis>exhaustive list of cases of an enumerated type</emphasis> 
+            <literal>T</literal> comprises the following types:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>for every type <literal>U</literal> belonging to the union, either 
-                    <literal>U</literal> is explicitly listed as a <literal>case (is U)</literal> 
-                    assignability condition, or, if <literal>U</literal> is also a type with an 
-                    enumerated list of cases, the <literal>switch</literal> has an exhaustive 
-                    list of cases of <literal>U</literal>.</para>
+                    <para>every case of <literal>T</literal> which is an anonymous class, and</para>
+                </listitem>
+                <listitem>
+                    <para>every case of <literal>T</literal> which is not itself an enumerated 
+                    type, together with</para>
+                </listitem>
+                <listitem>
+                    <para>the exhaustive list of cases of every case of <literal>T</literal>
+                    which is itself an enumerated type.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>A <literal>switch</literal> has an <emphasis>exhaustive list of cases of an optional
-            type</emphasis> <literal>T?</literal> if:</para>
+            <para>The <emphasis>exhaustive list of cases of a union type</emphasis> 
+            <literal>T|U|V|...</literal> comprises the following types:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>it has an exhaustive list of cases of <literal>T</literal>, and</para>
+                    <para>every type belonging to the union which is not an enumerated type, 
+                    together with</para>
                 </listitem>
                 <listitem>
-                    <para>it has a <literal>case (null)</literal>.</para>
+                    <para>the exhaustive list of cases of every type belonging to the union
+                    which is an enumerated type.</para>
                 </listitem>
             </itemizedlist>
+                        
+            <para>A <literal>switch</literal> is <emphasis>exhaustive</emphasis> if the union type 
+            formed by the types belonging to the exhaustive list of cases of the <literal>switch</literal>
+            expression type is a subtype of the union type formed from by the types of the 
+            <literal>case</literal>s of the <literal>switch</literal>.</para>
             
-            <para>A <literal>switch</literal> has an <emphasis>exhaustive list of cases of a metatype</emphasis> 
-            <literal>Type&lt;T&gt;</literal> where <literal>T</literal> is a type with an enumerated 
-            list of cases if:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para><literal>T</literal> has no cases which are anonymous classes, and</para>
-                </listitem>
-                <listitem>
-                    <para>for every case <literal>U</literal> of the type (every named class or 
-                    interface), either <literal>U</literal> is explicitly listed as a 
-                    <literal>case (satisfies U)</literal> subtype condition, or, if <literal>U</literal> 
-                    is also a type with an enumerated list of cases, the <literal>switch</literal> has 
-                    an exhaustive list of cases of <literal>Type&lt;U&gt;</literal>.</para>
-                </listitem>
-            </itemizedlist>
+            <comment><para>TODO: define exhaustive for <literal>case (satisfies ...)</literal>.</para></comment>
             
             <comment><para>TODO: for a covariant type like <literal>Sequence&lt;Node&lt;Element&gt;&gt;</literal>,
             should we treat the cases <literal>Sequence&lt;Root&lt;Element&gt;&gt;</literal>,
@@ -1821,49 +1800,36 @@ if (satisfies Comparable&lt;Element&gt; Element) {
             
             <programlisting>DefaultCaseItem: "else" Block</programlisting>
 
-            <para>The <literal>switch</literal> expression must be a type <literal>U</literal> 
-            with an enumerated list of cases. Each <literal>case</literal> must be:</para> 
+            <para>For a <literal>switch</literal> statement whose <literal>switch</literal> 
+            expression is of type <literal>U</literal>, each <literal>case</literal> must 
+            be either:</para> 
             
             <itemizedlist>
-                <!--listitem>
-                    <para>a list of expressions of type assignable to <literal>Matcher&lt;X&gt;</literal>, 
-                    where <literal>X</literal> or <literal>X?</literal> is a subtype of the 
-                    <literal>switch</literal> expression type, or</para>
-                </listitem>
-                <listitem>
-                    <para>if the <literal>switch</literal> expression is of type <literal>X?</literal>, 
-                    for some type <literal>X</literal>, the expression <literal>null</literal>, or</para>
-                </listitem-->
                 <listitem>
                     <para>a list of value references of form <literal>case (x, y, z)</literal> 
-                    where <literal>x</literal>, <literal>y</literal>, and <literal>z</literal> are 
-                    cases of the type <literal>U</literal>, or</para>
+                    where each value reference <literal>x</literal>, <literal>y</literal>, and 
+                    <literal>z</literal> refers to an anonymous class that is a subtype of 
+                    <literal>U</literal>, or</para>
                 </listitem>
                 <listitem>
-                    <para>an assignability condition of form <literal>case (is V)</literal> where
-                    <literal>V</literal> is a case of the type, or</para>
+                    <para>an assignability condition of form <literal>case (is V)</literal> 
+                    where <literal>V</literal> is a subtype of <literal>U</literal>.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>Alternatively, the <literal>switch</literal> expression type may be a subtype of 
-            <literal>Type&lt;U&gt;</literal> for some type <literal>U</literal> with an enumerated
-            list of cases. Then each <literal>case</literal> must be a subtype condition of form 
-            <literal>case (satisfies V)</literal> where <literal>V</literal> is a case of the type 
-            <literal>U</literal>.</para>
+            <para>Two <literal>case</literal>s are said to be <emphasis>disjoint</emphasis> if
+            the intersection of their types is the <literal>Bottom</literal> type. In every
+            <literal>switch</literal> statement, all <literal>case</literal>s must be
+            mutually disjoint.</para>
             
+            <para>If no <literal>else</literal> block is specified, the <literal>switch</literal> 
+            must be exhaustive. <!--Conversely, if the <literal>switch</literal> is exhaustive, 
+            no <literal>else</literal> block may be specified.--></para>
+            
+            <comment><para>TODO: define <literal>case (satisfies ...)</literal>.</para></comment>
+           
             <programlisting>Case: Expression ("," Expression)* | "is" UnionType | "satisfies" Type</programlisting>
-            
-            <!--
-            <para>If the <literal>switch</literal> expression is of type <literal>Optional&lt;X&gt;</literal>, 
-            there must be an explicit <literal>case (null)</literal>.</para>
-            -->
-            
-            <para>We say that a <literal>switch</literal> is <emphasis>exhaustive</emphasis> if it 
-            has an exhaustive list of cases of the <literal>switch</literal> expression type. If no 
-            <literal>else</literal> block is specified, the <literal>switch</literal> must be exhaustive. 
-            <!--Conversely, if the <literal>switch</literal> is exhaustive, no <literal>else</literal> block 
-            may be specified.--></para>
-            
+                        
             <!--  
             <para>When the construct is executed, the <literal>switch</literal> expression is 
             evaluated, and the resulting value is tested against the <literal>case</literal> values 
