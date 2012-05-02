@@ -51,6 +51,10 @@ class ControlStructures() {
     
     variable Object o := "hello";
     @error if (is String o) {}
+    
+    if (exists name && true) {}
+    if (nonempty names || true) {}
+    if (is String something && false) {}
 
     for (n in names) {
         print(n);
