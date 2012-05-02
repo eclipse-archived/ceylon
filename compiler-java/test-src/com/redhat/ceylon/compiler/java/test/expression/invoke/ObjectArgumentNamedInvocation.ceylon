@@ -1,10 +1,19 @@
-void objectArgumentNamedInvocation() {
+class ObjectArgumentNamedInvocation() {
 
-   void callFunction(Object o) {
-   }
+    shared ObjectArgumentNamedInvocation callFunction(Object o) {
+        print(o.string);
+        return this;
+    }
 
-   callFunction {
-       object o extends Object() {
-       }
-   };
+}
+shared void objectArgumentNamedInvocation() {
+    ObjectArgumentNamedInvocation().callFunction {
+        object o extends Object() {
+            shared actual String string = "Foo";
+        }
+    }.callFunction {
+        object o extends Object() {
+            shared actual String string = "Bar";
+        }
+    };
 }

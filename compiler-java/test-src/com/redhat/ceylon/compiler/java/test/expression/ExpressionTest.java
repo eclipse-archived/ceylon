@@ -183,6 +183,7 @@ public class ExpressionTest extends CompilerTest {
     @Test
     public void testInvObjectArgumentNamedInvocation(){
         compareWithJavaSource("invoke/ObjectArgumentNamedInvocation");
+        compileAndRun("com.redhat.ceylon.compiler.java.test.expression.invoke.objectArgumentNamedInvocation", "invoke/ObjectArgumentNamedInvocation.ceylon");
     }
     
     @Test

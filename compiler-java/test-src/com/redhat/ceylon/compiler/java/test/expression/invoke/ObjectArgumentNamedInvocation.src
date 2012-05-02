@@ -1,0 +1,86 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+class ObjectArgumentNamedInvocation {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocation")
+    public final .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocation callFunction(@.com.redhat.ceylon.compiler.java.metadata.Name("o")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Object")
+    final .java.lang.Object o) {
+        .ceylon.language.print.print(.ceylon.language.String.instance(o.toString()));
+        return this;
+    }
+    
+    ObjectArgumentNamedInvocation() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocation();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class objectArgumentNamedInvocation {
+    
+    private objectArgumentNamedInvocation() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+    public static void objectArgumentNamedInvocation() {
+        (
+            let
+            {
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                final class o extends .java.lang.Object {
+                    private final .java.lang.String string;
+                    
+                    @.java.lang.Override
+                    public final .java.lang.String toString() {
+                        return string;
+                    }
+                    
+                    private o() {
+                        super();
+                        this.string = "Bar";
+                    }
+                }
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocation $arg$0$callable$ = (
+                    let
+                    {
+                        
+                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                        final class o extends .java.lang.Object {
+                            private final .java.lang.String string;
+                            
+                            @.java.lang.Override
+                            public final .java.lang.String toString() {
+                                return string;
+                            }
+                            
+                            private o() {
+                                super();
+                                this.string = "Foo";
+                            }
+                        }
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocation $arg$1$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocation();
+                        final o $arg$1$0 = new o();
+                    }
+                    returning $arg$1$callable$.callFunction($arg$1$0);
+                );
+                final o $arg$0$0 = new o();
+            }
+            returning $arg$0$callable$.callFunction($arg$0$0);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.objectArgumentNamedInvocation.objectArgumentNamedInvocation();
+    }
+}
