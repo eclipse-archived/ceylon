@@ -470,8 +470,8 @@ public class ExpressionVisitor extends Visitor {
         }
         else if (!unit.isOptionalType(t) && 
                 !hasUncheckedNulls(term)) {
-            n.addError("expression must be of optional type: " +
-                    t.getProducedTypeName() + " is not a supertype of Nothing");
+            n.addError("expression must be of optional type: null is not assignable to " +
+                    t.getProducedTypeName());
         }
     }
 
