@@ -2481,6 +2481,10 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             that.setDeclaration(member);
+            if (!member.isVisible(that.getScope())) {
+                that.addError("method or attribute is not visible: " +
+                        name(that.getIdentifier()), 400);
+            }
             Tree.TypeArguments tal = that.getTypeArguments();
             if (explicitTypeArguments(member, tal, that)) {
                 List<ProducedType> ta = getTypeArguments(tal);
@@ -2593,6 +2597,10 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             that.setDeclaration(type);
+            if (!type.isVisible(that.getScope())) {
+                that.addError("type is not visible: " +
+                        name(that.getIdentifier()), 400);
+            }
             Tree.TypeArguments tal = that.getTypeArguments();
             if (explicitTypeArguments(type, tal, that)) {
                 List<ProducedType> ta = getTypeArguments(tal);

@@ -34,6 +34,8 @@ class Unit1() {
     @error Unit3 u3 = Unit3();
     Unit4 u4 = Unit4();
     
+    @error Unit3();
+    
     @error String h = u3.hello;
     @error String s = Unit5().hello;
     

@@ -298,6 +298,10 @@ public class TypeVisitor extends Visitor {
             unit.getUnresolvedReferences().add(that.getIdentifier());
         }
         else {
+            if (!type.isVisible(that.getScope())) {
+                that.addError("type is not visible: " +
+                        name(that.getIdentifier()), 400);
+            }
             ProducedType outerType = that.getScope().getDeclaringType(type);
             visitSimpleType(that, outerType, type);
         }
