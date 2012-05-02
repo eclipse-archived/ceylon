@@ -136,8 +136,7 @@
             </listitem>
             <listitem>
                 <para>the declaration is a parameter or type parameter, and it 
-                directly occurs in the body of the declaration which the 
-                declaration parameterizes,</para>
+                directly occurs in the body of the parameterized declaration,</para>
             </listitem>
             <!--
             <listitem>
@@ -167,66 +166,8 @@
         type. Can we easily work around this limitation?</para></comment>
         
         <para>The namespace of a declaration may not contain a second declaration with 
-        the same name, unless:</para>
-        
-        <itemizedlist>
-          <listitem>
-            <para>one declaration is an initializer parameter of a class and the 
-            other is an attribute of the class,</para>
-          </listitem>
-          <listitem>
-            <para>the attribute is neither <literal>default</literal> nor 
-            <literal>formal</literal>,</para>
-          </listitem>
-          <listitem>
-            <para>the type of the parameter is the same as the type of the attribute,
-            and either</para>
-          </listitem>
-          <listitem>
-            <para>the attribute is a non-<literal>variable</literal> simple 
-            attribute with a specifier, and the specifier expression is a value 
-            reference to the initializer parameter, or</para>
-          </listitem>
-          <listitem>
-            <para>the attribute is a getter with no matching setter, and the body 
-            of the getter has a single <literal>return</literal> statement, and the 
-            return expression is a value reference to the initializer parameter.</para>
-          </listitem>
-        </itemizedlist>
-        
-        <para>(Where a parameter or type parameter is considered to be a declaration 
+        the same name. (A parameter or type parameter is considered to be a declaration 
         that is directly contained by the body of the declaration it parameterizes.)</para>
-        
-        <para>Note that this code is not legal:</para>
-        
-        <programlisting>String uppercase(String string) {
-    String string = string.uppercased;  //compiler error!
-    return string;
-}</programlisting>
-
-        <para>However, this code <emphasis>is</emphasis> legal, since, according to 
-        the rules above, an initialization parameter and an attribute may share a 
-        name if they have the same value:</para>
-        
-        <programlisting>class Person(String name) {
-    shared String name = name;
-}</programlisting>
-
-        <para>But the following is not legal:</para>
-        
-        <programlisting>class Person(String name) {
-    shared String name = name.lowercased;
-}</programlisting>
-
-        <para>However, an inner body may <emphasis>hide</emphasis> declarations of 
-        a containing body. For example, the following code is legal:</para>
-        
-        <programlisting>class Person(String name) {
-    shared String lowerCaseName {
-        String name = name.lowercased;
-        return name;
-    }
-}</programlisting>
         
         <para>A class or interface may not inherit a declaration with the same 
         name as a declaration it contains unless either:</para>
@@ -366,6 +307,16 @@
     <section id="hidingdeclaration">
         <title>Hiding a declaration</title>
     
+        <para>An inner body may <emphasis>hide</emphasis> declarations of a containing 
+        body. For example, the following code is legal:</para>
+        
+        <programlisting>class Person(String name) {
+    shared String lowerCaseName {
+        String name = name.lowercased;
+        return name;
+    }
+}</programlisting>
+        
         <para>If two declarations with the same name are both in scope at a certain program 
         element, then one declaration may <emphasis>hide</emphasis> the other declaration.</para>
         
@@ -400,9 +351,6 @@
                 parameter, type parameter, or control structure variable of the containing
                 body. <emphasis>TODO: is this the best thing to do?</emphasis></para>
             </listitem-->
-            <listitem>
-                <para>An initializer parameter of a class hides an attribute of the class.</para>
-            </listitem>
             <listitem>
                 <para>An <literal>actual</literal> declaration hides the declaration it
                 refines.</para>
@@ -832,21 +780,21 @@ String result = middleObject.string;</programlisting>
         may be accessed via the self reference <literal>this</literal> or via the outer 
         instance reference <literal>outer</literal>. For example:</para>
         
-        <programlisting>shared class Item(String name) {
-    variable String name := name;
+        <programlisting>shared class Item(name) {
+    variable String name;
     shared void changeName(String name) {
         this.name := name;
     }
 }</programlisting>
         
-            <programlisting>class Catalog(String name) {
-    String name = name;
-    class Schema(String name) {
-        String name = name;
+            <programlisting>class Catalog(name) {
+    shared String name;
+    class Schema(name) {
+        shared String name;
         Catalog catalog { return outer; }
         String catalogName { return outer.name; }
-        class Table(String name) {
-            String name = name;
+        class Table(name) {
+            shared String name;
             Schema schema { return outer; }
             String schemaName { return outer.name; }
             String catalogName { return catalog.name; }
@@ -1223,8 +1171,9 @@ else {
             
             <para>A local, simple attribute, or method is considered <emphasis>definitely 
             initialized</emphasis> at a certain statement or declaration if its declaration has 
-            a specifier or initilalizer or if it is definitely initialized by the sequence of 
-            statements from its declaration to the given statement or declaration.</para>
+            a specifier or initializer, if it is referenced by a parameter, or if it is definitely 
+            initialized by the sequence of statements from its declaration to the given statement 
+            or declaration.</para>
             
             <para>A local, simple attribute, or method must be definitely initialized wherever any 
             value reference to it occurs as an expression within the body in which it is declared.</para>

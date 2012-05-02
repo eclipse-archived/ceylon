@@ -659,12 +659,15 @@ TypeConstraints?
         <para>An initializer parameter may be used to specify or initialize the value 
         of an attribute:</para>
         
-        <programlisting>shared class Key(Lock lock) {
-    shared Lock lock = lock;
-}</programlisting>
-        
         <programlisting>shared class Counter(Integer initialCount=0) {
     shared variable Integer count := initialCount;
+    shared void increment() { count++; }
+}</programlisting>
+        
+        <para>Or, using a more streamlined syntax:</para>
+                
+        <programlisting>shared class Counter(count=0) {
+    shared variable Integer count;
     shared void increment() { count++; }
 }</programlisting>
         
@@ -672,18 +675,10 @@ TypeConstraints?
         attribute getter, or attribute setter:</para>
         
         <programlisting>shared class Key(Lock lock) {
-    shared Lock lock { return lock; }
-}</programlisting>
-
-        <programlisting>shared class Key(Lock lock) {
     shared void lock() { lock.engage(this); }
     shared void unlock() { lock.disengage(this); }
 }</programlisting>
 
-        <comment><para>TODO: should class initializer parameters be allowed to be declared 
-        <literal>shared</literal>, allowing a shortcut simple attribute declaration like in 
-        Scala?</para></comment>
-        
     </section>
 
     <section id="callabletypeofclass">
@@ -2192,7 +2187,9 @@ else {
         <section id="simpleattributesandlocals">
             <title>Simple attributes and locals</title>
             
-        <para>A simple attribute defines state.</para>
+        <para>A simple attribute defines state. The value of a simple attribute or local
+        may be specified or initialized as part of the declaration, or via a later 
+        specification statement or assignment.</para>
         
         <programlisting>SimpleAttribute: AttributeHeader ( (Specifier | Initializer)? ";" | NamedArguments )</programlisting>
         
@@ -2205,8 +2202,12 @@ else {
         the assignment operator <literal>:=</literal>.</para>
 
         <programlisting>Initializer: ":=" Expression</programlisting>
+        
+        <para>If a simple attribute or local is referenced by a parameter, it must not have
+        an initializer or specifier.</para>
 
-        <para>Parameters of classes and methods are also considered to be locals.</para>
+        <para>Explicitly typed parameters of classes and methods are also considered to be 
+        locals.</para>
                  
         <programlisting>variable Integer count := 0;</programlisting>
         

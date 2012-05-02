@@ -3112,8 +3112,17 @@ value biggerBag = bag.with(1, 2, 5.0);]]></programlisting>
         <title>Parameters</title>
     
         <para>A method or class declaration may declare a list or <emphasis>parameters</emphasis>, 
-        including, optionally, <emphasis>defaulted parameters</emphasis> (parameters with default
-        values) and a <emphasis>sequenced parameter</emphasis> (a "vararg" parameter).</para>
+        including, optionally:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>one or more <emphasis>defaulted parameters</emphasis> (parameters with 
+                default values), and/or</para>
+            </listitem>
+            <listitem>
+                <para>a <emphasis>sequenced parameter</emphasis> (a "vararg" parameter).</para>
+            </listitem>
+        </itemizedlist>
         
         <para>In a parameter list, parameters with default values must occur after required 
         parameters. The sequenced parameter, if any, must occur last.</para>
@@ -3125,16 +3134,35 @@ DefaultParam ("," DefaultParam)* ("," SequencedParam)? |
 SequencedParam?
 ")"</programlisting>
 
-        <para>Each parameter is declared with a type and name and may have annotations and/or
-        parameters of its own.</para>
+        <para>Each parameter is either:</para>
         
-        <programlisting>Param: Annotation* (SimpleParam | CallableParam | EntryParamPair)</programlisting>
+        <itemizedlist>
+            <listitem>
+                <para>declared with an explicit type and name and may have annotations and/or 
+                parameters of its own, or</para>
+            </listitem>
+            <listitem>
+                <para>a named reference to a simple attribute or local.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <programlisting>Param: Annotation* (SimpleParam | CallableParam | EntryParamPair) | MemberName</programlisting>
         
         <programlisting>SimpleParam: UnionType MemberName</programlisting>
         
-        <para>A parameter may not be be declared <literal>variable</literal>, and may not be 
-        assigned to within the body of the method or class.</para>
+        <!--para>A parameter may not be be declared <literal>variable</literal>, and may not be 
+        assigned to within the body of the method or class.</para-->
                 
+        <para>In the case of a reference, the name of the parameter must be the name of a 
+        simple attribute or local of the method or class it parameterizes, and the type of the 
+        parameter is the type of this simple attribute or local. Any argument to the parameter 
+        is used as the initial value of the attribute or local to which it refers.</para>
+        
+        <programlisting>class Person(name, age=0) {
+    shared String name;
+    shared variable Integer age;
+}</programlisting>
+        
         <section id="callableparameters">
             <title>Callable parameters</title>
         
@@ -3225,6 +3253,9 @@ SequencedParam?
         <programlisting>(Name name, Organization? org=null, Address... addresses)</programlisting>
         
         <programlisting>(Value instance, Argument... args)</programlisting>
+        
+        <comment><para>TODO: what is the syntax for sequenced parameters when declared by 
+        reference?</para></comment>
         
         </section>
         
