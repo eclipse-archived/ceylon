@@ -2257,95 +2257,87 @@ booleanCondition returns [BooleanCondition condition]
     //-> ^(BOOLEAN_CONDITION expression)
     ;
     
-existsCondition returns [ExistsCondition condition]
+existsCondition returns [Condition condition]
+    @init { ExistsCondition ec = null; }
     : (LPAREN EXISTS LIDENTIFIER RPAREN)
       => l1=LPAREN 
-      { $condition = new ExistsCondition($l1); }
+      { ec = new ExistsCondition($l1); 
+        $condition = ec; }
       e1=EXISTS impliedVariable
-      { $condition.setVariable($impliedVariable.variable); }
+      { ec.setVariable($impliedVariable.variable); }
       r1=RPAREN
-      { $condition.setEndToken($r1); }
+      { ec.setEndToken($r1); }
     //-> ^(EXISTS_CONDITION[$EXISTS] impliedVariable)
     | (LPAREN EXISTS compilerAnnotations (declarationStart|specificationStart))
       => l2=LPAREN 
-      { $condition = new ExistsCondition($l2); }
+      { ec = new ExistsCondition($l2); 
+        $condition = ec; }
       e2=EXISTS 
       specifiedVariable 
-      { $condition.setVariable($specifiedVariable.variable); }
+      { ec.setVariable($specifiedVariable.variable); }
       r2=RPAREN
-      { $condition.setEndToken($r2); }
+      { ec.setEndToken($r2); }
     //-> ^(EXISTS_CONDITION[$EXISTS] specifiedVariable2)
-    | l3=LPAREN
-      { $condition = new ExistsCondition($l3); }
-      e3=EXISTS
-      (expression
-      { $condition.setExpression($expression.expression); })?
-      r3=RPAREN
-      { $condition.setEndToken($r3); }
+    | bc=booleanCondition
+      { $condition=$bc.condition; }
     ;
     
-nonemptyCondition returns [NonemptyCondition condition]
+nonemptyCondition returns [Condition condition]
+    @init { NonemptyCondition nc = null; }
     : (LPAREN NONEMPTY LIDENTIFIER RPAREN) 
       => l1=LPAREN 
-      { $condition = new NonemptyCondition($l1); }
+      { nc = new NonemptyCondition($l1); 
+        $condition = nc; }
       n1=NONEMPTY impliedVariable 
-      { $condition.setVariable($impliedVariable.variable); }
+      { nc.setVariable($impliedVariable.variable); }
       r1=RPAREN
-      { $condition.setEndToken($r1); }
+      { nc.setEndToken($r1); }
     //-> ^(NONEMPTY_CONDITION[$NONEMPTY] impliedVariable)
     | (LPAREN NONEMPTY compilerAnnotations (declarationStart|specificationStart))
       => l2=LPAREN 
-      { $condition = new NonemptyCondition($l2); }
+      { nc = new NonemptyCondition($l2); 
+        $condition = nc; }
       n2=NONEMPTY 
       (specifiedVariable 
-      { $condition.setVariable($specifiedVariable.variable); })?
+      { nc.setVariable($specifiedVariable.variable); })?
       r2=RPAREN
-      { $condition.setEndToken($r2); }
+      { nc.setEndToken($r2); }
     //-> ^(NONEMPTY_CONDITION[$NONEMPTY] specifiedVariable2)
-    | l3=LPAREN
-      { $condition = new NonemptyCondition($l3); }
-      n3=NONEMPTY 
-      (expression
-      { $condition.setExpression($expression.expression); })?
-      r3=RPAREN
-      { $condition.setEndToken($r3); }
+    | bc=booleanCondition
+      { $condition=$bc.condition; }
     ;
 
-isCondition returns [IsCondition condition]
+isCondition returns [Condition condition]
+    @init { IsCondition ic = null; }
     : (LPAREN IS_OP type LIDENTIFIER RPAREN) 
       => l1=LPAREN 
-      { $condition = new IsCondition($l1); }
+      { ic = new IsCondition($l1); 
+        $condition = ic; }
       i1=IS_OP t1=type impliedVariable 
-      { $condition.setType($t1.type);
-        $condition.setVariable($impliedVariable.variable); }
+      { ic.setType($t1.type);
+        ic.setVariable($impliedVariable.variable); }
       r1=RPAREN
-      { $condition.setEndToken($r1); }
+      { ic.setEndToken($r1); }
     //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
     | (LPAREN IS_OP type LIDENTIFIER SPECIFY)
       => l2=LPAREN
-      { $condition = new IsCondition($l2); }
+      { ic = new IsCondition($l2); 
+        $condition = ic; }
       i2=IS_OP 
       ( t2=type
-      { $condition.setType($t2.type);
+      { ic.setType($t2.type);
         Variable v = new Variable(null);
         v.setType($t2.type); 
-        $condition.setVariable(v); }
+        ic.setVariable(v); }
       memberName
-      { $condition.getVariable().setIdentifier($memberName.identifier); }
+      { ic.getVariable().setIdentifier($memberName.identifier); }
       specifier
-      { $condition.getVariable().setSpecifierExpression($specifier.specifierExpression); })?
+      { ic.getVariable().setSpecifierExpression($specifier.specifierExpression); })?
       r2=RPAREN
-      { $condition.setEndToken($r2); }
+      { ic.setEndToken($r2); }
     //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE unionType memberName specifier))
-    | l3=LPAREN
-      { $condition = new IsCondition($l3); }
-      i3=IS_OP 
-      t3=abbreviatedType
-      { $condition.setType($t3.type); }
-      ( expression
-      { $condition.setExpression($expression.expression); })?
-      r3=RPAREN
-      { $condition.setEndToken($r3); }
+    | bc=booleanCondition
+      { $condition=$bc.condition; }
     ;
 
 satisfiesCondition returns [SatisfiesCondition condition]
