@@ -210,6 +210,19 @@ public class CeylonDocToolTest {
     }
 
     @Test
+    public void classLoading() throws IOException {
+        String pathname = "test-ceylondoc-src";
+        
+        // compile the a and b modules
+        compile(pathname, "com.redhat.ceylon.ceylondoc.test.modules.classloading.a");
+        compile(pathname, "com.redhat.ceylon.ceylondoc.test.modules.classloading.b");
+        
+        // now run docs on c, which uses b, which uses a
+        CeylonDocTool tool = tool(pathname, "com.redhat.ceylon.ceylondoc.test.modules.classloading.c", true, "build/ceylon-cars");
+        tool.makeDoc();
+    }
+
+    @Test
     public void containsJavaCode() throws IOException {
         String pathname = "test-ceylondoc-src";
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.mixed";
