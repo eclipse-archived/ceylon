@@ -82,7 +82,8 @@ public final class List$impl<Element> {
     static <Element> int _hashCode(final List<Element> $this) {
         int hashCode = 1;
         java.lang.Object elem;
-        for (Iterator<? extends Element> iter=$this.getIterator(); !((elem = iter.next()) instanceof Finished);) {
+        for (Iterator<? extends Element> iter=$this.getIterator(); 
+                !((elem = iter.next()) instanceof Finished);) {
             hashCode *= 31;
             if (elem != null) {
                 hashCode += elem.hashCode();
@@ -95,9 +96,11 @@ public final class List$impl<Element> {
         return List$impl.<Element>_toString($this);
     }
     static <Element> java.lang.String _toString(List<Element> $this) {
+        if ($this.getEmpty()) return "{}";
         java.lang.StringBuilder result = new java.lang.StringBuilder("{ ");
         java.lang.Object elem;
-        for (Iterator<? extends Element> iter=$this.getIterator(); !((elem = iter.next()) instanceof Finished);) {
+        for (Iterator<? extends Element> iter=$this.getIterator(); 
+                !((elem = iter.next()) instanceof Finished);) {
             if (result.length() > 2) {
                 result.append(", ");
             }
