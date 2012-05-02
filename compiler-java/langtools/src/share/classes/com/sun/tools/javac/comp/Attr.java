@@ -798,7 +798,7 @@ public class Attr extends JCTree.Visitor {
                 if (tree.name == names.init && owner.type != syms.objectType) {
                     JCBlock body = tree.body;
                     if (body.stats.isEmpty() ||
-                        !TreeInfo.isSelfCall(body.stats.head)) {
+                        !TreeInfo.isSelfCall(names, body.stats.head)) {
                         body.stats = body.stats.
                             prepend(memberEnter.SuperCall(make.at(body.pos),
                                                           List.<Type>nil(),
@@ -806,7 +806,7 @@ public class Attr extends JCTree.Visitor {
                                                           false));
                     } else if ((env.enclClass.sym.flags() & ENUM) != 0 &&
                                (tree.mods.flags & GENERATEDCONSTR) == 0 &&
-                               TreeInfo.isSuperCall(body.stats.head)) {
+                               TreeInfo.isSuperCall(names, body.stats.head)) {
                         // enum constructors are not allowed to call super
                         // directly, so make sure there aren't any super calls
                         // in enum constructors, except in the compiler
@@ -1555,10 +1555,11 @@ public class Attr extends JCTree.Visitor {
                 if (body.stats.head.getTag() == JCTree.EXEC &&
                     ((JCExpressionStatement) body.stats.head).expr == tree)
                     return true;
+                // given tree allowed as last stmt in a Let
                 if (body.stats.head.getTag() == JCTree.EXEC &&
                         (((JCExpressionStatement) body.stats.head).expr instanceof LetExpr) &&
-                        ((LetExpr)((JCExpressionStatement) body.stats.head).expr).stats.head.getTag() == JCTree.EXEC && 
-                        ((JCExpressionStatement)((LetExpr)((JCExpressionStatement) body.stats.head).expr).stats.head).expr == tree)
+                        ((LetExpr)((JCExpressionStatement) body.stats.head).expr).stats.last().getTag() == JCTree.EXEC && 
+                        ((JCExpressionStatement)((LetExpr)((JCExpressionStatement) body.stats.head).expr).stats.last()).expr == tree)
                     return true;
             }
             log.error(tree.pos(),"call.must.be.first.stmt.in.ctor",

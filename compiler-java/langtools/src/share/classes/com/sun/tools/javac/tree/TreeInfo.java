@@ -143,45 +143,44 @@ public class TreeInfo {
         return false;
     }
 
-    /** If the expression is a method call, return the method name, null
-     *  otherwise. */
-    public static Name calledMethodName(JCTree tree) {
+    /** Returns true if the expression is a method call calling one of the given
+     * methods, or if it's a let whose last stmt is a method call calling on 
+     * the given methods, otherwise false */
+    private static boolean calledMethodNameIncludesAny(JCTree tree, Name... names) {
         if (tree.getTag() == JCTree.EXEC) {
             JCExpressionStatement exec = (JCExpressionStatement)tree;
             if (exec.expr.getTag() == JCTree.APPLY) {
                 Name mname = TreeInfo.name(((JCMethodInvocation) exec.expr).meth);
-                return mname;
+                for (Name name : names) {
+                    if (mname==name) {
+                        return true;
+                    }
+                }
+                return false;
             }
             if (exec.expr.getTag() == JCTree.LETEXPR) {
                 LetExpr let = (LetExpr)exec.expr;
-                return calledMethodName(let.stats.head);
+                for (JCStatement stmt : let.stats) {
+                    if (calledMethodNameIncludesAny(stmt, names)) {
+                        return true;
+                    }
+                }
+                return calledMethodNameIncludesAny(let.expr);
             }
         }
-        return null;
+        return false;
     }
 
     /** Is this a call to this or super?
      */
-    public static boolean isSelfCall(JCTree tree) {
-        Name name = calledMethodName(tree);
-        if (name != null) {
-            Names names = name.table.names;
-            return name==names._this || name==names._super;
-        } else {
-            return false;
-        }
+    public static boolean isSelfCall(Names names, JCTree tree) {
+        return calledMethodNameIncludesAny(tree, names._this, names._super);
     }
 
     /** Is this a call to super?
      */
-    public static boolean isSuperCall(JCTree tree) {
-        Name name = calledMethodName(tree);
-        if (name != null) {
-            Names names = name.table.names;
-            return name==names._super;
-        } else {
-            return false;
-        }
+    public static boolean isSuperCall(Names names, JCTree tree) {
+        return calledMethodNameIncludesAny(tree, names._super);
     }
 
     /** Is this a constructor whose first (non-synthetic) statement is not
