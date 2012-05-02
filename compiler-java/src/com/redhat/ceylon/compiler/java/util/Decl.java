@@ -163,12 +163,20 @@ public class Decl {
     }
     
     public static boolean isShared(Tree.Declaration decl) {
-        return decl.getDeclarationModel().isShared();
+        return isShared(decl.getDeclarationModel());
+    }
+    
+    public static boolean isShared(Declaration decl) {
+        return decl.isShared();
     }
     
     public static boolean isCaptured(Tree.Declaration decl) {
-    	// Shared elements are implicitely captured although the typechecker doesn't mark them that way
-        return decl.getDeclarationModel().isCaptured() || decl.getDeclarationModel().isShared();
+        return isCaptured(decl.getDeclarationModel());
+    }
+    
+    public static boolean isCaptured(Declaration decl) {
+        // Shared elements are implicitely captured although the typechecker doesn't mark them that way
+        return decl.isCaptured() || decl.isShared();
     }
 
     public static boolean isAbstract(Tree.ClassOrInterface decl) {
@@ -184,7 +192,11 @@ public class Decl {
     }
 
     public static boolean isActual(Tree.Declaration decl) {
-        return decl.getDeclarationModel().isActual();
+        return isActual(decl.getDeclarationModel());
+    }
+    
+    public static boolean isActual(Declaration decl) {
+        return decl.isActual();
     }
 
     public static boolean isMutable(Tree.AttributeDeclaration decl) {
@@ -192,7 +204,11 @@ public class Decl {
     }
 
     public static boolean isToplevel(Tree.Declaration decl) {
-        return decl.getDeclarationModel().isToplevel();
+        return isToplevel(decl.getDeclarationModel());
+    }
+    
+    public static boolean isToplevel(Declaration decl) {
+        return decl.isToplevel();
     }
     
     /**

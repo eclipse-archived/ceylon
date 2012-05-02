@@ -49,6 +49,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
@@ -415,7 +416,7 @@ public class ClassTransformer extends AbstractTransformer {
                  * declaration we can use to make sure we're not widening the attribute type.
                  */
             .setter(this, name, decl.getDeclarationModel().getGetter())
-            .modifiers(transformAttributeGetSetDeclFlags(decl, false))
+            .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), false))
             .isActual(isActual(decl))
             .setterBlock(body)
             .build();
@@ -427,7 +428,7 @@ public class ClassTransformer extends AbstractTransformer {
         // TODO Support concrete getters on interfaces
         return AttributeDefinitionBuilder
             .getter(this, name, decl.getDeclarationModel())
-            .modifiers(transformAttributeGetSetDeclFlags(decl, false))
+            .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), false))
             .isActual(Decl.isActual(decl))
             .getterBlock(body)
             .build();
@@ -498,8 +499,7 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
 
-    private int transformAttributeGetSetDeclFlags(Tree.TypedDeclaration cdecl, boolean forCompanion) {
-        TypedDeclaration tdecl = cdecl.getDeclarationModel();
+    private int transformAttributeGetSetDeclFlags(TypedDeclaration tdecl, boolean forCompanion) {
         if (tdecl instanceof Setter) {
             // Spec says: A setter may not be annotated shared, default or 
             // actual. The visibility and refinement modifiers of an attribute 
@@ -516,7 +516,7 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
 
-    private int transformObjectDeclFlags(Tree.ObjectDefinition cdecl) {
+    private int transformObjectDeclFlags(Value cdecl) {
         int result = 0;
 
         result |= FINAL;
@@ -554,7 +554,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         return builder
-            .modifiers(transformAttributeGetSetDeclFlags(decl, forCompanion))
+            .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), forCompanion))
             .isActual(Decl.isActual(decl) && !forCompanion)
             .isFormal(Decl.isFormal(decl) && !forCompanion)
             .build();
@@ -1052,45 +1052,55 @@ public class ClassTransformer extends AbstractTransformer {
         return methodBuilder.build();
     }
 
-    public List<JCTree> transformObject(Tree.ObjectDefinition def, ClassDefinitionBuilder containingClassBuilder) {
-        final Value model = def.getDeclarationModel();
+    public List<JCTree> transformObjectDefinition(Tree.ObjectDefinition def, ClassDefinitionBuilder containingClassBuilder) {
+        return transformObject(def, def.getDeclarationModel(), def.getType().getTypeModel(), containingClassBuilder, true);
+    }
+    
+    public List<JCTree> transformObjectArgument(Tree.ObjectArgument def) {
+        return transformObject(def, def.getDeclarationModel(), def.getType().getTypeModel(), null, false);
+    }
+    
+    private List<JCTree> transformObject(Node def, Value model, ProducedType typeModel, ClassDefinitionBuilder containingClassBuilder,
+            boolean makeInstanceIfLocal) {
         noteDecl(model);
         
-        String name = def.getIdentifier().getText();
-        ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.klass(this, Decl.isAncestorLocal(def), name);
+        String name = model.getName();
+        ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.klass(this, Decl.isAncestorLocal(model), name);
         
         CeylonVisitor visitor = new CeylonVisitor(gen(), objectClassBuilder);
         def.visitChildren(visitor);
 
         TypeDeclaration decl = model.getType().getDeclaration();
 
-        if (Decl.isToplevel(def)) {
-            objectClassBuilder.body(makeObjectGlobal(def, model.getQualifiedNameString()).toList());
+        if (Decl.isToplevel(model)
+                && def instanceof Tree.ObjectDefinition) {
+            objectClassBuilder.body(makeObjectGlobal((Tree.ObjectDefinition)def, model.getQualifiedNameString()).toList());
         }
 
         List<JCTree> result = objectClassBuilder
             .annotations(makeAtObject())
             .modelAnnotations(model.getAnnotations())
-            .modifiers(transformObjectDeclFlags(def))
+            .modifiers(transformObjectDeclFlags(model))
             .constructorModifiers(PRIVATE)
             .satisfies(decl.getSatisfiedTypes())
             .init((List<JCStatement>)visitor.getResult().toList())
             .build();
         
-        if (Decl.isLocal(def)) {
+        if (Decl.isLocal(model)
+                && makeInstanceIfLocal) {
             result = result.append(makeLocalIdentityInstance(name, false));
-        } else if (Decl.withinClassOrInterface(def)) {
-            boolean visible = Decl.isCaptured(def);
+        } else if (Decl.withinClassOrInterface(model)) {
+            boolean visible = Decl.isCaptured(model);
             int modifiers = FINAL | ((visible) ? PRIVATE : 0);
-            JCExpression type = makeJavaType(def.getType().getTypeModel());
-            JCExpression initialValue = makeNewClass(makeJavaType(def.getType().getTypeModel()), List.<JCTree.JCExpression>nil());
+            JCExpression type = makeJavaType(typeModel);
+            JCExpression initialValue = makeNewClass(makeJavaType(typeModel), List.<JCTree.JCExpression>nil());
             containingClassBuilder.field(modifiers, name, type, initialValue, !visible);
             
             if (visible) {
                 result = result.appendList(AttributeDefinitionBuilder
                     .getter(this, name, model)
-                    .modifiers(transformAttributeGetSetDeclFlags(def, false))
-                    .isActual(Decl.isActual(def))
+                    .modifiers(transformAttributeGetSetDeclFlags(model, false))
+                    .isActual(Decl.isActual(model))
                     .build());
             }
         }
