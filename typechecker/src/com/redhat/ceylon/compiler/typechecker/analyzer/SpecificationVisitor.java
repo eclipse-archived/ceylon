@@ -30,6 +30,7 @@ public class SpecificationVisitor extends Visitor {
     private SpecificationState specified = new SpecificationState(false, false);
     private boolean cannotSpecify = true;
     private boolean declared = false;
+    private boolean hasParameter = false;
     private Tree.Statement lastExecutableStatement;
     private boolean declarationSection = false;
 
@@ -157,7 +158,7 @@ public class SpecificationVisitor extends Visitor {
                     //you are allowed to refer to later 
                     //declarations in a class declaration
                     //section
-                    if (!inDeclarationSection()) {
+                    if (!isForwardReferenceable()) {
                         if (declaration.getContainer() instanceof Class) {
                             that.addError("forward reference to class member in initializer: " + 
                                     member.getName() + " is not yet declared (forward references must occur in declaration section)");
@@ -182,13 +183,13 @@ public class SpecificationVisitor extends Visitor {
                                     member.getName());
                         }
                     }
-                    else if (!inDeclarationSection()) {
+                    else if (!isForwardReferenceable()) {
                         that.addError("formal member may not be used in initializer: " + 
                                 member.getName());                    
                     }
                 }
                 else {
-                    if ( member.isDefault() && !inDeclarationSection() ) {
+                    if ( member.isDefault() && !isForwardReferenceable() ) {
                         that.addError("default member may not be used in initializer: " + 
                                 member.getName());                    
                     }
@@ -197,8 +198,8 @@ public class SpecificationVisitor extends Visitor {
         }
     }
 
-    private boolean inDeclarationSection() {
-        return declarationSection || 
+    private boolean isForwardReferenceable() {
+        return declarationSection || hasParameter ||
                 declaration.isToplevel() ||
                 declaration.isInterfaceMember();
     }
@@ -277,12 +278,16 @@ public class SpecificationVisitor extends Visitor {
 	                        .addError("variable values must be assigned using \":=\": " +
 	                            member.getName(), 802);
 	            }
+	            else if (!declared) {
+                    that.addError("specified value is not yet declared: " + 
+                            member.getName());
+	            }
 	            else if (cannotSpecify) {
 	                that.addError("cannot specify non-variable value from here: " + 
 	                        member.getName());
 	            }
 	            else if (specified.possibly) {
-	                that.addError("not definitely unspecified: " + 
+	                that.addError("specified value is not definitely unspecified: " + 
 	                        member.getName());
 	            }
 	            else {
@@ -397,6 +402,7 @@ public class SpecificationVisitor extends Visitor {
             Declaration a = that.getScope().getDirectMember(d.getName(), null);
             if (a!=null && a==declaration) {
                 specify();
+                hasParameter = true;
             }
         }
     }

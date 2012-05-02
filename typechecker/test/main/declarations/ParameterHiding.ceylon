@@ -85,4 +85,26 @@ interface NewParameterHiding {
         methodHiding("hello");
     }
     
+    class Up(Float x, Float y) {}
+    class Down(x,y) extends Up(x,y) {
+        shared Float x; variable shared Float y;
+    }
+    
+    void hrrm(s) {
+        print(s);
+        String s;
+    }
+    
+    class Broken() {
+        @error x = 1.0;
+        @error y = 0.0;
+        @error z := 2.0;
+        @error print(x);
+        shared Float x;
+        @error shared Float y;
+        shared variable Float z;
+        x = 2.0;
+        z := 0.0;
+    }
+    
 }
