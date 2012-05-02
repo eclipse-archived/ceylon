@@ -98,13 +98,19 @@ class Operators() {
     @type["Boolean"] value x29 = nothing exists;
     @type["Boolean"] value x29n = exists nothing;
     
-    @error value x30 = 1 exists;
-    @error value x30n = exists 1;
+    @error @type["Boolean"] value x30 = 1 exists;
+    @error @type["Boolean"] value x30n = exists 1;
     
-    @type["Boolean"] value x70 = {} nonempty;
-    @type["Boolean"] value x70n = nonempty {};
-    @error value x71 = {"hello"} nonempty;
-    @error value x71n = nonempty {"hello"};
+    @error @type["Boolean"] value x73 = null exists;
+    @error @type["Boolean"] value x73n = exists null;
+    
+    @error @type["Boolean"] value x70 = {} nonempty;
+    @error @type["Boolean"] value x70n = nonempty {};
+    @error @type["Boolean"] value x71 = {"hello"} nonempty;
+    @error @type["Boolean"] value x71n = nonempty {"hello"};
+    String[] strs = {};
+    @type["Boolean"] value x72 = strs nonempty;
+    @type["Boolean"] value x72n = nonempty strs;
     
     Object one = 1;
     @type["Boolean"] value x31 = one is Integer;
@@ -248,14 +254,19 @@ class Operators() {
     Float x=1.0;
     Float result = x>0.0 then x else 0.0;
     
-    String str1 = null ? null ? "hello";
-    String str2 = null else null else "hello";
+    @error String str1 = null ? null ? "hello";
+    @error String str2 = null else null else "hello";
+
+    String? nostring = null;
+    @type["String"] value str3 = nostring ? nostring ? "hello";
+    @type["String"] value str4 = nostring else nostring else "hello";
     
     Void vd = null;
     @type["Object"] value vd1 = vd ? 1;
     @type["Object"] value vd2 = vd ? "hello";
     
-    Float ff = null?1.0 + null?2.0;
+    Float? nof = null;
+    Float ff = nof?1.0 + nof?2.0;
     
     variable Ordinal<Integer> oi:=0;
     oi++;

@@ -242,9 +242,9 @@ class Assignability() {
     for (Integer i in {-1,+2}) {
         print(i.string);
     }
-    if ({} nonempty) {}
+    @error if ({} nonempty) {}
     @error if ({-2,+0,+1} nonempty) {}
-    if (nonempty e = {}) {}
+    if (nonempty @error e = {}) {}
     if (nonempty @error s = {-2,+0,+1}) {}
     Integer[] ints = {-2,+0,+1};
     if (nonempty ints) {

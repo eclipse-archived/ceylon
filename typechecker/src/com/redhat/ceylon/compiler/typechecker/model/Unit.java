@@ -531,10 +531,12 @@ public class Unit {
     }
     
     public boolean isOptionalType(ProducedType pt) {
-        //shortcut way of testing that the given type 
-        //has a nonempty intersection with Nothing
-        return getNullDeclaration().getType().isSubtypeOf(pt);
-                //&& !pt.getDeclaration().equals(getVoidDeclaration());
+        //must have non-empty intersection with Nothing
+        //and non-empty intersection with Object
+        return !(intersectionType(getNothingDeclaration().getType(), pt, this)
+                        .getDeclaration() instanceof BottomType) &&
+               !(intersectionType(getObjectDeclaration().getType(), pt, this)
+                        .getDeclaration() instanceof BottomType);
     }
     
     public boolean isEmptyType(ProducedType pt) {
@@ -544,9 +546,13 @@ public class Unit {
                     getNothingDeclaration().getType(), this)
                 .isSupertypeOf(pt) &&
         //must have non-empty intersection with None<Bottom>
-                !(intersectionType(producedType(getNoneDeclaration(),
+        //and non-empty intersection with Some<Bottom>
+               !(intersectionType(producedType(getNoneDeclaration(),
                     getBottomDeclaration().getType()), pt, this)
-                .getDeclaration() instanceof BottomType);
+                        .getDeclaration() instanceof BottomType) &&
+               !(intersectionType(producedType(getSomeDeclaration(),
+                    getBottomDeclaration().getType()), pt, this)
+                        .getDeclaration() instanceof BottomType);
     }
     
     public ProducedType getElementType(ProducedType pt) {

@@ -1451,9 +1451,9 @@ else {
                 assignability condition,</para>
             </listitem>
             <listitem>
-                <para>a type to which <literal>null</literal> is assignable, whose intersection with 
-                <literal>Object</literal> is not exactly <literal>Bottom</literal>, in the case of an 
-                exists condition, or</para>
+                <para>a type whose intersection with <literal>Nothing</literal> is not exactly 
+                <literal>Bottom</literal> and whose intersection with <literal>Object</literal> is 
+                not exactly <literal>Bottom</literal>, in the case of an exists condition, or</para>
             </listitem>
             <listitem>
                 <para>a subtype of <literal>Nothing|FixedSized&lt;Void&gt;</literal> whose intersection

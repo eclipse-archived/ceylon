@@ -445,8 +445,8 @@ public class ExpressionVisitor extends Visitor {
             n.addError("expression must be a type with fixed size: type not known");
         }
         else if (!unit.isEmptyType(t)) {
-            n.addError("expression must be a type with fixed size: " + 
-                    t.getProducedTypeName() + " is not a supertype of FixedSized");
+            n.addError("expression must be a possibly-empty type: " + 
+                    t.getProducedTypeName() + " is not possibly-empty");
         }
     }
     
@@ -470,8 +470,8 @@ public class ExpressionVisitor extends Visitor {
         }
         else if (!unit.isOptionalType(t) && 
                 !hasUncheckedNulls(term)) {
-            n.addError("expression must be of optional type: null is not assignable to " +
-                    t.getProducedTypeName());
+            n.addError("expression must be of optional type: " +
+                    t.getProducedTypeName() + " is not optional");
         }
     }
 
