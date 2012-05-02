@@ -131,7 +131,7 @@ shared interface List<out Element>
     String elementsString {
         variable Boolean first := true;
         value result = StringBuilder();
-        for (Element elem in this) {
+        for (elem in this) {
             if (first) {
                 first := false;
             }
