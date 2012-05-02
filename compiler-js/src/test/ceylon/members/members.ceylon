@@ -1,7 +1,7 @@
 import assert {...}
 
-shared class Counter(Integer initialCount=0) {
-    variable value currentCount:=initialCount;
+shared class Counter(Integer initCount=0) {
+    variable value currentCount:=initCount;
     shared Integer count {
         return currentCount;
     }
@@ -9,7 +9,7 @@ shared class Counter(Integer initialCount=0) {
         currentCount:=currentCount+1; 
     }
     shared Integer initialCount {
-        return initialCount;
+        return initCount;
     }
     shared actual String string {
         return "Counter[" + count.string + "]";
