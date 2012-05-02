@@ -1292,7 +1292,7 @@ public class ExpressionVisitor extends Visitor {
         if (sa!=null) {
             Parameter sp = getSequencedParameter(parameters);
             if (sp!=null) {
-                ProducedType spt = unit.getElementType(sp.getType());
+                ProducedType spt = unit.getIteratedType(sp.getType());
                 for (Tree.Expression e: args.getSequencedArgument()
                                 .getExpressionList().getExpressions()) {
                     ProducedType sat = e.getTypeModel();
@@ -1311,7 +1311,7 @@ public class ExpressionVisitor extends Visitor {
             Parameter parameter = parameters.getParameters().get(i);
             if (args.getPositionalArguments().size()>i) {
                 if (parameter.isSequenced() && args.getEllipsis()==null) {
-                    ProducedType spt = unit.getElementType(parameter.getType());
+                    ProducedType spt = unit.getIteratedType(parameter.getType());
                     for (int k=i; k<args.getPositionalArguments().size(); k++) {
                         ProducedType sat = args.getPositionalArguments().get(k)
                                 .getExpression().getTypeModel();
@@ -1652,7 +1652,7 @@ public class ExpressionVisitor extends Visitor {
             if (paramType==null) {
                 paramType = new UnknownType(a.getUnit()).getType();
             }
-            checkAssignable(e.getTypeModel(), unit.getElementType(paramType), a, 
+            checkAssignable(e.getTypeModel(), unit.getIteratedType(paramType), a, 
                     "sequenced argument must be assignable to sequenced parameter " + 
                     p.getName() + " of " + pr.getDeclaration().getName());
         }
@@ -1723,7 +1723,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.PositionalArgumentList pal, int i, ProducedType paramType) {
         List<Tree.PositionalArgument> args = pal.getPositionalArguments();
         ProducedType at = paramType==null ? null : 
-                unit.getElementType(paramType);
+                unit.getIteratedType(paramType);
         for (int j=i; j<args.size(); j++) {
             Tree.PositionalArgument a = args.get(j);
             a.setParameter(p);
