@@ -19,6 +19,8 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
+import static com.sun.tools.javac.code.Flags.FINAL;
+
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
@@ -31,6 +33,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
+import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -38,12 +41,14 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
@@ -62,8 +67,7 @@ abstract class InvocationBuilder {
     protected boolean unboxed;
     protected BoxingStrategy boxingStrategy;
     
-    protected final ListBuffer<JCVariableDecl> vars = ListBuffer.lb();
-    protected final ListBuffer<JCStatement> prestmts = ListBuffer.lb();
+    protected final ListBuffer<JCStatement> vars = ListBuffer.lb();
     protected final ListBuffer<JCExpression> args = ListBuffer.lb();
     protected final Map<TypeParameter, ProducedType> typeArguments;
     protected String callVarName;
@@ -277,15 +281,13 @@ abstract class InvocationBuilder {
         if (vars != null && !vars.isEmpty()) {
             if (returnType == null || gen().isVoid(returnType)) {
                 // void methods get wrapped like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1); null)
-                resultExpr = gen().make().LetExpr(prestmts.toList(), 
-                        vars.toList(), 
-                        List.<JCStatement>of(gen().make().Exec(resultExpr)), 
+                resultExpr = gen().make().LetExpr( 
+                        vars.append(gen().make().Exec(resultExpr)).toList(), 
                         gen().makeNull());
             } else {
                 // all other methods like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1))
-                resultExpr = gen().make().LetExpr(prestmts.toList(), 
-                        vars.toList(), 
-                        List.<JCStatement>nil(),
+                resultExpr = gen().make().LetExpr( 
+                        vars.toList(),
                         resultExpr);
             }
         }
@@ -822,31 +824,30 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         // Assign vars for each named argument given
         for (Tree.NamedArgument namedArg : namedArguments) {
             gen().at(namedArg);
+            Parameter declaredParam = namedArg.getParameter();
+            BoxingStrategy boxType;
+            ProducedType type = null;
+            int index;
+            if (declaredParam != null) {
+                boundSequenced = declaredParam.isSequenced();
+                index = declaredParams.indexOf(declaredParam);
+                boxType = Util.getBoxingStrategy(declaredParam);
+                type = gen().getTypeForParameter(declaredParam, isRaw, getTypeArguments());
+            } else {
+                // Arguments of overloaded methods don't have a reference to parameter
+                index = idx++;
+                boxType = BoxingStrategy.UNBOXED;
+            }
+            String varName = varBaseName + "$" + index;
             if (namedArg instanceof Tree.SpecifiedArgument) {             
                 Tree.SpecifiedArgument specifiedArg = (Tree.SpecifiedArgument)namedArg;
                 Tree.Expression expr = specifiedArg.getSpecifierExpression().getExpression();
-                Parameter declaredParam = namedArg.getParameter();
-                int index;
-                BoxingStrategy boxType;
-                ProducedType type;
-                if (declaredParam != null) {
-                    if (declaredParam.isSequenced()) {
-                        boundSequenced = true;
-                    }
-                    index = declaredParams.indexOf(declaredParam);
-                    boxType = Util.getBoxingStrategy(declaredParam);
-                    type = gen().getTypeForParameter(declaredParam, isRaw, getTypeArguments());
-                } else {
-                    // Arguments of overloaded methods don't have a reference to parameter
-                    index = idx++;
-                    boxType = BoxingStrategy.UNBOXED;
+                if (declaredParam == null) {
                     type = expr.getTypeModel();
                 }
-                String varName = varBaseName + "$" + index;
                 // if we can't pick up on the type from the declaration, revert to the type of the expression
                 if(gen().isTypeParameter(gen().simplifyType(type)))
                     type = expr.getTypeModel();
-                
                 JCExpression typeExpr = gen().makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? AbstractTransformer.TYPE_ARGUMENT : 0);
                 JCExpression argExpr = gen().expressionGen().transformExpression(expr, boxType, type);
                 JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, argExpr);
@@ -861,38 +862,53 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                         model.getParameterLists().get(0), 
                         gen().statementGen().transform(methodArg.getBlock()).getStatements());
                 JCNewClass callable = callableBuilder.build();
-                int index = idx++;
-                String varName = varBaseName + "$" + index;
                 JCExpression typeExpr = gen().makeJavaType(callableType);
                 JCVariableDecl varDecl = gen().makeVar(varName, typeExpr, callable);
                 vars.append(varDecl);
             } else if (namedArg instanceof Tree.ObjectArgument) {
                 Tree.ObjectArgument objectArg = (Tree.ObjectArgument)namedArg;
-                objectArg.getAnonymousClass();
-                objectArg.getDeclarationModel();
-                objectArg.getExtendedType();
-                objectArg.getIdentifier();
-                objectArg.getSatisfiedTypes();
-                ClassTransformer ct = ClassTransformer.getInstance(gen().getContext());
-                List<JCTree> object = ct.transformObjectArgument(objectArg);
-                if (object.size() != 1
-                        || !(object.head instanceof JCStatement)) {
-                    throw new RuntimeException();
-                }
-                prestmts.append((JCStatement)object.head);
-                
-                int index = idx++;
-                String varName = varBaseName + "$" + index;
-                JCVariableDecl varDecl = gen().makeLocalIdentityInstance(varName, "o", false);
-                vars.append(varDecl);
+                List<JCTree> object = gen().classGen().transformObjectArgument(objectArg);
+                // No need to worry about boxing (it cannot be a boxed type) 
+                JCVariableDecl varDecl = gen().makeLocalIdentityInstance(varName, objectArg.getIdentifier().getText(), false);
+                vars.appendList(toStmts(objectArg, object)).append(varDecl);
             } else if (namedArg instanceof Tree.AttributeArgument) {
                 Tree.AttributeArgument attrArg = (Tree.AttributeArgument)namedArg;
-                throw new RuntimeException("AttributeArgument");
+                final Getter model = attrArg.getDeclarationModel();
+                final String name = model.getName();
+                final String alias = gen().aliasName(name);
+                final List<JCTree> attrClass = gen().gen().transformAttribute(model, alias, alias, attrArg.getBlock(), null, null);
+                // TODO Type params
+                JCExpression initValue = gen().make().Apply(null, 
+                        gen().makeSelect(alias, Util.getGetterName(name)),
+                        List.<JCExpression>nil());
+                // TODO Boxing
+                initValue = gen().expressionGen().boxUnboxIfNecessary(initValue, 
+                        true, 
+                        model.getType(), 
+                        BoxingStrategy.UNBOXED);
+                JCTree.JCVariableDecl var = gen().make().VarDef(
+                        gen().make().Modifiers(FINAL, List.<JCAnnotation>nil()), 
+                        gen().names().fromString(varName), 
+                        gen().makeJavaType(model.getType()), 
+                        initValue);
+                vars.appendList(toStmts(attrArg, attrClass)).append(var);
             } else {
                 throw new RuntimeException("" + namedArg);
             }
         }
         return boundSequenced;
+    }
+    
+    private List<JCStatement> toStmts(Tree.NamedArgument namedArg, final List<JCTree> listOfStatements) {
+        final ListBuffer<JCStatement> result = ListBuffer.<JCStatement>lb();
+        for (JCTree tree : listOfStatements) {
+            if (tree instanceof JCStatement) {
+                result.append((JCStatement)tree);
+            } else {
+                result.append(gen().make().Exec(gen().makeErroneous(namedArg, "Attempt to put a non-statement in a Let")));
+            }
+        }
+        return result.toList();
     }
     
     private void appendVarsForDefaulted(
