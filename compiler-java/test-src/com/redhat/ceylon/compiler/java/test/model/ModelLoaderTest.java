@@ -399,4 +399,9 @@ public class ModelLoaderTest extends CompilerTest {
     public void loadJavaKeywords(){
         verifyClassLoading("JavaKeywords.ceylon");
     }
+
+    @Test
+    public void loadGettersWithUnderscores(){
+        verifyClassLoading("GettersWithUnderscores.ceylon");
+    }
 }
