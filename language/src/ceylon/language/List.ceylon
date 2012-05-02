@@ -138,7 +138,7 @@ shared interface List<out Element>
             else {
                 result.append(", ");
             }
-            if (is Object elem) {
+            if (exists elem) {
                 result.append(elem.string);
             }
             else {
