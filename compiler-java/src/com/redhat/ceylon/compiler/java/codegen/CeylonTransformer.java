@@ -29,7 +29,10 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
@@ -172,18 +175,43 @@ public class CeylonTransformer extends AbstractTransformer {
     
     public List<JCTree> transformAttribute(Tree.TypedDeclaration decl, Tree.AttributeSetterDefinition setterDecl) {
         at(decl);
+        TypedDeclaration declarationModel = decl.getDeclarationModel(); 
         String attrName = decl.getIdentifier().getText();
         String attrClassName = attrName;
-        TypedDeclaration declarationModel = decl.getDeclarationModel();
-        if (Decl.isLocal(decl)) {
-            if (decl instanceof Tree.AttributeGetterDefinition) {
+        final Tree.SpecifierOrInitializerExpression expression;
+        final Tree.Block block;
+        if (decl instanceof Tree.AttributeDeclaration) {
+            Tree.AttributeDeclaration adecl = (Tree.AttributeDeclaration)decl;
+            expression = adecl.getSpecifierOrInitializerExpression();
+            block = null;
+        } else if (decl instanceof Tree.AttributeGetterDefinition) {
+            expression = null;
+            Tree.AttributeGetterDefinition gdef = (Tree.AttributeGetterDefinition)decl;
+            block = gdef.getBlock();
+            if (Decl.isLocal(decl)) {
                 attrClassName += "$getter";
-            } else if (decl instanceof Tree.AttributeSetterDefinition) {
+            }
+        } else if (decl instanceof Tree.AttributeSetterDefinition) {
+            expression = null;
+            Tree.AttributeSetterDefinition sdef = (Tree.AttributeSetterDefinition)decl;
+            block = sdef.getBlock();
+            if (Decl.isLocal(decl)) {
                 attrClassName += "$setter";
                 declarationModel = ((Tree.AttributeSetterDefinition)decl).getDeclarationModel().getParameter();
             }
+        } else {
+            throw new RuntimeException();
         }
+        return transformAttribute(declarationModel, attrName, attrClassName,
+                block, expression, setterDecl);
+    }
 
+    public List<JCTree> transformAttribute(
+            TypedDeclaration declarationModel,
+            String attrName, String attrClassName,
+            final Tree.Block block,
+            final Tree.SpecifierOrInitializerExpression expression, 
+            final Tree.AttributeSetterDefinition setterDecl) {
         AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
             .wrapped(this, attrName, declarationModel)
             .className(attrClassName)
@@ -205,32 +233,30 @@ public class CeylonTransformer extends AbstractTransformer {
             }
         }
 
-        if (decl instanceof Tree.AttributeSetterDefinition) {
+        if (declarationModel instanceof Setter
+                || declarationModel instanceof Parameter) {
             // For inner setters
-            Tree.AttributeSetterDefinition sdef = (Tree.AttributeSetterDefinition)decl;
-            JCBlock setterBlock = make().Block(0, statementGen().transformStmts(sdef.getBlock().getStatements()));
+            JCBlock setterBlock = make().Block(0, statementGen().transformStmts(block.getStatements()));
             builder.setterBlock(setterBlock);
             builder.skipGetter();
         } else {
-            if (decl instanceof Tree.AttributeDeclaration) {
+            if (declarationModel instanceof Value) {
                 // For inner and toplevel value attributes
                 if (!declarationModel.isVariable()) {
                     builder.immutable();
                 }
-                Tree.AttributeDeclaration adecl = (Tree.AttributeDeclaration)decl;
-                if (adecl.getSpecifierOrInitializerExpression() != null) {
+                if (expression != null) {
                     builder.initialValue(expressionGen().transformExpression(
-                            adecl.getSpecifierOrInitializerExpression().getExpression(), 
+                            expression.getExpression(), 
                             Util.getBoxingStrategy(declarationModel),
                             declarationModel.getType()));
                 }
             } else {
                 // For inner and toplevel getters
-                Tree.AttributeGetterDefinition gdef = (Tree.AttributeGetterDefinition)decl;
-                JCBlock getterBlock = make().Block(0, statementGen().transformStmts(gdef.getBlock().getStatements()));
+                JCBlock getterBlock = make().Block(0, statementGen().transformStmts(block.getStatements()));
                 builder.getterBlock(getterBlock);
                 
-                if (Decl.isLocal(decl)) {
+                if (Decl.isLocal(declarationModel)) {
                     // For inner getters
                     builder.immutable();
                 } else {
@@ -245,7 +271,7 @@ public class CeylonTransformer extends AbstractTransformer {
             }
         }
         
-        if (Decl.isLocal(decl)) {
+        if (Decl.isLocal(declarationModel)) {
             return builder.build().append(makeLocalIdentityInstance(attrClassName, declarationModel.isShared()));
         } else {
             builder.is(Flags.STATIC, true);
