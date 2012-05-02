@@ -1,0 +1,44 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class getterArgumentNamedInvocation {
+    
+    private getterArgumentNamedInvocation() {
+    }
+    
+    static void getterArgumentNamedInvocation(final long num) {
+        
+        final class callFunction {
+            
+            private callFunction() {
+            }
+            
+            void callFunction(final long i) {
+            }
+        }
+        final callFunction callFunction = new callFunction();
+        long i = 3L;
+        (
+            let
+            {
+                
+                final class $i$1 {
+                    
+                    .ceylon.language.Integer getI() {
+                        if (num < 0L) {
+                            return .ceylon.language.Integer.instance(0L);
+                        }
+                        return .ceylon.language.Integer.instance(1L);
+                    }
+                    
+                    private $i$1() {
+                    }
+                }
+                final $i$1 $i$1 = new $i$1();
+                final long $arg$0$0 = $i$1.getI().longValue();
+                callFunction.callFunction($arg$0$0);
+            }
+            returning null;
+        );
+        i++;
+    }
+}

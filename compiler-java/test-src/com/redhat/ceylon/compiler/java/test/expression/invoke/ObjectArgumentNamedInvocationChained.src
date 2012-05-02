@@ -1,0 +1,86 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+class ObjectArgumentNamedInvocationChained {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained")
+    public final .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained callFunction(@.com.redhat.ceylon.compiler.java.metadata.Name("o")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Object")
+    final .java.lang.Object o) {
+        .ceylon.language.print.print(.ceylon.language.String.instance(o.toString()));
+        return this;
+    }
+    
+    ObjectArgumentNamedInvocationChained() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class objectArgumentNamedInvocationChained {
+    
+    private objectArgumentNamedInvocationChained() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+    public static void objectArgumentNamedInvocationChained() {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained $arg$0$callable$ = (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained $arg$1$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained();
+                        
+                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                        final class o extends .java.lang.Object {
+                            private final .java.lang.String string;
+                            
+                            @.java.lang.Override
+                            public final .java.lang.String toString() {
+                                return string;
+                            }
+                            
+                            private o() {
+                                super();
+                                this.string = "Foo";
+                            }
+                        }
+                        final o $arg$1$0 = new o();
+                    }
+                    returning $arg$1$callable$.callFunction($arg$1$0);
+                );
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                final class o extends .java.lang.Object {
+                    private final .java.lang.String string;
+                    
+                    @.java.lang.Override
+                    public final .java.lang.String toString() {
+                        return string;
+                    }
+                    
+                    private o() {
+                        super();
+                        this.string = "Bar";
+                    }
+                }
+                final o $arg$0$0 = new o();
+            }
+            returning $arg$0$callable$.callFunction($arg$0$0);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.objectArgumentNamedInvocationChained.objectArgumentNamedInvocationChained();
+    }
+}

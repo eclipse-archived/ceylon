@@ -18,13 +18,17 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void getterArgumentNamedInvocation() {
+void getterArgumentNamedInvocation(Integer num) {
     void callFunction(Integer i) {
     }
-
+    variable Integer i := 3; // test aliasing
     callFunction {
         value i {
+            if (num < 0) {
+                return 0;
+            }
             return 1;
         }
-    };   
+    };
+    i++;
 }

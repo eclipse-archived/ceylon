@@ -1,19 +1,13 @@
-class ObjectArgumentNamedInvocation() {
-
-    shared ObjectArgumentNamedInvocation callFunction(Object o) {
-        print(o.string);
-        return this;
-    }
-
-}
+@nomodel
 shared void objectArgumentNamedInvocation() {
-    ObjectArgumentNamedInvocation().callFunction {
+
+    void callFunction(Object o) {
+    }
+    
+    String o = "";// test alias
+
+    callFunction {
         object o extends Object() {
-            shared actual String string = "Foo";
-        }
-    }.callFunction {
-        object o extends Object() {
-            shared actual String string = "Bar";
         }
     };
 }
