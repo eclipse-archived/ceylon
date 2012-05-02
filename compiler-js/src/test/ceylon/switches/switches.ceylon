@@ -42,11 +42,13 @@ class TestIs2(Integer|String x) {
 shared void test() {
     value enums = {1, 2.0};
     //is cases
-    switch(enums[0])
+    value e0 = enums[0];
+    switch(e0)
     case(is Integer) {}
     else { fail("FLOAT? WTF?"); }
 
-    switch(enums[1])
+    value e1 = enums[1];
+    switch(e1)
     case(is Integer) { fail("INTEGER? WTF?"); }
     case(is Float) {}
     else { fail("Nothing!!! WTF?"); }

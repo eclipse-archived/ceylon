@@ -21,8 +21,6 @@ JAVA_CP="$JAVA_CP:$CEYLON_REPO/com/redhat/ceylon/typechecker/$CEYLON_VERSION/com
 JAVA_CP="$JAVA_CP:$CEYLON_REPO/com/redhat/ceylon/module-resolver/$CEYLON_VERSION/com.redhat.ceylon.module-resolver-$CEYLON_VERSION.jar"
 JAVA_CP="$JAVA_CP:$CEYLON_HOME/../../ceylon-compiler/lib/antlr-3.4-complete.jar"
 
-echo classpath es $JAVA_CP
-
 java \
     -enableassertions \
     -Xbootclasspath/p:"$JAVA_CP:$(dirname "$PRG")/../lib/jscompiler-${CEYLON_VERSION}.jar" \

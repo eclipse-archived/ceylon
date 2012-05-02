@@ -1312,16 +1312,15 @@ public class GenerateJsVisitor extends Visitor
             that.getNamedArgumentList().visit(this);
             out("return ");
             that.getPrimary().visit(this);
-            out("(");
             if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
                 Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
                 if (mte.getDeclaration() instanceof Functional) {
                     Functional f = (Functional) mte.getDeclaration();
-                    if (!f.getParameterLists().isEmpty()) {
+                    for (com.redhat.ceylon.compiler.typechecker.model.ParameterList plist : f.getParameterLists()) {
                         List<String> argNames = that.getNamedArgumentList().getNamedArgumentList().getArgumentNames();
                         boolean first=true;
-                        for (com.redhat.ceylon.compiler.typechecker.model.Parameter p:
-                                f.getParameterLists().get(0).getParameters()) {
+                        out("(");
+                        for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : plist.getParameters()) {
                             if (!first) out(",");
                             if (p.isSequenced() && that.getNamedArgumentList().getSequencedArgument()==null && that.getNamedArgumentList().getNamedArguments().isEmpty()) {
                                 out(clAlias, ".empty");
@@ -1332,10 +1331,11 @@ public class GenerateJsVisitor extends Visitor
                             }
                             first = false;
                         }
+                        out(")");
                     }
                 }
             }
-            out(")}())");
+            out("}())");
         }
         else {
             super.visit(that);
@@ -2335,7 +2335,10 @@ public class GenerateJsVisitor extends Visitor
    }
 
    @Override public void visit(ForStatement that) {
-       if (comment) out("//'for' statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
+       if (comment) {
+           out("//'for' statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
+           if (that.getExits()) out("//EXITS!");
+       }
        endLine();
        ForIterator foriter = that.getForClause().getForIterator();
        SpecifierExpression iterable = foriter.getSpecifierExpression();
