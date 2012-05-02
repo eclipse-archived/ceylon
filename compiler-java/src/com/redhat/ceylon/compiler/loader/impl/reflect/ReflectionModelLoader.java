@@ -68,9 +68,13 @@ public class ReflectionModelLoader extends AbstractModelLoader {
 
     @Override
     public ClassMirror lookupNewClassMirror(String name) {
+        Class<?> klass = findClassInModules(name);
+        return klass != null ? new ReflectionClass(klass) : null;
+    }
+
+    private Class<?> findClassInModules(String name) {
         Class<?> klass = null;
         // try in every module
-        // FIXME: surely we can do faster by checking the module name
         for(Module module : modules.getListOfModules()){
             // skip it if we loaded this module from source
             if(!(module instanceof ReflectionModule))
@@ -85,7 +89,7 @@ public class ReflectionModelLoader extends AbstractModelLoader {
                 // next
             }
         }
-        return klass != null ? new ReflectionClass(klass) : null;
+        return klass;
     }
 
     @Override
