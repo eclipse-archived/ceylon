@@ -74,6 +74,7 @@ public class ReflectionModelLoader extends AbstractModelLoader {
 
     private Class<?> findClassInModules(String name) {
         Class<?> klass = null;
+        boolean triedParentClassLoader = false;
         // try in every module
         for(Module module : modules.getListOfModules()){
             // skip it if we loaded this module from source
@@ -83,8 +84,11 @@ public class ReflectionModelLoader extends AbstractModelLoader {
                 ClassLoader classLoader = ((ReflectionModule)module).getClassLoader();
                 if(classLoader != null)
                     klass = classLoader.loadClass(name);
-                else
+                else if(!triedParentClassLoader){
                     klass = Class.forName(name);
+                    // no point trying it more than once
+                    triedParentClassLoader = true;
+                }
             } catch (ClassNotFoundException e) {
                 // next
             }
