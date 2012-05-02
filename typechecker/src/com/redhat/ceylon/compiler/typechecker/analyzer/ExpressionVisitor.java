@@ -49,6 +49,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
 
@@ -155,6 +156,9 @@ public class ExpressionVisitor extends Visitor {
         }
         ProducedType ft = unit.getCallableDeclaration().getProducedType(null, list);*/
         that.getType().setTypeModel(t);
+        that.setTypeModel(that.getDeclarationModel()
+                .getProducedTypedReference(null, Collections.<ProducedType>emptyList())
+                .getFullType());
     }
     
     @Override
@@ -1763,16 +1767,10 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private ProducedType getPositionalArgumentType(Tree.PositionalArgument a) {
-        if (a instanceof Tree.FunctionArgument) {
-            return ((Tree.FunctionArgument) a).getDeclarationModel()
-                    .getProducedTypedReference(null, Collections.<ProducedType>emptyList())
-                    .getFullType();
-        }
-        else {
-            return a.getExpression().getTypeModel();
-        }
+        Expression e = a.getExpression();
+        return e==null ? null : e.getTypeModel();
     }
-    
+        
     @Override public void visit(Tree.Annotation that) {
         super.visit(that);
         Declaration dec = ((Tree.MemberOrTypeExpression) that.getPrimary()).getDeclaration();

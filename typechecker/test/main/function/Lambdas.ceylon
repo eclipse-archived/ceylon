@@ -88,4 +88,12 @@ class Lambdas() {
     noop("")(1)(1.0);
     @error noop("")(1.0)(1.0);
     @error noop("")(1)(1);
+    
+    @type["Callable<String,String>"] function higher() {
+        return (String s) s.uppercased;
+    }
+
+    @type["Callable<Callable<Float,Float>,Float>"] function evenHigher(Float z) {
+        return (Float x)(Float y) x+y+z;
+    }
 }

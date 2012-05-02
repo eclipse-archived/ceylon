@@ -1054,8 +1054,8 @@ returnDirective returns [Return directive]
     : RETURN 
       { $directive = new Return($RETURN); }
       (
-        expression
-        { $directive.setExpression($expression.expression); }
+        functionOrExpression
+        { $directive.setExpression($functionOrExpression.expression); }
       )?
     ;
 
@@ -1512,9 +1512,14 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
     ;
 
 positionalArgument returns [PositionalArgument positionalArgument]
+    @init { $positionalArgument = new PositionalArgument(null); }
+    : functionOrExpression
+      { $positionalArgument.setExpression($functionOrExpression.expression); }
+    ;
+    
+functionOrExpression returns [Expression expression]
     @init { FunctionArgument fa = new FunctionArgument(null);
-            fa.setType(new FunctionModifier(null));
-            PositionalArgument pa = new PositionalArgument(null); }
+            fa.setType(new FunctionModifier(null)); }
     : (FUNCTION_MODIFIER|VOID_MODIFIER|parametersStart)=>
       (
         FUNCTION_MODIFIER 
@@ -1529,18 +1534,18 @@ positionalArgument returns [PositionalArgument positionalArgument]
         p2=parameters
         { fa.addParameterList($p2.parameterList); }
       )*
-      expression
-      { fa.setExpression($expression.expression); 
-        $positionalArgument = fa; }
+      e1=expression
+      { fa.setExpression($e1.expression); 
+        $expression = new Expression(null); 
+        $expression.setTerm(fa); }
     /*| VALUE_MODIFIER
       { fa.setType(new FunctionModifier($VALUE_MODIFIER)); } 
-      expression
+      e1=expression
       { fa.addParameterList(new ParameterList(null));
-        fa.setExpression($expression.expression); 
+        fa.setExpression($e1.expression); 
         $positionalArgument = fa; }*/
-    | expression
-      { pa.setExpression($expression.expression);
-        $positionalArgument = pa; }
+    | e2=expression
+      { $expression = $e2.expression; }
     ;
     
 /*inlineFunctionalArgument
