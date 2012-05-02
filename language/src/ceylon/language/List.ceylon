@@ -132,7 +132,10 @@ shared interface List<out Element>
         variable Boolean first := true;
         value result = StringBuilder();
         for (Element elem in this) {
-            if (!first) {
+            if (first) {
+                first := false;
+            }
+            else {
                 result.append(", ");
             }
             if (is Object elem) {
@@ -141,7 +144,6 @@ shared interface List<out Element>
             else {
                 result.append("null");
             }
-            first := false;
         }
         return result.string;
     }
