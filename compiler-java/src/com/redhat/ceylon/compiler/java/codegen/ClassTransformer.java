@@ -823,7 +823,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         overloadBuilder.resultType(method);
         final ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
-        final ListBuffer<JCVariableDecl> vars = ListBuffer.<JCVariableDecl>lb();        
+        final ListBuffer<JCStatement> vars = ListBuffer.<JCStatement>lb();        
         boolean seen = false;
         // TODO This code is very similar to transformForDefaultedParameter() but
         // operates on model.Parameter not Tree.Parameter
@@ -853,7 +853,8 @@ public class ClassTransformer extends AbstractTransformer {
                 args.toList());
         
         if (isVoid(method.getType())) {
-            invocation = make().LetExpr(vars.toList(), List.<JCStatement>of(make().Exec(invocation)), makeNull());
+            vars.append(make().Exec(invocation));
+            invocation = make().LetExpr(vars.toList(), makeNull());
             overloadBuilder.body(make().Exec(invocation));
         } else {
             invocation = make().LetExpr(vars.toList(), invocation);
@@ -899,7 +900,7 @@ public class ClassTransformer extends AbstractTransformer {
         // TODO This really belongs in the invocation builder
         
         ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
-        ListBuffer<JCVariableDecl> vars = ListBuffer.<JCVariableDecl>lb();
+        ListBuffer<JCStatement> vars = ListBuffer.<JCStatement>lb();
         
         final String companionInstanceName = tempName("$impl$");
         if (def instanceof Tree.AnyClass
@@ -959,7 +960,8 @@ public class ClassTransformer extends AbstractTransformer {
                     methName, args.toList());
                
             if (isVoid(def)) {
-                invocation = make().LetExpr(vars.toList(), List.<JCStatement>of(make().Exec(invocation)), makeNull());
+                vars.append(make().Exec(invocation));
+                invocation = make().LetExpr(vars.toList(), makeNull());
                 overloadBuilder.body(make().Exec(invocation));
             } else {
                 invocation = make().LetExpr(vars.toList(), invocation);

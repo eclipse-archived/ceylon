@@ -413,14 +413,14 @@ public abstract class AbstractTransformer implements Transformation {
     // or a "( let var1=expr1,var2=expr2,...,varN=exprN in statements; exprO; )"
     protected JCExpression makeLetExpr(String varBaseName, List<JCStatement> statements, JCExpression... args) {
         String varName = null;
-        List<JCVariableDecl> decls = List.nil();
+        ListBuffer<JCStatement> decls = ListBuffer.lb();
         int i;
         for (i = 0; (i + 1) < args.length; i += 2) {
             JCExpression typeExpr = args[i];
             JCExpression valueExpr = args[i+1];
             varName = varBaseName + ((args.length > 3) ? "$" + i : "");
             JCVariableDecl varDecl = makeVar(varName, typeExpr, valueExpr);
-            decls = decls.append(varDecl);
+            decls.append(varDecl);
         }
         
         JCExpression result;
@@ -430,10 +430,10 @@ public abstract class AbstractTransformer implements Transformation {
             result = args[i];
         }
         if (statements != null) {
-            return make().LetExpr(decls, statements, result);
-        } else {
-            return make().LetExpr(decls, result);
-        }
+            decls.appendList(statements);
+        } 
+        return make().LetExpr(decls.toList(), result);
+        
     }
 
     /*
