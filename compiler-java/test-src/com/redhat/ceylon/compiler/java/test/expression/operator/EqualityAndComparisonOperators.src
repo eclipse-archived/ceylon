@@ -53,16 +53,20 @@ public class EqualityAndComparisonOperators {
     private final void testInBoxed(final long n1, final long n2) {
         final boolean b1 = (
             let
-                .ceylon.language.Integer $ceylontmp0 = .ceylon.language.Integer.instance(n1)
-            returning new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(n1), .ceylon.language.Integer.instance(n2)).contains($ceylontmp0)
+            {
+                .ceylon.language.Integer $ceylontmp0 = .ceylon.language.Integer.instance(n1);
+            }
+            returning new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(n1), .ceylon.language.Integer.instance(n2)).contains($ceylontmp0);
         );
     }
     
     private final void testInUnboxed(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger n1, final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger n2) {
         final .ceylon.language.Boolean b1 = .ceylon.language.Boolean.instance((
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger $ceylontmp1 = n1
-            returning new .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(n1, n2).contains($ceylontmp1)
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger $ceylontmp1 = n1;
+            }
+            returning new .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(n1, n2).contains($ceylontmp1);
         ));
     }
     
@@ -71,38 +75,38 @@ public class EqualityAndComparisonOperators {
         final .java.lang.Object foo = .ceylon.language.Boolean.instance(sync);
         sync = (
             let
-                .java.lang.Object $ceylontmp2 = .ceylon.language.Boolean.instance(sync)
-            in {
+            {
+                .java.lang.Object $ceylontmp2 = .ceylon.language.Boolean.instance(sync);
             }
-            returning $ceylontmp2 instanceof .ceylon.language.Empty
+            returning $ceylontmp2 instanceof .ceylon.language.Empty;
         );
         final .ceylon.language.Boolean dest = .ceylon.language.Boolean.instance((
             let
-                .java.lang.Object $ceylontmp3 = .ceylon.language.Boolean.instance(true)
-            in {
+            {
+                .java.lang.Object $ceylontmp3 = .ceylon.language.Boolean.instance(true);
             }
-            returning $ceylontmp3 instanceof .ceylon.language.Empty
+            returning $ceylontmp3 instanceof .ceylon.language.Empty;
         ));
         sync = (
             let
-                .java.lang.Object $ceylontmp4 = foo
-            in {
+            {
+                .java.lang.Object $ceylontmp4 = foo;
             }
-            returning $ceylontmp4 instanceof .ceylon.language.Boolean
+            returning $ceylontmp4 instanceof .ceylon.language.Boolean;
         );
         sync = (
             let
-                .java.lang.Object $ceylontmp5 = foo
-            in {
+            {
+                .java.lang.Object $ceylontmp5 = foo;
             }
-            returning .com.redhat.ceylon.compiler.java.Util.isIdentifiable($ceylontmp5)
+            returning .com.redhat.ceylon.compiler.java.Util.isIdentifiable($ceylontmp5);
         );
         sync = (
             let
-                .java.lang.Object $ceylontmp6 = foo
-            in {
+            {
+                .java.lang.Object $ceylontmp6 = foo;
             }
-            returning $ceylontmp6 instanceof .java.lang.Throwable
+            returning $ceylontmp6 instanceof .java.lang.Throwable;
         );
     }
     

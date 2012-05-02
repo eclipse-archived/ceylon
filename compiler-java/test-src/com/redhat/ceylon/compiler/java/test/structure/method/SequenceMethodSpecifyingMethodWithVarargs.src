@@ -8,11 +8,11 @@ class SequenceMethodSpecifyingMethodWithVarargs {
     private final void foo() {
         (
             let
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$1 = foo$seq()
-            in {
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$1 = foo$seq();
                 foo($ceylontmp$seq$1);
             }
-            returning null
+            returning null;
         );
     }
     

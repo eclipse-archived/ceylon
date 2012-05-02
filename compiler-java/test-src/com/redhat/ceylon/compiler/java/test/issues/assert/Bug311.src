@@ -11,11 +11,11 @@ public final class $assert {
     public static final void $assert(final boolean assertion) {
         (
             let
-                .java.lang.String $ceylontmp$message$1 = assert$message(assertion)
-            in {
+            {
+                .java.lang.String $ceylontmp$message$1 = assert$message(assertion);
                 $assert(assertion, $ceylontmp$message$1);
             }
-            returning null
+            returning null;
         );
     }
     

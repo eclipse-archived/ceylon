@@ -37,20 +37,20 @@ final class bug261 {
         final Inner inner = new Inner();
         inner.setVi((
             let
-                Inner $ceylontmpopE0 = inner,
-                long $ceylontmpopV1 = 2L
-            in {
+            {
+                Inner $ceylontmpopE0 = inner;
+                long $ceylontmpopV1 = 2L;
                 $ceylontmpopE0.setVj($ceylontmpopV1);
             }
-            returning $ceylontmpopV1
+            returning $ceylontmpopV1;
         ));
         vk = (
             let
-                long $ceylontmpop2 = 2L
-            in {
+            {
+                long $ceylontmpop2 = 2L;
                 vl = $ceylontmpop2;
             }
-            returning $ceylontmpop2
+            returning $ceylontmpop2;
         );
     }
     

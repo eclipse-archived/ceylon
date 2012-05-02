@@ -12,11 +12,11 @@ class MethodWithVarargs {
     public final void f1() {
         (
             let
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$ns$3 = f1$ns()
-            in {
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$ns$3 = f1$ns();
                 f1($ceylontmp$ns$3);
             }
-            returning null
+            returning null;
         );
     }
     
@@ -34,11 +34,11 @@ class MethodWithVarargs {
     public final void f2(final long i) {
         (
             let
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$ns$7 = f2$ns(i)
-            in {
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$ns$7 = f2$ns(i);
                 f2(i, $ceylontmp$ns$7);
             }
-            returning null
+            returning null;
         );
     }
     
@@ -56,11 +56,11 @@ class MethodWithVarargs {
     public final void f3() {
         (
             let
-                .ceylon.language.Iterable<? extends .java.lang.Object> $ceylontmp$os$11 = f3$os()
-            in {
+            {
+                .ceylon.language.Iterable<? extends .java.lang.Object> $ceylontmp$os$11 = f3$os();
                 f3($ceylontmp$os$11);
             }
-            returning null
+            returning null;
         );
     }
     

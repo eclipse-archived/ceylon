@@ -27,11 +27,11 @@ public class LocalKlass {
             public final void m2(final long arg1) {
                 (
                     let
-                        .ceylon.language.Iterable<? extends T> $ceylontmp$t$1 = m2$t(arg1)
-                    in {
+                    {
+                        .ceylon.language.Iterable<? extends T> $ceylontmp$t$1 = m2$t(arg1);
                         m2(arg1, $ceylontmp$t$1);
                     }
-                    returning null
+                    returning null;
                 );
             }
             

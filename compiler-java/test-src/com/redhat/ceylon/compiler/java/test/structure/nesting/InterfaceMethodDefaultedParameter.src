@@ -131,68 +131,80 @@ final class named {
     static <T>void named(final .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> i, final .com.redhat.ceylon.compiler.java.test.structure.nesting.I<.ceylon.language.String> i2) {
         (
             let
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$16$callable$ = i,
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$16$this$ = $arg$16$callable$,
-                long $arg$16$0 = $arg$16$this$.m$i()
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$16$callable$ = i;
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$16$this$ = $arg$16$callable$;
+                long $arg$16$0 = $arg$16$this$.m$i();
                 $arg$16$callable$.m($arg$16$0);
             }
-            returning null
+            returning null;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<.ceylon.language.String> $arg$17$callable$ = i2,
-                long $arg$17$0 = 2L
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<.ceylon.language.String> $arg$17$callable$ = i2;
+                long $arg$17$0 = 2L;
                 $arg$17$callable$.m($arg$17$0);
             }
-            returning null
+            returning null;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<.ceylon.language.String> $arg$18$callable$ = i2,
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<.ceylon.language.String> $arg$18$this$ = $arg$18$callable$,
-                long $arg$18$0 = $arg$18$this$.m2$i()
-            returning $arg$18$callable$.m2($arg$18$0)
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<.ceylon.language.String> $arg$18$callable$ = i2;
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<.ceylon.language.String> $arg$18$this$ = $arg$18$callable$;
+                long $arg$18$0 = $arg$18$this$.m2$i();
+            }
+            returning $arg$18$callable$.m2($arg$18$0);
         );
         i.m2(2L);
         (
             let
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$19$callable$ = i,
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$19$this$ = $arg$19$callable$,
-                long $arg$19$0 = $arg$19$this$.m3$i(),
-                long $arg$19$1 = $arg$19$this$.m3$n($arg$19$0)
-            returning $arg$19$callable$.m3($arg$19$0, $arg$19$1)
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$19$callable$ = i;
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$19$this$ = $arg$19$callable$;
+                long $arg$19$0 = $arg$19$this$.m3$i();
+                long $arg$19$1 = $arg$19$this$.m3$n($arg$19$0);
+            }
+            returning $arg$19$callable$.m3($arg$19$0, $arg$19$1);
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$20$callable$ = i,
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$20$this$ = $arg$20$callable$,
-                long $arg$20$0 = 5L,
-                long $arg$20$1 = $arg$20$this$.m3$n($arg$20$0)
-            returning $arg$20$callable$.m3($arg$20$0, $arg$20$1)
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$20$callable$ = i;
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$20$this$ = $arg$20$callable$;
+                long $arg$20$0 = 5L;
+                long $arg$20$1 = $arg$20$this$.m3$n($arg$20$0);
+            }
+            returning $arg$20$callable$.m3($arg$20$0, $arg$20$1);
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$21$callable$ = i,
-                long $arg$21$0 = 4L,
-                long $arg$21$1 = 5L
-            returning $arg$21$callable$.m3($arg$21$0, $arg$21$1)
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$21$callable$ = i;
+                long $arg$21$0 = 4L;
+                long $arg$21$1 = 5L;
+            }
+            returning $arg$21$callable$.m3($arg$21$0, $arg$21$1);
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$22$callable$ = i,
-                long $arg$22$1 = 5L,
-                long $arg$22$0 = 4L
-            returning $arg$22$callable$.m3($arg$22$0, $arg$22$1)
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$22$callable$ = i;
+                long $arg$22$1 = 5L;
+                long $arg$22$0 = 4L;
+            }
+            returning $arg$22$callable$.m3($arg$22$0, $arg$22$1);
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$23$callable$ = i,
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$23$this$ = $arg$23$callable$,
-                long $arg$23$1 = 5L,
-                long $arg$23$0 = $arg$23$this$.m3$i()
-            returning $arg$23$callable$.m3($arg$23$0, $arg$23$1)
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$23$callable$ = i;
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$23$this$ = $arg$23$callable$;
+                long $arg$23$1 = 5L;
+                long $arg$23$0 = $arg$23$this$.m3$i();
+            }
+            returning $arg$23$callable$.m3($arg$23$0, $arg$23$1);
         );
         i.m4(5L);
         i.m4(4L, 5L);
@@ -213,11 +225,11 @@ class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.nesting.I<
     public final void m() {
         (
             let
-                long $ceylontmpi24 = $I$impl.m$i()
-            in {
+            {
+                long $ceylontmpi24 = $I$impl.m$i();
                 m($ceylontmpi24);
             }
-            returning null
+            returning null;
         );
     }
     
@@ -234,8 +246,10 @@ class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.nesting.I<
     public final long m2() {
         return (
             let
-                long $ceylontmpi25 = $I$impl.m2$i()
-            returning m2($ceylontmpi25)
+            {
+                long $ceylontmpi25 = $I$impl.m2$i();
+            }
+            returning m2($ceylontmpi25);
         );
     }
     
@@ -253,9 +267,11 @@ class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.nesting.I<
     public final long m3() {
         return (
             let
-                long $ceylontmpi26 = $I$impl.m3$i(),
-                long $ceylontmpn27 = $I$impl.m3$n($ceylontmpi26)
-            returning m3($ceylontmpi26, $ceylontmpn27)
+            {
+                long $ceylontmpi26 = $I$impl.m3$i();
+                long $ceylontmpn27 = $I$impl.m3$n($ceylontmpi26);
+            }
+            returning m3($ceylontmpi26, $ceylontmpn27);
         );
     }
     
@@ -268,8 +284,10 @@ class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.nesting.I<
     public final long m3(final long i) {
         return (
             let
-                long $ceylontmpn28 = $I$impl.m3$n(i)
-            returning m3(i, $ceylontmpn28)
+            {
+                long $ceylontmpn28 = $I$impl.m3$n(i);
+            }
+            returning m3(i, $ceylontmpn28);
         );
     }
     
@@ -287,8 +305,10 @@ class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.nesting.I<
     public final long m4(final long i) {
         return (
             let
-                long $ceylontmpn29 = $I$impl.m4$n(i)
-            returning m4(i, $ceylontmpn29)
+            {
+                long $ceylontmpn29 = $I$impl.m4$n(i);
+            }
+            returning m4(i, $ceylontmpn29);
         );
     }
     
@@ -306,9 +326,11 @@ class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.nesting.I<
     public final <U>long m5(final long i) {
         return (
             let
-                T $ceylontmpt30 = $I$impl.<U>m5$t(i),
-                U $ceylontmpu31 = $I$impl.<U>m5$u(i, $ceylontmpt30)
-            returning <U>m5(i, $ceylontmpt30, $ceylontmpu31)
+            {
+                T $ceylontmpt30 = $I$impl.<U>m5$t(i);
+                U $ceylontmpu31 = $I$impl.<U>m5$u(i, $ceylontmpt30);
+            }
+            returning <U>m5(i, $ceylontmpt30, $ceylontmpu31);
         );
     }
     
@@ -321,8 +343,10 @@ class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.nesting.I<
     public final <U>long m5(final long i, final T t) {
         return (
             let
-                U $ceylontmpu32 = $I$impl.<U>m5$u(i, t)
-            returning <U>m5(i, t, $ceylontmpu32)
+            {
+                U $ceylontmpu32 = $I$impl.<U>m5$u(i, t);
+            }
+            returning <U>m5(i, t, $ceylontmpu32);
         );
     }
     

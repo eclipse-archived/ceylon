@@ -27,18 +27,24 @@ public class SequenceOperators {
         s = c1.item(<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)));
         s = (
             let
-                .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String> $ceylontmpsafeaccess0 = c2
-            returning $ceylontmpsafeaccess0 != null ? $ceylontmpsafeaccess0.item(.ceylon.language.Integer.instance(1L)) : null
+            {
+                .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String> $ceylontmpsafeaccess0 = c2;
+            }
+            returning $ceylontmpsafeaccess0 != null ? $ceylontmpsafeaccess0.item(.ceylon.language.Integer.instance(1L)) : null;
         );
         s = (
             let
-                .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String> $ceylontmpsafeaccess1 = this.getC2()
-            returning $ceylontmpsafeaccess1 != null ? $ceylontmpsafeaccess1.item(.ceylon.language.Integer.instance(1L)) : null
+            {
+                .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String> $ceylontmpsafeaccess1 = this.getC2();
+            }
+            returning $ceylontmpsafeaccess1 != null ? $ceylontmpsafeaccess1.item(.ceylon.language.Integer.instance(1L)) : null;
         );
         s = (
             let
-                .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String> $ceylontmpsafeaccess2 = c2
-            returning $ceylontmpsafeaccess2 != null ? $ceylontmpsafeaccess2.item(<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L))) : null
+            {
+                .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String> $ceylontmpsafeaccess2 = c2;
+            }
+            returning $ceylontmpsafeaccess2 != null ? $ceylontmpsafeaccess2.item(<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L))) : null;
         );
         final .ceylon.language.Iterable<? extends .ceylon.language.String> sequence = new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("foo"), .ceylon.language.String.instance("bar"));
         .ceylon.language.Iterable<? extends .ceylon.language.String> subrange;
@@ -51,91 +57,93 @@ public class SequenceOperators {
         upperRange = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Iterable<? extends .ceylon.language.String>>)sequence).span(<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)), null);
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer> spreadMemberWithUnboxedType = (
             let
-                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$3 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)sequence
-            in {
+            {
+                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$3 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)sequence;
             }
             returning !$spreadTest$3.getEmpty() ? (
                 let
-                    .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$4$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$3,
-                    int $spread$4$2 = (int)$spread$4$0.getSize(),
-                    .ceylon.language.Integer[] $spread$4$4 = new .ceylon.language.Integer[$spread$4$2]
-                in {
+                {
+                    .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$4$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$3;
+                    int $spread$4$2 = (int)$spread$4$0.getSize();
+                    .ceylon.language.Integer[] $spread$4$4 = new .ceylon.language.Integer[$spread$4$2];
                     for (int $index$5 = 0; $index$5 < $spread$4$2; $index$5++) $spread$4$4[$index$5] = .ceylon.language.Integer.instance($spread$4$0.item(.ceylon.language.Integer.instance($index$5)).getSize());
                 }
-                returning new .ceylon.language.ArraySequence<.ceylon.language.Integer>($spread$4$4)
-            ) : .ceylon.language.$empty.getEmpty()
+                returning new .ceylon.language.ArraySequence<.ceylon.language.Integer>($spread$4$4);
+            ) : .ceylon.language.$empty.getEmpty();
         );
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer> intSequence = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L));
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer> spreadMemberWithBoxedType = (
             let
-                .ceylon.language.FixedSized<? extends .ceylon.language.Integer> $spreadTest$6 = (.ceylon.language.FixedSized<? extends .ceylon.language.Integer>)intSequence
-            in {
+            {
+                .ceylon.language.FixedSized<? extends .ceylon.language.Integer> $spreadTest$6 = (.ceylon.language.FixedSized<? extends .ceylon.language.Integer>)intSequence;
             }
             returning !$spreadTest$6.getEmpty() ? (
                 let
-                    .ceylon.language.Sequence<? extends .ceylon.language.Integer> $spread$7$0 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$spreadTest$6,
-                    int $spread$7$2 = (int)$spread$7$0.getSize(),
-                    .ceylon.language.Integer[] $spread$7$4 = new .ceylon.language.Integer[$spread$7$2]
-                in {
+                {
+                    .ceylon.language.Sequence<? extends .ceylon.language.Integer> $spread$7$0 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$spreadTest$6;
+                    int $spread$7$2 = (int)$spread$7$0.getSize();
+                    .ceylon.language.Integer[] $spread$7$4 = new .ceylon.language.Integer[$spread$7$2];
                     for (int $index$8 = 0; $index$8 < $spread$7$2; $index$8++) $spread$7$4[$index$8] = $spread$7$0.item(.ceylon.language.Integer.instance($index$8)).getWholePart();
                 }
-                returning new .ceylon.language.ArraySequence<.ceylon.language.Integer>($spread$7$4)
-            ) : .ceylon.language.$empty.getEmpty()
+                returning new .ceylon.language.ArraySequence<.ceylon.language.Integer>($spread$7$4);
+            ) : .ceylon.language.$empty.getEmpty();
         );
         .ceylon.language.Iterable<? extends .ceylon.language.Character> spreadInvoke;
         spreadInvoke = (
             let
-                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$9 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)sequence
-            in {
+            {
+                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$9 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)sequence;
             }
             returning !$spreadTest$9.getEmpty() ? (
                 let
-                    .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$10$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$9,
-                    int $spread$10$2 = (int)$spread$10$0.getSize(),
-                    .ceylon.language.Character[] $spread$10$4 = new .ceylon.language.Character[$spread$10$2]
-                in {
+                {
+                    .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$10$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$9;
+                    int $spread$10$2 = (int)$spread$10$0.getSize();
+                    .ceylon.language.Character[] $spread$10$4 = new .ceylon.language.Character[$spread$10$2];
                     for (int $index$11 = 0; $index$11 < $spread$10$2; $index$11++) $spread$10$4[$index$11] = $spread$10$0.item(.ceylon.language.Integer.instance($index$11)).item(.ceylon.language.Integer.instance(0L));
                 }
-                returning new .ceylon.language.ArraySequence<.ceylon.language.Character>($spread$10$4)
-            ) : .ceylon.language.$empty.getEmpty()
+                returning new .ceylon.language.ArraySequence<.ceylon.language.Character>($spread$10$4);
+            ) : .ceylon.language.$empty.getEmpty();
         );
         spreadInvoke = (
             let
-                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$13 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)sequence
-            in {
+            {
+                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$13 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)sequence;
             }
             returning !$spreadTest$13.getEmpty() ? (
                 let
-                    .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$14$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$13,
-                    int $spread$14$2 = (int)$spread$14$0.getSize(),
-                    .ceylon.language.Character[] $spread$14$4 = new .ceylon.language.Character[$spread$14$2]
-                in {
+                {
+                    .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$14$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$13;
+                    int $spread$14$2 = (int)$spread$14$0.getSize();
+                    .ceylon.language.Character[] $spread$14$4 = new .ceylon.language.Character[$spread$14$2];
                     for (int $index$15 = 0; $index$15 < $spread$14$2; $index$15++) $spread$14$4[$index$15] = (
                         let
-                            .ceylon.language.String $arg$12$callable$ = $spread$14$0.item(.ceylon.language.Integer.instance($index$15)),
-                            .ceylon.language.Integer $arg$12$0 = .ceylon.language.Integer.instance(0L)
-                        returning $arg$12$callable$.item($arg$12$0)
+                        {
+                            .ceylon.language.String $arg$12$callable$ = $spread$14$0.item(.ceylon.language.Integer.instance($index$15));
+                            .ceylon.language.Integer $arg$12$0 = .ceylon.language.Integer.instance(0L);
+                        }
+                        returning $arg$12$callable$.item($arg$12$0);
                     );
                 }
-                returning new .ceylon.language.ArraySequence<.ceylon.language.Character>($spread$14$4)
-            ) : .ceylon.language.$empty.getEmpty()
+                returning new .ceylon.language.ArraySequence<.ceylon.language.Character>($spread$14$4);
+            ) : .ceylon.language.$empty.getEmpty();
         );
         final .ceylon.language.Iterable<? extends .ceylon.language.String> empty = .ceylon.language.$empty.getEmpty();
         final .ceylon.language.Iterable<? extends .ceylon.language.String> upperCasedEmpty = (
             let
-                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$16 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)empty
-            in {
+            {
+                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$16 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)empty;
             }
             returning !$spreadTest$16.getEmpty() ? (
                 let
-                    .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$17$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$16,
-                    int $spread$17$2 = (int)$spread$17$0.getSize(),
-                    .ceylon.language.String[] $spread$17$4 = new .ceylon.language.String[$spread$17$2]
-                in {
+                {
+                    .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$17$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$16;
+                    int $spread$17$2 = (int)$spread$17$0.getSize();
+                    .ceylon.language.String[] $spread$17$4 = new .ceylon.language.String[$spread$17$2];
                     for (int $index$18 = 0; $index$18 < $spread$17$2; $index$18++) $spread$17$4[$index$18] = .ceylon.language.String.instance($spread$17$0.item(.ceylon.language.Integer.instance($index$18)).getUppercased());
                 }
-                returning new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$17$4)
-            ) : .ceylon.language.$empty.getEmpty()
+                returning new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$17$4);
+            ) : .ceylon.language.$empty.getEmpty();
         );
     }
     

@@ -5,9 +5,11 @@ class ThrowExceptionNamedArgs {
     private final void t() {
         throw (
             let
-                .ceylon.language.String $arg$0$0 = .ceylon.language.String.instance("Bang!"),
-                .java.lang.Throwable $arg$0$1 = null
-            returning new .ceylon.language.Exception($arg$0$0, $arg$0$1)
+            {
+                .ceylon.language.String $arg$0$0 = .ceylon.language.String.instance("Bang!");
+                .java.lang.Throwable $arg$0$1 = null;
+            }
+            returning new .ceylon.language.Exception($arg$0$0, $arg$0$1);
         );
     }
     

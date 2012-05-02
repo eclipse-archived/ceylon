@@ -15,11 +15,11 @@ class SequencedParameterClassInstantiation {
     SequencedParameterClassInstantiation(final long a) {
         (
             let
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$args$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation.$init$args(a)
-            in {
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$args$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation.$init$args(a);
                 this(a, $ceylontmp$args$1);
             }
-            returning null
+            returning null;
         );
     }
     

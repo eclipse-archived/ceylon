@@ -13,11 +13,11 @@ class MethodWithDefaultParams {
     private final void f1() {
         (
             let
-                long $ceylontmp$n$1 = f1$n()
-            in {
+            {
+                long $ceylontmp$n$1 = f1$n();
                 f1($ceylontmp$n$1);
             }
-            returning null
+            returning null;
         );
     }
     
@@ -31,11 +31,11 @@ class MethodWithDefaultParams {
     public final void f2(final long n) {
         (
             let
-                .java.lang.String $ceylontmp$s$3 = f2$s(n)
-            in {
+            {
+                .java.lang.String $ceylontmp$s$3 = f2$s(n);
                 f2(n, $ceylontmp$s$3);
             }
-            returning null
+            returning null;
         );
     }
     
@@ -49,23 +49,23 @@ class MethodWithDefaultParams {
     public final void f3(final long n) {
         (
             let
-                long $ceylontmp$m$8 = f3$m(n)
-            in {
+            {
+                long $ceylontmp$m$8 = f3$m(n);
                 f3(n, $ceylontmp$m$8);
             }
-            returning null
+            returning null;
         );
     }
     
     public final void f3() {
         (
             let
-                long $ceylontmp$n$5 = f3$n(),
-                long $ceylontmp$m$6 = f3$m($ceylontmp$n$5)
-            in {
+            {
+                long $ceylontmp$n$5 = f3$n();
+                long $ceylontmp$m$6 = f3$m($ceylontmp$n$5);
                 f3($ceylontmp$n$5, $ceylontmp$m$6);
             }
-            returning null
+            returning null;
         );
     }
     
@@ -83,23 +83,23 @@ class MethodWithDefaultParams {
     public final void f4(final long n) {
         (
             let
-                long $ceylontmp$m$13 = f4$m(n)
-            in {
+            {
+                long $ceylontmp$m$13 = f4$m(n);
                 f4(n, $ceylontmp$m$13);
             }
-            returning null
+            returning null;
         );
     }
     
     public final void f4() {
         (
             let
-                long $ceylontmp$n$10 = f4$n(),
-                long $ceylontmp$m$11 = f4$m($ceylontmp$n$10)
-            in {
+            {
+                long $ceylontmp$n$10 = f4$n();
+                long $ceylontmp$m$11 = f4$m($ceylontmp$n$10);
                 f4($ceylontmp$n$10, $ceylontmp$m$11);
             }
-            returning null
+            returning null;
         );
     }
     
@@ -117,11 +117,11 @@ class MethodWithDefaultParams {
     public final void f5() {
         (
             let
-                long $ceylontmp$n$15 = f5$n()
-            in {
+            {
+                long $ceylontmp$n$15 = f5$n();
                 f5($ceylontmp$n$15);
             }
-            returning null
+            returning null;
         );
     }
     
@@ -135,23 +135,23 @@ class MethodWithDefaultParams {
     public final void f6(final long n) {
         (
             let
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$20 = f6$seq(n)
-            in {
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$20 = f6$seq(n);
                 f6(n, $ceylontmp$seq$20);
             }
-            returning null
+            returning null;
         );
     }
     
     public final void f6() {
         (
             let
-                long $ceylontmp$n$17 = f6$n(),
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$18 = f6$seq($ceylontmp$n$17)
-            in {
+            {
+                long $ceylontmp$n$17 = f6$n();
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$18 = f6$seq($ceylontmp$n$17);
                 f6($ceylontmp$n$17, $ceylontmp$seq$18);
             }
-            returning null
+            returning null;
         );
     }
     

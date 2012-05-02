@@ -9,11 +9,11 @@ class SubclassInstantiationDefaultParam {
     SubclassInstantiationDefaultParam() {
         (
             let
-                .java.lang.String $ceylontmp$name$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam.$init$name()
-            in {
+            {
+                .java.lang.String $ceylontmp$name$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam.$init$name();
                 this($ceylontmp$name$1);
             }
-            returning null
+            returning null;
         );
     }
     

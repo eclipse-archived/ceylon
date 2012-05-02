@@ -9,11 +9,11 @@ class Foo {
     Foo() {
         (
             let
-                .ceylon.language.Iterable<? extends .ceylon.language.String> $ceylontmp$name$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.Foo.$init$name()
-            in {
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.String> $ceylontmp$name$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.Foo.$init$name();
                 this($ceylontmp$name$1);
             }
-            returning null
+            returning null;
         );
     }
     

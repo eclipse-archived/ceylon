@@ -13,39 +13,39 @@ final class fields {
         java.readWriteField = 2L;
         (
             let
-                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE0 = java,
-                long $ceylontmpopV1 = $ceylontmpopE0.readWriteField
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE0 = java;
+                long $ceylontmpopV1 = $ceylontmpopE0.readWriteField;
                 $ceylontmpopE0.readWriteField = $ceylontmpopV1 + 1;
             }
-            returning $ceylontmpopV1
+            returning $ceylontmpopV1;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE2 = java,
-                long $ceylontmpopV3 = $ceylontmpopE2.readWriteField + 1
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE2 = java;
+                long $ceylontmpopV3 = $ceylontmpopE2.readWriteField + 1;
                 $ceylontmpopE2.readWriteField = $ceylontmpopV3;
             }
-            returning $ceylontmpopV3
+            returning $ceylontmpopV3;
         );
         java.readWriteField = (
             let
-                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE4 = java,
-                long $ceylontmpopV5 = java.readWriteField
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE4 = java;
+                long $ceylontmpopV5 = java.readWriteField;
                 $ceylontmpopE4.readWriteField = $ceylontmpopV5;
             }
-            returning $ceylontmpopV5
+            returning $ceylontmpopV5;
         );
         java.readWriteField = (
             let
-                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE6 = java,
-                long $ceylontmpopV7 = $ceylontmpopE6.readWriteField + java.readWriteField
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE6 = java;
+                long $ceylontmpopV7 = $ceylontmpopE6.readWriteField + java.readWriteField;
                 $ceylontmpopE6.readWriteField = $ceylontmpopV7;
             }
-            returning $ceylontmpopV7
+            returning $ceylontmpopV7;
         );
     }
     
@@ -62,35 +62,35 @@ class CeylonFields extends .com.redhat.ceylon.compiler.java.test.interop.JavaFie
         readWriteField = 2L;
         (
             let
-                long $ceylontmpop8 = readWriteField
-            in {
+            {
+                long $ceylontmpop8 = readWriteField;
                 readWriteField = $ceylontmpop8 + 1;
             }
-            returning $ceylontmpop8
+            returning $ceylontmpop8;
         );
         (
             let
-                long $ceylontmpop9 = readWriteField + 1
-            in {
+            {
+                long $ceylontmpop9 = readWriteField + 1;
                 readWriteField = $ceylontmpop9;
             }
-            returning $ceylontmpop9
+            returning $ceylontmpop9;
         );
         readWriteField = (
             let
-                long $ceylontmpop10 = readWriteField
-            in {
+            {
+                long $ceylontmpop10 = readWriteField;
                 readWriteField = $ceylontmpop10;
             }
-            returning $ceylontmpop10
+            returning $ceylontmpop10;
         );
         readWriteField = (
             let
-                long $ceylontmpop11 = readWriteField + readWriteField
-            in {
+            {
+                long $ceylontmpop11 = readWriteField + readWriteField;
                 readWriteField = $ceylontmpop11;
             }
-            returning $ceylontmpop11
+            returning $ceylontmpop11;
         );
     }
     

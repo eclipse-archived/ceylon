@@ -6,8 +6,10 @@ class Bug233_Ceylon extends .com.redhat.ceylon.compiler.java.test.issues.Bug233_
     public final .com.redhat.ceylon.compiler.java.test.issues.Bug233_Type f(final .com.redhat.ceylon.compiler.java.test.issues.Bug233_Type arg) {
         return (
             let
-                .com.redhat.ceylon.compiler.java.test.issues.Bug233_Type $ceylontmp0 = arg
-            returning $ceylontmp0 != null ? $ceylontmp0 : new .com.redhat.ceylon.compiler.java.test.issues.Bug233_Type()
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.Bug233_Type $ceylontmp0 = arg;
+            }
+            returning $ceylontmp0 != null ? $ceylontmp0 : new .com.redhat.ceylon.compiler.java.test.issues.Bug233_Type();
         );
     }
     

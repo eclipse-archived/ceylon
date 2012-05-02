@@ -11,44 +11,60 @@ public class NullHandlingOperators {
         final .ceylon.language.Integer intOrNothing = .ceylon.language.Integer.instance(0L);
         final long n = (
             let
-                .ceylon.language.Integer $ceylontmp0 = natOrNothing1
-            returning $ceylontmp0 != null ? $ceylontmp0 : .ceylon.language.Integer.instance(2L)
+            {
+                .ceylon.language.Integer $ceylontmp0 = natOrNothing1;
+            }
+            returning $ceylontmp0 != null ? $ceylontmp0 : .ceylon.language.Integer.instance(2L);
         ).longValue();
         final .ceylon.language.Integer nBoxed = (
             let
-                .ceylon.language.Integer $ceylontmp1 = natOrNothing1
-            returning $ceylontmp1 != null ? $ceylontmp1 : <.ceylon.language.Integer>box(.ceylon.language.Integer.instance(0L))
+            {
+                .ceylon.language.Integer $ceylontmp1 = natOrNothing1;
+            }
+            returning $ceylontmp1 != null ? $ceylontmp1 : <.ceylon.language.Integer>box(.ceylon.language.Integer.instance(0L));
         );
         .ceylon.language.Integer nullSafeMember = (
             let
-                .ceylon.language.Integer $safe$2 = intOrNothing
-            returning $safe$2 != null ? $safe$2.getNegativeValue() : null
+            {
+                .ceylon.language.Integer $safe$2 = intOrNothing;
+            }
+            returning $safe$2 != null ? $safe$2.getNegativeValue() : null;
         );
         .ceylon.language.Integer nullSafeInvoke = (
             let
-                .ceylon.language.Integer $safe$3 = intOrNothing
-            returning $safe$3 != null ? $safe$3.plus(.ceylon.language.Integer.instance(1L)) : null
+            {
+                .ceylon.language.Integer $safe$3 = intOrNothing;
+            }
+            returning $safe$3 != null ? $safe$3.plus(.ceylon.language.Integer.instance(1L)) : null;
         );
         nullSafeInvoke = (
             let
-                .ceylon.language.Integer $safe$5 = intOrNothing
+            {
+                .ceylon.language.Integer $safe$5 = intOrNothing;
+            }
             returning $safe$5 != null ? (
                 let
-                    .ceylon.language.Integer $arg$4$callable$ = $safe$5,
-                    .ceylon.language.Integer $arg$4$0 = .ceylon.language.Integer.instance(1L)
-                returning $arg$4$callable$.plus($arg$4$0)
-            ) : null
+                {
+                    .ceylon.language.Integer $arg$4$callable$ = $safe$5;
+                    .ceylon.language.Integer $arg$4$0 = .ceylon.language.Integer.instance(1L);
+                }
+                returning $arg$4$callable$.plus($arg$4$0);
+            ) : null;
         );
         final .ceylon.language.Iterable<? extends .ceylon.language.String> s1 = null;
         final .ceylon.language.Iterable<? extends .ceylon.language.String> s2 = (
             let
-                .ceylon.language.Iterable<? extends .ceylon.language.String> $ceylontmp6 = s1
-            returning $ceylontmp6 != null ? $ceylontmp6 : .ceylon.language.$empty.getEmpty()
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.String> $ceylontmp6 = s1;
+            }
+            returning $ceylontmp6 != null ? $ceylontmp6 : .ceylon.language.$empty.getEmpty();
         );
         final long nn = (
             let
-                .ceylon.language.Integer $ceylontmp7 = null
-            returning $ceylontmp7 != null ? $ceylontmp7 : .ceylon.language.Integer.instance(2L)
+            {
+                .ceylon.language.Integer $ceylontmp7 = null;
+            }
+            returning $ceylontmp7 != null ? $ceylontmp7 : .ceylon.language.Integer.instance(2L);
         ).longValue();
     }
     
@@ -56,40 +72,40 @@ public class NullHandlingOperators {
         boolean sync = false;
         sync = (
             let
-                .java.lang.Object $ceylontmp8 = .ceylon.language.String.instance("").getCharacters()
-            in {
+            {
+                .java.lang.Object $ceylontmp8 = .ceylon.language.String.instance("").getCharacters();
             }
-            returning $ceylontmp8 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp8).getEmpty()
+            returning $ceylontmp8 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp8).getEmpty();
         );
         sync = (
             let
-                .java.lang.Object $ceylontmp9 = .ceylon.language.$empty.getEmpty()
-            in {
+            {
+                .java.lang.Object $ceylontmp9 = .ceylon.language.$empty.getEmpty();
             }
-            returning $ceylontmp9 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp9).getEmpty()
+            returning $ceylontmp9 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp9).getEmpty();
         );
         final .ceylon.language.Iterable<? extends .ceylon.language.String> iter = .ceylon.language.$empty.getEmpty();
         sync = (
             let
-                .java.lang.Object $ceylontmp10 = iter
-            in {
+            {
+                .java.lang.Object $ceylontmp10 = iter;
             }
-            returning $ceylontmp10 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp10).getEmpty()
+            returning $ceylontmp10 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp10).getEmpty();
         );
         final .ceylon.language.Iterable<? extends .ceylon.language.String> seq = .ceylon.language.$empty.getEmpty();
         sync = (
             let
-                .java.lang.Object $ceylontmp11 = seq
-            in {
+            {
+                .java.lang.Object $ceylontmp11 = seq;
             }
-            returning $ceylontmp11 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp11).getEmpty()
+            returning $ceylontmp11 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp11).getEmpty();
         );
         final .ceylon.language.Boolean boxed = .ceylon.language.Boolean.instance((
             let
-                .java.lang.Object $ceylontmp12 = seq
-            in {
+            {
+                .java.lang.Object $ceylontmp12 = seq;
             }
-            returning $ceylontmp12 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp12).getEmpty()
+            returning $ceylontmp12 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp12).getEmpty();
         ));
     }
     
@@ -105,19 +121,25 @@ public class NullHandlingOperators {
         final .ceylon.language.String foo = n > 0L ? .ceylon.language.String.instance("yes") : null;
         final .ceylon.language.String bar = (
             let
-                .ceylon.language.String $ceylontmp13 = foo
-            returning $ceylontmp13 != null ? $ceylontmp13 : .ceylon.language.String.instance("yes")
+            {
+                .ceylon.language.String $ceylontmp13 = foo;
+            }
+            returning $ceylontmp13 != null ? $ceylontmp13 : .ceylon.language.String.instance("yes");
         );
         final .ceylon.language.String baz = (
             let
-                .ceylon.language.String $ceylontmp14 = n > 0L ? .ceylon.language.String.instance("yes") : null
-            returning $ceylontmp14 != null ? $ceylontmp14 : .ceylon.language.String.instance("no")
+            {
+                .ceylon.language.String $ceylontmp14 = n > 0L ? .ceylon.language.String.instance("yes") : null;
+            }
+            returning $ceylontmp14 != null ? $ceylontmp14 : .ceylon.language.String.instance("no");
         );
         final double x = 5.0;
         final double y = (
             let
-                .ceylon.language.Float $ceylontmp15 = x > 0.0 ? .ceylon.language.Float.instance(x) : null
-            returning $ceylontmp15 != null ? $ceylontmp15 : .ceylon.language.Float.instance(1.0)
+            {
+                .ceylon.language.Float $ceylontmp15 = x > 0.0 ? .ceylon.language.Float.instance(x) : null;
+            }
+            returning $ceylontmp15 != null ? $ceylontmp15 : .ceylon.language.Float.instance(1.0);
         ).doubleValue();
     }
     

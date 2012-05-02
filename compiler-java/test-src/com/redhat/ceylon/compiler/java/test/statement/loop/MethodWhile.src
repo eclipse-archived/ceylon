@@ -6,8 +6,10 @@ class MethodWhile {
         boolean cont = true;
         while ((
             let
-                boolean $ceylontmp0 = cont
-            returning $ceylontmp0
+            {
+                boolean $ceylontmp0 = cont;
+            }
+            returning $ceylontmp0;
         )) {
             cont = false;
         }
@@ -18,8 +20,10 @@ class MethodWhile {
         .ceylon.language.Boolean $c$1;
         while ((
             let
-                boolean $ceylontmp3 = ($c$1 = cont) != null
-            returning $ceylontmp3
+            {
+                boolean $ceylontmp3 = ($c$1 = cont) != null;
+            }
+            returning $ceylontmp3;
         )) {
             final boolean $c$2 = $c$1.booleanValue();
             cont = null;
@@ -31,8 +35,10 @@ class MethodWhile {
         .ceylon.language.Iterable<? extends .ceylon.language.Integer> $s$4;
         while ((
             let
-                boolean $ceylontmp6 = ($s$4 = seq) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$s$4).getEmpty()
-            returning $ceylontmp6
+            {
+                boolean $ceylontmp6 = ($s$4 = seq) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$s$4).getEmpty();
+            }
+            returning $ceylontmp6;
         )) {
             final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $s$5 = (.ceylon.language.Iterable<? extends .ceylon.language.Integer>)$s$4;
             seq = .ceylon.language.$empty.getEmpty();
@@ -44,8 +50,10 @@ class MethodWhile {
         .java.lang.Object $i$7;
         while ((
             let
-                boolean $ceylontmp9 = ($i$7 = int) instanceof .ceylon.language.Integer
-            returning $ceylontmp9
+            {
+                boolean $ceylontmp9 = ($i$7 = int) instanceof .ceylon.language.Integer;
+            }
+            returning $ceylontmp9;
         )) {
             final long $i$8 = ((.ceylon.language.Integer)$i$7).longValue();
             int = .ceylon.language.String.instance("");

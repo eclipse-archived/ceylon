@@ -6,70 +6,72 @@ class Bug404 {
         boolean sync;
         sync = (
             let
-                .ceylon.language.String $ceylontmp0 = .ceylon.language.String.instance(.ceylon.language.Float.instance(1.0).toString())
-            returning new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("1"), .ceylon.language.String.instance("1.0")).contains($ceylontmp0)
+            {
+                .ceylon.language.String $ceylontmp0 = .ceylon.language.String.instance(.ceylon.language.Float.instance(1.0).toString());
+            }
+            returning new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("1"), .ceylon.language.String.instance("1.0")).contains($ceylontmp0);
         );
         final .ceylon.language.Iterable<? extends .ceylon.language.String> empty = .ceylon.language.$empty.getEmpty();
         sync = !(
             let
+            {
                 .java.lang.Object $ceylontmp4 = (
                     let
-                        .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$1 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)empty
-                    in {
+                    {
+                        .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$1 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)empty;
                     }
                     returning !$spreadTest$1.getEmpty() ? (
                         let
-                            .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$2$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$1,
-                            int $spread$2$2 = (int)$spread$2$0.getSize(),
-                            .ceylon.language.String[] $spread$2$4 = new .ceylon.language.String[$spread$2$2]
-                        in {
+                        {
+                            .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$2$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$1;
+                            int $spread$2$2 = (int)$spread$2$0.getSize();
+                            .ceylon.language.String[] $spread$2$4 = new .ceylon.language.String[$spread$2$2];
                             for (int $index$3 = 0; $index$3 < $spread$2$2; $index$3++) $spread$2$4[$index$3] = .ceylon.language.String.instance($spread$2$0.item(.ceylon.language.Integer.instance($index$3)).getUppercased());
                         }
-                        returning new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$2$4)
-                    ) : .ceylon.language.$empty.getEmpty()
-                )
-            in {
+                        returning new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$2$4);
+                    ) : .ceylon.language.$empty.getEmpty();
+                );
             }
-            returning $ceylontmp4 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp4).getEmpty()
+            returning $ceylontmp4 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp4).getEmpty();
         );
         final .ceylon.language.Iterable<? extends .ceylon.language.String> full = new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("foo"));
         sync = (
             let
+            {
                 .java.lang.Object $ceylontmp8 = (
                     let
-                        .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$5 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)full
-                    in {
+                    {
+                        .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$5 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)full;
                     }
                     returning !$spreadTest$5.getEmpty() ? (
                         let
-                            .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$6$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$5,
-                            int $spread$6$2 = (int)$spread$6$0.getSize(),
-                            .ceylon.language.String[] $spread$6$4 = new .ceylon.language.String[$spread$6$2]
-                        in {
+                        {
+                            .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$6$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$5;
+                            int $spread$6$2 = (int)$spread$6$0.getSize();
+                            .ceylon.language.String[] $spread$6$4 = new .ceylon.language.String[$spread$6$2];
                             for (int $index$7 = 0; $index$7 < $spread$6$2; $index$7++) $spread$6$4[$index$7] = .ceylon.language.String.instance($spread$6$0.item(.ceylon.language.Integer.instance($index$7)).getUppercased());
                         }
-                        returning new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$6$4)
-                    ) : .ceylon.language.$empty.getEmpty()
-                )
-            in {
+                        returning new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$6$4);
+                    ) : .ceylon.language.$empty.getEmpty();
+                );
             }
-            returning $ceylontmp8 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp8).getEmpty()
+            returning $ceylontmp8 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp8).getEmpty();
         );
         final .ceylon.language.Iterable<? extends .ceylon.language.String> spread1 = (
             let
-                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$9 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)full
-            in {
+            {
+                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$9 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)full;
             }
             returning !$spreadTest$9.getEmpty() ? (
                 let
-                    .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$10$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$9,
-                    int $spread$10$2 = (int)$spread$10$0.getSize(),
-                    .ceylon.language.String[] $spread$10$4 = new .ceylon.language.String[$spread$10$2]
-                in {
+                {
+                    .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$10$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$9;
+                    int $spread$10$2 = (int)$spread$10$0.getSize();
+                    .ceylon.language.String[] $spread$10$4 = new .ceylon.language.String[$spread$10$2];
                     for (int $index$11 = 0; $index$11 < $spread$10$2; $index$11++) $spread$10$4[$index$11] = .ceylon.language.String.instance($spread$10$0.item(.ceylon.language.Integer.instance($index$11)).getUppercased());
                 }
-                returning new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$10$4)
-            ) : .ceylon.language.$empty.getEmpty()
+                returning new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$10$4);
+            ) : .ceylon.language.$empty.getEmpty();
         );
     }
     

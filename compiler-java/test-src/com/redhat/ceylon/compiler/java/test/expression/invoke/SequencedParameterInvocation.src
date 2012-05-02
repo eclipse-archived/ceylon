@@ -8,11 +8,11 @@ class SequencedParameterInvocation {
     private final void m(final .java.lang.String a) {
         (
             let
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$i$1 = m$i(a)
-            in {
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$i$1 = m$i(a);
                 m(a, $ceylontmp$i$1);
             }
-            returning null
+            returning null;
         );
     }
     
@@ -26,11 +26,11 @@ class SequencedParameterInvocation {
     private final void m2(final .java.lang.String a) {
         (
             let
-                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> $ceylontmp$i$3 = m2$i(a)
-            in {
+            {
+                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> $ceylontmp$i$3 = m2$i(a);
                 m2(a, $ceylontmp$i$3);
             }
-            returning null
+            returning null;
         );
     }
     

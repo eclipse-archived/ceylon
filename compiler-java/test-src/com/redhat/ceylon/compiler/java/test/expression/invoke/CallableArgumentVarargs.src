@@ -19,11 +19,11 @@ final class callableArgumentVarargs_g {
     static final void callableArgumentVarargs_g() {
         (
             let
-                .ceylon.language.Iterable<? extends .ceylon.language.String> $ceylontmp$s$1 = callableArgumentVarargs_g$s()
-            in {
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.String> $ceylontmp$s$1 = callableArgumentVarargs_g$s();
                 callableArgumentVarargs_g($ceylontmp$s$1);
             }
-            returning null
+            returning null;
         );
     }
     

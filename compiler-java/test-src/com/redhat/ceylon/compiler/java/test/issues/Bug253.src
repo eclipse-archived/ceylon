@@ -80,12 +80,12 @@ final class bug253 {
         boxer.setTwo(.ceylon.language.Integer.instance(2L));
         boxer.setOne((
             let
-                .com.redhat.ceylon.compiler.java.test.issues.IntBoxer $ceylontmpopE0 = boxer,
-                .ceylon.language.Integer $ceylontmpopV1 = .ceylon.language.Integer.instance(3L)
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.IntBoxer $ceylontmpopE0 = boxer;
+                .ceylon.language.Integer $ceylontmpopV1 = .ceylon.language.Integer.instance(3L);
                 $ceylontmpopE0.setTwo($ceylontmpopV1);
             }
-            returning $ceylontmpopV1
+            returning $ceylontmpopV1;
         ));
     }
     

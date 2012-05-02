@@ -8,8 +8,10 @@ final class bug248 {
     static void bug248() {
         while ((
             let
-                boolean $ceylontmp0 = false
-            returning $ceylontmp0
+            {
+                boolean $ceylontmp0 = false;
+            }
+            returning $ceylontmp0;
         )) {
             throw new .ceylon.language.Exception(null, null);
         }

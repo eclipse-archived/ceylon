@@ -12,11 +12,11 @@ class VarargsMethodSpecifyingMethodWithSequence {
     private final void bar() {
         (
             let
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$ints$1 = bar$ints()
-            in {
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$ints$1 = bar$ints();
                 bar($ceylontmp$ints$1);
             }
-            returning null
+            returning null;
         );
     }
     

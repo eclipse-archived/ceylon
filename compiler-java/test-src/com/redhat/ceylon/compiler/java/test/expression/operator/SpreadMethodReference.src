@@ -9,19 +9,19 @@ class SpreadMethodReference {
             public .ceylon.language.Iterable<.ceylon.language.String> $call(final .java.lang.Object $param$0) {
                 return (
                     let
-                        .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$3 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)seq
-                    in {
+                    {
+                        .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$3 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)seq;
                     }
                     returning !$spreadTest$3.getEmpty() ? (
                         let
-                            .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$4$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$3,
-                            int $spread$4$2 = (int)$spread$4$0.getSize(),
-                            .ceylon.language.String[] $spread$4$4 = new .ceylon.language.String[$spread$4$2]
-                        in {
+                        {
+                            .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$4$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$3;
+                            int $spread$4$2 = (int)$spread$4$0.getSize();
+                            .ceylon.language.String[] $spread$4$4 = new .ceylon.language.String[$spread$4$2];
                             for (int $index$5 = 0; $index$5 < $spread$4$2; $index$5++) $spread$4$4[$index$5] = .ceylon.language.String.instance($spread$4$0.item(.ceylon.language.Integer.instance($index$5)).initial(((.ceylon.language.Integer)$param$0).longValue()));
                         }
-                        returning new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$4$4)
-                    ) : .ceylon.language.$empty.getEmpty()
+                        returning new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$4$4);
+                    ) : .ceylon.language.$empty.getEmpty();
                 );
             }
         };

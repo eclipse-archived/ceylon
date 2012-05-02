@@ -19,11 +19,11 @@ final class run {
             final void holaMundo() {
                 (
                     let
-                        .java.lang.String $ceylontmp$name$1 = holaMundo$name()
-                    in {
+                    {
+                        .java.lang.String $ceylontmp$name$1 = holaMundo$name();
                         holaMundo($ceylontmp$name$1);
                     }
-                    returning null
+                    returning null;
                 );
             }
             

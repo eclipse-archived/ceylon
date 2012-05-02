@@ -9,8 +9,10 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     private final <U>T m1(final X b) {
         return (
             let
-                U $ceylontmp$u$1 = m1$u(b)
-            returning m1(b, $ceylontmp$u$1)
+            {
+                U $ceylontmp$u$1 = m1$u(b);
+            }
+            returning m1(b, $ceylontmp$u$1);
         );
     }
     

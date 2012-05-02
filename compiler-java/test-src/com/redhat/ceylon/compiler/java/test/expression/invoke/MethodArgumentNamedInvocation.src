@@ -18,6 +18,7 @@ final class methodArgumentNamedIncovation {
         final callFunction callFunction = new callFunction();
         (
             let
+            {
                 .ceylon.language.Callable<? extends .ceylon.language.String> $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("Callable<String>"){
                     
                     @.java.lang.Override
@@ -25,11 +26,10 @@ final class methodArgumentNamedIncovation {
                         final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
                         return .ceylon.language.String.instance(i.power(.ceylon.language.Integer.instance(2L)).toString());
                     }
-                }
-            in {
+                };
                 callFunction.callFunction($arg$0$0);
             }
-            returning null
+            returning null;
         );
     }
     

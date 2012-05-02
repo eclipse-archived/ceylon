@@ -142,35 +142,35 @@ class ArithmeticOperators {
     private final void unboxedAttributes() {
         (
             let
-                long $ceylontmpop0 = getN1()
-            in {
+            {
+                long $ceylontmpop0 = getN1();
                 setN1($ceylontmpop0 + 1);
             }
-            returning $ceylontmpop0
+            returning $ceylontmpop0;
         );
         (
             let
-                long $ceylontmpop1 = getN1() + 1
-            in {
+            {
+                long $ceylontmpop1 = getN1() + 1;
                 setN1($ceylontmpop1);
             }
-            returning $ceylontmpop1
+            returning $ceylontmpop1;
         );
         (
             let
-                long $ceylontmpop2 = getN1()
-            in {
+            {
+                long $ceylontmpop2 = getN1();
                 setN1($ceylontmpop2 - 1);
             }
-            returning $ceylontmpop2
+            returning $ceylontmpop2;
         );
         (
             let
-                long $ceylontmpop3 = getN1() - 1
-            in {
+            {
+                long $ceylontmpop3 = getN1() - 1;
                 setN1($ceylontmpop3);
             }
-            returning $ceylontmpop3
+            returning $ceylontmpop3;
         );
         setI1(getN1());
         setI1(-getN1());
@@ -182,70 +182,70 @@ class ArithmeticOperators {
         setN1(.ceylon.language.Integer.instance(getN1()).power(.ceylon.language.Integer.instance(getN2())).longValue());
         (
             let
-                long $ceylontmpop4 = getN1() + getN2()
-            in {
+            {
+                long $ceylontmpop4 = getN1() + getN2();
                 setN1($ceylontmpop4);
             }
-            returning $ceylontmpop4
+            returning $ceylontmpop4;
         );
         (
             let
-                long $ceylontmpop5 = getN1() * getN1()
-            in {
+            {
+                long $ceylontmpop5 = getN1() * getN1();
                 setN1($ceylontmpop5);
             }
-            returning $ceylontmpop5
+            returning $ceylontmpop5;
         );
         (
             let
-                long $ceylontmpop6 = getN1() / getN2()
-            in {
+            {
+                long $ceylontmpop6 = getN1() / getN2();
                 setN1($ceylontmpop6);
             }
-            returning $ceylontmpop6
+            returning $ceylontmpop6;
         );
         (
             let
-                long $ceylontmpop7 = getN1() % getN2()
-            in {
+            {
+                long $ceylontmpop7 = getN1() % getN2();
                 setN1($ceylontmpop7);
             }
-            returning $ceylontmpop7
+            returning $ceylontmpop7;
         );
     }
     
     private final void unboxedGetterAttributes() {
         (
             let
-                long $ceylontmpop8 = getGetterN1()
-            in {
+            {
+                long $ceylontmpop8 = getGetterN1();
                 setGetterN1($ceylontmpop8 + 1);
             }
-            returning $ceylontmpop8
+            returning $ceylontmpop8;
         );
         (
             let
-                long $ceylontmpop9 = getGetterN1() + 1
-            in {
+            {
+                long $ceylontmpop9 = getGetterN1() + 1;
                 setGetterN1($ceylontmpop9);
             }
-            returning $ceylontmpop9
+            returning $ceylontmpop9;
         );
         (
             let
-                long $ceylontmpop10 = getGetterN1()
-            in {
+            {
+                long $ceylontmpop10 = getGetterN1();
                 setGetterN1($ceylontmpop10 - 1);
             }
-            returning $ceylontmpop10
+            returning $ceylontmpop10;
         );
         (
             let
-                long $ceylontmpop11 = getGetterN1() - 1
-            in {
+            {
+                long $ceylontmpop11 = getGetterN1() - 1;
                 setGetterN1($ceylontmpop11);
             }
-            returning $ceylontmpop11
+            returning $ceylontmpop11;
         );
         setGetterI1(getGetterN1());
         setGetterI1(-getGetterN1());
@@ -257,74 +257,74 @@ class ArithmeticOperators {
         setGetterN1(.ceylon.language.Integer.instance(getGetterN1()).power(.ceylon.language.Integer.instance(getGetterN2())).longValue());
         (
             let
-                long $ceylontmpop12 = getGetterN1() + getGetterN2()
-            in {
+            {
+                long $ceylontmpop12 = getGetterN1() + getGetterN2();
                 setGetterN1($ceylontmpop12);
             }
-            returning $ceylontmpop12
+            returning $ceylontmpop12;
         );
         (
             let
-                long $ceylontmpop13 = getGetterN1() * getGetterN1()
-            in {
+            {
+                long $ceylontmpop13 = getGetterN1() * getGetterN1();
                 setGetterN1($ceylontmpop13);
             }
-            returning $ceylontmpop13
+            returning $ceylontmpop13;
         );
         (
             let
-                long $ceylontmpop14 = getGetterN1() / getGetterN2()
-            in {
+            {
+                long $ceylontmpop14 = getGetterN1() / getGetterN2();
                 setGetterN1($ceylontmpop14);
             }
-            returning $ceylontmpop14
+            returning $ceylontmpop14;
         );
         (
             let
-                long $ceylontmpop15 = getGetterN1() % getGetterN2()
-            in {
+            {
+                long $ceylontmpop15 = getGetterN1() % getGetterN2();
                 setGetterN1($ceylontmpop15);
             }
-            returning $ceylontmpop15
+            returning $ceylontmpop15;
         );
     }
     
     private final void unboxedQualifiedAttributes() {
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE16 = this,
-                long $ceylontmpopV17 = $ceylontmpopE16.getN1()
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE16 = this;
+                long $ceylontmpopV17 = $ceylontmpopE16.getN1();
                 $ceylontmpopE16.setN1($ceylontmpopV17 + 1);
             }
-            returning $ceylontmpopV17
+            returning $ceylontmpopV17;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE18 = this,
-                long $ceylontmpopV19 = $ceylontmpopE18.getN1() + 1
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE18 = this;
+                long $ceylontmpopV19 = $ceylontmpopE18.getN1() + 1;
                 $ceylontmpopE18.setN1($ceylontmpopV19);
             }
-            returning $ceylontmpopV19
+            returning $ceylontmpopV19;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE20 = this,
-                long $ceylontmpopV21 = $ceylontmpopE20.getN1()
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE20 = this;
+                long $ceylontmpopV21 = $ceylontmpopE20.getN1();
                 $ceylontmpopE20.setN1($ceylontmpopV21 - 1);
             }
-            returning $ceylontmpopV21
+            returning $ceylontmpopV21;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE22 = this,
-                long $ceylontmpopV23 = $ceylontmpopE22.getN1() - 1
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE22 = this;
+                long $ceylontmpopV23 = $ceylontmpopE22.getN1() - 1;
                 $ceylontmpopE22.setN1($ceylontmpopV23);
             }
-            returning $ceylontmpopV23
+            returning $ceylontmpopV23;
         );
         this.setI1(this.getN1());
         this.setI1(-this.getN1());
@@ -336,78 +336,78 @@ class ArithmeticOperators {
         this.setN1(.ceylon.language.Integer.instance(this.getN1()).power(.ceylon.language.Integer.instance(this.getN2())).longValue());
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE24 = this,
-                long $ceylontmpopV25 = $ceylontmpopE24.getN1() + this.getN2()
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE24 = this;
+                long $ceylontmpopV25 = $ceylontmpopE24.getN1() + this.getN2();
                 $ceylontmpopE24.setN1($ceylontmpopV25);
             }
-            returning $ceylontmpopV25
+            returning $ceylontmpopV25;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE26 = this,
-                long $ceylontmpopV27 = $ceylontmpopE26.getN1() * this.getN1()
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE26 = this;
+                long $ceylontmpopV27 = $ceylontmpopE26.getN1() * this.getN1();
                 $ceylontmpopE26.setN1($ceylontmpopV27);
             }
-            returning $ceylontmpopV27
+            returning $ceylontmpopV27;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE28 = this,
-                long $ceylontmpopV29 = $ceylontmpopE28.getN1() / this.getN2()
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE28 = this;
+                long $ceylontmpopV29 = $ceylontmpopE28.getN1() / this.getN2();
                 $ceylontmpopE28.setN1($ceylontmpopV29);
             }
-            returning $ceylontmpopV29
+            returning $ceylontmpopV29;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE30 = this,
-                long $ceylontmpopV31 = $ceylontmpopE30.getN1() % this.getN2()
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE30 = this;
+                long $ceylontmpopV31 = $ceylontmpopE30.getN1() % this.getN2();
                 $ceylontmpopE30.setN1($ceylontmpopV31);
             }
-            returning $ceylontmpopV31
+            returning $ceylontmpopV31;
         );
     }
     
     private final void unboxedQualifiedGetterAttributes() {
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE32 = this,
-                long $ceylontmpopV33 = $ceylontmpopE32.getGetterN1()
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE32 = this;
+                long $ceylontmpopV33 = $ceylontmpopE32.getGetterN1();
                 $ceylontmpopE32.setGetterN1($ceylontmpopV33 + 1);
             }
-            returning $ceylontmpopV33
+            returning $ceylontmpopV33;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE34 = this,
-                long $ceylontmpopV35 = $ceylontmpopE34.getGetterN1() + 1
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE34 = this;
+                long $ceylontmpopV35 = $ceylontmpopE34.getGetterN1() + 1;
                 $ceylontmpopE34.setGetterN1($ceylontmpopV35);
             }
-            returning $ceylontmpopV35
+            returning $ceylontmpopV35;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE36 = this,
-                long $ceylontmpopV37 = $ceylontmpopE36.getGetterN1()
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE36 = this;
+                long $ceylontmpopV37 = $ceylontmpopE36.getGetterN1();
                 $ceylontmpopE36.setGetterN1($ceylontmpopV37 - 1);
             }
-            returning $ceylontmpopV37
+            returning $ceylontmpopV37;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE38 = this,
-                long $ceylontmpopV39 = $ceylontmpopE38.getGetterN1() - 1
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE38 = this;
+                long $ceylontmpopV39 = $ceylontmpopE38.getGetterN1() - 1;
                 $ceylontmpopE38.setGetterN1($ceylontmpopV39);
             }
-            returning $ceylontmpopV39
+            returning $ceylontmpopV39;
         );
         this.setGetterI1(this.getGetterN1());
         this.setGetterI1(-this.getGetterN1());
@@ -419,78 +419,78 @@ class ArithmeticOperators {
         this.setGetterN1(.ceylon.language.Integer.instance(this.getGetterN1()).power(.ceylon.language.Integer.instance(this.getGetterN2())).longValue());
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE40 = this,
-                long $ceylontmpopV41 = $ceylontmpopE40.getGetterN1() + this.getGetterN2()
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE40 = this;
+                long $ceylontmpopV41 = $ceylontmpopE40.getGetterN1() + this.getGetterN2();
                 $ceylontmpopE40.setGetterN1($ceylontmpopV41);
             }
-            returning $ceylontmpopV41
+            returning $ceylontmpopV41;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE42 = this,
-                long $ceylontmpopV43 = $ceylontmpopE42.getGetterN1() * this.getGetterN1()
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE42 = this;
+                long $ceylontmpopV43 = $ceylontmpopE42.getGetterN1() * this.getGetterN1();
                 $ceylontmpopE42.setGetterN1($ceylontmpopV43);
             }
-            returning $ceylontmpopV43
+            returning $ceylontmpopV43;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE44 = this,
-                long $ceylontmpopV45 = $ceylontmpopE44.getGetterN1() / this.getGetterN2()
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE44 = this;
+                long $ceylontmpopV45 = $ceylontmpopE44.getGetterN1() / this.getGetterN2();
                 $ceylontmpopE44.setGetterN1($ceylontmpopV45);
             }
-            returning $ceylontmpopV45
+            returning $ceylontmpopV45;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE46 = this,
-                long $ceylontmpopV47 = $ceylontmpopE46.getGetterN1() % this.getGetterN2()
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE46 = this;
+                long $ceylontmpopV47 = $ceylontmpopE46.getGetterN1() % this.getGetterN2();
                 $ceylontmpopE46.setGetterN1($ceylontmpopV47);
             }
-            returning $ceylontmpopV47
+            returning $ceylontmpopV47;
         );
     }
     
     private final void boxedQualifiedAttributes() {
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE48 = this,
-                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV49 = $ceylontmpopE48.getBoxedN1()
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE48 = this;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV49 = $ceylontmpopE48.getBoxedN1();
                 $ceylontmpopE48.setBoxedN1($ceylontmpopV49.getSuccessor());
             }
-            returning $ceylontmpopV49
+            returning $ceylontmpopV49;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE50 = this,
-                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV51 = $ceylontmpopE50.getBoxedN1().getSuccessor()
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE50 = this;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV51 = $ceylontmpopE50.getBoxedN1().getSuccessor();
                 $ceylontmpopE50.setBoxedN1($ceylontmpopV51);
             }
-            returning $ceylontmpopV51
+            returning $ceylontmpopV51;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE52 = this,
-                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV53 = $ceylontmpopE52.getBoxedN1()
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE52 = this;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV53 = $ceylontmpopE52.getBoxedN1();
                 $ceylontmpopE52.setBoxedN1($ceylontmpopV53.getPredecessor());
             }
-            returning $ceylontmpopV53
+            returning $ceylontmpopV53;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE54 = this,
-                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV55 = $ceylontmpopE54.getBoxedN1().getPredecessor()
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE54 = this;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV55 = $ceylontmpopE54.getBoxedN1().getPredecessor();
                 $ceylontmpopE54.setBoxedN1($ceylontmpopV55);
             }
-            returning $ceylontmpopV55
+            returning $ceylontmpopV55;
         );
         this.setBoxedI1(this.getBoxedN1().getPositiveValue());
         this.setBoxedI1(this.getBoxedN1().getNegativeValue());
@@ -502,39 +502,39 @@ class ArithmeticOperators {
         this.setBoxedN1(this.getBoxedN1().power(this.getBoxedN2()));
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE56 = this,
-                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV57 = $ceylontmpopE56.getBoxedN1().plus(this.getBoxedN2())
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE56 = this;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV57 = $ceylontmpopE56.getBoxedN1().plus(this.getBoxedN2());
                 $ceylontmpopE56.setBoxedN1($ceylontmpopV57);
             }
-            returning $ceylontmpopV57
+            returning $ceylontmpopV57;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE58 = this,
-                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV59 = $ceylontmpopE58.getBoxedN1().times(this.getBoxedN1())
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE58 = this;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV59 = $ceylontmpopE58.getBoxedN1().times(this.getBoxedN1());
                 $ceylontmpopE58.setBoxedN1($ceylontmpopV59);
             }
-            returning $ceylontmpopV59
+            returning $ceylontmpopV59;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE60 = this,
-                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV61 = $ceylontmpopE60.getBoxedN1().divided(this.getBoxedN2())
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE60 = this;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV61 = $ceylontmpopE60.getBoxedN1().divided(this.getBoxedN2());
                 $ceylontmpopE60.setBoxedN1($ceylontmpopV61);
             }
-            returning $ceylontmpopV61
+            returning $ceylontmpopV61;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE62 = this,
-                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV63 = $ceylontmpopE62.getBoxedN1().remainder(this.getBoxedN2())
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmpopE62 = this;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV63 = $ceylontmpopE62.getBoxedN1().remainder(this.getBoxedN2());
                 $ceylontmpopE62.setBoxedN1($ceylontmpopV63);
             }
-            returning $ceylontmpopV63
+            returning $ceylontmpopV63;
         );
     }
     
@@ -689,35 +689,35 @@ class ArithmeticOperators {
         final getterI1$setter getterI1$setter = new getterI1$setter();
         (
             let
-                long $ceylontmpop64 = getterN1$getter.getGetterN1()
-            in {
+            {
+                long $ceylontmpop64 = getterN1$getter.getGetterN1();
                 getterN1$setter.setGetterN1($ceylontmpop64 + 1);
             }
-            returning $ceylontmpop64
+            returning $ceylontmpop64;
         );
         (
             let
-                long $ceylontmpop65 = getterN1$getter.getGetterN1() + 1
-            in {
+            {
+                long $ceylontmpop65 = getterN1$getter.getGetterN1() + 1;
                 getterN1$setter.setGetterN1($ceylontmpop65);
             }
-            returning $ceylontmpop65
+            returning $ceylontmpop65;
         );
         (
             let
-                long $ceylontmpop66 = getterN1$getter.getGetterN1()
-            in {
+            {
+                long $ceylontmpop66 = getterN1$getter.getGetterN1();
                 getterN1$setter.setGetterN1($ceylontmpop66 - 1);
             }
-            returning $ceylontmpop66
+            returning $ceylontmpop66;
         );
         (
             let
-                long $ceylontmpop67 = getterN1$getter.getGetterN1() - 1
-            in {
+            {
+                long $ceylontmpop67 = getterN1$getter.getGetterN1() - 1;
                 getterN1$setter.setGetterN1($ceylontmpop67);
             }
-            returning $ceylontmpop67
+            returning $ceylontmpop67;
         );
         getterI1$setter.setGetterI1(getterN1$getter.getGetterN1());
         getterI1$setter.setGetterI1(-getterN1$getter.getGetterN1());
@@ -729,35 +729,35 @@ class ArithmeticOperators {
         getterN1$setter.setGetterN1(.ceylon.language.Integer.instance(getterN1$getter.getGetterN1()).power(.ceylon.language.Integer.instance(getterN2$getter.getGetterN2())).longValue());
         (
             let
-                long $ceylontmpop68 = getterN1$getter.getGetterN1() + getterN2$getter.getGetterN2()
-            in {
+            {
+                long $ceylontmpop68 = getterN1$getter.getGetterN1() + getterN2$getter.getGetterN2();
                 getterN1$setter.setGetterN1($ceylontmpop68);
             }
-            returning $ceylontmpop68
+            returning $ceylontmpop68;
         );
         (
             let
-                long $ceylontmpop69 = getterN1$getter.getGetterN1() * getterN1$getter.getGetterN1()
-            in {
+            {
+                long $ceylontmpop69 = getterN1$getter.getGetterN1() * getterN1$getter.getGetterN1();
                 getterN1$setter.setGetterN1($ceylontmpop69);
             }
-            returning $ceylontmpop69
+            returning $ceylontmpop69;
         );
         (
             let
-                long $ceylontmpop70 = getterN1$getter.getGetterN1() / getterN2$getter.getGetterN2()
-            in {
+            {
+                long $ceylontmpop70 = getterN1$getter.getGetterN1() / getterN2$getter.getGetterN2();
                 getterN1$setter.setGetterN1($ceylontmpop70);
             }
-            returning $ceylontmpop70
+            returning $ceylontmpop70;
         );
         (
             let
-                long $ceylontmpop71 = getterN1$getter.getGetterN1() % getterN2$getter.getGetterN2()
-            in {
+            {
+                long $ceylontmpop71 = getterN1$getter.getGetterN1() % getterN2$getter.getGetterN2();
                 getterN1$setter.setGetterN1($ceylontmpop71);
             }
-            returning $ceylontmpop71
+            returning $ceylontmpop71;
         );
     }
     
@@ -767,35 +767,35 @@ class ArithmeticOperators {
         .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger i1 = initI;
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpop72 = n1
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpop72 = n1;
                 n1 = $ceylontmpop72.getSuccessor();
             }
-            returning $ceylontmpop72
+            returning $ceylontmpop72;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpop73 = n1.getSuccessor()
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpop73 = n1.getSuccessor();
                 n1 = $ceylontmpop73;
             }
-            returning $ceylontmpop73
+            returning $ceylontmpop73;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpop74 = n1
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpop74 = n1;
                 n1 = $ceylontmpop74.getPredecessor();
             }
-            returning $ceylontmpop74
+            returning $ceylontmpop74;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpop75 = n1.getPredecessor()
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpop75 = n1.getPredecessor();
                 n1 = $ceylontmpop75;
             }
-            returning $ceylontmpop75
+            returning $ceylontmpop75;
         );
         i1 = n1.getPositiveValue();
         i1 = n1.getNegativeValue();
@@ -807,70 +807,70 @@ class ArithmeticOperators {
         n1 = n1.power(n2);
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpop76 = n1.plus(n2)
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpop76 = n1.plus(n2);
                 n1 = $ceylontmpop76;
             }
-            returning $ceylontmpop76
+            returning $ceylontmpop76;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpop77 = n1.times(n1)
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpop77 = n1.times(n1);
                 n1 = $ceylontmpop77;
             }
-            returning $ceylontmpop77
+            returning $ceylontmpop77;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpop78 = n1.divided(n2)
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpop78 = n1.divided(n2);
                 n1 = $ceylontmpop78;
             }
-            returning $ceylontmpop78
+            returning $ceylontmpop78;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpop79 = n1.remainder(n2)
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpop79 = n1.remainder(n2);
                 n1 = $ceylontmpop79;
             }
-            returning $ceylontmpop79
+            returning $ceylontmpop79;
         );
     }
     
     private final void unboxedToplevel() {
         (
             let
-                long $ceylontmpop80 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.getToplevelN1()
-            in {
+            {
+                long $ceylontmpop80 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.getToplevelN1();
                 .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop80 + 1);
             }
-            returning $ceylontmpop80
+            returning $ceylontmpop80;
         );
         (
             let
-                long $ceylontmpop81 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.getToplevelN1() + 1
-            in {
+            {
+                long $ceylontmpop81 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.getToplevelN1() + 1;
                 .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop81);
             }
-            returning $ceylontmpop81
+            returning $ceylontmpop81;
         );
         (
             let
-                long $ceylontmpop82 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.getToplevelN1()
-            in {
+            {
+                long $ceylontmpop82 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.getToplevelN1();
                 .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop82 - 1);
             }
-            returning $ceylontmpop82
+            returning $ceylontmpop82;
         );
         (
             let
-                long $ceylontmpop83 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.getToplevelN1() - 1
-            in {
+            {
+                long $ceylontmpop83 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.getToplevelN1() - 1;
                 .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop83);
             }
-            returning $ceylontmpop83
+            returning $ceylontmpop83;
         );
         .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1.setToplevelI1(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.getToplevelN1());
         .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1.setToplevelI1(-.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.getToplevelN1());
@@ -882,70 +882,70 @@ class ArithmeticOperators {
         .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.setToplevelN1(.ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.getToplevelN1()).power(.ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2.getToplevelN2())).longValue());
         (
             let
-                long $ceylontmpop84 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.getToplevelN1() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2.getToplevelN2()
-            in {
+            {
+                long $ceylontmpop84 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.getToplevelN1() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2.getToplevelN2();
                 .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop84);
             }
-            returning $ceylontmpop84
+            returning $ceylontmpop84;
         );
         (
             let
-                long $ceylontmpop85 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.getToplevelN1() * .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.getToplevelN1()
-            in {
+            {
+                long $ceylontmpop85 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.getToplevelN1() * .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.getToplevelN1();
                 .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop85);
             }
-            returning $ceylontmpop85
+            returning $ceylontmpop85;
         );
         (
             let
-                long $ceylontmpop86 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.getToplevelN1() / .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2.getToplevelN2()
-            in {
+            {
+                long $ceylontmpop86 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.getToplevelN1() / .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2.getToplevelN2();
                 .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop86);
             }
-            returning $ceylontmpop86
+            returning $ceylontmpop86;
         );
         (
             let
-                long $ceylontmpop87 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.getToplevelN1() % .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2.getToplevelN2()
-            in {
+            {
+                long $ceylontmpop87 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.getToplevelN1() % .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2.getToplevelN2();
                 .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop87);
             }
-            returning $ceylontmpop87
+            returning $ceylontmpop87;
         );
     }
     
     private final void unboxedToplevelGetter() {
         (
             let
-                long $ceylontmpop88 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()
-            in {
+            {
+                long $ceylontmpop88 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.getToplevelGetterN1();
                 .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop88 + 1);
             }
-            returning $ceylontmpop88
+            returning $ceylontmpop88;
         );
         (
             let
-                long $ceylontmpop89 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.getToplevelGetterN1() + 1
-            in {
+            {
+                long $ceylontmpop89 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.getToplevelGetterN1() + 1;
                 .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop89);
             }
-            returning $ceylontmpop89
+            returning $ceylontmpop89;
         );
         (
             let
-                long $ceylontmpop90 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()
-            in {
+            {
+                long $ceylontmpop90 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.getToplevelGetterN1();
                 .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop90 - 1);
             }
-            returning $ceylontmpop90
+            returning $ceylontmpop90;
         );
         (
             let
-                long $ceylontmpop91 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.getToplevelGetterN1() - 1
-            in {
+            {
+                long $ceylontmpop91 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.getToplevelGetterN1() - 1;
                 .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop91);
             }
-            returning $ceylontmpop91
+            returning $ceylontmpop91;
         );
         .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterI1.setToplevelGetterI1(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.getToplevelGetterN1());
         .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterI1.setToplevelGetterI1(-.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.getToplevelGetterN1());
@@ -957,35 +957,35 @@ class ArithmeticOperators {
         .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.setToplevelGetterN1(.ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()).power(.ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2.getToplevelGetterN2())).longValue());
         (
             let
-                long $ceylontmpop92 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.getToplevelGetterN1() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2.getToplevelGetterN2()
-            in {
+            {
+                long $ceylontmpop92 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.getToplevelGetterN1() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2.getToplevelGetterN2();
                 .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop92);
             }
-            returning $ceylontmpop92
+            returning $ceylontmpop92;
         );
         (
             let
-                long $ceylontmpop93 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.getToplevelGetterN1() * .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()
-            in {
+            {
+                long $ceylontmpop93 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.getToplevelGetterN1() * .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.getToplevelGetterN1();
                 .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop93);
             }
-            returning $ceylontmpop93
+            returning $ceylontmpop93;
         );
         (
             let
-                long $ceylontmpop94 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.getToplevelGetterN1() / .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2.getToplevelGetterN2()
-            in {
+            {
+                long $ceylontmpop94 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.getToplevelGetterN1() / .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2.getToplevelGetterN2();
                 .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop94);
             }
-            returning $ceylontmpop94
+            returning $ceylontmpop94;
         );
         (
             let
-                long $ceylontmpop95 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.getToplevelGetterN1() % .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2.getToplevelGetterN2()
-            in {
+            {
+                long $ceylontmpop95 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.getToplevelGetterN1() % .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2.getToplevelGetterN2();
                 .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop95);
             }
-            returning $ceylontmpop95
+            returning $ceylontmpop95;
         );
     }
     

@@ -19,11 +19,11 @@ final class callableArgumentSequenced_g {
     static final void callableArgumentSequenced_g() {
         (
             let
-                .ceylon.language.Iterable<? extends .ceylon.language.String> $ceylontmp$s$1 = callableArgumentSequenced_g$s()
-            in {
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.String> $ceylontmp$s$1 = callableArgumentSequenced_g$s();
                 callableArgumentSequenced_g($ceylontmp$s$1);
             }
-            returning null
+            returning null;
         );
     }
     

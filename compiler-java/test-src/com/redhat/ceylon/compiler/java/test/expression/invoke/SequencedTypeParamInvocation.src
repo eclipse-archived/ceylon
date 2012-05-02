@@ -8,11 +8,11 @@ class SequencedTypeParamInvocation<T> {
     public final void algo() {
         (
             let
-                .ceylon.language.Iterable<? extends T> $ceylontmp$strings$1 = algo$strings()
-            in {
+            {
+                .ceylon.language.Iterable<? extends T> $ceylontmp$strings$1 = algo$strings();
                 algo($ceylontmp$strings$1);
             }
-            returning null
+            returning null;
         );
     }
     

@@ -47,38 +47,38 @@ class IntegerBoxing {
         localAttrInteger = localAttrInteger++;
         setAttrInteger((
             let
-                long $ceylontmpop2 = getAttrInteger()
-            in {
+            {
+                long $ceylontmpop2 = getAttrInteger();
                 setAttrInteger($ceylontmpop2 + 1);
             }
-            returning $ceylontmpop2
+            returning $ceylontmpop2;
         ));
         this.setAttrInteger((
             let
-                .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing $ceylontmpopE3 = this,
-                long $ceylontmpopV4 = $ceylontmpopE3.getAttrInteger()
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing $ceylontmpopE3 = this;
+                long $ceylontmpopV4 = $ceylontmpopE3.getAttrInteger();
                 $ceylontmpopE3.setAttrInteger($ceylontmpopV4 + 1);
             }
-            returning $ceylontmpopV4
+            returning $ceylontmpopV4;
         ));
         test(localAttrInteger++);
         test((
             let
-                long $ceylontmpop5 = getAttrInteger()
-            in {
+            {
+                long $ceylontmpop5 = getAttrInteger();
                 setAttrInteger($ceylontmpop5 + 1);
             }
-            returning $ceylontmpop5
+            returning $ceylontmpop5;
         ));
         test((
             let
-                .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing $ceylontmpopE6 = this,
-                long $ceylontmpopV7 = $ceylontmpopE6.getAttrInteger()
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing $ceylontmpopE6 = this;
+                long $ceylontmpopV7 = $ceylontmpopE6.getAttrInteger();
                 $ceylontmpopE6.setAttrInteger($ceylontmpopV7 + 1);
             }
-            returning $ceylontmpopV7
+            returning $ceylontmpopV7;
         ));
         localAttrInteger = .ceylon.language.Integer.instance(localAttrInteger).getSuccessor().longValue();
         setAttrInteger(.ceylon.language.Integer.instance(getAttrInteger()).getSuccessor().longValue());

@@ -25,10 +25,12 @@ class GenericMethodInvocationMixed<X> {
         final .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<.ceylon.language.String> k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<.ceylon.language.String>();
         return (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<.ceylon.language.String> $arg$0$callable$ = k,
-                .ceylon.language.String $arg$0$0 = .ceylon.language.String.instance("hello"),
-                .ceylon.language.Integer $arg$0$1 = .ceylon.language.Integer.instance(1L)
-            returning $arg$0$callable$.<.ceylon.language.Integer>bar($arg$0$0, $arg$0$1)
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<.ceylon.language.String> $arg$0$callable$ = k;
+                .ceylon.language.String $arg$0$0 = .ceylon.language.String.instance("hello");
+                .ceylon.language.Integer $arg$0$1 = .ceylon.language.Integer.instance(1L);
+            }
+            returning $arg$0$callable$.<.ceylon.language.Integer>bar($arg$0$0, $arg$0$1);
         ).toString();
     }
     
@@ -41,10 +43,12 @@ class GenericMethodInvocationMixed<X> {
         final .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<X> k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<X>();
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<X> $arg$1$callable$ = k,
-                X $arg$1$0 = x,
-                Y $arg$1$1 = y
-            returning $arg$1$callable$.<Y>bar($arg$1$0, $arg$1$1)
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<X> $arg$1$callable$ = k;
+                X $arg$1$0 = x;
+                Y $arg$1$1 = y;
+            }
+            returning $arg$1$callable$.<Y>bar($arg$1$0, $arg$1$1);
         );
     }
     

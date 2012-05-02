@@ -21,11 +21,11 @@ class Bug299 {
         private final void m() {
             (
                 let
-                    .java.lang.String $ceylontmp$s$3 = m$s()
-                in {
+                {
+                    .java.lang.String $ceylontmp$s$3 = m$s();
                     m($ceylontmp$s$3);
                 }
-                returning null
+                returning null;
             );
         }
         
@@ -36,12 +36,12 @@ class Bug299 {
         Inner() {
             (
                 let
-                    .com.redhat.ceylon.compiler.java.test.issues.Bug299.Inner$impl $ceylontmp$impl$0 = new .com.redhat.ceylon.compiler.java.test.issues.Bug299.Inner$impl(),
-                    .java.lang.String $ceylontmp$s$1 = $ceylontmp$impl$0.$init$s()
-                in {
+                {
+                    .com.redhat.ceylon.compiler.java.test.issues.Bug299.Inner$impl $ceylontmp$impl$0 = new .com.redhat.ceylon.compiler.java.test.issues.Bug299.Inner$impl();
+                    .java.lang.String $ceylontmp$s$1 = $ceylontmp$impl$0.$init$s();
                     this($ceylontmp$s$1);
                 }
-                returning null
+                returning null;
             );
         }
         
@@ -66,11 +66,11 @@ class Bug299 {
             private final void m() {
                 (
                     let
-                        .java.lang.String $ceylontmp$s$7 = m$s()
-                    in {
+                    {
+                        .java.lang.String $ceylontmp$s$7 = m$s();
                         m($ceylontmp$s$7);
                     }
-                    returning null
+                    returning null;
                 );
             }
             
@@ -81,12 +81,12 @@ class Bug299 {
             Inner() {
                 (
                     let
-                        Inner$impl $ceylontmp$impl$4 = new Inner$impl(),
-                        .java.lang.String $ceylontmp$s$5 = $ceylontmp$impl$4.$init$s()
-                    in {
+                    {
+                        Inner$impl $ceylontmp$impl$4 = new Inner$impl();
+                        .java.lang.String $ceylontmp$s$5 = $ceylontmp$impl$4.$init$s();
                         this($ceylontmp$s$5);
                     }
-                    returning null
+                    returning null;
                 );
             }
             

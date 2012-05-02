@@ -9,11 +9,11 @@ class InitializerVarargs {
     InitializerVarargs(final .java.lang.String f) {
         (
             let
-                .ceylon.language.Iterable<? extends .ceylon.language.String> $ceylontmp$fs$1 = .com.redhat.ceylon.compiler.java.test.structure.klass.InitializerVarargs.$init$fs(f)
-            in {
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.String> $ceylontmp$fs$1 = .com.redhat.ceylon.compiler.java.test.structure.klass.InitializerVarargs.$init$fs(f);
                 this(f, $ceylontmp$fs$1);
             }
-            returning null
+            returning null;
         );
     }
     

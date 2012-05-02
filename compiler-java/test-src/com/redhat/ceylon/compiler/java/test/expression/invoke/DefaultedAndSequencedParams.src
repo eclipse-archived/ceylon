@@ -8,23 +8,23 @@ class DefaultedAndSequenced {
     private final void m(final .java.lang.String s, final long i) {
         (
             let
-                .ceylon.language.Iterable<? extends .ceylon.language.Boolean> $ceylontmp$b$4 = m$b(s, i)
-            in {
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Boolean> $ceylontmp$b$4 = m$b(s, i);
                 m(s, i, $ceylontmp$b$4);
             }
-            returning null
+            returning null;
         );
     }
     
     private final void m(final .java.lang.String s) {
         (
             let
-                long $ceylontmp$i$1 = m$i(s),
-                .ceylon.language.Iterable<? extends .ceylon.language.Boolean> $ceylontmp$b$2 = m$b(s, $ceylontmp$i$1)
-            in {
+            {
+                long $ceylontmp$i$1 = m$i(s);
+                .ceylon.language.Iterable<? extends .ceylon.language.Boolean> $ceylontmp$b$2 = m$b(s, $ceylontmp$i$1);
                 m(s, $ceylontmp$i$1, $ceylontmp$b$2);
             }
-            returning null
+            returning null;
         );
     }
     
@@ -67,143 +67,143 @@ class DefaultedAndSequenced {
     private final void namedArgs() {
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$5$this$ = this,
-                .java.lang.String $arg$5$0 = "",
-                long $arg$5$1 = $arg$5$this$.m$i($arg$5$0),
-                .ceylon.language.Iterable $arg$5$2 = $arg$5$this$.m$b($arg$5$0, $arg$5$1)
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$5$this$ = this;
+                .java.lang.String $arg$5$0 = "";
+                long $arg$5$1 = $arg$5$this$.m$i($arg$5$0);
+                .ceylon.language.Iterable $arg$5$2 = $arg$5$this$.m$b($arg$5$0, $arg$5$1);
                 m($arg$5$0, $arg$5$1, $arg$5$2);
             }
-            returning null
+            returning null;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$6$this$ = this,
-                .java.lang.String $arg$6$0 = "",
-                long $arg$6$1 = 2L,
-                .ceylon.language.Iterable $arg$6$2 = $arg$6$this$.m$b($arg$6$0, $arg$6$1)
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$6$this$ = this;
+                .java.lang.String $arg$6$0 = "";
+                long $arg$6$1 = 2L;
+                .ceylon.language.Iterable $arg$6$2 = $arg$6$this$.m$b($arg$6$0, $arg$6$1);
                 m($arg$6$0, $arg$6$1, $arg$6$2);
             }
-            returning null
+            returning null;
         );
         (
             let
-                .java.lang.String $arg$7$0 = "",
-                long $arg$7$1 = 2L,
-                .ceylon.language.Iterable<? extends .ceylon.language.Boolean> $arg$7$2 = new .ceylon.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.instance(false))
-            in {
+            {
+                .java.lang.String $arg$7$0 = "";
+                long $arg$7$1 = 2L;
+                .ceylon.language.Iterable<? extends .ceylon.language.Boolean> $arg$7$2 = new .ceylon.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.instance(false));
                 m($arg$7$0, $arg$7$1, $arg$7$2);
             }
-            returning null
+            returning null;
         );
         (
             let
-                .java.lang.String $arg$8$0 = "",
-                long $arg$8$1 = 2L,
-                .ceylon.language.Iterable $arg$8$2 = new .ceylon.language.ArraySequence(.ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(true))
-            in {
+            {
+                .java.lang.String $arg$8$0 = "";
+                long $arg$8$1 = 2L;
+                .ceylon.language.Iterable $arg$8$2 = new .ceylon.language.ArraySequence(.ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(true));
                 m($arg$8$0, $arg$8$1, $arg$8$2);
             }
-            returning null
+            returning null;
         );
     }
     
     private final void qmeNamedArgs() {
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$9$callable$ = self(),
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$9$this$ = $arg$9$callable$,
-                .java.lang.String $arg$9$0 = "",
-                long $arg$9$1 = $arg$9$this$.m$i($arg$9$0),
-                .ceylon.language.Iterable $arg$9$2 = $arg$9$this$.m$b($arg$9$0, $arg$9$1)
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$9$callable$ = self();
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$9$this$ = $arg$9$callable$;
+                .java.lang.String $arg$9$0 = "";
+                long $arg$9$1 = $arg$9$this$.m$i($arg$9$0);
+                .ceylon.language.Iterable $arg$9$2 = $arg$9$this$.m$b($arg$9$0, $arg$9$1);
                 $arg$9$callable$.m($arg$9$0, $arg$9$1, $arg$9$2);
             }
-            returning null
+            returning null;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$10$callable$ = self(),
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$10$this$ = $arg$10$callable$,
-                .java.lang.String $arg$10$0 = "",
-                long $arg$10$1 = 2L,
-                .ceylon.language.Iterable $arg$10$2 = $arg$10$this$.m$b($arg$10$0, $arg$10$1)
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$10$callable$ = self();
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$10$this$ = $arg$10$callable$;
+                .java.lang.String $arg$10$0 = "";
+                long $arg$10$1 = 2L;
+                .ceylon.language.Iterable $arg$10$2 = $arg$10$this$.m$b($arg$10$0, $arg$10$1);
                 $arg$10$callable$.m($arg$10$0, $arg$10$1, $arg$10$2);
             }
-            returning null
+            returning null;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$11$callable$ = self(),
-                .java.lang.String $arg$11$0 = "",
-                long $arg$11$1 = 2L,
-                .ceylon.language.Iterable<? extends .ceylon.language.Boolean> $arg$11$2 = new .ceylon.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.instance(false))
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$11$callable$ = self();
+                .java.lang.String $arg$11$0 = "";
+                long $arg$11$1 = 2L;
+                .ceylon.language.Iterable<? extends .ceylon.language.Boolean> $arg$11$2 = new .ceylon.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.instance(false));
                 $arg$11$callable$.m($arg$11$0, $arg$11$1, $arg$11$2);
             }
-            returning null
+            returning null;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$12$callable$ = self(),
-                .java.lang.String $arg$12$0 = "",
-                long $arg$12$1 = 2L,
-                .ceylon.language.Iterable $arg$12$2 = new .ceylon.language.ArraySequence(.ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(true))
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$12$callable$ = self();
+                .java.lang.String $arg$12$0 = "";
+                long $arg$12$1 = 2L;
+                .ceylon.language.Iterable $arg$12$2 = new .ceylon.language.ArraySequence(.ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(true));
                 $arg$12$callable$.m($arg$12$0, $arg$12$1, $arg$12$2);
             }
-            returning null
+            returning null;
         );
     }
     
     private final void qteNamedArgs() {
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$13$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced(),
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$13$this$ = $arg$13$callable$,
-                .java.lang.String $arg$13$0 = "",
-                long $arg$13$1 = $arg$13$this$.m$i($arg$13$0),
-                .ceylon.language.Iterable $arg$13$2 = $arg$13$this$.m$b($arg$13$0, $arg$13$1)
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$13$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced();
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$13$this$ = $arg$13$callable$;
+                .java.lang.String $arg$13$0 = "";
+                long $arg$13$1 = $arg$13$this$.m$i($arg$13$0);
+                .ceylon.language.Iterable $arg$13$2 = $arg$13$this$.m$b($arg$13$0, $arg$13$1);
                 $arg$13$callable$.m($arg$13$0, $arg$13$1, $arg$13$2);
             }
-            returning null
+            returning null;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$14$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced(),
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$14$this$ = $arg$14$callable$,
-                .java.lang.String $arg$14$0 = "",
-                long $arg$14$1 = 2L,
-                .ceylon.language.Iterable $arg$14$2 = $arg$14$this$.m$b($arg$14$0, $arg$14$1)
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$14$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced();
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$14$this$ = $arg$14$callable$;
+                .java.lang.String $arg$14$0 = "";
+                long $arg$14$1 = 2L;
+                .ceylon.language.Iterable $arg$14$2 = $arg$14$this$.m$b($arg$14$0, $arg$14$1);
                 $arg$14$callable$.m($arg$14$0, $arg$14$1, $arg$14$2);
             }
-            returning null
+            returning null;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$15$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced(),
-                .java.lang.String $arg$15$0 = "",
-                long $arg$15$1 = 2L,
-                .ceylon.language.Iterable<? extends .ceylon.language.Boolean> $arg$15$2 = new .ceylon.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.instance(false))
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$15$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced();
+                .java.lang.String $arg$15$0 = "";
+                long $arg$15$1 = 2L;
+                .ceylon.language.Iterable<? extends .ceylon.language.Boolean> $arg$15$2 = new .ceylon.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.instance(false));
                 $arg$15$callable$.m($arg$15$0, $arg$15$1, $arg$15$2);
             }
-            returning null
+            returning null;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$16$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced(),
-                .java.lang.String $arg$16$0 = "",
-                long $arg$16$1 = 2L,
-                .ceylon.language.Iterable $arg$16$2 = new .ceylon.language.ArraySequence(.ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(true))
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced $arg$16$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced();
+                .java.lang.String $arg$16$0 = "";
+                long $arg$16$1 = 2L;
+                .ceylon.language.Iterable $arg$16$2 = new .ceylon.language.ArraySequence(.ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(true));
                 $arg$16$callable$.m($arg$16$0, $arg$16$1, $arg$16$2);
             }
-            returning null
+            returning null;
         );
     }
     

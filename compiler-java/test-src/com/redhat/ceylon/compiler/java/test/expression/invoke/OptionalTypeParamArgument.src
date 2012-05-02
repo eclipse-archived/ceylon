@@ -24,12 +24,12 @@ final class m {
         f.bar(o);
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foo<.java.lang.Object> $arg$0$callable$ = f,
-                .java.lang.Object $arg$0$0 = o
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foo<.java.lang.Object> $arg$0$callable$ = f;
+                .java.lang.Object $arg$0$0 = o;
                 $arg$0$callable$.bar($arg$0$0);
             }
-            returning null
+            returning null;
         );
     }
     

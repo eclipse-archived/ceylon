@@ -26,18 +26,20 @@ public class NamedArgumentInvocationLocal {
         final v v = new v();
         (
             let
-                .java.lang.String $arg$0$1 = "abc",
-                long $arg$0$0 = 123L
-            in {
+            {
+                .java.lang.String $arg$0$1 = "abc";
+                long $arg$0$0 = 123L;
                 v.v($arg$0$0, $arg$0$1);
             }
-            returning null
+            returning null;
         );
         final long x = (
             let
-                .java.lang.String $arg$1$1 = "abc",
-                long $arg$1$0 = 123L
-            returning m.m($arg$1$0, $arg$1$1)
+            {
+                .java.lang.String $arg$1$1 = "abc";
+                long $arg$1$0 = 123L;
+            }
+            returning m.m($arg$1$0, $arg$1$1);
         );
     }
     
@@ -67,22 +69,22 @@ class X {
         final foo foo = new foo();
         (
             let
-                boolean $arg$2$1 = true,
-                .java.lang.String $arg$2$0 = "a"
-            in {
+            {
+                boolean $arg$2$1 = true;
+                .java.lang.String $arg$2$0 = "a";
                 foo.foo($arg$2$0, $arg$2$1);
             }
-            returning null
+            returning null;
         );
         (
             let
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.X $arg$3$callable$ = this,
-                boolean $arg$3$1 = true,
-                .java.lang.String $arg$3$0 = "a"
-            in {
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.X $arg$3$callable$ = this;
+                boolean $arg$3$1 = true;
+                .java.lang.String $arg$3$0 = "a";
                 $arg$3$callable$.foo($arg$3$0, $arg$3$1);
             }
-            returning null
+            returning null;
         );
     }
     

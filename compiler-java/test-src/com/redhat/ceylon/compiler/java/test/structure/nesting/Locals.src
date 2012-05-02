@@ -95,12 +95,12 @@ class Local {
                 LCC() {
                     (
                         let
-                            LC.LCC$impl $ceylontmp$impl$2 = new LC.LCC$impl(),
-                            long $ceylontmp$k$3 = $ceylontmp$impl$2.$init$k()
-                        in {
+                        {
+                            LC.LCC$impl $ceylontmp$impl$2 = new LC.LCC$impl();
+                            long $ceylontmp$k$3 = $ceylontmp$impl$2.$init$k();
                             this($ceylontmp$k$3);
                         }
-                        returning null
+                        returning null;
                     );
                 }
                 
@@ -113,12 +113,12 @@ class Local {
             LC() {
                 (
                     let
-                        LC$impl $ceylontmp$impl$0 = new LC$impl(),
-                        long $ceylontmp$j$1 = $ceylontmp$impl$0.$init$j()
-                    in {
+                    {
+                        LC$impl $ceylontmp$impl$0 = new LC$impl();
+                        long $ceylontmp$j$1 = $ceylontmp$impl$0.$init$j();
                         this($ceylontmp$j$1);
                     }
-                    returning null
+                    returning null;
                 );
             }
             
@@ -173,12 +173,12 @@ class Local {
                 LIC() {
                     (
                         let
-                            LIC$impl $ceylontmp$impl$4 = new LIC$impl(),
-                            long $ceylontmp$j$5 = $ceylontmp$impl$4.$init$j()
-                        in {
+                        {
+                            LIC$impl $ceylontmp$impl$4 = new LIC$impl();
+                            long $ceylontmp$j$5 = $ceylontmp$impl$4.$init$j();
                             this($ceylontmp$j$5);
                         }
-                        returning null
+                        returning null;
                     );
                 }
                 
@@ -197,11 +197,11 @@ class Local {
     private final void local() {
         (
             let
-                long $ceylontmp$i$7 = local$i()
-            in {
+            {
+                long $ceylontmp$i$7 = local$i();
                 local($ceylontmp$i$7);
             }
-            returning null
+            returning null;
         );
     }
     
@@ -274,12 +274,12 @@ class Local {
                     CLC() {
                         (
                             let
-                                CL.CLC$impl $ceylontmp$impl$12 = new CL.CLC$impl(),
-                                long $ceylontmp$l$13 = $ceylontmp$impl$12.$init$l()
-                            in {
+                            {
+                                CL.CLC$impl $ceylontmp$impl$12 = new CL.CLC$impl();
+                                long $ceylontmp$l$13 = $ceylontmp$impl$12.$init$l();
                                 this($ceylontmp$l$13);
                             }
-                            returning null
+                            returning null;
                         );
                     }
                     
@@ -292,12 +292,12 @@ class Local {
                 CL() {
                     (
                         let
-                            CL$impl $ceylontmp$impl$10 = new CL$impl(),
-                            long $ceylontmp$k$11 = $ceylontmp$impl$10.$init$k()
-                        in {
+                        {
+                            CL$impl $ceylontmp$impl$10 = new CL$impl();
+                            long $ceylontmp$k$11 = $ceylontmp$impl$10.$init$k();
                             this($ceylontmp$k$11);
                         }
-                        returning null
+                        returning null;
                     );
                 }
                 
@@ -310,11 +310,11 @@ class Local {
         private final void local2() {
             (
                 let
-                    long $ceylontmp$j$15 = local2$j()
-                in {
+                {
+                    long $ceylontmp$j$15 = local2$j();
                     local2($ceylontmp$j$15);
                 }
-                returning null
+                returning null;
             );
         }
         
@@ -325,12 +325,12 @@ class Local {
         C() {
             (
                 let
-                    .com.redhat.ceylon.compiler.java.test.structure.nesting.Local.C$impl $ceylontmp$impl$8 = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Local.C$impl(),
-                    long $ceylontmp$i$9 = $ceylontmp$impl$8.$init$i()
-                in {
+                {
+                    .com.redhat.ceylon.compiler.java.test.structure.nesting.Local.C$impl $ceylontmp$impl$8 = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Local.C$impl();
+                    long $ceylontmp$i$9 = $ceylontmp$impl$8.$init$i();
                     this($ceylontmp$i$9);
                 }
-                returning null
+                returning null;
             );
         }
         
@@ -401,12 +401,12 @@ class Local {
                     ILC() {
                         (
                             let
-                                IL.ILC$impl $ceylontmp$impl$20 = new IL.ILC$impl(),
-                                long $ceylontmp$k$21 = $ceylontmp$impl$20.$init$k()
-                            in {
+                            {
+                                IL.ILC$impl $ceylontmp$impl$20 = new IL.ILC$impl();
+                                long $ceylontmp$k$21 = $ceylontmp$impl$20.$init$k();
                                 this($ceylontmp$k$21);
                             }
-                            returning null
+                            returning null;
                         );
                     }
                     
@@ -419,12 +419,12 @@ class Local {
                 IL() {
                     (
                         let
-                            IL$impl $ceylontmp$impl$18 = new IL$impl(),
-                            long $ceylontmp$j$19 = $ceylontmp$impl$18.$init$j()
-                        in {
+                        {
+                            IL$impl $ceylontmp$impl$18 = new IL$impl();
+                            long $ceylontmp$j$19 = $ceylontmp$impl$18.$init$j();
                             this($ceylontmp$j$19);
                         }
-                        returning null
+                        returning null;
                     );
                 }
                 
