@@ -488,7 +488,9 @@ public abstract class AbstractTransformer implements Transformation {
     
     // A type is optional when it is a union of Nothing|Type...
     public boolean isOptional(ProducedType type) {
-        return typeFact().isOptionalType(type);
+        // Note we don't use typeFact().isOptionalType(type) because
+        // that implements a stricter test used in the type checker.
+        return typeFact().getNullDeclaration().getType().isSubtypeOf(type);
     }
     
     public boolean isNothing(ProducedType type) {
