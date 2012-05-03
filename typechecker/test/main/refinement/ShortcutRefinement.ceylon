@@ -26,5 +26,17 @@ class OK() extends Abstract() {
     name = "Trompon";
     print(name);
     value x = 0.0;
+    shared String getName() {
+        return name;
+    }
 }
 
+abstract class AlsoAbstract() {
+    shared formal variable String x;
+    shared default String y = "";
+}
+
+class AlsoBroken() extends AlsoAbstract() {
+    @error x = "hello";
+    @error y = "goodbye";
+}

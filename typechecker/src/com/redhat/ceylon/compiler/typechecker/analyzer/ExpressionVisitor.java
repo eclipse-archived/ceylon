@@ -568,7 +568,7 @@ public class ExpressionVisitor extends Visitor {
                         that.addError("attribute is variable: " + d.getName());
                     }
                     if (!d.isFormal()) {
-                        bme.addError("not a reference to a formal attribute: " + d.getName());
+                        bme.addError("attribute is not formal: " + d.getName());
                     }
                     Value v = new Value();
                     v.setName(d.getName());
