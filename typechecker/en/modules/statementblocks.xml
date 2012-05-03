@@ -969,7 +969,7 @@ try (lock) { ... }</programlisting>
         directive is executed, the expression is evaluated to determine the return value of 
         the method or attribute getter.</para>
         
-        <programlisting>Return: "return" Expression?</programlisting>
+        <programlisting>Return: "return" (Expression | Function)?</programlisting>
         
         <para>The <literal>break</literal> directive must sequentially occur in the body 
         of a loop.<!--If the loop has no <literal>fail</literal> block, the <literal>break</literal> 
