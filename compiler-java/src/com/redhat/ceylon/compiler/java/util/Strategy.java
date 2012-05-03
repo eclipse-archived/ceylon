@@ -24,6 +24,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 
@@ -98,6 +99,15 @@ public class Strategy {
 
     public static boolean needsOuterMethodInCompanion(ClassOrInterface model) {
         return !model.isToplevel();
+    }
+    
+    public static boolean useField(Value attr) {
+        return Decl.isCaptured(attr);
+    }
+    
+    
+    public static boolean createField(Parameter p, Value v) {
+        return (p == null) || (useField(v) && !p.isCaptured());
     }
     
 }

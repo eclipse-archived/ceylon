@@ -28,6 +28,7 @@ import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
 import com.redhat.ceylon.compiler.java.util.Decl;
+import com.redhat.ceylon.compiler.java.util.Strategy;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -37,6 +38,8 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -394,7 +397,7 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
-    private ClassDefinitionBuilder parameter(String name, TypedDeclaration decl, boolean isSequenced, boolean isDefaulted) {
+    private ClassDefinitionBuilder parameter(String name, Parameter decl, boolean isSequenced, boolean isDefaulted) {
         // Create a parameter for the constructor
         JCExpression type = gen.makeJavaType(decl);
         List<JCAnnotation> annots = List.nil();
@@ -410,15 +413,19 @@ public class ClassDefinitionBuilder {
         }
         JCVariableDecl var = gen.make().VarDef(gen.make().Modifiers(0, annots), gen.names().fromString(name), type, null);
         params.append(var);
-        
-        // Check if the parameter is used outside of the initializer
+
         if (decl.isCaptured()) {
-            // If so we create a field for it initializing it with the parameter's value
             JCVariableDecl localVar = gen.make().VarDef(gen.make().Modifiers(FINAL | PRIVATE), gen.names().fromString(name), type , null);
             defs.append(localVar);
-            init.append(gen.make().Exec(gen.make().Assign(gen.makeSelect("this", localVar.getName().toString()), gen.make().Ident(var.getName()))));
+            init.append(gen.make().Exec(gen.make().Assign(gen.makeSelect("this", name), gen.makeUnquotedIdent(name))));
+        } else if ((decl instanceof ValueParameter) 
+                        && ((ValueParameter)decl).isHidden()
+                        && (decl.getContainer() instanceof TypeDeclaration)
+                        && ((TypeDeclaration)decl.getContainer()).getMember(decl.getName(), null) != null
+                        && Strategy.createField((ValueParameter)decl, (Value)((TypeDeclaration)decl.getContainer()).getMember(decl.getName(), null))) {
+            // The field itself is created by the ClassTransformer
+            init.append(gen.make().Exec(gen.make().Assign(gen.makeSelect("this", name), gen.makeUnquotedIdent(name))));
         }
-        
         return this;
     }
     

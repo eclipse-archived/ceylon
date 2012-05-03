@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.loader.ModelResolutionException;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -49,6 +50,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
@@ -343,13 +345,14 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     public void transform(AttributeDeclaration decl, ClassDefinitionBuilder classBuilder) {
-        boolean useField = Decl.isCaptured(decl);
+        final Value model = decl.getDeclarationModel();
+        boolean useField = Strategy.useField(model);
         String attrName = decl.getIdentifier().getText();
 
         // Only a non-formal attribute has a corresponding field
         // and if a captured class parameter exists with the same name we skip this part as well
         Parameter p = findParamForAttr(decl);
-        boolean createField = (p == null) || (useField && !p.isCaptured());
+        boolean createField = Strategy.createField(p, model);
         boolean concrete = Decl.withinInterface(decl)
                 && decl.getSpecifierOrInitializerExpression() != null;
         if (concrete || 
@@ -357,24 +360,34 @@ public class ClassTransformer extends AbstractTransformer {
                         && createField)) {
             JCExpression initialValue = null;
             if (decl.getSpecifierOrInitializerExpression() != null) {
-                Value declarationModel = decl.getDeclarationModel();
+                Value declarationModel = model;
                 initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), 
                         Util.getBoxingStrategy(declarationModel), 
                         declarationModel.getType());
             }
 
             int flags = 0;
-            TypedDeclaration nonWideningType = nonWideningTypeDecl(decl.getDeclarationModel());
+            TypedDeclaration nonWideningType = nonWideningTypeDecl(model);
             if (!Util.isUnBoxed(nonWideningType)) {
                 flags |= NO_PRIMITIVES;
             }
             JCExpression type = makeJavaType(nonWideningType.getType(), flags);
 
             int modifiers = (useField) ? transformAttributeFieldDeclFlags(decl) : transformLocalDeclFlags(decl);
-            if (concrete) {
-                classBuilder.getCompanionBuilder().field(modifiers, attrName, type, initialValue, !useField);
-            } else {
-                classBuilder.field(modifiers, attrName, type, initialValue, !useField);
+            
+            if (model.getContainer() instanceof Functional) {
+                // If the attribute is really from a parameter then don't generate a field
+                // (The ClassDefinitionBuilder does it in that case)
+                Parameter parameter = ((Functional)model.getContainer()).getParameter(model.getName());
+                if (parameter == null
+                        || ((parameter instanceof ValueParameter) 
+                                && ((ValueParameter)parameter).isHidden())) {
+                    if (concrete) {
+                        classBuilder.getCompanionBuilder().field(modifiers, attrName, type, initialValue, !useField);
+                    } else {
+                        classBuilder.field(modifiers, attrName, type, initialValue, !useField);
+                    }        
+                }
             }
         }
 
