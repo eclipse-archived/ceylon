@@ -2968,10 +2968,15 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.SequenceEnumeration that) {
         super.visit(that);
         ProducedType st;
-        if ( that.getExpressionList()==null ) {
-            st = unit.getEmptyDeclaration().getType();
+        if ( that.getComprehension()!=null) {
+            ProducedType ct = that.getComprehension()
+                    .getForComprehensionClause().getTypeModel();
+            if (ct==null) {
+                ct = new UnknownType(unit).getType();
+            }
+            st = unit.getEmptyType(unit.getSequenceType(ct));
         }
-        else {
+        else if (that.getExpressionList()!=null){
             ProducedType et;
             List<ProducedType> list = new ArrayList<ProducedType>();
             for (Tree.Expression e: that.getExpressionList().getExpressions()) {
@@ -2994,6 +2999,10 @@ public class ExpressionVisitor extends Visitor {
             }
             st = unit.getSequenceType(et);
         }
+        else {
+            st = unit.getEmptyDeclaration().getType();
+        }
+        
         that.setTypeModel(st);
     }
 
