@@ -478,6 +478,7 @@ public abstract class CompilerTest {
     protected CeyloncTaskImpl getCompilerTask(List<String> initialOptions, DiagnosticListener<? super FileObject> diagnosticListener, 
             String... sourcePaths){
         // make sure we get a fresh jar cache for each compiler run
+        // FIXME: make this only get rid of the jars we produce, to win 2s out of 17s
         ZipFileIndexCache.getSharedInstance().clearCache();
         java.util.List<File> sourceFiles = new ArrayList<File>(sourcePaths.length);
         for(String file : sourcePaths){
