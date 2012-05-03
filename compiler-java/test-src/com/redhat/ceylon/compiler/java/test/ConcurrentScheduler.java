@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 import org.junit.runners.model.RunnerScheduler;
 
 public class ConcurrentScheduler implements RunnerScheduler {
-    ThreadPoolExecutor tpool = (ThreadPoolExecutor)Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*2);
+    ThreadPoolExecutor tpool = (ThreadPoolExecutor)Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     
     @Override
     public void schedule(Runnable r) {
