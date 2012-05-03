@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.java.test.model;
+package com.redhat.ceylon.compiler.java.test.annotations;
 
 import org.junit.Test;
 
@@ -26,31 +26,31 @@ import com.redhat.ceylon.compiler.java.test.CompilerTest;
 public class AnnotationsTest extends CompilerTest {
     @Test
     public void testUnionTypeInfo(){
-        compareWithJavaSource("annotations/UnionTypeInfo");
+        compareWithJavaSource("UnionTypeInfo");
     }
     @Test
     public void testClass(){
-        compareWithJavaSource("annotations/Klass");
+        compareWithJavaSource("Klass");
     }
     @Test
     public void testMethod(){
-        compareWithJavaSource("annotations/method");
+        compareWithJavaSource("method");
     }
     @Test
     public void testAttribute(){
-        compareWithJavaSource("annotations/attribute");
+        compareWithJavaSource("attribute");
     }
     @Test
     public void testLocalClass(){
-        compareWithJavaSource("annotations/LocalKlass");
+        compareWithJavaSource("LocalKlass");
     }
     @Test
     public void testLocalMethod(){
-        compareWithJavaSource("annotations/LocalMethod");
+        compareWithJavaSource("LocalMethod");
     }
     @Test
     public void testLocalObject(){
-        compareWithJavaSource("annotations/LocalObject");
+        compareWithJavaSource("LocalObject");
     }
     
 }

@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.test.model.annotations;
+package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -61,6 +61,6 @@ public class LocalKlass {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.model.annotations.LocalKlass();
+        new .com.redhat.ceylon.compiler.java.test.annotations.LocalKlass();
     }
 }

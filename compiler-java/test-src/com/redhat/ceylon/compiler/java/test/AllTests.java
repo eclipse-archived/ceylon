@@ -23,6 +23,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import com.redhat.ceylon.compiler.java.test.annotations.AnnotationsTest;
 import com.redhat.ceylon.compiler.java.test.bc.BcTests;
 import com.redhat.ceylon.compiler.java.test.cmr.CMRTest;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest;
@@ -30,7 +31,6 @@ import com.redhat.ceylon.compiler.java.test.interop.InteropTest;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTest;
 import com.redhat.ceylon.compiler.java.test.issues.PackageIssuesTest;
 import com.redhat.ceylon.compiler.java.test.misc.MiscTest;
-import com.redhat.ceylon.compiler.java.test.model.AnnotationsTest;
 import com.redhat.ceylon.compiler.java.test.model.ModelLoaderTest;
 import com.redhat.ceylon.compiler.java.test.model.TypeParserTest;
 import com.redhat.ceylon.compiler.java.test.quoting.QuotingTest;
