@@ -8,13 +8,22 @@ by "Gavin"
 shared interface Iterable<out Element> 
         satisfies Container {
     
-    doc "An iterator for the elements belonging to the container."
+    doc "An iterator for the elements belonging to this 
+         container."
     shared formal Iterator<Element> iterator;
     
     doc "Determines if the iterable object is empty, that is
-         to say, if `iterable.iterator` is `null`."
+         to say, if the iterator returns no elements."
     shared actual default Boolean empty {
         return is Finished iterator.next();
+    }
+    
+    doc "A sequence containing the elements returned by the
+         iterator."
+    shared default Element[] sequence {
+        value builder = SequenceBuilder<Element>();
+        builder.appendAll(this...);
+        return builder.sequence;
     }
     
 }
