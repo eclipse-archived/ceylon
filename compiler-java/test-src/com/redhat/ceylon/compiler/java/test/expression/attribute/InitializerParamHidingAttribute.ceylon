@@ -18,12 +18,12 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class InitializerParamHidingAttribute(Boolean b){
-   Boolean b = b;
+class InitializerParamHidingAttribute(b){
+   Boolean b;
    Boolean b2 = b;
 }
 @nomodel
-class InitializerParamHidingAttribute2(Boolean b){
-   shared Boolean b = b;
+class InitializerParamHidingAttribute2(b){
+   shared Boolean b;
    shared Boolean b2 = b;
 }

@@ -20,6 +20,6 @@ class InitializerParamHidingAttribute2 {
     
     InitializerParamHidingAttribute2(boolean b) {
         this.b = b;
-        this.b2 = b;
+        this.b2 = getB();
     }
 }

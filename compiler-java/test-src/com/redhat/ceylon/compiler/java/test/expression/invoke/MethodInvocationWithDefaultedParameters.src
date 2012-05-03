@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class Fookls {
-    private final long init;
     private final long prop;
     
     public final long getProp() {
@@ -11,6 +10,11 @@ class Fookls {
     
     private final long getPrivProp() {
         return privProp;
+    }
+    private final long init;
+    
+    private final long getInit() {
+        return init;
     }
     
     public void f1(final long n) {
@@ -186,7 +190,7 @@ class Fookls {
     }
     
     public final long f8$n() {
-        return init;
+        return getInit();
     }
     
     public void f9(final long n) {

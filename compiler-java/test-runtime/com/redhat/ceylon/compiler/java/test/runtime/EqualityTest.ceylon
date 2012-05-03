@@ -19,9 +19,9 @@
  */
 shared class EqualityTest() {
 
-    class Entity (Integer id) {    
+    class Entity (id) {    
     
-        shared Integer id = id;
+        shared Integer id;
             
         shared actual Boolean equals(Object that) {
             if (is Entity that) {

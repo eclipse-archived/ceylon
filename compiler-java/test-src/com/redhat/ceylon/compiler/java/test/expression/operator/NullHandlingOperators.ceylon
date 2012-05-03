@@ -37,14 +37,11 @@ shared class NullHandlingOperators() {
         
         String[]? s1 = null;
         String[] s2 = s1?{};
-        
-        Integer nn = null ? 2;
     }
     
     void testEmpty() {
         variable Boolean sync := false;
         sync := nonempty "".characters;
-        sync := nonempty {};
         List<String>&FixedSized<String> iter = {};
         sync := nonempty iter;
         String[] seq = {};

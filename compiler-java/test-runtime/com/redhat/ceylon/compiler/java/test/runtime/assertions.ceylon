@@ -22,9 +22,9 @@ shared class AssertionFailed(String message) extends Exception(message, null) {
 }
 
 shared class ComparisonFailed(String message, 
-  Object? expected, Object? got) extends AssertionFailed(message) {
-    shared Object? expected = expected;
-    shared Object? got = got;
+  expected, got) extends AssertionFailed(message) {
+    shared Object? expected;
+    shared Object? got;
 }
 
 shared void fail(String? message = null) {

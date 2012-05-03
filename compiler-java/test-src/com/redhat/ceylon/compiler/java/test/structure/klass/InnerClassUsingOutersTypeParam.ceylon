@@ -24,8 +24,8 @@ shared class InnerClassUsingOutersTypeParam<T>(){
         return cell.car;
     }
     
-    shared class Cell(T car, Cell? cdr) {
-        shared T car = car;
-        shared Cell? cdr = cdr;
+    shared class Cell(car, cdr) {
+        shared T car;
+        shared Cell? cdr;
     }
 }

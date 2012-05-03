@@ -18,10 +18,10 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class Fookls(Integer init) {
+class Fookls(init) {
     shared Integer prop = 42;
     Integer privProp = 24;
-    Integer init = init;
+    Integer init;
     shared default void f1(Integer n = 5) {}
     shared default void f2(Integer n, String s = "test") {}
     shared default void f3(Integer n = 5, Integer m = n) {}

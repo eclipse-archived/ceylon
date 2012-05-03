@@ -61,10 +61,6 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("attribute/InitializerParamHidingAttribute");
     }
     @Test
-    public void testAtrInitializerParamHidingGetter(){
-        compareWithJavaSource("attribute/InitializerParamHidingGetter");
-    }
-    @Test
     public void testAtrMethodLocalAccess(){
         compareWithJavaSource("attribute/MethodLocalAccess");
     }
