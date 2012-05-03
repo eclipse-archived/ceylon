@@ -49,9 +49,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
 
 /**
  * Third and final phase of type analysis.
@@ -553,11 +552,52 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.SpecifierStatement that) {
         super.visit(that);
-        if (!(that.getBaseMemberExpression() instanceof Tree.BaseMemberExpression)) {
-            that.getBaseMemberExpression().addError("illegal specification statement");
+        Tree.Term me = that.getBaseMemberExpression();
+        SpecifierExpression sie = that.getSpecifierExpression();
+        if (me instanceof Tree.BaseMemberExpression) {
+            Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression) me;
+            Declaration d = bme.getDeclaration();
+            if (d!=null && 
+                    that.getScope() instanceof Class && 
+                    !d.isDefinedInScope(that.getScope())) {
+                //then it must be inherited ... TODO: is this totally correct? 
+                //so it's actually a refinement of a formal declaration!
+                if (d instanceof Value) {
+                    Value sv = (Value) d;
+                    if (sv.isVariable()) {
+                        that.addError("attribute is variable: " + d.getName());
+                    }
+                    if (!d.isFormal()) {
+                        bme.addError("not a reference to a formal attribute: " + d.getName());
+                    }
+                    Value v = new Value();
+                    v.setName(d.getName());
+                    /*if (sie!=null) {
+                        v.setType(sie.getExpression().getTypeModel());
+                    }*/
+                    v.setType(sv.getType());
+                    v.setShared(true);
+                    v.setActual(true);
+                    v.setRefinedDeclaration(v);
+                    v.setUnit(unit);
+                    v.setContainer(that.getScope());
+                    DeclarationVisitor.setVisibleScope(v);
+                    ((Class) that.getScope()).getMembers().add(v);
+                    bme.setDeclaration(v);
+                    //bme.setTypeModel(v.getType());
+                    that.setRefinement(true);
+                }
+                else {
+                    //TODO!
+                    bme.addError("not a reference to a formal attribute: " + d.getName());
+                }
+            }
         }
-        checkType(that.getBaseMemberExpression().getTypeModel(), 
-                that.getSpecifierExpression());
+        else {
+            me.addError("illegal specification statement");
+        }
+        //TODO: display the value name in the error message
+        checkType(me.getTypeModel(), sie);
     }
 
     @Override public void visit(Tree.Parameter that) {
@@ -592,7 +632,7 @@ public class ExpressionVisitor extends Visitor {
 
     @Override
     public void visit(Tree.ValueParameterDeclaration that) {
-        if (that.getType() instanceof LocalModifier) {
+        if (that.getType() instanceof Tree.LocalModifier) {
             ValueParameter d = that.getDeclarationModel();
             if (d!=null) {
                 that.getType().setTypeModel(d.getType());
@@ -1767,7 +1807,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private ProducedType getPositionalArgumentType(Tree.PositionalArgument a) {
-        Expression e = a.getExpression();
+        Tree.Expression e = a.getExpression();
         return e==null ? null : e.getTypeModel();
     }
         

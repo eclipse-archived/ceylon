@@ -737,7 +737,7 @@ public class DeclarationVisitor extends Visitor {
         buildAnnotations(al, model.getAnnotations());        
     }
 
-    private static void setVisibleScope(Declaration model) {
+    static void setVisibleScope(Declaration model) {
         Scope s=model.getContainer();
         while (s!=null) {
             if (s instanceof Declaration) {
