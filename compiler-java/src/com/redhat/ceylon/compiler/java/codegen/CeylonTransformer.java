@@ -51,6 +51,7 @@ public class CeylonTransformer extends AbstractTransformer {
     private Options options;
     private LineMap map;
     private JavaFileObject fileObject;
+    public boolean disableModelAnnotations = false;
     
     public static CeylonTransformer getInstance(Context context) {
         CeylonTransformer trans = context.get(CeylonTransformer.class);

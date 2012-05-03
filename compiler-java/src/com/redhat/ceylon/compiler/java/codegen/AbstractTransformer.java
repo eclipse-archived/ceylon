@@ -1163,22 +1163,19 @@ public abstract class AbstractTransformer implements Transformation {
         return List.<JCAnnotation> of(make().Annotation(makeIdent(syms().overrideType), List.<JCExpression> nil()));
     }
 
-    // FIXME
-    public static boolean disableModelAnnotations = false;
-    
     public boolean checkCompilerAnnotations(Tree.Declaration decl){
-        boolean old = disableModelAnnotations;
+        boolean old = gen().disableModelAnnotations;
         if(Util.hasCompilerAnnotation(decl, "nomodel"))
-            disableModelAnnotations  = true;
+            gen().disableModelAnnotations  = true;
         return old;
     }
 
     public void resetCompilerAnnotations(boolean value){
-        disableModelAnnotations = value;
+        gen().disableModelAnnotations = value;
     }
 
     private List<JCAnnotation> makeModelAnnotation(Type annotationType, List<JCExpression> annotationArgs) {
-        if (disableModelAnnotations)
+        if (gen().disableModelAnnotations)
             return List.nil();
         return List.of(make().Annotation(makeIdent(annotationType), annotationArgs));
     }
