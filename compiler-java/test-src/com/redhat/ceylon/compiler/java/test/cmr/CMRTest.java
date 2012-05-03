@@ -33,7 +33,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
@@ -58,7 +57,6 @@ import org.junit.Test;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.util.Util;
-import com.sun.net.httpserver.HttpServer;
 
 public class CMRTest extends CompilerTest {
     
@@ -354,93 +352,6 @@ public class CMRTest extends CompilerTest {
 
         carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.module.depend.c", "6.6.6", repoC.getPath());
         assertTrue(carFile.exists());
-    }
-
-    @Test
-    public void testMdlHTTPRepos() throws IOException{
-        String moduleA = "com.redhat.ceylon.compiler.java.test.cmr.module.depend.a";
-        
-        // Clean up any cached version
-        File carFileInHomeRepo = getModuleArchive(moduleA, "6.6.6", Util.getHomeRepository());
-        if(carFileInHomeRepo.exists())
-            carFileInHomeRepo.delete();
-
-        // Compile the first module in its own repo 
-        File repoA = new File("build/ceylon-cars-a");
-        cleanCars(repoA.getPath());
-        repoA.mkdirs();
-        
-        Boolean result = getCompilerTask(Arrays.asList("-out", repoA.getPath()),
-                "module/depend/a/module.ceylon", "module/depend/a/package.ceylon", "module/depend/a/A.ceylon").call();
-        Assert.assertEquals(Boolean.TRUE, result);
-        
-        File carFile = getModuleArchive(moduleA, "6.6.6", repoA.getPath());
-        assertTrue(carFile.exists());
-
-        // now serve the first repo over HTTP
-        HttpServer server = HttpServer.create(new InetSocketAddress(18000), 1);
-        server.createContext("/repo", new RepoFileHandler(repoA.getPath()));
-        server.setExecutor(null); // creates a default executor
-        server.start();
-        
-        String repoAURL = "http://localhost:18000/repo";
-        
-        try{
-            // then try to compile only one module (the other being loaded from its car) 
-            result = getCompilerTask(Arrays.asList("-out", destDir, "-rep", repoAURL),
-                    "module/depend/b/module.ceylon", "module/depend/b/package.ceylon", "module/depend/b/a.ceylon", "module/depend/b/B.ceylon").call();
-            Assert.assertEquals(Boolean.TRUE, result);
-
-        }finally{
-            server.stop(0);
-        }
-        carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.module.depend.b", "6.6.6");
-        assertTrue(carFile.exists());
-        
-        // make sure it cached the module in the home repo
-        assertTrue(carFileInHomeRepo.exists());
-        
-        // make sure it didn't cache it in the output repo
-        carFile = getModuleArchive(moduleA, "6.6.6");
-        assertFalse(carFile.exists());
-    }
-
-    @Test
-    public void testMdlHTTPOutputRepo() throws IOException{
-        // Compile the first module in its own repo 
-        File repoA = new File("build/ceylon-cars-a");
-        cleanCars(repoA.getPath());
-        repoA.mkdirs();
-
-        // now serve the first repo over HTTP
-        HttpServer server = HttpServer.create(new InetSocketAddress(18000), 1);
-        server.createContext("/repo", new RepoFileHandler(repoA.getPath()));
-        server.setExecutor(null); // creates a default executor
-        server.start();
-        
-        String repoAURL = "http://localhost:18000/repo";
-        
-        try{
-            // then try to compile our module by outputting to HTTP 
-            Boolean result = getCompilerTask(Arrays.asList("-out", repoAURL), "module/single/module.ceylon").call();
-            Assert.assertEquals(Boolean.TRUE, result);
-
-        }finally{
-            server.stop(0);
-        }
-        
-        File carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.module.single", "6.6.6", repoA.getPath());
-        assertTrue(carFile.exists());
-
-        JarFile car = new JarFile(carFile);
-
-        // make sure it's not empty
-        ZipEntry moduleClass = car.getEntry("com/redhat/ceylon/compiler/java/test/cmr/module/single/module.class");
-        assertNotNull(moduleClass);
-        car.close();
-
-        File srcFile = getSourceArchive("com.redhat.ceylon.compiler.java.test.cmr.module.single", "6.6.6", repoA.getPath());
-        assertTrue(srcFile.exists());
     }
 
     @Test
