@@ -557,8 +557,8 @@ class PositionalInvocationBuilder extends SimpleInvocationBuilder {
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex, boolean isRaw, java.util.Map<TypeParameter, ProducedType> typeArgumentModels) {
         PositionalArgument arg = positional.getPositionalArguments().get(argIndex);
-        if (arg instanceof FunctionArgument) {
-            FunctionArgument farg = (FunctionArgument)arg;
+        if (arg.getExpression().getTerm() instanceof FunctionArgument) {
+            FunctionArgument farg = (FunctionArgument)arg.getExpression().getTerm();
             Method model = farg.getDeclarationModel();
             ProducedType callableType = gen().typeFact().getCallableType(model.getType());
             // TODO MPL
