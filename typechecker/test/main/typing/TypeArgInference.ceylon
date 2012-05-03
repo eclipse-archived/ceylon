@@ -66,7 +66,7 @@ class TypeArgInference() {
     @type["Bottom"] method("hello");
     
     T? firstElt<T>(T... args) {
-        return args.first;
+        return args.sequence.first;
     }
     @type["Nothing|String"] firstElt("hello", "world");
     @type["Nothing|Sequence<String>"] firstElt({"hello", "world"});
