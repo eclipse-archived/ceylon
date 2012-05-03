@@ -232,16 +232,19 @@ public class RefinementVisitor extends Visitor {
                 ProducedType refinedParameterType = refinedMember.getTypedParameter(rparam).getFullType();
                 Parameter param = params.getParameters().get(i);
                 ProducedType parameterType = member.getTypedParameter(param).getFullType();
-                Tree.Type type = getParameterList(that).getParameters().get(i).getType(); //some kind of syntax error
-                if (type!=null) {
-                    if (refinedParameterType==null || parameterType==null) {
-                        type.addError("could not determine if parameter type is the same as the corresponding parameter of refined member");
-                    }
-                    else {
-                        //TODO: consider type parameter substitution!!!
-                        checkIsExactly(parameterType, refinedParameterType, type, "type of parameter " + 
-                                param.getName() + " is different to type of corresponding parameter " +
-                                rparam.getName() + " of refined member");
+                Tree.Parameter p = getParameterList(that).getParameters().get(i);
+                if (p!=null) {
+                    Tree.Type type = p.getType(); //some kind of syntax error
+                    if (type!=null) {
+                        if (refinedParameterType==null || parameterType==null) {
+                            type.addError("could not determine if parameter type is the same as the corresponding parameter of refined member");
+                        }
+                        else {
+                            //TODO: consider type parameter substitution!!!
+                            checkIsExactly(parameterType, refinedParameterType, type, "type of parameter " + 
+                                    param.getName() + " is different to type of corresponding parameter " +
+                                    rparam.getName() + " of refined member");
+                        }
                     }
                 }
                 param.setDefaulted(rparam.isDefaulted());

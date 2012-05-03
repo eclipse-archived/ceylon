@@ -167,10 +167,12 @@ public class ExpressionVisitor extends Visitor {
         TypedDeclaration td = that.getDeclarationModel();
         for (Tree.ParameterList list: that.getParameterLists()) {
             for (Tree.Parameter tp: list.getParameters()) {
-                Parameter p = tp.getDeclarationModel();
-                if (p.getType()!=null && !isCompletelyVisible(td, p.getType())) {
-                    tp.getType().addError("type of parameter is not visible everywhere declaration is visible: " 
-                            + p.getName());
+                if (tp!=null) {
+                    Parameter p = tp.getDeclarationModel();
+                    if (p.getType()!=null && !isCompletelyVisible(td, p.getType())) {
+                        tp.getType().addError("type of parameter is not visible everywhere declaration is visible: " 
+                                + p.getName());
+                    }
                 }
             }
         }
@@ -182,10 +184,12 @@ public class ExpressionVisitor extends Visitor {
         Class td = that.getDeclarationModel();
         if (that.getParameterList()!=null) {
             for (Tree.Parameter tp: that.getParameterList().getParameters()) {
-                Parameter p = tp.getDeclarationModel();
-                if (p.getType()!=null && !isCompletelyVisible(td, p.getType())) {
-                    tp.getType().addError("type of parameter is not visible everywhere declaration is visible: " 
-                            + p.getName());
+                if (tp!=null) {
+                    Parameter p = tp.getDeclarationModel();
+                    if (p.getType()!=null && !isCompletelyVisible(td, p.getType())) {
+                        tp.getType().addError("type of parameter is not visible everywhere declaration is visible: " 
+                                + p.getName());
+                    }
                 }
             }
         }
@@ -706,13 +710,15 @@ public class ExpressionVisitor extends Visitor {
                         if (pl.getParameters().size()+1==et.getTypeArgumentList().size()) {
                             int i=0;
                             for (Tree.Parameter p: pl.getParameters()) {
-                                i++;
-                                ProducedType rt = et.getTypeArgumentList().get(i);
-                                ProducedType pt = p.getDeclarationModel().getProducedTypedReference(null, 
-                                        Collections.<ProducedType>emptyList()).getFullType();
-                                checkIsExactly(rt, pt, p.getType(), 
-                                        "specified reference parameter type must be exactly the same as declared type of parameter " + 
-                                        p.getDeclarationModel().getName());
+                                if (p!=null) {
+                                    i++;
+                                    ProducedType rt = et.getTypeArgumentList().get(i);
+                                    ProducedType pt = p.getDeclarationModel().getProducedTypedReference(null, 
+                                            Collections.<ProducedType>emptyList()).getFullType();
+                                    checkIsExactly(rt, pt, p.getType(), 
+                                            "specified reference parameter type must be exactly the same as declared type of parameter " + 
+                                            p.getDeclarationModel().getName());
+                                }
                             }
                         }
                         else {
