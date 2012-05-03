@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
@@ -563,29 +564,10 @@ public class ExpressionVisitor extends Visitor {
                 //then it must be inherited ... TODO: is this totally correct? 
                 //so it's actually a refinement of a formal declaration!
                 if (d instanceof Value) {
-                    Value sv = (Value) d;
-                    if (sv.isVariable()) {
-                        that.addError("attribute is variable: " + d.getName());
-                    }
-                    if (!d.isFormal()) {
-                        bme.addError("attribute is not formal: " + d.getName());
-                    }
-                    Value v = new Value();
-                    v.setName(d.getName());
-                    /*if (sie!=null) {
-                        v.setType(sie.getExpression().getTypeModel());
-                    }*/
-                    v.setType(sv.getType());
-                    v.setShared(true);
-                    v.setActual(true);
-                    v.setRefinedDeclaration(v);
-                    v.setUnit(unit);
-                    v.setContainer(that.getScope());
-                    DeclarationVisitor.setVisibleScope(v);
-                    ((Class) that.getScope()).getMembers().add(v);
-                    bme.setDeclaration(v);
-                    //bme.setTypeModel(v.getType());
-                    that.setRefinement(true);
+                    refine((Value) d, bme, that);
+                }
+                else if (d instanceof Method) {
+                    refine((Method) d, bme, that);
                 }
                 else {
                     //TODO!
@@ -598,6 +580,57 @@ public class ExpressionVisitor extends Visitor {
         }
         //TODO: display the value name in the error message
         checkType(me.getTypeModel(), sie);
+    }
+
+    private void refine(Value sv, Tree.BaseMemberExpression bme,
+            Tree.SpecifierStatement that) {
+        if (sv.isVariable()) {
+            that.addError("attribute is variable: " + sv.getName());
+        }
+        if (!sv.isFormal()) {
+            bme.addError("attribute is not formal: " + sv.getName());
+        }
+        Value v = new Value();
+        v.setName(sv.getName());
+        /*if (sie!=null) {
+            v.setType(sie.getExpression().getTypeModel());
+        }*/
+        v.setType(sv.getType());
+        v.setShared(true);
+        v.setActual(true);
+        v.setRefinedDeclaration(v);
+        v.setUnit(unit);
+        v.setContainer(that.getScope());
+        DeclarationVisitor.setVisibleScope(v);
+        ((Class) that.getScope()).getMembers().add(v);
+        bme.setDeclaration(v);
+        //bme.setTypeModel(v.getType());
+        that.setRefinement(true);
+    }
+
+    private void refine(Method sm, Tree.BaseMemberExpression bme,
+            Tree.SpecifierStatement that) {
+        if (!sm.isFormal()) {
+            bme.addError("method is not formal: " + sm.getName());
+        }
+        Method m = new Method();
+        m.setName(sm.getName());
+        /*if (sie!=null) {
+            v.setType(sie.getExpression().getTypeModel());
+        }*/
+        m.setType(sm.getType());
+        m.getParameterLists().addAll(sm.getParameterLists()); //TODO:broken!
+        m.getTypeParameters().addAll(sm.getTypeParameters()); //TODO:broken!
+        m.setShared(true);
+        m.setActual(true);
+        m.setRefinedDeclaration(m);
+        m.setUnit(unit);
+        m.setContainer(that.getScope());
+        DeclarationVisitor.setVisibleScope(m);
+        ((Class) that.getScope()).getMembers().add(m);
+        bme.setDeclaration(m);
+        //bme.setTypeModel(v.getType());
+        that.setRefinement(true);
     }
 
     @Override public void visit(Tree.Parameter that) {

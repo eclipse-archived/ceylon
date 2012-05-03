@@ -40,3 +40,25 @@ class AlsoBroken() extends AlsoAbstract() {
     @error x = "hello";
     @error y = "goodbye";
 }
+
+Float sq(Float x) {
+    return x*x;
+}
+
+abstract class OtherAbstract() {
+    shared formal Float sqr(Float x);
+}
+
+class OtherConcrete() extends OtherAbstract() {
+    sqr = sq;
+    sqr(1.0);
+}
+
+class OtherBadlyTyped() extends OtherAbstract() {
+    @error sqr = print;
+}
+
+class OtherBadlyUsed() extends OtherAbstract() {
+    @error sqr(2.0);
+    sqr = sq;
+}
