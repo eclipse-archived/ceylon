@@ -168,7 +168,7 @@ public class InteropTest extends CompilerTest {
         compile("access/JavaAccessModifiers.java");
         assertErrors("access/CallsDefaultAccessMethod",
                 new CompilerError(23, "invoked expression must be callable: unknown is not a subtype of Callable"),
-                new CompilerError(23, "member method or attribute does not exist: packageAccessMethod in type JavaAccessModifiers"));
+                new CompilerError(23, "member method or attribute does not exist or is ambiguous: packageAccessMethod in type JavaAccessModifiers"));
     }
     
     @Test
