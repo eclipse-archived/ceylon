@@ -3198,7 +3198,7 @@ SequencedParam?
         <para>The <literal>=</literal> specifier is used throughout the language to indicate 
         a value which cannot be reassigned.</para>
         
-        <programlisting>Specifier: "=" Expression</programlisting>
+        <programlisting>Specifier: "=" (Expression | Function)</programlisting>
         
         <para>Defaulted parameters must occur after non-defaulted parameters in the parameter 
         list.</para>

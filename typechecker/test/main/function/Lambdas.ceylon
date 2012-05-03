@@ -96,4 +96,10 @@ class Lambdas() {
     @type["Callable<Callable<Float,Float>,Float>"] function evenHigher(Float z) {
         return (Float x)(Float y) x+y+z;
     }
+    
+    @type["String"] function l1(String s) = (String s) s.uppercased;
+    @type["Callable<String,String>"] value l2 = (String s) s.lowercased;
+    @error String l3(String s) = (String s) s.size;
+    @error Integer l4(String s, Integer i) = (String s) s.size;
+    
 }

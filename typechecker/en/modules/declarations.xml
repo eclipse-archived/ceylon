@@ -2549,10 +2549,11 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
     shared actual Float pi { ... }
 }</programlisting>
             
-            <para>For <literal>formal</literal> attributes, a special shortcut form 
-            of refinement is permitted. A subclass initializer may simply specify or 
-            assign a value to the attribute declared by the superclass. No type 
-            declaration or <literal>actual</literal> annotation is necessary.</para>
+            <para>For <literal>formal</literal>, non-<literal>variable</literal> 
+            attributes, a special shortcut form of refinement is permitted. A 
+            subclass initializer may simply specify a value to the attribute 
+            declared by the superclass. No type declaration or <literal>actual</literal> 
+            annotation is necessary.</para>
             
             <programlisting>class ConcretePi() 
         extends AbstractPi() {
@@ -2560,6 +2561,9 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
     pi = calculatePi();
 }</programlisting>
 
+            <comment><para>TODO: Should we allow this for <literal>variable</literal>
+            attributes?</para></comment>
+            
             <comment><para>TODO: Why not also allow this for <literal>default</literal>
             attributes and methods??</para></comment>
             

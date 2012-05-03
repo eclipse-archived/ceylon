@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
@@ -49,7 +50,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -167,7 +167,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.ForComprehensionClause that) {
         super.visit(that);
-        ComprehensionClause cc = that.getComprehensionClause();
+        Tree.ComprehensionClause cc = that.getComprehensionClause();
         if (cc!=null) {
             that.setTypeModel(cc.getTypeModel());
         }
@@ -175,7 +175,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.IfComprehensionClause that) {
         super.visit(that);
-        ComprehensionClause cc = that.getComprehensionClause();
+        Tree.ComprehensionClause cc = that.getComprehensionClause();
         if (cc!=null) {
             that.setTypeModel(cc.getTypeModel());
         }
@@ -577,11 +577,84 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.SpecifierStatement that) {
         super.visit(that);
-        if (!(that.getBaseMemberExpression() instanceof Tree.BaseMemberExpression)) {
-            that.getBaseMemberExpression().addError("illegal specification statement");
+        Tree.Term me = that.getBaseMemberExpression();
+        Tree.SpecifierExpression sie = that.getSpecifierExpression();
+        if (me instanceof Tree.BaseMemberExpression) {
+            Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression) me;
+            Declaration d = bme.getDeclaration();
+            if (d!=null && 
+                    that.getScope() instanceof Class && 
+                    !d.isDefinedInScope(that.getScope())) {
+                //then it must be inherited ... TODO: is this totally correct? 
+                //so it's actually a refinement of a formal declaration!
+                if (d instanceof Value) {
+                    refine((Value) d, bme, that);
+                }
+                else if (d instanceof Method) {
+                    refine((Method) d, bme, that);
+                }
+                else {
+                    //TODO!
+                    bme.addError("not a reference to a formal attribute: " + d.getName());
+                }
+            }
         }
-        checkType(that.getBaseMemberExpression().getTypeModel(), 
-                that.getSpecifierExpression());
+        else {
+            me.addError("illegal specification statement");
+        }
+        //TODO: display the value name in the error message
+        checkType(me.getTypeModel(), sie);
+    }
+
+    private void refine(Value sv, Tree.BaseMemberExpression bme,
+            Tree.SpecifierStatement that) {
+        if (sv.isVariable()) {
+            that.addError("attribute is variable: " + sv.getName());
+        }
+        if (!sv.isFormal()) {
+            bme.addError("attribute is not formal: " + sv.getName());
+        }
+        Value v = new Value();
+        v.setName(sv.getName());
+        /*if (sie!=null) {
+            v.setType(sie.getExpression().getTypeModel());
+        }*/
+        v.setType(sv.getType());
+        v.setShared(true);
+        v.setActual(true);
+        v.setRefinedDeclaration(v);
+        v.setUnit(unit);
+        v.setContainer(that.getScope());
+        DeclarationVisitor.setVisibleScope(v);
+        ((Class) that.getScope()).getMembers().add(v);
+        bme.setDeclaration(v);
+        //bme.setTypeModel(v.getType());
+        that.setRefinement(true);
+    }
+
+    private void refine(Method sm, Tree.BaseMemberExpression bme,
+            Tree.SpecifierStatement that) {
+        if (!sm.isFormal()) {
+            bme.addError("method is not formal: " + sm.getName());
+        }
+        Method m = new Method();
+        m.setName(sm.getName());
+        /*if (sie!=null) {
+            v.setType(sie.getExpression().getTypeModel());
+        }*/
+        m.setType(sm.getType());
+        m.getParameterLists().addAll(sm.getParameterLists()); //TODO:broken!
+        m.getTypeParameters().addAll(sm.getTypeParameters()); //TODO:broken!
+        m.setShared(true);
+        m.setActual(true);
+        m.setRefinedDeclaration(m);
+        m.setUnit(unit);
+        m.setContainer(that.getScope());
+        DeclarationVisitor.setVisibleScope(m);
+        ((Class) that.getScope()).getMembers().add(m);
+        bme.setDeclaration(m);
+        //bme.setTypeModel(v.getType());
+        that.setRefinement(true);
     }
 
     @Override public void visit(Tree.Parameter that) {
@@ -592,25 +665,6 @@ public class ExpressionVisitor extends Visitor {
         Tree.Type tt = that.getType();
         if (tt!=null) {
             checkType(tt.getTypeModel(), se);
-            //TODO: do we really need this check?!
-            //      should we just remove it?
-            if (se!=null && tt.getTypeModel()!=null) {
-                if (unit.isOptionalType(tt.getTypeModel())) {
-                    Tree.Term t = se.getExpression().getTerm();
-                    if (t instanceof Tree.BaseMemberExpression) {
-                        ProducedReference pr = ((Tree.BaseMemberExpression) t).getTarget();
-                        if (pr==null || 
-                                !pr.getDeclaration().equals(unit.getNullDeclaration())) {
-                            se.getExpression()
-                                    .addError("defaulted parameters of optional type must have the default value null");
-                        }
-                    }
-                    else {
-                        se.getExpression()
-                                .addError("defaulted parameters of optional type must have the default value null");
-                    }
-                }
-            }
         }
     }
 

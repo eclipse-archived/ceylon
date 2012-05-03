@@ -11,7 +11,7 @@
             <para>literal values, self references, and metamodel references,</para>
         </listitem>
         <listitem>
-            <para>callable references,</para>
+            <para>callable references and anonymous functions,</para>
         </listitem>
         <listitem>
             <para>invocation of methods and instantiation of classes,</para> 
@@ -637,6 +637,34 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
     </section>
     -->
     
+        <section id="anonymousfunctions">
+            <title>Anonymous functions</title>
+            
+            <para>An anonyomous function declaration may occur in a positional argument 
+            list, <literal>return</literal> directive, or specifier. An anonymous
+            function defines a method with no method name. It comprises one or more
+            parameter lists, followed by an expression.</para>
+            
+            <programlisting>Function: ("function" | "void")? Params+ Expression</programlisting>
+            
+            <para>The parameters are the parameters of the method. The expression is 
+            the return value of the method, and the type of the expression is the 
+            return type of the method, unless the method is explicitly declared using 
+            the <literal>void</literal> keyword.</para>
+            
+            <para>An anonymous function declaration is treated as an expression. The
+            type of the expression is the callable byte of the method.</para>
+            
+            <para>For example:</para>
+            
+            <programlisting>() say("Hello")</programlisting>
+                    
+            <programlisting>(Value x, Value y) x&lt;=&gt;y</programlisting>
+
+            <programlisting>void (String name) print(name)</programlisting>
+        
+        </section>
+        
     <section id="valuereferences">
         <title>Value references</title>
                 
@@ -1165,7 +1193,7 @@ value comp = order(1,-1);</programlisting>
         <para>When arguments are listed, the arguments list is enclosed in parentheses.</para>
             
         <programlisting>PositionalArguments: "(" PositionalArgument ("," PositionalArgument)* ("," Sequence)? | Sequence? ")"</programlisting>
-        <programlisting>PositionalArgument: Expression | FunctionalArgument</programlisting>
+        <programlisting>PositionalArgument: Expression | Function</programlisting>
         
         <para>Positional arguments must be listed in the same order as the corresponding
         parameters.</para>
@@ -1328,29 +1356,6 @@ value comp = order(1,-1);</programlisting>
         
         </section>
 
-        <section id="functionalarguments">
-            <title>Inline functional arguments</title>
-            
-            <para>A positional argument list may contain an inline anonymous method
-            definition.</para>
-            
-            <programlisting>FunctionalArgument: ("function" | "void")? Params+ Expression</programlisting>
-            
-            <para>The parameters are the parameters of the method. The expression is 
-            the return value of the method, and the type of the expression is the 
-            return type of the method, unless the method is explicitly declared using 
-            the <literal>void</literal> keyword.</para>
-            
-            <para>For example:</para>
-            
-            <programlisting>() say("Hello")</programlisting>
-                    
-            <programlisting>(Value x, Value y) x&lt;=&gt;y</programlisting>
-
-            <programlisting>void (String name) print(name)</programlisting>
-        
-        </section>
-        
         <section id="sequencedarguments">
             <title>Sequenced and tuple arguments</title>
             
