@@ -72,8 +72,8 @@ public class ModelLoaderTest extends CompilerTest {
 
         PhasedUnits phasedUnits = LanguageCompiler.getPhasedUnitsInstance(context);
         
-        // find out what was in that file (unit + module decl)
-        Assert.assertEquals(2, phasedUnits.getPhasedUnits().size());
+        // find out what was in that file
+        Assert.assertEquals(1, phasedUnits.getPhasedUnits().size());
         PhasedUnit phasedUnit = phasedUnits.getPhasedUnits().get(0);
         final Map<String,Declaration> decls = new HashMap<String,Declaration>();
         for(Declaration decl : phasedUnit.getUnit().getDeclarations()){

@@ -510,7 +510,7 @@ public abstract class CompilerTest {
     }
 
     protected String getDestCar() {
-        return getModuleArchive(moduleName, "1").getPath();
+        return getModuleArchive("default", null).getPath();
     }
     
     protected File getModuleArchive(String moduleName, String version) {
