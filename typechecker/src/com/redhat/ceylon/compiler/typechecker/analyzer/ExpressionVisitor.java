@@ -641,25 +641,6 @@ public class ExpressionVisitor extends Visitor {
         Tree.Type tt = that.getType();
         if (tt!=null) {
             checkType(tt.getTypeModel(), se);
-            //TODO: do we really need this check?!
-            //      should we just remove it?
-            if (se!=null && tt.getTypeModel()!=null) {
-                if (unit.isOptionalType(tt.getTypeModel())) {
-                    Tree.Term t = se.getExpression().getTerm();
-                    if (t instanceof Tree.BaseMemberExpression) {
-                        ProducedReference pr = ((Tree.BaseMemberExpression) t).getTarget();
-                        if (pr==null || 
-                                !pr.getDeclaration().equals(unit.getNullDeclaration())) {
-                            se.getExpression()
-                                    .addError("defaulted parameters of optional type must have the default value null");
-                        }
-                    }
-                    else {
-                        se.getExpression()
-                                .addError("defaulted parameters of optional type must have the default value null");
-                    }
-                }
-            }
         }
     }
 
