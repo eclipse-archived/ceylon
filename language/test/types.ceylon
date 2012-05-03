@@ -43,11 +43,11 @@ class ConcreteTypesList<out X>(X... xs)
     }
 }
 
-class TypesCouple<X>(X x, X y) 
+class TypesCouple<X>(x, y) 
         extends TypesPair<X,X>(x,y) 
         given X satisfies Object {
-    shared X x = x;
-    shared X y = y;
+    shared X x;
+    shared X y;
 }
 
 

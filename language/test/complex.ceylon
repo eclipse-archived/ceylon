@@ -1,8 +1,8 @@
-class OrderedPair<out X,out Y>(X x, Y y) 
+class OrderedPair<out X,out Y>(x, y) 
         given X satisfies Object
         given Y satisfies Object {
-    shared X x = x;
-    shared Y y = y;
+    shared X x;
+    shared Y y;
     shared actual default String string {
         return "(" x ", " y ")";
     }

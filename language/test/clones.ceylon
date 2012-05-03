@@ -3,10 +3,10 @@ class Prototype<out Element>(Element e)
    shared actual Prototype<Element> clone { return this; }
 }
 
-class Proto2<out Element>(Element e)
+class Proto2<out Element>(element)
         satisfies Cloneable<Proto2<Element>> {
-    shared Element element = e;
-    shared actual Proto2<Element> clone { return Proto2(e); }
+    shared Element element;
+    shared actual Proto2<Element> clone { return Proto2(element); }
 }
 
 void clones() {
