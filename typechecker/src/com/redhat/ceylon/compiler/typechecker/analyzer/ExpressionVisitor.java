@@ -50,8 +50,8 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
  * Third and final phase of type analysis.
@@ -159,6 +159,21 @@ public class ExpressionVisitor extends Visitor {
         that.setTypeModel(that.getDeclarationModel()
                 .getProducedTypedReference(null, Collections.<ProducedType>emptyList())
                 .getFullType());
+    }
+    
+    @Override public void visit(Tree.ExpressionComprehensionClause that) {
+        super.visit(that);
+        that.setTypeModel(that.getExpression().getTypeModel());
+    }
+    
+    @Override public void visit(Tree.ForComprehensionClause that) {
+        super.visit(that);
+        that.setTypeModel(that.getComprehensionClause().getTypeModel());
+    }
+    
+    @Override public void visit(Tree.IfComprehensionClause that) {
+        super.visit(that);
+        that.setTypeModel(that.getComprehensionClause().getTypeModel());
     }
     
     @Override
@@ -1277,38 +1292,64 @@ public class ExpressionVisitor extends Visitor {
     private void inferTypeArgument(TypeParameter tp, ParameterList parameters,
             Tree.NamedArgumentList args, List<ProducedType> inferredTypes) {
         for (Tree.NamedArgument arg: args.getNamedArguments()) {
-            ProducedType type = null;
-            if (arg instanceof Tree.SpecifiedArgument) {
-                type = ((Tree.SpecifiedArgument) arg).getSpecifierExpression()
-                                .getExpression().getTypeModel();
-            }
-            else if (arg instanceof Tree.TypedArgument) {
-                //TODO: broken for method args
-                type = ((Tree.TypedArgument) arg).getType().getTypeModel();
-            }
-            if (type!=null) {
-                Parameter parameter = getMatchingParameter(parameters, arg);
-                if (parameter!=null) {
-                    addToUnion(inferredTypes, inferTypeArg(tp, parameter.getType(), 
-                            type, new ArrayList<TypeParameter>()));
-                }
-            }
+            inferTypeArg(arg, tp, parameters, inferredTypes);
         }
         Tree.SequencedArgument sa = args.getSequencedArgument();
         if (sa!=null) {
-            Parameter sp = getSequencedParameter(parameters);
-            if (sp!=null) {
+            inferTypeArg(sa, tp, parameters, inferredTypes);
+        }    
+        Tree.Comprehension ch = args.getComprehension();
+        if (ch!=null) {
+            inferTypeArg(ch, tp, parameters, inferredTypes);
+        }
+    }
+
+    private void inferTypeArg(Tree.Comprehension ch, TypeParameter tp,
+            ParameterList parameters, List<ProducedType> inferredTypes) {
+        Parameter sp = getSequencedParameter(parameters);
+        if (sp!=null) {
+            ProducedType ct = ch.getForComprehensionClause().getTypeModel();
+            if (ct!=null) {
                 ProducedType spt = unit.getIteratedType(sp.getType());
-                for (Tree.Expression e: args.getSequencedArgument()
-                                .getExpressionList().getExpressions()) {
-                    ProducedType sat = e.getTypeModel();
-                    if (sat!=null) {
-                        addToUnion(inferredTypes, inferTypeArg(tp, spt, sat,
-                                new ArrayList<TypeParameter>()));
-                    }
+                addToUnion(inferredTypes, inferTypeArg(tp, spt, ct,
+                        new ArrayList<TypeParameter>()));
+            }
+        }
+    }
+
+    private void inferTypeArg(Tree.SequencedArgument sa, TypeParameter tp,
+            ParameterList parameters, List<ProducedType> inferredTypes) {
+        Parameter sp = getSequencedParameter(parameters);
+        if (sp!=null) {
+            ProducedType spt = unit.getIteratedType(sp.getType());
+            for (Tree.Expression e: sa.getExpressionList().getExpressions()) {
+                ProducedType sat = e.getTypeModel();
+                if (sat!=null) {
+                    addToUnion(inferredTypes, inferTypeArg(tp, spt, sat,
+                            new ArrayList<TypeParameter>()));
                 }
             }
-        }            
+        }
+    }
+
+    private void inferTypeArg(Tree.NamedArgument arg, TypeParameter tp,
+            ParameterList parameters, List<ProducedType> inferredTypes) {
+        ProducedType type = null;
+        if (arg instanceof Tree.SpecifiedArgument) {
+            type = ((Tree.SpecifiedArgument) arg).getSpecifierExpression()
+                            .getExpression().getTypeModel();
+        }
+        else if (arg instanceof Tree.TypedArgument) {
+            //TODO: broken for method args
+            type = ((Tree.TypedArgument) arg).getType().getTypeModel();
+        }
+        if (type!=null) {
+            Parameter parameter = getMatchingParameter(parameters, arg);
+            if (parameter!=null) {
+                addToUnion(inferredTypes, inferTypeArg(tp, parameter.getType(), 
+                        type, new ArrayList<TypeParameter>()));
+            }
+        }
     }
 
     private void inferTypeArgument(TypeParameter tp, ParameterList parameters,
@@ -1353,6 +1394,12 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
         }
+        
+        Tree.Comprehension ch = args.getComprehension();
+        if (ch!=null) {
+            inferTypeArg(ch, tp, parameters, inferredTypes);
+        }
+
     }
     
     private ProducedType union(List<ProducedType> types) {
