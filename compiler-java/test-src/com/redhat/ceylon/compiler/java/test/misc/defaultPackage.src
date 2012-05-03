@@ -1,8 +1,0 @@
-public final class defaultPackage {
-    
-    private defaultPackage() {
-    }
-    
-    public static void defaultPackage() {
-    }
-}
