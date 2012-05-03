@@ -200,6 +200,11 @@ public abstract class CompilerTest {
         if(expectedErrorSet.size() == 1 && actualErrors.size() == 1){
             Assert.assertEquals("Error mismatch", expectedErrorSet.first().toString(), actualErrors.first().toString());
         }else{
+            // first dump the actual errors
+            for(CompilerError actualError : actualErrors){
+                System.err.println(actualError.lineNumber+": "+actualError.message);
+            }
+            
             // make sure we have all those we expect
             for(CompilerError expectedError : expectedErrorSet){
                 Assert.assertTrue("Missing expected error: "+expectedError, actualErrors.contains(expectedError));
