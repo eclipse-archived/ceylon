@@ -37,7 +37,7 @@ public class TypeHierarchyVisitor extends Visitor {
         public static final class Members {
             public String name;
             public Set<Declaration> formals = new LinkedHashSet<Declaration>();
-            public Set<Declaration> concretesOnInterfaces = new LinkedHashSet<Declaration>();
+            //public Set<Declaration> concretesOnInterfaces = new LinkedHashSet<Declaration>();
             public Set<Declaration> actuals = new HashSet<Declaration>();
             public Set<Declaration> actualsNonFormals = new HashSet<Declaration>();
             public Set<Declaration> defaults = new HashSet<Declaration>();
@@ -110,7 +110,7 @@ public class TypeHierarchyVisitor extends Visitor {
         aggregateMembers.nonFormalsNonDefaults.addAll(currentTypeMembers.nonFormalsNonDefaults);
         aggregateMembers.actuals.addAll(currentTypeMembers.actuals);
         aggregateMembers.formals.addAll(currentTypeMembers.formals);
-        aggregateMembers.concretesOnInterfaces.addAll(currentTypeMembers.concretesOnInterfaces);
+        //aggregateMembers.concretesOnInterfaces.addAll(currentTypeMembers.concretesOnInterfaces);
         aggregateMembers.actualsNonFormals.addAll(currentTypeMembers.actualsNonFormals);
         aggregateMembers.defaults.addAll(currentTypeMembers.defaults);
         aggregateMembers.shared.addAll(currentTypeMembers.shared);
@@ -208,12 +208,12 @@ public class TypeHierarchyVisitor extends Visitor {
                 		" of " + declaringType.getName() +
                         " not implemented in class hierarchy", 300);
             }
-            if (!members.concretesOnInterfaces.isEmpty() && members.actualsNonFormals.isEmpty()) {
+            /*if (!members.concretesOnInterfaces.isEmpty() && members.actualsNonFormals.isEmpty()) {
                 Declaration declaringType = (Declaration) members.concretesOnInterfaces.iterator().next().getContainer();
                 that.addWarning("interface member " + members.name + 
                 		" of " + declaringType.getName() +
                         " not implemented in class hierarchy (concrete interface members not yet supported)");
-            }
+            }*/
         }
     }
 
@@ -333,9 +333,9 @@ public class TypeHierarchyVisitor extends Visitor {
                 if (member.isFormal()) {
                     members.formals.add(member);
                 }
-                if (!member.isFormal() && member.isInterfaceMember()) {
+                /*if (!member.isFormal() && member.isInterfaceMember()) {
                 	members.concretesOnInterfaces.add(member);
-                }
+                }*/
                 if (member.isDefault()) {
                     members.defaults.add(member);
                 }

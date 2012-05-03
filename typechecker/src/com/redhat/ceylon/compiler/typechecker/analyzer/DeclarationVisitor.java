@@ -270,9 +270,9 @@ public class DeclarationVisitor extends Visitor {
         Scope o = enterScope(i);
         super.visit(that);
         exitScope(o);
-        if (!i.isToplevel()) {
+        /*if (!i.isToplevel()) {
             that.addWarning("inner interfaces are not yet supported");
-        }
+        }*/
         /*if ( that.getCaseTypes()!=null ) {
             that.addWarning("interfaces with enumerated cases not yet supported");
         }*/
@@ -789,13 +789,13 @@ public class DeclarationVisitor extends Visitor {
             that.addError("formal member may not have a body");
         }
         
-        if ( !d.isFormal() && 
+        /*if ( !d.isFormal() && 
                 d.getContainer() instanceof Interface && 
                 !(that instanceof Tree.TypeParameterDeclaration) &&
                 !(that instanceof Tree.ClassDeclaration) &&
                 !(that instanceof Tree.InterfaceDeclaration)) {
             that.addWarning("concrete members of interfaces not yet supported");
-        }
+        }*/
         
     }
 
@@ -839,7 +839,7 @@ public class DeclarationVisitor extends Visitor {
         Declaration d = beginDeclaration(that.getDeclarationModel());
         super.visit(that);
         endDeclaration(d);
-        that.addWarning("declaration-style named arguments not yet supported");
+        //that.addWarning("declaration-style named arguments not yet supported");
     }
 
     @Override
