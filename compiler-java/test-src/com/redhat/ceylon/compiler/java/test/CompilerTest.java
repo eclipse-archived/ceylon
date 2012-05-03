@@ -79,8 +79,13 @@ public abstract class CompilerTest {
         int lastDot = moduleName.lastIndexOf('.');
         if(lastDot == -1)
             throw new RuntimeException("Failed to find last part of package name: "+moduleName);
-        destDir = destDirGeneral + File.separator + moduleName.substring(lastDot+1);
+        destDir = destDirGeneral + File.separator + transformDestDir(moduleName.substring(lastDot+1));
         defaultOptions = Arrays.asList("-out", destDir, "-rep", destDir);
+    }
+
+    // for subclassers 
+    protected String transformDestDir(String name) {
+        return name;
     }
 
     protected CeyloncTool makeCompiler(){

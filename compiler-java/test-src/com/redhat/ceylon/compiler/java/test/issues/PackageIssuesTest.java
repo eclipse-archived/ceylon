@@ -34,6 +34,11 @@ public class PackageIssuesTest extends CompilerTest {
         return path;
     }
 	
+    @Override
+    protected String transformDestDir(String name) {
+        return name + "-package-issues";
+    }
+
     @Test
     public void testBug148(){
         compareWithJavaSource("bug148/Bug148.src", "bug148/Bug148.ceylon");
