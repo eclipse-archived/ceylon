@@ -63,16 +63,24 @@ import com.sun.tools.javac.file.ZipFileIndexCache;
 public abstract class CompilerTest {
 
     protected final static String dir = "test-src";
-    protected final static String destDir = "build/ceylon-cars";
-    protected final static List<String> defaultOptions = Arrays.asList("-out", destDir, "-rep", destDir);
+    protected final static String destDirGeneral = "build/test-cars";
+    protected final String destDir;
+    protected final String moduleName;
+    protected final List<String> defaultOptions;
 
     protected final String path;
 
     public CompilerTest() {
         // for comparing with java source
         Package pakage = getClass().getPackage();
-        String pkg = pakage == null ? "" : pakage.getName().replaceAll("\\.", Matcher.quoteReplacement(File.separator));
+        moduleName = pakage.getName();
+        String pkg = pakage == null ? "" : moduleName.replaceAll("\\.", Matcher.quoteReplacement(File.separator));
         path = dir + File.separator + pkg + File.separator;
+        int lastDot = moduleName.lastIndexOf('.');
+        if(lastDot == -1)
+            throw new RuntimeException("Failed to find last part of package name: "+moduleName);
+        destDir = destDirGeneral + File.separator + moduleName.substring(lastDot+1);
+        defaultOptions = Arrays.asList("-out", destDir, "-rep", destDir);
     }
 
     protected CeyloncTool makeCompiler(){
@@ -491,10 +499,10 @@ public abstract class CompilerTest {
     }
 
     protected String getDestCar() {
-        return destDir + "/default/default.car";
+        return getModuleArchive(moduleName, "1").getPath();
     }
     
-    protected static File getModuleArchive(String moduleName, String version) {
+    protected File getModuleArchive(String moduleName, String version) {
         return getModuleArchive(moduleName, version, destDir);
     }
 
@@ -502,7 +510,7 @@ public abstract class CompilerTest {
         return getArchiveName(moduleName, version, destDir, "car");
     }
 
-    protected static File getSourceArchive(String moduleName, String version) {
+    protected File getSourceArchive(String moduleName, String version) {
         return getArchiveName(moduleName, version, destDir, "src");
     }
     
