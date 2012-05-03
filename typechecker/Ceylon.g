@@ -1089,8 +1089,8 @@ typeSpecifier returns [TypeSpecifier typeSpecifier]
 specifier returns [SpecifierExpression specifierExpression]
     : SPECIFY 
       { $specifierExpression = new SpecifierExpression($SPECIFY); }
-      expression
-      { $specifierExpression.setExpression($expression.expression); }
+      functionOrExpression
+      { $specifierExpression.setExpression($functionOrExpression.expression); }
     ;
 
 initializer returns [InitializerExpression initializerExpression]
