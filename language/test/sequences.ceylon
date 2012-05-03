@@ -89,7 +89,8 @@ void test_exists_nonempty() {
     assert(t2 == "no doesn't exist", "exists 2");
     value t3 = nonempty empties then "nonempty works" else "nonempty broken";
     assert(t3 == "nonempty works", "nonempty 1");
-    value t4 = nonempty {} then "nonempty is broken" else "works";
+    Integer[] _t4 = {};
+    value t4 = nonempty _t4 then "nonempty is broken" else "works";
     assert(t4 == "works", "nonempty 2");
 }
 
