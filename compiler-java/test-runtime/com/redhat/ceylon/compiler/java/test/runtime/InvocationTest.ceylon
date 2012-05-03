@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-class Foo(Integer i = 1, Integer... rest={2, 3, 4}) {
-    shared Integer first = i;
-    shared Integer[] rest = rest;
+class Foo(first = 1, Integer... initialRest={2, 3, 4}) {
+    shared Integer first;
+    shared Integer[] rest = initialRest;
 }
 
 shared class InvocationTest() {
