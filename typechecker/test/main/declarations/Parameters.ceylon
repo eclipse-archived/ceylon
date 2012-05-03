@@ -14,7 +14,7 @@ class Parameters() {
     void d3(@error String name=0) {}
     void d4(@error Integer count="World") {}
     void d5(String? name=null) {}
-    void d6(@error String? name="World") {}
+    void d6(String? name="World") {}
     void d7(@error variable String s) {}
     
     void broken1(@error Unknown p) {}
