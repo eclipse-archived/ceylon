@@ -294,4 +294,9 @@ public class StatementTest extends CompilerTest {
     public void testSwitchMatch(){
         compareWithJavaSource("swtch/SwitchMatch");
     }
+    
+    @Test
+    public void testReturnAnonFunction(){
+        compareWithJavaSource("retrn/ReturnAnonFunction");
+    }
 }

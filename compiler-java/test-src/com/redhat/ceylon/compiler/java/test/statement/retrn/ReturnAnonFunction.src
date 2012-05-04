@@ -1,0 +1,23 @@
+package com.redhat.ceylon.compiler.java.test.statement.retrn;
+
+final class returnAnonFunction {
+    
+    private returnAnonFunction() {
+    }
+    
+    static .ceylon.language.Callable<? extends .ceylon.language.Integer> returnAnonFunction() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Callable<Integer>"){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
+                final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
+                return i;
+            }
+        };
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.statement.retrn.returnAnonFunction.returnAnonFunction();
+    }
+}

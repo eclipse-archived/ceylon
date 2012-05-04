@@ -673,4 +673,10 @@ public class ExpressionTest extends CompilerTest {
     public void testStpStringTemplate(){
         compareWithJavaSource("stringtemp/StringTemplate");
     }
+    
+    @Test
+    public void testLmdAnonFunctionNullary(){
+        compareWithJavaSource("lambda/AnonFunctionNullary");
+    }
+    
 }
