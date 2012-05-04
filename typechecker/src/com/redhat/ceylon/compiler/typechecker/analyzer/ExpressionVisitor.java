@@ -51,6 +51,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Ellipsis;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExpressionList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -3019,12 +3020,15 @@ public class ExpressionVisitor extends Visitor {
             }
             st = unit.getEmptyType(unit.getSequenceType(ct));
         }
-        else if (that.getExpressionList()!=null){
+        else if (that.getSequencedArgument()!=null){
             ProducedType et;
             List<ProducedType> list = new ArrayList<ProducedType>();
-            for (Tree.Expression e: that.getExpressionList().getExpressions()) {
-                if (e.getTypeModel()!=null) {
-                    addToUnion(list, denotableType(e.getTypeModel()));
+            ExpressionList el = that.getSequencedArgument().getExpressionList();
+            if (el!=null) {
+                for (Tree.Expression e: el.getExpressions()) {
+                    if (e.getTypeModel()!=null) {
+                        addToUnion(list, denotableType(e.getTypeModel()));
+                    }
                 }
             }
             if (list.isEmpty()) {

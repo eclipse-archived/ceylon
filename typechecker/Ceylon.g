@@ -1218,8 +1218,8 @@ elementSelectionOperator returns [IndexOperator operator]
 enumeration returns [SequenceEnumeration sequenceEnumeration]
     : LBRACE { $sequenceEnumeration = new SequenceEnumeration($LBRACE); } 
       (
-        expressions
-        { $sequenceEnumeration.setExpressionList($expressions.expressionList); }
+        sequencedArgument
+        { $sequenceEnumeration.setSequencedArgument($sequencedArgument.sequencedArgument); }
       | 
         comprehension
         { $sequenceEnumeration.setComprehension($comprehension.comprehension); }

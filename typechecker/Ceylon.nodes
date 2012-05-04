@@ -682,7 +682,7 @@ argument list."
 
 "Enumerated elements of a sequence."
 ^(SEQUENCE_ENUMERATION:ATOM 
-    EXPRESSION_LIST?
+    SEQUENCED_ARGUMENT?
     COMPREHENSION?)
 
 "A string template."
