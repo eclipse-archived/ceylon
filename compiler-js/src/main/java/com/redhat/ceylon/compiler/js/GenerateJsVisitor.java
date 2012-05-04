@@ -412,6 +412,8 @@ public class GenerateJsVisitor extends Visitor
 
         out(function, names.name(d), "(");
         for (Parameter p: that.getParameterList().getParameters()) {
+            //Force class initializer parameter names
+            names.forceName(p.getDeclarationModel(), p.getDeclarationModel().getName());
             p.visit(this);
             out(", ");
         }
@@ -957,25 +959,45 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(AttributeDeclaration that) {
         Value d = that.getDeclarationModel();
+        //Check if the attribute corresponds to a class parameter
+        //This is because of the new initializer syntax
+        String classParam = null;
+        if (that.getScope() instanceof Class) {
+            Class container = (Class)that.getScope();
+            if (container.getParameterList() != null) {
+                for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : container.getParameterList().getParameters()) {
+                    if (p.getName().equals(d.getName())) {
+                        classParam = names.name(p);
+                        break;
+                    }
+                }
+            }
+        }
         if (!d.isFormal()) {
             comment(that);
-            if (prototypeStyle&&d.isClassOrInterfaceMember()) {
+            if (prototypeStyle && d.isClassOrInterfaceMember()) {
                 if (that.getSpecifierOrInitializerExpression()!=null) {
                     outerSelf(d);
                     out(".", names.name(d), "=");
                     super.visit(that);
                     out(";");
                     endLine();
+                } else if (classParam != null) {
+                    outerSelf(d);
+                    out(".", names.name(d), "=", classParam, ";");
+                    endLine();
                 }
             }
             else {
-                String varName = names.name(d);
+                final String varName = names.name(d);
                 out("var ", varName);
                 if (that.getSpecifierOrInitializerExpression()!=null) {
                     out("=");
                     int boxType = boxStart(that.getSpecifierOrInitializerExpression().getExpression().getTerm());
                     super.visit(that);
                     boxUnboxEnd(boxType);
+                } else if (classParam != null) {
+                    out("=", classParam);
                 } else {
                     super.visit(that);
                 }
