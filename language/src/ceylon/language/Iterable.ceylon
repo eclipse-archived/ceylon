@@ -26,4 +26,20 @@ shared interface Iterable<out Element>
         return builder.sequence;
     }
     
+    shared default Iterable<Result> map<Result>(Result collecting(Element elem)) {
+        //TODO!!!
+        throw;
+    }
+    
+    shared default Iterable<Element> filter(Boolean selecting(Element elem)) {
+        //TODO!!!
+        throw;
+    }
+    
+    shared default Result fold<Result>(Result initial,
+            Result accumulating(Result partial, Element elem)) {
+        //TODO!!!
+        throw;
+    }
+    
 }
