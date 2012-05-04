@@ -1,0 +1,40 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class methodArgumentNamedIncovationVoid {
+    
+    private methodArgumentNamedIncovationVoid() {
+    }
+    
+    static void methodArgumentNamedIncovationVoid() {
+        
+        final class callFunction {
+            
+            private callFunction() {
+            }
+            
+            void callFunction(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+            }
+        }
+        final callFunction callFunction = new callFunction();
+        (
+            let
+            {
+                .ceylon.language.Callable<? extends .java.lang.Object> $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void>"){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                        final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
+                        return null;
+                    }
+                };
+                callFunction.callFunction($arg$0$0);
+            }
+            returning null;
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.methodArgumentNamedIncovationVoid.methodArgumentNamedIncovationVoid();
+    }
+}

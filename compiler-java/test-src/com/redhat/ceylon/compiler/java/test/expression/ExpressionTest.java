@@ -170,7 +170,10 @@ public class ExpressionTest extends CompilerTest {
     public void testInvMethodArgumentNamedInvocation(){
         compareWithJavaSource("invoke/MethodArgumentNamedInvocation");
     }
-    
+    @Test
+    public void testInvMethodArgumentNamedInvocationVoid(){
+        compareWithJavaSource("invoke/MethodArgumentNamedInvocationVoid");
+    }
     @Test
     public void testInvMethodArgumentNamedInvocation2(){
         compareWithJavaSource("invoke/MethodArgumentNamedInvocation2");
