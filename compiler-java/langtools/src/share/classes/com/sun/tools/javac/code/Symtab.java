@@ -145,6 +145,7 @@ public class Symtab {
     public final Type noSuchFieldErrorType;
     public final Type assertionErrorType;
     public final Type cloneNotSupportedExceptionType;
+    public final Type nullPointerExceptionType;
     public final Type annotationType;
     public final TypeSymbol enumSym;
     public final Type listType;
@@ -187,6 +188,7 @@ public class Symtab {
     public  Type ceylonContainerType;
     public  Type ceylonNamedArgumentCall;
     public  Type ceylonExceptionType;
+    public  Type ceylonRecursiveInitializationExceptionType;
     public  Type ceylonEnumeratedTypeErrorType;
     public  Type ceylonCallableType;
     public  Type ceylonAbstractCallableType;
@@ -510,6 +512,7 @@ public class Symtab {
         noSuchFieldErrorType = enterClass("java.lang.NoSuchFieldError");
         assertionErrorType = enterClass("java.lang.AssertionError");
         cloneNotSupportedExceptionType = enterClass("java.lang.CloneNotSupportedException");
+        nullPointerExceptionType = enterClass("java.lang.NullPointerException");
         annotationType = enterClass("java.lang.annotation.Annotation");
         classLoaderType = enterClass("java.lang.ClassLoader");
         enumSym = reader.enterClass(names.java_lang_Enum);
@@ -794,6 +797,7 @@ public class Symtab {
         ceylonContainerType = enterClass("ceylon.language.Container");
         ceylonNamedArgumentCall = enterClass("ceylon.language.NamedArgumentCall");
         ceylonExceptionType = enterClass("ceylon.language.Exception");
+        ceylonRecursiveInitializationExceptionType = enterClass("ceylon.language.RecursiveInitializationException");
         ceylonEnumeratedTypeErrorType = enterClass("com.redhat.ceylon.compiler.java.language.EnumeratedTypeError");
         ceylonCallableType = enterClass("ceylon.language.Callable");
         ceylonAbstractCallableType = enterClass("com.redhat.ceylon.compiler.java.language.AbstractCallable");
