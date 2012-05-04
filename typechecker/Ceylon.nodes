@@ -613,6 +613,7 @@ argument list."
 
 ^(SEQUENCED_ARGUMENT:STATEMENT_OR_ARGUMENT
     EXPRESSION_LIST
+    ELLIPSIS?
     Parameter parameter;)
 
 "A list of positional arguments."

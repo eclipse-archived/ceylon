@@ -1343,6 +1343,10 @@ sequencedArgument returns [SequencedArgument sequencedArgument]
       { sequencedArgument = new SequencedArgument(null);
         sequencedArgument.setExpressionList($expressions.expressionList);
         sequencedArgument.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
+      (
+        ELLIPSIS
+        { sequencedArgument.setEllipsis(new Ellipsis($ELLIPSIS)); }
+      )?
     ;
 
 namedArgument returns [NamedArgument namedArgument]

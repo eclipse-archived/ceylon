@@ -50,8 +50,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Ellipsis;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExpressionList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -1843,7 +1841,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.PositionalArgumentList pal) {
         List<Tree.PositionalArgument> args = pal.getPositionalArguments();
         List<Parameter> params = pl.getParameters();
-        Ellipsis ell = pal.getEllipsis();
+        Tree.Ellipsis ell = pal.getEllipsis();
         for (int i=0; i<params.size(); i++) {
             Parameter p = params.get(i);
             if (i>=args.size()) {
@@ -3011,46 +3009,67 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.SequenceEnumeration that) {
         super.visit(that);
-        ProducedType st;
+        ProducedType st = null;
         if ( that.getComprehension()!=null) {
             ProducedType ct = that.getComprehension()
                     .getForComprehensionClause().getTypeModel();
-            if (ct==null) {
-                ct = new UnknownType(unit).getType();
+            if (ct!=null) {
+                st = unit.getEmptyType(unit.getSequenceType(ct));
             }
-            st = unit.getEmptyType(unit.getSequenceType(ct));
         }
-        else if (that.getSequencedArgument()!=null){
-            ProducedType et;
-            List<ProducedType> list = new ArrayList<ProducedType>();
-            ExpressionList el = that.getSequencedArgument().getExpressionList();
-            if (el!=null) {
-                for (Tree.Expression e: el.getExpressions()) {
-                    if (e.getTypeModel()!=null) {
-                        addToUnion(list, denotableType(e.getTypeModel()));
+        else if (that.getSequencedArgument()!=null) {
+            Tree.Ellipsis ell = that.getSequencedArgument().getEllipsis();
+            if (ell==null) {
+                ProducedType et;
+                List<ProducedType> list = new ArrayList<ProducedType>();
+                Tree.ExpressionList el = that.getSequencedArgument().getExpressionList();
+                if (el!=null) {
+                    for (Tree.Expression e: el.getExpressions()) {
+                        if (e.getTypeModel()!=null) {
+                            addToUnion(list, denotableType(e.getTypeModel()));
+                        }
+                    }
+                }
+                if (list.isEmpty()) {
+    //                that.addError("could not infer type of sequence enumeration");
+                    return;
+                }
+                else if (list.size()==1) {
+                    et = list.get(0);
+                }
+                else {
+                    UnionType ut = new UnionType(unit);
+                    ut.setExtendedType( unit.getObjectDeclaration().getType() );
+                    ut.setCaseTypes(list);
+                    et = ut.getType(); 
+                }
+                st = unit.getSequenceType(et);
+            }
+            else {
+                List<Tree.Expression> es = that.getSequencedArgument()
+                        .getExpressionList().getExpressions();
+                if (es.size()>1) {
+                    ell.addError("more than one argument");
+                }
+                Tree.Expression e = es.get(0);
+                ProducedType et = e.getTypeModel();
+                if (et!=null) {
+                    ProducedType it = unit.getIteratedType(et);
+                    if (it==null) {
+                        e.addError("argument must be of iterable type: " +
+                                et.getProducedTypeName() + " is not Iterable");
+                    }
+                    else {
+                        st = unit.getEmptyType(unit.getSequenceType(it));
                     }
                 }
             }
-            if (list.isEmpty()) {
-//                that.addError("could not infer type of sequence enumeration");
-                return;
-            }
-            else if (list.size()==1) {
-                et = list.get(0);
-            }
-            else {
-                UnionType ut = new UnionType(unit);
-                ut.setExtendedType( unit.getObjectDeclaration().getType() );
-                ut.setCaseTypes(list);
-                et = ut.getType(); 
-            }
-            st = unit.getSequenceType(et);
         }
         else {
             st = unit.getEmptyDeclaration().getType();
         }
         
-        that.setTypeModel(st);
+        if (st!=null) that.setTypeModel(st);
     }
 
     @Override public void visit(Tree.CatchVariable that) {
