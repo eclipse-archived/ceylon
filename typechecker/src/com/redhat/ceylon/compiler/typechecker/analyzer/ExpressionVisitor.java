@@ -50,6 +50,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Ellipsis;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -1841,6 +1842,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.PositionalArgumentList pal) {
         List<Tree.PositionalArgument> args = pal.getPositionalArguments();
         List<Parameter> params = pl.getParameters();
+        Ellipsis ell = pal.getEllipsis();
         for (int i=0; i<params.size(); i++) {
             Parameter p = params.get(i);
             if (i>=args.size()) {
@@ -1848,7 +1850,7 @@ public class ExpressionVisitor extends Visitor {
                     pal.addError("missing argument to parameter " + 
                             p.getName() + " of " + pr.getDeclaration().getName());
                 }
-                if (p.isSequenced() && pal.getEllipsis()!=null) {
+                if (p.isSequenced() && ell!=null) {
                     pal.addError("missing argument to sequenced parameter " + 
                             p.getName() + " of " + pr.getDeclaration().getName());
                 }
@@ -1856,12 +1858,18 @@ public class ExpressionVisitor extends Visitor {
             else {
                 ProducedType paramType = pr.getTypedParameter(p.getAliasedParameter())
                         .getFullType();
-                if (p.isSequenced() && pal.getEllipsis()==null) {
+                if (p.isSequenced() && ell==null) {
                     checkSequencedPositionalArgument(p, pr, pal, i, paramType);
-                    return;
+                    if (pal.getComprehension()!=null) {
+                        pal.getComprehension().addError("sequenced parameter already has arguments");
+                    }
+                    return; //Note: early return!
                 }
                 else {
                     checkPositionalArgument(p, pr, args.get(i), paramType);
+                    if (p.isSequenced() && pal.getComprehension()!=null) {
+                        pal.getComprehension().addError("sequenced parameter already has arguments");
+                    }
                 }
             }
         }
@@ -1869,12 +1877,7 @@ public class ExpressionVisitor extends Visitor {
             args.get(i).addError("no matching parameter for argument declared by " +
                      pr.getDeclaration().getName());
         }
-        if (pal.getEllipsis()!=null && 
-                (params.isEmpty() || !params.get(params.size()-1).isSequenced())) {
-            pal.getEllipsis().addError("no matching sequenced parameter declared by " +
-                     pr.getDeclaration().getName());
-        }
-        
+
         Tree.Comprehension ch = pal.getComprehension();
         if (ch!=null) {
             Parameter p = getSequencedParameter(pl);
@@ -1884,6 +1887,12 @@ public class ExpressionVisitor extends Visitor {
                 checkComprehensionPositionalArgument(p, pr, ch, paramType);
             }
         }
+
+        if ((ell!=null || ch!=null) && !pl.hasSequencedParameter()) {
+            ell.addError("no matching sequenced parameter declared by " +
+                     pr.getDeclaration().getName());
+        }
+        
     }
 
     private void checkComprehensionPositionalArgument(Parameter p, ProducedReference pr,
@@ -1898,35 +1907,18 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkSequencedPositionalArgument(Parameter p, ProducedReference pr,
-            Tree.PositionalArgumentList pal, int i, ProducedType paramType) {
+            Tree.PositionalArgumentList pal, int from, ProducedType paramType) {
         List<Tree.PositionalArgument> args = pal.getPositionalArguments();
         ProducedType at = paramType==null ? null : 
                 unit.getIteratedType(paramType);
-        for (int j=i; j<args.size(); j++) {
+        for (int j=from; j<args.size(); j++) {
             Tree.PositionalArgument a = args.get(j);
             a.setParameter(p);
             Tree.Expression e = a.getExpression();
-            if (e==null) {
-                //TODO: this case is temporary until we get support for SPECIAL_ARGUMENTs
-            }
-            else {
-                /*if (pal.getEllipsis()!=null) {
-                    if (i<args.size()-1) {
-                        a.addError("too many arguments to sequenced parameter: " + 
-                                p.getName());
-                    }
-                    if (!paramType.isSupertypeOf(argType)) {
-                        a.addError("argument not assignable to parameter type: " + 
-                                p.getName() + " since " +
-                                argType.getProducedTypeName() + " is not " +
-                                paramType.getProducedTypeName());
-                    }
-                }
-                else {*/
-                    checkAssignable(e.getTypeModel(), at, a, 
-                            "argument must be assignable to sequenced parameter " + 
-                            p.getName()+ " of " + pr.getDeclaration().getName());
-                //}
+            if (e!=null) {
+                checkAssignable(e.getTypeModel(), at, a, 
+                        "argument must be assignable to sequenced parameter " + 
+                        p.getName()+ " of " + pr.getDeclaration().getName());
             }
         }
     }
@@ -1934,10 +1926,7 @@ public class ExpressionVisitor extends Visitor {
     private void checkPositionalArgument(Parameter p, ProducedReference pr,
             Tree.PositionalArgument a, ProducedType paramType) {
         a.setParameter(p);
-        if (a.getExpression()==null) {
-            //TODO: this case is temporary until we get support for SPECIAL_ARGUMENTs
-        }
-        else {
+        if (a.getExpression()!=null) {
             checkAssignable(getPositionalArgumentType(a), paramType, a, 
                     "argument must be assignable to parameter " + 
                     p.getName() + " of " + pr.getDeclaration().getName());

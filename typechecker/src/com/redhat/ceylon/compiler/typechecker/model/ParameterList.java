@@ -25,4 +25,9 @@ public class ParameterList {
         this.supportsNamedParameters = supportsNamedParameters;
     }
     
+    public boolean hasSequencedParameter() {
+        return !parameters.isEmpty() && 
+                parameters.get(parameters.size()-1).isSequenced();
+    }
+    
 }
