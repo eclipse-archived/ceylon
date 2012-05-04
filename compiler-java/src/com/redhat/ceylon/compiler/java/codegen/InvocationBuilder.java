@@ -854,8 +854,15 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         final JCExpression thisType;
         ProducedReference target = ((Tree.MemberOrTypeExpression)primary).getTarget();
         if (primary instanceof Tree.BaseMemberExpression) {
-            thisType = gen.makeJavaType(target.getQualifyingType(), NO_PRIMITIVES);
-            defaultedParameterInstance = gen.makeUnquotedIdent("this");
+            if (Decl.withinClassOrInterface(primaryDeclaration)) {
+                // a member method
+                thisType = gen.makeJavaType(target.getQualifyingType(), NO_PRIMITIVES);
+                defaultedParameterInstance = gen.makeUnquotedIdent("this");
+            } else {
+                // a local or toplevel function
+                defaultedParameterInstance = gen.makeUnquotedIdent(primaryDeclaration.getName());
+                thisType = gen.makeQuotedIdent(primaryDeclaration.getName());
+            }
         } else if (primary instanceof Tree.BaseTypeExpression
                 || primary instanceof Tree.QualifiedTypeExpression) {
             Map<TypeParameter, ProducedType> typeA = target.getTypeArguments();
