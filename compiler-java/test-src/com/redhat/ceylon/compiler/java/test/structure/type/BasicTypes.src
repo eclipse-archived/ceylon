@@ -91,130 +91,170 @@ public final class globalMethodOptionalCharacter {
     }
 }
 public final class globalAttrInteger {
-    private static final long value;
+    private static final long[] value;
     static {
-        value = 1L;
+        value = new long[]{1L};
     }
     
     public static long getGlobalAttrInteger() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     private globalAttrInteger() {
     }
 }
 public final class globalAttrFloat {
-    private static final double value;
+    private static final double[] value;
     static {
-        value = 1.0;
+        value = new double[]{1.0};
     }
     
     public static double getGlobalAttrFloat() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     private globalAttrFloat() {
     }
 }
 public final class globalAttrString {
-    private static final .java.lang.String value;
+    private static final .java.lang.String[] value;
     static {
-        value = "a";
+        value = new .java.lang.String[]{"a"};
     }
     
     public static .java.lang.String getGlobalAttrString() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     private globalAttrString() {
     }
 }
 public final class globalAttrBoolean {
-    private static final boolean value;
+    private static final boolean[] value;
     static {
-        value = true;
+        value = new boolean[]{true};
     }
     
     public static boolean getGlobalAttrBoolean() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     private globalAttrBoolean() {
     }
 }
 public final class globalAttrCharacter {
-    private static final int value;
+    private static final int[] value;
     static {
-        value = 'a';
+        value = new int[]{'a'};
     }
     
     public static int getGlobalAttrCharacter() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     private globalAttrCharacter() {
     }
 }
 public final class globalAttrOptionalInteger {
-    private static final .ceylon.language.Integer value;
+    private static final .ceylon.language.Integer[] value;
     static {
-        value = null;
+        value = new .ceylon.language.Integer[]{null};
     }
     
     public static .ceylon.language.Integer getGlobalAttrOptionalInteger() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     private globalAttrOptionalInteger() {
     }
 }
 public final class globalAttrOptionalFloat {
-    private static final .ceylon.language.Float value;
+    private static final .ceylon.language.Float[] value;
     static {
-        value = null;
+        value = new .ceylon.language.Float[]{null};
     }
     
     public static .ceylon.language.Float getGlobalAttrOptionalFloat() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     private globalAttrOptionalFloat() {
     }
 }
 public final class globalAttrOptionalString {
-    private static final .ceylon.language.String value;
+    private static final .ceylon.language.String[] value;
     static {
-        value = null;
+        value = new .ceylon.language.String[]{null};
     }
     
     public static .ceylon.language.String getGlobalAttrOptionalString() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     private globalAttrOptionalString() {
     }
 }
 public final class globalAttrOptionalBoolean {
-    private static final .ceylon.language.Boolean value;
+    private static final .ceylon.language.Boolean[] value;
     static {
-        value = null;
+        value = new .ceylon.language.Boolean[]{null};
     }
     
     public static .ceylon.language.Boolean getGlobalAttrOptionalBoolean() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     private globalAttrOptionalBoolean() {
     }
 }
 public final class globalAttrOptionalCharacter {
-    private static final .ceylon.language.Character value;
+    private static final .ceylon.language.Character[] value;
     static {
-        value = null;
+        value = new .ceylon.language.Character[]{null};
     }
     
     public static .ceylon.language.Character getGlobalAttrOptionalCharacter() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     private globalAttrOptionalCharacter() {

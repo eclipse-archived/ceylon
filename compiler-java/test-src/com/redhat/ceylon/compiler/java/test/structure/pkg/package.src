@@ -4,9 +4,9 @@ package com.redhat.ceylon.compiler.java.test.structure.pkg;
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 @.com.redhat.ceylon.compiler.java.metadata.Package(name = "com.redhat.ceylon.compiler.java.test.structure.pkg", shared = true)
 final class $package {
-    private static final .ceylon.language.descriptor.Package value;
+    private static final .ceylon.language.descriptor.Package[] value;
     static {
-        value = (
+        value = new .ceylon.language.descriptor.Package[]{(
             let
             {
                 .ceylon.language.Quoted $arg$0$0 = .ceylon.language.Quoted.instance("com.redhat.ceylon.compiler.java.test.structure.pkg");
@@ -15,12 +15,16 @@ final class $package {
                 .ceylon.language.Iterable<? extends .ceylon.language.String> $arg$0$3 = .ceylon.language.$empty.getEmpty();
             }
             returning new .ceylon.language.descriptor.Package($arg$0$0, $arg$0$1, $arg$0$2, $arg$0$3);
-        );
+        )};
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.descriptor.Package")
     static .ceylon.language.descriptor.Package getPackage() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     private $package() {

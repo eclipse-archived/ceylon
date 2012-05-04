@@ -10,13 +10,17 @@ final class bug327_foo extends .com.redhat.ceylon.compiler.java.test.issues.Bug3
     private bug327_foo() {
         super();
     }
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug327_foo value;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug327_foo[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.issues.bug327_foo();
+        value = new .com.redhat.ceylon.compiler.java.test.issues.bug327_foo[]{new .com.redhat.ceylon.compiler.java.test.issues.bug327_foo()};
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug327_foo getBug327_foo() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
 }
 final class bug327_bar extends .com.redhat.ceylon.compiler.java.test.issues.Bug327 {
@@ -24,13 +28,17 @@ final class bug327_bar extends .com.redhat.ceylon.compiler.java.test.issues.Bug3
     private bug327_bar() {
         super();
     }
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug327_bar value;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug327_bar[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.issues.bug327_bar();
+        value = new .com.redhat.ceylon.compiler.java.test.issues.bug327_bar[]{new .com.redhat.ceylon.compiler.java.test.issues.bug327_bar()};
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug327_bar getBug327_bar() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
 }
 final class bug327_test {

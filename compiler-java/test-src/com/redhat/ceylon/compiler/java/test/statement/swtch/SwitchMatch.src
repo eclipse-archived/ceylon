@@ -10,13 +10,17 @@ final class switchMatch_foo extends .com.redhat.ceylon.compiler.java.test.statem
     private switchMatch_foo() {
         super();
     }
-    private static final .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo value;
+    private static final .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo();
+        value = new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo[]{new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo()};
     }
     
     static .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo getSwitchMatch_foo() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
 }
 final class switchMatch_bar extends .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop {
@@ -24,13 +28,17 @@ final class switchMatch_bar extends .com.redhat.ceylon.compiler.java.test.statem
     private switchMatch_bar() {
         super();
     }
-    private static final .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar value;
+    private static final .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar();
+        value = new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar[]{new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar()};
     }
     
     static .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar getSwitchMatch_bar() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
 }
 class SwitchMatch {

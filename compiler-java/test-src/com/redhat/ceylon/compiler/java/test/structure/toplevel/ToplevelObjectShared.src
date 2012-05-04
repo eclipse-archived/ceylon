@@ -7,13 +7,17 @@ public final class topLevelObjectShared {
     
     private topLevelObjectShared() {
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared value;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared();
+        value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared[]{new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared()};
     }
     
     public static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared getTopLevelObjectShared() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
 }
 final class accessTopLevelObjectShared {
@@ -30,4 +34,3 @@ final class accessTopLevelObjectShared {
         .com.redhat.ceylon.compiler.java.test.structure.toplevel.accessTopLevelObjectShared.accessTopLevelObjectShared();
     }
 }
-

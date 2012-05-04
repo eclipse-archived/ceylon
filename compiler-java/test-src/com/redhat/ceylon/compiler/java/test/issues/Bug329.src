@@ -26,13 +26,17 @@ final class bug329_se implements .com.redhat.ceylon.compiler.java.test.issues.Bu
     private bug329_se() {
         this.something = .ceylon.language.String.instance("somethingElse");
     }
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug329_se value;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug329_se[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.issues.bug329_se();
+        value = new .com.redhat.ceylon.compiler.java.test.issues.bug329_se[]{new .com.redhat.ceylon.compiler.java.test.issues.bug329_se()};
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug329_se getBug329_se() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
 }
 final class bug329_se2 implements .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something {
@@ -44,12 +48,16 @@ final class bug329_se2 implements .com.redhat.ceylon.compiler.java.test.issues.B
     
     private bug329_se2() {
     }
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug329_se2 value;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug329_se2[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.issues.bug329_se2();
+        value = new .com.redhat.ceylon.compiler.java.test.issues.bug329_se2[]{new .com.redhat.ceylon.compiler.java.test.issues.bug329_se2()};
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug329_se2 getBug329_se2() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
 }

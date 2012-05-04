@@ -1,13 +1,17 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
 final class topLevelAttribute {
-    private static final long value;
+    private static final long[] value;
     static {
-        value = 0L;
+        value = new long[]{0L};
     }
     
     static long getTopLevelAttribute() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     private topLevelAttribute() {

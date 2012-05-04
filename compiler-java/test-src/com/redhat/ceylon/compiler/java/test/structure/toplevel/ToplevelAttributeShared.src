@@ -1,13 +1,17 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
 public final class topLevelAttributeShared {
-    private static final long value;
+    private static final long[] value;
     static {
-        value = 0L;
+        value = new long[]{0L};
     }
     
     public static long getTopLevelAttributeShared() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     private topLevelAttributeShared() {

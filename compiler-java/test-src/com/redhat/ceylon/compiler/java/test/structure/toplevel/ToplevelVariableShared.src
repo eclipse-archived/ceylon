@@ -1,17 +1,21 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
 public final class topLevelVariableShared {
-    private static long value;
+    private static long[] value;
     static {
-        value = 0L;
+        value = new long[]{0L};
     }
     
     public static long getTopLevelVariableShared() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     public static void setTopLevelVariableShared(long topLevelVariableShared) {
-        value = topLevelVariableShared;
+        value[0] = topLevelVariableShared;
     }
     
     private topLevelVariableShared() {

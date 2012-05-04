@@ -46,12 +46,16 @@ final class topLevelObjectWithMembers {
         this.varShared = false;
         this.varCaptured = false;
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers value;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers();
+        value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers[]{new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers()};
     }
     
     static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers getTopLevelObjectWithMembers() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
 }

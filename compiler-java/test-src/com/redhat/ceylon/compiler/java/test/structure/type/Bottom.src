@@ -1,26 +1,34 @@
 package com.redhat.ceylon.compiler.java.test.structure.type;
 
 final class toplevelObject {
-    private static final .java.lang.Object value;
+    private static final .java.lang.Object[] value;
     static {
-        value = .ceylon.language.bottom.getBottom();
+        value = new .java.lang.Object[]{.ceylon.language.bottom.getBottom()};
     }
     
     static .java.lang.Object getToplevelObject() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     private toplevelObject() {
     }
 }
 final class toplevelInteger {
-    private static final long value;
+    private static final long[] value;
     static {
-        value = ((.ceylon.language.Integer).ceylon.language.bottom.getBottom()).longValue();
+        value = new long[]{((.ceylon.language.Integer).ceylon.language.bottom.getBottom()).longValue()};
     }
     
     static long getToplevelInteger() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     private toplevelInteger() {

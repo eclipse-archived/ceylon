@@ -26,12 +26,16 @@ public final class topLevelObjectWithSuperTypes extends .com.redhat.ceylon.compi
     private topLevelObjectWithSuperTypes() {
         super(2L);
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes value;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes();
+        value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes[]{new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes()};
     }
     
     public static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes getTopLevelObjectWithSuperTypes() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
 }

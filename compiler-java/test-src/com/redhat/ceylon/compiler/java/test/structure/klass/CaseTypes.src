@@ -10,13 +10,17 @@ public final class foo extends .com.redhat.ceylon.compiler.java.test.structure.k
     private foo() {
         super("foo");
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.klass.foo value;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.klass.foo[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.structure.klass.foo();
+        value = new .com.redhat.ceylon.compiler.java.test.structure.klass.foo[]{new .com.redhat.ceylon.compiler.java.test.structure.klass.foo()};
     }
     
     public static .com.redhat.ceylon.compiler.java.test.structure.klass.foo getFoo() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
 }
 public final class bar extends .com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes {
@@ -24,13 +28,17 @@ public final class bar extends .com.redhat.ceylon.compiler.java.test.structure.k
     private bar() {
         super("bar");
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.klass.bar value;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.klass.bar[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.structure.klass.bar();
+        value = new .com.redhat.ceylon.compiler.java.test.structure.klass.bar[]{new .com.redhat.ceylon.compiler.java.test.structure.klass.bar()};
     }
     
     public static .com.redhat.ceylon.compiler.java.test.structure.klass.bar getBar() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
 }
 public abstract class CaseTypes2 {

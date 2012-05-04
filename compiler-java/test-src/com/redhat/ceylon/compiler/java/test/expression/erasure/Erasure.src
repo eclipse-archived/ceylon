@@ -174,17 +174,21 @@ final class EmptyInterface$impl {
     }
 }
 final class topLevelLeftAttribute {
-    private static .com.redhat.ceylon.compiler.java.test.expression.erasure.Left value;
+    private static .com.redhat.ceylon.compiler.java.test.expression.erasure.Left[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CLeft();
+        value = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Left[]{new .com.redhat.ceylon.compiler.java.test.expression.erasure.CLeft()};
     }
     
     static .com.redhat.ceylon.compiler.java.test.expression.erasure.Left getTopLevelLeftAttribute() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     static void setTopLevelLeftAttribute(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left topLevelLeftAttribute) {
-        value = topLevelLeftAttribute;
+        value[0] = topLevelLeftAttribute;
     }
     
     private topLevelLeftAttribute() {

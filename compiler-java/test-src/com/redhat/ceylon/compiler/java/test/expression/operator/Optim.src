@@ -1,17 +1,21 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
 final class optimToplevelInteger {
-    private static long value;
+    private static long[] value;
     static {
-        value = 0L;
+        value = new long[]{0L};
     }
     
     static long getOptimToplevelInteger() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     static void setOptimToplevelInteger(long optimToplevelInteger) {
-        value = optimToplevelInteger;
+        value[0] = optimToplevelInteger;
     }
     
     private optimToplevelInteger() {

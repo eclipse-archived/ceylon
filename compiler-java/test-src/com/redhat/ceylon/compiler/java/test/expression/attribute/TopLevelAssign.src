@@ -1,34 +1,42 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
 final class topLevelAssignB1 {
-    private static boolean value;
+    private static boolean[] value;
     static {
-        value = true;
+        value = new boolean[]{true};
     }
     
     static boolean getTopLevelAssignB1() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     static void setTopLevelAssignB1(boolean topLevelAssignB1) {
-        value = topLevelAssignB1;
+        value[0] = topLevelAssignB1;
     }
     
     private topLevelAssignB1() {
     }
 }
 public final class topLevelAssignB2 {
-    private static boolean value;
+    private static boolean[] value;
     static {
-        value = true;
+        value = new boolean[]{true};
     }
     
     public static boolean getTopLevelAssignB2() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     public static void setTopLevelAssignB2(boolean topLevelAssignB2) {
-        value = topLevelAssignB2;
+        value[0] = topLevelAssignB2;
     }
     
     private topLevelAssignB2() {

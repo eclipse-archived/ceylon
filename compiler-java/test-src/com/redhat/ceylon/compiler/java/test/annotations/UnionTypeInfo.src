@@ -87,14 +87,18 @@ public class SharedUnionTypeInfo {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 final class toplevelAttribute {
-    private static final .java.lang.Object value;
+    private static final .java.lang.Object[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
+        value = new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.test.annotations.Foo()};
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations.Foo|com.redhat.ceylon.compiler.java.test.annotations.Bar")
     static .java.lang.Object getToplevelAttribute() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     private toplevelAttribute() {
@@ -103,15 +107,19 @@ final class toplevelAttribute {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 public final class sharedToplevelAttribute {
-    private static final .java.lang.Object value;
+    private static final .java.lang.Object[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.annotations.Bar();
+        value = new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.test.annotations.Bar()};
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations.Foo|com.redhat.ceylon.compiler.java.test.annotations.Bar")
     public static .java.lang.Object getSharedToplevelAttribute() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     private sharedToplevelAttribute() {

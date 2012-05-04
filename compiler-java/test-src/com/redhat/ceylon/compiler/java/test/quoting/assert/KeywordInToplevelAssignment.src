@@ -1,17 +1,21 @@
 package com.redhat.ceylon.compiler.java.test.quoting.$assert;
 
 final class $assert {
-    private static long value;
+    private static long[] value;
     static {
-        value = 0L;
+        value = new long[]{0L};
     }
     
     static long getAssert() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     static void setAssert(long assert) {
-        value = assert;
+        value[0] = assert;
     }
     
     private $assert() {

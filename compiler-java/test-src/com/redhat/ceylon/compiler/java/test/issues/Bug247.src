@@ -1,17 +1,21 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
 final class bug247_toplevel {
-    private static long value;
+    private static long[] value;
     static {
-        value = 0L;
+        value = new long[]{0L};
     }
     
     static long getBug247_toplevel() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     static void setBug247_toplevel(long bug247_toplevel) {
-        value = bug247_toplevel;
+        value[0] = bug247_toplevel;
     }
     
     private bug247_toplevel() {

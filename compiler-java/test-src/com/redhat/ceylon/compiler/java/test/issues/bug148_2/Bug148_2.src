@@ -1,17 +1,21 @@
 package bug148_2;
 
 final class f {
-    private static long value;
+    private static long[] value;
     static {
-        value = 2L;
+        value = new long[]{2L};
     }
     
     static long getF() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     static void setF(long f) {
-        value = f;
+        value[0] = f;
     }
     
     private f() {

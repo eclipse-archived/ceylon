@@ -1,17 +1,21 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
 final class topLevelVariable {
-    private static long value;
+    private static long[] value;
     static {
-        value = 0L;
+        value = new long[]{0L};
     }
     
     static long getTopLevelVariable() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     static void setTopLevelVariable(long topLevelVariable) {
-        value = topLevelVariable;
+        value[0] = topLevelVariable;
     }
     
     private topLevelVariable() {

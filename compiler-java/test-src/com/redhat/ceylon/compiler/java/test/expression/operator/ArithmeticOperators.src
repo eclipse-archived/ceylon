@@ -7,51 +7,63 @@ abstract class MyInteger extends .java.lang.Object implements .ceylon.language.C
     }
 }
 final class toplevelN1 {
-    private static long value;
+    private static long[] value;
     static {
-        value = 0L;
+        value = new long[]{0L};
     }
     
     static long getToplevelN1() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     static void setToplevelN1(long toplevelN1) {
-        value = toplevelN1;
+        value[0] = toplevelN1;
     }
     
     private toplevelN1() {
     }
 }
 final class toplevelN2 {
-    private static long value;
+    private static long[] value;
     static {
-        value = 0L;
+        value = new long[]{0L};
     }
     
     static long getToplevelN2() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     static void setToplevelN2(long toplevelN2) {
-        value = toplevelN2;
+        value[0] = toplevelN2;
     }
     
     private toplevelN2() {
     }
 }
 final class toplevelI1 {
-    private static long value;
+    private static long[] value;
     static {
-        value = 0L;
+        value = new long[]{0L};
     }
     
     static long getToplevelI1() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     static void setToplevelI1(long toplevelI1) {
-        value = toplevelI1;
+        value[0] = toplevelI1;
     }
     
     private toplevelI1() {
