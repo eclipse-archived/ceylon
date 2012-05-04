@@ -383,20 +383,13 @@ class PositionalInvocationBuilder extends SimpleInvocationBuilder {
         PositionalArgument arg = positional.getPositionalArguments().get(argIndex);
         if (arg.getExpression().getTerm() instanceof FunctionArgument) {
             FunctionArgument farg = (FunctionArgument)arg.getExpression().getTerm();
-            Method model = farg.getDeclarationModel();
-            ProducedType callableType = gen.typeFact().getCallableType(model.getType());
-            // TODO MPL
-            CallableBuilder callableBuilder = CallableBuilder.anonymous(
-                    gen.gen(),
-                    farg.getExpression(),
-                    model.getParameterLists().get(0),
-                    callableType);
-            return callableBuilder.build();
+            return gen.expressionGen().transform(farg);
         }
         return transformArg(
                 getArgumentExpression(argIndex), 
                 getParameter(argIndex));
     }
+    
     protected final JCExpression transformArg(Tree.Term expr, Parameter parameter) {
         if (parameter != null) {
             final boolean isRaw = primaryTypeArguments.isEmpty();

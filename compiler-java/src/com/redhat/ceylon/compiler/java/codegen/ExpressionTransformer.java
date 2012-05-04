@@ -45,6 +45,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.code.TypeTags;
@@ -152,6 +153,18 @@ public class ExpressionTransformer extends AbstractTransformer {
         result = applyErasureAndBoxing(result, expr, boxingStrategy, expectedType);
 
         return result;
+    }
+    
+    JCExpression transform(FunctionArgument farg) {
+        Method model = farg.getDeclarationModel();
+        ProducedType callableType = typeFact().getCallableType(model.getType());
+        // TODO MPL
+        CallableBuilder callableBuilder = CallableBuilder.anonymous(
+                gen(),
+                farg.getExpression(),
+                model.getParameterLists().get(0),
+                callableType);
+        return callableBuilder.build();
     }
     
     //
