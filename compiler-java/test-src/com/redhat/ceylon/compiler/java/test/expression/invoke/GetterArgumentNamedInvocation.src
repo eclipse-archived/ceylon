@@ -12,7 +12,38 @@ final class getterArgumentNamedInvocation {
             private callFunction() {
             }
             
-            void callFunction(final long i) {
+            void callFunction(final long i, final .java.lang.String s) {
+            }
+            
+            final void callFunction(final long i) {
+                (
+                    let
+                    {
+                        .java.lang.String $ceylontmp$s$4 = callFunction$s(i);
+                        callFunction(i, $ceylontmp$s$4);
+                    }
+                    returning null;
+                );
+            }
+            
+            final void callFunction() {
+                (
+                    let
+                    {
+                        long $ceylontmp$i$1 = callFunction$i();
+                        .java.lang.String $ceylontmp$s$2 = callFunction$s($ceylontmp$i$1);
+                        callFunction($ceylontmp$i$1, $ceylontmp$s$2);
+                    }
+                    returning null;
+                );
+            }
+            
+            private final long callFunction$i() {
+                return 2L;
+            }
+            
+            private final .java.lang.String callFunction$s(final long i) {
+                return "";
             }
         }
         final callFunction callFunction = new callFunction();
@@ -21,7 +52,19 @@ final class getterArgumentNamedInvocation {
             let
             {
                 
-                final class $i$1 {
+                final class $s$6 {
+                    
+                    .ceylon.language.String getS() {
+                        return .ceylon.language.String.instance("s");
+                    }
+                    
+                    private $s$6() {
+                    }
+                }
+                final $s$6 $s$6 = new $s$6();
+                final .java.lang.String $arg$5$1 = $s$6.getS().toString();
+                
+                final class $i$7 {
                     
                     .ceylon.language.Integer getI() {
                         if (num < 0L) {
@@ -30,12 +73,91 @@ final class getterArgumentNamedInvocation {
                         return .ceylon.language.Integer.instance(1L);
                     }
                     
-                    private $i$1() {
+                    private $i$7() {
                     }
                 }
-                final $i$1 $i$1 = new $i$1();
-                final long $arg$0$0 = $i$1.getI().longValue();
-                callFunction.callFunction($arg$0$0);
+                final $i$7 $i$7 = new $i$7();
+                final long $arg$5$0 = $i$7.getI().longValue();
+                callFunction.callFunction($arg$5$0, $arg$5$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                
+                final class $i$9 {
+                    
+                    .ceylon.language.Integer getI() {
+                        if (num < 0L) {
+                            return .ceylon.language.Integer.instance(0L);
+                        }
+                        return .ceylon.language.Integer.instance(1L);
+                    }
+                    
+                    private $i$9() {
+                    }
+                }
+                final $i$9 $i$9 = new $i$9();
+                final long $arg$8$0 = $i$9.getI().longValue();
+                
+                final class $s$10 {
+                    
+                    .ceylon.language.String getS() {
+                        return .ceylon.language.String.instance("s");
+                    }
+                    
+                    private $s$10() {
+                    }
+                }
+                final $s$10 $s$10 = new $s$10();
+                final .java.lang.String $arg$8$1 = $s$10.getS().toString();
+                callFunction.callFunction($arg$8$0, $arg$8$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                callFunction $arg$11$this$ = callFunction;
+                
+                final class $s$12 {
+                    
+                    .ceylon.language.String getS() {
+                        return .ceylon.language.String.instance("s");
+                    }
+                    
+                    private $s$12() {
+                    }
+                }
+                final $s$12 $s$12 = new $s$12();
+                final .java.lang.String $arg$11$1 = $s$12.getS().toString();
+                long $arg$11$0 = $arg$11$this$.callFunction$i();
+                callFunction.callFunction($arg$11$0, $arg$11$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                callFunction $arg$13$this$ = callFunction;
+                
+                final class $i$14 {
+                    
+                    .ceylon.language.Integer getI() {
+                        if (num < 0L) {
+                            return .ceylon.language.Integer.instance(0L);
+                        }
+                        return .ceylon.language.Integer.instance(1L);
+                    }
+                    
+                    private $i$14() {
+                    }
+                }
+                final $i$14 $i$14 = new $i$14();
+                final long $arg$13$0 = $i$14.getI().longValue();
+                .java.lang.String $arg$13$1 = $arg$13$this$.callFunction$s($arg$13$0);
+                callFunction.callFunction($arg$13$0, $arg$13$1);
             }
             returning null;
         );

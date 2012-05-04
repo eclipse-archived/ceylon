@@ -18,43 +18,13 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void getterArgumentNamedInvocation(Integer num) {
-    void callFunction(Integer i = 2, String s = "") {
+void getterArgumentNamedInvocationGeneric<T>(T t) {
+    void callFunction(T i) {
     }
     variable Integer i := 3; // test aliasing
     callFunction {
-        String s {
-            return "s";
-        }
         value i {
-            if (num < 0) {
-                return 0;
-            }
-            return 1;
-        }
-    };
-    callFunction {
-        value i {
-            if (num < 0) {
-                return 0;
-            }
-            return 1;
-        }
-        String s {
-            return "s";
-        }
-    };
-    callFunction {
-        String s {
-            return "s";
-        }
-    };
-    callFunction {
-        value i {
-            if (num < 0) {
-                return 0;
-            }
-            return 1;
+            return t;
         }
     };
     i++;

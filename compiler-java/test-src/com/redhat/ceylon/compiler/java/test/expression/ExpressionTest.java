@@ -198,6 +198,11 @@ public class ExpressionTest extends CompilerTest {
     }
     
     @Test
+    public void testInvGetterArgumentNamedInvocationGeneric(){
+        compareWithJavaSource("invoke/GetterArgumentNamedInvocationGeneric");
+    }
+    
+    @Test
     public void testInvChainedInvocations(){
         compareWithJavaSource("invoke/ChainedInvocations");
     }
@@ -275,6 +280,11 @@ public class ExpressionTest extends CompilerTest {
     @Test
     public void testInvNamedArgumentInvocationInitWithSequence(){
         compareWithJavaSource("invoke/NamedArgumentInvocationInitWithSequence");
+    }
+    
+    @Test
+    public void testInvNamedArgumentInvocationWithDefaultedSequence(){
+        compareWithJavaSource("invoke/NamedArgumentInvocationWithDefaultedSequence");
     }
     
     @Test

@@ -1,0 +1,79 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class namedArgumentInvocationWithDefaultedSequence {
+    
+    private namedArgumentInvocationWithDefaultedSequence() {
+    }
+    
+    static void namedArgumentInvocationWithDefaultedSequence(final long num) {
+        
+        final class callFunction {
+            
+            private callFunction() {
+            }
+            
+            void callFunction(final long i, final .java.lang.String s, final .ceylon.language.Iterable<? extends .ceylon.language.Character> c) {
+            }
+            
+            final void callFunction(final long i, final .java.lang.String s) {
+                (
+                    let
+                    {
+                        .ceylon.language.Iterable<? extends .ceylon.language.Character> $ceylontmp$c$8 = callFunction$c(i, s);
+                        callFunction(i, s, $ceylontmp$c$8);
+                    }
+                    returning null;
+                );
+            }
+            
+            final void callFunction(final long i) {
+                (
+                    let
+                    {
+                        .java.lang.String $ceylontmp$s$5 = callFunction$s(i);
+                        .ceylon.language.Iterable<? extends .ceylon.language.Character> $ceylontmp$c$6 = callFunction$c(i, $ceylontmp$s$5);
+                        callFunction(i, $ceylontmp$s$5, $ceylontmp$c$6);
+                    }
+                    returning null;
+                );
+            }
+            
+            final void callFunction() {
+                (
+                    let
+                    {
+                        long $ceylontmp$i$1 = callFunction$i();
+                        .java.lang.String $ceylontmp$s$2 = callFunction$s($ceylontmp$i$1);
+                        .ceylon.language.Iterable<? extends .ceylon.language.Character> $ceylontmp$c$3 = callFunction$c($ceylontmp$i$1, $ceylontmp$s$2);
+                        callFunction($ceylontmp$i$1, $ceylontmp$s$2, $ceylontmp$c$3);
+                    }
+                    returning null;
+                );
+            }
+            
+            private final long callFunction$i() {
+                return 2L;
+            }
+            
+            private final .java.lang.String callFunction$s(final long i) {
+                return "";
+            }
+            
+            private final .ceylon.language.Iterable<? extends .ceylon.language.Character> callFunction$c(final long i, final .java.lang.String s) {
+                return new .ceylon.language.ArraySequence<.ceylon.language.Character>(.ceylon.language.Character.instance('a'), .ceylon.language.Character.instance('b'));
+            }
+        }
+        final callFunction callFunction = new callFunction();
+        (
+            let
+            {
+                callFunction $arg$9$this$ = callFunction;
+                .java.lang.String $arg$9$1 = "s";
+                long $arg$9$0 = 0L;
+                .ceylon.language.Iterable $arg$9$2 = $arg$9$this$.callFunction$c($arg$9$0, $arg$9$1);
+                callFunction.callFunction($arg$9$0, $arg$9$1, $arg$9$2);
+            }
+            returning null;
+        );
+    }
+}
