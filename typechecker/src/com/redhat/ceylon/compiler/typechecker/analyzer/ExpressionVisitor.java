@@ -642,10 +642,9 @@ public class ExpressionVisitor extends Visitor {
         Tree.SpecifierExpression se = that.getDefaultArgument()==null ?
                 null :
                 that.getDefaultArgument().getSpecifierExpression();
-        Tree.Type tt = that.getType();
-        if (tt!=null) {
-            checkType(tt.getTypeModel(), se);
-        }
+        ProducedType t = that.getDeclarationModel().getProducedTypedReference(null, 
+                Collections.<ProducedType>emptyList()).getFullType();
+        checkType(t, se);
     }
 
     @Override
