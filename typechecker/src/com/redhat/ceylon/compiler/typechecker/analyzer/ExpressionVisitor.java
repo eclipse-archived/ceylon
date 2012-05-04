@@ -1380,7 +1380,9 @@ public class ExpressionVisitor extends Visitor {
             ParameterList parameters, List<ProducedType> inferredTypes) {
         Parameter sp = getSequencedParameter(parameters);
         if (sp!=null) {
-            ProducedType spt = unit.getIteratedType(sp.getType());
+            ProducedType spt = sa.getEllipsis()==null ? 
+                    unit.getIteratedType(sp.getType()) :
+                    sp.getType();
             for (Tree.Expression e: sa.getExpressionList().getExpressions()) {
                 ProducedType sat = e.getTypeModel();
                 if (sat!=null) {
