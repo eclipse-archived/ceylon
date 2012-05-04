@@ -20,14 +20,14 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
                  "ceylon.language.Summable<ceylon.language.String>",
                  "ceylon.language.Castable<ceylon.language.String>",
                  "ceylon.language.Cloneable<ceylon.language.String>"})
-public final class String
+public abstract class String
     implements Comparable<String>, List<Character>,
                Summable<String>, Castable<String>,
                FixedSized<Character> {
 
     public final java.lang.String value;
 
-    private String(java.lang.String s) {
+    String(java.lang.String s) {
         value = s;
     }
 
@@ -37,7 +37,7 @@ public final class String
 
     @Ignore
     public static ceylon.language.String instance(java.lang.String s) {
-        return new ceylon.language.String(s);
+        return s.isEmpty() ? StringOfNone.instance : new StringOfSome(s);
     }
 
     @Ignore
@@ -45,7 +45,7 @@ public final class String
         StringBuffer buf = new StringBuffer();
         for (java.lang.String s: strings)
             buf.append(s);
-        return new ceylon.language.String(buf.toString());
+        return instance(buf.toString());
     }
 
     @Ignore
@@ -53,7 +53,7 @@ public final class String
         StringBuffer buf = new StringBuffer();
         for (String s: strings)
             buf.append(s.value);
-        return new ceylon.language.String(buf.toString());
+        return instance(buf.toString());
     }
 
     public java.lang.String getUppercased() {
@@ -205,11 +205,6 @@ public final class String
         }
         
         return new StringIterator();
-    }
-
-    @Override
-    public Character getFirst() {
-        return FixedSized$impl._getFirst(this);
     }
 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Character>")
