@@ -52,7 +52,7 @@ public class RecoveryTest extends CompilerTest {
 
     @Test
     public void testRcvClassWithBrokenMembers(){
-        compile(52, "ClassWithBrokenMembers.ceylon");
+        compile(47, "ClassWithBrokenMembers.ceylon");
     }
 
     @Test
@@ -62,8 +62,8 @@ public class RecoveryTest extends CompilerTest {
     }
 
     @Test
-    public void testRcvM2Features(){
-        compile(1, "M2Features.ceylon");
+    public void testRcvM3Features(){
+        compile(1, "M3Features.ceylon");
     }
 
     private void compile(int expectedErrors, String... ceylon){
