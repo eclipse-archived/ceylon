@@ -16,7 +16,7 @@ class StringOfSome extends String implements Some<Character> {
 
     @Override
     public FixedSized<? extends Character> getRest() {
-        return instance(value.substring(1));
+        return span(Integer.instance(1), null);
     }
     
     @Override

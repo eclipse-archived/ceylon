@@ -78,94 +78,94 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public static Array<Character> instance(char[] array) {
         if (array.length == 0) {
-            return new EmptyArray<Character>();
+            return new ArrayOfNone<Character>();
         } else {
-            return new NonemptyArray<Character>(array);
+            return new ArrayOfSome<Character>(array);
         }
     }
     
     @Ignore
     public static Array<Integer> instance(byte[] array) {
         if (array.length == 0) {
-            return new EmptyArray<Integer>();
+            return new ArrayOfNone<Integer>();
         } else {
-            return new NonemptyArray<Integer>(array);
+            return new ArrayOfSome<Integer>(array);
         }
     }
     
     @Ignore
     public static Array<Integer> instance(short[] array) {
         if (array.length == 0) {
-            return new EmptyArray<Integer>();
+            return new ArrayOfNone<Integer>();
         } else {
-            return new NonemptyArray<Integer>(array);
+            return new ArrayOfSome<Integer>(array);
         }
     }
     
     @Ignore
     public static Array<Integer> instance(int[] array) {
         if (array.length == 0) {
-            return new EmptyArray<Integer>();
+            return new ArrayOfNone<Integer>();
         } else {
-            return new NonemptyArray<Integer>(array);
+            return new ArrayOfSome<Integer>(array);
         }
     }
     
     @Ignore
     public static Array<Integer> instance(long[] array) {
         if (array.length == 0) {
-            return new EmptyArray<Integer>();
+            return new ArrayOfNone<Integer>();
         } else {
-            return new NonemptyArray<Integer>(array);
+            return new ArrayOfSome<Integer>(array);
         }
     }
     
     @Ignore
     public static Array<Float> instance(float[] array) {
         if (array.length == 0) {
-            return new EmptyArray<Float>();
+            return new ArrayOfNone<Float>();
         } else {
-            return new NonemptyArray<Float>(array);
+            return new ArrayOfSome<Float>(array);
         }
     }
     
     @Ignore
     public static Array<Float> instance(double[] array) {
         if (array.length == 0) {
-            return new EmptyArray<Float>();
+            return new ArrayOfNone<Float>();
         } else {
-            return new NonemptyArray<Float>(array);
+            return new ArrayOfSome<Float>(array);
         }
     }
     
     @Ignore
     public static Array<Boolean> instance(boolean[] array) {
         if (array.length == 0) {
-            return new EmptyArray<Boolean>();
+            return new ArrayOfNone<Boolean>();
         } else {
-            return new NonemptyArray<Boolean>(array);
+            return new ArrayOfSome<Boolean>(array);
         }
     }
     
     @Ignore
     public static Array<String> instance(java.lang.String[] array) {
         if (array.length == 0) {
-            return new EmptyArray<String>();
+            return new ArrayOfNone<String>();
         } else {
-            return new NonemptyArray<String>(array);
+            return new ArrayOfSome<String>(array);
         }
     }
     
     @Ignore
     public static <T> Array<T> instance(T[] array) {
         if (array.length == 0) {
-            return new EmptyArray<T>();
+            return new ArrayOfNone<T>();
         } else {
-            return new NonemptyArray<T>(array);
+            return new ArrayOfSome<T>(array);
         }
     }
 
-    @Override
+    /*@Override
     @TypeInfo("ceylon.language.Nothing|Element")
     public Element getFirst() {
         if (getEmpty()) {
@@ -173,7 +173,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         } else {
             return unsafeItem(0);
         }
-    }
+    }*/
 
     @Override
     public Array<? extends Element> span(@Name("from") Integer from, 
@@ -183,28 +183,28 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         long toIndex = to==null ? getSize()-1 : to.longValue();
         long lastIndex = getLastIndex().longValue();
         if (fromIndex>lastIndex||toIndex<fromIndex) {
-            return new EmptyArray<Element>();
+            return new ArrayOfNone<Element>();
         } else {
             if (array instanceof char[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((char[])array, (int)fromIndex, (int)toIndex+1));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((char[])array, (int)fromIndex, (int)toIndex+1));
             } else if (array instanceof byte[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((byte[])array, (int)fromIndex, (int)toIndex+1));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((byte[])array, (int)fromIndex, (int)toIndex+1));
             } else if (array instanceof short[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((short[])array, (int)fromIndex, (int)toIndex+1));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((short[])array, (int)fromIndex, (int)toIndex+1));
             } else if (array instanceof int[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((int[])array, (int)fromIndex, (int)toIndex+1));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((int[])array, (int)fromIndex, (int)toIndex+1));
             } else if (array instanceof long[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((long[])array, (int)fromIndex, (int)toIndex+1));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((long[])array, (int)fromIndex, (int)toIndex+1));
             } else if (array instanceof float[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((float[])array, (int)fromIndex, (int)toIndex+1));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((float[])array, (int)fromIndex, (int)toIndex+1));
             } else if (array instanceof double[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((double[])array, (int)fromIndex, (int)toIndex+1));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((double[])array, (int)fromIndex, (int)toIndex+1));
             } else if (array instanceof boolean[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((boolean[])array, (int)fromIndex, (int)toIndex+1));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((boolean[])array, (int)fromIndex, (int)toIndex+1));
             } else if (array instanceof java.lang.String[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((java.lang.String[])array, (int)fromIndex, (int)toIndex+1));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((java.lang.String[])array, (int)fromIndex, (int)toIndex+1));
             } else {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((Element[])array, (int)fromIndex, (int)toIndex+1));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((Element[])array, (int)fromIndex, (int)toIndex+1));
             }
         }
     }
@@ -217,28 +217,28 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         long resultLength = length;
         long lastIndex = getLastIndex().longValue();
         if (fromIndex>lastIndex||resultLength<=0) {
-            return new EmptyArray<Element>();
+            return new ArrayOfNone<Element>();
         } else {
             if (array instanceof char[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((char[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((char[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             } else if (array instanceof byte[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((byte[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((byte[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             } else if (array instanceof short[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((short[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((short[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             } else if (array instanceof int[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((int[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((int[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             } else if (array instanceof long[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((long[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((long[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             } else if (array instanceof float[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((float[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((float[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             } else if (array instanceof double[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((double[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((double[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             } else if (array instanceof boolean[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((boolean[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((boolean[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             } else if (array instanceof java.lang.String[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((java.lang.String[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((java.lang.String[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             } else {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((Element[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((Element[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             }
         }
     }
@@ -301,7 +301,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
                 null : unsafeItem(index);
     }
 
-    private Element unsafeItem(int index) {
+    protected Element unsafeItem(int index) {
         if (array instanceof char[]) {
             return (Element) Character.instance(((char[])array)[index]);
         } else if (array instanceof byte[]) {
@@ -456,89 +456,119 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 }
 
 @Ignore
-class EmptyArray<Element> extends Array<Element> implements None<Element> {
+class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
 
-    public EmptyArray() {
+    public ArrayOfNone() {
         super(0);
+    }
+    
+    @Override
+    public long getSize() {
+        return 0;
+    }
+    
+    @Override
+    public boolean getEmpty() {
+        return true;
+    }
+    
+    @Override
+    public Element getFirst() {
+        return null;
     }
     
 }
 
 @Ignore
-class NonemptyArray<Element> extends Array<Element> implements Some<Element> {
+class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
 
-    public NonemptyArray(char... array) {
+    public ArrayOfSome(char... array) {
         super(array);
     }
     
-    public NonemptyArray(byte... array) {
+    public ArrayOfSome(byte... array) {
         super(array);
     }
     
-    public NonemptyArray(short... array) {
+    public ArrayOfSome(short... array) {
         super(array);
     }
     
-    public NonemptyArray(int... array) {
+    public ArrayOfSome(int... array) {
         super(array);
     }
     
-    public NonemptyArray(long... array) {
+    public ArrayOfSome(long... array) {
         super(array);
     }
     
-    public NonemptyArray(float... array) {
+    public ArrayOfSome(float... array) {
         super(array);
     }
     
-    public NonemptyArray(double... array) {
+    public ArrayOfSome(double... array) {
         super(array);
     }
     
-    public NonemptyArray(boolean... array) {
-        super(array);
-    }
-
-    public NonemptyArray(java.lang.String... array) {
+    public ArrayOfSome(boolean... array) {
         super(array);
     }
 
-    public NonemptyArray(Element... array) {
+    public ArrayOfSome(java.lang.String... array) {
+        super(array);
+    }
+
+    public ArrayOfSome(Element... array) {
         super(array);
     }
     
     @Ignore
-    public NonemptyArray(java.util.List<Element> list) {
+    public ArrayOfSome(java.util.List<Element> list) {
         super(list);
     }
 
     @Override
     public FixedSized<? extends Element> getRest() {
         if (getSize() == 1) {
-            return arrayOfNone.<Element>arrayOfNone();
+            return $arrayOfNone.<Element>arrayOfNone();
         } else {
             if (array instanceof char[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((char[])array, 1, (int)getSize() - 1));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((char[])array, 1, (int)getSize()));
             } else if (array instanceof byte[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((byte[])array, 1, (int)getSize() - 1));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((byte[])array, 1, (int)getSize()));
             } else if (array instanceof short[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((short[])array, 1, (int)getSize() - 1));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((short[])array, 1, (int)getSize()));
             } else if (array instanceof int[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((int[])array, 1, (int)getSize() - 1));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((int[])array, 1, (int)getSize()));
             } else if (array instanceof long[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((long[])array, 1, (int)getSize() - 1));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((long[])array, 1, (int)getSize()));
             } else if (array instanceof float[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((float[])array, 1, (int)getSize() - 1));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((float[])array, 1, (int)getSize()));
             } else if (array instanceof double[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((double[])array, 1, (int)getSize() - 1));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((double[])array, 1, (int)getSize()));
             } else if (array instanceof boolean[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((boolean[])array, 1, (int)getSize() - 1));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((boolean[])array, 1, (int)getSize()));
             } else if (array instanceof java.lang.String[]) {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((java.lang.String[])array, 1, (int)getSize() - 1));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((java.lang.String[])array, 1, (int)getSize()));
             } else {
-                return new NonemptyArray<Element>(Arrays.copyOfRange((Element[])array, 1, (int)getSize() - 1));
+                return new ArrayOfSome<Element>(Arrays.copyOfRange((Element[])array, 1, (int)getSize()));
             }
         }
     }
 
+    @Override
+    public boolean getEmpty() {
+        return false;
+    }
+
+    /*@Override
+    public FixedSized<? extends Element> getRest() {
+        return span(Integer.instance(1), null);
+    }*/
+    
+    @Override
+    public Element getFirst() {
+        return unsafeItem(0); //FixedSized$impl._getFirst(this);
+    }
+    
 }
