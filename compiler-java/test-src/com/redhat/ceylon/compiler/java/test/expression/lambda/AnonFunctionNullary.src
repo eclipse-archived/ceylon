@@ -76,14 +76,14 @@ final class anonFunctionNullary {
                 return new .ceylon.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Float.instance(1.0));
             }
         };
-        final .ceylon.language.Callable<? extends .ceylon.language.Boolean> b1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>("Callable<true>"){
+        final .ceylon.language.Callable<? extends .ceylon.language.Boolean> b1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>("Callable<Boolean>"){
             
             @.java.lang.Override
             public .ceylon.language.Boolean $call() {
                 return .ceylon.language.Boolean.instance(true);
             }
         };
-        final .ceylon.language.Callable<? extends .ceylon.language.Boolean> b2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>("Callable<true>"){
+        final .ceylon.language.Callable<? extends .ceylon.language.Boolean> b2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>("Callable<Boolean>"){
             
             @.java.lang.Override
             public .ceylon.language.Boolean $call() {
@@ -97,17 +97,17 @@ final class anonFunctionNullary {
                 return new .ceylon.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.instance(true));
             }
         };
-        final .ceylon.language.Callable<? extends .ceylon.language.Comparison> c1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.larger>("Callable<larger>"){
+        final .ceylon.language.Callable<? extends .ceylon.language.Comparison> c1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Comparison>("Callable<Comparison>"){
             
             @.java.lang.Override
-            public .ceylon.language.larger $call() {
+            public .ceylon.language.Comparison $call() {
                 return .ceylon.language.larger.getLarger();
             }
         };
-        final .ceylon.language.Callable<? extends .ceylon.language.Comparison> c2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.larger>("Callable<larger>"){
+        final .ceylon.language.Callable<? extends .ceylon.language.Comparison> c2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Comparison>("Callable<Comparison>"){
             
             @.java.lang.Override
-            public .ceylon.language.larger $call() {
+            public .ceylon.language.Comparison $call() {
                 return .ceylon.language.larger.getLarger();
             }
         };
