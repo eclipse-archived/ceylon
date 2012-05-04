@@ -1789,13 +1789,26 @@ public class ExpressionVisitor extends Visitor {
     private void checkSequencedArgument(Tree.SequencedArgument a, ProducedReference pr, 
             Parameter p) {
         a.setParameter(p);
-        for (Tree.Expression e: a.getExpressionList().getExpressions()) {
-            ProducedType paramType = pr.getTypedParameter(p.getAliasedParameter())
-                    .getFullType();
-            if (paramType==null) {
-                paramType = new UnknownType(a.getUnit()).getType();
+        List<Tree.Expression> es = a.getExpressionList().getExpressions();
+        Tree.Ellipsis ell = a.getEllipsis();
+        ProducedType paramType = pr.getTypedParameter(p.getAliasedParameter())
+                .getFullType();
+        if (ell==null) {
+            for (Tree.Expression e: es) {
+                if (paramType==null) {
+                    paramType = new UnknownType(a.getUnit()).getType();
+                }
+                checkAssignable(e.getTypeModel(), unit.getIteratedType(paramType), a, 
+                        "sequenced argument must be assignable to sequenced parameter " + 
+                        p.getName() + " of " + pr.getDeclaration().getName());
             }
-            checkAssignable(e.getTypeModel(), unit.getIteratedType(paramType), a, 
+        }
+        else {
+            if (es.size()>1) {
+                ell.addError("more than one argument");
+            }
+            Tree.Expression e = es.get(0);
+            checkAssignable(e.getTypeModel(), paramType, a, 
                     "sequenced argument must be assignable to sequenced parameter " + 
                     p.getName() + " of " + pr.getDeclaration().getName());
         }
