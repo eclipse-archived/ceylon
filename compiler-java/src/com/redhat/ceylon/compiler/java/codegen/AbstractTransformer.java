@@ -399,6 +399,9 @@ public abstract class AbstractTransformer implements Transformation {
     
     // Creates a "new foo(arg1, arg2, ...);"
     protected JCTree.JCNewClass makeNewClass(JCExpression clazz, List<JCTree.JCExpression> args) {
+        if (args == null) {
+            args = List.<JCTree.JCExpression>nil();
+        }
         return make().NewClass(null, null, clazz, args, null);
     }
 

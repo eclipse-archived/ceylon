@@ -1106,7 +1106,7 @@ public class ClassTransformer extends AbstractTransformer {
             boolean visible = Decl.isCaptured(model);
             int modifiers = FINAL | ((visible) ? PRIVATE : 0);
             JCExpression type = makeJavaType(typeModel);
-            JCExpression initialValue = makeNewClass(makeJavaType(typeModel), List.<JCTree.JCExpression>nil());
+            JCExpression initialValue = makeNewClass(makeJavaType(typeModel), null);
             containingClassBuilder.field(modifiers, name, type, initialValue, !visible);
             
             if (visible) {
@@ -1124,7 +1124,7 @@ public class ClassTransformer extends AbstractTransformer {
     private ListBuffer<JCTree> makeObjectGlobal(Tree.ObjectDefinition decl, String generatedClassName) {
         ListBuffer<JCTree> defs = ListBuffer.lb();
         AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
-                .wrapped(this, decl.getIdentifier().getText(), decl.getDeclarationModel())
+                .wrapped(this, decl.getIdentifier().getText(), decl.getDeclarationModel(), true)
                 .immutable()
                 .initialValue(makeNewClass(generatedClassName, true))
                 .is(PUBLIC, Decl.isShared(decl))

@@ -25,9 +25,7 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
-import com.sun.tools.javac.tree.JCTree.JCAnnotation;
-import com.sun.tools.javac.tree.JCTree.JCAssign;
-import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 
@@ -46,7 +44,7 @@ public class AttributeDefinitionBuilder {
 
     private long modifiers;
 
-    private final ListBuffer<JCAnnotation> annotations = ListBuffer.lb();
+    private final ListBuffer<JCTree.JCAnnotation> annotations = ListBuffer.lb();
 
     private boolean readable = true;
     private final MethodDefinitionBuilder getterBuilder;
@@ -56,12 +54,12 @@ public class AttributeDefinitionBuilder {
     private boolean writable = true;
     private final MethodDefinitionBuilder setterBuilder;
     
-    private boolean isHashCode = false;
-    
     private AbstractTransformer owner;
     private boolean ancestorLocal;
 
-    private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, String className, String attrName, String fieldName) {
+    private boolean toplevel = false;
+
+    private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, String className, String attrName, String fieldName, boolean toplevel) {
         int typeFlags = 0;
         TypedDeclaration nonWideningType = owner.nonWideningTypeDecl(attrType);
         if (!Util.isUnBoxed(nonWideningType)) {
@@ -70,16 +68,16 @@ public class AttributeDefinitionBuilder {
         // Special erasure for the "hash" attribute which gets translated to hashCode()
         if ("hash".equals(attrName) && owner.isCeylonInteger(nonWideningType.getType())) {
             typeFlags = AbstractTransformer.SMALL_TYPE;
-            isHashCode = true;
         }
         
-        JCExpression type = owner.makeJavaType(nonWideningType.getType(), typeFlags);
+        JCTree.JCExpression type = owner.makeJavaType(nonWideningType.getType(), typeFlags);
         this.ancestorLocal = Decl.isAncestorLocal(attrType);
         this.attrType = type;
         this.owner = owner;
         this.className = className;
         this.attrName = attrName;
         this.fieldName = fieldName;
+        this.toplevel = toplevel;
         
         // Make sure we use the declaration for building the getter/setter names, as we might be trying to
         // override a JavaBean property with an "isFoo" getter, or non-Ceylon casing, and we have to respect that.
@@ -96,18 +94,18 @@ public class AttributeDefinitionBuilder {
             .parameter(0, attrName, attrType, nonWideningType);
     }
 
-    public static AttributeDefinitionBuilder wrapped(AbstractTransformer owner, String name, TypedDeclaration attrType) {
-        return new AttributeDefinitionBuilder(owner, attrType, name, name, "value");
+    public static AttributeDefinitionBuilder wrapped(AbstractTransformer owner, String name, TypedDeclaration attrType, boolean toplevel) {
+        return new AttributeDefinitionBuilder(owner, attrType, name, name, "value", toplevel);
     }
     
     public static AttributeDefinitionBuilder getter(AbstractTransformer owner, String name, TypedDeclaration attrType) {
-        return new AttributeDefinitionBuilder(owner, attrType, null, name, name)
+        return new AttributeDefinitionBuilder(owner, attrType, null, name, name, false)
             .skipField()
             .immutable();
     }
     
     public static AttributeDefinitionBuilder setter(AbstractTransformer owner, String name, TypedDeclaration attrType) {
-        return new AttributeDefinitionBuilder(owner, attrType, null, name, name)
+        return new AttributeDefinitionBuilder(owner, attrType, null, name, name, false)
             .skipField()
             .skipGetter();
     }
@@ -124,7 +122,7 @@ public class AttributeDefinitionBuilder {
                 .klass(owner, ancestorLocal, className)
                 .modifiers(Flags.FINAL | (modifiers & (Flags.PUBLIC | Flags.PRIVATE)))
                 .constructorModifiers(Flags.PRIVATE)
-                .annotations(!ancestorLocal ? owner.makeAtAttribute() : List.<JCAnnotation>nil())
+                .annotations(!ancestorLocal ? owner.makeAtAttribute() : List.<JCTree.JCAnnotation>nil())
                 .annotations(annotations.toList())
                 .defs(defs.toList())
                 .build();
@@ -169,7 +167,7 @@ public class AttributeDefinitionBuilder {
         return owner.make().VarDef(
                 owner.make().Modifiers(flags),
                 owner.names().fromString(Util.quoteIfJavaKeyword(fieldName)),
-                attrType,
+                (toplevel) ? owner.make().TypeArray(attrType) : attrType,
                 null
         );
     }
@@ -177,22 +175,45 @@ public class AttributeDefinitionBuilder {
     private JCTree generateFieldInit() {
         long flags = (modifiers & Flags.STATIC);
 
-        JCAssign init = owner.make().Assign(owner.makeUnquotedIdent(fieldName), variableInit);
+        JCTree.JCExpression varInit = variableInit;
+        if (toplevel) {
+            varInit = owner.make().NewArray(
+                    attrType,
+                    List.<JCTree.JCExpression>nil(),
+                    List.<JCTree.JCExpression>of(varInit)
+            );
+        }
+        JCTree.JCAssign init = owner.make().Assign(owner.makeUnquotedIdent(fieldName), varInit);
         return owner.make().Block(flags, 
                 List.<JCTree.JCStatement>of(owner.make().Exec(init)));
     }
 
     private JCTree.JCBlock generateDefaultGetterBlock() {
-        JCExpression returnExpr = owner.makeUnquotedIdent(fieldName);
-        return owner.make().Block(0L, List.<JCTree.JCStatement>of(owner.make().Return(returnExpr)));
+        JCTree.JCExpression returnExpr = owner.makeUnquotedIdent(fieldName);
+        if (toplevel) {
+            returnExpr = owner.make().Indexed(returnExpr, owner.make().Literal(0));
+        }
+        JCTree.JCBlock block = owner.make().Block(0L, List.<JCTree.JCStatement>of(owner.make().Return(returnExpr)));
+        if (toplevel) {
+            JCTree.JCThrow throwStmt = owner.make().Throw(owner.makeNewClass(owner.make().Type(owner.syms().ceylonRecursiveInitializationExceptionType), null));
+            JCTree.JCBlock catchBlock = owner.make().Block(0, List.<JCTree.JCStatement>of(throwStmt));
+            JCVariableDecl excepType = owner.makeVar("ex", owner.make().Type(owner.syms().nullPointerExceptionType), null);
+            JCTree.JCCatch catcher = owner.make().Catch(excepType , catchBlock);
+            JCTree.JCTry tryExpr = owner.make().Try(block, List.<JCTree.JCCatch>of(catcher), null);
+            block = owner.make().Block(0L, List.<JCTree.JCStatement>of(tryExpr));
+        }
+        return block;
     }
 
     public JCTree.JCBlock generateDefaultSetterBlock() {
-        JCExpression fld;
+        JCTree.JCExpression fld;
         if (fieldName.equals(attrName)) {
             fld = owner.makeSelect("this", fieldName);
         } else {
             fld = owner.makeUnquotedIdent(fieldName);
+        }
+        if (toplevel) {
+            fld = owner.make().Indexed(fld, owner.make().Literal(0));
         }
         return owner.make().Block(0L, List.<JCTree.JCStatement>of(
                 owner.make().Exec(
@@ -292,7 +313,7 @@ public class AttributeDefinitionBuilder {
     }
 
     /**
-     * Causes the generated global to be immutable. The <tt>value</tt> field is declared <tt>final</tt> and no
+     * Causes the generated attribute to be immutable. The <tt>value</tt> field is declared <tt>final</tt> and no
      * setter is generated.
      * @return this instance for method chaining
      */

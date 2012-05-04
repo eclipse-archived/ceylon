@@ -213,20 +213,20 @@ public class CeylonTransformer extends AbstractTransformer {
             final Tree.SpecifierOrInitializerExpression expression, 
             final Tree.AttributeSetterDefinition setterDecl) {
         AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
-            .wrapped(this, attrName, declarationModel)
+            .wrapped(this, attrName, declarationModel, declarationModel.isToplevel())
             .className(attrClassName)
             .is(Flags.PUBLIC, declarationModel.isShared());
 
         // if it's a module or package add a special annotation
-        if(declarationModel.isToplevel()){
-            if(attrName.equals("module")
-        		&& declarationModel.getUnit().getFilename().equals("module.ceylon")){
+        if (declarationModel.isToplevel()) {
+            if (attrName.equals("module")
+        		&& declarationModel.getUnit().getFilename().equals("module.ceylon")) {
                 // module
                 Package pkg = (Package) declarationModel.getContainer();
                 Module module = pkg.getModule();
                 builder.annotations(makeAtModule(module));
-            }else if(attrName.equals("package")
-                    && declarationModel.getUnit().getFilename().equals("package.ceylon")){
+            } else if (attrName.equals("package")
+                    && declarationModel.getUnit().getFilename().equals("package.ceylon")) {
                 // package
                 Package pkg = (Package) declarationModel.getContainer();
                 builder.annotations(makeAtPackage(pkg));
