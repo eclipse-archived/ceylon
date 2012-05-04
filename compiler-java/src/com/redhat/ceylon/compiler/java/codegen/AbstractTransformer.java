@@ -1064,8 +1064,7 @@ public abstract class AbstractTransformer implements Transformation {
             }
         } else if ((nmFlags & NM_FOR_INTERFACE) == 0
                 && Decl.isLocalScope(container)) {
-            TypeDeclaration typeDecl = (TypeDeclaration)decl;
-            sb.append(typeDecl.getName());    
+            sb.append(decl.getName());    
         } else { 
             throw new RuntimeException();
         }
