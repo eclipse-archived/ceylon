@@ -412,8 +412,6 @@ public class GenerateJsVisitor extends Visitor
 
         out(function, names.name(d), "(");
         for (Parameter p: that.getParameterList().getParameters()) {
-            //Force class initializer parameter names
-            names.forceName(p.getDeclarationModel(), p.getDeclarationModel().getName());
             p.visit(this);
             out(", ");
         }
