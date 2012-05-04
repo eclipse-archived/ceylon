@@ -644,7 +644,7 @@ public abstract class AbstractTransformer implements Transformation {
         return makeJavaType(producedType, 0);
     }
 
-    protected JCExpression makeJavaType(ProducedType type, int flags) {
+    protected JCExpression makeJavaType(ProducedType type, final int flags) {
         if(type == null)
             return make().Erroneous();
         
@@ -704,8 +704,9 @@ public abstract class AbstractTransformer implements Transformation {
                     return make().TypeIdent(TypeTags.INT);
                 }
             }
-        }else if(isCeylonBoolean(type)
-                && (flags & TYPE_ARGUMENT) == 0){
+        } else if (isCeylonBoolean(type)
+                && !isTypeParameter(type)) {
+                //&& (flags & TYPE_ARGUMENT) == 0){
             // special case to get rid of $true and $false types
             type = typeFact.getBooleanDeclaration().getType();
         }
@@ -842,6 +843,10 @@ public abstract class AbstractTransformer implements Transformation {
                 }else
                     ta = iterType;
             }
+            if (isCeylonBoolean(ta)
+                    && !isTypeParameter(ta)) {
+                ta = typeFact.getBooleanDeclaration().getType();
+            } 
             JCExpression jta;
             
             if (sameType(syms().ceylonVoidType, ta)) {
