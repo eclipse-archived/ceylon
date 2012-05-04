@@ -147,7 +147,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.FunctionArgument that) {
         super.visit(that);
-        ProducedType t = that.getExpression().getTypeModel();
+        ProducedType t = denotableType(that.getExpression().getTypeModel());
         that.getDeclarationModel().setType(t);
         /*List<ProducedType> list = new ArrayList<ProducedType>();
         for (Parameter p: that.getDeclarationModel().getParameterLists().get(0)
