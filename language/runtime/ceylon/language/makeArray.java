@@ -31,9 +31,9 @@ public final class makeArray {
             list.add(elem);
         }
         if (list.size() > 0) {
-            return new ceylon.language.NonemptyArray<Element>(list);
+            return new ArrayOfSome<Element>(list);
         } else {
-            return new ceylon.language.EmptyArray<Element>();
+            return new ArrayOfNone<Element>();
         }
     }
 }

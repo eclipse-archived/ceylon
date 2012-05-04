@@ -8,13 +8,13 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon
 @Method
-public final class arrayOfNone {
+public final class $arrayOfNone {
 
-    private arrayOfNone() {}
+    private $arrayOfNone() {}
 
     @TypeParameters(@TypeParameter(value="Element"))
     @TypeInfo("ceylon.language.Array<Element>&None<Element>")
     public static <Element> Array<? extends Element> arrayOfNone() {
-        return new ceylon.language.EmptyArray<Element>();
+        return new ceylon.language.ArrayOfNone<Element>();
     }
 }
