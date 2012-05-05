@@ -39,6 +39,7 @@ public class AttributeDefinitionBuilder {
     private final String fieldName;
 
     private final JCTree.JCExpression attrType;
+    private final JCTree.JCExpression attrTypeRaw;
     private final String attrName;
     private String className;
 
@@ -70,9 +71,9 @@ public class AttributeDefinitionBuilder {
             typeFlags = AbstractTransformer.SMALL_TYPE;
         }
         
-        JCTree.JCExpression type = owner.makeJavaType(nonWideningType.getType(), typeFlags);
         this.ancestorLocal = Decl.isAncestorLocal(attrType);
-        this.attrType = type;
+        this.attrType = owner.makeJavaType(nonWideningType.getType(), typeFlags);
+        this.attrTypeRaw = owner.makeJavaType(nonWideningType.getType(), AbstractTransformer.WANT_RAW_TYPE);
         this.owner = owner;
         this.className = className;
         this.attrName = attrName;
@@ -86,7 +87,7 @@ public class AttributeDefinitionBuilder {
             .block(generateDefaultGetterBlock())
             .isActual(attrType.isActual())
             .annotations(owner.makeAtAnnotations(attrType.getAnnotations()))
-            .resultType(type, attrType);
+            .resultType(this.attrType, attrType);
         setterBuilder = MethodDefinitionBuilder
             .systemMethod(owner, ancestorLocal, Util.getSetterName(attrType))
             .block(generateDefaultSetterBlock())
@@ -178,7 +179,7 @@ public class AttributeDefinitionBuilder {
         JCTree.JCExpression varInit = variableInit;
         if (toplevel) {
             varInit = owner.make().NewArray(
-                    attrType,
+                    attrTypeRaw,
                     List.<JCTree.JCExpression>nil(),
                     List.<JCTree.JCExpression>of(varInit)
             );
