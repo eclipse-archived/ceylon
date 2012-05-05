@@ -5,7 +5,7 @@ doc "Represents a collection in which every element has a
      |Correspondence| from indices to elements."
 shared interface List<out Element>
         satisfies Collection<Element> &
-                  Correspondence<Integer, Element> &
+                  Correspondence<Integer,Element> &
                   Ranged<Integer,List<Element>> &
                   Cloneable<List<Element>> {
 
