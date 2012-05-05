@@ -50,7 +50,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -67,6 +66,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 public class ExpressionVisitor extends Visitor {
     
     private Tree.Type returnType;
+    private Tree.Expression switchExpression;
     private Declaration returnDeclaration;
     private boolean defaultArgument;
 
@@ -558,7 +558,7 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.SpecifierStatement that) {
         super.visit(that);
         Tree.Term me = that.getBaseMemberExpression();
-        SpecifierExpression sie = that.getSpecifierExpression();
+        Tree.SpecifierExpression sie = that.getSpecifierExpression();
         if (me instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression) me;
             Declaration d = bme.getDeclaration();
@@ -3001,6 +3001,12 @@ public class ExpressionVisitor extends Visitor {
                 if (!dec.isToplevel() || isUpperCase(dec.getName().charAt(0))) {
                     e.addError("case must refer to a toplevel object declaration");
                 }
+                if (switchExpression!=null) {
+                    if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(t)) {
+                        checkAssignable(t, switchExpression.getTypeModel(), e, 
+                                "case must be assignable to switch expression type");
+                    }
+                }
             }
         }
     }
@@ -3020,11 +3026,24 @@ public class ExpressionVisitor extends Visitor {
         Tree.Variable v = that.getVariable();
         if (v!=null) {
             v.visit(this);
-            if (t!=null) {
+        }
+        if (switchExpression!=null) {
+            ProducedType st = switchExpression.getTypeModel();
+            if (t!=null && st!=null) {
                 ProducedType pt = t.getTypeModel();
-                if (pt!=null) {
-                    v.getType().setTypeModel(pt);
-                    v.getDeclarationModel().setType(pt);
+                ProducedType it = intersectionType(pt, st, unit);
+                if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(pt)) {
+                    if (it.isExactly(unit.getBottomDeclaration().getType())) {
+                        that.addError("narrows to Bottom type: " + 
+                                pt.getProducedTypeName() + " has empty intersection with " + 
+                                st.getProducedTypeName());
+                    }
+                    /*checkAssignable(ct, switchType, cc.getCaseItem(), 
+                        "case type must be a case of the switch type");*/
+                }
+                if (v!=null) {
+                    v.getType().setTypeModel(it);
+                    v.getDeclarationModel().setType(it);
                 }
             }
         }
@@ -3032,23 +3051,26 @@ public class ExpressionVisitor extends Visitor {
     
     @Override
     public void visit(Tree.SwitchStatement that) {
+        Tree.Expression ose = switchExpression;
+        switchExpression = that.getSwitchClause().getExpression();
+        super.visit(that);        
+        switchExpression = ose;
+        
+    }
+    
+    @Override
+    public void visit(Tree.SwitchCaseList that) {
         super.visit(that);
-        Tree.Expression e = that.getSwitchClause().getExpression();
-        if (e!=null) {
-            boolean hasUncheckedNull = hasUncheckedNulls(e.getTerm());
-            ProducedType switchType = e.getTypeModel().getUnionOfCases(true);
+
+        if (switchExpression!=null) {
             boolean hasIsCase = false;
-            for (Tree.CaseClause cc: that.getSwitchCaseList().getCaseClauses()) {
+            for (Tree.CaseClause cc: that.getCaseClauses()) {
                 if (cc.getCaseItem() instanceof Tree.IsCase) {
                     hasIsCase = true;
                 }
                 ProducedType ct = getType(cc);
                 if (ct!=null) {
-                    if (!hasUncheckedNull || !isNullCase(ct)) {
-                        checkAssignable(ct, switchType, cc, 
-                                "case type must be a case of the switch type");
-                    }
-                    for (Tree.CaseClause occ: that.getSwitchCaseList().getCaseClauses()) {
+                    for (Tree.CaseClause occ: that.getCaseClauses()) {
                         if (occ==cc) break;
                         ProducedType oct = getType(occ);
                         if (oct!=null) {
@@ -3064,17 +3086,23 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             if (hasIsCase) {
-                if (e.getTerm() instanceof Tree.BaseMemberExpression) {
-                    checkReferenceIsNonVariable((Tree.BaseMemberExpression) e.getTerm());
+                Tree.Term st = switchExpression.getTerm();
+                if (st instanceof Tree.BaseMemberExpression) {
+                    checkReferenceIsNonVariable((Tree.BaseMemberExpression) st);
                 }
                 else {
-                    e.addError("switch expression must be a value reference in switch with type cases");
+                    switchExpression.addError("switch expression must be a value reference in switch with type cases");
                 }
-            }
-            
-            if (that.getSwitchCaseList().getElseClause()==null) {
+            }   
+        }
+        
+
+        if (that.getElseClause()==null && switchExpression!=null) {
+            ProducedType st = switchExpression.getTypeModel();
+            if (st!=null) {
+                //form the union of all the case types
                 List<ProducedType> list = new ArrayList<ProducedType>();
-                for (Tree.CaseClause cc: that.getSwitchCaseList().getCaseClauses()) {
+                for (Tree.CaseClause cc: that.getCaseClauses()) {
                     ProducedType ct = getType(cc);
                     if (ct!=null) {
                         addToUnion(list, ct);
@@ -3082,12 +3110,18 @@ public class ExpressionVisitor extends Visitor {
                 }
                 UnionType ut = new UnionType(unit);
                 ut.setCaseTypes(list);
-                checkAssignable(switchType, ut.getType(), that, 
-                        "case types must cover all cases of the switch type or an else clause must appear");
+                //if the union of the case types covers 
+                //the switch expression type then the 
+                //switch is exhaustive
+                if (!ut.getType().covers(st)) {
+                    that.addError("case types must cover all cases of the switch type or an else clause must appear: " +
+                            ut.getType().getProducedTypeName() + " does not cover " + st.getProducedTypeName());
+                }
             }
         }
+        
     }
-
+    
     private boolean isNullCase(ProducedType ct) {
         TypeDeclaration d = ct.getDeclaration();
         return d!=null &&

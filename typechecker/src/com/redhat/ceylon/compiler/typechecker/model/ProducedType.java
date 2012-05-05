@@ -1220,9 +1220,17 @@ public class ProducedType extends ProducedReference {
         return producedTypeName;
     }
 
+    /**
+     * Form a union type of all cases of the type, 
+     * recursively reducing cases to their cases
+     */
     public ProducedType getUnionOfCases(boolean typeParams) {
         TypeDeclaration sdt = getDeclaration();
         Unit unit = getDeclaration().getUnit();
+        //if X is an intersection type A&B, and A is an
+        //enumerated type with cases U and V, then the cases
+        //of X are the intersection (U|V)&B canonicalized to
+        //the union U&B|V&B
         if (sdt instanceof IntersectionType) {
             List<ProducedType> list = new ArrayList<ProducedType>();
             for (ProducedType st: sdt.getSatisfiedTypes()) {
@@ -1247,12 +1255,18 @@ public class ProducedType extends ProducedReference {
             ut.setCaseTypes(list);
             return ut.getType();
         }*/
+        //if X is neither a union, intersection, or enumerated
+        //type then its cases are simply X
         else if (sdt.getCaseTypes()==null) {
             return this;
         }
         else if (sdt instanceof TypeParameter && !typeParams) {
             return this;
         }
+        //otherwise, if X is a union A|B, or an enumerated 
+        //type, with cases A and B, and A is an enumerated 
+        //type with cases U and V, ten the cases of X are
+        //the union U|V|B
         else {
             //build a union of all the cases
             List<ProducedType> list = new ArrayList<ProducedType>();
@@ -1272,6 +1286,45 @@ public class ProducedType extends ProducedReference {
     
     public String getUnderlyingType() {
         return underlyingType;
+    }
+
+    /**
+     * Does type covers the given type?
+     */
+    public boolean covers(ProducedType st) {
+        //X covers Y if the union of cases of Y is 
+        //a subtype of X
+        if (st.getUnionOfCases(true).isSubtypeOf(this)) {
+            return true;
+        }
+        else {
+            //X covers Y if Y extends Z and X covers Z
+            ProducedType et = st.getDeclaration().getExtendedType();
+            if (et!=null && covers(et.substituteInternal(st.getTypeArguments()))) {
+                return true;
+            }
+            //X covers Y if Y satisfies Z and X covers Z
+            for (ProducedType pt: st.getDeclaration().getSatisfiedTypes()) {
+                if (covers(pt.substituteInternal(st.getTypeArguments()))) {
+                    return true;
+                }
+            }
+            //X covers Y if Y is a union type A|B|C and X 
+            //covers all of A, B, and C
+            //NOTE: we don't apply the same rule for enumerated
+            //      types because of decidability problems
+            if (st.getDeclaration() instanceof UnionType) {
+                for (ProducedType pt: st.getDeclaration().getCaseTypes()) {
+                    if (!covers(pt.substituteInternal(st.getTypeArguments()))) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
     }
 
 }
