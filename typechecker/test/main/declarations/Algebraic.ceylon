@@ -289,7 +289,9 @@ interface J4 satisfies J1 {}
 void testHardCase(J4 i) {
     
     switch(i)
-    case (is J2) {}
+    case (is J2) {
+        @type["J4&J2"] value ii = i;
+    }
     case (is J3) {}
     
     @error switch(i)
@@ -314,7 +316,9 @@ void testHardCase(J4 i) {
     case (null) {}
 
     switch(mi)
-    case (is J2) {}
+    case (is J2) {
+        @type["J4&J2"] value ii = mi;
+    }
     case (is J3) {}
     case (is Nothing) {}
 }
