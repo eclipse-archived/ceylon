@@ -1,0 +1,78 @@
+package com.redhat.ceylon.compiler.java.test.structure.toplevel;
+
+final class topLevelAttributeGenerics {
+    private static final .ceylon.language.List<? extends .ceylon.language.String>[] value;
+    static {
+        value = new .ceylon.language.List[]{new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"))};
+    }
+    
+    static .ceylon.language.List<? extends .ceylon.language.String> getTopLevelAttributeGenerics() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+    
+    private topLevelAttributeGenerics() {
+    }
+}
+public final class topLevelAttributeGenericsShared {
+    private static final .ceylon.language.List<? extends .ceylon.language.String>[] value;
+    static {
+        value = new .ceylon.language.List[]{new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"))};
+    }
+    
+    public static .ceylon.language.List<? extends .ceylon.language.String> getTopLevelAttributeGenericsShared() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+    
+    private topLevelAttributeGenericsShared() {
+    }
+}
+final class topLevelVariableGenerics {
+    private static .ceylon.language.List<? extends .ceylon.language.String>[] value;
+    static {
+        value = new .ceylon.language.List[]{new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"))};
+    }
+    
+    static .ceylon.language.List<? extends .ceylon.language.String> getTopLevelVariableGenerics() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+    
+    static void setTopLevelVariableGenerics(.ceylon.language.List<? extends .ceylon.language.String> topLevelVariableGenerics) {
+        value[0] = topLevelVariableGenerics;
+    }
+    
+    private topLevelVariableGenerics() {
+    }
+}
+public final class topLevelVariableGenericsShared {
+    private static .ceylon.language.List<? extends .ceylon.language.String>[] value;
+    static {
+        value = new .ceylon.language.List[]{new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"))};
+    }
+    
+    public static .ceylon.language.List<? extends .ceylon.language.String> getTopLevelVariableGenericsShared() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+    
+    public static void setTopLevelVariableGenericsShared(.ceylon.language.List<? extends .ceylon.language.String> topLevelVariableGenericsShared) {
+        value[0] = topLevelVariableGenericsShared;
+    }
+    
+    private topLevelVariableGenericsShared() {
+    }
+}

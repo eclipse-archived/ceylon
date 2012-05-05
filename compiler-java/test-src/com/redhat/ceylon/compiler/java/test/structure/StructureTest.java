@@ -393,6 +393,10 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("toplevel/ToplevelAttribute");
     }
     @Test
+    public void testTopToplevelAttributeGenerics(){
+        compareWithJavaSource("toplevel/ToplevelAttributeGenerics");
+    }
+    @Test
     public void testTopToplevelAttributeShared(){
         compareWithJavaSource("toplevel/ToplevelAttributeShared");
     }
