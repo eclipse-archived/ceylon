@@ -1463,6 +1463,11 @@ else {
             </listitem>
         </itemizedlist>
         
+        <para>An assignability condition may narrow to an intersection or union type.</para>
+        
+        <programlisting>if (is Format &amp; IdentifiableObject object) { ... }</programlisting>
+        <programlisting>if (is Integer | Float num) { ... }</programlisting>
+
         <para>Note that an existence or nonemptiness condition is equivalent to&mdash;and may be 
         considered an abbreviation of&mdash;an assignability condition:</para>
         
@@ -1589,12 +1594,6 @@ if (is Usable tx) { ... }</programlisting>
         <para>The condition is satisfied if the given type is a subtype of the specified type when 
         the control structure containing the condition is executed.</para>
         
-        <comment><para>TODO: Should we support simultaneous narrowing to multiple types:</para>
-        <programlisting>if (is Format &amp; IdentifiableObject object) { ... }</programlisting>
-        <programlisting>if (satisfies Keyed &amp; Persistent Value) { ... }</programlisting>
-        <para>(This would fall out naturally if we add ad hoc intersection types.)</para>
-        </comment>
-        
         </section>
         
         <section id="exhaustivecaselists">
@@ -1640,6 +1639,10 @@ if (is Usable tx) { ... }</programlisting>
             formed by the types belonging to the exhaustive list of cases of the <literal>switch</literal>
             expression type is a subtype of the union type formed from by the types of the 
             <literal>case</literal>s of the <literal>switch</literal>.</para>
+            
+            <comment><para>TODO: This sells short what the compiler actually does. In fact it checks
+            if the union type of the <literal>case</literal> types covers any supertype of a type,
+            or even all members of a union type.</para></comment>
             
             <comment><para>TODO: define exhaustive for <literal>case (satisfies ...)</literal>.</para></comment>
             
@@ -1762,7 +1765,8 @@ if (satisfies Comparable&lt;Element&gt; Element) {
                 </listitem>
                 <listitem>
                     <para>an assignability condition of form <literal>case (is V)</literal> 
-                    where <literal>V</literal> is a subtype of <literal>U</literal>.</para>
+                    where the intersection type <literal>V&amp;U</literal> is not exactly
+                    <literal>Bottom</literal>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1787,6 +1791,13 @@ if (satisfies Comparable&lt;Element&gt; Element) {
             no <literal>case</literal> value tests <literal>true</literal>, and an <literal>else</literal> 
             block is defined, the <literal>else</literal> block is executed.</para>
             -->
+            
+            <para>An assignability condition <literal>case</literal> may narrow to an intersection or 
+            union type.</para>
+        
+            <programlisting>case (is Format &amp; IdentifiableObject) { ... }</programlisting>
+            <programlisting>case (is Integer | Float) { ... }</programlisting>
+
             <para>If a <literal>switch</literal> has an assignability condition <literal>case</literal>,
             then the <literal>switch</literal> expression must be an unqualified value reference to a 
             non-<literal>variable</literal>, non-<literal>default</literal> simple attribute, local, or 
@@ -2062,6 +2073,11 @@ while (exists iter) {
             the variable must be assignable to <literal>ceylon.language.Exception</literal>. 
             If no type is explicitly specified, the type is inferred to be 
             <literal>ceylon.language.Exception</literal>.</para> 
+            
+            <para>A <literal>catch</literal> block type may be a union or intersection
+            type:</para>
+            
+            <programlisting>catch (NotFoundException|DeletedException e) { ... }</programlisting>
             
             <para>If there are multiple <literal>catch</literal> blocks in a certain
             control structure, then:</para>
