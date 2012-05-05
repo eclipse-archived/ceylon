@@ -514,23 +514,40 @@ public class GenerateJsVisitor extends Visitor
             }
     }
 
-    private void typeInitialization(Tree.Declaration type) {
+    private void typeInitialization(final Tree.Declaration type) {
 
         ExtendedType extendedType = null;
         SatisfiedTypes satisfiedTypes = null;
         boolean isInterface = false;
+        TypeDeclaration decl = null;
         if (type instanceof ClassDefinition) {
             ClassDefinition classDef = (ClassDefinition) type;
             extendedType = classDef.getExtendedType();
             satisfiedTypes = classDef.getSatisfiedTypes();
+            decl = classDef.getDeclarationModel();
         } else if (type instanceof InterfaceDefinition) {
             satisfiedTypes = ((InterfaceDefinition) type).getSatisfiedTypes();
             isInterface = true;
+            decl = ((InterfaceDefinition) type).getDeclarationModel();
         } else if (type instanceof ObjectDefinition) {
             ObjectDefinition objectDef = (ObjectDefinition) type;
             extendedType = objectDef.getExtendedType();
             satisfiedTypes = objectDef.getSatisfiedTypes();
+            decl = objectDef.getDeclarationModel().getTypeDeclaration();
         }
+        final PrototypeInitCallback callback = new PrototypeInitCallback() {
+            @Override
+            public void addToPrototypeCallback() {
+                if (type instanceof ClassDefinition) {
+                    addToPrototype(((ClassDefinition)type).getDeclarationModel(), ((ClassDefinition)type).getClassBody().getStatements());
+                } else if (type instanceof InterfaceDefinition) {
+                    addToPrototype(((InterfaceDefinition)type).getDeclarationModel(), ((InterfaceDefinition)type).getInterfaceBody().getStatements());
+                }
+            }
+        };
+        typeInitialization(extendedType, satisfiedTypes, isInterface, type.getDeclarationModel(), decl, callback);
+    }
+    private void typeInitialization(ExtendedType extendedType, SatisfiedTypes satisfiedTypes, boolean isInterface, Declaration type, TypeDeclaration d, PrototypeInitCallback callback) {
 
         boolean inheritProto = prototypeStyle || (extendedType == null)
                 || !declaredInThisPackage(extendedType.getType().getDeclarationModel());
@@ -547,20 +564,16 @@ public class GenerateJsVisitor extends Visitor
             initFuncName += 'I';
         }
 
-        Declaration d = type.getDeclarationModel();
-        if (type instanceof ObjectDefinition) {
-            d = ((ObjectDefinition) type).getDeclarationModel().getTypeDeclaration();
-        }
         out("function $init$", names.name(d), "()");
         beginBlock();
         out("if (", names.name(d), ".$$===undefined)");
         beginBlock();
         out(clAlias, ".", initFuncName, "(", names.name(d), ",'",
-            type.getDeclarationModel().getQualifiedNameString(), "'");
+            type.getQualifiedNameString(), "'");
 
         if (extendedType != null) {
             out(",", typeFunctionName(extendedType.getType(), false));
-        } else if (!(type instanceof InterfaceDefinition)) {
+        } else if (!isInterface) {
             out(",", clAlias, ".IdentifiableObject");
         }
 
@@ -587,11 +600,7 @@ public class GenerateJsVisitor extends Visitor
         //The class definition needs to be inside the init function if we want forwards decls to work in prototype style
         if (prototypeStyle && (d instanceof ClassOrInterface)) {
             endLine();
-            if (type instanceof ClassDefinition) {
-                addToPrototype(((ClassDefinition)type).getDeclarationModel(), ((ClassDefinition)type).getClassBody().getStatements());
-            } else if (type instanceof InterfaceDefinition) {
-                addToPrototype(((InterfaceDefinition)type).getDeclarationModel(), ((InterfaceDefinition)type).getInterfaceBody().getStatements());
-            }
+            callback.addToPrototypeCallback();
         }
         endBlock();
         out("return ", names.name(d), ";");
@@ -2658,5 +2667,10 @@ public class GenerateJsVisitor extends Visitor
     private static interface ParameterListCallback {
         void completeFunction();
     }
+    /** This interface is used inside type initialization method. */
+    private interface PrototypeInitCallback {
+        void addToPrototypeCallback();
+    }
+
 }
 
