@@ -1,4 +1,5 @@
 import functions { ... }
+import assert { results }
 
 shared void test() {
     helloWorld();
@@ -15,5 +16,6 @@ shared void test() {
         print(i);
     }
     repeat(10,p);
-    print("OK");
+    testNamedArguments();
+    results();
 }
