@@ -280,3 +280,41 @@ abstract class Abstract2() {}
 class Concrete1() extends Abstract1() satisfies Indirect {}
 class Concrete2() satisfies Indirect {}
 class Concrete3() extends Abstract1() {}*/
+
+interface J1 of J2|J3 {}
+interface J2 satisfies J1 {}
+interface J3 satisfies J1 {}
+interface J4 satisfies J1 {}
+
+void testHardCase(J4 i) {
+    
+    switch(i)
+    case (is J2) {}
+    case (is J3) {}
+    
+    @error switch(i)
+    case (is J2) {}
+    case (is J3) {}
+    case (is Nothing) {}
+
+    @error switch(i)
+    case (is J2) {}
+    case (is J3) {}
+    case (null) {}
+
+    J4? mi = null;
+    
+    @error switch(mi)
+    case (is J2) {}
+    case (is J3) {}
+    
+    switch(mi)
+    case (is J2) {}
+    case (is J3) {}
+    case (null) {}
+
+    switch(mi)
+    case (is J2) {}
+    case (is J3) {}
+    case (is Nothing) {}
+}
