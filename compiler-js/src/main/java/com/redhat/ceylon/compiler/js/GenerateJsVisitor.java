@@ -547,7 +547,10 @@ public class GenerateJsVisitor extends Visitor
         };
         typeInitialization(extendedType, satisfiedTypes, isInterface, type.getDeclarationModel(), decl, callback);
     }
-    private void typeInitialization(ExtendedType extendedType, SatisfiedTypes satisfiedTypes, boolean isInterface, Declaration type, TypeDeclaration d, PrototypeInitCallback callback) {
+
+    /** This is now the main method to generate the type initialization code. */
+    private void typeInitialization(ExtendedType extendedType, SatisfiedTypes satisfiedTypes, boolean isInterface,
+            Declaration type, TypeDeclaration d, PrototypeInitCallback callback) {
 
         boolean inheritProto = prototypeStyle || (extendedType == null)
                 || !declaredInThisPackage(extendedType.getType().getDeclarationModel());
@@ -1450,6 +1453,55 @@ public class GenerateJsVisitor extends Visitor
         } else if (boxType== 2) {
             out(".value");
         }
+    }
+
+    @Override
+    public void visit(ObjectArgument that) {
+        final Class c = (Class)that.getDeclarationModel().getTypeDeclaration();
+        
+        out("(function()");
+        beginBlock();
+        out("//ObjectArgument ", that.getIdentifier().getText());
+        location(that);
+        endLine();
+        out(function, names.name(c), "()");
+        beginBlock();
+        instantiateSelf(c);
+        referenceOuter(c);
+        ExtendedType xt = that.getExtendedType();
+        final ClassBody body = that.getClassBody();
+        SatisfiedTypes sts = that.getSatisfiedTypes();
+        callSuperclass(xt, c, that);
+        copySuperMembers(xt, body, c);
+        callInterfaces(sts, c, that);
+        body.visit(this);
+        returnSelf(c);
+        indentLevel--;
+        endLine();
+        out("}");
+        endLine();
+        
+        typeInitialization(xt, sts, false, that.getDeclarationModel(), c, new PrototypeInitCallback() {
+            @Override
+            public void addToPrototypeCallback() {
+                addToPrototype(c, body.getStatements());
+            }
+        });
+        out("return ", names.name(c), "(new ", names.name(c), ".$$);");
+        endBlock();
+        out("());");
+    }
+
+    @Override
+    public void visit(AttributeArgument that) {
+        out("(function()");
+        beginBlock();
+        out("//AttributeArgument ", that.getParameter().getName());
+        location(that);
+        endLine();
+        visitStatements(that.getBlock().getStatements(), false);
+        endBlock();
+        out("());");
     }
 
     @Override
