@@ -216,8 +216,11 @@ class Union() {
     case (is String) {}
     case (is Nothing) {}
 
-    @error switch (maybe)
-    case (is Object) {}
+    //@error 
+    switch (maybe)
+    case (is Object) {
+        @type["String"] value ms = maybe;
+    }
     case (is Nothing) {}
     
     switch (maybe)

@@ -211,7 +211,8 @@ void switchInterface(Interface i) {
     @error switch(i)
     case (is Class1) {}
         
-    @error switch(i)
+    //@error 
+    switch(i)
     case (is String) {}
     case (is Class1) {}
     case (is Class2) {}
@@ -220,6 +221,17 @@ void switchInterface(Interface i) {
     case (is Class3) {}
     case (object1) {}
     case (is Class2) {}
+    
+    Integer|Float num = 1;
+    
+    switch (num)
+    case (is Integer) {}
+    case (is Float) {}
+    
+    @error switch (num)
+    case (is Integer) {}
+    case (is Float) {}
+    case (is String) {}
         
 }
 
