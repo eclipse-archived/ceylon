@@ -1160,41 +1160,102 @@ public class ProducedType extends ProducedReference {
             //unknown type
             return null;
         }
-        if (abbreviate && getDeclaration() instanceof UnionType) {
-            UnionType ut = (UnionType) getDeclaration();
-            if (ut.getCaseTypes().size()==2) {
-                Unit unit = getDeclaration().getUnit();
-                if (isElementOfUnion(ut, unit.getNothingDeclaration())) {
-                    return minus(unit.getNothingDeclaration())
-                            .getProducedTypeName() + "?";
-                }
-                if (isElementOfUnion(ut, unit.getEmptyDeclaration()) &&
-                        isElementOfUnion(ut, unit.getSequenceDeclaration())) {
-                    return unit.getElementType(this)
-                            .getProducedTypeName() + "[]";
+        if (abbreviate) {
+            Unit unit = getDeclaration().getUnit();
+            if (abbreviateOptional()) {
+                return minus(unit.getNothingDeclaration())
+                        .getProducedTypeName() + "?";
+            }
+            if (abbreviateSequence()) {
+                return unit.getElementType(this)
+                        .getProducedTypeName() + "[]";
+            }
+            if (abbreviateEntry()) {
+                ProducedType kt = unit.getKeyType(this);
+                ProducedType vt = unit.getValueType(this);
+                if (kt!=null && vt!=null &&
+                        kt.abbreviateKeyOrValue() && 
+                        vt.abbreviateKeyOrValue()) {
+                    return kt.getProducedTypeName(abbreviate) + "->"
+                            + vt.getProducedTypeName(abbreviate);
                 }
             }
         }
-        String producedTypeName = "";
-        if (getDeclaration().isMember()) {
-            producedTypeName += getQualifyingType().getProducedTypeName(abbreviate);
-            producedTypeName += ".";
+        return getSimpleProducedTypeName(abbreviate);
+    }
+
+    private boolean abbreviateEntry() {
+        Unit unit = getDeclaration().getUnit();
+        return getDeclaration().equals(unit.getEntryDeclaration()) &&
+                getTypeArgumentList().size()==2;
+    }
+
+    private boolean abbreviateSequence() {
+        if (getDeclaration() instanceof UnionType) {
+            Unit unit = getDeclaration().getUnit();
+            UnionType ut = (UnionType) getDeclaration();
+            return ut.getCaseTypes().size()==2 &&
+                    isElementOfUnion(ut, unit.getEmptyDeclaration()) &&
+                    isElementOfUnion(ut, unit.getSequenceDeclaration()) &&
+                        unit.getElementType(this).abbreviateKeyOrValue();
         }
-        producedTypeName += getDeclaration().getName();
+        else {
+            return false;
+        }
+    }
+
+    private boolean abbreviateOptional() {
+        if (getDeclaration() instanceof UnionType) {
+            Unit unit = getDeclaration().getUnit();
+            UnionType ut = (UnionType) getDeclaration();
+            return ut.getCaseTypes().size()==2 &&
+                    isElementOfUnion(ut, unit.getNothingDeclaration());
+        }
+        else {
+            return false;
+        }
+    }
+
+    private boolean abbreviateKeyOrValue() {
+        if (getDeclaration() instanceof IntersectionType) {
+            return false;
+        }
+        else if (getDeclaration() instanceof UnionType) {
+            return abbreviateSequence() || 
+                    abbreviateSequence();
+        }
+        else {
+            return true;
+        }
+    }
+    
+    private String getSimpleProducedTypeName(boolean abbreviate) {
+        StringBuilder ptn = new StringBuilder();
+        if (getDeclaration().isMember()) {
+            ptn.append(getQualifyingType().getProducedTypeName(abbreviate))
+                    .append(".");
+        }
+        ptn.append(getDeclaration().getName());
         if (!getTypeArgumentList().isEmpty()) {
-            producedTypeName += "<";
+            ptn.append("<");
+            boolean first = true;
             for (ProducedType t : getTypeArgumentList()) {
-                if (t==null) {
-                    producedTypeName += "unknown,";
+                if (first) {
+                    first = false;
                 }
                 else {
-                    producedTypeName += t.getProducedTypeName(abbreviate) + ",";
+                    ptn.append(",");
+                }
+                if (t==null) {
+                    ptn.append("unknown");
+                }
+                else {
+                    ptn.append(t.getProducedTypeName(abbreviate));
                 }
             }
-            producedTypeName += ">";
-            producedTypeName = producedTypeName.replace(",>", ">");
+            ptn.append(">");
         }
-        return producedTypeName;
+        return ptn.toString();
     }
 
     public String getProducedTypeQualifiedName() {
@@ -1202,22 +1263,34 @@ public class ProducedType extends ProducedReference {
             //unknown type
             return null;
         }
-        String producedTypeName = "";
-        producedTypeName += getDeclaration().getQualifiedNameString();
+        StringBuilder ptn = new StringBuilder();
+        if (getDeclaration().isMember()) {
+            ptn.append(getQualifyingType().getProducedTypeQualifiedName())
+                    .append(".").append(getDeclaration().getName());
+        }
+        else {
+            ptn.append(getDeclaration().getQualifiedNameString());
+        }
         if (!getTypeArgumentList().isEmpty()) {
-            producedTypeName += "<";
+            ptn.append("<");
+            boolean first = true;
             for (ProducedType t : getTypeArgumentList()) {
-                if (t==null) {
-                    producedTypeName += "?,";
+                if (first) {
+                    first = false;
                 }
                 else {
-                    producedTypeName += t.getProducedTypeQualifiedName() + ",";
+                    ptn.append(",");
+                }
+                if (t==null) {
+                    ptn.append("?");
+                }
+                else {
+                    ptn.append(t.getProducedTypeQualifiedName());
                 }
             }
-            producedTypeName += ">";
-            producedTypeName = producedTypeName.replace(",>", ">");
+            ptn.append(">");
         }
-        return producedTypeName;
+        return ptn.toString();
     }
 
     /**
