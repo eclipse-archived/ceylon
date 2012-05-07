@@ -1,0 +1,16 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+final class bug517 {
+    
+    private bug517() {
+    }
+    
+    static void bug517() {
+        final .ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.String> ran = (.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.String>)(.ceylon.language.Ranged).ceylon.language.String.instance("hello");
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug517.bug517();
+    }
+}
