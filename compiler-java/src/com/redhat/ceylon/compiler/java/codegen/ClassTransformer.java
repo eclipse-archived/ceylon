@@ -61,7 +61,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinitio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -109,7 +108,7 @@ public class ClassTransformer extends AbstractTransformer {
                 .klass(this, Decl.isAncestorLocal(def), className);
 
         if (def instanceof Tree.AnyClass) {
-            ParameterList paramList = ((Tree.AnyClass)def).getParameterList();
+            Tree.ParameterList paramList = ((Tree.AnyClass)def).getParameterList();
             for (Tree.Parameter param : paramList.getParameters()) {
                 classBuilder.parameter(param);
                 DefaultArgument defaultArgument = param.getDefaultArgument();
@@ -540,17 +539,21 @@ public class ClassTransformer extends AbstractTransformer {
             .build();
     }
 
-    private int transformClassDeclFlags(Tree.ClassOrInterface cdecl) {
+    private int transformClassDeclFlags(ClassOrInterface cdecl) {
         int result = 0;
 
         result |= Decl.isShared(cdecl) ? PUBLIC : 0;
-        result |= Decl.isAbstract(cdecl) && (cdecl instanceof Tree.AnyClass) ? ABSTRACT : 0;
-        result |= (cdecl instanceof Tree.AnyInterface) ? INTERFACE : 0;
+        result |= cdecl.isAbstract() && (cdecl instanceof Class) ? ABSTRACT : 0;
+        result |= (cdecl instanceof Interface) ? INTERFACE : 0;
 
         return result;
     }
     
-    private int transformOverloadCtorFlags(Tree.ClassOrInterface typeDecl) {
+    private int transformClassDeclFlags(Tree.ClassOrInterface cdecl) {
+        return transformClassDeclFlags(cdecl.getDeclarationModel());
+    }
+    
+    private int transformOverloadCtorFlags(Class typeDecl) {
         return transformClassDeclFlags(typeDecl) & (PUBLIC | PRIVATE | PROTECTED);
     }
 
@@ -575,9 +578,8 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
     
-    private int transformOverloadMethodDeclFlags(final Declaration model,
-            Tree.AnyMethod meth) {
-        int mods = transformMethodDeclFlags(meth);
+    private int transformOverloadMethodDeclFlags(final Method model) {
+        int mods = transformMethodDeclFlags(model);
         if (!Decl.withinInterface((model))) {
             mods |= FINAL;
         }
@@ -736,7 +738,7 @@ public class ClassTransformer extends AbstractTransformer {
         final Method model = def.getDeclarationModel();
         final String methodName = Util.quoteMethodNameIfProperty(model, gen());
         
-        java.util.List<ParameterList> parameterLists = def.getParameterLists();
+        java.util.List<Tree.ParameterList> parameterLists = def.getParameterLists();
         boolean mpl = parameterLists.size() > 1;
         ProducedType innerResultType = model.getType();
         ProducedType resultType = innerResultType;
@@ -769,7 +771,7 @@ public class ClassTransformer extends AbstractTransformer {
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(def), model.isClassOrInterfaceMember(), 
                 methodName);
         
-        final ParameterList paramList = parameterLists.get(0);
+        final Tree.ParameterList paramList = parameterLists.get(0);
         
         if (mpl) {
             methodBuilder.resultType(null, makeJavaType(resultType));
@@ -860,10 +862,20 @@ public class ClassTransformer extends AbstractTransformer {
         }
         throw new RuntimeException();
     }
+    
+    private boolean isVoid(Declaration def) {
+        if (def instanceof Method) {
+            return gen().isVoid(((Method)def).getType());
+        } else if (def instanceof Class) {
+            // Consider classes void since ctors don't require a return statement
+            return true;
+        }
+        throw new RuntimeException();
+    }
 
     private JCMethodDecl makeConcreteInterfaceMethodsForClosure(
             Tree.AnyMethod def, final String methodName,
-            final ParameterList paramList, Tree.Parameter currentParam) {
+            final Tree.ParameterList paramList, Tree.Parameter currentParam) {
         final Method model = def.getDeclarationModel();
         MethodDefinitionBuilder delegateBuilder = MethodDefinitionBuilder.method(gen(), false, true, methodName);
         delegateBuilder.modifiers(PRIVATE | FINAL);
@@ -887,7 +899,7 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
 
-    private boolean isLastParameter(final ParameterList paramList,
+    private boolean isLastParameter(final Tree.ParameterList paramList,
             Tree.Parameter param) {
         return paramList.getParameters().indexOf(param) == paramList.getParameters().size();
     }
@@ -978,26 +990,31 @@ public class ClassTransformer extends AbstractTransformer {
             Tree.Parameter currentParam) {
         at(currentParam);
         final Declaration model = def.getDeclarationModel();
+        final Parameter declarationModel = currentParam.getDeclarationModel();
+        java.util.List<Parameter> ps = new java.util.ArrayList<Parameter>(paramList.getParameters().size());
+        for (Tree.Parameter p : paramList.getParameters()) {
+            ps.add(p.getDeclarationModel());
+        }
+        
+        
         overloadBuilder.annotations(makeAtIgnore());
         
         final JCExpression methName;
-        if (def instanceof Tree.AnyMethod) {
-            Tree.AnyMethod meth = (Tree.AnyMethod)def;
-            long mods = transformOverloadMethodDeclFlags(model, meth);
+        if (model instanceof Method) {
+            long mods = transformOverloadMethodDeclFlags((Method)model);
             overloadBuilder.modifiers(mods);
             methName = makeQuotedIdent(Util.quoteMethodNameIfProperty((Method)model, gen()));
             overloadBuilder.resultType((Method)model);
-        } else if (def instanceof Tree.ClassOrInterface) {
-            Tree.ClassOrInterface typeDecl = (Tree.ClassOrInterface)def;
-            overloadBuilder.modifiers(transformOverloadCtorFlags(typeDecl));
+        } else if (model instanceof Class) {
+            overloadBuilder.modifiers(transformOverloadCtorFlags((Class)model));
             methName = makeUnquotedIdent("this");
         } else {
             throw new RuntimeException();
         }
         
         // TODO MPL
-        if (def instanceof Tree.AnyMethod) {
-            copyTypeParameters((Tree.AnyMethod)def, overloadBuilder);
+        if (model instanceof Method) {
+            copyTypeParameters((Method)model, overloadBuilder);
         }
 
         // TODO Some simple default expressions (e.g. literals, null and 
@@ -1009,10 +1026,10 @@ public class ClassTransformer extends AbstractTransformer {
         ListBuffer<JCStatement> vars = ListBuffer.<JCStatement>lb();
         
         final String companionInstanceName = tempName("$impl$");
-        if (def instanceof Tree.AnyClass
+        if (model instanceof Class
                 && !Strategy.defaultParameterMethodStatic(model)) {
             
-            Class classModel = (Class)def.getDeclarationModel();
+            Class classModel = (Class)model;
             Map<TypeParameter, ProducedType> typeArguments = classModel.getType().getTypeArguments();
             vars.append(makeVar(companionInstanceName, 
                     makeCompanionType(classModel,
@@ -1027,36 +1044,37 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         boolean useDefault = false;
-        for (Tree.Parameter param2 : paramList.getParameters()) {
-            if (param2 == currentParam) {
+        for (Parameter param2 : ps) {
+            
+            if (param2 == declarationModel) {
                 useDefault = true;
             }
             if (useDefault) {
-                String methodName = Util.getDefaultedParamMethodName(def.getDeclarationModel(), param2.getDeclarationModel());
+                String methodName = Util.getDefaultedParamMethodName(model, param2);
                 JCExpression defaultValueMethodName;
                 List<JCExpression> typeArguments = List.<JCExpression>nil();
-                if (Strategy.defaultParameterMethodOnSelf(def)) {
+                if (Strategy.defaultParameterMethodOnSelf(model)) {
                     defaultValueMethodName = gen().makeQuotedIdent(methodName);
-                } else if (Strategy.defaultParameterMethodStatic(def)){
+                } else if (Strategy.defaultParameterMethodStatic(model)){
                     defaultValueMethodName = gen().makeQuotedQualIdent(makeQuotedQualIdentFromString(getFQDeclarationName(model)), methodName);
-                    if (def instanceof Tree.AnyClass) {
-                        typeArguments = typeArguments((Tree.AnyClass)def);
-                    } else if (def instanceof Tree.AnyMethod) {
-                        typeArguments = typeArguments((Tree.AnyMethod)def);
+                    if (model instanceof Class) {
+                        typeArguments = typeArguments((Class)model);
+                    } else if (model instanceof Method) {
+                        typeArguments = typeArguments((Method)model);
                     }
                 } else {
                     defaultValueMethodName = gen().makeQuotedQualIdent(makeQuotedIdent(companionInstanceName), methodName);
                 }
-                String varName = tempName("$"+param2.getIdentifier().getText()+"$");
+                String varName = tempName("$"+param2.getName()+"$");
                 vars.append(makeVar(varName, 
-                        makeJavaType(param2.getDeclarationModel().getType()), 
+                        makeJavaType(param2.getType()), 
                         make().Apply(typeArguments, 
                                 defaultValueMethodName, 
                                 ListBuffer.<JCExpression>lb().appendList(args).toList())));
                 args.add(makeUnquotedIdent(varName));
             } else {
                 overloadBuilder.parameter(param2);
-                args.add(makeQuotedIdent(param2.getIdentifier().getText()));
+                args.add(makeQuotedIdent(param2.getName()));
             }
         }
         
@@ -1065,7 +1083,7 @@ public class ClassTransformer extends AbstractTransformer {
             JCExpression invocation = make().Apply(List.<JCExpression>nil(),
                     methName, args.toList());
                
-            if (isVoid(def)) {
+            if (isVoid(model)) {
                 vars.append(make().Exec(invocation));
                 invocation = make().LetExpr(vars.toList(), makeNull());
                 overloadBuilder.body(make().Exec(invocation));
@@ -1273,18 +1291,18 @@ public class ClassTransformer extends AbstractTransformer {
     }
     
     void copyTypeParameters(Tree.AnyMethod def, MethodDefinitionBuilder methodBuilder) {
-        if (def.getTypeParameterList() != null) {
-            for (Tree.TypeParameterDeclaration t : def.getTypeParameterList().getTypeParameterDeclarations()) {
+        copyTypeParameters(def.getDeclarationModel(), methodBuilder);
+    }
+    
+    void copyTypeParameters(Functional def, MethodDefinitionBuilder methodBuilder) {
+        if (def.getTypeParameters() != null) {
+            for (TypeParameter t : def.getTypeParameters()) {
                 methodBuilder.typeParameter(t);
             }
         }
     }
     
     void copyTypeParameters(Tree.AnyClass def, MethodDefinitionBuilder methodBuilder) {
-        if (def.getTypeParameterList() != null) {
-            for (Tree.TypeParameterDeclaration t : def.getTypeParameterList().getTypeParameterDeclarations()) {
-                methodBuilder.typeParameter(t);
-            }
-        }
+        copyTypeParameters(def.getDeclarationModel(), methodBuilder);
     }
 }
