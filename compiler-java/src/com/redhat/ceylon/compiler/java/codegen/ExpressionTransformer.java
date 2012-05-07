@@ -77,7 +77,6 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     private boolean inStatement = false;
-    private boolean needDollarThis = false;
     private boolean withinInvocation = false;
     private boolean withinCallableInvocation = false;
     
@@ -450,13 +449,13 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCTree transform(Tree.This expr) {
         at(expr);
-        if (needDollarThis) {
+        if (needDollarThis(expr.getScope())) {
             return makeUnquotedIdent("$this");
-        } if (isWithinCallableInvocation()) {
-            return makeSelect(makeJavaType(expr.getTypeModel()), "this");
-        } else {
-            return makeUnquotedIdent("this");
         }
+        if (isWithinCallableInvocation()) {
+            return makeSelect(makeJavaType(expr.getTypeModel()), "this");
+        } 
+        return makeUnquotedIdent("this");    
     }
 
     public JCTree transform(Tree.Super expr) {
@@ -1403,7 +1402,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 qualExpr = primaryExpr;
             }
             
-            if (qualExpr == null && needDollarThis && decl.isClassOrInterfaceMember() && expr.getScope() != decl.getContainer()) {
+            if (qualExpr == null 
+                    && needDollarThis(expr) 
+                    ) {
                 qualExpr = makeUnquotedIdent("$this");
             }
             if (qualExpr == null && decl.isStaticallyImportable()) {
@@ -1427,6 +1428,22 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     //
     // Array access
+
+    private boolean needDollarThis(Tree.StaticMemberOrTypeExpression expr) {
+        if (expr instanceof Tree.BaseMemberExpression) {
+            final Declaration decl = expr.getDeclaration();
+            return decl.isInterfaceMember()
+                && decl.getContainer() == expr.getScope().getContainer();
+        }
+        return false;
+    }
+    
+    private boolean needDollarThis(Scope scope) {
+        while (Decl.isLocalScope(scope)) {
+            scope = scope.getContainer();
+        }
+        return scope instanceof Interface;
+    }
 
     public JCTree transform(Tree.IndexExpression access) {
         boolean safe = access.getIndexOperator() instanceof Tree.SafeIndexOp;
