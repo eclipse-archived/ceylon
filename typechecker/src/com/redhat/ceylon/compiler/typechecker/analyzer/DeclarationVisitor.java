@@ -1,12 +1,12 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.buildAnnotations;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -801,42 +801,6 @@ public class DeclarationVisitor extends Visitor {
         
     }
 
-    private static void buildAnnotations(Tree.AnnotationList al, List<Annotation> annotations) {
-        if (al!=null) {
-            for (Tree.Annotation a: al.getAnnotations()) {
-                Annotation ann = new Annotation();
-                String name = ( (Tree.BaseMemberExpression) a.getPrimary() ).getIdentifier().getText();
-                ann.setName(name);
-                if (a.getNamedArgumentList()!=null) {
-                    for ( Tree.NamedArgument na: a.getNamedArgumentList().getNamedArguments() ) {
-                        if (na instanceof Tree.SpecifiedArgument) {
-                            Tree.Term t = ((Tree.SpecifiedArgument) na).getSpecifierExpression().getExpression().getTerm();
-                            String param = ((Tree.SpecifiedArgument) na).getIdentifier().getText();
-                            if (t instanceof Tree.Literal) {
-                                ann.addNamedArgument( param, ( (Tree.Literal) t ).getText() );
-                            }
-                            else if (t instanceof Tree.BaseMemberOrTypeExpression) {
-                                ann.addNamedArgument( param, ( (Tree.BaseMemberOrTypeExpression) t ).getIdentifier().getText() );
-                            }
-                        }                    
-                    }
-                }
-                if (a.getPositionalArgumentList()!=null) {
-                    for ( Tree.PositionalArgument pa: a.getPositionalArgumentList().getPositionalArguments() ) {
-                        Tree.Term t = pa.getExpression().getTerm();
-                        if (t instanceof Tree.Literal) {
-                            ann.addPositionalArgment( ( (Tree.Literal) t ).getText() );
-                        }
-                        else if (t instanceof Tree.BaseMemberOrTypeExpression) {
-                            ann.addPositionalArgment( ( (Tree.BaseMemberOrTypeExpression) t ).getIdentifier().getText() );
-                        }
-                    }
-                }
-                annotations.add(ann);
-            }
-        }
-    }
-        
     @Override public void visit(Tree.TypedArgument that) {
         Declaration d = beginDeclaration(that.getDeclarationModel());
         super.visit(that);

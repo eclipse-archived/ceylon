@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.buildAnnotations;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasAnnotation;
 
@@ -79,6 +80,7 @@ public class ModuleVisitor extends Visitor {
                 }
                 moduleManager.addLinkBetweenModuleAndNode(mainModule, unit);
                 mainModule.setAvailable(true);
+                buildAnnotations(that.getAnnotationList(), mainModule.getAnnotations());
             }
         }
     }
@@ -102,6 +104,7 @@ public class ModuleVisitor extends Visitor {
                 if (hasAnnotation(that.getAnnotationList(), "shared")) {
                     pkg.setShared(true);
                 }
+                buildAnnotations(that.getAnnotationList(), pkg.getAnnotations());
             }
         }
     }
@@ -129,6 +132,7 @@ public class ModuleVisitor extends Visitor {
                         boolean optional = hasAnnotation(that.getAnnotationList(), "optional");
                         boolean export = hasAnnotation(that.getAnnotationList(), "export");
                         moduleImport = new ModuleImport(importedModule, optional, export);
+                        buildAnnotations(that.getAnnotationList(), moduleImport.getAnnotations());
                         mainModule.getImports().add(moduleImport);
                     }
                     moduleManager.addModuleDependencyDefinition(moduleImport, that);

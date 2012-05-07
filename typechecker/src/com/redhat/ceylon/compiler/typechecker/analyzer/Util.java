@@ -5,6 +5,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
@@ -13,6 +14,14 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberOrTypeExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Literal;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifiedArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -198,6 +207,42 @@ class Util extends Visitor {
             sb.append(node.getText());
         }
         return sb.toString();
+    }
+
+    static void buildAnnotations(Tree.AnnotationList al, List<Annotation> annotations) {
+        if (al!=null) {
+            for (Tree.Annotation a: al.getAnnotations()) {
+                Annotation ann = new Annotation();
+                String name = ( (Tree.BaseMemberExpression) a.getPrimary() ).getIdentifier().getText();
+                ann.setName(name);
+                if (a.getNamedArgumentList()!=null) {
+                    for ( Tree.NamedArgument na: a.getNamedArgumentList().getNamedArguments() ) {
+                        if (na instanceof Tree.SpecifiedArgument) {
+                            Tree.Term t = ((Tree.SpecifiedArgument) na).getSpecifierExpression().getExpression().getTerm();
+                            String param = ((Tree.SpecifiedArgument) na).getIdentifier().getText();
+                            if (t instanceof Tree.Literal) {
+                                ann.addNamedArgument( param, ( (Tree.Literal) t ).getText() );
+                            }
+                            else if (t instanceof Tree.BaseMemberOrTypeExpression) {
+                                ann.addNamedArgument( param, ( (Tree.BaseMemberOrTypeExpression) t ).getIdentifier().getText() );
+                            }
+                        }                    
+                    }
+                }
+                if (a.getPositionalArgumentList()!=null) {
+                    for ( Tree.PositionalArgument pa: a.getPositionalArgumentList().getPositionalArguments() ) {
+                        Tree.Term t = pa.getExpression().getTerm();
+                        if (t instanceof Tree.Literal) {
+                            ann.addPositionalArgment( ( (Tree.Literal) t ).getText() );
+                        }
+                        else if (t instanceof Tree.BaseMemberOrTypeExpression) {
+                            ann.addPositionalArgment( ( (Tree.BaseMemberOrTypeExpression) t ).getIdentifier().getText() );
+                        }
+                    }
+                }
+                annotations.add(ann);
+            }
+        }
     }
 
 }
