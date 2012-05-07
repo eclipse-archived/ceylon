@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkTypeBelongsToContainingScope;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
@@ -139,21 +140,6 @@ public class TypeVisitor extends Visitor {
 //            return false;
 //        }
 //    }
-    
-    private static String formatPath(List<Tree.Identifier> nodes) {
-        StringBuilder sb = new StringBuilder();
-        boolean first = true;
-        for (Node node: nodes) {
-            if (first) {
-                first = false;
-            }
-            else {
-                sb.append(".");
-            }
-            sb.append(node.getText());
-        }
-        return sb.toString();
-    }
     
     private String importMember(Tree.ImportMemberOrType member, Package importedPackage, 
             ImportList il) {

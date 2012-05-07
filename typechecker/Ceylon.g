@@ -41,16 +41,73 @@ compilationUnit returns [CompilationUnit compilationUnit]
         SEMICOLON
         { $compilationUnit.getCompilerAnnotations().addAll($ca1.annotations); }
       )?
-      importList 
-      { $compilationUnit.setImportList($importList.importList); }
-      ( 
-        ca2=compilerAnnotations declaration
-        { if ($declaration.declaration!=null)
-              $compilationUnit.addDeclaration($declaration.declaration); 
-          if ($declaration.declaration!=null)
-              $declaration.declaration.getCompilerAnnotations().addAll($ca2.annotations); } 
-      )*
+      (
+        (annotations MODULE)=>
+        moduleDescriptor 
+        { $compilationUnit.setModuleDescriptor($moduleDescriptor.moduleDescriptor); }
+      | 
+        (annotations PACKAGE)=>
+        packageDescriptor
+        { $compilationUnit.setPackageDescriptor($packageDescriptor.packageDescriptor); }
+      |
+        importList 
+        { $compilationUnit.setImportList($importList.importList); }
+        ( 
+          ca2=compilerAnnotations declaration
+          { if ($declaration.declaration!=null)
+                $compilationUnit.addDeclaration($declaration.declaration); 
+            if ($declaration.declaration!=null)
+                $declaration.declaration.getCompilerAnnotations().addAll($ca2.annotations); } 
+        )*
+      )
       EOF
+    ;
+
+moduleDescriptor returns [ModuleDescriptor moduleDescriptor]
+    : annotations
+      MODULE 
+      { $moduleDescriptor = new ModuleDescriptor($MODULE); 
+        $moduleDescriptor.setAnnotationList($annotations.annotationList); }
+      packagePath
+      { $moduleDescriptor.setImportPath($packagePath.importPath); }
+      QUOTED_LITERAL
+      { $moduleDescriptor.setVersion(new QuotedLiteral($QUOTED_LITERAL)); }
+      importModuleList
+      { $moduleDescriptor.setImportModuleList($importModuleList.importModuleList); }
+    ;
+
+importModuleList returns [ImportModuleList importModuleList]
+    : LBRACE
+      { $importModuleList = new ImportModuleList($LBRACE); }
+      (
+        importModule
+        { if ($importModule.importModule!=null)
+             $importModuleList.addImportModule($importModule.importModule); }
+      )*
+      RBRACE
+      { $importModuleList.setEndToken($RBRACE); }
+    ;
+
+packageDescriptor returns [PackageDescriptor packageDescriptor]
+    : annotations
+      PACKAGE 
+      { $packageDescriptor = new PackageDescriptor($PACKAGE); 
+        $packageDescriptor.setAnnotationList($annotations.annotationList); }
+      packagePath
+      { $packageDescriptor.setImportPath($packagePath.importPath); }
+      SEMICOLON
+      { $packageDescriptor.setEndToken($SEMICOLON); }
+    ;
+
+importModule returns [ImportModule importModule]
+    : IMPORT
+      { $importModule = new ImportModule($IMPORT); }
+      packagePath
+      { $importModule.setImportPath($packagePath.importPath); }
+      QUOTED_LITERAL
+      { $importModule.setVersion(new QuotedLiteral($QUOTED_LITERAL)); }
+      SEMICOLON
+      { $importModule.setEndToken($SEMICOLON); }
     ;
 
 importList returns [ImportList importList]
@@ -59,32 +116,17 @@ importList returns [ImportList importList]
     ;
 
 importDeclaration returns [Import importDeclaration]
-    @init { ImportPath importPath=null; }
     : IMPORT 
       { $importDeclaration = new Import($IMPORT); } 
-      ( 
-        pn1=packageName 
-        { importPath = new ImportPath(null);
-          if ($pn1.identifier!=null) 
-              importPath.addIdentifier($pn1.identifier); 
-          $importDeclaration.setImportPath(importPath); } 
-        ( 
-          m=MEMBER_OP 
-          { importPath.setEndToken($m); }
-          (
-            pn2=packageName 
-            { importPath.addIdentifier($pn2.identifier); 
-              importPath.setEndToken(null); }
-          | { displayRecognitionError(getTokenNames(), 
-                  new MismatchedTokenException(LIDENTIFIER, input)); }
-          )
-        )*
+      (
+        packagePath
+        { $importDeclaration.setImportPath($packagePath.importPath); }
       | { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(LIDENTIFIER, input)); }
       )
       importElementList
       { $importDeclaration.setImportMemberOrTypeList($importElementList.importMemberOrTypeList); }
-      ;
+    ;
 
 importElementList returns [ImportMemberOrTypeList importMemberOrTypeList]
     @init { ImportMemberOrTypeList il=null; }
@@ -157,6 +199,25 @@ typeAlias returns [Alias alias]
       { $alias = new Alias($SPECIFY); 
         $alias.setIdentifier($typeNameDeclaration.identifier); }
     ;
+
+packagePath returns [ImportPath importPath]
+    @init { $importPath = new ImportPath(null); }
+    : pn1=packageName 
+      { if ($pn1.identifier!=null) 
+            $importPath.addIdentifier($pn1.identifier); } 
+      ( 
+        m=MEMBER_OP 
+        { $importPath.setEndToken($m); }
+        (
+          pn2=packageName 
+          { $importPath.addIdentifier($pn2.identifier); 
+            $importPath.setEndToken(null); }
+        | { displayRecognitionError(getTokenNames(), 
+                new MismatchedTokenException(LIDENTIFIER, input)); }
+        )
+      )*
+    ;
+    
 
 packageName returns [Identifier identifier]
     : LIDENTIFIER
@@ -2970,6 +3031,14 @@ VALUE_MODIFIER
 
 FUNCTION_MODIFIER
     :   'function'
+    ;
+
+MODULE
+    :   'module'
+    ;
+
+PACKAGE
+    :   'package'
     ;
 
 NONEMPTY
