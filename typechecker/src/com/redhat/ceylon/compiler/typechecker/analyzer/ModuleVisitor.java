@@ -55,7 +55,7 @@ public class ModuleVisitor extends Visitor {
     }
     
     private String getVersionString(Tree.QuotedLiteral that) {
-        return that.getText()
+        return that==null ? null : that.getText()
                 .substring(1, that.getText().length() - 1);
     }
     
