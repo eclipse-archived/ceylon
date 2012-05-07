@@ -1,44 +1,52 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
 final class bug270 {
-    private static final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> value;
+    private static final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>[] value;
     static {
-        value = (
+        value = new .ceylon.language.Entry[]{(
             let
             {
                 .ceylon.language.String $arg$0$1 = .ceylon.language.String.instance("hello");
                 .ceylon.language.Integer $arg$0$0 = .ceylon.language.Integer.instance(1L);
             }
             returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>($arg$0$0, $arg$0$1);
-        );
+        )};
     }
     
     static .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> getBug270() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     private bug270() {
     }
 }
 final class bug270Variable {
-    private static .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> value;
+    private static .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>[] value;
     static {
-        value = (
+        value = new .ceylon.language.Entry[]{(
             let
             {
                 .ceylon.language.String $arg$1$1 = .ceylon.language.String.instance("hello");
                 .ceylon.language.Integer $arg$1$0 = .ceylon.language.Integer.instance(1L);
             }
             returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>($arg$1$0, $arg$1$1);
-        );
+        )};
     }
     
     static .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> getBug270Variable() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     static void setBug270Variable(.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> bug270Variable) {
-        value = bug270Variable;
+        value[0] = bug270Variable;
     }
     
     private bug270Variable() {
@@ -54,9 +62,9 @@ final class bug270_eatEntry {
     }
 }
 final class bug270_2 {
-    private static final .ceylon.language.Entry<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .ceylon.language.String> value;
+    private static final .ceylon.language.Entry<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .ceylon.language.String>[] value;
     static {
-        value = .com.redhat.ceylon.compiler.java.test.issues.bug270_eatEntry.<.ceylon.language.Entry<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .ceylon.language.String>>bug270_eatEntry((
+        value = new .ceylon.language.Entry[]{.com.redhat.ceylon.compiler.java.test.issues.bug270_eatEntry.<.ceylon.language.Entry<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .ceylon.language.String>>bug270_eatEntry((
             let
             {
                 .ceylon.language.String $arg$2$1 = .ceylon.language.String.instance("hello");
@@ -70,11 +78,15 @@ final class bug270_2 {
                 );
             }
             returning new .ceylon.language.Entry<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, .ceylon.language.String>($arg$2$0, $arg$2$1);
-        ));
+        ))};
     }
     
     static .ceylon.language.Entry<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .ceylon.language.String> getBug270_2() {
-        return value;
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
     
     private bug270_2() {
