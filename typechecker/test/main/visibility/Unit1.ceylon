@@ -1,4 +1,4 @@
-import visibility.package { @error Unit3, Unit4, Unit5 }
+import visibility.pack { @error Unit3, Unit4, Unit5 }
 
 class Unit1() {
     

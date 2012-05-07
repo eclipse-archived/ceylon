@@ -42,11 +42,11 @@ compilationUnit returns [CompilationUnit compilationUnit]
         { $compilationUnit.getCompilerAnnotations().addAll($ca1.annotations); }
       )?
       (
-        (annotations MODULE)=>
+        (compilerAnnotations annotations MODULE)=>
         moduleDescriptor 
         { $compilationUnit.setModuleDescriptor($moduleDescriptor.moduleDescriptor); }
       | 
-        (annotations PACKAGE)=>
+        (compilerAnnotations annotations PACKAGE)=>
         packageDescriptor
         { $compilationUnit.setPackageDescriptor($packageDescriptor.packageDescriptor); }
       |
@@ -64,10 +64,11 @@ compilationUnit returns [CompilationUnit compilationUnit]
     ;
 
 moduleDescriptor returns [ModuleDescriptor moduleDescriptor]
-    : annotations
+    : compilerAnnotations annotations
       MODULE 
       { $moduleDescriptor = new ModuleDescriptor($MODULE); 
-        $moduleDescriptor.setAnnotationList($annotations.annotationList); }
+        $moduleDescriptor.setAnnotationList($annotations.annotationList);
+        $moduleDescriptor.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
       packagePath
       { $moduleDescriptor.setImportPath($packagePath.importPath); }
       QUOTED_LITERAL
@@ -80,19 +81,25 @@ importModuleList returns [ImportModuleList importModuleList]
     : LBRACE
       { $importModuleList = new ImportModuleList($LBRACE); }
       (
+        compilerAnnotations annotations
         importModule
         { if ($importModule.importModule!=null)
-             $importModuleList.addImportModule($importModule.importModule); }
+              $importModuleList.addImportModule($importModule.importModule); 
+          if ($importModule.importModule!=null)
+              $importModule.importModule.setAnnotationList($annotations.annotationList);
+          if ($importModule.importModule!=null)
+              $importModule.importModule.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
       )*
       RBRACE
       { $importModuleList.setEndToken($RBRACE); }
     ;
 
 packageDescriptor returns [PackageDescriptor packageDescriptor]
-    : annotations
+    : compilerAnnotations annotations
       PACKAGE 
       { $packageDescriptor = new PackageDescriptor($PACKAGE); 
-        $packageDescriptor.setAnnotationList($annotations.annotationList); }
+        $packageDescriptor.setAnnotationList($annotations.annotationList); 
+        $packageDescriptor.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
       packagePath
       { $packageDescriptor.setImportPath($packagePath.importPath); }
       SEMICOLON

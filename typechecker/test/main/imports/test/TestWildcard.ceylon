@@ -1,4 +1,4 @@
-import imports.package { a=attribute, ... }
+import imports.pack { a=attribute, ... }
 
 class TestWildcard() {
     method();

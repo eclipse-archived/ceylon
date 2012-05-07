@@ -1,4 +1,4 @@
-import imports.package { 
+import imports.pack { 
     m=method, 
     a=attribute,
     sing = singleton /*{ hi=hello }*/,

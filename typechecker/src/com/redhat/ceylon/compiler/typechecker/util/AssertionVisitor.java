@@ -108,7 +108,8 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         System.err.println(
             message + " at " + 
             that.getLocation() + " of " +
-            that.getUnit().getFilename());
+            that.getUnit().getFilename() + " in " + 
+            that.getUnit().getPackage().getNameAsString());
     }
 
     protected void out(Node that, LexError err) {
@@ -117,7 +118,8 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
             "lex error encountered [" +
             err.getMessage() + "] at " + 
             err.getHeader() + " of " + 
-            that.getUnit().getFilename());
+            that.getUnit().getFilename() + " in " + 
+            that.getUnit().getPackage().getNameAsString());
     }
 
     protected void out(Node that, ParseError err) {
@@ -126,7 +128,8 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
             "parse error encountered [" +
             err.getMessage() + "] at " + 
             err.getHeader() + " of " + 
-            that.getUnit().getFilename());
+            that.getUnit().getFilename() + " in " + 
+            that.getUnit().getPackage().getNameAsString());
     }
 
     protected void out(UnexpectedError err) {
@@ -135,7 +138,8 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
             "unexpected error encountered [" +
             err.getMessage() + "] at " + 
             err.getTreeNode().getLocation() + " of " +
-            err.getTreeNode().getUnit().getFilename());
+            err.getTreeNode().getUnit().getFilename() + " in " + 
+            err.getTreeNode().getUnit().getPackage().getNameAsString());
     }
 
     protected void out(AnalysisError err) {
@@ -144,7 +148,8 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
             "error encountered [" +
             err.getMessage() + "] at " + 
             err.getTreeNode().getLocation() + " of " +
-            err.getTreeNode().getUnit().getFilename());
+            err.getTreeNode().getUnit().getFilename() + " in " + 
+                    err.getTreeNode().getUnit().getPackage().getNameAsString());
     }
 
     protected void out(AnalysisWarning err) {
@@ -153,7 +158,8 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
             "warning encountered [" +
             err.getMessage() + "] at " + 
             err.getTreeNode().getLocation() + " of " +
-            err.getTreeNode().getUnit().getFilename());
+            err.getTreeNode().getUnit().getFilename() + " in " + 
+            err.getTreeNode().getUnit().getPackage().getNameAsString());
     }
 
     private void checkErrors(Node that) {

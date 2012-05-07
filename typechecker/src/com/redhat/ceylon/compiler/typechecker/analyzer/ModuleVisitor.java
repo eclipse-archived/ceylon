@@ -53,11 +53,16 @@ public class ModuleVisitor extends Visitor {
         super.visit(that);
     }
     
+    private String getVersionString(Tree.QuotedLiteral that) {
+        return that.getText()
+                .substring(1, that.getText().length() - 1);
+    }
+    
     @Override
     public void visit(Tree.ModuleDescriptor that) {
         super.visit(that);
         if (phase==Phase.SRC_MODULE) {
-            String version = that.getVersion().getText();
+            String version = getVersionString(that.getVersion());
             List<String> name = getNameAsList(that.getImportPath());
             if (name.isEmpty()) {
                 that.addError("missing module name");
@@ -105,7 +110,7 @@ public class ModuleVisitor extends Visitor {
     public void visit(Tree.ImportModule that) {
         super.visit(that);
         if (phase==Phase.REMAINING) {
-            String version = that.getVersion().getText();
+            String version = getVersionString(that.getVersion());
             List<String> name = getNameAsList(that.getImportPath());
             if (name.isEmpty()) {
                 that.addError("missing module name");
@@ -119,13 +124,11 @@ public class ModuleVisitor extends Visitor {
                     if (importedModule.getVersion() == null) {
                         importedModule.setVersion(version);
                     }
-                    //String optionalString = argumentToString(getArgument(that, "optional"));
-                    //String exportString = argumentToString(getArgument(that, "export"));
                     ModuleImport moduleImport = moduleManager.findImport(mainModule, importedModule);
                     if (moduleImport == null) {
-                        //boolean optional = optionalString!=null && optionalString.equals("true");
-                        //boolean export = exportString!=null && exportString.equals("true");
-                        moduleImport = new ModuleImport(importedModule, false, false);//TODO: optional, export
+                        boolean optional = hasAnnotation(that.getAnnotationList(), "optional");
+                        boolean export = hasAnnotation(that.getAnnotationList(), "export");
+                        moduleImport = new ModuleImport(importedModule, optional, export);
                         mainModule.getImports().add(moduleImport);
                     }
                     moduleManager.addModuleDependencyDefinition(moduleImport, that);
