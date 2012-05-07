@@ -138,7 +138,7 @@ public class ClassTransformer extends AbstractTransformer {
                         continue;
                     }
                     Interface iface = (Interface)decl;
-                    companionFields(model, classBuilder, satisfiedType, iface, satisfiedInterfaces);
+                    companionFields((Class)model, classBuilder, satisfiedType, iface, satisfiedInterfaces);
                     
                     if (!decl.isToplevel()) {// TODO What about local interfaces?
                         // Generate $outer() impl if implementing an inner interface
@@ -162,9 +162,8 @@ public class ClassTransformer extends AbstractTransformer {
                 }
                 type = type.getQualifyingType();
             }
-            
             // Build the companion class
-            buildCompanion(def, model, classBuilder);   
+            buildCompanion(def, (Interface)model, classBuilder);   
         }
         
         // Transform the class/interface members
@@ -186,7 +185,7 @@ public class ClassTransformer extends AbstractTransformer {
             .build();
     }
 
-    private void companionFields(final ClassOrInterface model,
+    private void companionFields(final Class model,
             ClassDefinitionBuilder classBuilder, Tree.SimpleType satisfiedType,
             Interface iface, Set<Interface> satisfiedInterfaces) {
         if (satisfiedInterfaces.contains(iface)) {
@@ -212,14 +211,93 @@ public class ClassTransformer extends AbstractTransformer {
             // $Interface$impl field
             transformInstantiateCompanions(classBuilder,
                     satisfiedType, iface, goRaw);
-            satisfiedInterfaces.add(iface);
+        }
+        
+        // For each super interface, if it has the most refined 
+        // default concrete member, then generate a method on the class
+        // delegating to the $impl instance
+        for (Declaration member : iface.getMembers()) {
+            if (member instanceof Method) {
+                Method method = (Method)member;
+                final java.util.List<TypeParameter> typeParameters = method.getTypeParameters();
+                final java.util.List<Parameter> parameters = method.getParameterLists().get(0).getParameters();
+                if (!satisfiedInterfaces.contains((Interface)method.getContainer())) {
+                    
+                    for (Parameter param : parameters) {
+                        if (param.isDefaulted()) {
+                            // If that method has a defaulted parameter, 
+                            // we need to generate a default value method
+                            // which also delegates to the $impl
+                            final JCMethodDecl defaultValueDelegate = generateDelegate(iface, 
+                                    PUBLIC | FINAL, typeParameters, param, param.getType(), 
+                                    Util.getDefaultedParamMethodName(method, param), parameters.subList(0, parameters.indexOf(param)),
+                                    Decl.isAncestorLocal(model));
+                            classBuilder.defs(defaultValueDelegate);
+                            // If that method has a defaulted parameter, 
+                            // we need to generate a overload method
+                            // which also delegates to the $impl
+                            final JCMethodDecl overloadDelegate = generateDelegate(iface, 
+                                    PUBLIC | FINAL, typeParameters, param, param.getType(), 
+                                    method.getName(), parameters.subList(0, parameters.indexOf(param)),
+                                    Decl.isAncestorLocal(model));
+                            classBuilder.defs(overloadDelegate);
+                        }
+                    }
+                }
+                if (member.equals(model.getMember(member.getName(), null))) {
+                    if (member.isDefault()) {
+                        final JCMethodDecl concreteMemberDelegate = generateDelegate(iface,
+                                PUBLIC, method.getTypeParameters(), 
+                                method,
+                                method.getType(), method.getName(), method.getParameterLists().get(0).getParameters(),
+                                Decl.isAncestorLocal(model));
+                        classBuilder.defs(concreteMemberDelegate);
+                                            
+                    }
+                }
+            } else {
+                // TODO
+                //throw new RuntimeException("non-Method concrete members not supported yet");
+            }
         }
         
         // Add $impl instances for the whole interface hierarchy
+        satisfiedInterfaces.add(iface);
         for (TypeDeclaration decl : iface.getSatisfiedTypeDeclarations()) {
             companionFields(model, classBuilder, satisfiedType, (Interface)decl, satisfiedInterfaces);
         }
         
+    }
+
+    private JCMethodDecl generateDelegate(Interface iface,
+            final long mods,
+            final java.util.List<TypeParameter> typeParameters,
+            TypedDeclaration resultType,
+            final ProducedType methodType,
+            final String methodName, final java.util.List<Parameter> parameters, boolean ancestorLocal) {
+        final MethodDefinitionBuilder concreteWrapper = MethodDefinitionBuilder.method(gen(), ancestorLocal, true, methodName);
+        concreteWrapper.modifiers(mods);//TODO
+        concreteWrapper.annotations(makeAtOverride());// TODO Other Annos?
+        for (TypeParameter tp : typeParameters) {
+            concreteWrapper.typeParameter(tp);
+        }
+        concreteWrapper.resultType(resultType);
+        ListBuffer<JCExpression> arguments = ListBuffer.<JCExpression>lb();
+        for (Parameter param : parameters) {
+            concreteWrapper.parameter(param);
+            arguments.add(makeQuotedIdent(param.getName()));
+        }
+        JCExpression expr = make().Apply(
+                null,  // TODO Type args
+                makeSelect(getCompanionFieldName(iface), methodName),
+                arguments.toList());
+        if (isVoid(methodType)) {
+            concreteWrapper.body(gen().make().Exec(expr));
+        } else {
+            concreteWrapper.body(gen().make().Return(expr));
+        }
+        final JCMethodDecl build = concreteWrapper.build();
+        return build;
     }
 
     private Boolean hasImpl(Interface iface) {
@@ -281,7 +359,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     private void buildCompanion(final Tree.ClassOrInterface def,
-            final ClassOrInterface model, ClassDefinitionBuilder classBuilder) {
+            final Interface model, ClassDefinitionBuilder classBuilder) {
         at(def);
         // Give the $impl companion a $this field...
         ClassDefinitionBuilder companionBuilder = classBuilder.getCompanionBuilder();
