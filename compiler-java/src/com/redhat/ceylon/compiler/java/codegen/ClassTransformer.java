@@ -29,7 +29,9 @@ import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.java.util.Strategy;
@@ -128,38 +130,15 @@ public class ClassTransformer extends AbstractTransformer {
                     
                 }
             }
-            
-            
+            Set<Interface> satisfiedInterfaces = new HashSet<Interface>();
             if (def.getSatisfiedTypes() != null) {
                 for (Tree.SimpleType satisfiedType : def.getSatisfiedTypes().getTypes()) {
                     TypeDeclaration decl = satisfiedType.getDeclarationModel();
                     if (!(decl instanceof Interface)) {
                         continue;
                     }
-                    boolean goRaw = false;
                     Interface iface = (Interface)decl;
-
-                    Map<TypeDeclaration, java.util.List<ProducedType>> m = new HashMap<TypeDeclaration, java.util.List<ProducedType>>();
-                    for (ProducedType t : model.getType().getSupertypes()) {
-                        TypeDeclaration declaration = t.getDeclaration();
-                        java.util.List<ProducedType> typeArguments = t.getTypeArgumentList();
-                        java.util.List<ProducedType> existingTypeArgs = m.put(declaration, typeArguments);
-                        if (existingTypeArgs != null) {
-                            goRaw = true;
-                            break;
-                        }
-                    }
-
-                    // If there is no $impl (e.g. implementing a Java interface) 
-                    // then don't instantiate it...
-                    if (hasImpl(iface)) {
-                        // ... otherwise for each satisfied interface, 
-                        // instantiate an instance of the 
-                        // companion class in the constructor and assign it to a
-                        // $Interface$impl field
-                        transformInstantiateCompanions(classBuilder,
-                                satisfiedType, iface, goRaw);
-                    }
+                    companionFields(model, classBuilder, satisfiedType, iface, satisfiedInterfaces);
                     
                     if (!decl.isToplevel()) {// TODO What about local interfaces?
                         // Generate $outer() impl if implementing an inner interface
@@ -205,6 +184,42 @@ public class ClassTransformer extends AbstractTransformer {
             .caseTypes(model.getCaseTypes())
             .init((List<JCStatement>)visitor.getResult().toList())
             .build();
+    }
+
+    private void companionFields(final ClassOrInterface model,
+            ClassDefinitionBuilder classBuilder, Tree.SimpleType satisfiedType,
+            Interface iface, Set<Interface> satisfiedInterfaces) {
+        if (satisfiedInterfaces.contains(iface)) {
+            return;
+        }
+        boolean goRaw = false;
+        Map<TypeDeclaration, java.util.List<ProducedType>> m = new HashMap<TypeDeclaration, java.util.List<ProducedType>>();
+        for (ProducedType t : model.getType().getSupertypes()) {
+            TypeDeclaration declaration = t.getDeclaration();
+            java.util.List<ProducedType> typeArguments = t.getTypeArgumentList();
+            java.util.List<ProducedType> existingTypeArgs = m.put(declaration, typeArguments);
+            if (existingTypeArgs != null) {
+                goRaw = true;
+                break;
+            }
+        }   
+        // If there is no $impl (e.g. implementing a Java interface) 
+        // then don't instantiate it...
+        if (hasImpl(iface)) {
+            // ... otherwise for each satisfied interface, 
+            // instantiate an instance of the 
+            // companion class in the constructor and assign it to a
+            // $Interface$impl field
+            transformInstantiateCompanions(classBuilder,
+                    satisfiedType, iface, goRaw);
+            satisfiedInterfaces.add(iface);
+        }
+        
+        // Add $impl instances for the whole interface hierarchy
+        for (TypeDeclaration decl : iface.getSatisfiedTypeDeclarations()) {
+            companionFields(model, classBuilder, satisfiedType, (Interface)decl, satisfiedInterfaces);
+        }
+        
     }
 
     private Boolean hasImpl(Interface iface) {
