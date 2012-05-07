@@ -180,6 +180,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             boolean exprBoxed,
             BoxingStrategy boxingStrategy, ProducedType expectedType) {
         
+        boolean canCast = false;
+        
         if (expectedType != null
                 && !(simplifyType(expectedType).getDeclaration() instanceof TypeParameter) 
                 // don't add cast to an erased type 
@@ -191,29 +193,41 @@ public class ExpressionTransformer extends AbstractTransformer {
                 JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.TYPE_ARGUMENT);
                 exprType = expectedType;
                 result = make().TypeCast(targetType, result);
-            }else if(exprBoxed){ // unboxed types certainly don't need casting for variance
-                VarianceCastResult varianceCastResult = getVarianceCastResult(expectedType, exprType);
-                if(varianceCastResult != null){
-                    // Types with variance types need a type cast, let's start with a raw cast to get rid
-                    // of Java's type system constraint (javac doesn't grok multiple implementations of the same
-                    // interface with different type params, which the JVM allows)
-                    JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.WANT_RAW_TYPE);
-                    // do not change exprType here since this is just a Java workaround
-                    result = make().TypeCast(targetType, result);
-                    // now, because a raw cast is losing a lot of info, can we do better?
-                    if(varianceCastResult.isBetterCastAvailable()){
-                        // let's recast that to something finer than a raw cast
-                        targetType = makeJavaType(varianceCastResult.castType, AbstractTransformer.TYPE_ARGUMENT);
-                        result = make().TypeCast(targetType, result);
-                    }
-                }
-            }
+            }else 
+                canCast = true;
         }
 
         // we must do the boxing after the cast to the proper type
         JCExpression ret = boxUnboxIfNecessary(result, exprBoxed, exprType, boxingStrategy);
+        // now check if we need variance casts
+        if(canCast)
+            ret = applyVarianceCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType);
         ret = applyJavaTypeConversions(ret, exprType, expectedType, boxingStrategy);
         return ret;
+    }
+
+    private JCExpression applyVarianceCasts(JCExpression result, ProducedType exprType,
+            boolean exprBoxed,
+            BoxingStrategy boxingStrategy, ProducedType expectedType) {
+        // unboxed types certainly don't need casting for variance
+        if(exprBoxed || boxingStrategy == BoxingStrategy.BOXED){
+            VarianceCastResult varianceCastResult = getVarianceCastResult(expectedType, exprType);
+            if(varianceCastResult != null){
+                // Types with variance types need a type cast, let's start with a raw cast to get rid
+                // of Java's type system constraint (javac doesn't grok multiple implementations of the same
+                // interface with different type params, which the JVM allows)
+                JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.WANT_RAW_TYPE);
+                // do not change exprType here since this is just a Java workaround
+                result = make().TypeCast(targetType, result);
+                // now, because a raw cast is losing a lot of info, can we do better?
+                if(varianceCastResult.isBetterCastAvailable()){
+                    // let's recast that to something finer than a raw cast
+                    targetType = makeJavaType(varianceCastResult.castType, AbstractTransformer.TYPE_ARGUMENT);
+                    result = make().TypeCast(targetType, result);
+                }
+            }
+        }
+        return result;
     }
 
     private JCExpression applyJavaTypeConversions(JCExpression ret, ProducedType exprType, ProducedType expectedType, BoxingStrategy boxingStrategy) {
