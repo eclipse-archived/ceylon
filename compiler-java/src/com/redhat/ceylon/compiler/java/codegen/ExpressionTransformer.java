@@ -191,12 +191,22 @@ public class ExpressionTransformer extends AbstractTransformer {
                 JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.TYPE_ARGUMENT);
                 exprType = expectedType;
                 result = make().TypeCast(targetType, result);
-            }else if(exprBoxed // unboxed types certainly don't need casting for variance  
-                    && isRawCastNecessaryForVariance(expectedType, exprType)){
-                // Types with variance types need a type cast
-                JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.WANT_RAW_TYPE);
-                // do not change exprType here since this is just a Java workaround
-                result = make().TypeCast(targetType, result);
+            }else if(exprBoxed){ // unboxed types certainly don't need casting for variance
+                VarianceCastResult varianceCastResult = getVarianceCastResult(expectedType, exprType);
+                if(varianceCastResult != null){
+                    // Types with variance types need a type cast, let's start with a raw cast to get rid
+                    // of Java's type system constraint (javac doesn't grok multiple implementations of the same
+                    // interface with different type params, which the JVM allows)
+                    JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.WANT_RAW_TYPE);
+                    // do not change exprType here since this is just a Java workaround
+                    result = make().TypeCast(targetType, result);
+                    // now, because a raw cast is losing a lot of info, can we do better?
+                    if(varianceCastResult.isBetterCastAvailable()){
+                        // let's recast that to something finer than a raw cast
+                        targetType = makeJavaType(varianceCastResult.castType, AbstractTransformer.TYPE_ARGUMENT);
+                        result = make().TypeCast(targetType, result);
+                    }
+                }
             }
         }
 
@@ -257,17 +267,33 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         return ret;
     }
+    
+    private static class VarianceCastResult {
+        ProducedType castType;
+        
+        VarianceCastResult(ProducedType castType){
+            this.castType = castType;
+        }
+        
+        private VarianceCastResult(){}
+        
+        boolean isBetterCastAvailable(){
+            return castType != null;
+        }
+    }
+    
+    private static final VarianceCastResult RawCastVarianceResult = new VarianceCastResult();
 
-    private boolean isRawCastNecessaryForVariance(ProducedType expectedType, ProducedType exprType) {
+    private VarianceCastResult getVarianceCastResult(ProducedType expectedType, ProducedType exprType) {
         // exactly the same type, doesn't need casting
         if(exprType.isExactly(expectedType))
-            return false;
+            return null;
         // if we're not trying to put it into an interface, there's no need
         if(!(expectedType.getDeclaration() instanceof Interface))
-            return false;
+            return null;
         // the interface must have type arguments, otherwise we can't use raw types
         if(expectedType.getTypeArguments().isEmpty())
-            return false;
+            return null;
         // see if any of those type arguments has variance
         boolean hasVariance = false;
         for(TypeParameter t : expectedType.getTypeArguments().keySet()){
@@ -277,7 +303,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         }
         if(!hasVariance)
-            return false;
+            return null;
         // see if we're inheriting the interface twice with different type parameters
         java.util.List<ProducedType> satisfiedTypes = new LinkedList<ProducedType>();
         for(ProducedType superType : exprType.getSupertypes()){
@@ -286,14 +312,25 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         // we need at least two instantiations
         if(satisfiedTypes.size() <= 1)
-            return false;
+            return null;
+        boolean needsCast = false;
         // we need at least one that differs
         for(ProducedType superType : satisfiedTypes){
-            if(!exprType.isExactly(superType))
-                return true;
+            if(!exprType.isExactly(superType)){
+                needsCast = true;
+                break;
+            }
         }
-        // only inheriting from the same type
-        return false;
+        // no cast needed if they are all the same type
+        if(!needsCast)
+            return null;
+        // find the better cast match
+        for(ProducedType superType : satisfiedTypes){
+            if(expectedType.isExactly(superType))
+                return new VarianceCastResult(superType);
+        }
+        // nothing better than a raw cast (Stef: not sure that can happen)
+        return RawCastVarianceResult;
     }
 
     //
