@@ -273,6 +273,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         for(TypeParameter t : expectedType.getTypeArguments().keySet()){
             if(t.isContravariant() || t.isCovariant()){
                 hasVariance = true;
+                break;
             }
         }
         if(!hasVariance)
