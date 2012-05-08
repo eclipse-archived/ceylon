@@ -107,7 +107,10 @@ public class ClassDefinitionBuilder {
     }
     
     public static ClassDefinitionBuilder methodWrapper(AbstractTransformer gen, boolean ancestorLocal, String name, boolean shared) {
-        return new ClassDefinitionBuilder(gen, ancestorLocal, name)
+        final ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, ancestorLocal, name);
+        builder.containingClassBuilder = gen.current();
+        gen.replace(builder);
+        return builder
             .annotations(gen.makeAtMethod())
             .modifiers(FINAL, shared ? PUBLIC : 0)
             .constructorModifiers(PRIVATE);

@@ -98,7 +98,7 @@ public class Strategy {
     }
 
     public static boolean needsOuterMethodInCompanion(ClassOrInterface model) {
-        return !model.isToplevel();
+        return Decl.withinClassOrInterface(model);
     }
     
     public static boolean useField(Value attr) {
