@@ -8,9 +8,7 @@ class TestSome(Integer i, Integer... items) satisfies Some<Integer> {
 
   value sap = SequenceBuilder<Integer>();
   sap.append(i);
-  if (nonempty items) {
     sap.appendAll(items...);
-  }
   value elems = sap.sequence;
 
   shared actual Iterator<Integer> iterator { return elems.iterator; }

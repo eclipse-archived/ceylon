@@ -3,7 +3,7 @@ import assert {...}
 class TestColl(Integer... elements) satisfies Collection<Integer> {
 
   shared actual TestColl clone { return TestColl(elements...); }
-  shared actual Integer size = elements.size;
+  shared actual Integer size = elements.sequence.size;
   shared actual Iterator<Integer> iterator { return elements.iterator; }
 
 }
