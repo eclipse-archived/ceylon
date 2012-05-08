@@ -28,6 +28,7 @@ import static com.sun.tools.javac.code.Flags.PROTECTED;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -247,20 +248,29 @@ public class ClassTransformer extends AbstractTransformer {
                 // if it has the *most refined* default concrete member, 
                 // then generate a method on the class
                 // delegating to the $impl instance
-                if (member.equals(model.getMember(member.getName(), null))) {
-                    if (member.isDefault()) {
-                        final JCMethodDecl concreteMemberDelegate = makeDelegateToCompanion(iface,
-                                PUBLIC, method.getTypeParameters(), 
-                                method,
-                                method.getType(), method.getName(), method.getParameterLists().get(0).getParameters(),
-                                Decl.isAncestorLocal(model));
-                        classBuilder.defs(concreteMemberDelegate);
-                                            
-                    }
+                if (needsCompanionDelegate(model, member)) {
+                    final JCMethodDecl concreteMemberDelegate = makeDelegateToCompanion(iface,
+                            PUBLIC, method.getTypeParameters(), 
+                            method,
+                            method.getType(), method.getName(), method.getParameterLists().get(0).getParameters(),
+                            Decl.isAncestorLocal(model));
+                    classBuilder.defs(concreteMemberDelegate);
+                     
                 }
-            } else {
-                // TODO concrete getters
-            }
+            } else if (member instanceof Getter) {// Concrete getter
+                Getter getter = (Getter)member;
+                if (needsCompanionDelegate(model, member)) {
+                    final JCMethodDecl getterDelegate = makeDelegateToCompanion(iface, 
+                            PUBLIC | (getter.isDefault() ? 0 : FINAL), 
+                            Collections.<TypeParameter>emptyList(), 
+                            getter, 
+                            getter.getType(), 
+                            Util.getGetterName(member), 
+                            Collections.<Parameter>emptyList(),
+                            Decl.isAncestorLocal(model));
+                    classBuilder.defs(getterDelegate);
+                }
+            } 
         }
         
         // Add $impl instances for the whole interface hierarchy
@@ -269,6 +279,11 @@ public class ClassTransformer extends AbstractTransformer {
             concreteMembersFromSuperinterfaces(model, classBuilder, satisfiedType, (Interface)decl, satisfiedInterfaces);
         }
         
+    }
+
+    private boolean needsCompanionDelegate(final Class model, Declaration member) {
+        return member.equals(model.getMember(member.getName(), null))
+                && member.isDefault();
     }
 
     /**
@@ -533,16 +548,22 @@ public class ClassTransformer extends AbstractTransformer {
             .build();
     }
 
-    public List<JCTree> transform(AttributeGetterDefinition decl) {
+    public List<JCTree> transform(AttributeGetterDefinition decl, boolean forCompanion) {
         String name = decl.getIdentifier().getText();
-        JCBlock body = statementGen().transform(decl.getBlock());
+        
         // TODO Support concrete getters on interfaces
-        return AttributeDefinitionBuilder
+        final AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
             .getter(this, name, decl.getDeclarationModel())
-            .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), false))
-            .isActual(Decl.isActual(decl))
-            .getterBlock(body)
-            .build();
+            .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), forCompanion));
+        
+        if (Decl.withinClass(decl) || forCompanion) {
+            JCBlock body = statementGen().transform(decl.getBlock());
+            builder.getterBlock(body);
+            builder.isActual(Decl.isActual(decl));
+        } else {
+            builder.isFormal(true);
+        }
+        return builder.build();
     }
 
     private int transformClassDeclFlags(ClassOrInterface cdecl) {
