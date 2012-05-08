@@ -67,22 +67,6 @@ TypeConstraints?
         
         <programlisting>TypeDeclaration: Class | Object | Interface</programlisting>
         
-        <!--
-        <para>All toplevel declarations annotated <literal>shared</literal> must have the 
-        same name as the compilation unit filename (after removing the file suffix 
-        <literal>.ceylon</literal>). For example, a <literal>shared</literal> toplevel 
-        class named <literal>Person</literal> must be defined in a file named 
-        <literal>Person.ceylon</literal>. A <literal>shared</literal> toplevel method 
-        named <literal>hello()</literal> must be defined in a file named 
-        <literal>hello.ceylon</literal>. A <literal>shared</literal> toplevel attribute 
-        named <literal>pi</literal> must be defined in a file named <literal>pi.ceylon</literal>. 
-        </para>
-        
-        <comment><para>TODO: This doesn't work on platforms with case-insensitive filenames. 
-        If I have a method named <literal>x</literal>, and a class named <literal>X</literal>,
-        the filesystem can't distinguish them. We need a workaround!</para></comment>
-        -->
-        
         <para>A toplevel declaration may not be annotated <literal>formal</literal>,
         <literal>default</literal>, <!--literal>definite</literal--> or
         <literal>actual</literal>.</para>
@@ -243,7 +227,7 @@ TypeConstraints?
         
         <comment><para>TODO: Currently, inheritance of two members with the same name
         from different unrelated types always results in a compile error. A similar 
-        problem arises with introductions. We could let you resolve these kinds of problem 
+        problem arises with introductions. We could let you resolve this class of problem 
         by aliasing a member of a type you're importing. This is a bit similar to what 
         Eiffel does, but it would be a lexical thing, scoped to the compilation unit. 
         For example:</para>
@@ -1063,13 +1047,6 @@ SequencedParam?
         <literal>value</literal> or <literal>function</literal> declaration with an 
         inferred type.--></para>
         
-        <!--
-        <comment><para>TODO: we could perhaps slightly relax the restrictions here. It's 
-        probably OK to let you have expression statements and control structures in the 
-        second part of the class body, just not specification or initialization 
-        statements.</para></comment>
-        -->
-        
     </section>
            
     <!--section id="classmembervisibility">
@@ -1323,19 +1300,12 @@ SequencedParam?
         <para>A block local class may not be annotated <literal>formal</literal> or 
         <literal>default</literal>.</para>
 
-        <!-- 
-        <para>Alternatively, a class may omit a class body entirely. Then the class must 
-        be a member class and must be annotated <literal>formal</literal>.</para>
-         
-        <programlisting>shared formal class Buffer(Character...) satisfies Sequence&lt;Character&gt;;</programlisting>
-        
-        <para>In this case, also, it is considered a <literal>formal</literal> member 
-        class.</para>
-        
-        <comment><para>TODO: In this case, do we need to limit the class to specifying 
-        at most one supertype? Not sure exactly what limitations exist at the bytecode
-        level.</para></comment>
-        -->
+        <comment><para>Note: a <literal>formal</literal> member class would be a
+        reasonably syntax for declaring virtual types. We think we don't need 
+        virtual types because they don't offer much that type parameters don't
+        already provide. For example:</para>
+        <programlisting>shared formal class Buffer(Character...) 
+        satisfies Sequence&lt;Character&gt;;</programlisting></comment>
         
         <!--
         <para>A member of an <literal>abstract</literal> or <literal>formal</literal> class 
@@ -1575,7 +1545,8 @@ String escapedSearchString = sql.escape(searchString);</programlisting>
         abstract return type.</para></comment>
         
         <comment><para>TODO: Should we support <literal>object</literal>s as part of the
-        expression syntax, like anonymous classes in Java. The syntax would be, for example:</para>
+        expression syntax, like anonymous classes in Java. The syntax would be, for 
+        example:</para>
         <programlisting>return object extends AbstractReader(stream) { 
         ...
     };</programlisting>
@@ -1590,10 +1561,12 @@ String escapedSearchString = sql.escape(searchString);</programlisting>
         <literal>object x satisfies X { ... }</literal>.</para>
         </comment>
         
+        <!--
         <comment><para>TODO: We could add a built-in type constructor to give access to 
         the concrete type of an <literal>object</literal>. It would look something like
         <literal>type&lt;sql&gt;</literal> and in theory you could let it accept any
         expression, even stuff like <literal>type&lt;foo.x+bar.y&gt;</literal>.</para></comment>
+        -->
         
     </section>
     
@@ -1629,9 +1602,6 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         <para>A non-<literal>abstract</literal> class may not have an <literal>of</literal> 
         clause.<!--A <literal>final</literal> class may not have an <literal>of</literal> 
         clause. --></para>
-        
-        <comment><para>TODO: We could default the <literal>extends Case()</literal>
-        for classes with an <literal>of</literal> clause.</para></comment>
         
         <!--
         <comment><para>TODO: We could let a non-<literal>abstract</literal> class
@@ -1672,74 +1642,6 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         
     </section>
     
-    
-    <!-- <programlisting>shared interface TransactionPropagation {
-    void propagate(Transaction tx);
-}
-
-shared choice TransactionPropagationStyle 
-        satisfies TransactionPropagation {
-        
-    abstract class BaseTransactionPropagation()
-            satisfies TransactionPropagation {
-        
-        shared actual void propagate(Transaction tx) {
-            if (tx.inProgress) {
-                inProgress(tx);
-            }
-            else {
-                notInProgress(tx);
-            }
-        }
-        
-        shared void inProgress(Transaction tx);
-        
-        shared void notInProgress(Transaction tx);
-        
-    }
-    
-    shared object required 
-            extends BaseTransactionPropagation() { 
-        shared actual void inProgress(Transaction tx) {}
-        shared actual void notInProgress(Transaction tx) {
-            tx.begin();
-        }
-    }
-    
-    shared object supports 
-            extends BaseTransactionPropagation() {
-        shared actual void inProgress(Transaction tx) {}
-        shared actual void notInProgress(Transaction tx) {}
-    }
-    
-    shared object mandatory 
-            extends BaseTransactionPropagation() { 
-        shared actual void inProgress(Transaction tx) {}
-        shared actual void notInProgress(Transaction tx) {
-            throw TransactionMandatory();
-        }
-    }
-    
-    shared object notSupported 
-            extends BaseTransactionPropagation() { 
-        shared actual void inProgress(Transaction tx) {
-            throw TransactionNotSupported();
-        }
-        shared actual void notInProgress(Transaction tx) {}
-    }
-    
-    shared object requiresNew 
-            extends BaseTransactionPropagation() { 
-        shared actual void inProgress(Transaction tx) {
-            throw TransactionRequiresNew();
-        }
-        shared actual void notInProgress(Transaction tx) {
-            tx.begin();
-        }
-    }
-    
-}</programlisting>-->
-        
     <section id="methods">
         <title>Methods</title>
         
@@ -2305,6 +2207,7 @@ else {
             <para>Toplevel methods cannot be refined, and so toplevel method invocation 
             is never polymorphic.</para>
             
+            <!--
             <comment><para>TODO: are you allowed to refine the default value of a 
             defaulted parameter?</para></comment>
             
@@ -2313,6 +2216,7 @@ else {
             argument invocation, you just use the names declared by the member of the 
             compile-time type, and they are mapped positionally to the parameters of 
             the refining method.</para></comment>
+            -->
         
         </section>
         
@@ -2768,39 +2672,13 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
             attributes?</para></comment>
             
             <comment><para>TODO: Why not also allow this for <literal>default</literal>
-            attributes and methods??</para></comment>
+            attributes and methods?</para></comment>
             
             <para>Toplevel attributes cannot be refined, and so toplevel attribute 
             evaluation and assignment is never polymorphic.</para>
             
         </section>
-        
-        <!--section id="getterandsettermethods">
-            <title>Getter and setter methods</title>
-            
-            <para>For each attribute, one or two methods exist implicitly:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>a <emphasis>getter method</emphasis> with no parameters 
-                    which returns the attribute type, and</para>
-                </listitem>
-                <listitem>
-                    <para>a <literal>void</literal> <emphasis>setter method</emphasis> 
-                    with a single parameter of the attribute type, if the attribute is 
-                    <literal>variable</literal>.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <para>These methods may be referred to using the <literal>get</literal> and 
-            <literal>set</literal> keywords, for example:</para>
-            
-            <programlisting>String name = get person.name();</programlisting>
-            <programlisting>set person.name(newName);</programlisting>
-            
-        
-        </section-->
-                
+                        
     </section>
         
     <section id="annotations">
@@ -3032,20 +2910,13 @@ shared deprecated</programlisting>
         <para>By default, <literal>Integer</literal> and <literal>Float</literal> 
         are assumed to represent 64-bit values.</para>
         
-        <!--
-        <para>The annotation names in this section are treated as keywords by 
-        the Ceylon compiler. This is a performance optimization to minimize 
-        the need for lookahead in the parser.</para>
-        -->
-        
-        <!--
         <comment><para>TODO: should we have <literal>final</literal> to specify 
         that a class may not be extended?</para></comment>
-        -->
         
         <!--
         <comment><para>TODO: should we make <literal>actual</literal> a keyword, 
-        to save the effort of redeclaring the attribute type or method return type?</para></comment>
+        to save the effort of redeclaring the attribute type or method return 
+        type?</para></comment>
         -->
         
         <comment><para>TODO: how hard would it be to add a <literal>recursive</literal>

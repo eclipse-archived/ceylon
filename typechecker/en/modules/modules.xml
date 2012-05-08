@@ -622,9 +622,11 @@ module org.hibernate.test '3.0.0.beta' {
         the compilation unit and the imported module version specified by 
         the module descriptor.</para>
         
+        <!--
         <comment><para>TODO: one slight issue with this is that with 
         wildcard imports it is sometimes ambiguous which package a class
         belongs to.</para></comment>
+        -->
         
         <para>Each version of each module is loaded using a different class 
         loader. Classes inside a module have access to other classes in the 

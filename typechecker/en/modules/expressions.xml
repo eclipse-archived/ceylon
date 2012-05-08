@@ -41,9 +41,9 @@
     <comment><para>TODO: We need a definition of a "constant expression".
     We might use it for:</para>
     <itemizedlist>
-    <listitem><literal>case</literal> expressions (when are these evaluated?),</listitem>
-    <listitem>annotations available at compile time,</listitem>
-    <listitem>default parameter values (when are these evaluated?), and even</listitem>
+    <!--listitem><literal>case</literal> expressions (when are these evaluated?),</listitem-->
+    <listitem>annotations available at compile time, and even perhaps</listitem>
+    <!--listitem>default parameter values (when are these evaluated?), and even</listitem-->
     <listitem>initializer/specifier expressions in declaration section of class body.</listitem>
     </itemizedlist>
     <para>For example we could follow Java's very restrictive model, and say 
@@ -88,11 +88,11 @@
         
         <programlisting>Person myself(Person me) { return me; }
 Person p = ...;
-assert() that (myself(p)&identical;p); //assertion never fails</programlisting>
+assert(myself(p)&identical;p); //assertion never fails</programlisting>
 
         <programlisting>Semaphore s = Semaphore();
 this.semaphore = s;
-assert() that (semaphore&identical;s); //assertion never fails</programlisting>
+assert(semaphore&identical;s); //assertion never fails</programlisting>
         
         <para>A new object is produced by execution of a class instantiation expression.
         The Ceylon compiler guarantees that if execution of a class initializer terminates
@@ -314,10 +314,12 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <programlisting>shared Float pi = 3.14159;</programlisting>
         
+        <!--
         <comment><para>TODO: Actually, this is not the best definition,
         since if we assign the literal to <literal>Decimal</literal>,
         we don't want it to go through an intermediate conversion to
         floating point representation.</para></comment>
+        -->
         
     </section>
     
@@ -328,8 +330,6 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <literal>Character</literal>.</para>
                 
         <programlisting>if ( string[i] &equals; `+` ) { ... }</programlisting>
-        
-        <comment><para>TODO: do we really need character literals?</para></comment>
         
     </section>
     
@@ -828,50 +828,6 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         initializer reference results in instantiation of the class.</para>
         
         </section>
-        
-        <!--
-        <section>
-            <title>Method reference typing</title>
-        
-        <para>Method references do not, strictly speaking, have types. However, the schema
-        of a method reference determines if it can appear to the right of the <literal>=</literal>
-        specifier in a method declaration, or as an argument to a functional parameter. In this
-        case we say the method reference <emphasis>conforms</emphasis> to the schema of the
-        method or functional parameter.</para>
-
-        <para>A method reference schema <emphasis>conforms</emphasis> to a method or functional 
-        parameter schema if:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>the return type of the method reference is assignable to the declared
-                return type of the method or functional parameter, and</para>
-            </listitem>
-            <listitem>
-                <para> the method reference has exactly the same number of parameters, 
-                with the same types, as the method or functional parameter.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Thus, method schemas are covariant in return type, and invariant in parameter 
-        types.</para>
-        
-        <para>The schema also restricts the the argument list that can be specified when the
-        method reference is invoked.</para>
-        
-        <para>Additionally, method references are assignable to <literal>Callable&lt;X&gt;</literal>
-        where <literal>X</literal> is the return type. Note that <literal>Callable</literal>
-        does not capture parameter types, and so references of type 
-        <literal>Callable&lt;X&gt;</literal> are therefore not method references.</para>
-        
-        <comment><para>TODO: could we make method references contravariant in the parameter
-        types? If so, we should use the same rule for refining.</para></comment>
-        
-        <comment><para>TODO: does a method schema with a defaulted parameter conform to a method 
-        schema without that parameter?</para></comment>
-        
-        </section>
-         -->
          
         <section id="callableobjectsasmethodimplementations">
             <title>Callable objects as method implementations</title>
@@ -1104,24 +1060,8 @@ value comp = order(1,-1);</programlisting>
             <programlisting>log.info("Hello world!")</programlisting>
             <programlisting>log.info { message = "Hello world!"; }</programlisting>
             <programlisting>printer.print { join = ", "; "Gavin", "Emmanuel", "Max", "Steve" }</programlisting>
-            <!--programlisting>printer.print { "Names: ", from (Person p in people) select (p.name) }</programlisting-->
             <programlisting>hash(default, firstName, initial, lastName)</programlisting>
             <programlisting>hash { algorithm=default; firstName, initial, lastName }</programlisting>
-
-            <!-- 
-            <programlisting>set(person.name)("Gavin")</programlisting>
-            <programlisting>get(process.arguments)()</programlisting>
-            
-            <programlisting>amounts.sort() by (Float x, Float y) (x&lt;=&gt;y)</programlisting>
-            <programlisting>people.each() perform (Person p) { log.info(p.name); }</programlisting>
-            <programlisting>map.filter() by (String key->String item) (item nonempty)</programlisting>
-                        
-            <programlisting>from (people) where (Person p) (p.age>18) select (Person p) (p.name)</programlisting>
-            <programlisting>iterate (map) 
-    perform (String name->Object item) { 
-        log.info("Entry: " name "->" item ""); 
-    };</programlisting>
-             -->
     
             <programlisting>perform {
     as = subject;
@@ -1182,8 +1122,10 @@ value comp = order(1,-1);</programlisting>
                 </listitem>
             </itemizedlist>
             
+            <!--
             <comment><para>TODO: alternatively, we could support a Java-style syntax of form
             <literal>String[] { "hello", "world" }</literal>.</para></comment>
+            -->
         
         </section>
         
@@ -1470,205 +1412,6 @@ value comp = order(1,-1);</programlisting>
 
         </section>
         
-        <!--
-        <section id="callablearguments">
-            <title>Inline callable arguments</title>
-            
-        <para>After a positional argument list, arguments to callable parameters 
-        may be specified with certain punctuation eliminated:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>the return type is not declared,</para>
-            </listitem>
-            <listitem>
-                <para>if the callable parameter has an empty parameter list, the 
-                empty parentheses may be eliminated, and</para>
-            </listitem>
-            <listitem>
-                <para>if the body of the method implementation consists of a single
-                <literal>return</literal> directive followed by a parenthesized
-                expression, the braces and <literal>return</literal> keyword may be 
-                eliminated.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>These arguments are called an <emphasis>inline callable arguments</emphasis> 
-        of a positional argument invocation. (This is what Ceylon provides instead of
-        lambda expressions.)</para>
-                
-        <programlisting>FunctionalArguments: (MemberName FunctionalBody)+</programlisting>
-        
-        <programlisting>FunctionalBody: Params? ( Block | "(" Expression ")" )</programlisting>
-                
-        <para>For example:</para>
-        
-        <programlisting>where (Person p) (p.age>18)</programlisting>
-        
-        <programlisting>by (Float x, Float y) (x&lt;=&gt;y)</programlisting>
-        
-        <programlisting>ifTrue (x+1)</programlisting>
-        
-        <programlisting>perform { count+=1; }</programlisting>
-        
-        <programlisting>perform (Person p) { log.info(p.name); }</programlisting>
-        
-        <programlisting>by (String key->String item) (item nonempty)</programlisting>
-        
-        <para>Inline callable arguments are listed without any additional punctuation:</para>
-        
-        <programlisting>ifTrue (x+1) ifFalse (x-1)</programlisting>
-        
-        <programlisting>select (Person p) (p.name) where (Person p) (p.age>18)</programlisting>
-        
-        <para>Arguments must be listed in the same order as the parameters are declared by the 
-        method declaration.</para>
-        
-        <comment><para>TODO: should we outlaw <literal>return</literal> directives in the body
-        of an inline callable argument?</para></comment>
-        
-        <comment><para>TODO: Should we provide "true" anonymous function support, according to
-        the same syntax:</para>
-        <programlisting>void logName(Person p) = (Person p) { log.info(p.name); };</programlisting>
-        <programlisting>Boolean adult(Person p) = (Person p) (p.age>18);</programlisting>
-        <para>Perhaps readability would be enhanced by a keyword:</para>
-        <programlisting>void logName(Person p) = void (Person p) { log.info(p.name); };</programlisting>
-        <programlisting>Boolean adult(Person p) = function (Person p) (p.age>18);</programlisting>
-        </comment>
-        
-        <comment><para>TODO: Should we introduce the ability to declare functional parameters
-        outside the parentheses in method and class definitions, in order to better respect the 
-        intended invocation syntax? For example:</para>
-        <programlisting>shared void assert(Gettable&lt;String&gt; message) Boolean that { ... }</programlisting>
-        <programlisting>shared Value when&lt;Value&gt;(Boolean condition) Value then Value otherwise { ... }</programlisting>
-        <programlisting>shared void repeat(Integer repetitions) void times(Integer i) { ... }</programlisting>
-        </comment>
-        
-        <comment><para>TODO: Since this is our solution for "anonymous methods" (lambda 
-        expressions), we could reuse exactly the same syntax for something like Java's 
-        anonymous classes. Essentially this would be an inline anonymous class declaration
-        where you are allowed to omit the <literal>object</literal> keyword. So you would 
-        be left with the parameter name, the <literal>extends</literal> and/or 
-        <literal>satisfies</literal> clauses, and the class body. For example:</para>
-        <programlisting>File file = ... ;
-using() resource satisfies Usable {
-    shared actual void begin() {
-        file.create();
-    }
-    shared actual void end() { 
-        file.close();
-    }
-    shared actual void end(Exception e) { 
-        file.delete();
-    }
-}</programlisting>
-        <para>Perhaps the <literal>extends</literal> or <literal>satisfies</literal> 
-        clause could be inferred from the parameter type in some cases.</para></comment>
-        
-        <comment><para>TODO: Should we support type inference for the parameters?
-        For example:</para>
-        <programlisting>by (value x, value y) (x&lt;=&gt;y)</programlisting>
-        <programlisting>where (value p) (p.age>18)</programlisting></comment>
-
-        </section>
-        -->
-            <!--
-            <section id="resolvingoverloadedmethodsandtypes">
-                <title>Resolving direct invocations of overloaded methods and classes</title>
-                
-                <para>A direct invocation is resolved to a specific toplevel declaration or 
-                member of the receiving type at compile time, even if the method or class it 
-                refers to is overloaded.</para>
-                
-                <para>The <emphasis>initial signature</emphasis> of a method or class in a direct
-                invocation is formed by:</para>
-        
-                <itemizedlist>
-                    <listitem>
-                        <para>taking the signature of the parameter list of the class, or of the 
-                        first parameter list of the method, and</para>
-                    </listitem>
-                    <listitem>
-                        <para>replacing each occurrence of any type parameter of the receiving type
-                        in the signature with the type argument of that parameter in the callable 
-                        object expression type, and</para>
-                    </listitem>
-                    <listitem>
-                        <para>replacing each occurrence of any type parameter of the method or class 
-                        in the signature with the explicitly specified type argument, if type 
-                        arguments were specified, or with the first declared upper bound of the type 
-                        parameter, or <literal>ceylon.language.Void</literal> if the type parameter 
-                        has no declared upper bound.</para>
-                    </listitem>
-                </itemizedlist>
-        
-                <para>A direct invocation is <emphasis>resolveable</emphasis> if there is 
-                exactly one method, callable parameter, or class declaration which:</para>
-                
-                <itemizedlist>
-                    <listitem>
-                        <para>has the specified name,</para>
-                    </listitem>
-                    <listitem>
-                        <para>has the same number of parameters as specified argument expressions,</para>
-                    </listitem>
-                    <listitem>
-                        <para>has a type parameter list to which the type argument list conforms, 
-                        if type arguments were explicitly specified,</para>
-                    </listitem>
-                    <listitem>
-                        <para>specifies generic type constraints which are satisfied by the type 
-                        arguments, if type arguments were explicitly specified, and which</para>
-                    </listitem>
-                    <listitem>
-                        <para>has an initial signature to which the given argument expression types 
-                        are assignable.</para>
-                    </listitem>
-                </itemizedlist>
-                
-                <para>In the case of a method with multiple parameter lists, only the first
-                parameter list is considered.</para>
-                
-                <para>If more than one overloaded declaration has an initial signature to which 
-                the arguments are assignable, or if there is no declaration with an initial 
-                signature to which the arguments are assignable, the invocation or instantiation 
-                is illegal. (Note that Ceylon is stricter and simpler than Java with this rule.)</para>
-                                
-                <para>Finally, if type arguments were not explicitly specified, there must be a
-                combination of type arguments that can be substituted for the type parameters of
-                the method or type, respecting constraints upon the type parameters, that results
-                in a method schema such that:</para>
-                
-                <itemizedlist>
-                    <listitem>
-                        <para>the given argument expression types are assignable to the method
-                        parameter types after substitution of the type arguments, and</para>
-                    </listitem>
-                    <listitem>
-                        <para>the expression type of the invocation or instantiation, after 
-                        substitution of the type arguments, is assignable to the surrounding
-                        context.</para>
-                    </listitem>
-                </itemizedlist>
-                
-                <comment><para>TODO: Figure out the details of the type inference implied by this 
-                last bit!</para></comment>
-                
-                <para>If no such combination of type arguments exists, the invocation or 
-                instantiation is illegal. (Note that Ceylon is less strict than Java with this 
-                rule.)</para>
-                
-                <comment><para>TODO: We should be able to disambiguate <literal>X x(Y y)</literal>
-                from <literal>X x(Y... ys)</literal> when called as <literal>x(y)</literal>.</para></comment>
-                
-                <comment><para>TODO: For type constraints with an initialization parameter 
-                specification, the actual parameter type may not declare such signature, but
-                one of its superclasses may. Is the compiler allowed to infer the superclass
-                type in this situation? If so, what happens when both the class and its 
-                superclass satisfy the constraint?</para></comment>
-                
-            </section>
-            -->
     </section>
     
     <section id="evaluationandassignment">
@@ -2594,17 +2337,6 @@ createItemMethod.intercept()
         </tgroup>
         </table>
 
-    <!-- 
-    <comment><para>TODO: should <literal>^</literal> have a higher precedence than
-    <literal>|</literal> like in C and Java? No, cos no-one will ever remember which
-    comes first.</para></comment>
-    -->
-    <!--
-    <comment><para>TODO: should <literal>^,|,&amp;</literal> have a lower precedence
-    than <literal>+,-,*,/</literal> like in Ruby? No point, cos numbers are not bit 
-    strings and bit strings are not numbers in Ceylon.</para></comment>
-    -->
-    
         <comment><para>Note: if we decide to add <literal>&lt;&lt;</literal> and 
         <literal>&gt;&gt;</literal> later, we could give them the same precedence
         as <literal>**</literal>.</para></comment>
@@ -3412,10 +3144,12 @@ createItemMethod.intercept()
     from <literal>i</literal> to <literal>j-1</literal>, like in most other
     languages?</para></comment>
     
+    <!--
     <comment><para>TODO: I'm increasingly warming to the idea of a non-destructive 
     add ("with") operator <literal>@</literal> and <literal>@=</literal>. This is
     an operation that is very efficient for some kinds of data structures (linked lists, 
     etc).</para></comment>
+    -->
     
     </section>
     
@@ -3728,46 +3462,6 @@ createItemMethod.intercept()
             <entry><literal>Castable&lt;N&gt;</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
-        
-        <!--
-        <row><entry namest="first" nameend="last"><emphasis>Duration arithmetic</emphasis></entry></row>
-                
-        <row>
-            <entry><literal>lhs + rhs</literal></entry>
-            <entry>extend</entry>
-            <entry><literal>lhs.extend(rhs)</literal></entry>
-            <entry><literal>Duration</literal></entry>
-            <entry><literal>Duration</literal></entry>
-            <entry><literal>Duration</literal></entry>
-        </row>
-        
-        <row>
-            <entry><literal>lhs - rhs</literal></entry>
-            <entry>curtail</entry>
-            <entry><literal>lhs.curtail(rhs)</literal></entry>
-            <entry><literal>Duration</literal></entry>
-            <entry><literal>Duration</literal></entry>
-            <entry><literal>Duration</literal></entry>
-        </row>
-        
-        <row>
-            <entry><literal>lhs * rhs</literal></entry>
-            <entry>multiply</entry>
-            <entry><literal>lhs.times(rhs)</literal></entry>
-            <entry><literal>Duration</literal></entry>
-            <entry><literal>Integer</literal></entry>
-            <entry><literal>Duration</literal></entry>
-        </row>
-        
-        <row>
-            <entry><literal>lhs / rhs</literal></entry>
-            <entry>divide</entry>
-            <entry><literal>lhs.divide(rhs)</literal></entry>
-            <entry><literal>Duration</literal></entry>
-            <entry><literal>Integer</literal></entry>
-            <entry><literal>Duration</literal></entry>
-        </row>
-        -->
                 
     </tbody>
     </tgroup>

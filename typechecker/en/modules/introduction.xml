@@ -396,12 +396,15 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
     The argument of such a callable parameter may be either a reference to a 
     named method declared elsewhere, or a new method defined inline as part of 
     the method invocation. A method may even return an invocable reference to 
-    another method.</para>
+    another method.
+    </para>
+    
+    <programlisting>value result = find((String s) s.size>1, "C", "Java", "Ceylon");</programlisting>
     
     <!-- 
     <para>
-    Finally, nested method declarations receive a closure of 
-    immutable references defined in the surrounding scope.
+    Finally, nested method declarations receive a closure of immutable references 
+    defined in the surrounding scope.
     </para>
     -->
     </section>
@@ -591,71 +594,6 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
     </section>
     
     </section>
-    
-    <!-- 
-    <section id="sdkmodules">
-        <title>Modules included in the SDK</title>
-    
-    <para>The Ceylon SDK includes the following important modules:</para>
-    
-    <itemizedlist>
-        <listitem>
-            <para><literal>ceylon.language</literal> - basic types provided to support
-            built-in language features</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.module</literal> - the module runtime (based on
-            JBoss Modules)</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.collection</literal> - the collections framework
-            (with the underlying implementation provided by the Java collections
-            framework)</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.datetime</literal> - support for representing
-            dates and times (based on JSR-310)</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.security</literal> - the security API</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.io</literal> - the I/O facility (based on 
-            <literal>java.io</literal>)</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.concurrent</literal> - the concurrency API (based
-            on JSR-166)</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.http</literal> - the HTTP client and server (based 
-            on JBoss Netty)</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.transaction</literal> - the transaction server (based 
-            on JBoss Transactions)</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.rdbc</literal> - relational database connectivity 
-            (based on JDBC)</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.message</literal> - the message server (based 
-            on JBoss HornetQ)</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.xml</literal> - the XML parser</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.html</literal> - the HTML construction kit</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.compiler</literal> - a compiler for Ceylon source
-            code</para>
-        </listitem>
-    </itemizedlist>
-    </section>
-    -->
     
     <section id="parsingceylon">
         <title>Parsing and compiling the Ceylon language</title>

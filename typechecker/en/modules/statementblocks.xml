@@ -10,12 +10,7 @@
     declarations that are syntactically valid in the body of a toplevel declaration 
     are, in general, also syntactically valid in the body of a nested declaration or 
     of a control structure, and vice-versa.</para>
-    
-    <!--
-    <para>There exists just one exception to this rule: a class body may not end in a 
-    control directive.</para>
-    -->
-    
+        
     <comment><para>TODO: a named argument list looks very much like a block, but is 
     not currently defined that way. The language would be more regular if we decided to 
     just make it a block.</para></comment>
@@ -162,9 +157,6 @@
             </listitem>
         </itemizedlist>
         
-        <comment><para>TODO: Java prohibits a type name from hiding the name of an outer
-        type. Can we easily work around this limitation?</para></comment>
-        
         <para>The namespace of a declaration may not contain a second declaration with 
         the same name. (A parameter or type parameter is considered to be a declaration 
         that is directly contained by the body of the declaration it parameterizes.)</para>
@@ -208,39 +200,6 @@
         </itemizedlist>
         
     </section>
-    
-    <!--
-    <section id="declarationvisibility">
-        <title>Declaration visibility</title>
-    
-            <para>The scope of a declaration is governed by the body or package in which it 
-            occurs.</para>
-        
-            <para>Packages contain toplevel declarations. A declaration that occurs in a 
-            package is visible to any program element that occurs in any compilation unit of 
-            the package. The toplevel declaration may be annotated <literal>shared</literal>, 
-            in which case it is also visible to compilation units in other packages that 
-            <literal>import</literal> it.</para>
-        
-            <para>Blocks may contain declarations. A declaration that (indirectly) occurs in 
-            a block is a block local declaration&mdash;it is visible to a program element only 
-            if the program element occurs withing the lexical scope of the declaration. 
-            Therefore, a declaration contained in a block may not declare a visibility modifier. 
-            Nor may block local declarations be refined. Therefore, a block may not contain a 
-            declaration annotated <literal>formal</literal>, <literal>default</literal>, 
-            <literal>actual</literal>, or <literal>shared</literal>.</para>
-            
-            <para>Class and interface bodies also contain declarations. Unlike a declaration 
-            nested inside a block, a declaration directly contained in the body of a class or
-            interface may be annotated <literal>shared</literal>, making the member accessible 
-            outside the body of the class or interface. Furthermore, a declaration occurring 
-            in an interface body or in the declaration section of a class body is visible to 
-            all other program elements that occur in the same interface body or declaration 
-            section (unless it is a <literal>value</literal> or <literal>function</literal>
-            declaration with an inferred type).</para>
-            
-    </section>
-   -->
     
     <section id="scopeofdeclaration">
         <title>Scope of a declaration</title>
@@ -417,9 +376,6 @@
                 <para>the declaration is a toplevel declaration.</para>
             </listitem>
         </itemizedlist-->
-        
-        <comment><para>TODO: fix the referenceability rules for toplevel declarations that 
-        occur in different compilation units! Outlaw simple toplevel attributes?</para></comment>
         
         <para>Note that these rules have very different consequences for:</para>
         
@@ -772,9 +728,11 @@ String result = middleObject.string;</programlisting>
         local, block local attribute getter or block local method whose declaration indirectly 
         occurs earlier within the containing scope.</para>
         
+        <!--
         <comment><para>TODO: is there a good reason to add the following limitation: It may 
         not refer to <literal>variable</literal> locals defined within the containing method 
-        or attribute body.</para></comment> 
+        or attribute body.</para></comment>
+        --> 
         
         <para>When a member of a class is hidden by a block local declaration, the member 
         may be accessed via the self reference <literal>this</literal> or via the outer 
@@ -862,6 +820,7 @@ String result = middleObject.string;</programlisting>
         <para>Every block local declaration must be used somewhere inside the block in which
         it is declared.</para>
         
+        <!--
         <comment><para>TODO: should we allow blocks and control structures to be annotated, 
         for example:</para>
         <programlisting>doc "unsafe assignment" 
@@ -870,6 +829,7 @@ if (it.walksLikeADuck) { Duck duck = it; }</programlisting>
 <programlisting>doc "synchronize on the lock"
 try (lock) { ... }</programlisting>
 </comment>
+        -->
         
         <comment><para>TODO: Note that Java does not let you define an interface inside a 
         method, so we should either add the same restriction, or figure out workaround. 
@@ -913,15 +873,6 @@ try (lock) { ... }</programlisting>
         <programlisting>log.info("Hello");</programlisting>
         <programlisting>Main(p);</programlisting>
         
-        <!-- 
-        <comment><para>TODO: it would be possible to say that any expression is a valid
-        statement, but this seems to just open up more potential programming errors. So
-        I think it's better to limit statements to assignments, invocations
-        and instantiations.</para></comment>
-        <comment><para>TODO: should we let you leave off the <literal>;</literal> on the last
-        expression statement in the block, like we do for directives?</para></comment>
-        -->
-                
         </section>
         
         <section id="controldirectives">
@@ -943,10 +894,6 @@ try (lock) { ... }</programlisting>
             <listitem>the <literal>continue</literal> directive&mdash;to jump to the next iteration 
             of a loop, and</listitem>
             <listitem>the <literal>throw</literal> directive&mdash;to raise an exception.</listitem>
-            <!--
-            <listitem>the <literal>retry</literal> directive&mdash;to re-execute a <literal>try</literal> 
-            block, reinitializing all resources.</listitem>
-            -->
         </itemizedlist>
                 
         <programlisting>Directive: Return | Throw | Break | Continue</programlisting>
@@ -992,28 +939,7 @@ try (lock) { ... }</programlisting>
         no expression is specified, the directive is equivalent to <literal>throw Exception()</literal>.</para>
         
         <programlisting>Throw: "throw" Expression?</programlisting>
-        
-        <!--
-        <comment><para>TODO: Crazy idea: let <literal>...</literal> be a shortcut for
-        <literal>throw NotYetImplemented();</literal>. Too cute?</para></comment>
-        -->
-        
-        <!--
-        <para>A <literal>retry</literal> directive may not appear outside of a
-        <literal>catch</literal> block.</para>
-        
-        <programlisting>Retry: "retry"</programlisting>
-        -->
-        
-        <!--comment><para>TODO: We could support <literal>for/else</literal> loops 
-        that return a value by supporting a <literal>found expr</literal> directive. 
-        We could support conditionals that return a value by adding a 
-        <literal>then expr</literal> directive.</para></comment-->
-        
-        <!--
-        <comment><para>TODO: Should we have a <literal>retry</literal> directive?</para></comment>
-        -->
-        
+                
         </section>
         
         <section id="specificationstatements">
@@ -1287,13 +1213,7 @@ else {
         <title>Control structures</title>
         
         <para>Control of execution flow may be achieved using control directives and control 
-        structures. Control structures include conditionals, loops, and exception management. 
-        <!--For many tasks, the use of these traditional control
-        structures is considered bad style, and the use of expressions with functor 
-        parameters is preferred. However, control structures support the use of the 
-        <literal>return</literal> and <literal>break</literal> directives, whereas 
-        functors do not. Therefore, some tasks may be accomplished only with control 
-        structures.--></para>
+        structures. Control structures include conditionals, loops, and exception management.</para>
 
         <para>Ceylon provides the following control structures:</para>
         
@@ -1663,17 +1583,10 @@ if (is Usable tx) { ... }</programlisting>
             <programlisting>If: "if" "(" Condition ")" Block</programlisting>
             
             <programlisting>Else: "else" (Block | IfElse)</programlisting>
-
-            <!--programlisting>IfElse: 
-"if" "(" Condition ("," Condition)* ")"
-( ClosedBlock | OpenBlock "else" ClosedBlock )</programlisting-->
-
+            
             <para>When the construct is executed, the condition is evaluated. If the condition is 
             satisfied, the <literal>if</literal> block is executed. Otherwise, the <literal>else</literal> 
             block, if any, is executed.</para>
-
-            <!--para>Condition expressions may refer to any local variable defined by a previous
-            condition.</para-->
                                 
             <para>For example:</para>
             
@@ -1780,17 +1693,8 @@ if (satisfies Comparable&lt;Element&gt; Element) {
             no <literal>else</literal> block may be specified.--></para>
             
             <comment><para>TODO: define <literal>case (satisfies ...)</literal>.</para></comment>
-           
+            
             <programlisting>Case: Expression ("," Expression)* | "is" UnionType | "satisfies" Type</programlisting>
-                        
-            <!--  
-            <para>When the construct is executed, the <literal>switch</literal> expression is 
-            evaluated, and the resulting value is tested against the <literal>case</literal> values 
-            using <literal>Matcher.matchesCase()</literal>. The <literal>case</literal> block for the 
-            first <literal>case</literal> value that tests <literal>true</literal> is executed. If 
-            no <literal>case</literal> value tests <literal>true</literal>, and an <literal>else</literal> 
-            block is defined, the <literal>else</literal> block is executed.</para>
-            -->
             
             <para>An assignability condition <literal>case</literal> may narrow to an intersection or 
             union type.</para>
@@ -1864,12 +1768,6 @@ if (satisfies Comparable&lt;Element&gt; Element) {
     }
 }</programlisting>
             
-            <!--
-            <comment><para>TODO: should it be a <literal>catch</literal>-style syntax,
-            for example <literal>is (Leaf)</literal> instead of 
-            <literal>case (is ...)</literal>?</para></comment>
-            -->
-            
             <para>A Java-style overloaded method may be emulated as follows:</para>
             
             <programlisting>shared void print&lt;Printable&gt;(Printable printable) 
@@ -1912,11 +1810,6 @@ if (satisfies Comparable&lt;Element&gt; Element) {
             
             <programlisting>Fail: "else" Block</programlisting>
 
-            <!--programlisting>ForFail :=
-"for" "(" Iteration (";" Iteration)* ")" 
-( ClosedBlock | OpenBlock "fail" ClosedBlock )
-</programlisting-->
-
             <para>The <literal>for</literal> iterator consists of an iteration variable 
             declaration and an iterated expression that contains the range of values to 
             be iterated.</para>
@@ -1939,9 +1832,6 @@ if (satisfies Comparable&lt;Element&gt; Element) {
                 and <literal>V</literal> are the declared types of the iteration variables.</para>
             </listitem>
             </itemizedlist>
-            
-            <!--para>Iterated and constraint expressions may refer to any local variable 
-            defined by a previous iteration.</para-->
             
             <para>When the construct is executed:</para>
             
@@ -2024,11 +1914,6 @@ else {
             <para>The loop condition determines when the loop terminates.</para>
             
             <programlisting>LoopCondition: "while" "(" Condition ")"</programlisting>
-
-            <!--programlisting>DoWhileFail: 
-( "do" ("(" Variable Specifier ")")? OpenBlock? )?
-"while" "(" Condition ("," Condition)* ")" 
-( ";" | ClosedBlock | OpenBlock? "fail" ClosedBlock )</programlisting-->
             
             <para>When the construct is executed, the loop condition is evaluated repeatedly
             until the first time the condition is not satisfied, or until a <literal>break</literal>, 
@@ -2182,28 +2067,6 @@ finally {
     }
 }</programlisting>
 
-<!--
-
-            <para>The <literal>retry</literal> directive re-evaluates the resource 
-            expression, if any, and then re-executes the <literal>try</literal> block, 
-            calling <literal>begin()</literal> and <literal>end()</literal>/<literal>abort()</literal> 
-            upon the resource instance.</para>
-
-            <programlisting>variable Integer retries := 0;
-try ( Transaction() ) {
-    ...
-}
-catch (TransactionTimeoutException e) {
-    if (retries &lt; 3) {
-        retries++;
-        retry;
-    }
-    else {
-        throw e;
-    }
-}</programlisting>
-
--->
         </section>
          
     </section>
