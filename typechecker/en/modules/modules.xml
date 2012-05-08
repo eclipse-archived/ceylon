@@ -458,8 +458,7 @@ module org.hibernate '3.0.0.beta' {
     import javax.sql '4.0';
 }</programlisting>
 
-        <programlisting>
-doc "The test suite for Hibernate"
+        <programlisting>doc "The test suite for Hibernate"
 license 'http://www.gnu.org/licenses/lgpl.html'
 module org.hibernate.test '3.0.0.beta' {
     import org.hibernate '3.0.0.beta';
