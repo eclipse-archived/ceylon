@@ -128,9 +128,21 @@ TypeConstraints?
         <para>For a given package, there may be at most one <literal>import</literal>
         statement per compilation unit.</para>
         
-        <para>An <literal>import</literal> statement may not import from a non-shared
-        package unless the containing compilation unit belongs to the same module as
-        the package.</para>
+        <para>An <literal>import</literal> statement may not import from a package
+        unless:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the package belongs to the same module as the compilation unit 
+                containing the <literal>import</literal> statement, or</para>
+            </listitem>
+            <listitem>
+                <para>the package is declared <literal>shared</literal> in its
+                package descriptor, and the module descriptor of the module containing 
+                the <literal>import</literal> statement explicitly imports the module 
+                containing the package.</para>
+            </listitem>
+        </itemizedlist>
         
         <para>Each <literal>import</literal> statement imports one or more toplevel 
         declarations from the given package, specifying a list of <emphasis>import
@@ -172,11 +184,20 @@ TypeConstraints?
         <para>An import element that specifies a type name imports the toplevel type 
         with that name from the given package.</para>
         
-        <programlisting>ImportTypeElement: TypeAlias? TypeName</programlisting>
+        <programlisting>ImportTypeElement: TypeAlias? TypeName ("{" ImportElements? "}")?</programlisting>
         
         <para>A compilation unit may not import two types with the same name.</para>
         
-        <programlisting>import ceylon.collection { Set, List, Map }</programlisting>
+        <programlisting>import java.util { Set, List, Map }</programlisting>
+        
+        <para>The import element may be followed by a list of nested import elements, 
+        which must specify aliases.</para>
+        
+        <comment><para>Note: as a special exception to the usual language rules, to 
+        support interoperation with Java, a nested import element which references a
+        <literal>static</literal> member of a Java type results in a Ceylon
+        <emphasis>toplevel</emphasis> reference to the <literal>static</literal> member. 
+        In this case, the import element may omit the explicit alias.</para></comment>
         
         </section>
         
@@ -191,7 +212,7 @@ TypeConstraints?
         <para>A compilation unit may not import two methods or attributes with the same 
         name.</para>
         
-        <programlisting>import math { sqr, sqrt, e, pi }</programlisting>
+        <programlisting>import ceylon.math { sqr, sqrt, e, pi }</programlisting>
         
         </section>
         
@@ -205,16 +226,24 @@ TypeConstraints?
         
         <programlisting>MethodAttributeAlias: MemberName "="</programlisting>
         
-        <para>An alias assigns a different name to the imported declaration.</para>
+        <para>An alias assigns a different name to the imported declaration, or to a
+        member of the imported declaration. This name is visible within the compilation
+        unit in which the <literal>import</literal> statement occurs.</para>
         
         <programlisting>import java.util { JavaMap = Map }</programlisting>
         
-        <programlisting>import math { fib = fibonnacciNumber }</programlisting>
+        <programlisting>import my.math { fib = fibonnacciNumber }</programlisting>
+        
+        <programlisting>import java.lang { 
+    Math { sin, cos, ln=log }, 
+    System { sysprops=properties },
+    Char=Character { upper=toUpperCase, lower=toLowerCase, char=charValue } 
+}</programlisting>
         
         <comment><para>TODO: Currently, inheritance of two members with the same name
         from different unrelated types always results in a compile error. A similar 
         problem arises with introductions. We could let you resolve these kinds of problem 
-        by renaming a member of a type you're importing. This is a bit similar to what 
+        by aliasing a member of a type you're importing. This is a bit similar to what 
         Eiffel does, but it would be a lexical thing, scoped to the compilation unit. 
         For example:</para>
         <programlisting>import org.formats { Format { formatToString = format }, ... }</programlisting>
@@ -231,14 +260,14 @@ TypeConstraints?
         
         <programlisting>ImportWildcard: "..."</programlisting>
         
-        <para>An <literal>import</literal> statement may specify a list of alias or 
-        <literal>implicit</literal> imports followed by a wildcard. In this case, the 
-        alias imports are imported with the specified names, and all other toplevel 
-        declarations are imported with their declared names.</para>
+        <para>An <literal>import</literal> statement may specify a list of alias imports 
+        followed by a wildcard. In this case, the alias imports are imported with the 
+        specified names, and all other toplevel declarations are imported with their 
+        declared names.</para>
         
         <programlisting>import ceylon.collection { ... }</programlisting>
         
-        <programlisting>import math { fib = fibonnacciNumber, ... }</programlisting>
+        <programlisting>import my.math { fib = fibonnacciNumber, ... }</programlisting>
                 
         <para>Overuse of wildcard imports is discouraged.</para>
         
