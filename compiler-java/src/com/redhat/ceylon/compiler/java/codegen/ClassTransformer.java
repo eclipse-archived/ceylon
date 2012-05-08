@@ -137,7 +137,7 @@ public class ClassTransformer extends AbstractTransformer {
                         continue;
                     }
                     Interface iface = (Interface)decl;
-                    companionFields((Class)model, classBuilder, satisfiedType, iface, satisfiedInterfaces);
+                    concreteMembersFromSuperinterfaces((Class)model, classBuilder, satisfiedType, iface, satisfiedInterfaces);
                     
                     if (!decl.isToplevel()) {// TODO What about local interfaces?
                         // Generate $outer() impl if implementing an inner interface
@@ -184,7 +184,10 @@ public class ClassTransformer extends AbstractTransformer {
             .build();
     }
 
-    private void companionFields(final Class model,
+    /**
+     * Generates companion fields ($Foo$impl) and methods
+     */
+    private void concreteMembersFromSuperinterfaces(final Class model,
             ClassDefinitionBuilder classBuilder, Tree.SimpleType satisfiedType,
             Interface iface, Set<Interface> satisfiedInterfaces) {
         if (satisfiedInterfaces.contains(iface)) {
@@ -212,9 +215,7 @@ public class ClassTransformer extends AbstractTransformer {
                     satisfiedType, iface, goRaw);
         }
         
-        // For each super interface, if it has the most refined 
-        // default concrete member, then generate a method on the class
-        // delegating to the $impl instance
+        // For each super interface
         for (Declaration member : iface.getMembers()) {
             if (member instanceof Method) {
                 Method method = (Method)member;
@@ -227,7 +228,7 @@ public class ClassTransformer extends AbstractTransformer {
                             // If that method has a defaulted parameter, 
                             // we need to generate a default value method
                             // which also delegates to the $impl
-                            final JCMethodDecl defaultValueDelegate = generateDelegate(iface, 
+                            final JCMethodDecl defaultValueDelegate = makeDelegateToCompanion(iface, 
                                     PUBLIC | FINAL, typeParameters, param, param.getType(), 
                                     Util.getDefaultedParamMethodName(method, param), parameters.subList(0, parameters.indexOf(param)),
                                     Decl.isAncestorLocal(model));
@@ -235,17 +236,20 @@ public class ClassTransformer extends AbstractTransformer {
                             // If that method has a defaulted parameter, 
                             // we need to generate a overload method
                             // which also delegates to the $impl
-                            final JCMethodDecl overloadDelegate = generateDelegate(iface, 
-                                    PUBLIC | FINAL, typeParameters, param, param.getType(), 
-                                    method.getName(), parameters.subList(0, parameters.indexOf(param)),
-                                    Decl.isAncestorLocal(model));
-                            classBuilder.defs(overloadDelegate);
+                            MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(
+                                    gen(), Decl.isAncestorLocal(model), true, method.getName());
+                            final MethodDefinitionBuilder overload = makeOverloadsForDefaultedParameter(true, true,  
+                                    overloadBuilder, method, parameters, param);
+                            classBuilder.defs(overload.build());
                         }
                     }
                 }
+                // if it has the *most refined* default concrete member, 
+                // then generate a method on the class
+                // delegating to the $impl instance
                 if (member.equals(model.getMember(member.getName(), null))) {
                     if (member.isDefault()) {
-                        final JCMethodDecl concreteMemberDelegate = generateDelegate(iface,
+                        final JCMethodDecl concreteMemberDelegate = makeDelegateToCompanion(iface,
                                 PUBLIC, method.getTypeParameters(), 
                                 method,
                                 method.getType(), method.getName(), method.getParameterLists().get(0).getParameters(),
@@ -255,20 +259,22 @@ public class ClassTransformer extends AbstractTransformer {
                     }
                 }
             } else {
-                // TODO
-                //throw new RuntimeException("non-Method concrete members not supported yet");
+                // TODO concrete getters
             }
         }
         
         // Add $impl instances for the whole interface hierarchy
         satisfiedInterfaces.add(iface);
         for (TypeDeclaration decl : iface.getSatisfiedTypeDeclarations()) {
-            companionFields(model, classBuilder, satisfiedType, (Interface)decl, satisfiedInterfaces);
+            concreteMembersFromSuperinterfaces(model, classBuilder, satisfiedType, (Interface)decl, satisfiedInterfaces);
         }
         
     }
 
-    private JCMethodDecl generateDelegate(Interface iface,
+    /**
+     * Generates a method which delegates to the companion instance $Foo$impl
+     */
+    private JCMethodDecl makeDelegateToCompanion(Interface iface,
             final long mods,
             final java.util.List<TypeParameter> typeParameters,
             TypedDeclaration resultType,
@@ -836,7 +842,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         // Generate an impl for overloaded methods using the $impl instance
         // TODO MPL
-        if (Decl.withinInterface(model.getRefinedDeclaration())
+        /*if (Decl.withinInterface(model.getRefinedDeclaration())
                 && !Decl.withinInterface(model)) {
             java.util.List<Parameter> parameters = model.getParameterLists().get(0).getParameters();
             for (Parameter p : parameters) {
@@ -846,7 +852,7 @@ public class ClassTransformer extends AbstractTransformer {
                     classBuilder.defs(overloadMethodImpl(def, parameters, p));
                 }
             }
-        }
+        }*/
         
         lb.prepend(methodBuilder.build());
         
@@ -982,26 +988,53 @@ public class ClassTransformer extends AbstractTransformer {
         return overloadBuilder.build();
     }
 
+    /**
+     * Generates an overloaded method where all the defaulted parameters after 
+     * and including the given {@code currentParam} are given their default 
+     * values. Using Java-side overloading ensures positional invocations 
+     * are binary compatible when new defaulted parameters are appended to a
+     * parameter list.
+     */
     private MethodDefinitionBuilder makeOverloadsForDefaultedParameter(
-            boolean body,
+            boolean generateBody,
             MethodDefinitionBuilder overloadBuilder,
             Tree.Declaration def,
             Tree.ParameterList paramList,
             Tree.Parameter currentParam) {
         at(currentParam);
-        final Declaration model = def.getDeclarationModel();
-        final Parameter declarationModel = currentParam.getDeclarationModel();
-        java.util.List<Parameter> ps = new java.util.ArrayList<Parameter>(paramList.getParameters().size());
-        for (Tree.Parameter p : paramList.getParameters()) {
-            ps.add(p.getDeclarationModel());
+        java.util.List<Parameter> parameters = new java.util.ArrayList<Parameter>(paramList.getParameters().size());
+        for (Tree.Parameter param : paramList.getParameters()) {
+            parameters.add(param.getDeclarationModel());
         }
-        
-        
+        return makeOverloadsForDefaultedParameter(generateBody, false, 
+                overloadBuilder, def.getDeclarationModel(),
+                parameters, currentParam.getDeclarationModel());
+    }
+
+    /**
+     * Generates an overloaded method where all the defaulted parameters after 
+     * and including the given {@code currentParam} are given their default 
+     * values. Using Java-side overloading ensures positional invocations 
+     * are binary compatible when new defaulted parameters are appended to a
+     * parameter list.
+     */
+    private MethodDefinitionBuilder makeOverloadsForDefaultedParameter(
+            boolean generateBody, 
+            boolean forImplementor, MethodDefinitionBuilder overloadBuilder,
+            final Declaration model, java.util.List<Parameter> parameters,
+            final Parameter currentParam) {
         overloadBuilder.annotations(makeAtIgnore());
+        if (forImplementor) {
+            overloadBuilder.annotations(makeAtOverride());
+        }
         
         final JCExpression methName;
         if (model instanceof Method) {
             long mods = transformOverloadMethodDeclFlags((Method)model);
+            if (forImplementor) {
+                mods &= ~ABSTRACT;
+                mods |= FINAL;
+            }
             overloadBuilder.modifiers(mods);
             methName = makeQuotedIdent(Util.quoteMethodNameIfProperty((Method)model, gen()));
             overloadBuilder.resultType((Method)model);
@@ -1044,16 +1077,17 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         boolean useDefault = false;
-        for (Parameter param2 : ps) {
+        for (Parameter param2 : parameters) {
             
-            if (param2 == declarationModel) {
+            if (param2 == currentParam) {
                 useDefault = true;
             }
             if (useDefault) {
                 String methodName = Util.getDefaultedParamMethodName(model, param2);
                 JCExpression defaultValueMethodName;
                 List<JCExpression> typeArguments = List.<JCExpression>nil();
-                if (Strategy.defaultParameterMethodOnSelf(model)) {
+                if (Strategy.defaultParameterMethodOnSelf(model)
+                        || forImplementor) {
                     defaultValueMethodName = gen().makeQuotedIdent(methodName);
                 } else if (Strategy.defaultParameterMethodStatic(model)){
                     defaultValueMethodName = gen().makeQuotedQualIdent(makeQuotedQualIdentFromString(getFQDeclarationName(model)), methodName);
@@ -1079,7 +1113,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         // TODO Type args on method call
-        if (body) {
+        if (generateBody) {
             JCExpression invocation = make().Apply(List.<JCExpression>nil(),
                     methName, args.toList());
                
