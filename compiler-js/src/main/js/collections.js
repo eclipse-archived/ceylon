@@ -25,6 +25,15 @@ initTypeProtoI(Iterable, 'ceylon.language.Iterable', Container);
 Iterable.$$.prototype.getEmpty = function() {
     return Boolean$(this.getIterator().next() === $finished);
 }
+Iterable.$$.prototype.getSequence = function() {
+    var a = [];
+    var iter = this.getIterator();
+    var next;
+    while ((next = iter.next()) !== $finished) {
+        a.push(next);
+    }
+    return ArraySequence(a);
+}
 exports.Iterable=Iterable;
 
 function Category(wat) {
