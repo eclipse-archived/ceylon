@@ -2848,8 +2848,8 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
         
         <para>The <literal>String</literal> arguments to the <literal>deprecated</literal>, 
         <literal>doc</literal>, <literal>throws</literal> and <literal>by</literal> 
-        annotations are parsed by the documentation compiler as Seam Text, a 
-        simple ANTLR-based wiki text format.</para>
+        annotations are parsed by the documentation compiler as Markdown-format
+        content.</para>
         
         <para>These annotations are defined in the package 
         <literal>ceylon.language.documentation</literal>:</para>
