@@ -721,22 +721,7 @@
         <section id="typenameabbreviations">
             <title>Type name abbreviations</title>
         
-        <para>Two important union types may be written using an abbreviated syntax.</para>
-        
-        <programlisting>AbbreviatedType: Type Abbreviation*</programlisting>
-        
-        <programlisting>Abbreviation: "?" | "[]"</programlisting>
-        
-        <!--
-        <programlisting>Abbreviation: "?" | "[]" | "[" dimension "]"</programlisting>
-        -->
-         
-        <para>A further abbreviation is supported for the parameterized type <literal>Entry</literal>
-        in the package <literal>ceylon.language</literal>.</para>
-        
-        <programlisting>EntryType: AbbreviatedType ("->" AbbreviatedType)?</programlisting>
-        
-        <para>The following type name abbreviations are supported:</para>
+        <para>Certain important types may be written using an abbreviated syntax.</para>
         
         <itemizedlist>
             <listitem>
@@ -745,7 +730,7 @@
             </listitem>
             <listitem>
                 <para><literal>X[]</literal> means <literal>Empty|Sequence&lt;X&gt;</literal> 
-                for any type <literal>X</literal>, and</para>
+                for any type <literal>X</literal>,</para>
             </listitem>
             <!--
             <listitem>
@@ -754,14 +739,29 @@
             </listitem>
              -->
             <listitem>
-                <para><literal>X->Y</literal> means <literal>Entry&lt;X,Y&gt;</literal>.</para>
+                <para><literal>X->Y</literal> means <literal>Entry&lt;X,Y&gt;</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para><literal>X(Y,Z)</literal> means <literal>Callable&lt;X,Y,Z&gt;</literal>
+                where <literal>Y, Z</literal> is a list of types of any length.</para>
             </listitem>
         </itemizedlist>
+        
+        <programlisting>EntryType: AbbreviatedType ("->" AbbreviatedType)?</programlisting>
+        <programlisting>AbbreviatedType: Type (Abbreviation | ParameterTypes)*</programlisting>        
+        <programlisting>Abbreviation: "?" | "[]"</programlisting>
+        <programlisting>ParameterTypes: "(" ( UnionType ("," UnionType)* )? ")"</programlisting>
+                
+        <!--
+        <programlisting>Abbreviation: "?" | "[]" | "[" dimension "]"</programlisting>
+        -->
         
         <para>Abbreviations may be combined:</para>
         
         <programlisting>String?[] words = { "hello", "world", null };
-String? firstWord = words[0];</programlisting>
+String? firstWord = words[0];
+String->Integer[] onetwo = "onetwo"->{1, 2};
+Float[](Float x, Float[] xs) add = (Float x, Float[] xs) append(xs, x);</programlisting>
         
         <para>When a type appears in an expression, the abbreviations cannot be used (they 
         cannot be disambiguated from operator expressions).</para>
