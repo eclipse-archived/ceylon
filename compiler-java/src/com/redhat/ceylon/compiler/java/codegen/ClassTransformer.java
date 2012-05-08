@@ -62,6 +62,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinitio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ObjectArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ObjectDefinition;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -130,23 +132,8 @@ public class ClassTransformer extends AbstractTransformer {
                     
                 }
             }
-            Set<Interface> satisfiedInterfaces = new HashSet<Interface>();
-            if (def.getSatisfiedTypes() != null) {
-                for (Tree.SimpleType satisfiedType : def.getSatisfiedTypes().getTypes()) {
-                    TypeDeclaration decl = satisfiedType.getDeclarationModel();
-                    if (!(decl instanceof Interface)) {
-                        continue;
-                    }
-                    Interface iface = (Interface)decl;
-                    concreteMembersFromSuperinterfaces((Class)model, classBuilder, satisfiedType, iface, satisfiedInterfaces);
-                    
-                    if (!decl.isToplevel()) {// TODO What about local interfaces?
-                        // Generate $outer() impl if implementing an inner interface
-                        classBuilder.defs(makeOuterImpl(model, satisfiedType, iface));
-                    }
-                }
-                at(def);
-            }
+            satisfaction((Class)model, classBuilder);
+            at(def);
         }
         
         if (def instanceof Tree.AnyInterface) {
@@ -200,12 +187,31 @@ public class ClassTransformer extends AbstractTransformer {
             .build();
     }
 
+    private void satisfaction(final Class model, ClassDefinitionBuilder classBuilder) {
+        final java.util.List<ProducedType> satisfiedTypes = model.getSatisfiedTypes();
+        Set<Interface> satisfiedInterfaces = new HashSet<Interface>();
+        for (ProducedType satisfiedType : satisfiedTypes) {
+            TypeDeclaration decl = satisfiedType.getDeclaration();
+            if (!(decl instanceof Interface)) {
+                continue;
+            }
+            Interface iface = (Interface)decl;
+            concreteMembersFromSuperinterfaces((Class)model, classBuilder, satisfiedType, satisfiedInterfaces);
+            
+            if (Decl.withinClassOrInterface(decl)) {// TODO What about local interfaces?
+                // Generate $outer() impl if implementing an inner interface
+                classBuilder.defs(makeOuterImpl(model, iface));
+            }
+        }
+    }
+
     /**
      * Generates companion fields ($Foo$impl) and methods
      */
     private void concreteMembersFromSuperinterfaces(final Class model,
-            ClassDefinitionBuilder classBuilder, Tree.SimpleType satisfiedType,
-            Interface iface, Set<Interface> satisfiedInterfaces) {
+            ClassDefinitionBuilder classBuilder, 
+            ProducedType satisfiedType, Set<Interface> satisfiedInterfaces) {
+        Interface iface = (Interface)satisfiedType.getDeclaration();
         if (satisfiedInterfaces.contains(iface)) {
             return;
         }
@@ -228,7 +234,7 @@ public class ClassTransformer extends AbstractTransformer {
             // companion class in the constructor and assign it to a
             // $Interface$impl field
             transformInstantiateCompanions(classBuilder,
-                    satisfiedType, iface, goRaw);
+                    iface, satisfiedType, goRaw);
         }
         
         // For each super interface
@@ -290,8 +296,8 @@ public class ClassTransformer extends AbstractTransformer {
         
         // Add $impl instances for the whole interface hierarchy
         satisfiedInterfaces.add(iface);
-        for (TypeDeclaration decl : iface.getSatisfiedTypeDeclarations()) {
-            concreteMembersFromSuperinterfaces(model, classBuilder, satisfiedType, (Interface)decl, satisfiedInterfaces);
+        for (ProducedType sat : iface.getSatisfiedTypes()) {
+            concreteMembersFromSuperinterfaces(model, classBuilder, sat, satisfiedInterfaces);
         }
         
     }
@@ -351,30 +357,26 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     private void transformInstantiateCompanions(
-            ClassDefinitionBuilder classBuilder, Tree.SimpleType satisfiedType,
-            Interface iface, boolean goRaw) {
-        at(satisfiedType);
-        final ListBuffer<JCExpression> state = ListBuffer.<JCExpression>of(makeUnquotedIdent("this"));
-        //if (!iface.isToplevel()) {
-        //    state.append(makeQualIdent(makeJavaType(iface.getType().getQualifyingType()), "this"));
-        //}
-        Map<TypeParameter, ProducedType> typeArguments = satisfiedType.getTypeModel().getTypeArguments();
+            ClassDefinitionBuilder classBuilder, 
+            Interface iface, ProducedType satisfiedType, boolean goRaw) {
+        at(null);
+        final List<JCExpression> state = List.<JCExpression>of(makeUnquotedIdent("this"));
+        Map<TypeParameter, ProducedType> typeArguments = satisfiedType.getTypeArguments();
         final String fieldName = getCompanionFieldName(iface);
         classBuilder.init(make().Exec(make().Assign(
                 makeSelect("this", fieldName),// TODO Use qualified name for quoting? 
                 make().NewClass(null, 
                         null, // TODO Type args 
                         makeCompanionType(iface, typeArguments, goRaw),
-                        state.toList(),  
+                        state,
                         null))));
         
         classBuilder.field(PRIVATE | FINAL, fieldName, 
                 makeCompanionType(iface, typeArguments, false), null, false);
     }
 
-    private JCMethodDecl makeOuterImpl(final ClassOrInterface model,
-            Tree.SimpleType satisfiedType, Interface iface) {
-        at(satisfiedType);
+    private JCMethodDecl makeOuterImpl(final ClassOrInterface model, Interface iface) {
+        at(null);
         
         MethodDefinitionBuilder outerBuilder = MethodDefinitionBuilder.method(gen(), true, true, "$outer");// TODO ancestorLocal
         outerBuilder.annotations(makeAtOverride());
@@ -1247,14 +1249,18 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     public List<JCTree> transformObjectDefinition(Tree.ObjectDefinition def, ClassDefinitionBuilder containingClassBuilder) {
-        return transformObject(def, def.getDeclarationModel(), def.getType().getTypeModel(), containingClassBuilder, true);
+        return transformObject(def, def.getDeclarationModel(), 
+                def.getAnonymousClass(), containingClassBuilder, true);
     }
     
     public List<JCTree> transformObjectArgument(Tree.ObjectArgument def) {
-        return transformObject(def, def.getDeclarationModel(), def.getType().getTypeModel(), null, false);
+        return transformObject(def, def.getDeclarationModel(), 
+                def.getAnonymousClass(), null, false);
     }
     
-    private List<JCTree> transformObject(Node def, Value model, ProducedType typeModel, ClassDefinitionBuilder containingClassBuilder,
+    private List<JCTree> transformObject(Node def, Value model, 
+            Class klass,
+            ClassDefinitionBuilder containingClassBuilder,
             boolean makeInstanceIfLocal) {
         noteDecl(model);
         
@@ -1279,6 +1285,8 @@ public class ClassTransformer extends AbstractTransformer {
             visitor.defs = prevDefs;
         }
 
+        satisfaction(klass, objectClassBuilder);
+        
         TypeDeclaration decl = model.getType().getDeclaration();
 
         if (Decl.isToplevel(model)
@@ -1301,8 +1309,8 @@ public class ClassTransformer extends AbstractTransformer {
         } else if (Decl.withinClassOrInterface(model)) {
             boolean visible = Decl.isCaptured(model);
             int modifiers = FINAL | ((visible) ? PRIVATE : 0);
-            JCExpression type = makeJavaType(typeModel);
-            JCExpression initialValue = makeNewClass(makeJavaType(typeModel), null);
+            JCExpression type = makeJavaType(klass.getType());
+            JCExpression initialValue = makeNewClass(makeJavaType(klass.getType()), null);
             containingClassBuilder.field(modifiers, name, type, initialValue, !visible);
             
             if (visible) {
