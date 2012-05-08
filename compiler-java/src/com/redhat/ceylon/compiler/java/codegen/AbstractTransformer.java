@@ -1056,8 +1056,13 @@ public abstract class AbstractTransformer implements Transformation {
             
             sb.append(getLocalId(container)).append(sep).append(typeDecl.getName());
             if ((nmFlags & NM_FQ_LOCAL) != 0) {
-                sb.insert(0, sep)
-                    .insert(0, declName((Declaration)nonLocal, nmFlags));
+                if (nonLocal instanceof Declaration) {
+                    sb.insert(0, sep)
+                        .insert(0, declName((Declaration)nonLocal, nmFlags));
+                } else if (nonLocal instanceof Package
+                        && (nmFlags & NM_INCLUDE_PACKAGE) != 0) {
+                    sb.insert(0, '.').insert(0, ((Package)nonLocal).getQualifiedNameString()).insert(0, '.');   
+                }
             } else {
                 nonLocal = container.getContainer();
                 while (nonLocal instanceof TypeDeclaration) {
