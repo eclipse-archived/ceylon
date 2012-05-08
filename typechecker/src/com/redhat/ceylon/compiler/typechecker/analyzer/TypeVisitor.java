@@ -294,7 +294,7 @@ public class TypeVisitor extends Visitor {
         TypeDeclaration type = getBaseDeclaration(that);
         if (type==null) {
             that.addError("type declaration does not exist or is ambiguous: " + 
-                    name(that.getIdentifier()), 100);
+                    name(that.getIdentifier()), 102);
             unit.getUnresolvedReferences().add(that.getIdentifier());
         }
         else {
