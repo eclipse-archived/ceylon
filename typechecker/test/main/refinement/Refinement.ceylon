@@ -196,3 +196,15 @@ class VariableSub() extends VariableSuper() {
     shared actual variable Integer j:=1;
     @error shared actual variable Void k:=0;
 }
+
+abstract class WithRefinedMethod() {
+    shared formal void method1(String s)(Integer i);
+    shared formal void method2(String s)(Integer i);
+    shared formal void method3(String s)(Integer i);
+}
+
+class WithRefiningMethod() extends WithRefinedMethod() {
+    @error shared actual void method1(String s) {}
+    @error shared actual void method2(String s)(Integer i)(Float f) {}
+    shared actual void method3(String s)(@error String i) {}
+}

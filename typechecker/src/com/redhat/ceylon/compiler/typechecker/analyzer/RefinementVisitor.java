@@ -139,49 +139,56 @@ public class RefinementVisitor extends Visitor {
         }
     }
 
-	private void checkRefinedTypeAndParameterTypes(Tree.Declaration that,
-			Declaration dec, ClassOrInterface ci, Declaration refined) {
-		List<ProducedType> typeArgs = new ArrayList<ProducedType>();
-		if (refined instanceof Generic && dec instanceof Generic) {
-		    List<TypeParameter> refinedTypeParams = ((Generic) refined).getTypeParameters();
-		    List<TypeParameter> refiningTypeParams = ((Generic) dec).getTypeParameters();
-		    int refiningSize = refiningTypeParams.size();
-		    int refinedSize = refinedTypeParams.size();
-		    if (refiningSize!=refinedSize) {
-		        that.addError("member does not have the same number of type parameters as refined member");
-		    }
-		    for (int i=0; i<(refiningSize<=refinedSize ? refiningSize : refinedSize); i++) {
-		        TypeParameter refinedTypParam = refinedTypeParams.get(i);
-		        TypeParameter refiningTypeParam = refiningTypeParams.get(i);
-		        for (ProducedType t: refiningTypeParam.getSatisfiedTypes()) {
-		            checkAssignable(refinedTypParam.getType(), t, that, 
-		                "member type parameter " + refiningTypeParam.getName() +
-		                " has constraint which refined member type parameter " + refinedTypParam.getName() +
-		                " does not satisfy");
-		        }
-		        typeArgs.add(refinedTypParam.getType());
-		    }
-		}
-		ProducedReference refinedMember = ci.getType().getTypedReference(refined, typeArgs);
-		ProducedReference refiningMember = ci.getType().getTypedReference(dec, typeArgs);
-		if (refinedMember.getDeclaration() instanceof TypedDeclaration &&
-		        ((TypedDeclaration) refinedMember.getDeclaration()).isVariable()) {
+    private void checkRefinedTypeAndParameterTypes(Tree.Declaration that,
+            Declaration dec, ClassOrInterface ci, Declaration refined) {
+        List<ProducedType> typeArgs = new ArrayList<ProducedType>();
+        if (refined instanceof Generic && dec instanceof Generic) {
+            List<TypeParameter> refinedTypeParams = ((Generic) refined).getTypeParameters();
+            List<TypeParameter> refiningTypeParams = ((Generic) dec).getTypeParameters();
+            int refiningSize = refiningTypeParams.size();
+            int refinedSize = refinedTypeParams.size();
+            if (refiningSize!=refinedSize) {
+                that.addError("member does not have the same number of type parameters as refined member");
+            }
+            for (int i=0; i<(refiningSize<=refinedSize ? refiningSize : refinedSize); i++) {
+                TypeParameter refinedTypParam = refinedTypeParams.get(i);
+                TypeParameter refiningTypeParam = refiningTypeParams.get(i);
+                for (ProducedType t: refiningTypeParam.getSatisfiedTypes()) {
+                    checkAssignable(refinedTypParam.getType(), t, that, 
+                        "member type parameter " + refiningTypeParam.getName() +
+                        " has constraint which refined member type parameter " + refinedTypParam.getName() +
+                        " does not satisfy");
+                }
+                typeArgs.add(refinedTypParam.getType());
+            }
+        }
+        ProducedReference refinedMember = ci.getType().getTypedReference(refined, typeArgs);
+        ProducedReference refiningMember = ci.getType().getTypedReference(dec, typeArgs);
+        if (refinedMember.getDeclaration() instanceof TypedDeclaration &&
+                ((TypedDeclaration) refinedMember.getDeclaration()).isVariable()) {
             checkIsExactly(refiningMember.getType(), refinedMember.getType(), that,
                     "member type must be exactly the same as variable refined member type");
-		}
-		else {
-	        //note: this version checks return type and parameter types in one shot, but the
-	        //resulting error messages aren't as friendly, so do it the hard way instead!
-	        //checkAssignable(refiningMember.getFullType(), refinedMember.getFullType(), that,
-	        checkAssignable(refiningMember.getType(), refinedMember.getType(), that,
-	                "member type must be assignable to refined member type");
-		}
-		if (dec instanceof Functional && refined instanceof Functional) {
-		   ParameterList refiningParams = ((Functional) dec).getParameterLists().get(0);
-		   ParameterList refinedParams = ((Functional) refined).getParameterLists().get(0);
-		   checkParameterTypes(that, refiningMember, refinedMember, refiningParams, refinedParams);
-		}
-	}
+        }
+        else {
+            //note: this version checks return type and parameter types in one shot, but the
+            //resulting error messages aren't as friendly, so do it the hard way instead!
+            //checkAssignable(refiningMember.getFullType(), refinedMember.getFullType(), that,
+            checkAssignable(refiningMember.getType(), refinedMember.getType(), that,
+                    "member type must be assignable to refined member type");
+        }
+        if (dec instanceof Functional && refined instanceof Functional) {
+           List<ParameterList> refiningParamLists = ((Functional) dec).getParameterLists();
+           List<ParameterList> refinedParamLists = ((Functional) refined).getParameterLists();
+           if (refinedParamLists.size()!=refiningParamLists.size()) {
+               that.addError("member type must have the same number of parameter lists as refined member");
+           }
+           for (int i=0; i<refinedParamLists.size() && i<refiningParamLists.size(); i++) {
+               checkParameterTypes(that, getParameterList(that, i), 
+                       refiningMember, refinedMember, 
+                       refiningParamLists.get(i), refinedParamLists.get(i));
+           }
+        }
+    }
 
     private void checkUnshared(Tree.Declaration that, Declaration dec) {
         if (dec.isActual()) {
@@ -220,7 +227,7 @@ public class RefinementVisitor extends Visitor {
         }
     }
 
-    private void checkParameterTypes(Tree.Declaration that,
+    private void checkParameterTypes(Tree.Declaration that, Tree.ParameterList pl,
             ProducedReference member, ProducedReference refinedMember,
             ParameterList params, ParameterList refinedParams) {
         if (params.getParameters().size()!=refinedParams.getParameters().size()) {
@@ -232,7 +239,7 @@ public class RefinementVisitor extends Visitor {
                 ProducedType refinedParameterType = refinedMember.getTypedParameter(rparam).getFullType();
                 Parameter param = params.getParameters().get(i);
                 ProducedType parameterType = member.getTypedParameter(param).getFullType();
-                Tree.Parameter p = getParameterList(that).getParameters().get(i);
+                Tree.Parameter p = pl.getParameters().get(i);
                 if (p!=null) {
                     Tree.Type type = p.getType(); //some kind of syntax error
                     if (type!=null) {
@@ -252,10 +259,10 @@ public class RefinementVisitor extends Visitor {
         }
     }
 
-    private static Tree.ParameterList getParameterList(Tree.Declaration that) {
+    private static Tree.ParameterList getParameterList(Tree.Declaration that, int i) {
         Tree.ParameterList pl;
         if (that instanceof Tree.AnyMethod) {
-            pl = ((Tree.AnyMethod) that).getParameterLists().get(0);
+            pl = ((Tree.AnyMethod) that).getParameterLists().get(i);
         }
         else {
             pl = ((Tree.ClassDefinition) that).getParameterList();
