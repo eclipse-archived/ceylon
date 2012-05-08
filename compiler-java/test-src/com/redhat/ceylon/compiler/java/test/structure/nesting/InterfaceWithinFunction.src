@@ -1,0 +1,25 @@
+package com.redhat.ceylon.compiler.java.test.structure.nesting;
+
+interface 0$Foo {
+}
+final class interfaceWithinFunction {
+    
+    private interfaceWithinFunction() {
+    }
+    
+    static void interfaceWithinFunction() {
+        
+        final class 0$Foo$impl {
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.0$Foo $this;
+            
+            0$Foo$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.0$Foo $this) {
+                this.$this = $this;
+            }
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinFunction.interfaceWithinFunction();
+    }
+}
