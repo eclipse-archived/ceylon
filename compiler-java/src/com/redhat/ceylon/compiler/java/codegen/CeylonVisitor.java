@@ -20,11 +20,7 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
-import java.util.Map;
-
 import com.redhat.ceylon.compiler.java.util.Decl;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -35,33 +31,18 @@ import com.sun.tools.javac.util.ListBuffer;
 
 public class CeylonVisitor extends Visitor implements NaturalVisitor {
     protected final CeylonTransformer gen;
-    private final ListBuffer<JCTree> defs;
-    
     private final ToplevelAttributesDefinitionBuilder topattrBuilder;
-    private final ClassDefinitionBuilder classBuilder;
-    
-    /** For expressions and statements */
-    public CeylonVisitor(CeylonTransformer ceylonTransformer) {
-        this.gen = ceylonTransformer;
-        this.defs = new ListBuffer<JCTree>();
-        this.topattrBuilder = null;
-        this.classBuilder = null;
-    }
+    ListBuffer<JCTree> defs;
+    ClassDefinitionBuilder classBuilder;
+    boolean inInitializer = false;
     
     /** For compilation units */
     public CeylonVisitor(CeylonTransformer ceylonTransformer, ToplevelAttributesDefinitionBuilder topattrBuilder) {
         this.gen = ceylonTransformer;
+        this.gen.visitor = this;
         this.defs = new ListBuffer<JCTree>();
         this.topattrBuilder = topattrBuilder;
         this.classBuilder = null;
-    }
-    
-    /** For class/interface/object members */
-    public CeylonVisitor(CeylonTransformer ceylonTransformer, ClassDefinitionBuilder classBuilder) {
-        this.gen = ceylonTransformer;
-        this.defs = new ListBuffer<JCTree>();
-        this.topattrBuilder = null;
-        this.classBuilder = classBuilder;
     }
     
     public void handleException(Exception e, Node that) {
@@ -513,7 +494,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
     
     void append(JCTree x) {
-    	if (classBuilder != null) {
+    	if (inInitializer) {
     		classBuilder.init((JCTree.JCStatement)x);
     	} else {
     		defs.append(x);

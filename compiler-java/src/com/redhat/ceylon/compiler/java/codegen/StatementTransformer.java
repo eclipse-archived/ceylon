@@ -91,12 +91,25 @@ public class StatementTransformer extends AbstractTransformer {
 
     @SuppressWarnings("unchecked")
     List<JCStatement> transformStmts(java.util.List<Tree.Statement> list) {
-        CeylonVisitor v = new CeylonVisitor(gen());
+        CeylonVisitor v = gen().visitor;
+        final ListBuffer<JCTree> prevDefs = v.defs;
+        final boolean prevInInitializer = v.inInitializer;
+        final ClassDefinitionBuilder prevClassBuilder = v.classBuilder;
+        List<JCStatement> childDefs;
+        try {
+            v.defs = new ListBuffer<JCTree>();
+            v.inInitializer = false;
+            v.classBuilder = current();
+            for (Tree.Statement stmt : list)
+                stmt.visit(v);
+            childDefs = (List<JCStatement>)v.getResult().toList();
+        } finally {
+            v.classBuilder = prevClassBuilder;
+            v.inInitializer = prevInInitializer;
+            v.defs = prevDefs;
+        }
 
-        for (Tree.Statement stmt : list)
-            stmt.visit(v);
-
-        return (List<JCStatement>) v.getResult().toList();
+        return childDefs;
     }
 
     List<JCStatement> transform(Tree.IfStatement stmt) {

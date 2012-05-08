@@ -63,6 +63,7 @@ import com.sun.tools.javac.tree.JCTree.JCUnary;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
+import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
 
 /**
@@ -130,24 +131,37 @@ public class ExpressionTransformer extends AbstractTransformer {
             inStatement = false;
         }
         
-        CeylonVisitor v = new CeylonVisitor(gen());
-        // FIXME: shouldn't that be in the visitor?
-        if (expr instanceof Tree.Expression) {
-            // Cope with things like ((expr))
-            Tree.Expression expr2 = (Tree.Expression)expr;
-            while(((Tree.Expression)expr2).getTerm() instanceof Tree.Expression) {
-                expr2 = (Tree.Expression)expr2.getTerm();
+        CeylonVisitor v = gen().visitor;
+        final ListBuffer<JCTree> prevDefs = v.defs;
+        final boolean prevInInitializer = v.inInitializer;
+        final ClassDefinitionBuilder prevClassBuilder = v.classBuilder;
+        JCExpression result;
+        try {
+            v.defs = new ListBuffer<JCTree>();
+            v.inInitializer = false;
+            v.classBuilder = gen().current();
+            // FIXME: shouldn't that be in the visitor?
+            if (expr instanceof Tree.Expression) {
+                // Cope with things like ((expr))
+                Tree.Expression expr2 = (Tree.Expression)expr;
+                while(((Tree.Expression)expr2).getTerm() instanceof Tree.Expression) {
+                    expr2 = (Tree.Expression)expr2.getTerm();
+                }
+                expr2.visitChildren(v);
+            } else {
+                expr.visit(v);
             }
-            expr2.visitChildren(v);
-        } else {
-            expr.visit(v);
+            if (!v.hasResult()) {
+                return makeErroneous();
+            }
+            result = v.getSingleResult();
+        } finally {
+            v.classBuilder = prevClassBuilder;
+            v.inInitializer = prevInInitializer;
+            v.defs = prevDefs;
         }
+
         
-        if (!v.hasResult()) {
-        	return makeErroneous();
-        }
-        
-        JCExpression result = v.getSingleResult();
 
         result = applyErasureAndBoxing(result, expr, boxingStrategy, expectedType);
 

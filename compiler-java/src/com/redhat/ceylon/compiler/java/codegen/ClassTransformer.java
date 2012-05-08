@@ -167,8 +167,23 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         // Transform the class/interface members
-        CeylonVisitor visitor = new CeylonVisitor(gen(), classBuilder);
-        def.visitChildren(visitor);
+        CeylonVisitor visitor = gen().visitor;
+        final ListBuffer<JCTree> prevDefs = visitor.defs;
+        final boolean prevInInitializer = visitor.inInitializer;
+        final ClassDefinitionBuilder prevClassBuilder = visitor.classBuilder;
+        List<JCStatement> childDefs;
+        try {
+            visitor.defs = new ListBuffer<JCTree>();
+            visitor.inInitializer = true;
+            visitor.classBuilder = classBuilder;
+            
+            def.visitChildren(visitor);
+            childDefs = (List<JCStatement>)visitor.getResult().toList();
+        } finally {
+            visitor.classBuilder = prevClassBuilder;
+            visitor.inInitializer = prevInInitializer;
+            visitor.defs = prevDefs;
+        }
 
         // If it's a Class without initializer parameters...
         if (Strategy.generateMain(def)) {
@@ -181,7 +196,7 @@ public class ClassTransformer extends AbstractTransformer {
             .modifiers(transformClassDeclFlags(def))
             .satisfies(model.getSatisfiedTypes())
             .caseTypes(model.getCaseTypes())
-            .init((List<JCStatement>)visitor.getResult().toList())
+            .init(childDefs)
             .build();
     }
 
@@ -1246,8 +1261,23 @@ public class ClassTransformer extends AbstractTransformer {
         String name = model.getName();
         ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.klass(this, Decl.isAncestorLocal(model), name);
         
-        CeylonVisitor visitor = new CeylonVisitor(gen(), objectClassBuilder);
-        def.visitChildren(visitor);
+        CeylonVisitor visitor = gen().visitor;
+        final ListBuffer<JCTree> prevDefs = visitor.defs;
+        final boolean prevInInitializer = visitor.inInitializer;
+        final ClassDefinitionBuilder prevClassBuilder = visitor.classBuilder;
+        List<JCStatement> childDefs;
+        try {
+            visitor.defs = new ListBuffer<JCTree>();
+            visitor.inInitializer = true;
+            visitor.classBuilder = objectClassBuilder;
+            
+            def.visitChildren(visitor);
+            childDefs = (List<JCStatement>)visitor.getResult().toList();
+        } finally {
+            visitor.classBuilder = prevClassBuilder;
+            visitor.inInitializer = prevInInitializer;
+            visitor.defs = prevDefs;
+        }
 
         TypeDeclaration decl = model.getType().getDeclaration();
 
@@ -1262,7 +1292,7 @@ public class ClassTransformer extends AbstractTransformer {
             .modifiers(transformObjectDeclFlags(model))
             .constructorModifiers(PRIVATE)
             .satisfies(decl.getSatisfiedTypes())
-            .init((List<JCStatement>)visitor.getResult().toList())
+            .init(childDefs)
             .build();
         
         if (Decl.isLocal(model)
