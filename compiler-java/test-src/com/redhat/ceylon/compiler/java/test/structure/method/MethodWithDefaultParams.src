@@ -280,7 +280,7 @@ final class MethodWithDefaultParams2$impl {
     }
     
     public final long f5$n() {
-        return getProp();
+        return $this.getProp();
     }
     
     private final void f5() {
@@ -288,7 +288,7 @@ final class MethodWithDefaultParams2$impl {
     }
     
     public final long f6$n() {
-        return getProp();
+        return $this.getProp();
     }
     
     private final void f6() {
