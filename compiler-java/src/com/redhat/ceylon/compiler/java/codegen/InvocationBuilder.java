@@ -152,10 +152,14 @@ abstract class InvocationBuilder {
         } else {
             if (primaryDeclaration instanceof FunctionalParameter
                     || (this instanceof IndirectInvocationBuilder)) {
-                if (primaryExpr != null) {
-                    actualPrimExpr = gen.makeQualIdent(primaryExpr, primaryDeclaration.getName());
+                if (primaryDeclaration != null) {
+                    if (primaryExpr != null) {
+                        actualPrimExpr = gen.makeQualIdent(primaryExpr, primaryDeclaration.getName());
+                    } else {
+                        actualPrimExpr = gen.makeUnquotedIdent(primaryDeclaration.getName());
+                    }
                 } else {
-                    actualPrimExpr = gen.makeUnquotedIdent(primaryDeclaration.getName());
+                    // indirect with invocation as primary
                 }
                 selector = "$call";
             }
@@ -214,7 +218,10 @@ abstract class InvocationBuilder {
             final Tree.InvocationExpression invocation) {
         
         Tree.Primary primary = invocation.getPrimary();
-        Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)primary).getDeclaration();
+        Declaration primaryDeclaration = null;
+        if (primary instanceof Tree.MemberOrTypeExpression) {
+            primaryDeclaration = ((Tree.MemberOrTypeExpression)primary).getDeclaration();
+        }
         InvocationBuilder builder;
         if (invocation.getPositionalArgumentList() != null) {
             if (primaryDeclaration instanceof Functional){
@@ -226,7 +233,7 @@ abstract class InvocationBuilder {
                         parameters);
             } else {
                 // indirect invocation
-                final java.util.List<ProducedType> tas = ((TypedDeclaration)primaryDeclaration).getType().getTypeArgumentList();
+                final java.util.List<ProducedType> tas = primary.getTypeModel().getTypeArgumentList();
                 final java.util.List<ProducedType> parameterTypes = tas.subList(1, tas.size());
                 final java.util.List<Tree.Expression> argumentExpressions = new ArrayList<Tree.Expression>(tas.size());
                 for (Tree.PositionalArgument argument : invocation.getPositionalArgumentList().getPositionalArguments()) {

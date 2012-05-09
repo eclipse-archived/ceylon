@@ -1284,8 +1284,16 @@ public class ExpressionTransformer extends AbstractTransformer {
             return transform((Tree.BaseTypeExpression)primary, transformer);
         } else if (primary instanceof Tree.QualifiedTypeExpression) {
             return transform((Tree.QualifiedTypeExpression)primary, transformer);
-        } else {
+        } else if (primary instanceof Tree.MemberOrTypeExpression) {
             return makeQuotedIdent(((Tree.MemberOrTypeExpression)primary).getDeclaration().getName());
+        } else if (primary instanceof Tree.InvocationExpression){
+            JCExpression primaryExpr = transform((Tree.InvocationExpression)primary);
+            if (transformer != null) {
+                primaryExpr = transformer.transform(primaryExpr, null);
+            }
+            return primaryExpr;
+        } else {
+            return makeErroneous(primary, "Unhandled primary");
         }
     }
     
