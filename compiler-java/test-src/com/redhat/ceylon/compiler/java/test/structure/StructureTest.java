@@ -589,6 +589,25 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("nesting/ClassInitDefaultedParameter");
     }
     
+    @Test
+    public void testNstNestedInterface(){
+        compareWithJavaSource("nesting/NestedInterface");
+    }
+    
+    @Test
+    public void testNstObjects(){
+        compareWithJavaSource("nesting/Objects");
+    }
+    
+    @Test
+    public void testNstInterfaceWithinObject(){
+        compareWithJavaSource("nesting/InterfaceWithinObject");
+    }
+    
+    @Test
+    public void testNstInterfaceWithinFunction(){
+        compareWithJavaSource("nesting/InterfaceWithinFunction");
+    }
 
     // Tests for concrete members of interfaces
     @Test
