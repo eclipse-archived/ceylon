@@ -24,10 +24,13 @@ import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.TYPE_A
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.WANT_RAW_TYPE;
 import static com.sun.tools.javac.code.Flags.FINAL;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+
+import javax.management.RuntimeErrorException;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.TermTransformer;
@@ -147,7 +150,8 @@ abstract class InvocationBuilder {
         } else if (primary instanceof Tree.QualifiedTypeExpression) {
             resultExpr = gen.make().NewClass(actualPrimExpr, null, gen.makeQuotedIdent(selector), args.toList(), null);
         } else {
-            if (primaryDeclaration instanceof FunctionalParameter) {
+            if (primaryDeclaration instanceof FunctionalParameter
+                    || (this instanceof IndirectInvocationBuilder)) {
                 if (primaryExpr != null) {
                     actualPrimExpr = gen.makeQualIdent(primaryExpr, primaryDeclaration.getName());
                 } else {
@@ -213,11 +217,27 @@ abstract class InvocationBuilder {
         Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)primary).getDeclaration();
         InvocationBuilder builder;
         if (invocation.getPositionalArgumentList() != null) {
+            if (primaryDeclaration instanceof Functional){
+                // direct invocation
                 java.util.List<Parameter> parameters = ((Functional)primaryDeclaration).getParameterLists().get(0).getParameters();
                 builder = new PositionalInvocationBuilder(gen, 
                         primary, primaryDeclaration,
                         invocation,
                         parameters);
+            } else {
+                // indirect invocation
+                final java.util.List<ProducedType> tas = ((TypedDeclaration)primaryDeclaration).getType().getTypeArgumentList();
+                final java.util.List<ProducedType> parameterTypes = tas.subList(1, tas.size());
+                final java.util.List<Tree.Expression> argumentExpressions = new ArrayList<Tree.Expression>(tas.size());
+                for (Tree.PositionalArgument argument : invocation.getPositionalArgumentList().getPositionalArguments()) {
+                    argumentExpressions.add(argument.getExpression());
+                }
+                builder = new IndirectInvocationBuilder(gen, 
+                        primary, primaryDeclaration,
+                        invocation,
+                        parameterTypes, argumentExpressions);
+            }
+            
         } else if (invocation.getNamedArgumentList() != null) {
             builder = new NamedArgumentInvocationBuilder(gen, 
                     primary, 
@@ -312,8 +332,10 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
      * Gets the transformed expression supplying the argument value for the 
      * given argument index
      */
+    //protected abstract JCExpression getTransformedArgumentExpression(int argIndex);
+
     protected abstract boolean dontBoxSequence();
-    
+
     @Override
     protected final void compute() {
         int numArguments = getNumArguments();
@@ -506,8 +528,7 @@ class PositionalInvocationBuilder extends DirectInvocationBuilder {
             java.util.List<Parameter> parameters) {
         super(gen, primary, primaryDeclaration, invocation.getTypeModel(), invocation);
         positional = invocation.getPositionalArgumentList();
-        this.parameters = parameters;
-        
+        this.parameters = parameters;    
     }
     protected Tree.Expression getArgumentExpression(int argIndex) {
         return positional.getPositionalArguments().get(argIndex).getExpression();
