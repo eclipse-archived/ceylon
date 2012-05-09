@@ -497,11 +497,12 @@ public class ClassTransformer extends AbstractTransformer {
             }
 
             int flags = 0;
-            TypedDeclaration nonWideningType = nonWideningTypeDecl(model);
-            if (!Util.isUnBoxed(nonWideningType)) {
+            TypedDeclaration nonWideningTypeDeclaration = nonWideningTypeDecl(model);
+            ProducedType nonWideningType = nonWideningType(model, nonWideningTypeDeclaration);
+            if (!Util.isUnBoxed(nonWideningTypeDeclaration)) {
                 flags |= NO_PRIMITIVES;
             }
-            JCExpression type = makeJavaType(nonWideningType.getType(), flags);
+            JCExpression type = makeJavaType(nonWideningType, flags);
 
             int modifiers = (useField) ? transformAttributeFieldDeclFlags(decl) : transformLocalDeclFlags(decl);
             

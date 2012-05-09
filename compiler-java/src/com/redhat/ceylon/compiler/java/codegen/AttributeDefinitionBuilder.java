@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
@@ -62,18 +63,19 @@ public class AttributeDefinitionBuilder {
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, String className, String attrName, String fieldName, boolean toplevel) {
         int typeFlags = 0;
-        TypedDeclaration nonWideningType = owner.nonWideningTypeDecl(attrType);
-        if (!Util.isUnBoxed(nonWideningType)) {
+        TypedDeclaration nonWideningTypeDeclaration = owner.nonWideningTypeDecl(attrType);
+        ProducedType nonWideningType = owner.nonWideningType(attrType, nonWideningTypeDeclaration);
+        if (!Util.isUnBoxed(nonWideningTypeDeclaration)) {
             typeFlags |= AbstractTransformer.NO_PRIMITIVES;
         }
         // Special erasure for the "hash" attribute which gets translated to hashCode()
-        if ("hash".equals(attrName) && owner.isCeylonInteger(nonWideningType.getType())) {
+        if ("hash".equals(attrName) && owner.isCeylonInteger(nonWideningType)) {
             typeFlags = AbstractTransformer.SMALL_TYPE;
         }
         
         this.ancestorLocal = Decl.isAncestorLocal(attrType);
-        this.attrType = owner.makeJavaType(nonWideningType.getType(), typeFlags);
-        this.attrTypeRaw = owner.makeJavaType(nonWideningType.getType(), AbstractTransformer.WANT_RAW_TYPE);
+        this.attrType = owner.makeJavaType(nonWideningType, typeFlags);
+        this.attrTypeRaw = owner.makeJavaType(nonWideningType, AbstractTransformer.WANT_RAW_TYPE);
         this.owner = owner;
         this.className = className;
         this.attrName = attrName;
@@ -92,7 +94,7 @@ public class AttributeDefinitionBuilder {
             .systemMethod(owner, ancestorLocal, Util.getSetterName(attrType))
             .block(generateDefaultSetterBlock())
             .isActual(attrType.isActual())
-            .parameter(0, attrName, attrType, nonWideningType);
+            .parameter(0, attrName, attrType, nonWideningTypeDeclaration, nonWideningType);
     }
 
     public static AttributeDefinitionBuilder wrapped(AbstractTransformer owner, String name, TypedDeclaration attrType, boolean toplevel) {

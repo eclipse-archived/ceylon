@@ -418,10 +418,11 @@ public class StatementTransformer extends AbstractTransformer {
             // we can cast to TypedDeclaration here because return with expressions are only in Method or Value
             TypedDeclaration declaration = (TypedDeclaration)ret.getDeclaration();
             // make sure we use the best declaration for boxing and type
-            declaration = nonWideningTypeDecl(declaration);
+            TypedDeclaration nonWideningTypeDeclaration = nonWideningTypeDecl(declaration);
+            ProducedType nonWideningType = nonWideningType(declaration, nonWideningTypeDeclaration);
             returnExpr = expressionGen().transformExpression(expr.getTerm(), 
-                    Util.getBoxingStrategy(declaration),
-                    declaration.getType());
+                    Util.getBoxingStrategy(nonWideningTypeDeclaration),
+                    nonWideningType);
         }
         return at(ret).Return(returnExpr);
     }

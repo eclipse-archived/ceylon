@@ -402,7 +402,7 @@ public class ClassDefinitionBuilder {
 
     private ClassDefinitionBuilder parameter(String name, Parameter decl, boolean isSequenced, boolean isDefaulted) {
         // Create a parameter for the constructor
-        JCExpression type = gen.makeJavaType(decl);
+        JCExpression type = gen.makeJavaType(decl, decl.getType());
         List<JCAnnotation> annots = List.nil();
         if (gen.needsAnnotations(decl)) {
             annots = annots.appendList(gen.makeAtName(name));

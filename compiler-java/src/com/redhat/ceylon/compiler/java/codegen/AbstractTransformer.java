@@ -43,14 +43,16 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
+import com.redhat.ceylon.compiler.typechecker.model.Generic;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -561,6 +563,25 @@ public abstract class AbstractTransformer implements Transformation {
         return decl;
     }
 
+    protected ProducedType nonWideningType(TypedDeclaration declaration, TypedDeclaration refinedDeclaration){
+        if(declaration == refinedDeclaration)
+            return declaration.getType();
+        // we must get the return type of the refined decl with any type param instantiated
+        // Note(Stef): this magic taken from the IDE code
+        ArrayList<ProducedType> params = new ArrayList<ProducedType>();
+        if (refinedDeclaration instanceof Generic) {
+            for (TypeParameter tp: ((Generic)refinedDeclaration).getTypeParameters()) {
+                params.add(tp.getType());
+            }
+        }
+        ProducedType outerType = declaration.getContainer().getDeclaringType(refinedDeclaration);
+        ProducedReference producedReference = refinedDeclaration.getProducedReference(outerType, params);
+        ProducedType refinedType = refinedDeclaration.getType();
+        if(producedReference != null)
+            refinedType = refinedType.substitute(producedReference.getTypeArguments());
+        return refinedType;
+    }
+    
     protected ProducedType toPType(com.sun.tools.javac.code.Type t) {
         return loader().getType(t.tsym.getQualifiedName().toString(), null);
     }
@@ -634,13 +655,13 @@ public abstract class AbstractTransformer implements Transformation {
     /**
      * This function is used solely for method return types and parameters 
      */
-    protected JCExpression makeJavaType(TypedDeclaration typeDecl) {
+    protected JCExpression makeJavaType(TypedDeclaration typeDecl, ProducedType type) {
         if (typeDecl instanceof FunctionalParameter) {
             FunctionalParameter p = (FunctionalParameter)typeDecl;
-            return makeJavaType(typeFact().getCallableType(p.getType()), 0);    
+            return makeJavaType(typeFact().getCallableType(type), 0);    
         } else {
             boolean usePrimitives = Util.isUnBoxed(typeDecl);
-            return makeJavaType(typeDecl.getType(), usePrimitives ? 0 : AbstractTransformer.NO_PRIMITIVES);
+            return makeJavaType(type, usePrimitives ? 0 : AbstractTransformer.NO_PRIMITIVES);
         }
     }
 

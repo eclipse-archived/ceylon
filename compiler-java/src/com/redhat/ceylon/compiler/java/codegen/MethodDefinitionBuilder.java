@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -98,7 +99,7 @@ public class MethodDefinitionBuilder {
         this.gen = gen;
         this.name = name;
         this.ancestorLocal = ancestorLocal;
-        resultTypeExpr = makeResultType(null);
+        resultTypeExpr = makeVoidType();
     }
     
     public JCTree.JCMethodDecl build() {
@@ -138,12 +139,16 @@ public class MethodDefinitionBuilder {
         return (!isFormal && (body != null) && ((modifiers & ABSTRACT) == 0)) ? gen.make().Block(0, body.toList()) : null;
     }
 
-    JCExpression makeResultType(TypedDeclaration resultType) {
-        if (resultType == null
-                || gen.isVoid(resultType.getType())) {
-            return gen.make().TypeIdent(VOID);
+    JCExpression makeVoidType() {
+        return gen.make().TypeIdent(VOID);
+    }
+
+    JCExpression makeResultType(TypedDeclaration typedDeclaration, ProducedType type) {
+        if (typedDeclaration == null
+                || gen.isVoid(type)) {
+            return makeVoidType();
         } else {
-            return gen.makeJavaType(resultType);
+            return gen.makeJavaType(typedDeclaration, type);
         }
     }
 
@@ -193,8 +198,8 @@ public class MethodDefinitionBuilder {
         return this;
     }
     
-    public MethodDefinitionBuilder parameter(long modifiers, String name, TypedDeclaration decl, TypedDeclaration nonWideningDecl) {
-        JCExpression type = gen.makeJavaType(nonWideningDecl);
+    public MethodDefinitionBuilder parameter(long modifiers, String name, TypedDeclaration decl, TypedDeclaration nonWideningDecl, ProducedType nonWideningType) {
+        JCExpression type = gen.makeJavaType(nonWideningDecl, nonWideningType);
         List<JCAnnotation> annots = List.nil();
         if (gen.needsAnnotations(decl)) {
             annots = annots.appendList(gen.makeAtName(name));
@@ -223,7 +228,7 @@ public class MethodDefinitionBuilder {
 
     public MethodDefinitionBuilder parameter(Parameter param) {
         String name = param.getName();
-        return parameter(FINAL, name, param, param);
+        return parameter(FINAL, name, param, param, param.getType());
     }
 
     public MethodDefinitionBuilder isActual(boolean isActual) {
@@ -265,11 +270,13 @@ public class MethodDefinitionBuilder {
     }
 
     public MethodDefinitionBuilder resultType(Method method) {
-        return resultType(makeResultType(gen.nonWideningTypeDecl(method)), method);
+        TypedDeclaration nonWideningTypeDecl = gen.nonWideningTypeDecl(method);
+        ProducedType nonWideningType = gen.nonWideningType(method, nonWideningTypeDecl);
+        return resultType(makeResultType(nonWideningTypeDecl, nonWideningType), method);
     }
 
     public MethodDefinitionBuilder resultType(TypedDeclaration resultType) {
-        return resultType(makeResultType(resultType), resultType);
+        return resultType(makeResultType(resultType, resultType.getType()), resultType);
     }
 
     public MethodDefinitionBuilder resultType(JCExpression resultType, TypedDeclaration typeDecl) {
