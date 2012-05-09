@@ -303,7 +303,8 @@ public class ProducedType extends ProducedReference {
      * given type.
      */
     public ProducedType minus(ClassOrInterface ci) {
-        if (getDeclaration().equals(ci) || getSupertype(ci) != null) {
+        if ((getDeclaration() instanceof ClassOrInterface && getDeclaration().equals(ci)) 
+                || getSupertype(ci) != null) {
             return getDeclaration().getUnit().getBottomDeclaration().getType();
         }
         else if (getDeclaration() instanceof UnionType) {
@@ -429,7 +430,9 @@ public class ProducedType extends ProducedReference {
     }
     
     private List<ProducedType> getSupertypes(List<ProducedType> list) {
-        if ( isWellDefined() && Util.addToSupertypes(list, this) ) {
+        if ( isWellDefined() && (getDeclaration() instanceof UnionType || 
+                                 getDeclaration() instanceof IntersectionType || 
+                                 Util.addToSupertypes(list, this)) ) {
             ProducedType extendedType = getExtendedType();
             if (extendedType!=null) {
                 extendedType.getSupertypes(list);
@@ -503,7 +506,9 @@ public class ProducedType extends ProducedReference {
         Criteria c = new Criteria() {
             @Override
             public boolean satisfies(TypeDeclaration type) {
-                return type.equals(dec);
+                return !(type instanceof UnionType) && 
+                       !(type instanceof IntersectionType) && 
+                       type.equals(dec);
             }
         };
         return getSupertype(c, new ArrayList<ProducedType>(), selfTypeToIgnore);
@@ -531,7 +536,9 @@ public class ProducedType extends ProducedReference {
         if (c.satisfies(getDeclaration())) {
             return qualifiedByDeclaringType();
         }
-        if ( isWellDefined() && Util.addToSupertypes(list, this) ) {
+        if ( isWellDefined() && (getDeclaration() instanceof UnionType || 
+                                 getDeclaration() instanceof IntersectionType || 
+                                 Util.addToSupertypes(list, this)) ) {
             //now let's call the two most difficult methods
             //in the whole code base:
             ProducedType result = getPrincipalInstantiation(c, list,
@@ -635,7 +642,10 @@ public class ProducedType extends ProducedReference {
             }
         }
         
-        if (!getDeclaration().equals(ignoringSelfType)) {
+        if (ignoringSelfType==null ||
+                !(getDeclaration() instanceof UnionType) && 
+                !(getDeclaration() instanceof IntersectionType) && 
+                !getDeclaration().equals(ignoringSelfType)) {
             ProducedType selfType = getInternalSelfType();
             if (selfType!=null) {
                 ProducedType possibleResult = selfType.getSupertype(c, list, 
@@ -1220,7 +1230,8 @@ public class ProducedType extends ProducedReference {
 
     private boolean abbreviateEntry() {
         Unit unit = getDeclaration().getUnit();
-        if (getDeclaration().equals(unit.getEntryDeclaration()) &&
+        if (getDeclaration() instanceof Class &&
+            getDeclaration().equals(unit.getEntryDeclaration()) &&
                 getTypeArgumentList().size()==2) {
             ProducedType kt = unit.getKeyType(this);
             ProducedType vt = unit.getValueType(this);
@@ -1234,7 +1245,8 @@ public class ProducedType extends ProducedReference {
     }
 
     private boolean abbreviateCallable() {
-        return getDeclaration().getQualifiedNameString()
+        return getDeclaration() instanceof Interface &&
+                getDeclaration().getQualifiedNameString()
                         .equals("ceylon.language.Callable") &&
                 getTypeArgumentList().size()>0 && 
                 getTypeArgumentList().get(0).isPrimitiveAbbreviatedType() &&
@@ -1315,34 +1327,62 @@ public class ProducedType extends ProducedReference {
             //unknown type
             return null;
         }
-        StringBuilder ptn = new StringBuilder();
-        if (getDeclaration().isMember()) {
-            ptn.append(getQualifyingType().getProducedTypeQualifiedName())
-                    .append(".").append(getDeclaration().getName());
-        }
-        else {
-            ptn.append(getDeclaration().getQualifiedNameString());
-        }
-        if (!getTypeArgumentList().isEmpty()) {
-            ptn.append("<");
-            boolean first = true;
-            for (ProducedType t : getTypeArgumentList()) {
-                if (first) {
-                    first = false;
+        if (getDeclaration() instanceof UnionType) {
+            StringBuilder name = new StringBuilder();
+            for (ProducedType pt: getCaseTypes()) {
+                if (pt==null) {
+                    name.append("unknown");
                 }
                 else {
-                    ptn.append(",");
+                    name.append(pt.getProducedTypeQualifiedName());
                 }
-                if (t==null) {
-                    ptn.append("?");
-                }
-                else {
-                    ptn.append(t.getProducedTypeQualifiedName());
-                }
+                name.append("|");
             }
-            ptn.append(">");
+            return name.substring(0,name.length()-1);
         }
-        return ptn.toString();
+        else if (getDeclaration() instanceof IntersectionType) {
+            StringBuilder name = new StringBuilder();
+            for (ProducedType pt: getSatisfiedTypes()) {
+                if (pt==null) {
+                    name.append("unknown");
+                }
+                else {
+                    name.append(pt.getProducedTypeQualifiedName());
+                }
+                name.append("&");
+            }
+            return name.substring(0,name.length()-1);
+        }
+        else {            
+            StringBuilder ptn = new StringBuilder();
+            if (getDeclaration().isMember()) {
+                ptn.append(getQualifyingType().getProducedTypeQualifiedName())
+                        .append(".").append(getDeclaration().getName());
+            }
+            else {
+                ptn.append(getDeclaration().getQualifiedNameString());
+            }
+            if (!getTypeArgumentList().isEmpty()) {
+                ptn.append("<");
+                boolean first = true;
+                for (ProducedType t : getTypeArgumentList()) {
+                    if (first) {
+                        first = false;
+                    }
+                    else {
+                        ptn.append(",");
+                    }
+                    if (t==null) {
+                        ptn.append("?");
+                    }
+                    else {
+                        ptn.append(t.getProducedTypeQualifiedName());
+                    }
+                }
+                ptn.append(">");
+            }
+            return ptn.toString();
+        }
     }
 
     /**
