@@ -296,8 +296,13 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
             Node node) {
         super(gen, primary, primaryDeclaration, returnType, node);
     }
- 
-    protected abstract java.util.List<Parameter> getDeclaredParameters();
+
+    /**
+     * Gets the Parameter corresponding to the given argument
+     * @param argIndex
+     * @return
+     */
+    protected abstract Parameter getParameter(int argIndex);
     
     /** Gets the number of arguments actually being supplied */
     protected abstract int getNumArguments();
@@ -313,17 +318,17 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
     @Override
     protected final void compute() {
         int numArguments = getNumArguments();
-        for (int ii = 0; ii < numArguments; ii++) {
-            Parameter parameter = getDeclaredParameters().get(ii);
+        for (int argIndex = 0; argIndex < numArguments; argIndex++) {
+            Parameter parameter = getParameter(argIndex);
             final JCExpression expr;
             if (!parameter.isSequenced()
                     || dontBoxSequence()) {
-                expr = this.getTransformedArgumentExpression(ii);
+                expr = this.getTransformedArgumentExpression(argIndex);
             } else {
                 // box with an ArraySequence<T>
                 List<JCExpression> x = List.<JCExpression>nil();
-                for ( ; ii < numArguments; ii++) {
-                    x = x.append(this.getTransformedArgumentExpression(ii));
+                for ( ; argIndex < numArguments; argIndex++) {
+                    x = x.append(this.getTransformedArgumentExpression(argIndex));
                 }
                 expr = gen.makeSequenceRaw(x);
             }
@@ -351,10 +356,6 @@ class PositionalInvocationBuilder extends SimpleInvocationBuilder {
         positional = invocation.getPositionalArgumentList();
         declaredParameters = parameterList.getParameters();
         
-    }
-    @Override
-    protected java.util.List<Parameter> getDeclaredParameters() {
-        return declaredParameters;
     }
     protected Tree.Expression getArgumentExpression(int argIndex) {
         return positional.getPositionalArguments().get(argIndex).getExpression();
@@ -450,11 +451,11 @@ class CallableInvocationBuilder extends SimpleInvocationBuilder {
     }
     @Override
     protected int getNumArguments() {
-        return getDeclaredParameters().size();
+        return functionalParameters.size();
     }
     @Override
     protected boolean dontBoxSequence() {
-        return getDeclaredParameters().get(getNumArguments() - 1).isSequenced();
+        return getParameter(getNumArguments() - 1).isSequenced();
     }
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
@@ -464,8 +465,8 @@ class CallableInvocationBuilder extends SimpleInvocationBuilder {
         return CallableBuilder.unpickCallableParameter(gen, isRaw, getTypeArguments(), param, argType, argIndex, functionalParameters.size());
     }
     @Override
-    protected java.util.List<Parameter> getDeclaredParameters() {
-        return functionalParameters;
+    protected Parameter getParameter(int index) {
+        return functionalParameters.get(index);
     }
 }
 
@@ -488,7 +489,7 @@ class MethodReferenceSpecifierInvocationBuilder extends SimpleInvocationBuilder 
 
     @Override
     protected int getNumArguments() {
-        return getDeclaredParameters().size();
+        return method.getParameterLists().get(0).getParameters().size();
     }
     
     @Override
@@ -507,8 +508,9 @@ class MethodReferenceSpecifierInvocationBuilder extends SimpleInvocationBuilder 
         return result;
     }
 
-    private Parameter getParameter(int argIndex) {
-        return getDeclaredParameters().get(argIndex);
+    @Override
+    protected Parameter getParameter(int argIndex) {
+        return method.getParameterLists().get(0).getParameters().get(argIndex);
     }
     
     @Override
@@ -516,10 +518,6 @@ class MethodReferenceSpecifierInvocationBuilder extends SimpleInvocationBuilder 
         return method.getParameterLists().get(0).getParameters().get(getNumArguments() - 1).isSequenced();
     }
 
-    @Override
-    protected java.util.List<Parameter> getDeclaredParameters() {
-        return method.getParameterLists().get(0).getParameters();
-    }
 }
 
 /**
