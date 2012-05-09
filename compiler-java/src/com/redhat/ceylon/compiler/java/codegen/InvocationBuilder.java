@@ -312,41 +312,22 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
     
     @Override
     protected final void compute() {
-        int numParameters = getDeclaredParameters().size();
         int numArguments = getNumArguments();
-        // => call to a varargs method
-        // first, append the normal args
-        if (numArguments < numParameters) {
-            // Defaulted parameters
-            for (int ii = 0; ii < numArguments; ii++) {
-                appendArgument(this.getTransformedArgumentExpression(ii));
-            }
-            return;
-        }
-        for (int ii = 0; ii < numParameters - 1; ii++) {
-            appendArgument(this.getTransformedArgumentExpression(ii));
-        }
-        
-        Parameter lastDeclaredParam = getDeclaredParameters().isEmpty() ? null : getDeclaredParameters().get(getDeclaredParameters().size() - 1);
-        
-        if (lastDeclaredParam != null) {
-            JCExpression boxed;
-            if (!lastDeclaredParam.isSequenced()
+        for (int ii = 0; ii < numArguments; ii++) {
+            Parameter parameter = getDeclaredParameters().get(ii);
+            final JCExpression expr;
+            if (!parameter.isSequenced()
                     || dontBoxSequence()) {
-                // foo(sequence...) syntax => no need to box
-                boxed = this.getTransformedArgumentExpression(numArguments-1);
-            } else if (numParameters -1 == numArguments) {
-                // box as Empty
-                boxed = gen.makeEmpty();
+                expr = this.getTransformedArgumentExpression(ii);
             } else {
                 // box with an ArraySequence<T>
                 List<JCExpression> x = List.<JCExpression>nil();
-                for (int ii = numParameters - 1; ii < numArguments; ii++) {
+                for ( ; ii < numArguments; ii++) {
                     x = x.append(this.getTransformedArgumentExpression(ii));
                 }
-                boxed = gen.makeSequenceRaw(x);
+                expr = gen.makeSequenceRaw(x);
             }
-            appendArgument(boxed);
+            appendArgument(expr);
         }
     }
 }
