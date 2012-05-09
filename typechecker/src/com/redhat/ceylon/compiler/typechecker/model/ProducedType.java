@@ -1176,9 +1176,20 @@ public class ProducedType extends ProducedReference {
                 if (kt!=null && vt!=null &&
                         kt.abbreviateKeyOrValue() && 
                         vt.abbreviateKeyOrValue()) {
-                    return kt.getProducedTypeName(abbreviate) + "->"
-                            + vt.getProducedTypeName(abbreviate);
+                    return kt.getProducedTypeName() + "->"
+                            + vt.getProducedTypeName();
                 }
+            }
+            if (abbreviateCallable()) {
+                String result = getTypeArgumentList().get(0)
+                        .getProducedTypeName() + "(";
+                if (getTypeArgumentList().size()>1) {
+                    result += getTypeArgumentList().get(1).getProducedTypeName();
+                    for (int i=2; i<getTypeArgumentList().size(); i++) {
+                        result += ", " + getTypeArgumentList().get(i).getProducedTypeName();
+                    }
+                }
+                return result + ")";
             }
         }
         return getSimpleProducedTypeName(abbreviate);
@@ -1188,6 +1199,14 @@ public class ProducedType extends ProducedReference {
         Unit unit = getDeclaration().getUnit();
         return getDeclaration().equals(unit.getEntryDeclaration()) &&
                 getTypeArgumentList().size()==2;
+    }
+
+    private boolean abbreviateCallable() {
+        return getDeclaration().getQualifiedNameString()
+                        .equals("ceylon.language.Callable") &&
+                getTypeArgumentList().size()>0 && 
+                getTypeArgumentList().get(0).abbreviateReturn() &&
+                getTypeArgumentList().size()==getDeclaration().getTypeParameters().size();
     }
 
     private boolean abbreviateSequence() {
@@ -1222,10 +1241,23 @@ public class ProducedType extends ProducedReference {
         }
         else if (getDeclaration() instanceof UnionType) {
             return abbreviateSequence() || 
-                    abbreviateSequence();
+                    abbreviateOptional();
         }
         else {
-            return true;
+            return !abbreviateEntry();
+        }
+    }
+    
+    private boolean abbreviateReturn() {
+        if (getDeclaration() instanceof IntersectionType) {
+            return false;
+        }
+        else if (getDeclaration() instanceof UnionType) {
+            return abbreviateSequence() || 
+                    abbreviateOptional();
+        }
+        else {
+            return !abbreviateCallable() && !abbreviateEntry();
         }
     }
     

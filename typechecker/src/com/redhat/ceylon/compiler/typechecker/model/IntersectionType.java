@@ -20,7 +20,7 @@ public class IntersectionType extends TypeDeclaration {
                 name+="<unknown>";
             }
             else {
-                name+=pt.getProducedTypeName(false);
+                name+=pt.getProducedTypeName();
             }
             name+="&";
         }
