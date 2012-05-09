@@ -1660,7 +1660,7 @@ public class GenerateJsVisitor extends Visitor
                     out("===", clTrue);
                 }
                 out("));"); endLine();
-                out("return this.", names.name(comprehensions.get(idx-2)), "!==", clAlias, ".getExhausted();");
+                out("return this.", names.name(comprehensions.get(comprehensions.size()-1)), "!==", clAlias, ".getExhausted();");
                 endBlock(false); out(";"); endLine();
                 clause = ((IfComprehensionClause)clause).getComprehensionClause();
             } else if (clause instanceof ExpressionComprehensionClause) {
@@ -1672,7 +1672,7 @@ public class GenerateJsVisitor extends Visitor
                 return;
             }
         }
-        //Implement next()
+        //Implement Iterator.next()
         out("$cmp$.next=function()"); beginBlock();
         out("if(this.next$", Integer.toString(idx-1), "())"); beginBlock();
         //The expression
