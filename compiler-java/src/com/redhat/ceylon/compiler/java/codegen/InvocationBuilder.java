@@ -46,10 +46,15 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -208,11 +213,11 @@ abstract class InvocationBuilder {
         Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)primary).getDeclaration();
         InvocationBuilder builder;
         if (invocation.getPositionalArgumentList() != null) {
-            java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
-            builder = new PositionalInvocationBuilder(gen, 
-                    primary, primaryDeclaration,
-                    invocation,
-                    paramLists.get(0).getParameters());
+                java.util.List<Parameter> parameters = ((Functional)primaryDeclaration).getParameterLists().get(0).getParameters();
+                builder = new PositionalInvocationBuilder(gen, 
+                        primary, primaryDeclaration,
+                        invocation,
+                        parameters);
         } else if (invocation.getNamedArgumentList() != null) {
             builder = new NamedArgumentInvocationBuilder(gen, 
                     primary, 
@@ -281,14 +286,162 @@ abstract class InvocationBuilder {
     }
 }
 
+abstract class SimpleInvocationBuilder extends InvocationBuilder {
+
+    public SimpleInvocationBuilder(AbstractTransformer gen, Primary primary,
+            Declaration primaryDeclaration, ProducedType returnType, Node node) {
+        super(gen, primary, primaryDeclaration, returnType, node);
+    }
+
+    protected abstract boolean isParameterSequenced(int argIndex);
+
+    protected abstract ProducedType getParameterType(int argIndex);
+
+    protected abstract String getParameterName(int argIndex);
+
+    protected abstract Boolean getParameterUnboxed(int argIndex);
+
+    protected abstract BoxingStrategy getParameterBoxingStrategy(int argIndex);
+
+    protected abstract boolean hasParameter(int argIndex);
+
+    /** Gets the number of arguments actually being supplied */
+    protected abstract int getNumArguments();
+
+    /**
+     * Gets the transformed expression supplying the argument value for the 
+     * given argument index
+     */
+    protected abstract boolean dontBoxSequence();
+    
+    @Override
+    protected final void compute() {
+        int numArguments = getNumArguments();
+        for (int argIndex = 0; argIndex < numArguments; argIndex++) {
+            final JCExpression expr;
+            if (!isParameterSequenced(argIndex)
+                    || dontBoxSequence()) {
+                expr = this.getTransformedArgumentExpression(argIndex);
+            } else {
+                // box with an ArraySequence<T>
+                List<JCExpression> x = List.<JCExpression>nil();
+                for ( ; argIndex < numArguments; argIndex++) {
+                    x = x.append(this.getTransformedArgumentExpression(argIndex));
+                }
+                expr = gen.makeSequenceRaw(x);
+            }
+            appendArgument(expr);
+        }
+    }
+
+    protected abstract Tree.Expression getArgumentExpression(int argIndex);
+    
+    protected JCExpression getTransformedArgumentExpression(int argIndex) {
+        Tree.Expression expr = getArgumentExpression(argIndex);
+        if (expr.getTerm() instanceof FunctionArgument) {
+            FunctionArgument farg = (FunctionArgument)expr.getTerm();
+            return gen.expressionGen().transform(farg);
+        }
+        return transformArg(argIndex);
+    }
+    
+    protected final JCExpression transformArg(int argIndex) {
+        final Tree.Term expr = getArgumentExpression(argIndex);
+        if (hasParameter(argIndex)) {
+            ProducedType type = getParameterType(argIndex);
+            return gen.expressionGen().transformExpression(expr, 
+                    getParameterBoxingStrategy(argIndex), 
+                    type);
+        } else {
+            // Overloaded methods don't have a reference to a parameter
+            // so we have to treat them differently. Also knowing it's
+            // overloaded we know we're dealing with Java code so we unbox
+            ProducedType type = expr.getTypeModel();
+            return gen.expressionGen().transformExpression(expr, 
+                    BoxingStrategy.UNBOXED, 
+                    type);
+        }
+    }
+    
+}
+
+class IndirectInvocationBuilder extends SimpleInvocationBuilder {
+
+    private final java.util.List<ProducedType> parameterTypes;
+    private final java.util.List<Tree.Expression> argumentExpressions;
+
+    public IndirectInvocationBuilder(
+            AbstractTransformer gen, 
+            Tree.Primary primary,
+            Declaration primaryDeclaration,
+            Tree.InvocationExpression invocation,
+            java.util.List<ProducedType> parameterTypes,
+            java.util.List<Tree.Expression> argumentExpressions) {
+        super(gen, primary, primaryDeclaration, invocation.getTypeModel(), invocation);
+        if (parameterTypes.size() != argumentExpressions.size()) {
+            throw new RuntimeException();
+        }
+        this.parameterTypes = parameterTypes;
+        this.argumentExpressions = argumentExpressions;
+    }
+    
+
+    @Override
+    protected boolean isParameterSequenced(int argIndex) {
+        return false;
+    }
+
+    @Override
+    protected ProducedType getParameterType(int argIndex) {
+        return parameterTypes.get(argIndex);
+    }
+
+    @Override
+    protected String getParameterName(int argIndex) {
+        return "arg" + argIndex;
+    }
+
+    @Override
+    protected Boolean getParameterUnboxed(int argIndex) {
+        return false;
+    }
+
+    @Override
+    protected BoxingStrategy getParameterBoxingStrategy(int argIndex) {
+        return BoxingStrategy.BOXED;
+    }
+
+    @Override
+    protected boolean hasParameter(int argIndex) {
+        return true;
+    }
+
+    @Override
+    protected int getNumArguments() {
+        return parameterTypes.size();
+    }
+
+    @Override
+    protected boolean dontBoxSequence() {
+        return true;
+    }
+
+
+    @Override
+    protected Tree.Expression getArgumentExpression(int argIndex) {
+        return argumentExpressions.get(argIndex);
+    }
+    
+}
+
 /**
  * An abstract implementation of InvocationBuilder support invocation 
  * via positional arguments. Supports with sequenced arguments but not 
  * defaulted arguments.
  */
-abstract class SimpleInvocationBuilder extends InvocationBuilder {
+abstract class DirectInvocationBuilder extends SimpleInvocationBuilder {
 
-    protected SimpleInvocationBuilder(
+    protected DirectInvocationBuilder(
             AbstractTransformer gen,
             Tree.Primary primary,
             Declaration primaryDeclaration,
@@ -304,36 +457,35 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
      */
     protected abstract Parameter getParameter(int argIndex);
     
-    /** Gets the number of arguments actually being supplied */
-    protected abstract int getNumArguments();
-
-    /**
-     * Gets the transformed expression supplying the argument value for the 
-     * given argument index
-     */
-    protected abstract JCExpression getTransformedArgumentExpression(int argIndex);
-    
-    protected abstract boolean dontBoxSequence();
+    @Override
+    protected boolean isParameterSequenced(int argIndex) {
+        return getParameter(argIndex).isSequenced();
+    }
     
     @Override
-    protected final void compute() {
-        int numArguments = getNumArguments();
-        for (int argIndex = 0; argIndex < numArguments; argIndex++) {
-            Parameter parameter = getParameter(argIndex);
-            final JCExpression expr;
-            if (!parameter.isSequenced()
-                    || dontBoxSequence()) {
-                expr = this.getTransformedArgumentExpression(argIndex);
-            } else {
-                // box with an ArraySequence<T>
-                List<JCExpression> x = List.<JCExpression>nil();
-                for ( ; argIndex < numArguments; argIndex++) {
-                    x = x.append(this.getTransformedArgumentExpression(argIndex));
-                }
-                expr = gen.makeSequenceRaw(x);
-            }
-            appendArgument(expr);
-        }
+    protected ProducedType getParameterType(int argIndex) {
+        boolean isRaw = primaryTypeArguments.isEmpty();
+        return gen.expressionGen().getTypeForParameter(getParameter(argIndex), isRaw, getTypeArguments());
+    }
+    
+    @Override
+    protected String getParameterName(int argIndex) {
+        return getParameter(argIndex).getName();
+    }
+    
+    @Override
+    protected Boolean getParameterUnboxed(int argIndex) {
+        return getParameter(argIndex).getUnboxed();
+    }
+    
+    @Override
+    protected BoxingStrategy getParameterBoxingStrategy(int argIndex) {
+        return Util.getBoxingStrategy(getParameter(argIndex));
+    }
+    
+    @Override
+    protected boolean hasParameter(int argIndex) {
+        return getParameter(argIndex) != null;
     }
 }
 
@@ -341,7 +493,7 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
  * InvocationBuilder used for 'normal' method and initializer invocations via 
  * positional arguments. Supports sequenced and defaulted arguments.
  */
-class PositionalInvocationBuilder extends SimpleInvocationBuilder {
+class PositionalInvocationBuilder extends DirectInvocationBuilder {
     
     private final Tree.PositionalArgumentList positional;
     private final java.util.List<Parameter> parameters;
@@ -362,32 +514,12 @@ class PositionalInvocationBuilder extends SimpleInvocationBuilder {
     }
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
-        PositionalArgument arg = positional.getPositionalArguments().get(argIndex);
-        if (arg.getExpression().getTerm() instanceof FunctionArgument) {
-            FunctionArgument farg = (FunctionArgument)arg.getExpression().getTerm();
+        Tree.Expression expr = getArgumentExpression(argIndex);
+        if (expr.getTerm() instanceof FunctionArgument) {
+            FunctionArgument farg = (FunctionArgument)expr.getTerm();
             return gen.expressionGen().transform(farg);
         }
-        return transformArg(
-                getArgumentExpression(argIndex), 
-                getParameter(argIndex));
-    }
-    
-    protected final JCExpression transformArg(Tree.Term expr, Parameter parameter) {
-        if (parameter != null) {
-            final boolean isRaw = primaryTypeArguments.isEmpty();
-            ProducedType type = gen.getTypeForParameter(parameter, isRaw, getTypeArguments());
-            return gen.expressionGen().transformExpression(expr, 
-                    Util.getBoxingStrategy(parameter), 
-                    type);
-        } else {
-            // Overloaded methods don't have a reference to a parameter
-            // so we have to treat them differently. Also knowing it's
-            // overloaded we know we're dealing with Java code so we unbox
-            ProducedType type = expr.getTypeModel();
-            return gen.expressionGen().transformExpression(expr, 
-                    BoxingStrategy.UNBOXED, 
-                    type);
-        }
+        return transformArg(argIndex);
     }
     protected Parameter getParameter(int argIndex) {
         return positional.getPositionalArguments().get(argIndex).getParameter();
@@ -433,7 +565,7 @@ class SuperInvocationBuilder extends PositionalInvocationBuilder {
  * InvocationBuilder for constructing the invocation of a method reference 
  * used when implementing {@code Callable.call()}
  */
-class CallableInvocationBuilder extends SimpleInvocationBuilder {
+class CallableInvocationBuilder extends DirectInvocationBuilder {
     
     private final java.util.List<Parameter> callableParameters;
     
@@ -455,7 +587,7 @@ class CallableInvocationBuilder extends SimpleInvocationBuilder {
     }
     @Override
     protected boolean dontBoxSequence() {
-        return getParameter(getNumArguments() - 1).isSequenced();
+        return isParameterSequenced(getNumArguments() - 1);
     }
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
@@ -468,12 +600,16 @@ class CallableInvocationBuilder extends SimpleInvocationBuilder {
     protected Parameter getParameter(int index) {
         return functionalParameters.get(index);
     }
+    @Override
+    protected Expression getArgumentExpression(int argIndex) {
+        throw new RuntimeException("I override getTransformedArgumentExpression(), so should never be called");
+    }
 }
 
 /**
  * InvocationBuilder for methods specifierd with a method reference. 
  */
-class MethodReferenceSpecifierInvocationBuilder extends SimpleInvocationBuilder {
+class MethodReferenceSpecifierInvocationBuilder extends DirectInvocationBuilder {
     
     private final Method method;
 
@@ -494,30 +630,29 @@ class MethodReferenceSpecifierInvocationBuilder extends SimpleInvocationBuilder 
     
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
-        Parameter parameter = getParameter(argIndex);
-        final boolean isRaw = primaryTypeArguments.isEmpty();
-        ProducedType exprType = gen.expressionGen().getTypeForParameter(parameter, isRaw, getTypeArguments());
+        ProducedType exprType = getParameterType(argIndex);
         Parameter declaredParameter = ((Functional)primaryDeclaration).getParameterLists().get(0).getParameters().get(argIndex);
-        JCExpression result = gen.makeQuotedIdent(parameter.getName());
+        JCExpression result = gen.makeQuotedIdent(getParameterName(argIndex));
         result = gen.expressionGen().applyErasureAndBoxing(
                 result, 
                 exprType, 
-                !parameter.getUnboxed(), 
+                !getParameterUnboxed(argIndex), 
                 Util.getBoxingStrategy(declaredParameter), 
                 declaredParameter.getType());
         return result;
     }
-
     @Override
     protected Parameter getParameter(int argIndex) {
         return method.getParameterLists().get(0).getParameters().get(argIndex);
     }
-    
     @Override
     protected boolean dontBoxSequence() {
         return method.getParameterLists().get(0).getParameters().get(getNumArguments() - 1).isSequenced();
     }
-
+    @Override
+    protected Expression getArgumentExpression(int argIndex) {
+        throw new RuntimeException("I override getTransformedArgumentExpression(), so should never be called");
+    }
 }
 
 /**
