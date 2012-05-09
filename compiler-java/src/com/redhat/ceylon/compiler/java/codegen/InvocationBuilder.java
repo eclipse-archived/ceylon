@@ -212,7 +212,7 @@ abstract class InvocationBuilder {
             builder = new PositionalInvocationBuilder(gen, 
                     primary, primaryDeclaration,
                     invocation,
-                    paramLists.get(0));
+                    paramLists.get(0).getParameters());
         } else if (invocation.getNamedArgumentList() != null) {
             builder = new NamedArgumentInvocationBuilder(gen, 
                     primary, 
@@ -344,17 +344,17 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
 class PositionalInvocationBuilder extends SimpleInvocationBuilder {
     
     private final Tree.PositionalArgumentList positional;
-    private final java.util.List<Parameter> declaredParameters;
+    private final java.util.List<Parameter> parameters;
     
     public PositionalInvocationBuilder(
             AbstractTransformer gen, 
             Tree.Primary primary,
             Declaration primaryDeclaration,
             Tree.InvocationExpression invocation,
-            ParameterList parameterList) {
+            java.util.List<Parameter> parameters) {
         super(gen, primary, primaryDeclaration, invocation.getTypeModel(), invocation);
         positional = invocation.getPositionalArgumentList();
-        declaredParameters = parameterList.getParameters();
+        this.parameters = parameters;
         
     }
     protected Tree.Expression getArgumentExpression(int argIndex) {
@@ -401,7 +401,7 @@ class PositionalInvocationBuilder extends SimpleInvocationBuilder {
         return positional.getEllipsis() != null;
     }
     protected boolean hasDefaultArgument(int ii) {
-        return declaredParameters.get(ii).isDefaulted();
+        return parameters.get(ii).isDefaulted();
     }
 }
 
@@ -418,7 +418,7 @@ class SuperInvocationBuilder extends PositionalInvocationBuilder {
                 invocation.getPrimary(), 
                 ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration(),
                 invocation,
-                parameterList);
+                parameterList.getParameters());
     }
     @Override
     protected JCExpression makeInvocation(List<JCExpression> args) {
