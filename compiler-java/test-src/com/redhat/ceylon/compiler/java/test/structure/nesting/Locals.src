@@ -13,8 +13,6 @@ interface Local$1$LI$LII {
     public long m();
 }
 interface Local$1$LI {
-    
-    public abstract .java.lang.Object $outer();
 }
 interface Local$C$1$CL$LCI {
     
@@ -129,10 +127,6 @@ class Local {
         
         final class Local$1$LI$impl {
             private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$1$LI $this;
-            
-            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local $outer() {
-                return .com.redhat.ceylon.compiler.java.test.structure.nesting.Local.this;
-            }
             
             final class Local$1$LI$LII$impl {
                 private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$1$LI$LII $this;
