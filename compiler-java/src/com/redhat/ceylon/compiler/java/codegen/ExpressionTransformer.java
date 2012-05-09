@@ -131,37 +131,31 @@ public class ExpressionTransformer extends AbstractTransformer {
             inStatement = false;
         }
         
+        // Cope with things like ((expr))
+        // FIXME: shouldn't that be in the visitor?
+        Tree.Term term = expr;
+        while (term instanceof Tree.Expression) {
+            term = ((Tree.Expression)term).getTerm();
+        }
+        
         CeylonVisitor v = gen().visitor;
         final ListBuffer<JCTree> prevDefs = v.defs;
         final boolean prevInInitializer = v.inInitializer;
         final ClassDefinitionBuilder prevClassBuilder = v.classBuilder;
-        JCExpression result;
+        JCExpression result = makeErroneous();
         try {
             v.defs = new ListBuffer<JCTree>();
             v.inInitializer = false;
             v.classBuilder = gen().current();
-            // FIXME: shouldn't that be in the visitor?
-            if (expr instanceof Tree.Expression) {
-                // Cope with things like ((expr))
-                Tree.Expression expr2 = (Tree.Expression)expr;
-                while(((Tree.Expression)expr2).getTerm() instanceof Tree.Expression) {
-                    expr2 = (Tree.Expression)expr2.getTerm();
-                }
-                expr2.visitChildren(v);
-            } else {
-                expr.visit(v);
+            term.visit(v);
+            if (v.hasResult()) {
+                result = v.getSingleResult();
             }
-            if (!v.hasResult()) {
-                return makeErroneous();
-            }
-            result = v.getSingleResult();
         } finally {
             v.classBuilder = prevClassBuilder;
             v.inInitializer = prevInInitializer;
             v.defs = prevDefs;
         }
-
-        
 
         result = applyErasureAndBoxing(result, expr, boxingStrategy, expectedType);
 
