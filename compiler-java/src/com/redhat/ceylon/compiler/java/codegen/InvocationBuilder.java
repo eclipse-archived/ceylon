@@ -290,14 +290,14 @@ abstract class InvocationBuilder {
     public static InvocationBuilder forSpecifierInvocation(
             CeylonTransformer gen, Tree.SpecifierExpression specifierExpression,
             Method method) {
-        Tree.Primary primary = (Tree.Primary)specifierExpression.getExpression().getTerm();
+        Tree.Term primary = specifierExpression.getExpression().getTerm();
         InvocationBuilder builder;
         if (primary instanceof Tree.MemberOrTypeExpression
                 && ((Tree.MemberOrTypeExpression)primary).getDeclaration() instanceof Functional) {
             Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)primary).getDeclaration();
             builder = new MethodReferenceSpecifierInvocationBuilder(
                     gen, 
-                    primary, 
+                    (Tree.MemberOrTypeExpression)primary, 
                     primaryDeclaration,
                     method,
                     specifierExpression);
