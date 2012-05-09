@@ -1,0 +1,198 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+class IndirectInvoke<X> {
+    
+    private final void mParameter(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
+        indirect.$call();
+    }
+    
+    private final void mParameter2(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
+        indirect.$call(.ceylon.language.Integer.instance(1L));
+    }
+    
+    private final void mParameter3(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
+        indirect.$call(.ceylon.language.Boolean.instance(true));
+    }
+    
+    private final void mParameter4(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
+        indirect.$call(.ceylon.language.String.instance(""));
+    }
+    
+    private final <T>void mParameter5(final .ceylon.language.Callable<? extends .java.lang.Object> indirect, final T t) {
+        indirect.$call(t);
+    }
+    
+    private final void mLocal(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+        final .ceylon.language.Callable<? extends .java.lang.Object> indirect = f;
+        indirect.$call();
+    }
+    
+    private final long mLocal2(final .ceylon.language.Callable<? extends .ceylon.language.Integer> f) {
+        final .ceylon.language.Callable<? extends .ceylon.language.Integer> indirect = f;
+        return indirect.$call(.ceylon.language.Integer.instance(1L)).longValue();
+    }
+    
+    private final boolean mLocal3(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f) {
+        final .ceylon.language.Callable<? extends .ceylon.language.Boolean> indirect = f;
+        return indirect.$call(.ceylon.language.Boolean.instance(true)).booleanValue();
+    }
+    
+    private final .java.lang.String mLocal4(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
+        final .ceylon.language.Callable<? extends .ceylon.language.String> indirect = f;
+        return indirect.$call(.ceylon.language.String.instance("")).toString();
+    }
+    
+    private final <T>T mLocal5(final .ceylon.language.Callable<? extends T> f, final T t) {
+        final .ceylon.language.Callable<? extends T> indirect = f;
+        return indirect.$call(t);
+    }
+    
+    private final void mMethod(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> indirect) {
+        indirect.$call().$call();
+    }
+    
+    private final long mMethod2(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> indirect) {
+        return indirect.$call().$call(.ceylon.language.Integer.instance(1L)).longValue();
+    }
+    
+    private final boolean mMethod3(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Boolean>> indirect) {
+        return indirect.$call().$call(.ceylon.language.Boolean.instance(true)).booleanValue();
+    }
+    
+    private final .java.lang.String mMethod4(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> indirect) {
+        return indirect.$call().$call(.ceylon.language.String.instance("")).toString();
+    }
+    
+    private final <T>T mMethod5(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends T>> indirect, final T t) {
+        return indirect.$call().$call(t);
+    }
+    
+    private final .ceylon.language.Callable<? extends .java.lang.Object> getGetter1() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    private final void mGetter1() {
+        getGetter1().$call();
+    }
+    
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> getGetter2() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    private final long mGetter2() {
+        return getGetter2().$call().longValue();
+    }
+    
+    private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> getGetter3() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    private final boolean mGetter3() {
+        return getGetter3().$call().booleanValue();
+    }
+    
+    private final .ceylon.language.Callable<? extends .ceylon.language.String> getGetter4() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    private final .java.lang.String mGetter4() {
+        return getGetter4().$call().toString();
+    }
+    
+    private final .ceylon.language.Callable<? extends X> getGetter5() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    private final X mGetter5() {
+        return getGetter5().$call();
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> value1;
+    
+    private final .ceylon.language.Callable<? extends .java.lang.Object> getValue1() {
+        return value1;
+    }
+    
+    private final void mValue1() {
+        value1.$call();
+    }
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> value2;
+    
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> getValue2() {
+        return value2;
+    }
+    
+    private final long mValue2() {
+        return value2.$call().longValue();
+    }
+    private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> value3;
+    
+    private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> getValue3() {
+        return value3;
+    }
+    
+    private final boolean mValue3() {
+        return value3.$call().booleanValue();
+    }
+    private final .ceylon.language.Callable<? extends .ceylon.language.String> value4;
+    
+    private final .ceylon.language.Callable<? extends .ceylon.language.String> getValue4() {
+        return value4;
+    }
+    
+    private final .java.lang.String mValue4() {
+        return value4.$call().toString();
+    }
+    private final .ceylon.language.Callable<? extends X> value5;
+    
+    private final .ceylon.language.Callable<? extends X> getValue5() {
+        return value5;
+    }
+    
+    private final X mValue5() {
+        return value5.$call();
+    }
+    
+    IndirectInvoke() {
+        this.value1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call() {
+                mGetter1();
+                return null;
+            }
+        };
+        this.value2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer()"){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call() {
+                return .ceylon.language.Integer.instance(mGetter2());
+            }
+        };
+        this.value3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>("Boolean()"){
+            
+            @.java.lang.Override
+            public .ceylon.language.Boolean $call() {
+                return .ceylon.language.Boolean.instance(mGetter3());
+            }
+        };
+        this.value4 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call() {
+                return .ceylon.language.String.instance(mGetter4());
+            }
+        };
+        this.value5 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<X>("X()"){
+            
+            @.java.lang.Override
+            public X $call() {
+                return mGetter5();
+            }
+        };
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.IndirectInvoke();
+    }
+}

@@ -542,6 +542,11 @@ public class ExpressionTest extends CompilerTest {
     public void testCallableNamedInvocationSequenced(){
         compareWithJavaSource("invoke/CallableNamedInvocationSequenced");
     }
+    
+    @Test
+    public void testIndirectInvoke(){
+        compareWithJavaSource("invoke/IndirectInvoke");
+    }
 
 
     // Self references
