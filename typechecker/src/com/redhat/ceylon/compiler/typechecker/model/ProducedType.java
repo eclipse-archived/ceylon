@@ -1157,42 +1157,71 @@ public class ProducedType extends ProducedReference {
 
     public String getProducedTypeName(boolean abbreviate) {
         if (getDeclaration()==null) {
-            //unknown type
-            return null;
+            return "unknown";
         }
-        if (abbreviate) {
-            Unit unit = getDeclaration().getUnit();
-            if (abbreviateOptional()) {
-                return minus(unit.getNothingDeclaration())
-                        .getProducedTypeName() + "?";
-            }
-            if (abbreviateSequence()) {
-                return unit.getElementType(this)
-                        .getProducedTypeName() + "[]";
-            }
-            if (abbreviateEntry()) {
-                return unit.getKeyType(this).getProducedTypeName() + "->"
-                        + unit.getValueType(this).getProducedTypeName();
-            }
-            if (abbreviateCallable()) {
-                String result = getTypeArgumentList().get(0)
-                        .getProducedTypeName() + "(";
-                if (getTypeArgumentList().size()>1) {
-                    result += getTypeArgumentList().get(1).getProducedTypeName();
-                    for (int i=2; i<getTypeArgumentList().size(); i++) {
-                        result += ", " + getTypeArgumentList().get(i).getProducedTypeName();
-                    }
+        else {
+            if (abbreviate) {
+                Unit unit = getDeclaration().getUnit();
+                if (abbreviateOptional()) {
+                    return minus(unit.getNothingDeclaration())
+                            .getProducedTypeName() + "?";
                 }
-                return result + ")";
+                if (abbreviateSequence()) {
+                    return unit.getElementType(this)
+                            .getProducedTypeName() + "[]";
+                }
+                /*if (abbreviateEntry()) {
+                    return unit.getKeyType(this).getProducedTypeName() + "->"
+                            + unit.getValueType(this).getProducedTypeName();
+                }*/
+                if (abbreviateCallable()) {
+                    List<ProducedType> tal = getTypeArgumentList();
+                    String result = tal.get(0).getProducedTypeName() + "(";
+                    if (tal.size()>1) {
+                        result += tal.get(1).getProducedTypeName();
+                        for (int i=2; i<tal.size(); i++) {
+                            result += ", " + tal.get(i).getProducedTypeName();
+                        }
+                    }
+                    return result + ")";
+                }
+            }
+            if (getDeclaration() instanceof UnionType) {
+                StringBuilder name = new StringBuilder();
+                for (ProducedType pt: getCaseTypes()) {
+                    if (pt==null) {
+                        name.append("unknown");
+                    }
+                    else {
+                        name.append(pt.getProducedTypeName(abbreviate));
+                    }
+                    name.append("|");
+                }
+                return name.substring(0,name.length()-1);
+            }
+            else if (getDeclaration() instanceof IntersectionType) {
+                StringBuilder name = new StringBuilder();
+                for (ProducedType pt: getSatisfiedTypes()) {
+                    if (pt==null) {
+                        name.append("unknown");
+                    }
+                    else {
+                        name.append(pt.getProducedTypeName(abbreviate));
+                    }
+                    name.append("&");
+                }
+                return name.substring(0,name.length()-1);
+            }
+            else {            
+                return getSimpleProducedTypeName(abbreviate);
             }
         }
-        return getSimpleProducedTypeName(abbreviate);
     }
 
     private boolean abbreviateEntry() {
         Unit unit = getDeclaration().getUnit();
-        if ( getDeclaration().equals(unit.getEntryDeclaration()) &&
-                getTypeArgumentList().size()==2 ) {
+        if (getDeclaration().equals(unit.getEntryDeclaration()) &&
+                getTypeArgumentList().size()==2) {
             ProducedType kt = unit.getKeyType(this);
             ProducedType vt = unit.getValueType(this);
             return kt!=null && vt!=null &&
@@ -1248,7 +1277,7 @@ public class ProducedType extends ProducedReference {
                     abbreviateOptional();
         }
         else {
-            return !abbreviateEntry();
+            return true;//!abbreviateEntry();
         }
     }
     

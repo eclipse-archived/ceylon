@@ -14,10 +14,10 @@ public class UnionType extends TypeDeclaration {
         String name = "";
         for (ProducedType pt: getCaseTypes()) {
             if (pt==null) {
-                name+="<unknown>";
+                name+="unknown";
             }
             else {
-                name+=pt.getProducedTypeName();
+                name+=pt.getProducedTypeName(false);
             }
             name+="|";
         }
@@ -29,7 +29,7 @@ public class UnionType extends TypeDeclaration {
         String name = "";
         for (ProducedType pt: getCaseTypes()) {
             if (pt==null) {
-                name+="<unknown>";
+                name+="unknown";
             }
             else {
                 name+=pt.getProducedTypeQualifiedName();

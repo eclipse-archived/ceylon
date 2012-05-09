@@ -17,10 +17,10 @@ public class IntersectionType extends TypeDeclaration {
         String name = "";
         for (ProducedType pt: getSatisfiedTypes()) {
             if (pt==null) {
-                name+="<unknown>";
+                name+="unknown";
             }
             else {
-                name+=pt.getProducedTypeName();
+                name+=pt.getProducedTypeName(false);
             }
             name+="&";
         }
@@ -32,7 +32,7 @@ public class IntersectionType extends TypeDeclaration {
         String name = "";
         for (ProducedType pt: getSatisfiedTypes()) {
             if (pt==null) {
-                name+="<unknown>";
+                name+="unknown";
             }
             else {
                 name+=pt.getProducedTypeQualifiedName();
