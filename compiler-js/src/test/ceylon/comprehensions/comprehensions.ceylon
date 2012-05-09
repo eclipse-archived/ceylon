@@ -16,5 +16,7 @@ shared void test() {
   assert(s3.sequence=={ "h", "e", "l", "l", "o" }, "comprehensions 5");
   assert(array(for (y in 1..5) for (x in 1..5) if (x>y) x*y)==array(2, 3, 4, 5, 6, 8, 10, 12, 15, 20), "comprehensions 6");
   assert(array(for (x in 1..6) if (x % 2 == 0) for (y in 1..3) x*y)==array(2,4,6,4,8,12,6,12,18), "comprehensions 7");
+  variable Object check := s1;
+  assert(is Iterable<String> check, "comprehension is Iterable");
   results();
 }
