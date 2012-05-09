@@ -697,4 +697,14 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("lambda/AnonFunctionNullary");
     }
     
+    @Test
+    public void testLmdToplevel(){
+        compareWithJavaSource("lambda/Toplevel");
+    }
+    
+    @Test
+    public void testLmdDefaultedParameter(){
+        compareWithJavaSource("lambda/DefaultedParameter");
+    }
+    
 }
