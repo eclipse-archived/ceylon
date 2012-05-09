@@ -291,7 +291,9 @@ public class ClassTransformer extends AbstractTransformer {
                             Decl.isAncestorLocal(model));
                     classBuilder.defs(getterDelegate);
                 }
-            } 
+            } else if (needsCompanionDelegate(model, member)) {
+                log.error("ceylon", "Unhandled concrete interface member " + member.getName());
+            }
         }
         
         // Add $impl instances for the whole interface hierarchy
