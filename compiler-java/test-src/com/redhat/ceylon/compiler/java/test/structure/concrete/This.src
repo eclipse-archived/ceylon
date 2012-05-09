@@ -1,0 +1,45 @@
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
+
+interface This {
+    
+    public abstract long m1();
+    
+    public long m2(final long i1, final long i2);
+    
+    public long m2(final long i1);
+    
+    public long m2();
+    
+    public abstract long m2$i1();
+    
+    public abstract long m2$i2(final long i1);
+}
+final class This$impl {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.This $this;
+    
+    public final long m2$i1() {
+        return $this.m1();
+    }
+    
+    public final long m2$i2(final long i1) {
+        return $this.m1();
+    }
+    
+    public long m2(final long i1, final long i2) {
+        return $this.m1() + $this.m1() + i1 + i2;
+    }
+    
+    class Inner {
+        
+        private final void m3() {
+            m2(1L, 2L);
+        }
+        
+        Inner() {
+        }
+    }
+    
+    This$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.This $this) {
+        this.$this = $this;
+    }
+}

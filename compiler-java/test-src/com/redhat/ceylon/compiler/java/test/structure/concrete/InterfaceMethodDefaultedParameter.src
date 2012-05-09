@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.test.structure.nesting;
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
 interface I<T> {
     
@@ -41,7 +41,7 @@ interface I<T> {
     public abstract <U>U m5$u(final long i, final T t);
 }
 final class I$impl<T> {
-    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $this;
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $this;
     
     public final long m$i() {
         return 1L;
@@ -99,7 +99,7 @@ final class I$impl<T> {
         return $this.<U>m5(i, t);
     }
     
-    I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $this) {
+    I$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $this) {
         this.$this = $this;
     }
 }
@@ -108,7 +108,7 @@ final class positional {
     private positional() {
     }
     
-    static <T>void positional(final .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> i, final .com.redhat.ceylon.compiler.java.test.structure.nesting.I<.ceylon.language.String> i2) {
+    static <T>void positional(final .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> i, final .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> i2) {
         i.m();
         i2.m(2L);
         i2.m2();
@@ -128,12 +128,12 @@ final class named {
     private named() {
     }
     
-    static <T>void named(final .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> i, final .com.redhat.ceylon.compiler.java.test.structure.nesting.I<.ceylon.language.String> i2) {
+    static <T>void named(final .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> i, final .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> i2) {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$16$callable$ = i;
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$16$this$ = $arg$16$callable$;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$16$callable$ = i;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$16$this$ = $arg$16$callable$;
                 long $arg$16$0 = $arg$16$this$.m$i();
                 $arg$16$callable$.m($arg$16$0);
             }
@@ -142,7 +142,7 @@ final class named {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<.ceylon.language.String> $arg$17$callable$ = i2;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> $arg$17$callable$ = i2;
                 long $arg$17$0 = 2L;
                 $arg$17$callable$.m($arg$17$0);
             }
@@ -151,8 +151,8 @@ final class named {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<.ceylon.language.String> $arg$18$callable$ = i2;
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<.ceylon.language.String> $arg$18$this$ = $arg$18$callable$;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> $arg$18$callable$ = i2;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> $arg$18$this$ = $arg$18$callable$;
                 long $arg$18$0 = $arg$18$this$.m2$i();
             }
             returning $arg$18$callable$.m2($arg$18$0);
@@ -161,8 +161,8 @@ final class named {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$19$callable$ = i;
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$19$this$ = $arg$19$callable$;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$19$callable$ = i;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$19$this$ = $arg$19$callable$;
                 long $arg$19$0 = $arg$19$this$.m3$i();
                 long $arg$19$1 = $arg$19$this$.m3$n($arg$19$0);
             }
@@ -171,8 +171,8 @@ final class named {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$20$callable$ = i;
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$20$this$ = $arg$20$callable$;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$20$callable$ = i;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$20$this$ = $arg$20$callable$;
                 long $arg$20$0 = 5L;
                 long $arg$20$1 = $arg$20$this$.m3$n($arg$20$0);
             }
@@ -181,7 +181,7 @@ final class named {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$21$callable$ = i;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$21$callable$ = i;
                 long $arg$21$0 = 4L;
                 long $arg$21$1 = 5L;
             }
@@ -190,7 +190,7 @@ final class named {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$22$callable$ = i;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$22$callable$ = i;
                 long $arg$22$1 = 5L;
                 long $arg$22$0 = 4L;
             }
@@ -199,8 +199,8 @@ final class named {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$23$callable$ = i;
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> $arg$23$this$ = $arg$23$callable$;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$23$callable$ = i;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$23$this$ = $arg$23$callable$;
                 long $arg$23$1 = 5L;
                 long $arg$23$0 = $arg$23$this$.m3$i();
             }
@@ -213,8 +213,8 @@ final class named {
         i.<.ceylon.language.String>m5(5L, null, .ceylon.language.String.instance(""));
     }
 }
-class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.nesting.I<T> {
-    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.I$impl<T> $I$impl;
+class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I$impl<T> $I$impl;
     
     @.java.lang.Override
     public final long m$i() {
@@ -356,11 +356,11 @@ class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.nesting.I<
     }
     
     C() {
-        this.$I$impl = new .com.redhat.ceylon.compiler.java.test.structure.nesting.I$impl<T>(this);
+        this.$I$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I$impl<T>(this);
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.nesting.C();
+        new .com.redhat.ceylon.compiler.java.test.structure.concrete.C();
     }
 }

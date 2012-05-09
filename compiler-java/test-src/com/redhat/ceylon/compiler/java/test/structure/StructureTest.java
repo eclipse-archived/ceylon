@@ -532,6 +532,7 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("import_/ImportCeylonLanguageType");
     }
     
+    // Tests for nesting of declarations
     /*@Test
     public void testNstNesting(){
         compareWithJavaSource("nesting/Nesting");
@@ -588,19 +589,26 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("nesting/ClassInitDefaultedParameter");
     }
     
-    @Test
-    public void testNstInterfaceMethodDefaultedParameter(){
-        compareWithJavaSource("nesting/InterfaceMethodDefaultedParameter");
-    }
 
+    // Tests for concrete members of interfaces
     @Test
-    public void testNstConcreteInterface(){
-        compareWithJavaSource("nesting/ConcreteInterface");
+    public void testCncThis(){
+        compareWithJavaSource("concrete/This");
     }
     
     @Test
-    public void testNstNestedInterface(){
-        compareWithJavaSource("nesting/NestedInterface");
+    public void testCncConcreteInterface(){
+        compareWithJavaSource("concrete/ConcreteInterface");
+    }
+
+    @Test
+    public void testCncInterfaceMethodDefaultedParameter(){
+        compareWithJavaSource("concrete/InterfaceMethodDefaultedParameter");
+    }
+    
+    @Test
+    public void testCncSatisfaction(){
+        compareWithJavaSource("concrete/Satisfaction");
     }
     
     @Test

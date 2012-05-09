@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.test.structure.nesting;
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
 interface I1 {
     
@@ -13,7 +13,7 @@ interface I1 {
     public abstract boolean m1$b(final long i);
 }
 final class I1$impl {
-    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.I1 $this;
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I1 $this;
     
     public final long m1$i() {
         return 0L;
@@ -31,7 +31,7 @@ final class I1$impl {
         return $this.m1(i);
     }
     
-    I1$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.I1 $this) {
+    I1$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I1 $this) {
         this.$this = $this;
     }
 }
@@ -48,7 +48,7 @@ interface I2 {
     public abstract boolean m2$b(final long i);
 }
 final class I2$impl {
-    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.I2 $this;
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 $this;
     
     public final long m2$i() {
         return 0L;
@@ -66,13 +66,13 @@ final class I2$impl {
         return $this.m2(i);
     }
     
-    I2$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.I2 $this) {
+    I2$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I2 $this) {
         this.$this = $this;
     }
 }
-class C implements .com.redhat.ceylon.compiler.java.test.structure.nesting.I1, .com.redhat.ceylon.compiler.java.test.structure.nesting.I2 {
-    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.I1$impl $I1$impl;
-    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.I2$impl $I2$impl;
+class C implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl $I1$impl;
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl $I2$impl;
     
     @.java.lang.Override
     public final long m1$i() {
@@ -151,12 +151,12 @@ class C implements .com.redhat.ceylon.compiler.java.test.structure.nesting.I1, .
     }
     
     C() {
-        this.$I1$impl = new .com.redhat.ceylon.compiler.java.test.structure.nesting.I1$impl(this);
-        this.$I2$impl = new .com.redhat.ceylon.compiler.java.test.structure.nesting.I2$impl(this);
+        this.$I1$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl(this);
+        this.$I2$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl(this);
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.nesting.C();
+        new .com.redhat.ceylon.compiler.java.test.structure.concrete.C();
     }
 }
