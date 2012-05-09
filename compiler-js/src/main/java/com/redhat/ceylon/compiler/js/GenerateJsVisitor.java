@@ -1576,8 +1576,9 @@ public class GenerateJsVisitor extends Visitor
         final String compName = names.createTempVariable("compr");
         out("function ", compName, "()"); beginBlock();
         out("var $cmp$=new ", compName, ".$$;"); endLine();
+        out(clAlias, ".IdentifiableObject($cmp$);"); endLine();
         comprehensions.clear();
-        //First pass: get all the iterators and item vars, generate contexts
+        //Get the first clause to start getting into the other ones
         ComprehensionClause clause = that.getForComprehensionClause();
         int idx = 0;
         ExpressionComprehensionClause excc = null;
@@ -1595,9 +1596,9 @@ public class GenerateJsVisitor extends Visitor
                 } else {
                     //The subsequent iterators need to be inside a function, in case they depend on the outer current element
                     out("$cmp$.getIter", Integer.toString(idx), "=function()"); beginBlock();
-                    out("if(");
-                    specexpr.visit(this);
-                    out("===undefined)this.next$", Integer.toString(idx-1), "();"); endLine();
+                    if (true) {
+                        out("if(this.", names.name(comprehensions.get(comprehensions.size()-1)), "===undefined)this.next$", Integer.toString(idx-1), "();"); endLine();
+                    }
                     out("return ");
                     specexpr.visit(this);
                     out(".getIterator();");
@@ -1628,17 +1629,18 @@ public class GenerateJsVisitor extends Visitor
                     endLine();
                 }
                 if (fcl.getForIterator() instanceof ValueIterator) {
-                    out("this.", names.name(comprehensions.get(idx-1)), "=this.iter", Integer.toString(idx), ".next();");
+                    out("this.", names.name(comprehensions.get(comprehensions.size()-1)), "=this.iter", Integer.toString(idx), ".next();");
                 } else {
                     out("this.item$", Integer.toString(idx), "=this.iter", Integer.toString(idx), ".next();");
                 }
                 endLine();
                 out("if(this.", itemVar, "===", clAlias, ".getExhausted())"); beginBlock();
                 if (idx>1) {
+                    //Add an inner check after the first context
                     out("if(this.next$", Integer.toString(idx-1), "())"); beginBlock();
                     out("this.iter", Integer.toString(idx), "=this.getIter", Integer.toString(idx), "();"); endLine();
-                    out("this.", names.name(comprehensions.get(idx-1)), "=this.iter", Integer.toString(idx), ".next();"); endLine();
-                    out("return this.", names.name(comprehensions.get(idx-1)), "!==", clAlias, ".getExhausted();");
+                    out("this.", names.name(comprehensions.get(comprehensions.size()-1)), "=this.iter", Integer.toString(idx), ".next();"); endLine();
+                    out("return this.", names.name(comprehensions.get(comprehensions.size()-1)), "!==", clAlias, ".getExhausted();");
                     endBlock();
                 }
                 out("return false;");
