@@ -93,7 +93,8 @@ public class AttributeDefinitionBuilder {
         setterBuilder = MethodDefinitionBuilder
             .systemMethod(owner, ancestorLocal, Util.getSetterName(attrType))
             .block(generateDefaultSetterBlock())
-            .isActual(attrType.isActual())
+            // only actual if the superclass is also variable
+            .isActual(attrType.isActual() && ((TypedDeclaration)attrType.getRefinedDeclaration()).isVariable())
             .parameter(0, attrName, attrType, nonWideningTypeDeclaration, nonWideningType);
     }
 
@@ -262,12 +263,6 @@ public class AttributeDefinitionBuilder {
         return this;
     }
 
-    public AttributeDefinitionBuilder isActual(boolean isActual) {
-        getterBuilder.isActual(isActual);
-        setterBuilder.isActual(isActual);
-        return this;
-    }
-
     public AttributeDefinitionBuilder isFormal(boolean isFormal) {
         getterBuilder.isFormal(isFormal);
         setterBuilder.isFormal(isFormal);
@@ -332,6 +327,19 @@ public class AttributeDefinitionBuilder {
      */
     public AttributeDefinitionBuilder initialValue(JCTree.JCExpression initialValue) {
         this.variableInit = initialValue;
+        return this;
+    }
+
+    /**
+     * Marks the getter/setter methods as not actual. In general <tt>actual</tt> is derived from
+     * the model while creating this builder so it will be correct. You can only disable this
+     * computation. Enabling <tt>actual</tt> would otherwise depend on the question of whether the
+     * getter is or not actual which may be different for the setter if the refined decl is not variable
+     * so we'd need two parameters.
+     */
+    public AttributeDefinitionBuilder notActual() {
+        getterBuilder.isActual(false);
+        setterBuilder.isActual(false);
         return this;
     }
 }

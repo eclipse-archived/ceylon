@@ -561,7 +561,6 @@ public class ClassTransformer extends AbstractTransformer {
                  */
             .setter(this, name, decl.getDeclarationModel().getGetter())
             .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), false))
-            .isActual(isActual(decl))
             .setterBlock(body)
             .build();
     }
@@ -577,7 +576,6 @@ public class ClassTransformer extends AbstractTransformer {
         if (Decl.withinClass(decl) || forCompanion) {
             JCBlock body = statementGen().transform(decl.getBlock());
             builder.getterBlock(body);
-            builder.isActual(Decl.isActual(decl));
         } else {
             builder.isFormal(true);
         }
@@ -706,9 +704,10 @@ public class ClassTransformer extends AbstractTransformer {
                 
             }
         }
+        if(forCompanion)
+            builder.notActual();
         return builder
             .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), forCompanion))
-            .isActual(Decl.isActual(decl) && !forCompanion)
             .isFormal(Decl.isFormal(decl) && !forCompanion)
             .build();
     }
@@ -728,27 +727,6 @@ public class ClassTransformer extends AbstractTransformer {
         return makeGetterOrSetter(decl, forCompanion, setter, false);
     }
 
-    private boolean isActual(Tree.TypedDeclaration decl) {
-        boolean actual;
-        Declaration refinedDecl = decl.getDeclarationModel().getRefinedDeclaration();
-        if (refinedDecl instanceof Value) {
-            // If a variable attr is refining a non-variable one then the
-            // setter is not overriding anything: We mustn't add an @Override
-            Value refinedValue = (Value)refinedDecl;
-            actual = refinedValue.isVariable() && Decl.isActual(decl);
-        } else if (decl instanceof AttributeSetterDefinition
-                && refinedDecl instanceof Getter) {            
-            AttributeSetterDefinition setterDecl = (AttributeSetterDefinition)decl;
-            Getter refinedGetter = (Getter)refinedDecl;
-            actual = refinedGetter.getSetter() != null // The setter might not be refined even if the getter is 
-                    && refinedGetter.isDefault() // The setter metadata comes from the getter
-                    && setterDecl.getDeclarationModel().getGetter().isActual();
-        } else {
-            actual = Decl.isActual(decl);
-        }
-        return actual;
-    }
-    
     public List<JCTree> transformWrappedMethod(Tree.AnyMethod def) {
         final Method model = def.getDeclarationModel();
         noteDecl(model);
@@ -1318,7 +1296,6 @@ public class ClassTransformer extends AbstractTransformer {
                 result = result.appendList(AttributeDefinitionBuilder
                     .getter(this, name, model)
                     .modifiers(transformAttributeGetSetDeclFlags(model, false))
-                    .isActual(Decl.isActual(model))
                     .build());
             }
         }
