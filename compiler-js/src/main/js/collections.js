@@ -392,10 +392,15 @@ exports.arrayOfSome=function(elems) { //receives an ArraySequence
     return ArrayList(elems.value);
 }
 exports.array=function(elems) {
-    if (elems === null || elems === undefined || elems.getSize().value === 0) {
+    if (elems === null || elems === undefined) {
         return EmptyArray();
     } else {
-        return ArrayList(elems.value);
+        var e=[];
+        var iter=elems.getIterator();
+        var item;while((item=iter.next())!==$finished) {
+            e.push(item);
+        }
+        return e.length==0 ? EmptyArray() : ArrayList(e);
     }
 }
 exports.makeArray=function(size, init) {
@@ -407,3 +412,14 @@ exports.makeArray=function(size, init) {
         return ArrayList(elems);
     } else return EmptyArray();
 }
+
+function Comprehension(iterator) {
+    var that = new Comprehension.$$;
+    that.iterator=iterator;
+    return that;
+}
+initTypeProto(Comprehension, 'ceylon.language.Comprehension', Iterable);
+Comprehension.$$.prototype.getIterator=function() {
+    return this.iterator;
+};
+exports.Comprehension=Comprehension;
