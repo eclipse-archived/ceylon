@@ -72,7 +72,6 @@ final class I2$impl {
 }
 class C implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 {
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl $I1$impl;
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl $I2$impl;
     
     @.java.lang.Override
     public final long m1$i() {
@@ -84,10 +83,10 @@ class C implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, 
         return (
             let
             {
-                long $ceylontmpi10 = $I1$impl.m1$i();
-                boolean $ceylontmpb11 = $I1$impl.m1$b($ceylontmpi10);
+                long $ceylontmp$i$11 = m1$i();
+                boolean $ceylontmp$b$12 = m1$b($ceylontmp$i$11);
             }
-            returning m1($ceylontmpi10, $ceylontmpb11);
+            returning m1($ceylontmp$i$11, $ceylontmp$b$12);
         );
     }
     
@@ -101,16 +100,12 @@ class C implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, 
         return (
             let
             {
-                boolean $ceylontmpb12 = $I1$impl.m1$b(i);
+                boolean $ceylontmp$b$14 = m1$b(i);
             }
-            returning m1(i, $ceylontmpb12);
+            returning m1(i, $ceylontmp$b$14);
         );
     }
-    
-    @.java.lang.Override
-    public final .java.lang.String m1(final long i, final boolean b) {
-        return "";
-    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl $I2$impl;
     
     @.java.lang.Override
     public final long m2$i() {
@@ -122,10 +117,10 @@ class C implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, 
         return (
             let
             {
-                long $ceylontmpi13 = $I2$impl.m2$i();
-                boolean $ceylontmpb14 = $I2$impl.m2$b($ceylontmpi13);
+                long $ceylontmp$i$16 = m2$i();
+                boolean $ceylontmp$b$17 = m2$b($ceylontmp$i$16);
             }
-            returning m2($ceylontmpi13, $ceylontmpb14);
+            returning m2($ceylontmp$i$16, $ceylontmp$b$17);
         );
     }
     
@@ -139,10 +134,15 @@ class C implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, 
         return (
             let
             {
-                boolean $ceylontmpb15 = $I2$impl.m2$b(i);
+                boolean $ceylontmp$b$19 = m2$b(i);
             }
-            returning m2(i, $ceylontmpb15);
+            returning m2(i, $ceylontmp$b$19);
         );
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String m1(final long i, final boolean b) {
+        return "";
     }
     
     @.java.lang.Override

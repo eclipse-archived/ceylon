@@ -34,7 +34,7 @@ class CI1 implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I1
     }
     
     @.java.lang.Override
-    public long m1() {
+    public final long m1() {
         return (
             let
             {
@@ -61,5 +61,232 @@ class CI1 implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I1
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.CI1();
+    }
+}
+interface I2 {
+    
+    public abstract long i2();
+    
+    public long m2(final long n);
+    
+    public long m2();
+    
+    public abstract long m2$n();
+}
+final class I2$impl {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 $this;
+    
+    public final long m2$n() {
+        return $this.i2();
+    }
+    
+    public long m2(final long n) {
+        return n + $this.i2();
+    }
+    
+    I2$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I2 $this) {
+        this.$this = $this;
+    }
+}
+interface I3 extends .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 {
+}
+final class I3$impl {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I3 $this;
+    
+    I3$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I3 $this) {
+        this.$this = $this;
+    }
+}
+interface I4 {
+    
+    public abstract long i4();
+    
+    public long m4(final long n);
+    
+    public long m4();
+    
+    public abstract long m4$n();
+}
+final class I4$impl {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I4 $this;
+    
+    public final long m4$n() {
+        return $this.i4();
+    }
+    
+    public long m4(final long n) {
+        return n;
+    }
+    
+    I4$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I4 $this) {
+        this.$this = $this;
+    }
+}
+class CI3 implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl $I1$impl;
+    
+    @.java.lang.Override
+    public final long m1$n() {
+        return $I1$impl.m1$n();
+    }
+    
+    @.java.lang.Override
+    public final long m1() {
+        return (
+            let
+            {
+                long $ceylontmp$n$9 = m1$n();
+            }
+            returning m1($ceylontmp$n$9);
+        );
+    }
+    
+    @.java.lang.Override
+    public long m1(final long n) {
+        return $I1$impl.m1(n);
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl $I2$impl;
+    
+    @.java.lang.Override
+    public final long m2$n() {
+        return $I2$impl.m2$n();
+    }
+    
+    @.java.lang.Override
+    public final long m2() {
+        return (
+            let
+            {
+                long $ceylontmp$n$11 = m2$n();
+            }
+            returning m2($ceylontmp$n$11);
+        );
+    }
+    
+    @.java.lang.Override
+    public final long i1() {
+        return 1L;
+    }
+    
+    @.java.lang.Override
+    public final long i2() {
+        return 2L;
+    }
+    
+    @.java.lang.Override
+    public final long m2(final long n) {
+        return 2L;
+    }
+    
+    CI3() {
+        this.$I1$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl(this);
+        this.$I2$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl(this);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.concrete.CI3();
+    }
+}
+abstract class A7 implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I3, .com.redhat.ceylon.compiler.java.test.structure.concrete.I4 {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I3$impl $I3$impl;
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl $I1$impl;
+    
+    @.java.lang.Override
+    public final long m1$n() {
+        return $I1$impl.m1$n();
+    }
+    
+    @.java.lang.Override
+    public final long m1() {
+        return (
+            let
+            {
+                long $ceylontmp$n$13 = m1$n();
+            }
+            returning m1($ceylontmp$n$13);
+        );
+    }
+    
+    @.java.lang.Override
+    public long m1(final long n) {
+        return $I1$impl.m1(n);
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl $I2$impl;
+    
+    @.java.lang.Override
+    public final long m2$n() {
+        return $I2$impl.m2$n();
+    }
+    
+    @.java.lang.Override
+    public final long m2() {
+        return (
+            let
+            {
+                long $ceylontmp$n$15 = m2$n();
+            }
+            returning m2($ceylontmp$n$15);
+        );
+    }
+    
+    @.java.lang.Override
+    public long m2(final long n) {
+        return $I2$impl.m2(n);
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I4$impl $I4$impl;
+    
+    @.java.lang.Override
+    public final long m4$n() {
+        return $I4$impl.m4$n();
+    }
+    
+    @.java.lang.Override
+    public final long m4() {
+        return (
+            let
+            {
+                long $ceylontmp$n$17 = m4$n();
+            }
+            returning m4($ceylontmp$n$17);
+        );
+    }
+    
+    @.java.lang.Override
+    public final long i1() {
+        return 1L;
+    }
+    
+    @.java.lang.Override
+    public final long m4(final long n) {
+        return 5L;
+    }
+    
+    A7() {
+        this.$I3$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I3$impl(this);
+        this.$I1$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl(this);
+        this.$I2$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl(this);
+        this.$I4$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I4$impl(this);
+    }
+}
+class CA7 extends .com.redhat.ceylon.compiler.java.test.structure.concrete.A7 {
+    
+    @.java.lang.Override
+    public final long i2() {
+        return 2L;
+    }
+    
+    @.java.lang.Override
+    public final long i4() {
+        return 4L;
+    }
+    
+    CA7() {
+        super();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.concrete.CA7();
     }
 }

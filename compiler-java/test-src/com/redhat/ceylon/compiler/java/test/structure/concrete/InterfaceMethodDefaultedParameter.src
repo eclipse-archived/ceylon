@@ -226,15 +226,11 @@ class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I
         (
             let
             {
-                long $ceylontmpi24 = $I$impl.m$i();
-                m($ceylontmpi24);
+                long $ceylontmp$i$25 = m$i();
+                m($ceylontmp$i$25);
             }
             returning null;
         );
-    }
-    
-    @.java.lang.Override
-    public final void m(final long i) {
     }
     
     @.java.lang.Override
@@ -247,15 +243,10 @@ class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I
         return (
             let
             {
-                long $ceylontmpi25 = $I$impl.m2$i();
+                long $ceylontmp$i$27 = m2$i();
             }
-            returning m2($ceylontmpi25);
+            returning m2($ceylontmp$i$27);
         );
-    }
-    
-    @.java.lang.Override
-    public final long m2(final long i) {
-        return i;
     }
     
     @.java.lang.Override
@@ -268,10 +259,10 @@ class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I
         return (
             let
             {
-                long $ceylontmpi26 = $I$impl.m3$i();
-                long $ceylontmpn27 = $I$impl.m3$n($ceylontmpi26);
+                long $ceylontmp$i$29 = m3$i();
+                long $ceylontmp$n$30 = m3$n($ceylontmp$i$29);
             }
-            returning m3($ceylontmpi26, $ceylontmpn27);
+            returning m3($ceylontmp$i$29, $ceylontmp$n$30);
         );
     }
     
@@ -285,15 +276,10 @@ class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I
         return (
             let
             {
-                long $ceylontmpn28 = $I$impl.m3$n(i);
+                long $ceylontmp$n$32 = m3$n(i);
             }
-            returning m3(i, $ceylontmpn28);
+            returning m3(i, $ceylontmp$n$32);
         );
-    }
-    
-    @.java.lang.Override
-    public final long m3(final long i, final long n) {
-        return i;
     }
     
     @.java.lang.Override
@@ -306,20 +292,15 @@ class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I
         return (
             let
             {
-                long $ceylontmpn29 = $I$impl.m4$n(i);
+                long $ceylontmp$n$34 = m4$n(i);
             }
-            returning m4(i, $ceylontmpn29);
+            returning m4(i, $ceylontmp$n$34);
         );
     }
     
     @.java.lang.Override
-    public final long m4(final long i, final long n) {
-        return i;
-    }
-    
-    @.java.lang.Override
     public final <U>T m5$t(final long i) {
-        return $I$impl.<U>m5$t(i);
+        return $I$impl.m5$t(i);
     }
     
     @.java.lang.Override
@@ -327,16 +308,16 @@ class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I
         return (
             let
             {
-                T $ceylontmpt30 = $I$impl.<U>m5$t(i);
-                U $ceylontmpu31 = $I$impl.<U>m5$u(i, $ceylontmpt30);
+                T $ceylontmp$t$36 = m5$t(i);
+                U $ceylontmp$u$37 = m5$u(i, $ceylontmp$t$36);
             }
-            returning <U>m5(i, $ceylontmpt30, $ceylontmpu31);
+            returning m5(i, $ceylontmp$t$36, $ceylontmp$u$37);
         );
     }
     
     @.java.lang.Override
     public final <U>U m5$u(final long i, final T t) {
-        return $I$impl.<U>m5$u(i, t);
+        return $I$impl.m5$u(i, t);
     }
     
     @.java.lang.Override
@@ -344,10 +325,29 @@ class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I
         return (
             let
             {
-                U $ceylontmpu32 = $I$impl.<U>m5$u(i, t);
+                U $ceylontmp$u$39 = m5$u(i, t);
             }
-            returning <U>m5(i, t, $ceylontmpu32);
+            returning m5(i, t, $ceylontmp$u$39);
         );
+    }
+    
+    @.java.lang.Override
+    public final void m(final long i) {
+    }
+    
+    @.java.lang.Override
+    public final long m2(final long i) {
+        return i;
+    }
+    
+    @.java.lang.Override
+    public final long m3(final long i, final long n) {
+        return i;
+    }
+    
+    @.java.lang.Override
+    public final long m4(final long i, final long n) {
+        return i;
     }
     
     @.java.lang.Override
