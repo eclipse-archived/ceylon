@@ -19,7 +19,7 @@ final class callableReturnNullary_bar {
     }
     
     static .ceylon.language.Callable<? extends .java.lang.Object> callableReturnNullary_bar() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void>"){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
             
             @.java.lang.Override
             public .java.lang.Object $call() {

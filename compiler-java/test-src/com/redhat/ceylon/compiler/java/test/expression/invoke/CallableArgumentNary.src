@@ -22,7 +22,7 @@ final class callableArgumentNary_m {
     }
     
     static void callableArgumentNary_m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentNary_f.callableArgumentNary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void,Integer,String,Boolean,Character>"){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentNary_f.callableArgumentNary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Integer, String, Boolean, Character)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object... $param$0) {

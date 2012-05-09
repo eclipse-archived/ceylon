@@ -16,7 +16,7 @@ final class callableReturnReturningClass_bar {
     }
     
     static .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass> callableReturnReturningClass_bar() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass>("Callable<CallableReturnReturningClass>"){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass>("CallableReturnReturningClass()"){
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass $call() {

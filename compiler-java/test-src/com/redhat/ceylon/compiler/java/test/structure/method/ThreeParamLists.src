@@ -6,12 +6,12 @@ public final class fullName {
     }
     
     public static .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> fullName(final .ceylon.language.String firstName) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>("Callable<Callable<String>>"){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>("String()()"){
             
             @.java.lang.Override
             public .ceylon.language.Callable<.ceylon.language.String> $call(final .java.lang.Object $param$0) {
                 final .ceylon.language.String middleName = (.ceylon.language.String)$param$0;
-                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("Callable<String>"){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
                     
                     @.java.lang.Override
                     public .ceylon.language.String $call(final .java.lang.Object $param$0) {

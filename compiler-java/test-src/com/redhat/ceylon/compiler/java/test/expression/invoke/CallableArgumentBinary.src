@@ -22,7 +22,7 @@ final class callableArgumentBinary_m {
     }
     
     static void callableArgumentBinary_m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentBinary_f.callableArgumentBinary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void,Integer,String>"){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentBinary_f.callableArgumentBinary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Integer, String)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {

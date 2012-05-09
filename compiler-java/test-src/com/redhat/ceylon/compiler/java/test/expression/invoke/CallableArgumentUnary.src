@@ -22,7 +22,7 @@ final class callableArgumentUnary_m {
     }
     
     static void callableArgumentUnary_m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentUnary_f.callableArgumentUnary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Callable<Void,Integer>"){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentUnary_f.callableArgumentUnary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Integer)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {

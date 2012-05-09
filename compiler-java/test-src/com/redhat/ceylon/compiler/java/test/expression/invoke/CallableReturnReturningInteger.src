@@ -20,7 +20,7 @@ final class callableReturnReturningInteger_bar {
     }
     
     static .ceylon.language.Callable<? extends .ceylon.language.Integer> callableReturnReturningInteger_bar() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Callable<Integer>"){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer()"){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call() {
