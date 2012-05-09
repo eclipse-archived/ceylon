@@ -61,6 +61,7 @@ final class Right$impl {
 }
 class CMiddle implements .com.redhat.ceylon.compiler.java.test.expression.erasure.Left, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right {
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left$impl $Left$impl;
+    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top$impl $Top$impl;
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Right$impl $Right$impl;
     
     @.java.lang.Override
@@ -106,6 +107,7 @@ class CMiddle implements .com.redhat.ceylon.compiler.java.test.expression.erasur
     
     CMiddle() {
         this.$Left$impl = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Left$impl(this);
+        this.$Top$impl = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Top$impl(this);
         this.$Right$impl = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Right$impl(this);
         this.topAttribute = 1L;
         this.leftAttribute = 1L;
@@ -120,6 +122,7 @@ class CMiddle implements .com.redhat.ceylon.compiler.java.test.expression.erasur
 }
 class CLeft implements .com.redhat.ceylon.compiler.java.test.expression.erasure.Left {
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left$impl $Left$impl;
+    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top$impl $Top$impl;
     
     @.java.lang.Override
     public final void left() {
@@ -154,6 +157,7 @@ class CLeft implements .com.redhat.ceylon.compiler.java.test.expression.erasure.
     
     CLeft() {
         this.$Left$impl = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Left$impl(this);
+        this.$Top$impl = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Top$impl(this);
         this.topAttribute = 1L;
         this.leftAttribute = 1L;
         this.leftAndRightAttribute = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
