@@ -612,8 +612,8 @@ public class StructureTest extends CompilerTest {
     }
     
     @Test
-    public void testNstObjects(){
-        compareWithJavaSource("nesting/Objects");
+    public void testCncConcreteGetter(){
+        compareWithJavaSource("concrete/ConcreteGetter");
     }
 
 }
