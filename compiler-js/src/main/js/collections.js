@@ -415,10 +415,11 @@ exports.makeArray=function(size, init) {
 
 function Comprehension(iterator) {
     var that = new Comprehension.$$;
+    IdentifiableObject(that);
     that.iterator=iterator;
     return that;
 }
-initTypeProto(Comprehension, 'ceylon.language.Comprehension', Iterable);
+initTypeProto(Comprehension, 'ceylon.language.Comprehension', IdentifiableObject, Iterable);
 Comprehension.$$.prototype.getIterator=function() {
     return this.iterator;
 };
