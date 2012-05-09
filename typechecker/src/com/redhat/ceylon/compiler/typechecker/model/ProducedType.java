@@ -1171,14 +1171,8 @@ public class ProducedType extends ProducedReference {
                         .getProducedTypeName() + "[]";
             }
             if (abbreviateEntry()) {
-                ProducedType kt = unit.getKeyType(this);
-                ProducedType vt = unit.getValueType(this);
-                if (kt!=null && vt!=null &&
-                        kt.abbreviateKeyOrValue() && 
-                        vt.abbreviateKeyOrValue()) {
-                    return kt.getProducedTypeName() + "->"
-                            + vt.getProducedTypeName();
-                }
+                return unit.getKeyType(this).getProducedTypeName() + "->"
+                        + unit.getValueType(this).getProducedTypeName();
             }
             if (abbreviateCallable()) {
                 String result = getTypeArgumentList().get(0)
@@ -1197,15 +1191,24 @@ public class ProducedType extends ProducedReference {
 
     private boolean abbreviateEntry() {
         Unit unit = getDeclaration().getUnit();
-        return getDeclaration().equals(unit.getEntryDeclaration()) &&
-                getTypeArgumentList().size()==2;
+        if ( getDeclaration().equals(unit.getEntryDeclaration()) &&
+                getTypeArgumentList().size()==2 ) {
+            ProducedType kt = unit.getKeyType(this);
+            ProducedType vt = unit.getValueType(this);
+            return kt!=null && vt!=null &&
+                    kt.isPrimitiveAbbreviatedType() && 
+                    vt.isPrimitiveAbbreviatedType();
+        }
+        else {
+            return false;
+        }
     }
 
     private boolean abbreviateCallable() {
         return getDeclaration().getQualifiedNameString()
                         .equals("ceylon.language.Callable") &&
                 getTypeArgumentList().size()>0 && 
-                getTypeArgumentList().get(0).abbreviateReturn() &&
+                getTypeArgumentList().get(0).isPrimitiveAbbreviatedType() &&
                 getTypeArgumentList().size()==getDeclaration().getTypeParameters().size();
     }
 
@@ -1216,7 +1219,7 @@ public class ProducedType extends ProducedReference {
             return ut.getCaseTypes().size()==2 &&
                     isElementOfUnion(ut, unit.getEmptyDeclaration()) &&
                     isElementOfUnion(ut, unit.getSequenceDeclaration()) &&
-                        unit.getElementType(this).abbreviateKeyOrValue();
+                        unit.getElementType(this).isPrimitiveAbbreviatedType();
         }
         else {
             return false;
@@ -1228,14 +1231,15 @@ public class ProducedType extends ProducedReference {
             Unit unit = getDeclaration().getUnit();
             UnionType ut = (UnionType) getDeclaration();
             return ut.getCaseTypes().size()==2 &&
-                    isElementOfUnion(ut, unit.getNothingDeclaration());
+                    isElementOfUnion(ut, unit.getNothingDeclaration()) &&
+                    minus(unit.getNothingDeclaration()).isPrimitiveAbbreviatedType();
         }
         else {
             return false;
         }
     }
 
-    private boolean abbreviateKeyOrValue() {
+    private boolean isPrimitiveAbbreviatedType() {
         if (getDeclaration() instanceof IntersectionType) {
             return false;
         }
@@ -1245,19 +1249,6 @@ public class ProducedType extends ProducedReference {
         }
         else {
             return !abbreviateEntry();
-        }
-    }
-    
-    private boolean abbreviateReturn() {
-        if (getDeclaration() instanceof IntersectionType) {
-            return false;
-        }
-        else if (getDeclaration() instanceof UnionType) {
-            return abbreviateSequence() || 
-                    abbreviateOptional();
-        }
-        else {
-            return !abbreviateCallable() && !abbreviateEntry();
         }
     }
     
