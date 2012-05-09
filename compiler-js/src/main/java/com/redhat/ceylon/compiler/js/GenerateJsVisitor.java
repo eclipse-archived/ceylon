@@ -37,6 +37,10 @@ public class GenerateJsVisitor extends Visitor
     private final EnclosingFunctionVisitor encloser = new EnclosingFunctionVisitor();
     private final JsIdentifierNames names;
     private final Set<Declaration> directAccess = new HashSet<Declaration>();
+    /** This set is meant to store declarations in a comprehension,
+     * because the code referencing them needs to be treated differently; similar to the directAccess but it gets cleared
+     * after the comprehension has been generated. */
+    private final List<Declaration> comprehensions = new ArrayList<Declaration>();
 
     private final class SuperVisitor extends Visitor {
         private final List<Declaration> decs;
@@ -1142,6 +1146,8 @@ public class GenerateJsVisitor extends Visitor
             out(decl.getName());
         } else if (accessDirectly(decl)) {
             out(names.name(decl));
+        } else if (comprehensions.contains(decl)) {
+            out("this.", names.name(decl));
         } else {
             out(names.getter(decl));
             out("()");
@@ -1355,7 +1361,11 @@ public class GenerateJsVisitor extends Visitor
                         for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : plist.getParameters()) {
                             if (!first) out(",");
                             if (p.isSequenced() && that.getNamedArgumentList().getSequencedArgument()==null && that.getNamedArgumentList().getNamedArguments().isEmpty()) {
-                                out(clAlias, ".empty");
+                                if (that.getNamedArgumentList().getComprehension() == null) {
+                                    out(clAlias, ".empty");
+                                } else {
+                                    out("$$$comp$$$");
+                                }
                             } else if (p.isSequenced() || argNames.contains(p.getName())) {
                                 out(names.name(p));
                             } else {
@@ -1394,6 +1404,9 @@ public class GenerateJsVisitor extends Visitor
             if (sequenced) {
                 out("])");
             }
+        }
+        if (that.getComprehension() != null) {
+            that.getComprehension().visit(this);
         }
         out(")");
     }
@@ -1517,6 +1530,11 @@ public class GenerateJsVisitor extends Visitor
             sarg.visit(this);
             out(";");
         }
+        if (that.getComprehension() != null) {
+            out("var $$$comp$$$=");
+            that.getComprehension().visit(this);
+            out(";");
+        }
     }
 
     @Override
@@ -1533,16 +1551,145 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(SequenceEnumeration that) {
-        out(clAlias, ".ArraySequence([");
-        boolean first=true;
-        if (that.getExpressionList() != null) {
-            for (Expression arg: that.getExpressionList().getExpressions()) {
+        if (that.getComprehension() != null) {
+            that.getComprehension().visit(this);
+        } else if (that.getSequencedArgument() != null) {
+            out(clAlias, ".ArraySequence([");
+            boolean first=true;
+            for (Expression arg: that.getSequencedArgument().getExpressionList().getExpressions()) {
                 if (!first) out(",");
                 arg.visit(this);
                 first = false;
             }
+            out("])");
+        } else {
+            out(clAlias, ".empty");
         }
-        out("])");
+    }
+
+    @Override
+    public void visit(Comprehension that) {
+        out("(function()"); beginBlock();
+        out("//Comprehension");
+        location(that);
+        endLine();
+        final String compName = names.createTempVariable("compr");
+        out("function ", compName, "()"); beginBlock();
+        out("var $cmp$=new ", compName, ".$$;"); endLine();
+        comprehensions.clear();
+        //First pass: get all the iterators and item vars, generate contexts
+        ComprehensionClause clause = that.getForComprehensionClause();
+        int idx = 0;
+        ExpressionComprehensionClause excc = null;
+        while (clause != null) {
+            idx++;
+            if (clause instanceof ForComprehensionClause) {
+                ForComprehensionClause fcl = (ForComprehensionClause)clause;
+                SpecifierExpression specexpr = fcl.getForIterator().getSpecifierExpression();
+                if (clause == that.getForComprehensionClause()) {
+                    //The first iterator can be initialized without problems
+                    out("$cmp$.iter", Integer.toString(idx), "=");
+                    specexpr.visit(this);
+                    out(".getIterator();");
+                    endLine();
+                } else {
+                    //The subsequent iterators need to be inside a function, in case they depend on the outer current element
+                    out("$cmp$.getIter", Integer.toString(idx), "=function()"); beginBlock();
+                    out("if(");
+                    specexpr.visit(this);
+                    out("===undefined)this.next$", Integer.toString(idx-1), "();"); endLine();
+                    out("return ");
+                    specexpr.visit(this);
+                    out(".getIterator();");
+                    endBlock(false); out(";");
+                    endLine();
+                }
+                String itemVar = null;
+                if (fcl.getForIterator() instanceof ValueIterator) {
+                    Value item = ((ValueIterator)fcl.getForIterator()).getVariable().getDeclarationModel();
+                    comprehensions.add(item);
+                    itemVar = names.name(item);
+                } else if (fcl.getForIterator() instanceof KeyValueIterator) {
+                    itemVar = String.format("item$%d", idx);
+                    KeyValueIterator kviter = (KeyValueIterator)fcl.getForIterator();
+                    out("$cmp$.", names.getter(kviter.getKeyVariable().getDeclarationModel()), "=function(){return this.", itemVar, ".getKey();}");
+                    endLine();
+                    out("$cmp$.", names.getter(kviter.getValueVariable().getDeclarationModel()), "=function(){return this,", itemVar, ".getItem();}");
+                } else {
+                    that.addError("No support yet for iterators of type " + fcl.getForIterator().getClass().getName());
+                    return;
+                }
+                endLine();
+                //Now the context for this iterator
+                out("$cmp$.next$", Integer.toString(idx), "=function()"); beginBlock();
+                if (idx>1) {
+                    out("if(this.iter", Integer.toString(idx), "===undefined)this.iter", Integer.toString(idx),
+                            "=this.getIter", Integer.toString(idx), "();");
+                    endLine();
+                }
+                if (fcl.getForIterator() instanceof ValueIterator) {
+                    out("this.", names.name(comprehensions.get(idx-1)), "=this.iter", Integer.toString(idx), ".next();");
+                } else {
+                    out("this.item$", Integer.toString(idx), "=this.iter", Integer.toString(idx), ".next();");
+                }
+                endLine();
+                out("if(this.", itemVar, "===", clAlias, ".getExhausted())"); beginBlock();
+                if (idx>1) {
+                    out("if(this.next$", Integer.toString(idx-1), "())"); beginBlock();
+                    out("this.iter", Integer.toString(idx), "=this.getIter", Integer.toString(idx), "();"); endLine();
+                    out("this.", names.name(comprehensions.get(idx-1)), "=this.iter", Integer.toString(idx), ".next();"); endLine();
+                    out("return this.", names.name(comprehensions.get(idx-1)), "!==", clAlias, ".getExhausted();");
+                    endBlock();
+                }
+                out("return false;");
+                endBlock();
+                out("return true;");
+                endBlock(false); out(";"); endLine();
+                clause = fcl.getComprehensionClause();
+            } else if (clause instanceof IfComprehensionClause) {
+                //The context of an if is an iteration through the parent, checking each element against the condition
+                out("$cmp$.next$", Integer.toString(idx), "=function()");beginBlock();
+                out("while(this.next$", Integer.toString(idx-1), "() && !(");
+                Condition cond = ((IfComprehensionClause)clause).getCondition();
+                if (cond instanceof ExistsOrNonemptyCondition || cond instanceof IsCondition) {
+                    specialConditionAndBlock(cond, null, "if");
+                } else {
+                    cond.visit(this);
+                    out("===", clTrue);
+                }
+                out("));"); endLine();
+                out("return this.", names.name(comprehensions.get(idx-2)), "!==", clAlias, ".getExhausted();");
+                endBlock(false); out(";"); endLine();
+                clause = ((IfComprehensionClause)clause).getComprehensionClause();
+            } else if (clause instanceof ExpressionComprehensionClause) {
+                //Just keep a ref to the expression
+                excc = (ExpressionComprehensionClause)clause;
+                clause = null;
+            } else {
+                that.addError("No support for comprehension clause of type " + clause.getClass().getName());
+                return;
+            }
+        }
+        //Implement next()
+        out("$cmp$.next=function()"); beginBlock();
+        out("if(this.next$", Integer.toString(idx-1), "())"); beginBlock();
+        //The expression
+        out("return ");
+        excc.getExpression().visit(this);
+        out(";");
+        endBlock(false);
+        out("else return ", clAlias, ".getExhausted();");
+        endBlock(false); out(";"); endLine();
+        //Return the new object
+        out("return $cmp$;");
+        endBlock();
+        //Initialize this iterable
+        out(clAlias, ".initTypeProto(", compName, ", 'ceylon.language.ComprehensionIterator', ", clAlias, ".IdentifiableObject, ", clAlias, ".Iterator);");
+        endLine();
+        //Create the Iterable and return it
+        out("return ", clAlias, ".Comprehension(", compName, "());");
+        endBlock(false);
+        out("())");
     }
 
     @Override
@@ -1851,8 +1998,8 @@ public class GenerateJsVisitor extends Visitor
                 lhsPath += '.';
             }
 
-            String svar = accessDirectly(lhsDecl)
-                    ? names.name(lhsDecl) : (names.getter(lhsDecl)+"()");
+            String svar = accessDirectly(lhsDecl) ? names.name(lhsDecl)
+                    : comprehensions.contains(lhsDecl) ? "this." + names.name(lhsDecl) : (names.getter(lhsDecl)+"()");
             out("(", lhsPath, names.setter(lhsDecl), "(", lhsPath,
                     svar, ".", functionName, "(");
             that.getRightTerm().visit(this);
@@ -2133,13 +2280,14 @@ public class GenerateJsVisitor extends Visitor
            }
 
            out("(", path, names.setter(bme.getDeclaration()), "(", path);
-           if (!accessDirectly(bme.getDeclaration())) {
-               String bmeGetter = names.getter(bme.getDeclaration());
-               out(bmeGetter, "().", functionName, "()),", path, bmeGetter, "())");
+           String bmeGetter = null;
+           if (accessDirectly(bme.getDeclaration())) {
+               bmeGetter = names.name(bme.getDeclaration());
            } else {
-               String bmeGetter = names.name(bme.getDeclaration());
-               out(bmeGetter, ".", functionName, "()),", path, bmeGetter, ")");
+               bmeGetter = comprehensions.contains(bme.getDeclaration())
+                       ? "this."+names.name(bme.getDeclaration()) : names.getter(bme.getDeclaration()) + "()";
            }
+           out(bmeGetter, ".", functionName, "()),", path, bmeGetter, ")");
        } else if (term instanceof QualifiedMemberExpression) {
            QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
            out("function($){var $2=$.", names.getter(qme.getDeclaration()), "().",
@@ -2167,10 +2315,12 @@ public class GenerateJsVisitor extends Visitor
 
            out("(function($){", path, names.setter(bme.getDeclaration()), "($.", functionName,
                "());return $}(", path);
-           if (!accessDirectly(bme.getDeclaration())) {
-               out(names.getter(bme.getDeclaration()), "()))");
-           } else {
+           if (accessDirectly(bme.getDeclaration())) {
                out(names.name(bme.getDeclaration()), "))");
+           } else if (comprehensions.contains(bme.getDeclaration())) {
+               out("this.", names.name(bme.getDeclaration()), "))");
+           } else {
+               out(names.getter(bme.getDeclaration()), "()))");
            }
        } else if (term instanceof QualifiedMemberExpression) {
            QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
@@ -2270,7 +2420,9 @@ public class GenerateJsVisitor extends Visitor
        specialConditionCheck(condition, variableRHS, varName);
        out(")");
        directAccess.add(variable.getDeclarationModel());
-       encloseBlockInFunction(block);
+       if (block != null) {
+           encloseBlockInFunction(block);
+       }
    }
 
     private void specialConditionCheck(Condition condition, Term variableRHS, String varName) {
@@ -2415,58 +2567,56 @@ public class GenerateJsVisitor extends Visitor
        });
    }
 
-   @Override public void visit(ForStatement that) {
-       if (comment) {
-           out("//'for' statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
-           if (that.getExits()) out("//EXITS!");
-       }
-       endLine();
-       ForIterator foriter = that.getForClause().getForIterator();
-       SpecifierExpression iterable = foriter.getSpecifierExpression();
-       boolean hasElse = that.getElseClause() != null && !that.getElseClause().getBlock().getStatements().isEmpty();
-       final String iterVar = names.createTempVariable("it");
-       final String itemVar;
-       if (foriter instanceof ValueIterator) {
-           itemVar = names.name(((ValueIterator)foriter).getVariable().getDeclarationModel());
-       } else {
-           itemVar = names.createTempVariable("item");
-       }
-       out("var ", iterVar, " = ");
-       iterable.visit(this);
-       out(".getIterator();");
-       endLine();
-       out("var ", itemVar, ";while ((", itemVar, "=", iterVar, ".next())!==", clAlias, ".getExhausted())");
-       List<Statement> stmnts = that.getForClause().getBlock().getStatements();
-       beginBlock();
-       if (foriter instanceof ValueIterator) {
-           directAccess.add(((ValueIterator)foriter).getVariable().getDeclarationModel());
-       } else if (foriter instanceof KeyValueIterator) {
-           String keyvar = names.name(((KeyValueIterator)foriter).getKeyVariable().getDeclarationModel());
-           String valvar = names.name(((KeyValueIterator)foriter).getValueVariable().getDeclarationModel());
-           out("var ", keyvar, "=", itemVar, ".getKey();");
-           endLine();
-           out("var ", valvar, "=", itemVar, ".getItem();");
-           directAccess.add(((KeyValueIterator)foriter).getKeyVariable().getDeclarationModel());
-           directAccess.add(((KeyValueIterator)foriter).getValueVariable().getDeclarationModel());
-       }
-       endLine();
-       for (int i=0; i<stmnts.size(); i++) {
-           Statement s = stmnts.get(i);
-           s.visit(this);
-           if (i<stmnts.size()-1 && s instanceof ExecutableStatement) {
-               endLine();
-           }
-       }
-       //If there's an else block, check for normal termination
-       indentLevel--;
-       endLine();
-       out("}");
-       if (hasElse) {
-           endLine();
-           out("if (", clAlias, ".getExhausted() === ", itemVar, ")");
-           encloseBlockInFunction(that.getElseClause().getBlock());
-       }
-   }
+    @Override public void visit(ForStatement that) {
+        if (comment) {
+            out("//'for' statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
+            if (that.getExits()) out("//EXITS!");
+            endLine();
+        }
+        ForIterator foriter = that.getForClause().getForIterator();
+        final String itemVar = generateForLoop(foriter);
+
+        boolean hasElse = that.getElseClause() != null && !that.getElseClause().getBlock().getStatements().isEmpty();
+        visitStatements(that.getForClause().getBlock().getStatements(), false);
+        //If there's an else block, check for normal termination
+        endBlock(false);
+        if (hasElse) {
+            endLine();
+            out("if (", clAlias, ".getExhausted() === ", itemVar, ")");
+            encloseBlockInFunction(that.getElseClause().getBlock());
+        }
+    }
+
+    /** Generates code for the beginning of a "for" loop, returning the name of the variable used for the item. */
+    private String generateForLoop(ForIterator that) {
+        SpecifierExpression iterable = that.getSpecifierExpression();
+        final String iterVar = names.createTempVariable("it");
+        final String itemVar;
+        if (that instanceof ValueIterator) {
+            itemVar = names.name(((ValueIterator)that).getVariable().getDeclarationModel());
+        } else {
+            itemVar = names.createTempVariable("item");
+        }
+        out("var ", iterVar, " = ");
+        iterable.visit(this);
+        out(".getIterator();");
+        endLine();
+        out("var ", itemVar, ";while ((", itemVar, "=", iterVar, ".next())!==", clAlias, ".getExhausted())");
+        beginBlock();
+        if (that instanceof ValueIterator) {
+            directAccess.add(((ValueIterator)that).getVariable().getDeclarationModel());
+        } else if (that instanceof KeyValueIterator) {
+            String keyvar = names.name(((KeyValueIterator)that).getKeyVariable().getDeclarationModel());
+            String valvar = names.name(((KeyValueIterator)that).getValueVariable().getDeclarationModel());
+            out("var ", keyvar, "=", itemVar, ".getKey();");
+            endLine();
+            out("var ", valvar, "=", itemVar, ".getItem();");
+            directAccess.add(((KeyValueIterator)that).getKeyVariable().getDeclarationModel());
+            directAccess.add(((KeyValueIterator)that).getValueVariable().getDeclarationModel());
+            endLine();
+        }
+        return itemVar;
+    }
 
     public void visit(InOp that) {
         binaryOp(that, new BinaryOpGenerator() {
