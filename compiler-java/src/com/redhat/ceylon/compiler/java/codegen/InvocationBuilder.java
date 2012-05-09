@@ -155,6 +155,8 @@ abstract class InvocationBuilder {
                 if (primaryDeclaration != null) {
                     if (primaryExpr != null) {
                         actualPrimExpr = gen.makeQualIdent(primaryExpr, primaryDeclaration.getName());
+                    } else if (primaryDeclaration instanceof Getter){
+                        actualPrimExpr = gen.make().Apply(null,  gen.makeUnquotedIdent(selector), List.<JCExpression>nil());
                     } else {
                         actualPrimExpr = gen.makeUnquotedIdent(primaryDeclaration.getName());
                     }
