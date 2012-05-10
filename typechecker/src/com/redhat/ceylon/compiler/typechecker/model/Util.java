@@ -494,12 +494,14 @@ public class Util {
         return false;
     }
     
-    public static boolean isElementOfIntersection(IntersectionType ut, TypeDeclaration td) {
+    /*public static boolean isElementOfIntersection(IntersectionType ut, ClassOrInterface td) {
         for (TypeDeclaration ct: ut.getSatisfiedTypeDeclarations()) {
-            if (ct.equals(td)) return true;
+            if (ct instanceof ClassOrInterface && ct.equals(td)) {
+                return true;
+            }
         }
         return false;
-    }
+    }*/
     
     public static Declaration lookupMember(List<Declaration> members, String name,
             List<ProducedType> signature, boolean includeParameters) {
