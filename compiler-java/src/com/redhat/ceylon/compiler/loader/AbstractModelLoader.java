@@ -1544,7 +1544,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(member != null)
                 return ((TypeDeclaration)member).getType();
         }
-        throw new RuntimeException("Failed to look up given type in language module while bootstrapping: "+name);
+        throw new ModelResolutionException("Failed to look up given type in language module while bootstrapping: "+name);
     }
 
     public void removeDeclarations(List<Declaration> declarations) {
