@@ -428,6 +428,24 @@ public class CMRTest extends CompilerTest {
         sourceArchive.close();
     }
 
+    @Test
+    public void testMdlMultipleVersions(){
+        // Compile module A/1
+        Boolean result = getCompilerTask(Arrays.asList("-src", path+"/module/multiversion/a1"),
+                "module/multiversion/a1/a/module.ceylon", "module/multiversion/a1/a/package.ceylon", "module/multiversion/a1/a/A.ceylon").call();
+        Assert.assertEquals(Boolean.TRUE, result);
+        
+        ErrorCollector collector = new ErrorCollector();
+        // Compile module A/2 with B importing A/1
+        result = getCompilerTask(Arrays.asList("-src", path+"/module/multiversion/a2:"+path+"/module/multiversion/b"),
+                collector,
+                "module/multiversion/a2/a/module.ceylon", "module/multiversion/a2/a/package.ceylon", "module/multiversion/a2/a/A.ceylon",
+                "module/multiversion/b/b/module.ceylon", "module/multiversion/b/b/B.ceylon").call();
+        Assert.assertEquals(Boolean.FALSE, result);
+        
+        compareErrors(collector.actualErrors, new CompilerError(-1, "Trying to import or compile two different versions of the same module: a (1 and 2)"));
+    }
+
     private int countEntries(JarFile jar) {
         int count = 0;
         Enumeration<JarEntry> entries = jar.entries();
