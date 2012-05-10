@@ -1,0 +1,31 @@
+package com.redhat.ceylon.compiler.java.test.expression.lambda;
+
+final class defaultedParameter {
+    
+    private defaultedParameter() {
+    }
+    
+    static .java.lang.String defaultedParameter(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
+        return f.$call().toString();
+    }
+    
+    static final .java.lang.String defaultedParameter() {
+        return (
+            let
+            {
+                .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$f$1 = defaultedParameter$f();
+            }
+            returning defaultedParameter($ceylontmp$f$1);
+        );
+    }
+    
+    static final .ceylon.language.Callable<? extends .ceylon.language.String> defaultedParameter$f() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call() {
+                return .ceylon.language.String.instance("bye");
+            }
+        };
+    }
+}
