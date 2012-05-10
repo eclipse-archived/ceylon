@@ -46,9 +46,11 @@ public class TypeParserTest {
         
         @Override
         public ProducedType getType(String name, Scope scope) {
+            if(name.equals("unknown") || name.endsWith(".unknown"))
+                throw new ModelResolutionException("Unknown type: "+name);
             Class klass = new Class();
             klass.setName(name);
-            if(name.equals("t2")){
+            if(name.equals("t2") || name.endsWith(".t2")){
                 List<TypeParameter> typeParameters = new ArrayList<TypeParameter>(2);
                 TypeParameter typeParam = new TypeParameter();
                 typeParam.setName("A");
@@ -212,5 +214,83 @@ public class TypeParserTest {
         Assert.assertEquals("f", f.getDeclaration().getName());
         Assert.assertTrue(f.getDeclaration() instanceof Class);
 
+    }
+
+    @Test
+    public void testQualified(){
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("a.b", null);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Class);
+        Assert.assertEquals("a.b", declaration.getName());
+
+        ProducedType qualifyingType = type.getQualifyingType();
+        Assert.assertNotNull(qualifyingType);
+        TypeDeclaration qualifyingDeclaration = qualifyingType.getDeclaration();
+        Assert.assertNotNull(qualifyingDeclaration);
+        Assert.assertTrue(qualifyingDeclaration instanceof Class);
+        Assert.assertEquals("a", qualifyingDeclaration.getName());
+    }
+
+    @Test
+    public void testQualifiedAndParameterised(){
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("t2<a,b>.t2<c,d>", null);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Class);
+        Assert.assertEquals("t2.t2", declaration.getName());
+        Assert.assertEquals(2, type.getTypeArgumentList().size());
+        
+        // c
+        ProducedType c = type.getTypeArgumentList().get(0);
+        Assert.assertEquals("c", c.getDeclaration().getName());
+        Assert.assertTrue(c.getDeclaration() instanceof Class);
+
+        // d
+        ProducedType d = type.getTypeArgumentList().get(1);
+        Assert.assertEquals("d", d.getDeclaration().getName());
+        Assert.assertTrue(d.getDeclaration() instanceof Class);
+
+        ProducedType qualifyingType = type.getQualifyingType();
+        Assert.assertNotNull(qualifyingType);
+        TypeDeclaration qualifyingDeclaration = qualifyingType.getDeclaration();
+        Assert.assertNotNull(qualifyingDeclaration);
+        Assert.assertTrue(qualifyingDeclaration instanceof Class);
+        Assert.assertEquals("t2", qualifyingDeclaration.getName());
+        Assert.assertEquals(2, qualifyingType.getTypeArgumentList().size());
+        
+        // a
+        ProducedType a = qualifyingType.getTypeArgumentList().get(0);
+        Assert.assertEquals("a", a.getDeclaration().getName());
+        Assert.assertTrue(a.getDeclaration() instanceof Class);
+
+        // b
+        ProducedType b = qualifyingType.getTypeArgumentList().get(1);
+        Assert.assertEquals("b", b.getDeclaration().getName());
+        Assert.assertTrue(b.getDeclaration() instanceof Class);
+    }
+
+    @Test
+    public void testPackageQualified(){
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("unknown.b", null);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Class);
+        Assert.assertEquals("unknown.b", declaration.getName());
+
+        Assert.assertNull(type.getQualifyingType());
+    }
+
+    @Test(expected = ModelResolutionException.class)
+    public void testParameterisedPackage(){
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("unknown<a>.b", null);
+    }
+
+    @Test(expected = ModelResolutionException.class)
+    public void testUnknownMember(){
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("a.unknown", null);
     }
 }
