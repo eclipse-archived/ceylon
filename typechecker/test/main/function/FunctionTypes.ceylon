@@ -132,6 +132,11 @@ void method() {
     @type["Entry<Object,Object>"] generic((Object obj) obj, () "hello");
     @type["Entry<Object,String>"] generic((Object obj) obj.string, () "hello");
     @type["Entry<String,String>"] generic((String str) str, () "hello");
+    
+    function fx(String g()) = do<String>;
+    @error function fy(String g()) = do;
+    value fw = do<String>;
+    @error value fz = do;
 }
 
 class Outer() {

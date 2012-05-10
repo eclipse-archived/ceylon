@@ -747,8 +747,11 @@ public class ExpressionVisitor extends Visitor {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
                 ProducedType et = e.getTypeModel();
-                for (Tree.ParameterList pl: that.getParameterLists()) {   
-                    if (et==null || !isCallableType(et)) {
+                for (Tree.ParameterList pl: that.getParameterLists()) { 
+                    if (et==null || et.getDeclaration() instanceof UnknownType) {
+                        //don't add an extra error
+                    }
+                    else if (!isCallableType(et)) {
                         se.addError("specified value must be a reference to a function or class: " + 
                                 et.getDeclaration().getName() + " is not a subtype of Callable");
                         return; //NOTE EARLY EXIT!!!
@@ -2837,6 +2840,25 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 that.setTypeModel(t);
+            }
+        }
+    }
+    
+    @Override public void visit(Tree.SpecifierOrInitializerExpression that) {
+        //i.e. this is a parenthesized expression
+        super.visit(that);
+        Tree.Term term = that.getExpression()==null ? 
+                null : that.getExpression().getTerm();
+        if (term!=null) {
+            //TODO: it seems a bit fragile to handle this here
+            if (term instanceof Tree.StaticMemberOrTypeExpression) {
+                Tree.StaticMemberOrTypeExpression smte = (Tree.StaticMemberOrTypeExpression) term;
+                if (isGeneric(smte.getDeclaration())) {
+                    if (smte.getTypeArguments() instanceof Tree.InferredTypeArguments) {
+                        smte.addError("missing type arguments to: " + 
+                                smte.getDeclaration().getName());
+                    }
+                }
             }
         }
     }

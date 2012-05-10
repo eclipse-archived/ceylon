@@ -20,5 +20,5 @@ void check() {
     E2<String> g5 = e2("gavin","king"); 
     E3<String> g6 = e2("gavin","king"); 
     @error F();
-    value e4 = Entry;
+    @error value e4 = Entry;
 }
