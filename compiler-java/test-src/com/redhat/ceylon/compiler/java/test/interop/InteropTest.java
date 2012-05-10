@@ -125,7 +125,29 @@ public class InteropTest extends CompilerTest {
         compile("access/JavaAccessModifiers.java");
         compareWithJavaSource("access/RefinesProtectedAccessMethod");
     }
-    
+
+    @Test
+    public void testMixedCompilationIndependent(){
+        compile("mixed/independent/Java.java", "mixed/independent/Ceylon.ceylon");
+    }
+
+    @Test
+    public void testMixedCompilationCeylonNeedsJava(){
+        compile("mixed/ceylon_needs_java/Java.java", "mixed/ceylon_needs_java/Ceylon.ceylon");
+    }
+
+    @Ignore("M4?")
+    @Test
+    public void testMixedCompilationJavaNeedsCeylon(){
+        compile("mixed/java_needs_ceylon/Java.java", "mixed/java_needs_ceylon/Ceylon.ceylon");
+    }
+
+    @Ignore("M4?")
+    @Test
+    public void testMixedCompilationInterdependent(){
+        compile("mixed/interdependent/Java.java", "mixed/interdependent/Ceylon.ceylon");
+    }
+
     @Test
     public void testIopCallsProtectedAccessMethod(){
         compile("access/JavaAccessModifiers.java");
