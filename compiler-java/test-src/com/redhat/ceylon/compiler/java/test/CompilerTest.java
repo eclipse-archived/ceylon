@@ -179,27 +179,35 @@ public abstract class CompilerTest {
         }
     }
     
+    public static class ErrorCollector implements DiagnosticListener {
+        public final TreeSet<CompilerError> actualErrors = new TreeSet<CompilerError>();
+
+        @Override
+        public void report(Diagnostic diagnostic) {
+            if (diagnostic.getKind() == Diagnostic.Kind.ERROR) {
+                actualErrors.add(new CompilerError(diagnostic.getLineNumber(),
+                        diagnostic.getMessage(Locale.getDefault())));
+            }
+        }
+    }
+    
     protected void assertErrors(String ceylon, CompilerError... expectedErrors) {
         // make a compiler task
         // FIXME: runFileManager.setSourcePath(dir);
-        final TreeSet<CompilerError> actualErrors = new TreeSet<CompilerError>();
+        ErrorCollector collector = new ErrorCollector();
         
-        CeyloncTaskImpl task = getCompilerTask(defaultOptions, new DiagnosticListener() {
-            @Override
-            public void report(Diagnostic diagnostic) {
-                if (diagnostic.getKind() == Diagnostic.Kind.ERROR) {
-                    actualErrors.add(new CompilerError(diagnostic.getLineNumber(),
-                            diagnostic.getMessage(Locale.getDefault())));
-                }
-            }
-        
-        }, new String[] {ceylon+".ceylon"});
+        CeyloncTaskImpl task = getCompilerTask(defaultOptions, collector, new String[] {ceylon+".ceylon"});
 
         // now compile it all the way
         Boolean success = task.call();
 
         Assert.assertFalse("Compilation succeeded", success);
         
+        TreeSet<CompilerError> actualErrors = collector.actualErrors;
+        compareErrors(actualErrors, expectedErrors);
+    }
+    
+    protected void compareErrors(TreeSet<CompilerError> actualErrors, CompilerError... expectedErrors) {
         TreeSet<CompilerError> expectedErrorSet = new TreeSet<CompilerError>(Arrays.asList(expectedErrors));
         // shortcut for simple cases
         if(expectedErrorSet.size() == 1 && actualErrors.size() == 1){
