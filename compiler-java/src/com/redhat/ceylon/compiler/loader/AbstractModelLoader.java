@@ -804,7 +804,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 if(methodMirror.isConstructor()) {
                     if (methodMirror == constructor) {
                         if(!(klass instanceof LazyClass) || !((LazyClass)klass).isTopLevelObjectType())
-                            setParameters((Class)klass, methodMirror, isCeylon);
+                            setParameters((Class)klass, methodMirror, isCeylon, klass);
                     }
                 } else if(isGetter(methodMirror)) {
                     // simple attribute
@@ -856,15 +856,20 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if (decl != null && decl instanceof Value) {
                 Value value = (Value)decl;
                 VariableMirror setterParam = setter.getParameters().get(0);
-                ProducedType paramType = obtainType(setterParam.getType(), setterParam, klass);
-                // only add the setter if it has exactly the same type as the getter
-                if(paramType.isExactly(value.getType())){
-                    foundGetter = true;
-                    value.setVariable(true);
-                    if(decl instanceof JavaBeanValue)
-                        ((JavaBeanValue)decl).setSetterName(setter.getName());
-                }else
-                    logWarning("Setter parameter type for "+name+" does not match corresponding getter type, adding setter as a method");
+                try{
+                    ProducedType paramType = obtainType(setterParam.getType(), setterParam, klass);
+                    // only add the setter if it has exactly the same type as the getter
+                    if(paramType.isExactly(value.getType())){
+                        foundGetter = true;
+                        value.setVariable(true);
+                        if(decl instanceof JavaBeanValue)
+                            ((JavaBeanValue)decl).setSetterName(setter.getName());
+                    }else
+                        logWarning("Setter parameter type for "+name+" does not match corresponding getter type, adding setter as a method");
+                }catch(TypeParserException x){
+                    logError("Invalid type signature for setter of "+klass.getQualifiedNameString()+"."+setter.getName()+": "+x.getMessage());
+                    throw x;
+                }
             } 
             
             if(!foundGetter){
@@ -944,11 +949,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(isEqualsMethod(methodMirror))
             setEqualsParameters(method, methodMirror);
         else
-            setParameters(method, methodMirror, isCeylon);
+            setParameters(method, methodMirror, isCeylon, klass);
         
         // and its return type
-        ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, method);
-        method.setType(type);
+        try{
+            ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, method);
+            method.setType(type);
+        }catch(TypeParserException x){
+            logError("Invalid type signature for method return type of "+klass.getQualifiedNameString()+"."+methodMirror.getName()+": "+x.getMessage());
+            throw x;
+        }
         
         markUnboxed(method, methodMirror.getReturnType());
         setAnnotations(method, methodMirror);
@@ -1083,7 +1093,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // FIXME: figure this out: (default)
         // FIXME: for the same reason, can it be an overriding field? (actual)
         value.setVariable(!fieldMirror.isFinal());
-        value.setType(obtainType(fieldMirror.getType(), fieldMirror, klass));
+        try{
+            value.setType(obtainType(fieldMirror.getType(), fieldMirror, klass));
+        }catch(TypeParserException x){
+            logError("Invalid type signature for field "+klass.getQualifiedNameString()+"."+value.getName()+": "+x.getMessage());
+            throw x;
+        }
         markUnboxed(value, fieldMirror.getType());
         klass.getMembers().add(value);
     }
@@ -1095,7 +1110,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setName(methodName);
         value.setUnit(klass.getUnit());
         setMethodOrValueFlags(klass, methodMirror, value);
-        value.setType(obtainType(methodMirror.getReturnType(), methodMirror, klass));
+        try{
+            value.setType(obtainType(methodMirror.getReturnType(), methodMirror, klass));
+        }catch(TypeParserException x){
+            logError("Invalid type signature for getter type of "+klass.getQualifiedNameString()+"."+methodName+": "+x.getMessage());
+            throw x;
+        }
         markUnboxed(value, methodMirror.getReturnType());
         setAnnotations(value, methodMirror);
         klass.getMembers().add(value);
@@ -1145,7 +1165,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // read it from annotation first
                 String annotationSuperClassName = getAnnotationStringValue(classMirror, CEYLON_CLASS_ANNOTATION, "extendsType");
                 if(annotationSuperClassName != null && !annotationSuperClassName.isEmpty()){
-                    extendedType = decodeType(annotationSuperClassName, klass);
+                    try{
+                        extendedType = decodeType(annotationSuperClassName, klass);
+                    }catch(TypeParserException x){
+                        logError("Invalid type signature for super class of "+className+": "+x.getMessage());
+                        throw x;
+                    }
                 }else{
                     // read it from the Java super type
                     // now deal with type erasure, avoid having Object as superclass
@@ -1161,7 +1186,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             klass.setExtendedType(extendedType);
     }
 
-    private void setParameters(Functional decl, MethodMirror methodMirror, boolean isCeylon) {
+    private void setParameters(Functional decl, MethodMirror methodMirror, boolean isCeylon, Scope container) {
         ParameterList parameters = new ParameterList();
         parameters.setNamedParametersSupported(isCeylon);
         decl.addParameterList(parameters);
@@ -1178,14 +1203,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 paramName = paramMirror.getName();
             parameter.setName(paramName);
             TypeMirror typeMirror = paramMirror.getType();
-            ProducedType type = obtainType(typeMirror, paramMirror, (Scope) decl);
-            if(!isCeylon && !typeMirror.isPrimitive()){
-                // Java parameters are all optional unless primitives
-                ProducedType optionalType = typeFactory.getOptionalType(type);
-                optionalType.setUnderlyingType(type.getUnderlyingType());
-                type = optionalType;
+            try{
+                ProducedType type = obtainType(typeMirror, paramMirror, (Scope) decl);
+                if(!isCeylon && !typeMirror.isPrimitive()){
+                    // Java parameters are all optional unless primitives
+                    ProducedType optionalType = typeFactory.getOptionalType(type);
+                    optionalType.setUnderlyingType(type.getUnderlyingType());
+                    type = optionalType;
+                }
+                parameter.setType(type );
+            }catch(TypeParserException x){
+                logError("Invalid type signature for parameter "+paramName+" of "+container.getQualifiedNameString()+"."+methodMirror.getName()+": "+x.getMessage());
+                throw x;
             }
-            parameter.setType(type );
             if(paramMirror.getAnnotation(CEYLON_SEQUENCED_ANNOTATION) != null)
                 parameter.setSequenced(true);
             if(paramMirror.getAnnotation(CEYLON_DEFAULTED_ANNOTATION) != null)
@@ -1227,7 +1257,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(meth == null || meth.getReturnType() == null)
             throw new ModelResolutionException("Failed to find toplevel attribute "+value.getName());
         
-        value.setType(obtainType(meth.getReturnType(), meth, null));
+        try{
+            value.setType(obtainType(meth.getReturnType(), meth, null));
+        }catch(TypeParserException x){
+            logError("Invalid type signature for toplevel attribute of "+value.getQualifiedNameString()+": "+x.getMessage());
+            throw x;
+        }
         setAnnotations(value, meth);
         markUnboxed(value, meth.getReturnType());
     }
@@ -1253,8 +1288,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         setTypeParameters(method, meth);
 
         // now its parameters
-        setParameters(method, meth, true /* toplevel methods are always Ceylon */);
-        method.setType(obtainType(meth.getReturnType(), meth, method));
+        setParameters(method, meth, true /* toplevel methods are always Ceylon */, method);
+        try{
+            method.setType(obtainType(meth.getReturnType(), meth, method));
+        }catch(TypeParserException x){
+            logError("Invalid type signature for toplevel method of "+method.getQualifiedNameString()+": "+x.getMessage());
+            throw x;
+        }
         markUnboxed(method, meth.getReturnType());
         
         setAnnotations(method, meth);
@@ -1270,7 +1310,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private void setSatisfiedTypes(ClassOrInterface klass, ClassMirror classMirror) {
         List<String> satisfiedTypes = getSatisfiedTypesFromAnnotations(classMirror);
         if(satisfiedTypes != null){
-            klass.getSatisfiedTypes().addAll(getTypesList(satisfiedTypes, klass));
+            try{
+                klass.getSatisfiedTypes().addAll(getTypesList(satisfiedTypes, klass));
+            }catch(TypeParserException x){
+                logError("Invalid type signature for satisfied types of "+klass.getQualifiedNameString()+": "+x.getMessage());
+                throw x;
+            }
         }else{
             for(TypeMirror iface : classMirror.getInterfaces()){
                 klass.getSatisfiedTypes().add(getType(iface, klass));
@@ -1288,7 +1333,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private void setCaseTypes(ClassOrInterface klass, ClassMirror classMirror) {
         List<String> caseTypes = getCaseTypesFromAnnotations(classMirror);
         if(caseTypes != null){
-            klass.setCaseTypes(getTypesList(caseTypes, klass));
+            try{
+                klass.setCaseTypes(getTypesList(caseTypes, klass));
+            }catch(TypeParserException x){
+                logError("Invalid type signature for case types of "+klass.getQualifiedNameString()+": "+x.getMessage());
+                throw x;
+            }
         }
     }
 
@@ -1342,8 +1392,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             List<String> satisfiesAttribute = (List<String>)typeParam.getValue("satisfies");
             if(satisfiesAttribute != null){
                 for (String satisfy : satisfiesAttribute) {
-                    ProducedType satisfiesType = decodeType(satisfy, scope);
-                    param.getSatisfiedTypes().add(satisfiesType);
+                    try{
+                        ProducedType satisfiesType = decodeType(satisfy, scope);
+                        param.getSatisfiedTypes().add(satisfiesType);
+                    }catch(TypeParserException x){
+                        logError("Invalid type signature for type parameter "+param.getName()+" of "+scope.getQualifiedNameString()+": "+x.getMessage());
+                        throw x;
+                    }
                 }
             }
         }
