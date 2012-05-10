@@ -57,8 +57,8 @@ import com.redhat.ceylon.compiler.java.util.RepositoryLister;
 import com.sun.source.util.TaskEvent;
 import com.sun.source.util.TaskEvent.Kind;
 import com.sun.source.util.TaskListener;
-import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.file.ZipFileIndexCache;
+import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 
 public abstract class CompilerTest {
 
