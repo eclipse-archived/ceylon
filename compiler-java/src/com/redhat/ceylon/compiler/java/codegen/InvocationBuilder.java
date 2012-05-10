@@ -506,7 +506,7 @@ abstract class DirectInvocationBuilder extends SimpleInvocationBuilder {
     
     @Override
     protected Boolean getParameterUnboxed(int argIndex) {
-        return getParameter(argIndex).getUnboxed();
+        return Boolean.TRUE.equals(getParameter(argIndex).getUnboxed());
     }
     
     @Override
@@ -650,7 +650,7 @@ class MethodReferenceSpecifierInvocationBuilder extends DirectInvocationBuilder 
         super(gen, primary, primaryDeclaration, method.getType(), node);
         this.method = method;
         setUnboxed(primary.getUnboxed());
-        setBoxingStrategy(method.getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED);
+        setBoxingStrategy(Util.getBoxingStrategy(method));
     }
 
     @Override
