@@ -52,7 +52,7 @@ public class TypeLexer {
 
     public String eatWord(){
         if(index >= type.length)
-            throw new RuntimeException("Expecting word but got EOT");
+            throw new TypeParserException("Expecting word but got EOT");
         int start = index;
         // eat every char
         FOR: for(;index<type.length;index++){
@@ -68,7 +68,7 @@ public class TypeLexer {
             }
         }
         if(index == start)
-            throw new RuntimeException("Expecting word but got "+eatTokenString());
+            throw new TypeParserException("Expecting word but got "+eatTokenString());
         return new String(type, start, index-start);
     }
 
@@ -99,12 +99,16 @@ public class TypeLexer {
         case WORD  : return "WORD";
         }
         // cannot happen
-        throw new RuntimeException("Unhandled token: "+token);
+        throw new TypeParserException("Unhandled token: "+token);
     }
 
     public void eat(int token) {
-        if(!lookingAt(token))
-            throw new RuntimeException("Missing expected token: "+tokenToString(token) + ", got: "+eatTokenString());
+        if(!lookingAt(token)){
+            int oldIndex = index;
+            throw new TypeParserException("Missing expected token: "+tokenToString(token) 
+                    + ", got: "+eatTokenString()
+                    + " at "+new String(type)+"["+oldIndex+"]");
+        }
         eat();
     }
 

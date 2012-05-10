@@ -29,6 +29,7 @@ import org.junit.Test;
 import com.redhat.ceylon.compiler.loader.ModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelResolutionException;
 import com.redhat.ceylon.compiler.loader.TypeParser;
+import com.redhat.ceylon.compiler.loader.TypeParserException;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -292,5 +293,10 @@ public class TypeParserTest {
     @Test(expected = ModelResolutionException.class)
     public void testUnknownMember(){
         ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("a.unknown", null);
+    }
+
+    @Test(expected = TypeParserException.class)
+    public void testInvalidType(){
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("t2<a,b", null);
     }
 }

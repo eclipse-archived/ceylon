@@ -41,7 +41,7 @@ public class TypeParser {
             // do the parsing
             ProducedType ret = parseType();
             if(!lexer.lookingAt(TypeLexer.EOT))
-                throw new RuntimeException("Junk lexemes remaining: "+lexer.eatTokenString());
+                throw new TypeParserException("Junk lexemes remaining: "+lexer.eatTokenString());
             return ret;
         }finally{
             // restore the previous state
