@@ -200,4 +200,9 @@ public class ReflectionClass implements ClassMirror {
     public boolean isAnonymous() {
         return klass.isAnonymousClass();
     }
+
+    @Override
+    public boolean isJavaSource() {
+        return false;
+    }
 }

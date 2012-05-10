@@ -124,4 +124,10 @@ public interface ClassMirror extends AnnotatedMirror {
      * Returns true if this class was loaded from source, false if it was loaded from a compiled form
      */
     boolean isLoadedFromSource();
+
+    /**
+     * Returns true if this class was loaded from a Java source file, false if it came from a ceylon
+     * source file or from a class file
+     */
+    boolean isJavaSource();
 }

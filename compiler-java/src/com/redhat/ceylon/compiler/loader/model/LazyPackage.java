@@ -83,8 +83,9 @@ public class LazyPackage extends Package {
         }
         
         ClassMirror classSymbol = modelLoader.lookupClassMirror(className);
-        // only get it from the classpath if we're not compiling it
-        if(classSymbol != null && !classSymbol.isLoadedFromSource()) {
+        // only get it from the classpath if we're not compiling it, unless
+        // it happens to be a java source
+        if(classSymbol != null && (!classSymbol.isLoadedFromSource() || classSymbol.isJavaSource())) {
             d = modelLoader.convertToDeclaration(className, DeclarationType.VALUE);
             if (d instanceof Class) {
                 if ( ((Class) d).isAbstraction()) {

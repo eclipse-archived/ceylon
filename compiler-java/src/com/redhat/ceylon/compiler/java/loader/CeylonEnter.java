@@ -118,8 +118,23 @@ public class CeylonEnter extends Enter {
     @Override
     public void main(List<JCCompilationUnit> trees) {
         // complete the javac AST with a completed ceylon model
+        prepareForTypeChecking(trees);
+        List<JCCompilationUnit> javaTrees = List.nil();
+        List<JCCompilationUnit> ceylonTrees = List.nil();
+        // split them in two sets: java and ceylon
+        for(JCCompilationUnit tree : trees){
+            if(tree instanceof CeylonCompilationUnit)
+                ceylonTrees = ceylonTrees.prepend(tree);
+            else
+                javaTrees = javaTrees.prepend(tree);
+        }
+        // enter java trees first to set up their ClassSymbol objects for ceylon trees to use during type-checking
+        if(!javaTrees.isEmpty())
+            super.main(javaTrees);
+        // now we can type-check the Ceylon code
         completeCeylonTrees(trees);
-        super.main(trees);
+        // and complete their new trees
+        super.main(ceylonTrees);
     }
 
     @Override
@@ -147,7 +162,7 @@ public class CeylonEnter extends Enter {
         }
     }
 
-    public void completeCeylonTrees(List<JCCompilationUnit> trees) {
+    public void prepareForTypeChecking(List<JCCompilationUnit> trees) {
         if (hasRun)
             throw new RuntimeException("Waaaaa, running twice!!!");
         //By now le language module version should be known (as local)
@@ -166,6 +181,9 @@ public class CeylonEnter extends Enter {
         resolveModuleDependencies();
         // now load package descriptors
         modelLoader.loadPackageDescriptors();
+    }
+    
+    public void completeCeylonTrees(List<JCCompilationUnit> trees){
         // run the type checker
         typeCheck();
         // some debugging

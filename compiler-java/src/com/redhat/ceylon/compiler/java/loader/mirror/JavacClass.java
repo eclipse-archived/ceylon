@@ -212,4 +212,9 @@ public class JavacClass implements ClassMirror {
     public boolean isAnonymous() {
         return classSymbol.name.isEmpty();
     }
+
+    @Override
+    public boolean isJavaSource() {
+        return classSymbol.classfile.getKind() == Kind.SOURCE && classSymbol.classfile.getName().endsWith(".java");
+    }
 }
