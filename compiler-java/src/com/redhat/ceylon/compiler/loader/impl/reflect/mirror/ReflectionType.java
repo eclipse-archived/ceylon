@@ -97,7 +97,9 @@ public class ReflectionType implements TypeMirror {
             return TypeKind.WILDCARD;
         if(type instanceof Class){
             TypeKind kind = primitives.get(type);
-            return kind != null ? kind : TypeKind.DECLARED;
+            if(kind != null)
+                return kind;
+            return ((Class<?>)type).isArray() ? TypeKind.ARRAY : TypeKind.DECLARED;
         }
         throw new RuntimeException("Unknown type: "+type);
     }
@@ -106,7 +108,11 @@ public class ReflectionType implements TypeMirror {
     public TypeMirror getComponentType() {
         if(componentType != null)
             return componentType;
-        Type ct = ((GenericArrayType)type).getGenericComponentType();
+        Type ct;
+        if(type instanceof Class)
+            ct = ((Class<?>)type).getComponentType(); 
+        else
+            ct = ((GenericArrayType)type).getGenericComponentType();
         componentType = new ReflectionType(ct);
         return componentType;
     }
