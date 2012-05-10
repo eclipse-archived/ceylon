@@ -119,8 +119,16 @@ public class CallableBuilder {
 
         CallableBuilder cb = new CallableBuilder(gen);
         cb.paramLists = parameterList;
-        body = prependVarsForArgs(gen, parameterList, body);
         cb.typeModel = typeModel;
+        if (body == null) {
+            body = List.<JCStatement>nil();
+        }
+        body = prependVarsForArgs(gen, parameterList, body);
+        // We void methods need to have their Callables return null
+        // so adjust here.
+        if (gen.isVoid(gen.getCallableReturnType(typeModel))) {
+            body = gen.addReturnNull(body);
+        }
         cb.body = body;
         return cb;
     }

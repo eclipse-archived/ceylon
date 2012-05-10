@@ -884,7 +884,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 ProducedType callableType = gen.typeFact().getCallableType(model.getType());
                 List<JCStatement> body = gen.statementGen().transform(methodArg.getBlock()).getStatements();
                 if (gen.isVoid(model.getType())) {
-                    body = body.append(gen.make().Return(gen.makeNull()));
+                    body = gen.addReturnNull(body);
                 }
                 CallableBuilder callableBuilder = CallableBuilder.methodArgument(gen.gen(), 
                         callableType, 
