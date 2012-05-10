@@ -1,0 +1,36 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+final class twoParamListsVoid {
+    
+    private twoParamListsVoid() {
+    }
+    
+    static void twoParamListsVoid() {
+        
+        final class f {
+            
+            private f() {
+            }
+            
+            .ceylon.language.Callable<? extends .java.lang.Object> f(final .ceylon.language.String s) {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call() {
+                        if (true) {
+                            .ceylon.language.print.print(s);
+                        }
+                        return null;
+                    }
+                };
+            }
+        }
+        final f f = new f();
+        f.f(.ceylon.language.String.instance("hello")).$call();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsVoid.twoParamListsVoid();
+    }
+}

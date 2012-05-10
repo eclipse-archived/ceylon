@@ -547,6 +547,11 @@ public class ExpressionTest extends CompilerTest {
     public void testIndirectInvoke(){
         compareWithJavaSource("invoke/IndirectInvoke");
     }
+    
+    @Test
+    public void testIndirectTypeParam(){
+        compareWithJavaSource("invoke/IndirectTypeParam");
+    }
 
 
     // Self references

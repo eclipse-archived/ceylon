@@ -1,0 +1,92 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class indirectTypeParam_topLevel {
+    
+    private indirectTypeParam_topLevel() {
+    }
+    
+    static <T>T indirectTypeParam_topLevel(final T t) {
+        return t;
+    }
+}
+final class indirectTypeParam {
+    
+    private indirectTypeParam() {
+    }
+    
+    static void indirectTypeParam() {
+        final .ceylon.language.Callable<? extends .ceylon.language.Integer> f1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer)"){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.indirectTypeParam_topLevel.<.ceylon.language.Integer>indirectTypeParam_topLevel((.ceylon.language.Integer)$param$0);
+            }
+        };
+        long i = f1.$call(.ceylon.language.Integer.instance(1L)).longValue();
+        
+        final class local {
+            
+            private local() {
+            }
+            
+            <T>T local(final T t) {
+                return t;
+            }
+        }
+        final local local = new local();
+        final .ceylon.language.Callable<? extends .ceylon.language.Integer> f2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer)"){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
+                return local.<.ceylon.language.Integer>local((.ceylon.language.Integer)$param$0);
+            }
+        };
+        i = f2.$call(.ceylon.language.Integer.instance(1L)).longValue();
+        
+        final class mpl {
+            
+            private mpl() {
+            }
+            
+            <T>.ceylon.language.Callable<? extends .java.lang.Object> mpl(final T t) {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call() {
+                        if (true) {
+                            throw new .ceylon.language.Exception(null, null);
+                        }
+                        return null;
+                    }
+                };
+            }
+        }
+        final mpl mpl = new mpl();
+        
+        final class f3 {
+            
+            private f3() {
+            }
+            
+            .ceylon.language.Callable<? extends .java.lang.Object> f3(final .ceylon.language.Integer i) {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call() {
+                        if (true) {
+                            mpl.<.ceylon.language.Integer>mpl(i);
+                        }
+                        return null;
+                    }
+                };
+            }
+        }
+        final f3 f3 = new f3();
+        f3.f3(.ceylon.language.Integer.instance(1L)).$call();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.indirectTypeParam.indirectTypeParam();
+    }
+}
