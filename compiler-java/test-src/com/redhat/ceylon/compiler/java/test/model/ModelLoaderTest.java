@@ -58,7 +58,7 @@ import com.sun.tools.javac.util.Context;
 
 public class ModelLoaderTest extends CompilerTest {
     
-    private Map<Declaration, Set<Declaration>> alreadyCompared = new HashMap<Declaration, Set<Declaration>>();
+    private Map<Integer, Set<Integer>> alreadyCompared = new HashMap<Integer, Set<Integer>>();
     
     protected void verifyClassLoading(String ceylon){
         // now compile the ceylon decl file
@@ -192,12 +192,12 @@ public class ModelLoaderTest extends CompilerTest {
     }
 
     private boolean alreadyCompared(Declaration validDeclaration, Declaration modelDeclaration) {
-        Set<Declaration> comparedDeclarations = alreadyCompared.get(modelDeclaration);
+        Set<Integer> comparedDeclarations = alreadyCompared.get(modelDeclaration.hashCode());
         if(comparedDeclarations == null){
-            comparedDeclarations = new HashSet<Declaration>();
-            alreadyCompared.put(modelDeclaration, comparedDeclarations);
+            comparedDeclarations = new HashSet<Integer>();
+            alreadyCompared.put(modelDeclaration.hashCode(), comparedDeclarations);
         }
-        return !comparedDeclarations.add(validDeclaration);
+        return !comparedDeclarations.add(validDeclaration.hashCode());
     }
 
     private void compareTypeParameters(TypeParameter validDeclaration, TypeParameter modelDeclaration) {
