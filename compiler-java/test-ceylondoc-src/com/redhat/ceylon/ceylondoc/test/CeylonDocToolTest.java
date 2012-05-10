@@ -37,6 +37,7 @@ import javax.tools.JavaFileObject;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -301,6 +302,22 @@ public class CeylonDocToolTest {
         tool.makeDoc();
         
         Module module = makeModule("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION);
+        File destDir = getOutputDir(tool, module);
+        
+        assertFileExists(destDir, "index.html");
+    }
+
+    @Ignore("Disabled unless you have the sdk checked out")
+    @Test
+    public void ceylonMath() throws IOException {
+        String pathname = "../ceylon-sdk/math/source";
+        String moduleName = "ceylon.math";
+        CeylonDocTool tool = tool(pathname, moduleName, false);
+        tool.setIncludeNonShared(false);
+        tool.setIncludeSourceCode(true);
+        tool.makeDoc();
+        
+        Module module = makeModule("ceylon.math", "0.2");
         File destDir = getOutputDir(tool, module);
         
         assertFileExists(destDir, "index.html");
