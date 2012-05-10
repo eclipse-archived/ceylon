@@ -485,9 +485,11 @@ public class Util {
         return it.canonicalize().getType();
     }
 
-    public static boolean isElementOfUnion(UnionType ut, TypeDeclaration td) {
+    public static boolean isElementOfUnion(UnionType ut, ClassOrInterface ci) {
         for (TypeDeclaration ct: ut.getCaseTypeDeclarations()) {
-            if (ct.equals(td)) return true;
+            if (ct instanceof ClassOrInterface && ct.equals(ci)) {
+                return true;
+            }
         }
         return false;
     }
