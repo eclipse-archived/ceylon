@@ -42,6 +42,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -1118,9 +1119,16 @@ public class ClassTransformer extends AbstractTransformer {
                 } else {
                     defaultValueMethodName = gen().makeQuotedQualIdent(makeQuotedIdent(companionInstanceName), methodName);
                 }
+                
                 String varName = tempName("$"+param2.getName()+"$");
+                final ProducedType paramType;
+                if (param2 instanceof FunctionalParameter) {
+                    paramType = typeFact().getCallableType(param2.getType());
+                } else {
+                    paramType = param2.getType();
+                }
                 vars.append(makeVar(varName, 
-                        makeJavaType(param2.getType()), 
+                        makeJavaType(paramType), 
                         make().Apply(typeArguments, 
                                 defaultValueMethodName, 
                                 ListBuffer.<JCExpression>lb().appendList(args).toList())));
