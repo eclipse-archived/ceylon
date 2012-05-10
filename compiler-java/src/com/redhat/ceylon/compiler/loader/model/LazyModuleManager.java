@@ -46,11 +46,21 @@ public abstract class LazyModuleManager extends ModuleManager {
     @Override
     public void resolveModule(ArtifactResult artifact, Module module, ModuleImport moduleImport, 
             LinkedList<Module> dependencyTree, List<PhasedUnits> phasedUnitsOfDependencies) {
-        if(isModuleLoadedFromSource(module.getNameAsString())){
+        String moduleName = module.getNameAsString();
+        // check for an already loaded module with the same name but different version
+        for(Module loadedModule : getContext().getModules().getListOfModules()){
+            if(loadedModule.getNameAsString().equals(moduleName)
+                    && !loadedModule.getVersion().equals(module.getVersion())){
+                getModelLoader().logDuplicateModuleError(module, loadedModule);
+                // abort
+                return;
+            }
+        }
+        if(isModuleLoadedFromSource(moduleName)){
             super.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies);
         }else{
             getModelLoader().addModuleToClassPath(module, artifact); // To be able to load it from the corresponding archive
-            Module compiledModule = getModelLoader().loadCompiledModule(module.getNameAsString());
+            Module compiledModule = getModelLoader().loadCompiledModule(moduleName);
             if(compiledModule == null && !module.isDefault()){
                 // we didn't find module.class so it must be a java module if it's not the default module
                 ((LazyModule)module).setJava(true);
