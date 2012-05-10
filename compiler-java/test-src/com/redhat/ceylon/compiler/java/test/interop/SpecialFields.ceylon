@@ -19,24 +19,9 @@
  */
 @nomodel
 @error
-void fields() {
+void specialFields() {
     @error
     JavaFields java = JavaFields();
-    variable Integer sync;
-    @error
-    sync := java.readOnlyField;
-    @error
-    sync := java.readWriteField;
-    @error
-    java.readWriteField := 2;
-    @error
-    java.readWriteField++;
-    @error
-    ++java.readWriteField;
-    @error
-    java.readWriteField := java.readWriteField := java.readWriteField;
-    @error
-    java.readWriteField := java.readWriteField += java.readWriteField;
     @error
     java.hash := java.hash;
     @error
@@ -45,25 +30,4 @@ void fields() {
     java.string := java.string;
     @error
     java.string := java.toString();
-}
-
-@nomodel
-@error
-class CeylonFields() extends JavaFields() {
-    
-    @error
-    void f(){
-        Integer i1 = readOnlyField;
-        Integer i2 = readWriteField;
-        @error
-        readWriteField := 2;
-        @error
-        readWriteField++;
-        @error
-        ++readWriteField;
-        @error
-        readWriteField := readWriteField := readWriteField;
-        @error
-        readWriteField := readWriteField += readWriteField;
-    }
 }
