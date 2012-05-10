@@ -1,11 +1,9 @@
-package com.redhat.ceylon.compiler.loader.typeparser;
+package com.redhat.ceylon.compiler.loader;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.java.util.Util;
-import com.redhat.ceylon.compiler.loader.ModelLoader;
-import com.redhat.ceylon.compiler.loader.ModelResolutionException;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;

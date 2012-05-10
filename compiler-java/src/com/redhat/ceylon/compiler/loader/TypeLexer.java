@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.loader.typeparser;
+package com.redhat.ceylon.compiler.loader;
 
 
 public class TypeLexer {
