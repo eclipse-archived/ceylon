@@ -345,6 +345,10 @@ public class ModuleManager {
         return new PhasedUnits(getContext());
     }
 
+    protected PhasedUnits createPhasedUnits() {
+        return new PhasedUnits(getContext());
+    }
+
     public Iterable<String> getSearchedArtifactExtensions() {
         return Arrays.asList("src");
     }
