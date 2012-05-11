@@ -8,5 +8,7 @@ void comprehensions() {
     Entry<String,Integer>[] entries = { for (s in words) for (n in 0..10) s->n };
     @type["Empty|Sequence<String>"] value seq = { for (x in {null, "hello", "goodbye"}) if (exists x) if (x.size>1) x.uppercased };
     @type["Array<String>"] array(for (x in {null, "hello", "goodbye"}) if (exists x) if (x.size>1) x.uppercased);
+    
+    value xxx = { array { seq... }... };
         
 }
