@@ -88,8 +88,15 @@ public abstract class LazyModule extends Module {
     }
 
     private Package findPackageInModule(LazyModule module, String name) {
-        if(module.containsPackage(name))
+        if(module.containsPackage(name)){
+            // first try the already loaded packages from that module
+            for(Package pkg : module.getPackages()){
+                if(pkg.getNameAsString().equals(name))
+                    return pkg;
+            }
+            // create/load a new one
             return getModelLoader().findOrCreatePackage(module, name);
+        }
         return null;
     }
 
