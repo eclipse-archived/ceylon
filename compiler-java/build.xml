@@ -286,6 +286,7 @@
        classpathref="test.compile.classpath"
        includeantruntime="false">
       <include name="com/redhat/ceylon/compiler/java/test/**"/>
+      <exclude name="com/redhat/ceylon/compiler/java/test/interop/mixed/**"/>
       <include name="com/redhat/ceylon/itest/**"/>
     </javac>
     <javac
@@ -386,10 +387,7 @@
 
       <batchtest fork="yes" todir="${test.reports}">
         <fileset dir="${test.src}">
-          <include name="**/*Test.java"/>
-          <exclude name="com/redhat/ceylon/compiler/java/test/CompilerTest.java"/>
-          <exclude name="com/redhat/ceylon/compiler/java/test/runtime/**"/>
-          <exclude name="com/redhat/ceylon/itest/**"/>
+          <include name="com/redhat/ceylon/compiler/java/test/ConcurrentTestsNoRuntime.java"/>
         </fileset>
       </batchtest>
     </junit>
