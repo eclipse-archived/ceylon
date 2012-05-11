@@ -8,9 +8,11 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ExternalUnit;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -35,8 +37,13 @@ public class DependedUponVisitor extends Visitor {
     }
 
     private void storeDependency(Declaration d) {
-        if (d!=null && !alreadyDone.contains(d)) {
-            alreadyDone.add(d);
+        if (d!=null && (d instanceof UnionType || 
+                        d instanceof IntersectionType || 
+                        !alreadyDone.contains(d))) {
+            if (!(d instanceof UnionType || 
+                        d instanceof IntersectionType)) {
+                alreadyDone.add(d);
+            }
             if (d instanceof TypeDeclaration) {
                 TypeDeclaration td = (TypeDeclaration) d;
                 storeDependency(td.getExtendedTypeDeclaration());
