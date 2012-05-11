@@ -60,6 +60,9 @@ public abstract class CeylonDoc extends Markup {
     }
     
     protected void link(ProducedType type) throws IOException {
+        // Avoid NPEs for things the typechecker will produce errors for
+        if(type == null)
+            return;
         TypeDeclaration decl = type.getDeclaration();
         if(decl instanceof UnionType){
             UnionType ut = (UnionType) decl;
