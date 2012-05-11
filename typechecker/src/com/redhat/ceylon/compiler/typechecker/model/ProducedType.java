@@ -1303,7 +1303,7 @@ public class ProducedType extends ProducedReference {
         if (!getTypeArgumentList().isEmpty()) {
             ptn.append("<");
             boolean first = true;
-            for (ProducedType t : getTypeArgumentList()) {
+            for (ProducedType t: getTypeArgumentList()) {
                 if (first) {
                     first = false;
                 }
@@ -1315,6 +1315,37 @@ public class ProducedType extends ProducedReference {
                 }
                 else {
                     ptn.append(t.getProducedTypeName(abbreviate));
+                }
+            }
+            ptn.append(">");
+        }
+        return ptn.toString();
+    }
+
+    private String getSimpleProduceTypeQualifiedName() {
+        StringBuilder ptn = new StringBuilder();
+        if (getDeclaration().isMember()) {
+            ptn.append(getQualifyingType().getProducedTypeQualifiedName())
+                    .append(".").append(getDeclaration().getName());
+        }
+        else {
+            ptn.append(getDeclaration().getQualifiedNameString());
+        }
+        if (!getTypeArgumentList().isEmpty()) {
+            ptn.append("<");
+            boolean first = true;
+            for (ProducedType t: getTypeArgumentList()) {
+                if (first) {
+                    first = false;
+                }
+                else {
+                    ptn.append(",");
+                }
+                if (t==null) {
+                    ptn.append("?");
+                }
+                else {
+                    ptn.append(t.getProducedTypeQualifiedName());
                 }
             }
             ptn.append(">");
@@ -1354,34 +1385,7 @@ public class ProducedType extends ProducedReference {
             return name.substring(0,name.length()-1);
         }
         else {            
-            StringBuilder ptn = new StringBuilder();
-            if (getDeclaration().isMember()) {
-                ptn.append(getQualifyingType().getProducedTypeQualifiedName())
-                        .append(".").append(getDeclaration().getName());
-            }
-            else {
-                ptn.append(getDeclaration().getQualifiedNameString());
-            }
-            if (!getTypeArgumentList().isEmpty()) {
-                ptn.append("<");
-                boolean first = true;
-                for (ProducedType t : getTypeArgumentList()) {
-                    if (first) {
-                        first = false;
-                    }
-                    else {
-                        ptn.append(",");
-                    }
-                    if (t==null) {
-                        ptn.append("?");
-                    }
-                    else {
-                        ptn.append(t.getProducedTypeQualifiedName());
-                    }
-                }
-                ptn.append(">");
-            }
-            return ptn.toString();
+            return getSimpleProduceTypeQualifiedName();
         }
     }
 

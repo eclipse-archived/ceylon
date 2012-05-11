@@ -145,32 +145,38 @@ class Util extends Visitor {
         }
         return null;
     }
-            
+    
+    private static String message(ProducedType type, String problem, ProducedType otherType) {
+        if (type.getDeclaration() instanceof UnknownType) {
+            return ": type cannot be determined";
+        }
+        String typeName = type.getProducedTypeName();
+        String otherTypeName = otherType.getProducedTypeName();
+        if (otherTypeName.equals(typeName)) {
+            typeName = type.getProducedTypeQualifiedName();
+            otherTypeName = otherType.getProducedTypeQualifiedName();
+        }
+        return ": " + typeName + problem + otherTypeName;
+    }
+    
     static void checkAssignable(ProducedType type, ProducedType supertype, 
             Node node, String message) {
         if (type==null||supertype==null) {
         	//this is always a bug now, i suppose?
-            node.addError(message);
+            node.addError(message + ": type not known");
         }
         else if (!type.isSubtypeOf(supertype)) {
-        	if (type.getDeclaration() instanceof UnknownType) {
-            	node.addError(message + ": type of expression cannot be determined");
-            }
-        	else {
-	            node.addError(message + ": " + type.getProducedTypeName() + 
-	                    " is not assignable to " + supertype.getProducedTypeName());
-        	}
+        	node.addError(message + message(type, " is not assignable to ", supertype));
         }
     }
 
     static void checkAssignable(ProducedType type, ProducedType supertype, 
             TypeDeclaration td, Node node, String message) {
         if (type==null||supertype==null) {
-            node.addError(message);
+            node.addError(message + ": type not known");
         }
         else if (!type.isSubtypeOf(supertype, td)) {
-            node.addError(message + ": " + type.getProducedTypeName() + 
-                    " is not assignable to " + supertype.getProducedTypeName());
+            node.addError(message + message(type, " is not assignable to ", supertype));
         }
     }
 
@@ -180,8 +186,7 @@ class Util extends Visitor {
             node.addError(message + ": type not known");
         }
         else if (!type.isExactly(supertype)) {
-            node.addError(message + ": " + type.getProducedTypeName() + 
-                    " is not exactly " + supertype.getProducedTypeName());
+            node.addError(message + message(type, " is not exactly ", supertype));
         }
     }
 
