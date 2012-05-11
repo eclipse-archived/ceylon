@@ -2560,8 +2560,12 @@ public class ExpressionVisitor extends Visitor {
                 List<ProducedType> ta = getTypeArguments(tal);
                 tal.setTypeModels(ta);
                 visitBaseMemberExpression(that, member, ta, tal);
+                //otherwise infer type arguments later
             }
-            //otherwise infer type arguments later
+            else {
+                //TODO: set the correct metatype
+                that.setTypeModel(unit.getVoidDeclaration().getType());
+            }
             /*if (defaultArgument) {
                 if (member.isClassOrInterfaceMember()) {
                     that.addWarning("references to this from default argument expressions not yet supported");
@@ -2607,8 +2611,12 @@ public class ExpressionVisitor extends Visitor {
                     List<ProducedType> ta = getTypeArguments(tal);
                     tal.setTypeModels(ta);
                     visitQualifiedMemberExpression(that, member, ta, tal);
+                    //otherwise infer type arguments later
                 }
-                //otherwise infer type arguments later
+                else {
+                    //TODO: set the correct metatype
+                    that.setTypeModel(unit.getVoidDeclaration().getType());
+                }
                 checkOverloadedReference(that);
             }
             if (that.getPrimary() instanceof Tree.Super) {
@@ -2676,8 +2684,12 @@ public class ExpressionVisitor extends Visitor {
                 List<ProducedType> ta = getTypeArguments(tal);
                 tal.setTypeModels(ta);
                 visitBaseTypeExpression(that, type, ta, tal);
+                //otherwise infer type arguments later
             }
-            //otherwise infer type arguments later
+            else {
+                //TODO: set the correct metatype
+                that.setTypeModel(unit.getVoidDeclaration().getType());
+            }
             checkOverloadedReference(that);
         }
     }
@@ -2746,6 +2758,10 @@ public class ExpressionVisitor extends Visitor {
                     visitQualifiedTypeExpression(that, pt, type, ta, tal);
                     //otherwise infer type arguments later
                 }
+                else {
+                    //TODO: set the correct metatype
+                    that.setTypeModel(unit.getVoidDeclaration().getType());
+                }
                 checkOverloadedReference(that);
             }
             //TODO: this is temporary until we get metamodel reference expressions!
@@ -2797,7 +2813,7 @@ public class ExpressionVisitor extends Visitor {
         if (acceptsTypeArguments(receiverType, type, typeArgs, tal, that)) {
             ProducedType t = receiverType.getTypeMember(type, typeArgs);
             ProducedType ft = isAbstractType(t) ?
-                    unit.getVoidDeclaration().getType() : 
+                    unit.getVoidDeclaration().getType() : //TODO: set the correct metatype
                     t.getFullType(wrap(t, receivingType, that));
             that.setTypeModel(ft);
             that.setTarget(t);
@@ -2816,7 +2832,7 @@ public class ExpressionVisitor extends Visitor {
         }
         if ( acceptsTypeArguments(type, typeArgs, tal, that) ) {
             ProducedType ft = isAbstractType(t) ?
-                    unit.getVoidDeclaration().getType() : 
+                    unit.getVoidDeclaration().getType() : //TODO: set the correct metatype
                     t.getFullType();
             that.setTypeModel(ft);
             that.setTarget(t);
