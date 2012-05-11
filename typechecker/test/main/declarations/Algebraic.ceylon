@@ -212,7 +212,8 @@ void switchInterface(Interface i) {
     @error switch(i)
     case (is Class1) {}
         
-    @error switch(i)
+    //@error 
+    switch(i)
     case (is String) {}
     case (is Class1) {}
     case (is Class2) {}
@@ -221,6 +222,17 @@ void switchInterface(Interface i) {
     case (is Class3) {}
     case (object1) {}
     case (is Class2) {}
+    
+    Integer|Float num = 1;
+    
+    switch (num)
+    case (is Integer) {}
+    case (is Float) {}
+    
+    @error switch (num)
+    case (is Integer) {}
+    case (is Float) {}
+    case (is String) {}
         
 }
 
@@ -269,3 +281,45 @@ abstract class Abstract2() {}
 class Concrete1() extends Abstract1() satisfies Indirect {}
 class Concrete2() satisfies Indirect {}
 class Concrete3() extends Abstract1() {}*/
+
+interface J1 of J2|J3 {}
+interface J2 satisfies J1 {}
+interface J3 satisfies J1 {}
+interface J4 satisfies J1 {}
+
+void testHardCase(J4 i) {
+    
+    switch(i)
+    case (is J2) {
+        @type["J4&J2"] value ii = i;
+    }
+    case (is J3) {}
+    
+    @error switch(i)
+    case (is J2) {}
+    case (is J3) {}
+    case (is Nothing) {}
+
+    @error switch(i)
+    case (is J2) {}
+    case (is J3) {}
+    case (null) {}
+
+    J4? mi = null;
+    
+    @error switch(mi)
+    case (is J2) {}
+    case (is J3) {}
+    
+    switch(mi)
+    case (is J2) {}
+    case (is J3) {}
+    case (null) {}
+
+    switch(mi)
+    case (is J2) {
+        @type["J4&J2"] value ii = mi;
+    }
+    case (is J3) {}
+    case (is Nothing) {}
+}

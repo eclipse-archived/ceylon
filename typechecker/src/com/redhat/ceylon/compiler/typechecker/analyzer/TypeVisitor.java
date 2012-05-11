@@ -171,7 +171,7 @@ public class TypeVisitor extends Visitor {
             member.getIdentifier().addError("imported declaration not found: " + 
                     name, 100);
         }
-        else if ("java.lang.Object".equals(d.getQualifiedNameString())) {
+        else if (isNonimportable(d)) {
             member.getIdentifier().addError("root type may not be imported");
         }
         else {
@@ -199,6 +199,12 @@ public class TypeVisitor extends Visitor {
         	}
         }
         return name;
+    }
+
+    private boolean isNonimportable(Declaration d) {
+        String name = d.getQualifiedNameString();
+        return "java.lang.Object".equals(name) ||
+                "java.lang.Exception".equals(name);
     }
 
     private void addImport(Tree.ImportMemberOrType member, ImportList il,
@@ -294,7 +300,7 @@ public class TypeVisitor extends Visitor {
         TypeDeclaration type = getBaseDeclaration(that);
         if (type==null) {
             that.addError("type declaration does not exist or is ambiguous: " + 
-                    name(that.getIdentifier()), 100);
+                    name(that.getIdentifier()), 102);
             unit.getUnresolvedReferences().add(that.getIdentifier());
         }
         else {

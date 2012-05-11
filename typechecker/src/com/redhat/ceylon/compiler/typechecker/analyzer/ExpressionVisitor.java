@@ -50,7 +50,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -148,7 +147,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.FunctionArgument that) {
         super.visit(that);
-        ProducedType t = that.getExpression().getTypeModel();
+        ProducedType t = denotableType(that.getExpression().getTypeModel());
         that.getDeclarationModel().setType(t);
         /*List<ProducedType> list = new ArrayList<ProducedType>();
         for (Parameter p: that.getDeclarationModel().getParameterLists().get(0)
@@ -664,10 +663,9 @@ public class ExpressionVisitor extends Visitor {
         Tree.SpecifierExpression se = that.getDefaultArgument()==null ?
                 null :
                 that.getDefaultArgument().getSpecifierExpression();
-        Tree.Type tt = that.getType();
-        if (tt!=null) {
-            checkType(tt.getTypeModel(), se);
-        }
+        ProducedType t = that.getDeclarationModel().getProducedTypedReference(null, 
+                Collections.<ProducedType>emptyList()).getFullType();
+        checkType(t, se);
     }
 
     @Override
@@ -770,8 +768,11 @@ public class ExpressionVisitor extends Visitor {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
                 ProducedType et = e.getTypeModel();
-                for (Tree.ParameterList pl: that.getParameterLists()) {   
-                    if (et==null || !isCallableType(et)) {
+                for (Tree.ParameterList pl: that.getParameterLists()) { 
+                    if (et==null || et.getDeclaration() instanceof UnknownType) {
+                        //don't add an extra error
+                    }
+                    else if (!isCallableType(et)) {
                         se.addError("specified value must be a reference to a function or class: " + 
                                 et.getDeclaration().getName() + " is not a subtype of Callable");
                         return; //NOTE EARLY EXIT!!!
@@ -1486,7 +1487,8 @@ public class ExpressionVisitor extends Visitor {
     private ProducedType inferTypeArg(TypeParameter tp, ProducedType paramType,
             ProducedType argType, List<TypeParameter> visited) {
         if (paramType!=null) {
-            if (paramType.getDeclaration().equals(tp)) {
+            if (paramType.getDeclaration() instanceof TypeParameter &&
+                    paramType.getDeclaration().equals(tp)) {
                 return denotableType(argType);
             }
             else if (paramType.getDeclaration() instanceof UnionType) {
@@ -2964,6 +2966,25 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    @Override public void visit(Tree.SpecifierOrInitializerExpression that) {
+        //i.e. this is a parenthesized expression
+        super.visit(that);
+        Tree.Term term = that.getExpression()==null ? 
+                null : that.getExpression().getTerm();
+        if (term!=null) {
+            //TODO: it seems a bit fragile to handle this here
+            if (term instanceof Tree.StaticMemberOrTypeExpression) {
+                Tree.StaticMemberOrTypeExpression smte = (Tree.StaticMemberOrTypeExpression) term;
+                if (isGeneric(smte.getDeclaration())) {
+                    if (smte.getTypeArguments() instanceof Tree.InferredTypeArguments) {
+                        smte.addError("missing type arguments to: " + 
+                                smte.getDeclaration().getName());
+                    }
+                }
+            }
+        }
+    }
+    
     @Override public void visit(Tree.Outer that) {
         ProducedType ci = getOuterClassOrInterface(that.getScope());
         if (ci==null) {
@@ -3243,7 +3264,7 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             if (hasIsCase) {
-                Term st = switchExpression.getTerm();
+                Tree.Term st = switchExpression.getTerm();
                 if (st instanceof Tree.BaseMemberExpression) {
                     checkReferenceIsNonVariable((Tree.BaseMemberExpression) st);
                 }

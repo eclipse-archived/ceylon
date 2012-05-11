@@ -237,7 +237,8 @@ class ControlStructures() {
     case (is String) {}
     case (is Nothing) {}
     
-    @error switch (s)
+    //@error 
+    switch (s)
     case (is Object) {}
     case (is Nothing) {}
     

@@ -363,7 +363,9 @@ public class Util {
                     else if (pt.isSubtypeOf(t)) {
                         iter.remove();
                     }
-                    else if ( pt.getDeclaration().equals(t.getDeclaration()) ) {
+                    else if (pt.getDeclaration() instanceof ClassOrInterface && 
+                            t.getDeclaration() instanceof ClassOrInterface && 
+                            pt.getDeclaration().equals(t.getDeclaration()) ) {
                         //canonicalize T<InX,OutX>&T<InY,OutY> to T<InX|InY,OutX&OutY>
                         TypeDeclaration td = pt.getDeclaration();
                         List<ProducedType> args = new ArrayList<ProducedType>();
@@ -423,9 +425,11 @@ public class Util {
                         if (pt.getDeclaration() instanceof Class &&
                                 t.getDeclaration() instanceof Class ||
                             pt.getDeclaration() instanceof Interface &&
+                                t.getDeclaration() instanceof Class &&
                                 t.getDeclaration().equals(nd) ||
                                 //t.getDeclaration().getQualifiedNameString().equals("ceylon.language.Nothing") ||
                             t.getDeclaration() instanceof Interface &&
+                            pt.getDeclaration() instanceof Class &&
                                 pt.getDeclaration().equals(nd)) {
                                 //pt.getDeclaration().getQualifiedNameString().equals("ceylon.language.Nothing")) {
                             //the meet of two classes unrelated by inheritance, or
@@ -481,19 +485,23 @@ public class Util {
         return it.canonicalize().getType();
     }
 
-    public static boolean isElementOfUnion(UnionType ut, TypeDeclaration td) {
+    public static boolean isElementOfUnion(UnionType ut, ClassOrInterface ci) {
         for (TypeDeclaration ct: ut.getCaseTypeDeclarations()) {
-            if (ct.equals(td)) return true;
+            if (ct instanceof ClassOrInterface && ct.equals(ci)) {
+                return true;
+            }
         }
         return false;
     }
     
-    public static boolean isElementOfIntersection(IntersectionType ut, TypeDeclaration td) {
+    /*public static boolean isElementOfIntersection(IntersectionType ut, ClassOrInterface td) {
         for (TypeDeclaration ct: ut.getSatisfiedTypeDeclarations()) {
-            if (ct.equals(td)) return true;
+            if (ct instanceof ClassOrInterface && ct.equals(td)) {
+                return true;
+            }
         }
         return false;
-    }
+    }*/
     
     public static Declaration lookupMember(List<Declaration> members, String name,
             List<ProducedType> signature, boolean includeParameters) {

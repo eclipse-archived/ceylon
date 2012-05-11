@@ -11,32 +11,12 @@ public class UnionType extends TypeDeclaration {
     
     @Override
     public String getName() {
-        String name = "";
-        for (ProducedType pt: getCaseTypes()) {
-            if (pt==null) {
-                name+="<unknown>";
-            }
-            else {
-                name+=pt.getProducedTypeName(false);
-            }
-            name+="|";
-        }
-        return name.substring(0,name.length()-1);
+        return getType().getProducedTypeName();
     }
     
     @Override
     public String getQualifiedNameString() {
-        String name = "";
-        for (ProducedType pt: getCaseTypes()) {
-            if (pt==null) {
-                name+="<unknown>";
-            }
-            else {
-                name+=pt.getProducedTypeQualifiedName();
-            }
-            name+="|";
-        }
-        return name.substring(0,name.length()-1);
+        return getType().getProducedTypeQualifiedName();
     }
     
     @Override
@@ -46,7 +26,7 @@ public class UnionType extends TypeDeclaration {
     
     @Override @Deprecated
     public List<String> getQualifiedName() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("union types don't have names");
     }
     
     @Override
@@ -77,6 +57,11 @@ public class UnionType extends TypeDeclaration {
     @Override
     public DeclarationKind getDeclarationKind() {
         return null;
+    }
+    
+    @Override
+    public boolean equals(Object object) {
+        throw new UnsupportedOperationException("union types don't have well-defined equality");
     }
 
 }
