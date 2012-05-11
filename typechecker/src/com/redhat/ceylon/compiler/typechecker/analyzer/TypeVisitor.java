@@ -170,6 +170,7 @@ public class TypeVisitor extends Visitor {
         if (d==null) {
             member.getIdentifier().addError("imported declaration not found: " + 
                     name, 100);
+            unit.getUnresolvedReferences().add(member.getIdentifier());
         }
         else if (isNonimportable(d)) {
             member.getIdentifier().addError("root type may not be imported");
@@ -239,6 +240,7 @@ public class TypeVisitor extends Visitor {
         if (m==null) {
             member.getIdentifier().addError("imported declaration not found: " + 
                     name + " of " + d.getName(), 100);
+            unit.getUnresolvedReferences().add(member.getIdentifier());
         }
         else {
             if (!m.isShared()) {
