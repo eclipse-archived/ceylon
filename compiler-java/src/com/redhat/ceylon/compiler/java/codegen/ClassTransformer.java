@@ -249,7 +249,8 @@ public class ClassTransformer extends AbstractTransformer {
                 if (!satisfiedInterfaces.contains((Interface)method.getContainer())) {
                     
                     for (Parameter param : parameters) {
-                        if (param.isDefaulted()) {
+                        if (param.isDefaulted()
+                                || param.isSequenced()) {
                             // If that method has a defaulted parameter, 
                             // we need to generate a default value method
                             // which also delegates to the $impl
