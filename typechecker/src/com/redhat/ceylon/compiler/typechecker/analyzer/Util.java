@@ -147,9 +147,6 @@ class Util extends Visitor {
     }
     
     private static String message(ProducedType type, String problem, ProducedType otherType) {
-        if (type.getDeclaration() instanceof UnknownType) {
-            return ": type cannot be determined";
-        }
         String typeName = type.getProducedTypeName();
         String otherTypeName = otherType.getProducedTypeName();
         if (otherTypeName.equals(typeName)) {
@@ -161,9 +158,8 @@ class Util extends Visitor {
     
     static void checkAssignable(ProducedType type, ProducedType supertype, 
             Node node, String message) {
-        if (type==null||supertype==null) {
-        	//this is always a bug now, i suppose?
-            node.addError(message + ": type not known");
+        if (isTypeUnknown(type, supertype)) {
+        	addTypeUnknownError(node, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
         	node.addError(message + message(type, " is not assignable to ", supertype));
@@ -172,8 +168,8 @@ class Util extends Visitor {
 
     static void checkAssignable(ProducedType type, ProducedType supertype, 
             TypeDeclaration td, Node node, String message) {
-        if (type==null||supertype==null) {
-            node.addError(message + ": type not known");
+        if (isTypeUnknown(type, supertype)) {
+            addTypeUnknownError(node, message);
         }
         else if (!type.isSubtypeOf(supertype, td)) {
             node.addError(message + message(type, " is not assignable to ", supertype));
@@ -182,12 +178,24 @@ class Util extends Visitor {
 
     static void checkIsExactly(ProducedType type, ProducedType supertype, 
             Node node, String message) {
-        if (type==null||supertype==null) {
-            node.addError(message + ": type not known");
+        if (isTypeUnknown(type, supertype)) {
+            addTypeUnknownError(node, message);
         }
         else if (!type.isExactly(supertype)) {
             node.addError(message + message(type, " is not exactly ", supertype));
         }
+    }
+
+    private static void addTypeUnknownError(Node node, String message) {
+        if (node.getErrors().isEmpty()) {
+            node.addError(message + ": type cannot be determined");
+        }
+    }
+
+    private static boolean isTypeUnknown(ProducedType type, ProducedType supertype) {
+        return type==null || supertype==null ||
+                type.getDeclaration() instanceof UnknownType ||
+                supertype.getDeclaration() instanceof UnknownType;
     }
 
 }
