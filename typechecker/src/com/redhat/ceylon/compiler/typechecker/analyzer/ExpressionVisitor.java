@@ -1559,6 +1559,15 @@ public class ExpressionVisitor extends Visitor {
                     that.addError("abstract classes may not be instantiated");
                 }
             }
+            if (that.getNamedArgumentList()!=null && 
+                    dec.isAbstraction()) {
+                //TODO: this is not really right - it's the fact 
+                //      that we're calling Java and don't have
+                //      meaningful parameter names that is the
+                //      real problem, not the overload
+                that.addError("overloaded declarations may not be called using named arguments: " +
+                        dec.getName());
+            }
             //that.setTypeModel(prf.getType());
             ProducedType ct = that.getPrimary().getTypeModel();
             if (ct!=null && !ct.getTypeArgumentList().isEmpty()) {
