@@ -1248,7 +1248,7 @@ public class ProducedType extends ProducedReference {
         return getDeclaration() instanceof Interface &&
                 getDeclaration().getQualifiedNameString()
                         .equals("ceylon.language.Callable") &&
-                getTypeArgumentList().size()>0 && 
+                getTypeArgumentList().size()>0 && getTypeArgumentList().get(0)!=null &&
                 getTypeArgumentList().get(0).isPrimitiveAbbreviatedType() &&
                 getTypeArgumentList().size()==getDeclaration().getTypeParameters().size();
     }
