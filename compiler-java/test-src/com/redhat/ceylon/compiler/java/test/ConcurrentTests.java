@@ -27,6 +27,7 @@ import com.redhat.ceylon.compiler.java.test.bc.BcTests;
 import com.redhat.ceylon.compiler.java.test.cmr.CMRTest;
 import com.redhat.ceylon.compiler.java.test.cmr.CMRTestHTTP;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest;
+import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest2;
 import com.redhat.ceylon.compiler.java.test.interop.InteropTest;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTest;
 import com.redhat.ceylon.compiler.java.test.issues.PackageIssuesTest;
@@ -38,12 +39,15 @@ import com.redhat.ceylon.compiler.java.test.recovery.RecoveryTest;
 import com.redhat.ceylon.compiler.java.test.runtime.RuntimeSuite;
 import com.redhat.ceylon.compiler.java.test.statement.StatementTest;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTest;
+import com.redhat.ceylon.compiler.java.test.structure.StructureTest2;
 
 @RunWith(ConcurrentSuite.class) 
 @SuiteClasses({
     // those take the longest time to run, so we start them first
     ExpressionTest.class,
+    ExpressionTest2.class,
     StructureTest.class,
+    StructureTest2.class,
     CMRTestHTTP.class,
     
     // those can run in any order

@@ -28,6 +28,7 @@ import com.redhat.ceylon.compiler.java.test.bc.BcTests;
 import com.redhat.ceylon.compiler.java.test.cmr.CMRTest;
 import com.redhat.ceylon.compiler.java.test.cmr.CMRTestHTTP;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest;
+import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest2;
 import com.redhat.ceylon.compiler.java.test.interop.InteropTest;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTest;
 import com.redhat.ceylon.compiler.java.test.issues.PackageIssuesTest;
@@ -39,11 +40,13 @@ import com.redhat.ceylon.compiler.java.test.recovery.RecoveryTest;
 import com.redhat.ceylon.compiler.java.test.runtime.RuntimeSuite;
 import com.redhat.ceylon.compiler.java.test.statement.StatementTest;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTest;
+import com.redhat.ceylon.compiler.java.test.structure.StructureTest2;
 
 @RunWith(Suite.class) 
 @SuiteClasses({
     AnnotationsTest.class,
     ExpressionTest.class,
+    ExpressionTest2.class,
     InteropTest.class,
     IssuesTest.class,
 	MiscTest.class,
@@ -52,6 +55,7 @@ import com.redhat.ceylon.compiler.java.test.structure.StructureTest;
     RecoveryTest.class,
     StatementTest.class,
 	StructureTest.class,
+    StructureTest2.class,
 	TypeParserTest.class,
 	QuotingTest.class,
 	CMRTest.class,
