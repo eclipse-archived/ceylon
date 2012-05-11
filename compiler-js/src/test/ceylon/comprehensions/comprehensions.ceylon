@@ -21,4 +21,5 @@ shared void test() {
   variable Object check := s1;
   assert(is Iterable<String> check, "comprehension is Iterable");
   results();
+  assert({for (x in {null, "hello", "goodbye"}) if (exists x) if (x.size>5) x}=={"goodbye"});
 }
