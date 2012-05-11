@@ -22,7 +22,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  * @author Gavin King
  *
  */
-class Util extends Visitor {
+class Util {
     
     static TypedDeclaration getBaseDeclaration(Tree.BaseMemberExpression bme, 
             List<ProducedType> signature) {
@@ -187,7 +187,21 @@ class Util extends Visitor {
     }
 
     private static void addTypeUnknownError(Node node, String message) {
-        if (node.getErrors().isEmpty()) {
+        class ErrorVisitor extends Visitor {
+            boolean found = false;
+            @Override
+            public void visitAny(Node that) {
+                if (that.getErrors().isEmpty()) {
+                    super.visitAny(that);
+                }
+                else {
+                    found = true;
+                }
+            }
+        }
+        ErrorVisitor ev = new ErrorVisitor();
+        node.visit(ev);
+        if (!ev.found) {
             node.addError(message + ": type cannot be determined");
         }
     }
