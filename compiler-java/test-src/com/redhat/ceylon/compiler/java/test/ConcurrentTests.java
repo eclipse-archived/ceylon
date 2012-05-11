@@ -25,8 +25,7 @@ import org.junit.runners.Suite.SuiteClasses;
 import com.redhat.ceylon.compiler.java.test.annotations.AnnotationsTest;
 import com.redhat.ceylon.compiler.java.test.bc.BcTests;
 import com.redhat.ceylon.compiler.java.test.cmr.CMRTest;
-import com.redhat.ceylon.compiler.java.test.cmr.CMRTestHTTP1;
-import com.redhat.ceylon.compiler.java.test.cmr.CMRTestHTTP2;
+import com.redhat.ceylon.compiler.java.test.cmr.CMRTestHTTP;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest;
 import com.redhat.ceylon.compiler.java.test.interop.InteropTest;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTest;
@@ -45,7 +44,7 @@ import com.redhat.ceylon.compiler.java.test.structure.StructureTest;
     // those take the longest time to run, so we start them first
     ExpressionTest.class,
     StructureTest.class,
-    CMRTestHTTP2.class,
+    CMRTestHTTP.class,
     
     // those can run in any order
     AnnotationsTest.class,
@@ -59,7 +58,6 @@ import com.redhat.ceylon.compiler.java.test.structure.StructureTest;
     TypeParserTest.class,
     QuotingTest.class,
     CMRTest.class,
-    CMRTestHTTP1.class,
     RuntimeSuite.class,
     BcTests.class
 })

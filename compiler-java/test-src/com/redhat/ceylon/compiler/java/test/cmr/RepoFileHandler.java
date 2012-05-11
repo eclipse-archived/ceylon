@@ -69,7 +69,7 @@ public class RepoFileHandler implements HttpHandler {
                 t.sendResponseHeaders(HttpURLConnection.HTTP_OK, bytes.length);
                 OutputStream response = t.getResponseBody();
                 response.write(bytes);
-                response.close();
+                t.close();
                 return;
             }
 
@@ -82,16 +82,16 @@ public class RepoFileHandler implements HttpHandler {
             }
 
             if("UNLOCK".equals(method)){
-                t.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-                t.getResponseBody().close();
+                t.sendResponseHeaders(HttpURLConnection.HTTP_OK, -1);
+                t.close();
                 return;
             }
 
             if("MKCOL".equals(method)){
                 file.mkdirs();
                 // OK
-                t.sendResponseHeaders(HttpURLConnection.HTTP_CREATED, 0);
-                t.getResponseBody().close();
+                t.sendResponseHeaders(HttpURLConnection.HTTP_CREATED, -1);
+                t.close();
                 return;
             }
             
@@ -105,8 +105,8 @@ public class RepoFileHandler implements HttpHandler {
                 body.close();
                 os.close();
                 // OK
-                t.sendResponseHeaders(HttpURLConnection.HTTP_CREATED, 0);
-                t.getResponseBody().close();
+                t.sendResponseHeaders(HttpURLConnection.HTTP_CREATED, -1);
+                t.close();
                 return;
             }
 
@@ -120,27 +120,27 @@ public class RepoFileHandler implements HttpHandler {
                         InputStream is = new FileInputStream(file);
                         copy(is, os);
                     }
-                    os.close();
+                    t.close();
                     return;
                 }
                 if("HEAD".equals(method)){
-                    t.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-                    t.getResponseBody().close();
+                    t.sendResponseHeaders(HttpURLConnection.HTTP_OK, -1);
+                    t.close();
                     return;
                 }
                 if("PROPFIND".equals(method)){
                     String ret = propfind(file);
                     t.sendResponseHeaders(207, ret.length()); // MULTI STATUS
                     t.getResponseBody().write(ret.getBytes());
-                    t.getResponseBody().close();
+                    t.close();
                     return;
                 }
             }else
                 log("File does not exist: "+file.getAbsolutePath());
         }
         log("Returning 404");
-        t.sendResponseHeaders(HttpURLConnection.HTTP_NOT_FOUND, 0);
-        t.getResponseBody().close();
+        t.sendResponseHeaders(HttpURLConnection.HTTP_NOT_FOUND, -1);
+        t.close();
     }
 
     private String propfind(File file) throws IOException {
