@@ -1653,8 +1653,19 @@ public class GenerateJsVisitor extends Visitor
                 out("$cmp$.next$", Integer.toString(idx), "=function()");beginBlock();
                 out("while(this.next$", Integer.toString(idx-1), "() && !(");
                 Condition cond = ((IfComprehensionClause)clause).getCondition();
-                if (cond instanceof ExistsOrNonemptyCondition || cond instanceof IsCondition) {
-                    specialConditionAndBlock(cond, null, "if");
+                if (cond instanceof IsCondition || cond instanceof ExistsOrNonemptyCondition) {
+                    //In this case we do not generate additional variables for narrowing
+                    //we have to undo some of the stuff done by specialConditionCheck
+                    Variable var = cond instanceof IsCondition ? ((IsCondition)cond).getVariable() : ((ExistsOrNonemptyCondition)cond).getVariable();
+                    specialConditionCheck(cond, var.getSpecifierExpression().getExpression().getTerm(), null);
+                    for (Declaration d : comprehensions) {
+                        if (var.getIdentifier().getText().equals(d.getName())) {
+                            directAccess.remove(var.getDeclarationModel());
+                            comprehensions.add(var.getDeclarationModel());
+                            names.forceName(var.getDeclarationModel(), names.name(d));
+                            break;
+                        }
+                    }
                 } else {
                     cond.visit(this);
                     out("===", clTrue);
@@ -2399,7 +2410,7 @@ public class GenerateJsVisitor extends Visitor
        }
    }
 
-   // handles an "is", "exists" or "nonempty" condition
+   /** Handles the "is", "exists" and "nonempty" conditions */
    private void specialConditionAndBlock(Condition condition,
                Block block, String keyword) {
        Variable variable = null;
@@ -2492,7 +2503,12 @@ public class GenerateJsVisitor extends Visitor
 
     /** Generates js code to check if a term is of a certain type. We solve this in JS by
      * checking against all types that Type satisfies (in the case of union types, matching any
-     * type will do, and in case of intersection types, all types must be matched). */
+     * type will do, and in case of intersection types, all types must be matched).
+     * @param term The term that is to be checked against a type
+     * @param termString (optional) a string to be used as the term to be checked
+     * @param type The type to check against
+     * @param tmpvar (optional) a variable to which the term is assigned
+     */
     private void generateIsOfType(Term term, String termString, Type type, String tmpvar) {
         if (type instanceof SimpleType) {
             out(clAlias, ".isOfType(");
