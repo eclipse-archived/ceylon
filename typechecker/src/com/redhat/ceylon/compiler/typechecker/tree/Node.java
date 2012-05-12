@@ -248,7 +248,7 @@ public abstract class Node {
 		}
 	}
 
-	protected List<Node> getChildren() {
+	public List<Node> getChildren() {
 		return children;
 	}
 
