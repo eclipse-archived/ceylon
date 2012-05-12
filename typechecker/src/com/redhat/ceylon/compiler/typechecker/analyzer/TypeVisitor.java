@@ -659,8 +659,7 @@ public class TypeVisitor extends Visitor {
         for (Tree.StaticType t: that.getTypes()) {
             ProducedType type = t.getTypeModel();
             if (type!=null) {
-                if (type.getDeclaration().getQualifiedNameString()
-                        .equals("ceylon.language.Callable")) {
+                if (type.isCallable()) {
                     t.addError("directly satisfies Callable");
                 }
                 if (!(td instanceof TypeParameter)) {

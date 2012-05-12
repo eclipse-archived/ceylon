@@ -156,9 +156,28 @@ class Util {
         return ": " + typeName + problem + otherTypeName;
     }
     
+    private static String message(ProducedType type, String problem) {
+        String typeName = type.getProducedTypeName();
+        return ": " + typeName + problem;
+    }
+    
+    static boolean checkCallable(ProducedType type, Node node, String message) {
+        if (type==null || isTypeUnknown(type)) {
+            addTypeUnknownError(node, message);
+            return false;
+        }
+        else if (!type.isCallable()) {
+            node.addError(message + message(type, " is not a subtype of Callable"));
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
     static void checkAssignable(ProducedType type, ProducedType supertype, 
             Node node, String message) {
-        if (isTypeUnknown(type, supertype)) {
+        if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
         	addTypeUnknownError(node, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
@@ -168,7 +187,7 @@ class Util {
 
     static void checkAssignable(ProducedType type, ProducedType supertype, 
             TypeDeclaration td, Node node, String message) {
-        if (isTypeUnknown(type, supertype)) {
+        if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
             addTypeUnknownError(node, message);
         }
         else if (!type.isSubtypeOf(supertype, td)) {
@@ -178,7 +197,7 @@ class Util {
 
     static void checkIsExactly(ProducedType type, ProducedType supertype, 
             Node node, String message) {
-        if (isTypeUnknown(type, supertype)) {
+        if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
             addTypeUnknownError(node, message);
         }
         else if (!type.isExactly(supertype)) {
@@ -206,10 +225,8 @@ class Util {
         }
     }
 
-    private static boolean isTypeUnknown(ProducedType type, ProducedType supertype) {
-        return type==null || supertype==null ||
-                type.getDeclaration() instanceof UnknownType ||
-                supertype.getDeclaration() instanceof UnknownType;
+    private static boolean isTypeUnknown(ProducedType type) {
+        return type==null || type.getDeclaration() instanceof UnknownType;
     }
 
 }

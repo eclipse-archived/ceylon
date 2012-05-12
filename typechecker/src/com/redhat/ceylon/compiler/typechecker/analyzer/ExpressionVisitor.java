@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkCallable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkTypeBelongsToContainingScope;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
@@ -747,16 +748,8 @@ public class ExpressionVisitor extends Visitor {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
                 ProducedType et = e.getTypeModel();
-                for (Tree.ParameterList pl: that.getParameterLists()) { 
-                    if (et==null || et.getDeclaration() instanceof UnknownType) {
-                        //don't add an extra error
-                    }
-                    else if (!isCallableType(et)) {
-                        se.addError("specified value must be a reference to a function or class: " + 
-                                et.getDeclaration().getName() + " is not a subtype of Callable");
-                        return; //NOTE EARLY EXIT!!!
-                    }
-                    else {
+                for (Tree.ParameterList pl: that.getParameterLists()) {
+                    if (checkCallable(et, se, "specified value must be a reference to a function or class")){
                         /*if (e.getTerm() instanceof MemberOrTypeExpression) {
                             Declaration d = ((MemberOrTypeExpression) e.getTerm()).getDeclaration();
                             if (d instanceof Class && ((Class) d).isAbstract()) {
@@ -782,6 +775,9 @@ public class ExpressionVisitor extends Visitor {
                         }
                         et = et.getTypeArgumentList().get(0);
                     }
+                    else {
+                        return; //Note: early exit!
+                    }
                 }
                 inferFunctionType(that, et);
                 if (that.getType()!=null) {
@@ -789,12 +785,6 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
         }
-    }
-
-    private boolean isCallableType(ProducedType et) {
-        //TODO: yew, fix this:
-        return et.getDeclaration().getQualifiedNameString()
-                .equals("ceylon.language.Callable");
     }
 
     @Override public void visit(Tree.MethodDefinition that) {
@@ -1537,17 +1527,13 @@ public class ExpressionVisitor extends Visitor {
         if (prf==null || !prf.isFunctional()) {
             ProducedType pt = that.getPrimary().getTypeModel();
             if (pt!=null) {
-                if (isCallableType(pt)) {
+                if (checkCallable(pt, that, "invoked expression must be callable")) {
                     List<ProducedType> typeArgs = pt.getTypeArgumentList();
                     if (!typeArgs.isEmpty()) {
                         that.setTypeModel(typeArgs.get(0));
                     }
                     //typecheck arguments using the type args of Callable
                     checkIndirectInvocationArguments(that, typeArgs);
-                }
-                else {
-                    that.addError("invoked expression must be callable: " + 
-                        pt.getDeclaration().getName() + " is not a subtype of Callable");
                 }
             }
         }

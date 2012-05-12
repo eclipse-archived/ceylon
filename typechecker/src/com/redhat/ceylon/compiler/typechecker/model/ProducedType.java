@@ -1496,4 +1496,10 @@ public class ProducedType extends ProducedReference {
         }
     }
 
+    public boolean isCallable() {
+        //TODO: yew, fix this:
+        return getDeclaration().getQualifiedNameString()
+                .equals("ceylon.language.Callable");
+    }
+
 }
