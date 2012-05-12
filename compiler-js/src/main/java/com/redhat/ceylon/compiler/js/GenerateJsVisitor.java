@@ -1649,29 +1649,39 @@ public class GenerateJsVisitor extends Visitor
                 endBlock(false); out(";"); endLine();
                 clause = fcl.getComprehensionClause();
             } else if (clause instanceof IfComprehensionClause) {
+                Condition cond = ((IfComprehensionClause)clause).getCondition();
                 //The context of an if is an iteration through the parent, checking each element against the condition
                 out("$cmp$.next$", Integer.toString(idx), "=function()");beginBlock();
-                out("while(this.next$", Integer.toString(idx-1), "() && !(");
-                Condition cond = ((IfComprehensionClause)clause).getCondition();
+                Variable var = null;
                 if (cond instanceof IsCondition || cond instanceof ExistsOrNonemptyCondition) {
-                    //In this case we do not generate additional variables for narrowing
-                    //we have to undo some of the stuff done by specialConditionCheck
-                    Variable var = cond instanceof IsCondition ? ((IsCondition)cond).getVariable() : ((ExistsOrNonemptyCondition)cond).getVariable();
-                    specialConditionCheck(cond, var.getSpecifierExpression().getExpression().getTerm(), null);
-                    for (Declaration d : comprehensions) {
-                        if (var.getIdentifier().getText().equals(d.getName())) {
-                            directAccess.remove(var.getDeclarationModel());
-                            comprehensions.add(var.getDeclarationModel());
-                            names.forceName(var.getDeclarationModel(), names.name(d));
-                            break;
-                        }
-                    }
+                    var = cond instanceof IsCondition ? ((IsCondition)cond).getVariable()
+                            : ((ExistsOrNonemptyCondition)cond).getVariable();
+                    comprehensions.add(var.getDeclarationModel());
+                    //Initialize the condition's attribute to finished so that this is returned
+                    //in case the condition is not met and the iterator is exhausted
+                    out("this.", names.name(var.getDeclarationModel()), "=", clAlias, ".getExhausted();");
+                    endLine();
+                }
+                out("while(this.next$", Integer.toString(idx-1), "() && !(");
+                if (cond instanceof IsCondition || cond instanceof ExistsOrNonemptyCondition) {
+                    specialConditionCheck(cond, var.getSpecifierExpression().getExpression().getTerm(),
+                            "this."+names.name(var.getDeclarationModel()));
                 } else {
                     cond.visit(this);
                     out("===", clTrue);
                 }
                 out("));"); endLine();
+                //Remove the condition's attribute to generate the return statement with the original attribute
+                //If we generate the return statement checking if the condition's attribute is exhausted, it returns
+                //the wrong result if the condition was not met with the last element.
+                if (var!=null) {
+                    comprehensions.remove(comprehensions.size()-1);
+                }
                 out("return this.", names.name(comprehensions.get(comprehensions.size()-1)), "!==", clAlias, ".getExhausted();");
+                //Add back the condition's attribute if present
+                if (var!=null) {
+                    comprehensions.add(var.getDeclarationModel());
+                }
                 endBlock(false); out(";"); endLine();
                 clause = ((IfComprehensionClause)clause).getComprehensionClause();
             } else if (clause instanceof ExpressionComprehensionClause) {
