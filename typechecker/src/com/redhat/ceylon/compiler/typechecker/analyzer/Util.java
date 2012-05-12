@@ -175,6 +175,21 @@ class Util {
         }
     }
 
+    static ProducedType checkSupertype(ProducedType pt, TypeDeclaration td, 
+            Node node, String message) {
+        if (isTypeUnknown(pt)) {
+            addTypeUnknownError(node, message);
+            return null;
+        }
+        else {
+            ProducedType supertype = pt.getSupertype(td);
+            if (supertype==null) {
+                node.addError(message + message(pt, " is not a subtype of " + td.getName()));
+            }
+            return supertype;
+        }
+    }
+
     static void checkAssignable(ProducedType type, ProducedType supertype, 
             Node node, String message) {
         if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
