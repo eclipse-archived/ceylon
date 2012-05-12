@@ -20,8 +20,11 @@ shared void test() {
   assert(array(for (x in 1..10) if (x%2==0) if (x>5) x)==array(6,8,10), "comprehensions 9");
   variable Object check := s1;
   assert(is Iterable<String> check, "comprehension is Iterable");
-  assert({for (x in {null, "hello", "goodbye"}) if (exists x) if (x.size>5) x}.sequence=={"goodbye"}, "comprehensions w/exists");
-  assert({for (x in {"a", "", "c"}) if (nonempty x) x.uppercased}.sequence=={"A", "C"}, "comprehensions w/nonempty");
-  assert({for (x in {1,2,3.1,4}) if (is Float x) x}.sequence=={3.1}, "comprehensions w/is");
+  assert({for (x in {null, "hello", "goodbye"}) if (exists x) if (x.size>5) x}.sequence=={"goodbye"}, "comprehensions w/exists 1");
+  assert({for (x in {"a", "", "c"}) if (exists c=x[0]) c.uppercased}.sequence=={`A`, `C`}, "comprehensions w/exists 2");
+  assert({for (x in {"a", "", "c"}) if (nonempty x) x.uppercased}.sequence=={"A", "C"}, "comprehensions w/nonempty 1");
+  assert({for (x in {"a", "", "c"}) if (nonempty s=x) s.uppercased}.sequence=={"A", "C"}, "comprehensions w/nonempty 2");
+  assert({for (x in {1,2,"3.1",4}) if (is String x) x}.sequence=={"3.1"}, "comprehensions w/is 1");
+  assert({for (x in {1.1,2.2,3,4.4}) if (is Integer i=x) i}.sequence=={3}, "comprehensions w/is 2");
   results();
 }
