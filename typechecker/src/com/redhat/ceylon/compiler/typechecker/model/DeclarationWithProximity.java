@@ -11,6 +11,12 @@ public class DeclarationWithProximity {
         this.name = declaration.getName();
     }
     
+    public DeclarationWithProximity(Declaration declaration, DeclarationWithProximity dwp) {
+        this.declaration = declaration;
+        this.proximity = dwp.proximity;
+        this.name = dwp.name;
+    }
+    
     public DeclarationWithProximity(Import imp, int proximity) {
         this.declaration = imp.getDeclaration();
         this.proximity = proximity;
