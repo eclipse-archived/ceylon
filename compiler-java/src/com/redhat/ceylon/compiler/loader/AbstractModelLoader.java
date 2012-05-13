@@ -318,7 +318,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         
         // make it
         Declaration decl = null;
-        List<Declaration> decls = new ArrayList<Declaration>(2);
+        List<Declaration> decls = new ArrayList<Declaration>();
         switch(type){
         case ATTRIBUTE:
             decl = makeToplevelAttribute(classMirror);
@@ -347,11 +347,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     // a subclass of the original
                     Class supercls = makeLazyClass(classMirror, null, null, false);
                     supercls.setAbstraction(true);
+                    List<Declaration> overloads = new ArrayList<Declaration>(constructors.size());
                     for (MethodMirror constructor : constructors) {
                         LazyClass subdecl = makeLazyClass(classMirror, supercls, constructor, false);
                         subdecl.setOverloaded(true);
+                        overloads.add(subdecl);
                         decls.add(subdecl);
                     }
+                    supercls.setOverloads(overloads);
                     decl = supercls;
                 } else {
                     MethodMirror constructor = constructors.get(0);
@@ -797,8 +800,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // Add the methods
         for(List<MethodMirror> methodMirrors : methods.values()){
             boolean isOverloaded = methodMirrors.size() > 1;
-            boolean first = true;
             
+            List<Declaration> overloads = (isOverloaded) ? new ArrayList<Declaration>(methodMirrors.size()) : null;
             for (MethodMirror methodMirror : methodMirrors) {
                 String methodName = methodMirror.getName();
                 if(methodMirror.isConstructor()) {
@@ -821,16 +824,20 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     // Un-erasing 'string' attribute from 'toString' method
                     addValue(klass, methodMirror, "string");
                 } else {
-                    if (first && isOverloaded) {
-                        // We create an extra "abstraction" method for overloaded methods
-                        Method abstractionMethod = addMethod(klass, methodMirror, false, false);
-                        abstractionMethod.setAbstraction(true);
-                        abstractionMethod.setType(new UnknownType(typeFactory).getType());
-                        first = false;
-                    }
                     // normal method
-                    addMethod(klass, methodMirror, isCeylon, isOverloaded);
+                    Method m = addMethod(klass, methodMirror, isCeylon, isOverloaded);
+                    if (isOverloaded) {
+                        overloads.add(m);
+                    }
                 }
+            }
+            
+            if (isOverloaded) {
+                // We create an extra "abstraction" method for overloaded methods
+                Method abstractionMethod = addMethod(klass, methodMirrors.get(0), false, false);
+                abstractionMethod.setAbstraction(true);
+                abstractionMethod.setOverloads(overloads);
+                abstractionMethod.setType(new UnknownType(typeFactory).getType());
             }
         }
 
