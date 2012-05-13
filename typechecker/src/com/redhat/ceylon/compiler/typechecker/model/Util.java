@@ -121,11 +121,9 @@ public class Util {
                             if (pdt==null || sdt==null) return false;
                             ProducedType paramType = d.getUnit().getDefiniteType(pdt);
                             ProducedType sigType = d.getUnit().getDefiniteType(sdt);
-                            TypeDeclaration paramTypeDec = paramType.getDeclaration();
-                            TypeDeclaration sigTypeDec = sigType.getDeclaration();
-                            if (sigTypeDec==null || paramTypeDec==null) return false;
-                            if (sigTypeDec instanceof UnknownType || paramTypeDec instanceof UnknownType) return false;
-                            if (!erase(sigTypeDec).inherits(erase(paramTypeDec)) &&
+                            if (isTypeUnknown(sigType) || isTypeUnknown(paramType)) return false;
+                            if (!erase(sigType.getDeclaration())
+                                        .inherits(erase(paramType.getDeclaration())) &&
                                     underlyingTypesUnequal(paramType, sigType)) {
                                 return false;
                             }
@@ -160,12 +158,10 @@ public class Util {
                 if (dpl.size()==rpl.size()) {
                     for (int i=0; i<dpl.size(); i++) {
                         ProducedType paramType = d.getUnit().getDefiniteType(dpl.get(i).getType());
-                        TypeDeclaration paramTypeDec = paramType.getDeclaration();
                         ProducedType otherType = d.getUnit().getDefiniteType(rpl.get(i).getType());
-                        TypeDeclaration otherTypeDec = otherType.getDeclaration();
-                        if (otherTypeDec==null || paramTypeDec==null) return false;
-                        if (otherTypeDec instanceof UnknownType || paramTypeDec instanceof UnknownType) return false;
-                        if (!erase(paramTypeDec).inherits(erase(otherTypeDec)) &&
+                        if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) return false;
+                        if (!erase(paramType.getDeclaration())
+                                    .inherits(erase(otherType.getDeclaration())) &&
                                 underlyingTypesUnequal(paramType, otherType)) {
                             return false;
                         }
@@ -566,6 +562,11 @@ public class Util {
             //declaration
             return inexactMatch;
         }
+    }
+
+    public static boolean isTypeUnknown(ProducedType type) {
+        return type==null || type.getDeclaration()==null ||
+                type.getDeclaration() instanceof UnknownType;
     }
 
 }

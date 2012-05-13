@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import java.util.ArrayList;
@@ -10,7 +11,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -162,7 +162,7 @@ class Util {
     }
     
     static boolean checkCallable(ProducedType type, Node node, String message) {
-        if (type==null || isTypeUnknown(type)) {
+        if (isTypeUnknown(type)) {
             addTypeUnknownError(node, message);
             return false;
         }
@@ -238,10 +238,6 @@ class Util {
         if (!ev.found) {
             node.addError(message + ": type cannot be determined");
         }
-    }
-
-    private static boolean isTypeUnknown(ProducedType type) {
-        return type==null || type.getDeclaration() instanceof UnknownType;
     }
 
 }

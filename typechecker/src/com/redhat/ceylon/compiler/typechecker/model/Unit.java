@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 
@@ -324,8 +325,7 @@ public class Unit {
     }
     
     ProducedType getCallableType(ProducedReference ref, ProducedType rt) {
-    	if (ref.getType()==null ||
-    	        ref.getType().getDeclaration() instanceof UnknownType) {
+    	if ( isTypeUnknown(ref.getType())) {
     		//special case for forward reference to member
     		//with inferred type TODO: something better
     		return new UnknownType(this).getType();

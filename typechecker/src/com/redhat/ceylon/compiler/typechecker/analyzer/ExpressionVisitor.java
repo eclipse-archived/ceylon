@@ -13,10 +13,10 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingCla
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
-import static java.lang.Character.isUpperCase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -2622,7 +2622,7 @@ public class ExpressionVisitor extends Visitor {
             ProducedTypedReference pr = member.getProducedTypedReference(outerType, typeArgs);
             that.setTarget(pr);
             ProducedType t = pr.getFullType();
-            if (t==null || t.getDeclaration() instanceof UnknownType) {
+            if (isTypeUnknown(t)) {
                 that.addError("could not determine type of method or attribute reference: " +
                         name(that.getIdentifier()));
             }
@@ -3013,9 +3013,9 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         for (Tree.Expression e: that.getExpressionList().getExpressions()) {
             ProducedType t = e.getTypeModel();
-            if (t!=null) {
+            if (!isTypeUnknown(t)) {
                 TypeDeclaration dec = t.getDeclaration();
-                if (!dec.isToplevel() || isUpperCase(dec.getName().charAt(0))) {
+                if (!dec.isToplevel() || !dec.isAnonymous()) {
                     e.addError("case must refer to a toplevel object declaration");
                 }
                 if (switchExpression!=null) {
@@ -3086,11 +3086,11 @@ public class ExpressionVisitor extends Visitor {
                     hasIsCase = true;
                 }
                 ProducedType ct = getType(cc);
-                if (ct!=null) {
+                if (!isTypeUnknown(ct)) {
                     for (Tree.CaseClause occ: that.getCaseClauses()) {
                         if (occ==cc) break;
                         ProducedType oct = getType(occ);
-                        if (oct!=null) {
+                        if (!isTypeUnknown(oct)) {
                             //TODO: the following test doesn't work for cases of an interface!
                             if (!intersectionType(ct, oct, unit)
                                     .isExactly(unit.getBottomDeclaration().getType())) {
@@ -3121,7 +3121,10 @@ public class ExpressionVisitor extends Visitor {
                 List<ProducedType> list = new ArrayList<ProducedType>();
                 for (Tree.CaseClause cc: that.getCaseClauses()) {
                     ProducedType ct = getType(cc);
-                    if (ct!=null) {
+                    if (isTypeUnknown(ct)) {
+                        return; //Note: early exit!
+                    }
+                    else {
                         addToUnion(list, ct);
                     }
                 }

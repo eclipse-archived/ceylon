@@ -713,7 +713,7 @@ public class TypeVisitor extends Visitor {
                 if (od!=null) {
                     ProducedType type = od.getType();
                     TypeDeclaration dec = type.getDeclaration();
-                    if (!dec.isToplevel() && isUpperCase(dec.getName().charAt(0))) {
+                    if (!dec.isToplevel() && !dec.isAnonymous()) {
                         bme.addError("case must refer to a toplevel object declaration");
                     }
                     else {
