@@ -54,10 +54,10 @@ shared interface Iterable<out Element>
                     Iterator<Element> iter = outer.iterator;
                     shared actual Element|Finished next() {
                         variable Element|Finished e := iter.next();
-                        variable value flag := is Finished e then false else selecting(e);
+                        variable value flag := is Finished e then true else selecting(e);
                         while (!flag) {
                             e := iter.next();
-                            flag := is Finished e then false else selecting(e);
+                            flag := is Finished e then true else selecting(e);
                         }
                         return e;
                     }
