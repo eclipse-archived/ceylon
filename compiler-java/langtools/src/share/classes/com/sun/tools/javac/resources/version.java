@@ -3,7 +3,7 @@ package com.sun.tools.javac.resources;
 import java.util.ListResourceBundle;
 
 public final class version extends ListResourceBundle {
-    private static final Object CEYLON_VERSION = "ceylonc 0.2 'Minitel'";
+    private static final Object CEYLON_VERSION = "ceylonc 0.3 alpha 'Supercalifragilisticexpialidocious'";
 
     protected final Object[][] getContents() {
         return new Object[][] {
