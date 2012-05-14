@@ -39,7 +39,7 @@ import java.util.List;
  */
 public class RemoteModuleLoader extends BootstrapModuleLoader {
 
-    private final static String DEFAULT_CEYLON_VERSION = "0.2";
+    private final static String DEFAULT_CEYLON_VERSION = "0.3";
     private final static String INDEX = ".index";
     private final static String XML = "module.xml";
 

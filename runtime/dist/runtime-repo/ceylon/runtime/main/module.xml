@@ -30,8 +30,8 @@
     <main-class name="ceylon.modules.Main"/>
 
     <dependencies>
-        <module name="ceylon.language" slot="0.2"/>
-        <module name="com.redhat.ceylon.module-resolver" slot="0.2"/>
+        <module name="ceylon.language" slot="0.3"/>
+        <module name="com.redhat.ceylon.module-resolver" slot="0.3"/>
         <module name="org.jboss.modules"/>
     </dependencies>
 </module>
