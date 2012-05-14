@@ -32,7 +32,9 @@ public interface Iterable<Element> extends Container {
         Callable<Boolean> selecting);
 
     @TypeInfo("Result")
-    public <Result> Result fold(@Name("accumulating")
+    public <Result> Result fold(@Name("initial")
+		@TypeInfo("Result") Result initial,
+		@Name("accumulating")
         @TypeInfo("ceylon.language.Callable<Result,Result,Element>")
         Callable<Result> accumulating);
 
