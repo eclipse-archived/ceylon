@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 doc "The classic Hello World program"
-void hello(String name = "World") {
+shared void hello(String name = "World") {
     print("Hello, " name "!");
 }
 
 doc "The runnable method of the module." 
-void run(){
+shared void run(){
     if (nonempty args=process.arguments) {
         for (arg in args) {
             hello(arg);

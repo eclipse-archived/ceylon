@@ -18,6 +18,6 @@ Module module {
  version = '1.0.0';
  by = {"Stef Epardaud"};
  dependencies = {};
- doc = "Hello World";
+ doc = "The classic Hello World module";
  license = 'Public domain';
 }

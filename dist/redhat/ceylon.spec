@@ -5,7 +5,7 @@
 %define section free
 
 %define major_version 0
-%define minor_version 2
+%define minor_version 3
 %define micro_version 0
 %define ceylon_home /usr/lib/ceylon/%{major_version}.%{minor_version}
 
@@ -89,6 +89,8 @@ popd
 
 
 %changelog
+* Mon May 14 2012 Stephane Epardaud <separdau@redhat.com> 0.3.0-0
+- Update for 0.3
 * Tue Mar 15 2012 Stephane Epardaud <separdau@redhat.com> 0.2.0-0
 - Update for 0.2
 * Tue Dec 20 2011 Mladen Turk <mturk@redhat.com> 0.1.0-0
