@@ -28,9 +28,9 @@ shared interface Iterable<out Element>
 
     doc "Returns an Iterable that will return the transformation of the original elements."
     shared default Iterable<Result> map<Result>(Result collecting(Element elem)) {
-        object mapped() satisfies Iterable<Result> {
+        object mapped satisfies Iterable<Result> {
             shared actual Iterator<Result> iterator {
-                object mappedIterator() satisfies Iterator<Result> {
+                object mappedIterator satisfies Iterator<Result> {
                     Iterator<Element> iter = outer.iterator;
                     shared actual Result|Finished next() {
                         value e = iter.next();
@@ -48,9 +48,9 @@ shared interface Iterable<out Element>
 
     doc "Returns an Iterable that returns only the elements which satisfy the collecting condition."
     shared default Iterable<Element> filter(Boolean selecting(Element elem)) {
-        object filtered() satisfies Iterable<Element> {
+        object filtered satisfies Iterable<Element> {
             shared actual Iterator<Element> iterator {
-                object filteredIterator() satisfies Iterator<Element> {
+                object filteredIterator satisfies Iterator<Element> {
                     Iterator<Element> iter = outer.iterator;
                     shared actual Element|Finished next() {
                         variable Element|Finished e := iter.next();
