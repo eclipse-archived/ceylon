@@ -4,10 +4,12 @@ import imports.package {
     sing = singleton /*{ hi=hello }*/,
     C=Class { i=count, 
               In=Inner, 
-              m=method }, 
+              m=method,
+              @error i2=count }, 
     I=Interface, 
     D=Dupe,
     o=op,
+    @error o2=op,
     @error m=method
 }
 

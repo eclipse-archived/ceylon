@@ -95,4 +95,22 @@ public class ImportList implements Scope {
         return imports;
     }
     
+    public boolean hasImport(Declaration d) {
+        for (Import i: getImports()) {
+            if (i.getDeclaration().equals(d)) {
+                return true;
+            }
+        }
+        return false;
+    }
+     
+    public Import getImport(String alias) {
+        for (Import i: getImports()) {
+            if (i.getAlias().equals(alias)) {
+                return i;
+            }
+        }
+        return null;
+    }
+    
 }

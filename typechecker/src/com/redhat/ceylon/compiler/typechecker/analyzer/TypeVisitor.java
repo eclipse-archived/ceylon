@@ -186,6 +186,10 @@ public class TypeVisitor extends Visitor {
             }
             i.setDeclaration(d);
             member.setDeclarationModel(d);
+            if (il.hasImport(d)) {
+                member.getIdentifier().addError("already imported: " +
+                        name);
+            }
             addImport(member, il, i);
         }
         Tree.ImportMemberOrTypeList imtl = member.getImportMemberOrTypeList();
@@ -241,12 +245,31 @@ public class TypeVisitor extends Visitor {
             }
             i.setDeclaration(m);
             member.setDeclarationModel(m);
-            addImport(member, il, i);
-            //unit.getImports().add(i);
+            if (il.hasImport(m)) {
+                member.getIdentifier().addError("already imported: " +
+                        name + " of " + d.getName());
+            }
+            if (m.isStaticallyImportable()) {
+                addImport(member, il, i);
+            }
+            else {
+                addMemberImport(member, il, i);
+            }
         }
         if (member.getImportMemberOrTypeList()!=null) {
             member.getImportMemberOrTypeList()
                     .addError("member aliases of member aliases not supported");
+        }
+    }
+
+    private void addMemberImport(Tree.ImportMemberOrType member, ImportList il,
+            Import i) {
+        if (il.getImport(i.getAlias())==null) {
+            unit.getImports().add(i);
+            il.getImports().add(i);
+        }
+        else {
+            member.addError("duplicate member import alias: " + i.getAlias());
         }
     }
     
@@ -270,7 +293,7 @@ public class TypeVisitor extends Visitor {
             il.getImports().add(i);
         }
         else {
-            member.addError("duplicate import: " + i.getAlias());
+            member.addError("duplicate import alias: " + i.getAlias());
         }
     }
         
