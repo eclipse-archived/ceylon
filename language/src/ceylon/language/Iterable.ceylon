@@ -7,17 +7,17 @@ see (Collection)
 by "Gavin"
 shared interface Iterable<out Element> 
         satisfies Container {
-    
+
     doc "An iterator for the elements belonging to this 
          container."
     shared formal Iterator<Element> iterator;
-    
+
     doc "Determines if the iterable object is empty, that is
          to say, if the iterator returns no elements."
     shared actual default Boolean empty {
         return is Finished iterator.next();
     }
-    
+
     doc "A sequence containing the elements returned by the
          iterator."
     shared default Element[] sequence {
@@ -25,21 +25,67 @@ shared interface Iterable<out Element>
         builder.appendAll(this...);
         return builder.sequence;
     }
-    
+
+    doc "Returns an Iterable that will return the transformation of the original elements."
     shared default Iterable<Result> map<Result>(Result collecting(Element elem)) {
-        //TODO!!!
-        throw;
+        object mapped() satisfies Iterable<Result> {
+            shared actual Iterator<Result> iterator {
+                object mappedIterator() satisfies Iterator<Result> {
+                    Iterator<Element> iter = outer.iterator;
+                    shared actual Result|Finished next() {
+                        value e = iter.next();
+                        if (is Finished e) {
+                            return exhausted;
+                        }
+                        return collecting(e);
+                    }
+                }
+                return mappedIterator;
+            }
+        }
+        return mapped;
     }
-    
+
+    doc "Returns an Iterable that returns only the elements which satisfy the collecting condition."
     shared default Iterable<Element> filter(Boolean selecting(Element elem)) {
-        //TODO!!!
-        throw;
+        object filtered() satisfies Iterable<Element> {
+            shared actual Iterator<Element> iterator {
+                object filteredIterator() satisfies Iterator<Element> {
+                    Iterator<Element> iter = outer.iterator;
+                    shared actual Element|Finished next() {
+                        variable Element|Finished e := iter.next();
+                        variable value flag := is Finished e then false else selecting(e);
+                        while (!flag) {
+                            e := iter.next();
+                            flag := is Finished e then false else selecting(e);
+                        }
+                        return e;
+                    }
+                }
+                return filteredIterator;
+            }
+        }
+        return filtered;
     }
-    
+
+    doc "Returns the result of applying the accumulating function to each element." 
     shared default Result fold<Result>(Result initial,
             Result accumulating(Result partial, Element elem)) {
-        //TODO!!!
-        throw;
+        variable value r := initial;
+        for (e in this) {
+            r := accumulating(r, e);
+        }
+        return r;
     }
-    
+
+    doc "Return the first element which satisfies the selecting function, if any."
+    shared default Element? find(Boolean selecting(Element elem)) {
+        for (e in this) {
+            if (selecting(e)) {
+                return e;
+            }
+        }
+        return null;
+    }
+ 
 }
