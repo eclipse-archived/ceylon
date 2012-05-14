@@ -160,6 +160,11 @@ public final class Map$impl<Key,Item> {
             public boolean subset(Set<? extends java.lang.Object> set) {
                 return Set$impl._subset(this, set);
             }
+    @Override public Iterable<? extends Key> getSequence() { return Iterable$impl._getSequence(this); }
+    @Override public Key find(Callable<Boolean> f) { return Iterable$impl._find(this, f); }
+    @Override public <Result> Iterable<Result> map(Callable<Result> f) { return Iterable$impl._map(this, f); }
+    @Override public Iterable<? extends Key> filter(Callable<Boolean> f) { return Iterable$impl._filter(this, f); }
+    @Override public <Result> Result fold(Result ini, Callable<Result> f) { return Iterable$impl._fold(this, ini, f); }
         }
         return new keySet();
     }
@@ -227,6 +232,11 @@ public final class Map$impl<Key,Item> {
             public long count(java.lang.Object element) {
                 return Collection$impl._count(this, element);
             }
+    @Override public Iterable<? extends Item> getSequence() { return Iterable$impl._getSequence(this); }
+    @Override public Item find(Callable<Boolean> f) { return Iterable$impl._find(this, f); }
+    @Override public <Result> Iterable<Result> map(Callable<Result> f) { return Iterable$impl._map(this, f); }
+    @Override public Iterable<? extends Item> filter(Callable<Boolean> f) { return Iterable$impl._filter(this, f); }
+    @Override public <Result> Result fold(Result ini, Callable<Result> f) { return Iterable$impl._fold(this, ini, f); }
         }
         return new valueCollection();
     }
@@ -333,6 +343,11 @@ public final class Map$impl<Key,Item> {
             public Map<? extends Set<Key>, ? extends Set<? extends Item>> getInverse() {
                 return Map$impl._getInverse(this);
             }
+    @Override public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> getSequence() { return Iterable$impl._getSequence(this); }
+    @Override public Entry<? extends Item, ? extends Set<Key>> find(Callable<Boolean> f) { return Iterable$impl._find(this, f); }
+    @Override public <Result> Iterable<Result> map(Callable<Result> f) { return Iterable$impl._map(this, f); }
+    @Override public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> filter(Callable<Boolean> f) { return Iterable$impl._filter(this, f); }
+    @Override public <Result> Result fold(Result ini, Callable<Result> f) { return Iterable$impl._fold(this, ini, f); }
         }
         return new inverse();
     }

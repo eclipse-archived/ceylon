@@ -151,5 +151,11 @@ public interface Correspondence<Key,Item> {
         public int hashCode() {
             return keys.hashCode();
         }
+
+    @Override public Iterable<? extends Item> getSequence() { return Iterable$impl._getSequence(this); }
+    @Override public Item find(Callable<Boolean> f) { return Iterable$impl._find(this, f); }
+    @Override public <Result> Iterable<Result> map(Callable<Result> f) { return Iterable$impl._map(this, f); }
+    @Override public Iterable<? extends Item> filter(Callable<Boolean> f) { return Iterable$impl._filter(this, f); }
+    @Override public <Result> Result fold(Result ini, Callable<Result> f) { return Iterable$impl._fold(this, ini, f); }
     }
 }

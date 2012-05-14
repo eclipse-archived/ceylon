@@ -21,12 +21,12 @@ public interface Iterable<Element> extends Container {
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public Iterable<? extends Element> getSequence();
 
-    @TypeInfo("ceylon.language.Iterator<Result>")
+    @TypeInfo("ceylon.language.Iterable<Result>")
     public <Result> Iterable<Result> map(@Name("collecting")
         @TypeInfo("ceylon.language.Callable<Result,Element>")
         Callable<Result> collecting);
 
-    @TypeInfo("ceylon.language.Iterator<Element>")
+    @TypeInfo("ceylon.language.Iterable<Element>")
     public Iterable<? extends Element> filter(@Name("selecting")
         @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
         Callable<Boolean> selecting);

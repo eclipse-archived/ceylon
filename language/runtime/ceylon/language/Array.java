@@ -476,7 +476,12 @@ class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
     public Element getFirst() {
         return null;
     }
-    
+
+    public Iterable<? extends Element> getSequence() { return $empty.getEmpty(); }
+    public Element find(Callable<Boolean> f) { return null; }
+    public <Result> Iterable<Result> map(Callable<Result> f) { return $empty.getEmpty(); }
+    public Iterable<? extends Element> filter(Callable<Boolean> f) { return this; }
+    public <Result> Result fold(Result ini, Callable<Result> f) { return ini; }
 }
 
 @Ignore
@@ -571,4 +576,9 @@ class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
         return unsafeItem(0); //FixedSized$impl._getFirst(this);
     }
     
+    public Iterable<? extends Element> getSequence() { return Iterable$impl._getSequence(this); }
+    public Element find(Callable<Boolean> f) { return Iterable$impl._find(this, f); }
+    public <Result> Iterable<Result> map(Callable<Result> f) { return Iterable$impl._map(this, f); }
+    public Iterable<? extends Element> filter(Callable<Boolean> f) { return Iterable$impl._filter(this, f); }
+    public <Result> Result fold(Result ini, Callable<Result> f) { return Iterable$impl._fold(this, ini, f); }
 }

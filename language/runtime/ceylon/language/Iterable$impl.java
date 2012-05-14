@@ -15,7 +15,7 @@ public final class Iterable$impl<Element> {
         return $this.getIterator().next() instanceof Finished;
     }
 
-    public Iterable<? extends Element> getSequence() {
+    public Iterable<? extends Element> _getSequence() {
         return Iterable$impl._getSequence($this);
     }
     static <Element> Iterable<? extends Element> _getSequence(Iterable<Element> $this) {
@@ -76,9 +76,9 @@ public final class Iterable$impl<Element> {
     }
 
     public Element find(Callable<Boolean> selecting) {
-        return Iterable$impl.find($this, selecting);
+        return Iterable$impl._find($this, selecting);
     }
-    static <Element> Element find(Iterable<? extends Element> $this, Callable<Boolean> sel) {
+    static <Element> Element _find(Iterable<? extends Element> $this, Callable<Boolean> sel) {
         Iterator<? extends Element> iter = $this.getIterator();
         java.lang.Object elem;
         while (!((elem = iter.next()) instanceof Finished)) {

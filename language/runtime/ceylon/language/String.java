@@ -518,6 +518,11 @@ public abstract class String
             java.lang.Object result = getIterator().next();
             return (String) ((result != exhausted.getExhausted()) ? result : null);
         }*/
+    @Override public Iterable<? extends String> getSequence() { return Iterable$impl._getSequence(this); }
+    @Override public String find(Callable<Boolean> f) { return Iterable$impl._find(this, f); }
+    @Override public <Result> Iterable<Result> map(Callable<Result> f) { return Iterable$impl._map(this, f); }
+    @Override public Iterable<? extends String> filter(Callable<Boolean> f) { return Iterable$impl._filter(this, f); }
+    @Override public <Result> Result fold(Result ini, Callable<Result> f) { return Iterable$impl._fold(this, ini, f); }
     }
 
     private static final class Occurs implements Iterable<Integer> {
@@ -558,6 +563,11 @@ public abstract class String
             java.lang.Object result = getIterator().next();
             return (String) ((result != exhausted.getExhausted()) ? result : null);
         }*/
+    @Override public Iterable<? extends Integer> getSequence() { return Iterable$impl._getSequence(this); }
+    @Override public Integer find(Callable<Boolean> f) { return Iterable$impl._find(this, f); }
+    @Override public <Result> Iterable<Result> map(Callable<Result> f) { return Iterable$impl._map(this, f); }
+    @Override public Iterable<? extends Integer> filter(Callable<Boolean> f) { return Iterable$impl._filter(this, f); }
+    @Override public <Result> Result fold(Result ini, Callable<Result> f) { return Iterable$impl._fold(this, ini, f); }
     }
 
     @Override

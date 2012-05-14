@@ -122,6 +122,11 @@ public class $empty {
             return Empty$impl._segment(this, (Integer)from, length);
         }
 
+    @Override public Empty getSequence() { return this; }
+    @Override public Empty find(Callable f) { return null; }
+    @Override public Empty map(Callable f) { return this; }
+    @Override public Empty filter(Callable f) { return this; }
+    @Override public java.lang.Object fold(java.lang.Object ini, Callable f) { return ini; }
     };
     
     public static Empty getEmpty(){

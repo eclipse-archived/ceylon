@@ -24,4 +24,9 @@ class StringOfSome extends String implements Some<Character> {
         return FixedSized$impl._getFirst(this);
     }
     
+    @Override public Iterable<? extends Character> getSequence() { return Iterable$impl._getSequence(this); }
+    @Override public Character find(Callable<Boolean> f) { return Iterable$impl._find(this, f); }
+    @Override public <Result> Iterable<Result> map(Callable<Result> f) { return Iterable$impl._map(this, f); }
+    @Override public Iterable<? extends Character> filter(Callable<Boolean> f) { return Iterable$impl._filter(this, f); }
+    @Override public <Result> Result fold(Result ini, Callable<Result> f) { return Iterable$impl._fold(this, ini, f); }
 }
