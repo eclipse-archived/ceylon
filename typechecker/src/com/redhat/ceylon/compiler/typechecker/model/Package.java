@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class Package implements Scope {
+public class Package implements ImportableScope {
 
     private List<String> name;
     private Module module;
@@ -168,13 +168,14 @@ public class Package implements Scope {
         return result;
     }
 
-    Map<String, DeclarationWithProximity> getImportableDeclarations(Unit unit, String startingWith, List<Import> imports, int proximity) {
+    public Map<String, DeclarationWithProximity> getImportableDeclarations(Unit unit, String startingWith, List<Import> imports, int proximity) {
         Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && d.isShared() && isNameMatching(startingWith, d) ) {
                 boolean already = false;
                 for (Import i: imports) {
-                    if (i.getDeclaration().equals(d)) {
+                    if (!i.isWildcardImport() && 
+                            i.getDeclaration().equals(d)) {
                         already = true;
                         break;
                     }

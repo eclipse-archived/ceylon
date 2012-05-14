@@ -7,7 +7,6 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersectio
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
-import static java.lang.Character.isUpperCase;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,8 +35,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
  * Second phase of type analysis.
@@ -66,12 +65,10 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.Import that) {
         Package importedPackage = getPackage(that.getImportPath());
         if (importedPackage!=null) {
-            ImportList il = (ImportList) that.getScope();
-            il.setImportedPackage(importedPackage);
-            il.setContainer(that.getUnit().getPackage());
-            that.setImportList(il);
-            Set<String> names = new HashSet<String>();
             Tree.ImportMemberOrTypeList imtl = that.getImportMemberOrTypeList();
+            ImportList il = imtl.getImportList();
+            il.setImportedScope(importedPackage);
+            Set<String> names = new HashSet<String>();
             if (imtl!=null) {
                 for (Tree.ImportMemberOrType member: imtl.getImportMemberOrTypes()) {
                     names.add(importMember(member, importedPackage, il));
@@ -194,8 +191,10 @@ public class TypeVisitor extends Visitor {
         Tree.ImportMemberOrTypeList imtl = member.getImportMemberOrTypeList();
         if (imtl!=null) {
         	if (d instanceof TypeDeclaration) {
+                ImportList til = imtl.getImportList();
+                til.setImportedScope((TypeDeclaration) d);
         		for (Tree.ImportMemberOrType submember: imtl.getImportMemberOrTypes()) {
-        			importMember(submember, (TypeDeclaration) d);
+        			importMember(submember, (TypeDeclaration) d, til);
             	}
             }
         	else {
@@ -205,31 +204,8 @@ public class TypeVisitor extends Visitor {
         return name;
     }
 
-    private boolean isNonimportable(Declaration d) {
-        String name = d.getQualifiedNameString();
-        return "java.lang.Object".equals(name) ||
-                "java.lang.Exception".equals(name);
-    }
-
-    private void addImport(Tree.ImportMemberOrType member, ImportList il,
-            Import i) {
-        Import o = unit.getImport(i.getAlias());
-        if (o==null) {
-            unit.getImports().add(i);
-            il.getImports().add(i);
-        }
-        else if (o.isWildcardImport()) {
-            unit.getImports().remove(o);
-            il.getImports().remove(o);
-            unit.getImports().add(i);
-            il.getImports().add(i);
-        }
-        else {
-            member.addError("duplicate import: " + i.getAlias());
-        }
-    }
-        
-    private void importMember(Tree.ImportMemberOrType member, TypeDeclaration d) {
+    private void importMember(Tree.ImportMemberOrType member, TypeDeclaration d, 
+            ImportList il) {
         if (member.getIdentifier()==null) {
             return;
         }
@@ -265,15 +241,39 @@ public class TypeVisitor extends Visitor {
             }
             i.setDeclaration(m);
             member.setDeclarationModel(m);
-            unit.getImports().add(i);
-            //TODO: check for dupe!!
+            addImport(member, il, i);
+            //unit.getImports().add(i);
         }
         if (member.getImportMemberOrTypeList()!=null) {
-        	member.getImportMemberOrTypeList()
-        	        .addError("member aliases of member aliases not supported");
+            member.getImportMemberOrTypeList()
+                    .addError("member aliases of member aliases not supported");
         }
     }
     
+    private boolean isNonimportable(Declaration d) {
+        String name = d.getQualifiedNameString();
+        return "java.lang.Object".equals(name) ||
+                "java.lang.Exception".equals(name);
+    }
+
+    private void addImport(Tree.ImportMemberOrType member, ImportList il,
+            Import i) {
+        Import o = unit.getImport(i.getAlias());
+        if (o==null) {
+            unit.getImports().add(i);
+            il.getImports().add(i);
+        }
+        else if (o.isWildcardImport()) {
+            unit.getImports().remove(o);
+            il.getImports().remove(o);
+            unit.getImports().add(i);
+            il.getImports().add(i);
+        }
+        else {
+            member.addError("duplicate import: " + i.getAlias());
+        }
+    }
+        
     @Override 
     public void visit(Tree.UnionType that) {
         super.visit(that);

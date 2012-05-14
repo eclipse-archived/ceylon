@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public abstract class TypeDeclaration extends Declaration 
-        implements Scope, Generic, Cloneable {
+        implements ImportableScope, Generic, Cloneable {
 
     private ProducedType extendedType;
     private List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>();
@@ -523,6 +523,27 @@ public abstract class TypeDeclaration extends Declaration
 
     public ProducedType getSelfType() {
         return selfType;
+    }
+    
+    public Map<String, DeclarationWithProximity> getImportableDeclarations(Unit unit, String startingWith, List<Import> imports, int proximity) {
+        //TODO: fix copy/paste from below!
+        Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
+        for (Declaration d: getMembers()) {
+            if (isResolvable(d) && d.isShared() && 
+                    isNameMatching(startingWith, d) ) {
+                boolean already = false;
+                for (Import i: imports) {
+                    if (i.getDeclaration().equals(d)) {
+                        already = true;
+                        break;
+                    }
+                }
+                if (!already) {
+                    result.put(d.getName(), new DeclarationWithProximity(d, proximity));
+                }
+            }
+        }
+        return result;
     }
     
     @Override

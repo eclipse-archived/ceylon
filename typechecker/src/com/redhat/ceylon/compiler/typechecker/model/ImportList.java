@@ -9,9 +9,9 @@ import java.util.Map;
 //autocompletion in the IDE
 public class ImportList implements Scope {
     
-    Package container;
-    Package importedPackage;
-    List<Import> imports = new ArrayList<Import>();
+    private Scope container;
+    private ImportableScope importedScope;
+    private List<Import> imports = new ArrayList<Import>();
     
     @Override
     public List<Declaration> getMembers() {
@@ -68,29 +68,29 @@ public class ImportList implements Scope {
         return container;
     }
     
-    public void setContainer(Package container) {
+    public void setContainer(Scope container) {
         this.container = container;
     }
     
     @Override
     public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit,
             String startingWith, int proximity) {
-        if (importedPackage!=null) {
-            return importedPackage.getImportableDeclarations(unit, startingWith, imports, proximity);
+        if (importedScope!=null) {
+            return importedScope.getImportableDeclarations(unit, startingWith, imports, proximity);
         }
         else {
             return Collections.emptyMap();
         }
     }
     
-    public Package getImportedPackage() {
-        return importedPackage;
+    public ImportableScope getImportedScope() {
+        return importedScope;
     }
     
-    public void setImportedPackage(Package importedPackage) {
-        this.importedPackage = importedPackage;
+    public void setImportedScope(ImportableScope importedScope) {
+        this.importedScope = importedScope;
     }
-    
+        
     public List<Import> getImports() {
         return imports;
     }

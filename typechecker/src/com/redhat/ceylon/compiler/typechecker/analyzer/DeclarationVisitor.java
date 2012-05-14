@@ -97,7 +97,7 @@ public class DeclarationVisitor extends Visitor {
         }
         //that.setDeclarationModel(model);
         unit.getDeclarations().add(model);
-        if (! (scope instanceof Package)) {
+        if (!(scope instanceof Package)) {
             scope.getMembers().add(model);
         }
 
@@ -212,9 +212,11 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.Import that) {
+    public void visit(Tree.ImportMemberOrTypeList that) {
         ImportList il = new ImportList();
         unit.getImportLists().add(il);
+        that.setImportList(il);
+        il.setContainer(scope);
         Scope o = enterScope(il);
         super.visit(that);
         exitScope(o);
