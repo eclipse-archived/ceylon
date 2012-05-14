@@ -34,6 +34,60 @@ Iterable.$$.prototype.getSequence = function() {
     }
     return ArraySequence(a);
 }
+Iterable.$$.prototype.map = function(mapper) {
+    function mapped$iter(iter, mapper){
+        var $cmp$=new mapped$iter.$$;
+        IdentifiableObject(mapped$iter);
+        $cmp$.iter=iter;
+        $cmp$.mapper=mapper;
+        $cmp$.next=function(){
+            var e = this.iter.next();
+            if(e !== $finished){
+                return this.mapper(e);
+            }else return $finished;
+        };
+        return $cmp$;
+    }
+    initTypeProto(mapped$iter, 'ceylon.language.MappedIterator', IdentifiableObject, Iterator);
+    return Comprehension(mapped$iter(this.getIterator(), mapper));
+}
+Iterable.$$.prototype.filter = function(select) {
+    function filtered$iter(iter, select){
+        var $cmp$=new filtered$iter.$$;
+        IdentifiableObject(filtered$iter);
+        $cmp$.iter=iter;
+        $cmp$.select=select;
+        $cmp$.next=function(){
+            var e = this.iter.next();
+            var flag = e === $finished ? true : this.select(e) === $true;
+            while (!flag) {
+                e = this.iter.next();
+                flag = e === $finished ? true : this.select(e) === $true;
+            }
+            return e;
+        };
+        return $cmp$;
+    }
+    initTypeProto(filtered$iter, 'ceylon.language.FilteredIterator', IdentifiableObject, Iterator);
+    return Comprehension(filtered$iter(this.getIterator(), select));
+}
+Iterable.$$.prototype.fold = function(ini, accum) {
+    var r = ini;
+    var iter = this.getIterator();
+    var e; while ((e = iter.next()) !== $finished) {
+        r = accum(r, e);
+    }
+    return r;
+}
+Iterable.$$.prototype.find = function(select) {
+    var iter = this.getIterator();
+    var e; while ((e = iter.next()) !== $finished) {
+        if (select(e) === $true) {
+            return e;
+        }
+    }
+    return null;
+}
 exports.Iterable=Iterable;
 
 function Category(wat) {
