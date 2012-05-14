@@ -87,7 +87,8 @@ importDeclaration returns [Import importDeclaration]
       ;
 
 importElementList returns [ImportMemberOrTypeList importMemberOrTypeList]
-    @init { ImportMemberOrTypeList il=null; }
+    @init { ImportMemberOrTypeList il=null; 
+            boolean wildcarded = false; }
     :
     LBRACE
     { il = new ImportMemberOrTypeList($LBRACE);
@@ -98,24 +99,26 @@ importElementList returns [ImportMemberOrTypeList importMemberOrTypeList]
             il.addImportMemberOrType($ie1.importMemberOrType); } 
       ( 
         c1=COMMA 
-        { il.setEndToken($c1); }
+        { il.setEndToken($c1); 
+          if (wildcarded) 
+              displayRecognitionError(getTokenNames(), 
+                  new MismatchedTokenException(RBRACE, input)); }
         (
           ie2=importElement 
           { if ($ie2.importMemberOrType!=null)
                 il.addImportMemberOrType($ie2.importMemberOrType);
             if ($ie2.importMemberOrType!=null)
                 il.setEndToken(null); } 
-          | { displayRecognitionError(getTokenNames(), 
+        | iw=importWildcard
+          { wildcarded = true;
+            if ($iw.importWildcard!=null) 
+                il.setImportWildcard($iw.importWildcard); 
+            if ($iw.importWildcard!=null) 
+                il.setEndToken(null); } 
+        | { displayRecognitionError(getTokenNames(), 
                 new MismatchedTokenException(ELLIPSIS, input)); }
         )
       )*
-      ( 
-        c2=COMMA
-        { il.setEndToken($c2); }
-        iw=importWildcard
-        { il.setImportWildcard($iw.importWildcard); 
-          il.setEndToken(null); } 
-      )?
     | iw=importWildcard { il.setImportWildcard($iw.importWildcard); }
     )?
     RBRACE
