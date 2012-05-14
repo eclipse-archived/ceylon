@@ -97,21 +97,24 @@ importElementList returns [ImportMemberOrTypeList importMemberOrTypeList]
       { if ($ie1.importMemberOrType!=null)
             il.addImportMemberOrType($ie1.importMemberOrType); } 
       ( 
-        COMMA 
-        ie2=importElement 
-        { if ($ie2.importMemberOrType!=null)
-            il.addImportMemberOrType($ie2.importMemberOrType); } 
-      )*
-      ( 
-        c=COMMA
-        { il.setEndToken($c); }
+        c1=COMMA 
+        { il.setEndToken($c1); }
         (
-          iw=importWildcard 
-          { il.setImportWildcard($iw.importWildcard); 
-            il.setEndToken(null); } 
-        | { displayRecognitionError(getTokenNames(), 
+          ie2=importElement 
+          { if ($ie2.importMemberOrType!=null)
+                il.addImportMemberOrType($ie2.importMemberOrType);
+            if ($ie2.importMemberOrType!=null)
+                il.setEndToken(null); } 
+          | { displayRecognitionError(getTokenNames(), 
                 new MismatchedTokenException(ELLIPSIS, input)); }
         )
+      )*
+      ( 
+        c2=COMMA
+        { il.setEndToken($c2); }
+        iw=importWildcard
+        { il.setImportWildcard($iw.importWildcard); 
+          il.setEndToken(null); } 
       )?
     | iw=importWildcard { il.setImportWildcard($iw.importWildcard); }
     )?
@@ -122,20 +125,39 @@ importElementList returns [ImportMemberOrTypeList importMemberOrTypeList]
 importElement returns [ImportMemberOrType importMemberOrType]
     : compilerAnnotations
     (
-      memberAlias? memberName
+      memberName
       { $importMemberOrType = new ImportMember(null);
-        if ($memberAlias.alias!=null) 
-            $importMemberOrType.setAlias($memberAlias.alias);
         $importMemberOrType.setIdentifier($memberName.identifier); }
-    | typeAlias? typeName
+    | typeName
       { $importMemberOrType = new ImportType(null);
-        if ($typeAlias.alias!=null)
-            $importMemberOrType.setAlias($typeAlias.alias);
         $importMemberOrType.setIdentifier($typeName.identifier); }
         (
-          importElementList
-          { $importMemberOrType.setImportMemberOrTypeList($importElementList.importMemberOrTypeList); }
+          iel1=importElementList
+          { $importMemberOrType.setImportMemberOrTypeList($iel1.importMemberOrTypeList); }
         )?
+    | memberAlias 
+      { $importMemberOrType = new ImportMember(null);
+        $importMemberOrType.setAlias($memberAlias.alias); }
+      ( 
+        memberNameDeclaration 
+        { $importMemberOrType.setIdentifier($memberNameDeclaration.identifier); }
+      | { displayRecognitionError(getTokenNames(), 
+                  new MismatchedTokenException(LIDENTIFIER, input)); } 
+      )  
+    | typeAlias 
+      { $importMemberOrType = new ImportType(null);
+        $importMemberOrType.setAlias($typeAlias.alias); }
+      ( 
+        typeNameDeclaration 
+        { $importMemberOrType.setIdentifier($typeNameDeclaration.identifier); }
+      | { displayRecognitionError(getTokenNames(), 
+                  new MismatchedTokenException(UIDENTIFIER, input)); } 
+      )
+        (
+          iel2=importElementList
+          { $importMemberOrType.setImportMemberOrTypeList($iel2.importMemberOrTypeList); }
+        )?
+    
     )
     { if ($importMemberOrType!=null)
         $importMemberOrType.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
@@ -147,15 +169,15 @@ importWildcard returns [ImportWildcard importWildcard]
     ;
 
 memberAlias returns [Alias alias]
-    : memberNameDeclaration SPECIFY
+    : memberName SPECIFY
       { $alias = new Alias($SPECIFY); 
-        $alias.setIdentifier($memberNameDeclaration.identifier); }
+        $alias.setIdentifier($memberName.identifier); }
     ;
 
 typeAlias returns [Alias alias]
-    : typeNameDeclaration SPECIFY
+    : typeName SPECIFY
       { $alias = new Alias($SPECIFY); 
-        $alias.setIdentifier($typeNameDeclaration.identifier); }
+        $alias.setIdentifier($typeName.identifier); }
     ;
 
 packageName returns [Identifier identifier]

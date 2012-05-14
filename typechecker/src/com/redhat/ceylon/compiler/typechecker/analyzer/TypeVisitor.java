@@ -157,6 +157,9 @@ public class TypeVisitor extends Visitor {
     
     private String importMember(Tree.ImportMemberOrType member, Package importedPackage, 
             ImportList il) {
+        if (member.getIdentifier()==null) {
+            return null;
+        }
         Import i = new Import();
         Tree.Alias alias = member.getAlias();
         String name = name(member.getIdentifier());
@@ -227,6 +230,9 @@ public class TypeVisitor extends Visitor {
     }
         
     private void importMember(Tree.ImportMemberOrType member, TypeDeclaration d) {
+        if (member.getIdentifier()==null) {
+            return;
+        }
         Import i = new Import();
         Tree.Alias alias = member.getAlias();
         String name = name(member.getIdentifier());

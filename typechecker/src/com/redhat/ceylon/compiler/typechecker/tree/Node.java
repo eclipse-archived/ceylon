@@ -176,7 +176,11 @@ public abstract class Node {
 	}
     
     public void setEndToken(Token endToken) {
-		this.endToken = endToken;
+        //the tokens ANTLR inserts to represent missing tokens
+        //don't come with useful offset information
+        if (endToken==null || !isMissingToken(endToken)) {
+            this.endToken = endToken;
+        }
 	}
     
     /**
