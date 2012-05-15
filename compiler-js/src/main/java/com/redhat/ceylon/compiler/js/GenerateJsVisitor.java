@@ -13,6 +13,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
+import com.redhat.ceylon.compiler.typechecker.model.ImportableScope;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -176,8 +177,11 @@ public class GenerateJsVisitor extends Visitor
     }
 
     public void visit(Import that) {
-        Package pkg = that.getImportList().getImportedPackage();
-        require(pkg);
+    	ImportableScope scope =
+    			that.getImportMemberOrTypeList().getImportList().getImportedScope();
+    	if (scope instanceof Package) {
+    		require((Package) scope);
+    	}
     }
 
     private void require(Package pkg) {
