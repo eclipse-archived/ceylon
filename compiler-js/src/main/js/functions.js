@@ -1,4 +1,4 @@
-var exports,console,$true,$false;//IGNORE
+var exports,console,$true,$false,$finished;//IGNORE
 function Comparison(x){}//IGNORE
 function ArraySequence(x){}//IGNORE
 function Entry(a,b){}//IGNORE
@@ -89,11 +89,13 @@ function prepend(seq, elem) {
     }
 }
 
-//Receives ArraySequence, returns ArraySequence (with Entries)
+//Receives Iterable, returns ArraySequence (with Entries)
 function entries(seq) {
     var e = [];
-    for (var i = 0; i < seq.value.length; i++) {
-        e.push(Entry(Integer(i), seq.value[i]));
+    var iter = seq.getIterator();
+    var i = 0;
+    var elem; while ((elem = iter.next()) !== $finished) {
+        e.push(Entry(Integer(i++), elem));
     }
     return ArraySequence(e);
 }
