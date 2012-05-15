@@ -54,6 +54,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -1175,42 +1176,39 @@ public abstract class AbstractTransformer implements Transformation {
         return typeModel.getTypeArgumentList().get(0);
     }
     
-    protected ProducedType getTypeForParameter(Parameter parameter, boolean isRaw, java.util.Map<TypeParameter, ProducedType> typeArgumentModels) {
+    protected ProducedType getTypeForParameter(Parameter parameter, ProducedReference producedReference) {
         if (parameter instanceof FunctionalParameter) {
-            FunctionalParameter fp = (FunctionalParameter)parameter;
-            java.util.List<ProducedType> typeArgs = new ArrayList<ProducedType>(fp.getTypeParameters().size());
-            typeArgs.add(fp.getType());
-            for (TypeParameter typeParameter : fp.getTypeParameters()) {
-                typeArgs.add(typeParameter.getType());
-            }
-            return typeFact().getCallableType(typeArgs);
+            return getTypeForFunctionalParameter((FunctionalParameter)parameter);
         }
-        ProducedType type = parameter.getType();
-        if(isTypeParameter(type)){
-            // TODO This ^^ and this vv is ugly because it doesn't handle unions or intersections properly
-            TypeParameter tp = getTypeParameter(type);
-            if(!isRaw && typeArgumentModels != null){
-                // try to use the inferred type if we're not going raw
-                ProducedType producedType = typeArgumentModels.get(tp);
-                if (producedType != null) {
-                    return producedType;
-                }
-            }
-            if(tp.getSatisfiedTypes().size() >= 1){
-                // try the first satisfied type
-                type = tp.getSatisfiedTypes().get(0).getType();
-                // unless it's erased, in which case try for more specific
-                if(!willEraseToObject(type))
-                    return type;
-            }
+        if (producedReference == null) {
+            return parameter.getType();
         }
+        final ProducedTypedReference producedTypedReference = producedReference.getTypedParameter(parameter);
+        final ProducedType type = producedTypedReference.getType();
+        final TypedDeclaration producedParameterDecl = producedTypedReference.getDeclaration();
+        final ProducedType declType = producedParameterDecl.getType();
+        final TypeDeclaration declTypeDecl = declType.getDeclaration();
+        if (type.getDeclaration() instanceof ClassOrInterface) {
+            // Explicit type parameter
+            return producedTypedReference.getType();
+        } else if (declTypeDecl instanceof ClassOrInterface) {
+            return declType;
+        } else if (declTypeDecl instanceof TypeParameter) {
+            if (!declTypeDecl.getSatisfiedTypes().isEmpty()) {
+                // use upper bound
+                return declTypeDecl.getSatisfiedTypes().get(0);
+            }
+         }
         return type;
     }
 
-    private int getTypeParameterIndex(Scope scope, TypeParameter tp) {
-        if(scope instanceof Method)
-            return ((Method)scope).getTypeParameters().indexOf(tp);
-        return ((ClassOrInterface)scope).getTypeParameters().indexOf(tp);
+    private ProducedType getTypeForFunctionalParameter(FunctionalParameter fp) {
+        java.util.List<ProducedType> typeArgs = new ArrayList<ProducedType>(fp.getTypeParameters().size());
+        typeArgs.add(fp.getType());
+        for (TypeParameter typeParameter : fp.getTypeParameters()) {
+            typeArgs.add(typeParameter.getType());
+        }
+        return typeFact().getCallableType(typeArgs);
     }
     
     /*
@@ -1440,7 +1438,7 @@ public abstract class AbstractTransformer implements Transformation {
             return List.nil();
         ProducedType type;
         if (decl instanceof FunctionalParameter) {
-            type = getTypeForParameter((Parameter)decl, false, Collections.<TypeParameter, ProducedType>emptyMap());
+            type = getTypeForFunctionalParameter((FunctionalParameter)decl);
         } else {
             type = decl.getType();
         }
@@ -1504,7 +1502,7 @@ public abstract class AbstractTransformer implements Transformation {
     protected boolean isTypeParameter(ProducedType type) {
         if (typeFact().isOptionalType(type)) {
             type = type.minus(typeFact().getNothingDeclaration());
-        }
+        } 
         return type.getDeclaration() instanceof TypeParameter;
     }
     

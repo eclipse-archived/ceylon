@@ -30,8 +30,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import javax.management.RuntimeErrorException;
-
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.TermTransformer;
 import com.redhat.ceylon.compiler.java.util.Decl;
@@ -49,14 +47,10 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -221,7 +215,9 @@ abstract class InvocationBuilder {
         
         Tree.Primary primary = invocation.getPrimary();
         Declaration primaryDeclaration = null;
+        ProducedReference producedReference = null;
         if (primary instanceof Tree.MemberOrTypeExpression) {
+            producedReference = ((Tree.MemberOrTypeExpression)primary).getTarget();
             primaryDeclaration = ((Tree.MemberOrTypeExpression)primary).getDeclaration();
         }
         InvocationBuilder builder;
@@ -230,7 +226,7 @@ abstract class InvocationBuilder {
                 // direct invocation
                 java.util.List<Parameter> parameters = ((Functional)primaryDeclaration).getParameterLists().get(0).getParameters();
                 builder = new PositionalInvocationBuilder(gen, 
-                        primary, primaryDeclaration,
+                        primary, primaryDeclaration,producedReference,
                         invocation,
                         parameters);
             } else {
@@ -251,6 +247,7 @@ abstract class InvocationBuilder {
             builder = new NamedArgumentInvocationBuilder(gen, 
                     primary, 
                     primaryDeclaration,
+                    producedReference,
                     invocation);
         } else {
             throw new RuntimeException("Illegal State");
@@ -280,6 +277,7 @@ abstract class InvocationBuilder {
                 gen,
                 primary,
                 primaryDeclaration,
+                primary.getTarget(),
                 gen.getCallableReturnType(expr.getTypeModel()),
                 expr, 
                 parameterList);
@@ -295,10 +293,12 @@ abstract class InvocationBuilder {
         if (primary instanceof Tree.MemberOrTypeExpression
                 && ((Tree.MemberOrTypeExpression)primary).getDeclaration() instanceof Functional) {
             Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)primary).getDeclaration();
+            ProducedReference producedReference = ((Tree.MemberOrTypeExpression)primary).getTarget();
             builder = new MethodReferenceSpecifierInvocationBuilder(
                     gen, 
                     (Tree.MemberOrTypeExpression)primary, 
                     primaryDeclaration,
+                    producedReference,
                     method,
                     specifierExpression);
         } else if (gen.isCeylonCallable(primary.getTypeModel())) {
@@ -472,13 +472,16 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
  */
 abstract class DirectInvocationBuilder extends SimpleInvocationBuilder {
 
+    protected final ProducedReference producedReference;
+
     protected DirectInvocationBuilder(
             AbstractTransformer gen,
             Tree.Primary primary,
             Declaration primaryDeclaration,
-            ProducedType returnType, 
+            ProducedReference producedReference, ProducedType returnType, 
             Node node) {
         super(gen, primary, primaryDeclaration, returnType, node);
+        this.producedReference = producedReference;
     }
 
     /**
@@ -495,8 +498,7 @@ abstract class DirectInvocationBuilder extends SimpleInvocationBuilder {
     
     @Override
     protected ProducedType getParameterType(int argIndex) {
-        boolean isRaw = primaryTypeArguments.isEmpty();
-        return gen.expressionGen().getTypeForParameter(getParameter(argIndex), isRaw, getTypeArguments());
+        return gen.expressionGen().getTypeForParameter(getParameter(argIndex), producedReference);
     }
     
     @Override
@@ -533,9 +535,9 @@ class PositionalInvocationBuilder extends DirectInvocationBuilder {
             AbstractTransformer gen, 
             Tree.Primary primary,
             Declaration primaryDeclaration,
-            Tree.InvocationExpression invocation,
+            ProducedReference producedReference, Tree.InvocationExpression invocation,
             java.util.List<Parameter> parameters) {
-        super(gen, primary, primaryDeclaration, invocation.getTypeModel(), invocation);
+        super(gen, primary, primaryDeclaration, producedReference, invocation.getTypeModel(), invocation);
         positional = invocation.getPositionalArgumentList();
         this.parameters = parameters;    
     }
@@ -579,6 +581,7 @@ class SuperInvocationBuilder extends PositionalInvocationBuilder {
         super(gen, 
                 invocation.getPrimary(), 
                 ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration(),
+                ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getTarget(),
                 invocation,
                 parameterList.getParameters());
     }
@@ -603,9 +606,9 @@ class CallableInvocationBuilder extends DirectInvocationBuilder {
     
     public CallableInvocationBuilder(
             AbstractTransformer gen, Tree.MemberOrTypeExpression primary,
-            Declaration primaryDeclaration, ProducedType returnType,
+            Declaration primaryDeclaration, ProducedReference producedReference, ProducedType returnType,
             Tree.Term expr, ParameterList parameterList) {
-        super(gen, primary, primaryDeclaration, returnType, expr);
+        super(gen, primary, primaryDeclaration, producedReference, returnType, expr);
         callableParameters = ((Functional)primary.getDeclaration()).getParameterLists().get(0).getParameters();
         functionalParameters = parameterList.getParameters();
         setUnboxed(expr.getUnboxed());
@@ -623,8 +626,7 @@ class CallableInvocationBuilder extends DirectInvocationBuilder {
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
         Parameter param = callableParameters.get(argIndex);
         ProducedType argType = primary.getTypeModel().getTypeArgumentList().get(argIndex+1);
-        final boolean isRaw = primaryTypeArguments.isEmpty();
-        return CallableBuilder.unpickCallableParameter(gen, isRaw, getTypeArguments(), param, argType, argIndex, functionalParameters.size());
+        return CallableBuilder.unpickCallableParameter(gen, producedReference, param, argType, argIndex, functionalParameters.size());
     }
     @Override
     protected Parameter getParameter(int index) {
@@ -646,8 +648,8 @@ class MethodReferenceSpecifierInvocationBuilder extends DirectInvocationBuilder 
     public MethodReferenceSpecifierInvocationBuilder(
             AbstractTransformer gen, Tree.Primary primary,
             Declaration primaryDeclaration,
-            Method method, Tree.SpecifierExpression node) {
-        super(gen, primary, primaryDeclaration, method.getType(), node);
+            ProducedReference producedReference, Method method, Tree.SpecifierExpression node) {
+        super(gen, primary, primaryDeclaration, producedReference, method.getType(), node);
         this.method = method;
         setUnboxed(primary.getUnboxed());
         setBoxingStrategy(Util.getBoxingStrategy(method));
@@ -707,11 +709,9 @@ class CallableSpecifierInvocationBuilder extends InvocationBuilder {
     }
     @Override
     protected void compute() {
-        boolean isRaw = primaryTypeArguments.isEmpty();
-        Map<TypeParameter, ProducedType> typeArgumentModels = getTypeArguments();
         int argIndex = 0;
         for(Parameter parameter : method.getParameterLists().get(0).getParameters()) {
-            ProducedType exprType = gen.expressionGen().getTypeForParameter(parameter, isRaw, typeArgumentModels);
+            ProducedType exprType = gen.expressionGen().getTypeForParameter(parameter, null);
             Parameter declaredParameter = method.getParameterLists().get(0).getParameters().get(argIndex);
             
             JCExpression result = gen.makeQuotedIdent(parameter.getName());
@@ -749,12 +749,15 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
     private final Set<String> argNames = new HashSet<String>();
     private final TreeMap<Integer, String> argsNamesByIndex = new TreeMap<Integer, String>();
     private final Set<Parameter> bound = new HashSet<Parameter>();
+    private ProducedReference producedReference;
     
     public NamedArgumentInvocationBuilder(
             AbstractTransformer gen, Tree.Primary primary,
             Declaration primaryDeclaration,
+            ProducedReference producedReference,
             Tree.InvocationExpression invocation) {
         super(gen, primary, primaryDeclaration, invocation.getTypeModel(), invocation);
+        this.producedReference = producedReference;
         namedArgumentList = invocation.getNamedArgumentList();
         varBaseName = gen.aliasName("arg");
         callVarName = varBaseName + "$callable$";
@@ -857,7 +860,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
             ProducedType type = null;    
             if (declaredParam != null) {
                 boxType = Util.getBoxingStrategy(declaredParam);
-                type = gen.getTypeForParameter(declaredParam, isRaw, getTypeArguments());
+                type = gen.getTypeForParameter(declaredParam, producedReference);
             } else {
                 // Arguments of overloaded methods don't have a reference to parameter
                 boxType = BoxingStrategy.UNBOXED;
@@ -953,7 +956,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         } else if (Util.getBoxingStrategy(param) == BoxingStrategy.BOXED) {
             flags |= TYPE_ARGUMENT;
         }
-        ProducedType type = gen.getTypeForParameter(param, isRaw, getTypeArguments());
+        ProducedType type = gen.getTypeForParameter(param, producedReference);
         String argName = argName(param);
         JCExpression typeExpr = gen.makeJavaType(type, flags);
         JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, argExpr);

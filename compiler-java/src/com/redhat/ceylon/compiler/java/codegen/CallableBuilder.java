@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -142,7 +143,7 @@ public class CallableBuilder {
             ParameterList parameterList, List<JCStatement> body) {
         int ii =0;
         for (Parameter p : parameterList.getParameters()) {
-            JCExpression init = unpickCallableParameter(gen, true, null, p, null, ii, parameterList.getParameters().size());
+            JCExpression init = unpickCallableParameter(gen, null, p, null, ii, parameterList.getParameters().size());
             JCVariableDecl varDef = gen.make().VarDef(gen.make().Modifiers(Flags.FINAL), 
                     gen.names().fromString(p.getName()), 
                     gen.makeJavaType(p.getType(), NO_PRIMITIVES), 
@@ -205,8 +206,7 @@ public class CallableBuilder {
     }
     
     public static JCExpression unpickCallableParameter(AbstractTransformer gen,
-            boolean isRaw,
-            java.util.Map<TypeParameter, ProducedType> typeArgumentModels,
+            ProducedReference producedReference,
             Parameter param,
             ProducedType argType, 
             int argIndex,
@@ -228,7 +228,7 @@ public class CallableBuilder {
         if (argType != null) {
             castType = argType;
         } else {
-            castType = gen.getTypeForParameter(param, isRaw, typeArgumentModels);
+            castType = gen.getTypeForParameter(param, producedReference);
         }
         JCTypeCast cast = gen.make().TypeCast(gen.makeJavaType(castType, NO_PRIMITIVES), argExpr);
         // TODO Should this be calling applyErasureAndBoxing() instead?
