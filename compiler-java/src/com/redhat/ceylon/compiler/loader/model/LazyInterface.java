@@ -46,6 +46,8 @@ public class LazyInterface extends Interface implements LazyContainer {
     public ClassMirror classMirror;
     private ModelCompleter completer;
     private String realName;
+    private boolean isStatic;
+    
     private boolean isLoaded = false;
     private boolean isTypeParamsLoaded = false;
 
@@ -54,6 +56,11 @@ public class LazyInterface extends Interface implements LazyContainer {
         this.completer = completer;
         this.realName = classMirror.getSimpleName();
         setName(Util.strip(this.realName));
+        this.isStatic = classMirror.isStatic();
+    }
+
+    public boolean isStatic() {
+        return isStatic;
     }
 
     public String getRealName() {

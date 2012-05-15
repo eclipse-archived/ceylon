@@ -51,6 +51,7 @@ public class LazyClass extends Class implements LazyContainer {
     private MethodMirror constructor;
     private boolean forTopLevelObject;
     private String realName;
+    private boolean isStatic;
     
     private boolean isLoaded = false;
     private boolean isTypeParamsLoaded = false;
@@ -64,6 +65,11 @@ public class LazyClass extends Class implements LazyContainer {
         this.realName = classMirror.getSimpleName();
         setName(Util.strip(this.realName));
         setAbstract(classMirror.isAbstract());
+        this.isStatic = classMirror.isStatic();
+    }
+
+    public boolean isStatic() {
+        return isStatic;
     }
 
     public MethodMirror getConstructor() {
