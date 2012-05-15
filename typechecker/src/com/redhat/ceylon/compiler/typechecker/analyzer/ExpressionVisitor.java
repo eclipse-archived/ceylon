@@ -1293,32 +1293,42 @@ public class ExpressionVisitor extends Visitor {
             ParameterList parameters = dec.getParameterLists().get(0);
             for (TypeParameter tp: dec.getTypeParameters()) {
                 if (!tp.isSequenced()) {
-                    ProducedType ta = inferTypeArgument(that, tp, parameters);
-                    List<ProducedType> list = new ArrayList<ProducedType>();
-                    addToIntersection(list, ta, unit);
-                    for (ProducedType st: tp.getSatisfiedTypes()) {
-                        //TODO: st.getProducedType(receiver, dec, typeArgs);
-                        if (//if the upper bound is a type parameter, ignore it
-                            !dec.getTypeParameters().contains(st.getDeclaration()) &&
-                            (st.getQualifyingType()==null ||
-                            !dec.getTypeParameters().contains(st.getQualifyingType().getDeclaration())) &&
-                            //TODO: remove this awful hack that 
-                            //tries to work around the possibility 
-                            //that a type parameter appears in the 
-                            //upper bound!
-                            !st.getDeclaration().isParameterized() &&
-                            (st.getQualifyingType()==null || 
-                            !st.getQualifyingType().getDeclaration().isParameterized())) {
-                            addToIntersection(list, st, unit);
-                        }
-                    }
-                    IntersectionType it = new IntersectionType(unit);
-                    it.setSatisfiedTypes(list);
-                    typeArgs.add(it.canonicalize().getType());
+                    typeArgs.add(constrainInferredType(dec, tp, 
+                            inferTypeArgument(that, tp, parameters)));
                 }
             }
         }
         return typeArgs;
+    }
+
+    private ProducedType constrainInferredType(Functional dec,
+            TypeParameter tp, ProducedType ta) {
+        List<ProducedType> list = new ArrayList<ProducedType>();
+        addToIntersection(list, ta, unit);
+        //Intersect the inferred type with any 
+        //upper bound constraints on the type. This
+        //helps with cases like passing an arg of
+        //type String? to a parameter of type T?
+        for (ProducedType st: tp.getSatisfiedTypes()) {
+            //TODO: st.getProducedType(receiver, dec, typeArgs);
+            if (//if the upper bound is a type parameter, ignore it
+                !dec.getTypeParameters().contains(st.getDeclaration()) &&
+                (st.getQualifyingType()==null ||
+                !dec.getTypeParameters().contains(st.getQualifyingType().getDeclaration())) &&
+                //TODO: remove this awful hack that 
+                //tries to work around the possibility 
+                //that a type parameter appears in the 
+                //upper bound!
+                !st.getDeclaration().isParameterized() &&
+                (st.getQualifyingType()==null || 
+                !st.getQualifyingType().getDeclaration().isParameterized())) {
+                addToIntersection(list, st, unit);
+            }
+        }
+        IntersectionType it = new IntersectionType(unit);
+        it.setSatisfiedTypes(list);
+        ProducedType type = it.canonicalize().getType();
+        return type;
     }
 
     private ProducedType inferTypeArgument(Tree.InvocationExpression that,
