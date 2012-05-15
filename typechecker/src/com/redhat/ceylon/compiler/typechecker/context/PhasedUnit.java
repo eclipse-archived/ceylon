@@ -49,9 +49,12 @@ public class PhasedUnit {
     private VirtualFile unitFile;
     private final Set<PhasedUnit> dependentsOf = new HashSet<PhasedUnit>();
     private List<CommonToken> tokens;
-    private boolean fullyTyped;
     private ModuleVisitor moduleVisitor;
     private VirtualFile srcDir;
+    private boolean declarationsScanned;
+    private boolean typeDeclarationsScanned;
+    private boolean refinementValidated;
+    private boolean fullyTyped;
 
     public VirtualFile getSrcDir() {
         return srcDir;
@@ -109,6 +112,31 @@ public class PhasedUnit {
         return fullyTyped;
     }
 
+    
+    public boolean isDeclarationsScanned() {
+        return declarationsScanned;
+    }
+
+    public void setDeclarationsScanned(boolean declarationsScanned) {
+        this.declarationsScanned = declarationsScanned;
+    }
+
+    public boolean isTypeDeclarationsScanned() {
+        return typeDeclarationsScanned;
+    }
+
+    public void setTypeDeclarationsScanned(boolean typeDeclarationsScanned) {
+        this.typeDeclarationsScanned = typeDeclarationsScanned;
+    }
+
+    public boolean isRefinementValidated() {
+        return refinementValidated;
+    }
+
+    public void setRefinementValidated(boolean refinementValidated) {
+        this.refinementValidated = refinementValidated;
+    }
+
     public void validateTree() {
         //System.out.println("Validating tree for " + fileName);
         compilationUnit.visit(new Validator());
@@ -119,11 +147,13 @@ public class PhasedUnit {
         DeclarationVisitor dv = new DeclarationVisitor(pkg, fileName);
         compilationUnit.visit(dv);
         unit = dv.getCompilationUnit();
+        declarationsScanned = true;
     }
 
     public void scanTypeDeclarations() {
         //System.out.println("Scan type declarations for " + fileName);
         compilationUnit.visit( new TypeVisitor() );
+        typeDeclarationsScanned = true;
     }
 
     public void analyseTypes() {
@@ -158,6 +188,7 @@ public class PhasedUnit {
     public void validateRefinement() {
         //System.out.println("Validate member refinement for " + fileName);
         compilationUnit.visit(new RefinementVisitor());
+        refinementValidated = true;
     }
 
     public void generateStatistics(StatisticsVisitor statsVisitor) {
