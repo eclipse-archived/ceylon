@@ -167,7 +167,9 @@ class Util {
             return false;
         }
         else if (!type.isCallable()) {
-            node.addError(message + message(type, " is not a subtype of Callable"));
+            if (!hasError(node)) {
+                node.addError(message + message(type, " is not a subtype of Callable"));
+            }
             return false;
         }
         else {
@@ -219,8 +221,8 @@ class Util {
             node.addError(message + message(type, " is not exactly ", supertype));
         }
     }
-
-    private static void addTypeUnknownError(Node node, String message) {
+    
+    private static boolean hasError(Node node) {
         class ErrorVisitor extends Visitor {
             boolean found = false;
             @Override
@@ -235,7 +237,11 @@ class Util {
         }
         ErrorVisitor ev = new ErrorVisitor();
         node.visit(ev);
-        if (!ev.found) {
+        return ev.found;
+    }
+
+    private static void addTypeUnknownError(Node node, String message) {
+        if (!hasError(node)) {
             node.addError(message + ": type cannot be determined");
         }
     }
