@@ -177,6 +177,11 @@ public class ExpressionTest2 extends CompilerTest {
     }
     
     @Test
+    public void testInvZeroSequencedArgs(){
+        compareWithJavaSource("invoke/ZeroSequencedArgs");
+    }
+    
+    @Test
     public void testInvDefaultedAndSequenced(){
         compareWithJavaSource("invoke/DefaultedAndSequencedParams");
     }

@@ -1,0 +1,17 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class zeroSequencedArgs {
+    
+    private zeroSequencedArgs() {
+    }
+    
+    static void zeroSequencedArgs() {
+        final .ceylon.language.SequenceBuilder<.ceylon.language.String> sb = new .ceylon.language.SequenceBuilder<.ceylon.language.String>();
+        sb.appendAll();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.zeroSequencedArgs.zeroSequencedArgs();
+    }
+}
