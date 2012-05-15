@@ -385,6 +385,10 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("method/TwoParamListsVoid");
     }
     @Test
+    public void testTwoParamListsTP(){
+        compareWithJavaSource("method/TwoParamListsTP");
+    }
+    @Test
     public void testCallableEscaping(){
         compareWithJavaSource("method/CallableEscaping");
     }

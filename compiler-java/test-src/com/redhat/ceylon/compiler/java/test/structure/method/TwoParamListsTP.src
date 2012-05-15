@@ -1,0 +1,43 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+final class twoParamListsTP {
+    
+    private twoParamListsTP() {
+    }
+    
+    static <T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<? super T> & .ceylon.language.Invertable<? extends T>>.ceylon.language.Callable<? extends .java.lang.Object> twoParamListsTP(final .ceylon.language.String name) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                if (true) {
+                    final T i = (T)$param$0;
+                    .java.lang.Object $elem$0;
+                    for (.ceylon.language.Iterator<? extends T> $x$iter$1 = new .ceylon.language.Range<T>(i.getNegativeValue(), i).getIterator(); !(($elem$0 = $x$iter$1.next()) instanceof .ceylon.language.Finished); ) {
+                        final T x = (T)$elem$0;
+                        .ceylon.language.print.print(.ceylon.language.String.instance("hello ").plus(name));
+                    }
+                }
+                return null;
+            }
+        };
+    }
+}
+final class twoParamListsTP_simple {
+    
+    private twoParamListsTP_simple() {
+    }
+    
+    static <T extends .ceylon.language.Ordinal<? extends T>>.ceylon.language.Callable<? extends .java.lang.Object> twoParamListsTP_simple(final .ceylon.language.String name) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                if (true) {
+                    final T i = (T)$param$0;
+                }
+                return null;
+            }
+        };
+    }
+}
