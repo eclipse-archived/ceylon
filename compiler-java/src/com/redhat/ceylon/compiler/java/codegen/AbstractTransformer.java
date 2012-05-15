@@ -741,57 +741,49 @@ public abstract class AbstractTransformer implements Transformation {
         ProducedType simpleType = simplifyType(type);
         
         java.util.List<ProducedType> qualifyingTypes = new java.util.ArrayList<ProducedType>();
-        java.util.List<TypeParameter> qualifyingTypeParameters = new java.util.ArrayList<TypeParameter>();
-        java.util.Map<TypeParameter, ProducedType> qualifyingTypeArguments = new java.util.HashMap<TypeParameter, ProducedType>();
         ProducedType qType = simpleType;
+        boolean hasTypeParameters = false;
         while (qType != null) {
+            hasTypeParameters |= !qType.getTypeArguments().isEmpty();
             qualifyingTypes.add(qType);
-            Map<TypeParameter, ProducedType> tas = qType.getTypeArguments();
-            java.util.List<TypeParameter> tps = qType.getDeclaration().getTypeParameters();
-            if (tps != null) {
-                qualifyingTypeParameters.addAll(tps);
-                qualifyingTypeArguments.putAll(tas);
-            }
             qType = qType.getQualifyingType();
         }
+        int firstQualifyingTypeWithTypeParameters = qualifyingTypes.size() - 1;
+        // find the first static one, from the right to the left
+        for(ProducedType pt : qualifyingTypes){
+            TypeDeclaration declaration = pt.getDeclaration();
+            if(Decl.isStatic(declaration)){
+                break;
+            }
+            firstQualifyingTypeWithTypeParameters--;
+        }
+        if(firstQualifyingTypeWithTypeParameters < 0)
+            firstQualifyingTypeWithTypeParameters = 0;
+        // put them in outer->inner order
+        Collections.reverse(qualifyingTypes);
         
-        if (simpleType.getDeclaration() instanceof Interface
-                && ((flags & WANT_RAW_TYPE) == 0) && !qualifyingTypeParameters.isEmpty()) {
-            Collections.reverse(qualifyingTypes);
-            JCExpression baseType = makeErroneous();
-            TypeDeclaration tdecl = simpleType.getDeclaration();
-            ListBuffer<JCExpression> typeArgs = makeTypeArgs(isCeylonCallable(simpleType), 
-                    flags, 
-                    qualifyingTypeArguments, qualifyingTypeParameters);
-            if (isCeylonCallable(type) && 
-                    (flags & CLASS_NEW) != 0) {
-                baseType = makeIdent(syms().ceylonAbstractCallableType);
-            } else {
-                baseType = makeDeclarationName(tdecl);
-            }
-            
-            if (typeArgs != null && typeArgs.size() > 0) {
-                jt = make().TypeApply(baseType, typeArgs.toList());
-            } else {
-                jt = baseType;
-            }
-        } else  if (((flags & WANT_RAW_TYPE) == 0) && !qualifyingTypeParameters.isEmpty()) {
+        if (((flags & WANT_RAW_TYPE) == 0) && hasTypeParameters) {
             // GENERIC TYPES
-            Collections.reverse(qualifyingTypes);
             JCExpression baseType = makeErroneous();
-            boolean first = true;
+            int index = 0;
             for (ProducedType qualifyingType : qualifyingTypes) {
                 TypeDeclaration tdecl = qualifyingType.getDeclaration();
-                ListBuffer<JCExpression> typeArgs = makeTypeArgs( 
+                ListBuffer<JCExpression> typeArgs = null;
+                if(index >= firstQualifyingTypeWithTypeParameters)
+                    typeArgs = makeTypeArgs( 
                         qualifyingType, 
                         //tdecl, 
                         flags);
                 if (isCeylonCallable(type) && 
                         (flags & CLASS_NEW) != 0) {
                     baseType = makeIdent(syms().ceylonAbstractCallableType);
-                } else if (first) {
+                } else if (index == 0) {
                     String name;
-                    if (tdecl instanceof Interface) {
+                    // in Ceylon we'd move the nested decl to a companion class (TODO: check that
+                    // we are qualifying first!!!)
+                    // but in Java we just don't have type params to the qualifying type if the
+                    // qualified type is static
+                    if (tdecl instanceof Interface && firstQualifyingTypeWithTypeParameters == 0) {
                         name = getCompanionClassName(tdecl);
                     } else {
                         name = getFQDeclarationName(tdecl);
@@ -807,9 +799,7 @@ public abstract class AbstractTransformer implements Transformation {
                     jt = baseType;
                 }
                 
-                if (first) {
-                    first = false;
-                }
+                index++;
             }
         } else {
             TypeDeclaration tdecl = simpleType.getDeclaration();            
