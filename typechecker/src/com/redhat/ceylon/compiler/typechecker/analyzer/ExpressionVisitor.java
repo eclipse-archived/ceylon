@@ -52,6 +52,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -1714,7 +1715,10 @@ public class ExpressionVisitor extends Visitor {
         ProducedType argType = null;
         if (a instanceof Tree.SpecifiedArgument) {
             Tree.SpecifiedArgument sa = (Tree.SpecifiedArgument) a;
-            argType = sa.getSpecifierExpression().getExpression().getTypeModel();
+            Expression e = sa.getSpecifierExpression().getExpression();
+            if (e!=null) {
+                argType = e.getTypeModel();
+            }
         }
         else if (a instanceof Tree.TypedArgument) {
             Tree.TypedArgument ta = (Tree.TypedArgument) a;
