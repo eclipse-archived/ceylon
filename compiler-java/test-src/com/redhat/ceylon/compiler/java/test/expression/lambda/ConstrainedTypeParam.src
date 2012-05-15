@@ -1,0 +1,27 @@
+package com.redhat.ceylon.compiler.java.test.expression.lambda;
+
+class ConstrainedTypeParam<T> {
+    
+    private final void method(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+    }
+    
+    private final void test() {
+        method(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                final T t = (T)$param$0;
+                .ceylon.language.print.print(.ceylon.language.String.instance(t.toString()));
+                return null;
+            }
+        });
+    }
+    
+    ConstrainedTypeParam() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.lambda.ConstrainedTypeParam();
+    }
+}

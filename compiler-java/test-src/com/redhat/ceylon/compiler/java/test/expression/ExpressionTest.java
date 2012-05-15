@@ -314,4 +314,9 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("lambda/DefaultedParameter");
     }
     
+    @Test
+    public void testLmdConstrainedTypeParam(){
+        compareWithJavaSource("lambda/ConstrainedTypeParam");
+    }
+    
 }
