@@ -28,6 +28,7 @@ import static com.sun.tools.javac.code.TypeTags.VOID;
 
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -145,7 +146,8 @@ public class MethodDefinitionBuilder {
 
     JCExpression makeResultType(TypedDeclaration typedDeclaration, ProducedType type) {
         if (typedDeclaration == null
-                || gen.isVoid(type)) {
+                || (!(typedDeclaration instanceof FunctionalParameter)
+                        && gen.isVoid(type))) {
             return makeVoidType();
         } else {
             return gen.makeJavaType(typedDeclaration, type);
