@@ -19,27 +19,47 @@ public class $empty {
 
         @Override
         public boolean definesEvery(Iterable keys) {
-            return Correspondence$impl._definesEvery(this, keys);
+            return false;
+        }
+        @Override
+        public boolean definesEvery() {
+            return false;
         }
 
         @Override
         public boolean definesAny(Iterable keys) {
-            return Correspondence$impl._definesAny(this, keys);
+            return false;
+        }
+        @Override
+        public boolean definesAny() {
+            return false;
         }
 
         @Override
         public List<? extends java.lang.Object> items(Iterable keys) {
-            return Correspondence$impl._items(this, keys);
+            return this;
+        }
+        @Override
+        public List<? extends java.lang.Object> items() {
+            return this;
         }
         
         @Override
         public boolean containsEvery(ceylon.language.Iterable<?> elements) {
             return Category$impl._containsEvery(this, elements);
         }
+        @Override
+        public boolean containsEvery() {
+            return false;
+        }
 
         @Override
         public boolean containsAny(ceylon.language.Iterable<?> elements) {
             return Category$impl._containsAny(this, elements);
+        }
+        @Override
+        public boolean containsAny() {
+            return false;
         }
 
         @Override

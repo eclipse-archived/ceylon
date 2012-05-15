@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -47,6 +48,11 @@ public class SequenceBuilder<Element> implements Sized {
     	for (Iterator<? extends Element> iter=elements.getIterator(); !((elem = iter.next()) instanceof Finished);) {
     	    list.add((Element) elem);
     	}
+    }
+    
+    @Ignore
+    public final void appendAll() {
+        appendAll($empty.getEmpty());
     }
     
     @Override

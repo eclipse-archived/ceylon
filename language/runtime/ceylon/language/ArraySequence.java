@@ -157,15 +157,30 @@ public class ArraySequence<Element> implements Sequence<Element> {
     public boolean definesEvery(Iterable<? extends Integer> keys) {
         return Correspondence$impl._definesEvery(this, keys);
     }
+    
+    @Override
+    public boolean definesEvery() {
+        return Correspondence$impl._definesEvery(this, $empty.getEmpty());
+    }
 
     @Override
     public boolean definesAny(Iterable<? extends Integer> keys) {
         return Correspondence$impl._definesAny(this, keys);
     }
+    
+    @Override
+    public boolean definesAny() {
+        return Correspondence$impl._definesAny(this, $empty.getEmpty());
+    }
 
     @Override
     public ceylon.language.List<? extends Element> items(Iterable<? extends Integer> keys) {
         return Correspondence$impl._items(this, keys);
+    }
+    
+    @Override
+    public ceylon.language.List<? extends Element> items() {
+        return Correspondence$impl._items(this, $empty.getEmpty());
     }
 
     @Override
@@ -213,9 +228,19 @@ public class ArraySequence<Element> implements Sequence<Element> {
     public boolean containsEvery(Iterable<?> elements) {
         return Category$impl._containsEvery(this, elements);
     }
+    
+    @Override
+    public boolean containsEvery() {
+        return Category$impl._containsEvery(this, $empty.getEmpty());
+    }
 
     @Override
     public boolean containsAny(Iterable<?> elements) {
         return Category$impl._containsAny(this, elements);
+    }
+    
+    @Override
+    public boolean containsAny() {
+        return Category$impl._containsAny(this, $empty.getEmpty());
     }
 }

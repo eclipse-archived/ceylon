@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
@@ -37,5 +38,9 @@ public final class join {
 			}
 		}
         return new ArraySequence<Element>(list);
+    }
+    @Ignore
+    public static <Element> Iterable<? extends Element> join() {
+        return join($empty.getEmpty());
     }
 }
