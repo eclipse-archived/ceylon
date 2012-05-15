@@ -475,4 +475,22 @@ class Generics() {
     class A4<in V, W>() extends Algebraic<Bottom,V,W>() {}
     class A5<out U, W>() extends Algebraic<U,Void,W>() {}
     class A6<out U, in V, W>() extends Algebraic<U,V,W>() {}
+    
+    T genericMethod1<T>(T t) given T satisfies Numeric<T> {
+        return t;
+    }
+    T genericMethod2<T>(T? t) given T satisfies Object {
+        if (exists t) {
+            return t;
+        }
+        else {
+            throw;
+        }
+    }
+    @error genericMethod1("hello");
+    @type["Integer"] genericMethod1(1);
+    @type["String"] genericMethod2("hello");
+    @type["String"] genericMethod2(true then "hello");
+    
+    @type["Empty|Sequence<String>"] coalesce({null, "hello"});
 }
