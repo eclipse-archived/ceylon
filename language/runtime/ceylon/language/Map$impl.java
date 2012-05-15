@@ -162,8 +162,8 @@ public final class Map$impl<Key,Item> {
             }
     @Override public Iterable<? extends Key> getSequence() { return Iterable$impl._getSequence(this); }
     @Override public Key find(Callable<Boolean> f) { return Iterable$impl._find(this, f); }
-    @Override public <Result> Iterable<Result> map(Callable<Result> f) { return Iterable$impl._map(this, f); }
-    @Override public Iterable<? extends Key> filter(Callable<Boolean> f) { return Iterable$impl._filter(this, f); }
+    @Override public <Result> Iterable<Result> map(Callable<Result> f) { return new MapIterable(this, f); }
+    @Override public Iterable<? extends Key> filter(Callable<Boolean> f) { return new FilterIterable(this, f); }
     @Override public <Result> Result fold(Result ini, Callable<Result> f) { return Iterable$impl._fold(this, ini, f); }
         }
         return new keySet();
@@ -234,8 +234,8 @@ public final class Map$impl<Key,Item> {
             }
     @Override public Iterable<? extends Item> getSequence() { return Iterable$impl._getSequence(this); }
     @Override public Item find(Callable<Boolean> f) { return Iterable$impl._find(this, f); }
-    @Override public <Result> Iterable<Result> map(Callable<Result> f) { return Iterable$impl._map(this, f); }
-    @Override public Iterable<? extends Item> filter(Callable<Boolean> f) { return Iterable$impl._filter(this, f); }
+    @Override public <Result> Iterable<Result> map(Callable<Result> f) { return new MapIterable(this, f); }
+    @Override public Iterable<? extends Item> filter(Callable<Boolean> f) { return new FilterIterable(this, f); }
     @Override public <Result> Result fold(Result ini, Callable<Result> f) { return Iterable$impl._fold(this, ini, f); }
         }
         return new valueCollection();
@@ -345,8 +345,8 @@ public final class Map$impl<Key,Item> {
             }
     @Override public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> getSequence() { return Iterable$impl._getSequence(this); }
     @Override public Entry<? extends Item, ? extends Set<Key>> find(Callable<Boolean> f) { return Iterable$impl._find(this, f); }
-    @Override public <Result> Iterable<Result> map(Callable<Result> f) { return Iterable$impl._map(this, f); }
-    @Override public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> filter(Callable<Boolean> f) { return Iterable$impl._filter(this, f); }
+    @Override public <Result> Iterable<Result> map(Callable<Result> f) { return new MapIterable(this, f); }
+    @Override public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> filter(Callable<Boolean> f) { return new FilterIterable(this, f); }
     @Override public <Result> Result fold(Result ini, Callable<Result> f) { return Iterable$impl._fold(this, ini, f); }
         }
         return new inverse();

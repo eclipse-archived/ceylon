@@ -25,42 +25,11 @@ public final class Iterable$impl<Element> {
     }
 
     public <Result> Iterable<Result> map(Callable<Result> collecting) {
-        return Iterable$impl._map($this, collecting);
-    }
-    static <Result> Iterable<Result> _map(final Iterable $this, final Callable<Result> collecting) {
-        class MapIterator implements Iterator<Result> {
-            final Iterator orig = $this.getIterator();
-            java.lang.Object elem;
-            public java.lang.Object next() {
-                elem = orig.next();
-                if (!(elem instanceof Finished)) {
-                    return collecting.$call(elem);
-                }
-                return elem;
-            }
-        }
-        //TODO return an Iterable with this iterator
-        return null;
+        return new MapIterable($this, collecting);
     }
 
     public Iterable<? extends Element> filter(Callable<Boolean> selecting) {
-        return Iterable$impl._filter($this, selecting);
-    }
-    static <Element> Iterable<? extends Element> _filter(final Iterable<? extends Element> $this, final Callable<Boolean> selecting) {
-        class FilterIterator implements Iterator<Element> {
-            final Iterator<? extends Element> iter = $this.getIterator();
-            public java.lang.Object next() {
-                java.lang.Object elem = iter.next();
-                boolean flag = elem instanceof Finished ? true : selecting.$call(elem).booleanValue();
-                while (!flag) {
-                    elem = iter.next();
-                    flag = elem instanceof Finished ? true : selecting.$call(elem).booleanValue();
-                }
-                return elem;
-            }
-        }
-        //TODO return an Iterable with this iterator
-        return null;
+        return new FilterIterable($this, selecting);
     }
 
     public <Result> Result fold(Result initial, Callable<Result> accumulating) {
@@ -89,4 +58,62 @@ public final class Iterable$impl<Element> {
         return null;
     }
 
+}
+
+class MapIterable<Element> implements Iterable<Element> {
+    final Iterable<Element> iterable;
+    final Callable sel;
+    <Result> MapIterable(Iterable<Element> iterable, Callable<Result> collecting) {
+        this.iterable = iterable;
+        sel = collecting;
+    }
+
+    class MapIterator<Result> implements Iterator<Result> {
+        final Iterator orig = iterable.getIterator();
+        java.lang.Object elem;
+        public java.lang.Object next() {
+            elem = orig.next();
+            if (!(elem instanceof Finished)) {
+                return sel.$call(elem);
+            }
+            return elem;
+        }
+    }
+    public Iterator<? extends Element> getIterator() { return new MapIterator(); }
+    public boolean getEmpty() { return getIterator().next() instanceof Finished; }
+
+    @Override public Iterable<? extends Element> getSequence() { return Iterable$impl._getSequence(this); }
+    @Override public Element find(Callable<Boolean> f) { return Iterable$impl._find(this, f); }
+    @Override public Iterable<java.lang.Object> map(Callable f) { return new MapIterable(this, f); }
+    @Override public Iterable<? extends Element> filter(Callable<Boolean> f) { return new FilterIterable(this, f); }
+    @Override public java.lang.Object fold(java.lang.Object ini, Callable f) { return Iterable$impl._fold(this, ini, f); }
+}
+
+class FilterIterable<Element> implements Iterable<Element> {
+    final Iterable<Element> iterable;
+    final Callable<Boolean> f;
+    FilterIterable(Iterable<Element> iterable, Callable<Boolean> selecting) {
+        this.iterable = iterable;
+        f = selecting;
+    }
+
+    class FilterIterator implements Iterator<Element> {
+        final Iterator<? extends Element> iter = iterable.getIterator();
+        public java.lang.Object next() {
+            java.lang.Object elem = iter.next();
+            boolean flag = elem instanceof Finished ? true : f.$call(elem).booleanValue();
+            while (!flag) {
+                elem = iter.next();
+                flag = elem instanceof Finished ? true : f.$call(elem).booleanValue();
+            }
+            return elem;
+        }
+    }
+    public Iterator<Element> getIterator() { return new FilterIterator(); }
+    public boolean getEmpty() { return getIterator().next() instanceof Finished; }
+    @Override public Iterable<? extends Element> getSequence() { return Iterable$impl._getSequence(this); }
+    @Override public Element find(Callable<Boolean> f) { return Iterable$impl._find(this, f); }
+    @Override public <Result> Iterable<Result> map(Callable<Result> f) { return new MapIterable(this, f); }
+    @Override public Iterable<? extends Element> filter(Callable<Boolean> f) { return new FilterIterable(this, f); }
+    @Override public <Result> Result fold(Result ini, Callable<Result> f) { return Iterable$impl._fold(this, ini, f); }
 }

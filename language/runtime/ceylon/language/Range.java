@@ -306,8 +306,8 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
 
     @Override public Iterable<? extends Element> getSequence() { return Iterable$impl._getSequence(this); }
     @Override public Element find(Callable<Boolean> f) { return Iterable$impl._find(this, f); }
-    @Override public <Result> Iterable<Result> map(Callable<Result> f) { return Iterable$impl._map(this, f); }
-    @Override public Iterable<? extends Element> filter(Callable<Boolean> f) { return Iterable$impl._filter(this, f); }
+    @Override public <Result> Iterable<Result> map(Callable<Result> f) { return new MapIterable(this, f); }
+    @Override public Iterable<? extends Element> filter(Callable<Boolean> f) { return new FilterIterable(this, f); }
     @Override public <Result> Result fold(Result ini, Callable<Result> f) { return Iterable$impl._fold(this, ini, f); }
 
 }
