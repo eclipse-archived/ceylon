@@ -418,5 +418,10 @@ public class ExpressionTest2 extends CompilerTest {
     public void testIndirectTypeParam(){
         compareWithJavaSource("invoke/IndirectTypeParam");
     }
+    
+    @Test
+    public void testDefaultFunctionReference(){
+        compareWithJavaSource("invoke/DefaultFunctionReference");
+    }
 
 }

@@ -1,0 +1,47 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class defaultFunctionReference {
+    
+    private defaultFunctionReference() {
+    }
+    
+    static void defaultFunctionReference(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+        f.$call(.ceylon.language.Integer.instance(1L));
+    }
+    
+    static final void defaultFunctionReference() {
+        (
+            let
+            {
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$f$1 = defaultFunctionReference$f();
+                defaultFunctionReference($ceylontmp$f$1);
+            }
+            returning null;
+        );
+    }
+    
+    static final .ceylon.language.Callable<? extends .java.lang.Object> defaultFunctionReference$f() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Object)"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                .ceylon.language.print.print((.java.lang.Object)$param$0);
+                return null;
+            }
+        };
+    }
+}
+final class defaultFunctionReference_call {
+    
+    private defaultFunctionReference_call() {
+    }
+    
+    static void defaultFunctionReference_call() {
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference.defaultFunctionReference();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference_call.defaultFunctionReference_call();
+    }
+}
