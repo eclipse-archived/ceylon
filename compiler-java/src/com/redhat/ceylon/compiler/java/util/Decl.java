@@ -293,6 +293,17 @@ public class Decl {
         }
         return false;
     }
+
+    public static boolean isCeylon(TypeDeclaration declaration) {
+        if(declaration instanceof LazyClass){
+            return ((LazyClass)declaration).isCeylon();
+        }
+        if(declaration instanceof LazyInterface){
+            return ((LazyInterface)declaration).isCeylon();
+        }
+        // if it's not one of those it must be from source (Ceylon)
+        return true;
+    }
     
 
 }

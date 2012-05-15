@@ -23,6 +23,7 @@ package com.redhat.ceylon.compiler.loader.model;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelCompleter;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
@@ -47,6 +48,7 @@ public class LazyInterface extends Interface implements LazyContainer {
     private ModelCompleter completer;
     private String realName;
     private boolean isStatic;
+    private boolean isCeylon;
     
     private boolean isLoaded = false;
     private boolean isTypeParamsLoaded = false;
@@ -57,6 +59,11 @@ public class LazyInterface extends Interface implements LazyContainer {
         this.realName = classMirror.getSimpleName();
         setName(Util.strip(this.realName));
         this.isStatic = classMirror.isStatic();
+        this.isCeylon = classMirror.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null;
+    }
+
+    public boolean isCeylon() {
+        return isCeylon;
     }
 
     public boolean isStatic() {
