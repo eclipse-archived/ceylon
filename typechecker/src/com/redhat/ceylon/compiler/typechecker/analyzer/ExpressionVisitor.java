@@ -1217,26 +1217,36 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.InvocationExpression that) {
         
-        //super.visit(that);
-        List<ProducedType> sig = null;
+        boolean isDirectInvocation = that.getPrimary() instanceof Tree.MemberOrTypeExpression;
+        if (isDirectInvocation) {
+            ((Tree.MemberOrTypeExpression) that.getPrimary()).setDirectlyInvoked(true);
+        }
+        
         if (that.getPositionalArgumentList()!=null) {
             that.getPositionalArgumentList().visit(this);
-            sig = new ArrayList<ProducedType>();
-            for (Tree.PositionalArgument pa: that.getPositionalArgumentList().getPositionalArguments()) {
-                sig.add(pa.getExpression().getTypeModel());
-            }
-            if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
+            if (isDirectInvocation) {
+                //set up the "signature" on the primary
+                //so that we can resolve the the right 
+                //overloaded declaration
+                List<ProducedType> sig = new ArrayList<ProducedType>();
+                for (Tree.PositionalArgument pa: that.getPositionalArgumentList()
+                        .getPositionalArguments()) {
+                    sig.add(pa.getExpression().getTypeModel());
+                }
                 ((Tree.MemberOrTypeExpression) that.getPrimary()).setSignature(sig);
             }
         }
+        
         if (that.getNamedArgumentList()!=null) {
             that.getNamedArgumentList().visit(this);
         }
-        if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
-            ((Tree.MemberOrTypeExpression) that.getPrimary()).setDirectlyInvoked(true);
-        }
+        
         that.getPrimary().visit(this);
         
+        visitInvocation(that);
+    }
+
+    private void visitInvocation(Tree.InvocationExpression that) {
         Tree.Primary pr = that.getPrimary();
         if (pr==null) {
             that.addError("malformed invocation expression");
