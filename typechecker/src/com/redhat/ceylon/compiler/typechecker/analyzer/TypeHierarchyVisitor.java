@@ -63,6 +63,17 @@ public class TypeHierarchyVisitor extends Visitor {
     }
 
     @Override
+    public void visit(Tree.ObjectArgument that) {
+        super.visit(that);
+        final Value value = that.getDeclarationModel();
+        //an object definition is always concrete
+        List<Type> orderedTypes = sortDAGAndBuildMetadata(value.getTypeDeclaration(), that);
+        checkForFormalsNotImplemented(that, orderedTypes);
+        checkForDoubleMemberInheritanceNotOverridden(that, orderedTypes);
+        checkForDoubleMemberInheritanceWoCommonAncestor(that, orderedTypes);
+    }
+
+    @Override
     public void visit(Tree.ClassOrInterface that) {
         super.visit(that);
         final ClassOrInterface classOrInterface = that.getDeclarationModel();
@@ -75,7 +86,7 @@ public class TypeHierarchyVisitor extends Visitor {
         checkForDoubleMemberInheritanceWoCommonAncestor(that, orderedTypes);
     }
 
-    private void checkForDoubleMemberInheritanceWoCommonAncestor(Tree.Declaration that, List<Type> orderedTypes) {
+    private void checkForDoubleMemberInheritanceWoCommonAncestor(Tree.StatementOrArgument that, List<Type> orderedTypes) {
         Type aggregateType = new Type();
         for(Type currentType : orderedTypes) {
             for (Type.Members currentTypeMembers:currentType.membersByName.values()) {
@@ -129,7 +140,7 @@ public class TypeHierarchyVisitor extends Visitor {
         return sameMemberInherited;
     }
 
-    private void checkForDoubleMemberInheritanceNotOverridden(Tree.Declaration that, List<Type> orderedTypes) {
+    private void checkForDoubleMemberInheritanceNotOverridden(Tree.StatementOrArgument that, List<Type> orderedTypes) {
         Type aggregateType = new Type();
         int size = orderedTypes.size();
         for(int index = size -1;index>=0;index--) {
@@ -199,7 +210,7 @@ public class TypeHierarchyVisitor extends Visitor {
         return null;
     }
 
-    private void checkForFormalsNotImplemented(Tree.Declaration that, List<Type> orderedTypes) {
+    private void checkForFormalsNotImplemented(Tree.StatementOrArgument that, List<Type> orderedTypes) {
         Type aggregation = buildAggregatedType(orderedTypes);
         for (Type.Members members:aggregation.membersByName.values()) {
             if (!members.formals.isEmpty() && members.actualsNonFormals.isEmpty()) {
