@@ -25,7 +25,7 @@ public final class List$impl<Element> {
         return lastIndex==null ? 0 : lastIndex.longValue()+1;
     }
 
-    public boolean defines(List<Element> $this, Integer key){
+    public boolean defines(Integer key){
         return List$impl.<Element>_defines($this, key);
     }
     static <Element> boolean _defines(List<Element> $this, Integer key){
