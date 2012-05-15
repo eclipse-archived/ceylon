@@ -37,6 +37,7 @@ import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
+import com.redhat.ceylon.compiler.loader.ModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -139,6 +140,34 @@ public class ModelLoaderTest extends CompilerTest {
         task2.setTaskListener(listener);
 
         success = task2.call();
+        Assert.assertTrue("Compilation failed", success);
+    }
+
+    protected void verifyClassLoading(String ceylon, final RunnableTest test){
+        // now compile the ceylon usage file
+        JavacTaskImpl task2 = getCompilerTask(ceylon);
+        // get the context to grab the declarations
+        final Context context2 = task2.getContext();
+        
+        // check the declarations after Enter but before the compilation is done otherwise we can'tload lazy
+        // declarations from the jar anymore because we've overridden the jar and the javac jar index is corrupted
+        class Listener implements TaskListener{
+            @Override
+            public void started(TaskEvent e) {
+            }
+
+            @Override
+            public void finished(TaskEvent e) {
+                if(e.getKind() == Kind.ENTER){
+                    CeylonModelLoader modelLoader = (CeylonModelLoader) CeylonModelLoader.instance(context2);
+                    test.test(modelLoader);
+                }
+            }
+        }
+        Listener listener = new Listener();
+        task2.setTaskListener(listener);
+
+        Boolean success = task2.call();
         Assert.assertTrue("Compilation failed", success);
     }
 
