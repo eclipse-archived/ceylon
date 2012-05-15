@@ -763,43 +763,77 @@ public abstract class AbstractTransformer implements Transformation {
         Collections.reverse(qualifyingTypes);
         
         if (((flags & WANT_RAW_TYPE) == 0) && hasTypeParameters) {
-            // GENERIC TYPES
-            JCExpression baseType = makeErroneous();
-            int index = 0;
-            for (ProducedType qualifyingType : qualifyingTypes) {
-                TypeDeclaration tdecl = qualifyingType.getDeclaration();
-                ListBuffer<JCExpression> typeArgs = null;
-                if(index >= firstQualifyingTypeWithTypeParameters)
-                    typeArgs = makeTypeArgs( 
-                        qualifyingType, 
-                        //tdecl, 
-                        flags);
+            // special case for interfaces because we pull them into toplevel types
+            if(Decl.isCeylon(simpleType.getDeclaration())
+                    && qualifyingTypes.size() > 1
+                    && simpleType.getDeclaration() instanceof Interface){
+                JCExpression baseType = makeErroneous();
+                TypeDeclaration tdecl = simpleType.getDeclaration();
+                // collect all the qualifying type args we'd normally have
+                java.util.List<TypeParameter> qualifyingTypeParameters = new java.util.ArrayList<TypeParameter>();
+                java.util.Map<TypeParameter, ProducedType> qualifyingTypeArguments = new java.util.HashMap<TypeParameter, ProducedType>();
+                for (ProducedType qualifiedType : qualifyingTypes) {
+                    Map<TypeParameter, ProducedType> tas = qualifiedType.getTypeArguments();
+                    java.util.List<TypeParameter> tps = qualifiedType.getDeclaration().getTypeParameters();
+                    if (tps != null) {
+                        qualifyingTypeParameters.addAll(tps);
+                        qualifyingTypeArguments.putAll(tas);
+                    }
+                }
+                ListBuffer<JCExpression> typeArgs = makeTypeArgs(isCeylonCallable(simpleType), 
+                        flags, 
+                        qualifyingTypeArguments, qualifyingTypeParameters);
                 if (isCeylonCallable(type) && 
                         (flags & CLASS_NEW) != 0) {
                     baseType = makeIdent(syms().ceylonAbstractCallableType);
-                } else if (index == 0) {
-                    String name;
-                    // in Ceylon we'd move the nested decl to a companion class (TODO: check that
-                    // we are qualifying first!!!)
-                    // but in Java we just don't have type params to the qualifying type if the
-                    // qualified type is static
-                    if (tdecl instanceof Interface && firstQualifyingTypeWithTypeParameters == 0) {
-                        name = getCompanionClassName(tdecl);
-                    } else {
-                        name = getFQDeclarationName(tdecl);
-                    }
-                    baseType = makeQuotedQualIdentFromString(name);
                 } else {
-                    baseType = makeSelect(jt, tdecl.getName());
+                    baseType = makeDeclarationName(tdecl);
                 }
-                
+
                 if (typeArgs != null && typeArgs.size() > 0) {
                     jt = make().TypeApply(baseType, typeArgs.toList());
                 } else {
                     jt = baseType;
                 }
-                
-                index++;
+            }else{
+                JCExpression baseType = makeErroneous();
+                int index = 0;
+                for (ProducedType qualifyingType : qualifyingTypes) {
+                    TypeDeclaration tdecl = qualifyingType.getDeclaration();
+                    ListBuffer<JCExpression> typeArgs = null;
+                    if(index >= firstQualifyingTypeWithTypeParameters)
+                        typeArgs = makeTypeArgs( 
+                                qualifyingType, 
+                                //tdecl, 
+                                flags);
+                    if (isCeylonCallable(type) && 
+                            (flags & CLASS_NEW) != 0) {
+                        baseType = makeIdent(syms().ceylonAbstractCallableType);
+                    } else if (index == 0) {
+                        String name;
+                        // in Ceylon we'd move the nested decl to a companion class
+                        // but in Java we just don't have type params to the qualifying type if the
+                        // qualified type is static
+                        if (tdecl instanceof Interface
+                                && qualifyingTypes.size() > 1
+                                && firstQualifyingTypeWithTypeParameters == 0) {
+                            name = getCompanionClassName(tdecl);
+                        } else {
+                            name = getFQDeclarationName(tdecl);
+                        }
+                        baseType = makeQuotedQualIdentFromString(name);
+                    } else {
+                        baseType = makeSelect(jt, tdecl.getName());
+                    }
+
+                    if (typeArgs != null && typeArgs.size() > 0) {
+                        jt = make().TypeApply(baseType, typeArgs.toList());
+                    } else {
+                        jt = baseType;
+                    }
+
+                    index++;
+                }
             }
         } else {
             TypeDeclaration tdecl = simpleType.getDeclaration();            
