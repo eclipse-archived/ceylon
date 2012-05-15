@@ -811,18 +811,18 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     }
                 } else if(isGetter(methodMirror)) {
                     // simple attribute
-                    addValue(klass, methodMirror, getJavaAttributeName(methodName));
+                    addValue(klass, methodMirror, getJavaAttributeName(methodName), isCeylon);
                 } else if(isSetter(methodMirror)) {
                     // We skip setters for now and handle them later
                     variables.put(methodMirror, methodMirrors);
                 } else if(isHashAttribute(methodMirror)) {
                     // ERASURE
                     // Un-erasing 'hash' attribute from 'hashCode' method
-                    addValue(klass, methodMirror, "hash");
+                    addValue(klass, methodMirror, "hash", isCeylon);
                 } else if(isStringAttribute(methodMirror)) {
                     // ERASURE
                     // Un-erasing 'string' attribute from 'toString' method
-                    addValue(klass, methodMirror, "string");
+                    addValue(klass, methodMirror, "string", isCeylon);
                 } else {
                     // normal method
                     Method m = addMethod(klass, methodMirror, isCeylon, isOverloaded);
@@ -851,7 +851,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // skip the field if "we've already got one"
             if(klass.getDirectMember(name, null) != null)
                 continue;
-            addValue(klass, fieldMirror);
+            addValue(klass, fieldMirror, isCeylon);
         }
         
         // Now mark all Values for which Setters exist as variable
@@ -961,6 +961,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // and its return type
         try{
             ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, method);
+            method.setUncheckedNullType(!isCeylon);
             method.setType(type);
         }catch(TypeParserException x){
             logError("Invalid type signature for method return type of "+klass.getQualifiedNameString()+"."+methodMirror.getName()+": "+x.getMessage());
@@ -1086,7 +1087,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return new String(newName);
     }
 
-    private void addValue(ClassOrInterface klass, FieldMirror fieldMirror) {
+    private void addValue(ClassOrInterface klass, FieldMirror fieldMirror, boolean isCeylon) {
         // make sure it's a FieldValue so we can figure it out in the backend
         Value value = new FieldValue();
         value.setContainer(klass);
@@ -1102,6 +1103,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setVariable(!fieldMirror.isFinal());
         try{
             value.setType(obtainType(fieldMirror.getType(), fieldMirror, klass));
+            value.setUncheckedNullType(!isCeylon);
         }catch(TypeParserException x){
             logError("Invalid type signature for field "+klass.getQualifiedNameString()+"."+value.getName()+": "+x.getMessage());
             throw x;
@@ -1110,7 +1112,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         klass.getMembers().add(value);
     }
     
-    private void addValue(ClassOrInterface klass, MethodMirror methodMirror, String methodName) {
+    private void addValue(ClassOrInterface klass, MethodMirror methodMirror, String methodName, boolean isCeylon) {
         JavaBeanValue value = new JavaBeanValue();
         value.setGetterName(methodMirror.getName());
         value.setContainer(klass);
@@ -1119,6 +1121,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         setMethodOrValueFlags(klass, methodMirror, value);
         try{
             value.setType(obtainType(methodMirror.getReturnType(), methodMirror, klass));
+            value.setUncheckedNullType(!isCeylon);
         }catch(TypeParserException x){
             logError("Invalid type signature for getter type of "+klass.getQualifiedNameString()+"."+methodName+": "+x.getMessage());
             throw x;
