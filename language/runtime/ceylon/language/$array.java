@@ -1,7 +1,6 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
@@ -14,15 +13,10 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 public final class $array {
 
     private $array() {}
-
-    @Ignore
-    public static <Element> Array<? extends Element> array() {
-        return $arrayOfNone.<Element>arrayOfNone();
-    }
     
     @TypeParameters(@TypeParameter(value="Element"))
     @TypeInfo("ceylon.language.Array<Element>")
-    public static <Element> Array<? extends Element> array(
+    public static <Element> Array<Element> array(
     @Name("elements")
     @Sequenced
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
