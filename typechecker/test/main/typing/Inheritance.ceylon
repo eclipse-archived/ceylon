@@ -173,4 +173,9 @@ class Inheritance() {
         }
     }
     
+    class XXXX(String s) {}
+    class YYYY(s) extends XXXX(s) {
+        shared String s;
+    }
+    
 }

@@ -95,3 +95,25 @@ class InheritanceConsistency() {
         shared actual String hello { return "Wazza"; }
     }
 }
+
+interface Inter<T> {
+    shared formal T get();
+}
+
+void accept<T>(Inter<T> inter) 
+        given T satisfies Object {
+    print(inter.get());
+}
+
+void testObjectArgs() {
+    accept {
+        object inter satisfies Inter<String> {
+            shared actual String get() {
+                return "hello";
+            }
+        }
+    };
+    accept {
+        @error object inter satisfies Inter<String> {}
+    };
+}
