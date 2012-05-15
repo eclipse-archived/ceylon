@@ -21,6 +21,8 @@
 package com.redhat.ceylon.compiler.java.util;
 
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
+import com.redhat.ceylon.compiler.loader.model.LazyClass;
+import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -32,6 +34,7 @@ import com.redhat.ceylon.compiler.typechecker.model.NamedArgumentList;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 /**
@@ -279,6 +282,16 @@ public class Decl {
 
     public static boolean isJavaField(Declaration decl) {
         return decl instanceof FieldValue;
+    }
+
+    public static boolean isStatic(TypeDeclaration declaration) {
+        if(declaration instanceof LazyClass){
+            return ((LazyClass)declaration).isStatic();
+        }
+        if(declaration instanceof LazyInterface){
+            return ((LazyInterface)declaration).isStatic();
+        }
+        return false;
     }
     
 
