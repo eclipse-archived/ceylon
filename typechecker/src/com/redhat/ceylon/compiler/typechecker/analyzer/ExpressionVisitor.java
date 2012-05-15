@@ -1552,7 +1552,8 @@ public class ExpressionVisitor extends Visitor {
         if (prf==null || !prf.isFunctional()) {
             ProducedType pt = that.getPrimary().getTypeModel();
             if (pt!=null) {
-                if (checkCallable(pt, that, "invoked expression must be callable")) {
+                if (checkCallable(pt, that.getPrimary(), 
+                        "invoked expression must be callable")) {
                     List<ProducedType> typeArgs = pt.getTypeArgumentList();
                     if (!typeArgs.isEmpty()) {
                         that.setTypeModel(typeArgs.get(0));
@@ -1626,8 +1627,9 @@ public class ExpressionVisitor extends Visitor {
                          paramCount + " arguments required");
             }
             for (int i=0; i<paramCount && i<argCount; i++) {
-                checkAssignable(getPositionalArgumentType(args.get(i)), 
-                        typeArgs.get(i+1), that, 
+                Tree.PositionalArgument arg = args.get(i);
+                checkAssignable(getPositionalArgumentType(arg), 
+                        typeArgs.get(i+1), arg, 
                         "argument must be assignable to parameter type");
             }
         }
