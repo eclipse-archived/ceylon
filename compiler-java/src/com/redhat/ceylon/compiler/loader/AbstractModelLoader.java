@@ -421,23 +421,23 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return unit;
     }
 
-    private Declaration makeToplevelAttribute(ClassMirror classMirror) {
+    protected Declaration makeToplevelAttribute(ClassMirror classMirror) {
         Value value = new LazyValue(classMirror, this);
         return value;
     }
 
-    private Declaration makeToplevelMethod(ClassMirror classMirror) {
+    protected Declaration makeToplevelMethod(ClassMirror classMirror) {
         LazyMethod method = new LazyMethod(classMirror, this);
         return method;
     }
     
-    private Class makeLazyClass(ClassMirror classMirror, Class superClass, MethodMirror constructor, boolean forTopLevelObject) {
+    protected Class makeLazyClass(ClassMirror classMirror, Class superClass, MethodMirror constructor, boolean forTopLevelObject) {
         Class klass = new LazyClass(classMirror, this, superClass, constructor, forTopLevelObject);
         addInnerClasses(klass, classMirror);
         return klass;
     }
 
-    private Interface makeLazyInterface(ClassMirror classMirror) {
+    protected Interface makeLazyInterface(ClassMirror classMirror) {
         Interface iface = new LazyInterface(classMirror, this);
         addInnerClasses(iface, classMirror);
         return iface;
