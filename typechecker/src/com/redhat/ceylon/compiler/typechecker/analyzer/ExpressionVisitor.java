@@ -3073,6 +3073,7 @@ public class ExpressionVisitor extends Visitor {
         Tree.Variable v = that.getVariable();
         if (v!=null) {
             v.visit(this);
+            initOriginalDeclaration(v);
         }
         if (switchExpression!=null) {
             ProducedType st = switchExpression.getTypeModel();
