@@ -18,6 +18,7 @@ public class MainForTest {
     public static void main(String[] args) throws Exception {
         long start = System.nanoTime();
         TypeChecker typeChecker = new TypeCheckerBuilder()
+                .statistics(true)
                 .verbose(false)
                 .addSrcDirectory( new File("test/main") )
                 .getTypeChecker();
