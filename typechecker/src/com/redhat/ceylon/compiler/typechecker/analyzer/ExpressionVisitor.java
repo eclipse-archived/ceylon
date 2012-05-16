@@ -987,12 +987,15 @@ public class ExpressionVisitor extends Visitor {
             Tree.SpecifierExpression se, Tree.Variable that) {
         ProducedType expressionType = se.getExpression().getTypeModel();
         if (expressionType!=null) {
+            ProducedType t;
             if (unit.isOptionalType(expressionType)) {
-                ProducedType t = unit.getDefiniteType(expressionType);
-                local.setTypeModel(t);
-                that.getDeclarationModel().setType(t);
-                return;
+                t = unit.getDefiniteType(expressionType);
             }
+            else {
+                t=expressionType;
+            }
+            local.setTypeModel(t);
+            that.getDeclarationModel().setType(t);
         }
 //        local.addError("could not infer type of: " + 
 //                name(that.getIdentifier()));
@@ -1002,12 +1005,15 @@ public class ExpressionVisitor extends Visitor {
             Tree.SpecifierExpression se, Tree.Variable that) {
         ProducedType expressionType = se.getExpression().getTypeModel();
         if (expressionType!=null) {
+            ProducedType t;
             if (unit.isEmptyType(expressionType)) {
-                ProducedType t = unit.getNonemptyDefiniteType(expressionType);
-                local.setTypeModel(t);
-                that.getDeclarationModel().setType(t);
-                return;
+                t = unit.getNonemptyDefiniteType(expressionType);
             }
+            else {
+                t = expressionType;
+            }
+            local.setTypeModel(t);
+            that.getDeclarationModel().setType(t);
         }
 //        local.addError("could not infer type of: " + 
 //                name(that.getIdentifier()));
