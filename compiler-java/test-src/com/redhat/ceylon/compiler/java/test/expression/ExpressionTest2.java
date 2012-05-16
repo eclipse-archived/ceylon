@@ -36,11 +36,6 @@ public class ExpressionTest2 extends CompilerTest {
     }
     
     @Test
-    public void testInvObjectArgumentNamed(){
-        compareWithJavaSource("invoke/ObjectArgumentNamedInvocation");
-    }
-    
-    @Test
     public void testInvObjectArgumentNamedInvocation(){
         compareWithJavaSource("invoke/ObjectArgumentNamedInvocation");
     }

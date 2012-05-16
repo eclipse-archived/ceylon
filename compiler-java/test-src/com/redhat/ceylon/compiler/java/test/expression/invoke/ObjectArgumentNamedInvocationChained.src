@@ -48,9 +48,21 @@ public final class objectArgumentNamedInvocationChained {
                                 return string;
                             }
                             
+                            @.java.lang.Override
+                            public final boolean equals(final .java.lang.Object other) {
+                                return false;
+                            }
+                            private final int hash;
+                            
+                            @.java.lang.Override
+                            public final int hashCode() {
+                                return hash;
+                            }
+                            
                             private o() {
                                 super();
                                 this.string = "Foo";
+                                this.hash = (int)0L;
                             }
                         }
                         final o $arg$1$0 = new o();
@@ -67,9 +79,21 @@ public final class objectArgumentNamedInvocationChained {
                         return string;
                     }
                     
+                    @.java.lang.Override
+                    public final boolean equals(final .java.lang.Object other) {
+                        return false;
+                    }
+                    private final int hash;
+                    
+                    @.java.lang.Override
+                    public final int hashCode() {
+                        return hash;
+                    }
+                    
                     private o() {
                         super();
                         this.string = "Bar";
+                        this.hash = (int)0L;
                     }
                 }
                 final o $arg$0$0 = new o();

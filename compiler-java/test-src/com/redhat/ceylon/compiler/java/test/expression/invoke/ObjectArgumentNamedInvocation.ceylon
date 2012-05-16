@@ -8,6 +8,8 @@ shared void objectArgumentNamedInvocation() {
 
     callFunction {
         object o extends Object() {
+            shared actual Boolean equals(Object other) {return false;}
+            shared actual Integer hash = 0;
         }
     };
 }
