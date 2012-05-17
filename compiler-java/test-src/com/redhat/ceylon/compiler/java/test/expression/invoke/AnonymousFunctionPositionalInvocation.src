@@ -20,8 +20,8 @@ final class anonymousArgument {
             
             @.java.lang.Override
             public .ceylon.language.String $call(final .java.lang.Object $param$0) {
-                final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
-                return .ceylon.language.String.instance(i.times(.ceylon.language.Integer.instance(3L)).toString());
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                return .ceylon.language.String.instance(.ceylon.language.Integer.instance(i * 3L).toString());
             }
         });
     }
