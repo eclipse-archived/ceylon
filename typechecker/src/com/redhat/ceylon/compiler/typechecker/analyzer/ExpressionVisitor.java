@@ -587,7 +587,7 @@ public class ExpressionVisitor extends Visitor {
                             .addError("variable values must be assigned using \":=\": " +
                                 d.getName(), 802);
                 }
-                if (d.isToplevel()) {
+                else if (d.isToplevel()) {
                     that.getBaseMemberExpression()
                            .addError("toplevel declarations may not be specified");
                 }
