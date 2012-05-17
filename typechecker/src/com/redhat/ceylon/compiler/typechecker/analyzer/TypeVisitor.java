@@ -35,6 +35,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrTypeList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -66,10 +67,10 @@ public class TypeVisitor extends Visitor {
         Package importedPackage = getPackage(that.getImportPath());
         if (importedPackage!=null) {
             Tree.ImportMemberOrTypeList imtl = that.getImportMemberOrTypeList();
-            ImportList il = imtl.getImportList();
-            il.setImportedScope(importedPackage);
-            Set<String> names = new HashSet<String>();
             if (imtl!=null) {
+                ImportList il = imtl.getImportList();
+                il.setImportedScope(importedPackage);
+                Set<String> names = new HashSet<String>();
                 for (Tree.ImportMemberOrType member: imtl.getImportMemberOrTypes()) {
                     names.add(importMember(member, importedPackage, il));
                 }
@@ -256,9 +257,9 @@ public class TypeVisitor extends Visitor {
                 addMemberImport(member, il, i);
             }
         }
-        if (member.getImportMemberOrTypeList()!=null) {
-            member.getImportMemberOrTypeList()
-                    .addError("member aliases of member aliases not supported");
+        ImportMemberOrTypeList imtl = member.getImportMemberOrTypeList();
+        if (imtl!=null) {
+            imtl.addError("member aliases may not have member aliases");
         }
     }
 
