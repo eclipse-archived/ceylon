@@ -1577,7 +1577,12 @@ public abstract class AbstractTransformer implements Transformation {
         return makeUnboxType(value, "doubleValue");
     }
     
-    private JCTree.JCMethodInvocation unboxString(JCExpression value) {
+    private JCExpression unboxString(JCExpression value) {
+        if (value instanceof JCLiteral
+                && ((JCLiteral)value).value instanceof String) {
+            // If it's already a String literal, why call .toString on it?
+            return value;
+        }
         return makeUnboxType(value, "toString");
     }
     
