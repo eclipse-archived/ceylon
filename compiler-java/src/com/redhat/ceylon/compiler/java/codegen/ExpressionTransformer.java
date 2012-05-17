@@ -108,7 +108,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCStatement transform(Tree.SpecifierStatement op) {
         // SpecifierStatement do not return any value, therefore we don't care about the type of the expressions.
         inStatement = true;
-        JCStatement result = at(op).Exec(transformAssignment(op, op.getBaseMemberExpression(), op.getSpecifierExpression().getExpression()));
+        JCStatement  result = at(op).Exec(transformAssignment(op, op.getBaseMemberExpression(), op.getSpecifierExpression().getExpression()));
         inStatement = false;
         return result;
     }

@@ -65,6 +65,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
@@ -868,7 +869,35 @@ public class ClassTransformer extends AbstractTransformer {
     private List<JCStatement> transformMethodBody(Tree.AnyMethod def) {
         List<JCStatement> body = null;
         final Method model = def.getDeclarationModel();
-        if (def instanceof Tree.MethodDefinition) {
+        
+        if (!Decl.isFormal(def)
+                && def instanceof Tree.MethodDeclaration
+                && ((Tree.MethodDeclaration)def).getSpecifierExpression() == null) {
+            // Uninitialized or deferred initialized method => Make a Callable field
+            current().field(PRIVATE, model.getName(), makeJavaType(typeFact().getCallableType(model.getType())), makeNull(), false);
+            
+            ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
+            for (Parameter param : model.getParameterLists().get(0).getParameters()) {
+                args.append(makeQuotedIdent(param.getName()));
+            }
+            
+            final JCBinary cond = make().Binary(JCTree.EQ, makeQuotedIdent(model.getName()), makeNull());
+            final JCStatement throw_ = make().Throw(make().NewClass(null, null, 
+                    make().Type(syms().runtimeExceptionType), 
+                    List.<JCExpression>nil(), 
+                    null));
+            JCExpression call = make().Apply(null, makeSelect(
+                    model.getName(), "$call"), args.toList());
+            call = gen().expressionGen().applyErasureAndBoxing(call, model.getType(), 
+                    true, BoxingStrategy.UNBOXED, model.getType());
+            JCStatement stmt;
+            if (isVoid(def)) {
+                stmt = make().Exec(call);
+            } else {
+                stmt = make().Return(call);
+            }
+            return List.<JCStatement>of(make().If(cond, throw_, stmt));
+        } else if (def instanceof Tree.MethodDefinition) {
             Scope container = model.getContainer();
             boolean isInterface = container instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
             if(!isInterface){
