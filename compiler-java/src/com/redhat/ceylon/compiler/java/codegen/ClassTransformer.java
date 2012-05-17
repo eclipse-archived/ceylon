@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.java.util.Strategy;
 import com.redhat.ceylon.compiler.java.util.Util;
@@ -65,6 +66,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ObjectArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ObjectDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -769,22 +771,7 @@ public class ClassTransformer extends AbstractTransformer {
         ProducedType innerResultType = model.getType();
         ProducedType resultType = innerResultType;
         // Transform the method body of the 'inner-most method'
-        List<JCStatement> body = null;
-        if (def instanceof Tree.MethodDefinition) {
-            Scope container = model.getContainer();
-            boolean isInterface = container instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
-            if(!isInterface){
-                body = statementGen().transform(((Tree.MethodDefinition)def).getBlock()).getStatements();
-            }
-        } else if (def instanceof MethodDeclaration
-                && ((MethodDeclaration) def).getSpecifierExpression() != null) {
-            InvocationBuilder specifierBuilder = InvocationBuilder.forSpecifierInvocation(gen(), ((MethodDeclaration) def).getSpecifierExpression(), def.getDeclarationModel());
-            if (isVoid(def)) {
-                body = List.<JCStatement>of(make().Exec(specifierBuilder.build()));
-            } else {
-                body = List.<JCStatement>of(make().Return(specifierBuilder.build()));
-            }
-        }
+        List<JCStatement> body = transformMethodBody(def, resultType);
         
         // Construct all but the outer-most method
         for (int index = parameterLists.size() - 1; index >  0; index--) {
@@ -877,6 +864,42 @@ public class ClassTransformer extends AbstractTransformer {
         lb.prepend(methodBuilder.build());
         
         return lb.toList();
+    }
+
+    private List<JCStatement> transformMethodBody(Tree.AnyMethod def, ProducedType resultType) {
+        List<JCStatement> body = null;
+        final Method model = def.getDeclarationModel();
+        if (def instanceof Tree.MethodDefinition) {
+            Scope container = model.getContainer();
+            boolean isInterface = container instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
+            if(!isInterface){
+                body = statementGen().transform(((Tree.MethodDefinition)def).getBlock()).getStatements();
+            }
+        } else if (def instanceof MethodDeclaration
+                && ((MethodDeclaration) def).getSpecifierExpression() != null) {
+            MethodDeclaration methodDecl = (MethodDeclaration)def;
+            JCExpression bodyExpr;
+            final Term term = methodDecl.getSpecifierExpression().getExpression().getTerm();
+            if (term instanceof Tree.FunctionArgument) {
+                // Method specified with lambda: Don't bother generating a 
+                // Callable, just transform the expr to use as the method body.
+                Tree.FunctionArgument fa = (Tree.FunctionArgument)term;
+                bodyExpr = gen().expressionGen().transformExpression(fa.getExpression(), BoxingStrategy.UNBOXED, null);
+                bodyExpr = gen().expressionGen().applyErasureAndBoxing(bodyExpr, resultType, 
+                        true, 
+                        model.getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED, 
+                                resultType);
+            } else {
+                InvocationBuilder specifierBuilder = InvocationBuilder.forSpecifierInvocation(gen(), methodDecl.getSpecifierExpression(), methodDecl.getDeclarationModel());
+                bodyExpr = specifierBuilder.build();
+            }
+            if (isVoid(def)) {
+                body = List.<JCStatement>of(make().Exec(bodyExpr));
+            } else {
+                body = List.<JCStatement>of(make().Return(bodyExpr));
+            }
+        }
+        return body;
     }
 
     private boolean isVoid(Tree.Declaration def) {
