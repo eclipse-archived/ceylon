@@ -16,7 +16,7 @@ final class anonymousArgument2 {
             }
         }
         final callFunction callFunction = new callFunction();
-        callFunction.<.ceylon.language.String>callFunction(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
+        callFunction.<.ceylon.language.String>callFunction(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("ceylon.language.Callable<ceylon.language.String>"){
             
             @.java.lang.Override
             public .ceylon.language.String $call(final .java.lang.Object $param$0) {
@@ -24,7 +24,7 @@ final class anonymousArgument2 {
                 return .ceylon.language.String.instance(i.times(.ceylon.language.Integer.instance(3L)).toString());
             }
         });
-        callFunction.<Y>callFunction(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<Y>("Y()"){
+        callFunction.<Y>callFunction(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<Y>("ceylon.language.Callable<Y>"){
             
             @.java.lang.Override
             public Y $call(final .java.lang.Object $param$0) {

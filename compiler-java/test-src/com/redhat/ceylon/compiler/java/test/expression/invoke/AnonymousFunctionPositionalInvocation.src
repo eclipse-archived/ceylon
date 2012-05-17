@@ -16,7 +16,7 @@ final class anonymousArgument {
             }
         }
         final callFunction callFunction = new callFunction();
-        callFunction.callFunction(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
+        callFunction.callFunction(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("ceylon.language.Callable<ceylon.language.String>"){
             
             @.java.lang.Override
             public .ceylon.language.String $call(final .java.lang.Object $param$0) {

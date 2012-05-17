@@ -6,7 +6,7 @@ final class toplevel {
     }
     
     static .java.lang.String toplevel() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("ceylon.language.Callable<ceylon.language.String>"){
             
             @.java.lang.Override
             public .ceylon.language.String $call() {

@@ -15,7 +15,7 @@ final class indirectTypeParam {
     }
     
     static void indirectTypeParam() {
-        final .ceylon.language.Callable<? extends .ceylon.language.Integer> f1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer)"){
+        final .ceylon.language.Callable<? extends .ceylon.language.Integer> f1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("ceylon.language.Callable<ceylon.language.Integer,ceylon.language.Integer>"){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
@@ -34,7 +34,7 @@ final class indirectTypeParam {
             }
         }
         final local local = new local();
-        final .ceylon.language.Callable<? extends .ceylon.language.Integer> f2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer)"){
+        final .ceylon.language.Callable<? extends .ceylon.language.Integer> f2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("ceylon.language.Callable<ceylon.language.Integer,ceylon.language.Integer>"){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
@@ -49,7 +49,7 @@ final class indirectTypeParam {
             }
             
             <T>.ceylon.language.Callable<? extends .java.lang.Object> mpl(final T t) {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void>"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call() {
@@ -69,7 +69,7 @@ final class indirectTypeParam {
             }
             
             .ceylon.language.Callable<? extends .java.lang.Object> f3(final .ceylon.language.Integer i) {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void>"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call() {

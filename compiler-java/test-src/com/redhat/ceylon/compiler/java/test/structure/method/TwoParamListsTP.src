@@ -6,7 +6,7 @@ final class twoParamListsTP {
     }
     
     static <T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<? super T> & .ceylon.language.Invertable<? extends T>>.ceylon.language.Callable<? extends .java.lang.Object> twoParamListsTP(final .ceylon.language.String name) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void>"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -29,7 +29,7 @@ final class twoParamListsTP_simple {
     }
     
     static <T extends .ceylon.language.Ordinal<? extends T>>.ceylon.language.Callable<? extends .java.lang.Object> twoParamListsTP_simple(final .ceylon.language.String name) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void>"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
