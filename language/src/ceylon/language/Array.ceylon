@@ -58,7 +58,7 @@ shared Array<Element>&Some<Element> arrayOfSome<Element>(Sequence<Element> eleme
 
 doc "Creates and returns an array of the specified size, populating 
      it with the result of calling `element()` for each index."
-shared Array<Element> makeArray<Element>(Integer size, Element element(Integer)) { throw; }
+shared Array<Element> makeArray<Element>(Integer size, Element element(Integer index)) { throw; }
 
 shared void copyArray<Element>(Array<Element> source, Array<Element> target, 
         Integer from, Integer to, Integer length) { throw; }
