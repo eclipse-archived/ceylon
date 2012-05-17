@@ -34,7 +34,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.java.util.Strategy;
 import com.redhat.ceylon.compiler.java.util.Util;
@@ -64,9 +63,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinitio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ObjectArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ObjectDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -131,8 +128,7 @@ public class ClassTransformer extends AbstractTransformer {
                     MethodDefinitionBuilder overloadBuilder = classBuilder.addConstructor();
                     makeOverloadsForDefaultedParameter(true,
                             overloadBuilder,
-                            def, paramList, param);
-                    
+                            model, paramList, param);
                 }
             }
             satisfaction((Class)model, classBuilder);
@@ -762,6 +758,13 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     public List<JCTree> transform(Tree.AnyMethod def, ClassDefinitionBuilder classBuilder) {
+        // Transform the method body of the 'inner-most method'
+        List<JCStatement> body = transformMethodBody(def);        
+        return transform(def, classBuilder, body);
+    }
+
+    List<JCTree> transform(Tree.AnyMethod def,
+            ClassDefinitionBuilder classBuilder, List<JCStatement> body) {
         ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
         final Method model = def.getDeclarationModel();
         final String methodName = Util.quoteMethodNameIfProperty(model, gen());
@@ -770,8 +773,6 @@ public class ClassTransformer extends AbstractTransformer {
         boolean mpl = parameterLists.size() > 1;
         ProducedType innerResultType = model.getType();
         ProducedType resultType = innerResultType;
-        // Transform the method body of the 'inner-most method'
-        List<JCStatement> body = transformMethodBody(def, resultType);
         
         // Construct all but the outer-most method
         for (int index = parameterLists.size() - 1; index >  0; index--) {
@@ -781,10 +782,9 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         // Finally construct the outermost method using the body we've built so far
-        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(def), model.isClassOrInterfaceMember(), 
-                methodName);
-        
         final Tree.ParameterList paramList = parameterLists.get(0);
+        final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(), 
+                methodName);
         
         if (mpl) {
             methodBuilder.resultType(null, makeJavaType(resultType));
@@ -792,7 +792,7 @@ public class ClassTransformer extends AbstractTransformer {
             methodBuilder.resultType(model);
         }
         
-        copyTypeParameters(def, methodBuilder);
+        copyTypeParameters(model, methodBuilder);
         
         for (Tree.Parameter param : paramList.getParameters()) {
             methodBuilder.parameter(param);
@@ -802,21 +802,21 @@ public class ClassTransformer extends AbstractTransformer {
                     && (defaultArgument != null
                         || param.getDeclarationModel().isSequenced())) {
                 
-                JCMethodDecl defaultValueMethodImpl = makeParamDefaultValueMethod(false, def, paramList, param);
-                if (Strategy.defaultParameterMethodOnSelf(def)) {
+                JCMethodDecl defaultValueMethodImpl = makeParamDefaultValueMethod(false, model, paramList, param);
+                if (Strategy.defaultParameterMethodOnSelf(model)) {
                     lb.add(defaultValueMethodImpl);    
                 } else {
-                    lb.add(makeParamDefaultValueMethod(true, def, paramList, param));
+                    lb.add(makeParamDefaultValueMethod(true, model, paramList, param));
                     classBuilder.getCompanionBuilder().defs(defaultValueMethodImpl);
                 }
                 
-                MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(def), model.isClassOrInterfaceMember(),
+                MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(),
                         methodName);
                 JCMethodDecl overloadedMethod = makeOverloadsForDefaultedParameter(!Decl.withinInterface(model), overloadBuilder, 
-                        def, paramList, param).build();
+                        model, paramList, param).build();
                 lb.prepend(overloadedMethod);    
             }
-
+            
             if (defaultArgument != null
                     || isLastParameter(paramList, param)) {        
                 if (Decl.withinInterface(model)
@@ -838,15 +838,14 @@ public class ClassTransformer extends AbstractTransformer {
             methodBuilder.noBody();
         }
         
+        methodBuilder
+            .modifiers(transformMethodDeclFlags(model))
+            .isActual(model.isActual())
+            .modelAnnotations(model.getAnnotations());
+        
         if(Util.hasCompilerAnnotation(def, "test")){
             methodBuilder.annotations(List.of(make().Annotation(makeQualIdentFromString("org.junit.Test"), List.<JCTree.JCExpression>nil())));
         }
-        
-        methodBuilder
-            .modifiers(transformMethodDeclFlags(def))
-            .isActual(Decl.isActual(def))
-            .modelAnnotations(model.getAnnotations());
-        
         // Generate an impl for overloaded methods using the $impl instance
         // TODO MPL
         /*if (Decl.withinInterface(model.getRefinedDeclaration())
@@ -866,7 +865,7 @@ public class ClassTransformer extends AbstractTransformer {
         return lb.toList();
     }
 
-    private List<JCStatement> transformMethodBody(Tree.AnyMethod def, ProducedType resultType) {
+    private List<JCStatement> transformMethodBody(Tree.AnyMethod def) {
         List<JCStatement> body = null;
         final Method model = def.getDeclarationModel();
         if (def instanceof Tree.MethodDefinition) {
@@ -877,27 +876,39 @@ public class ClassTransformer extends AbstractTransformer {
             }
         } else if (def instanceof MethodDeclaration
                 && ((MethodDeclaration) def).getSpecifierExpression() != null) {
-            MethodDeclaration methodDecl = (MethodDeclaration)def;
-            JCExpression bodyExpr;
-            final Term term = methodDecl.getSpecifierExpression().getExpression().getTerm();
-            if (term instanceof Tree.FunctionArgument) {
-                // Method specified with lambda: Don't bother generating a 
-                // Callable, just transform the expr to use as the method body.
-                Tree.FunctionArgument fa = (Tree.FunctionArgument)term;
-                bodyExpr = gen().expressionGen().transformExpression(fa.getExpression(), BoxingStrategy.UNBOXED, null);
-                bodyExpr = gen().expressionGen().applyErasureAndBoxing(bodyExpr, resultType, 
-                        true, 
-                        model.getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED, 
-                                resultType);
-            } else {
-                InvocationBuilder specifierBuilder = InvocationBuilder.forSpecifierInvocation(gen(), methodDecl.getSpecifierExpression(), methodDecl.getDeclarationModel());
-                bodyExpr = specifierBuilder.build();
-            }
-            if (isVoid(def)) {
-                body = List.<JCStatement>of(make().Exec(bodyExpr));
-            } else {
-                body = List.<JCStatement>of(make().Return(bodyExpr));
-            }
+            body = transformSpecifiedMethodBody((MethodDeclaration)def, ((MethodDeclaration) def).getSpecifierExpression());
+        }
+        return body;
+    }
+
+    List<JCStatement> transformSpecifiedMethodBody(Tree.MethodDeclaration  def, SpecifierExpression specifierExpression) {
+        final Method model = def.getDeclarationModel();
+        List<JCStatement> body;
+        MethodDeclaration methodDecl = (MethodDeclaration)def;
+        JCExpression bodyExpr;
+        Tree.Term term = null;
+        if (specifierExpression != null
+                && specifierExpression.getExpression() != null) {
+            term = specifierExpression.getExpression().getTerm();
+        }
+        if (term instanceof Tree.FunctionArgument) {
+            // Method specified with lambda: Don't bother generating a 
+            // Callable, just transform the expr to use as the method body.
+            Tree.FunctionArgument fa = (Tree.FunctionArgument)term;
+            ProducedType resultType = model.getType();
+            bodyExpr = gen().expressionGen().transformExpression(fa.getExpression(), BoxingStrategy.UNBOXED, null);
+            bodyExpr = gen().expressionGen().applyErasureAndBoxing(bodyExpr, resultType, 
+                    true, 
+                    model.getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED, 
+                            resultType);
+        } else {
+            InvocationBuilder specifierBuilder = InvocationBuilder.forSpecifierInvocation(gen(), specifierExpression, methodDecl.getDeclarationModel());
+            bodyExpr = specifierBuilder.build();
+        }
+        if (isVoid(def)) {
+            body = List.<JCStatement>of(make().Exec(bodyExpr));
+        } else {
+            body = List.<JCStatement>of(make().Return(bodyExpr));
         }
         return body;
     }
@@ -1041,7 +1052,7 @@ public class ClassTransformer extends AbstractTransformer {
     private MethodDefinitionBuilder makeOverloadsForDefaultedParameter(
             boolean generateBody,
             MethodDefinitionBuilder overloadBuilder,
-            Tree.Declaration def,
+            Declaration model,
             Tree.ParameterList paramList,
             Tree.Parameter currentParam) {
         at(currentParam);
@@ -1050,7 +1061,7 @@ public class ClassTransformer extends AbstractTransformer {
             parameters.add(param.getDeclarationModel());
         }
         return makeOverloadsForDefaultedParameter(generateBody, false, 
-                overloadBuilder, def.getDeclarationModel(),
+                overloadBuilder, model,
                 parameters, currentParam.getDeclarationModel());
     }
 
@@ -1213,15 +1224,20 @@ public class ClassTransformer extends AbstractTransformer {
      */
     private JCMethodDecl makeParamDefaultValueMethod(boolean noBody, Tree.Declaration container, 
             Tree.ParameterList params, Tree.Parameter currentParam) {
+        return makeParamDefaultValueMethod(noBody, container.getDeclarationModel(), 
+                params, currentParam);
+    }
+    private JCMethodDecl makeParamDefaultValueMethod(boolean noBody, Declaration container, 
+            Tree.ParameterList params, Tree.Parameter currentParam) {
         at(currentParam);
         Parameter parameter = currentParam.getDeclarationModel();
-        String name = Util.getDefaultedParamMethodName(container.getDeclarationModel(), parameter );
+        String name = Util.getDefaultedParamMethodName(container, parameter );
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(container), true, name);
         methodBuilder.annotations(makeAtIgnore());
         int modifiers = noBody ? PUBLIC | ABSTRACT : FINAL;
-        if (container.getDeclarationModel().isShared()) {
+        if (container.isShared()) {
             modifiers |= PUBLIC;
-        } else if (!container.getDeclarationModel().isToplevel()
+        } else if (!container.isToplevel()
                 && !noBody){
             modifiers |= PRIVATE;
         }
@@ -1230,11 +1246,11 @@ public class ClassTransformer extends AbstractTransformer {
         }
         methodBuilder.modifiers(modifiers);
         
-        if (container instanceof Tree.AnyMethod) {
-            copyTypeParameters((Tree.AnyMethod)container, methodBuilder);
+        if (container instanceof Method) {
+            copyTypeParameters((Method)container, methodBuilder);
         } else if (Decl.isToplevel(container)
-                && container instanceof Tree.AnyClass) {
-            copyTypeParameters((Tree.AnyClass)container, methodBuilder);
+                && container instanceof Class) {
+            copyTypeParameters((Class)container, methodBuilder);
         }
         
         // Add any of the preceding parameters as parameters to the method
