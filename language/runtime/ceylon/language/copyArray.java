@@ -19,12 +19,12 @@ public final class copyArray {
     @Name("source")
     final Array<Element> source,
     @TypeInfo("ceylon.language.Array<Element>")
-    @Name("source")
+    @Name("target")
     final Array<Element> target,
     @Name("from")
     @TypeInfo("ceylon.language.Integer")
     final long from,
-    @Name("from")
+    @Name("to")
     @TypeInfo("ceylon.language.Integer")
     final long to,
     @Name("length")
