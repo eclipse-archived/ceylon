@@ -1,0 +1,25 @@
+package com.redhat.ceylon.compiler.java.test.expression.lambda;
+
+final class toplevel {
+    
+    private toplevel() {
+    }
+    
+    static .java.lang.String toplevel(final .java.lang.String name) {
+        return ("hello " + name).toString();
+    }
+    
+    static final .java.lang.String toplevel() {
+        return (
+            let
+            {
+                .java.lang.String $ceylontmp$name$1 = toplevel$name();
+            }
+            returning toplevel($ceylontmp$name$1);
+        );
+    }
+    
+    static final .java.lang.String toplevel$name() {
+        return "world";
+    }
+}

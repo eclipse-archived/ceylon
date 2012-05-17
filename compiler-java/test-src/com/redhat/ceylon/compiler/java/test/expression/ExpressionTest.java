@@ -305,8 +305,13 @@ public class ExpressionTest extends CompilerTest {
     }
     
     @Test
-    public void testLmdToplevel(){
-        compareWithJavaSource("lambda/Toplevel");
+    public void testLmdToplevelMethodSpecifyingLambda(){
+        compareWithJavaSource("lambda/ToplevelMethodSpecifyingLambda");
+    }
+    
+    @Test
+    public void testLmdMethodSpecifyingLambda(){
+        compareWithJavaSource("lambda/MethodSpecifyingLambda");
     }
     
     @Test
