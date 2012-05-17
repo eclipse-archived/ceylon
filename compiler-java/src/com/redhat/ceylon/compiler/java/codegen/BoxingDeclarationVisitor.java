@@ -36,6 +36,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -48,9 +49,18 @@ public class BoxingDeclarationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(FunctionArgument that) {
+        super.visit(that);
+        boxMethod(that.getDeclarationModel());
+    }
+    
+    @Override
     public void visit(AnyMethod that) {
         super.visit(that);
-        Method method = that.getDeclarationModel();
+        boxMethod(that.getDeclarationModel());
+    }
+
+    private void boxMethod(Method method) {
         // deal with invalid input
         if(method == null)
             return;

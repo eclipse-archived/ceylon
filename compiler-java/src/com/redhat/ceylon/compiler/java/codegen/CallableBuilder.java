@@ -146,7 +146,7 @@ public class CallableBuilder {
             JCExpression init = unpickCallableParameter(gen, null, p, null, ii, parameterList.getParameters().size());
             JCVariableDecl varDef = gen.make().VarDef(gen.make().Modifiers(Flags.FINAL), 
                     gen.names().fromString(p.getName()), 
-                    gen.makeJavaType(p.getType(), NO_PRIMITIVES), 
+                    gen.makeJavaType(p.getType(), Boolean.TRUE.equals(p.getUnboxed()) ? 0 : NO_PRIMITIVES), 
                     init);
             body = body.prepend(varDef);
             ii++;
