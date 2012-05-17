@@ -1188,9 +1188,11 @@ public class ProducedType extends ProducedReference {
                     List<ProducedType> tal = getTypeArgumentList();
                     String result = tal.get(0).getProducedTypeName() + "(";
                     if (tal.size()>1) {
-                        result += tal.get(1).getProducedTypeName();
+                        ProducedType t = tal.get(1);
+                        result += t==null ? "unknown" : t.getProducedTypeName();
                         for (int i=2; i<tal.size(); i++) {
-                            result += ", " + tal.get(i).getProducedTypeName();
+                            ProducedType ti = tal.get(i);
+                            result += ", " + (t==null ? "unknown" : ti.getProducedTypeName());
                         }
                     }
                     return result + ")";
