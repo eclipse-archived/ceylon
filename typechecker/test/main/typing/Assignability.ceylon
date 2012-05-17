@@ -182,7 +182,7 @@ class Assignability() {
     }
     
     if (exists @error xx = something) {
-        @error print(xx.hello);
+        print(xx.hello);
     }
     
     @error if (something.hello exists) {}
