@@ -5,3 +5,6 @@ String goodFunction() { return good; }
 
 @error value sharedBad = "hello";
 @error function sharedBadFunction() { return sharedBad; }
+
+variable Integer count:=0;
+Float amount = 0.0;
