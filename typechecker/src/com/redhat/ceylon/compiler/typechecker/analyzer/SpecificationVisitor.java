@@ -211,7 +211,9 @@ public class SpecificationVisitor extends Visitor {
             Tree.BaseMemberExpression m = (Tree.BaseMemberExpression) lt;
             Declaration member = getBaseDeclaration(m, null);
             if (member==declaration) {
-                that.getRightTerm().visit(this);
+                if (that.getRightTerm()!=null) {
+                    that.getRightTerm().visit(this);
+                }
                 checkVariable(lt, that);
                 specify();
                 lt.visit(this);
