@@ -2361,7 +2361,7 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else if ( !((TypedDeclaration) dec).isVariable() ) {
                     node.addError("value is not variable: " 
-                            + dec.getName());
+                            + dec.getName(), 800);
                 }
             }
         }
