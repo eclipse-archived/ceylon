@@ -322,7 +322,7 @@ public class ClassTransformer extends AbstractTransformer {
                     classBuilder.defs(getterDelegate);
                 }
             } else if (needsCompanionDelegate(model, member)) {
-                log.error("ceylon", "Unhandled concrete interface member " + member.getName());
+                log.error("ceylon", "Unhandled concrete interface member " + member.getName() + " " + member.getClass());
             }
         }
         
@@ -336,7 +336,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     private boolean needsCompanionDelegate(final Class model, Declaration member) {
         return member.equals(model.getMember(member.getName(), null))
-                && member.isDefault();
+                && (member.isDefault() || !member.isFormal());
     }
 
     /**
@@ -401,7 +401,7 @@ public class ClassTransformer extends AbstractTransformer {
                         null))));
         
         classBuilder.field(PRIVATE | FINAL, fieldName, 
-                makeCompanionType(iface, typeArguments, false), null, false);
+                makeCompanionType(iface, typeArguments, goRaw), null, false);
     }
 
     private JCMethodDecl makeOuterImpl(final ClassOrInterface model, Interface iface) {
