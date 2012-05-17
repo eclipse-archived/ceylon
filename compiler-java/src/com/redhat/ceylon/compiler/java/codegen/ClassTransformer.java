@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.loader.ModelResolutionException;
+import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -352,14 +353,10 @@ public class ClassTransformer extends AbstractTransformer {
         if (gen().hasInterface(iface)) {
             return true;
         }
-        // Otherwise, ask the model loader
-        try {
-            Declaration implDecl = gen().loader().convertToDeclaration(gen().getCompanionClassName(iface), 
-                    com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType.TYPE);
-            return implDecl != null;
-        } catch (ModelResolutionException e) {
-            return false;
+        if (iface instanceof LazyInterface) {
+            return ((LazyInterface)iface).isCeylon();
         }
+        return false;
     }
 
     private void transformInstantiateCompanions(
