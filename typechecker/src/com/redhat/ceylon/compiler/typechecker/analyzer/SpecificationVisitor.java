@@ -256,7 +256,7 @@ public class SpecificationVisitor extends Visitor {
                                         member.getName(), 803);
                     }
                     else {
-                        node.addError("not a variable: " +
+                        term.addError("not a variable: " +
                                 member.getName(), 800);
                     }
                 }

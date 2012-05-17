@@ -583,13 +583,11 @@ public class ExpressionVisitor extends Visitor {
             }
             if (d!=null) { 
                 if (d instanceof Value && ((Value) d).isVariable()) {
-                    that.getSpecifierExpression()
-                            .addError("variable values must be assigned using \":=\": " +
+                    sie.addError("variable values must be assigned using \":=\": " +
                                 d.getName(), 802);
                 }
                 else if (d.isToplevel()) {
-                    that.getBaseMemberExpression()
-                           .addError("toplevel declarations may not be specified");
+                    me.addError("toplevel declarations may not be specified");
                 }
             }
         }
@@ -2356,11 +2354,11 @@ public class ExpressionVisitor extends Visitor {
             if (pr!=null) {
                 Declaration dec = pr.getDeclaration();
                 if (!(dec instanceof Value | dec instanceof Getter)) {
-                    node.addError("member cannot be assigned: " 
+                    that.addError("member cannot be assigned: " 
                             + dec.getName());
                 }
                 else if ( !((TypedDeclaration) dec).isVariable() ) {
-                    node.addError("value is not variable: " 
+                    that.addError("value is not variable: " 
                             + dec.getName(), 800);
                 }
             }
