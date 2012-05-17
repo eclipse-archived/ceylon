@@ -581,6 +581,17 @@ public class ExpressionVisitor extends Visitor {
                     bme.addError("not a reference to a formal attribute: " + d.getName());
                 }
             }
+            if (d!=null) { 
+                if (d instanceof Value && ((Value) d).isVariable()) {
+                    that.getSpecifierExpression()
+                            .addError("variable values must be assigned using \":=\": " +
+                                d.getName(), 802);
+                }
+                if (d.isToplevel()) {
+                    that.getBaseMemberExpression()
+                           .addError("toplevel declarations may not be specified");
+                }
+            }
         }
         else {
             me.addError("illegal specification statement");

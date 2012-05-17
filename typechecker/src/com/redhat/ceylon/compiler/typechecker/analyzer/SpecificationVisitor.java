@@ -274,9 +274,10 @@ public class SpecificationVisitor extends Visitor {
 	                        m.getIdentifier().getText());
 	            }
 	            else*/ if (isVariable()) {
-	                that.getSpecifierExpression()
+	                //don't do it here!
+	                /*that.getSpecifierExpression()
 	                        .addError("variable values must be assigned using \":=\": " +
-	                            member.getName(), 802);
+	                            member.getName(), 802);*/
 	            }
 	            else if (!declared) {
                     that.addError("specified value is not yet declared: " + 
