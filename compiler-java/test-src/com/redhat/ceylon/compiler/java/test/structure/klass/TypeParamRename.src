@@ -1,0 +1,103 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+interface TypeParamRename<T, U> {
+    
+    public U m(final T t);
+    
+    public U m();
+    
+    public abstract T m$t();
+    
+    public <V, W>W m2(final V v);
+    
+    public <V, W>W m2();
+    
+    public abstract <V, W>V m2$v();
+}
+final class TypeParamRename$impl<T, U> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<T, U> $this;
+    
+    public final T m$t() {
+        return null;
+    }
+    
+    public U m() {
+        return (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<T, U> $ceylontmp$impl$2 = this;
+                T $ceylontmp$t$3 = $ceylontmp$impl$2.m$t();
+            }
+            returning m($ceylontmp$t$3);
+        );
+    }
+    
+    public U m(final T t) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    public final <V, W>V m2$v() {
+        return null;
+    }
+    
+    public <V, W>W m2() {
+        return (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<T, U> $ceylontmp$impl$6 = this;
+                V $ceylontmp$v$7 = $ceylontmp$impl$6.m2$v();
+            }
+            returning m2($ceylontmp$v$7);
+        );
+    }
+    
+    public <V, W>W m2(final V v) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    TypeParamRename$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<T, U> $this) {
+        this.$this = $this;
+    }
+}
+class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<X, Y> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<X, Y> $TypeParamRename$impl;
+    
+    @.java.lang.Override
+    public final X m$t() {
+        return $TypeParamRename$impl.m$t();
+    }
+    
+    @.java.lang.Override
+    public final Y m() {
+        return $TypeParamRename$impl.m();
+    }
+    
+    @.java.lang.Override
+    public Y m(final X t) {
+        return $TypeParamRename$impl.m(t);
+    }
+    
+    @.java.lang.Override
+    public final <V, W>V m2$v() {
+        return $TypeParamRename$impl.m2$v();
+    }
+    
+    @.java.lang.Override
+    public final <V, W>W m2() {
+        return $TypeParamRename$impl.m2();
+    }
+    
+    @.java.lang.Override
+    public <A, B>B m2(final A v) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    TypeParamRenameKls() {
+        this.$TypeParamRename$impl = new .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<X, Y>(this);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRenameKls();
+    }
+}
