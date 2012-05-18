@@ -2739,7 +2739,8 @@ public class ExpressionVisitor extends Visitor {
         if (that.getPrimary() instanceof Tree.QualifiedTypeExpression || 
                 that.getPrimary() instanceof Tree.BaseTypeExpression) {
             //this is a qualified type name, not member reference
-            pt = ((Tree.MemberOrTypeExpression) that.getPrimary()).getTarget().getType();
+            ProducedReference target = ((Tree.MemberOrTypeExpression) that.getPrimary()).getTarget();
+            pt = target==null ? null : target.getType();
         }
         if (pt!=null) {
             TypeDeclaration d = unwrap(pt, that).getDeclaration();
