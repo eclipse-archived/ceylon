@@ -20,5 +20,5 @@
 package com.redhat.ceylon.compiler.java.test.interop.mixed.ceylon_needs_java;
 
 public class Java {
-
+    public static void foo(){}
 }

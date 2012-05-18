@@ -17,6 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+import com.redhat.ceylon.compiler.java.test.interop.mixed.ceylon_needs_java { Java { foo } }
+
 shared class Ceylon(Java java){
     Java attr = java;
     
