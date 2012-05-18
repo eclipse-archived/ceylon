@@ -37,9 +37,7 @@ public class Package implements ImportableScope {
     
     public Iterable<Unit> getUnits() {
         synchronized (units) {
-            List<Unit> copiedList = new ArrayList<Unit>(units.size());
-            copiedList.addAll(units);
-            return copiedList;
+            return new ArrayList<Unit>(units);
         }
     }
     
@@ -66,7 +64,7 @@ public class Package implements ImportableScope {
     @Override
     public List<Declaration> getMembers() {
         List<Declaration> result = new ArrayList<Declaration>();
-        for (Unit unit: units) {
+        for (Unit unit: getUnits()) {
             for (Declaration d: unit.getDeclarations()) {
                 if (d.getContainer().equals(this)) {
                     result.add(d);

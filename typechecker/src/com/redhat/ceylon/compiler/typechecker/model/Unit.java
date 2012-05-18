@@ -49,7 +49,15 @@ public class Unit {
     }
 
     public List<Declaration> getDeclarations() {
-        return declarations;
+        synchronized (declarations) {
+            return new ArrayList<Declaration>(declarations);
+        }
+    }
+    
+    public void addDeclaration(Declaration declaration) {
+        synchronized (declarations) {
+            declarations.add(declaration);
+        }
     }
 
     public String getFilename() {
