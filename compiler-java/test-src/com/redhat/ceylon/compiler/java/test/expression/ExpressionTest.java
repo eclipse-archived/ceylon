@@ -295,6 +295,11 @@ public class ExpressionTest extends CompilerTest {
     }
     
     @Test
+    public void testOprVoid(){
+        compareWithJavaSource("operator/Void");
+    }
+    
+    @Test
     public void testStpStringTemplate(){
         compareWithJavaSource("stringtemp/StringTemplate");
     }
