@@ -295,6 +295,11 @@ public class ExpressionTest extends CompilerTest {
     }
     
     @Test
+    public void testOprNullSafeVoidMethodReference(){
+        compareWithJavaSource("operator/NullSafeVoidMethodReference");
+    }
+    
+    @Test
     public void testOprVoid(){
         compareWithJavaSource("operator/Void");
     }

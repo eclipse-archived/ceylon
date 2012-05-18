@@ -1,0 +1,29 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+interface NullSafeVoidMethodReference {
+    
+    public abstract void invoke();
+}
+final class NullSafeVoidMethodReference$impl {
+    private final .com.redhat.ceylon.compiler.java.test.expression.operator.NullSafeVoidMethodReference $this;
+    
+    NullSafeVoidMethodReference$impl(.com.redhat.ceylon.compiler.java.test.expression.operator.NullSafeVoidMethodReference $this) {
+        this.$this = $this;
+    }
+}
+final class test {
+    
+    private test() {
+    }
+    
+    static void test(final .com.redhat.ceylon.compiler.java.test.expression.operator.NullSafeVoidMethodReference handler) {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.NullSafeVoidMethodReference $safe$0 = handler;
+                if ($safe$0 != null) $safe$0.invoke();
+            }
+            returning null;
+        );
+    }
+}
