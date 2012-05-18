@@ -96,7 +96,7 @@ public class DeclarationVisitor extends Visitor {
             if (checkDupe) checkForDuplicateDeclaration(that, model);
         }
         //that.setDeclarationModel(model);
-        unit.getDeclarations().add(model);
+        unit.addDeclaration(model);
         if (!(scope instanceof Package)) {
             scope.getMembers().add(model);
         }
@@ -114,13 +114,13 @@ public class DeclarationVisitor extends Visitor {
         setModelName(that, model, id);
         visitElement(that, model);
         //that.setDeclarationModel(model);
-        unit.getDeclarations().add(model);
+        unit.addDeclaration(model);
     }
 
     private void visitArgument(Tree.FunctionArgument that, Declaration model) {
         visitElement(that, model);
         //that.setDeclarationModel(model);
-        unit.getDeclarations().add(model);
+        unit.addDeclaration(model);
     }
 
     private static boolean setModelName(Node that, Declaration model,
@@ -489,7 +489,7 @@ public class DeclarationVisitor extends Visitor {
         p.setName(s.getName());
         p.setDeclaration(s);
         visitElement(that, p);
-        unit.getDeclarations().add(p);
+        unit.addDeclaration(p);
         if (! (scope instanceof Package)) {
             scope.getMembers().add(p);
         }
