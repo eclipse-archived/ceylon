@@ -1,0 +1,27 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+class MethodDefaultedParamCaptureInitParam {
+    private final .java.lang.String s;
+    
+    private final .java.lang.String m(final .java.lang.String t) {
+        return t.toString();
+    }
+    
+    private final .java.lang.String m() {
+        return (
+            let
+            {
+                .java.lang.String $ceylontmp$t$1 = m$t();
+            }
+            returning m($ceylontmp$t$1);
+        );
+    }
+    
+    private final .java.lang.String m$t() {
+        return s;
+    }
+    
+    MethodDefaultedParamCaptureInitParam(.java.lang.String s) {
+        this.s = s;
+    }
+}

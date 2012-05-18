@@ -371,6 +371,10 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("method/MethodSpecifyingInitParam");
     }
     @Test
+    public void testMthMethodDefaultedParamCaptureInitParam(){
+        compareWithJavaSource("method/MethodDefaultedParamCaptureInitParam");
+    }
+    @Test
     public void testMthRefinedMethodSpecifyingTopLevel(){
         compareWithJavaSource("method/RefinedMethodSpecifyingTopLevel");
     }
