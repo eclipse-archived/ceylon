@@ -25,6 +25,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -436,10 +437,13 @@ public abstract class CompilerTest {
             if (Character.isLowerCase(klass.getSimpleName().charAt(0))) {
                 // A main method
                 Method m = klass.getMethod(klass.getSimpleName());
+                m.setAccessible(true);
                 m.invoke(null);
             } else {
                 // A main class
-                klass.newInstance();
+                final Constructor<?> ctor = klass.getDeclaredConstructor();
+                ctor.setAccessible(true);
+                ctor.newInstance();
             }
             
             loader.clearCache();
