@@ -114,40 +114,6 @@ public class ExpressionVisitor extends Visitor {
         defaultArgument=false;
     }
     
-    @Override public void visit(Tree.TypeDeclaration that) {
-        super.visit(that);
-        TypeDeclaration td = that.getDeclarationModel();
-        if (td!=null) {
-            List<ProducedType> supertypes = td.getType().getSupertypes();
-            for (int i=0; i<supertypes.size(); i++) {
-                ProducedType st1 = supertypes.get(i);
-                for (int j=i+1; j<supertypes.size(); j++) {
-                    ProducedType st2 = supertypes.get(j);
-                    if (st1.getDeclaration().equals(st2.getDeclaration()) /*&& !st1.isExactly(st2)*/) {
-                        if (!st1.isSubtypeOf(st2) && !st2.isSubtypeOf(st1)) {
-                            that.addError("type " + td.getName() +
-                                    " has the same supertype twice with incompatible type arguments: " +
-                                    st1.getProducedTypeName() + " and " + st2.getProducedTypeName());
-                        }
-                    }
-                }
-                if (!isCompletelyVisible(td, st1)) {
-                    that.addError("supertype of type is not visible everywhere type is visible: "
-                            + st1.getProducedTypeName());
-                }
-            }
-        }
-    }
-    
-    @Override public void visit(Tree.TypedDeclaration that) {
-        super.visit(that);
-        TypedDeclaration td = that.getDeclarationModel();
-        if ( td.getType()!=null && !isCompletelyVisible(td,td.getType()) ) {
-            that.getType().addError("type of declaration is not visible everywhere declaration is visible: " 
-                        + td.getName());
-        }
-    }
-    
     @Override public void visit(Tree.FunctionArgument that) {
         super.visit(that);
         ProducedType t = denotableType(that.getExpression().getTypeModel());
@@ -164,75 +130,6 @@ public class ExpressionVisitor extends Visitor {
                 .getFullType());
     }
     
-    @Override
-    public void visit(Tree.AnyMethod that) {
-        super.visit(that);
-        TypedDeclaration td = that.getDeclarationModel();
-        for (Tree.ParameterList list: that.getParameterLists()) {
-            for (Tree.Parameter tp: list.getParameters()) {
-                if (tp!=null) {
-                    Parameter p = tp.getDeclarationModel();
-                    if (p.getType()!=null && !isCompletelyVisible(td, p.getType())) {
-                        tp.getType().addError("type of parameter is not visible everywhere declaration is visible: " 
-                                + p.getName());
-                    }
-                }
-            }
-        }
-    }
-    
-    @Override
-    public void visit(Tree.AnyClass that) {
-        super.visit(that);
-        Class td = that.getDeclarationModel();
-        if (that.getParameterList()!=null) {
-            for (Tree.Parameter tp: that.getParameterList().getParameters()) {
-                if (tp!=null) {
-                    Parameter p = tp.getDeclarationModel();
-                    if (p.getType()!=null && !isCompletelyVisible(td, p.getType())) {
-                        tp.getType().addError("type of parameter is not visible everywhere declaration is visible: " 
-                                + p.getName());
-                    }
-                }
-            }
-        }
-    }
-    
-    private boolean isCompletelyVisible(Declaration member, ProducedType pt) {
-        if (pt.getDeclaration() instanceof UnionType) {
-            for (ProducedType ct: pt.getDeclaration().getCaseTypes()) {
-                if ( !isCompletelyVisible(member, ct.substitute(pt.getTypeArguments())) ) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        else if (pt.getDeclaration() instanceof IntersectionType) {
-            for (ProducedType ct: pt.getDeclaration().getSatisfiedTypes()) {
-                if ( !isCompletelyVisible(member, ct.substitute(pt.getTypeArguments())) ) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        else {
-            if (!isVisible(member, pt.getDeclaration())) {
-                return false;
-            }
-            for (ProducedType at: pt.getTypeArgumentList()) {
-                if ( at!=null && !isCompletelyVisible(member, at) ) {
-                    return false;
-                }
-            }
-            return true;
-        }
-    }
-
-    private boolean isVisible(Declaration member, TypeDeclaration type) {
-        return type instanceof TypeParameter || 
-                type.isVisible(member.getVisibleScope());
-    }
-
     @Override public void visit(Tree.Variable that) {
         super.visit(that);
         if (that.getSpecifierExpression()!=null) {
