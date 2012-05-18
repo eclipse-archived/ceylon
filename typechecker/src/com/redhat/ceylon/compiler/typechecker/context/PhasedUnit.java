@@ -126,6 +126,11 @@ public class PhasedUnit {
         compilationUnit.visit( new TypeVisitor() );
     }
 
+    public void validateRefinement() {
+        //System.out.println("Validate member refinement for " + fileName);
+        compilationUnit.visit(new RefinementVisitor());
+    }
+
     public void analyseTypes() {
         //System.out.println("Run analysis phase for " + fileName);
         compilationUnit.visit(new ExpressionVisitor());
@@ -153,11 +158,6 @@ public class PhasedUnit {
                 compilationUnit.visit(new SelfReferenceVisitor((TypeDeclaration) d));
             }
         }
-    }
-
-    public void validateRefinement() {
-        //System.out.println("Validate member refinement for " + fileName);
-        compilationUnit.visit(new RefinementVisitor());
     }
 
     public void generateStatistics(StatisticsVisitor statsVisitor) {
