@@ -1,0 +1,28 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+final class deferredFunctionInitialization {
+    
+    private .java.lang.String s() {
+        return "hello";
+    }
+    
+    private deferredFunctionInitialization() {
+    }
+    
+    static void deferredFunctionInitialization() {
+        
+        
+        .ceylon.language.print.print(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("ceylon.language.Callable<ceylon.language.String>"){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call() {
+                return .ceylon.language.String.instance(s.s());
+            }
+        });
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.klass.deferredFunctionInitialization.deferredFunctionInitialization();
+    }
+}

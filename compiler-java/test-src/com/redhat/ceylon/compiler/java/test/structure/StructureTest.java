@@ -254,6 +254,25 @@ public class StructureTest extends CompilerTest {
     public void testKlsInnerClassUsingOutersTypeParam2(){
         compareWithJavaSource("klass/InnerClassUsingOutersTypeParam2");
     }
+    @Test
+    public void testKlsUninitializedMethod(){
+        compareWithJavaSource("klass/UninitializedMethod");
+    }
+    
+    @Test
+    public void testKlsDeferredMethodInitialization(){
+        compareWithJavaSource("klass/DeferredMethodInitialization");
+    }
+    
+    @Test
+    public void testKlsDeferredMethodInitializationMultipleSpecification(){
+        compareWithJavaSource("klass/DeferredMethodInitializationMultipleSpecification");
+    }
+    
+    @Test
+    public void testKlsDeferredFunctionInitialization(){
+        compareWithJavaSource("klass/DeferredFunctionInitialization");
+    }
     
     //
     // Methods
