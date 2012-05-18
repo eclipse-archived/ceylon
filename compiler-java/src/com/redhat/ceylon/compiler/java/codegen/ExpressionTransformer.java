@@ -54,6 +54,7 @@ import com.sun.tools.javac.tree.JCTree.JCConditional;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCForLoop;
+import com.sun.tools.javac.tree.JCTree.JCIf;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewArray;
@@ -1119,9 +1120,17 @@ public class ExpressionTransformer extends AbstractTransformer {
                 return transExpr;
             }
             transExpr = boxUnboxIfNecessary(transExpr, expr, expr.getTarget().getType(), BoxingStrategy.BOXED);
-            JCExpression testExpr = make().Binary(JCTree.NE, makeUnquotedIdent(tmpVarName), makeNull());                
-            JCExpression condExpr = make().Conditional(testExpr, transExpr, makeNull());
-            result = makeLetExpr(tmpVarName, null, typeExpr, primaryExpr, condExpr);
+            JCExpression testExpr = make().Binary(JCTree.NE, makeUnquotedIdent(tmpVarName), makeNull());
+            
+            if (isCeylonCallable(expr.getTypeModel()) && isVoid(getCallableReturnType(expr.getTypeModel()))) {
+                final JCIf condStmt = make().If(testExpr, make().Exec(transExpr), null);
+                JCExpression returningExpr = makeNull();
+                result = makeLetExpr(tmpVarName, 
+                        List.<JCStatement>of(condStmt), typeExpr, primaryExpr, returningExpr);
+            } else {
+                JCExpression condExpr = make().Conditional(testExpr, transExpr, makeNull());
+                result = makeLetExpr(tmpVarName, null, typeExpr, primaryExpr, condExpr);
+            }
         } else if (expr.getMemberOperator() instanceof Tree.SpreadOp) {
             result = transformSpreadOperator(expr, transformer);
         } else {
