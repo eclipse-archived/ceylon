@@ -202,7 +202,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
             if(classSymbol != null){
                 if(outerName.length() != name.length())
                     classSymbol = lookupInnerClass(classSymbol, name.substring(outerName.length()+1).split("\\."));
-                if(classSymbol.classfile == null){
+                if(classSymbol.classfile == null && classSymbol.sourcefile == null){
                     // try to complete it if that changes anything
                     classSymbol.complete();
                     if(classSymbol.classfile == null){
