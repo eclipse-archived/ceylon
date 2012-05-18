@@ -25,6 +25,10 @@ public class $empty {
         public boolean definesEvery() {
             return false;
         }
+        @Override
+        public Iterable definesEvery$keys() {
+            return this;
+        }
 
         @Override
         public boolean definesAny(Iterable keys) {
@@ -34,6 +38,10 @@ public class $empty {
         public boolean definesAny() {
             return false;
         }
+        @Override
+        public Iterable definesAny$keys() {
+            return this;
+        }
 
         @Override
         public List<? extends java.lang.Object> items(Iterable keys) {
@@ -41,6 +49,10 @@ public class $empty {
         }
         @Override
         public List<? extends java.lang.Object> items() {
+            return this;
+        }
+        @Override
+        public Iterable items$keys() {
             return this;
         }
         
@@ -52,6 +64,10 @@ public class $empty {
         public boolean containsEvery() {
             return false;
         }
+        @Override
+        public Iterable containsEvery$elements() {
+            return this;
+        }
 
         @Override
         public boolean containsAny(ceylon.language.Iterable<?> elements) {
@@ -60,6 +76,10 @@ public class $empty {
         @Override
         public boolean containsAny() {
             return false;
+        }
+        @Override
+        public Iterable containsAny$elements() {
+            return this;
         }
 
         @Override

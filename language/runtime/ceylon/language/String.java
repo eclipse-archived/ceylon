@@ -171,6 +171,11 @@ public abstract class String
     public boolean definesEvery() {
         return Correspondence$impl._definesEvery(this, $empty.getEmpty());
     }
+    @Override
+    @Ignore
+    public Iterable<? extends Integer> definesEvery$keys() {
+        return $empty.getEmpty();
+    }
 
     @Override
     public boolean definesAny(@Name("keys") 
@@ -185,6 +190,11 @@ public abstract class String
     public boolean definesAny() {
         return Correspondence$impl._definesAny(this, $empty.getEmpty());
     }
+    @Override
+    @Ignore
+    public Iterable<? extends Integer> definesAny$keys() {
+        return $empty.getEmpty();
+    }
 
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Character>")
@@ -197,6 +207,11 @@ public abstract class String
     @Ignore
     public List<? extends Character> items() {
         return Correspondence$impl._items(this, $empty.getEmpty());
+    }
+    @Override
+    @Ignore
+    public Iterable<? extends Integer> items$keys() {
+        return $empty.getEmpty();
     }
 
     @Override
@@ -300,6 +315,11 @@ public abstract class String
     public boolean containsAny() {
         return Category$impl._containsAny(this, $empty.getEmpty());
     }
+    @Override
+    @Ignore
+    public Iterable<?> containsAny$elements() {
+        return $empty.getEmpty();
+    }
 
     @Override
     public boolean containsEvery(@Sequenced @Name("elements") 
@@ -311,6 +331,11 @@ public abstract class String
     @Ignore
     public boolean containsEvery() {
         return Category$impl._containsEvery(this, $empty.getEmpty());
+    }
+    @Override
+    @Ignore
+    public Iterable<?> containsEvery$elements() {
+        return $empty.getEmpty();
     }
     
     public boolean longerThan(@TypeInfo("ceylon.language.Integer") 

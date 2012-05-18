@@ -29,12 +29,16 @@ public interface Correspondence<Key,Item> {
     Iterable<? extends Key> keys);
     @Ignore
     public boolean definesEvery();
+    @Ignore
+    public Iterable<? extends Key> definesEvery$keys();
 
     public boolean definesAny(@Sequenced @Name("keys") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
     Iterable<? extends Key> keys);
     @Ignore
     public boolean definesAny();
+    @Ignore
+    public Iterable<? extends Key> definesAny$keys();
 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
     public Iterable<? extends Item> items(@Sequenced @Name("keys") 
@@ -42,6 +46,8 @@ public interface Correspondence<Key,Item> {
     Iterable<? extends Key> keys);
     @Ignore
     public Iterable<? extends Item> items();
+    @Ignore
+    public Iterable<? extends Key> items$keys();
 
     @Ignore
     class Items<Key,Item>
@@ -90,6 +96,10 @@ public interface Correspondence<Key,Item> {
             return Correspondence$impl._definesEvery(this, $empty.getEmpty());
         }
         @Override
+        public Iterable<? extends Integer> definesEvery$keys() {
+            return $empty.getEmpty();
+        }
+        @Override
         public boolean definesAny(Iterable<? extends Integer> keys) {
             return Correspondence$impl._definesAny(this, keys);
         }
@@ -98,12 +108,20 @@ public interface Correspondence<Key,Item> {
             return Correspondence$impl._definesAny(this, $empty.getEmpty());
         }
         @Override
+        public Iterable<? extends Integer> definesAny$keys() {
+            return $empty.getEmpty();
+        }
+        @Override
         public List<? extends Item> items(Iterable<? extends Integer> keys) {
             return Correspondence$impl._items(this, keys);
         }
         @Override
         public List<? extends Item> items() {
             return Correspondence$impl._items(this, $empty.getEmpty());
+        }
+        @Override
+        public Iterable<? extends Integer> items$keys() {
+            return $empty.getEmpty();
         }
         @Override
         public boolean getEmpty() {
@@ -162,12 +180,20 @@ public interface Correspondence<Key,Item> {
             return Category$impl._containsEvery(this, $empty.getEmpty());
         }
         @Override
+        public Iterable<?> containsEvery$elements() {
+            return $empty.getEmpty();
+        }
+        @Override
         public boolean containsAny(Iterable<?> elements) {
             return Category$impl._containsAny(this, elements);
         }
         @Override
         public boolean containsAny() {
             return Category$impl._containsAny(this, $empty.getEmpty());
+        }
+        @Override
+        public Iterable<?> containsAny$elements() {
+            return $empty.getEmpty();
         }
         @Override
         public boolean equals(java.lang.Object obj) {

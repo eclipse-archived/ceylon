@@ -53,6 +53,11 @@ public class Singleton<Element>
     public boolean definesEvery() {
 	    return Correspondence$impl._definesEvery(this, $empty.getEmpty());
 	}
+	@Override
+    @Ignore
+    public Iterable<? extends Integer> definesEvery$keys() {
+        return $empty.getEmpty();
+    }
 	
 	@Override
 	public boolean definesAny(@Sequenced @Name("keys") 
@@ -65,6 +70,11 @@ public class Singleton<Element>
     public boolean definesAny() {
 	    return Correspondence$impl._definesAny(this, $empty.getEmpty());
 	}
+	@Override
+    @Ignore
+    public Iterable<? extends Integer> definesAny$keys() {
+        return $empty.getEmpty();
+    }
 	
 	@Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
@@ -78,6 +88,11 @@ public class Singleton<Element>
 	public List<? extends Element> items() {
 	    return Correspondence$impl._items(this, $empty.getEmpty());
 	}
+	@Override
+    @Ignore
+    public Iterable<? extends Integer> items$keys() {
+        return $empty.getEmpty();
+    }
 	
 	@Override
     @TypeInfo("ceylon.language.Integer")
@@ -179,6 +194,10 @@ public class Singleton<Element>
     public boolean containsEvery() {
         return Category$impl._containsEvery(this, $empty.getEmpty());
     }
+    @Override
+    public Iterable<?> containsEvery$elements() {
+        return $empty.getEmpty();
+    }
 
     @Override
     public boolean containsAny(Iterable<?> elements) {
@@ -188,6 +207,11 @@ public class Singleton<Element>
     @Override
     public boolean containsAny() {
         return Category$impl._containsAny(this, $empty.getEmpty());
+    }
+    
+    @Override
+    public Iterable<?> containsAny$elements() {
+        return $empty.getEmpty();
     }
 	
     @Override

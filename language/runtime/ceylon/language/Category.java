@@ -15,11 +15,15 @@ public interface Category {
     Iterable<?> elements);
     @Ignore
     public boolean containsEvery();
+    @Ignore
+    public Iterable<?> containsEvery$elements();
 
     public boolean containsAny(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
     Iterable<?> elements);
     @Ignore
     public boolean containsAny();
+    @Ignore
+    public Iterable<?> containsAny$elements();
 
 }
