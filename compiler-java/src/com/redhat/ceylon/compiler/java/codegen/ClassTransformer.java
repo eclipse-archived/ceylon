@@ -896,11 +896,21 @@ public class ClassTransformer extends AbstractTransformer {
             // Callable, just transform the expr to use as the method body.
             Tree.FunctionArgument fa = (Tree.FunctionArgument)term;
             ProducedType resultType = model.getType();
+            final java.util.List<com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter> lambdaParams = fa.getParameterLists().get(0).getParameters();
+            final java.util.List<com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter> defParams = def.getParameterLists().get(0).getParameters();
+            for (int ii = 0; ii < lambdaParams.size(); ii++) {
+                gen().addVariableSubst(lambdaParams.get(ii).getIdentifier().getText(), 
+                        defParams.get(ii).getIdentifier().getText());
+            }
             bodyExpr = gen().expressionGen().transformExpression(fa.getExpression(), BoxingStrategy.UNBOXED, null);
             bodyExpr = gen().expressionGen().applyErasureAndBoxing(bodyExpr, resultType, 
                     true, 
                     model.getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED, 
                             resultType);
+            for (int ii = 0; ii < lambdaParams.size(); ii++) {
+                gen().removeVariableSubst(lambdaParams.get(ii).getIdentifier().getText(), 
+                        null);
+            }
         } else {
             InvocationBuilder specifierBuilder = InvocationBuilder.forSpecifierInvocation(gen(), specifierExpression, methodDecl.getDeclarationModel());
             bodyExpr = specifierBuilder.build();
