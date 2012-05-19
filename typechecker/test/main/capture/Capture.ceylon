@@ -253,8 +253,14 @@ class Capture() {
          shared Integer n;
      }
      
-     class Something(@captured n) {
+     class Something2(@uncaptured n) { //was @captured before...
          shared Integer n;
+         shared void p() {
+             print(n);
+         }
+     }
+
+     class Something3(@captured Integer n) {
          shared void p() {
              print(n);
          }
@@ -267,4 +273,24 @@ class Capture() {
         }
     }
     
+}
+
+class MethodDefaultedParamCaptureInitParam1(@captured String s) {
+    String m(String t = s) = (String x) x;
+}
+
+class MethodDefaultedParamCaptureInitParam2(@captured String s) {
+    String m(String t = s) { return t; }
+}
+
+void methodDefaultedParamCaptureInitParam1(@captured String s) {
+    String m(String t = s) = (String x) x;
+}
+
+void methodDefaultedParamCaptureInitParam2(@captured String s) {
+    String m(String t = s) { return t; }
+}
+
+String() cap(@captured String s) {
+    return () s;
 }
