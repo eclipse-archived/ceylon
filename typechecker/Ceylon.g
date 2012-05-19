@@ -1995,9 +1995,10 @@ stringTemplate returns [StringTemplate stringTemplate]
         $stringTemplate.addStringLiteral($sl1.stringLiteral); }
       (
         (interpolatedExpressionStart) 
-         => expression sl2=stringLiteral
-        { $stringTemplate.addExpression($expression.expression);
-          $stringTemplate.addStringLiteral($sl2.stringLiteral); }
+         => e=expression sl2=stringLiteral
+        { $stringTemplate.addExpression($e.expression);
+          if (sl2!=null) 
+              $stringTemplate.addStringLiteral($sl2.stringLiteral); }
       )+
     ;
 
