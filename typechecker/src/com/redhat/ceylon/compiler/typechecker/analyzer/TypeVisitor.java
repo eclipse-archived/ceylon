@@ -31,6 +31,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -326,6 +327,46 @@ public class TypeVisitor extends Visitor {
         //that.setTarget(pt);
     }
 
+    @Override 
+    public void visit(Tree.SequenceType that) {
+        super.visit(that);
+        ProducedType et = that.getElementType().getTypeModel();
+        if (et!=null) {
+            that.setTypeModel(unit.getEmptyType(unit.getSequenceType(et)));
+        }
+    }
+    
+    @Override
+    public void visit(Tree.OptionalType that) {
+        super.visit(that);
+        ProducedType dt = that.getDefiniteType().getTypeModel();
+        if (dt!=null) {
+            that.setTypeModel(unit.getOptionalType(dt));
+        }
+    }
+    
+    @Override
+    public void visit(Tree.EntryType that) {
+        super.visit(that);
+        ProducedType kt = that.getKeyType().getTypeModel();
+        ProducedType vt = that.getValueType()==null ? 
+                new UnknownType(unit).getType() : 
+                that.getValueType().getTypeModel();
+        that.setTypeModel(unit.getEntryType(kt, vt));
+    }
+    
+    @Override
+    public void visit(Tree.FunctionType that) {
+        super.visit(that);
+        List<ProducedType> args = new ArrayList<ProducedType>();
+        args.add(that.getReturnType().getTypeModel());
+        for (Tree.StaticType st: that.getArgumentTypes()) {
+            args.add(st.getTypeModel());
+        }
+        that.setTypeModel(unit.getCallableDeclaration()
+                .getProducedType(null, args));
+    }
+    
     @Override 
     public void visit(Tree.BaseType that) {
         super.visit(that);

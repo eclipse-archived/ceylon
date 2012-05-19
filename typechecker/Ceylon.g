@@ -2039,28 +2039,22 @@ type returns [StaticType type]
     ;
     
 entryType returns [StaticType type]
-    @init { BaseType bt=null; 
-            TypeArgumentList tal=null; }
-    : ut1=abbreviatedType
-      { $type=$ut1.type; 
-        bt = new BaseType(null); 
-        tal = new TypeArgumentList(null); 
-        tal.addType($ut1.type); 
-        bt.setTypeArgumentList(tal); }
+    @init { EntryType bt=null; }
+    : t1=abbreviatedType
+      { $type=$t1.type; }
       (
         ENTRY_OP
-        { bt.setEndToken($ENTRY_OP); 
-          CommonToken tok = new CommonToken($ENTRY_OP);
-          tok.setText("Entry");
-          bt.setIdentifier( new Identifier(tok) ); }
+        { bt=new EntryType(null);
+          bt.setKeyType($type);
+          bt.setEndToken($ENTRY_OP); 
+          $type=bt; }
         (
-          ut2=abbreviatedType
-          { tal.addType($ut2.type);
+          t2=abbreviatedType
+          { bt.setValueType($t2.type);
             bt.setEndToken(null); }
 //        | { displayRecognitionError(getTokenNames(), 
 //                new MismatchedTokenException(UIDENTIFIER, input)); }
         )
-        { $type=bt; }
       )?
     ;
 
@@ -2109,53 +2103,39 @@ intersectionType returns [StaticType type]
     ;
 
 abbreviatedType returns [StaticType type]
-    @init { TypeArgumentList tal=null; }
+    @init { FunctionType bt=null; }
     : qualifiedType
       { $type=$qualifiedType.type; }
       (
         DEFAULT_OP 
-        { UnionType ot = new UnionType(null);
-          CommonToken tok = new CommonToken($DEFAULT_OP);
-          tok.setText("Nothing");
-          BaseType bt = new BaseType($DEFAULT_OP);
-          bt.setIdentifier( new Identifier(tok) );
-          ot.addStaticType(bt);
-          ot.addStaticType($type);
+        { OptionalType ot = new OptionalType(null);
+          ot.setDefiniteType($type);
+          ot.setEndToken($DEFAULT_OP);
           $type=ot; }
       | ARRAY 
-        { UnionType ot = new UnionType(null);
-          CommonToken tok = new CommonToken($ARRAY);
-          tok.setText("Empty");
-          BaseType bt = new BaseType($ARRAY);
-          bt.setIdentifier( new Identifier(tok) );
-          ot.addStaticType(bt);
-          tok = new CommonToken($ARRAY);
-          tok.setText("Sequence");
-          bt = new BaseType($ARRAY);
-          bt.setIdentifier( new Identifier(tok) );
-          tal = new TypeArgumentList(null);
-          tal.addType($type);
-          bt.setTypeArgumentList(tal);
-          ot.addStaticType(bt);
+        { SequenceType ot = new SequenceType(null);
+          ot.setElementType($type);
+          ot.setEndToken($DEFAULT_OP);
           $type=ot; }
       | LPAREN
-        { CommonToken tok = new CommonToken($LPAREN);
-          tok.setText("Callable");
-          BaseType bt = new BaseType($LPAREN);
-          bt.setIdentifier( new Identifier(tok) );
-          tal = new TypeArgumentList(null);
-          tal.addType($type);
-          bt.setTypeArgumentList(tal);
+        { bt = new FunctionType(null);
+          bt.setEndToken($LPAREN);
+          bt.setReturnType($type);
           $type=bt; }
           (
             t1=type
-            { tal.addType($t1.type); }
+            { if ($t1.type!=null)
+                  bt.addArgumentType($t1.type); }
             (
-              COMMA t2=type
-              { tal.addType($t2.type); }
+              COMMA
+              { bt.setEndToken($COMMA); } 
+              t2=type
+              { if ($t2.type!=null)
+                  bt.getArgumentTypes().add($t2.type); }
             )*
           )?
         RPAREN
+        { bt.setEndToken($RPAREN); }
       )*
     ;
     
