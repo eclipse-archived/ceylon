@@ -143,4 +143,18 @@ public class ValueVisitor extends Visitor {
         exitCapturingScope(cs);
     }
     
+    @Override public void visit(Tree.DefaultArgument that) {
+        //parameter declarations capture 
+        //their default argument
+        boolean cs = enterCapturingScope();
+        super.visit(that);
+        exitCapturingScope(cs);
+    }    
+    
+    @Override public void visit(Tree.FunctionArgument that) {
+        boolean cs = enterCapturingScope();
+        super.visit(that);
+        exitCapturingScope(cs);
+    }    
+    
 }
