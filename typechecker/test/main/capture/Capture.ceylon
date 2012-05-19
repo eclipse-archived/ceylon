@@ -291,6 +291,11 @@ void methodDefaultedParamCaptureInitParam2(@captured String s) {
     String m(String t = s) { return t; }
 }
 
-String() cap(@captured String s) {
+String() cap1(@captured String s) {
+    return () s;
+}
+
+String() cap2() {
+    @captured String s="hello";
     return () s;
 }
