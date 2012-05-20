@@ -1263,8 +1263,11 @@ public class ExpressionVisitor extends Visitor {
         for (Tree.NamedArgument arg: args.getNamedArguments()) {
             ProducedType type = null;
             if (arg instanceof Tree.SpecifiedArgument) {
-                type = ((Tree.SpecifiedArgument) arg).getSpecifierExpression()
-                                .getExpression().getTypeModel();
+                Expression e = ((Tree.SpecifiedArgument) arg).getSpecifierExpression()
+                                .getExpression();
+                if (e!=null) {
+                    type = e.getTypeModel();
+                }
             }
             else if (arg instanceof Tree.TypedArgument) {
                 //TODO: broken for method args
