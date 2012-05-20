@@ -57,4 +57,9 @@ public class PackageIssuesTest extends CompilerTest {
         compareWithJavaSource("Bug214.src", "Bug214.ceylon");
     }
     
+    @Test
+    public void testBug542(){
+        compareWithJavaSource("Bug542");
+    }
+    
 }
