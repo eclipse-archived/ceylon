@@ -35,10 +35,8 @@ public class TestAutocompletion {
         file = path.substring(path.lastIndexOf('/')+1);
         TypeChecker tc = new TypeCheckerBuilder().verbose(false).addSrcDirectory(new File(path)).getTypeChecker();
         tc.process();
-        assist = new AutocompleteVisitor(r, c);
-        for (PhasedUnit pu : tc.getPhasedUnits().getPhasedUnits()) {
-            pu.getCompilationUnit().visit(assist);
-        }
+        assist = new AutocompleteVisitor(r, c, tc);
+        assist.findNode();
     }
 
     @Test

@@ -2,9 +2,13 @@ package com.redhat.ceylon.compiler.js;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.typechecker.TypeChecker;
+import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
+import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.DeclarationWithProximity;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -17,16 +21,25 @@ public class AutocompleteVisitor extends Visitor {
 
     private final int row;
     private final int col;
+    private final TypeChecker checker;
     private Node node;
 
     /** Create a new instance that will look for suggestions for the node at the specified location. */
-    public AutocompleteVisitor(int row, int col) {
+    public AutocompleteVisitor(int row, int col, TypeChecker tc) {
         this.row = row;
         this.col = col;
+        checker = tc;
     }
 
     public int getRow() { return row; }
     public int getColumn() { return col; }
+
+    public Node findNode() {
+        for (PhasedUnit pu : checker.getPhasedUnits().getPhasedUnits()) {
+            pu.getCompilationUnit().visit(this);
+        }
+        return node;
+    }
 
     @Override
     public void visitAny(Node that) {
@@ -47,10 +60,20 @@ public class AutocompleteVisitor extends Visitor {
 
     public List<String> getCompletions() {
         if (node != null) {
-            Map<String, DeclarationWithProximity> comps = node.getScope().getMatchingDeclarations(node.getUnit(), node.getText(), 1);
-            for (Map.Entry<String, DeclarationWithProximity> e : comps.entrySet()) {
-                System.out.println("Completion key: " + e.getKey());
-                System.out.printf("Completion decl name %s prox %d%n", e.getValue().getName(), e.getValue().getProximity());
+            Map<String, DeclarationWithProximity> comps = new HashMap<String, DeclarationWithProximity>();
+            for (PhasedUnit pu : checker.getPhasedUnits().getPhasedUnits()) {
+                Map<String, DeclarationWithProximity> c2 = pu.getPackage().getMatchingDeclarations(node.getUnit(), node.getText(), 100);
+                comps.putAll(c2);
+                c2 = node.getScope().getMatchingDeclarations(pu.getUnit(), node.getText(), 100);
+                comps.putAll(c2);
+            }
+            for (PhasedUnits pus : checker.getPhasedUnitsOfDependencies()) {
+                for (PhasedUnit pu : pus.getPhasedUnits()) {
+                    Map<String, DeclarationWithProximity> c2 = pu.getPackage().getMatchingDeclarations(node.getUnit(), node.getText(), 100);
+                    comps.putAll(c2);
+                    c2 = node.getScope().getMatchingDeclarations(pu.getUnit(), node.getText(), 100);
+                    comps.putAll(c2);
+                }
             }
             return Arrays.asList(comps.keySet().toArray(new String[0]));
         }
