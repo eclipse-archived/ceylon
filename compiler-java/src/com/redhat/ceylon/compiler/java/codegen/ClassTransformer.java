@@ -870,9 +870,7 @@ public class ClassTransformer extends AbstractTransformer {
         List<JCStatement> body = null;
         final Method model = def.getDeclarationModel();
         
-        if (!Decl.isFormal(def)
-                && def instanceof Tree.MethodDeclaration
-                && ((Tree.MethodDeclaration)def).getSpecifierExpression() == null) {
+        if (Decl.isDeferredInitialization(def)) {
             // Uninitialized or deferred initialized method => Make a Callable field
             current().field(PRIVATE, model.getName(), makeJavaType(typeFact().getCallableType(model.getType())), makeNull(), false);
             

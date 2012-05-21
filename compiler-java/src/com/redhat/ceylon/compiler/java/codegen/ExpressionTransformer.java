@@ -1595,6 +1595,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (Decl.isLocal(decl)) {
                 lhs = makeQualIdent(lhs, decl.getName() + "$setter");
             }
+        } else if (decl instanceof Method
+                && !Decl.withinClassOrInterface(decl)) {
+            // Deferred method initialization of a local function
+            result = at(op).Assign(makeQualIdent(lhs, decl.getName(), decl.getName()), rhs);
         } else if (variable && (Decl.isClassAttribute(decl))) {
             // must use the setter, nothing to do, unless it's a java field
             if(Decl.isJavaField(decl)){
