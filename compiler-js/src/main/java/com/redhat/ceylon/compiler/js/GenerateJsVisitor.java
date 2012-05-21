@@ -2315,36 +2315,49 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    /** Appends an object with the type's type and list of union/instersection types. */
+    /** Appends an object with the type's type and list of union/intersection types. */
     private void getTypeList(StaticType type) {
         out("{ t:'");
-        if (type instanceof UnionType) {
-            out("u");
-        } else {
+        if (type instanceof IntersectionType) {
             out("i");
+        } else {
+            out("u");
         }
         out("', l:[");
-        List<StaticType> types = type instanceof UnionType ? ((UnionType)type).getStaticTypes() : ((IntersectionType)type).getStaticTypes();
-        boolean first = true;
-        for (StaticType t : types) {
-            if (!first) out(",");
-            if (t instanceof SimpleType) {
-                out("'");
-                out(((SimpleType)t).getDeclarationModel().getQualifiedNameString());
-                out("'");
-            } else {
-                getTypeList(t);
-            }
-            first = false;
+        if (type instanceof OptionalType) {
+        	out("'ceylon.language.Nothing',");
+        	typeNameOrList(((OptionalType) type).getDefiniteType());
+        } else {
+	        List<StaticType> types = type instanceof UnionType
+	        		? ((UnionType)type).getStaticTypes()
+	        		: ((IntersectionType)type).getStaticTypes();
+	        boolean first = true;
+	        for (StaticType t : types) {
+	            if (!first) out(",");
+	            typeNameOrList(t);
+	            first = false;
+	        }
         }
         out("]}");
+    }
+    
+    private void typeNameOrList(StaticType type) {
+    	if (type instanceof SimpleType) {
+            out("'");
+            out(((SimpleType) type).getDeclarationModel().getQualifiedNameString());
+            out("'");
+        } else if (type instanceof EntryType) {
+        	out("'ceylon.language.Entry'"); //TODO: type parameters
+        } else {
+            getTypeList(type);
+        }
     }
 
     /** Generates js code to check if a term is of a certain type. We solve this in JS by
      * checking against all types that Type satisfies (in the case of union types, matching any
      * type will do, and in case of intersection types, all types must be matched). */
     private void generateIsOfType(Term term, String termString, Type type, String tmpvar) {
-        if (type instanceof SimpleType) {
+        if ((type instanceof SimpleType) || (type instanceof EntryType))  {
             out(clAlias, ".isOfType(");
         } else {
             out(clAlias, ".Boolean(", clAlias, ".isOfTypes(");
@@ -2369,11 +2382,14 @@ public class GenerateJsVisitor extends Visitor
                 }
                 out("*/");
             }
+        } else if (type instanceof EntryType) {
+        	out("'ceylon.language.Entry')"); //TODO: type parameters
         } else {
             getTypeList((StaticType)type);
             out("))");
         }
     }
+    
     @Override
     public void visit(IsOp that) {
         generateIsOfType(that.getTerm(), null, that.getType(), null);
