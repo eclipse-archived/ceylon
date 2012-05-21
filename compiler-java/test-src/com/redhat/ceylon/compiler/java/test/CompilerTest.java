@@ -77,9 +77,11 @@ public abstract class CompilerTest {
         String pkg = pakage == null ? "" : moduleName.replaceAll("\\.", Matcher.quoteReplacement(File.separator));
         path = dir + File.separator + pkg + File.separator;
         int lastDot = moduleName.lastIndexOf('.');
-        if(lastDot == -1)
-            throw new RuntimeException("Failed to find last part of package name: "+moduleName);
-        destDir = destDirGeneral + File.separator + transformDestDir(moduleName.substring(lastDot+1));
+        if(lastDot == -1){
+            destDir = destDirGeneral + File.separator + transformDestDir(moduleName);
+        } else {
+            destDir = destDirGeneral + File.separator + transformDestDir(moduleName.substring(lastDot+1));
+        }
         defaultOptions = Arrays.asList("-out", destDir, "-rep", destDir);
     }
 
