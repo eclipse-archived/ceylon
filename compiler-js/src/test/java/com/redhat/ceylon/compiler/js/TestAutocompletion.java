@@ -46,10 +46,13 @@ public class TestAutocompletion {
     public void testCompletions() {
         assist.findNode();
         Node node = assist.getNodeAtLocation();
+        //Check that we did find a node
         Assert.assertNotNull("No node found at " + assist.getRow() + ":" + assist.getColumn() + " for file " + file, node);
-        Assert.assertEquals(nodeText, node.getText());
+        //Check that the node we found is the one we were actually looking for
+        Assert.assertEquals(nodeText, assist.getTextAtLocation());
         List<String> comps = assist.getCompletions();
         System.out.println("Completions for " + file + ": " + comps);
+        //Check that the completions contain the expected one
         Assert.assertTrue("Completion '" + checkCompletion + "' not found in " + comps, comps.contains(checkCompletion));
     }
 
