@@ -321,6 +321,7 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
         checkMethodParameters(that);
+        m.setDeclaredVoid(that.getType() instanceof Tree.VoidModifier);
         if (that.getType() instanceof Tree.ValueModifier) {
             that.getType().addError("methods may not be declared using the keyword value");
         }

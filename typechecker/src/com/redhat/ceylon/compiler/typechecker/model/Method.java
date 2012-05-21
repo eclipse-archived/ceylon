@@ -22,6 +22,7 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     private boolean overloaded;
     private boolean abstraction;
     private List<Declaration> overloads;
+    private boolean declaredVoid;
 
     /*public boolean isFormal() {
          return formal;
@@ -70,6 +71,14 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     @Override
     public boolean isAbstraction() {
         return abstraction;
+    }
+    
+    public boolean isDeclaredVoid() {
+        return declaredVoid;
+    }
+    
+    public void setDeclaredVoid(boolean declaredVoid) {
+        this.declaredVoid = declaredVoid;
     }
     
     @Override
