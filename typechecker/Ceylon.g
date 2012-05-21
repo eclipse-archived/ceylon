@@ -126,41 +126,42 @@ importElementList returns [ImportMemberOrTypeList importMemberOrTypeList]
     ;
 
 importElement returns [ImportMemberOrType importMemberOrType]
+    @init { Alias alias = null; }
     : compilerAnnotations
-    (
-      memberName
+    ( memberName 
       { $importMemberOrType = new ImportMember(null);
         $importMemberOrType.setIdentifier($memberName.identifier); }
-    | typeName
+      ( s1=SPECIFY
+        { alias = new Alias($s1);
+          alias.setIdentifier($memberName.identifier);
+          $importMemberOrType.setAlias(alias); 
+          $importMemberOrType.setIdentifier(null); }
+        (
+          memberNameDeclaration 
+          { $importMemberOrType.setIdentifier($memberNameDeclaration.identifier); }
+        | { displayRecognitionError(getTokenNames(), 
+                  new MismatchedTokenException(LIDENTIFIER, input)); }
+        ) 
+      )?
+    | typeName 
       { $importMemberOrType = new ImportType(null);
         $importMemberOrType.setIdentifier($typeName.identifier); }
+      ( s2=SPECIFY
+        { alias = new Alias($s2);
+          alias.setIdentifier($typeName.identifier);
+          $importMemberOrType.setAlias(alias); 
+          $importMemberOrType.setIdentifier(null); }
         (
-          iel1=importElementList
-          { $importMemberOrType.setImportMemberOrTypeList($iel1.importMemberOrTypeList); }
-        )?
-    | memberAlias 
-      { $importMemberOrType = new ImportMember(null);
-        $importMemberOrType.setAlias($memberAlias.alias); }
-      ( 
-        memberNameDeclaration 
-        { $importMemberOrType.setIdentifier($memberNameDeclaration.identifier); }
-      | { displayRecognitionError(getTokenNames(), 
-                  new MismatchedTokenException(LIDENTIFIER, input)); } 
-      )  
-    | typeAlias 
-      { $importMemberOrType = new ImportType(null);
-        $importMemberOrType.setAlias($typeAlias.alias); }
-      ( 
-        typeNameDeclaration 
-        { $importMemberOrType.setIdentifier($typeNameDeclaration.identifier); }
-      | { displayRecognitionError(getTokenNames(), 
-                  new MismatchedTokenException(UIDENTIFIER, input)); } 
-      )
-        (
-          iel2=importElementList
-          { $importMemberOrType.setImportMemberOrTypeList($iel2.importMemberOrTypeList); }
-        )?
-    
+          typeNameDeclaration 
+          { $importMemberOrType.setIdentifier($typeNameDeclaration.identifier); }
+          (
+            iel2=importElementList
+            { $importMemberOrType.setImportMemberOrTypeList($iel2.importMemberOrTypeList); }
+          )?
+        | { displayRecognitionError(getTokenNames(), 
+                  new MismatchedTokenException(UIDENTIFIER, input)); }
+        ) 
+      )? 
     )
     { if ($importMemberOrType!=null)
         $importMemberOrType.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
@@ -169,18 +170,6 @@ importElement returns [ImportMemberOrType importMemberOrType]
 importWildcard returns [ImportWildcard importWildcard]
     : ELLIPSIS
       { $importWildcard = new ImportWildcard($ELLIPSIS); }
-    ;
-
-memberAlias returns [Alias alias]
-    : memberName SPECIFY
-      { $alias = new Alias($SPECIFY); 
-        $alias.setIdentifier($memberName.identifier); }
-    ;
-
-typeAlias returns [Alias alias]
-    : typeName SPECIFY
-      { $alias = new Alias($SPECIFY); 
-        $alias.setIdentifier($typeName.identifier); }
     ;
 
 packageName returns [Identifier identifier]
