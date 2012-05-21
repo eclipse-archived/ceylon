@@ -4,7 +4,7 @@ class DeferredInitializedMethod {
     private .ceylon.language.Callable<? extends .ceylon.language.String> s;
     
     private final .java.lang.String s(final .java.lang.String name) {
-        if (s == null) throw new .java.lang.RuntimeException(); else return s.$call(name).toString();
+        if (s == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return s.$call(name).toString();
     }
     
     private final .java.lang.String s() {

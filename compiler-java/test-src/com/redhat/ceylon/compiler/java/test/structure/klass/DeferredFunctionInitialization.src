@@ -15,7 +15,7 @@ final class deferredFunctionInitialization {
             }
             
             .java.lang.String s() {
-                if (s == null) throw new .java.lang.RuntimeException(); else return s.$call().toString();
+                if (s == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return s.$call().toString();
             }
         }
         final s s = new s();
