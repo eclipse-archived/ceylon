@@ -6,6 +6,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 /**
  * Validates that the initializer of a class does
@@ -244,16 +245,18 @@ public class SelfReferenceVisitor extends Visitor {
     @Override
     public void visit(Tree.Return that) {
         super.visit(that);
-        if ( that.getExpression()!=null && inBody() ) {
-            checkSelfReference(that, that.getExpression().getTerm());    
+        Expression e = that.getExpression();
+        if ( e!=null && inBody() ) {
+            checkSelfReference(that, e.getTerm());    
         }
     }
 
     @Override
     public void visit(Tree.SpecifierOrInitializerExpression that) {
         super.visit(that);
-        if ( inBody() ) {
-            checkSelfReference(that, that.getExpression().getTerm());    
+        Expression e = that.getExpression();
+        if ( e!=null && inBody() ) {
+            checkSelfReference(that, e.getTerm());    
         }
     }
 
