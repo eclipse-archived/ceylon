@@ -55,8 +55,13 @@
         <mkdir dir="${runtime}/${jslangpath}" />
         <mkdir dir="${build.classes}" />
         <!-- compile Java sources -->
-        <echo message="${ceylon.typechecker.lib}" />
-        <javac srcdir="${src}" destdir="${build.classes}" debug="true" classpath="${ceylon.typechecker.lib}">
+        <javac srcdir="${src}" destdir="${build.classes}" debug="true">
+        	<classpath>
+				<fileset dir="${ceylon.typechecker.loc}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+				<pathelement location="${ceylon.typechecker.lib}" />
+        	</classpath>
             <include name="**/*.java" />
         </javac>
         <!-- generate the ceylon.language.js file -->
