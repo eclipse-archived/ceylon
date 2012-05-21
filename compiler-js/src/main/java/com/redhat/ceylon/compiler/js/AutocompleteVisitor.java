@@ -44,20 +44,28 @@ public class AutocompleteVisitor extends Visitor {
     public int getRow() { return row; }
     public int getColumn() { return col; }
 
-    public Node findNode() {
+    public Node findNode(AutocompleteUnitValidator callback) {
         //First pass, to find the identifier
         pass = 1;
         for (PhasedUnit pu : checker.getPhasedUnits().getPhasedUnits()) {
-            pu.getCompilationUnit().visit(this);
+            if (callback.processUnit(pu)) {
+                pu.getCompilationUnit().visit(this);
+            }
         }
         //Second pass, to find its parent
         if (node != null) {
             pass = 2;
             for (PhasedUnit pu : checker.getPhasedUnits().getPhasedUnits()) {
-                pu.getCompilationUnit().visit(this);
+                if (callback.processUnit(pu)) {
+                    pu.getCompilationUnit().visit(this);
+                }
             }
         }
         return node;
+    }
+
+    public Node findNode() {
+        return findNode(new DefaultAutocompleteUnitValidator());
     }
 
     /** Checks if the identifier contains the location we're interested in. */
@@ -136,4 +144,15 @@ public class AutocompleteVisitor extends Visitor {
         return Arrays.asList(comps.keySet().toArray(new String[0]));
     }
 
+    /** Callbacks can implement this to tell the visitor if a unit should be processed or not. */
+    public interface AutocompleteUnitValidator {
+        public boolean processUnit(PhasedUnit pu);
+    }
+
+    private class DefaultAutocompleteUnitValidator implements AutocompleteUnitValidator {
+        @Override
+        public boolean processUnit(PhasedUnit pu) {
+            return true;
+        }
+    }
 }
