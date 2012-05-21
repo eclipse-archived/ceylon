@@ -34,6 +34,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -813,13 +814,16 @@ public class DeclarationVisitor extends Visitor {
                 if (a.getNamedArgumentList()!=null) {
                     for ( Tree.NamedArgument na: a.getNamedArgumentList().getNamedArguments() ) {
                         if (na instanceof Tree.SpecifiedArgument) {
-                            Tree.Term t = ((Tree.SpecifiedArgument) na).getSpecifierExpression().getExpression().getTerm();
-                            String param = ((Tree.SpecifiedArgument) na).getIdentifier().getText();
-                            if (t instanceof Tree.Literal) {
-                                ann.addNamedArgument( param, ( (Tree.Literal) t ).getText() );
-                            }
-                            else if (t instanceof Tree.BaseMemberOrTypeExpression) {
-                                ann.addNamedArgument( param, ( (Tree.BaseMemberOrTypeExpression) t ).getIdentifier().getText() );
+                            Expression e = ((Tree.SpecifiedArgument) na).getSpecifierExpression().getExpression();
+                            if (e!=null) {
+                                Tree.Term t = e.getTerm();
+                                String param = ((Tree.SpecifiedArgument) na).getIdentifier().getText();
+                                if (t instanceof Tree.Literal) {
+                                    ann.addNamedArgument( param, ( (Tree.Literal) t ).getText() );
+                                }
+                                else if (t instanceof Tree.BaseMemberOrTypeExpression) {
+                                    ann.addNamedArgument( param, ( (Tree.BaseMemberOrTypeExpression) t ).getIdentifier().getText() );
+                                }
                             }
                         }                    
                     }

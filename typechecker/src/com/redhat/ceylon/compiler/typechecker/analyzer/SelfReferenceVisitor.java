@@ -272,8 +272,11 @@ public class SelfReferenceVisitor extends Visitor {
     public void visit(Tree.PositionalArgumentList that) {
         super.visit(that);
         if ( inBody() ) {
-            for ( Tree.PositionalArgument arg: that.getPositionalArguments()) {
-                checkSelfReference(arg, arg.getExpression().getTerm());    
+            for (Tree.PositionalArgument arg: that.getPositionalArguments()) {
+                Expression e = arg.getExpression();
+                if (e!=null) {
+                    checkSelfReference(arg, e.getTerm());
+                }
             }
         }
     }
@@ -282,10 +285,13 @@ public class SelfReferenceVisitor extends Visitor {
     public void visit(Tree.NamedArgumentList that) {
         super.visit(that);
         if ( inBody() ) {
-            for ( Tree.NamedArgument arg: that.getNamedArguments()) {
+            for (Tree.NamedArgument arg: that.getNamedArguments()) {
                 if (arg instanceof Tree.SpecifiedArgument) {
                     Tree.SpecifierExpression se = ((Tree.SpecifiedArgument) arg).getSpecifierExpression();
-                    checkSelfReference(se, se.getExpression().getTerm());    
+                    Expression e = se.getExpression();
+                    if (e!=null) {
+                        checkSelfReference(se, e.getTerm());
+                    }
                 }
             }
         }
