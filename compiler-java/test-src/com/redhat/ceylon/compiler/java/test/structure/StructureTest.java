@@ -363,7 +363,6 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("method/MethodSpecifyingGetter");
     }
     @Test
-    @Ignore("Awaiting fix for ceylon-spec#218")
     public void testMthMethodSpecifyingInitParam(){
         compareWithJavaSource("method/MethodSpecifyingInitParam");
     }
