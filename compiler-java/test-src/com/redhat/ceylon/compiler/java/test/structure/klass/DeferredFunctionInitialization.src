@@ -2,23 +2,31 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 final class deferredFunctionInitialization {
     
-    private .java.lang.String s() {
-        return "hello";
-    }
-    
     private deferredFunctionInitialization() {
     }
     
     static void deferredFunctionInitialization() {
         
-        
-        .ceylon.language.print.print(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("ceylon.language.Callable<ceylon.language.String>"){
+        final class s {
+            private .ceylon.language.Callable<? extends .ceylon.language.String> s;
+            
+            private s() {
+                this.s = null;
+            }
+            
+            .java.lang.String s() {
+                if (s == null) throw new .java.lang.RuntimeException(); else return s.$call().toString();
+            }
+        }
+        final s s = new s();
+        s.s = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("ceylon.language.Callable<ceylon.language.String>"){
             
             @.java.lang.Override
             public .ceylon.language.String $call() {
-                return .ceylon.language.String.instance(s.s());
+                return .ceylon.language.String.instance("hello");
             }
-        });
+        };
+        .ceylon.language.print.print(.ceylon.language.String.instance(s.s()));
     }
     
     public static void main(.java.lang.String[] args) {
