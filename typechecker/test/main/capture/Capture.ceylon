@@ -283,12 +283,28 @@ class MethodDefaultedParamCaptureInitParam2(@captured String s) {
     String m(String t = s) { return t; }
 }
 
+class MethodDefaultedParamCaptureInitParam3(@captured String s) {
+    String m(String t = s);
+}
+
+class MethodDefaultedParamCaptureInitParam4(@captured String s) {
+    class C(String t = s) {}
+}
+
 void methodDefaultedParamCaptureInitParam1(@captured String s) {
     String m(String t = s) = (String x) x;
 }
 
 void methodDefaultedParamCaptureInitParam2(@captured String s) {
     String m(String t = s) { return t; }
+}
+
+void methodDefaultedParamCaptureInitParam3(@captured String s) {
+    String m(String t = s);
+}
+
+void methodDefaultedParamCaptureInitParam4(@captured String s) {
+    class C(String t = s) {}
 }
 
 String() cap1(@captured String s) {
@@ -299,3 +315,21 @@ String() cap2() {
     @captured String s="hello";
     return () s;
 }
+
+class MethodSpecifyingInitParam(@captured Callable<Void> x) {
+    void foo() = x;
+}
+
+class MethodSpecifyingInitParam2(@captured void x()) {
+    void foo() = x;
+}
+
+void methodSpecifyingInitParam(@captured Callable<Void> x) {
+    void foo() = x;
+}
+
+void methodSpecifyingInitParam2(@captured void x()) {
+    void foo() = x;
+}
+
+class DefaultedParameterClassInstantiation(@uncaptured Integer m = 1, Integer n = m + 1) {}
