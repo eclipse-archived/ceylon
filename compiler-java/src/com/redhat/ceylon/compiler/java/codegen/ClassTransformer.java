@@ -881,7 +881,7 @@ public class ClassTransformer extends AbstractTransformer {
             
             final JCBinary cond = make().Binary(JCTree.EQ, makeQuotedIdent(model.getName()), makeNull());
             final JCStatement throw_ = make().Throw(make().NewClass(null, null, 
-                    make().Type(syms().runtimeExceptionType), 
+                    make().Type(syms().ceylonUninitializedMethodErrorType), 
                     List.<JCExpression>nil(), 
                     null));
             JCExpression call = make().Apply(null, makeSelect(

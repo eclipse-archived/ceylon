@@ -190,6 +190,7 @@ public class Symtab {
     public  Type ceylonExceptionType;
     public  Type ceylonRecursiveInitializationExceptionType;
     public  Type ceylonEnumeratedTypeErrorType;
+    public  Type ceylonUninitializedMethodErrorType;
     public  Type ceylonCallableType;
     public  Type ceylonAbstractCallableType;
     
@@ -799,6 +800,7 @@ public class Symtab {
         ceylonExceptionType = enterClass("ceylon.language.Exception");
         ceylonRecursiveInitializationExceptionType = enterClass("ceylon.language.RecursiveInitializationException");
         ceylonEnumeratedTypeErrorType = enterClass("com.redhat.ceylon.compiler.java.language.EnumeratedTypeError");
+        ceylonUninitializedMethodErrorType = enterClass("com.redhat.ceylon.compiler.java.language.UninitializedMethodError");
         ceylonCallableType = enterClass("ceylon.language.Callable");
         ceylonAbstractCallableType = enterClass("com.redhat.ceylon.compiler.java.language.AbstractCallable");
     }
