@@ -1,10 +1,11 @@
 package com.redhat.ceylon.compiler.js;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -35,6 +36,7 @@ public class AutocompleteVisitor extends Visitor {
     public int getColumn() { return col; }
 
     public Node findNode() {
+        //First pass
         for (PhasedUnit pu : checker.getPhasedUnits().getPhasedUnits()) {
             pu.getCompilationUnit().visit(this);
         }
@@ -43,11 +45,13 @@ public class AutocompleteVisitor extends Visitor {
 
     @Override
     public void visitAny(Node that) {
-        if (that.getToken().getLine() == row) {
-            final int col0 = that.getToken().getCharPositionInLine();
-            final int col1 = Math.max(col0+that.getText().length()-1, col0);
-            if (col >= col0 && col <= col1) {
-                node = that;
+        if (node == null && !that.getText().isEmpty()) {
+            if (that.getToken().getLine() == row) {
+                final int col0 = that.getToken().getCharPositionInLine();
+                final int col1 = Math.max(col0+that.getText().length()-1, col0);
+                if (col >= col0 && col <= col1) {
+                    node = that;
+                }
             }
         }
         super.visitAny(that);
@@ -58,26 +62,36 @@ public class AutocompleteVisitor extends Visitor {
         return node;
     }
 
+    private void addCompletions(Map<String, DeclarationWithProximity> comps, Set<PhasedUnit> units,
+            Set<com.redhat.ceylon.compiler.typechecker.model.Package> packs, PhasedUnit pu) {
+        String s = node.getText();
+        if (!packs.contains(pu.getPackage())) {
+            Map<String, DeclarationWithProximity> c2 = pu.getPackage().getMatchingDeclarations(node.getUnit(), s, 100);
+            comps.putAll(c2);
+            packs.add(pu.getPackage());
+        }
+        if (!units.contains(pu)) {
+            Map<String, DeclarationWithProximity> c2 = node.getScope().getMatchingDeclarations(pu.getUnit(), s, 100);
+            comps.putAll(c2);
+            units.add(pu);
+        }
+        for (PhasedUnit sub : pu.getDependentsOf()) {
+            addCompletions(comps, units, packs, sub);
+        }
+    }
+    /** Looks for declarations matching the node's text and returns them as strings. */
     public List<String> getCompletions() {
+        Map<String, DeclarationWithProximity> comps = new HashMap<String, DeclarationWithProximity>();
         if (node != null) {
-            Map<String, DeclarationWithProximity> comps = new HashMap<String, DeclarationWithProximity>();
-            for (PhasedUnit pu : checker.getPhasedUnits().getPhasedUnits()) {
-                Map<String, DeclarationWithProximity> c2 = pu.getPackage().getMatchingDeclarations(node.getUnit(), node.getText(), 100);
-                comps.putAll(c2);
-                c2 = node.getScope().getMatchingDeclarations(pu.getUnit(), node.getText(), 100);
-                comps.putAll(c2);
-            }
+            HashSet<PhasedUnit> units = new HashSet<PhasedUnit>();
+            HashSet<com.redhat.ceylon.compiler.typechecker.model.Package> packs = new HashSet<com.redhat.ceylon.compiler.typechecker.model.Package>();
             for (PhasedUnits pus : checker.getPhasedUnitsOfDependencies()) {
                 for (PhasedUnit pu : pus.getPhasedUnits()) {
-                    Map<String, DeclarationWithProximity> c2 = pu.getPackage().getMatchingDeclarations(node.getUnit(), node.getText(), 100);
-                    comps.putAll(c2);
-                    c2 = node.getScope().getMatchingDeclarations(pu.getUnit(), node.getText(), 100);
-                    comps.putAll(c2);
+                    addCompletions(comps, units, packs, pu);
                 }
             }
-            return Arrays.asList(comps.keySet().toArray(new String[0]));
         }
-        return Collections.emptyList();
+        return Arrays.asList(comps.keySet().toArray(new String[0]));
     }
 
 }
