@@ -832,7 +832,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 }
             }
             
-            if (isOverloaded && !methodMirrors.get(0).isConstructor()) {
+            if (overloads != null && !overloads.isEmpty()) {
                 // We create an extra "abstraction" method for overloaded methods
                 Method abstractionMethod = addMethod(klass, methodMirrors.get(0), false, false);
                 abstractionMethod.setAbstraction(true);
