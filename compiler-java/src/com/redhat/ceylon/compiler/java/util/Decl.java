@@ -304,11 +304,15 @@ public class Decl {
         // if it's not one of those it must be from source (Ceylon)
         return true;
     }
-    
+
     public static boolean isDeferredInitialization(Tree.AnyMethod def) {
         return !Decl.isFormal(def)
             && def instanceof Tree.MethodDeclaration
             && ((Tree.MethodDeclaration)def).getSpecifierExpression() == null;
     }
 
+    public static boolean isLittleVoid(Declaration decl) {
+        return (decl instanceof Method)
+                && ((Method)decl).isDeclaredVoid();
+    }
 }

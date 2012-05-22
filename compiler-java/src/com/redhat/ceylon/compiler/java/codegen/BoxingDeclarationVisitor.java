@@ -23,6 +23,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import java.util.Iterator;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -124,7 +125,7 @@ public class BoxingDeclarationVisitor extends Visitor {
                 setBoxingState(refinedDeclaration, refinedDeclaration);
             // inherit
             declaration.setUnboxed(refinedDeclaration.getUnboxed());
-        }else if(transformer.isCeylonBasicType(type)
+        }else if((transformer.isCeylonBasicType(type) || Decl.isLittleVoid(declaration))
            && !(refinedDeclaration.getTypeDeclaration() instanceof TypeParameter)){
             declaration.setUnboxed(true);
         }else

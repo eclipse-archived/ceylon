@@ -1538,6 +1538,8 @@ public abstract class AbstractTransformer implements Transformation {
             expr = boxBoolean(expr);
         } else if (isCeylonArray(exprType)) {
             expr = boxArray(expr);
+        } else if (isVoid(exprType)) {
+            expr = make().LetExpr(List.<JCStatement>of(make().Exec(expr)), makeNull());
         }
         return expr;
     }
