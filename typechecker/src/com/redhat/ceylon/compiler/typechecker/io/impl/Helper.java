@@ -3,6 +3,8 @@ package com.redhat.ceylon.compiler.typechecker.io.impl;
 import java.io.File;
 import java.util.zip.ZipEntry;
 
+import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
+
 /**
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
@@ -35,5 +37,18 @@ public class Helper {
         }
         repo.mkdirs();
         return repo;
+    }
+
+    public static String computeRelativePath(VirtualFile unitFile, VirtualFile srcDir) {
+        final String rawRelativePath = unitFile.getPath().substring( srcDir.getPath().length() );
+        if ( rawRelativePath.startsWith("/") ) {
+            return rawRelativePath.substring(1);
+        }
+        else if ( rawRelativePath.startsWith("!/") ) {
+            return rawRelativePath.substring(2);
+        }
+        else {
+            return rawRelativePath;
+        }
     }
 }
