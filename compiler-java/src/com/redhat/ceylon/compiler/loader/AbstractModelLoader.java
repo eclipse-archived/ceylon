@@ -1663,6 +1663,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public void logDuplicateModuleError(Module module, Module loadedModule) {
         logError("Trying to import or compile two different versions of the same module: "+
                 module.getNameAsString()+" ("+module.getVersion()+" and "+loadedModule.getVersion()+")");
+    }
     
     public void setupSourceFileObjects(List<?> treeHolders) {
     }
