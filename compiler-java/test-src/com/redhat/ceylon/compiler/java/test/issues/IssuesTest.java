@@ -19,9 +19,15 @@
  */
 package com.redhat.ceylon.compiler.java.test.issues;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
 
 import junit.framework.Assert;
 
@@ -308,5 +314,11 @@ public class IssuesTest extends CompilerTest {
     @Test
     public void testBug540(){
         compareWithJavaSource("Bug540");
+    }
+    
+    @Test
+    public void testBug548() throws IOException{
+        compile("bug548/Bug548_1.ceylon");
+        compile("bug548/Bug548_2.ceylon");
     }
 }
