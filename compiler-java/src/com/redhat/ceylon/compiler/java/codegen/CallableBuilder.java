@@ -68,12 +68,7 @@ public class CallableBuilder {
         CallableBuilder cb = new CallableBuilder(gen);
         cb.paramLists = parameterList;
         cb.typeModel = expr.getTypeModel();
-        ProducedType returnType = gen.getCallableReturnType(cb.typeModel);
-        if (gen.isVoid(returnType)) {
-            cb.body = List.<JCStatement>of(gen.make().Exec(fnCall), gen.make().Return(gen.makeNull()));
-        } else {
-            cb.body = List.<JCStatement>of(gen.make().Return(fnCall));
-        }
+        cb.body = List.<JCStatement>of(gen.make().Return(fnCall));    
         
         return cb;
     }
