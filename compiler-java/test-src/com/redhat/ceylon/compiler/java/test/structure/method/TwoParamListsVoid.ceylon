@@ -22,5 +22,9 @@ void twoParamListsVoid() {
     void f(String s)() {
         print(s);
     }
+    Void g(String s)() {
+        return print(s);
+    }
     f("hello")();
+    g("hello")();
 }

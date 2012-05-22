@@ -26,7 +26,34 @@ final class twoParamListsVoid {
             }
         }
         final f f = new f();
+        
+        final class g {
+            
+            private g() {
+            }
+            
+            .ceylon.language.Callable<? extends .java.lang.Object> g(final .ceylon.language.String s) {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void>"){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call() {
+                        if (true) {
+                            return (
+                                let
+                                {
+                                    .ceylon.language.print.print(s);
+                                }
+                                returning null;
+                            );
+                        }
+                        return null;
+                    }
+                };
+            }
+        }
+        final g g = new g();
         f.f(.ceylon.language.String.instance("hello")).$call();
+        g.g(.ceylon.language.String.instance("hello")).$call();
     }
     
     public static void main(.java.lang.String[] args) {
