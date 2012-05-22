@@ -82,6 +82,8 @@ public interface MethodMirror extends AnnotatedMirror {
      * Returns the return type for this method 
      */
     TypeMirror getReturnType();
+    
+    boolean isDeclaredVoid();
 
     /**
      * Returns the list of type parameters for this method

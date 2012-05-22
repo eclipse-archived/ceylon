@@ -127,6 +127,12 @@ public class ReflectionMethod implements MethodMirror {
         returnType = new ReflectionType(((Method)method).getGenericReturnType());
         return returnType;
     }
+    
+    @Override
+    public boolean isDeclaredVoid() {
+        return method instanceof Method 
+                && Void.TYPE == ((Method)method).getReturnType();
+    }
 
     @Override
     public List<TypeParameterMirror> getTypeParameters() {

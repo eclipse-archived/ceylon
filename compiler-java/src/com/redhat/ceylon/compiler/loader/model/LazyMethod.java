@@ -84,6 +84,12 @@ public class LazyMethod extends Method implements LazyElement {
         load();
         return super.getType();
     }
+    
+    @Override
+    public boolean isDeclaredVoid() {
+        load();
+        return super.isDeclaredVoid();
+    }
 
     @Override
     public boolean isParameterized() {

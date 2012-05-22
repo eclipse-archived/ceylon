@@ -35,6 +35,7 @@ import java.util.Set;
 import javax.lang.model.type.TypeKind;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotatedMirror;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
@@ -963,6 +964,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, method);
             method.setUncheckedNullType(!isCeylon);
             method.setType(type);
+            method.setDeclaredVoid(methodMirror.isDeclaredVoid());
         }catch(TypeParserException x){
             logError("Invalid type signature for method return type of "+klass.getQualifiedNameString()+"."+methodMirror.getName()+": "+x.getMessage());
             throw x;
@@ -1239,7 +1241,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private void markUnboxed(TypedDeclaration decl, TypeMirror type) {
         boolean unboxed = false;
         if(type.isPrimitive() || type.getKind() == TypeKind.ARRAY
-                || sameType(type, STRING_TYPE)) {
+                || sameType(type, STRING_TYPE)
+                || Decl.isLittleVoid(decl)) {
             unboxed = true;
         }
         decl.setUnboxed(unboxed);
@@ -1301,6 +1304,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         setParameters(method, meth, true /* toplevel methods are always Ceylon */, method);
         try{
             method.setType(obtainType(meth.getReturnType(), meth, method));
+            method.setDeclaredVoid(meth.isDeclaredVoid());
         }catch(TypeParserException x){
             logError("Invalid type signature for toplevel method of "+method.getQualifiedNameString()+": "+x.getMessage());
             throw x;
