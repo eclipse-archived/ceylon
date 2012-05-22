@@ -161,6 +161,10 @@ abstract class InvocationBuilder {
             }
             resultExpr = gen.make().Apply(primaryTypeArguments, gen.makeQuotedQualIdent(actualPrimExpr, selector), args.toList());
         }
+        
+        resultExpr = gen.expressionGen().applyErasureAndBoxing(resultExpr, returnType, 
+                !unboxed, boxingStrategy, returnType);
+        
         return resultExpr;
     }
 
@@ -184,8 +188,7 @@ abstract class InvocationBuilder {
                 return transformInvocation(primaryExpr, selector);
             }
         });
-        result = gen.expressionGen().applyErasureAndBoxing(result, returnType, 
-                !unboxed, boxingStrategy, returnType);
+        
         return result;
     }
 
@@ -1044,7 +1047,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         JCExpression resultExpr = super.transformInvocation(primaryExpr, selector);
         // apply the default parameters
         if (vars != null && !vars.isEmpty()) {
-            if (returnType == null || gen.isVoid(returnType)) {
+            if (returnType == null || Decl.isLittleVoid(primaryDeclaration)) {
                 // void methods get wrapped like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1); null)
                 resultExpr = gen.make().LetExpr( 
                         vars.append(gen.make().Exec(resultExpr)).toList(), 
@@ -1056,6 +1059,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                         resultExpr);
             }
         }
+        
         return resultExpr;
     }
     
