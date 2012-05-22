@@ -31,6 +31,7 @@ import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
+import com.redhat.ceylon.compiler.loader.ModelLoaderFactory;
 import com.redhat.ceylon.compiler.loader.TypeParser;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
@@ -68,11 +69,17 @@ public class CeylonModelLoader extends AbstractModelLoader {
     private Types types;
     private Options options;
     
-    public static CeylonModelLoader instance(Context context) {
-        CeylonModelLoader instance = context.get(CeylonModelLoader.class);
+    public static AbstractModelLoader instance(Context context) {
+        AbstractModelLoader instance = context.get(AbstractModelLoader.class);
         if (instance == null) {
-            instance = new CeylonModelLoader(context);
-            context.put(CeylonModelLoader.class, instance);
+            ModelLoaderFactory factory = context.get(ModelLoaderFactory.class);
+            if (factory != null) {
+                instance = factory.createModelLoader(context);
+            }
+            else {
+                instance = new CeylonModelLoader(context);
+            }
+            context.put(AbstractModelLoader.class, instance);
         }
         return instance;
     }

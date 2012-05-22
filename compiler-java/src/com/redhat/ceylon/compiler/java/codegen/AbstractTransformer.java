@@ -34,6 +34,7 @@ import com.redhat.ceylon.compiler.java.loader.TypeFactory;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
@@ -87,7 +88,7 @@ public abstract class AbstractTransformer implements Transformation {
     private TreeMaker make;
     private Name.Table names;
     private Symtab syms;
-    private CeylonModelLoader loader;
+    private AbstractModelLoader loader;
     private TypeFactory typeFact;
     protected Log log;
 
@@ -145,7 +146,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     @Override
-    public CeylonModelLoader loader() {
+    public AbstractModelLoader loader() {
         return loader;
     }
     
