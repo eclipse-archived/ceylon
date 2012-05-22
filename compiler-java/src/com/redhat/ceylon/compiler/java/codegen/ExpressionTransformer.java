@@ -1121,16 +1121,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             transExpr = boxUnboxIfNecessary(transExpr, expr, expr.getTarget().getType(), BoxingStrategy.BOXED);
             JCExpression testExpr = make().Binary(JCTree.NE, makeUnquotedIdent(tmpVarName), makeNull());
-            
-            if (isCeylonCallable(expr.getTypeModel()) && isVoid(getCallableReturnType(expr.getTypeModel()))) {
-                final JCIf condStmt = make().If(testExpr, make().Exec(transExpr), null);
-                JCExpression returningExpr = makeNull();
-                result = makeLetExpr(tmpVarName, 
-                        List.<JCStatement>of(condStmt), typeExpr, primaryExpr, returningExpr);
-            } else {
-                JCExpression condExpr = make().Conditional(testExpr, transExpr, makeNull());
-                result = makeLetExpr(tmpVarName, null, typeExpr, primaryExpr, condExpr);
-            }
+            JCExpression condExpr = make().Conditional(testExpr, transExpr, makeNull());
+            result = makeLetExpr(tmpVarName, null, typeExpr, primaryExpr, condExpr);
         } else if (expr.getMemberOperator() instanceof Tree.SpreadOp) {
             result = transformSpreadOperator(expr, transformer);
         } else {
