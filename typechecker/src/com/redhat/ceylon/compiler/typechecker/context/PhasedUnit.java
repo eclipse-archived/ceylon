@@ -54,6 +54,7 @@ public class PhasedUnit {
     private boolean declarationsScanned;
     private boolean typeDeclarationsScanned;
     private boolean refinementValidated;
+    private boolean flowAnalyzed;
     private boolean fullyTyped;
 
     public VirtualFile getSrcDir() {
@@ -112,7 +113,18 @@ public class PhasedUnit {
         return fullyTyped;
     }
 
+    public void setFullyTyped(boolean fullyTyped) {
+        this.fullyTyped = fullyTyped;
+    }
     
+    public boolean isFlowAnalyzed() {
+        return flowAnalyzed;
+    }
+
+    public void setFlowAnalyzed(boolean flowAnalyzed) {
+        this.flowAnalyzed = flowAnalyzed;
+    }
+
     public boolean isDeclarationsScanned() {
         return declarationsScanned;
     }
@@ -143,25 +155,31 @@ public class PhasedUnit {
     }
 
     public void scanDeclarations() {
-        //System.out.println("Scan declarations for " + fileName);
-        DeclarationVisitor dv = new DeclarationVisitor(pkg, fileName);
-        compilationUnit.visit(dv);
-        unit = dv.getCompilationUnit();
-        declarationsScanned = true;
+        if (!declarationsScanned) {
+            //System.out.println("Scan declarations for " + fileName);
+            DeclarationVisitor dv = new DeclarationVisitor(pkg, fileName);
+            compilationUnit.visit(dv);
+            unit = dv.getCompilationUnit();
+            declarationsScanned = true;
+        }
     }
 
     public void scanTypeDeclarations() {
-        //System.out.println("Scan type declarations for " + fileName);
-        compilationUnit.visit( new TypeVisitor() );
-        typeDeclarationsScanned = true;
+        if (!typeDeclarationsScanned) {
+            //System.out.println("Scan type declarations for " + fileName);
+            compilationUnit.visit( new TypeVisitor() );
+            typeDeclarationsScanned = true;
+        }
     }
 
     public void analyseTypes() {
-        //System.out.println("Run analysis phase for " + fileName);
-        compilationUnit.visit(new ExpressionVisitor());
-        compilationUnit.visit(new TypeArgumentVisitor());
-        compilationUnit.visit(new TypeHierarchyVisitor());
-        fullyTyped = true;
+        if (! fullyTyped) {
+            //System.out.println("Run analysis phase for " + fileName);
+            compilationUnit.visit(new ExpressionVisitor());
+            compilationUnit.visit(new TypeArgumentVisitor());
+            compilationUnit.visit(new TypeHierarchyVisitor());
+            fullyTyped = true;
+        }
     }
 
     public void collectUnitDependencies(PhasedUnits phasedUnits, List<PhasedUnits> phasedUnitsOfDependencies) {
@@ -170,25 +188,30 @@ public class PhasedUnit {
     }
     
     public void analyseFlow() {
-        //System.out.println("Validate control flow for " + fileName);
-        compilationUnit.visit(new ControlFlowVisitor());
-        //System.out.println("Validate self references for " + fileName);
-        //System.out.println("Validate specification for " + fileName);
-        for (Declaration d: unit.getDeclarations()) {
-            compilationUnit.visit(new SpecificationVisitor(d));
-            if (d instanceof TypedDeclaration && !(d instanceof Setter)) {
-                compilationUnit.visit(new ValueVisitor((TypedDeclaration) d));
+        if (! flowAnalyzed) {
+            //System.out.println("Validate control flow for " + fileName);
+            compilationUnit.visit(new ControlFlowVisitor());
+            //System.out.println("Validate self references for " + fileName);
+            //System.out.println("Validate specification for " + fileName);
+            for (Declaration d: unit.getDeclarations()) {
+                compilationUnit.visit(new SpecificationVisitor(d));
+                if (d instanceof TypedDeclaration && !(d instanceof Setter)) {
+                    compilationUnit.visit(new ValueVisitor((TypedDeclaration) d));
+                }
+                else if (d instanceof TypeDeclaration) {
+                    compilationUnit.visit(new SelfReferenceVisitor((TypeDeclaration) d));
+                }
             }
-            else if (d instanceof TypeDeclaration) {
-                compilationUnit.visit(new SelfReferenceVisitor((TypeDeclaration) d));
-            }
+            flowAnalyzed = true;
         }
     }
 
     public void validateRefinement() {
-        //System.out.println("Validate member refinement for " + fileName);
-        compilationUnit.visit(new RefinementVisitor());
-        refinementValidated = true;
+        if (! refinementValidated) {
+            //System.out.println("Validate member refinement for " + fileName);
+            compilationUnit.visit(new RefinementVisitor());
+            refinementValidated = true;
+        }
     }
 
     public void generateStatistics(StatisticsVisitor statsVisitor) {
