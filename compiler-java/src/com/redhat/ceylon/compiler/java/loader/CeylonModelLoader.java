@@ -106,12 +106,13 @@ public class CeylonModelLoader extends AbstractModelLoader {
             ((CompilerModuleManager)phasedUnits.getModuleManager()).getCeylonEnter().addModuleToClassPath(module, true, artifact);
     }
 
-    public void setupSourceFileObjects(com.sun.tools.javac.util.List<JCCompilationUnit> trees) {
-        for(final JCCompilationUnit tree : trees){
-            if (!(tree instanceof CeylonCompilationUnit)) {
+    public void setupSourceFileObjects(java.util.List<?> treeHolders) {
+        for(Object treeHolder : treeHolders){
+            if (!(treeHolder instanceof CeylonCompilationUnit)) {
                 continue;
             }
-            CompilationUnit ceylonTree = ((CeylonCompilationUnit)tree).ceylonTree;
+            final CeylonCompilationUnit tree = (CeylonCompilationUnit)treeHolder;
+            CompilationUnit ceylonTree = tree.ceylonTree;
             final String pkgName = tree.getPackageName() != null ? tree.getPackageName().toString() : "";
             ceylonTree.visit(new SourceDeclarationVisitor(){
                 @Override

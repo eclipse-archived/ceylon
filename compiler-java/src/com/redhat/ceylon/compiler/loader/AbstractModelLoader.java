@@ -1627,4 +1627,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     +packageEntry.getValue().loaded+"(loaded)/"+packageEntry.getValue().total+"(total) declarations]");
         }
     }
+    
+    public void setupSourceFileObjects(List<?> treeHolders) {
+        
+    }
 }
