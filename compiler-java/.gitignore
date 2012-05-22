@@ -6,3 +6,8 @@
 .classpath
 .project
 samples/helloworld/modules
+/allSources/com/*
+/allSources/sun/
+/allSources/javax/
+!/allSources/com/void
+
