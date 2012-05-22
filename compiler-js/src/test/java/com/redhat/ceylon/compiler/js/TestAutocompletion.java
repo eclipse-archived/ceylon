@@ -30,6 +30,7 @@ public class TestAutocompletion {
             {"src/test/resources/complete/t2.ceylon", 4, 12, "ini", "initial" },
             {"src/test/resources/complete/t3.ceylon", 3, 16, "st",  "strings" },
             {"src/test/resources/complete/t4.ceylon", 3, 13, "m",   "maybe" },
+            {"src/test/resources/complete/t5.ceylon", 2, 11, "",    "reversed" },
         });
     }
 
