@@ -74,6 +74,25 @@ public class PhasedUnit {
         this.tokens = tokenStream;
     }
 
+    public PhasedUnit(PhasedUnit other) {
+        this.compilationUnit = other.compilationUnit;
+        this.pkg = other.pkg;
+        this.unit = other.unit;
+        this.fileName = other.fileName;
+        this.moduleManager = other.moduleManager;
+        this.pathRelativeToSrcDir = other.pathRelativeToSrcDir;
+        this.unitFile = other.unitFile;
+        this.dependentsOf.addAll(other.dependentsOf);
+        this.tokens = other.tokens;
+        this.moduleVisitor = other.moduleVisitor;
+        this.srcDir = other.srcDir;
+        this.declarationsScanned = other.declarationsScanned;
+        this.typeDeclarationsScanned = other.typeDeclarationsScanned;
+        this.refinementValidated = other.refinementValidated;
+        this.flowAnalyzed = other.flowAnalyzed;
+        this.fullyTyped = other.fullyTyped;
+    }
+
     @Deprecated
     protected PhasedUnit(VirtualFile unitFile, VirtualFile srcDir, Tree.CompilationUnit cu, 
             Package p, ModuleManager moduleManager, Context context) {
