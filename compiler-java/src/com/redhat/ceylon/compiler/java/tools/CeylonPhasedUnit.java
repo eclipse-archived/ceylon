@@ -43,6 +43,12 @@ public class CeylonPhasedUnit extends PhasedUnit {
         this.lineMap = map;
     }
 
+    public CeylonPhasedUnit(PhasedUnit original, JavaFileObject fileObject, LineMap map) {
+        super(original);
+        this.fileObject = fileObject;
+        this.lineMap = map;
+    }
+    
     public JavaFileObject getFileObject() {
         return fileObject;
     }
