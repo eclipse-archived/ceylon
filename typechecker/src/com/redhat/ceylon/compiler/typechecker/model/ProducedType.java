@@ -1192,7 +1192,7 @@ public class ProducedType extends ProducedReference {
                         result += t==null ? "unknown" : t.getProducedTypeName();
                         for (int i=2; i<tal.size(); i++) {
                             ProducedType ti = tal.get(i);
-                            result += ", " + (t==null ? "unknown" : ti.getProducedTypeName());
+                            result += ", " + (ti==null ? "unknown" : ti.getProducedTypeName());
                         }
                     }
                     return result + ")";
