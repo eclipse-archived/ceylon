@@ -23,8 +23,13 @@ final class callableReturnNullary_bar {
             
             @.java.lang.Override
             public .java.lang.Object $call() {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnNullary_foo.callableReturnNullary_foo();
-                return null;
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnNullary_foo.callableReturnNullary_foo();
+                    }
+                    returning null;
+                );
             }
         };
     }

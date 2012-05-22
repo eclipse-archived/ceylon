@@ -74,7 +74,7 @@ final class indirectTypeParam {
                     @.java.lang.Override
                     public .java.lang.Object $call() {
                         if (true) {
-                            mpl.<.ceylon.language.Integer>mpl(i);
+                            return mpl.<.ceylon.language.Integer>mpl(i);
                         }
                         return null;
                     }

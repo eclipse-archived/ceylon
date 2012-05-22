@@ -10,8 +10,14 @@ class KeywordInCallable {
             private $enum() {
             }
             
-            void $enum() {
-                $assert();
+            .java.lang.Object $enum() {
+                return (
+                    let
+                    {
+                        $assert();
+                    }
+                    returning null;
+                );
             }
         }
         final $enum enum = new $enum();
@@ -19,16 +25,20 @@ class KeywordInCallable {
             
             @.java.lang.Override
             public .java.lang.Object $call() {
-                $assert();
-                return null;
+                return (
+                    let
+                    {
+                        $assert();
+                    }
+                    returning null;
+                );
             }
         });
         m(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void>"){
             
             @.java.lang.Override
             public .java.lang.Object $call() {
-                enum.$enum();
-                return null;
+                return enum.$enum();
             }
         });
     }

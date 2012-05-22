@@ -157,8 +157,13 @@ class IndirectInvoke<X> {
             
             @.java.lang.Override
             public .java.lang.Object $call() {
-                mGetter1();
-                return null;
+                return (
+                    let
+                    {
+                        mGetter1();
+                    }
+                    returning null;
+                );
             }
         };
         this.value2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("ceylon.language.Callable<ceylon.language.Integer>"){

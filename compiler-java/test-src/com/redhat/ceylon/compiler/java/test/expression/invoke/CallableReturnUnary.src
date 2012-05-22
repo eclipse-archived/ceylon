@@ -18,8 +18,13 @@ final class callableReturnUnary_bar {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnUnary_foo.callableReturnUnary_foo(((.ceylon.language.Integer)$param$0).longValue());
-                return null;
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnUnary_foo.callableReturnUnary_foo(((.ceylon.language.Integer)$param$0).longValue());
+                    }
+                    returning null;
+                );
             }
         };
     }

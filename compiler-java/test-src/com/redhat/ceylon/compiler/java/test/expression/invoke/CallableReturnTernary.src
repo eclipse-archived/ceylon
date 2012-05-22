@@ -18,8 +18,13 @@ final class callableReturnTernary_bar {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnTernary_foo.callableReturnTernary_foo(((.ceylon.language.Integer)$param$0).longValue(), ((.ceylon.language.String)$param$1).toString(), ((.ceylon.language.Boolean)$param$2).booleanValue());
-                return null;
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnTernary_foo.callableReturnTernary_foo(((.ceylon.language.Integer)$param$0).longValue(), ((.ceylon.language.String)$param$1).toString(), ((.ceylon.language.Boolean)$param$2).booleanValue());
+                    }
+                    returning null;
+                );
             }
         };
     }

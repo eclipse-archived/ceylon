@@ -47,9 +47,15 @@ final class namedArgumentInvocationTopLevelY {
         value = new .java.lang.Object[]{(
             let
             {
-                .java.lang.String $arg$1$1 = "abc";
-                long $arg$1$0 = 123L;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelV.namedArgumentInvocationTopLevelV($arg$1$0, $arg$1$1);
+                (
+                    let
+                    {
+                        .java.lang.String $arg$1$1 = "abc";
+                        long $arg$1$0 = 123L;
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelV.namedArgumentInvocationTopLevelV($arg$1$0, $arg$1$1);
+                    }
+                    returning null;
+                );
             }
             returning null;
         )};

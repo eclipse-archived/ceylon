@@ -18,8 +18,13 @@ final class callableReturnNary_bar {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object... $param$0) {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnNary_foo.callableReturnNary_foo(((.ceylon.language.Integer)$param$0[0]).longValue(), ((.ceylon.language.String)$param$0[1]).toString(), ((.ceylon.language.Boolean)$param$0[2]).booleanValue(), ((.ceylon.language.Character)$param$0[3]).intValue());
-                return null;
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnNary_foo.callableReturnNary_foo(((.ceylon.language.Integer)$param$0[0]).longValue(), ((.ceylon.language.String)$param$0[1]).toString(), ((.ceylon.language.Boolean)$param$0[2]).booleanValue(), ((.ceylon.language.Character)$param$0[3]).intValue());
+                    }
+                    returning null;
+                );
             }
         };
     }

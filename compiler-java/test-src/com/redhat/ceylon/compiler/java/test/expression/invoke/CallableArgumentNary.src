@@ -26,8 +26,13 @@ final class callableArgumentNary_m {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object... $param$0) {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentNary_bar.callableArgumentNary_bar(((.ceylon.language.Integer)$param$0[0]).longValue(), ((.ceylon.language.String)$param$0[1]).toString(), ((.ceylon.language.Boolean)$param$0[2]).booleanValue(), ((.ceylon.language.Character)$param$0[3]).intValue());
-                return null;
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentNary_bar.callableArgumentNary_bar(((.ceylon.language.Integer)$param$0[0]).longValue(), ((.ceylon.language.String)$param$0[1]).toString(), ((.ceylon.language.Boolean)$param$0[2]).booleanValue(), ((.ceylon.language.Character)$param$0[3]).intValue());
+                    }
+                    returning null;
+                );
             }
         });
     }

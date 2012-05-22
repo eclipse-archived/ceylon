@@ -34,16 +34,26 @@ final class callableArgumentParameterTypeParam_m {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_bar.<.ceylon.language.String>callableArgumentParameterTypeParam_bar((.ceylon.language.String)$param$0);
-                return null;
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_bar.<.ceylon.language.String>callableArgumentParameterTypeParam_bar((.ceylon.language.String)$param$0);
+                    }
+                    returning null;
+                );
             }
         });
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_f.<.ceylon.language.Integer>callableArgumentParameterTypeParam_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void,ceylon.language.Integer>"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_baz.callableArgumentParameterTypeParam_baz(((.ceylon.language.Integer)$param$0).longValue());
-                return null;
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_baz.callableArgumentParameterTypeParam_baz(((.ceylon.language.Integer)$param$0).longValue());
+                    }
+                    returning null;
+                );
             }
         });
     }

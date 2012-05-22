@@ -31,8 +31,13 @@ final class callableArgumentNullary_m {
             
             @.java.lang.Override
             public .java.lang.Object $call() {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentNullary_bar.callableArgumentNullary_bar();
-                return null;
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentNullary_bar.callableArgumentNullary_bar();
+                    }
+                    returning null;
+                );
             }
         });
     }

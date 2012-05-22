@@ -11,36 +11,32 @@ final class callableNamedInvocationSequenced_f {
             {
                 .ceylon.language.Integer $arg$0$0 = .ceylon.language.Integer.instance(1L);
                 .ceylon.language.Iterable $arg$0$1 = .ceylon.language.$empty.getEmpty();
-                foo.$call($arg$0$0, $arg$0$1);
             }
-            returning null;
+            returning foo.$call($arg$0$0, $arg$0$1);
         );
         (
             let
             {
                 .ceylon.language.Integer $arg$1$0 = .ceylon.language.Integer.instance(1L);
                 .ceylon.language.Iterable $arg$1$1 = new .ceylon.language.ArraySequence(.ceylon.language.String.instance(""));
-                foo.$call($arg$1$0, $arg$1$1);
             }
-            returning null;
+            returning foo.$call($arg$1$0, $arg$1$1);
         );
         (
             let
             {
                 .ceylon.language.Integer $arg$2$0 = .ceylon.language.Integer.instance(1L);
                 .ceylon.language.Iterable $arg$2$1 = new .ceylon.language.ArraySequence(.ceylon.language.String.instance(""), .ceylon.language.String.instance(""));
-                foo.$call($arg$2$0, $arg$2$1);
             }
-            returning null;
+            returning foo.$call($arg$2$0, $arg$2$1);
         );
         (
             let
             {
                 .ceylon.language.Iterable<? extends .ceylon.language.String> $arg$3$1 = .ceylon.language.$empty.getEmpty();
                 .ceylon.language.Integer $arg$3$0 = .ceylon.language.Integer.instance(1L);
-                foo.$call($arg$3$0, $arg$3$1);
             }
-            returning null;
+            returning foo.$call($arg$3$0, $arg$3$1);
         );
     }
 }

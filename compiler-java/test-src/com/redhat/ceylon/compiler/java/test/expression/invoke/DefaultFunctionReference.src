@@ -25,8 +25,13 @@ final class defaultFunctionReference {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                .ceylon.language.print.print((.java.lang.Object)$param$0);
-                return null;
+                return (
+                    let
+                    {
+                        .ceylon.language.print.print((.java.lang.Object)$param$0);
+                    }
+                    returning null;
+                );
             }
         };
     }

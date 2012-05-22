@@ -36,8 +36,13 @@ final class callableArgumentParameterClass_m {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterClass_bar.callableArgumentParameterClass_bar((.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterClass)$param$0);
-                return null;
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterClass_bar.callableArgumentParameterClass_bar((.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterClass)$param$0);
+                    }
+                    returning null;
+                );
             }
         });
     }
