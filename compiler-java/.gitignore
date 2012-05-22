@@ -6,3 +6,5 @@
 .classpath
 .project
 samples/helloworld/modules
+/allSources/
+

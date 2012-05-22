@@ -423,24 +423,24 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return unit;
     }
 
-    private LazyValue makeToplevelAttribute(ClassMirror classMirror) {
+    protected LazyValue makeToplevelAttribute(ClassMirror classMirror) {
         LazyValue value = new LazyValue(classMirror, this);
         return value;
     }
 
-    private LazyMethod makeToplevelMethod(ClassMirror classMirror) {
+    protected LazyMethod makeToplevelMethod(ClassMirror classMirror) {
         LazyMethod method = new LazyMethod(classMirror, this);
         return method;
     }
     
-    private LazyClass makeLazyClass(ClassMirror classMirror, Class superClass, MethodMirror constructor, boolean forTopLevelObject) {
+    protected LazyClass makeLazyClass(ClassMirror classMirror, Class superClass, MethodMirror constructor, boolean forTopLevelObject) {
         LazyClass klass = new LazyClass(classMirror, this, superClass, constructor, forTopLevelObject);
         klass.setAnonymous(classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION) != null);
         addInnerClasses(klass, classMirror);
         return klass;
     }
 
-    private LazyInterface makeLazyInterface(ClassMirror classMirror) {
+    protected LazyInterface makeLazyInterface(ClassMirror classMirror) {
         LazyInterface iface = new LazyInterface(classMirror, this);
         addInnerClasses(iface, classMirror);
         return iface;
@@ -1659,9 +1659,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     +packageEntry.getValue().loaded+"(loaded)/"+packageEntry.getValue().total+"(total) declarations]");
         }
     }
-
+    
     public void logDuplicateModuleError(Module module, Module loadedModule) {
         logError("Trying to import or compile two different versions of the same module: "+
                 module.getNameAsString()+" ("+module.getVersion()+" and "+loadedModule.getVersion()+")");
+    
+    public void setupSourceFileObjects(List<?> treeHolders) {
     }
 }

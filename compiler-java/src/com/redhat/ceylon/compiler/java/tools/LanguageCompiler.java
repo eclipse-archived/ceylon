@@ -52,11 +52,13 @@ import com.redhat.ceylon.compiler.java.loader.CeylonEnter;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.loader.model.CompilerModuleManager;
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
+import com.redhat.ceylon.compiler.typechecker.io.impl.Helper;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -94,16 +96,18 @@ public class LanguageCompiler extends JavaCompiler {
 
     /** The context key for the phasedUnits. */
     protected static final Context.Key<PhasedUnits> phasedUnitsKey = new Context.Key<PhasedUnits>();
+    public static final Context.Key<PhasedUnits> existingPhasedUnitsKey = new Context.Key<PhasedUnits>();
 
     /** The context key for the ceylon context. */
-    protected static final Context.Key<com.redhat.ceylon.compiler.typechecker.context.Context> ceylonContextKey = new Context.Key<com.redhat.ceylon.compiler.typechecker.context.Context>();
+    public static final Context.Key<com.redhat.ceylon.compiler.typechecker.context.Context> ceylonContextKey = new Context.Key<com.redhat.ceylon.compiler.typechecker.context.Context>();
 
     private final CeylonTransformer gen;
     private final PhasedUnits phasedUnits;
+    private final PhasedUnits existingPhasedUnits;
     private final com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
     private final VFS vfs;
 
-	private CeylonModelLoader modelLoader;
+	private AbstractModelLoader modelLoader;
 
     private CeylonEnter ceylonEnter;
 
@@ -117,6 +121,10 @@ public class LanguageCompiler extends JavaCompiler {
             phasedUnits = new PhasedUnits(ceylonContext, new ModuleManagerFactory(){
                 @Override
                 public ModuleManager createModuleManager(com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext) {
+                    PhasedUnits existingPhasedUnits = getExistingPhasedUnitsInstance(context);
+                    if (existingPhasedUnits != null) {
+                        return existingPhasedUnits.getModuleManager();
+                    }
                     return new CompilerModuleManager(ceylonContext, context);
                 }
             });
@@ -124,6 +132,12 @@ public class LanguageCompiler extends JavaCompiler {
         }
         return phasedUnits;
     }
+
+    public static PhasedUnits getExistingPhasedUnitsInstance(final Context context) {
+        PhasedUnits existingPhasedUnits = context.get(existingPhasedUnitsKey);
+        return existingPhasedUnits;
+    }
+
 
     /** Get the Ceylon context instance for this context. */
     public static com.redhat.ceylon.compiler.typechecker.context.Context getCeylonContextInstance(Context context) {
@@ -155,6 +169,7 @@ public class LanguageCompiler extends JavaCompiler {
         super(context);
         ceylonContext = getCeylonContextInstance(context);
         vfs = ceylonContext.getVfs();
+        existingPhasedUnits = getExistingPhasedUnitsInstance(context);
         phasedUnits = getPhasedUnitsInstance(context);
         try {
             gen = CeylonTransformer.getInstance(context);
@@ -200,47 +215,63 @@ public class LanguageCompiler extends JavaCompiler {
         if(ceylonEnter.hasRun())
             throw new RuntimeException("Trying to load new source file after CeylonEnter has been called: "+filename);
         try {
+            ModuleManager moduleManager = phasedUnits.getModuleManager();
+            File sourceFile = new File(filename.toString());
+            // FIXME: temporary solution
+            VirtualFile file = vfs.getFromFile(sourceFile);
+            VirtualFile srcDir = vfs.getFromFile(getSrcDir(sourceFile));
+            
             String source = readSource.toString();
-            ANTLRStringStream input = new ANTLRStringStream(source);
-            CeylonLexer lexer = new CeylonLexer(input);
-
-            CommonTokenStream tokens = new CommonTokenStream(lexer);
-
-            CeylonParser parser = new CeylonParser(tokens);
-            CompilationUnit cu = parser.compilationUnit();
-
             char[] chars = source.toCharArray();
             LineMap map = Position.makeLineMap(chars, chars.length, false);
+            
+            PhasedUnit phasedUnit = null;
+            
+            if (existingPhasedUnits != null && existingPhasedUnits.getPhasedUnits().size() > 0) {
+                PhasedUnit existingPhasedUnit = existingPhasedUnits.getPhasedUnitFromRelativePath(Helper.computeRelativePath(file, srcDir));
+                if (existingPhasedUnit != null) {
+                    
+                    phasedUnit = new CeylonPhasedUnit(existingPhasedUnit, filename, map);
+                    phasedUnits.addPhasedUnit(existingPhasedUnit.getUnitFile(), phasedUnit);
+                    gen.setMap(map);
 
-            java.util.List<LexError> lexerErrors = lexer.getErrors();
-            for (LexError le : lexerErrors) {
-                printError(le, le.getMessage(), "ceylon.lexer", map);
+                    return gen.makeJCCompilationUnitPlaceholder(phasedUnit.getCompilationUnit(), filename, phasedUnit.getPackage().getQualifiedNameString(), phasedUnit);
+                }
             }
+            if (phasedUnit == null) {
+                ANTLRStringStream input = new ANTLRStringStream(source);
+                CeylonLexer lexer = new CeylonLexer(input);
 
-            java.util.List<ParseError> parserErrors = parser.getErrors();
-            for (ParseError pe : parserErrors) {
-                printError(pe, pe.getMessage(), "ceylon.parser", map);
-            }
+                CommonTokenStream tokens = new CommonTokenStream(lexer);
 
-            if (lexer.getNumberOfSyntaxErrors() != 0) {
-                log.error("ceylon.lexer.failed");
-            } else if (parser.getNumberOfSyntaxErrors() != 0) {
-                log.error("ceylon.parser.failed");
-            } else {
-                ModuleManager moduleManager = phasedUnits.getModuleManager();
-                File sourceFile = new File(filename.getName());
-                // FIXME: temporary solution
-                VirtualFile file = vfs.getFromFile(sourceFile);
-                VirtualFile srcDir = vfs.getFromFile(getSrcDir(sourceFile));
-                // FIXME: this is bad in many ways
-                String pkgName = getPackage(filename);
-                // make a Package with no module yet, we will resolve them later
-                com.redhat.ceylon.compiler.typechecker.model.Package p = modelLoader.findOrCreatePackage(null, pkgName == null ? "" : pkgName);
-                PhasedUnit phasedUnit = new CeylonPhasedUnit(file, srcDir, cu, p, moduleManager, ceylonContext, filename, map);
-                phasedUnits.addPhasedUnit(file, phasedUnit);
-                gen.setMap(map);
+                CeylonParser parser = new CeylonParser(tokens);
+                CompilationUnit cu = parser.compilationUnit();
 
-                return gen.makeJCCompilationUnitPlaceholder(cu, filename, pkgName, phasedUnit);
+                java.util.List<LexError> lexerErrors = lexer.getErrors();
+                for (LexError le : lexerErrors) {
+                    printError(le, le.getMessage(), "ceylon.lexer", map);
+                }
+
+                java.util.List<ParseError> parserErrors = parser.getErrors();
+                for (ParseError pe : parserErrors) {
+                    printError(pe, pe.getMessage(), "ceylon.parser", map);
+                }
+
+                if (lexer.getNumberOfSyntaxErrors() != 0) {
+                    log.error("ceylon.lexer.failed");
+                } else if (parser.getNumberOfSyntaxErrors() != 0) {
+                    log.error("ceylon.parser.failed");
+                } else {
+                    // FIXME: this is bad in many ways
+                    String pkgName = getPackage(filename);
+                    // make a Package with no module yet, we will resolve them later
+                    com.redhat.ceylon.compiler.typechecker.model.Package p = modelLoader.findOrCreatePackage(null, pkgName == null ? "" : pkgName);
+                    phasedUnit = new CeylonPhasedUnit(file, srcDir, cu, p, moduleManager, ceylonContext, filename, map);
+                    phasedUnits.addPhasedUnit(file, phasedUnit);
+                    gen.setMap(map);
+
+                    return gen.makeJCCompilationUnitPlaceholder(cu, filename, pkgName, phasedUnit);
+                }
             }
         } catch (Exception e) {
             log.error("ceylon", e);

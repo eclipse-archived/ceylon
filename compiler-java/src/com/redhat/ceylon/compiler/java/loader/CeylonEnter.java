@@ -34,10 +34,12 @@ import com.redhat.ceylon.compiler.java.codegen.BoxingVisitor;
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.java.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.java.codegen.CodeGenError;
+import com.redhat.ceylon.compiler.java.loader.model.CompilerModuleManager;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeylonPhasedUnit;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
+import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
@@ -82,7 +84,7 @@ public class CeylonEnter extends Enter {
     private PhasedUnits phasedUnits;
     private com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
     private Log log;
-    private CeylonModelLoader modelLoader;
+    private AbstractModelLoader modelLoader;
     private Options options;
     private Paths paths;
     private CeyloncFileManager fileManager;
@@ -219,8 +221,10 @@ public class CeylonEnter extends Enter {
 
     // FIXME: this needs to be replaced when we deal with modules
     private void resolveModuleDependencies() {
-        ModuleValidator validator = new ModuleValidator(ceylonContext, phasedUnits);
-        validator.verifyModuleDependencyTree();
+        if (phasedUnits.getModuleManager() instanceof CompilerModuleManager) {
+            ModuleValidator validator = new ModuleValidator(ceylonContext, phasedUnits);
+            validator.verifyModuleDependencyTree();
+        }
     }
 
     public void addOutputModuleToClassPath(Module module){

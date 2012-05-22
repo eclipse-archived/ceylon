@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.loader.TypeFactory;
+import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.tree.TreeMaker;
@@ -38,7 +39,7 @@ public interface Transformation {
 
     public abstract Names names();
 
-    public abstract CeylonModelLoader loader();
+    public abstract AbstractModelLoader loader();
 
     public abstract TypeFactory typeFact();
 

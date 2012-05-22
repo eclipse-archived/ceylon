@@ -14,4 +14,36 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>allSources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>allSources/com</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>allSources/javax</name>
+			<type>2</type>
+			<locationURI>PROJECT_LOC/langtools/src/share/classes/javax</locationURI>
+		</link>
+		<link>
+			<name>allSources/sun</name>
+			<type>2</type>
+			<locationURI>PROJECT_LOC/langtools/src/share/classes/sun</locationURI>
+		</link>
+		<link>
+			<name>allSources/com/redhat</name>
+			<type>2</type>
+			<locationURI>PROJECT_LOC/src/com/redhat</locationURI>
+		</link>
+		<link>
+			<name>allSources/com/sun</name>
+			<type>2</type>
+			<locationURI>PROJECT_LOC/langtools/src/share/classes/com/sun</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>
