@@ -134,10 +134,11 @@ public class AutocompleteVisitor extends Visitor {
                 ProducedType type = exp.getPrimary().getTypeModel();
                 Map<String, DeclarationWithProximity> c2 = type.getDeclaration().getMatchingMemberDeclarations(text, 0);
                 comps.putAll(c2);
-            }
-            for (PhasedUnits pus : checker.getPhasedUnitsOfDependencies()) {
-                for (PhasedUnit pu : pus.getPhasedUnits()) {
-                    addCompletions(comps, units, packs, pu);
+            } else {
+                for (PhasedUnits pus : checker.getPhasedUnitsOfDependencies()) {
+                    for (PhasedUnit pu : pus.getPhasedUnits()) {
+                        addCompletions(comps, units, packs, pu);
+                    }
                 }
             }
         }
