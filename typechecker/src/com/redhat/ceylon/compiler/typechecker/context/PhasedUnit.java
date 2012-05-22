@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Validator;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.PrintVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
+import com.redhat.ceylon.compiler.typechecker.io.impl.Helper;
 
 /**
  * Represent a unit and each of the type checking phases
@@ -68,7 +69,7 @@ public class PhasedUnit {
         this.unitFile = unitFile;
         this.srcDir = srcDir;
         this.fileName = unitFile.getName();
-        this.pathRelativeToSrcDir = computeRelativePath(unitFile, srcDir);
+        this.pathRelativeToSrcDir = Helper.computeRelativePath(unitFile, srcDir);
         this.moduleManager = moduleManager;
         this.tokens = tokenStream;
     }
@@ -79,19 +80,6 @@ public class PhasedUnit {
         this(unitFile, srcDir, cu, p, moduleManager, context, null);
     }
     
-    private String computeRelativePath(VirtualFile unitFile, VirtualFile srcDir) {
-        final String rawRelativePath = unitFile.getPath().substring( srcDir.getPath().length() );
-        if ( rawRelativePath.startsWith("/") ) {
-            return rawRelativePath.substring(1);
-        }
-        else if ( rawRelativePath.startsWith("!/") ) {
-            return rawRelativePath.substring(2);
-        }
-        else {
-            return rawRelativePath;
-        }
-    }
-
     public Module visitSrcModulePhase() {
         if ( ModuleManager.MODULE_FILE.equals(fileName) ||
                 ModuleManager.PACKAGE_FILE.equals(fileName) ) {
