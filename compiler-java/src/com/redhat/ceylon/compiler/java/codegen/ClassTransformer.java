@@ -942,7 +942,7 @@ public class ClassTransformer extends AbstractTransformer {
             InvocationBuilder specifierBuilder = InvocationBuilder.forSpecifierInvocation(gen(), specifierExpression, methodDecl.getDeclarationModel());
             bodyExpr = specifierBuilder.build();
         }
-        if (isVoid(def)) {
+        if (Decl.isLittleVoid(model)) {
             body = List.<JCStatement>of(make().Exec(bodyExpr));
         } else {
             body = List.<JCStatement>of(make().Return(bodyExpr));
