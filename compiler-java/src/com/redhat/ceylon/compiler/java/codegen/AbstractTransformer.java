@@ -52,6 +52,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
@@ -1205,8 +1206,8 @@ public abstract class AbstractTransformer implements Transformation {
     private ProducedType getTypeForFunctionalParameter(FunctionalParameter fp) {
         java.util.List<ProducedType> typeArgs = new ArrayList<ProducedType>(fp.getTypeParameters().size());
         typeArgs.add(fp.getType());
-        for (TypeParameter typeParameter : fp.getTypeParameters()) {
-            typeArgs.add(typeParameter.getType());
+        for (Parameter parameter : fp.getParameterLists().get(0).getParameters()) {
+            typeArgs.add(parameter.getType());
         }
         return typeFact().getCallableType(typeArgs);
     }
