@@ -79,14 +79,8 @@ public class CallableBuilder {
     public static CallableBuilder anonymous(
             CeylonTransformer gen, Tree.Expression expr, ParameterList parameterList, 
             ProducedType callableTypeModel) {
-        ProducedType returnType = gen.getCallableReturnType(callableTypeModel);
         JCExpression transformedExpr = gen.expressionGen().transformExpression(expr);
-        final List<JCStatement> stmts;
-        if (gen.isVoid(returnType)) {
-            stmts = List.<JCStatement>of(gen.make().Exec(transformedExpr), gen.make().Return(gen.makeNull()));
-        } else {
-            stmts = List.<JCStatement>of(gen.make().Return(transformedExpr));
-        }
+        final List<JCStatement> stmts = List.<JCStatement>of(gen.make().Return(transformedExpr));
         
         return methodArgument(gen, callableTypeModel, parameterList, stmts);
     }
