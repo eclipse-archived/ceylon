@@ -35,6 +35,7 @@ import com.redhat.ceylon.compiler.java.codegen.BoxingVisitor;
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.java.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.java.codegen.CodeGenError;
+import com.redhat.ceylon.compiler.java.loader.model.CompilerModuleManager;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeylonPhasedUnit;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
@@ -203,8 +204,10 @@ public class CeylonEnter extends Enter {
 
     // FIXME: this needs to be replaced when we deal with modules
     private void resolveModuleDependencies() {
-        ModuleValidator validator = new ModuleValidator(ceylonContext, phasedUnits);
-        validator.verifyModuleDependencyTree();
+        if (phasedUnits.getModuleManager() instanceof CompilerModuleManager) {
+            ModuleValidator validator = new ModuleValidator(ceylonContext, phasedUnits);
+            validator.verifyModuleDependencyTree();
+        }
     }
 
     public void addOutputModuleToClassPath(Module module){
