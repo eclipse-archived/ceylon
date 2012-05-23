@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.AnalysisMessage;
@@ -21,12 +22,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 public class JsCompiler {
     
     protected final TypeChecker tc;
-    
-    private boolean optimize = false;
+    protected final Options opts;
+
     private boolean stopOnErrors = true;
-    private boolean indent = true;
-    private boolean comment = true;
-    private boolean modulify = false;
     private int errCount = 0;
     private Writer systemOut = new OutputStreamWriter(System.out);
 
@@ -43,8 +41,9 @@ public class JsCompiler {
         }
     };
 
-    public JsCompiler(TypeChecker tc) {
+    public JsCompiler(TypeChecker tc, Options options) {
         this.tc = tc;
+        opts = options;
     }
 
     /** Specifies whether the compiler should stop when errors are found in a compilation unit (default true). */
@@ -53,23 +52,6 @@ public class JsCompiler {
         return this;
     }
 
-    public JsCompiler optimize(boolean optimize) {
-        this.optimize = optimize;
-        return this;
-    }
-    public JsCompiler indent(boolean flag) {
-        indent=flag;
-        return this;
-    }
-    public JsCompiler comment(boolean flag) {
-        comment=flag;
-        return this;
-    }
-    public JsCompiler modulify(boolean flag) {
-        modulify=flag;
-        return this;
-    }
-    
     public List<Message> listErrors() {
         return Collections.unmodifiableList(errors);
     }
@@ -80,9 +62,9 @@ public class JsCompiler {
         unitErrors.clear();
         pu.getCompilationUnit().visit(unitVisitor);
         if (errCount == 0 || !stopOnErrors) {
-            GenerateJsVisitor jsv = new GenerateJsVisitor(getWriter(pu), optimize, names);
-            jsv.setAddComments(comment);
-            jsv.setIndent(indent);
+            GenerateJsVisitor jsv = new GenerateJsVisitor(getWriter(pu), opts.isOptimize(), names);
+            jsv.setAddComments(opts.isComment());
+            jsv.setIndent(opts.isIndent());
             pu.getCompilationUnit().visit(jsv);
             pu.getCompilationUnit().visit(unitVisitor);
         }
@@ -107,11 +89,11 @@ public class JsCompiler {
         boolean modDone = false;
         errors.clear();
         try {
-            JsIdentifierNames names = new JsIdentifierNames(optimize);
+            JsIdentifierNames names = new JsIdentifierNames(opts.isOptimize());
             for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
                 String name = pu.getUnitFile().getName();
                 if (!"module.ceylon".equals(name) && !"package.ceylon".equals(name)) {
-                    if (modulify && !modDone) {
+                    if (opts.isModulify() && !modDone) {
                         beginWrapper(getWriter(pu));
                         modDone = true;
                     }
@@ -122,7 +104,7 @@ public class JsCompiler {
                     }
                 }
             }
-            if (modulify) {
+            if (opts.isModulify()) {
                 endWrapper(getWriter(tc.getPhasedUnits().getPhasedUnits().get(tc.getPhasedUnits().getPhasedUnits().size()-1)));
             }
         } finally {

@@ -5,6 +5,7 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -17,8 +18,8 @@ public abstract class JsModuleCompiler extends JsCompiler {
 
     private final Map<Package, Writer> output = new HashMap<Package, Writer>();
 
-    public JsModuleCompiler(TypeChecker tc) {
-        super(tc);
+    public JsModuleCompiler(TypeChecker tc, Options options) {
+        super(tc, options);
     }
 
     @Override
