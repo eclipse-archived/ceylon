@@ -138,7 +138,10 @@ public class LanguageCompiler extends JavaCompiler {
         return existingPhasedUnits;
     }
 
-
+    public boolean usingExternalPhasedUnits() {
+        return existingPhasedUnits != null;
+    }
+    
     /** Get the Ceylon context instance for this context. */
     public static com.redhat.ceylon.compiler.typechecker.context.Context getCeylonContextInstance(Context context) {
         com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext = context.get(ceylonContextKey);

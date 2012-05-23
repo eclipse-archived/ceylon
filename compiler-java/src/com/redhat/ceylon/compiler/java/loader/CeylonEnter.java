@@ -227,7 +227,7 @@ public class CeylonEnter extends Enter {
 
     // FIXME: this needs to be replaced when we deal with modules
     private void resolveModuleDependencies() {
-        if (phasedUnits.getModuleManager() instanceof CompilerModuleManager) {
+        if (! ((LanguageCompiler)compiler).usingExternalPhasedUnits()) {
             ModuleValidator validator = new ModuleValidator(ceylonContext, phasedUnits);
             validator.verifyModuleDependencyTree();
         }
