@@ -157,4 +157,9 @@ public class Module {
     public void setDefault(boolean isDefault) {
         this.isDefault = isDefault;
     }
+    
+    public boolean isJava() {
+        return false;
+    }
+    
 }
