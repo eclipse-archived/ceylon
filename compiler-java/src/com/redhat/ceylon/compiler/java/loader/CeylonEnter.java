@@ -123,20 +123,26 @@ public class CeylonEnter extends Enter {
         prepareForTypeChecking(trees);
         List<JCCompilationUnit> javaTrees = List.nil();
         List<JCCompilationUnit> ceylonTrees = List.nil();
-        // split them in two sets: java and ceylon
-        for(JCCompilationUnit tree : trees){
-            if(tree instanceof CeylonCompilationUnit)
-                ceylonTrees = ceylonTrees.prepend(tree);
-            else
-                javaTrees = javaTrees.prepend(tree);
+        if (modelLoader instanceof CeylonModelLoader) {
+            // split them in two sets: java and ceylon
+            for(JCCompilationUnit tree : trees){
+                if(tree instanceof CeylonCompilationUnit)
+                    ceylonTrees = ceylonTrees.prepend(tree);
+                else
+                    javaTrees = javaTrees.prepend(tree);
+            }
+            // enter java trees first to set up their ClassSymbol objects for ceylon trees to use during type-checking
+            if(!javaTrees.isEmpty())
+                super.main(javaTrees);
+            // now we can type-check the Ceylon code
+            completeCeylonTrees(trees);
+            // and complete their new trees
+            super.main(ceylonTrees);
         }
-        // enter java trees first to set up their ClassSymbol objects for ceylon trees to use during type-checking
-        if(!javaTrees.isEmpty())
-            super.main(javaTrees);
-        // now we can type-check the Ceylon code
-        completeCeylonTrees(trees);
-        // and complete their new trees
-        super.main(ceylonTrees);
+        else {
+            completeCeylonTrees(trees);
+            super.main(trees);
+        }
     }
 
     @Override
