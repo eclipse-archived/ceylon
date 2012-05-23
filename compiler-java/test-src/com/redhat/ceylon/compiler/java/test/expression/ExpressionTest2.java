@@ -423,5 +423,10 @@ public class ExpressionTest2 extends CompilerTest {
     public void testDefaultFunctionReference(){
         compareWithJavaSource("invoke/DefaultFunctionReference");
     }
+    
+    @Test
+    public void testInvSelfType(){
+        compareWithJavaSource("invoke/SelfType");
+    }
 
 }
