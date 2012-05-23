@@ -53,6 +53,7 @@ public class PhasedUnit {
     private ModuleVisitor moduleVisitor;
     private VirtualFile srcDir;
     private boolean declarationsScanned;
+    private boolean scanningDeclarations;
     private boolean typeDeclarationsScanned;
     private boolean refinementValidated;
     private boolean flowAnalyzed;
@@ -163,27 +164,29 @@ public class PhasedUnit {
 
     public void scanDeclarations() {
         if (!declarationsScanned) {
+            scanningDeclarations = true;
             //System.out.println("Scan declarations for " + fileName);
             DeclarationVisitor dv = new DeclarationVisitor(pkg, fileName);
             compilationUnit.visit(dv);
             unit = dv.getCompilationUnit();
             declarationsScanned = true;
+            scanningDeclarations = false;
         }
     }
 
     public void scanTypeDeclarations() {
         if (!typeDeclarationsScanned) {
+            typeDeclarationsScanned = true;
             //System.out.println("Scan type declarations for " + fileName);
             compilationUnit.visit( new TypeVisitor() );
-            typeDeclarationsScanned = true;
         }
     }
 
     public void validateRefinement() {
         if (! refinementValidated) {
             //System.out.println("Validate member refinement for " + fileName);
-            compilationUnit.visit(new RefinementVisitor());
             refinementValidated = true;
+            compilationUnit.visit(new RefinementVisitor());
         }
     }
 
@@ -191,10 +194,10 @@ public class PhasedUnit {
     public void analyseTypes() {
         if (! fullyTyped) {
             //System.out.println("Run analysis phase for " + fileName);
+            fullyTyped = true;
             compilationUnit.visit(new ExpressionVisitor());
             compilationUnit.visit(new TypeArgumentVisitor());
             compilationUnit.visit(new TypeHierarchyVisitor());
-            fullyTyped = true;
         }
     }
 
@@ -205,6 +208,7 @@ public class PhasedUnit {
     
     public void analyseFlow() {
         if (! flowAnalyzed) {
+            flowAnalyzed = true;
             //System.out.println("Validate control flow for " + fileName);
             compilationUnit.visit(new ControlFlowVisitor());
             //System.out.println("Validate self references for " + fileName);
@@ -218,7 +222,6 @@ public class PhasedUnit {
                     compilationUnit.visit(new SelfReferenceVisitor((TypeDeclaration) d));
                 }
             }
-            flowAnalyzed = true;
         }
     }
 
@@ -278,4 +281,7 @@ public class PhasedUnit {
         return tokens;
     }
 
+    public boolean isScanningDeclarations() {
+        return scanningDeclarations;
+    }
 }
