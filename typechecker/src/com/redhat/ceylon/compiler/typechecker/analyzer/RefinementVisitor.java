@@ -221,34 +221,44 @@ public class RefinementVisitor extends Visitor {
             for (Declaration refined: others) {
                 if (dec instanceof Method) {
                     if (!(refined instanceof Method)) {
-                        that.addError("refined declaration is not a method");
+                        that.addError("refined declaration is not a method: " + 
+                                message(refined));
                     }
                 }
                 else if (dec instanceof Class) {
                     if (!(refined instanceof Class)) {
-                        that.addError("refined declaration is not a class");
+                        that.addError("refined declaration is not a class: " + 
+                                message(refined));
                     }
                 }
                 else if (dec instanceof TypedDeclaration) {
                     if (refined instanceof Class || refined instanceof Method) {
-                        that.addError("refined declaration is not an attribute");
+                        that.addError("refined declaration is not an attribute: " + 
+                                message(refined));
                     }
                     else if (refined instanceof TypedDeclaration) {
                         if ( ((TypedDeclaration) refined).isVariable() && 
                                 !((TypedDeclaration) dec).isVariable()) {
-                            that.addError("non-variable attribute refines a variable attribute");
+                            that.addError("non-variable attribute refines a variable attribute: " + 
+                                    message(refined));
                         }
                     }
                 }
                 if (!dec.isActual()) {
-                    that.addError("non-actual member refines an inherited member", 600);
+                    that.addError("non-actual member refines an inherited member: " + 
+                            message(refined), 600);
                 }
                 if (!refined.isDefault() && !refined.isFormal()) {
-                    that.addError("member refines a non-default, non-formal member", 500);
+                    that.addError("member refines a non-default, non-formal member: " + 
+                            message(refined), 500);
                 }
                 if (!broken) checkRefinedTypeAndParameterTypes(that, dec, ci, refined);
             }
         }
+    }
+    
+    static String message(Declaration refined) {
+        return refined.getName() + " in " + ((Declaration) refined.getContainer()).getName();
     }
 
     private void checkRefinedTypeAndParameterTypes(Tree.Declaration that,
@@ -260,7 +270,8 @@ public class RefinementVisitor extends Visitor {
             int refiningSize = refiningTypeParams.size();
             int refinedSize = refinedTypeParams.size();
             if (refiningSize!=refinedSize) {
-                that.addError("member does not have the same number of type parameters as refined member");
+                that.addError("member does not have the same number of type parameters as refined member: " + 
+                            message(refined));
             }
             for (int i=0; i<(refiningSize<=refinedSize ? refiningSize : refinedSize); i++) {
                 TypeParameter refinedTypParam = refinedTypeParams.get(i);
@@ -269,7 +280,7 @@ public class RefinementVisitor extends Visitor {
                     checkAssignable(refinedTypParam.getType(), t, that, 
                         "member type parameter " + refiningTypeParam.getName() +
                         " has constraint which refined member type parameter " + refinedTypParam.getName() +
-                        " does not satisfy");
+                        " of " + message(refined) + " does not satisfy");
                 }
                 typeArgs.add(refinedTypParam.getType());
             }
@@ -279,20 +290,23 @@ public class RefinementVisitor extends Visitor {
         if (refinedMember.getDeclaration() instanceof TypedDeclaration &&
                 ((TypedDeclaration) refinedMember.getDeclaration()).isVariable()) {
             checkIsExactly(refiningMember.getType(), refinedMember.getType(), that,
-                    "member type must be exactly the same as variable refined member type");
+                    "type of member must be exactly the same as type of variable refined member: " + 
+                            message(refined));
         }
         else {
             //note: this version checks return type and parameter types in one shot, but the
             //resulting error messages aren't as friendly, so do it the hard way instead!
             //checkAssignable(refiningMember.getFullType(), refinedMember.getFullType(), that,
             checkAssignable(refiningMember.getType(), refinedMember.getType(), that,
-                    "member type must be assignable to refined member type");
+                    "type of member must be assignable to type of refined member: " + 
+                            message(refined));
         }
         if (dec instanceof Functional && refined instanceof Functional) {
            List<ParameterList> refiningParamLists = ((Functional) dec).getParameterLists();
            List<ParameterList> refinedParamLists = ((Functional) refined).getParameterLists();
            if (refinedParamLists.size()!=refiningParamLists.size()) {
-               that.addError("member type must have the same number of parameter lists as refined member");
+               that.addError("member must have the same number of parameter lists as refined member: " + 
+                            message(refined));
            }
            for (int i=0; i<refinedParamLists.size() && i<refiningParamLists.size(); i++) {
                checkParameterTypes(that, getParameterList(that, i), 

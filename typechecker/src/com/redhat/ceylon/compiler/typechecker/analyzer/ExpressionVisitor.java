@@ -53,7 +53,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -503,10 +502,13 @@ public class ExpressionVisitor extends Visitor {
             Tree.SpecifierStatement that) {
         Class c = (Class) that.getScope();
         if (sv.isVariable()) {
-            that.addError("attribute is variable: " + sv.getName());
+            that.addError("attribute is variable: " + 
+                    RefinementVisitor.message(sv));
         }
-        if (!sv.isFormal()) {
-            bme.addError("attribute is not formal: " + sv.getName());
+        if (!sv.isFormal()
+                && !sv.isShortcutRefinement()) { //this condition is here to squash a dupe message
+            bme.addError("attribute is not formal: " + 
+                    RefinementVisitor.message(sv));
         }
         Value v = new Value();
         v.setName(sv.getName());
@@ -530,8 +532,10 @@ public class ExpressionVisitor extends Visitor {
     private void refine(Method sm, Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that) {
         Class c = (Class) that.getScope();
-        if (!sm.isFormal()) {
-            bme.addError("method is not formal: " + sm.getName());
+        if (!sm.isFormal()
+                && !sm.isShortcutRefinement()) { //this condition is here to squash a dupe message
+            bme.addError("method is not formal: " + 
+                    RefinementVisitor.message(sm));
         }
         Method m = new Method();
         m.setName(sm.getName());
@@ -1271,7 +1275,7 @@ public class ExpressionVisitor extends Visitor {
         for (Tree.NamedArgument arg: args.getNamedArguments()) {
             ProducedType type = null;
             if (arg instanceof Tree.SpecifiedArgument) {
-                Expression e = ((Tree.SpecifiedArgument) arg).getSpecifierExpression()
+                Tree.Expression e = ((Tree.SpecifiedArgument) arg).getSpecifierExpression()
                                 .getExpression();
                 if (e!=null) {
                     type = e.getTypeModel();
@@ -1638,7 +1642,7 @@ public class ExpressionVisitor extends Visitor {
         ProducedType argType = null;
         if (a instanceof Tree.SpecifiedArgument) {
             Tree.SpecifiedArgument sa = (Tree.SpecifiedArgument) a;
-            Expression e = sa.getSpecifierExpression().getExpression();
+            Tree.Expression e = sa.getSpecifierExpression().getExpression();
             if (e!=null) {
                 argType = e.getTypeModel();
             }

@@ -85,6 +85,35 @@ public class TypeHierarchyVisitor extends Visitor {
         checkForDoubleMemberInheritanceNotOverridden(that, orderedTypes);
         checkForDoubleMemberInheritanceWoCommonAncestor(that, orderedTypes);
     }
+    
+    @Override
+    public void visit(Tree.Declaration that) {
+        super.visit(that);
+        Declaration dec = that.getDeclarationModel();
+        if (dec.isClassOrInterfaceMember() && dec.isActual()) {
+            checkForShortcutRefinement(that, dec);
+        }
+    }
+
+    @Override
+    public void visit(Tree.BaseMemberExpression that) {
+        super.visit(that);
+        Declaration dec = that.getDeclaration();
+        if (dec instanceof MethodOrValue && 
+                ((MethodOrValue) dec).isShortcutRefinement()) {
+            checkForShortcutRefinement(that, dec);
+        }
+    }
+
+    private static void checkForShortcutRefinement(Node that, Declaration dec) {
+        for (Declaration im: ((ClassOrInterface) dec.getContainer()).getInheritedMembers(dec.getName())) {
+            if (im instanceof MethodOrValue && 
+                    ((MethodOrValue) im).isShortcutRefinement()) {
+                that.addError("refines a non-formal, non-default member: " + 
+                        RefinementVisitor.message(im));
+            }
+        }
+    }
 
     private void checkForDoubleMemberInheritanceWoCommonAncestor(Tree.StatementOrArgument that, List<Type> orderedTypes) {
         Type aggregateType = new Type();
