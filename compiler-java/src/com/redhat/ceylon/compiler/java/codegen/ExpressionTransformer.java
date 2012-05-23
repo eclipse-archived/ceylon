@@ -208,8 +208,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         // we must do the boxing after the cast to the proper type
         JCExpression ret = boxUnboxIfNecessary(result, exprBoxed, exprType, boxingStrategy);
         // now check if we need variance casts
-        if(canCast)
+        if (canCast) {
             ret = applyVarianceCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType);
+            ret = applySelfTypeCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType);
+        }
         ret = applyJavaTypeConversions(ret, exprType, expectedType, boxingStrategy);
         return ret;
     }
@@ -234,6 +236,17 @@ public class ExpressionTransformer extends AbstractTransformer {
                     result = make().TypeCast(targetType, result);
                 }
             }
+        }
+        return result;
+    }
+    
+    private JCExpression applySelfTypeCasts(JCExpression result, ProducedType exprType,
+            boolean exprBoxed,
+            BoxingStrategy boxingStrategy, ProducedType expectedType) {
+        final ProducedType selfType = expectedType.getDeclaration().getSelfType();
+        if (selfType != null) {
+            JCExpression targetType = makeJavaType(selfType, AbstractTransformer.TYPE_ARGUMENT);
+            result = make().TypeCast(targetType, result);
         }
         return result;
     }
