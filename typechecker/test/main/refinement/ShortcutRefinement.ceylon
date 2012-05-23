@@ -22,6 +22,16 @@ class BadlyUsed() extends Abstract() {
     name = "Tompon";
 }
 
+class BadlyDuped() extends Abstract() {
+    name = "Gavin";
+    @error name = "Tako";
+}
+
+class ReallyBadlyDuped() extends Abstract() {
+    @error name = "Gavin";
+    shared actual String name = "Tako";
+}
+
 class OK() extends Abstract() {
     name = "Trompon";
     print(name);
@@ -62,3 +72,9 @@ class OtherBadlyUsed() extends OtherAbstract() {
     @error sqr(2.0);
     sqr = sq;
 }
+
+class OtherBadlyDuped() extends OtherAbstract() {
+	sqr = sq;
+    @error sqr = sq;
+}
+
