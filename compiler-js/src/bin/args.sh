@@ -1,6 +1,6 @@
 # This file is intended to be sourced, not run directly
 
-CEYLON_VERSION=0.2
+CEYLON_VERSION=0.3
 
 # resolve links - $0 may be a softlink
 PRG="$0"
