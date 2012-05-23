@@ -1177,7 +1177,13 @@ public abstract class AbstractTransformer implements Transformation {
         return typeModel.getTypeArgumentList().get(0);
     }
     
-    protected ProducedType getTypeForParameter(Parameter parameter, ProducedReference producedReference) {
+    /** 
+     * Return the upper bound of any type parameter, instead of the type 
+     * parameter itself 
+     */
+    static final int TP_TO_BOUND = 1<<0;
+    
+    protected ProducedType getTypeForParameter(Parameter parameter, ProducedReference producedReference, int flags) {
         if (parameter instanceof FunctionalParameter) {
             return getTypeForFunctionalParameter((FunctionalParameter)parameter);
         }
@@ -1194,7 +1200,8 @@ public abstract class AbstractTransformer implements Transformation {
             return producedTypedReference.getType();
         } else if (declTypeDecl instanceof ClassOrInterface) {
             return declType;
-        } else if (declTypeDecl instanceof TypeParameter) {
+        } else if ((declTypeDecl instanceof TypeParameter)
+                && (flags & TP_TO_BOUND) != 0) {
             if (!declTypeDecl.getSatisfiedTypes().isEmpty()) {
                 // use upper bound
                 return declTypeDecl.getSatisfiedTypes().get(0);

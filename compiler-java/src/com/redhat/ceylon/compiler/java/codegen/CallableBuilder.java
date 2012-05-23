@@ -217,7 +217,7 @@ public class CallableBuilder {
         if (argType != null) {
             castType = argType;
         } else {
-            castType = gen.getTypeForParameter(param, producedReference);
+            castType = gen.getTypeForParameter(param, producedReference, gen.TP_TO_BOUND);
         }
         JCTypeCast cast = gen.make().TypeCast(gen.makeJavaType(castType, NO_PRIMITIVES), argExpr);
         // TODO Should this be calling applyErasureAndBoxing() instead?
