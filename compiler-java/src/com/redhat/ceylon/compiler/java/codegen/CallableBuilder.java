@@ -68,12 +68,7 @@ public class CallableBuilder {
         CallableBuilder cb = new CallableBuilder(gen);
         cb.paramLists = parameterList;
         cb.typeModel = expr.getTypeModel();
-        ProducedType returnType = gen.getCallableReturnType(cb.typeModel);
-        if (gen.isVoid(returnType)) {
-            cb.body = List.<JCStatement>of(gen.make().Exec(fnCall), gen.make().Return(gen.makeNull()));
-        } else {
-            cb.body = List.<JCStatement>of(gen.make().Return(fnCall));
-        }
+        cb.body = List.<JCStatement>of(gen.make().Return(fnCall));    
         
         return cb;
     }
@@ -84,14 +79,8 @@ public class CallableBuilder {
     public static CallableBuilder anonymous(
             CeylonTransformer gen, Tree.Expression expr, ParameterList parameterList, 
             ProducedType callableTypeModel) {
-        ProducedType returnType = gen.getCallableReturnType(callableTypeModel);
         JCExpression transformedExpr = gen.expressionGen().transformExpression(expr);
-        final List<JCStatement> stmts;
-        if (gen.isVoid(returnType)) {
-            stmts = List.<JCStatement>of(gen.make().Exec(transformedExpr), gen.make().Return(gen.makeNull()));
-        } else {
-            stmts = List.<JCStatement>of(gen.make().Return(transformedExpr));
-        }
+        final List<JCStatement> stmts = List.<JCStatement>of(gen.make().Return(transformedExpr));
         
         return methodArgument(gen, callableTypeModel, parameterList, stmts);
     }
@@ -228,7 +217,7 @@ public class CallableBuilder {
         if (argType != null) {
             castType = argType;
         } else {
-            castType = gen.getTypeForParameter(param, producedReference);
+            castType = gen.getTypeForParameter(param, producedReference, gen.TP_TO_BOUND);
         }
         JCTypeCast cast = gen.make().TypeCast(gen.makeJavaType(castType, NO_PRIMITIVES), argExpr);
         // TODO Should this be calling applyErasureAndBoxing() instead?

@@ -1,0 +1,48 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class getterArgumentNamedInvocationBoxing {
+    
+    private getterArgumentNamedInvocationBoxing() {
+    }
+    
+    static <T>void getterArgumentNamedInvocationBoxing(final T t) {
+        (
+            let
+            {
+                .ceylon.language.String $arg$0$0 = .ceylon.language.String.instance("getterarg");
+                
+                final class $item$1 {
+                    
+                    long getItem() {
+                        return 1L;
+                    }
+                    
+                    private $item$1() {
+                    }
+                }
+                final $item$1 $item$1 = new $item$1();
+                final .ceylon.language.Integer $arg$0$1 = .ceylon.language.Integer.instance($item$1.getItem());
+            }
+            returning new .ceylon.language.Entry<.ceylon.language.String, .ceylon.language.Integer>($arg$0$0, $arg$0$1);
+        );
+        (
+            let
+            {
+                .ceylon.language.String $arg$2$0 = .ceylon.language.String.instance("getterarg");
+                
+                final class $item$3 {
+                    
+                    T getItem() {
+                        return t;
+                    }
+                    
+                    private $item$3() {
+                    }
+                }
+                final $item$3 $item$3 = new $item$3();
+                final T $arg$2$1 = $item$3.getItem();
+            }
+            returning new .ceylon.language.Entry<.ceylon.language.String, T>($arg$2$0, $arg$2$1);
+        );
+    }
+}

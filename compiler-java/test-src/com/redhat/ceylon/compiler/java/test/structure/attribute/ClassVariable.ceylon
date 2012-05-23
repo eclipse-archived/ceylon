@@ -32,3 +32,7 @@ abstract class ClassVariable(){
         capturedvar := "new value";
     }
 }
+@nomodel
+class SubClassVariable() extends ClassVariable() {
+    shared actual variable String formalvar := "";
+}

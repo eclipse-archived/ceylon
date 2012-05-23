@@ -21,9 +21,14 @@ final class test {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.operator.NullSafeVoidMethodReference $safe$0 = handler;
-                if ($safe$0 != null) $safe$0.invoke();
             }
-            returning null;
+            returning $safe$0 != null ? (
+                let
+                {
+                    $safe$0.invoke();
+                }
+                returning null;
+            ) : null;
         );
     }
 }

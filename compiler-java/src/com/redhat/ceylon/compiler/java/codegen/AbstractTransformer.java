@@ -53,6 +53,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
@@ -1177,7 +1178,13 @@ public abstract class AbstractTransformer implements Transformation {
         return typeModel.getTypeArgumentList().get(0);
     }
     
-    protected ProducedType getTypeForParameter(Parameter parameter, ProducedReference producedReference) {
+    /** 
+     * Return the upper bound of any type parameter, instead of the type 
+     * parameter itself 
+     */
+    static final int TP_TO_BOUND = 1<<0;
+    
+    protected ProducedType getTypeForParameter(Parameter parameter, ProducedReference producedReference, int flags) {
         if (parameter instanceof FunctionalParameter) {
             return getTypeForFunctionalParameter((FunctionalParameter)parameter);
         }
@@ -1194,7 +1201,8 @@ public abstract class AbstractTransformer implements Transformation {
             return producedTypedReference.getType();
         } else if (declTypeDecl instanceof ClassOrInterface) {
             return declType;
-        } else if (declTypeDecl instanceof TypeParameter) {
+        } else if ((declTypeDecl instanceof TypeParameter)
+                && (flags & TP_TO_BOUND) != 0) {
             if (!declTypeDecl.getSatisfiedTypes().isEmpty()) {
                 // use upper bound
                 return declTypeDecl.getSatisfiedTypes().get(0);
@@ -1206,8 +1214,8 @@ public abstract class AbstractTransformer implements Transformation {
     private ProducedType getTypeForFunctionalParameter(FunctionalParameter fp) {
         java.util.List<ProducedType> typeArgs = new ArrayList<ProducedType>(fp.getTypeParameters().size());
         typeArgs.add(fp.getType());
-        for (TypeParameter typeParameter : fp.getTypeParameters()) {
-            typeArgs.add(typeParameter.getType());
+        for (Parameter parameter : fp.getParameterLists().get(0).getParameters()) {
+            typeArgs.add(parameter.getType());
         }
         return typeFact().getCallableType(typeArgs);
     }
@@ -1538,6 +1546,8 @@ public abstract class AbstractTransformer implements Transformation {
             expr = boxBoolean(expr);
         } else if (isCeylonArray(exprType)) {
             expr = boxArray(expr);
+        } else if (isVoid(exprType)) {
+            expr = make().LetExpr(List.<JCStatement>of(make().Exec(expr)), makeNull());
         }
         return expr;
     }

@@ -23,8 +23,13 @@ final class callableAndDefaultedArguments {
             
             @.java.lang.Override
             public .java.lang.Object $call() {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableAndDefaultedArguments_bar.callableAndDefaultedArguments_bar();
-                return null;
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableAndDefaultedArguments_bar.callableAndDefaultedArguments_bar();
+                    }
+                    returning null;
+                );
             }
         }, .ceylon.language.String.instance(""));
     }

@@ -18,25 +18,17 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class Void_() {
-    void m(String s){}
-    Void m1(String s){return 1;}
-    Void a = 1;
-    Void g { return 1;}
-    
-    void test() {
-        Void v1 = m("");
-        Void v2 = m{s="";};
-        Void v3 = m1("");
-        Void v4 = m1{s="";};
-        Void v5 = a;
-        Void v6 = g;
-        variable Void v;
-        v := m("");
-        v := m{s="";};
-        v := m1("");
-        v := m1{s="";};
-        v := a;
-        v := g;
-    }
+void getterArgumentNamedInvocationBoxing<T>(T t) given T satisfies Object {
+    Entry {
+         key = "getterarg"; 
+         value item {
+            return 1;
+         }
+    };
+    Entry {
+         key = "getterarg"; 
+         value item {
+            return t;
+         }
+    };
 }

@@ -23,6 +23,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import java.util.Iterator;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -34,6 +35,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
@@ -124,17 +126,14 @@ public class BoxingDeclarationVisitor extends Visitor {
                 setBoxingState(refinedDeclaration, refinedDeclaration);
             // inherit
             declaration.setUnboxed(refinedDeclaration.getUnboxed());
-        }else if(transformer.isCeylonBasicType(type)
+        }else if((transformer.isCeylonBasicType(type) || Decl.isLittleVoid(declaration))
            && !(refinedDeclaration.getTypeDeclaration() instanceof TypeParameter)){
             declaration.setUnboxed(true);
         }else
             declaration.setUnboxed(false);
     }
 
-    @Override
-    public void visit(AnyAttribute that) {
-        super.visit(that);
-        TypedDeclaration declaration = that.getDeclarationModel();
+    private void boxAttribute(TypedDeclaration declaration) {
         // deal with invalid input
         if(declaration == null)
             return;
@@ -143,6 +142,19 @@ public class BoxingDeclarationVisitor extends Visitor {
         if(refinedDeclaration == null)
             return;
         setBoxingState(declaration, refinedDeclaration);
+    }
+    
+    @Override
+    public void visit(AnyAttribute that) {
+        super.visit(that);
+        TypedDeclaration declaration = that.getDeclarationModel();
+        boxAttribute(declaration);
+    }
+
+    @Override
+    public void visit(AttributeArgument that) {
+        super.visit(that);
+        boxAttribute(that.getDeclarationModel());
     }
 
     @Override
@@ -153,14 +165,7 @@ public class BoxingDeclarationVisitor extends Visitor {
         if(declarationModel == null)
             return;
         TypedDeclaration declaration = declarationModel.getParameter();
-        // deal with invalid input
-        if(declaration == null)
-            return;
-        TypedDeclaration refinedDeclaration = (TypedDeclaration)Util.getTopmostRefinedDeclaration(declaration);
-        // deal with invalid input
-        if(refinedDeclaration == null)
-            return;
-        setBoxingState(declaration, refinedDeclaration);
+        boxAttribute(declaration);
     }
 
     @Override

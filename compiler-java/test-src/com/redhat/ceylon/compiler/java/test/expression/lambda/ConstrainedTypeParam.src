@@ -11,8 +11,13 @@ class ConstrainedTypeParam<T> {
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
                 final T t = (T)$param$0;
-                .ceylon.language.print.print(.ceylon.language.String.instance(t.toString()));
-                return null;
+                return (
+                    let
+                    {
+                        .ceylon.language.print.print(.ceylon.language.String.instance(t.toString()));
+                    }
+                    returning null;
+                );
             }
         });
     }

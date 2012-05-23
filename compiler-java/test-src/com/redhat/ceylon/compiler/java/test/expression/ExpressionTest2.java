@@ -57,6 +57,11 @@ public class ExpressionTest2 extends CompilerTest {
     }
     
     @Test
+    public void testInvGetterArgumentNamedInvocationBoxing(){
+        compareWithJavaSource("invoke/GetterArgumentNamedInvocationBoxing");
+    }
+    
+    @Test
     public void testInvChainedInvocations(){
         compareWithJavaSource("invoke/ChainedInvocations");
     }
@@ -417,6 +422,11 @@ public class ExpressionTest2 extends CompilerTest {
     @Test
     public void testDefaultFunctionReference(){
         compareWithJavaSource("invoke/DefaultFunctionReference");
+    }
+    
+    @Test
+    public void testInvSelfType(){
+        compareWithJavaSource("invoke/SelfType");
     }
 
 }

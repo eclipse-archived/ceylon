@@ -11,9 +11,8 @@ final class callableNamedInvocationBinary_f {
             {
                 .ceylon.language.Integer $arg$0$1 = .ceylon.language.Integer.instance(1L);
                 .ceylon.language.String $arg$0$0 = .ceylon.language.String.instance("");
-                foo.$call($arg$0$0, $arg$0$1);
             }
-            returning null;
+            returning foo.$call($arg$0$0, $arg$0$1);
         );
     }
 }

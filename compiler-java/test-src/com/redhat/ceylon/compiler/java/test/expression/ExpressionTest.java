@@ -115,6 +115,10 @@ public class ExpressionTest extends CompilerTest {
     public void testBoxStringBoxing(){
         compareWithJavaSource("boxing/StringBoxing");
     }
+    @Test
+    public void testBoxVoidBoxing(){
+        compareWithJavaSource("boxing/VoidBoxing");
+    }
 
     // Erasure
     
@@ -297,11 +301,6 @@ public class ExpressionTest extends CompilerTest {
     @Test
     public void testOprNullSafeVoidMethodReference(){
         compareWithJavaSource("operator/NullSafeVoidMethodReference");
-    }
-    
-    @Test
-    public void testOprVoid(){
-        compareWithJavaSource("operator/Void");
     }
     
     @Test

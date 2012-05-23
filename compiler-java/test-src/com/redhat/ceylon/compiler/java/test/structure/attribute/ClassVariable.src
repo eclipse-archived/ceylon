@@ -36,3 +36,26 @@ abstract class ClassVariable {
         setFormalvar("");
     }
 }
+class SubClassVariable extends .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassVariable {
+    private .java.lang.String formalvar;
+    
+    @.java.lang.Override
+    public final .java.lang.String getFormalvar() {
+        return formalvar;
+    }
+    
+    @.java.lang.Override
+    public final void setFormalvar(.java.lang.String formalvar) {
+        this.formalvar = formalvar;
+    }
+    
+    SubClassVariable() {
+        super();
+        this.formalvar = "";
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassVariable();
+    }
+}

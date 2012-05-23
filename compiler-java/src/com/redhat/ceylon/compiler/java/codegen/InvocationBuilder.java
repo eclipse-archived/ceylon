@@ -47,6 +47,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
@@ -161,6 +162,10 @@ abstract class InvocationBuilder {
             }
             resultExpr = gen.make().Apply(primaryTypeArguments, gen.makeQuotedQualIdent(actualPrimExpr, selector), args.toList());
         }
+        
+        resultExpr = gen.expressionGen().applyErasureAndBoxing(resultExpr, returnType, 
+                !unboxed, boxingStrategy, returnType);
+        
         return resultExpr;
     }
 
@@ -184,8 +189,7 @@ abstract class InvocationBuilder {
                 return transformInvocation(primaryExpr, selector);
             }
         });
-        result = gen.expressionGen().applyErasureAndBoxing(result, returnType, 
-                !unboxed, boxingStrategy, returnType);
+        
         return result;
     }
 
@@ -498,7 +502,7 @@ abstract class DirectInvocationBuilder extends SimpleInvocationBuilder {
     
     @Override
     protected ProducedType getParameterType(int argIndex) {
-        return gen.expressionGen().getTypeForParameter(getParameter(argIndex), producedReference);
+        return gen.expressionGen().getTypeForParameter(getParameter(argIndex), producedReference, gen.TP_TO_BOUND);
     }
     
     @Override
@@ -711,7 +715,7 @@ class CallableSpecifierInvocationBuilder extends InvocationBuilder {
     protected void compute() {
         int argIndex = 0;
         for(Parameter parameter : method.getParameterLists().get(0).getParameters()) {
-            ProducedType exprType = gen.expressionGen().getTypeForParameter(parameter, null);
+            ProducedType exprType = gen.expressionGen().getTypeForParameter(parameter, null, gen.TP_TO_BOUND);
             Parameter declaredParameter = method.getParameterLists().get(0).getParameters().get(argIndex);
             
             JCExpression result = gen.makeQuotedIdent(parameter.getName());
@@ -847,35 +851,25 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
     private int parameterIndex(Parameter param) {
         return parameterList(param).indexOf(param);
     }
+
+    private ProducedType parameterType(Parameter declaredParam, ProducedType pt, int flags) {
+        return (declaredParam == null) ? pt : gen.getTypeForParameter(declaredParam, producedReference, flags);        
+    }
     
     private void appendVarsForNamedArguments(
             java.util.List<Tree.NamedArgument> namedArguments,
             java.util.List<Parameter> declaredParams) {
-        boolean isRaw = primaryTypeArguments.isEmpty();
         // Assign vars for each named argument given
         for (Tree.NamedArgument namedArg : namedArguments) {
             gen.at(namedArg);
             Parameter declaredParam = namedArg.getParameter();
-            BoxingStrategy boxType;
-            ProducedType type = null;    
-            if (declaredParam != null) {
-                boxType = Util.getBoxingStrategy(declaredParam);
-                type = gen.getTypeForParameter(declaredParam, producedReference);
-            } else {
-                // Arguments of overloaded methods don't have a reference to parameter
-                boxType = BoxingStrategy.UNBOXED;
-            }
             String argName = argName(declaredParam);
             ListBuffer<JCStatement> statements;
             if (namedArg instanceof Tree.SpecifiedArgument) {             
                 Tree.SpecifiedArgument specifiedArg = (Tree.SpecifiedArgument)namedArg;
                 Tree.Expression expr = specifiedArg.getSpecifierExpression().getExpression();
-                if (declaredParam == null) {
-                    type = expr.getTypeModel();
-                }
-                // if we can't pick up on the type from the declaration, revert to the type of the expression
-                if(gen.isTypeParameter(gen.simplifyType(type)))
-                    type = expr.getTypeModel();
+                ProducedType type = parameterType(declaredParam, expr.getTypeModel(), gen.TP_TO_BOUND);
+                final BoxingStrategy boxType = declaredParam != null ? Util.getBoxingStrategy(declaredParam) : BoxingStrategy.UNBOXED;
                 JCExpression typeExpr = gen.makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? TYPE_ARGUMENT : 0);
                 JCExpression argExpr = gen.expressionGen().transformExpression(expr, boxType, type);
                 JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, argExpr);
@@ -909,19 +903,23 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 final String name = model.getName();
                 final String alias = gen.aliasName(name);
                 final List<JCTree> attrClass = gen.gen().transformAttribute(model, alias, alias, attrArg.getBlock(), null, null);
-                // TODO Type params
+                TypedDeclaration nonWideningTypeDeclaration = gen.nonWideningTypeDecl(model);
+                ProducedType nonWideningType = gen.nonWideningType(model, nonWideningTypeDeclaration);
+                ProducedType type = parameterType(declaredParam, model.getType(), 0);
+                final BoxingStrategy boxType = declaredParam != null ? Util.getBoxingStrategy(declaredParam) : BoxingStrategy.UNBOXED;
                 JCExpression initValue = gen.make().Apply(null, 
                         gen.makeSelect(alias, Util.getGetterName(name)),
                         List.<JCExpression>nil());
-                // TODO Boxing
-                initValue = gen.expressionGen().boxUnboxIfNecessary(initValue, 
-                        true, 
-                        model.getType(), 
-                        BoxingStrategy.UNBOXED);
+                initValue = gen.expressionGen().applyErasureAndBoxing(
+                        initValue, 
+                        nonWideningType, 
+                        !Util.isUnBoxed(nonWideningTypeDeclaration),
+                        boxType,
+                        type);
                 JCTree.JCVariableDecl var = gen.make().VarDef(
                         gen.make().Modifiers(FINAL, List.<JCAnnotation>nil()), 
                         gen.names().fromString(argName), 
-                        gen.makeJavaType(model.getType()), 
+                        gen.makeJavaType(type, boxType==BoxingStrategy.BOXED ? NO_PRIMITIVES : 0), 
                         initValue);
                 statements = toStmts(attrArg, attrClass).append(var);
             } else {
@@ -956,7 +954,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         } else if (Util.getBoxingStrategy(param) == BoxingStrategy.BOXED) {
             flags |= TYPE_ARGUMENT;
         }
-        ProducedType type = gen.getTypeForParameter(param, producedReference);
+        ProducedType type = gen.getTypeForParameter(param, producedReference, gen.TP_TO_BOUND);
         String argName = argName(param);
         JCExpression typeExpr = gen.makeJavaType(type, flags);
         JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, argExpr);
@@ -1044,7 +1042,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         JCExpression resultExpr = super.transformInvocation(primaryExpr, selector);
         // apply the default parameters
         if (vars != null && !vars.isEmpty()) {
-            if (returnType == null || gen.isVoid(returnType)) {
+            if (returnType == null || Decl.isLittleVoid(primaryDeclaration)) {
                 // void methods get wrapped like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1); null)
                 resultExpr = gen.make().LetExpr( 
                         vars.append(gen.make().Exec(resultExpr)).toList(), 
@@ -1056,6 +1054,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                         resultExpr);
             }
         }
+        
         return resultExpr;
     }
     

@@ -26,8 +26,13 @@ final class callableArgumentVarargs2_m {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentVarargs2_g.callableArgumentVarargs2_g((.ceylon.language.Iterable<? extends .ceylon.language.String>)$param$0);
-                return null;
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentVarargs2_g.callableArgumentVarargs2_g((.ceylon.language.Iterable<? extends .ceylon.language.String>)$param$0);
+                    }
+                    returning null;
+                );
             }
         });
     }
