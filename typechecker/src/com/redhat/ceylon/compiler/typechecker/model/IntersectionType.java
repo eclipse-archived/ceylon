@@ -34,7 +34,7 @@ public class IntersectionType extends TypeDeclaration {
     
     @Override
     public ProducedType getType() {
-        if (getSatisfiedTypes().size()==0) {
+        if (getSatisfiedTypes().isEmpty()) {
             return unit.getVoidDeclaration().getType();
         }
         else if (getSatisfiedTypes().size()==1) {
@@ -51,6 +51,9 @@ public class IntersectionType extends TypeDeclaration {
      * a union of intersections, instead of an intersection of unions.
      */
 	public TypeDeclaration canonicalize() {
+	    if (getSatisfiedTypes().isEmpty()) {
+	        return unit.getBottomDeclaration();
+	    }
 		for (ProducedType st: getSatisfiedTypes()) {
 			if (st.getDeclaration() instanceof UnionType) {
 				TypeDeclaration result = new UnionType(unit);
