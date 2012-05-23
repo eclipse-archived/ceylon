@@ -111,7 +111,7 @@ public class TypeParser {
         // try to find a qualifying type
         try{
             ProducedType newType = loader.getType(fullName, scope);
-            return newType.getDeclaration().getProducedType(qualifyingType, part.parameters);
+            return newType == null ? null : newType.getDeclaration().getProducedType(qualifyingType, part.parameters);
         }catch(ModelResolutionException x){
             // allow this only if we don't have any qualifying type or parameters:
             // - if we have no qualifying type we may be adding package name parts

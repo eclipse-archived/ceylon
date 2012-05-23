@@ -1598,8 +1598,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(typeParameter != null)
                 return typeParameter.getType();
         }
-        if(!isBootstrap || !name.startsWith("ceylon.language"))
-            return ((TypeDeclaration)convertToDeclaration(name, DeclarationType.TYPE)).getType();
+        if(!isBootstrap || !name.startsWith("ceylon.language")) {
+            TypeDeclaration td = (TypeDeclaration)convertToDeclaration(name, DeclarationType.TYPE);
+            return td == null ? null : td.getType();
+        }
+            
         // we're bootstrapping ceylon.language so we need to return the ProducedTypes straight from the model we're compiling
         Module languageModule = modules.getLanguageModule();
         String simpleName = name.substring(name.lastIndexOf(".")+1);
