@@ -21,6 +21,7 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.java.util.Decl;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -233,6 +234,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.SpecifierStatement op) {
+        if (op.getRefinement()) {
+            gen.classGen().transformRefinementSpecifierStatement(op, classBuilder);
+        }
         append(gen.expressionGen().transform(op));
     }
 

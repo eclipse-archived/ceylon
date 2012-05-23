@@ -64,6 +64,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
@@ -473,6 +474,26 @@ public class ClassTransformer extends AbstractTransformer {
             outerBuilderInterface.modifiers(PUBLIC | ABSTRACT);
             outerBuilderInterface.resultType(null, makeJavaType(outerTypeInterface));
             classBuilder.defs(outerBuilderInterface.build());
+        }
+    }
+
+    public void transformRefinementSpecifierStatement(SpecifierStatement op, ClassDefinitionBuilder classBuilder) {
+        // Check if this is a shortcut form of formal attribute refinement
+        if (op.getRefinement()) {
+            // Now build a "fake" declaration for the attribute
+            Tree.BaseMemberExpression expr = (Tree.BaseMemberExpression)op.getBaseMemberExpression();
+            Value attr = (Value)expr.getDeclaration();
+            Tree.AttributeDeclaration decl = new Tree.AttributeDeclaration(null);
+            decl.setDeclarationModel(attr);
+            decl.setIdentifier(expr.getIdentifier());
+            decl.setScope(op.getScope());
+
+            // Make sure the boxing information is set correctly
+            BoxingDeclarationVisitor v = new BoxingDeclarationVisitor(this);
+            v.visit(decl);
+            
+            // Generate the attribute
+            transform(decl, classBuilder);
         }
     }
 
