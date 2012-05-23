@@ -859,14 +859,10 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         for (Tree.NamedArgument namedArg : namedArguments) {
             gen.at(namedArg);
             Parameter declaredParam = namedArg.getParameter();
-            BoxingStrategy boxType;
+            final BoxingStrategy boxType = declaredParam != null ? Util.getBoxingStrategy(declaredParam) : BoxingStrategy.UNBOXED;
             ProducedType type = null;    
             if (declaredParam != null) {
-                boxType = Util.getBoxingStrategy(declaredParam);
                 type = gen.getTypeForParameter(declaredParam, producedReference);
-            } else {
-                // Arguments of overloaded methods don't have a reference to parameter
-                boxType = BoxingStrategy.UNBOXED;
             }
             String argName = argName(declaredParam);
             ListBuffer<JCStatement> statements;
@@ -877,7 +873,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                     type = expr.getTypeModel();
                 }
                 // if we can't pick up on the type from the declaration, revert to the type of the expression
-                if(gen.isTypeParameter(gen.simplifyType(type)))
+                if (gen.isTypeParameter(gen.simplifyType(type)))
                     type = expr.getTypeModel();
                 JCExpression typeExpr = gen.makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? TYPE_ARGUMENT : 0);
                 JCExpression argExpr = gen.expressionGen().transformExpression(expr, boxType, type);
@@ -912,19 +908,24 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 final String name = model.getName();
                 final String alias = gen.aliasName(name);
                 final List<JCTree> attrClass = gen.gen().transformAttribute(model, alias, alias, attrArg.getBlock(), null, null);
-                // TODO Type params
+                TypedDeclaration nonWideningTypeDeclaration = gen.nonWideningTypeDecl(model);
+                ProducedType nonWideningType = gen.nonWideningType(model, nonWideningTypeDeclaration);
+                if (declaredParam == null || gen.isTypeParameter(gen.simplifyType(declaredParam.getType()))) {
+                    type = model.getType();
+                }
                 JCExpression initValue = gen.make().Apply(null, 
                         gen.makeSelect(alias, Util.getGetterName(name)),
                         List.<JCExpression>nil());
-                // TODO Boxing
-                initValue = gen.expressionGen().boxUnboxIfNecessary(initValue, 
-                        true, 
-                        model.getType(), 
-                        BoxingStrategy.UNBOXED);
+                initValue = gen.expressionGen().applyErasureAndBoxing(
+                        initValue, 
+                        nonWideningType, 
+                        !Util.isUnBoxed(nonWideningTypeDeclaration),
+                        boxType,
+                        type);
                 JCTree.JCVariableDecl var = gen.make().VarDef(
                         gen.make().Modifiers(FINAL, List.<JCAnnotation>nil()), 
                         gen.names().fromString(argName), 
-                        gen.makeJavaType(model.getType()), 
+                        gen.makeJavaType(type, boxType==BoxingStrategy.BOXED ? NO_PRIMITIVES : 0), 
                         initValue);
                 statements = toStmts(attrArg, attrClass).append(var);
             } else {
