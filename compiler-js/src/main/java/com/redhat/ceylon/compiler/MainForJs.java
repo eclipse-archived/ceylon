@@ -3,6 +3,8 @@ package com.redhat.ceylon.compiler;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.js.JsCompiler;
@@ -20,53 +22,63 @@ import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
  */
 public class MainForJs {
 
+    /** Print a help message with the available options. */
+    private static void help() {
+        System.err.println("Usage ceylonjs [options] [file|dir]...");
+        System.err.println();
+        System.err.println("Options:");
+        System.err.println("  -rep <url>         Module repository (default: ./modules).");
+        System.err.println("                     Can be specified multiple times.");
+        System.err.println("  -user <value>      User name for output repository (HTTP only)");
+        System.err.println("  -pass <value>      Password for output repository (HTTP only)");
+        System.err.println("  -src <directory>   Path to source files (default: ./source)");
+        System.err.println("  -out <url>         Output module repository (default: ./modules)");
+        System.err.println("  -version           Version information");
+        System.err.println("  -help              Print a synopsis of standard options");
+        System.err.println();
+        System.err.println("Javascript code generation options:");
+        System.err.println("  -optimize    Create prototype-style JS code");
+        System.err.println("  -module      Wrap generated code as CommonJS module");
+        System.err.println("  -noindent    Do NOT indent code");
+        System.err.println("  -nocomments  Do not generate any comments");
+        System.err.println("  -compact     Same as -noindent -nocomments");
+        System.err.println("  -verbose     Print messages while compiling");
+        System.err.println("  -profile     Time the compilation phases (results are printed to STDERR)");
+        System.err.println();
+        System.err.println("If no files are specified or '--' is used, STDIN is read.");
+    }
+
     /**
      * Files that are not under a proper module structure are placed under a <nomodule> module.
      */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] _args) throws Exception {
         long t0, t1, t2, t3, t4;
-        boolean optimize = false;
-        boolean modulify = false;
-        boolean noindent = false;
-        boolean nocomments = false;
-        boolean verbose = false;
-        boolean profile = false;
-        List<String> path = new ArrayList<String>(args.length);
-        if ( args.length==0 ) {
-            System.err.println("Usage ceylonjs [options] [file|dir]...");
-            System.err.println();
-            System.err.println("Options:");
-            System.err.println("-optimize    Create prototype-style JS code");
-            System.err.println("-module      Wrap generated code as CommonJS module");
-            System.err.println("-noindent    Do NOT indent code");
-            System.err.println("-nocomments  Do not generate any comments");
-            System.err.println("-compact     Same as -noindent -nocomments");
-            System.err.println("-verbose     Tell the whole story");
-            System.err.println("-profile     Time the compilation phases (results are printed to STDERR)");
-            System.err.println();
-            System.err.println("If no files are specified or '--' is used, STDIN is read.");
-            System.exit(-1);
+        List<String> args = new ArrayList<String>(Arrays.asList(_args));
+        final Options opts = Options.parse(args);
+        if (opts.isVersion()) {
+            System.err.println("Ceylon to Javascript Compiler version 0.3");
             return;
         }
-        else {
-            for (String arg : args) {
-                if ("-optimize".equals(arg)) optimize=true;
-                else if ("-module".equals(arg)) modulify=true;
-                else if ("-compact".equals(arg)) {
-                    noindent=true; nocomments=true;
-                } else if ("-noindent".equals(arg)) noindent=true;
-                else if ("-nocomments".equals(arg)) nocomments=true;
-                else if ("-verbose".equals(arg)) verbose=true;
-                else if ("-profile".equals(arg)) profile=true;
-                else if ("--".equals(arg)) {
-                    path.clear();
-                    break;
-                } else path.add(arg);
-            }
+        if (opts.isHelp()) {
+            help();
+            return;
         }
 
+        //Separate modules from source files
+        final List<String> modlist = new ArrayList<String>();
+        for (Iterator<String> iter = args.iterator(); iter.hasNext();) {
+            String s = iter.next();
+            if (!s.endsWith(".ceylon")) {
+                iter.remove();
+                modlist.add(s);
+            }
+        }
+        if (!modlist.isEmpty()) {
+            System.err.printf("Don't know how to load modules yet: %s%n", modlist);
+            return;
+        }
         TypeChecker typeChecker;
-        if (path.isEmpty()) {
+        if (opts.isStdin()) {
             VirtualFile src = new VirtualFile() {
                 @Override
                 public boolean isFolder() {
@@ -104,16 +116,16 @@ public class MainForJs {
             };
             t0 = System.nanoTime();
             typeChecker = new TypeCheckerBuilder()
-                    .verbose(verbose)
+                    .verbose(opts.isVerbose())
                     .addSrcDirectory(src)
                     .getTypeChecker();
             t1=System.nanoTime();
         } else {
             t0=System.nanoTime();
             TypeCheckerBuilder tcb = new TypeCheckerBuilder()
-                .verbose(verbose);
-            for (String filedir : path) {
-              tcb.addSrcDirectory(new File(filedir));
+                .verbose(opts.isVerbose());
+            for (String filedir : args) {
+                tcb.addSrcDirectory(new File(filedir));
             }
             typeChecker = tcb.getTypeChecker();
             t1=System.nanoTime();
@@ -121,14 +133,13 @@ public class MainForJs {
         //getting the type checker does process all types in the source directory
         typeChecker.process();
         t2=System.nanoTime();
-        JsCompiler jsc = new JsCompiler(typeChecker).optimize(optimize)
-            .comment(!nocomments).indent(!noindent).modulify(modulify);
+        JsCompiler jsc = new JsCompiler(typeChecker, opts);
         t3=System.nanoTime();
         if (!jsc.generate()) {
             jsc.printErrors(System.out);
         }
         t4=System.nanoTime();
-        if (profile) {
+        if (opts.isProfile()) {
             System.err.println("PROFILING INFORMATION");
             System.err.printf("TypeChecker creation:   %6d nanos%n", t1-t0);
             System.err.printf("TypeChecker processing: %6d nanos%n", t2-t1);

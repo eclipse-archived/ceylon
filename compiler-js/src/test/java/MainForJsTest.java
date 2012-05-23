@@ -3,11 +3,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Arrays;
 
+import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.js.JsModuleCompiler;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -24,8 +26,8 @@ public class MainForJsTest {
     
     private static final class JsTestCompiler extends JsModuleCompiler {
 
-        private JsTestCompiler(TypeChecker tc) {
-            super(tc);
+        private JsTestCompiler(TypeChecker tc, Options options) {
+            super(tc, options);
         }
 
         @Override
@@ -59,7 +61,8 @@ public class MainForJsTest {
         if (typeChecker.getErrors() > 0) {
             System.exit(1);
         }
-        JsCompiler jsc = new JsTestCompiler(typeChecker).optimize(opt).stopOnErrors(false);
+        Options opts = Options.parse(new ArrayList<String>(Arrays.asList(opt ? "-optimize" : "")));
+        JsCompiler jsc = new JsTestCompiler(typeChecker, opts).stopOnErrors(false);
         if (jsc.generate()) {
             validateOutput(typeChecker);
         } else {
