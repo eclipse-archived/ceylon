@@ -76,7 +76,12 @@ public class TypeVisitor extends Visitor {
                 for (Tree.ImportMemberOrType member: imtl.getImportMemberOrTypes()) {
                     names.add(importMember(member, importedPackage, il));
                 }
-                if (imtl.getImportWildcard()!=null) {
+                if (imtl.getImportWildcard()==null) {
+                    if (imtl.getImportMemberOrTypes().isEmpty()) {
+                        imtl.addError("empty import list");
+                    }
+                }
+                else {
                     importAllMembers(importedPackage, names, il);
                 }
             }
@@ -197,6 +202,9 @@ public class TypeVisitor extends Visitor {
         }
         Tree.ImportMemberOrTypeList imtl = member.getImportMemberOrTypeList();
         if (imtl!=null) {
+            if (imtl.getImportMemberOrTypes().isEmpty()) {
+                imtl.addError("empty import list");
+            }
         	if (d instanceof TypeDeclaration) {
                 ImportList til = imtl.getImportList();
                 til.setImportedScope((TypeDeclaration) d);
