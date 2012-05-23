@@ -14,6 +14,8 @@ abstract class ClassAttribute {
     
     public abstract .java.lang.String getFormalvar();
     
+    public abstract .java.lang.String getFormalvarShortcut();
+    
     private final .java.lang.String m() {
         return getCapturedvar();
     }
@@ -32,10 +34,17 @@ class SubClassAttribute extends .com.redhat.ceylon.compiler.java.test.structure.
     public final .java.lang.String getFormalvar() {
         return formalvar;
     }
+    private final .java.lang.String formalvarShortcut;
+    
+    @.java.lang.Override
+    public final .java.lang.String getFormalvarShortcut() {
+        return formalvarShortcut;
+    }
     
     SubClassAttribute() {
         super();
         this.formalvar = "";
+        formalvarShortcut = "";
     }
     
     public static void main(.java.lang.String[] args) {

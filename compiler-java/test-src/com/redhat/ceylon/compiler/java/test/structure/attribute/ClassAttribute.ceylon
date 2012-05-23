@@ -23,6 +23,7 @@ abstract class ClassAttribute(){
     String uncapturedvar;
     String capturedvar;
     shared formal String formalvar;
+    shared formal String formalvarShortcut;
     publicvar = "";
     uncapturedvar = "";
     capturedvar = "";
@@ -34,4 +35,5 @@ abstract class ClassAttribute(){
 @nomodel
 class SubClassAttribute() extends ClassAttribute() {
     shared actual String formalvar = "";
+    formalvarShortcut = "";
 }
