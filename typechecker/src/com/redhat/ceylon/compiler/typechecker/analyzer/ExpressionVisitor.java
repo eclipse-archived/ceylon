@@ -35,6 +35,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
@@ -462,23 +463,26 @@ public class ExpressionVisitor extends Visitor {
         if (me instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression) me;
             Declaration d = bme.getDeclaration();
-            if (d!=null && 
-                    that.getScope() instanceof Class && 
-                    !d.isDefinedInScope(that.getScope())) {
-                //then it must be inherited ... TODO: is this totally correct? 
-                //so it's actually a refinement of a formal declaration!
-                if (d instanceof Value) {
-                    refine((Value) d, bme, that);
-                }
-                else if (d instanceof Method) {
-                    refine((Method) d, bme, that);
-                }
-                else {
-                    //TODO!
-                    bme.addError("not a reference to a formal attribute: " + d.getName());
-                }
-            }
             if (d!=null) { 
+                if (that.getScope() instanceof Class && 
+                        !d.isDefinedInScope(that.getScope())) {
+                    //then it must be inherited ... TODO: is this totally correct? 
+                    //so it's actually a refinement of a formal declaration!
+                    if (d instanceof Value) {
+                        refine((Value) d, bme, that);
+                    }
+                    else if (d instanceof Method) {
+                        refine((Method) d, bme, that);
+                    }
+                    else {
+                        //TODO!
+                        bme.addError("not a reference to a formal attribute: " + d.getName());
+                    }
+                }
+                else if (d instanceof MethodOrValue && 
+                        ((MethodOrValue)d).isShortcutRefinement()) {
+                    bme.addError("already specified: " + d.getName());
+                }
                 if (d instanceof Value && ((Value) d).isVariable()) {
                     sie.addError("variable values must be assigned using \":=\": " +
                                 d.getName(), 802);
@@ -497,6 +501,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void refine(Value sv, Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that) {
+        Class c = (Class) that.getScope();
         if (sv.isVariable()) {
             that.addError("attribute is variable: " + sv.getName());
         }
@@ -513,9 +518,10 @@ public class ExpressionVisitor extends Visitor {
         v.setActual(true);
         v.setRefinedDeclaration(v);
         v.setUnit(unit);
-        v.setContainer(that.getScope());
+        v.setContainer(c);
+        v.setShortcutRefinement(true);
         DeclarationVisitor.setVisibleScope(v);
-        ((Class) that.getScope()).getMembers().add(v);
+        c.getMembers().add(v);
         bme.setDeclaration(v);
         //bme.setTypeModel(v.getType());
         that.setRefinement(true);
@@ -523,6 +529,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void refine(Method sm, Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that) {
+        Class c = (Class) that.getScope();
         if (!sm.isFormal()) {
             bme.addError("method is not formal: " + sm.getName());
         }
@@ -538,9 +545,10 @@ public class ExpressionVisitor extends Visitor {
         m.setActual(true);
         m.setRefinedDeclaration(m);
         m.setUnit(unit);
-        m.setContainer(that.getScope());
+        m.setContainer(c);
+        m.setShortcutRefinement(true);
         DeclarationVisitor.setVisibleScope(m);
-        ((Class) that.getScope()).getMembers().add(m);
+        c.getMembers().add(m);
         bme.setDeclaration(m);
         //bme.setTypeModel(v.getType());
         that.setRefinement(true);
