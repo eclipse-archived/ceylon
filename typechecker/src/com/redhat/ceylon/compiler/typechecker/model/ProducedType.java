@@ -1209,7 +1209,7 @@ public class ProducedType extends ProducedReference {
                     }
                     name.append("|");
                 }
-                return name.substring(0,name.length()-1);
+                return name.substring(0,name.length()>0?name.length()-1:0);
             }
             else if (getDeclaration() instanceof IntersectionType) {
                 StringBuilder name = new StringBuilder();
@@ -1222,7 +1222,7 @@ public class ProducedType extends ProducedReference {
                     }
                     name.append("&");
                 }
-                return name.substring(0,name.length()-1);
+                return name.substring(0,name.length()>0?name.length()-1:0);
             }
             else {            
                 return getSimpleProducedTypeName(abbreviate);
@@ -1371,7 +1371,7 @@ public class ProducedType extends ProducedReference {
                 }
                 name.append("|");
             }
-            return name.substring(0,name.length()-1);
+            return name.substring(0,name.length()>0?name.length()-1:0);
         }
         else if (getDeclaration() instanceof IntersectionType) {
             StringBuilder name = new StringBuilder();
@@ -1384,7 +1384,7 @@ public class ProducedType extends ProducedReference {
                 }
                 name.append("&");
             }
-            return name.substring(0,name.length()-1);
+            return name.substring(0,name.length()>0?name.length()-1:0);
         }
         else {            
             return getSimpleProduceTypeQualifiedName();
