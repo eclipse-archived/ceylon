@@ -13,6 +13,10 @@ class Concrete() extends Abstract() {
     }
 }
 
+class IndirectlyBroken() extends Concrete() {
+    @error name = "Trompon";
+}
+
 class BadlyTyped() extends Abstract() {
     @error name = 1;
 }
@@ -57,6 +61,10 @@ Float sq(Float x) {
 
 abstract class OtherAbstract() {
     shared formal Float sqr(Float x);
+}
+
+class ReallyIndirectlyBroken() extends OtherConcrete() {
+    @error sqr = sq;
 }
 
 class OtherConcrete() extends OtherAbstract() {
