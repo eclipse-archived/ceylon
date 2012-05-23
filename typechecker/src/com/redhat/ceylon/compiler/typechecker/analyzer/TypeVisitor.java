@@ -331,8 +331,7 @@ public class TypeVisitor extends Visitor {
             addToIntersection(types, st.getTypeModel(), unit);
         }
         it.setSatisfiedTypes(types);
-        ProducedType pt = it.getType();
-        that.setTypeModel(pt);
+        that.setTypeModel(it.getType());
         //that.setTarget(pt);
     }
 
