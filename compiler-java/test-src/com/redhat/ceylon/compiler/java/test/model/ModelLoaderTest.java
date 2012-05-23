@@ -35,6 +35,7 @@ import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -99,7 +100,7 @@ public class ModelLoaderTest extends CompilerTest {
             @Override
             public void finished(TaskEvent e) {
                 if(e.getKind() == Kind.ENTER){
-                    CeylonModelLoader modelLoader = CeylonModelLoader.instance(context2);
+                    AbstractModelLoader modelLoader = CeylonModelLoader.instance(context2);
                     // now see if we can find our declarations
                     for(Entry<String, Declaration> entry : decls.entrySet()){
                         String quotedQualifiedName = Util.quoteJavaKeywords(entry.getKey().substring(1));
