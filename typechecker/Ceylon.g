@@ -154,14 +154,14 @@ importElement returns [ImportMemberOrType importMemberOrType]
         (
           typeNameDeclaration 
           { $importMemberOrType.setIdentifier($typeNameDeclaration.identifier); }
-          (
-            iel2=importElementList
-            { $importMemberOrType.setImportMemberOrTypeList($iel2.importMemberOrTypeList); }
-          )?
         | { displayRecognitionError(getTokenNames(), 
                   new MismatchedTokenException(UIDENTIFIER, input)); }
         ) 
       )? 
+      (
+        iel2=importElementList
+        { $importMemberOrType.setImportMemberOrTypeList($iel2.importMemberOrTypeList); }
+      )?
     )
     { if ($importMemberOrType!=null)
         $importMemberOrType.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
