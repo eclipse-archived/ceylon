@@ -67,6 +67,7 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.Import that) {
         Package importedPackage = getPackage(that.getImportPath());
         if (importedPackage!=null) {
+            that.getImportPath().setPackageModel(importedPackage);
             Tree.ImportMemberOrTypeList imtl = that.getImportMemberOrTypeList();
             if (imtl!=null) {
                 ImportList il = imtl.getImportList();
