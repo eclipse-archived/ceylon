@@ -216,7 +216,7 @@ public class LanguageCompiler extends JavaCompiler {
             throw new RuntimeException("Trying to load new source file after CeylonEnter has been called: "+filename);
         try {
             ModuleManager moduleManager = phasedUnits.getModuleManager();
-            File sourceFile = new File(filename.toString());
+            File sourceFile = new File(filename.getName());
             // FIXME: temporary solution
             VirtualFile file = vfs.getFromFile(sourceFile);
             VirtualFile srcDir = vfs.getFromFile(getSrcDir(sourceFile));
