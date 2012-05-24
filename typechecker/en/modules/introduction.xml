@@ -67,6 +67,14 @@
     optimized performance of primitive types on the JVM.
     </para>
     
+    <para>
+    The type system is based upon computation of <emphasis>principal types</emphasis>.
+    Within the language, there is no way to produce an expression which does not
+    have a unique principal type expressible within the language itself. The 
+    principal type is a subtype of all other types to which the expression could
+    be assigned.
+    </para>
+    
     </section>
     
     <section id="mixininheritance">
@@ -101,10 +109,10 @@
     <title>Algebraic types, self types, and type families</title>
     
     <para>
-    Ceylon does not feature enumerated types as a first-class construct. Instead,
-    any abstract type may specify its <emphasis>cases</emphasis>&mdash;an enumerated 
-    list of instances or subtypes. This facility is used to simulate both enumerated 
-    types and functional-style algebraic types. 
+    Ceylon does not feature Java-style enumerated types as a first-class construct. 
+    Instead, any abstract type may specify its <emphasis>cases</emphasis>&mdash;an
+    enumerated list of instances or subtypes. This facility is used to simulate both 
+    enumerated types and functional-style algebraic types. 
     </para>
     
     <programlisting>interface Identity of Person | Organization { ... }</programlisting>
@@ -176,7 +184,7 @@
         
     <para>
     Union and intersection types play a central role in generic type argument 
-    inference.
+    inference and therefore underly the whole system of principal typing.
     </para>
     
     </section>
@@ -191,7 +199,7 @@
     </para>
 
     <para>
-    <emphasis>A type alias</emphasis> is similar to a C-style <literal>typedef</literal>.
+    A <emphasis>type alias</emphasis> is similar to a C-style <literal>typedef</literal>.
     </para>
     
     <programlisting>interface Strings = Sequence&lt;String&gt;;</programlisting>
@@ -380,44 +388,6 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
     
     </section>
     
-    <section id="firstclassfunctions">
-    <title>First-class functions and higher-order programming</title>
-    
-    <para>
-    Ceylon supports first-class function types and higher-order functions, 
-    with minimal extensions to the traditional C syntax. A method declaration 
-    may specify a <emphasis>callable parameter</emphasis> that accepts 
-    references to other methods with a certain signature. 
-    </para>
-    
-    <programlisting>String find(Boolean where(String string), String... strings) { ... }</programlisting>
-    
-    <para>
-    The argument of such a callable parameter may be either a reference to a 
-    named method declared elsewhere, or a new method defined inline as part of 
-    the method invocation. A method may even return an invocable reference to 
-    another method.</para>
-    
-    <!-- 
-    <para>
-    Finally, nested method declarations receive a closure of 
-    immutable references defined in the surrounding scope.
-    </para>
-    -->
-    </section>
-    
-    <!--
-    <section id="lazyevaluationpassbyreference">
-    <title>Lazy evaluation and pass by reference</title>
-    
-    <para>
-    Using a "trick" in the Ceylon type system, it's possible to take advantage 
-    of lazy evaluation of expressions and pass by reference for attributes.
-    </para>
-    
-    </section>
-    -->
-    
     <section id="compiletimesafety">
     <title>Compile-time safety for optional values and type narrowing</title>
     
@@ -445,19 +415,59 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
     
     </section>
     
-    <section id="sequences">
-    <title>Sequences</title>
+    <section id="firstclassfunctions">
+    <title>First-class functions and higher-order programming</title>
     
-    <para>Sequences are Ceylon's version of arrays. However, the
-    <literal>Sequence</literal> interface does not provide operations for
-    mutating the elements of the sequence.</para>
+    <para>
+    Ceylon supports first-class function types and higher-order functions, 
+    with minimal extensions to the traditional C syntax. A method declaration 
+    may specify a <emphasis>callable parameter</emphasis> that accepts 
+    references to other methods with a certain signature. 
+    </para>
+    
+    <programlisting>String find(Boolean where(String string), String... strings) { ... }</programlisting>
+    
+    <para>
+    The argument of such a callable parameter may be either a reference to a 
+    named method declared elsewhere, or a new method defined inline as part of 
+    the method invocation. A method may even return an invocable reference to 
+    another method.</para>
+    
+    <programlisting>value matches = find((String s) !s.empty, "", "hello", "world");</programlisting>
+    
+    <!-- 
+    <para>
+    Finally, nested method declarations receive a closure of 
+    immutable references defined in the surrounding scope.
+    </para>
+    -->
+    </section>
+    
+    <!--
+    <section id="lazyevaluationpassbyreference">
+    <title>Lazy evaluation and pass by reference</title>
+    
+    <para>
+    Using a "trick" in the Ceylon type system, it's possible to take advantage 
+    of lazy evaluation of expressions and pass by reference for attributes.
+    </para>
+    
+    </section>
+    -->
+    
+    <section id="sequences">
+    <title>Sequences and comprehensions</title>
+    
+    <para><emphasis>Sequences</emphasis> are Ceylon's version of arrays. 
+    However, the <literal>Sequence</literal> interface does not provide 
+    operations for mutating the elements of the sequence.</para>
     
     <para>Ceylon distinguishes between empty and nonempty sequences. An 
     instance of <literal>Sequence</literal> is has at least one element. An 
-    empty sequence is an instance of the type <literal>Empty</literal>.
-    It's very common to work with a <emphasis>sequence type</emphasis> like
-    <literal>Empty|Sequence&lt;String&gt;</literal>,
-    which may be abbreviated <literal>String[]</literal>. The special-purpose
+    empty sequence is an instance of the type <literal>Empty</literal>. It's 
+    very common to work with a <emphasis>sequence type</emphasis> like
+    <literal>Empty|Sequence&lt;String&gt;</literal>, which may be abbreviated
+    <literal>String[]</literal>. The special-purpose 
     <literal>if (nonempty ... )</literal> construct narrows a sequence type
     to an instance of <literal>Sequence</literal>.</para>
     
@@ -465,17 +475,24 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
     
     <programlisting>String[] languages = { "Java", "Python", "Ceylon", "Smalltalk", "ML" };</programlisting>
     
+    <para><emphasis>Comprehensions</emphasis> are an expressive syntax for
+    filtering and transforming streams of values. For example, they may be 
+    used when instantiating a sequence or collection:</para>
+    
+    <programlisting>value adults = { for (p in people) if (p.age>18) p.name };</programlisting>
+    <programlisting>value peopleByName = HashMap { for (p in people) p.name->p };</programlisting>
+        
     </section>
     
     <section id="controlflow">
-    <title>Control flow</title>
+    <title>Control flow and exceptions</title>
     
     <para>
-    Ceylon's built in control flow structures are very similar to the 
-    traditional constructs found in C, C# and Java. However, inline methods 
-    can be used together with a special Smalltalk-style method invocation 
-    protocol to achieve more specialized flow control and other 
-    functional-style constructs such as comprehensions.
+    Ceylon's built in control flow structures look very similar to the 
+    traditional constructs found in C, C# and Java. However, there are
+    some differences. There is no <literal>do/while</literal> loop, or 
+    C-style <literal>for</literal> loop. Furthermore, the syntax and 
+    semantics of Ceylon's <literal>switch</literal> is quite different.
     </para>
     
     <para>
@@ -493,8 +510,9 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
     supported by C and Java. True operator overloading is not supported. 
     However, each operator is defined to act upon a certain class or interface 
     type, allowing application of the operator to any class which extends or 
-    satisfies that type. This approach is called <emphasis>operator 
-    polymorphism</emphasis>.
+    satisfies that type. For example, the <literal>+</literal> operater may be
+    applied to any class that satisfies <literal>Summable</literal> interface. 
+    This approach is called <emphasis>operator polymorphism</emphasis>.
     </para>
     
     </section>
@@ -537,8 +555,7 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
     collections and expressing literal values of user-defined types. The goal 
     of this facility is to replace the use of XML for expressing hierarchical 
     structures such as documents, user interfaces, configuration and serialized 
-    data. An especially important application of this facility is Ceylon's 
-    built-in support for program element annotations.
+    data.
     </para>
     
     <programlisting>Html page {
@@ -552,6 +569,11 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
         } 
     }
 }</programlisting>
+    
+    <para>
+    An especially important application of this facility is Ceylon's 
+    built-in support for program element annotations.
+    </para>
     
     </section>
     
@@ -657,6 +679,7 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
     </section>
     -->
     
+    <!--
     <section id="parsingceylon">
         <title>Parsing and compiling the Ceylon language</title>
         
@@ -687,6 +710,6 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
         and the parser, syntax tree, and type analyzer may be reused separately.</para>
         
     </section>
-    
+    -->
     
 </chapter>
