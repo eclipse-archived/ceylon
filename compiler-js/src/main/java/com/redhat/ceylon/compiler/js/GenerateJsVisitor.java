@@ -1042,8 +1042,8 @@ public class GenerateJsVisitor extends Visitor
                 shareGetter(d);
                 if (d.isVariable()) {
                     String paramVarName = names.createTempVariable(d.getName());
-                    out("var ", names.setter(d), "=function(", paramVarName, "){");
-                    out(varName, "=", paramVarName, "; return ", varName, ";};");
+                    out("var ", names.setter(d), "=function(", paramVarName, "){return ");
+                    out(varName, "=", paramVarName, ";};");
                     endLine();
                     shareSetter(d);
                 }
@@ -1067,7 +1067,7 @@ public class GenerateJsVisitor extends Visitor
                 out(names.self(outer), ".", names.setter(d), "=");
                 out(function, names.setter(d), "(", paramVarName, ")");
                 beginBlock();
-                out("this.", names.name(d), "=", paramVarName, "; return ", paramVarName, ";");
+                out("return this.", names.name(d), "=", paramVarName, ";");
                 endBlock();
             }
         }
@@ -1887,10 +1887,10 @@ public class GenerateJsVisitor extends Visitor
 
             String svar = accessDirectly(lhsDecl)
                     ? names.name(lhsDecl) : (names.getter(lhsDecl)+"()");
-            out("(", lhsPath, names.setter(lhsDecl), "(", lhsPath,
+            out(lhsPath, names.setter(lhsDecl), "(", lhsPath,
                     svar, ".", functionName, "(");
             that.getRightTerm().visit(this);
-            out(")),", lhsPath, svar, ")");
+            out("))");
         } else if (lhs instanceof QualifiedMemberExpression) {
             QualifiedMemberExpression lhsQME = (QualifiedMemberExpression) lhs;
             if (isNative(lhsQME)) {
@@ -1907,15 +1907,14 @@ public class GenerateJsVisitor extends Visitor
                 that.getRightTerm().visit(this);
                 out("))");
             } else {
-                out("(function($1,$2){var $=");
-                out("$1.", names.getter(lhsQME.getDeclaration()), "()");
-                out(".", functionName, "($2);");
-                out("$1.", names.setter(lhsQME.getDeclaration()), "($)");
-                out(";return $}(");
+                String lhsPrimaryVar = createRetainedTempVar();
+                out("(", lhsPrimaryVar, "=");
                 lhsQME.getPrimary().visit(this);
-                out(",");
+                out(",", lhsPrimaryVar, ".", names.setter(lhsQME.getDeclaration()), "(",
+                        lhsPrimaryVar, ".", names.getter(lhsQME.getDeclaration()), "().",
+                        functionName, "(");
                 that.getRightTerm().visit(this);
-                out("))");
+                out(")))");
             }
         }
     }
@@ -2166,13 +2165,11 @@ public class GenerateJsVisitor extends Visitor
                path += '.';
            }
 
-           out("(", path, names.setter(bme.getDeclaration()), "(", path);
+           out(path, names.setter(bme.getDeclaration()), "(", path);
            if (!accessDirectly(bme.getDeclaration())) {
-               String bmeGetter = names.getter(bme.getDeclaration());
-               out(bmeGetter, "().", functionName, "()),", path, bmeGetter, "())");
+               out(names.getter(bme.getDeclaration()), "().", functionName, "())");
            } else {
-               String bmeGetter = names.name(bme.getDeclaration());
-               out(bmeGetter, ".", functionName, "()),", path, bmeGetter, ")");
+               out(names.name(bme.getDeclaration()), ".", functionName, "())");
            }
        } else if (term instanceof QualifiedMemberExpression) {
            QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
