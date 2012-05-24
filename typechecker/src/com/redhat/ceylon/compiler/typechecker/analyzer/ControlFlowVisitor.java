@@ -208,6 +208,12 @@ public class ControlFlowVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.Block that) {
+        super.visit(that);
+        that.setDefinitelyReturns(definitelyReturns);
+    }
+    
+    @Override
     public void visit(Tree.Declaration that) {
         Boolean efl = pauseLoop();
         super.visit(that);

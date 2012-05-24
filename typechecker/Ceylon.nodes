@@ -182,7 +182,8 @@
                RETURN THROW CONTINUE BREAK))
 
 "A method or attribute body containing statements and declarations."
-^(BLOCK:BODY)
+^(BLOCK:BODY
+    boolean definitelyReturns;)
 
 "A class body."
 ^(CLASS_BODY:BODY)
