@@ -1,17 +1,13 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.js.JsCompiler;
-import com.redhat.ceylon.compiler.js.JsModuleCompiler;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -24,24 +20,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
  */
 public class MainForJsTest {
     
-    private static final class JsTestCompiler extends JsModuleCompiler {
-
-        private JsTestCompiler(TypeChecker tc, Options options) {
-            super(tc, options);
-        }
-
-        @Override
-        protected Writer getModuleWriter(PhasedUnit pu) throws IOException {
-            Package pkg = pu.getPackage();
-            File file = new File("build/test/node_modules", toOutputPath(pkg));
-            file.getParentFile().mkdirs();
-            if (file.exists()) file.delete();
-            file.createNewFile();
-            return new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
-        }
-
-    }
-
     static boolean opt = false;
 
     public static void main(String[] args) throws Exception {
@@ -61,8 +39,8 @@ public class MainForJsTest {
         if (typeChecker.getErrors() > 0) {
             System.exit(1);
         }
-        Options opts = Options.parse(new ArrayList<String>(Arrays.asList(opt ? "-optimize" : "")));
-        JsCompiler jsc = new JsTestCompiler(typeChecker, opts).stopOnErrors(false);
+        Options opts = Options.parse(new ArrayList<String>(Arrays.asList(opt ? "-optimize" : "", "-out", "build/test/node_modules")));
+        JsCompiler jsc = new JsCompiler(typeChecker, opts).stopOnErrors(false);
         if (jsc.generate()) {
             validateOutput(typeChecker);
         } else {
