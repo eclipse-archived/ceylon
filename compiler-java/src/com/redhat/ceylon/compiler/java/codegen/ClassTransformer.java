@@ -817,6 +817,7 @@ public class ClassTransformer extends AbstractTransformer {
         copyTypeParameters(model, methodBuilder);
         
         for (Tree.Parameter param : paramList.getParameters()) {
+            
             methodBuilder.parameter(param);
             DefaultArgument defaultArgument = param.getDefaultArgument();
                 
@@ -963,7 +964,7 @@ public class ClassTransformer extends AbstractTransformer {
             InvocationBuilder specifierBuilder = InvocationBuilder.forSpecifierInvocation(gen(), specifierExpression, methodDecl.getDeclarationModel());
             bodyExpr = specifierBuilder.build();
         }
-        if (Decl.isLittleVoid(model)) {
+        if (Decl.isUnboxedVoid(model)) {
             body = List.<JCStatement>of(make().Exec(bodyExpr));
         } else {
             body = List.<JCStatement>of(make().Return(bodyExpr));
