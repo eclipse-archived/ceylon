@@ -38,6 +38,7 @@ public class GenerateJsVisitor extends Visitor
     private final EnclosingFunctionVisitor encloser = new EnclosingFunctionVisitor();
     private final JsIdentifierNames names;
     private final Set<Declaration> directAccess = new HashSet<Declaration>();
+    private final List<String> retainedTempVars = new ArrayList<String>();
 
     private final class SuperVisitor extends Visitor {
         private final List<Declaration> decs;
@@ -219,8 +220,23 @@ public class GenerateJsVisitor extends Visitor
         for (int i=0; i<statements.size(); i++) {
             Statement s = statements.get(i);
             s.visit(this);
-            if ((endLastLine || (i<statements.size()-1)) &&
-                        s instanceof ExecutableStatement) {
+
+            boolean needNewline = s instanceof ExecutableStatement;
+            if (!retainedTempVars.isEmpty()) {
+                if (needNewline) { endLine(); }
+                needNewline = true;
+                out("var ");
+                boolean first = true;
+                for (String varName : retainedTempVars) {
+                    if (!first) { out(","); }
+                    first = false;
+                    out(varName);
+                }
+                out(";");
+                retainedTempVars.clear();
+            }
+
+            if (needNewline && (endLastLine || (i<statements.size()-1))) {
                 endLine();
             }
         }
@@ -1548,7 +1564,7 @@ public class GenerateJsVisitor extends Visitor
         }
         out("])");
     }
-
+    
     @Override
     public void visit(SpecifierStatement that) {
         BaseMemberExpression bme = (Tree.BaseMemberExpression) that.getBaseMemberExpression();
@@ -1680,6 +1696,20 @@ public class GenerateJsVisitor extends Visitor
     public void visit(ExecutableStatement that) {
         super.visit(that);
         out(";");
+    }
+    
+    /* Creates a new temporary variable which can be used immediately, even
+     * inside an expression. The declaration for that temporary variable will be
+     * emitted after the current Ceylon statement has been completely processed.
+     * The resulting code is valid because JavaScript variables may be used before
+     * they are declared. */
+    private String createRetainedTempVar(String baseName) {
+        String varName = names.createTempVariable(baseName);
+        retainedTempVars.add(varName);
+        return varName;
+    }
+    private String createRetainedTempVar() {
+        return createRetainedTempVar("tmp");
     }
 
 //    @Override
@@ -2146,10 +2176,12 @@ public class GenerateJsVisitor extends Visitor
            }
        } else if (term instanceof QualifiedMemberExpression) {
            QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
-           out("function($){var $2=$.", names.getter(qme.getDeclaration()), "().",
-               functionName, "();$.", names.setter(qme.getDeclaration()), "($2);return $2}(");
+           String primaryVar = createRetainedTempVar();
+           out("(", primaryVar, "=");
            qme.getPrimary().visit(this);
-           out(")");
+           out(",", primaryVar, ".", names.setter(qme.getDeclaration()), "(",
+                   primaryVar, ".", names.getter(qme.getDeclaration()), "().",
+                   functionName, "()))");
        }
    }
 
@@ -2169,19 +2201,28 @@ public class GenerateJsVisitor extends Visitor
                path += '.';
            }
 
-           out("(function($){", path, names.setter(bme.getDeclaration()), "($.", functionName,
-               "());return $}(", path);
+           String oldValueVar = createRetainedTempVar("old" + bme.getDeclaration().getName());
+           out("(", oldValueVar, "=", path);
            if (!accessDirectly(bme.getDeclaration())) {
-               out(names.getter(bme.getDeclaration()), "()))");
+               out(names.getter(bme.getDeclaration()), "()");
            } else {
-               out(names.name(bme.getDeclaration()), "))");
+               out(names.name(bme.getDeclaration()));
            }
+           out(",", path, names.setter(bme.getDeclaration()), "(",
+                   oldValueVar, ".", functionName, "()),",
+                   oldValueVar, ")");
+           
        } else if (term instanceof QualifiedMemberExpression) {
            QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
-           out("function($){var $2=$.", names.getter(qme.getDeclaration()), "();$.",
-                   names.setter(qme.getDeclaration()), "($2.", functionName, "());return $2}(");
+           String primaryVar = createRetainedTempVar();
+           String oldValueVar = createRetainedTempVar("old" + qme.getDeclaration().getName());
+           out("(", primaryVar, "=");
            qme.getPrimary().visit(this);
-           out(")");
+           out(",", oldValueVar, "=",
+                   primaryVar, ".", names.getter(qme.getDeclaration()), "(),",
+                   primaryVar, ".", names.setter(qme.getDeclaration()), "(",
+                   oldValueVar, ".", functionName, "()),",
+                   oldValueVar, ")");
        }
    }
 
