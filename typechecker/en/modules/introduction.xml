@@ -45,6 +45,8 @@
     as a replacement for the Java platform class libraries.
     </para>
     
+    </section>
+    
     <section id="thetypesystem">
     <title>The type system</title>
     
@@ -609,8 +611,6 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
     express block-local, package-private, module-private, and public visibility 
     for program elements. There's no equivalent to Java's <literal>protected</literal>.
     </para>
-    
-    </section>
     
     </section>
     
