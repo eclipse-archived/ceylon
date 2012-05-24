@@ -82,6 +82,10 @@ public class StructureTest2 extends CompilerTest {
         compareWithJavaSource("type/Bottom");
     }
     @Test
+    public void testTypGenericBottom(){
+        compareWithJavaSource("type/GenericBottom");
+    }
+    @Test
     public void testTypConversions(){
         compareWithJavaSource("type/Conversions");
     }
