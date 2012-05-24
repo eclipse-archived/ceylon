@@ -23,6 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.NamedArgumentList;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
@@ -504,27 +505,30 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.Parameter that) {
         super.visit(that);
-        Tree.SpecifierExpression se = that.getDefaultArgument()==null ?
-                null :
-                that.getDefaultArgument().getSpecifierExpression();
-       if (se!=null) {
-            if (declaration.isActual()) {
-                se.addError("parameter of actual declaration may not define default value: parameter " +
-                        name(that.getIdentifier()) + " of " + declaration.getName());
-            }
-            /*if (declaration instanceof Method &&
+        if (that.getDefaultArgument()!=null) {
+            Tree.SpecifierExpression se = that.getDefaultArgument().getSpecifierExpression();
+            if (se!=null) {
+                if (declaration.isActual()) {
+                    se.addError("parameter of actual declaration may not define default value: parameter " +
+                            name(that.getIdentifier()) + " of " + declaration.getName());
+                }
+                if (that.getDeclarationModel().getDeclaration() instanceof Parameter) {
+                    se.addError("parameter of callable parameter may not have default argument");
+                }
+                /*if (declaration instanceof Method &&
                     !declaration.isToplevel() &&
                     !(declaration.isClassOrInterfaceMember() && 
                             ((Declaration) declaration.getContainer()).isToplevel())) {
-                se.addWarning("default arguments for parameters of inner methods not yet supported");
+                    se.addWarning("default arguments for parameters of inner methods not yet supported");
+                }
+                if (declaration instanceof Class && 
+                        !declaration.isToplevel()) {
+                    se.addWarning("default arguments for parameters of inner classes not yet supported");
+                }*/
+                    /*else {
+                    se.addWarning("parameter default values are not yet supported");
+                }*/
             }
-            if (declaration instanceof Class && 
-                    !declaration.isToplevel()) {
-                se.addWarning("default arguments for parameters of inner classes not yet supported");
-            }*/
-            /*else {
-                se.addWarning("parameter default values are not yet supported");
-            }*/
         }
     }
     

@@ -28,6 +28,8 @@ class Parameters() {
     void broken5<T>(@error Entry<T,Unknown> e) {}
     @error broken5("hello"->"goodbye");
     
+    void broken6(void param(@error String paramOfParam="hello")) {}
+    
     class Super() {
     	shared default void greet(String greeting) {}
     }
