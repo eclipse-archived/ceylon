@@ -5,7 +5,12 @@ abstract class SelfType<T extends .com.redhat.ceylon.compiler.java.test.expressi
     public abstract long compareTo(final T other);
     
     public final long reverseCompareTo(final T other) {
-        return ((T)other).compareTo((T)this);
+        return other.compareTo((T)this);
+    }
+    
+    public final T self() {
+        final T x = (T)this;
+        return (T)this;
     }
     
     SelfType() {
