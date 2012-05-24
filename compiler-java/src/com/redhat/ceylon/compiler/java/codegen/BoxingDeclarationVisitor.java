@@ -126,7 +126,7 @@ public class BoxingDeclarationVisitor extends Visitor {
                 setBoxingState(refinedDeclaration, refinedDeclaration);
             // inherit
             declaration.setUnboxed(refinedDeclaration.getUnboxed());
-        }else if((transformer.isCeylonBasicType(type) || Decl.isLittleVoid(declaration))
+        }else if((transformer.isCeylonBasicType(type) || Decl.isUnboxedVoid(declaration))
            && !(refinedDeclaration.getTypeDeclaration() instanceof TypeParameter)){
             declaration.setUnboxed(true);
         }else

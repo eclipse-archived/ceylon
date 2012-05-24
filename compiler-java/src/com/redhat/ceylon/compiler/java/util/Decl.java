@@ -311,7 +311,7 @@ public class Decl {
             && ((Tree.MethodDeclaration)def).getSpecifierExpression() == null;
     }
 
-    public static boolean isLittleVoid(Declaration decl) {
+    public static boolean isUnboxedVoid(Declaration decl) {
         return (decl instanceof Method)
                 && ((Method)decl).isDeclaredVoid();
     }

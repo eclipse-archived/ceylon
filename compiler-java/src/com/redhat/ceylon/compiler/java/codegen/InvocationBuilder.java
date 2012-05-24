@@ -1042,7 +1042,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         JCExpression resultExpr = super.transformInvocation(primaryExpr, selector);
         // apply the default parameters
         if (vars != null && !vars.isEmpty()) {
-            if (returnType == null || Decl.isLittleVoid(primaryDeclaration)) {
+            if (returnType == null || Decl.isUnboxedVoid(primaryDeclaration)) {
                 // void methods get wrapped like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1); null)
                 resultExpr = gen.make().LetExpr( 
                         vars.append(gen.make().Exec(resultExpr)).toList(), 

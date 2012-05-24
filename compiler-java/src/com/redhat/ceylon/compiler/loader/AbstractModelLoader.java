@@ -1242,7 +1242,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         boolean unboxed = false;
         if(type.isPrimitive() || type.getKind() == TypeKind.ARRAY
                 || sameType(type, STRING_TYPE)
-                || Decl.isLittleVoid(decl)) {
+                || Decl.isUnboxedVoid(decl)) {
             unboxed = true;
         }
         decl.setUnboxed(unboxed);
