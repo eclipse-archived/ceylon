@@ -102,26 +102,18 @@ public class JsCompiler {
     /** Compile all the phased units in the typechecker.
      * @return true is compilation was successful (0 errors/warnings), false otherwise. */
     public boolean generate() throws IOException {
-        boolean modDone = false;
         errors.clear();
         try {
             JsIdentifierNames names = new JsIdentifierNames(opts.isOptimize());
             for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
                 String name = pu.getUnitFile().getName();
                 if (!"module.ceylon".equals(name) && !"package.ceylon".equals(name)) {
-                    if (opts.isModulify() && !modDone) {
-                        beginWrapper(getWriter(pu));
-                        modDone = true;
-                    }
                     compileUnit(pu, names);
                     if (stopOnError()) {
                         System.err.println("Errors found. Compilation stopped.");
                         break;
                     }
                 }
-            }
-            if (opts.isModulify()) {
-                endWrapper(getWriter(tc.getPhasedUnits().getPhasedUnits().get(tc.getPhasedUnits().getPhasedUnits().size()-1)));
             }
         } finally {
             finish();
@@ -145,12 +137,18 @@ public class JsCompiler {
             file.createNewFile();
             writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
             output.put(pkg, writer);
+            if (opts.isModulify()) {
+                beginWrapper(writer);
+            }
         }
         return writer;
     }
     
     protected void finish() throws IOException {
         for (Writer writer: output.values()) {
+            if (opts.isModulify()) {
+                endWrapper(writer);
+            }
             writer.flush();
             writer.close();
         }
