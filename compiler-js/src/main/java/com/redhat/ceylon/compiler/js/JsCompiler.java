@@ -1,12 +1,16 @@
 package com.redhat.ceylon.compiler.js;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -14,6 +18,7 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.AnalysisMessage;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -26,11 +31,12 @@ public class JsCompiler {
 
     private boolean stopOnErrors = true;
     private int errCount = 0;
-    private Writer systemOut = new OutputStreamWriter(System.out);
+    protected File root;
 
     protected List<Message> errors = new ArrayList<Message>();
     protected List<Message> unitErrors = new ArrayList<Message>();
-    
+    private final Map<Package, Writer> output = new HashMap<Package, Writer>();
+
     private final Visitor unitVisitor = new Visitor() {
         @Override
         public void visitAny(Node that) {
@@ -44,6 +50,16 @@ public class JsCompiler {
     public JsCompiler(TypeChecker tc, Options options) {
         this.tc = tc;
         opts = options;
+        root = new File(options.getOutDir());
+        if (root.exists()) {
+            if (!(root.isDirectory() && root.canWrite())) {
+                System.err.printf("Cannot write to %s. Stop.%n", root);
+            }
+        } else {
+            if (!root.mkdirs()) {
+                System.err.printf("Cannot create %s. Stop.%n", root);
+            }
+        }
     }
 
     /** Specifies whether the compiler should stop when errors are found in a compilation unit (default true). */
@@ -114,11 +130,32 @@ public class JsCompiler {
     }
 
     protected Writer getWriter(PhasedUnit pu) throws IOException {
-        return systemOut;
+        Package pkg = pu.getPackage();
+        Writer writer = output.get(pkg);
+        if (writer==null) {
+            String pkgName = pkg.getNameAsString();
+            if (pkgName.isEmpty()) pkgName = "default";
+            String path = String.format("%s%s/%s.js",
+                pkg.getModule().getNameAsString().replace('.', '/'),
+                (pkg.getModule().isDefault() ? "" : "/" + pkg.getModule().getVersion() ),
+                pkgName);
+            File file = new File(root, path);
+            file.getParentFile().mkdirs();
+            if (file.exists()) file.delete();
+            file.createNewFile();
+            writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
+            beginWrapper(writer);
+            output.put(pkg, writer);
+        }
+        return writer;
     }
     
     protected void finish() throws IOException {
-        systemOut.flush();
+        for (Writer writer: output.values()) {
+            endWrapper(writer);
+            writer.flush();
+            writer.close();
+        }
     }
 
     /** Print all the errors found during compilation to the specified stream. */
