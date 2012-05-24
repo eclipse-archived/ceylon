@@ -223,8 +223,8 @@ public class InteropTest extends CompilerTest {
     public void testIopOverrideStaticMethods(){
         compile("JavaWithStaticMembers.java");
         assertErrors("OverrideStaticMethods",
-                new CompilerError(26, "member refines a non-default, non-formal member"),
-                new CompilerError(28, "member refines a non-default, non-formal member")
+                new CompilerError(26, "member refines a non-default, non-formal member: topMethod in JavaWithStaticMembers"),
+                new CompilerError(28, "member refines a non-default, non-formal member: topField in JavaWithStaticMembers")
         );
     }
 }
