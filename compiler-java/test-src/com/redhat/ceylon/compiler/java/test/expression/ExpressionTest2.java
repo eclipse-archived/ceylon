@@ -212,6 +212,7 @@ public class ExpressionTest2 extends CompilerTest {
     }
     
     @Test
+    @Ignore("M5??: #512: Not supported at the moment")
     public void testCallableArgumentWithDefaultedArguments(){
         compareWithJavaSource("invoke/CallableArgumentWithDefaulted");
         // Note we want to run it as well, because one of the problems 
