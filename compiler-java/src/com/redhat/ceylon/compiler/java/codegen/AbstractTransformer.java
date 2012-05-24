@@ -599,6 +599,7 @@ public abstract class AbstractTransformer implements Transformation {
         return (sameType(syms().ceylonVoidType, type) || sameType(syms().ceylonObjectType, type)
                 || sameType(syms().ceylonNothingType, type)
                 || sameType(syms().ceylonIdentifiableObjectType, type)
+                || sameType(syms().ceylonIdentifiableType, type)
                 || type.getDeclaration() instanceof BottomType
                 || typeFact().isUnion(type)|| typeFact().isIntersection(type));
     }
