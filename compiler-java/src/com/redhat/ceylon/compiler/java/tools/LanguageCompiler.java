@@ -237,8 +237,12 @@ public class LanguageCompiler extends JavaCompiler {
                     phasedUnit = new CeylonPhasedUnit(existingPhasedUnit, filename, map);
                     phasedUnits.addPhasedUnit(existingPhasedUnit.getUnitFile(), phasedUnit);
                     gen.setMap(map);
-
-                    return gen.makeJCCompilationUnitPlaceholder(phasedUnit.getCompilationUnit(), filename, phasedUnit.getPackage().getQualifiedNameString(), phasedUnit);
+                    
+                    String pkgName = phasedUnit.getPackage().getQualifiedNameString();
+                    if ("".equals(pkgName)) {
+                        pkgName = null;
+                    }
+                    return gen.makeJCCompilationUnitPlaceholder(phasedUnit.getCompilationUnit(), filename, pkgName, phasedUnit);
                 }
             }
             if (phasedUnit == null) {
