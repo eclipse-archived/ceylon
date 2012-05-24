@@ -39,7 +39,7 @@ public class MainForJsTest {
         if (typeChecker.getErrors() > 0) {
             System.exit(1);
         }
-        Options opts = Options.parse(new ArrayList<String>(Arrays.asList(opt ? "-optimize" : "", "-out", "build/test/node_modules")));
+        Options opts = Options.parse(new ArrayList<String>(Arrays.asList(opt ? "-optimize" : "", "-out", "build/test/node_modules", "-module")));
         JsCompiler jsc = new JsCompiler(typeChecker, opts).stopOnErrors(false);
         if (jsc.generate()) {
             validateOutput(typeChecker);
