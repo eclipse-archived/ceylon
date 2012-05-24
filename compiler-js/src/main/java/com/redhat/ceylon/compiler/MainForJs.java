@@ -124,8 +124,17 @@ public class MainForJs {
             t0=System.nanoTime();
             TypeCheckerBuilder tcb = new TypeCheckerBuilder()
                 .verbose(opts.isVerbose());
+            final File root = new File(opts.getSrcDir());
+            final String path = root.getAbsolutePath();
+            tcb.addSrcDirectory(root);
             for (String filedir : args) {
-                tcb.addSrcDirectory(new File(filedir));
+                File f = new File(filedir);
+                if (!f.getAbsolutePath().startsWith(path)) {
+                    while (!f.isDirectory()) {
+                        f = f.getParentFile();
+                    }
+                    tcb.addSrcDirectory(f);
+                }
             }
             typeChecker = tcb.getTypeChecker();
             t1=System.nanoTime();

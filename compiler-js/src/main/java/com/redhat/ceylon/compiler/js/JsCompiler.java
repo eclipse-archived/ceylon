@@ -135,16 +135,15 @@ public class JsCompiler {
         if (writer==null) {
             String pkgName = pkg.getNameAsString();
             if (pkgName.isEmpty()) pkgName = "default";
-            String path = String.format("%s%s/%s.js",
+            String path = String.format("%s%s/%s%s.js",
                 pkg.getModule().getNameAsString().replace('.', '/'),
                 (pkg.getModule().isDefault() ? "" : "/" + pkg.getModule().getVersion() ),
-                pkgName);
+                pkgName, (pkg.getModule().isDefault() ? "" : "-" + pkg.getModule().getVersion() ));
             File file = new File(root, path);
             file.getParentFile().mkdirs();
             if (file.exists()) file.delete();
             file.createNewFile();
             writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
-            beginWrapper(writer);
             output.put(pkg, writer);
         }
         return writer;
@@ -152,7 +151,6 @@ public class JsCompiler {
     
     protected void finish() throws IOException {
         for (Writer writer: output.values()) {
-            endWrapper(writer);
             writer.flush();
             writer.close();
         }
