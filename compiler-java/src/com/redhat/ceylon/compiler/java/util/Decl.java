@@ -315,4 +315,8 @@ public class Decl {
         return (decl instanceof Method)
                 && ((Method)decl).isDeclaredVoid();
     }
+    
+    public static boolean isMpl(Method decl) {
+        return decl.getParameterLists().size() > 1;
+    }
 }

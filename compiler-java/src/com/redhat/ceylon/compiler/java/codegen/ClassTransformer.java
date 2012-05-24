@@ -972,7 +972,14 @@ public class ClassTransformer extends AbstractTransformer {
             Scope container = model.getContainer();
             boolean isInterface = container instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
             if(!isInterface){
-                body = statementGen().transform(((Tree.MethodDefinition)def).getBlock()).getStatements();
+                boolean prevNoExpressionlessReturn = statementGen().noExpressionlessReturn;
+                try {
+                    statementGen().noExpressionlessReturn = Decl.isMpl(model);
+                
+                    body = statementGen().transform(((Tree.MethodDefinition)def).getBlock()).getStatements();
+                } finally {
+                    statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
+                }
             }
         } else if (def instanceof MethodDeclaration
                 && ((MethodDeclaration) def).getSpecifierExpression() != null) {

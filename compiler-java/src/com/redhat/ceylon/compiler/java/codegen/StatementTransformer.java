@@ -72,6 +72,13 @@ public class StatementTransformer extends AbstractTransformer {
     // Is null if we're currently in a while-loop or not in any loop at all
     private Name currentForFailVariable = null;
     
+    /**
+     * If false generating plain {@code return;} statements is OK.
+     * If true then generate {@code return null;} statements instead of 
+     * expressionless {@code return;}.
+     */
+    boolean noExpressionlessReturn = false;
+    
     public static StatementTransformer getInstance(Context context) {
         StatementTransformer trans = context.get(StatementTransformer.class);
         if (trans == null) {
@@ -415,14 +422,22 @@ public class StatementTransformer extends AbstractTransformer {
         JCExpression returnExpr = null;
         at(ret);
         if (expr != null) {
-            // we can cast to TypedDeclaration here because return with expressions are only in Method or Value
-            TypedDeclaration declaration = (TypedDeclaration)ret.getDeclaration();
-            // make sure we use the best declaration for boxing and type
-            TypedDeclaration nonWideningTypeDeclaration = nonWideningTypeDecl(declaration);
-            ProducedType nonWideningType = nonWideningType(declaration, nonWideningTypeDeclaration);
-            returnExpr = expressionGen().transformExpression(expr.getTerm(), 
-                    Util.getBoxingStrategy(nonWideningTypeDeclaration),
-                    nonWideningType);
+            boolean prevNoExpressionlessReturn = noExpressionlessReturn;
+            try {
+                noExpressionlessReturn = false;
+                // we can cast to TypedDeclaration here because return with expressions are only in Method or Value
+                TypedDeclaration declaration = (TypedDeclaration)ret.getDeclaration();
+                // make sure we use the best declaration for boxing and type
+                TypedDeclaration nonWideningTypeDeclaration = nonWideningTypeDecl(declaration);
+                ProducedType nonWideningType = nonWideningType(declaration, nonWideningTypeDeclaration);
+                returnExpr = expressionGen().transformExpression(expr.getTerm(), 
+                        Util.getBoxingStrategy(nonWideningTypeDeclaration),
+                        nonWideningType);
+            } finally {
+                noExpressionlessReturn = prevNoExpressionlessReturn;
+            }
+        } else if (noExpressionlessReturn) {
+            returnExpr = makeNull();
         }
         return at(ret).Return(returnExpr);
     }

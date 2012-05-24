@@ -879,10 +879,18 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 // TODO MPL
                 Method model = methodArg.getDeclarationModel();
                 ProducedType callableType = gen.typeFact().getCallableType(model.getType());
-                List<JCStatement> body = gen.statementGen().transform(methodArg.getBlock()).getStatements();
-                if (gen.isVoid(model.getType())) {
-                    body = gen.addReturnNull(body);
+                List<JCStatement> body;
+                boolean prevNoExpressionlessReturn = gen.statementGen().noExpressionlessReturn;
+                try {
+                    gen.statementGen().noExpressionlessReturn = gen.isVoid(model.getType());
+                    body = gen.statementGen().transform(methodArg.getBlock()).getStatements();
+                    if (gen.isVoid(model.getType())) {
+                        body = gen.addReturnNull(body);
+                    }
+                } finally {
+                    gen.statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
                 }
+                
                 CallableBuilder callableBuilder = CallableBuilder.methodArgument(gen.gen(), 
                         callableType, 
                         model.getParameterLists().get(0), 
