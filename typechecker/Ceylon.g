@@ -1539,7 +1539,7 @@ functionOrExpression returns [Expression expression]
         FUNCTION_MODIFIER 
         { fa.setType(new FunctionModifier($FUNCTION_MODIFIER)); }
       | VOID_MODIFIER
-         { fa.setType(new FunctionModifier($VOID_MODIFIER)); }
+         { fa.setType(new VoidModifier($VOID_MODIFIER)); }
       )?
       p1=parameters
       { fa.addParameterList($p1.parameterList); }

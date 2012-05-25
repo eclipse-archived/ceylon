@@ -551,7 +551,7 @@ argument list."
     Parameter parameter;)
     
 ^(FUNCTION_ARGUMENT: TERM
-    LOCAL_MODIFIER type
+    TYPE type
     PARAMETER_LIST*
     EXPRESSION
     Method declarationModel;)

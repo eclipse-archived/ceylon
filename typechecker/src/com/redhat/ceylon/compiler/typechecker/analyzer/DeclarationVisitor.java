@@ -357,6 +357,7 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
         checkMethodArgumentParameters(that);
+        m.setDeclaredVoid(that.getType() instanceof Tree.VoidModifier);
     }
 
     @Override
@@ -370,6 +371,7 @@ public class DeclarationVisitor extends Visitor {
         endDeclaration(d);
         exitScope(o);
         checkFunctionArgumentParameters(that);
+        m.setDeclaredVoid(that.getType() instanceof Tree.VoidModifier);
         //that.addWarning("inline functions not yet supported");
     }
 

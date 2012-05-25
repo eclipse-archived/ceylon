@@ -551,6 +551,7 @@ public class ExpressionVisitor extends Visitor {
         m.setUnit(unit);
         m.setContainer(c);
         m.setShortcutRefinement(true);
+        m.setDeclaredVoid(sm.isDeclaredVoid());
         DeclarationVisitor.setVisibleScope(m);
         c.getMembers().add(m);
         bme.setDeclaration(m);
