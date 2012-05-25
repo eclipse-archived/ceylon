@@ -53,10 +53,7 @@ final class indirectTypeParam {
                     
                     @.java.lang.Override
                     public .java.lang.Object $call() {
-                        if (true) {
-                            throw new .ceylon.language.Exception(null, null);
-                        }
-                        return null;
+                        throw new .ceylon.language.Exception(null, null);
                     }
                 };
             }
@@ -73,10 +70,7 @@ final class indirectTypeParam {
                     
                     @.java.lang.Override
                     public .java.lang.Object $call() {
-                        if (true) {
-                            return mpl.<.ceylon.language.Integer>mpl(i);
-                        }
-                        return null;
+                        return mpl.<.ceylon.language.Integer>mpl(i);
                     }
                 };
             }

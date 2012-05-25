@@ -17,9 +17,7 @@ final class twoParamListsVoid {
                     
                     @.java.lang.Override
                     public .java.lang.Object $call() {
-                        if (true) {
-                            .ceylon.language.print.print(s);
-                        }
+                        .ceylon.language.print.print(s);
                         return null;
                     }
                 };
@@ -37,16 +35,13 @@ final class twoParamListsVoid {
                     
                     @.java.lang.Override
                     public .java.lang.Object $call() {
-                        if (true) {
-                            return (
-                                let
-                                {
-                                    .ceylon.language.print.print(s);
-                                }
-                                returning null;
-                            );
-                        }
-                        return null;
+                        return (
+                            let
+                            {
+                                .ceylon.language.print.print(s);
+                            }
+                            returning null;
+                        );
                     }
                 };
             }
