@@ -53,6 +53,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -174,7 +175,8 @@ public class ExpressionVisitor extends Visitor {
                 initOriginalDeclaration(v);
                 //this is a bit ugly (the parser sends us a SyntheticVariable
                 //instead of the real StaticType which it very well knows!)
-                knownType = se.getExpression().getTypeModel();
+                Expression e = se.getExpression();
+                knownType = e==null ? null : e.getTypeModel();
                 if (knownType!=null && knownType.isSubtypeOf(type)) {
                     that.addError("does not narrow type: " + knownType.getProducedTypeName() + 
                             " is a subtype of " + type.getProducedTypeName());
