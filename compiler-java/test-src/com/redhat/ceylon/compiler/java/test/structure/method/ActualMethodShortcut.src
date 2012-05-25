@@ -8,6 +8,8 @@ abstract class ActualMethodShortcut {
     
     public abstract void foo(final .java.lang.String s);
     
+    public abstract .java.lang.String foo2(final .java.lang.String s);
+    
     ActualMethodShortcut() {
     }
 }
@@ -26,6 +28,11 @@ class ActualMethodShortcutSub extends .com.redhat.ceylon.compiler.java.test.stru
     @.java.lang.Override
     public final void foo(final .java.lang.String s) {
         .ceylon.language.print.print(.ceylon.language.String.instance(s));
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String foo2(final .java.lang.String s) {
+        return s.toString();
     }
     
     ActualMethodShortcutSub() {
