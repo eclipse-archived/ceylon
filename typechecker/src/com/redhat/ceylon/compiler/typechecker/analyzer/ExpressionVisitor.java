@@ -796,21 +796,25 @@ public class ExpressionVisitor extends Visitor {
         if (c!=null) {
             //that.getTypeSpecifier().getType().get
             ProducedType at = alias.getExtendedType();
-            int cps = c.getParameterList().getParameters().size();
-            int aps = alias.getParameterList().getParameters().size();
-            if (cps!=aps) {
-                that.addError("wrong number of initializer parameters declared by class alias: " + 
-                        alias.getName());
-            }
-            for (int i=0; i<(cps<=aps ? cps : aps); i++) {
-                Parameter ap = alias.getParameterList().getParameters().get(i);
-                Parameter cp = c.getParameterList().getParameters().get(i);
-                ProducedType pt = at.getTypedParameter(cp).getType();
-                ap.setAliasedParameter(cp);
-                //TODO: properly check type of functional parameters!!
-                checkAssignable(ap.getType(), pt, that, "alias parameter " + 
-                        ap.getName() + " must be assignable to corresponding class parameter " +
-                        cp.getName());
+            ParameterList pl = c.getParameterList();
+            ParameterList apl = alias.getParameterList();
+            if (pl!=null&&apl!=null) {
+                int cps = pl.getParameters().size();
+                int aps = apl.getParameters().size();
+                if (cps!=aps) {
+                    that.addError("wrong number of initializer parameters declared by class alias: " + 
+                            alias.getName());
+                }
+                for (int i=0; i<(cps<=aps ? cps : aps); i++) {
+                    Parameter ap = apl.getParameters().get(i);
+                    Parameter cp = pl.getParameters().get(i);
+                    ProducedType pt = at.getTypedParameter(cp).getType();
+                    ap.setAliasedParameter(cp);
+                    //TODO: properly check type of functional parameters!!
+                    checkAssignable(ap.getType(), pt, that, "alias parameter " + 
+                            ap.getName() + " must be assignable to corresponding class parameter " +
+                            cp.getName());
+                }
             }
         }
     }
