@@ -18,7 +18,7 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.AnalysisMessage;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -35,7 +35,7 @@ public class JsCompiler {
 
     protected List<Message> errors = new ArrayList<Message>();
     protected List<Message> unitErrors = new ArrayList<Message>();
-    private final Map<Package, Writer> output = new HashMap<Package, Writer>();
+    private final Map<Module, Writer> output = new HashMap<Module, Writer>();
 
     private final Visitor unitVisitor = new Visitor() {
         @Override
@@ -121,22 +121,23 @@ public class JsCompiler {
         return errCount == 0;
     }
 
+    /** Creates a writer if needed. Right now it's one file per package. */
     protected Writer getWriter(PhasedUnit pu) throws IOException {
-        Package pkg = pu.getPackage();
-        Writer writer = output.get(pkg);
+        Module mod = pu.getPackage().getModule();
+        Writer writer = output.get(mod);
         if (writer==null) {
-            String pkgName = pkg.getNameAsString();
-            if (pkgName.isEmpty()) pkgName = "default";
+            String modname = mod.getNameAsString();
+            if (modname.isEmpty()) modname = "default";
             String path = String.format("%s%s/%s%s.js",
-                pkg.getModule().getNameAsString().replace('.', '/'),
-                (pkg.getModule().isDefault() ? "" : "/" + pkg.getModule().getVersion() ),
-                pkgName, (pkg.getModule().isDefault() ? "" : "-" + pkg.getModule().getVersion() ));
+                modname.replace('.', '/'),
+                (mod.isDefault() ? "" : "/" + mod.getVersion() ),
+                modname, (mod.isDefault() ? "" : "-" + mod.getVersion() ));
             File file = new File(root, path);
             file.getParentFile().mkdirs();
             if (file.exists()) file.delete();
             file.createNewFile();
             writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
-            output.put(pkg, writer);
+            output.put(mod, writer);
             if (opts.isModulify()) {
                 beginWrapper(writer);
             }
