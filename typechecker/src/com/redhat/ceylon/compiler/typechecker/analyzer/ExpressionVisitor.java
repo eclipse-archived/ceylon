@@ -515,7 +515,7 @@ public class ExpressionVisitor extends Visitor {
         /*if (sie!=null) {
             v.setType(sie.getExpression().getTypeModel());
         }*/
-        v.setType(sv.getType());
+        v.setType(getRefinedMember(sv, c).getType());
         v.setShared(true);
         v.setActual(true);
         v.setRefinedDeclaration(v);
@@ -527,6 +527,11 @@ public class ExpressionVisitor extends Visitor {
         bme.setDeclaration(v);
         //bme.setTypeModel(v.getType());
         that.setRefinement(true);
+    }
+
+    private ProducedReference getRefinedMember(MethodOrValue sv, Class c) {
+        return sv.getProducedReference(c.getType().getSupertype((TypeDeclaration)sv.getContainer()), 
+                Collections.<ProducedType>emptyList());
     }
 
     private void refine(Method sm, Tree.BaseMemberExpression bme,
@@ -542,9 +547,24 @@ public class ExpressionVisitor extends Visitor {
         /*if (sie!=null) {
             v.setType(sie.getExpression().getTypeModel());
         }*/
-        m.setType(sm.getType());
-        m.getParameterLists().addAll(sm.getParameterLists()); //TODO:broken!
-        m.getTypeParameters().addAll(sm.getTypeParameters()); //TODO:broken!
+        ProducedReference rm = getRefinedMember(sm, c);
+        m.setType(rm.getType());
+        for (ParameterList pl: sm.getParameterLists()) {
+            ParameterList l = new ParameterList();
+            for (Parameter p: pl.getParameters()) {
+                Parameter vp = new ValueParameter();
+                vp.setSequenced(p.isSequenced());
+                vp.setDefaulted(p.isDefaulted());
+                vp.setName(p.getName());
+                vp.setType(rm.getTypedParameter(p).getFullType());
+                l.getParameters().add(vp);
+            }
+            m.getParameterLists().add(l);
+        }
+        if (!sm.getTypeParameters().isEmpty()) {
+            bme.addError("method has type parameters: " +  
+                    RefinementVisitor.message(sm));
+        }
         m.setShared(true);
         m.setActual(true);
         m.setRefinedDeclaration(m);

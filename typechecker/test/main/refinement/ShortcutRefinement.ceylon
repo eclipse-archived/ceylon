@@ -102,3 +102,27 @@ class OtherBadlyDuped() extends OtherAbstract() {
     @error sqr = sq;
 }
 
+abstract class X<T>() {
+    shared formal void foo(T s);
+    shared formal T bar;
+    shared formal Object baz(String s(Integer i));
+    shared formal String qux<S>();
+    shared formal void fum(String string = "hello");
+    shared formal void fo(String... strings);
+}
+
+class Y() extends X<String>() {
+    foo = void (String s) print(s.uppercased);
+    bar = "hello";
+    baz = (String(Integer) s) s(0);
+    @error qux = () "hello";
+    fum = (String s) print(s);
+    fo = (String... ss) print(", ".join(ss...));
+}
+
+void testxy() {
+	@type["String"] value b = Y().bar;
+	Y().foo("hello");
+	Y().fum();
+	Y().fo("x", "y", "z");
+}
