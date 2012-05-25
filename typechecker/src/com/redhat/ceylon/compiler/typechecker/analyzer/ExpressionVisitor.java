@@ -515,7 +515,7 @@ public class ExpressionVisitor extends Visitor {
         /*if (sie!=null) {
             v.setType(sie.getExpression().getTypeModel());
         }*/
-        v.setType(sv.getType());
+        v.setType(getRefinedMember(sv, c).getType());
         v.setShared(true);
         v.setActual(true);
         v.setRefinedDeclaration(v);
@@ -527,6 +527,11 @@ public class ExpressionVisitor extends Visitor {
         bme.setDeclaration(v);
         //bme.setTypeModel(v.getType());
         that.setRefinement(true);
+    }
+
+    private ProducedReference getRefinedMember(MethodOrValue sv, Class c) {
+        return sv.getProducedReference(c.getType().getSupertype((TypeDeclaration)sv.getContainer()), 
+                Collections.<ProducedType>emptyList());
     }
 
     private void refine(Method sm, Tree.BaseMemberExpression bme,
@@ -542,8 +547,8 @@ public class ExpressionVisitor extends Visitor {
         /*if (sie!=null) {
             v.setType(sie.getExpression().getTypeModel());
         }*/
-        m.setType(sm.getType());
-        m.getParameterLists().addAll(sm.getParameterLists()); //TODO:broken!
+        m.setType(getRefinedMember(sm, c).getType());
+        m.getParameterLists().addAll(sm.getParameterLists()); //TODO:broken - does not do type arg substitution
         m.getTypeParameters().addAll(sm.getTypeParameters()); //TODO:broken!
         m.setShared(true);
         m.setActual(true);
