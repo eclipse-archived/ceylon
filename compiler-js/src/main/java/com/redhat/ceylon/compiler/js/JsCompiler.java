@@ -1,10 +1,10 @@
 package com.redhat.ceylon.compiler.js;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -28,6 +31,7 @@ public class JsCompiler {
     
     protected final TypeChecker tc;
     protected final Options opts;
+    protected final RepositoryManager outRepo;
 
     private boolean stopOnErrors = true;
     private int errCount = 0;
@@ -50,6 +54,7 @@ public class JsCompiler {
     public JsCompiler(TypeChecker tc, Options options) {
         this.tc = tc;
         opts = options;
+        outRepo = com.redhat.ceylon.compiler.java.util.Util.makeOutputRepositoryManager(options.getOutDir(), new JULLogger(), options.getUser(), options.getPass());
         root = new File(options.getOutDir());
         if (root.exists()) {
             if (!(root.isDirectory() && root.canWrite())) {
@@ -126,17 +131,7 @@ public class JsCompiler {
         Module mod = pu.getPackage().getModule();
         Writer writer = output.get(mod);
         if (writer==null) {
-            String modname = mod.getNameAsString();
-            if (modname.isEmpty()) modname = "default";
-            String path = String.format("%s%s/%s%s.js",
-                modname.replace('.', '/'),
-                (mod.isDefault() ? "" : "/" + mod.getVersion() ),
-                modname, (mod.isDefault() ? "" : "-" + mod.getVersion() ));
-            File file = new File(root, path);
-            file.getParentFile().mkdirs();
-            if (file.exists()) file.delete();
-            file.createNewFile();
-            writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
+            writer = new StringWriter();
             output.put(mod, writer);
             if (opts.isModulify()) {
                 beginWrapper(writer);
@@ -146,12 +141,15 @@ public class JsCompiler {
     }
     
     protected void finish() throws IOException {
-        for (Writer writer: output.values()) {
+        for (Map.Entry<Module,Writer> entry: output.entrySet()) {
             if (opts.isModulify()) {
-                endWrapper(writer);
+                endWrapper(entry.getValue());
             }
-            writer.flush();
-            writer.close();
+            String out = ((StringWriter)entry.getValue()).getBuffer().toString();
+            ArtifactContext artifact = new ArtifactContext(entry.getKey().getNameAsString(), entry.getKey().getVersion());
+            artifact.setFetchSingleArtifact(true);
+            artifact.setSuffix(".js");
+            outRepo.putArtifact(artifact, new ByteArrayInputStream(out.getBytes()));
         }
     }
 
