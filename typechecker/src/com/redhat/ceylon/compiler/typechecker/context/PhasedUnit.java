@@ -74,8 +74,8 @@ public class PhasedUnit {
         this.moduleManager = moduleManager;
         this.tokens = tokenStream;
         unit = new Unit();
-        unit.setPackage(pkg);
         unit.setFilename(fileName);
+        unit.setPackage(pkg);
         pkg.removeUnit(unit);
         pkg.addUnit(unit);
         cu.setUnit(unit);
@@ -94,10 +94,10 @@ public class PhasedUnit {
         this.moduleVisitor = other.moduleVisitor;
         this.srcDir = other.srcDir;
         this.declarationsScanned = other.declarationsScanned;
+        this.scanningDeclarations = other.scanningDeclarations;
         this.typeDeclarationsScanned = other.typeDeclarationsScanned;
         this.refinementValidated = other.refinementValidated;
         this.flowAnalyzed = other.flowAnalyzed;
-        this.fullyTyped = other.fullyTyped;
     }
 
     @Deprecated
