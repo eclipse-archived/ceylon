@@ -571,7 +571,7 @@ attributeBody[StaticType type] returns [Node result]
     : 
       (namedArguments)
       => namedArguments //first try to match with no directives or control structures
-      { SpecifierExpression specifier = new SpecifierExpression(null);
+      { SpecifierExpression specifier = new SyntheticSpecifierExpression(null);
         SimpleType t = $type instanceof SimpleType ? (SimpleType) $type : null;
         Expression e = new Expression(null);
         InvocationExpression ie = new InvocationExpression(null);
@@ -598,7 +598,7 @@ methodBody[StaticType type] returns [Block block]
     : 
       (namedArguments)
       => namedArguments //first try to match with no directives or control structures
-      { $block = new Block(null);
+      { $block = new SyntheticBlock(null);
         SimpleType t = $type instanceof SimpleType ? (SimpleType) $type : null;
         Return r = new Return(null);
         Expression e = new Expression(null);

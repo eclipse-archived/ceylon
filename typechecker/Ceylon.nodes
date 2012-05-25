@@ -185,6 +185,8 @@
 ^(BLOCK:BODY
     boolean definitelyReturns;)
 
+^(SYNTHETIC_BLOCK:BLOCK)
+
 "A class body."
 ^(CLASS_BODY:BODY)
 
@@ -692,6 +694,8 @@ argument list."
 
 "An initializer expression."
 ^(INITIALIZER_EXPRESSION:SPECIFIER_OR_INITIALIZER_EXPRESSION)
+
+^(SYNTHETIC_SPECIFIER_EXPRESSION:SPECIFIER_EXPRESSION)
 
 "A member reference, type reference, literal, string template, or parenthesized expression."
 ^(abstract ATOM:PRIMARY)
