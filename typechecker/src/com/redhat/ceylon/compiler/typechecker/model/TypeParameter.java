@@ -122,5 +122,10 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     public Parameter getParameter(String name) {
         return null;
     }
+    
+    @Override
+    public boolean isDeclaredVoid() {
+        return false;
+    }
 
 }

@@ -98,4 +98,9 @@ public class Class extends ClassOrInterface implements Functional {
         this.overloads = overloads;
     }
     
+    @Override
+    public boolean isDeclaredVoid() {
+        return false;
+    }
+    
 }

@@ -552,6 +552,7 @@ public class DeclarationVisitor extends Visitor {
         FunctionalParameter p = new FunctionalParameter();
         p.setDeclaration(declaration);
         p.setDefaulted(that.getDefaultArgument()!=null);
+        p.setDeclaredVoid(that.getType() instanceof Tree.VoidModifier);
         that.setDeclarationModel(p);
         visitDeclaration(that, p);
         Scope o = enterScope(p);
