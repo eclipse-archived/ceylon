@@ -557,6 +557,8 @@ public class ExpressionVisitor extends Visitor {
                 vp.setDefaulted(p.isDefaulted());
                 vp.setName(p.getName());
                 vp.setType(rm.getTypedParameter(p).getFullType());
+                vp.setDeclaration(m);
+                vp.setContainer(m);
                 l.getParameters().add(vp);
             }
             m.getParameterLists().add(l);
