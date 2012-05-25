@@ -8,7 +8,7 @@ import java.util.Set;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 
@@ -131,7 +131,7 @@ public class JsIdentifierNames {
      * Determine the identifier to be used in the generated JavaScript code as
      * an alias for the given package.
      */
-    public String packageAlias(Package pkg) {
+    public String moduleAlias(Module pkg) {
         StringBuilder sb = new StringBuilder("$$$");
         for (String s: pkg.getName()) {
             sb.append(s.substring(0,1));
@@ -195,7 +195,7 @@ public class JsIdentifierNames {
         uniqueVarNames.put(decl, name);
     }
     
-    private Map<Package, Long> packageUIDs = new HashMap<Package, Long>();
+    private Map<Module, Long> moduleUIDs = new HashMap<Module, Long>();
     private Map<Declaration, Long> uniqueVarIDs = new HashMap<Declaration, Long>();
     private Map<Declaration, String> uniqueVarNames =
             new HashMap<Declaration, String>();
@@ -231,11 +231,11 @@ public class JsIdentifierNames {
         return id;
     }
     
-    private long getUID(Package pkg) {
-        Long id = packageUIDs.get(pkg);
+    private long getUID(Module pkg) {
+        Long id = moduleUIDs.get(pkg);
         if (id == null) {
             id = nextUID();
-            packageUIDs.put(pkg, id);
+            moduleUIDs.put(pkg, id);
         }
         return id;
     }
