@@ -1982,23 +1982,4 @@ public abstract class AbstractTransformer implements Transformation {
         }
         return lb.toList();
     }
-    
-    /**
-     * Add a {@code return null;} to the given statements.
-     *   
-     * In Java a Ceylon {@code Callable<Void>} is represented as 
-     * @{code Callable<java.lang.Object>} returning {@code null}. This means 
-     * we have to add a {@code return null;} statement to the transformed block.
-     */
-    List<JCStatement> addReturnNull(List<JCStatement> stmts) {
-        // just appending 'return null' doesn't work because stmts might 
-        // contain a return or throw (i.e. definitely return), thus causing 
-        // an error from javac, so use if(true){...} return null;
-        return List.<JCStatement>of(
-            make().If(make().Literal(Boolean.TRUE), 
-                    make().Block(0, stmts), 
-                    null),
-            make().Return(makeNull()));
-        
-    }
 }

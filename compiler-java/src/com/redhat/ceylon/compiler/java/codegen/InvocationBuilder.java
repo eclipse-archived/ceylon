@@ -884,8 +884,12 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 try {
                     gen.statementGen().noExpressionlessReturn = gen.isVoid(model.getType());
                     body = gen.statementGen().transform(methodArg.getBlock()).getStatements();
-                    if (gen.isVoid(model.getType())) {
-                        body = gen.addReturnNull(body);
+                    if (!methodArg.getBlock().getDefinitelyReturns()) {
+                        if (gen.isVoid(model.getType())) {
+                            body = body.append(gen.make().Return(gen.makeNull()));
+                        } else {
+                            body = body.append(gen.make().Return(gen.makeErroneous(methodArg.getBlock(), "non-void method doesn't definitely return")));
+                        }
                     }
                 } finally {
                     gen.statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;

@@ -61,6 +61,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Block;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
@@ -976,7 +977,18 @@ public class ClassTransformer extends AbstractTransformer {
                 try {
                     statementGen().noExpressionlessReturn = Decl.isMpl(model);
                 
-                    body = statementGen().transform(((Tree.MethodDefinition)def).getBlock()).getStatements();
+                    final Block block = ((Tree.MethodDefinition) def).getBlock();
+                    body = statementGen().transform(block).getStatements();
+                    // We void methods need to have their Callables return null
+                    // so adjust here.
+                    if (Decl.isMpl(model) &&
+                            !block.getDefinitelyReturns()) {
+                        if (Decl.isUnboxedVoid(model)) {
+                            body = body.append(make().Return(makeNull()));
+                        } else {
+                            body = body.append(make().Return(makeErroneous(block, "non-void method doesn't definitely return")));
+                        }
+                    }
                 } finally {
                     statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
                 }
