@@ -548,10 +548,9 @@ public abstract class TypeDeclaration extends Declaration
     
     @Override
     public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
-        Map<String, DeclarationWithProximity> result = getMatchingMemberDeclarations(startingWith, proximity);
-        //TODO: is this correct? I thought inherited declarations hide outer
-        //      declarations! I think this is a bug
-        result.putAll(super.getMatchingDeclarations(unit, startingWith, proximity));
+        Map<String, DeclarationWithProximity> result = super.getMatchingDeclarations(unit, startingWith, proximity);
+        //Inherited declarations hide outer and imported declarations
+        result.putAll(getMatchingMemberDeclarations(startingWith, proximity));
         return result;
     }
 
