@@ -102,3 +102,17 @@ class OtherBadlyDuped() extends OtherAbstract() {
     @error sqr = sq;
 }
 
+abstract class X<T>() {
+    shared formal void foo(T s);
+    shared formal T bar;
+}
+
+class Y() extends X<String>() {
+    foo = void (String s) print(s.uppercased);
+    bar = "hello";
+}
+
+void testxy() {
+	@type["String"] value b = Y().bar;
+	Y().foo("hello");
+}
