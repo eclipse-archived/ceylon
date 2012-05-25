@@ -1220,19 +1220,19 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void generateSafeOp(QualifiedMemberOrTypeExpression that) {
-        if (that.getDeclaration() instanceof Method) {
-            String tmp=names.createTempVariable();
-            out("(function(){var ", tmp, "=");
-            super.visit(that);
-            out("; return ", clAlias, ".JsCallable(", tmp, ",", tmp, "===null?null:", tmp, ".");
-            qualifiedMemberRHS(that);
-            out(");}())");
-        } else {
-            out("(function($){return $===null?null:$.");
-            qualifiedMemberRHS(that);
-            out("}(");
-            super.visit(that);
-            out("))");
+        boolean isMethod = that.getDeclaration() instanceof Method;
+        String lhsVar = createRetainedTempVar("opt");
+        out("(", lhsVar, "=");
+        super.visit(that);
+        out(",");
+        if (isMethod) {
+            out(clAlias, ".JsCallable(", lhsVar, ",");
+        }
+        out(lhsVar, "!==null?", lhsVar, ".");
+        qualifiedMemberRHS(that);
+        out(":null)");
+        if (isMethod) {
+            out(")");
         }
     }
 
