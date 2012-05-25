@@ -32,3 +32,5 @@ shared void results() {
 }
 
 shared Integer assertionCount() { return assertions; }
+
+shared void test() {}
