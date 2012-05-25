@@ -547,9 +547,23 @@ public class ExpressionVisitor extends Visitor {
         /*if (sie!=null) {
             v.setType(sie.getExpression().getTypeModel());
         }*/
-        m.setType(getRefinedMember(sm, c).getType());
-        m.getParameterLists().addAll(sm.getParameterLists()); //TODO:broken - does not do type arg substitution
-        m.getTypeParameters().addAll(sm.getTypeParameters()); //TODO:broken!
+        ProducedReference rm = getRefinedMember(sm, c);
+        m.setType(rm.getType());
+        for (ParameterList pl: sm.getParameterLists()) {
+            ParameterList l = new ParameterList();
+            for (Parameter p: pl.getParameters()) {
+                Parameter vp = new ValueParameter();
+                vp.setSequenced(p.isSequenced());
+                vp.setName(p.getName());
+                vp.setType(rm.getTypedParameter(p).getFullType());
+                l.getParameters().add(vp);
+            }
+            m.getParameterLists().add(l);
+        }
+        if (!sm.getTypeParameters().isEmpty()) {
+            bme.addError("method has type parameters: " +  
+                    RefinementVisitor.message(sm));
+        }
         m.setShared(true);
         m.setActual(true);
         m.setRefinedDeclaration(m);
