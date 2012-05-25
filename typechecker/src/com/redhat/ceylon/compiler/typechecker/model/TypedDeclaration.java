@@ -34,8 +34,8 @@ public abstract class TypedDeclaration extends Declaration {
         return type;
     }
 
-    public void setType(ProducedType type) {
-        this.type = type;
+    public void setType(ProducedType t) {
+        this.type = t;
     }
 
     @Override
