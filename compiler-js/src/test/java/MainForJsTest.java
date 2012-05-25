@@ -5,13 +5,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 
 /**
  * Some hack before a proper unit test harness is put in place
@@ -52,44 +53,45 @@ public class MainForJsTest {
     static void validateOutput(TypeChecker typeChecker)
             throws FileNotFoundException, IOException {
         int count=0;
+        HashSet<Module> tested = new HashSet<Module>();
         for (PhasedUnit pu: typeChecker.getPhasedUnits().getPhasedUnits()) {
-            Package pkg = pu.getPackage();
-            File generated = new File("build/test/node_modules/" + toOutputPath(pkg));
-            File test = new File("src/test/ceylon/"+ toTestPath(pkg));
-            if (test.exists()) {
-                BufferedReader reader = new BufferedReader(new FileReader(test));
-                BufferedReader outputReader = new BufferedReader(new FileReader(generated));
-                int i=0;
-                while (reader.ready() && outputReader.ready()) {
-                    i++;
-                    String actual = outputReader.readLine();
-                    String expected = reader.readLine();
-                    if (!expected.equals(actual) && !expected.trim().startsWith("//")) {
-                        System.err.println("error at " + test.getPath() + ":" + i); 
-                        System.err.println("expected: " + expected);
-                        System.err.println("  actual: " + actual);
-                        break;
+            Module mod = pu.getPackage().getModule();
+            if (!tested.contains(mod)) {
+                File generated = new File("build/test/node_modules/" + toOutputPath(mod));
+                File test = new File("src/test/ceylon/"+ toTestPath(mod));
+                if (test.exists()) {
+                    BufferedReader reader = new BufferedReader(new FileReader(test));
+                    BufferedReader outputReader = new BufferedReader(new FileReader(generated));
+                    int i=0;
+                    while (reader.ready() && outputReader.ready()) {
+                        i++;
+                        String actual = outputReader.readLine();
+                        String expected = reader.readLine();
+                        if (!expected.equals(actual) && !expected.trim().startsWith("//")) {
+                            System.err.println("error at " + test.getPath() + ":" + i); 
+                            System.err.println("expected: " + expected);
+                            System.err.println("  actual: " + actual);
+                            break;
+                        }
                     }
+                    count++;
                 }
-                count++;
+                tested.add(mod);
             }
         }
         System.out.printf("ran %d tests%n", count);
     }
-    
-    private static String toOutputPath(Package pkg) {
-        String pkgName = pkg.getNameAsString();
-        if (pkgName.isEmpty()) pkgName = "default";
-        String modName = pkg.getModule().getNameAsString();
-        return modName.replace('.', '/') +
-                (pkg.getModule().isDefault() ? 
-                        "/" : "/" + pkg.getModule().getVersion() ) +
-                pkgName + ".js";
+
+    private static String toOutputPath(Module mod) {
+        String modname = mod.isDefault() ? "default" : mod.getNameAsString();
+        return modname.replace('.', '/') +
+                (mod.isDefault() ? "/" : "/" + mod.getVersion() ) + "/" +
+                modname + (mod.isDefault() ? "" : "-" + mod.getVersion() ) +
+                ".js";
     }
 
-    private static String toTestPath(Package pkg) {
-        String pkgName = pkg.getNameAsString();
-        if (pkgName.isEmpty()) pkgName = "default";
-        return pkgName.replace('.', '/') + "/" + pkgName + (opt? ".jsopt" : "") + ".js";
+    private static String toTestPath(Module mod) {
+        String modname = mod.isDefault() ? "default" : mod.getNameAsString();
+        return modname.replace('.', '/') + "/" + modname + (opt? ".jsopt" : "") + ".js";
     }
 }

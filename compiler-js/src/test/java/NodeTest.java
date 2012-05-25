@@ -61,41 +61,47 @@ public class NodeTest {
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        File dir = new File(args[0]);
-        if (!(dir.exists() && dir.isDirectory() && dir.canRead())) {
-            System.out.printf("%s is not a readable directory%n", dir);
+        File root = new File(args[0]);
+        if (!(root.exists() && root.isDirectory() && root.canRead())) {
+            System.out.printf("%s is not a readable directory%n", root);
             System.exit(1);
         }
-        for (File jsf : dir.listFiles(new JsExtFilter())) {
-            System.out.printf("RUNNING %s%n", jsf.getName());
-            String nodePath = findNode();
-            if (nodePath == null) {
-                System.err.println("Could not find 'node' executable. Please install node.js and retry.");
-                System.exit(1);
+        for (File subdir : root.listFiles()) {
+            if (subdir.isDirectory() && !(subdir.getName().equals("ceylon"))) {
+                File jsf = subdir.getName().equals("default") ? new File(subdir, "default.js") :
+                    new File(subdir, "0.1/" + subdir.getName() + "-0.1.js");
+                System.out.printf("RUNNING %s%n", jsf.getName());
+                String nodePath = findNode();
+                if (nodePath == null) {
+                    System.err.println("Could not find 'node' executable. Please install node.js and retry.");
+                    System.exit(1);
+                }
+                byte[] b1 = new byte[16834];
+                byte[] b2 = new byte[16834];
+                String path = jsf.getPath();
+                String eval = String.format("require('%s').test();setTimeout(function(){}, 50);",
+                        path.substring(path.indexOf(args[0])));
+                Process proc = new ProcessBuilder(nodePath, "-e", eval).directory(root.getParentFile()).start();
+                ReadStream readOut = new ReadStream(proc.getInputStream(), b1);
+                ReadStream readErr = new ReadStream(proc.getErrorStream(), b2);
+                readOut.start();
+                readErr.start();
+                int xv = proc.waitFor();
+                proc.getInputStream().close();
+                proc.getErrorStream().close();
+                if (xv != 0) {
+                    System.out.printf("ERROR abnormal termination of node: %s%n", xv);
+                }
+                if (readOut.getResult().length() > 0) {
+                    System.out.println(readOut.getResult().trim());
+                }
+                if (readErr.getResult().length() > 0) {
+                    System.out.println();
+                    System.out.println("ERRORS:");
+                    System.out.println(readErr.getResult().trim());
+                }
+                System.out.println("------------------------------------------------------");
             }
-            byte[] b1 = new byte[16834];
-            byte[] b2 = new byte[16834];
-            String eval = String.format("require('%s/%s').test();setTimeout(function(){}, 50);", dir.getName(), jsf.getName());
-            Process proc = new ProcessBuilder(nodePath, "-e", eval).directory(dir.getParentFile()).start();
-            ReadStream readOut = new ReadStream(proc.getInputStream(), b1);
-            ReadStream readErr = new ReadStream(proc.getErrorStream(), b2);
-            readOut.start();
-            readErr.start();
-            int xv = proc.waitFor();
-            proc.getInputStream().close();
-            proc.getErrorStream().close();
-            if (xv != 0) {
-                System.out.printf("ERROR abnormal termination of node: %s%n", xv);
-            }
-            if (readOut.getResult().length() > 0) {
-                System.out.println(readOut.getResult().trim());
-            }
-            if (readErr.getResult().length() > 0) {
-                System.out.println();
-                System.out.println("ERRORS:");
-                System.out.println(readErr.getResult().trim());
-            }
-            System.out.println("------------------------------------------------------");
         }
     }
 }
