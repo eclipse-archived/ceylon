@@ -28,16 +28,14 @@ node : '^' '('
        ')'
      ;
 
-subnode : n=NODE_NAME f=FIELD_NAME ('(' NODE_NAME* ')')?
+subnode : n=NODE_NAME f=FIELD_NAME
           { println("        if (that.get" + initialUpper($f.text) + "()==null)"); }
           { println("            that.addError(\"missing tokens\");"); }
-        | n=NODE_NAME ('(' NODE_NAME* ')')?
+        | n=NODE_NAME
           { println("        if (that.get" + className($n.text) + "()==null)"); }
           { println("            that.addError(\"missing " + description($n.text) + "\");"); }
-        | n=NODE_NAME '?' f=FIELD_NAME ('(' NODE_NAME* ')')?
-        | n=NODE_NAME '?' ('(' NODE_NAME* ')')?
-        | mn=NODE_NAME '*' ('(' NODE_NAME* ')')? 
-        | mn=NODE_NAME '*' f=FIELD_NAME ('(' NODE_NAME* ')')? 
+        | NODE_NAME '?' FIELD_NAME?
+        | NODE_NAME '*' FIELD_NAME?
         ;
 
 field : 'abstract'? (TYPE_NAME|'boolean') FIELD_NAME ';'
