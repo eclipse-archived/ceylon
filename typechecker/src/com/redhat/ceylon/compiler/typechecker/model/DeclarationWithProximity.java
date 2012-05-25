@@ -4,6 +4,18 @@ public class DeclarationWithProximity {
     private Declaration declaration;
     private int proximity;
     private String name;
+    private NamedArgumentList namedArgumentList; 
+    
+    public NamedArgumentList getNamedArgumentList() {
+        return namedArgumentList;
+    }
+    
+    public DeclarationWithProximity(Parameter parameter, NamedArgumentList nal) {
+        this.declaration = parameter;
+        this.proximity = 0;
+        this.name = declaration.getName();
+        this.namedArgumentList = nal;
+    }
     
     public DeclarationWithProximity(Declaration declaration, int proximity) {
         this.declaration = declaration;

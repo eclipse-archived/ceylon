@@ -22,7 +22,7 @@ public class NamedArgumentList extends Element implements Scope {
         if (getParameterList()!=null) {
             for (Parameter p: getParameterList().getParameters()) {
                 if (p.getName().startsWith(startingWith) && !getArgumentNames().contains(p.getName())) {
-                    result.put(p.getName(), new DeclarationWithProximity(p, proximity));
+                    result.put(p.getName(), new DeclarationWithProximity(p, this));
                 }
             }
         }
