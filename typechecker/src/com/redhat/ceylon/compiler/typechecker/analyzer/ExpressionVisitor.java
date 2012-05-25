@@ -1358,8 +1358,8 @@ public class ExpressionVisitor extends Visitor {
                             //TODO: this is very incomplete!
                             List<ProducedType> list = new ArrayList<ProducedType>();
                             list.add(parameter.getType());
-                            for (Parameter p: ((FunctionalParameter) parameter).getParameterLists().get(0)
-                                    .getParameters()) {
+                            for (Parameter p: ((FunctionalParameter) parameter).getParameterLists()
+                                    .get(0).getParameters()) {
                                 list.add(p.getType());
                             }
                             pt = unit.getCallableDeclaration().getProducedType(null, list);
