@@ -26,7 +26,7 @@ public class Options {
     private boolean stdin;
 
     /** Creates and returns an Options object from a command-list argument list. The list itself
-     * is modified, so at the end it only contains files to compile and module names. */
+     * is modified, so at the end it only contains the files to compile. */
     public static Options parse(List<String> args) {
         Options opts = new Options();
         //Review all non-arg options
@@ -92,12 +92,18 @@ public class Options {
                 }
             }
         }
-        if (opts.repos.isEmpty()) {
-            opts.repos.add("modules");
+        //Get the repositories
+        for (Iterator<String> iter = args.iterator(); iter.hasNext();) {
+            String s = iter.next();
+            if (!s.endsWith(".ceylon")) {
+                iter.remove();
+                opts.repos.add(s);
+            }
         }
         return opts;
     }
 
+    /** Returns the list of repositories that were parsed from the command line. */
     public List<String> getRepos() {
         return repos;
     }
