@@ -47,6 +47,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
@@ -477,24 +478,67 @@ public class ClassTransformer extends AbstractTransformer {
         }
     }
 
-    public void transformRefinementSpecifierStatement(SpecifierStatement op, ClassDefinitionBuilder classBuilder) {
+    public List<JCStatement> transformRefinementSpecifierStatement(SpecifierStatement op, ClassDefinitionBuilder classBuilder) {
+        List<JCStatement> result = List.<JCStatement>nil();
         // Check if this is a shortcut form of formal attribute refinement
         if (op.getRefinement()) {
-            // Now build a "fake" declaration for the attribute
             Tree.BaseMemberExpression expr = (Tree.BaseMemberExpression)op.getBaseMemberExpression();
-            Value attr = (Value)expr.getDeclaration();
-            Tree.AttributeDeclaration decl = new Tree.AttributeDeclaration(null);
-            decl.setDeclarationModel(attr);
-            decl.setIdentifier(expr.getIdentifier());
-            decl.setScope(op.getScope());
-
-            // Make sure the boxing information is set correctly
-            BoxingDeclarationVisitor v = new BoxingDeclarationVisitor(this);
-            v.visit(decl);
-            
-            // Generate the attribute
-            transform(decl, classBuilder);
+            Declaration decl = expr.getDeclaration();
+            if (decl instanceof Value) {
+                // Now build a "fake" declaration for the attribute
+                Tree.AttributeDeclaration attrDecl = new Tree.AttributeDeclaration(null);
+                attrDecl.setDeclarationModel((Value)decl);
+                attrDecl.setIdentifier(expr.getIdentifier());
+                attrDecl.setScope(op.getScope());
+    
+                // Make sure the boxing information is set correctly
+                BoxingDeclarationVisitor v = new BoxingDeclarationVisitor(this);
+                v.visit(attrDecl);
+                
+                // Generate the attribute
+                transform(attrDecl, classBuilder);
+                
+                // Generate the specifier statement
+                result = result.append(expressionGen().transform(op));
+            } else if (decl instanceof Method) {
+                // Now build a "fake" declaration for the method
+                Tree.MethodDeclaration methDecl = new Tree.MethodDeclaration(null);
+                Method m = (Method)decl;
+                methDecl.setDeclarationModel(m);
+                methDecl.setIdentifier(expr.getIdentifier());
+                methDecl.setScope(op.getScope());
+                methDecl.setSpecifierExpression(op.getSpecifierExpression());
+                for (ParameterList pl : m.getParameterLists()) {
+                    Tree.ParameterList tpl = new Tree.ParameterList(null);
+                    for (Parameter p : pl.getParameters()) {
+                        Tree.Parameter tp = null;
+                        if (p instanceof ValueParameter) {
+                            Tree.ValueParameterDeclaration tvpd = new Tree.ValueParameterDeclaration(null);
+                            tvpd.setDeclarationModel((ValueParameter)p);
+                            tp = tvpd;
+                        } else if (p instanceof FunctionalParameter) {
+                            Tree.FunctionalParameterDeclaration tfpd = new Tree.FunctionalParameterDeclaration(null);
+                            tfpd.setDeclarationModel((FunctionalParameter)p);
+                            tp = tfpd;
+                        }
+                        tp.setScope(p.getContainer());
+                        tpl.addParameter(tp);
+                    }
+                    methDecl.addParameterList(tpl);
+                }
+                
+                // Make sure the boxing information is set correctly
+                BoxingDeclarationVisitor v = new BoxingDeclarationVisitor(this);
+                v.visit(methDecl);
+                
+                // Generate the attribute
+                classBuilder.method(methDecl);
+            }
+        } else {
+            // Normal case, just generate the specifier statement
+            result = result.append(expressionGen().transform(op));
         }
+        return result;
     }
 
     public void transform(AttributeDeclaration decl, ClassDefinitionBuilder classBuilder) {
