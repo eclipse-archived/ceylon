@@ -42,16 +42,16 @@ public class RepositoryLister {
     
     public void list(File path, RepositoryLister.Actions actions) {
         if (path.isDirectory()) {
+            actions.enterDirectory(path);
             for (File f : path.listFiles()) {
-                actions.enterDirectory(path);
                 list(f, actions);
-                actions.exitDirectory(path);
             }
+            actions.exitDirectory(path);
         }
         else if (path.isFile()) {
             String fileName = path.getName();
             for (String extension : extensions) {
-                if (fileName.endsWith(extension)) {
+                if (extension.equals(".*") || fileName.endsWith(extension) ) {
                     actions.doWithFile(path);
                     return;
                 }
