@@ -1306,15 +1306,17 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void generateCallable(QualifiedMemberOrTypeExpression that, String name) {
-        out("(function(){var $=");
+        String primaryVar = createRetainedTempVar("opt");
+        out("(", primaryVar, "=");
         that.getPrimary().visit(this);
-        out(";return ", clAlias, ".JsCallable($, $==null?null:$.");
+        out(",", clAlias, ".JsCallable(", primaryVar, ",", primaryVar, "!==null?",
+                primaryVar, ".");
         if (name == null) {
             qualifiedMemberRHS(that);
         } else {
             out(name);
         }
-        out(")})()");
+        out(":null))");
     }
 
     private void qualifiedMemberRHS(QualifiedMemberOrTypeExpression that) {
