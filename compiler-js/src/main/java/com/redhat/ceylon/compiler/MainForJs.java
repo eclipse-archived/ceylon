@@ -127,13 +127,16 @@ public class MainForJs {
             final File root = new File(opts.getSrcDir());
             final String path = root.getAbsolutePath();
             tcb.addSrcDirectory(root);
+            //TODO we should only compile specified files
             for (String filedir : args) {
                 File f = new File(filedir);
                 if (!f.getAbsolutePath().startsWith(path)) {
-                    while (!f.isDirectory()) {
+                    while (f != null && !f.isDirectory()) {
                         f = f.getParentFile();
                     }
-                    tcb.addSrcDirectory(f);
+                    if (f != null) {
+                        tcb.addSrcDirectory(f);
+                    }
                 }
             }
             typeChecker = tcb.getTypeChecker();
