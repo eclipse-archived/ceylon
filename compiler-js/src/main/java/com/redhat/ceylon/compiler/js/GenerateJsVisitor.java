@@ -39,6 +39,7 @@ public class GenerateJsVisitor extends Visitor
     private final JsIdentifierNames names;
     private final Set<Declaration> directAccess = new HashSet<Declaration>();
     private final List<String> retainedTempVars = new ArrayList<String>();
+    private final Set<Module> importedModules = new HashSet<Module>();
 
     private final class SuperVisitor extends Visitor {
         private final List<Declaration> decs;
@@ -171,9 +172,9 @@ public class GenerateJsVisitor extends Visitor
         root = that;
         Module clm = that.getUnit().getPackage().getModule()
                 .getLanguageModule();
-        Package clPackage = clm.getPackage(clm.getNameAsString());
-        setCLAlias(names.packageAlias(clPackage));
-        require(clPackage);
+        if (require(clm)) {
+            setCLAlias(names.moduleAlias(clm));
+        }
         super.visit(that);
     }
 
@@ -181,21 +182,29 @@ public class GenerateJsVisitor extends Visitor
     	ImportableScope scope =
     			that.getImportMemberOrTypeList().getImportList().getImportedScope();
     	if (scope instanceof Package) {
-    		require((Package) scope);
+    		require(((Package) scope).getModule());
     	}
     }
 
-    private void require(Package pkg) {
-        out("var ", names.packageAlias(pkg), "=require('", scriptPath(pkg), "');");
+    private boolean require(Module mod) {
+        if (importedModules.contains(mod)) {
+            return false;
+        }
+        out("var ", names.moduleAlias(mod), "=require('", scriptPath(mod), "');");
         endLine();
+        importedModules.add(mod);
+        return true;
     }
 
-    private String scriptPath(Package pkg) {
-        StringBuilder path = new StringBuilder(pkg.getModule().getNameAsString().replace('.', '/')).append('/');
-        if (!pkg.getModule().isDefault()) {
-            path.append(pkg.getModule().getVersion()).append('/');
+    private String scriptPath(Module mod) {
+        StringBuilder path = new StringBuilder(mod.getNameAsString().replace('.', '/')).append('/');
+        if (!mod.isDefault()) {
+            path.append(mod.getVersion()).append('/');
         }
-        path.append(pkg.getNameAsString());
+        path.append(mod.getNameAsString());
+        if (!(mod.isDefault() || mod==mod.getLanguageModule())) {
+            path.append('-').append(mod.getVersion());
+        }
         return path.toString();
     }
 
@@ -1624,7 +1633,7 @@ public class GenerateJsVisitor extends Visitor
 
     private String qualifiedPath(Node that, Declaration d, boolean inProto) {
         if (isImported(that, d)) {
-            return names.packageAlias(d.getUnit().getPackage());
+            return names.moduleAlias(d.getUnit().getPackage().getModule());
         }
         else if (prototypeStyle && !inProto) {
             if (d.isClassOrInterfaceMember() &&
