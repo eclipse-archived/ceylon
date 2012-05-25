@@ -7,6 +7,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
+import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
@@ -64,20 +67,9 @@ public class MainForJs {
             return;
         }
 
-        //Separate modules from source files
-        final List<String> modlist = new ArrayList<String>();
-        for (Iterator<String> iter = args.iterator(); iter.hasNext();) {
-            String s = iter.next();
-            if (!s.endsWith(".ceylon")) {
-                iter.remove();
-                modlist.add(s);
-            }
-        }
-        if (!modlist.isEmpty()) {
-            System.err.printf("Don't know how to load modules yet: %s%n", modlist);
-            return;
-        }
-        TypeChecker typeChecker;
+        final TypeChecker typeChecker;
+        final RepositoryManager repoman = com.redhat.ceylon.compiler.java.util.Util.makeRepositoryManager(
+                opts.getRepos(), opts.getOutDir(), new JULLogger());
         if (opts.isStdin()) {
             VirtualFile src = new VirtualFile() {
                 @Override
@@ -115,15 +107,17 @@ public class MainForJs {
                 }
             };
             t0 = System.nanoTime();
-            typeChecker = new TypeCheckerBuilder()
-                    .verbose(opts.isVerbose())
-                    .addSrcDirectory(src)
-                    .getTypeChecker();
+            TypeCheckerBuilder tcb = new TypeCheckerBuilder()
+                .verbose(opts.isVerbose())
+                .addSrcDirectory(src);
+            tcb.setRepositoryManager(repoman);
+            typeChecker = tcb.getTypeChecker();
             t1=System.nanoTime();
         } else {
             t0=System.nanoTime();
             TypeCheckerBuilder tcb = new TypeCheckerBuilder()
                 .verbose(opts.isVerbose());
+            tcb.setRepositoryManager(repoman);
             final File root = new File(opts.getSrcDir());
             final String path = root.getAbsolutePath();
             tcb.addSrcDirectory(root);
