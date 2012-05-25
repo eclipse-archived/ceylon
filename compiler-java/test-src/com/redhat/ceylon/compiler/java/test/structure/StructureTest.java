@@ -278,6 +278,10 @@ public class StructureTest extends CompilerTest {
     // Methods
     
     @Test
+    public void testMthActualMethodShortcut(){
+        compareWithJavaSource("method/ActualMethodShortcut");
+    }
+    @Test
     public void testMthLocalMethod(){
         compareWithJavaSource("method/LocalMethod");
     }
