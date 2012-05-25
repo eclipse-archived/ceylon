@@ -8,5 +8,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-spec"/>
 	<classpathentry kind="lib" path="/ceylon-spec/lib/antlr-3.4-complete.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-module-resolver"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-compiler"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
