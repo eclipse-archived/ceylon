@@ -21,9 +21,11 @@
 abstract class ActualMethodShortcut() {
     shared formal void print1();
     shared formal void print2(String s);
+    shared formal void foo(String s);
 }
 @nomodel
 class ActualMethodShortcutSub() extends ActualMethodShortcut() {
     print1 = () process.writeLine("hello");
     print2 = process.writeLine;
+    foo = (String s) print(s);
 }

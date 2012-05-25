@@ -1,15 +1,39 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-class PublicMethod {
+abstract class ActualMethodShortcut {
     
-    public final void f() {
+    public abstract void print1();
+    
+    public abstract void print2(final .java.lang.String s);
+    
+    public abstract void foo(final .java.lang.String s);
+    
+    ActualMethodShortcut() {
+    }
+}
+class ActualMethodShortcutSub extends .com.redhat.ceylon.compiler.java.test.structure.method.ActualMethodShortcut {
+    
+    @.java.lang.Override
+    public final void print1() {
+        .ceylon.language.process.getProcess().writeLine("hello");
     }
     
-    PublicMethod() {
+    @.java.lang.Override
+    public final void print2(final .java.lang.String s) {
+        .ceylon.language.process.getProcess().writeLine(s);
+    }
+    
+    @.java.lang.Override
+    public final void foo(final .java.lang.String s) {
+        .ceylon.language.print.print(.ceylon.language.String.instance(s));
+    }
+    
+    ActualMethodShortcutSub() {
+        super();
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.method.PublicMethod();
+        new .com.redhat.ceylon.compiler.java.test.structure.method.ActualMethodShortcutSub();
     }
 }

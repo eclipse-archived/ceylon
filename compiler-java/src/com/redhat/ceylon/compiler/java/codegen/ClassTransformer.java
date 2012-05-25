@@ -522,6 +522,7 @@ public class ClassTransformer extends AbstractTransformer {
                             tp = tfpd;
                         }
                         tp.setScope(p.getContainer());
+                        tp.setIdentifier(makeIdentifier(p.getName()));
                         tpl.addParameter(tp);
                     }
                     methDecl.addParameterList(tpl);
@@ -541,6 +542,12 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
 
+    private Tree.Identifier makeIdentifier(String name) {
+        Tree.Identifier id = new Tree.Identifier(null);
+        id.setText(name);
+        return id;
+    }
+    
     public void transform(AttributeDeclaration decl, ClassDefinitionBuilder classBuilder) {
         final Value model = decl.getDeclarationModel();
         boolean useField = Strategy.useField(model);
