@@ -191,7 +191,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         boolean canCast = false;
         
         if (expectedType != null
-                && !(simplifyType(expectedType).getDeclaration() instanceof TypeParameter) 
                 // don't add cast to an erased type 
                 && !willEraseToObject(expectedType)
                 // don't add cast for null
@@ -1551,7 +1550,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         inStatement = false;
         
         // right side
-        final JCExpression rhs = transformExpression(rightTerm, Util.getBoxingStrategy(decl), decl.getType());
+        final JCExpression rhs = transformExpression(rightTerm, Util.getBoxingStrategy(decl), leftTerm.getTypeModel());
 
         if (tmpInStatement) {
             return transformAssignment(op, leftTerm, rhs);

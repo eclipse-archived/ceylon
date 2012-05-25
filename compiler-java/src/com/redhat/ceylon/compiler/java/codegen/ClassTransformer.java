@@ -47,6 +47,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
@@ -60,6 +61,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Block;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
@@ -477,26 +479,76 @@ public class ClassTransformer extends AbstractTransformer {
         }
     }
 
-    public void transformRefinementSpecifierStatement(SpecifierStatement op, ClassDefinitionBuilder classBuilder) {
+    public List<JCStatement> transformRefinementSpecifierStatement(SpecifierStatement op, ClassDefinitionBuilder classBuilder) {
+        List<JCStatement> result = List.<JCStatement>nil();
         // Check if this is a shortcut form of formal attribute refinement
         if (op.getRefinement()) {
-            // Now build a "fake" declaration for the attribute
             Tree.BaseMemberExpression expr = (Tree.BaseMemberExpression)op.getBaseMemberExpression();
-            Value attr = (Value)expr.getDeclaration();
-            Tree.AttributeDeclaration decl = new Tree.AttributeDeclaration(null);
-            decl.setDeclarationModel(attr);
-            decl.setIdentifier(expr.getIdentifier());
-            decl.setScope(op.getScope());
-
-            // Make sure the boxing information is set correctly
-            BoxingDeclarationVisitor v = new BoxingDeclarationVisitor(this);
-            v.visit(decl);
-            
-            // Generate the attribute
-            transform(decl, classBuilder);
+            Declaration decl = expr.getDeclaration();
+            if (decl instanceof Value) {
+                // Now build a "fake" declaration for the attribute
+                Tree.AttributeDeclaration attrDecl = new Tree.AttributeDeclaration(null);
+                attrDecl.setDeclarationModel((Value)decl);
+                attrDecl.setIdentifier(expr.getIdentifier());
+                attrDecl.setScope(op.getScope());
+    
+                // Make sure the boxing information is set correctly
+                BoxingDeclarationVisitor v = new BoxingDeclarationVisitor(this);
+                v.visit(attrDecl);
+                
+                // Generate the attribute
+                transform(attrDecl, classBuilder);
+                
+                // Generate the specifier statement
+                result = result.append(expressionGen().transform(op));
+            } else if (decl instanceof Method) {
+                // Now build a "fake" declaration for the method
+                Tree.MethodDeclaration methDecl = new Tree.MethodDeclaration(null);
+                Method m = (Method)decl;
+                methDecl.setDeclarationModel(m);
+                methDecl.setIdentifier(expr.getIdentifier());
+                methDecl.setScope(op.getScope());
+                methDecl.setSpecifierExpression(op.getSpecifierExpression());
+                for (ParameterList pl : m.getParameterLists()) {
+                    Tree.ParameterList tpl = new Tree.ParameterList(null);
+                    for (Parameter p : pl.getParameters()) {
+                        Tree.Parameter tp = null;
+                        if (p instanceof ValueParameter) {
+                            Tree.ValueParameterDeclaration tvpd = new Tree.ValueParameterDeclaration(null);
+                            tvpd.setDeclarationModel((ValueParameter)p);
+                            tp = tvpd;
+                        } else if (p instanceof FunctionalParameter) {
+                            Tree.FunctionalParameterDeclaration tfpd = new Tree.FunctionalParameterDeclaration(null);
+                            tfpd.setDeclarationModel((FunctionalParameter)p);
+                            tp = tfpd;
+                        }
+                        tp.setScope(p.getContainer());
+                        tp.setIdentifier(makeIdentifier(p.getName()));
+                        tpl.addParameter(tp);
+                    }
+                    methDecl.addParameterList(tpl);
+                }
+                
+                // Make sure the boxing information is set correctly
+                BoxingDeclarationVisitor v = new BoxingDeclarationVisitor(this);
+                v.visit(methDecl);
+                
+                // Generate the attribute
+                classBuilder.method(methDecl);
+            }
+        } else {
+            // Normal case, just generate the specifier statement
+            result = result.append(expressionGen().transform(op));
         }
+        return result;
     }
 
+    private Tree.Identifier makeIdentifier(String name) {
+        Tree.Identifier id = new Tree.Identifier(null);
+        id.setText(name);
+        return id;
+    }
+    
     public void transform(AttributeDeclaration decl, ClassDefinitionBuilder classBuilder) {
         final Value model = decl.getDeclarationModel();
         boolean useField = Strategy.useField(model);
@@ -921,7 +973,25 @@ public class ClassTransformer extends AbstractTransformer {
             Scope container = model.getContainer();
             boolean isInterface = container instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
             if(!isInterface){
-                body = statementGen().transform(((Tree.MethodDefinition)def).getBlock()).getStatements();
+                boolean prevNoExpressionlessReturn = statementGen().noExpressionlessReturn;
+                try {
+                    statementGen().noExpressionlessReturn = Decl.isMpl(model);
+                
+                    final Block block = ((Tree.MethodDefinition) def).getBlock();
+                    body = statementGen().transform(block).getStatements();
+                    // We void methods need to have their Callables return null
+                    // so adjust here.
+                    if (Decl.isMpl(model) &&
+                            !block.getDefinitelyReturns()) {
+                        if (Decl.isUnboxedVoid(model)) {
+                            body = body.append(make().Return(makeNull()));
+                        } else {
+                            body = body.append(make().Return(makeErroneous(block, "non-void method doesn't definitely return")));
+                        }
+                    }
+                } finally {
+                    statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
+                }
             }
         } else if (def instanceof MethodDeclaration
                 && ((MethodDeclaration) def).getSpecifierExpression() != null) {

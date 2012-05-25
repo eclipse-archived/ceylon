@@ -1,0 +1,45 @@
+package com.redhat.ceylon.compiler.java.test.structure.type;
+
+class GenericBottom<T, U> {
+    private final T attrTp;
+    
+    private final T getAttrTp() {
+        return attrTp;
+    }
+    private final .java.lang.Object attrIntersection;
+    
+    private final .java.lang.Object getAttrIntersection() {
+        return attrIntersection;
+    }
+    
+    private final T methodTp(final T o) {
+        return (T).ceylon.language.bottom.getBottom();
+    }
+    
+    private final .java.lang.Object methodIntersection(final .java.lang.Object o) {
+        return .ceylon.language.bottom.getBottom();
+    }
+    
+    private final T getGetterTp() {
+        return (T).ceylon.language.bottom.getBottom();
+    }
+    
+    private final .java.lang.Object getGetterIntersection() {
+        return .ceylon.language.bottom.getBottom();
+    }
+    
+    private final void f() {
+        final .com.redhat.ceylon.compiler.java.test.structure.type.GenericBottom<T, U> g = new .com.redhat.ceylon.compiler.java.test.structure.type.GenericBottom<T, U>(.ceylon.language.bottom.getBottom());
+        T t = g.getAttrTp();
+        t = (T)g.getAttrIntersection();
+        t = g.methodTp((T).ceylon.language.bottom.getBottom());
+        t = (T)g.methodIntersection(.ceylon.language.bottom.getBottom());
+        t = g.getGetterTp();
+        t = (T)g.getGetterIntersection();
+    }
+    
+    GenericBottom(.java.lang.Object argObject) {
+        this.attrTp = (T).ceylon.language.bottom.getBottom();
+        this.attrIntersection = .ceylon.language.bottom.getBottom();
+    }
+}
