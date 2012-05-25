@@ -73,6 +73,12 @@ public class PhasedUnit {
         this.pathRelativeToSrcDir = Helper.computeRelativePath(unitFile, srcDir);
         this.moduleManager = moduleManager;
         this.tokens = tokenStream;
+        unit = new Unit();
+        unit.setPackage(pkg);
+        unit.setFilename(fileName);
+        pkg.removeUnit(unit);
+        pkg.addUnit(unit);
+        cu.setUnit(unit);
     }
 
     public PhasedUnit(PhasedUnit other) {
@@ -157,12 +163,12 @@ public class PhasedUnit {
         this.refinementValidated = refinementValidated;
     }
 
-    public void validateTree() {
+    public synchronized void validateTree() {
         //System.out.println("Validating tree for " + fileName);
         compilationUnit.visit(new Validator());
     }
 
-    public void scanDeclarations() {
+    public synchronized void scanDeclarations() {
         if (!declarationsScanned) {
             scanningDeclarations = true;
             //System.out.println("Scan declarations for " + fileName);
@@ -174,7 +180,7 @@ public class PhasedUnit {
         }
     }
 
-    public void scanTypeDeclarations() {
+    public synchronized void scanTypeDeclarations() {
         if (!typeDeclarationsScanned) {
             typeDeclarationsScanned = true;
             //System.out.println("Scan type declarations for " + fileName);
@@ -182,7 +188,7 @@ public class PhasedUnit {
         }
     }
 
-    public void validateRefinement() {
+    public synchronized void validateRefinement() {
         if (! refinementValidated) {
             //System.out.println("Validate member refinement for " + fileName);
             refinementValidated = true;
@@ -190,8 +196,7 @@ public class PhasedUnit {
         }
     }
 
-
-    public void analyseTypes() {
+    public synchronized void analyseTypes() {
         if (! fullyTyped) {
             //System.out.println("Run analysis phase for " + fileName);
             fullyTyped = true;
@@ -206,7 +211,7 @@ public class PhasedUnit {
         compilationUnit.visit(new DependedUponVisitor(this, phasedUnits, phasedUnitsOfDependencies));
     }
     
-    public void analyseFlow() {
+    public synchronized void analyseFlow() {
         if (! flowAnalyzed) {
             flowAnalyzed = true;
             //System.out.println("Validate control flow for " + fileName);
@@ -245,6 +250,13 @@ public class PhasedUnit {
     
     public Unit getUnit() {
         return unit;
+    }
+
+    public List<Declaration> getDeclarations() {
+        if (!declarationsScanned) {
+            scanDeclarations();
+        }
+        return unit.getDeclarations();
     }
 
     public String getPathRelativeToSrcDir() {
