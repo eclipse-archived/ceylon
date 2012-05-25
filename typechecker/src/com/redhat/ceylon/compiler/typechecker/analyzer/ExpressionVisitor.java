@@ -554,6 +554,7 @@ public class ExpressionVisitor extends Visitor {
             for (Parameter p: pl.getParameters()) {
                 Parameter vp = new ValueParameter();
                 vp.setSequenced(p.isSequenced());
+                vp.setDefaulted(p.isDefaulted());
                 vp.setName(p.getName());
                 vp.setType(rm.getTypedParameter(p).getFullType());
                 l.getParameters().add(vp);
