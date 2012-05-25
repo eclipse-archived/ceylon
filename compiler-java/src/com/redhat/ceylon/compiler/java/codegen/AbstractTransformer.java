@@ -662,7 +662,11 @@ public abstract class AbstractTransformer implements Transformation {
     protected JCExpression makeJavaType(TypedDeclaration typeDecl, ProducedType type) {
         if (typeDecl instanceof FunctionalParameter) {
             FunctionalParameter p = (FunctionalParameter)typeDecl;
-            return makeJavaType(typeFact().getCallableType(type), 0);    
+            ProducedType pt = type;
+            for (int ii = 1; ii < p.getParameterLists().size(); ii++) {
+                pt = typeFact().getCallableType(pt);
+            }
+            return makeJavaType(typeFact().getCallableType(pt), 0);    
         } else {
             boolean usePrimitives = Util.isUnBoxed(typeDecl);
             return makeJavaType(type, usePrimitives ? 0 : AbstractTransformer.NO_PRIMITIVES);
