@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticAssignmentOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticOp;
@@ -49,9 +50,11 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.PostfixOperatorExpressio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PowerOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PrefixOperatorExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class BoxingVisitor extends Visitor {
@@ -190,11 +193,31 @@ public class BoxingVisitor extends Visitor {
         // this is not conditional
         Util.markUnBoxed(that);
     }
+    
+    @Override
+    public void visit(SpecifierStatement that) {
+        super.visit(that);
+        underlyingType(that.getBaseMemberExpression());
+    }
 
     @Override
     public void visit(AssignOp that) {
         super.visit(that);
         propagateFromTerm(that, that.getLeftTerm());
+        underlyingType(that.getLeftTerm());
+    }
+
+    private void underlyingType(Tree.Term term) {
+        if (term instanceof Tree.MemberOrTypeExpression) {
+            Tree.MemberOrTypeExpression leftTerm = (Tree.MemberOrTypeExpression)term;
+            TypedDeclaration decl = (TypedDeclaration) leftTerm.getDeclaration();
+            if ("hash".equals(decl.getName())
+                    && transformer.typeFact().getObjectDeclaration().equals(decl.getRefinedDeclaration().getContainer())) {
+                ProducedType expectedType = decl.getTypeDeclaration().getType();
+                expectedType.setUnderlyingType("int");
+                leftTerm.setTypeModel(expectedType);
+            }
+        }
     }
 
     @Override
