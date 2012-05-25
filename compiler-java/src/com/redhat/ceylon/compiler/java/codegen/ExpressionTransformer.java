@@ -1550,7 +1550,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         inStatement = false;
         
         // right side
-        final JCExpression rhs = transformExpression(rightTerm, Util.getBoxingStrategy(decl), decl.getType());
+        final JCExpression rhs = transformExpression(rightTerm, Util.getBoxingStrategy(decl), leftTerm.getTypeModel());
 
         if (tmpInStatement) {
             return transformAssignment(op, leftTerm, rhs);
