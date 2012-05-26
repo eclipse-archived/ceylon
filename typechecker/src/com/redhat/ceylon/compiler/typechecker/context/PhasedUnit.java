@@ -52,6 +52,7 @@ public class PhasedUnit {
     private List<CommonToken> tokens;
     private ModuleVisitor moduleVisitor;
     private VirtualFile srcDir;
+    private boolean treeValidated;
     private boolean declarationsScanned;
     private boolean scanningDeclarations;
     private boolean typeDeclarationsScanned;
@@ -93,6 +94,7 @@ public class PhasedUnit {
         this.tokens = other.tokens;
         this.moduleVisitor = other.moduleVisitor;
         this.srcDir = other.srcDir;
+        this.treeValidated = treeValidated;
         this.declarationsScanned = other.declarationsScanned;
         this.scanningDeclarations = other.scanningDeclarations;
         this.typeDeclarationsScanned = other.typeDeclarationsScanned;
@@ -139,6 +141,14 @@ public class PhasedUnit {
         this.flowAnalyzed = flowAnalyzed;
     }
 
+    public boolean isTreeValidated() {
+        return treeValidated;
+    }
+
+    public void setTreeValidated(boolean treeValidated) {
+        this.treeValidated = treeValidated;
+    }
+
     public boolean isDeclarationsScanned() {
         return declarationsScanned;
     }
@@ -165,17 +175,20 @@ public class PhasedUnit {
 
     public synchronized void validateTree() {
         //System.out.println("Validating tree for " + fileName);
-        compilationUnit.visit(new Validator());
+        if (!treeValidated) {
+            treeValidated = true;
+            compilationUnit.visit(new Validator());
+        }
     }
 
     public synchronized void scanDeclarations() {
         if (!declarationsScanned) {
             scanningDeclarations = true;
+            declarationsScanned = true;
             //System.out.println("Scan declarations for " + fileName);
             DeclarationVisitor dv = new DeclarationVisitor(pkg, fileName);
             compilationUnit.visit(dv);
             unit = dv.getCompilationUnit();
-            declarationsScanned = true;
             scanningDeclarations = false;
         }
     }
