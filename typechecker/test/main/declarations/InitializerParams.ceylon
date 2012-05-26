@@ -7,7 +7,7 @@ interface InitializerParams {
         print(bar);
     }
 
-    class Foo(foo, bar, @error fum, @error qux) {
+    class Foo(foo, bar, @error fum, qux) {
         String foo;
         shared String bar;
         String qux();
@@ -19,7 +19,7 @@ interface InitializerParams {
         shared formal String baz;
     }
 
-    void foo(foo, @error fum, @error qux) {
+    void foo(foo, @error fum, qux) {
         String foo;
         String qux();
     }
@@ -29,11 +29,25 @@ interface InitializerParams {
         print(foo);
     }
     
+    class Func(f) {
+        void f(Object o);
+        f(0);
+    }
+
+    void func(f) {
+        String f();
+        print(f());
+    }
+
     void test() {
         Baz("", "");
         bar("");
         @error Baz(0);
         @error baz(0);
+        Func(print);
+        func(() "hello");
+        @error Func(() "hello");
+        @error func(print);
     }
-
+    
 }
