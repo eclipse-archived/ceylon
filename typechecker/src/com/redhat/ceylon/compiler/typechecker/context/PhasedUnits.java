@@ -123,7 +123,7 @@ public class PhasedUnits {
         }
     }
 
-    private void parseFile(VirtualFile file, VirtualFile srcDir) throws Exception {
+    protected void parseFile(VirtualFile file, VirtualFile srcDir) throws Exception {
         if (file.getName().endsWith(".ceylon")) {
 
             //System.out.println("Parsing " + file.getName());
