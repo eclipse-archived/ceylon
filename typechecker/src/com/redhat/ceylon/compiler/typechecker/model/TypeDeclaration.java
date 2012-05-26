@@ -551,6 +551,12 @@ public abstract class TypeDeclaration extends Declaration
         Map<String, DeclarationWithProximity> result = super.getMatchingDeclarations(unit, startingWith, proximity);
         //Inherited declarations hide outer and imported declarations
         result.putAll(getMatchingMemberDeclarations(startingWith, proximity));
+        //Local declarations always hide inherited declarations, even if non-shared
+        for (Declaration d: getMembers()) {
+            if (isResolvable(d) && isNameMatching(startingWith, d)) {
+                result.put(d.getName(), new DeclarationWithProximity(d, proximity));
+            }
+        }
         return result;
     }
 
