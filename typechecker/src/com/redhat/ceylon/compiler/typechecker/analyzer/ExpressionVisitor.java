@@ -53,6 +53,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -174,7 +175,8 @@ public class ExpressionVisitor extends Visitor {
                 initOriginalDeclaration(v);
                 //this is a bit ugly (the parser sends us a SyntheticVariable
                 //instead of the real StaticType which it very well knows!)
-                knownType = se.getExpression().getTypeModel();
+                Expression e = se.getExpression();
+                knownType = e==null ? null : e.getTypeModel();
                 if (knownType!=null && knownType.isSubtypeOf(type)) {
                     that.addError("does not narrow type: " + knownType.getProducedTypeName() + 
                             " is a subtype of " + type.getProducedTypeName());
@@ -796,21 +798,25 @@ public class ExpressionVisitor extends Visitor {
         if (c!=null) {
             //that.getTypeSpecifier().getType().get
             ProducedType at = alias.getExtendedType();
-            int cps = c.getParameterList().getParameters().size();
-            int aps = alias.getParameterList().getParameters().size();
-            if (cps!=aps) {
-                that.addError("wrong number of initializer parameters declared by class alias: " + 
-                        alias.getName());
-            }
-            for (int i=0; i<(cps<=aps ? cps : aps); i++) {
-                Parameter ap = alias.getParameterList().getParameters().get(i);
-                Parameter cp = c.getParameterList().getParameters().get(i);
-                ProducedType pt = at.getTypedParameter(cp).getType();
-                ap.setAliasedParameter(cp);
-                //TODO: properly check type of functional parameters!!
-                checkAssignable(ap.getType(), pt, that, "alias parameter " + 
-                        ap.getName() + " must be assignable to corresponding class parameter " +
-                        cp.getName());
+            ParameterList pl = c.getParameterList();
+            ParameterList apl = alias.getParameterList();
+            if (pl!=null&&apl!=null) {
+                int cps = pl.getParameters().size();
+                int aps = apl.getParameters().size();
+                if (cps!=aps) {
+                    that.addError("wrong number of initializer parameters declared by class alias: " + 
+                            alias.getName());
+                }
+                for (int i=0; i<(cps<=aps ? cps : aps); i++) {
+                    Parameter ap = apl.getParameters().get(i);
+                    Parameter cp = pl.getParameters().get(i);
+                    ProducedType pt = at.getTypedParameter(cp).getType();
+                    ap.setAliasedParameter(cp);
+                    //TODO: properly check type of functional parameters!!
+                    checkAssignable(ap.getType(), pt, that, "alias parameter " + 
+                            ap.getName() + " must be assignable to corresponding class parameter " +
+                            cp.getName());
+                }
             }
         }
     }
@@ -1358,8 +1364,8 @@ public class ExpressionVisitor extends Visitor {
                             //TODO: this is very incomplete!
                             List<ProducedType> list = new ArrayList<ProducedType>();
                             list.add(parameter.getType());
-                            for (Parameter p: ((FunctionalParameter) parameter).getParameterLists().get(0)
-                                    .getParameters()) {
+                            for (Parameter p: ((FunctionalParameter) parameter).getParameterLists()
+                                    .get(0).getParameters()) {
                                 list.add(p.getType());
                             }
                             pt = unit.getCallableDeclaration().getProducedType(null, list);

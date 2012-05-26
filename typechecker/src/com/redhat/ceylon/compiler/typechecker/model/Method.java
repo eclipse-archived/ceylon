@@ -73,6 +73,7 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
         return abstraction;
     }
     
+    @Override
     public boolean isDeclaredVoid() {
         return declaredVoid;
     }

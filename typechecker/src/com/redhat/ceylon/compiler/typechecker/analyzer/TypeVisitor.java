@@ -675,6 +675,11 @@ public class TypeVisitor extends Visitor {
             }*/
             ProducedType type = et.getTypeModel();
             if (type!=null) {
+                if (type.getDeclaration()==td) {
+                    //TODO: handle indirect circularities!
+                    et.addError("directly extends itself: " + td.getName());
+                    return;
+                }
                 if (!isExtendable(type) && !inLanguageModule(that)) {
                     et.addError("directly extends a special language type: " +
                         type.getProducedTypeName());
@@ -738,6 +743,11 @@ public class TypeVisitor extends Visitor {
         for (Tree.StaticType t: that.getTypes()) {
             ProducedType type = t.getTypeModel();
             if (type!=null) {
+                if (type.getDeclaration()==td) {
+                    //TODO: handle indirect circularities!
+                    t.addError("directly extends itself: " + td.getName());
+                    continue;
+                }
                 if (type.isCallable()) {
                     t.addError("directly satisfies Callable");
                 }
@@ -842,6 +852,7 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.ValueParameterDeclaration that) {
         super.visit(that);
         if (that.getType() instanceof LocalModifier) {
+            //i.e. an attribute initializer parameter
             ValueParameter d = that.getDeclarationModel();
             Declaration a = that.getScope().getDirectMember(d.getName(), null);
             if (a==null) {
@@ -849,6 +860,10 @@ public class TypeVisitor extends Visitor {
             }
             else if (!(a instanceof Value)) {
                 that.addError("not a simple attribute: " + d.getName());
+            }
+            else if (a.isFormal()) {
+                that.addError("initializer parameter refers to a formal attribute: " + 
+                        d.getName());
             }
         }
     }
