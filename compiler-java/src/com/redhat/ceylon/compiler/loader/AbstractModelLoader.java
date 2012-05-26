@@ -389,7 +389,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         
             // add it to its Unit
             d.setUnit(unit);
-            unit.getDeclarations().add(d);
+            unit.addDeclaration(d);
             
             // add it to its package if it's not an inner class
             if(!classMirror.isInnerClass()){
