@@ -9,6 +9,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingCla
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +22,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Import;
 import com.redhat.ceylon.compiler.typechecker.model.ImportList;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -38,6 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrTypeList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -621,9 +624,26 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
-        if (that.getSpecifierExpression()==null
+        SpecifierExpression sie = that.getSpecifierExpression();
+        if (sie==null
                 && that.getType() instanceof Tree.FunctionModifier) {
             that.getType().addError("method must specify an explicit return type or definition");
+        }
+        TypedDeclaration dec = that.getDeclarationModel();
+        if (dec!=null) {
+            Scope s = dec.getContainer();
+            if (s instanceof Functional) {
+                Parameter param = ((Functional) s).getParameter( dec.getName() );
+                if (param instanceof ValueParameter && 
+                        ((ValueParameter) param).isHidden()) {
+                    ProducedType ft = dec.getProducedReference(null, 
+                            Collections.<ProducedType>emptyList()).getFullType();
+                    param.setType(ft);
+                    if (sie!=null) {
+                        sie.addError("has matching initializer parameter: " + dec.getName());
+                    }
+                }
+            }
         }
     }
     
@@ -858,8 +878,8 @@ public class TypeVisitor extends Visitor {
             if (a==null) {
                 that.addError("attribute does not exist: " + d.getName());
             }
-            else if (!(a instanceof Value)) {
-                that.addError("not a simple attribute: " + d.getName());
+            else if (!(a instanceof Value) && !(a instanceof Method)) {
+                that.addError("not a simple attribute or method: " + d.getName());
             }
             else if (a.isFormal()) {
                 that.addError("initializer parameter refers to a formal attribute: " + 
