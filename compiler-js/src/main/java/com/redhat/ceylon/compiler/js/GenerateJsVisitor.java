@@ -2169,6 +2169,10 @@ public class GenerateJsVisitor extends Visitor
        prefixIncrementOrDecrement(that.getTerm(), "getPredecessor");
    }
 
+   private boolean hasSimpleGetterSetter(Declaration decl) {
+       return !((decl instanceof Getter) || (decl instanceof Setter) || decl.isFormal()); 
+   }
+   
    private void prefixIncrementOrDecrement(Term term, String functionName) {
        if (term instanceof BaseMemberExpression) {
            BaseMemberExpression bme = (BaseMemberExpression) term;
@@ -2177,20 +2181,28 @@ public class GenerateJsVisitor extends Visitor
                path += '.';
            }
 
-           out(path, names.setter(bme.getDeclaration()), "(", path);
-           if (!accessDirectly(bme.getDeclaration())) {
-               out(names.getter(bme.getDeclaration()), "().", functionName, "())");
-           } else {
-               out(names.name(bme.getDeclaration()), ".", functionName, "())");
+           boolean simpleSetter = hasSimpleGetterSetter(bme.getDeclaration());
+           String member = accessDirectly(bme.getDeclaration())
+                   ? names.name(bme.getDeclaration())
+                   : (names.getter(bme.getDeclaration()) + "()");
+           if (!simpleSetter) { out("("); }
+           out(path, names.setter(bme.getDeclaration()), "(", path, member, ".",
+                   functionName, "())");
+           if (!simpleSetter) {
+               out(",", path, member, ")");
            }
        } else if (term instanceof QualifiedMemberExpression) {
            QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
+           String member = names.getter(qme.getDeclaration()) + "()";
            String primaryVar = createRetainedTempVar();
            out("(", primaryVar, "=");
            qme.getPrimary().visit(this);
            out(",", primaryVar, ".", names.setter(qme.getDeclaration()), "(",
-                   primaryVar, ".", names.getter(qme.getDeclaration()), "().",
-                   functionName, "()))");
+                   primaryVar, ".", member, ".", functionName, "())");
+           if (!hasSimpleGetterSetter(qme.getDeclaration())) {
+               out(",", primaryVar, ".", member);
+           }
+           out(")");
        }
    }
 

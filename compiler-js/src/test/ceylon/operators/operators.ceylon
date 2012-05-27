@@ -221,15 +221,25 @@ void testNullsafeOperators() {
 }
 
 void testIncDecOperators() {
+    variable Integer x0 := 1;
+    Integer x { return x0; } assign x { x0 := x; }
+    
     variable Integer i1 := 1;
     void f1() {
         Integer i2 = ++i1;
-        assert(i1==2, "prefix increment");
-        assert(i2==2, "prefix increment");
+        Integer x2 = ++x;
+        assert(i1==2, "prefix increment 1");
+        assert(i2==2, "prefix increment 2");
+        assert(x==2, "prefix increment 3");
+        assert(x2==2, "prefix increment 4");
     }
     f1();
     
-    class C1() { shared variable Integer i := 1; }
+    class C1() {
+        shared variable Integer i := 1;
+        variable Integer x0 := 1;
+        shared Integer x { return x0; } assign x { x0 := x; }
+    }
     C1 c1 = C1();
     variable Integer i3 := 0;
     C1 f2() {
@@ -237,9 +247,12 @@ void testIncDecOperators() {
         return c1;
     }
     Integer i4 = ++f2().i;
-    assert(i4==2, "prefix increment");
-    assert(c1.i==2, "prefix increment");
-    assert(i3==1, "prefix increment");
+    Integer x4 = ++f2().x;
+    assert(i4==2, "prefix increment 5");
+    assert(c1.i==2, "prefix increment 6");
+    assert(x4==2, "prefix increment 7");
+    assert(c1.x==2, "prefix increment 8");
+    assert(i3==2, "prefix increment 9");
     
     void f3() {
         Integer i2 = --i1;
@@ -251,19 +264,25 @@ void testIncDecOperators() {
     Integer i5 = --f2().i;
     assert(i5==1, "prefix decrement");
     assert(c1.i==1, "prefix decrement");
-    assert(i3==2, "prefix decrement");
+    assert(i3==3, "prefix decrement");
     
     void f4() {
         Integer i2 = i1++;
-        assert(i1==2, "postfix increment");
-        assert(i2==1, "postfix increment");
+        Integer x2 = x++;
+        assert(i1==2, "postfix increment 1");
+        assert(i2==1, "postfix increment 2");
+        assert(x==3, "postfix increment 3");
+        assert(x2==2, "postfix increment 4");
     }
     f4();
     
     Integer i6 = f2().i++;
-    assert(i6==1, "postfix increment");
-    assert(c1.i==2, "postfix increment");
-    assert(i3==3, "postfix increment");
+    Integer x6 = f2().x++;
+    assert(i6==1, "postfix increment 5");
+    assert(c1.i==2, "postfix increment 6");
+    assert(x6==2, "postfix increment 7 ");
+    assert(c1.x==3, "postfix increment 8 ");
+    assert(i3==5, "postfix increment 9");
     
     void f5() {
         Integer i2 = i1--;
@@ -275,7 +294,7 @@ void testIncDecOperators() {
     Integer i7 = f2().i--;
     assert(i7==2, "postfix decrement");
     assert(c1.i==1, "postfix decrement");
-    assert(i3==4, "postfix decrement");
+    assert(i3==6, "postfix decrement");
 }
 
 void testArithmeticAssignOperators() {
