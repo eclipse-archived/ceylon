@@ -12,7 +12,7 @@ var $true,$false,$empty,$finished,IdentifiableObject,Iterator,exports;//IGNORE
 function String$(value,size) {
     var that = new String$.$$;
     that.value = value;
-    that.codePoints = (size===undefined) ? countCodepoints(value) : size;
+    that.codePoints = size;
     return that;
 }
 initTypeProto(String$, 'ceylon.language.String', Object$, List, Comparable, Ranged, FixedSized,
