@@ -318,13 +318,13 @@ public class RefinementVisitor extends Visitor {
 
     private void checkUnshared(Tree.Declaration that, Declaration dec) {
         if (dec.isActual()) {
-            that.addError("actual member is not shared", 700);
+            that.addError("actual member is not shared", 701);
         }
         if (dec.isFormal()) {
-            that.addError("formal member is not shared", 700);
+            that.addError("formal member is not shared", 702);
         }
         if (dec.isDefault()) {
-            that.addError("default member is not shared", 700);
+            that.addError("default member is not shared", 703);
         }
     }
 
