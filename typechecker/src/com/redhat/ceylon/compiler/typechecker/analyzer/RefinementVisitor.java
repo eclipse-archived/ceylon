@@ -239,8 +239,14 @@ public class RefinementVisitor extends Visitor {
                     else if (refined instanceof TypedDeclaration) {
                         if ( ((TypedDeclaration) refined).isVariable() && 
                                 !((TypedDeclaration) dec).isVariable()) {
-                            that.addError("non-variable attribute refines a variable attribute: " + 
-                                    message(refined));
+                            if (dec instanceof Value) {
+                                that.addError("non-variable attribute refines a variable attribute: " + 
+                                        message(refined), 804);
+                            }
+                            else {
+                                that.addError("non-variable attribute refines a variable attribute: " + 
+                                        message(refined));
+                            }
                         }
                     }
                 }
@@ -274,15 +280,16 @@ public class RefinementVisitor extends Visitor {
                             message(refined));
             }
             for (int i=0; i<(refiningSize<=refinedSize ? refiningSize : refinedSize); i++) {
-                TypeParameter refinedTypParam = refinedTypeParams.get(i);
+                TypeParameter refinedTypeParam = refinedTypeParams.get(i);
                 TypeParameter refiningTypeParam = refiningTypeParams.get(i);
                 for (ProducedType t: refiningTypeParam.getSatisfiedTypes()) {
-                    checkAssignable(refinedTypParam.getType(), t, that, 
+                    checkAssignable(refinedTypeParam.getType(), t, that, 
                         "member type parameter " + refiningTypeParam.getName() +
-                        " has constraint which refined member type parameter " + refinedTypParam.getName() +
-                        " of " + message(refined) + " does not satisfy");
+                        " has upper bound which refined member type parameter " + 
+                        refinedTypeParam.getName() + " of " + message(refined) + 
+                        " does not satisfy");
                 }
-                typeArgs.add(refinedTypParam.getType());
+                typeArgs.add(refinedTypeParam.getType());
             }
         }
         ProducedReference refinedMember = ci.getType().getTypedReference(refined, typeArgs);
