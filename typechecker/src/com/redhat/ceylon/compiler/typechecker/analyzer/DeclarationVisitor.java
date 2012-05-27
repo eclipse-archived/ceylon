@@ -788,7 +788,7 @@ public class DeclarationVisitor extends Visitor {
         
         if ( d.isFormal() ) {
             if ( !(d.getContainer() instanceof ClassOrInterface) ) {
-                that.addError("formal member does not belong to an interface or abstract class");
+                that.addError("formal member does not belong to an interface or abstract class", 1100);
             }
             else if (!( (ClassOrInterface) d.getContainer() ).isAbstract() ) {
                 that.addError("formal member belongs to a concrete class", 900);
@@ -799,7 +799,7 @@ public class DeclarationVisitor extends Visitor {
                 !(that instanceof Tree.AttributeDeclaration) && 
                 !(that instanceof Tree.MethodDeclaration) &&
                 !(that instanceof Tree.ClassDefinition)) {
-            that.addError("formal member may not have a body");
+            that.addError("formal member may not have a body", 1100);
         }
         
         /*if ( !d.isFormal() && 
