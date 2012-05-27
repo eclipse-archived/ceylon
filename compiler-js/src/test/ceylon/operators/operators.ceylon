@@ -299,14 +299,25 @@ void testIncDecOperators() {
 
 void testArithmeticAssignOperators() {
     variable Integer i1 := 1;
+    variable Integer x0 := 1;
+    Integer x { return x0; } assign x { x0:=x; } 
     i1 += 10;
-    assert(i1==11, "+= operator");
+    x += 10;
+    assert(i1==11, "+= operator 1");
+    assert(x==11, "+= operator 2");
     
     variable Integer i2 := (i1 += -5);
-    assert(i2==6, "+= operator");
-    assert(i1==6, "+= operator");
+    variable Integer x2 := (x += -5);
+    assert(i2==6, "+= operator 3");
+    assert(i1==6, "+= operator 4");
+    assert(x2==6, "+= operator 5");
+    assert(x==6, "+= operator 6");
     
-    class C1() { shared variable Integer i := 1; }
+    class C1() {
+        shared variable Integer i := 1;
+        variable Integer x0 := 1;
+        shared Integer x { return x0; } assign x { x0:=x; }
+    }
     C1 c1 = C1();
     variable Integer i3 := 0;
     C1 f() {
@@ -315,9 +326,12 @@ void testArithmeticAssignOperators() {
     }
     
     i2 := (f().i += 11);
+    x2 := (f().x += 11);
     assert(i2==12, "+= operator");
     assert(c1.i==12, "+= operator");
-    assert(i3==1, "+= operator");
+    assert(x2==12, "+= operator");
+    assert(c1.x==12, "+= operator");
+    assert(i3==2, "+= operator");
     
     i2 := (i1 -= 14);
     assert(i1==-8, "-= operator");

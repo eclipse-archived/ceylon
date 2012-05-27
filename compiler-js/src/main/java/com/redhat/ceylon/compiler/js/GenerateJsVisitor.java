@@ -1896,12 +1896,17 @@ public class GenerateJsVisitor extends Visitor
                 lhsPath += '.';
             }
 
+            boolean simpleSetter = hasSimpleGetterSetter(lhsDecl);
             String svar = accessDirectly(lhsDecl)
                     ? names.name(lhsDecl) : (names.getter(lhsDecl)+"()");
+            if (!simpleSetter) { out("("); }
             out(lhsPath, names.setter(lhsDecl), "(", lhsPath,
                     svar, ".", functionName, "(");
             that.getRightTerm().visit(this);
             out("))");
+            if (!simpleSetter) {
+                out(",", lhsPath, svar, ")");
+            }
         } else if (lhs instanceof QualifiedMemberExpression) {
             QualifiedMemberExpression lhsQME = (QualifiedMemberExpression) lhs;
             if (isNative(lhsQME)) {
@@ -1919,13 +1924,17 @@ public class GenerateJsVisitor extends Visitor
                 out("))");
             } else {
                 String lhsPrimaryVar = createRetainedTempVar();
+                String member = names.getter(lhsQME.getDeclaration()) + "()";
                 out("(", lhsPrimaryVar, "=");
                 lhsQME.getPrimary().visit(this);
                 out(",", lhsPrimaryVar, ".", names.setter(lhsQME.getDeclaration()), "(",
-                        lhsPrimaryVar, ".", names.getter(lhsQME.getDeclaration()), "().",
-                        functionName, "(");
+                        lhsPrimaryVar, ".", member, ".", functionName, "(");
                 that.getRightTerm().visit(this);
-                out(")))");
+                out("))");
+                if (!hasSimpleGetterSetter(lhsQME.getDeclaration())) {
+                    out(",", lhsPrimaryVar, ".", member);
+                }
+                out(")");
             }
         }
     }
