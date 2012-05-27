@@ -124,7 +124,7 @@ public class Unit {
     
     public Map<String, DeclarationWithProximity> getMatchingImportedDeclarations(String startingWith, int proximity) {
     	Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
-        for (Import i: getImports()) {
+        for (Import i: new ArrayList<Import>(getImports())) {
             if (i.getAlias()!=null &&
                     i.getAlias().toLowerCase().startsWith(startingWith.toLowerCase())) {
                 result.put(i.getAlias(), new DeclarationWithProximity(i, proximity));
