@@ -36,6 +36,8 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -327,9 +329,6 @@ public class DeclarationVisitor extends Visitor {
         if (that.getType() instanceof Tree.ValueModifier) {
             that.getType().addError("methods may not be declared using the keyword value");
         }
-        if (that.getType() instanceof Tree.FunctionModifier && m.isToplevel()) {
-            that.getType().addError("toplevel methods may not be declared using the keyword function", 200);
-        }
         for (TypeParameter tp: m.getTypeParameters()) {
             if (tp.isSequenced()) {
                 that.addError("sequenced type parameters for methods not yet supported");
@@ -341,10 +340,7 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.AnyAttribute that) {
         super.visit(that);
         if (that.getType() instanceof Tree.FunctionModifier) {
-            that.getType().addError("attributes may not be declared using the keyword function", 200);
-        }
-        if (that.getType() instanceof Tree.ValueModifier && that.getDeclarationModel().isToplevel()) {
-            that.getType().addError("toplevel attributes may not be declared using the keyword value", 200);
+            that.getType().addError("attributes may not be declared using the keyword function");
         }
     }
 
@@ -451,16 +447,62 @@ public class DeclarationVisitor extends Visitor {
         if ( v.isInterfaceMember() && !v.isFormal()) {
             that.addError("interfaces may not have simple attributes");
         }
-        if ( v.isFormal() && that.getSpecifierOrInitializerExpression()!=null ) {
+        SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
+        if ( v.isFormal() && sie!=null ) {
             that.addError("formal attributes may not have a value");
+        }
+        if (that.getType() instanceof Tree.ValueModifier) {
+            if (v.isToplevel()) {
+                if (sie==null) {
+                    that.getType().addError("toplevel attribute must explicitly specify a type");
+                }
+                else {
+                    that.getType().addError("toplevel attribute must explicitly specify a type", 200);
+                }
+            }
+            else if (v.isShared()) {
+                that.getType().addError("shared attribute must explicitly specify a type", 200);
+            }
+            else if (sie==null) {
+                that.getType().addError("attribute must specify an explicit type or definition", 200);
+            }
         }
     }
 
     @Override
     public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
-        if ( that.getDeclarationModel().isFormal() && that.getSpecifierExpression()!=null ) {
+        SpecifierExpression sie = that.getSpecifierExpression();
+        if ( that.getDeclarationModel().isFormal() && sie!=null ) {
             that.addError("formal methods may not have a method reference");
+        }
+        Method m = that.getDeclarationModel();
+        if (that.getType() instanceof Tree.FunctionModifier) {
+            if (m.isToplevel()) {
+                if (sie==null) {
+                    that.getType().addError("toplevel method must explicitly specify a return type");
+                }
+                else {
+                    that.getType().addError("toplevel method must explicitly specify a return type", 200);
+                }
+            }
+            else if (m.isShared()) {
+                that.getType().addError("shared method must explicitly specify a return type", 200);
+            }
+        }
+    }
+            
+    @Override
+    public void visit(Tree.MethodDefinition that) {
+        super.visit(that);
+        Method m = that.getDeclarationModel();
+        if (that.getType() instanceof Tree.FunctionModifier) {
+            if (m.isToplevel()) {
+                that.getType().addError("toplevel method must explicitly specify a return type", 200);
+            }
+            else if (m.isShared()) {
+                that.getType().addError("shared method must explicitly specify a return type", 200);
+            }
         }
     }
             
@@ -472,6 +514,14 @@ public class DeclarationVisitor extends Visitor {
         Scope o = enterScope(g);
         super.visit(that);
         exitScope(o);
+        if (that.getType() instanceof Tree.ValueModifier) {
+            if (g.isToplevel()) {
+                that.getType().addError("toplevel attribute must explicitly specify a type", 200);
+            }
+            else if (g.isShared()) {
+                that.getType().addError("shared attribute must explicitly specify a type", 200);
+            }
+        }
     }
     
     @Override
@@ -688,16 +738,16 @@ public class DeclarationVisitor extends Visitor {
         Tree.AnnotationList al = that.getAnnotationList();
         if (hasAnnotation(al, "shared")) {
             if (that instanceof Tree.AttributeSetterDefinition) {
-                that.addError("setters may not be annotated shared");
+                that.addError("setters may not be annotated shared", 1201);
             }
             else if (that instanceof Tree.TypedDeclaration && !(that instanceof Tree.ObjectDefinition)) {
                 Tree.Type t =  ((Tree.TypedDeclaration) that).getType();
-                if (t instanceof Tree.ValueModifier || t instanceof Tree.FunctionModifier) {
+                /*if (t instanceof Tree.ValueModifier || t instanceof Tree.FunctionModifier) {
                     t.addError("shared declarations must explicitly specify a type", 200);
                 }
-                else {
+                else {*/
                     model.setShared(true);
-                }
+                //}
             }
             else {
                 model.setShared(true);
@@ -705,7 +755,7 @@ public class DeclarationVisitor extends Visitor {
         }
         if (hasAnnotation(al, "default")) {
             if (that instanceof Tree.ObjectDefinition) {
-                that.addError("object declarations may not be default");
+                that.addError("object declarations may not be default", 1313);
             }
             else {
                 model.setDefault(true);
@@ -713,7 +763,7 @@ public class DeclarationVisitor extends Visitor {
         }
         if (hasAnnotation(al, "formal")) {
             if (that instanceof Tree.ObjectDefinition) {
-                that.addError("object declarations may not be formal");
+                that.addError("object declarations may not be formal", 1312);
             }
             else {
                 model.setFormal(true);
@@ -725,14 +775,14 @@ public class DeclarationVisitor extends Visitor {
         if (hasAnnotation(al, "abstract")) {
             if (model instanceof Class) {
                 if (model instanceof ClassAlias) {
-                    that.addError("aliases may not be annotated abstract");
+                    that.addError("aliases may not be annotated abstract", 1600);
                 }
                 else {
                     ((Class) model).setAbstract(true);
                 }
             }
             else {
-                that.addError("declaration is not a class, and may not be abstract");
+                that.addError("declaration is not a class, and may not be abstract", 1600);
             }
         }
         if (hasAnnotation(al, "variable")) {
@@ -743,7 +793,7 @@ public class DeclarationVisitor extends Visitor {
                 that.addError("parameter may not be variable: " + model.getName());
             }
             else {
-                that.addError("declaration is not a value, and may not be variable");
+                that.addError("declaration is not a value, and may not be variable", 1500);
             }
         }
         

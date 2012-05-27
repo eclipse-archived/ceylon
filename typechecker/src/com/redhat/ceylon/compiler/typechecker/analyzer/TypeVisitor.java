@@ -657,9 +657,6 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);
         Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
-        if (sie==null && that.getType() instanceof Tree.ValueModifier) {
-            that.getType().addError("attribute must specify an explicit type or definition", 200);
-        }
         TypedDeclaration dec = that.getDeclarationModel();
         if (dec!=null) {
             Scope s = dec.getContainer();
