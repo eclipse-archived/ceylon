@@ -1565,7 +1565,7 @@ shared choice TransactionPropagationStyle
         
         <itemizedlist>
             <listitem>
-                <para>a block of code, or</para>
+                <para>a block of code,</para>
             </listitem>
             <listitem>
                 <para>a reference to another method, or</para>
@@ -1575,6 +1575,9 @@ shared choice TransactionPropagationStyle
             </listitem>
         </itemizedlist>
         
+        <para>If a method is referenced by a parameter, it must not specify any 
+        implementation.</para>
+
         <!--
         <para>A member method body may invoke, evaluate or assign members of the instance
         being invoked&mdash;the current instance of the class which defines the 
@@ -2160,8 +2163,10 @@ else {
         must (directly or indirectly) extend the class <literal>IdentifiableObject</literal> 
         defined in <literal>ceylon.language</literal>.</para>
         
+        <!--
         <para>An attribute of type <literal>Gettable</literal> or <literal>Settable</literal> 
         may not be <literal>variable</literal>.</para>
+        -->
         
         <!--<section id="attributebodies">
             <title>Attribute bodies</title>-->
@@ -2188,8 +2193,8 @@ else {
             <title>Simple attributes and locals</title>
             
         <para>A simple attribute defines state. The value of a simple attribute or local
-        may be specified or initialized as part of the declaration, or via a later 
-        specification statement or assignment.</para>
+        may be specified or initialized as part of the declaration, via a later 
+        specification statement or assignment, or via a parameter that references it.</para>
         
         <programlisting>SimpleAttribute: AttributeHeader ( (Specifier | Initializer)? ";" | NamedArguments )</programlisting>
         
@@ -2275,10 +2280,10 @@ else {
             
             <programlisting>String greeting;
 switch (language)
-case ("en") {
+case (en) {
     greeting = "Hello";
 }
-case ("es") {
+case (es) {
     greeting = "Hola";
 }
 else {

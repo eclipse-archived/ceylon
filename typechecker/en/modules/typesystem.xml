@@ -3142,7 +3142,9 @@ SequencedParam?
                 parameters of its own, or</para>
             </listitem>
             <listitem>
-                <para>a named reference to a simple attribute or local.</para>
+                <para>a named reference to a forward-declared simple attribute, local, or 
+                method that directly occurs in the body that immediately follows the parameter 
+                list.</para>
             </listitem>
         </itemizedlist>
         
@@ -3154,9 +3156,11 @@ SequencedParam?
         assigned to within the body of the method or class.</para-->
                 
         <para>In the case of a reference, the name of the parameter must be the name of a 
-        simple attribute or local of the method or class it parameterizes, and the type of the 
-        parameter is the type of this simple attribute or local. Any argument to the parameter 
-        is used as the initial value of the attribute or local to which it refers.</para>
+        forward-declared simple attribute, local, or method of the method or class it 
+        parameterizes, and the type of the parameter is the type of this simple attribute or 
+        local, or the callable type of the method. Any argument to the parameter is used as the 
+        specification of the value of the attribute or local to which it refers, or as the 
+        implementation of the method to which it refers.</para>
         
         <programlisting>class Person(name, age=0) {
     shared String name;
