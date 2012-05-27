@@ -7,10 +7,12 @@ interface InitializerParams {
         print(bar);
     }
 
-    class Foo(foo, bar, @error fum, qux) {
+    class Foo(foo, bar, @error fum, qux, fo, fi) {
         String foo;
         shared String bar;
         String qux();
+        @error value fo;
+        @error function fi();
     }
 
     abstract class Bar(foo, bar, @error baz, @error fum) {
@@ -19,9 +21,11 @@ interface InitializerParams {
         shared formal String baz;
     }
 
-    void foo(foo, @error fum, qux) {
+    void foo(foo, @error fum, qux, fo, fi) {
         String foo;
         String qux();
+        @error value fo;
+        @error function fi();
     }
     
     void bar(foo) {
