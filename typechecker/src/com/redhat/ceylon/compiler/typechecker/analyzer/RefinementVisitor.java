@@ -160,7 +160,7 @@ public class RefinementVisitor extends Visitor {
             
             if (!toplevel && !member) {
                 if (dec.isShared()) {
-                    that.addError("shared declaration is not a member of a class, interface, or package");
+                    that.addError("shared declaration is not a member of a class, interface, or package", 1200);
                 }
             }
             
@@ -169,7 +169,7 @@ public class RefinementVisitor extends Visitor {
                     dec instanceof ClassOrInterface;
             if (!mayBeShared) {
                 if (dec.isShared()) {
-                    that.addError("shared member is not a method, attribute, class, or interface");
+                    that.addError("shared member is not a method, attribute, class, or interface", 1200);
                 }
             }
             
@@ -208,13 +208,13 @@ public class RefinementVisitor extends Visitor {
         if (dec.isFormal() && ci instanceof Class) {
             Class c = (Class) ci;
             if (!c.isAbstract() && !c.isFormal()) {
-                that.addError("formal member belongs to non-abstract, non-formal class");
+                that.addError("formal member belongs to non-abstract, non-formal class", 1100);
             }
         }
         List<Declaration> others = ci.getInheritedMembers( dec.getName() );
         if (others.isEmpty()) {
             if (dec.isActual()) {
-                that.addError("actual member does not refine any inherited member");
+                that.addError("actual member does not refine any inherited member", 1300);
             }
         }
         else {
@@ -331,25 +331,25 @@ public class RefinementVisitor extends Visitor {
     private void checkNonrefinableDeclaration(Tree.Declaration that,
             Declaration dec) {
         if (dec.isActual()) {
-            that.addError("actual declaration is not a getter, simple attribute, or class");
+            that.addError("actual declaration is not a getter, simple attribute, or class", 1301);
         }
         if (dec.isFormal()) {
-            that.addError("formal declaration is not a getter, simple attribute, or class");
+            that.addError("formal declaration is not a getter, simple attribute, or class", 1302);
         }
         if (dec.isDefault()) {
-            that.addError("default declaration is not a getter, simple attribute, or class");
+            that.addError("default declaration is not a getter, simple attribute, or class", 1303);
         }
     }
 
     private void checkNonMember(Tree.Declaration that, Declaration dec) {
         if (dec.isActual()) {
-            that.addError("actual declaration is not a member of a class or interface");
+            that.addError("actual declaration is not a member of a class or interface", 1301);
         }
         if (dec.isFormal()) {
-            that.addError("formal declaration is not a member of a class or interface");
+            that.addError("formal declaration is not a member of a class or interface", 1302);
         }
         if (dec.isDefault()) {
-            that.addError("default declaration is not a member of a class or interface");
+            that.addError("default declaration is not a member of a class or interface", 1303);
         }
     }
 
