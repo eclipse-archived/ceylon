@@ -114,6 +114,12 @@ public class TypeVisitor extends Visitor {
         else if (o.isWildcardImport()) {
             unit.getImports().remove(o);
             il.getImports().remove(o);
+            if (o.getDeclaration().equals(dec)) {
+                //this case only happens in the IDE,
+                //due to reuse of the Unit
+                unit.getImports().add(i);
+                il.getImports().add(i);
+            }
         }
     }
 
