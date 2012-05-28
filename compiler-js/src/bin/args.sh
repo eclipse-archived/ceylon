@@ -17,7 +17,7 @@ done
 # Set CEYLON_HOME if not already set by the user
 if test -z "$CEYLON_HOME"
 then
-    CEYLON_HOME="$(dirname "$PRG)")/.."
+    CEYLON_HOME="$HOME/.ceylon"
 fi
 
 # Set CEYLON_REPO if not already set
