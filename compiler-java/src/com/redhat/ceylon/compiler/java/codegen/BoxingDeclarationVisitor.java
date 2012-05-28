@@ -20,12 +20,13 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
-import java.util.Iterator;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -82,13 +83,32 @@ public class BoxingDeclarationVisitor extends Visitor {
                 || refinedParameterLists.isEmpty())
             return;
 
-        Iterator<Parameter> parameters = methodParameterLists.get(0).getParameters().iterator();
-        for(Parameter refinedParam : refinedParameterLists.get(0).getParameters()){
-            Parameter param = parameters.next();
-            setBoxingState(param, refinedParam);
-        }
+        boxParameterLists(methodParameterLists, refinedParameterLists);
     }
     
+    private void boxParameterLists(List<ParameterList> paramLists, List<ParameterList> refinedParamLists) {
+        if (paramLists.size() != refinedParamLists.size()) {
+            throw new RuntimeException();
+        }
+        for (int ii = 0; ii < paramLists.size(); ii++) {
+            ParameterList paramList = paramLists.get(ii);
+            ParameterList refinedParamList = refinedParamLists.get(ii);
+            if (paramList.getParameters().size() != 
+                    refinedParamList.getParameters().size()) {
+                throw new RuntimeException();
+            }
+            for (int jj = 0; jj < paramList.getParameters().size(); jj++) {
+                Parameter param = paramList.getParameters().get(jj);
+                Parameter refinedParam = refinedParamList.getParameters().get(jj);
+                if (param instanceof Functional) {
+                    boxParameterLists(((Functional)param).getParameterLists(),
+                            ((Functional)refinedParam).getParameterLists());
+                }
+                setBoxingState(param, refinedParam);
+            }
+        }
+    }
+
     @Override
     public void visit(ClassDefinition that) {
         super.visit(that);
@@ -100,10 +120,7 @@ public class BoxingDeclarationVisitor extends Visitor {
         // deal with invalid input
         if(parameterLists.isEmpty())
             return;
-        List<Parameter> parameters = parameterLists.get(0).getParameters();
-        for(Parameter param : parameters){
-            setBoxingState(param, param);
-        }
+        boxParameterLists(parameterLists, parameterLists);
     }
     
     private void setBoxingState(TypedDeclaration declaration, TypedDeclaration refinedDeclaration) {
@@ -127,7 +144,8 @@ public class BoxingDeclarationVisitor extends Visitor {
             // inherit
             declaration.setUnboxed(refinedDeclaration.getUnboxed());
         }else if((transformer.isCeylonBasicType(type) || Decl.isUnboxedVoid(declaration))
-           && !(refinedDeclaration.getTypeDeclaration() instanceof TypeParameter)){
+           && !(refinedDeclaration.getTypeDeclaration() instanceof TypeParameter)
+           && !(refinedDeclaration.getContainer() instanceof FunctionalParameter)){
             declaration.setUnboxed(true);
         }else
             declaration.setUnboxed(false);
