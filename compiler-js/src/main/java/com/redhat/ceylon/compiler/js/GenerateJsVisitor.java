@@ -1590,26 +1590,51 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(AssignOp that) {
         boolean paren=false;
+        String returnValue = null;
         if (that.getLeftTerm() instanceof BaseMemberExpression) {
             BaseMemberExpression bme = (BaseMemberExpression) that.getLeftTerm();
-            qualify(that, bme.getDeclaration());
+            Declaration bmeDecl = bme.getDeclaration();
+            boolean simpleSetter = hasSimpleGetterSetter(bmeDecl);
+            if (!simpleSetter) {
+                out("(");
+            }
+            String path = qualifiedPath(that, bmeDecl);
+            if (path.length() > 0) { path += '.'; }
+            out(path);
             if (isNative(bme.getDeclaration())) {
-                out(bme.getDeclaration().getName());
+                out(bmeDecl.getName());
                 out("=");
             } else {
-                out(names.setter(bme.getDeclaration()));
+                out(names.setter(bmeDecl));
                 out("(");
-                paren = !(bme.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter);
+                if (!simpleSetter) {
+                    returnValue = accessDirectly(bmeDecl)
+                            ? (path + names.name(bmeDecl))
+                            : (path + names.getter(bmeDecl) + "()");
+                }
+                paren = true;//!(bmeDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter);
             }
         } else if (that.getLeftTerm() instanceof QualifiedMemberExpression) {
             QualifiedMemberExpression qme = (QualifiedMemberExpression)that.getLeftTerm();
-            super.visit(qme);
+            boolean simpleSetter = hasSimpleGetterSetter(qme.getDeclaration());
+            String lhsVar = null;
+            if (!simpleSetter) {
+                lhsVar = createRetainedTempVar();
+                out("(", lhsVar, "=");
+                super.visit(qme);
+                out(",", lhsVar);
+            } else {
+                super.visit(qme);
+            }
             if (isNative(qme.getDeclaration())) {
                 out(".", qme.getDeclaration().getName());
                 out("=");
             } else {
                 out(".", names.setter(qme.getDeclaration()));
                 out("(");
+                if (!simpleSetter) {
+                    returnValue = lhsVar + "." + names.getter(qme.getDeclaration()) + "()";
+                }
                 paren = true;
             }
         }
@@ -1618,6 +1643,9 @@ public class GenerateJsVisitor extends Visitor
         boxUnboxEnd(boxType);
         if (paren) {
             out(")");
+        }
+        if (returnValue != null) {
+            out(",", returnValue, ")");
         }
     }
 

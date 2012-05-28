@@ -327,11 +327,11 @@ void testArithmeticAssignOperators() {
     
     i2 := (f().i += 11);
     x2 := (f().x += 11);
-    assert(i2==12, "+= operator");
-    assert(c1.i==12, "+= operator");
-    assert(x2==12, "+= operator");
-    assert(c1.x==12, "+= operator");
-    assert(i3==2, "+= operator");
+    assert(i2==12, "+= operator 7");
+    assert(c1.i==12, "+= operator 8");
+    assert(x2==12, "+= operator 9");
+    assert(c1.x==12, "+= operator 10");
+    assert(i3==2, "+= operator 11");
     
     i2 := (i1 -= 14);
     assert(i1==-8, "-= operator");
@@ -350,6 +350,38 @@ void testArithmeticAssignOperators() {
     assert(i2==1, "%= operator");
 }
 
+void testAssignmentOperator() {
+    variable Integer i1 := 1;
+    variable Integer i2 := 2;
+    variable Integer i3 := 3;
+    assert((i1:=i2:=i3)==3, "assignment 1");
+    assert(i1==3, "assignment 2");
+    assert(i2==3, "assignment 3");
+    
+    Integer x1 { return i1; } assign x1 { i1 := x1; }
+    Integer x2 { return i2; } assign x2 { i2 := x2; }
+    Integer x3 { return i3; } assign x3 { i3 := x3; }
+    i1 := 1;
+    i2 := 2;
+    assert((x1:=x2:=x3)==3, "assignment 4");
+    assert(x1==3, "assignment 5");
+    assert(x2==3, "assignment 6");
+    
+    class C() {
+        shared variable Integer i := 1;
+        variable Integer x0 := 1;
+        shared Integer x { return x0; } assign x { x0:=x; }
+    }
+    C o1 = C();
+    C o2 = C();
+    assert((o1.i:=o2.i:=3)==3, "assignment 7");
+    assert(o1.i==3, "assignment 8");
+    assert(o2.i==3, "assignment 9");
+    assert((o1.x:=o2.x:=3)==3, "assignment 10");
+    assert(o1.x==3, "assignment 11");
+    assert(o2.x==3, "assignment 12");
+}
+
 shared void test() {
     testIntegerOperators();
     testFloatOperators();
@@ -360,5 +392,6 @@ shared void test() {
     testNullsafeOperators();
     testIncDecOperators();
     testArithmeticAssignOperators();
+    testAssignmentOperator();
     results();
 }
