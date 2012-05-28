@@ -143,7 +143,8 @@ public class BoxingDeclarationVisitor extends Visitor {
             declaration.setUnboxed(refinedDeclaration.getUnboxed());
         }else if((transformer.isCeylonBasicType(type) || Decl.isUnboxedVoid(declaration))
            && !(refinedDeclaration.getTypeDeclaration() instanceof TypeParameter)
-           && !(refinedDeclaration.getContainer() instanceof FunctionalParameter)){
+           && !(refinedDeclaration.getContainer() instanceof FunctionalParameter)
+           && !(refinedDeclaration instanceof Functional && Decl.isMpl((Functional)refinedDeclaration))){
             declaration.setUnboxed(true);
         }else
             declaration.setUnboxed(false);
