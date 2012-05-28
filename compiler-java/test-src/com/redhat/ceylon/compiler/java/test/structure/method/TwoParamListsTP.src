@@ -5,7 +5,7 @@ final class twoParamListsTP {
     private twoParamListsTP() {
     }
     
-    static <T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<? super T> & .ceylon.language.Invertable<? extends T>>.ceylon.language.Callable<? extends .java.lang.Object> twoParamListsTP(final .ceylon.language.String name) {
+    static <T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<? super T> & .ceylon.language.Invertable<? extends T>>.ceylon.language.Callable<? extends .java.lang.Object> twoParamListsTP(final .java.lang.String name) {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void>"){
             
             @.java.lang.Override
@@ -14,7 +14,7 @@ final class twoParamListsTP {
                 .java.lang.Object $elem$0;
                 for (.ceylon.language.Iterator<? extends T> $x$iter$1 = new .ceylon.language.Range<T>(i.getNegativeValue(), i).getIterator(); !(($elem$0 = $x$iter$1.next()) instanceof .ceylon.language.Finished); ) {
                     final T x = (T)$elem$0;
-                    .ceylon.language.print.print(.ceylon.language.String.instance("hello ").plus(name));
+                    .ceylon.language.print.print(.ceylon.language.String.instance("hello " + name));
                 }
                 return null;
             }
@@ -26,7 +26,7 @@ final class twoParamListsTP_simple {
     private twoParamListsTP_simple() {
     }
     
-    static <T extends .ceylon.language.Ordinal<? extends T>>.ceylon.language.Callable<? extends .java.lang.Object> twoParamListsTP_simple(final .ceylon.language.String name) {
+    static <T extends .ceylon.language.Ordinal<? extends T>>.ceylon.language.Callable<? extends .java.lang.Object> twoParamListsTP_simple(final .java.lang.String name) {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void>"){
             
             @.java.lang.Override
