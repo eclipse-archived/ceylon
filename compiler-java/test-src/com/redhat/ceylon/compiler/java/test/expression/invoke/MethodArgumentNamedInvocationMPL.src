@@ -1,0 +1,40 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+class MethodArgumentNamedInvocationMPL {
+    
+    private final void m1(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f) {
+        final .java.lang.String s = f.$call().$call(.ceylon.language.Integer.instance(1L)).toString();
+    }
+    
+    private final void m2(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
+        final .java.lang.Object v = f.$call().$call(.ceylon.language.Integer.instance(1L));
+    }
+    
+    private final void m3(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f) {
+        final .java.lang.String s = f.$call().$call(.ceylon.language.Integer.instance(1L)).toString();
+    }
+    
+    private final void m4(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
+        final .java.lang.Object v = f.$call().$call(.ceylon.language.Integer.instance(1L));
+    }
+    
+    private final void m5(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
+        final .java.lang.Object v = f.$call().$call(.ceylon.language.Integer.instance(1L));
+    }
+    
+    private final void m6(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
+        final .java.lang.Object v = f.$call().$call(.ceylon.language.Integer.instance(1L));
+    }
+    
+    private final void m7(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f) {
+        final .java.lang.String s = f.$call().$call(.ceylon.language.Integer.instance(1L)).toString();
+    }
+    
+    MethodArgumentNamedInvocationMPL() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.MethodArgumentNamedInvocationMPL();
+    }
+}
