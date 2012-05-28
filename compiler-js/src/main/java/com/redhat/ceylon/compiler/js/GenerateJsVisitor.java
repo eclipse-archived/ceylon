@@ -845,6 +845,26 @@ public class GenerateJsVisitor extends Visitor
             out(";");
             endLine();
             share(that.getDeclarationModel(), false);
+        } else {
+            //Check for refinement of simple param declaration
+            Method m = that.getDeclarationModel();
+            if (m == that.getScope()) {
+                if (m.getContainer() instanceof Class && m.isClassOrInterfaceMember()) {
+                    //Declare the method just by pointing to the param function
+                    final String name = findParameterByName((Class)m.getContainer(), m.getName());
+                    if (name != null) {
+                        self((Class)m.getContainer());
+                        out(".", m.getName(), "=", name, ";");
+                        endLine();
+                    }
+                } else if (m.getContainer() instanceof Method) {
+                    //Declare the function just by forcing the name we used in the param list
+                    final String name = findParameterByName((Method)m.getContainer(), m.getName());
+                    if (names != null) {
+                        names.forceName(m, name);
+                    }
+                }
+            }
         }
     }
 
@@ -894,8 +914,14 @@ public class GenerateJsVisitor extends Visitor
 
     private void initParameters(ParameterList params, TypeDeclaration typeDecl) {
         for (Parameter param : params.getParameters()) {
-            String paramName = names.name(param.getDeclarationModel());
-            if (param.getDefaultArgument() != null || param.getDeclarationModel().isSequenced()) {
+            com.redhat.ceylon.compiler.typechecker.model.Parameter pd = param.getDeclarationModel();
+            /*if (param instanceof ValueParameterDeclaration && ((ValueParameterDeclaration)param).getDeclarationModel().isHidden()) {
+                //TODO support new syntax for class and method parameters
+                //the declaration is actually different from the one we usually use
+                out("//HIDDEN! ", pd.getName(), "(", names.name(pd), ")"); endLine();
+            }*/
+            String paramName = names.name(pd);
+            if (param.getDefaultArgument() != null || pd.isSequenced()) {
                 out("if(", paramName, "===undefined){", paramName, "=");
                 if (param.getDefaultArgument() == null) {
                     out(clAlias, ".empty");
@@ -905,7 +931,7 @@ public class GenerateJsVisitor extends Visitor
                 out(";}");
                 endLine();
             }
-            if ((typeDecl != null) && param.getDeclarationModel().isCaptured()) {
+            if ((typeDecl != null) && pd.isCaptured()) {
                 self(typeDecl);
                 out(".", paramName, "=", paramName, ";");
                 endLine();
@@ -995,22 +1021,28 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
+    /** Looks up a parameter with the specified name in the parameter lists of the specified Functional;
+     * if found, returns the js identifier for that parameter. This is useful for hidden parameter declarations
+     * (or whatever the name is for the parameter syntax that only has a name). */
+    private String findParameterByName(Functional f, String name) {
+        for (com.redhat.ceylon.compiler.typechecker.model.ParameterList plist : f.getParameterLists()) {
+            for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : plist.getParameters()) {
+                if (name.equals(p.getName())) {
+                    return names.name(p);
+                }
+            }
+        }
+        return null;
+    }
+
     @Override
     public void visit(AttributeDeclaration that) {
         Value d = that.getDeclarationModel();
         //Check if the attribute corresponds to a class parameter
         //This is because of the new initializer syntax
         String classParam = null;
-        if (that.getScope() instanceof Class) {
-            Class container = (Class)that.getScope();
-            if (container.getParameterList() != null) {
-                for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : container.getParameterList().getParameters()) {
-                    if (p.getName().equals(d.getName())) {
-                        classParam = names.name(p);
-                        break;
-                    }
-                }
-            }
+        if (that.getScope() instanceof Functional) {
+            classParam = findParameterByName((Functional)that.getScope(), d.getName());
         }
         if (!d.isFormal()) {
             comment(that);
