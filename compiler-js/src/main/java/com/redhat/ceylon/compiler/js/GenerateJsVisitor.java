@@ -851,7 +851,7 @@ public class GenerateJsVisitor extends Visitor
             if (m == that.getScope()) {
                 if (m.getContainer() instanceof Class && m.isClassOrInterfaceMember()) {
                     //Declare the method just by pointing to the param function
-                    final String name = findParameterByName((Class)m.getContainer(), m.getName());
+                    final String name = names.name(((Class)m.getContainer()).getParameter(m.getName()));
                     if (name != null) {
                         self((Class)m.getContainer());
                         out(".", names.name(m), "=", name, ";");
@@ -859,7 +859,7 @@ public class GenerateJsVisitor extends Visitor
                     }
                 } else if (m.getContainer() instanceof Method) {
                     //Declare the function just by forcing the name we used in the param list
-                    final String name = findParameterByName((Method)m.getContainer(), m.getName());
+                    final String name = names.name(((Method)m.getContainer()).getParameter(m.getName()));
                     if (names != null) {
                         names.forceName(m, name);
                     }
@@ -1021,20 +1021,6 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    /** Looks up a parameter with the specified name in the parameter lists of the specified Functional;
-     * if found, returns the js identifier for that parameter. This is useful for hidden parameter declarations
-     * (or whatever the name is for the parameter syntax that only has a name). */
-    private String findParameterByName(Functional f, String name) {
-        for (com.redhat.ceylon.compiler.typechecker.model.ParameterList plist : f.getParameterLists()) {
-            for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : plist.getParameters()) {
-                if (name.equals(p.getName())) {
-                    return names.name(p);
-                }
-            }
-        }
-        return null;
-    }
-
     @Override
     public void visit(AttributeDeclaration that) {
         Value d = that.getDeclarationModel();
@@ -1042,7 +1028,7 @@ public class GenerateJsVisitor extends Visitor
         //This is because of the new initializer syntax
         String classParam = null;
         if (that.getScope() instanceof Functional) {
-            classParam = findParameterByName((Functional)that.getScope(), d.getName());
+            classParam = names.name(((Functional)that.getScope()).getParameter(d.getName()));
         }
         if (!d.isFormal()) {
             comment(that);
