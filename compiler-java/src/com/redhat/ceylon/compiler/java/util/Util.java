@@ -69,6 +69,10 @@ public class Util {
         // ERASURE
         return "hash".equals(name) || "string".equals(name);
     }
+    
+    public static boolean isSmall(TypedDeclaration declaration) {
+        return "hash".equals(declaration.getName());
+    }
 
     public static String quoteMethodNameIfProperty(Method method, AbstractTransformer gen) {
         String name = method.getName();

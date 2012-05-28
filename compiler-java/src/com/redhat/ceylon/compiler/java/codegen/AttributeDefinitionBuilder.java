@@ -69,7 +69,7 @@ public class AttributeDefinitionBuilder {
             typeFlags |= AbstractTransformer.NO_PRIMITIVES;
         }
         // Special erasure for the "hash" attribute which gets translated to hashCode()
-        if ("hash".equals(attrName) && owner.isCeylonInteger(nonWideningType)) {
+        if (Util.isSmall(attrType)) {
             typeFlags = AbstractTransformer.SMALL_TYPE;
         }
         

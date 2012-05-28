@@ -211,8 +211,7 @@ public class BoxingVisitor extends Visitor {
         if (term instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression leftTerm = (Tree.MemberOrTypeExpression)term;
             TypedDeclaration decl = (TypedDeclaration) leftTerm.getDeclaration();
-            if ("hash".equals(decl.getName())
-                    && transformer.typeFact().getObjectDeclaration().equals(decl.getRefinedDeclaration().getContainer())) {
+            if (Util.isSmall(decl)) {
                 ProducedType expectedType = decl.getTypeDeclaration().getType();
                 expectedType.setUnderlyingType("int");
                 leftTerm.setTypeModel(expectedType);
