@@ -854,7 +854,7 @@ public class GenerateJsVisitor extends Visitor
                     final String name = findParameterByName((Class)m.getContainer(), m.getName());
                     if (name != null) {
                         self((Class)m.getContainer());
-                        out(".", m.getName(), "=", name, ";");
+                        out(".", names.name(m), "=", name, ";");
                         endLine();
                     }
                 } else if (m.getContainer() instanceof Method) {
