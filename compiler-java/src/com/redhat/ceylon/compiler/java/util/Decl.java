@@ -316,7 +316,7 @@ public class Decl {
                 && ((Method)decl).isDeclaredVoid();
     }
     
-    public static boolean isMpl(Method decl) {
+    public static boolean isMpl(Functional decl) {
         return decl.getParameterLists().size() > 1;
     }
 }

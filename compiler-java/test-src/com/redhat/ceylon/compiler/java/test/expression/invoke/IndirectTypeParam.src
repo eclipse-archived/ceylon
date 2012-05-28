@@ -65,18 +65,24 @@ final class indirectTypeParam {
             private f3() {
             }
             
-            .ceylon.language.Callable<? extends .java.lang.Object> f3(final .ceylon.language.Integer i) {
+            .ceylon.language.Callable<? extends .java.lang.Object> f3(final long i) {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void>"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call() {
-                        return mpl.<.ceylon.language.Integer>mpl(i);
+                        return (
+                            let
+                            {
+                                mpl.<.ceylon.language.Integer>mpl(.ceylon.language.Integer.instance(i));
+                            }
+                            returning null;
+                        );
                     }
                 };
             }
         }
         final f3 f3 = new f3();
-        f3.f3(.ceylon.language.Integer.instance(1L)).$call();
+        f3.f3(1L).$call();
     }
     
     public static void main(.java.lang.String[] args) {

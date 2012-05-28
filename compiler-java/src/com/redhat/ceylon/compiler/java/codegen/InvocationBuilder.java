@@ -190,6 +190,9 @@ abstract class InvocationBuilder {
             }
         });
         
+        //result = gen.expressionGen().applyErasureAndBoxing(result, returnType, 
+        //        !unboxed, boxingStrategy, returnType);
+        
         return result;
     }
 
@@ -337,7 +340,7 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
 
     protected abstract String getParameterName(int argIndex);
 
-    protected abstract Boolean getParameterUnboxed(int argIndex);
+    protected abstract boolean getParameterUnboxed(int argIndex);
 
     protected abstract BoxingStrategy getParameterBoxingStrategy(int argIndex);
 
@@ -442,7 +445,7 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
     }
 
     @Override
-    protected Boolean getParameterUnboxed(int argIndex) {
+    protected boolean getParameterUnboxed(int argIndex) {
         return false;
     }
 
@@ -516,8 +519,8 @@ abstract class DirectInvocationBuilder extends SimpleInvocationBuilder {
     }
     
     @Override
-    protected Boolean getParameterUnboxed(int argIndex) {
-        return Boolean.TRUE.equals(getParameter(argIndex).getUnboxed());
+    protected boolean getParameterUnboxed(int argIndex) {
+        return getParameter(argIndex).getUnboxed();
     }
     
     @Override
