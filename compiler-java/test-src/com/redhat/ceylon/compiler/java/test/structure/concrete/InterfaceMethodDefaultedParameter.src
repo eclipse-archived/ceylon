@@ -43,15 +43,11 @@ interface I<T> {
 final class I$impl<T> {
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $this;
     
-    public final long m$i() {
-        return 1L;
-    }
-    
     private final void m() {
         $this.m();
     }
     
-    public final long m2$i() {
+    public final long m$i() {
         return 1L;
     }
     
@@ -59,7 +55,7 @@ final class I$impl<T> {
         return $this.m2();
     }
     
-    public final long m3$i() {
+    public final long m2$i() {
         return 1L;
     }
     
@@ -67,15 +63,15 @@ final class I$impl<T> {
         return $this.m3();
     }
     
-    public final long m3$n(final long i) {
-        return 2L * i;
-    }
-    
     private final long m3(final long i) {
         return $this.m3(i);
     }
     
-    public final long m4$n(final long i) {
+    public final long m3$i() {
+        return 1L;
+    }
+    
+    public final long m3$n(final long i) {
         return 2L * i;
     }
     
@@ -83,20 +79,24 @@ final class I$impl<T> {
         return $this.m4(i);
     }
     
-    public final <U>T m5$t(final long i) {
-        return null;
+    public final long m4$n(final long i) {
+        return 2L * i;
     }
     
     private final <U>long m5(final long i) {
         return $this.<U>m5(i);
     }
     
-    public final <U>U m5$u(final long i, final T t) {
+    private final <U>long m5(final long i, final T t) {
+        return $this.<U>m5(i, t);
+    }
+    
+    public final <U>T m5$t(final long i) {
         return null;
     }
     
-    private final <U>long m5(final long i, final T t) {
-        return $this.<U>m5(i, t);
+    public final <U>U m5$u(final long i, final T t) {
+        return null;
     }
     
     I$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $this) {

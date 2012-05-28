@@ -15,20 +15,20 @@ interface I1 {
 final class I1$impl {
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I1 $this;
     
-    public final long m1$i() {
-        return 0L;
-    }
-    
     private final .java.lang.String m1() {
         return $this.m1();
     }
     
-    public final boolean m1$b(final long i) {
-        return false;
-    }
-    
     private final .java.lang.String m1(final long i) {
         return $this.m1(i);
+    }
+    
+    public final long m1$i() {
+        return 0L;
+    }
+    
+    public final boolean m1$b(final long i) {
+        return false;
     }
     
     I1$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I1 $this) {
@@ -50,20 +50,20 @@ interface I2 {
 final class I2$impl {
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 $this;
     
-    public final long m2$i() {
-        return 0L;
-    }
-    
     private final .java.lang.String m2() {
         return $this.m2();
     }
     
-    public final boolean m2$b(final long i) {
-        return false;
-    }
-    
     private final .java.lang.String m2(final long i) {
         return $this.m2(i);
+    }
+    
+    public final long m2$i() {
+        return 0L;
+    }
+    
+    public final boolean m2$b(final long i) {
+        return false;
     }
     
     I2$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I2 $this) {

@@ -231,68 +231,68 @@ final class MethodWithDefaultParams2$impl {
         return $this.getProp();
     }
     
-    public final long f1$n() {
-        return 5L;
-    }
-    
     private final void f1() {
         $this.f1();
     }
     
-    public final .java.lang.String f2$s(final long n) {
-        return "test";
+    public final long f1$n() {
+        return 5L;
     }
     
     private final void f2(final long n) {
         $this.f2(n);
     }
     
-    public final long f3$n() {
-        return 5L;
+    public final .java.lang.String f2$s(final long n) {
+        return "test";
     }
     
     private final void f3() {
         $this.f3();
     }
     
-    public final long f3$m(final long n) {
-        return n;
-    }
-    
     private final void f3(final long n) {
         $this.f3(n);
     }
     
-    public final long f4$n() {
+    public final long f3$n() {
         return 5L;
+    }
+    
+    public final long f3$m(final long n) {
+        return n;
     }
     
     private final void f4() {
         $this.f4();
     }
     
-    public final long f4$m(final long n) {
-        return n + 1L;
-    }
-    
     private final void f4(final long n) {
         $this.f4(n);
     }
     
-    public final long f5$n() {
-        return $this.getProp();
+    public final long f4$n() {
+        return 5L;
+    }
+    
+    public final long f4$m(final long n) {
+        return n + 1L;
     }
     
     private final void f5() {
         $this.f5();
     }
     
-    public final long f6$n() {
+    public final long f5$n() {
         return $this.getProp();
     }
     
     private final void f6() {
         $this.f6();
+    }
+    
+    public final long f6$n() {
+        return $this.getProp();
     }
     
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> f6$seq(final long n) {
