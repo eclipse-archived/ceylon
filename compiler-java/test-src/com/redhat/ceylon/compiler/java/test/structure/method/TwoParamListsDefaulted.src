@@ -1,0 +1,53 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+public final class twoParamListsDefaulted {
+    
+    private twoParamListsDefaulted() {
+    }
+    
+    public static .ceylon.language.Callable<? extends .ceylon.language.String> twoParamListsDefaulted(final .java.lang.String firstName) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("ceylon.language.Callable<ceylon.language.String>"){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+                final .java.lang.String lastName = ((.ceylon.language.String)$param$0).toString();
+                return .ceylon.language.String.instance(firstName + " " + lastName);
+            }
+        };
+    }
+    
+    public static final .ceylon.language.Callable<? extends .ceylon.language.String> twoParamListsDefaulted() {
+        return (
+            let
+            {
+                .java.lang.String $ceylontmp$firstName$1 = twoParamListsDefaulted$firstName();
+            }
+            returning twoParamListsDefaulted($ceylontmp$firstName$1);
+        );
+    }
+    
+    public static final .java.lang.String twoParamListsDefaulted$firstName() {
+        return "John";
+    }
+}
+final class twoParamListsDefaulted_caller {
+    
+    private twoParamListsDefaulted_caller() {
+    }
+    
+    static void twoParamListsDefaulted_caller() {
+        .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted.twoParamListsDefaulted().$call(.ceylon.language.String.instance("Doe"));
+        (
+            let
+            {
+                .java.lang.String $arg$2$0 = .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted.twoParamListsDefaulted$firstName();
+            }
+            returning .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted.twoParamListsDefaulted($arg$2$0);
+        ).$call(.ceylon.language.String.instance("Doe"));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted_caller.twoParamListsDefaulted_caller();
+    }
+}

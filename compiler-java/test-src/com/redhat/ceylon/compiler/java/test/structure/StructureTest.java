@@ -399,8 +399,8 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("method/TwoParamLists");
     }
     @Test
-    public void testTwoParamListsString(){
-        compareWithJavaSource("method/TwoParamListsString");
+    public void testTwoParamListsDefaulted(){
+        compareWithJavaSource("method/TwoParamListsDefaulted");
     }
     @Test
     public void testThreeParamLists(){
