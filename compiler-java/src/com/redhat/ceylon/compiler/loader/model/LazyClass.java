@@ -92,8 +92,8 @@ public class LazyClass extends Class implements LazyContainer {
     }
     
     private void load() {
+        loadTypeParams();
         if(!isLoaded){
-            loadTypeParams();
             isLoaded = true;
             completer.complete(this);
         }

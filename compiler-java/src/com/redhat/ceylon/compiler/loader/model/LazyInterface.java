@@ -75,8 +75,8 @@ public class LazyInterface extends Interface implements LazyContainer {
     }
     
     private void load() {
+        loadTypeParams();
         if(!isLoaded){
-            loadTypeParams();
             isLoaded = true;
             completer.complete(this);
         }
