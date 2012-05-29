@@ -22,6 +22,8 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.sun.tools.javac.code.Flags.FINAL;
 
+import static com.redhat.ceylon.compiler.java.codegen.CodegenUtil.NameFlag.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -91,7 +93,7 @@ import com.sun.tools.javac.util.Position.LineMap;
 /**
  * Base class for all delegating transformers
  */
-public abstract class AbstractTransformer implements Transformation {
+public abstract class AbstractTransformer implements Transformation, LocalId {
     private Context context;
     private TreeMaker make;
     private Names names;
@@ -993,12 +995,13 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
     
-    private int getLocalId(Scope decl) {
+    @Override
+    public String getLocalId(Scope decl) {
         Integer id = ((AbstractTransformer)gen()).locals.get(decl);
         if (id == null) {
             throw new RuntimeException(decl + " has no local id");
         }
-        return id;
+        return String.valueOf(id);
     }
     
     private ClassDefinitionBuilder ccdb;
@@ -1014,114 +1017,11 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     String getFQDeclarationName(final Declaration decl) {
-        return getDeclarationName(decl, true, true);
+        return declName(decl, QUALIFIED);
     }
     
-    String getDeclarationName(final Declaration decl, boolean fqLocalInterface, boolean includePackage) {
-        int nmFlags = 0;
-        if (fqLocalInterface) {
-            nmFlags |= NM_FQ_LOCAL;
-        }
-        if (decl instanceof Interface) {
-            nmFlags |= NM_FOR_INTERFACE;
-        }
-        if (includePackage) {
-            nmFlags |= NM_INCLUDE_PACKAGE;
-        }
-        return declName(decl, nmFlags);
-    }
-    
-    private final static int NM_FOR_INTERFACE = 1<<0;
-    private final static int NM_FQ_LOCAL = 1<<1;
-    private final static int NM_INCLUDE_PACKAGE = 1<<2;
-    
-    /**
-     * Construct the Java name of the given declaration.
-     * @param decl The declaration
-     * @param fqLocalInterface Whether local declararations need to be fully qualified
-     * @param forInterface Whether an interface name is ultimately sought
-     */
-    private String declName(final Declaration decl, int nmFlags) {
-        final char sep = (nmFlags & NM_FOR_INTERFACE) != 0 ? '$' : '.';
-        final Scope container = decl.getContainer();
-        final StringBuilder sb = new StringBuilder();
-        if (decl instanceof TypeDeclaration
-                && container instanceof Package) { // a top level type
-            Package pkg = (Package)container;
-            TypeDeclaration td = (TypeDeclaration)decl;
-            if ((nmFlags & NM_INCLUDE_PACKAGE) != 0) {
-                sb.append('.').append(pkg.getQualifiedNameString()).append('.');
-            } 
-            sb.append(td.getName());
-        } else if (decl instanceof Class
-                && container instanceof Class) { // class inner to class
-            Class klass = (Class)decl;
-            sb.append(declName((Class)container, nmFlags)) 
-                .append(sep)
-                .append(klass.getName());
-        } else if (decl instanceof Class
-                && container instanceof Interface) { // class inner to interface
-            Class klass = (Class)decl;
-            Interface icont = (Interface)container;
-            if (Decl.isLocal(icont)) {
-                sb.append(klass.getName());
-            } else if (Decl.isToplevel(icont)) {
-                sb.append(declName((Declaration)container, nmFlags | NM_FOR_INTERFACE))
-                    .append((nmFlags & NM_FOR_INTERFACE) != 0 ? "" : "$impl")
-                    .append(sep)
-                    .append(klass.getName());
-            } else {
-                sb.append(declName((Declaration)container.getContainer(), nmFlags));
-                sb.append(sep)
-                    .append(declName((Declaration)container, (nmFlags & ~NM_INCLUDE_PACKAGE) | NM_FOR_INTERFACE ))
-                    .append((nmFlags & NM_FOR_INTERFACE) != 0 ? "" : "$impl")
-                    .append(sep)
-                    .append(klass.getName());
-            }
-        } else if (decl instanceof Interface
-                && container instanceof Class) { // interface inner to class
-            Interface iface = (Interface)decl;
-            sb.append(declName((Class)container, nmFlags)) 
-                .append(sep)
-                .append(iface.getName());
-        } else if (decl instanceof Interface
-                && container instanceof Interface) { // interface inner to interface
-            Interface iface = (Interface)decl;
-            sb.append(declName((Interface)container, nmFlags)) 
-                .append("$")
-                .append(iface.getName());
-        } else if ((nmFlags & NM_FOR_INTERFACE) != 0
-                && Decl.isLocalScope(container)) {// a local interface
-            final TypeDeclaration typeDecl = (TypeDeclaration)decl;
-            Scope nonLocal = container;
-            do {
-                nonLocal = nonLocal.getContainer();
-            } while (Decl.isLocalScope(nonLocal));
-            
-            sb.append(getLocalId(container)).append(sep).append(typeDecl.getName());
-            if ((nmFlags & NM_FQ_LOCAL) != 0) {
-                if (nonLocal instanceof Declaration) {
-                    sb.insert(0, sep)
-                        .insert(0, declName((Declaration)nonLocal, nmFlags));
-                } else if (nonLocal instanceof Package
-                        && (nmFlags & NM_INCLUDE_PACKAGE) != 0) {
-                    sb.insert(0, '.').insert(0, ((Package)nonLocal).getQualifiedNameString()).insert(0, '.');   
-                }
-            } else {
-                nonLocal = container.getContainer();
-                while (nonLocal instanceof TypeDeclaration) {
-                    sb.insert(0, sep)
-                    .insert(0, ((TypeDeclaration)nonLocal).getName());
-                    nonLocal = nonLocal.getContainer();
-                }
-            }
-        } else if ((nmFlags & NM_FOR_INTERFACE) == 0
-                && Decl.isLocalScope(container)) {
-            sb.append(decl.getName());    
-        } else { 
-            throw new RuntimeException();
-        }
-        return sb.toString();
+    String declName(final Declaration decl, CodegenUtil.NameFlag... flags) {
+        return CodegenUtil.declName(this, decl, flags);
     }
     
     private JCExpression makeDeclarationName(Declaration decl) {
@@ -1129,7 +1029,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     String getCompanionClassName(Declaration decl){
-        return getDeclarationName(decl, false, true) + "$impl";
+        return declName(decl, QUALIFIED, COMPANION);
     }
     
     /**

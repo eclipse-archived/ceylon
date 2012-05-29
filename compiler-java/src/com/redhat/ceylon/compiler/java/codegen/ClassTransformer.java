@@ -28,6 +28,8 @@ import static com.sun.tools.javac.code.Flags.PROTECTED;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
+import static com.redhat.ceylon.compiler.java.codegen.CodegenUtil.NameFlag.*;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -107,7 +109,7 @@ public class ClassTransformer extends AbstractTransformer {
         noteDecl(model);
         final String className;
         if (def instanceof Tree.AnyInterface) {
-            className = getDeclarationName(model, true, false);
+            className = declName(model, QUALIFIED).replaceFirst(".*\\.", "");
         } else {
             className = def.getIdentifier().getText();
         }
