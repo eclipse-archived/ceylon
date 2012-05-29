@@ -29,11 +29,62 @@ class MethodArgumentNamedInvocationMPL() {
                 return x.string;
             }
         };
-        /*m2{
+        
+        m2{
             void f()(Integer x) {
                 return;
             }
-        };*/
+        };
+        m2{
+            function f()(Integer x) {
+                return x.string;
+            }
+        };
+        
+        m3{
+            function f()(Integer x) {
+                return x.string;
+            }
+        };
+        
+        m4{
+            void f()(Integer x) {
+                return;
+            }
+        };
+        m4{
+            function f()(Integer x) {
+                return x.string;
+            }
+        };
+        
+        m5{
+            void f()(Integer x) {
+                return;
+            }
+        };
+        m5{
+            function f()(Integer x) {
+                return x.string;
+            }
+        };
+        
+        m6{
+            void f()(Integer x) {
+                return;
+            }
+        };
+        m6{
+            function f()(Integer x) {
+                return x.string;
+            }
+        };
+        
+        m7{
+            function f()(Integer x) {
+                return x.string;
+            }
+        };
         
     }
 }
