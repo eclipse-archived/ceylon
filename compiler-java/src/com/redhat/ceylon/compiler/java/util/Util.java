@@ -286,25 +286,6 @@ public class Util {
             return null;
         }
     }
-    
-    public static List<String> addDefaultRepositories(List<String> userRepos){
-        List<String> defaultRepositories = new LinkedList<String>();
-        // DIST first
-        String ceylonHome = System.getProperty("ceylon.home");
-        // if it's not set, let's not use it
-        if(ceylonHome != null && !ceylonHome.isEmpty()){
-            defaultRepositories.add(ceylonHome+File.separator+"repo");
-        }
-        // then USER repos with default
-        if(userRepos.isEmpty())
-            defaultRepositories.add("modules");
-        else
-            defaultRepositories.addAll(userRepos);
-        // then HOME repo
-        defaultRepositories.add(getHomeRepository());
-        return defaultRepositories;
-    }
-
     public static String getHomeRepository() {
         return System.getProperty("user.home")+File.separator
                 +".ceylon"+File.separator+"repo";

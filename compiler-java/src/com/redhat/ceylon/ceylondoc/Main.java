@@ -166,7 +166,7 @@ public class Main {
     }
 
     private static void printUsage(int statusCode) {
-        List<String> defaultRepositories = com.redhat.ceylon.compiler.java.util.Util.addDefaultRepositories(Collections.<String>emptyList());
+        List<String> defaultRepositories = addDefaultRepositories(Collections.<String>emptyList());
         System.err.print(CeylondMessages.msg("info.usage1"));
         for(String repo : defaultRepositories) {
             System.err.println("                        "+repo);
@@ -175,4 +175,21 @@ public class Main {
         exit(statusCode);
     }
     
+    private static List<String> addDefaultRepositories(List<String> userRepos){
+        List<String> defaultRepositories = new LinkedList<String>();
+        // DIST first
+        String ceylonHome = System.getProperty("ceylon.home");
+        // if it's not set, let's not use it
+        if(ceylonHome != null && !ceylonHome.isEmpty()){
+            defaultRepositories.add(ceylonHome+File.separator+"repo");
+        }
+        // then USER repos with default
+        if(userRepos.isEmpty())
+            defaultRepositories.add("modules");
+        else
+            defaultRepositories.addAll(userRepos);
+        // then HOME repo
+        defaultRepositories.add(com.redhat.ceylon.compiler.java.util.Util.getHomeRepository());
+        return defaultRepositories;
+    }
 }
