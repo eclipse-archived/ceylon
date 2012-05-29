@@ -6,6 +6,9 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -54,8 +57,16 @@ public class ValueVisitor extends Visitor {
     }
 
     private void capture(Tree.Primary that) {
+        capture(that, false);
+    }
+    
+    private void capture(Tree.Primary that, boolean methodSpecifier) {
         if (that instanceof Tree.MemberOrTypeExpression) {
-            TypedDeclaration d = (TypedDeclaration) ((Tree.MemberOrTypeExpression) that).getDeclaration();
+            final Declaration decl = ((Tree.MemberOrTypeExpression) that).getDeclaration();
+            if (!(decl instanceof TypedDeclaration)) {
+                return;
+            }
+            TypedDeclaration d = (TypedDeclaration) decl;
             if (d==declaration) {
                 if (d instanceof Value) {
                     ((Value) d).setCaptured(true);
@@ -64,6 +75,8 @@ public class ValueVisitor extends Visitor {
                     if (!d.getContainer().equals(that.getScope())) { //a reference from a default argument 
                                                                      //expression of the same parameter 
                                                                      //list does not capture a parameter
+                        ((Parameter) d).setCaptured(true);
+                    } else if (methodSpecifier) {
                         ((Parameter) d).setCaptured(true);
                     }
                 }
@@ -159,6 +172,19 @@ public class ValueVisitor extends Visitor {
         boolean cs = enterCapturingScope();
         super.visit(that);
         exitCapturingScope(cs);
-    }    
+    }
     
+    @Override public void visit(Tree.MethodDeclaration that) {
+        super.visit(that);
+        final SpecifierExpression specifier = that.getSpecifierExpression();
+        if (specifier != null) {
+            
+            final Expression expr = specifier.getExpression();
+            final Term term = expr.getTerm();
+            if (term instanceof Tree.Primary) {
+                capture((Tree.Primary)term, true);
+            }
+        }   
+        
+    }    
 }
