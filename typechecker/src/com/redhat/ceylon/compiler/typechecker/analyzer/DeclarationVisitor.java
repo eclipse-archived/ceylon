@@ -617,8 +617,8 @@ public class DeclarationVisitor extends Visitor {
         parameterList = new ParameterList();
         super.visit(that);
         Functional f = (Functional) scope;
-        if ( f instanceof Class && 
-                !f.getParameterLists().isEmpty() ) {
+        boolean first = f.getParameterLists().isEmpty();
+        if (f instanceof Class && !first) {
             that.addError("classes may have only one parameter list");
         }
         else {
@@ -635,9 +635,15 @@ public class DeclarationVisitor extends Visitor {
                         p.addError("default parameter must occur before sequenced parameter");
                     }
                     foundDefault = true;
+                    if (!first) {
+                        p.addError("only the first parameter list may have default parameters");
+                    }
                 }
                 else if (p.getType() instanceof Tree.SequencedType) {
                     foundSequenced = true;
+                    if (!first) {
+                        p.addError("only the first parameter list may have a sequenced parameter");
+                    }
                 }
                 else {
                     if (foundDefault) {
