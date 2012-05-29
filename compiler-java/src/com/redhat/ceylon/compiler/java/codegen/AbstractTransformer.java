@@ -1168,7 +1168,9 @@ public abstract class AbstractTransformer implements Transformation {
      * @return The result type of the Callable.
      */
     protected ProducedType getCallableReturnType(ProducedType typeModel) {
-        assert isCeylonCallable(typeModel);
+        if (!isCeylonCallable(typeModel)) {
+            throw new RuntimeException("Not a Callable<>: " + typeModel);
+        }
         return typeModel.getTypeArgumentList().get(0);
     }
     
