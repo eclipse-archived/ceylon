@@ -1163,11 +1163,11 @@ public abstract class AbstractTransformer implements Transformation {
     
     /**
      * Gets the first type parameter from the type model representing a 
-     * ceylon.language.Callable<Result, ParameterTypes...>.
-     * @param typeModel
-     * @return The result type of the Callable.
+     * {@code ceylon.language.Callable<Result, ParameterTypes...>}.
+     * @param typeModel A {@code ceylon.language.Callable<Result, ParameterTypes...>}.
+     * @return The result type of the {@code Callable}.
      */
-    protected ProducedType getCallableReturnType(ProducedType typeModel) {
+    protected ProducedType getReturnTypeOfCallable(ProducedType typeModel) {
         if (!isCeylonCallable(typeModel)) {
             throw new RuntimeException("Not a Callable<>: " + typeModel);
         }

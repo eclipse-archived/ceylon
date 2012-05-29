@@ -290,7 +290,7 @@ abstract class InvocationBuilder {
                 primary,
                 primaryDeclaration,
                 primary.getTarget(),
-                gen.getCallableReturnType(expr.getTypeModel()),
+                gen.getReturnTypeOfCallable(expr.getTypeModel()),
                 expr, 
                 parameterList);
         builder.compute();
