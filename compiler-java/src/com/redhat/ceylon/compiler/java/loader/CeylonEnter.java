@@ -34,7 +34,6 @@ import com.redhat.ceylon.compiler.java.codegen.BoxingVisitor;
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.java.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.java.codegen.CodeGenError;
-import com.redhat.ceylon.compiler.java.loader.model.CompilerModuleManager;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeylonPhasedUnit;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
@@ -49,7 +48,11 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
@@ -306,6 +309,16 @@ public class CeylonEnter extends Enter {
         }
         for (PhasedUnit pu : listOfUnits) { 
             pu.analyseFlow();
+        }
+        
+        for (PhasedUnit pu : listOfUnits) {
+            Unit unit = pu.getUnit();
+            final CompilationUnit compilationUnit = pu.getCompilationUnit();
+            for (Declaration d: unit.getDeclarations()) {
+                if (d instanceof TypedDeclaration && !(d instanceof Setter)) {
+                    compilationUnit.visit(new ValueVisitor((TypedDeclaration) d));
+                }
+            }
         }
         BoxingDeclarationVisitor boxingDeclarationVisitor = new BoxingDeclarationVisitor(gen);
         BoxingVisitor boxingVisitor = new BoxingVisitor(gen);
