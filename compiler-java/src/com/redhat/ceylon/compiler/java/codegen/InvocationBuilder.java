@@ -205,13 +205,18 @@ abstract class InvocationBuilder {
     
     public static InvocationBuilder forSuperInvocation(AbstractTransformer gen,
             Tree.InvocationExpression invocation) {
-        Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
-        java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
-        SuperInvocationBuilder builder = new SuperInvocationBuilder(gen,
-                invocation,
-                paramLists.get(0));
-        builder.compute();
-        return builder;
+        gen.expressionGen().setWithinSuperInvocation(true);
+        try {
+            Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
+            java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
+            SuperInvocationBuilder builder = new SuperInvocationBuilder(gen,
+                    invocation,
+                    paramLists.get(0));
+            builder.compute();
+            return builder;
+        } finally {
+            gen.expressionGen().setWithinSuperInvocation(false);
+        }
     }
     
     public static InvocationBuilder forInvocation(AbstractTransformer gen, 

@@ -54,7 +54,6 @@ import com.sun.tools.javac.tree.JCTree.JCConditional;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCForLoop;
-import com.sun.tools.javac.tree.JCTree.JCIf;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewArray;
@@ -81,6 +80,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     private boolean inStatement = false;
     private boolean withinInvocation = false;
     private boolean withinCallableInvocation = false;
+    private boolean withinSuperInvocation = false;
     
     public static ExpressionTransformer getInstance(Context context) {
         ExpressionTransformer trans = context.get(ExpressionTransformer.class);
@@ -1363,9 +1363,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                     selector = Util.getGetterName(decl.getName());
                 }
             } else if (Decl.isClassAttribute(decl)) {
-                if(Decl.isJavaField(decl)){
+                if (Decl.isJavaField(decl) || isWithinSuperInvocation()){
                     selector = decl.getName();
-                }else{
+                } else {
                     // invoke the getter, using the Java interop form of Util.getGetterName because this is the only case
                     // (Value inside a Class) where we might refer to JavaBean properties
                     selector = Util.getGetterName(decl);
@@ -1417,7 +1417,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         }
         if (result == null) {
-            boolean useGetter = !(decl instanceof Method) && !(Decl.isJavaField(decl));
+            boolean useGetter = !(decl instanceof Method) && !(Decl.isJavaField(decl)) && !isWithinSuperInvocation();
             if (qualExpr == null && selector == null) {
                 useGetter = decl.isClassOrInterfaceMember() && Util.isErasedAttribute(decl.getName());
                 if (useGetter) {
@@ -1431,9 +1431,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 qualExpr = primaryExpr;
             }
             
-            if (qualExpr == null 
-                    && needDollarThis(expr) 
-                    ) {
+            if (qualExpr == null && needDollarThis(expr)) {
                 qualExpr = makeUnquotedIdent("$this");
             }
             if (qualExpr == null && decl.isStaticallyImportable()) {
@@ -1691,6 +1689,14 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public void setWithinCallableInvocation(boolean withinCallableInvocation) {
         this.withinCallableInvocation = withinCallableInvocation;
+    }
+
+    public boolean isWithinSuperInvocation() {
+        return withinSuperInvocation;
+    }
+
+    public void setWithinSuperInvocation(boolean withinSuperInvocation) {
+        this.withinSuperInvocation = withinSuperInvocation;
     }
     
     
