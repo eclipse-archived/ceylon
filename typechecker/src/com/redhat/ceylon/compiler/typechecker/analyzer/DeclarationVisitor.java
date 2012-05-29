@@ -395,9 +395,9 @@ public class DeclarationVisitor extends Visitor {
             that.addError("missing parameter list in named argument declaration: " + 
                     name(that.getIdentifier()) );
         }
-        if ( that.getParameterLists().size()>1 ) {
+        /*if ( that.getParameterLists().size()>1 ) {
             that.addWarning("higher-order methods are not yet supported");
-        }
+        }*/
     }
 
     @Override
