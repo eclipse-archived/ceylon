@@ -291,17 +291,6 @@ public class Util {
                 +".ceylon"+File.separator+"repo";
     }
 
-    public static String getName(List<String> parts){
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < parts.size(); i++) {
-            sb.append(parts.get(i));
-            if (i < parts.size() - 1) {
-                sb.append('.');
-            }
-        }
-        return sb.toString();
-    }
-
     public static boolean isDirectAccessVariable(Term term) {
         if(!(term instanceof BaseMemberExpression))
             return false;
