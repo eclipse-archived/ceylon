@@ -878,11 +878,8 @@ public class ClassTransformer extends AbstractTransformer {
         
         final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(), 
                 methodName);
-        if (Decl.isMpl(model)) {
-            methodBuilder.resultType(null, makeJavaType(functionalReturnType(model)));
-        } else {
-            methodBuilder.resultType(model);
-        }
+        
+        methodBuilder.resultType(model);
         
         copyTypeParameters(model, methodBuilder);
         

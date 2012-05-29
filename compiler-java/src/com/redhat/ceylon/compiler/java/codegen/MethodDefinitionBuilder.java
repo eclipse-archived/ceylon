@@ -26,6 +26,7 @@ import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 import static com.sun.tools.javac.code.TypeTags.VOID;
 
+import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
@@ -277,9 +278,13 @@ public class MethodDefinitionBuilder {
     }
 
     public MethodDefinitionBuilder resultType(Method method) {
-        TypedDeclaration nonWideningTypeDecl = gen.nonWideningTypeDecl(method);
-        ProducedType nonWideningType = gen.nonWideningType(method, nonWideningTypeDecl);
-        return resultType(makeResultType(nonWideningTypeDecl, nonWideningType), method);
+        if (Decl.isMpl(method)) {
+            return resultType(null, gen.makeJavaType(gen.functionalReturnType(method)));
+        } else {
+            TypedDeclaration nonWideningTypeDecl = gen.nonWideningTypeDecl(method);
+            ProducedType nonWideningType = gen.nonWideningType(method, nonWideningTypeDecl);
+            return resultType(makeResultType(nonWideningTypeDecl, nonWideningType), method);
+        }
     }
 
     public MethodDefinitionBuilder resultType(TypedDeclaration resultType) {
