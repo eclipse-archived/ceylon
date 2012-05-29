@@ -744,7 +744,7 @@ public class DeclarationVisitor extends Visitor {
         Tree.AnnotationList al = that.getAnnotationList();
         if (hasAnnotation(al, "shared")) {
             if (that instanceof Tree.AttributeSetterDefinition) {
-                that.addError("setters may not be annotated shared", 1201);
+                that.addError("setter may not be annotated shared", 1201);
             }
             /*else if (that instanceof Tree.TypedDeclaration && !(that instanceof Tree.ObjectDefinition)) {
                 Tree.Type t =  ((Tree.TypedDeclaration) that).getType();
@@ -761,7 +761,7 @@ public class DeclarationVisitor extends Visitor {
         }
         if (hasAnnotation(al, "default")) {
             if (that instanceof Tree.ObjectDefinition) {
-                that.addError("object declarations may not be default", 1313);
+                that.addError("object declaration may not be annotated default", 1313);
             }
             else {
                 model.setDefault(true);
@@ -769,14 +769,14 @@ public class DeclarationVisitor extends Visitor {
         }
         if (hasAnnotation(al, "formal")) {
             if (that instanceof Tree.ObjectDefinition) {
-                that.addError("object declarations may not be formal", 1312);
+                that.addError("object declaration may not be annotated formal", 1312);
             }
             else {
                 model.setFormal(true);
             }
         }
         if (model.isFormal() && model.isDefault()) {
-            that.addError("declarations may not be both formal and default");
+            that.addError("declaration may not be annotated both formal and default");
         }
         if (hasAnnotation(al, "actual")) {
             model.setActual(true);
@@ -784,14 +784,14 @@ public class DeclarationVisitor extends Visitor {
         if (hasAnnotation(al, "abstract")) {
             if (model instanceof Class) {
                 if (model instanceof ClassAlias) {
-                    that.addError("aliases may not be annotated abstract", 1600);
+                    that.addError("alias may not be annotated abstract", 1600);
                 }
                 else {
                     ((Class) model).setAbstract(true);
                 }
             }
             else {
-                that.addError("declaration is not a class, and may not be abstract", 1600);
+                that.addError("declaration is not a class, and may not be annotated abstract", 1600);
             }
         }
         if (hasAnnotation(al, "variable")) {
@@ -799,10 +799,10 @@ public class DeclarationVisitor extends Visitor {
                 ((Value) model).setVariable(true);
             }
             else if (model instanceof ValueParameter) {
-                that.addError("parameter may not be variable: " + model.getName());
+                that.addError("parameter may not be annotated variable: " + model.getName());
             }
             else {
-                that.addError("declaration is not a value, and may not be variable", 1500);
+                that.addError("declaration is not a value, and may not be annotated variable", 1500);
             }
         }
         
