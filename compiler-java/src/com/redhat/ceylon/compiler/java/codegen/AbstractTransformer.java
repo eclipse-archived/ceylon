@@ -111,7 +111,7 @@ public abstract class AbstractTransformer implements Transformation {
         log = CeylonLog.instance(context);
     }
 
-    public Context getContext() {
+    Context getContext() {
         return context;
     }
 
@@ -164,11 +164,11 @@ public abstract class AbstractTransformer implements Transformation {
         return typeFact;
     }
 
-    public void setMap(LineMap map) {
+    void setMap(LineMap map) {
         gen().setMap(map);
     }
 
-    protected LineMap getMap() {
+    LineMap getMap() {
         return gen().getMap();
     }
 
@@ -197,7 +197,7 @@ public abstract class AbstractTransformer implements Transformation {
      * @param ident The identifier
      * @return The ident
      */
-    protected JCExpression makeUnquotedIdent(String ident) {
+    JCExpression makeUnquotedIdent(String ident) {
         return make().Ident(names().fromString(ident));
     }
 
@@ -206,7 +206,7 @@ public abstract class AbstractTransformer implements Transformation {
      * @param ident The identifier
      * @return The ident
      */
-    protected JCIdent makeQuotedIdent(String ident) {
+    JCIdent makeQuotedIdent(String ident) {
         return make().Ident(names().fromString(Util.quoteIfJavaKeyword(ident)));
     }
     
@@ -216,7 +216,7 @@ public abstract class AbstractTransformer implements Transformation {
      * quoted if it is a Java keyword.
      * @param qualifiedName The qualified name 
      */
-    protected JCExpression makeQuotedQualIdentFromString(String qualifiedName) {
+    JCExpression makeQuotedQualIdentFromString(String qualifiedName) {
         return makeQualIdent(null, Util.quoteJavaKeywords(qualifiedName.split("\\.")));
     }
 
@@ -226,7 +226,7 @@ public abstract class AbstractTransformer implements Transformation {
      * @param components The components of the name.
      * @see #makeQuotedQualIdentFromString(String)
      */
-    protected JCExpression makeQualIdent(Iterable<String> components) {
+    JCExpression makeQualIdent(Iterable<String> components) {
         JCExpression type = null;
         for (String component : components) {
             if (type == null)
@@ -237,7 +237,7 @@ public abstract class AbstractTransformer implements Transformation {
         return type;
     }
     
-    protected JCExpression makeQuotedQualIdent(Iterable<String> components) {
+    JCExpression makeQuotedQualIdent(Iterable<String> components) {
         JCExpression type = null;
         for (String component : components) {
             if (type == null)
@@ -255,7 +255,7 @@ public abstract class AbstractTransformer implements Transformation {
      * @param names The components of the name (may be null)
      * @see #makeQuotedQualIdentFromString(String)
      */
-    protected JCExpression makeQualIdent(JCExpression expr, String... names) {
+    JCExpression makeQualIdent(JCExpression expr, String... names) {
         if (names != null) {
             for (String component : names) {
                 if (component != null) {
@@ -270,7 +270,7 @@ public abstract class AbstractTransformer implements Transformation {
         return expr;
     }
     
-    protected JCExpression makeQuotedQualIdent(JCExpression expr, String... names) {
+    JCExpression makeQuotedQualIdent(JCExpression expr, String... names) {
         if (names != null) {
             for (String component : names) {
                 if (component != null) {
@@ -285,19 +285,19 @@ public abstract class AbstractTransformer implements Transformation {
         return expr;
     }
 
-    protected JCExpression makeFQIdent(String... components) {
+    JCExpression makeFQIdent(String... components) {
         return makeQualIdent(makeUnquotedIdent(""), components);
     }
 
-    protected JCExpression makeQuotedFQIdent(String... components) {
+    JCExpression makeQuotedFQIdent(String... components) {
         return makeQuotedQualIdent(makeUnquotedIdent(""), components);
     }
 
-    protected JCExpression makeQuotedFQIdent(String qualifiedName) {
+    JCExpression makeQuotedFQIdent(String qualifiedName) {
         return makeQuotedFQIdent(Util.quoteJavaKeywords(qualifiedName.split("\\.")));
     }
 
-    protected JCExpression makeIdent(Type type) {
+    JCExpression makeIdent(Type type) {
         return make().QualIdent(type.tsym);
     }
 
@@ -307,7 +307,7 @@ public abstract class AbstractTransformer implements Transformation {
      * @param s2 The field to access
      * @return The field access
      */
-    protected JCFieldAccess makeSelect(JCExpression s1, String s2) {
+    JCFieldAccess makeSelect(JCExpression s1, String s2) {
         return make().Select(s1, names().fromString(s2));
     }
 
@@ -317,7 +317,7 @@ public abstract class AbstractTransformer implements Transformation {
      * @param s2 The field to access
      * @return The field access
      */
-    protected JCFieldAccess makeSelect(String s1, String s2) {
+    JCFieldAccess makeSelect(String s1, String s2) {
         return makeSelect(makeUnquotedIdent(s1), s2);
     }
 
@@ -328,11 +328,11 @@ public abstract class AbstractTransformer implements Transformation {
      * @param rest The remaining fields to access
      * @return The field access
      */
-    protected JCFieldAccess makeSelect(String s1, String s2, String... rest) {
+    JCFieldAccess makeSelect(String s1, String s2, String... rest) {
         return makeSelect(makeSelect(s1, s2), rest);
     }
 
-    private JCFieldAccess makeSelect(JCFieldAccess s1, String[] rest) {
+    JCFieldAccess makeSelect(JCFieldAccess s1, String[] rest) {
         JCFieldAccess acc = s1;
         for (String s : rest) {
             acc = makeSelect(acc, s);
@@ -340,19 +340,19 @@ public abstract class AbstractTransformer implements Transformation {
         return acc;
     }
 
-    protected JCLiteral makeNull() {
+    JCLiteral makeNull() {
         return make().Literal(TypeTags.BOT, null);
     }
     
-    protected JCExpression makeInteger(int i) {
+    JCExpression makeInteger(int i) {
         return make().Literal(Integer.valueOf(i));
     }
     
-    protected JCExpression makeLong(long i) {
+    JCExpression makeLong(long i) {
         return make().Literal(Long.valueOf(i));
     }
     
-    protected JCExpression makeBoolean(boolean b) {
+    JCExpression makeBoolean(boolean b) {
         JCExpression expr;
         if (b) {
             expr = make().Literal(TypeTags.BOOLEAN, Integer.valueOf(1));
@@ -363,7 +363,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     // Creates a "foo foo = new foo();"
-    protected JCTree.JCVariableDecl makeLocalIdentityInstance(String varName, String className, boolean isShared) {
+    JCTree.JCVariableDecl makeLocalIdentityInstance(String varName, String className, boolean isShared) {
         JCExpression name = makeQuotedIdent(className);
         
         JCExpression initValue = makeNewClass(className, false);
@@ -378,42 +378,42 @@ public abstract class AbstractTransformer implements Transformation {
         
         return var;
     }
-    protected JCTree.JCVariableDecl makeLocalIdentityInstance(String varName, boolean isShared) {
+    JCTree.JCVariableDecl makeLocalIdentityInstance(String varName, boolean isShared) {
         return makeLocalIdentityInstance(varName, varName, isShared);
     }
     
     // Creates a "new foo();"
-    protected JCTree.JCNewClass makeNewClass(String className, boolean fullyQualified) {
+    JCTree.JCNewClass makeNewClass(String className, boolean fullyQualified) {
         return makeNewClass(className, List.<JCTree.JCExpression>nil(), fullyQualified);
     }
     
     // Creates a "new foo(arg1, arg2, ...);"
-    protected JCTree.JCNewClass makeNewClass(String className, List<JCTree.JCExpression> args, boolean fullyQualified) {
+    JCTree.JCNewClass makeNewClass(String className, List<JCTree.JCExpression> args, boolean fullyQualified) {
         JCExpression name = fullyQualified ? makeQuotedFQIdent(className) : makeQuotedQualIdentFromString(className);
         return makeNewClass(name, args);
     }
     
     // Creates a "new foo(arg1, arg2, ...);"
-    protected JCTree.JCNewClass makeNewClass(JCExpression clazz, List<JCTree.JCExpression> args) {
+    JCTree.JCNewClass makeNewClass(JCExpression clazz, List<JCTree.JCExpression> args) {
         if (args == null) {
             args = List.<JCTree.JCExpression>nil();
         }
         return make().NewClass(null, null, clazz, args, null);
     }
 
-    protected JCVariableDecl makeVar(String varName, JCExpression typeExpr, JCExpression valueExpr) {
+    JCVariableDecl makeVar(String varName, JCExpression typeExpr, JCExpression valueExpr) {
         return make().VarDef(make().Modifiers(0), names().fromString(varName), typeExpr, valueExpr);
     }
     
     // Creates a "( let var1=expr1,var2=expr2,...,varN=exprN in varN; )"
     // or a "( let var1=expr1,var2=expr2,...,varN=exprN,exprO in exprO; )"
-    protected JCExpression makeLetExpr(JCExpression... args) {
+    JCExpression makeLetExpr(JCExpression... args) {
         return makeLetExpr(tempName(), null, args);
     }
 
     // Creates a "( let var1=expr1,var2=expr2,...,varN=exprN in statements; varN; )"
     // or a "( let var1=expr1,var2=expr2,...,varN=exprN in statements; exprO; )"
-    protected JCExpression makeLetExpr(String varBaseName, List<JCStatement> statements, JCExpression... args) {
+    JCExpression makeLetExpr(String varBaseName, List<JCStatement> statements, JCExpression... args) {
         String varName = null;
         ListBuffer<JCStatement> decls = ListBuffer.lb();
         int i;
@@ -458,17 +458,17 @@ public abstract class AbstractTransformer implements Transformation {
         return id.nextId();
     }
     
-    protected String tempName() {
+    String tempName() {
         String result = "$ceylontmp" + nextUniqueId();
         return result;
     }
 
-    protected String tempName(String prefix) {
+    String tempName(String prefix) {
         String result = "$ceylontmp" + prefix + nextUniqueId();
         return result;
     }
 
-    protected String aliasName(String name) {
+    String aliasName(String name) {
         String result = "$" + name + "$" + nextUniqueId();
         return result;
     }
@@ -488,13 +488,13 @@ public abstract class AbstractTransformer implements Transformation {
     /**
      * Determines whether the given type is optional.
      */
-    public boolean isOptional(ProducedType type) {
+    boolean isOptional(ProducedType type) {
         // Note we don't use typeFact().isOptionalType(type) because
         // that implements a stricter test used in the type checker.
         return typeFact().getNullDeclaration().getType().isSubtypeOf(type);
     }
     
-    public boolean isNothing(ProducedType type) {
+    boolean isNothing(ProducedType type) {
         return type.getSupertype(typeFact.getNothingDeclaration()) != null;
     }
     
@@ -506,7 +506,7 @@ public abstract class AbstractTransformer implements Transformation {
         return typeFact.getObjectDeclaration().getType().isExactly(type);
     }
 
-    protected ProducedType simplifyType(ProducedType type) {
+    ProducedType simplifyType(ProducedType type) {
         if (isOptional(type)) {
             // For an optional type T?:
             //  - The Ceylon type T? results in the Java type T
@@ -536,7 +536,7 @@ public abstract class AbstractTransformer implements Transformation {
         return type;
     }
     
-    protected TypedDeclaration nonWideningTypeDecl(TypedDeclaration decl) {
+    TypedDeclaration nonWideningTypeDecl(TypedDeclaration decl) {
         TypedDeclaration refinedDeclaration = (TypedDeclaration) decl.getRefinedDeclaration();
         if(decl != refinedDeclaration){
             /*
@@ -554,7 +554,7 @@ public abstract class AbstractTransformer implements Transformation {
         return decl;
     }
 
-    protected ProducedType nonWideningType(TypedDeclaration declaration, TypedDeclaration refinedDeclaration){
+    ProducedType nonWideningType(TypedDeclaration declaration, TypedDeclaration refinedDeclaration){
         if(declaration == refinedDeclaration)
             return declaration.getType();
         // we must get the return type of the refined decl with any type param instantiated
@@ -582,7 +582,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     // Determines if a type will be erased to java.lang.Object once converted to Java
-    protected boolean willEraseToObject(ProducedType type) {
+    boolean willEraseToObject(ProducedType type) {
         type = simplifyType(type);
         return (sameType(syms().ceylonVoidType, type) || sameType(syms().ceylonObjectType, type)
                 || sameType(syms().ceylonNothingType, type)
@@ -592,41 +592,41 @@ public abstract class AbstractTransformer implements Transformation {
                 || typeFact().isUnion(type)|| typeFact().isIntersection(type));
     }
     
-    protected boolean willEraseToException(ProducedType type) {
+    boolean willEraseToException(ProducedType type) {
         type = simplifyType(type);
         return (sameType(syms().ceylonExceptionType, type));
     }
 
-    protected boolean isCeylonString(ProducedType type) {
+    boolean isCeylonString(ProducedType type) {
         return (sameType(syms().ceylonStringType, type));
     }
     
-    protected boolean isCeylonBoolean(ProducedType type) {
+    boolean isCeylonBoolean(ProducedType type) {
         return type.isSubtypeOf(typeFact.getBooleanDeclaration().getType())
                 && !(type.getDeclaration() instanceof BottomType);
     }
     
-    protected boolean isCeylonInteger(ProducedType type) {
+    boolean isCeylonInteger(ProducedType type) {
         return (sameType(syms().ceylonIntegerType, type));
     }
     
-    protected boolean isCeylonFloat(ProducedType type) {
+    boolean isCeylonFloat(ProducedType type) {
         return (sameType(syms().ceylonFloatType, type));
     }
     
-    protected boolean isCeylonCharacter(ProducedType type) {
+    boolean isCeylonCharacter(ProducedType type) {
         return (sameType(syms().ceylonCharacterType, type));
     }
 
-    protected boolean isCeylonArray(ProducedType type) {
+    boolean isCeylonArray(ProducedType type) {
         return (sameType(syms().ceylonArrayType, type.getDeclaration().getType()));
     }
     
-    protected boolean isCeylonBasicType(ProducedType type) {
+    boolean isCeylonBasicType(ProducedType type) {
         return (isCeylonString(type) || isCeylonBoolean(type) || isCeylonInteger(type) || isCeylonFloat(type) || isCeylonCharacter(type));
     }
     
-    protected boolean isCeylonCallable(ProducedType type) {
+    boolean isCeylonCallable(ProducedType type) {
         // FIXME This is ugly, we should find a proper way to do this!
         return type.getDeclaration().getType().getProducedTypeQualifiedName().startsWith("ceylon.language.Callable<");
     }
@@ -647,7 +647,7 @@ public abstract class AbstractTransformer implements Transformation {
     /**
      * This function is used solely for method return types and parameters 
      */
-    protected JCExpression makeJavaType(TypedDeclaration typeDecl, ProducedType type) {
+    JCExpression makeJavaType(TypedDeclaration typeDecl, ProducedType type) {
         if (typeDecl instanceof FunctionalParameter) {
             FunctionalParameter p = (FunctionalParameter)typeDecl;
             ProducedType pt = type;
@@ -661,11 +661,11 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
 
-    protected JCExpression makeJavaType(ProducedType producedType) {
+    JCExpression makeJavaType(ProducedType producedType) {
         return makeJavaType(producedType, 0);
     }
 
-    protected JCExpression makeJavaType(ProducedType type, final int flags) {
+    JCExpression makeJavaType(ProducedType type, final int flags) {
         if(type == null)
             return make().Erroneous();
         
@@ -964,57 +964,62 @@ public abstract class AbstractTransformer implements Transformation {
         return "java.lang.String".equals(type.getUnderlyingType());
     }
 
-    protected java.util.Map<Scope, Integer> locals;
-    protected java.util.Set<Interface> interfaces;
+    private java.util.Map<Scope, Integer> locals;
+    private java.util.Set<Interface> interfaces;
     
     private void resetLocals() {
-        gen().locals = new java.util.HashMap<Scope, Integer>();
+        ((AbstractTransformer)gen()).locals = new java.util.HashMap<Scope, Integer>();
     }
     
     private void local(Scope decl) {
-        Map<Scope, Integer> locals = gen().locals;
+        Map<Scope, Integer> locals = ((AbstractTransformer)gen()).locals;
         locals.put(decl, locals.size());
     }
     
-    protected void noteDecl(Declaration decl) {
+    boolean hasInterface(Interface iface) {
+        return ((AbstractTransformer)gen()).interfaces != null 
+                && ((AbstractTransformer)gen()).interfaces.contains(iface);
+    }
+    
+    void noteDecl(Declaration decl) {
         if (decl.isToplevel()) {
             resetLocals();
         } else if (Decl.isLocal(decl)){
             local(decl.getContainer());
         }
         if (decl instanceof Interface) {
-            if (gen().interfaces == null) {
-                gen().interfaces = new HashSet<Interface>();
+            if (((AbstractTransformer)gen()).interfaces == null) {
+                ((AbstractTransformer)gen()).interfaces = new HashSet<Interface>();
             }
-            gen().interfaces.add((Interface)decl);
+            ((AbstractTransformer)gen()).interfaces.add((Interface)decl);
         }
     }
     
     private int getLocalId(Scope decl) {
-        Integer id = gen().locals.get(decl);
+        Integer id = ((AbstractTransformer)gen()).locals.get(decl);
         if (id == null) {
             throw new RuntimeException(decl + " has no local id");
         }
         return id;
     }
     
-    protected ClassDefinitionBuilder ccdb;
+    private ClassDefinitionBuilder ccdb;
     
-    public ClassDefinitionBuilder current() {
-        return gen().ccdb; 
+    ClassDefinitionBuilder current() {
+        return ((AbstractTransformer)gen()).ccdb; 
     }
     
-    public ClassDefinitionBuilder replace(ClassDefinitionBuilder ccdb) {
-        ClassDefinitionBuilder result = gen().ccdb;
-        gen().ccdb = ccdb;
+    ClassDefinitionBuilder replace(ClassDefinitionBuilder ccdb) {
+        ClassDefinitionBuilder result = ((AbstractTransformer)gen()).ccdb;
+        ((AbstractTransformer)gen()).ccdb = ccdb;
         return result;
     }
     
-    protected String getFQDeclarationName(final Declaration decl) {
+    String getFQDeclarationName(final Declaration decl) {
         return getDeclarationName(decl, true, true);
     }
     
-    public String getDeclarationName(final Declaration decl, boolean fqLocalInterface, boolean includePackage) {
+    String getDeclarationName(final Declaration decl, boolean fqLocalInterface, boolean includePackage) {
         int nmFlags = 0;
         if (fqLocalInterface) {
             nmFlags |= NM_FQ_LOCAL;
@@ -1125,7 +1130,7 @@ public abstract class AbstractTransformer implements Transformation {
         return makeQuotedQualIdentFromString(getFQDeclarationName(decl));
     }
     
-    public String getCompanionClassName(Declaration decl){
+    String getCompanionClassName(Declaration decl){
         return getDeclarationName(decl, false, true) + "$impl";
     }
     
@@ -1155,7 +1160,7 @@ public abstract class AbstractTransformer implements Transformation {
      * @param typeModel A {@code ceylon.language.Callable<Result, ParameterTypes...>}.
      * @return The result type of the {@code Callable}.
      */
-    protected ProducedType getReturnTypeOfCallable(ProducedType typeModel) {
+    ProducedType getReturnTypeOfCallable(ProducedType typeModel) {
         if (!isCeylonCallable(typeModel)) {
             throw new RuntimeException("Not a Callable<>: " + typeModel);
         }
@@ -1178,7 +1183,7 @@ public abstract class AbstractTransformer implements Transformation {
      * </tbody>
      * </table>
      */
-    protected ProducedType functionalType(Functional model) {
+    ProducedType functionalType(Functional model) {
         return typeFact().getCallableType(functionalReturnType(model));
     }
     
@@ -1197,7 +1202,7 @@ public abstract class AbstractTransformer implements Transformation {
      * </tbody>
      * </table>
      */
-    protected ProducedType functionalReturnType(Functional model) {
+    ProducedType functionalReturnType(Functional model) {
         ProducedType callableType = model.getType();
         for (int ii = 1; ii < model.getParameterLists().size(); ii++) {
             callableType = typeFact().getCallableType(callableType);
@@ -1211,7 +1216,7 @@ public abstract class AbstractTransformer implements Transformation {
      */
     static final int TP_TO_BOUND = 1<<0;
     
-    protected ProducedType getTypeForParameter(Parameter parameter, ProducedReference producedReference, int flags) {
+    ProducedType getTypeForParameter(Parameter parameter, ProducedReference producedReference, int flags) {
         if (parameter instanceof FunctionalParameter) {
             return getTypeForFunctionalParameter((FunctionalParameter)parameter);
         }
@@ -1255,14 +1260,14 @@ public abstract class AbstractTransformer implements Transformation {
         return List.<JCAnnotation> of(make().Annotation(makeIdent(syms().overrideType), List.<JCExpression> nil()));
     }
 
-    public boolean checkCompilerAnnotations(Tree.Declaration decl){
+    boolean checkCompilerAnnotations(Tree.Declaration decl){
         boolean old = gen().disableModelAnnotations;
         if(Util.hasCompilerAnnotation(decl, "nomodel"))
             gen().disableModelAnnotations  = true;
         return old;
     }
 
-    public void resetCompilerAnnotations(boolean value){
+    void resetCompilerAnnotations(boolean value){
         gen().disableModelAnnotations = value;
     }
 
@@ -1276,11 +1281,11 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(annotationType, List.<JCExpression>nil());
     }
 
-    protected List<JCAnnotation> makeAtCeylon() {
+    List<JCAnnotation> makeAtCeylon() {
         return makeModelAnnotation(syms().ceylonAtCeylonType);
     }
 
-    protected List<JCAnnotation> makeAtModule(Module module) {
+    List<JCAnnotation> makeAtModule(Module module) {
         String name = module.getNameAsString();
         String version = module.getVersion();
         java.util.List<ModuleImport> dependencies = module.getImports();
@@ -1312,7 +1317,7 @@ public abstract class AbstractTransformer implements Transformation {
                 List.<JCExpression>of(nameAttribute, versionAttribute, importAttribute));
     }
 
-    protected List<JCAnnotation> makeAtPackage(Package pkg) {
+    List<JCAnnotation> makeAtPackage(Package pkg) {
         String name = pkg.getNameAsString();
         boolean shared = pkg.isShared();
         JCExpression nameAttribute = make().Assign(makeUnquotedIdent("name"), make().Literal(name));
@@ -1321,15 +1326,15 @@ public abstract class AbstractTransformer implements Transformation {
                 List.<JCExpression>of(nameAttribute, sharedAttribute));
     }
 
-    protected List<JCAnnotation> makeAtName(String name) {
+    List<JCAnnotation> makeAtName(String name) {
         return makeModelAnnotation(syms().ceylonAtNameType, List.<JCExpression>of(make().Literal(name)));
     }
 
-    protected List<JCAnnotation> makeAtType(String name) {
+    List<JCAnnotation> makeAtType(String name) {
         return makeModelAnnotation(syms().ceylonAtTypeInfoType, List.<JCExpression>of(make().Literal(name)));
     }
 
-    public final JCAnnotation makeAtTypeParameter(String name, java.util.List<ProducedType> satisfiedTypes, boolean covariant, boolean contravariant) {
+    final JCAnnotation makeAtTypeParameter(String name, java.util.List<ProducedType> satisfiedTypes, boolean covariant, boolean contravariant) {
         JCExpression nameAttribute = make().Assign(makeUnquotedIdent("value"), make().Literal(name));
         // variance
         String variance = "NONE";
@@ -1352,32 +1357,32 @@ public abstract class AbstractTransformer implements Transformation {
                 List.<JCExpression>of(nameAttribute, varianceAttribute, satisfiesAttribute));
     }
 
-    public List<JCAnnotation> makeAtTypeParameters(List<JCExpression> typeParameters) {
+    List<JCAnnotation> makeAtTypeParameters(List<JCExpression> typeParameters) {
         JCExpression value = make().NewArray(null, null, typeParameters);
         return makeModelAnnotation(syms().ceylonAtTypeParameters, List.of(value));
     }
 
-    protected List<JCAnnotation> makeAtSequenced() {
+    List<JCAnnotation> makeAtSequenced() {
         return makeModelAnnotation(syms().ceylonAtSequencedType);
     }
 
-    protected List<JCAnnotation> makeAtDefaulted() {
+    List<JCAnnotation> makeAtDefaulted() {
         return makeModelAnnotation(syms().ceylonAtDefaultedType);
     }
 
-    protected List<JCAnnotation> makeAtAttribute() {
+    List<JCAnnotation> makeAtAttribute() {
         return makeModelAnnotation(syms().ceylonAtAttributeType);
     }
 
-    protected List<JCAnnotation> makeAtMethod() {
+    List<JCAnnotation> makeAtMethod() {
         return makeModelAnnotation(syms().ceylonAtMethodType);
     }
 
-    protected List<JCAnnotation> makeAtObject() {
+    List<JCAnnotation> makeAtObject() {
         return makeModelAnnotation(syms().ceylonAtObjectType);
     }
 
-    protected List<JCAnnotation> makeAtClass(ProducedType extendedType) {
+    List<JCAnnotation> makeAtClass(ProducedType extendedType) {
         List<JCExpression> attributes = List.nil();
         if(!extendedType.isExactly(typeFact.getIdentifiableObjectDeclaration().getType())){
             JCExpression extendsAttribute = make().Assign(makeUnquotedIdent("extendsType"), 
@@ -1387,11 +1392,11 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtClassType, attributes);
     }
 
-    protected List<JCAnnotation> makeAtSatisfiedTypes(java.util.List<ProducedType> satisfiedTypes) {
+    List<JCAnnotation> makeAtSatisfiedTypes(java.util.List<ProducedType> satisfiedTypes) {
         return makeTypesListAnnotation(syms().ceylonAtSatisfiedTypes, satisfiedTypes);
     }
 
-    protected List<JCAnnotation> makeAtCaseTypes(java.util.List<ProducedType> caseTypes) {
+    List<JCAnnotation> makeAtCaseTypes(java.util.List<ProducedType> caseTypes) {
         return makeTypesListAnnotation(syms().ceylonAtCaseTypes, caseTypes);
     }
 
@@ -1409,11 +1414,11 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(annotationType, List.of(caseAttribute));
     }
 
-    protected List<JCAnnotation> makeAtIgnore() {
+    List<JCAnnotation> makeAtIgnore() {
         return makeModelAnnotation(syms().ceylonAtIgnore);
     }
 
-    protected List<JCAnnotation> makeAtAnnotations(java.util.List<Annotation> annotations) {
+    List<JCAnnotation> makeAtAnnotations(java.util.List<Annotation> annotations) {
         if(annotations == null || annotations.isEmpty())
             return List.nil();
         ListBuffer<JCExpression> array = new ListBuffer<JCTree.JCExpression>();
@@ -1460,7 +1465,7 @@ public abstract class AbstractTransformer implements Transformation {
         return make().Annotation(makeIdent(syms().ceylonAtAnnotationType), attributes);
     }
 
-    protected boolean needsAnnotations(Declaration decl) {
+    boolean needsAnnotations(Declaration decl) {
         Declaration reqdecl = decl;
         if (reqdecl instanceof Parameter) {
             Parameter p = (Parameter)reqdecl;
@@ -1469,7 +1474,7 @@ public abstract class AbstractTransformer implements Transformation {
         return reqdecl.isToplevel() || (reqdecl.isClassOrInterfaceMember() && reqdecl.isShared() && !Decl.isAncestorLocal(reqdecl));
     }
 
-    protected List<JCTree.JCAnnotation> makeJavaTypeAnnotations(TypedDeclaration decl) {
+    List<JCTree.JCAnnotation> makeJavaTypeAnnotations(TypedDeclaration decl) {
         if(decl == null || decl.getType() == null)
             return List.nil();
         ProducedType type;
@@ -1502,14 +1507,14 @@ public abstract class AbstractTransformer implements Transformation {
         UNBOXED, BOXED, INDIFFERENT;
     }
 
-    protected JCExpression boxUnboxIfNecessary(JCExpression javaExpr, Tree.Term expr,
+    JCExpression boxUnboxIfNecessary(JCExpression javaExpr, Tree.Term expr,
             ProducedType exprType,
             BoxingStrategy boxingStrategy) {
         boolean exprBoxed = !Util.isUnBoxed(expr);
         return boxUnboxIfNecessary(javaExpr, exprBoxed, exprType, boxingStrategy);
     }
     
-    protected JCExpression boxUnboxIfNecessary(JCExpression javaExpr, boolean exprBoxed,
+    JCExpression boxUnboxIfNecessary(JCExpression javaExpr, boolean exprBoxed,
             ProducedType exprType,
             BoxingStrategy boxingStrategy) {
         if(boxingStrategy == BoxingStrategy.INDIFFERENT)
@@ -1528,14 +1533,14 @@ public abstract class AbstractTransformer implements Transformation {
         return javaExpr;
     }
     
-    protected boolean isTypeParameter(ProducedType type) {
+    boolean isTypeParameter(ProducedType type) {
         if (typeFact().isOptionalType(type)) {
             type = type.minus(typeFact().getNothingDeclaration());
         } 
         return type.getDeclaration() instanceof TypeParameter;
     }
     
-    protected JCExpression unboxType(JCExpression expr, ProducedType targetType) {
+    JCExpression unboxType(JCExpression expr, ProducedType targetType) {
         if (isCeylonInteger(targetType)) {
             expr = unboxInteger(expr);
         } else if (isCeylonFloat(targetType)) {
@@ -1553,7 +1558,7 @@ public abstract class AbstractTransformer implements Transformation {
         return expr;
     }
 
-    protected JCExpression boxType(JCExpression expr, ProducedType exprType) {
+    JCExpression boxType(JCExpression expr, ProducedType exprType) {
         if (isCeylonInteger(exprType)) {
             expr = boxInteger(expr);
         } else if (isCeylonFloat(exprType)) {
@@ -1646,7 +1651,7 @@ public abstract class AbstractTransformer implements Transformation {
      * @return a JCExpression
      * @see #makeSequenceRaw(java.util.List)
      */
-    protected JCExpression makeSequence(List<JCExpression> elems, ProducedType seqElemType, int makeJavaTypeOpts) {
+    JCExpression makeSequence(List<JCExpression> elems, ProducedType seqElemType, int makeJavaTypeOpts) {
         ProducedType seqType = typeFact().getDefaultSequenceType(seqElemType);
         JCExpression typeExpr = makeJavaType(seqType, makeJavaTypeOpts);
         return makeNewClass(typeExpr, elems);
@@ -1660,7 +1665,7 @@ public abstract class AbstractTransformer implements Transformation {
      * @return a JCExpression
      * @see #makeSequenceRaw(java.util.List)
      */
-    protected JCExpression makeSequence(java.util.List<Expression> list, ProducedType seqElemType) {
+    JCExpression makeSequence(java.util.List<Expression> list, ProducedType seqElemType) {
         ListBuffer<JCExpression> elems = new ListBuffer<JCExpression>();
         for (Expression expr : list) {
             // no need for erasure casts here
@@ -1676,7 +1681,7 @@ public abstract class AbstractTransformer implements Transformation {
      * @return a JCExpression
      * @see #makeSequence(java.util.List, ProducedType)
      */
-    protected JCExpression makeSequenceRaw(java.util.List<Expression> list) {
+    JCExpression makeSequenceRaw(java.util.List<Expression> list) {
         ListBuffer<JCExpression> elems = new ListBuffer<JCExpression>();
         for (Expression expr : list) {
             // no need for erasure casts here
@@ -1685,18 +1690,18 @@ public abstract class AbstractTransformer implements Transformation {
         return makeSequence(elems.toList(), typeFact().getObjectDeclaration().getType(), CeylonTransformer.WANT_RAW_TYPE);
     }
     
-    protected JCExpression makeSequenceRaw(List<JCExpression> elems) {
+    JCExpression makeSequenceRaw(List<JCExpression> elems) {
         return makeSequence(elems, typeFact().getObjectDeclaration().getType(), CeylonTransformer.WANT_RAW_TYPE);
     }
     
-    protected JCExpression makeEmpty() {
+    JCExpression makeEmpty() {
         return make().Apply(
                 List.<JCTree.JCExpression>nil(),
                 makeFQIdent("ceylon", "language", "$empty", Util.getGetterName("$empty")),
                 List.<JCTree.JCExpression>nil());
     }
     
-    protected JCExpression makeFinished() {
+    JCExpression makeFinished() {
         return make().Apply(
                 List.<JCTree.JCExpression>nil(),
                 makeFQIdent("ceylon", "language", "$finished", Util.getGetterName("$finished")),
@@ -1745,7 +1750,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     // Creates comparisons of expressions against types
-    protected JCExpression makeTypeTest(JCExpression firstTimeExpr, String varName, ProducedType type) {
+    JCExpression makeTypeTest(JCExpression firstTimeExpr, String varName, ProducedType type) {
         JCExpression result = null;
         if (typeFact().isUnion(type)) {
             UnionType union = (UnionType)type.getDeclaration();
@@ -1794,7 +1799,7 @@ public abstract class AbstractTransformer implements Transformation {
         return result;
     }
 
-    protected JCExpression makeNonEmptyTest(JCExpression firstTimeExpr, String varName) {
+    JCExpression makeNonEmptyTest(JCExpression firstTimeExpr, String varName) {
         Interface fixedSize = typeFact().getFixedSizedDeclaration();
         JCExpression test = makeTypeTest(firstTimeExpr, varName, fixedSize.getType());
         JCExpression fixedSizeType = makeJavaType(fixedSize.getType(), NO_PRIMITIVES | WANT_RAW_TYPE);
@@ -1802,7 +1807,7 @@ public abstract class AbstractTransformer implements Transformation {
         return make().Binary(JCTree.AND, test, nonEmpty);
     }
 
-    protected JCExpression makeNonEmptyTest(JCExpression expr){
+    JCExpression makeNonEmptyTest(JCExpression expr){
         JCExpression getEmptyCall = make().Select(expr, names().fromString("getEmpty"));
         JCExpression empty = make().Apply(List.<JCExpression>nil(), getEmptyCall, List.<JCExpression>nil());
         return make().Unary(JCTree.NOT, empty);
@@ -1828,28 +1833,28 @@ public abstract class AbstractTransformer implements Transformation {
 
     }
     
-    protected JCExpression makeErroneous() {
+    JCExpression makeErroneous() {
         return makeErroneous(null);
     }
     
     /**
      * Makes an 'erroneous' AST node with no message
      */
-    protected JCExpression makeErroneous(Node node) {
+    JCExpression makeErroneous(Node node) {
         return makeErroneous(node, null, List.<JCTree>nil());
     }
     
     /**
      * Makes an 'erroneous' AST node with a message to be logged as an error
      */
-    protected JCExpression makeErroneous(Node node, String message) {
+    JCExpression makeErroneous(Node node, String message) {
         return makeErroneous(node, message, List.<JCTree>nil());
     }
     
     /**
      * Makes an 'erroneous' AST node with a message to be logged as an error
      */
-    protected JCExpression makeErroneous(Node node, String message, List<? extends JCTree> errs) {
+    JCExpression makeErroneous(Node node, String message, List<? extends JCTree> errs) {
         if (node != null) {
             at(node);
         }
@@ -1873,47 +1878,47 @@ public abstract class AbstractTransformer implements Transformation {
         return make().TypeParameter(names().fromString(name), bounds.toList());
     }
 
-    public JCTypeParameter makeTypeParameter(TypeParameter declarationModel) {
+    JCTypeParameter makeTypeParameter(TypeParameter declarationModel) {
         return makeTypeParameter(declarationModel.getName(), 
                 declarationModel.getSatisfiedTypes(),
                 declarationModel.isCovariant(),
                 declarationModel.isContravariant());
     }
     
-    public JCTypeParameter makeTypeParameter(Tree.TypeParameterDeclaration param) {
+    JCTypeParameter makeTypeParameter(Tree.TypeParameterDeclaration param) {
         at(param);
         return makeTypeParameter(param.getDeclarationModel());
     }
 
-    public JCAnnotation makeAtTypeParameter(TypeParameter declarationModel) {
+    JCAnnotation makeAtTypeParameter(TypeParameter declarationModel) {
         return makeAtTypeParameter(declarationModel.getName(), 
                 declarationModel.getSatisfiedTypes(),
                 declarationModel.isCovariant(),
                 declarationModel.isContravariant());
     }
     
-    public JCAnnotation makeAtTypeParameter(Tree.TypeParameterDeclaration param) {
+    JCAnnotation makeAtTypeParameter(Tree.TypeParameterDeclaration param) {
         at(param);
         return makeAtTypeParameter(param.getDeclarationModel());
     }
     
-    public final List<JCExpression> typeArguments(Tree.AnyMethod method) {
+    final List<JCExpression> typeArguments(Tree.AnyMethod method) {
         return typeArguments(method.getDeclarationModel());
     }
     
-    public final List<JCExpression> typeArguments(Tree.AnyClass type) {
+    final List<JCExpression> typeArguments(Tree.AnyClass type) {
         return typeArguments(type);
     }
     
-    public final List<JCExpression> typeArguments(Functional method) {
+    final List<JCExpression> typeArguments(Functional method) {
         return typeArguments(method.getTypeParameters(), method.getType().getTypeArguments());
     }
     
-    public final List<JCExpression> typeArguments(Tree.ClassOrInterface type) {
+    final List<JCExpression> typeArguments(Tree.ClassOrInterface type) {
         return typeArguments(type.getDeclarationModel().getTypeParameters(), type.getDeclarationModel().getType().getTypeArguments());
     }
     
-    public final List<JCExpression> typeArguments(java.util.List<TypeParameter> typeParameters, Map<TypeParameter, ProducedType> typeArguments) {
+    final List<JCExpression> typeArguments(java.util.List<TypeParameter> typeParameters, Map<TypeParameter, ProducedType> typeArguments) {
         ListBuffer<JCExpression> typeArgs = ListBuffer.<JCExpression>lb();
         for (TypeParameter tp : typeParameters) {
             ProducedType type = typeArguments.get(tp);
@@ -1926,17 +1931,17 @@ public abstract class AbstractTransformer implements Transformation {
         return typeArgs.toList();
     }
     
-    public final String getCompanionFieldName(Interface def) {
+    final String getCompanionFieldName(Interface def) {
         return "$" + Util.getCompanionClassName(def.getName());
     }
     
-    public final JCExpression makeDefaultedParamMethodIdent(Method method, Parameter param) {
+    final JCExpression makeDefaultedParamMethodIdent(Method method, Parameter param) {
         Interface iface = (Interface)method.getRefinedDeclaration().getContainer();
         return makeQuotedQualIdent(makeQuotedIdent(getCompanionFieldName(iface)), 
                 Util.getDefaultedParamMethodName(method, param));
     }
     
-    public final JCExpression makeCompanionType(final ClassOrInterface decl, Map<TypeParameter, ProducedType> typeParameters, boolean goRaw) {
+    final JCExpression makeCompanionType(final ClassOrInterface decl, Map<TypeParameter, ProducedType> typeParameters, boolean goRaw) {
         List<JCExpression> typeArgs;
         if (goRaw) {
             typeArgs = List.<JCExpression>nil();
@@ -1946,7 +1951,7 @@ public abstract class AbstractTransformer implements Transformation {
         return makeCompanionType(decl, typeArgs);
     }
 
-    public final JCExpression makeCompanionType(final ClassOrInterface decl,
+    final JCExpression makeCompanionType(final ClassOrInterface decl,
             List<JCExpression> typeArgs) {
         String companionClassName = getCompanionClassName(decl);
         JCExpression baseName = makeQuotedQualIdentFromString(companionClassName);

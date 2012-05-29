@@ -348,7 +348,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     private Boolean hasImpl(Interface iface) {
         // If we're already transformed the interface then it will have a $impl
-        if (gen().interfaces != null && gen().interfaces.contains(iface)) {
+        if (gen().hasInterface(iface)) {
             return true;
         }
         // Otherwise, ask the model loader
