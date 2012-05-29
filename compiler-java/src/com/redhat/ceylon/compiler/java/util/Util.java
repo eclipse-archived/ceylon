@@ -399,13 +399,6 @@ public class Util {
         outputStream.flush();
     }
 
-    public static Package getPackage(Object decl) {
-        if(decl == null)
-            return null;
-        if(decl instanceof Package)
-            return (Package) decl;
-        return getPackage(((Declaration)decl).getContainer());
-    }
 
     public static boolean isSubPackage(String moduleName, String pkgName) {
         return pkgName.equals(moduleName)

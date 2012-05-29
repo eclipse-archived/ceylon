@@ -1647,7 +1647,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         Map<Package, Stats> loadedByPackage = new HashMap<Package, Stats>();
         for(Declaration decl : declarationsByName.values()){
             if(decl instanceof LazyElement){
-                Package pkg = Util.getPackage(decl);
+                Package pkg = getPackage(decl);
                 Stats stats = loadedByPackage.get(pkg);
                 if(stats == null){
                     stats = new Stats();
@@ -1665,6 +1665,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             logVerbose("[ Package "+packageEntry.getKey().getNameAsString()+": "
                     +packageEntry.getValue().loaded+"(loaded)/"+packageEntry.getValue().total+"(total) declarations]");
         }
+    }
+
+    private static Package getPackage(Object decl) {
+        if(decl == null)
+            return null;
+        if(decl instanceof Package)
+            return (Package) decl;
+        return getPackage(((Declaration)decl).getContainer());
     }
     
     public void logDuplicateModuleError(Module module, Module loadedModule) {
