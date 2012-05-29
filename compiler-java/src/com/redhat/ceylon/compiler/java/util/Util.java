@@ -250,27 +250,7 @@ public class Util {
 	    return prefix + name;
 	}
 
-    public static Declaration getTopmostRefinedDeclaration(Declaration decl){
-        if(decl instanceof Parameter && decl.getContainer() instanceof Functional){
-            // Parameters in a refined class, interface or method are not considered refinements themselves
-            // so we have to look up the corresponding parameter in the container's refined declaration
-            Functional func = (Functional)decl.getContainer();
-            Parameter param = (Parameter)decl;
-            Functional refinedFunc = (Functional) getTopmostRefinedDeclaration((Declaration)decl.getContainer());
-            // shortcut if the functional doesn't override anything
-            if(refinedFunc == decl.getContainer())
-                return decl;
-            if(func.getParameterLists().size() != 1 || refinedFunc.getParameterLists().size() != 1)
-                throw new RuntimeException("Multiple parameter lists not supported");
-            // find the index of the parameter
-            int index = func.getParameterLists().get(0).getParameters().indexOf(param);
-            return refinedFunc.getParameterLists().get(0).getParameters().get(index);
-        }
-        Declaration refinedDecl = decl.getRefinedDeclaration();
-        if(refinedDecl != null && refinedDecl != decl)
-            return getTopmostRefinedDeclaration(refinedDecl);
-        return decl;
-    }
+
 
     public static boolean isUnBoxed(Term node){
         return node.getUnboxed();
