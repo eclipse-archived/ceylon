@@ -42,6 +42,7 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -62,6 +63,24 @@ public class ModelLoaderTest extends CompilerTest {
     
     private Map<Integer, Set<Integer>> alreadyCompared = new HashMap<Integer, Set<Integer>>();
     
+    private static String getQualifiedPrefixedName(Declaration decl){
+        String name = decl.getQualifiedNameString();
+        String prefix;
+        if(decl instanceof ClassOrInterface)
+            prefix = "C";
+        else if(decl instanceof Value)
+            prefix = "V";
+        else if(decl instanceof Getter)
+            prefix = "G";
+        else if(decl instanceof Setter)
+            prefix = "S";
+        else if(decl instanceof Method)
+            prefix = "M";
+        else
+            throw new RuntimeException("Don't know how to prefix decl: "+decl);
+        return prefix + name;
+    }
+    
     protected void verifyClassLoading(String ceylon){
         // now compile the ceylon decl file
         CeyloncTaskImpl task = getCompilerTask(ceylon);
@@ -80,7 +99,7 @@ public class ModelLoaderTest extends CompilerTest {
         final Map<String,Declaration> decls = new HashMap<String,Declaration>();
         for(Declaration decl : phasedUnit.getUnit().getDeclarations()){
             if(decl.isToplevel()){
-                decls.put(Util.getQualifiedPrefixedName(decl), decl);
+                decls.put(getQualifiedPrefixedName(decl), decl);
             }
         }
 

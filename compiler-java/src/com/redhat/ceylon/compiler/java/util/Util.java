@@ -231,26 +231,6 @@ public class Util {
     public static String getCompanionClassName(String name){
         return name + "$impl";
     }
-    
-	public static String getQualifiedPrefixedName(Declaration decl){
-	    String name = decl.getQualifiedNameString();
-	    String prefix;
-	    if(decl instanceof ClassOrInterface)
-	        prefix = "C";
-	    else if(decl instanceof Value)
-	        prefix = "V";
-        else if(decl instanceof Getter)
-            prefix = "G";
-        else if(decl instanceof Setter)
-            prefix = "S";
-        else if(decl instanceof Method)
-            prefix = "M";
-        else
-            throw new RuntimeException("Don't know how to prefix decl: "+decl);
-	    return prefix + name;
-	}
-
-
 
     public static boolean isUnBoxed(Term node){
         return node.getUnboxed();
