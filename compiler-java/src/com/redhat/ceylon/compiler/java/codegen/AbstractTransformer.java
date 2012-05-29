@@ -53,7 +53,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
@@ -1131,26 +1130,6 @@ public abstract class AbstractTransformer implements Transformation {
     
     String getCompanionClassName(Declaration decl){
         return getDeclarationName(decl, false, true) + "$impl";
-    }
-    
-    private ProducedType getThisType(Tree.Declaration decl) {
-        if (decl instanceof Tree.TypeDeclaration) {
-            return getThisType(((Tree.TypeDeclaration)decl).getDeclarationModel());
-        } else {
-            return getThisType(((Tree.TypedDeclaration)decl).getDeclarationModel());
-        }
-    }
-    
-    private ProducedType getThisType(Declaration decl) {
-        ProducedType thisType;
-        if (decl instanceof ClassOrInterface) {
-            thisType = ((ClassOrInterface)decl).getType();
-        } else if (decl.isToplevel()) {
-            thisType = ((TypedDeclaration)decl).getType();
-        } else {
-            thisType = getThisType((Declaration)decl.getContainer());
-        }
-        return thisType;
     }
     
     /**
