@@ -884,9 +884,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 statements = ListBuffer.<JCStatement>of(varDecl);
             } else if (namedArg instanceof Tree.MethodArgument) {
                 Tree.MethodArgument methodArg = (Tree.MethodArgument)namedArg;
-                // TODO MPL
                 Method model = methodArg.getDeclarationModel();
-                ProducedType callableType = gen.typeFact().getCallableType(model.getType());
                 List<JCStatement> body;
                 boolean prevNoExpressionlessReturn = gen.statementGen().noExpressionlessReturn;
                 try {
@@ -903,13 +901,15 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                     gen.statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
                 }
                 
+                ProducedType callableType = gen.functionalType(model);                
                 CallableBuilder callableBuilder = CallableBuilder.methodArgument(gen.gen(), 
                         callableType, 
                         model.getParameterLists().get(0), 
-                        body);
+                        gen.classGen().transformMplBody(model, body));
                 JCNewClass callable = callableBuilder.build();
                 JCExpression typeExpr = gen.makeJavaType(callableType);
                 JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, callable);
+                
                 statements = ListBuffer.<JCStatement>of(varDecl);
             } else if (namedArg instanceof Tree.ObjectArgument) {
                 Tree.ObjectArgument objectArg = (Tree.ObjectArgument)namedArg;

@@ -865,31 +865,21 @@ public class ClassTransformer extends AbstractTransformer {
         return lb.toList();
     }
 
-    private ListBuffer<JCTree> transformMethod(Method model,
+    ListBuffer<JCTree> transformMethod(Method model,
             ClassDefinitionBuilder classBuilder, List<JCStatement> body,
             boolean unspecified, boolean addTestAnno) {
         
         ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
         final String methodName = Util.quoteMethodNameIfProperty(model, gen());
         
-        boolean mpl = Decl.isMpl(model);
-        ProducedType innerResultType = model.getType();
-        ProducedType resultType = innerResultType;
-        
-        // Construct all but the outer-most method
-        for (int index = model.getParameterLists().size() - 1; index >  0; index--) {
-            resultType = gen().typeFact().getCallableType(resultType);
-            CallableBuilder cb = CallableBuilder.mpl(gen(), resultType, model.getParameterLists().get(index), body);
-            body = List.<JCStatement>of(make().Return(cb.build()));
-        }
+        body = transformMplBody(model, body);
         
         // Finally construct the outermost method using the body we've built so far
         
         final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(), 
                 methodName);
-        
-        if (mpl) {
-            methodBuilder.resultType(null, makeJavaType(resultType));
+        if (Decl.isMpl(model)) {
+            methodBuilder.resultType(null, makeJavaType(functionalReturnType(model)));
         } else {
             methodBuilder.resultType(model);
         }
@@ -954,6 +944,23 @@ public class ClassTransformer extends AbstractTransformer {
         
         lb.prepend(methodBuilder.build());
         return lb;
+    }
+
+    /**
+     * Constructs all but the outer-most method of a {@code Method} with 
+     * multiple parameter lists 
+     * @param model The {@code Method} model
+     * @param body The inner-most body
+     */
+    List<JCStatement> transformMplBody(Method model,
+            List<JCStatement> body) {
+        ProducedType resultType = model.getType();
+        for (int index = model.getParameterLists().size() - 1; index >  0; index--) {
+            resultType = gen().typeFact().getCallableType(resultType);
+            CallableBuilder cb = CallableBuilder.mpl(gen(), resultType, model.getParameterLists().get(index), body);
+            body = List.<JCStatement>of(make().Return(cb.build()));
+        }
+        return body;
     }
 
     private List<JCStatement> transformMethodBody(Tree.AnyMethod def) {
