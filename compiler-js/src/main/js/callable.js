@@ -14,6 +14,12 @@ function $JsCallable(callable) {
 }
 initExistingType($JsCallable, Function, 'ceylon.language.JsCallable', IdentifiableObject, Callable);
 inheritProto($JsCallable, IdentifiableObject, Callable);
+Function.prototype.getHash = function() {
+    if (this.identifiableObjectID === undefined) {
+        IdentifiableObject.call(this, this);
+    }
+    return this.identifiableObjectID;
+}
 
 function noop() { return null; }
 
