@@ -28,6 +28,7 @@ import java.util.Set;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
@@ -351,7 +352,7 @@ public class ModelLoaderTest extends CompilerTest {
         verifyClassLoading("KlassWithAttributeAndConflictingMethods.ceylon");
     }
 
-    @Test
+    @Test @Ignore("M4")
     public void loadTypeParameters(){
         verifyClassLoading("TypeParameters.ceylon");
     }
