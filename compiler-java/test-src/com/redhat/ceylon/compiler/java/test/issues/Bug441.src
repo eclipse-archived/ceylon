@@ -1,0 +1,28 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+interface IBug441 extends .ceylon.language.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.IBug441> {
+}
+final class IBug441$impl {
+    private final .com.redhat.ceylon.compiler.java.test.issues.IBug441 $this;
+    
+    IBug441$impl(.com.redhat.ceylon.compiler.java.test.issues.IBug441 $this) {
+        this.$this = $this;
+    }
+}
+class Bug441 implements .com.redhat.ceylon.compiler.java.test.issues.IBug441, .ceylon.language.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.Bug441> {
+    private final .com.redhat.ceylon.compiler.java.test.issues.IBug441$impl $IBug441$impl;
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.Bug441 getClone() {
+        return this;
+    }
+    
+    Bug441() {
+        this.$IBug441$impl = new .com.redhat.ceylon.compiler.java.test.issues.IBug441$impl(this);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug441();
+    }
+}
