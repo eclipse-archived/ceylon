@@ -263,6 +263,10 @@ public class StatementTransformer extends AbstractTransformer {
         }
     }
 
+    private ProducedType actualType(Tree.TypedDeclaration decl) {
+        return decl.getType().getTypeModel();
+    }
+    
     List<JCStatement> transform(Tree.ForStatement stmt) {
         Name tempForFailVariable = currentForFailVariable;
         
