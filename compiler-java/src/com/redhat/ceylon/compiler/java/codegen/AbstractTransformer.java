@@ -627,8 +627,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     boolean isCeylonCallable(ProducedType type) {
-        // FIXME This is ugly, we should find a proper way to do this!
-        return type.getDeclaration().getType().getProducedTypeQualifiedName().startsWith("ceylon.language.Callable<");
+        return type.isCallable();
     }
 
     /*
