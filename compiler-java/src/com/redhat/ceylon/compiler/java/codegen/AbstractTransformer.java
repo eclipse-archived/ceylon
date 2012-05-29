@@ -209,16 +209,6 @@ public abstract class AbstractTransformer implements Transformation {
     protected JCIdent makeQuotedIdent(String ident) {
         return make().Ident(names().fromString(Util.quoteIfJavaKeyword(ident)));
     }
-
-    /** 
-     * Makes an <strong>unquoted</strong> qualified (compound) identifier from 
-     * the given qualified name.
-     * @param qualifiedName The qualified name
-     * @see #makeQuotedQualIdentFromString(String)
-     */
-    protected JCExpression makeQualIdentFromString(String qualifiedName) {
-        return makeQualIdent(null, qualifiedName.split("\\."));
-    }
     
     /** 
      * Makes a <strong>quoted</strong> qualified (compound) identifier from 

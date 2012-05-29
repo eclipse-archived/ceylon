@@ -926,7 +926,7 @@ public class ClassTransformer extends AbstractTransformer {
             .modelAnnotations(model.getAnnotations());
         
         if(addTestAnno){
-            methodBuilder.annotations(List.of(make().Annotation(makeQualIdentFromString("org.junit.Test"), List.<JCTree.JCExpression>nil())));
+            methodBuilder.annotations(List.of(make().Annotation(makeSelect("org", "junit", "Test"), List.<JCTree.JCExpression>nil())));
         }
         // Generate an impl for overloaded methods using the $impl instance
         // TODO MPL
