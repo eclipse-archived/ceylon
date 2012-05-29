@@ -37,12 +37,14 @@ import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
 
 import javax.tools.JavaFileObject;
+import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.compiler.java.util.ShaSigner;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.sun.tools.javac.file.JavacFileManager;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Options;
@@ -229,10 +231,32 @@ public class JarOutputRepositoryManager {
         }
 
         private String toPlatformIndependentPath(String prefixedSourceFile) {
-            String sourceFile = Util.getSourceFilePath(ceyloncFileManager, prefixedSourceFile);
+            String sourceFile = getSourceFilePath(ceyloncFileManager, prefixedSourceFile);
             // zips are UNIX-friendly
             sourceFile = sourceFile.replace(File.separatorChar, '/');
             return sourceFile;
+        }
+        
+        private static String getSourceFilePath(JavacFileManager fileManager, String file){
+            Iterable<? extends File> prefixes = fileManager.getLocation(StandardLocation.SOURCE_PATH);
+
+            // find the matching source prefix
+            int srcDirLength = 0;
+            for (File prefixFile : prefixes) {
+                String prefix = prefixFile.getPath();
+                if (file.startsWith(prefix) && prefix.length() > srcDirLength) {
+                    srcDirLength = prefix.length();
+                }
+                String absPrefix = prefixFile.getAbsolutePath();
+                if (file.startsWith(absPrefix) && absPrefix.length() > srcDirLength) {
+                    srcDirLength = absPrefix.length();
+                }
+            }
+            
+            String path = file.substring(srcDirLength);
+            if(path.startsWith(File.separator))
+                path = path.substring(1);
+            return path;
         }
 
         public void finishUpdatingJar(File originalFile, File outputFile, ArtifactContext context, 

@@ -276,28 +276,6 @@ public class Util {
         return new File(outputDir, modulePath);
     }
 
-    public static String getSourceFilePath(JavacFileManager fileManager, String file){
-        Iterable<? extends File> prefixes = fileManager.getLocation(StandardLocation.SOURCE_PATH);
-
-        // find the matching source prefix
-        int srcDirLength = 0;
-        for (File prefixFile : prefixes) {
-            String prefix = prefixFile.getPath();
-            if (file.startsWith(prefix) && prefix.length() > srcDirLength) {
-                srcDirLength = prefix.length();
-            }
-            String absPrefix = prefixFile.getAbsolutePath();
-            if (file.startsWith(absPrefix) && absPrefix.length() > srcDirLength) {
-                srcDirLength = absPrefix.length();
-            }
-        }
-        
-        String path = file.substring(srcDirLength);
-        if(path.startsWith(File.separator))
-            path = path.substring(1);
-        return path;
-    }
-
     public static String getDefaultedParamMethodName(Declaration decl, Parameter param) {
         if (decl instanceof Method) {
             return decl.getName() + "$" + param.getName();
