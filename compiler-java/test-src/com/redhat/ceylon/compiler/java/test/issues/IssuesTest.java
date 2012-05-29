@@ -312,6 +312,11 @@ public class IssuesTest extends CompilerTest {
     }
     
     @Test
+    public void testBug544(){
+        compareWithJavaSource("Bug544");
+    }
+    
+    @Test
     public void testBug548() throws IOException{
         compile("bug548/Bug548_1.ceylon");
         compile("bug548/Bug548_2.ceylon");
