@@ -66,23 +66,12 @@ public class ReflectionModuleManager extends LazyModuleManager {
     @Override
     protected Module createModule(List<String> moduleName) {
         Module module;
-        if(isModuleLoadedFromSource(getName(moduleName)))
+        if(isModuleLoadedFromSource(Util.getName(moduleName)))
             module = new Module();
         else
             module = new ReflectionModule(this);
         module.setName(moduleName);
         return module;
-    }
-    
-    private static String getName(List<String> parts){
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < parts.size(); i++) {
-            sb.append(parts.get(i));
-            if (i < parts.size() - 1) {
-                sb.append('.');
-            }
-        }
-        return sb.toString();
     }
 
     @Override
