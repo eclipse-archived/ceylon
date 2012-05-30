@@ -1755,7 +1755,7 @@ public class ExpressionVisitor extends Visitor {
         }
         for (int i=params.size(); i<args.size(); i++) {
             args.get(i).addError("no matching parameter for argument declared by " +
-                     pr.getDeclaration().getName());
+                     pr.getDeclaration().getName(), 2000);
         }
         if (pal.getEllipsis()!=null && 
                 (params.isEmpty() || !params.get(params.size()-1).isSequenced())) {
