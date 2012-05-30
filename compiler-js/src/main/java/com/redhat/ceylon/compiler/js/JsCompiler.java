@@ -139,7 +139,8 @@ public class JsCompiler {
         }
         return writer;
     }
-    
+
+    /** Closes all output writers and puts resulting artifacts in the output repo. */
     protected void finish() throws IOException {
         for (Map.Entry<Module,Writer> entry: output.entrySet()) {
             if (opts.isModulify()) {

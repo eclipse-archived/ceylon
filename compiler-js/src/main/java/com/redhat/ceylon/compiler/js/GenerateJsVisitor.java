@@ -1204,6 +1204,7 @@ public class GenerateJsVisitor extends Visitor
                   || (d instanceof Method));
     }
 
+    /** Returns true if the top-level declaration for the term is annotated "nativejs" */
     private static boolean isNative(Term t) {
         if (t instanceof MemberOrTypeExpression) {
             return isNative(((MemberOrTypeExpression)t).getDeclaration());
@@ -1211,6 +1212,7 @@ public class GenerateJsVisitor extends Visitor
         return false;
     }
 
+    /** Returns true if the declaration is annotated "nativejs" */
     private static boolean isNative(Declaration d) {
         return hasAnnotationByName(getToplevel(d), "nativejs");
     }
@@ -1641,6 +1643,7 @@ public class GenerateJsVisitor extends Visitor
                 out("(", lhsVar, "=");
                 super.visit(qme);
                 out(",", lhsVar);
+                paren=true;
             } else {
                 super.visit(qme);
             }
@@ -1755,7 +1758,7 @@ public class GenerateJsVisitor extends Visitor
         out(";");
     }
     
-    /* Creates a new temporary variable which can be used immediately, even
+    /** Creates a new temporary variable which can be used immediately, even
      * inside an expression. The declaration for that temporary variable will be
      * emitted after the current Ceylon statement has been completely processed.
      * The resulting code is valid because JavaScript variables may be used before
