@@ -261,6 +261,24 @@ public class Util {
         return false;
     }
 
+    public static String getModuleArchiveName(Module module) {
+        return getArchiveName(module, "car");
+    }
+    
+    public static String getSourceArchiveName(Module module) {
+        return getArchiveName(module, "src");
+    }
+
+    public static String getArchiveName(Module module, String extension) {
+        String moduleName = module.getNameAsString();
+        if(module.isDefault())
+            moduleName = "default";
+        else{
+            moduleName += "-"+module.getVersion();
+        }
+        return moduleName+"."+extension;
+    }
+
     public static File getModulePath(File outputDir, Module module) {
         // See 7.2.4. Module repositories
         String moduleName = module.getNameAsString();
