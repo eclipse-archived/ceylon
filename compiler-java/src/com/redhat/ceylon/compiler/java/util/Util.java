@@ -26,10 +26,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.LinkedList;
 import java.util.List;
-
-import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
@@ -45,15 +42,10 @@ import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrateg
 import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
 import com.redhat.ceylon.compiler.loader.model.JavaMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
-import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -61,7 +53,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.parser.Token;
-import com.sun.tools.javac.file.JavacFileManager;
 
 public class Util {
 
@@ -261,14 +252,17 @@ public class Util {
         return false;
     }
 
+    // Used by the IDE
     public static String getModuleArchiveName(Module module) {
         return getArchiveName(module, "car");
     }
-    
+
+    // Used by the IDE
     public static String getSourceArchiveName(Module module) {
         return getArchiveName(module, "src");
     }
 
+    // Used by the IDE
     public static String getArchiveName(Module module, String extension) {
         String moduleName = module.getNameAsString();
         if(module.isDefault())
@@ -309,6 +303,7 @@ public class Util {
                 +".ceylon"+File.separator+"repo";
     }
 
+    // Used by the IDE
     public static String getName(List<String> parts){
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < parts.size(); i++) {
