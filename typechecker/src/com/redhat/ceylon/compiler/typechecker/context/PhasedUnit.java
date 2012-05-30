@@ -173,49 +173,49 @@ public class PhasedUnit {
         this.refinementValidated = refinementValidated;
     }
 
-    public synchronized void validateTree() {
+    public void validateTree() {
         //System.out.println("Validating tree for " + fileName);
         if (!treeValidated) {
-            treeValidated = true;
             compilationUnit.visit(new Validator());
+            treeValidated = true;
         }
     }
 
-    public synchronized void scanDeclarations() {
+    public void scanDeclarations() {
         if (!declarationsScanned) {
             scanningDeclarations = true;
-            declarationsScanned = true;
             //System.out.println("Scan declarations for " + fileName);
             DeclarationVisitor dv = new DeclarationVisitor(pkg, fileName);
             compilationUnit.visit(dv);
             unit = dv.getCompilationUnit();
+            declarationsScanned = true;
             scanningDeclarations = false;
         }
     }
 
-    public synchronized void scanTypeDeclarations() {
+    public void scanTypeDeclarations() {
         if (!typeDeclarationsScanned) {
-            typeDeclarationsScanned = true;
             //System.out.println("Scan type declarations for " + fileName);
             compilationUnit.visit( new TypeVisitor() );
+            typeDeclarationsScanned = true;
         }
     }
 
     public synchronized void validateRefinement() {
         if (! refinementValidated) {
             //System.out.println("Validate member refinement for " + fileName);
-            refinementValidated = true;
             compilationUnit.visit(new RefinementVisitor());
+            refinementValidated = true;
         }
     }
 
     public synchronized void analyseTypes() {
         if (! fullyTyped) {
             //System.out.println("Run analysis phase for " + fileName);
-            fullyTyped = true;
             compilationUnit.visit(new ExpressionVisitor());
             compilationUnit.visit(new TypeArgumentVisitor());
             compilationUnit.visit(new TypeHierarchyVisitor());
+            fullyTyped = true;
         }
     }
 
@@ -226,7 +226,6 @@ public class PhasedUnit {
     
     public synchronized void analyseFlow() {
         if (! flowAnalyzed) {
-            flowAnalyzed = true;
             //System.out.println("Validate control flow for " + fileName);
             compilationUnit.visit(new ControlFlowVisitor());
             //System.out.println("Validate self references for " + fileName);
@@ -240,6 +239,7 @@ public class PhasedUnit {
                     compilationUnit.visit(new SelfReferenceVisitor((TypeDeclaration) d));
                 }
             }
+            flowAnalyzed = true;
         }
     }
 
