@@ -7,10 +7,26 @@ interface InitializerParams {
         print(bar);
     }
 
-    class Foo(foo, bar, @error fum, qux) {
+    class Foo(foo, bar, @error fum, qux, fo, fi, fee, lorax,
+            xarol, @error twiddle, @error twaddle) {
         String foo;
         shared String bar;
         String qux();
+        @error value fo;
+        @error function fi();
+        if (true) {
+            String twiddle;
+        }
+        @error String fee = "goodbye";
+        String twaddle { return "hello"; }
+        String lorax;
+        if (false) {
+            @error lorax = "something";
+        }
+        variable String xarol;
+        if (true) {
+            xarol := "something else";
+        }
     }
 
     abstract class Bar(foo, bar, @error baz, @error fum) {
@@ -19,9 +35,25 @@ interface InitializerParams {
         shared formal String baz;
     }
 
-    void foo(foo, @error fum, qux) {
+    void foo(foo, @error fum, qux, fo, fi, fee, lorax,
+            xarol, @error twiddle, @error twaddle) {
         String foo;
         String qux();
+        @error value fo;
+        @error function fi();
+        if (true) {
+            String twiddle;
+        }
+        @error String fee = "goodbye";
+        String twaddle { return "hello"; }
+        String lorax;
+        if (false) {
+            @error lorax = "something";
+        }
+        variable String xarol;
+        if (true) {
+            xarol := "something else";
+        }
     }
     
     void bar(foo) {

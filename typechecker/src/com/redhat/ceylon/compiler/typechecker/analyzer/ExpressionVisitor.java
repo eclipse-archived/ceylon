@@ -117,7 +117,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.FunctionArgument that) {
         super.visit(that);
-        ProducedType t = denotableType(that.getExpression().getTypeModel());
+        ProducedType t = unit.denotableType(that.getExpression().getTypeModel());
         that.getDeclarationModel().setType(t);
         /*List<ProducedType> list = new ArrayList<ProducedType>();
         for (Parameter p: that.getDeclarationModel().getParameterLists().get(0)
@@ -821,22 +821,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private ProducedType denotableType(ProducedType pt) {
-        if ( pt.getDeclaration().isAnonymous() ) {
-            List<ProducedType> list = new ArrayList<ProducedType>();
-            addToIntersection(list, pt.getSupertype(pt.getDeclaration().getExtendedTypeDeclaration()), unit);
-            for (TypeDeclaration td: pt.getDeclaration().getSatisfiedTypeDeclarations()) {
-                addToIntersection(list, pt.getSupertype(td), unit);
-            }
-            IntersectionType it = new IntersectionType(unit);
-            it.setSatisfiedTypes(list);
-            return it.getType();
-        }
-        else {
-            return pt;
-        }
-    }
-    
     private void inferType(Tree.TypedDeclaration that, 
             Tree.SpecifierOrInitializerExpression spec) {
         if (that.getType() instanceof Tree.LocalModifier) {
@@ -1031,7 +1015,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.SpecifierOrInitializerExpression s, 
             Tree.TypedDeclaration that) {
         if (s.getExpression()!=null) {
-            ProducedType t = denotableType(s.getExpression().getTypeModel());
+            ProducedType t = unit.denotableType(s.getExpression().getTypeModel());
             local.setTypeModel(t);
             that.getDeclarationModel().setType(t);
         }
@@ -1039,7 +1023,7 @@ public class ExpressionVisitor extends Visitor {
         
     private void setFunctionType(Tree.FunctionModifier local, 
             ProducedType et, Tree.TypedDeclaration that) {
-        ProducedType t = denotableType(et);
+        ProducedType t = unit.denotableType(et);
         local.setTypeModel(t);
         that.getDeclarationModel().setType(t);
     }
@@ -1091,7 +1075,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void inferReturnType(ProducedType et, ProducedType at) {
         if (at!=null) {
-            at = denotableType(at);
+            at = unit.denotableType(at);
             if (et==null || et.isSubtypeOf(at)) {
                 returnType.setTypeModel(at);
             }
@@ -1406,7 +1390,7 @@ public class ExpressionVisitor extends Visitor {
         if (paramType!=null) {
             if (paramType.getDeclaration() instanceof TypeParameter &&
                     paramType.getDeclaration().equals(tp)) {
-                return denotableType(argType);
+                return unit.denotableType(argType);
             }
             else if (paramType.getDeclaration() instanceof UnionType) {
                 List<ProducedType> list = new ArrayList<ProducedType>();
@@ -1755,7 +1739,7 @@ public class ExpressionVisitor extends Visitor {
         }
         for (int i=params.size(); i<args.size(); i++) {
             args.get(i).addError("no matching parameter for argument declared by " +
-                     pr.getDeclaration().getName());
+                     pr.getDeclaration().getName(), 2000);
         }
         if (pal.getEllipsis()!=null && 
                 (params.isEmpty() || !params.get(params.size()-1).isSequenced())) {
@@ -2915,7 +2899,7 @@ public class ExpressionVisitor extends Visitor {
             List<ProducedType> list = new ArrayList<ProducedType>();
             for (Tree.Expression e: that.getExpressionList().getExpressions()) {
                 if (e.getTypeModel()!=null) {
-                    addToUnion(list, denotableType(e.getTypeModel()));
+                    addToUnion(list, unit.denotableType(e.getTypeModel()));
                 }
             }
             if (list.isEmpty()) {

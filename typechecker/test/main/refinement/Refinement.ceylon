@@ -1,3 +1,5 @@
+import ceylon.language { pr = print }
+
 class Refinement() {
 
     interface Good {
@@ -207,4 +209,36 @@ class WithRefiningMethod() extends WithRefinedMethod() {
     @error shared actual void method1(String s) {}
     @error shared actual void method2(String s)(Integer i)(Float f) {}
     shared actual void method3(String s)(@error String i) {}
+}
+
+class Qux() {
+    shared default void print(String... strings) {}
+    shared default void print2(String[] strings) {}
+    shared default void print3(String... strings) {}
+}
+
+class QuxQux() extends Qux() {
+    actual shared default 
+    void print(String[] strings) {
+        for (string in strings) {
+            pr(string);
+        }
+    }
+    shared actual void print2(String... strings) {
+        for (string in strings) {
+            pr(string);
+        }
+    }
+    shared actual void print3(String... strings) {
+        for (string in strings) {
+            pr(string);
+        }
+    }
+}
+
+void testQux() {
+    Qux().print2({"hello", "world"});
+    QuxQux().print2("hello", "world");
+    Qux().print("hello", "world");
+    QuxQux().print({"hello", "world"});
 }

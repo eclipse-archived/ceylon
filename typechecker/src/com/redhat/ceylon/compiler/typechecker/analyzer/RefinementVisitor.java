@@ -160,7 +160,7 @@ public class RefinementVisitor extends Visitor {
             
             if (!toplevel && !member) {
                 if (dec.isShared()) {
-                    that.addError("shared declaration is not a member of a class, interface, or package");
+                    that.addError("shared declaration is not a member of a class, interface, or package", 1200);
                 }
             }
             
@@ -169,7 +169,7 @@ public class RefinementVisitor extends Visitor {
                     dec instanceof ClassOrInterface;
             if (!mayBeShared) {
                 if (dec.isShared()) {
-                    that.addError("shared member is not a method, attribute, class, or interface");
+                    that.addError("shared member is not a method, attribute, class, or interface", 1200);
                 }
             }
             
@@ -208,13 +208,13 @@ public class RefinementVisitor extends Visitor {
         if (dec.isFormal() && ci instanceof Class) {
             Class c = (Class) ci;
             if (!c.isAbstract() && !c.isFormal()) {
-                that.addError("formal member belongs to non-abstract, non-formal class");
+                that.addError("formal member belongs to non-abstract, non-formal class", 1100);
             }
         }
         List<Declaration> others = ci.getInheritedMembers( dec.getName() );
         if (others.isEmpty()) {
             if (dec.isActual()) {
-                that.addError("actual member does not refine any inherited member");
+                that.addError("actual member does not refine any inherited member", 1300);
             }
         }
         else {
@@ -239,8 +239,14 @@ public class RefinementVisitor extends Visitor {
                     else if (refined instanceof TypedDeclaration) {
                         if ( ((TypedDeclaration) refined).isVariable() && 
                                 !((TypedDeclaration) dec).isVariable()) {
-                            that.addError("non-variable attribute refines a variable attribute: " + 
-                                    message(refined));
+                            if (dec instanceof Value) {
+                                that.addError("non-variable attribute refines a variable attribute: " + 
+                                        message(refined), 804);
+                            }
+                            else {
+                                that.addError("non-variable attribute refines a variable attribute: " + 
+                                        message(refined));
+                            }
                         }
                     }
                 }
@@ -274,15 +280,16 @@ public class RefinementVisitor extends Visitor {
                             message(refined));
             }
             for (int i=0; i<(refiningSize<=refinedSize ? refiningSize : refinedSize); i++) {
-                TypeParameter refinedTypParam = refinedTypeParams.get(i);
+                TypeParameter refinedTypeParam = refinedTypeParams.get(i);
                 TypeParameter refiningTypeParam = refiningTypeParams.get(i);
                 for (ProducedType t: refiningTypeParam.getSatisfiedTypes()) {
-                    checkAssignable(refinedTypParam.getType(), t, that, 
+                    checkAssignable(refinedTypeParam.getType(), t, that, 
                         "member type parameter " + refiningTypeParam.getName() +
-                        " has constraint which refined member type parameter " + refinedTypParam.getName() +
-                        " of " + message(refined) + " does not satisfy");
+                        " has upper bound which refined member type parameter " + 
+                        refinedTypeParam.getName() + " of " + message(refined) + 
+                        " does not satisfy");
                 }
-                typeArgs.add(refinedTypParam.getType());
+                typeArgs.add(refinedTypeParam.getType());
             }
         }
         ProducedReference refinedMember = ci.getType().getTypedReference(refined, typeArgs);
@@ -318,38 +325,38 @@ public class RefinementVisitor extends Visitor {
 
     private void checkUnshared(Tree.Declaration that, Declaration dec) {
         if (dec.isActual()) {
-            that.addError("actual member is not shared", 700);
+            that.addError("actual member is not shared", 701);
         }
         if (dec.isFormal()) {
-            that.addError("formal member is not shared", 700);
+            that.addError("formal member is not shared", 702);
         }
         if (dec.isDefault()) {
-            that.addError("default member is not shared", 700);
+            that.addError("default member is not shared", 703);
         }
     }
 
     private void checkNonrefinableDeclaration(Tree.Declaration that,
             Declaration dec) {
         if (dec.isActual()) {
-            that.addError("actual declaration is not a getter, simple attribute, or class");
+            that.addError("actual declaration is not a getter, simple attribute, or class", 1301);
         }
         if (dec.isFormal()) {
-            that.addError("formal declaration is not a getter, simple attribute, or class");
+            that.addError("formal declaration is not a getter, simple attribute, or class", 1302);
         }
         if (dec.isDefault()) {
-            that.addError("default declaration is not a getter, simple attribute, or class");
+            that.addError("default declaration is not a getter, simple attribute, or class", 1303);
         }
     }
 
     private void checkNonMember(Tree.Declaration that, Declaration dec) {
         if (dec.isActual()) {
-            that.addError("actual declaration is not a member of a class or interface");
+            that.addError("actual declaration is not a member of a class or interface", 1301);
         }
         if (dec.isFormal()) {
-            that.addError("formal declaration is not a member of a class or interface");
+            that.addError("formal declaration is not a member of a class or interface", 1302);
         }
         if (dec.isDefault()) {
-            that.addError("default declaration is not a member of a class or interface");
+            that.addError("default declaration is not a member of a class or interface", 1303);
         }
     }
 

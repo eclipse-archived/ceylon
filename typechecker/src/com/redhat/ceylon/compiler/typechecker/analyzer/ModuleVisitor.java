@@ -88,33 +88,35 @@ public class ModuleVisitor extends Visitor {
             }
             else {
                 Tree.SpecifiedArgument vsa = getArgument(that, "version");
-                String version = argumentToString(vsa);
-                if (version==null) {
-                    that.addError("missing module version");
-                }
-                else {
-                    if (version.isEmpty()) {
-                        vsa.addError("empty version identifier");
+                if (vsa!=null) {
+                    String version = argumentToString(vsa);
+                    if (version==null) {
+                        that.addError("missing module version");
                     }
-                }
-                //mainModule = pkg.getModule();
-                mainModule = moduleManager.getOrCreateModule(pkg.getName(),version); //in compiler the Package has a null Module
-                if (mainModule == null) {
-                    nsa.addError("module must have a nonempty name");
-                }
-                else {
-                    mainModule.setVersion(version);
-                    if ( !mainModule.getNameAsString().equals(moduleName) ) {
-                        nsa.addError("module name does not match descriptor location");
+                    else {
+                        if (version.isEmpty()) {
+                            vsa.addError("empty version identifier");
+                        }
                     }
-                    moduleManager.addLinkBetweenModuleAndNode(mainModule, unit);
-                    mainModule.setDoc(argumentToString(getArgument(that, "doc")));
-                    mainModule.setLicense(argumentToString(getArgument(that, "license")));
-                    List<String> by = argumentToStrings(getArgument(that, "by"));
-                    if (by!=null) {
-                        mainModule.getAuthors().addAll(by);
+                    //mainModule = pkg.getModule();
+                    mainModule = moduleManager.getOrCreateModule(pkg.getName(),version); //in compiler the Package has a null Module
+                    if (mainModule == null) {
+                        nsa.addError("module must have a nonempty name");
                     }
-                    mainModule.setAvailable(true);
+                    else {
+                        mainModule.setVersion(version);
+                        if ( !mainModule.getNameAsString().equals(moduleName) ) {
+                            nsa.addError("module name does not match descriptor location");
+                        }
+                        moduleManager.addLinkBetweenModuleAndNode(mainModule, unit);
+                        mainModule.setDoc(argumentToString(getArgument(that, "doc")));
+                        mainModule.setLicense(argumentToString(getArgument(that, "license")));
+                        List<String> by = argumentToStrings(getArgument(that, "by"));
+                        if (by!=null) {
+                            mainModule.getAuthors().addAll(by);
+                        }
+                        mainModule.setAvailable(true);
+                    }
                 }
             }
         }
@@ -129,30 +131,32 @@ public class ModuleVisitor extends Visitor {
             }
             else {
                 Tree.SpecifiedArgument vsa = getArgument(that, "version");
-                String version = argumentToString(vsa);
-                if (version.isEmpty()) {
-                    vsa.addError("empty version identifier");
-                }
-                Module importedModule = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(moduleName),version);
-                if (importedModule == null) {
-                    nsa.addError("module must have a nonempty name");
-                }
-                else if (mainModule != null) {
-                    if (importedModule.getVersion() == null) {
-                        importedModule.setVersion(version);
+                if (vsa!=null) {
+                    String version = argumentToString(vsa);
+                    if (version.isEmpty()) {
+                        vsa.addError("empty version identifier");
                     }
-                    String optionalString = argumentToString(getArgument(that, "optional"));
-                    String exportString = argumentToString(getArgument(that, "export"));
-                    ModuleImport moduleImport = moduleManager.findImport(mainModule, importedModule);
-                    if (moduleImport == null) {
-                        boolean optional = optionalString!=null && optionalString.equals("true");
-                        boolean export = exportString!=null && exportString.equals("true");
-                        moduleImport = new ModuleImport(importedModule, optional, export);
-                        mainModule.getImports().add(moduleImport);
+                    Module importedModule = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(moduleName),version);
+                    if (importedModule == null) {
+                        nsa.addError("module must have a nonempty name");
                     }
-                    moduleManager.addModuleDependencyDefinition(moduleImport, nsa);
+                    else if (mainModule != null) {
+                        if (importedModule.getVersion() == null) {
+                            importedModule.setVersion(version);
+                        }
+                        String optionalString = argumentToString(getArgument(that, "optional"));
+                        String exportString = argumentToString(getArgument(that, "export"));
+                        ModuleImport moduleImport = moduleManager.findImport(mainModule, importedModule);
+                        if (moduleImport == null) {
+                            boolean optional = optionalString!=null && optionalString.equals("true");
+                            boolean export = exportString!=null && exportString.equals("true");
+                            moduleImport = new ModuleImport(importedModule, optional, export);
+                            mainModule.getImports().add(moduleImport);
+                        }
+                        moduleManager.addModuleDependencyDefinition(moduleImport, nsa);
+                    }
+                    //else we leave it behind unprocessed
                 }
-                //else we leave it behind unprocessed
             }
         }
         if (id.getText().equals("Package")) {

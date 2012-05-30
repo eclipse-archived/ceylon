@@ -37,5 +37,7 @@ class Parameters() {
     class Sub() extends Super() {
     	shared actual void greet(@error String greeting="hello") {}
     }
+    
+    void method()(@error String name="gavin")(@error String... names) {}
 
 }

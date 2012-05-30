@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
@@ -124,7 +125,7 @@ public class Unit {
     
     public Map<String, DeclarationWithProximity> getMatchingImportedDeclarations(String startingWith, int proximity) {
     	Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
-        for (Import i: getImports()) {
+        for (Import i: new ArrayList<Import>(getImports())) {
             if (i.getAlias()!=null &&
                     i.getAlias().toLowerCase().startsWith(startingWith.toLowerCase())) {
                 result.put(i.getAlias(), new DeclarationWithProximity(i, proximity));
@@ -575,6 +576,22 @@ public class Unit {
     
     public BottomType getBottomDeclaration() {
         return new BottomType(this);
+    }
+
+    public ProducedType denotableType(ProducedType pt) {
+        if ( pt.getDeclaration().isAnonymous() ) {
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            addToIntersection(list, pt.getSupertype(pt.getDeclaration().getExtendedTypeDeclaration()), this);
+            for (TypeDeclaration td: pt.getDeclaration().getSatisfiedTypeDeclarations()) {
+                addToIntersection(list, pt.getSupertype(td), this);
+            }
+            IntersectionType it = new IntersectionType(this);
+            it.setSatisfiedTypes(list);
+            return it.getType();
+        }
+        else {
+            return pt;
+        }
     }
     
 }

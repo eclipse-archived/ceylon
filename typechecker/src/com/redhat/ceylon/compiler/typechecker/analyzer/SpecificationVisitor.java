@@ -358,7 +358,7 @@ public class SpecificationVisitor extends Visitor {
             }
             else if (declaration.isInterfaceMember() && !declaration.isFormal()) {
                 that.addError("interface method must be formal or specified: " +
-                        declaration.getName());
+                        declaration.getName(), 1400);
             }
         }
     }
