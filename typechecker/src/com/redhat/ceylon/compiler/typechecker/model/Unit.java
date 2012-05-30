@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
@@ -575,6 +576,22 @@ public class Unit {
     
     public BottomType getBottomDeclaration() {
         return new BottomType(this);
+    }
+
+    public ProducedType denotableType(ProducedType pt) {
+        if ( pt.getDeclaration().isAnonymous() ) {
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            addToIntersection(list, pt.getSupertype(pt.getDeclaration().getExtendedTypeDeclaration()), this);
+            for (TypeDeclaration td: pt.getDeclaration().getSatisfiedTypeDeclarations()) {
+                addToIntersection(list, pt.getSupertype(td), this);
+            }
+            IntersectionType it = new IntersectionType(this);
+            it.setSatisfiedTypes(list);
+            return it.getType();
+        }
+        else {
+            return pt;
+        }
     }
     
 }
