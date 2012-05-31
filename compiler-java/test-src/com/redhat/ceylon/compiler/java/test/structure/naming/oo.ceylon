@@ -1,0 +1,3 @@
+object oo {
+    object o {}
+}

@@ -1,0 +1,3 @@
+void fo() {
+    object o {}
+}

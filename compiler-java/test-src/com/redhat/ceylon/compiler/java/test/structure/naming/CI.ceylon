@@ -1,0 +1,3 @@
+class CI() {
+    interface I {}
+}

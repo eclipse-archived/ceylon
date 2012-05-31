@@ -1,0 +1,3 @@
+interface II {
+    interface I {}
+}

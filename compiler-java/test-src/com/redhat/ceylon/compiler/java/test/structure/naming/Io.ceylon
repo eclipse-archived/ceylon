@@ -1,0 +1,3 @@
+interface Io {
+    object o {}
+}

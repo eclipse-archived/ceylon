@@ -1,0 +1,3 @@
+void fC() {
+    class C() {}
+}

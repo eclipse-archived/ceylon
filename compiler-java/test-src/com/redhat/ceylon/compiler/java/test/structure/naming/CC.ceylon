@@ -1,0 +1,3 @@
+class CC() {
+    class C() {}
+}

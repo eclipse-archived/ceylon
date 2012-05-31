@@ -1,0 +1,3 @@
+void ff() {
+    void f() {}
+}

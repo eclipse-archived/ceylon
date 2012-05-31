@@ -1,0 +1,3 @@
+void fI() {
+    interface I {}
+}

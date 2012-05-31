@@ -1,0 +1,3 @@
+class Co() {
+    object o {}
+}
