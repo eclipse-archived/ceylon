@@ -11,14 +11,15 @@ import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 
-public class CodegenUtil {
+class CodegenUtil {
 
     public static enum NameFlag {
         /** 
          * A qualified name. 
          * <li>For a top level this includes the package name.
-         * <li>For an inner this includes the package name and the qualiftying type names
-         * <li>For a (possibly indirect) local this includes the qualiftying type names */
+         * <li>For an inner this includes the package name and the qualifying type names
+         * <li>For a (possibly indirect) local this includes the qualifying type names 
+         */
         QUALIFIED,
         /** The name of the companion type of this thing */
         COMPANION
@@ -26,7 +27,13 @@ public class CodegenUtil {
     
     private CodegenUtil(){}
     
-    public static String declName(LocalId gen, final Declaration decl, NameFlag... options) {
+    /**
+     * Generates a Java type name for the given declaration
+     * @param gen Something which knows about local declarations
+     * @param decl The declaration
+     * @param options Option flags
+     */
+    static String declName(LocalId gen, final Declaration decl, NameFlag... options) {
         EnumSet<NameFlag> flags = EnumSet.noneOf(NameFlag.class);
         flags.addAll(Arrays.asList(options));
         java.util.List<Scope> l = new java.util.ArrayList<Scope>();
@@ -48,7 +55,6 @@ public class CodegenUtil {
         for (int ii = 0; ii < l.size(); ii++) {
             Scope scope = l.get(ii);
             final boolean last = ii == l.size() - 1;
-            final int mark = sb.length();
             if (scope instanceof Class) {
                 Class klass = (Class)scope;
                 sb.append(klass.getName());

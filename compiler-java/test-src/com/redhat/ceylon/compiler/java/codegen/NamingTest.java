@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.test.structure.naming;
+package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.redhat.ceylon.compiler.java.codegen.CodegenUtil.declName;
 import static com.redhat.ceylon.compiler.java.codegen.CodegenUtil.NameFlag.COMPANION;
@@ -211,15 +211,6 @@ public class NamingTest {
         Assert.assertEquals("oo.o$impl", declName(lid, decl, COMPANION));
         Assert.assertEquals(QUAL + "oo.o", declName(lid, decl, QUALIFIED));
         Assert.assertEquals(QUAL + "oo.o$impl", declName(lid, decl, COMPANION, QUALIFIED));
-    }
-    
-    @Test
-    public void testf() throws Exception {
-        final Declaration decl = findDecl("f.ceylon", "f");
-        Assert.assertEquals("f", declName(lid, decl));
-        Assert.assertEquals("f$impl", declName(lid, decl, COMPANION));
-        Assert.assertEquals(QUAL + "f", declName(lid, decl, QUALIFIED));
-        Assert.assertEquals(QUAL + "f$impl", declName(lid, decl, COMPANION, QUALIFIED));
     }
     
     @Test

@@ -23,6 +23,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import com.redhat.ceylon.compiler.java.codegen.NamingTest;
 import com.redhat.ceylon.compiler.java.test.annotations.AnnotationsTest;
 import com.redhat.ceylon.compiler.java.test.bc.BcTests;
 import com.redhat.ceylon.compiler.java.test.cmr.CMRTest;
@@ -44,6 +45,7 @@ import com.redhat.ceylon.compiler.java.test.structure.StructureTest2;
 
 @RunWith(Suite.class) 
 @SuiteClasses({
+    NamingTest.class,
     AnnotationsTest.class,
     ExpressionTest.class,
     ExpressionTest2.class,
