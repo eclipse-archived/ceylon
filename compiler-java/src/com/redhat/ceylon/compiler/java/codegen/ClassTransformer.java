@@ -203,10 +203,10 @@ public class ClassTransformer extends AbstractTransformer {
             Interface iface = (Interface)decl;
             concreteMembersFromSuperinterfaces((Class)model, classBuilder, satisfiedType, satisfiedInterfaces);
             
-            if (Decl.withinClassOrInterface(decl)) {// TODO What about local interfaces?
+            /*if (Decl.withinClassOrInterface(decl)) {// TODO What about local interfaces?
                 // Generate $outer() impl if implementing an inner interface
                 classBuilder.defs(makeOuterImpl(model, iface));
-            }
+            }*/
         }
     }
 
@@ -423,7 +423,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 makeSelect("this", "$this"), 
                                 makeUnquotedIdent("$this"))));
         ctor.body(bodyStatements.toList());
-        if (Strategy.needsOuterMethodInCompanion(model)) {
+        /*if (Strategy.needsOuterMethodInCompanion(model)) {
             // interfaces inner to local types have a different type in the 
             // interface and on the $impl because the real outer type is not 
             // visible because the interfaces is hoisted to top level
@@ -478,7 +478,7 @@ public class ClassTransformer extends AbstractTransformer {
             outerBuilderInterface.modifiers(PUBLIC | ABSTRACT);
             outerBuilderInterface.resultType(null, makeJavaType(outerTypeInterface));
             classBuilder.defs(outerBuilderInterface.build());
-        }
+        }*/
     }
 
     public List<JCStatement> transformRefinementSpecifierStatement(SpecifierStatement op, ClassDefinitionBuilder classBuilder) {
