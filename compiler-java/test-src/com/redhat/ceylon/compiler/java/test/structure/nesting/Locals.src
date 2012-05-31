@@ -1,34 +1,24 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting;
 
-interface Local$0$LC$LCI {
-    
-    public abstract .java.lang.Object $outer();
+interface Local$local$0$LC$LCI {
     
     public long m();
 }
-interface Local$1$LI$LII {
-    
-    public abstract .java.lang.Object $outer();
+interface Local$local$1$LI$LII {
     
     public long m();
 }
-interface Local$1$LI {
+interface Local$local$1$LI {
 }
-interface Local$C$1$CL$LCI {
-    
-    public abstract .java.lang.Object $outer();
+interface Local$C$local2$1$CL$LCI {
     
     public long m();
 }
-interface Local$I$2$IL$ICI {
-    
-    public abstract .java.lang.Object $outer();
+interface Local$I$local3$2$IL$ICI {
     
     public long m();
 }
 interface Local$I {
-    
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.Local $outer();
     
     public void local3(final long i);
     
@@ -54,18 +44,14 @@ class Local {
         class LC {
             private final long j;
             
-            final class Local$0$LC$LCI$impl {
-                private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$0$LC$LCI $this;
-                
-                private final LC $outer() {
-                    return LC.this;
-                }
+            final class LCI$impl {
+                private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$0$LC$LCI $this;
                 
                 public long m() {
                     return mLocal() + i + j;
                 }
                 
-                Local$0$LC$LCI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$0$LC$LCI $this) {
+                LCI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$0$LC$LCI $this) {
                     this.$this = $this;
                 }
             }
@@ -77,13 +63,9 @@ class Local {
                 }
             }
             
-            class LCC implements .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$0$LC$LCI {
+            class LCC implements .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$0$LC$LCI {
                 private final long k;
-                private final Local$0$LC$LCI$impl $LCI$impl;
-                
-                public final LC $outer() {
-                    return LC.this;
-                }
+                private final LC.LCI$impl $LCI$impl;
                 
                 @.java.lang.Override
                 public final long m() {
@@ -104,7 +86,7 @@ class Local {
                 
                 LCC(long k) {
                     this.k = k;
-                    this.$LCI$impl = new Local$0$LC$LCI$impl(this);
+                    this.$LCI$impl = new LC.LCI$impl(this);
                 }
             }
             
@@ -125,21 +107,17 @@ class Local {
             }
         }
         
-        final class Local$1$LI$impl {
-            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$1$LI $this;
+        final class LI$impl {
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$1$LI $this;
             
-            final class Local$1$LI$LII$impl {
-                private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$1$LI$LII $this;
-                
-                private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$1$LI $outer() {
-                    return (.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$1$LI)$this.$outer();
-                }
+            final class LII$impl {
+                private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$1$LI$LII $this;
                 
                 public long m() {
                     return mLocal() + i;
                 }
                 
-                Local$1$LI$LII$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$1$LI$LII $this) {
+                LII$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$1$LI$LII $this) {
                     this.$this = $this;
                 }
             }
@@ -151,13 +129,9 @@ class Local {
                 }
             }
             
-            class LIC implements .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$1$LI$LII {
+            class LIC implements .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$1$LI$LII {
                 private final long j;
-                private final Local$1$LI$LII$impl $LII$impl;
-                
-                public final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$1$LI $outer() {
-                    return null;
-                }
+                private final LI$impl.LII$impl $LII$impl;
                 
                 @.java.lang.Override
                 public final long m() {
@@ -168,7 +142,7 @@ class Local {
                     (
                         let
                         {
-                            LIC$impl $ceylontmp$impl$4 = new LIC$impl();
+                            LI$impl.LIC$impl $ceylontmp$impl$4 = new LI$impl.LIC$impl();
                             long $ceylontmp$j$5 = $ceylontmp$impl$4.$init$j();
                             this($ceylontmp$j$5);
                         }
@@ -178,11 +152,11 @@ class Local {
                 
                 LIC(long j) {
                     this.j = j;
-                    this.$LII$impl = new Local$1$LI$LII$impl(this);
+                    this.$LII$impl = new LI$impl.LII$impl(this);
                 }
             }
             
-            Local$1$LI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$1$LI $this) {
+            LI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$1$LI $this) {
                 this.$this = $this;
             }
         }
@@ -229,18 +203,14 @@ class Local {
             class CL {
                 private final long k;
                 
-                final class Local$C$1$CL$LCI$impl {
-                    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$C$1$CL$LCI $this;
-                    
-                    private final CL $outer() {
-                        return CL.this;
-                    }
+                final class LCI$impl {
+                    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$C$local2$1$CL$LCI $this;
                     
                     public long m() {
                         return mLocal() + i + j + k;
                     }
                     
-                    Local$C$1$CL$LCI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$C$1$CL$LCI $this) {
+                    LCI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$C$local2$1$CL$LCI $this) {
                         this.$this = $this;
                     }
                 }
@@ -252,13 +222,9 @@ class Local {
                     }
                 }
                 
-                class CLC implements .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$C$1$CL$LCI {
+                class CLC implements .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$C$local2$1$CL$LCI {
                     private final long l;
-                    private final Local$C$1$CL$LCI$impl $LCI$impl;
-                    
-                    public final CL $outer() {
-                        return CL.this;
-                    }
+                    private final CL.LCI$impl $LCI$impl;
                     
                     @.java.lang.Override
                     public final long m() {
@@ -279,7 +245,7 @@ class Local {
                     
                     CLC(long l) {
                         this.l = l;
-                        this.$LCI$impl = new Local$C$1$CL$LCI$impl(this);
+                        this.$LCI$impl = new CL.LCI$impl(this);
                     }
                 }
                 
@@ -333,12 +299,8 @@ class Local {
         }
     }
     
-    final class Local$I$impl {
+    final class I$impl {
         private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I $this;
-        
-        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local $outer() {
-            return .com.redhat.ceylon.compiler.java.test.structure.nesting.Local.this;
-        }
         
         private final long local3$i() {
             return 0L;
@@ -356,18 +318,14 @@ class Local {
             class IL {
                 private final long j;
                 
-                final class Local$I$2$IL$ICI$impl {
-                    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I$2$IL$ICI $this;
-                    
-                    private final IL $outer() {
-                        return IL.this;
-                    }
+                final class ICI$impl {
+                    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I$local3$2$IL$ICI $this;
                     
                     public long m() {
                         return mLocal() + i + j;
                     }
                     
-                    Local$I$2$IL$ICI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I$2$IL$ICI $this) {
+                    ICI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I$local3$2$IL$ICI $this) {
                         this.$this = $this;
                     }
                 }
@@ -379,13 +337,9 @@ class Local {
                     }
                 }
                 
-                class ILC implements .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I$2$IL$ICI {
+                class ILC implements .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I$local3$2$IL$ICI {
                     private final long k;
-                    private final Local$I$2$IL$ICI$impl $ICI$impl;
-                    
-                    public final IL $outer() {
-                        return IL.this;
-                    }
+                    private final IL.ICI$impl $ICI$impl;
                     
                     @.java.lang.Override
                     public final long m() {
@@ -406,7 +360,7 @@ class Local {
                     
                     ILC(long k) {
                         this.k = k;
-                        this.$ICI$impl = new Local$I$2$IL$ICI$impl(this);
+                        this.$ICI$impl = new IL.ICI$impl(this);
                     }
                 }
                 
@@ -428,7 +382,7 @@ class Local {
             }
         }
         
-        Local$I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I $this) {
+        I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I $this) {
             this.$this = $this;
         }
     }

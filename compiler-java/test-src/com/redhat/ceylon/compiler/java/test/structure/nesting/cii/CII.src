@@ -2,13 +2,9 @@ package com.redhat.ceylon.compiler.java.test.structure.nesting.cii;
 
 interface C$CI$CII<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI<? extends T, ? super X> $outer();
-    
     public T m2();
 }
 interface C$CI<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
-    
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C<? extends T, ? super X> $outer();
 }
 class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
@@ -30,30 +26,22 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
         return null;
     }
     
-    final class C$CI$impl {
+    final class CI$impl {
         private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI<? extends T, ? super X> $this;
         
-        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C<? extends T, ? super X> $outer() {
-            return .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C.this;
-        }
-        
-        final class C$CI$CII$impl {
+        final class CII$impl {
             private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI$CII<? extends T, ? super X> $this;
-            
-            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI<? extends T, ? super X> $outer() {
-                return $this.$outer();
-            }
             
             public T m2() {
                 return m1(null);
             }
             
-            C$CI$CII$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI$CII<? extends T, ? super X> $this) {
+            CII$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI$CII<? extends T, ? super X> $this) {
                 this.$this = $this;
             }
         }
         
-        C$CI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI<? extends T, ? super X> $this) {
+        CI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI<? extends T, ? super X> $this) {
             this.$this = $this;
         }
     }

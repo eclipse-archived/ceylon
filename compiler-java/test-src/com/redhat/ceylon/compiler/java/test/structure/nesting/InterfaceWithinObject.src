@@ -1,0 +1,51 @@
+package com.redhat.ceylon.compiler.java.test.structure.nesting;
+
+public interface interfaceWithinObject$Z {
+}
+final class interfaceWithinObject {
+    
+    public final class Z$impl {
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z $this;
+        
+        public Z$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z $this) {
+            this.$this = $this;
+        }
+    }
+    
+    public class ZI implements .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z {
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject.Z$impl $Z$impl;
+        
+        public ZI() {
+            this.$Z$impl = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject.Z$impl(this);
+        }
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject.z z;
+    
+    public final class z implements .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z {
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject.Z$impl $Z$impl;
+        
+        private z() {
+            this.$Z$impl = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject.Z$impl(this);
+        }
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject.z getZ() {
+        return z;
+    }
+    
+    private interfaceWithinObject() {
+        this.z = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject.z();
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject[] value;
+    static {
+        value = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject[]{new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject()};
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject getInterfaceWithinObject() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+}

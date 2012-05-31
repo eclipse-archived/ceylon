@@ -1,12 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting;
 
 interface Objects$objects_o$DummyI {
-    
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o $outer();
 }
 interface Objects$ObjectsI {
-    
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects $outer();
 }
 class Objects {
     
@@ -24,14 +20,10 @@ class Objects {
             }
         }
         
-        final class Objects$objects_o$DummyI$impl {
+        final class DummyI$impl {
             private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$objects_o$DummyI $this;
             
-            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o $outer() {
-                return .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o.this;
-            }
-            
-            Objects$objects_o$DummyI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$objects_o$DummyI $this) {
+            DummyI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$objects_o$DummyI $this) {
                 this.$this = $this;
             }
         }
@@ -69,12 +61,8 @@ class Objects {
         }
     }
     
-    final class Objects$ObjectsI$impl {
+    final class ObjectsI$impl {
         private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$ObjectsI $this;
-        
-        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects $outer() {
-            return .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.this;
-        }
         
         class ObjectsIC {
             
@@ -86,11 +74,11 @@ class Objects {
             }
             
             ObjectsIC() {
-                final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Objects$ObjectsI$impl.ObjectsIC.objectsic_o objectsic_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Objects$ObjectsI$impl.ObjectsIC.objectsic_o();
+                final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.objectsic_o objectsic_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.objectsic_o();
             }
         }
         
-        Objects$ObjectsI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$ObjectsI $this) {
+        ObjectsI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$ObjectsI $this) {
             this.$this = $this;
         }
     }

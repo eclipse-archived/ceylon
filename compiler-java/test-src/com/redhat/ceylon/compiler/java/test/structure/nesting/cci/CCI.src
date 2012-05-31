@@ -2,8 +2,6 @@ package com.redhat.ceylon.compiler.java.test.structure.nesting.cci;
 
 interface C$CC$CCI<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.cci.C<? extends T, ? super X>.CC $outer();
-    
     public T m2();
 }
 class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
@@ -28,18 +26,14 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
     class CC {
         
-        final class C$CC$CCI$impl {
+        final class CCI$impl {
             private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cci.C$CC$CCI<? extends T, ? super X> $this;
-            
-            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cci.C<? extends T, ? super X>.CC $outer() {
-                return .com.redhat.ceylon.compiler.java.test.structure.nesting.cci.C.CC.this;
-            }
             
             public T m2() {
                 return m1(null);
             }
             
-            C$CC$CCI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.cci.C$CC$CCI<? extends T, ? super X> $this) {
+            CCI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.cci.C$CC$CCI<? extends T, ? super X> $this) {
                 this.$this = $this;
             }
         }
