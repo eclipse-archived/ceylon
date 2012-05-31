@@ -1669,7 +1669,8 @@ public class ExpressionVisitor extends Visitor {
         }
         checkAssignable(argType, pr.getTypedParameter(p.getAliasedParameter()).getFullType(), 
                 a, "named argument must be assignable to parameter " + 
-                p.getName() + " of " + pr.getDeclaration().getName());
+                p.getName() + " of " + pr.getDeclaration().getName(), 
+                2100);
     }
     
     private void checkSequencedArgument(Tree.SequencedArgument a, ProducedReference pr, 
@@ -1791,7 +1792,8 @@ public class ExpressionVisitor extends Visitor {
         else {
             checkAssignable(getPositionalArgumentType(a), paramType, a, 
                     "argument must be assignable to parameter " + 
-                    p.getName() + " of " + pr.getDeclaration().getName());
+                    p.getName() + " of " + pr.getDeclaration().getName(), 
+                    2100);
         }
     }
 
