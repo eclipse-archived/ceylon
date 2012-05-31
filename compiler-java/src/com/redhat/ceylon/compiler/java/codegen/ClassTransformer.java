@@ -125,7 +125,7 @@ public class ClassTransformer extends AbstractTransformer {
                     if (Strategy.defaultParameterMethodStatic(model)) {
                         cbForDevaultValues = classBuilder;
                     } else {
-                        cbForDevaultValues = classBuilder.getCompanionBuilder();
+                        cbForDevaultValues = classBuilder.getCompanionBuilder(model);
                     }
                     cbForDevaultValues.defs(makeParamDefaultValueMethod(false, def, paramList, param));
                     // Add overloaded constructors for defaulted parameter
@@ -404,7 +404,7 @@ public class ClassTransformer extends AbstractTransformer {
             final Interface model, ClassDefinitionBuilder classBuilder) {
         at(def);
         // Give the $impl companion a $this field...
-        ClassDefinitionBuilder companionBuilder = classBuilder.getCompanionBuilder();
+        ClassDefinitionBuilder companionBuilder = classBuilder.getCompanionBuilder(model);
         
         ProducedType thisType = model.getType();
         companionBuilder.field(PRIVATE | FINAL, 
@@ -589,7 +589,7 @@ public class ClassTransformer extends AbstractTransformer {
                         || ((parameter instanceof ValueParameter) 
                                 && ((ValueParameter)parameter).isHidden())) {
                     if (concrete) {
-                        classBuilder.getCompanionBuilder().field(modifiers, attrName, type, initialValue, !useField);
+                        classBuilder.getCompanionBuilder((Declaration)model.getContainer()).field(modifiers, attrName, type, initialValue, !useField);
                     } else {
                         classBuilder.field(modifiers, attrName, type, initialValue, !useField);
                     }        
@@ -600,12 +600,12 @@ public class ClassTransformer extends AbstractTransformer {
         if (useField) {
             classBuilder.defs(makeGetter(decl, false));
             if (Decl.withinInterface(decl)) {
-                classBuilder.getCompanionBuilder().defs(makeGetter(decl, true));
+                classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).defs(makeGetter(decl, true));
             }
             if (Decl.isMutable(decl)) {
                 classBuilder.defs(makeSetter(decl, false));
                 if (Decl.withinInterface(decl)) {
-                    classBuilder.getCompanionBuilder().defs(makeSetter(decl, true));
+                    classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).defs(makeSetter(decl, true));
                 }
             }
         }
@@ -857,7 +857,7 @@ public class ClassTransformer extends AbstractTransformer {
                     lb.add(defaultValueMethodImpl);    
                 } else {
                     lb.add(makeParamDefaultValueMethod(true, model, paramList, param));
-                    classBuilder.getCompanionBuilder().defs(defaultValueMethodImpl);
+                    classBuilder.getCompanionBuilder((Declaration)model.getContainer()).defs(defaultValueMethodImpl);
                 }    
             }
         }
@@ -905,7 +905,7 @@ public class ClassTransformer extends AbstractTransformer {
                     // $this (for closure purposes)
                     JCMethodDecl result = makeConcreteInterfaceMethodsForClosure(
                             model, methodName, parameterList, parameter);
-                    classBuilder.getCompanionBuilder().defs(result);
+                    classBuilder.getCompanionBuilder((Declaration)model.getContainer()).defs(result);
                 }
             }    
         }

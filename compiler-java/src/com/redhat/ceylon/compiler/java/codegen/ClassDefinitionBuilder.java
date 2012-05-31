@@ -484,9 +484,9 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
-    public ClassDefinitionBuilder getCompanionBuilder() {
+    public ClassDefinitionBuilder getCompanionBuilder(Declaration decl) {
         if (concreteInterfaceMemberDefs == null) {
-            concreteInterfaceMemberDefs = new ClassDefinitionBuilder(gen, ancestorLocal, Util.getCompanionClassName(name))
+            concreteInterfaceMemberDefs = new ClassDefinitionBuilder(gen, ancestorLocal, gen.getCompanionClassName(decl).replaceFirst(".*\\.", ""))
                 .annotations(gen.makeAtIgnore());
             concreteInterfaceMemberDefs.isCompanion = true;
         }
@@ -515,7 +515,7 @@ public class ClassDefinitionBuilder {
         if (method instanceof Tree.MethodDefinition) {
             Tree.MethodDefinition m = (Tree.MethodDefinition)method;
             if (Decl.withinInterface(m) && m.getBlock() != null) {
-                getCompanionBuilder().defs(gen.classGen().transformConcreteInterfaceMember(m, ((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)Decl.container(method)).getType()));
+                getCompanionBuilder((Declaration)m.getDeclarationModel().getContainer()).defs(gen.classGen().transformConcreteInterfaceMember(m, ((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)Decl.container(method)).getType()));
             }
         }
         return this;
