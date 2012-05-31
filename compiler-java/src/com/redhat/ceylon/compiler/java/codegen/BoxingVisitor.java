@@ -20,7 +20,6 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
-import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -72,11 +71,11 @@ public class BoxingVisitor extends Visitor {
         if(that.getDeclaration() == null)
             return;
         Declaration decl = that.getDeclaration();
-        if(Util.isUnBoxed((TypedDeclaration)decl)
+        if(CodegenUtil.isUnBoxed((TypedDeclaration)decl)
                 // special cases for true/false
                 || transformer.isBooleanTrue(decl)
                 || transformer.isBooleanFalse(decl))
-            Util.markUnBoxed(that);
+            CodegenUtil.markUnBoxed(that);
     }
 
     @Override
@@ -103,32 +102,32 @@ public class BoxingVisitor extends Visitor {
     @Override
     public void visit(NaturalLiteral that) {
         super.visit(that);
-        Util.markUnBoxed(that);
+        CodegenUtil.markUnBoxed(that);
     }
 
     @Override
     public void visit(FloatLiteral that) {
         super.visit(that);
-        Util.markUnBoxed(that);
+        CodegenUtil.markUnBoxed(that);
     }
 
     @Override
     public void visit(StringLiteral that) {
         super.visit(that);
-        Util.markUnBoxed(that);
+        CodegenUtil.markUnBoxed(that);
     }
 
     @Override
     public void visit(CharLiteral that) {
         super.visit(that);
-        Util.markUnBoxed(that);
+        CodegenUtil.markUnBoxed(that);
     }
 
     @Override
     public void visit(StringTemplate that) {
         super.visit(that);
         // for now we always produce an unboxed string in ExpressionTransformer
-        Util.markUnBoxed(that);
+        CodegenUtil.markUnBoxed(that);
     }
     
     @Override
@@ -154,7 +153,7 @@ public class BoxingVisitor extends Visitor {
         // we are unboxed if both terms are
         if(that.getLeftTerm().getUnboxed()
                 && that.getRightTerm().getUnboxed())
-            Util.markUnBoxed(that);
+            CodegenUtil.markUnBoxed(that);
     }
 
     @Override
@@ -163,7 +162,7 @@ public class BoxingVisitor extends Visitor {
         // we are unboxed if both terms are 
         if(that.getLeftTerm().getUnboxed()
                 && that.getRightTerm().getUnboxed())
-            Util.markUnBoxed(that);
+            CodegenUtil.markUnBoxed(that);
     }
 
     @Override
@@ -184,14 +183,14 @@ public class BoxingVisitor extends Visitor {
     public void visit(NotOp that) {
         super.visit(that);
         // this is not conditional
-        Util.markUnBoxed(that);
+        CodegenUtil.markUnBoxed(that);
     }
     
     @Override
     public void visit(LogicalOp that) {
         super.visit(that);
         // this is not conditional
-        Util.markUnBoxed(that);
+        CodegenUtil.markUnBoxed(that);
     }
     
     @Override
@@ -211,7 +210,7 @@ public class BoxingVisitor extends Visitor {
         if (term instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression leftTerm = (Tree.MemberOrTypeExpression)term;
             TypedDeclaration decl = (TypedDeclaration) leftTerm.getDeclaration();
-            if (Util.isSmall(decl)) {
+            if (CodegenUtil.isSmall(decl)) {
                 ProducedType expectedType = decl.getTypeDeclaration().getType();
                 expectedType.setUnderlyingType("int");
                 leftTerm.setTypeModel(expectedType);
@@ -223,66 +222,66 @@ public class BoxingVisitor extends Visitor {
     public void visit(LogicalAssignmentOp that) {
         super.visit(that);
         // this is not conditional
-        Util.markUnBoxed(that);
+        CodegenUtil.markUnBoxed(that);
     }
 
     @Override
     public void visit(EqualityOp that) {
         super.visit(that);
         // this is not conditional
-        Util.markUnBoxed(that);
+        CodegenUtil.markUnBoxed(that);
     }
 
     @Override
     public void visit(IdenticalOp that) {
         super.visit(that);
         // this is not conditional
-        Util.markUnBoxed(that);
+        CodegenUtil.markUnBoxed(that);
     }
 
     @Override
     public void visit(ComparisonOp that) {
         super.visit(that);
         // this is not conditional
-        Util.markUnBoxed(that);
+        CodegenUtil.markUnBoxed(that);
     }
 
     @Override
     public void visit(InOp that) {
         super.visit(that);
         // this is not conditional
-        Util.markUnBoxed(that);
+        CodegenUtil.markUnBoxed(that);
     }
 
     @Override
     public void visit(IsOp that) {
         super.visit(that);
         // this is not conditional
-        Util.markUnBoxed(that);
+        CodegenUtil.markUnBoxed(that);
     }
 
     @Override
     public void visit(Nonempty that) {
         super.visit(that);
         // this is not conditional
-        Util.markUnBoxed(that);
+        CodegenUtil.markUnBoxed(that);
     }
 
     @Override
     public void visit(Exists that) {
         super.visit(that);
         // this is not conditional
-        Util.markUnBoxed(that);
+        CodegenUtil.markUnBoxed(that);
     }
 
     private void propagateFromDeclaration(Term that, TypedDeclaration term) {
-        if(Util.isUnBoxed(term))
-            Util.markUnBoxed(that);
+        if(CodegenUtil.isUnBoxed(term))
+            CodegenUtil.markUnBoxed(that);
     }
 
     private void propagateFromTerm(Term that, Term term) {
-        if(Util.isUnBoxed(term))
-            Util.markUnBoxed(that);
+        if(CodegenUtil.isUnBoxed(term))
+            CodegenUtil.markUnBoxed(that);
     }
 
 }

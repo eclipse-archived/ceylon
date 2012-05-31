@@ -391,7 +391,7 @@ public class StatementTransformer extends AbstractTransformer {
         JCExpression initialValue = null;
         if (decl.getSpecifierOrInitializerExpression() != null) {
             initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), 
-                    Util.getBoxingStrategy(decl.getDeclarationModel()), 
+                    CodegenUtil.getBoxingStrategy(decl.getDeclarationModel()), 
                     decl.getDeclarationModel().getType());
         }
 
@@ -435,7 +435,7 @@ public class StatementTransformer extends AbstractTransformer {
                 TypedDeclaration nonWideningTypeDeclaration = nonWideningTypeDecl(declaration);
                 ProducedType nonWideningType = nonWideningType(declaration, nonWideningTypeDeclaration);
                 returnExpr = expressionGen().transformExpression(expr.getTerm(), 
-                        Util.getBoxingStrategy(nonWideningTypeDeclaration),
+                        CodegenUtil.getBoxingStrategy(nonWideningTypeDeclaration),
                         nonWideningType);
             } finally {
                 noExpressionlessReturn = prevNoExpressionlessReturn;

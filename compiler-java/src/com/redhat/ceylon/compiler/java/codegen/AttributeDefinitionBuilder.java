@@ -64,7 +64,7 @@ public class AttributeDefinitionBuilder {
         int typeFlags = 0;
         TypedDeclaration nonWideningTypeDeclaration = owner.nonWideningTypeDecl(attrType);
         ProducedType nonWideningType = owner.nonWideningType(attrType, nonWideningTypeDeclaration);
-        if (!Util.isUnBoxed(nonWideningTypeDeclaration)) {
+        if (!CodegenUtil.isUnBoxed(nonWideningTypeDeclaration)) {
             typeFlags |= AbstractTransformer.NO_PRIMITIVES;
         }
         
@@ -80,13 +80,13 @@ public class AttributeDefinitionBuilder {
         // Make sure we use the declaration for building the getter/setter names, as we might be trying to
         // override a JavaBean property with an "isFoo" getter, or non-Ceylon casing, and we have to respect that.
         getterBuilder = MethodDefinitionBuilder
-            .systemMethod(owner, ancestorLocal, Util.getGetterName(attrType))
+            .systemMethod(owner, ancestorLocal, CodegenUtil.getGetterName(attrType))
             .block(generateDefaultGetterBlock())
             .isActual(attrType.isActual())
             .annotations(owner.makeAtAnnotations(attrType.getAnnotations()))
             .resultType(this.attrType, attrType);
         setterBuilder = MethodDefinitionBuilder
-            .systemMethod(owner, ancestorLocal, Util.getSetterName(attrType))
+            .systemMethod(owner, ancestorLocal, CodegenUtil.getSetterName(attrType))
             .block(generateDefaultSetterBlock())
             // only actual if the superclass is also variable
             .isActual(attrType.isActual() && ((TypedDeclaration)attrType.getRefinedDeclaration()).isVariable())

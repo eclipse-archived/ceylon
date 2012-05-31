@@ -223,7 +223,7 @@ public class ClassDefinitionBuilder {
             for(Declaration member : decl.getMembers()){
                 if(member instanceof Method && !member.isFormal()){
                     // this member has a body so we need to add a definition for it
-                    MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(gen, Decl.isAncestorLocal(member), true, Util.quoteMethodNameIfProperty((Method) member, gen));
+                    MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(gen, Decl.isAncestorLocal(member), true, CodegenUtil.quoteMethodNameIfProperty((Method) member, gen));
                     Method method = (Method) member;
                     ListBuffer<JCTree.JCExpression> params = ListBuffer.lb();
                     params.append(gen.makeUnquotedIdent("this"));
@@ -234,7 +234,7 @@ public class ClassDefinitionBuilder {
                     
                     boolean isVoid = method.getType().getProducedTypeQualifiedName().equals("ceylon.language.Void");
                     JCMethodInvocation expr = gen.make().Apply(/*FIXME*/List.<JCTree.JCExpression>nil(), 
-                            gen.makeQuotedQualIdentFromString(Util.getCompanionClassName(decl.getName())+"."+method.getName()), 
+                            gen.makeQuotedQualIdentFromString(CodegenUtil.getCompanionClassName(decl.getName())+"."+method.getName()), 
                             params.toList());
                     JCTree.JCStatement body;
                     if (!isVoid) {

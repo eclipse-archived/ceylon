@@ -25,7 +25,6 @@ import java.util.Iterator;
 
 import javax.tools.JavaFileObject;
 
-import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -251,7 +250,7 @@ public class CeylonTransformer extends AbstractTransformer {
                 if (expression != null) {
                     builder.initialValue(expressionGen().transformExpression(
                             expression.getExpression(), 
-                            Util.getBoxingStrategy(declarationModel),
+                            CodegenUtil.getBoxingStrategy(declarationModel),
                             declarationModel.getType()));
                 }
             } else {

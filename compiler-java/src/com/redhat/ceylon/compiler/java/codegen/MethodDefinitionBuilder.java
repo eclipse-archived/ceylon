@@ -79,7 +79,7 @@ public class MethodDefinitionBuilder {
     private boolean built = false;
 
     public static MethodDefinitionBuilder method(AbstractTransformer gen, boolean ancestorLocal, boolean isMember, String name) {
-        return new MethodDefinitionBuilder(gen, ancestorLocal, isMember ? Util.quoteMethodName(name) : Util.quoteIfJavaKeyword(name));
+        return new MethodDefinitionBuilder(gen, ancestorLocal, isMember ? CodegenUtil.quoteMethodName(name) : Util.quoteIfJavaKeyword(name));
     }
     
     public static MethodDefinitionBuilder systemMethod(AbstractTransformer gen, boolean ancestorLocal, String name) {

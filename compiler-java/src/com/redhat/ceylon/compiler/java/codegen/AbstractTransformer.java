@@ -655,7 +655,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             }
             return makeJavaType(typeFact().getCallableType(pt), 0);    
         } else {
-            boolean usePrimitives = Util.isUnBoxed(typeDecl);
+            boolean usePrimitives = CodegenUtil.isUnBoxed(typeDecl);
             return makeJavaType(type, usePrimitives ? 0 : AbstractTransformer.NO_PRIMITIVES);
         }
     }
@@ -1139,7 +1139,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
 
     boolean checkCompilerAnnotations(Tree.Declaration decl){
         boolean old = gen().disableModelAnnotations;
-        if(Util.hasCompilerAnnotation(decl, "nomodel"))
+        if(CodegenUtil.hasCompilerAnnotation(decl, "nomodel"))
             gen().disableModelAnnotations  = true;
         return old;
     }
@@ -1387,7 +1387,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     JCExpression boxUnboxIfNecessary(JCExpression javaExpr, Tree.Term expr,
             ProducedType exprType,
             BoxingStrategy boxingStrategy) {
-        boolean exprBoxed = !Util.isUnBoxed(expr);
+        boolean exprBoxed = !CodegenUtil.isUnBoxed(expr);
         return boxUnboxIfNecessary(javaExpr, exprBoxed, exprType, boxingStrategy);
     }
     
@@ -1809,13 +1809,13 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     }
     
     final String getCompanionFieldName(Interface def) {
-        return "$" + Util.getCompanionClassName(def.getName());
+        return "$" + CodegenUtil.getCompanionClassName(def.getName());
     }
     
     final JCExpression makeDefaultedParamMethodIdent(Method method, Parameter param) {
         Interface iface = (Interface)method.getRefinedDeclaration().getContainer();
         return makeQuotedQualIdent(makeQuotedIdent(getCompanionFieldName(iface)), 
-                Util.getDefaultedParamMethodName(method, param));
+                CodegenUtil.getDefaultedParamMethodName(method, param));
     }
     
     final JCExpression makeCompanionType(final ClassOrInterface decl, Map<TypeParameter, ProducedType> typeParameters, boolean goRaw) {

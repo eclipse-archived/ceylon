@@ -179,7 +179,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     private JCExpression applyErasureAndBoxing(JCExpression result, Tree.Term expr, BoxingStrategy boxingStrategy, ProducedType expectedType) {
         ProducedType exprType = expr.getTypeModel();
-        boolean exprBoxed = !Util.isUnBoxed(expr);
+        boolean exprBoxed = !CodegenUtil.isUnBoxed(expr);
         return applyErasureAndBoxing(result, exprType, exprBoxed, boxingStrategy, expectedType);
     }
     
@@ -510,7 +510,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCExpression transform(Tree.NotOp op) {
         // No need for an erasure cast since Term must be Boolean and we never need to erase that
-        JCExpression term = transformExpression(op.getTerm(), Util.getBoxingStrategy(op), null);
+        JCExpression term = transformExpression(op.getTerm(), CodegenUtil.getBoxingStrategy(op), null);
         JCUnary jcu = at(op).Unary(JCTree.NOT, term);
         return jcu;
     }
@@ -631,7 +631,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCTree transform(Tree.ThenOp op) {
-        JCExpression left = transformExpression(op.getLeftTerm(), Util.getBoxingStrategy(op.getLeftTerm()), typeFact().getBooleanDeclaration().getType());
+        JCExpression left = transformExpression(op.getLeftTerm(), CodegenUtil.getBoxingStrategy(op.getLeftTerm()), typeFact().getBooleanDeclaration().getType());
         JCExpression right = transformExpression(op.getRightTerm());
         return make().Conditional(left , right, makeNull());
     }
@@ -768,7 +768,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
 
         // see if we can optimise it
-        if(op.getUnboxed() && Util.isDirectAccessVariable(op.getLeftTerm())){
+        if(op.getUnboxed() && CodegenUtil.isDirectAccessVariable(op.getLeftTerm())){
             return optimiseAssignmentOperator(op, operator);
         }
         
@@ -813,7 +813,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         // optimise if we can
-        if(Util.isDirectAccessVariable(op.getLeftTerm())){
+        if(CodegenUtil.isDirectAccessVariable(op.getLeftTerm())){
             return optimiseAssignmentOperator(op, operator);
         }
         
@@ -849,7 +849,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         boolean canOptimise = optimisationStrategy.useJavaOperator();
         
         // only fully optimise if we don't have to access the getter/setter
-        if(canOptimise && Util.isDirectAccessVariable(expr.getTerm())){
+        if(canOptimise && CodegenUtil.isDirectAccessVariable(expr.getTerm())){
             JCExpression term = transformExpression(expr.getTerm(), BoxingStrategy.UNBOXED, expr.getTypeModel());
             return at(expr).Unary(operator.javacOperator, term);
         }
@@ -891,7 +891,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                                          makeSelect(make().Ident(varName), operator.ceylonMethod), 
                                          List.<JCExpression>nil());
                 // make sure the result is boxed if necessary, the result of successor/predecessor is always boxed
-                successor = boxUnboxIfNecessary(successor, true, term.getTypeModel(), Util.getBoxingStrategy(term));
+                successor = boxUnboxIfNecessary(successor, true, term.getTypeModel(), CodegenUtil.getBoxingStrategy(term));
             }
             JCExpression assignment = transformAssignment(expr, term, successor);
             stats = stats.prepend(at(expr).Exec(assignment));
@@ -937,7 +937,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                                          makeSelect(make().Ident(varVName), operator.ceylonMethod), 
                                          List.<JCExpression>nil());
                 //  make sure the result is boxed if necessary, the result of successor/predecessor is always boxed
-                successor = boxUnboxIfNecessary(successor, true, term.getTypeModel(), Util.getBoxingStrategy(term));
+                successor = boxUnboxIfNecessary(successor, true, term.getTypeModel(), CodegenUtil.getBoxingStrategy(term));
             }
             JCExpression assignment = transformAssignment(expr, term, make().Ident(varEName), successor);
             stats = stats.prepend(at(expr).Exec(assignment));
@@ -970,7 +970,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         Term term = expr.getTerm();
         // only fully optimise if we don't have to access the getter/setter
-        if(canOptimise && Util.isDirectAccessVariable(term)){
+        if(canOptimise && CodegenUtil.isDirectAccessVariable(term)){
             JCExpression jcTerm = transformExpression(term, BoxingStrategy.UNBOXED, expr.getTypeModel());
             return at(expr).Unary(operator.javacOperator, jcTerm);
         }
@@ -1029,7 +1029,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // attr = $tmp
             // make sure the result is unboxed if necessary, $tmp may be boxed
             JCExpression value = make().Ident(varName);
-            value = boxUnboxIfNecessary(value, boxResult, term.getTypeModel(), Util.getBoxingStrategy(term));
+            value = boxUnboxIfNecessary(value, boxResult, term.getTypeModel(), CodegenUtil.getBoxingStrategy(term));
             JCExpression assignment = transformAssignment(operator, term, value);
             stats = stats.prepend(at(operator).Exec(assignment));
             
@@ -1068,7 +1068,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // $tmpE.attr = $tmpV
             // make sure $tmpV is unboxed if necessary
             JCExpression value = make().Ident(varVName);
-            value = boxUnboxIfNecessary(value, boxResult, term.getTypeModel(), Util.getBoxingStrategy(term));
+            value = boxUnboxIfNecessary(value, boxResult, term.getTypeModel(), CodegenUtil.getBoxingStrategy(term));
             JCExpression assignment = transformAssignment(operator, term, make().Ident(varEName), value);
             stats = stats.prepend(at(operator).Exec(assignment));
             
@@ -1097,7 +1097,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         DefaultArgument defaultArgument = param.getDefaultArgument();
         if (defaultArgument != null) {
             SpecifierExpression spec = defaultArgument.getSpecifierExpression();
-            expr = expressionGen().transformExpression(spec.getExpression(), Util.getBoxingStrategy(param.getDeclarationModel()), param.getDeclarationModel().getType());
+            expr = expressionGen().transformExpression(spec.getExpression(), CodegenUtil.getBoxingStrategy(param.getDeclarationModel()), param.getDeclarationModel().getType());
         } else if (param.getDeclarationModel().isSequenced()) {
             expr = makeEmpty();
         } else {
@@ -1380,7 +1380,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 } else {
                     // invoke the getter, using the Java interop form of Util.getGetterName because this is the only case
                     // (Value inside a Class) where we might refer to JavaBean properties
-                    selector = Util.getGetterName(decl);
+                    selector = CodegenUtil.getGetterName(decl);
                 }
             } else if (decl.isCaptured() || decl.isShared()) {
                 TypeDeclaration typeDecl = ((Value)decl).getType().getDeclaration();
@@ -1425,15 +1425,15 @@ public class ExpressionTransformer extends AbstractTransformer {
                 selector = null;
             } else {
                 // not toplevel, not within method, must be a class member
-                selector = Util.quoteMethodName(Util.quoteMethodNameIfProperty((Method) decl, gen()));
+                selector = CodegenUtil.quoteMethodName(CodegenUtil.quoteMethodNameIfProperty((Method) decl, gen()));
             }
         }
         if (result == null) {
             boolean useGetter = !(decl instanceof Method) && !(Decl.isJavaField(decl)) && !isWithinSuperInvocation();
             if (qualExpr == null && selector == null) {
-                useGetter = decl.isClassOrInterfaceMember() && Util.isErasedAttribute(decl.getName());
+                useGetter = decl.isClassOrInterfaceMember() && CodegenUtil.isErasedAttribute(decl.getName());
                 if (useGetter) {
-                    selector = Util.quoteMethodName(decl.getName());
+                    selector = CodegenUtil.quoteMethodName(decl.getName());
                 } else {
                     selector = substitute(decl.getName());
                 }
@@ -1560,13 +1560,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         inStatement = false;
         
         // right side
-        final JCExpression rhs = transformExpression(rightTerm, Util.getBoxingStrategy(decl), leftTerm.getTypeModel());
+        final JCExpression rhs = transformExpression(rightTerm, CodegenUtil.getBoxingStrategy(decl), leftTerm.getTypeModel());
 
         if (tmpInStatement) {
             return transformAssignment(op, leftTerm, rhs);
         } else {
             ProducedType valueType = leftTerm.getTypeModel();
-            return transformAssignAndReturnOperation(op, leftTerm, Util.getBoxingStrategy(decl) == BoxingStrategy.BOXED, 
+            return transformAssignAndReturnOperation(op, leftTerm, CodegenUtil.getBoxingStrategy(decl) == BoxingStrategy.BOXED, 
                     valueType, valueType, new AssignAndReturnOperationFactory(){
                 @Override
                 public JCExpression getNewValue(JCExpression previousValue) {
@@ -1600,7 +1600,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         boolean variable = decl.isVariable();
         
         at(op);
-        String selector = Util.getSetterName(decl);
+        String selector = CodegenUtil.getSetterName(decl);
         if (decl.isToplevel()) {
             // must use top level setter
             lhs = makeQualIdent(makeFQIdent(Util.quoteJavaKeywords(decl.getContainer().getQualifiedNameString())), Util.quoteIfJavaKeyword(decl.getName()));

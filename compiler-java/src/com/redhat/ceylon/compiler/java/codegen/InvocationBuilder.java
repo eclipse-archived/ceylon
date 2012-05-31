@@ -523,7 +523,7 @@ abstract class DirectInvocationBuilder extends SimpleInvocationBuilder {
     
     @Override
     protected BoxingStrategy getParameterBoxingStrategy(int argIndex) {
-        return Util.getBoxingStrategy(getParameter(argIndex));
+        return CodegenUtil.getBoxingStrategy(getParameter(argIndex));
     }
     
     @Override
@@ -662,7 +662,7 @@ class MethodReferenceSpecifierInvocationBuilder extends DirectInvocationBuilder 
         super(gen, primary, primaryDeclaration, producedReference, method.getType(), node);
         this.method = method;
         setUnboxed(primary.getUnboxed());
-        setBoxingStrategy(Util.getBoxingStrategy(method));
+        setBoxingStrategy(CodegenUtil.getBoxingStrategy(method));
     }
 
     @Override
@@ -679,7 +679,7 @@ class MethodReferenceSpecifierInvocationBuilder extends DirectInvocationBuilder 
                 result, 
                 exprType, 
                 !getParameterUnboxed(argIndex), 
-                Util.getBoxingStrategy(declaredParameter), 
+                CodegenUtil.getBoxingStrategy(declaredParameter), 
                 declaredParameter.getType());
         return result;
     }
@@ -793,7 +793,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
     }
     
     private JCExpression makeDefaultedArgumentMethodCall(Parameter param) {
-        final String methodName = Util.getDefaultedParamMethodName(primaryDeclaration, param);
+        final String methodName = CodegenUtil.getDefaultedParamMethodName(primaryDeclaration, param);
         JCExpression defaultValueMethodName;
         if (Strategy.defaultParameterMethodOnSelf(param)) {
             Declaration container = param.getDeclaration().getRefinedDeclaration();
@@ -875,7 +875,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 Tree.SpecifiedArgument specifiedArg = (Tree.SpecifiedArgument)namedArg;
                 Tree.Expression expr = specifiedArg.getSpecifierExpression().getExpression();
                 ProducedType type = parameterType(declaredParam, expr.getTypeModel(), gen.TP_TO_BOUND);
-                final BoxingStrategy boxType = declaredParam != null ? Util.getBoxingStrategy(declaredParam) : BoxingStrategy.UNBOXED;
+                final BoxingStrategy boxType = declaredParam != null ? CodegenUtil.getBoxingStrategy(declaredParam) : BoxingStrategy.UNBOXED;
                 JCExpression typeExpr = gen.makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? TYPE_ARGUMENT : 0);
                 JCExpression argExpr = gen.expressionGen().transformExpression(expr, boxType, type);
                 JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, argExpr);
@@ -924,14 +924,14 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 TypedDeclaration nonWideningTypeDeclaration = gen.nonWideningTypeDecl(model);
                 ProducedType nonWideningType = gen.nonWideningType(model, nonWideningTypeDeclaration);
                 ProducedType type = parameterType(declaredParam, model.getType(), 0);
-                final BoxingStrategy boxType = declaredParam != null ? Util.getBoxingStrategy(declaredParam) : BoxingStrategy.UNBOXED;
+                final BoxingStrategy boxType = declaredParam != null ? CodegenUtil.getBoxingStrategy(declaredParam) : BoxingStrategy.UNBOXED;
                 JCExpression initValue = gen.make().Apply(null, 
                         gen.makeSelect(alias, Util.getGetterName(name)),
                         List.<JCExpression>nil());
                 initValue = gen.expressionGen().applyErasureAndBoxing(
                         initValue, 
                         nonWideningType, 
-                        !Util.isUnBoxed(nonWideningTypeDeclaration),
+                        !CodegenUtil.isUnBoxed(nonWideningTypeDeclaration),
                         boxType,
                         type);
                 JCTree.JCVariableDecl var = gen.make().VarDef(
@@ -969,7 +969,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         int flags = 0;
         if (isRaw) {
             flags |= WANT_RAW_TYPE;
-        } else if (Util.getBoxingStrategy(param) == BoxingStrategy.BOXED) {
+        } else if (CodegenUtil.getBoxingStrategy(param) == BoxingStrategy.BOXED) {
             flags |= TYPE_ARGUMENT;
         }
         ProducedType type = gen.getTypeForParameter(param, producedReference, gen.TP_TO_BOUND);

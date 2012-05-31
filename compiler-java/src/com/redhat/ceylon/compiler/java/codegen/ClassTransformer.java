@@ -36,7 +36,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.ModelResolutionException;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -255,7 +254,7 @@ public class ClassTransformer extends AbstractTransformer {
                             // which also delegates to the $impl
                             final JCMethodDecl defaultValueDelegate = makeDelegateToCompanion(iface, 
                                     PUBLIC | FINAL, typeParameters, param, param.getType(), 
-                                    Util.getDefaultedParamMethodName(method, param), parameters.subList(0, parameters.indexOf(param)),
+                                    CodegenUtil.getDefaultedParamMethodName(method, param), parameters.subList(0, parameters.indexOf(param)),
                                     Decl.isAncestorLocal(model));
                             classBuilder.defs(defaultValueDelegate);
                             // If that method has a defaulted parameter, 
@@ -289,7 +288,7 @@ public class ClassTransformer extends AbstractTransformer {
                             Collections.<TypeParameter>emptyList(), 
                             getter, 
                             getter.getType(), 
-                            Util.getGetterName(member), 
+                            CodegenUtil.getGetterName(member), 
                             Collections.<Parameter>emptyList(),
                             Decl.isAncestorLocal(model));
                     classBuilder.defs(getterDelegate);
@@ -567,14 +566,14 @@ public class ClassTransformer extends AbstractTransformer {
             if (decl.getSpecifierOrInitializerExpression() != null) {
                 Value declarationModel = model;
                 initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), 
-                        Util.getBoxingStrategy(declarationModel), 
+                        CodegenUtil.getBoxingStrategy(declarationModel), 
                         declarationModel.getType());
             }
 
             int flags = 0;
             TypedDeclaration nonWideningTypeDeclaration = nonWideningTypeDecl(model);
             ProducedType nonWideningType = nonWideningType(model, nonWideningTypeDeclaration);
-            if (!Util.isUnBoxed(nonWideningTypeDeclaration)) {
+            if (!CodegenUtil.isUnBoxed(nonWideningTypeDeclaration)) {
                 flags |= NO_PRIMITIVES;
             }
             JCExpression type = makeJavaType(nonWideningType, flags);
@@ -759,8 +758,8 @@ public class ClassTransformer extends AbstractTransformer {
                 builder.getterBlock(make().Block(0, List.<JCStatement>of(make().Return(makeErroneous()))));
             } else {
                 String accessorName = isGetter ? 
-                        Util.getGetterName(decl.getDeclarationModel()) :
-                        Util.getSetterName(decl.getDeclarationModel());
+                        CodegenUtil.getGetterName(decl.getDeclarationModel()) :
+                        CodegenUtil.getSetterName(decl.getDeclarationModel());
                 
                 if (isGetter) {
                     builder.getterBlock(make().Block(0, List.<JCStatement>of(make().Return(
@@ -843,7 +842,7 @@ public class ClassTransformer extends AbstractTransformer {
         ListBuffer<JCTree> lb = transformMethod(model, classBuilder, body,
                 def instanceof MethodDeclaration
                 && ((MethodDeclaration) def).getSpecifierExpression() == null,
-                Util.hasCompilerAnnotation(def, "test"));
+                CodegenUtil.hasCompilerAnnotation(def, "test"));
         
         final Tree.ParameterList paramList = def.getParameterLists().get(0);
         for (Tree.Parameter param : paramList.getParameters()) {
@@ -870,7 +869,7 @@ public class ClassTransformer extends AbstractTransformer {
             boolean unspecified, boolean addTestAnno) {
         
         ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
-        final String methodName = Util.quoteMethodNameIfProperty(model, gen());
+        final String methodName = CodegenUtil.quoteMethodNameIfProperty(model, gen());
         
         body = transformMplBody(model, body);
         
@@ -1116,7 +1115,7 @@ public class ClassTransformer extends AbstractTransformer {
     private JCMethodDecl transformDefaultValueMethodImpl(Tree.AnyMethod def,
             java.util.List<Parameter> parameters, Parameter p) {
         final Method method = def.getDeclarationModel();
-        String name = Util.getDefaultedParamMethodName(method, p);
+        String name = CodegenUtil.getDefaultedParamMethodName(method, p);
         MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(gen(), false, true, name);// TODO ancestorLocal
         overloadBuilder.annotations(makeAtOverride());
         overloadBuilder.annotations(makeAtIgnore());
@@ -1239,7 +1238,7 @@ public class ClassTransformer extends AbstractTransformer {
                 mods |= FINAL;
             }
             overloadBuilder.modifiers(mods);
-            methName = makeQuotedIdent(Util.quoteMethodNameIfProperty((Method)model, gen()));
+            methName = makeQuotedIdent(CodegenUtil.quoteMethodNameIfProperty((Method)model, gen()));
             overloadBuilder.resultType((Method)model);
         } else if (model instanceof Class) {
             overloadBuilder.modifiers(transformOverloadCtorFlags((Class)model));
@@ -1286,7 +1285,7 @@ public class ClassTransformer extends AbstractTransformer {
                 useDefault = true;
             }
             if (useDefault) {
-                String methodName = Util.getDefaultedParamMethodName(model, param2);
+                String methodName = CodegenUtil.getDefaultedParamMethodName(model, param2);
                 JCExpression defaultValueMethodName;
                 List<JCExpression> typeArguments = List.<JCExpression>nil();
                 if (Strategy.defaultParameterMethodOnSelf(model)
@@ -1345,7 +1344,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     
     public JCMethodDecl transformConcreteInterfaceMember(MethodDefinition def, ProducedType type) {
-        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(def), true, Util.quoteMethodNameIfProperty(def.getDeclarationModel(), gen()));
+        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(def), true, CodegenUtil.quoteMethodNameIfProperty(def.getDeclarationModel(), gen()));
         
         for (Tree.Parameter param : def.getParameterLists().get(0).getParameters()) {
             methodBuilder.parameter(param);
@@ -1380,7 +1379,7 @@ public class ClassTransformer extends AbstractTransformer {
             Tree.ParameterList params, Tree.Parameter currentParam) {
         at(currentParam);
         Parameter parameter = currentParam.getDeclarationModel();
-        String name = Util.getDefaultedParamMethodName(container, parameter );
+        String name = CodegenUtil.getDefaultedParamMethodName(container, parameter );
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(container), true, name);
         methodBuilder.annotations(makeAtIgnore());
         int modifiers = noBody ? PUBLIC | ABSTRACT : FINAL;

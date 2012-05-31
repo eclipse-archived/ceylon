@@ -37,82 +37,22 @@ import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
-import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
-import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
-import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
-import com.redhat.ceylon.compiler.loader.model.JavaMethod;
-import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.parser.Token;
 
+/**
+ * Utility functions that are used in various packages and/or components of the 
+ * Ceylon toolset.
+ * @see com.redhat.ceylon.compiler.java.codegen.CodegenUtil
+ */
 public class Util {
 
-    public static boolean isErasedAttribute(String name){
-        // ERASURE
-        return "hash".equals(name) || "string".equals(name);
-    }
-    
-    public static boolean isSmall(TypedDeclaration declaration) {
-        return "hash".equals(declaration.getName());
-    }
-
-    public static String quoteMethodNameIfProperty(Method method, AbstractTransformer gen) {
-        String name = method.getName();
-        // Toplevel methods keep their original name because their names might be mangled
-        if (method instanceof LazyMethod) {
-            return ((LazyMethod)method).getRealName();
-        }
-        // only quote if method is a member, we cannot get a conflict for local
-        // since local methods have a $getter suffix
-        if(!method.isClassOrInterfaceMember())
-            return name;
-        // do not quote method names if we have a refined constraint
-        Method refinedMethod = (Method) method.getRefinedDeclaration();
-        if(refinedMethod instanceof JavaMethod){
-            return ((JavaMethod)refinedMethod).getRealName();
-        }
-        // get/is with at least one more letter, no parameter and non-void type
-        if(((name.length() >= 4 && name.startsWith("get"))
-             || name.length() >= 3 && name.startsWith("is"))
-            && method.getParameterLists().get(0).getParameters().isEmpty()
-            && !gen.isVoid(method.getType()))
-            return quote(name);
-        // set with one parameter and void type
-        if((name.length() >= 4 && name.startsWith("set"))
-           && method.getParameterLists().get(0).getParameters().size() == 1
-           && gen.isVoid(method.getType()))
-            return quote(name);
-        return name;
-    }
-
-    private static String quote(String name) {
+    public static String quote(String name) {
         return "$"+name;
     }
 
-    public static String quoteMethodName(String name){
-        // ERASURE
-        if ("hash".equals(name)) {
-            return "hashCode";
-        } else if ("string".equals(name)) {
-            return "toString";
-        } else if ("hashCode".equals(name)) {
-            return "$hashCode";
-        } else if ("toString".equals(name)) {
-            return "$toString";
-        } else {
-            return quoteIfJavaKeyword(name);
-        }
-    }
-    
     public static String quoteIfJavaKeyword(String name){
         if(isJavaKeyword(name))
             return quote(name);
@@ -189,67 +129,8 @@ public class Util {
         return "get"+capitalize(strip(property));
     }
 
-    public static String getGetterName(Declaration decl) {
-        // always use the refined decl
-        decl = decl.getRefinedDeclaration();
-        if(decl instanceof JavaBeanValue){
-            return ((JavaBeanValue)decl).getGetterName();
-        }
-        return getGetterName(decl.getName());
-    }
-
     public static String getSetterName(String property){
         return "set"+capitalize(strip(property));
-    }
-
-    public static String getSetterName(Declaration decl){
-        // always use the refined decl
-        decl = decl.getRefinedDeclaration();
-        if(decl instanceof JavaBeanValue){
-            return ((JavaBeanValue)decl).getSetterName();
-        }
-        return getSetterName(decl.getName());
-    }
-
-    /**
-     * Deprecated in favour of 
-     * {@link AbstractTransformer#getCompanionClassName(Declaration)} which 
-     * understands interface renaming and local types.
-     * @param name
-     * @return
-     */
-    @Deprecated
-    public static String getCompanionClassName(String name){
-        return name + "$impl";
-    }
-
-    public static boolean isUnBoxed(Term node){
-        return node.getUnboxed();
-    }
-
-    public static boolean isUnBoxed(TypedDeclaration decl){
-        // null is considered boxed
-        return decl.getUnboxed() == Boolean.TRUE;
-    }
-
-    public static void markUnBoxed(Term node) {
-        node.setUnboxed(true);
-    }
-
-    public static BoxingStrategy getBoxingStrategy(Term node) {
-        return isUnBoxed(node) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
-    }
-
-    public static BoxingStrategy getBoxingStrategy(TypedDeclaration decl) {
-        return isUnBoxed(decl) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
-    }
-
-    public static boolean hasCompilerAnnotation(Tree.Declaration decl, String name){
-        for(CompilerAnnotation annotation : decl.getCompilerAnnotations()){
-            if(annotation.getIdentifier().getText().equals(name))
-                return true;
-        }
-        return false;
     }
 
     // Used by the IDE
@@ -288,16 +169,6 @@ public class Util {
         return new File(outputDir, modulePath);
     }
 
-    public static String getDefaultedParamMethodName(Declaration decl, Parameter param) {
-        if (decl instanceof Method) {
-            return decl.getName() + "$" + param.getName();
-        } else if (decl instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) {
-            return "$init$" + param.getName();
-        } else {
-            // Should never happen (for now at least)
-            return null;
-        }
-    }
     public static String getHomeRepository() {
         return System.getProperty("user.home")+File.separator
                 +".ceylon"+File.separator+"repo";
@@ -313,20 +184,6 @@ public class Util {
             }
         }
         return sb.toString();
-    }
-
-    public static boolean isDirectAccessVariable(Term term) {
-        if(!(term instanceof BaseMemberExpression))
-            return false;
-        Declaration decl = ((BaseMemberExpression)term).getDeclaration();
-        if(decl == null) // typechecker error
-            return false;
-        // make sure we don't try to optimise things which can't be optimised
-        return decl instanceof Value
-                && !decl.isToplevel()
-                && !decl.isClassOrInterfaceMember()
-                && !decl.isCaptured()
-                && !decl.isShared();
     }
 
     public static RepositoryManager makeRepositoryManager(List<String> userRepos, String outRepo, Logger log) {
