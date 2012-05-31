@@ -1,0 +1,93 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+class Bug283 {
+    private .ceylon.language.Ordinal<? extends .ceylon.language.Integer> oi;
+    
+    private final .ceylon.language.Ordinal<? extends .ceylon.language.Integer> getOi() {
+        return oi;
+    }
+    
+    private final void setOi(.ceylon.language.Ordinal<? extends .ceylon.language.Integer> oi) {
+        this.oi = oi;
+    }
+    
+    private final void m(final .com.redhat.ceylon.compiler.java.test.issues.Bug283 x) {
+        (
+            let
+            {
+                .ceylon.language.Integer $ceylontmpop0 = (.ceylon.language.Integer)getOi();
+                setOi($ceylontmpop0.getSuccessor());
+            }
+            returning $ceylontmpop0;
+        );
+        (
+            let
+            {
+                .ceylon.language.Integer $ceylontmpop1 = (.ceylon.language.Integer)getOi();
+                setOi($ceylontmpop1.getPredecessor());
+            }
+            returning $ceylontmpop1;
+        );
+        (
+            let
+            {
+                .ceylon.language.Integer $ceylontmpop2 = getOi().getSuccessor();
+                setOi($ceylontmpop2);
+            }
+            returning $ceylontmpop2;
+        );
+        (
+            let
+            {
+                .ceylon.language.Integer $ceylontmpop3 = getOi().getPredecessor();
+                setOi($ceylontmpop3);
+            }
+            returning $ceylontmpop3;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.Bug283 $ceylontmpopE4 = x;
+                .ceylon.language.Integer $ceylontmpopV5 = (.ceylon.language.Integer)$ceylontmpopE4.getOi();
+                $ceylontmpopE4.setOi($ceylontmpopV5.getSuccessor());
+            }
+            returning $ceylontmpopV5;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.Bug283 $ceylontmpopE6 = x;
+                .ceylon.language.Integer $ceylontmpopV7 = (.ceylon.language.Integer)$ceylontmpopE6.getOi();
+                $ceylontmpopE6.setOi($ceylontmpopV7.getPredecessor());
+            }
+            returning $ceylontmpopV7;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.Bug283 $ceylontmpopE8 = x;
+                .ceylon.language.Integer $ceylontmpopV9 = $ceylontmpopE8.getOi().getSuccessor();
+                $ceylontmpopE8.setOi($ceylontmpopV9);
+            }
+            returning $ceylontmpopV9;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.Bug283 $ceylontmpopE10 = x;
+                .ceylon.language.Integer $ceylontmpopV11 = $ceylontmpopE10.getOi().getPredecessor();
+                $ceylontmpopE10.setOi($ceylontmpopV11);
+            }
+            returning $ceylontmpopV11;
+        );
+    }
+    
+    Bug283() {
+        this.oi = .ceylon.language.Integer.instance(0L);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug283();
+    }
+}

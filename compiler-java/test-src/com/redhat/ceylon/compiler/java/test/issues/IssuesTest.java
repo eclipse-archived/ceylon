@@ -19,19 +19,13 @@
  */
 package com.redhat.ceylon.compiler.java.test.issues;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.JarFile;
-import java.util.zip.ZipEntry;
 
 import junit.framework.Assert;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
@@ -136,6 +130,11 @@ public class IssuesTest extends CompilerTest {
     @Test
     public void testBug270(){
         compareWithJavaSource("Bug270");
+    }
+    
+    @Test
+    public void testBug283() {
+        compareWithJavaSource("Bug283");
     }
     
     @Test
