@@ -68,10 +68,6 @@ public class AttributeDefinitionBuilder {
         if (!Util.isUnBoxed(nonWideningTypeDeclaration)) {
             typeFlags |= AbstractTransformer.NO_PRIMITIVES;
         }
-        // Special erasure for the "hash" attribute which gets translated to hashCode()
-        if (Util.isSmall(attrType)) {
-            typeFlags = AbstractTransformer.SMALL_TYPE;
-        }
         
         this.ancestorLocal = Decl.isAncestorLocal(attrType);
         this.attrType = owner.makeJavaType(nonWideningType, typeFlags);
