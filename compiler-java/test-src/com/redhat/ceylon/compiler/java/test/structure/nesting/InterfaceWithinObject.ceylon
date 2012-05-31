@@ -20,5 +20,6 @@
 @nomodel
 object interfaceWithinObject {
     shared interface Z {}
+    shared class ZI() satisfies Z {}
     shared object z satisfies Z {}
 }
