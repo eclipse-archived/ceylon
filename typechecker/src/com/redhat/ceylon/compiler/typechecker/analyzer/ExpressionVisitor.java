@@ -1077,7 +1077,7 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     checkAssignable(at, et, that.getExpression(), 
                             "returned expression must be assignable to return type of " +
-                            returnDeclaration.getName());
+                            returnDeclaration.getName(), 2100);
                 }
             }
         }
@@ -2278,7 +2278,8 @@ public class ExpressionVisitor extends Visitor {
         ProducedType lhst = leftType(that);
         if ( rhst!=null && lhst!=null ) {
             checkAssignable(rhst, lhst, that.getRightTerm(), 
-                    "assigned expression must be assignable to declared type");
+                    "assigned expression must be assignable to declared type", 
+                    2100);
         }
         //that.setTypeModel(rhst); //stef requests lhst to make it easier on backend
         that.setTypeModel(lhst);
