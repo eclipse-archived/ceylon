@@ -453,7 +453,9 @@ public class ExpressionVisitor extends Visitor {
         inferType(that, that.getSpecifierOrInitializerExpression());
         if (that.getType()!=null) {
             checkType(that.getType().getTypeModel(), 
-                    that.getSpecifierOrInitializerExpression());
+                    that.getDeclarationModel().getName(),
+                    that.getSpecifierOrInitializerExpression(), 
+                    2100);
         }
     }
     
@@ -491,13 +493,12 @@ public class ExpressionVisitor extends Visitor {
                 else if (d.isToplevel()) {
                     me.addError("toplevel declarations may not be specified");
                 }
+                checkType(me.getTypeModel(), d.getName(), sie, 2100);
             }
         }
         else {
             me.addError("illegal specification statement");
         }
-        //TODO: display the value name in the error message
-        checkType(me.getTypeModel(), sie);
     }
 
     private void refine(Value sv, Tree.BaseMemberExpression bme,
@@ -590,7 +591,7 @@ public class ExpressionVisitor extends Visitor {
                 that.getDefaultArgument().getSpecifierExpression();
         ProducedType t = that.getDeclarationModel().getProducedTypedReference(null, 
                 Collections.<ProducedType>emptyList()).getFullType();
-        checkType(t, se);
+        checkType(t, that.getDeclarationModel().getName(), se, 2100);
     }
 
     @Override
@@ -609,6 +610,15 @@ public class ExpressionVisitor extends Visitor {
         if (sie!=null && sie.getExpression()!=null) {
             checkAssignable(sie.getExpression().getTypeModel(), declaredType, sie, 
                     "specified expression must be assignable to declared type");
+        }
+    }
+
+    private void checkType(ProducedType declaredType, String name,
+            Tree.SpecifierOrInitializerExpression sie, int code) {
+        if (sie!=null && sie.getExpression()!=null) {
+            checkAssignable(sie.getExpression().getTypeModel(), declaredType, sie, 
+                    "specified expression must be assignable to declared type of " + name,
+                    code);
         }
     }
 
