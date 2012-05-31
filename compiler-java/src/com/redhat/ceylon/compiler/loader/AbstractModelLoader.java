@@ -35,7 +35,6 @@ import java.util.Set;
 import javax.lang.model.type.TypeKind;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotatedMirror;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
@@ -1242,7 +1241,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         boolean unboxed = false;
         if(type.isPrimitive() || type.getKind() == TypeKind.ARRAY
                 || sameType(type, STRING_TYPE)
-                || Decl.isUnboxedVoid(decl)) {
+                || Util.isUnboxedVoid(decl)) {
             unboxed = true;
         }
         decl.setUnboxed(unboxed);

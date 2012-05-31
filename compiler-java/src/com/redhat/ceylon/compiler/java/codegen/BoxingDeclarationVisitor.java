@@ -22,7 +22,6 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.List;
 
-import com.redhat.ceylon.compiler.java.util.Decl;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;

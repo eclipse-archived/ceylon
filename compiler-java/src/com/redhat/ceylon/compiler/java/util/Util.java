@@ -428,4 +428,9 @@ public class Util {
         return pkgName.equals(moduleName)
                 || pkgName.startsWith(moduleName+".");
     }
+    
+    public static boolean isUnboxedVoid(Declaration decl) {
+        return (decl instanceof Method)
+                && ((Method)decl).isDeclaredVoid();
+    }
 }

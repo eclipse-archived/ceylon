@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.java.util;
+package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -32,7 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
  * Utility functions telling you about code generation strategies
  * @see Decl
  */
-public class Strategy {
+class Strategy {
     private Strategy() {}
     
     public static boolean defaultParameterMethodTakesThis(Tree.Declaration decl) {

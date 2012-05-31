@@ -18,12 +18,12 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.compiler.java.util;
+package com.redhat.ceylon.compiler.java.codegen;
 
+import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
-import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -31,7 +31,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.NamedArgumentList;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -41,7 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
  * Utility functions telling you about Ceylon declarations
  * @see Strategy
  */
-public class Decl {
+class Decl {
     private Decl() {
     }
 
@@ -312,8 +311,7 @@ public class Decl {
     }
 
     public static boolean isUnboxedVoid(Declaration decl) {
-        return (decl instanceof Method)
-                && ((Method)decl).isDeclaredVoid();
+        return Util.isUnboxedVoid(decl);
     }
     
     public static boolean isMpl(Functional decl) {
