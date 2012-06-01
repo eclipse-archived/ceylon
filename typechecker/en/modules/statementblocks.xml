@@ -479,28 +479,23 @@
     <section id="typedetermination">
         <title>Type determinability of a declaration</title>
         
-        <para>A declaration may be in scope at a program element, but its type may
-        not be <emphasis>determinable</emphasis> at the program element. The type 
-        of a declaration is determinable at a program element if the declaration is 
-        in scope at the program element and either:</para>
+        <para>An attribute declared using the keyword <literal>value</literal> 
+        or a method declared using the keyword <literal>function</literal> may 
+        be in scope at a program element, but its type may not be 
+        <emphasis>determinable</emphasis> at the program element.</para>
         
-        <itemizedlist>
-            <listitem>
-                <para>the program element occurs within the lexical scope of the 
-                declaration,</para>
-            </listitem>
-            <listitem>
-                <para>the declaration is a control structure variable or iteration 
-                variable, or</para>
-            </listitem>
-            <listitem>
-                <para>the declaration is not declared using the keyword 
-                <literal>value</literal> or <literal>function</literal>.</para>
-            </listitem>
-        </itemizedlist>
+        <para>The type of an attribute or method declared using the keyword 
+        <literal>value</literal> or <literal>function</literal> is determinable 
+        at a program element if the declaration is in scope at the program 
+        element and the program element occurs within the lexical scope of the 
+        declaration.</para>
         
-        <comment><para>TODO: Can we infer the type of a declaration inside the body
-        of the declaration itself?</para></comment>
+        <comment><para>TODO: Can we infer the type of a declaration inside the 
+        body of the declaration itself?</para></comment>
+        
+        <para>For any other declaration, the type is considered determinable
+        at a program element if the declaration is in scope at the program 
+        element.</para>
         
         <para>The following code is not legal:</para>
         
