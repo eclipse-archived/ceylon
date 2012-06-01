@@ -161,10 +161,7 @@
                 in the namespace of the declaration.</para>
             </listitem>
         </itemizedlist>
-        
-        <comment><para>TODO: Java prohibits a type name from hiding the name of an outer
-        type. Can we easily work around this limitation?</para></comment>
-        
+                
         <para>The namespace of a declaration may not contain a second declaration with 
         the same name. (A parameter or type parameter is considered to be a declaration 
         that is directly contained by the body of the declaration it parameterizes.)</para>
@@ -417,9 +414,6 @@
                 <para>the declaration is a toplevel declaration.</para>
             </listitem>
         </itemizedlist-->
-        
-        <comment><para>TODO: fix the referenceability rules for toplevel declarations that 
-        occur in different compilation units! Outlaw simple toplevel attributes?</para></comment>
         
         <para>Note that these rules have very different consequences for:</para>
         
