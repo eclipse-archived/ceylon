@@ -121,6 +121,11 @@ public class Util {
                             if (pdt==null || sdt==null) return false;
                             ProducedType paramType = d.getUnit().getDefiniteType(pdt);
                             ProducedType sigType = d.getUnit().getDefiniteType(sdt);
+                            ProducedType ast = sigType.getSupertype(d.getUnit().getArrayDeclaration());
+                            if (ast!=null) sigType = ast;
+                            if (sigType.isSubtypeOf(d.getUnit().getNothingDeclaration().getType())) {
+                                continue;
+                            }
                             if (isTypeUnknown(sigType) || isTypeUnknown(paramType)) return false;
                             if (!erase(sigType.getDeclaration())
                                         .inherits(erase(paramType.getDeclaration())) &&

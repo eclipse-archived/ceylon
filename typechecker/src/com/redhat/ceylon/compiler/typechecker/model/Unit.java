@@ -251,12 +251,7 @@ public class Unit {
     public Interface getSummableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Summable");
     }
-    
-    //TODO: remove!
-    public Interface getSubtractableDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Subtractable");
-    }
-        
+            
     public Interface getNumericDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Numeric");
     }
@@ -304,11 +299,7 @@ public class Unit {
     public TypeDeclaration getQuotedDeclaration() {
         return (TypeDeclaration) getLanguageModuleDeclaration("Quoted");
     }
-        
-    /*public Interface getEqualityDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Equality");
-    }*/
-        
+    
     public Interface getComparableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Comparable");
     }
@@ -323,6 +314,10 @@ public class Unit {
         
     public Class getRangeDeclaration() {
         return (Class) getLanguageModuleDeclaration("Range");
+    }
+        
+    public TypeDeclaration getArrayDeclaration() {
+        return (Class) getLanguageModuleDeclaration("Array");
     }
         
     public Interface getRangedDeclaration() {

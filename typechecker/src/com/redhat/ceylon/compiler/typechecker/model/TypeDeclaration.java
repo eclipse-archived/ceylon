@@ -370,7 +370,7 @@ public abstract class TypeDeclaration extends Declaration
             //looking for, return it
             //TODO: should also return it if we're 
             //      calling from local scope!
-            if (isAbstraction(d)){
+            if (signature!=null && isAbstraction(d)){
                 // look for a supertype decl that matches the signature better
                 Declaration s = getSupertypeDeclaration(name, signature);
                 if (s!=null && !isAbstraction(s)) {
@@ -405,7 +405,7 @@ public abstract class TypeDeclaration extends Declaration
         //declarations
         Declaration d = getDirectMemberOrParameter(name, signature);
         if (d!=null) {
-            if(isAbstraction(d)){
+            if (signature!=null && isAbstraction(d)){
                 // look for a supertype decl that matches the signature better
                 Declaration s = getSupertypeDeclaration(name, signature);
                 if (s!=null && !isAbstraction(s)) {
