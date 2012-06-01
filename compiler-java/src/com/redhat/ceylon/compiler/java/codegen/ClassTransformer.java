@@ -261,21 +261,12 @@ public class ClassTransformer extends AbstractTransformer {
                             final JCMethodDecl overload = makeDelegateToCompanion(iface,
                                     typedMember,
                                     PUBLIC | FINAL, 
-                                    typeParameters, 
-                                    typedParameter.getType(), 
+                                    typeParameters,  
+                                    typedMember.getType(), 
                                     method.getName(), 
                                     parameters.subList(0, parameters.indexOf(param)),
                                     Decl.isAncestorLocal(model));
                             classBuilder.defs(overload);
-                            
-                            // If that method has a defaulted parameter, 
-                            // we need to generate a overload method
-                            // which also delegates to the $impl
-                            MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(
-                                    gen(), Decl.isAncestorLocal(model), true, method.getName());
-                            final MethodDefinitionBuilder overload = makeOverloadsForDefaultedParameter(true, true,  
-                                    overloadBuilder, method, parameters, param);
-                            classBuilder.defs(overload.build());
                         }
                     }
                 }
