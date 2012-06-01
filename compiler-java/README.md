@@ -89,3 +89,28 @@ Generating the API documentation
 The ceylondoc tool can be run as follows:
 
     build/bin/ceylond -out api-docs -src ../ceylon.language/languagesrc/current ceylon.language
+
+Building the project on Mac with JDK7
+-------------------------------------
+
+1) Download JDK7: http://jdk7.java.net/download.html
+
+2) Unpack .dmg
+
+3) export JAVA_HOME
+
+    Skywalker:ceylon-compiler alesj$ export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_06.jdk/Contents/Home/
+
+    Skywalker:ceylon-compiler alesj$ java -version
+    java version "1.7.0_06-ea"
+    Java(TM) SE Runtime Environment (build 1.7.0_06-ea-b12)
+    Java HotSpot(TM) 64-Bit Server VM (build 23.2-b03, mixed mode)
+
+4) Build it (ant clean publish)
+
+    publish:
+        [copy] Copying 2 files to /Users/alesj/.ceylon/repo/com/redhat/ceylon/compiler/java/0.3
+        [copy] Copying 2 files to /Users/alesj/.ceylon/repo/com/redhat/ceylon/ant/0.3
+
+BUILD SUCCESSFUL
+
