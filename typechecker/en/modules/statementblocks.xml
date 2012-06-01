@@ -526,7 +526,7 @@
                 <literal>Sequence&lt;String&gt;</literal>,</para>
             </listitem>
             <listitem>
-                <para>the member name an unqualified value reference, for example
+                <para>the member in name an unqualified value reference, for example
                 <literal>counter</literal> in <literal>counter.count</literal>, 
                 or</para>
             </listitem>
@@ -580,7 +580,7 @@
                 <literal>Buffer</literal> in <literal>BufferedReader.Buffer</literal>,</para>
             </listitem>
             <listitem>
-                <para>the member name a qualified value reference, for example
+                <para>the member name in a qualified value reference, for example
                 <literal>count</literal> in <literal>counter.count</literal>, or</para>
             </listitem>
             <listitem>
