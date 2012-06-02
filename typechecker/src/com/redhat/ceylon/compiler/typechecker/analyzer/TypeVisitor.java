@@ -187,6 +187,7 @@ public class TypeVisitor extends Visitor {
             return null;
         }
         Import i = new Import();
+        member.setImportModel(i);
         Tree.Alias alias = member.getAlias();
         String name = name(member.getIdentifier());
         if (alias==null) {
@@ -246,6 +247,7 @@ public class TypeVisitor extends Visitor {
             return;
         }
         Import i = new Import();
+        member.setImportModel(i);
         Tree.Alias alias = member.getAlias();
         String name = name(member.getIdentifier());
         if (alias==null) {
