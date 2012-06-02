@@ -24,6 +24,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -129,11 +130,22 @@ public class TypeVisitor extends Visitor {
             Module module = unit.getPackage().getModule();
             Package pkg = module.getPackage(nameToImport);
             if (pkg != null) {
-                if (!pkg.getModule().equals(module) && !pkg.isShared()) {
+                if (pkg.getModule().equals(module)) {
+                    return pkg;
+                }
+                if (!pkg.isShared()) {
                     path.addError("imported package is not shared: " + 
                             nameToImport);
                 }
-                return pkg; 
+                //check that the package really does belong to
+                //an imported module, to work around bug where
+                //default package things it can see stuff in
+                //all modules in the same source dir
+                for (ModuleImport mi: module.getImports()) {
+                    if (mi.getModule().equals(pkg.getModule())) {
+                        return pkg; 
+                    }
+                }
             }
             path.addError("package not found in dependent modules: " + nameToImport);
         }
