@@ -15,6 +15,6 @@ public final class $arrayOfNone {
     @TypeParameters(@TypeParameter(value="Element"))
     @TypeInfo("ceylon.language.Array<Element>&None<Element>")
     public static <Element> Array<Element> arrayOfNone() {
-        return new ceylon.language.ArrayOfNone<Element>();
+        return new ArrayOfNone<Element>();
     }
 }
