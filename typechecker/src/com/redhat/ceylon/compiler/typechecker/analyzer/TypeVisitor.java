@@ -193,7 +193,7 @@ public class TypeVisitor extends Visitor {
             member.getIdentifier().addError("root type may not be imported");
         }
         else {
-            if (!d.isShared()) {
+            if (!d.isShared() && !d.getUnit().getPackage().equals(unit.getPackage())) {
                 member.getIdentifier().addError("imported declaration is not shared: " +
                         name, 400);
             }
