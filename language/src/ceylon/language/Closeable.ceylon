@@ -7,6 +7,6 @@ shared interface Closeable {
     shared formal void open();
 
     doc "Called after completion of a `try` block."
-    shared formal void close(Exception? e);
+    shared formal void close(Exception? exception);
     
 }
