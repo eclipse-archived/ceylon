@@ -445,7 +445,12 @@ public class DeclarationVisitor extends Visitor {
         visitDeclaration(that, v);
         super.visit(that);
         if ( v.isInterfaceMember() && !v.isFormal()) {
-            that.addError("interfaces may not have simple attributes");
+            if (that.getSpecifierOrInitializerExpression()==null) {
+                that.addError("interface attribute must be annotated formal", 1400);
+            }
+            else {
+                that.addError("interfaces may not have simple attributes");
+            }
         }
         SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
         if ( v.isFormal() && sie!=null ) {
