@@ -448,9 +448,9 @@ public class DeclarationVisitor extends Visitor {
             if (that.getSpecifierOrInitializerExpression()==null) {
                 that.addError("interface attribute must be annotated formal", 1400);
             }
-            else {
+            /*else {
                 that.addError("interfaces may not have simple attributes");
-            }
+            }*/
         }
         SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
         if ( v.isFormal() && sie!=null ) {
