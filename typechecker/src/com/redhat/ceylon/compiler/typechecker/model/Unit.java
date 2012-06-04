@@ -574,7 +574,8 @@ public class Unit {
     }
 
     public ProducedType denotableType(ProducedType pt) {
-        if ( pt.getDeclaration().isAnonymous() ) {
+        if ( pt!=null && pt.getDeclaration()!=null &&
+                pt.getDeclaration().isAnonymous() ) {
             List<ProducedType> list = new ArrayList<ProducedType>();
             addToIntersection(list, pt.getSupertype(pt.getDeclaration().getExtendedTypeDeclaration()), this);
             for (TypeDeclaration td: pt.getDeclaration().getSatisfiedTypeDeclarations()) {

@@ -105,7 +105,6 @@ public class DeclarationVisitor extends Visitor {
             scope.getMembers().add(model);
         }
 
-
         handleDeclarationAnnotations(that, model);        
 
         setVisibleScope(model);
