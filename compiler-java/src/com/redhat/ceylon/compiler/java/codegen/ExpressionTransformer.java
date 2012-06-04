@@ -1256,8 +1256,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (!typeFact().isEmptyType(expr.getPrimary().getTypeModel())) {
             resultExpr = spread;
         } else {
-            resultExpr = make().Conditional(makeNonEmptyTest(makeUnquotedIdent(testVarName)), 
-                spread, makeEmpty());
+            resultExpr = make().TypeCast(makeJavaType(typeFact().getSequenceType(expr.getTarget().getType())), 
+                    make().Conditional(makeNonEmptyTest(makeUnquotedIdent(testVarName)), 
+                        spread, 
+                        makeEmpty()));
         }
         
         // now surround it with the test
