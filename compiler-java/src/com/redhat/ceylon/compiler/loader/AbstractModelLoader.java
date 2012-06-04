@@ -1484,19 +1484,26 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return typeParser.decodeType(value, scope);
     }
     
+    /** Warning: only valid for toplevel types, not for type parameters */
     private ProducedType obtainType(TypeMirror type, AnnotatedMirror symbol, Scope scope) {
         String typeName = getAnnotationStringValue(symbol, CEYLON_TYPE_INFO_ANNOTATION);
         if (typeName != null) {
             return decodeType(typeName, scope);
         } else {
-            return obtainType(type, scope);
+            return obtainType(type, scope, TypeLocation.TOPLEVEL);
         }
     }
     
-    private ProducedType obtainType(TypeMirror type, Scope scope) {
+    private enum TypeLocation {
+        TOPLEVEL, TYPE_PARAM;
+    }
+    
+    private ProducedType obtainType(TypeMirror type, Scope scope, TypeLocation location) {
         String underlyingType = null;
         // ERASURE
-        if (sameType(type, STRING_TYPE)) {
+        
+        // don't erase to c.l.String if in a type param location
+        if (sameType(type, STRING_TYPE) && location != TypeLocation.TYPE_PARAM) {
             underlyingType = type.getQualifiedName();
             type = CEYLON_STRING_TYPE;
             
@@ -1563,7 +1570,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if (type.getKind() == TypeKind.ARRAY) {
             List<ProducedType> typeArguments = new ArrayList<ProducedType>(1);
             TypeMirror ct = type.getComponentType();
-            ProducedType ctpt = (ProducedType) obtainType(ct, scope);
+            ProducedType ctpt = (ProducedType) obtainType(ct, scope, TypeLocation.TYPE_PARAM);
             typeArguments.add(ctpt);
             ProducedType arrayType = declaration.getProducedType(getQualifyingType(declaration), typeArguments);
             if (ctpt.getUnderlyingType() != null) {
@@ -1578,7 +1585,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     // if a single type argument is a wildcard, we erase to Object
                     if(typeArgument.getKind() == TypeKind.WILDCARD)
                         return typeFactory.getObjectDeclaration().getType();
-                    typeArguments.add((ProducedType) getType(typeArgument, scope));
+                    typeArguments.add((ProducedType) obtainType(typeArgument, scope, TypeLocation.TYPE_PARAM));
                 }
                 return declaration.getProducedType(getQualifyingType(declaration), typeArguments);
             }
