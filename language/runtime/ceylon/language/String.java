@@ -291,7 +291,7 @@ public abstract class String
     
     @Override
     public boolean containsAny(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     Iterable<?> elements) {
         return Category$impl._containsAny(this, elements);
     }
@@ -303,7 +303,7 @@ public abstract class String
 
     @Override
     public boolean containsEvery(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     Iterable<?> elements) {
         return Category$impl._containsEvery(this, elements);
     }
@@ -372,7 +372,7 @@ public abstract class String
     }
     
     public java.lang.String join(@Name("strings") @Sequenced
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.String>")
     Iterable<? extends String> strings) {
         java.lang.StringBuilder result = new java.lang.StringBuilder();
         Iterator<? extends String> it = strings.getIterator();

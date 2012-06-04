@@ -68,7 +68,7 @@ public class Module {
     @TypeInfo("ceylon.language.Nothing|ceylon.language.Quoted")
     ceylon.language.Quoted license, @Name("dependencies")
     @Sequenced
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.descriptor.Import>")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.descriptor.Import>")
     ceylon.language.Iterable<? extends Import> dependencies) {
         this.name = name;
         this.version = version;

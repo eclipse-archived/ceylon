@@ -25,20 +25,20 @@ public interface Correspondence<Key,Item> {
     public Category getKeys();
 
     public boolean definesEvery(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
+    @TypeInfo("ceylon.language.Iterable<Key>")
     Iterable<? extends Key> keys);
     @Ignore
     public boolean definesEvery();
 
     public boolean definesAny(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
+    @TypeInfo("ceylon.language.Iterable<Key>")
     Iterable<? extends Key> keys);
     @Ignore
     public boolean definesAny();
 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
     public Iterable<? extends Item> items(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
+    @TypeInfo("ceylon.language.Iterable<Key>")
     Iterable<? extends Key> keys);
     @Ignore
     public Iterable<? extends Item> items();

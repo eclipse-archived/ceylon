@@ -20,7 +20,7 @@ public final class $array {
     public static <Element> Array<Element> array(
     @Name("elements")
     @Sequenced
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    @TypeInfo("ceylon.language.Iterable<Element>")
     final ceylon.language.Iterable<? extends Element> elements) {
 		if (elements.getEmpty()) {
             return $arrayOfNone.<Element>arrayOfNone();

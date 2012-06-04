@@ -39,7 +39,7 @@ public class SequenceBuilder<Element> implements Sized {
     }
     
     public final synchronized void appendAll(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>") 
+    @TypeInfo("ceylon.language.Iterable<Element>") 
     Iterable<? extends Element> elements) {
     	if (list==null) {
     	    list = new ArrayList<Element>( (int) ((Sized) elements).getSize() );
