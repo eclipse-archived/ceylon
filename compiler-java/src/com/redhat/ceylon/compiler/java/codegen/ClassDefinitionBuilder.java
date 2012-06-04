@@ -390,6 +390,13 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
+    public ClassDefinitionBuilder of(ProducedType ofType) {
+        if (ofType != null) {
+            annotations(gen.makeAtCaseTypes(ofType));
+        }
+        return this;
+    }
+
     public ClassDefinitionBuilder annotations(List<JCTree.JCAnnotation> annotations) {
         if (ancestorLocal) {
             return this;

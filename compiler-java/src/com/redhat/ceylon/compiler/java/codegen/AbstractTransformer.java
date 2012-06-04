@@ -1291,6 +1291,16 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         return makeModelAnnotation(annotationType, List.of(caseAttribute));
     }
 
+    List<JCAnnotation> makeAtCaseTypes(ProducedType ofType) {
+        if(ofType == null)
+            return List.nil();
+        String typeSig = serialiseTypeSignature(ofType);
+        JCExpression caseAttribute = make().Assign(makeUnquotedIdent("of"), 
+                make().Literal(typeSig));
+        
+        return makeModelAnnotation(syms().ceylonAtCaseTypes, List.of(caseAttribute));
+    }
+
     List<JCAnnotation> makeAtIgnore() {
         return makeModelAnnotation(syms().ceylonAtIgnore);
     }
