@@ -1,4 +1,3 @@
-@nomodel
 abstract class SelfType<T>() of T given T satisfies SelfType<T> {
     shared formal Integer compareTo(T other);
     shared Integer reverseCompareTo(T other) {

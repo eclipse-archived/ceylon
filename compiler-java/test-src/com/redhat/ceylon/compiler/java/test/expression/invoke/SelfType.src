@@ -1,13 +1,27 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("abstract")})
+@.com.redhat.ceylon.compiler.java.metadata.CaseTypes(of = "T")
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {"com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<T>"})})
 abstract class SelfType<T extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<T>> {
     
-    public abstract long compareTo(final T other);
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+    public abstract long compareTo(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
+    final T other);
     
-    public final long reverseCompareTo(final T other) {
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+    public final long reverseCompareTo(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
+    final T other) {
         return other.compareTo((T)this);
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
     public final T self() {
         final T x = (T)this;
         return (T)this;
