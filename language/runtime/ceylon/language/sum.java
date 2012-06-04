@@ -9,25 +9,22 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon
 @Method
-public final class min {
+public final class sum {
     
-    private min() {
+    private sum() {
     }
     
-    @TypeParameters(@TypeParameter(value="Value", satisfies="ceylon.language.Comparable<Value>"))
+    @TypeParameters(@TypeParameter(value="Value", satisfies="ceylon.language.Summable<Value>"))
     @TypeInfo("Value")
-    public static <Value extends Comparable<? super Value>>Value min(@Name("values")
+    public static <Value extends Summable<Value>>Value sum(@Name("values")
     @TypeInfo("ceylon.language.Sequence<Value>")
     final Sequence<? extends Value> values) {
-        Value min = values.getFirst();
+        Value sum = values.getFirst();
         java.lang.Object $tmp;
         for (Iterator<? extends Value> $val$iter$0 = values.getRest().getIterator(); 
                 !(($tmp = $val$iter$0.next()) instanceof Finished);) {
-            final Value val = (Value) $tmp;
-            if (val.compare(min).smallerThan()) {
-                min = val;
-            }
+            sum = sum.plus((Value) $tmp);
         }
-        return min;
+        return sum;
     }
 }

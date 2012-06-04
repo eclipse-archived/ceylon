@@ -1,5 +1,5 @@
-doc "Given a sequence of `Comparable` values, return the 
-     smallest value in the sequence."
+doc "Given a nonempty sequence of `Comparable` values, 
+     return the smallest value in the sequence."
 see (Comparable, max, smallest)
 shared Value min<Value>(Sequence<Value> values) 
         given Value satisfies Comparable<Value> {
