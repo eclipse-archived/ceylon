@@ -49,6 +49,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -239,6 +240,8 @@ public class ModelLoaderTest extends CompilerTest {
             compareDeclarations(validDeclaration.getExtendedTypeDeclaration(), modelDeclaration.getExtendedTypeDeclaration());
         // satisfied types!
         compareSatisfiedTypes(name, validDeclaration.getSatisfiedTypeDeclarations(), modelDeclaration.getSatisfiedTypeDeclarations());
+        // self type
+        compareSelfTypes(validDeclaration, modelDeclaration, name);
         // parameters
         compareParameterLists(validDeclaration.getQualifiedNameString(), validDeclaration.getParameterLists(), modelDeclaration.getParameterLists());
         // make sure it has every member required
@@ -257,6 +260,19 @@ public class ModelLoaderTest extends CompilerTest {
                 continue;
             Declaration validMember = lookupMember(validDeclaration, modelMember);
             Assert.assertNotNull(modelMember.getQualifiedNameString()+" [extra member] encountered in loaded model", validMember);
+        }
+    }
+
+    private void compareSelfTypes(Class validDeclaration,
+            Class modelDeclaration, String name) {
+        if(validDeclaration.getSelfType() == null)
+            Assert.assertTrue(name+" [null self type]", modelDeclaration.getSelfType() == null);
+        else{
+            ProducedType validSelfType = validDeclaration.getSelfType();
+            ProducedType modelSelfType =  modelDeclaration.getSelfType();
+            Assert.assertNotNull(name+" [non-null self type]", modelSelfType);
+            // self types are always type parameters so they must have a declaration
+            compareDeclarations(validSelfType.getDeclaration(), modelSelfType.getDeclaration());
         }
     }
     
@@ -424,5 +440,10 @@ public class ModelLoaderTest extends CompilerTest {
     @Test
     public void loadGettersWithUnderscores(){
         verifyClassLoading("GettersWithUnderscores.ceylon");
+    }
+
+    @Test
+    public void loadCaseTypes(){
+        verifyClassLoading("CaseTypes.ceylon");
     }
 }
