@@ -275,6 +275,7 @@ public class ControlFlowVisitor extends Visitor {
     
     @Override
     public void visit(Tree.WhileStatement that) {
+        checkExecutableStatementAllowed(that);
         boolean d = beginIndefiniteReturnScope();
         Boolean b = beginLoop();
         that.getWhileClause().visit(this);

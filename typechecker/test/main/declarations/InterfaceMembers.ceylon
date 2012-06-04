@@ -48,6 +48,12 @@ interface Interfaces {
         shared Integer times = 1;
     }
     
+    @error for (c in "hello") {}
+    @error while (true) {}
+    @error if (true) {}
+    @error try {} finally {}
+    @error switch (1==0) case (true) {} case (false) {}
+    
     @error MemberClass();
     
     @error throw;
