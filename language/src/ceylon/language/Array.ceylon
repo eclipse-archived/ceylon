@@ -48,11 +48,20 @@ shared abstract class Array<Element>()
 doc "Creates and returns an array containing the specified elements.
      If called without any arguments, returns an empty array."
 shared Array<Element> array<Element>(Element... elements) { throw; }
+
 doc "Returns an empty array."
 shared Array<Element>&None<Element> arrayOfNone<Element>() { throw; }
+
 doc "Returns an array with the elements in the sequence.
      This array can never be empty."
 shared Array<Element>&Some<Element> arrayOfSome<Element>(Sequence<Element> elements) { throw; }
-doc "Creates and returns an array of the specified size, populating it with the result
-     of calling `init` for each index."
-shared Array<Element> makeArray<Element>(Integer size, Callable<Element,Integer> init) { throw; }
+
+doc "Creates and returns an array of the specified size, populating 
+     it with the result of calling `element()` for each index."
+shared Array<Element> makeArray<Element>(Integer size, Element element(Integer index)) { throw; }
+
+shared void copyArray<Element>(Array<Element> source, Array<Element> target, 
+        Integer from, Integer to, Integer length) { throw; }
+        //TODO: defaults!
+        //Integer from=0, Integer to=0, Integer length=smallest(source.size,target.size)) { throw; }
+        

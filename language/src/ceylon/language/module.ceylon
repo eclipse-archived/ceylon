@@ -1,6 +1,6 @@
 Module module {
     name = 'ceylon.language';
-    version = '0.2';
+    version = '0.3';
     doc = "The Ceylon language module containing
            the core types referred to in the 
            language specification.";

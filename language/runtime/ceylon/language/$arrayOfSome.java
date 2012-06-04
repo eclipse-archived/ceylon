@@ -18,13 +18,14 @@ public final class $arrayOfSome {
 
     @TypeParameters(@TypeParameter(value="Element"))
     @TypeInfo("ceylon.language.Array<Element>&Some<Element>")
-    public static <Element> Array<? extends Element> arrayOfSome(
+    public static <Element> Array<Element> arrayOfSome(
     @Name("elements")
     @TypeInfo("ceylon.language.Sequence<Element>")
     final Iterable<? extends Element> elements) {
 		List<Element> list = new ArrayList<Element>();
 		java.lang.Object $tmp;
-		for (Iterator<? extends Element> iter=elements.getIterator(); !(($tmp = iter.next()) instanceof Finished);) {
+		for (Iterator<? extends Element> iter=elements.getIterator(); 
+		        !(($tmp = iter.next()) instanceof Finished);) {
 			Element elem = (Element)$tmp;
 			if (elem!=null) list.add(elem);
 		}

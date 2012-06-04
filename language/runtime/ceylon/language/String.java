@@ -166,6 +166,11 @@ public abstract class String
         //      of getSize()
         return Correspondence$impl._definesEvery(this, keys);
     }
+    @Override
+    @Ignore
+    public boolean definesEvery() {
+        return Correspondence$impl._definesEvery(this, $empty.getEmpty());
+    }
 
     @Override
     public boolean definesAny(@Name("keys") 
@@ -175,6 +180,11 @@ public abstract class String
         //      of getSize()
         return Correspondence$impl._definesAny(this, keys);
     }
+    @Override
+    @Ignore
+    public boolean definesAny() {
+        return Correspondence$impl._definesAny(this, $empty.getEmpty());
+    }
 
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Character>")
@@ -182,6 +192,11 @@ public abstract class String
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
         return Correspondence$impl._items(this, keys);
+    }
+    @Override
+    @Ignore
+    public List<? extends Character> items() {
+        return Correspondence$impl._items(this, $empty.getEmpty());
     }
 
     @Override
@@ -280,12 +295,22 @@ public abstract class String
     Iterable<?> elements) {
         return Category$impl._containsAny(this, elements);
     }
+    @Override
+    @Ignore
+    public boolean containsAny() {
+        return Category$impl._containsAny(this, $empty.getEmpty());
+    }
 
     @Override
     public boolean containsEvery(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
     Iterable<?> elements) {
         return Category$impl._containsEvery(this, elements);
+    }
+    @Override
+    @Ignore
+    public boolean containsEvery() {
+        return Category$impl._containsEvery(this, $empty.getEmpty());
     }
     
     public boolean longerThan(@TypeInfo("ceylon.language.Integer") 
@@ -359,6 +384,10 @@ public abstract class String
             }
         }
         return result.toString();
+    }
+    @Ignore
+    public java.lang.String join() {
+        return join($empty.getEmpty());
     }
     
     @Override

@@ -145,10 +145,20 @@ public final class Map$impl<Key,Item> {
             public boolean containsEvery(Iterable<?> elements) {
                 return Category$impl._containsEvery(this, elements);
             }
+            
+            @Override
+            public boolean containsEvery() {
+                return Category$impl._containsEvery(this, $empty.getEmpty());
+            }
 
             @Override
             public boolean containsAny(Iterable<?> elements) {
                 return Category$impl._containsAny(this, elements);
+            }
+            
+            @Override
+            public boolean containsAny() {
+                return Category$impl._containsAny(this, $empty.getEmpty());
             }
 
             @Override
@@ -211,12 +221,21 @@ public final class Map$impl<Key,Item> {
             public boolean containsEvery(Iterable<?> elements) {
                 return Category$impl._containsEvery(this, elements);
             }
+            
+            @Override
+            public boolean containsEvery() {
+                return Category$impl._containsEvery(this, $empty.getEmpty());
+            }
 
             @Override
             public boolean containsAny(Iterable<?> elements) {
                 return Category$impl._containsAny(this, elements);
             }
-
+            
+            @Override
+            public boolean containsAny() {
+                return Category$impl._containsAny(this, $empty.getEmpty());
+            }
 
             @Override
             public boolean getEmpty() {
@@ -293,15 +312,30 @@ public final class Map$impl<Key,Item> {
             public boolean definesEvery(Iterable<? extends java.lang.Object> keys) {
                 return Correspondence$impl._definesEvery(this, keys);
             }
+            
+            @Override
+            public boolean definesEvery() {
+                return Correspondence$impl._definesEvery(this, $empty.getEmpty());
+            }
 
             @Override
             public boolean definesAny(Iterable<? extends java.lang.Object> keys) {
                 return Correspondence$impl._definesAny(this, keys);
             }
+            
+            @Override
+            public boolean definesAny() {
+                return Correspondence$impl._definesAny(this, $empty.getEmpty());
+            }
 
             @Override
             public Iterable<? extends Set<Key>> items(Iterable<? extends java.lang.Object> keys) {
                 return Correspondence$impl._items(this, keys);
+            }
+            
+            @Override
+            public Iterable<? extends Set<Key>> items() {
+                return Correspondence$impl._items(this, $empty.getEmpty());
             }
 
             @Override
@@ -318,10 +352,20 @@ public final class Map$impl<Key,Item> {
             public boolean containsEvery(Iterable<?> elements) {
                 return Category$impl._containsEvery(this, elements);
             }
+            
+            @Override
+            public boolean containsEvery() {
+                return Category$impl._containsEvery(this, $empty.getEmpty());
+            }
 
             @Override
             public boolean containsAny(Iterable<?> elements) {
                 return Category$impl._containsAny(this, elements);
+            }
+            
+            @Override
+            public boolean containsAny() {
+                return Category$impl._containsAny(this, $empty.getEmpty());
             }
 
             @Override

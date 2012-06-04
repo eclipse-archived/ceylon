@@ -2,6 +2,7 @@ package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -30,6 +31,10 @@ public class StringBuilder {
             builder.append(elem);
         }
         return this;
+    }
+    @Ignore
+    public final synchronized StringBuilder appendAll() {
+        return appendAll($empty.getEmpty());
     }
     
     public final synchronized StringBuilder appendCharacter(@Name("character") 

@@ -2,6 +2,7 @@ package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
@@ -47,12 +48,22 @@ public class Singleton<Element>
 	Iterable<? extends Integer> keys) {
 		return Correspondence$impl._definesEvery(this, keys);
 	}
+	@Override
+	@Ignore
+    public boolean definesEvery() {
+	    return Correspondence$impl._definesEvery(this, $empty.getEmpty());
+	}
 	
 	@Override
 	public boolean definesAny(@Sequenced @Name("keys") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
 	Iterable<? extends Integer> keys) {
 		return Correspondence$impl._definesAny(this, keys);
+	}
+	@Override
+	@Ignore
+    public boolean definesAny() {
+	    return Correspondence$impl._definesAny(this, $empty.getEmpty());
 	}
 	
 	@Override
@@ -61,6 +72,11 @@ public class Singleton<Element>
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
 	Iterable<? extends Integer> keys) {
 		return Correspondence$impl._items(this, keys);
+	}
+	@Override
+	@Ignore
+	public List<? extends Element> items() {
+	    return Correspondence$impl._items(this, $empty.getEmpty());
 	}
 	
 	@Override
@@ -158,10 +174,20 @@ public class Singleton<Element>
     public boolean containsEvery(Iterable<?> elements) {
         return Category$impl._containsEvery(this, elements);
     }
+    
+    @Override
+    public boolean containsEvery() {
+        return Category$impl._containsEvery(this, $empty.getEmpty());
+    }
 
     @Override
     public boolean containsAny(Iterable<?> elements) {
         return Category$impl._containsAny(this, elements);
+    }
+    
+    @Override
+    public boolean containsAny() {
+        return Category$impl._containsAny(this, $empty.getEmpty());
     }
 	
     @Override

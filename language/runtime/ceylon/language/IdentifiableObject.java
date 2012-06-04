@@ -2,7 +2,6 @@ package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;

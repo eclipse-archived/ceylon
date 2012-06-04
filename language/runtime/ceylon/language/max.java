@@ -21,7 +21,8 @@ public final class max {
     final Sequence<? extends Value> values) {
         Value max = values.getFirst();
         java.lang.Object $tmp;
-        for (Iterator<? extends Value> $val$iter$0 = values.getRest().getIterator(); !(($tmp = $val$iter$0.next()) instanceof Finished);) {
+        for (Iterator<? extends Value> $val$iter$0 = values.getRest().getIterator(); 
+                !(($tmp = $val$iter$0.next()) instanceof Finished);) {
             final Value val = (Value) $tmp;
             if (val.compare(max).largerThan()) {
                 max = val;
