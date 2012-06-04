@@ -158,7 +158,7 @@ public class SpecificationVisitor extends Visitor {
                     //you are allowed to refer to later 
                     //declarations in a class declaration
                     //section
-                    if (!isForwardReferenceable()) {
+                    if (!isForwardReferenceable() && !hasParameter) {
                         if (declaration.getContainer() instanceof Class) {
                             that.addError("forward reference to class member in initializer: " + 
                                     member.getName() + " is not yet declared (forward references must occur in declaration section)");
@@ -188,18 +188,16 @@ public class SpecificationVisitor extends Visitor {
                                 member.getName());                    
                     }
                 }
-                else {
-                    if ( member.isDefault() && !isForwardReferenceable() ) {
-                        that.addError("default member may not be used in initializer: " + 
-                                member.getName());                    
-                    }
+                if ( member.isDefault() && !isForwardReferenceable() ) {
+                    that.addError("default member may not be used in initializer: " + 
+                            member.getName());                    
                 }
             }
         }
     }
 
     private boolean isForwardReferenceable() {
-        return declarationSection || hasParameter ||
+        return declarationSection ||
                 declaration.isToplevel() ||
                 declaration.isInterfaceMember();
     }
