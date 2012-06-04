@@ -25,8 +25,10 @@ import java.lang {
     JLong = Long,
     JFloat = Float,
     JDouble = Double,
-    JCharacter = Character 
+    JCharacter = Character,
+    JString = String
 }
+import java.util { List, ArrayList }
 
 @nomodel
 T box<T>(T t){
@@ -307,4 +309,18 @@ void operationsOnMixedTypes() {
     sync := java.byte_attr == java.int_attr;
     sync := java.byte_attr != java.int_attr;
     sync := java.byte_attr < java.int_attr;
+}
+
+@nomodel
+@error
+void typeParameters(){
+    @error
+    TypesJava java = TypesJava();
+
+    List<String> stringList = java.stringList();
+    stringList.add("foo");
+    List<JString> jstringList = java.jstringList();
+    jstringList.add(JString("foo"));
+    List<Object> objectList = java.objectList();
+    objectList.add("foo");
 }

@@ -92,4 +92,8 @@ public class TypesJava {
     public byte getByte(){return 1;}
     public void setByte(byte b){}
     public int int_attr;
+    
+    java.util.List<ceylon.language.String> stringList(){ return null; }
+    java.util.List<java.lang.String> jstringList(){ return null; }
+    java.util.List<java.lang.Object> objectList(){ return null; }
 }
