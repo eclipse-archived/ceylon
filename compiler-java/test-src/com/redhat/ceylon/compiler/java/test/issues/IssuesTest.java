@@ -26,6 +26,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
@@ -133,6 +134,7 @@ public class IssuesTest extends CompilerTest {
     }
     
     @Test
+    @Ignore("M4: Waiting for model loader support for self-types")
     public void testBug283() {
         compareWithJavaSource("Bug283");
     }
@@ -335,3 +337,4 @@ public class IssuesTest extends CompilerTest {
         compareWithJavaSource("Bug568");
     }
 }
+
