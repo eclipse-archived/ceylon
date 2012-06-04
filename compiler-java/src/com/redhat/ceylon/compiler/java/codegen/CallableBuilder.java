@@ -145,7 +145,7 @@ public class CallableBuilder {
         callMethod.isActual(true);
         callMethod.modifiers(Flags.PUBLIC);
         ProducedType returnType = gen.getReturnTypeOfCallable(typeModel);
-        callMethod.resultType(gen.makeJavaType(returnType, EXTENDS | NO_PRIMITIVES), null);
+        callMethod.resultType(gen.makeJavaType(returnType, NO_PRIMITIVES), null);
         // Now append formal parameters
         int numParams = paramLists.getParameters().size();
         switch (numParams) {
