@@ -1343,6 +1343,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return getAnnotationArrayValue(symbol, CEYLON_CASE_TYPES_ANNOTATION);
     }
     
+    private String getSelfTypeFromAnnotations(AnnotatedMirror symbol) {
+        return getAnnotationStringValue(symbol, CEYLON_CASE_TYPES_ANNOTATION, "of");
+    }
+
     private void setCaseTypes(ClassOrInterface klass, ClassMirror classMirror) {
         List<String> caseTypes = getCaseTypesFromAnnotations(classMirror);
         if(caseTypes != null){
@@ -1350,6 +1354,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 klass.setCaseTypes(getTypesList(caseTypes, klass));
             }catch(TypeParserException x){
                 logError("Invalid type signature for case types of "+klass.getQualifiedNameString()+": "+x.getMessage());
+                throw x;
+            }
+        }
+        String selfType = getSelfTypeFromAnnotations(classMirror);
+        if(selfType != null && !selfType.isEmpty()){
+            try{
+                ProducedType type = decodeType(selfType, klass);
+                if(!(type.getDeclaration() instanceof TypeParameter)){
+                    logError("Invalid type signature for self type of "+klass.getQualifiedNameString()+": "+selfType+" is not a type parameter");
+                }else
+                    klass.setSelfType(type);
+            }catch(TypeParserException x){
+                logError("Invalid type signature for self type of "+klass.getQualifiedNameString()+": "+x.getMessage());
                 throw x;
             }
         }
