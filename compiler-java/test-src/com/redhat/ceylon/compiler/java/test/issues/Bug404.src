@@ -20,7 +20,7 @@ class Bug404 {
                     {
                         .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$1 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)empty;
                     }
-                    returning !$spreadTest$1.getEmpty() ? (
+                    returning (.ceylon.language.Sequence<? extends .ceylon.language.String>)(!$spreadTest$1.getEmpty() ? (
                         let
                         {
                             .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$2$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$1;
@@ -29,7 +29,7 @@ class Bug404 {
                             for (int $index$3 = 0; $index$3 < $spread$2$2; $index$3++) $spread$2$4[$index$3] = .ceylon.language.String.instance($spread$2$0.item(.ceylon.language.Integer.instance($index$3)).getUppercased());
                         }
                         returning new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$2$4);
-                    ) : .ceylon.language.$empty.getEmpty();
+                    ) : .ceylon.language.$empty.getEmpty());
                 );
             }
             returning $ceylontmp4 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp4).getEmpty();
@@ -43,7 +43,7 @@ class Bug404 {
                     {
                         .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$5 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)full;
                     }
-                    returning !$spreadTest$5.getEmpty() ? (
+                    returning (.ceylon.language.Sequence<? extends .ceylon.language.String>)(!$spreadTest$5.getEmpty() ? (
                         let
                         {
                             .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$6$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$5;
@@ -52,7 +52,7 @@ class Bug404 {
                             for (int $index$7 = 0; $index$7 < $spread$6$2; $index$7++) $spread$6$4[$index$7] = .ceylon.language.String.instance($spread$6$0.item(.ceylon.language.Integer.instance($index$7)).getUppercased());
                         }
                         returning new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$6$4);
-                    ) : .ceylon.language.$empty.getEmpty();
+                    ) : .ceylon.language.$empty.getEmpty());
                 );
             }
             returning $ceylontmp8 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp8).getEmpty();
@@ -62,7 +62,7 @@ class Bug404 {
             {
                 .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$9 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)full;
             }
-            returning !$spreadTest$9.getEmpty() ? (
+            returning (.ceylon.language.Sequence<? extends .ceylon.language.String>)(!$spreadTest$9.getEmpty() ? (
                 let
                 {
                     .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$10$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$9;
@@ -71,7 +71,7 @@ class Bug404 {
                     for (int $index$11 = 0; $index$11 < $spread$10$2; $index$11++) $spread$10$4[$index$11] = .ceylon.language.String.instance($spread$10$0.item(.ceylon.language.Integer.instance($index$11)).getUppercased());
                 }
                 returning new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$10$4);
-            ) : .ceylon.language.$empty.getEmpty();
+            ) : .ceylon.language.$empty.getEmpty());
         );
     }
     

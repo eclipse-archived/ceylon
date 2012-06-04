@@ -28,7 +28,7 @@ final class spread {
             {
                 .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$3 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)seq2;
             }
-            returning !$spreadTest$3.getEmpty() ? (
+            returning (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(!$spreadTest$3.getEmpty() ? (
                 let
                 {
                     .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$4$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$3;
@@ -37,7 +37,7 @@ final class spread {
                     for (int $index$5 = 0; $index$5 < $spread$4$2; $index$5++) $spread$4$4[$index$5] = .ceylon.language.Integer.instance($spread$4$0.item(.ceylon.language.Integer.instance($index$5)).getSize());
                 }
                 returning new .ceylon.language.ArraySequence<.ceylon.language.Integer>($spread$4$4);
-            ) : .ceylon.language.$empty.getEmpty();
+            ) : .ceylon.language.$empty.getEmpty());
         );
     }
 }
