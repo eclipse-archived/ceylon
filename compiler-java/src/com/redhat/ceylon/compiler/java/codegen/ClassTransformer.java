@@ -1396,7 +1396,6 @@ public class ClassTransformer extends AbstractTransformer {
         methodBuilder.block(body);
         lb.append(methodBuilder
             .modifiers(transformMethodDeclFlags(def))
-            .isActual(Decl.isActual(def))
             .build());
         return lb.toList();
     }
