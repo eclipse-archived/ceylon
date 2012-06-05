@@ -18,12 +18,20 @@
  * MA  02110-1301, USA.
  */
 shared interface TopInterface {
+    shared formal Integer topFormalAttr;
+    shared default Integer concreteDefaultAttr { return 1; }
+
     shared formal Integer topFormalMethod(Integer p1);
+    shared default Integer concreteDefaultMethod(Integer p1){ return p1; }
 }
 
 shared interface Interface satisfies TopInterface {
+    shared actual Integer topFormalAttr { return 1; }
+    shared Integer concreteAttr { return 1; }
+    shared actual formal Integer concreteDefaultAttr;
+
     shared actual Integer topFormalMethod(Integer p1){ return p1; }
     shared formal Integer formalMethod(Integer p1);
     shared Integer concreteMethod(Integer p1){ return p1; }
-    shared default Integer concreteDefaultMethod(Integer p1){ return p1; }
+    shared actual formal Integer concreteDefaultMethod(Integer p1);
 }
