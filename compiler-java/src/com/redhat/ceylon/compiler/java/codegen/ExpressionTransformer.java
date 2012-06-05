@@ -471,12 +471,14 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCExpression transform(Tree.SequenceEnumeration value) {
         at(value);
-        if (value.getExpressionList() == null) {
-            return makeEmpty();
-        } else {
-            java.util.List<Tree.Expression> list = value.getExpressionList().getExpressions();
+        if (value.getComprehension() != null) {
+            return makeErroneous(value, "Comprehensions not supported yet [1]");
+        } else if (value.getSequencedArgument() != null) {
+            java.util.List<Tree.Expression> list = value.getSequencedArgument().getExpressionList().getExpressions();
             ProducedType seqElemType = value.getTypeModel().getTypeArgumentList().get(0);
             return makeSequence(list, seqElemType);
+        } else {
+            return makeEmpty();
         }
     }
 
