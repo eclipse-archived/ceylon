@@ -32,6 +32,7 @@ import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
+import com.redhat.ceylon.cmr.impl.CachingRepositoryManager;
 import com.redhat.ceylon.cmr.impl.FileContentStore;
 import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
@@ -284,7 +285,6 @@ public class Util {
             outRepo = "modules";
         }
 
-        StructureBuilder structureBuilder;
         if(!isHTTP(outRepo, log)){
             File repoFolder = new File(outRepo);
             if(repoFolder.exists()){
@@ -294,15 +294,25 @@ public class Util {
                     log.error("Output repository is not writable: "+outRepo);
             }else if(!repoFolder.mkdirs())
                 log.error("Failed to create output repository: "+outRepo);
-            structureBuilder = new FileContentStore(repoFolder);
+            StructureBuilder structureBuilder = new FileContentStore(repoFolder);
+            return new SimpleRepositoryManager(structureBuilder, log);
         }else{
+            File modules = new File("modules"); // TODO -- tmp dir?
+            if(modules.exists()){
+                if(!modules.isDirectory())
+                    log.error("Output repository is not a directory: "+outRepo);
+                else if(!modules.canWrite())
+                    log.error("Output repository is not writable: "+outRepo);
+            }else if(!modules.mkdirs())
+                log.error("Failed to create output repository: "+outRepo);
+
             // HTTP
             WebDAVContentStore davContentStore = new WebDAVContentStore(outRepo, log);
             davContentStore.setUsername(user);
             davContentStore.setPassword(password);
-            structureBuilder = davContentStore;
+
+            return new CachingRepositoryManager(davContentStore, modules, log);
         }
-        return new SimpleRepositoryManager(structureBuilder, log);
     }
 
     private static boolean isHTTP(String repo, Logger log) {
