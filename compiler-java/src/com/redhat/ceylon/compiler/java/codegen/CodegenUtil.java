@@ -230,7 +230,7 @@ class CodegenUtil {
 
     static String getDefaultedParamMethodName(Declaration decl, Parameter param) {
         if (decl instanceof Method) {
-            return decl.getName() + "$" + param.getName();
+            return ((Method) decl).getName() + "$" + getTopmostRefinedDeclaration(param).getName();
         } else if (decl instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) {
             return "$init$" + param.getName();
         } else {
