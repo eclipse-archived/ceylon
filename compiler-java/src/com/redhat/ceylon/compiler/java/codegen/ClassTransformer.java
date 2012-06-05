@@ -234,6 +234,11 @@ public class ClassTransformer extends AbstractTransformer {
         
         // For each super interface
         for (Declaration member : iface.getMembers()) {
+            if (Strategy.onlyOnCompanion(member)) {
+                // non-shared interface methods don't need implementing
+                // (they're just private methods on the $impl)
+                continue;
+            }
             if (member instanceof Method) {
                 Method method = (Method)member;
                 final ProducedTypedReference typedMember = satisfiedType.getTypedMember(method, Collections.<ProducedType>emptyList());
@@ -843,10 +848,15 @@ public class ClassTransformer extends AbstractTransformer {
     List<JCTree> transform(Tree.AnyMethod def,
             ClassDefinitionBuilder classBuilder, List<JCStatement> body) {
         final Method model = def.getDeclarationModel();
-        ListBuffer<JCTree> lb = transformMethod(model, classBuilder, body,
+        
+        ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
+        
+        if (!Strategy.onlyOnCompanion(model)) {
+            lb.appendList(transformMethod(model, classBuilder, body,
                 def instanceof MethodDeclaration
                 && ((MethodDeclaration) def).getSpecifierExpression() == null,
-                CodegenUtil.hasCompilerAnnotation(def, "test"));
+                CodegenUtil.hasCompilerAnnotation(def, "test")));
+        }
         
         final Tree.ParameterList paramList = def.getParameterLists().get(0);
         for (Tree.Parameter param : paramList.getParameters()) {
@@ -859,7 +869,9 @@ public class ClassTransformer extends AbstractTransformer {
                 if (Strategy.defaultParameterMethodOnSelf(model)) {
                     lb.add(defaultValueMethodImpl);    
                 } else {
-                    lb.add(makeParamDefaultValueMethod(true, model, paramList, param));
+                    if (!Strategy.onlyOnCompanion(model)) {
+                        lb.add(makeParamDefaultValueMethod(true, model, paramList, param));
+                    }
                     classBuilder.getCompanionBuilder((Declaration)model.getContainer()).defs(defaultValueMethodImpl);
                 }    
             }
