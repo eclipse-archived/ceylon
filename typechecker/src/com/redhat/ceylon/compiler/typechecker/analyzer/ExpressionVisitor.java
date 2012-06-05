@@ -1154,7 +1154,10 @@ public class ExpressionVisitor extends Visitor {
             return unit.getOptionalType(pt);
         }
         else if (op instanceof Tree.SpreadOp) {
-            ProducedType st = unit.getSequenceType(pt);            
+            ProducedType st = unit.getSequenceType(pt);
+            //note: the following is nice, even though
+            //      it is not actually blessed by the
+            //      language spec!
             return unit.isEmptyType(receivingType) ?
                     unit.getEmptyType(st) : st;
         }
