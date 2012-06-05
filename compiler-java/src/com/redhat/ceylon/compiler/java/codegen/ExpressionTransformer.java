@@ -1183,13 +1183,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression sizeExpr = make().TypeCast(syms().intType, make().Apply(null, 
                 make().Select(makeUnquotedIdent(srcSequenceName), names().fromString("getSize")), 
                 List.<JCTree.JCExpression>nil()));
-        
+
         // new array
         String newArrayName = varBaseName+"$4";
         JCExpression arrayElementType = makeJavaType(expr.getTarget().getType(), NO_PRIMITIVES);
         JCExpression newArrayType = make().TypeArray(arrayElementType);
         JCNewArray newArrayExpr = make().NewArray(arrayElementType, List.of(makeUnquotedIdent(sizeName)), null);
-        
+
         // return the new array
         JCExpression returnArrayType = makeJavaType(expr.getTarget().getType(), SATISFIES);
         JCExpression returnArrayIdent = make().QualIdent(syms().ceylonArraySequenceType.tsym);
@@ -1202,7 +1202,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCNewClass returnArray = make().NewClass(null, null, 
                 returnArrayTypeExpr, 
                 List.of(makeUnquotedIdent(newArrayName)), null);
-        
+
         // for loop
         Name indexVarName = names().fromString(aliasName("index"));
         // int index = 0
@@ -1213,7 +1213,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // index++
         JCExpression stepExpr = make().Unary(JCTree.POSTINC, make().Ident(indexVarName));
         List<JCExpressionStatement> step = List.of(make().Exec(stepExpr));
-        
+
         // newArray[index]
         JCExpression dstArrayExpr = make().Indexed(makeUnquotedIdent(newArrayName), make().Ident(indexVarName));
         // srcSequence.item(box(index))
@@ -1252,14 +1252,14 @@ public class ExpressionTransformer extends AbstractTransformer {
                 returnArray);
         
         JCExpression resultExpr;
-        
-        if (!typeFact().isEmptyType(expr.getPrimary().getTypeModel())) {
-            resultExpr = spread;
-        } else {
-            resultExpr = make().TypeCast(makeJavaType(typeFact().getSequenceType(expr.getTarget().getType())), 
+
+        if (typeFact().isEmptyType(expr.getPrimary().getTypeModel())) {
+            ProducedType emptyOrSequence = typeFact().getEmptyType(typeFact().getSequenceType(expr.getTarget().getType()));
+            resultExpr = make().TypeCast(makeJavaType(emptyOrSequence), 
                     make().Conditional(makeNonEmptyTest(makeUnquotedIdent(testVarName)), 
-                        spread, 
-                        makeEmpty()));
+                        spread, makeEmpty()));
+        } else {
+            resultExpr = spread;
         }
         
         // now surround it with the test
