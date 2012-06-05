@@ -26,6 +26,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -170,6 +174,11 @@ public class RepoFileHandler implements HttpHandler {
             xml.append("      <resourcetype><collection/></resourcetype>\n");
         else
             xml.append("      <resourcetype/>\n");
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+        format.setTimeZone(TimeZone.getTimeZone("UTC"));
+        xml.append("      <getlastmodified>").append(format.format(new Date(file.lastModified()))).append("</getlastmodified>\n");
+
         xml.append("    </prop>\n");
         xml.append("    <status>HTTP/1.1 200 OK</status>\n");
         xml.append("  </propstat>\n");
