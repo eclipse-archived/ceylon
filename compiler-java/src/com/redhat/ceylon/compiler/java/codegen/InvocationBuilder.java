@@ -966,11 +966,9 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         return result;
     }
     
-    private final void appendDefaulted(Parameter param, boolean isRaw, JCExpression argExpr) {
+    private final void appendDefaulted(Parameter param, JCExpression argExpr) {
         int flags = 0;
-        if (isRaw) {
-            flags |= WANT_RAW_TYPE;
-        } else if (CodegenUtil.getBoxingStrategy(param) == BoxingStrategy.BOXED) {
+        if (CodegenUtil.getBoxingStrategy(param) == BoxingStrategy.BOXED) {
             flags |= TYPE_ARGUMENT;
         }
         ProducedType type = gen.getTypeForParameter(param, producedReference, gen.TP_TO_BOUND);
@@ -982,7 +980,6 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
     
     private boolean appendVarsForDefaulted(java.util.List<Parameter> declaredParams) {
         boolean hasDefaulted = false;
-        boolean isRaw = primaryTypeArguments.isEmpty();
         if (!Decl.isOverloaded(primaryDeclaration)) {
             // append any arguments for defaulted parameters
             for (Parameter param : declaredParams) {
@@ -1007,7 +1004,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 } else {
                     argExpr = gen.makeErroneous(this.node, "Missing argument, and parameter is not defaulted");
                 }
-                appendDefaulted(param, isRaw, argExpr);
+                appendDefaulted(param, argExpr);
             }
         }
         return hasDefaulted;
