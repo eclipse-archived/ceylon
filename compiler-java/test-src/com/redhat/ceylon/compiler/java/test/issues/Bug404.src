@@ -20,7 +20,7 @@ class Bug404 {
                     {
                         .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$1 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)empty;
                     }
-                    returning (.ceylon.language.Sequence<? extends .ceylon.language.String>)(!$spreadTest$1.getEmpty() ? (
+                    returning (.ceylon.language.Iterable<? extends .ceylon.language.String>)(!$spreadTest$1.getEmpty() ? (
                         let
                         {
                             .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$2$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$1;
@@ -43,7 +43,7 @@ class Bug404 {
                     {
                         .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$5 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)full;
                     }
-                    returning (.ceylon.language.Sequence<? extends .ceylon.language.String>)(!$spreadTest$5.getEmpty() ? (
+                    returning (.ceylon.language.Iterable<? extends .ceylon.language.String>)(!$spreadTest$5.getEmpty() ? (
                         let
                         {
                             .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$6$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$5;
@@ -62,7 +62,7 @@ class Bug404 {
             {
                 .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$9 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)full;
             }
-            returning (.ceylon.language.Sequence<? extends .ceylon.language.String>)(!$spreadTest$9.getEmpty() ? (
+            returning (.ceylon.language.Iterable<? extends .ceylon.language.String>)(!$spreadTest$9.getEmpty() ? (
                 let
                 {
                     .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$10$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$9;

@@ -60,7 +60,7 @@ public class SequenceOperators {
             {
                 .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$3 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)sequence;
             }
-            returning (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(!$spreadTest$3.getEmpty() ? (
+            returning (.ceylon.language.Iterable<? extends .ceylon.language.Integer>)(!$spreadTest$3.getEmpty() ? (
                 let
                 {
                     .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$4$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$3;
@@ -77,7 +77,7 @@ public class SequenceOperators {
             {
                 .ceylon.language.FixedSized<? extends .ceylon.language.Integer> $spreadTest$6 = (.ceylon.language.FixedSized<? extends .ceylon.language.Integer>)intSequence;
             }
-            returning (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(!$spreadTest$6.getEmpty() ? (
+            returning (.ceylon.language.Iterable<? extends .ceylon.language.Integer>)(!$spreadTest$6.getEmpty() ? (
                 let
                 {
                     .ceylon.language.Sequence<? extends .ceylon.language.Integer> $spread$7$0 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$spreadTest$6;
@@ -94,7 +94,7 @@ public class SequenceOperators {
             {
                 .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$9 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)sequence;
             }
-            returning (.ceylon.language.Sequence<? extends .ceylon.language.Character>)(!$spreadTest$9.getEmpty() ? (
+            returning (.ceylon.language.Iterable<? extends .ceylon.language.Character>)(!$spreadTest$9.getEmpty() ? (
                 let
                 {
                     .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$10$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$9;
@@ -110,7 +110,7 @@ public class SequenceOperators {
             {
                 .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$13 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)sequence;
             }
-            returning (.ceylon.language.Sequence<? extends .ceylon.language.Character>)(!$spreadTest$13.getEmpty() ? (
+            returning (.ceylon.language.Iterable<? extends .ceylon.language.Character>)(!$spreadTest$13.getEmpty() ? (
                 let
                 {
                     .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$14$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$13;
@@ -134,7 +134,7 @@ public class SequenceOperators {
             {
                 .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$16 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)empty;
             }
-            returning (.ceylon.language.Sequence<? extends .ceylon.language.String>)(!$spreadTest$16.getEmpty() ? (
+            returning (.ceylon.language.Iterable<? extends .ceylon.language.String>)(!$spreadTest$16.getEmpty() ? (
                 let
                 {
                     .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$17$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$16;
