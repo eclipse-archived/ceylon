@@ -24,6 +24,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
@@ -108,6 +109,16 @@ class Strategy {
     
     public static boolean createField(Parameter p, Value v) {
         return (p == null) || (useField(v) && !p.isCaptured());
+    }
+    
+    /**
+     * Non-{@code shared} concrete interface members are 
+     * only defined/declared on the companion class, not on the transformed 
+     * interface itself.
+     */
+    public static boolean onlyOnCompanion(Declaration model) {
+        return Decl.withinInterface(model)
+                && !Decl.isShared(model);
     }
     
 }
