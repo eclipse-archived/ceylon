@@ -906,9 +906,12 @@ public class ClassTransformer extends AbstractTransformer {
                         || parameter.isSequenced())) {
                 MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(),
                         methodName);
-                JCMethodDecl overloadedMethod = makeOverloadsForDefaultedParameter(!Decl.withinInterface(model), false, 
+                JCMethodDecl overloadedMethod = makeOverloadsForDefaultedParameter(!Decl.withinInterface(model), false, false, 
                         overloadBuilder, 
                         model, parameterList.getParameters(), parameter).build();
+                if (!Decl.withinInterface(model)) {
+                    overloadBuilder.annotations(makeAtOverride());
+                }
                 lb.prepend(overloadedMethod);
             }
             if (parameter.isDefaulted()
@@ -918,9 +921,11 @@ public class ClassTransformer extends AbstractTransformer {
                     // interface methods without concrete implementation (including 
                     // overloaded versions) on the companion class by delegating to 
                     // $this (for closure purposes)
-                    JCMethodDecl result = makeConcreteInterfaceMethodsForClosure(
-                            model, methodName, parameterList, parameter);
-                    classBuilder.getCompanionBuilder((Declaration)model.getContainer()).defs(result);
+                    MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(),
+                            methodName);
+                    makeOverloadsForDefaultedParameter(true, true, true, 
+                            overloadBuilder, model, parameterList.getParameters(), parameter);
+                    classBuilder.getCompanionBuilder((Declaration)model.getContainer()).defs(overloadBuilder.build());
                 }
             }    
         }
@@ -1224,7 +1229,7 @@ public class ClassTransformer extends AbstractTransformer {
         for (Tree.Parameter param : paramList.getParameters()) {
             parameters.add(param.getDeclarationModel());
         }
-        return makeOverloadsForDefaultedParameter(generateBody, false, 
+        return makeOverloadsForDefaultedParameter(generateBody, false, false,
                 overloadBuilder, model,
                 parameters, currentParam.getDeclarationModel());
     }
@@ -1238,13 +1243,11 @@ public class ClassTransformer extends AbstractTransformer {
      */
     private MethodDefinitionBuilder makeOverloadsForDefaultedParameter(
             boolean generateBody, 
-            boolean forImplementor, MethodDefinitionBuilder overloadBuilder,
+            boolean forImplementor, 
+            boolean forDelegator, MethodDefinitionBuilder overloadBuilder,
             final Declaration model, java.util.List<Parameter> parameters,
             final Parameter currentParam) {
         overloadBuilder.annotations(makeAtIgnore());
-        if (forImplementor) {
-            overloadBuilder.annotations(makeAtOverride());
-        }
         
         final JCExpression methName;
         if (model instanceof Method) {
@@ -1254,7 +1257,11 @@ public class ClassTransformer extends AbstractTransformer {
                 mods |= FINAL;
             }
             overloadBuilder.modifiers(mods);
-            methName = makeQuotedIdent(CodegenUtil.quoteMethodNameIfProperty((Method)model, gen()));
+            if (forDelegator) {
+                methName = makeSelect(makeUnquotedIdent("$this"), CodegenUtil.quoteMethodNameIfProperty((Method)model, gen()));
+            } else {
+                methName = makeQuotedIdent(CodegenUtil.quoteMethodNameIfProperty((Method)model, gen()));
+            }
             overloadBuilder.resultType((Method)model);
         } else if (model instanceof Class) {
             overloadBuilder.modifiers(transformOverloadCtorFlags((Class)model));
