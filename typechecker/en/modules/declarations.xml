@@ -244,6 +244,24 @@ TypeConstraints?
         
         </section>
         
+        <section>
+            <title>Imported name</title>
+            
+            <para>Inside a compilation unit which imports a declaration, the declaration
+            may be referred to by its <emphasis>imported name</emphasis>. For an import
+            element with an alias, the imported name is the alias. For an import element
+            with no alias, or for a wildcard import, the imported name is the name of the
+            declaration.</para>
+            
+            <para>An import element may not result in an imported name that is the same
+            as the name of a toplevel declaration contained in the compilation unit in
+            which the import element occurs.</para>
+            
+            <para>Two import elements occurring in the same compilation unit may not result 
+            in the same imported name.</para>
+            
+        </section>
+        
         </section>
         
         <!--

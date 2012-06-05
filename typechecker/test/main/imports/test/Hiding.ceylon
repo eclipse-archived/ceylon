@@ -1,11 +1,17 @@
-import ceylon.language { Set, String }
+import ceylon.language { @error Set, Map, String }
 
 class Set() {}
 class List() {}
 
 void useThem() {
    @error Set();
+   @error Map();
    List();
-   interface String {}
-   @error String s = "hello";
+   String s = "hello";
+   void nested() {
+       class Map() {}
+       Map();
+       interface String {}
+       @error String s = "hello";
+   }
 }

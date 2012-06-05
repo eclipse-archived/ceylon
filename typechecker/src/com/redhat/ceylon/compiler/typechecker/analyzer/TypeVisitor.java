@@ -196,6 +196,19 @@ public class TypeVisitor extends Visitor {
         else {
             i.setAlias(name(alias.getIdentifier()));
         }
+        for (Declaration d: unit.getDeclarations()) {
+            String n = d.getName();
+            if (d.isToplevel() && n!=null && 
+                    i.getAlias().equals(n)) {
+                if (alias==null) {
+                    member.getIdentifier()
+                        .addError("toplevel declaration with this name declared in this unit: " + n);
+                }
+                else {
+                    alias.addError("toplevel declaration with this name declared in this unit: " + n);
+                }
+            }
+        }
         Declaration d = importedPackage.getMember(name, null);
         if (d==null) {
             member.getIdentifier().addError("imported declaration not found: " + 
