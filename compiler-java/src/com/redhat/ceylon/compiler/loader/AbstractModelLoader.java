@@ -1137,14 +1137,25 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private void setMethodOrValueFlags(ClassOrInterface klass, MethodMirror methodMirror, MethodOrValue decl) {
         decl.setShared(methodMirror.isPublic() || methodMirror.isProtected());
         decl.setProtectedVisibility(methodMirror.isProtected());
-        if(methodMirror.isAbstract()
-                // Java interfaces are formal
-                || (klass instanceof Interface
-                        && !((LazyInterface)klass).isCeylon())
-                || isAnnotated(methodMirror, "formal")) {
+        if(// for class members we rely on abstract bit
+           (klass instanceof Class 
+                   && methodMirror.isAbstract())
+           // Java interfaces are formal
+           || (klass instanceof Interface
+                   && !((LazyInterface)klass).isCeylon())
+           // For Ceylon interfaces we rely on annotation
+           || isAnnotated(methodMirror, "formal")) {
             decl.setFormal(true);
         } else {
-            if (!methodMirror.isFinal() && !methodMirror.isStatic()) {
+            if (// for class members we rely on final/static bits
+                (klass instanceof Class
+                        && !methodMirror.isFinal() 
+                        && !methodMirror.isStatic())
+                // Java interfaces are never final
+                || (klass instanceof Interface
+                        && !((LazyInterface)klass).isCeylon())
+                // For Ceylon interfaces we rely on annotation
+                || isAnnotated(methodMirror, "default")){
                 decl.setDefault(true);
             }
         }
