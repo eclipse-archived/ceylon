@@ -1474,7 +1474,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (expr instanceof Tree.BaseMemberExpression) {
             final Declaration decl = expr.getDeclaration();
             return decl.isInterfaceMember()
-                && decl.getContainer() == expr.getScope().getContainer();
+                && decl.getContainer() == expr.getScope().getContainer()
+                && decl.isShared();
         }
         return false;
     }
