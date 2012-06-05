@@ -1073,7 +1073,8 @@ public class Check {
                 if (incompatibleArg != null) {
                     for (JCTree arg : tree.arguments) {
                         if (arg.type == incompatibleArg) {
-                            log.error(arg, "not.within.bounds", incompatibleArg, forms.head);
+                            // Unwanted check for Ceylon, see compiler issue #441
+                            //log.error(arg, "not.within.bounds", incompatibleArg, forms.head);
                         }
                         forms = forms.tail;
                      }
