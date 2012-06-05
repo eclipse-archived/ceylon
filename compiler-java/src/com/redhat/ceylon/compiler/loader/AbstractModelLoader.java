@@ -1587,7 +1587,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if (type.getKind() == TypeKind.ARRAY) {
             List<ProducedType> typeArguments = new ArrayList<ProducedType>(1);
             TypeMirror ct = type.getComponentType();
-            ProducedType ctpt = (ProducedType) obtainType(ct, scope, TypeLocation.TYPE_PARAM);
+            // Although we are putting that type into a type param, we have special handling
+            // for arrays and so we should treat it as a toplevel (magic boxing of strings)
+            ProducedType ctpt = (ProducedType) obtainType(ct, scope, TypeLocation.TOPLEVEL);
             typeArguments.add(ctpt);
             ProducedType arrayType = declaration.getProducedType(getQualifyingType(declaration), typeArguments);
             if (ctpt.getUnderlyingType() != null) {
