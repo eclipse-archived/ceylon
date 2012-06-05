@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.metadata.Annotation;
+import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
@@ -11,6 +13,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
     		satisfies="ceylon.language.Comparable<Other>"))
 public interface Comparable<Other extends Comparable<? super Other>> {
     
+    @Annotations(@Annotation("formal"))
     public Comparison compare(@Name("other") Other other);
     
     /*public boolean largerThan(@Name("other") Other other); 

@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.metadata.Annotation;
+import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
@@ -20,24 +22,30 @@ public interface Map<Key,Item>
         extends Correspondence<java.lang.Object, Item>, 
                 Collection<Entry<? extends Key,? extends Item>> {
 
+    @Annotations({@Annotation("actual"), @Annotation("default")})
     @Override
     public long count(@Name("element") @TypeInfo("ceylon.language.Object") 
     java.lang.Object element);
     
+    @Annotations({@Annotation("actual"), @Annotation("default")})
     @Override
     public boolean equals(@Name("that") @TypeInfo("ceylon.language.Object")
     java.lang.Object that);
     
+    @Annotations({@Annotation("actual"), @Annotation("default")})
     @Override
     public int hashCode();
     
+    @Annotations({@Annotation("actual"), @Annotation("default")})
     @Override
     @TypeInfo("ceylon.language.Set<Key>")
     public Set<? extends Key> getKeys();
     
+    @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Collection<Item>")
     public Collection<? extends Item> getValues();
     
+    @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Map<Item,ceylon.language.Set<Key>>")
     public Map<? extends Item, ? extends Set<? extends Key>> getInverse();
 

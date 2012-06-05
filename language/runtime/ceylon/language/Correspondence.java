@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.metadata.Annotation;
+import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -17,13 +19,17 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 })
 public interface Correspondence<Key,Item> {
     
+    @Annotations(@Annotation("formal"))
     @TypeInfo("Item|ceylon.language.Nothing")
     public Item item(@Name("key") Key key);
 
+    @Annotations(@Annotation("default"))
     public boolean defines(@Name("key") Key key);
 
+    @Annotations(@Annotation("default"))
     public Category getKeys();
 
+    @Annotations(@Annotation("default"))
     public boolean definesEvery(@Sequenced @Name("keys") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
     Iterable<? extends Key> keys);
@@ -32,6 +38,7 @@ public interface Correspondence<Key,Item> {
     @Ignore
     public Iterable<? extends Key> definesEvery$keys();
 
+    @Annotations(@Annotation("default"))
     public boolean definesAny(@Sequenced @Name("keys") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
     Iterable<? extends Key> keys);
@@ -40,6 +47,7 @@ public interface Correspondence<Key,Item> {
     @Ignore
     public Iterable<? extends Key> definesAny$keys();
 
+    @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
     public Iterable<? extends Item> items(@Sequenced @Name("keys") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
