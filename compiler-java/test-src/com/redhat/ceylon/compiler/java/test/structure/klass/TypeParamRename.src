@@ -21,12 +21,11 @@ final class TypeParamRename$impl<T, U> {
         return null;
     }
     
-    public U m() {
+    public final U m() {
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<T, U> $ceylontmp$impl$2 = this;
-                T $ceylontmp$t$3 = $ceylontmp$impl$2.m$t();
+                T $ceylontmp$t$3 = m$t();
             }
             returning m($ceylontmp$t$3);
         );
@@ -40,12 +39,11 @@ final class TypeParamRename$impl<T, U> {
         return null;
     }
     
-    public <V, W>W m2() {
+    public final <V, W>W m2() {
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<T, U> $ceylontmp$impl$6 = this;
-                V $ceylontmp$v$7 = $ceylontmp$impl$6.m2$v();
+                V $ceylontmp$v$7 = m2$v();
             }
             returning m2($ceylontmp$v$7);
         );

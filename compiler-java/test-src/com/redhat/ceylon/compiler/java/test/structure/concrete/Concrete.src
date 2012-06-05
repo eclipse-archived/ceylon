@@ -1,0 +1,145 @@
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
+
+interface Concrete {
+    
+    public void mShared();
+    
+    public abstract void mFormal();
+    
+    public void mDefault();
+}
+final class Concrete$impl {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $this;
+    
+    public void mNonShared() {
+    }
+    
+    public void mShared() {
+        mNonShared();
+    }
+    
+    public void mDefault() {
+    }
+    
+    Concrete$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $this) {
+        this.$this = $this;
+    }
+}
+class ConcreteImpl implements .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl $Concrete$impl;
+    
+    @.java.lang.Override
+    public void mShared() {
+        $Concrete$impl.mShared();
+    }
+    
+    @.java.lang.Override
+    public void mDefault() {
+        $Concrete$impl.mDefault();
+    }
+    
+    @.java.lang.Override
+    public final void mFormal() {
+    }
+    
+    ConcreteImpl() {
+        this.$Concrete$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl(this);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImpl();
+    }
+}
+class ConcreteImplWithDefault implements .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl $Concrete$impl;
+    
+    @.java.lang.Override
+    public void mShared() {
+        $Concrete$impl.mShared();
+    }
+    
+    @.java.lang.Override
+    public final void mFormal() {
+    }
+    
+    @.java.lang.Override
+    public final void mDefault() {
+    }
+    
+    ConcreteImplWithDefault() {
+        this.$Concrete$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl(this);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault();
+    }
+}
+abstract class Abstract implements .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl $Concrete$impl;
+    
+    @.java.lang.Override
+    public void mShared() {
+        $Concrete$impl.mShared();
+    }
+    
+    @.java.lang.Override
+    public void mDefault() {
+        $Concrete$impl.mDefault();
+    }
+    
+    Abstract() {
+        this.$Concrete$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl(this);
+    }
+}
+class AbstractSub extends .com.redhat.ceylon.compiler.java.test.structure.concrete.Abstract {
+    
+    @.java.lang.Override
+    public final void mFormal() {
+    }
+    
+    AbstractSub() {
+        super();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSub();
+    }
+}
+abstract class AbstractImpl implements .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl $Concrete$impl;
+    
+    @.java.lang.Override
+    public void mShared() {
+        $Concrete$impl.mShared();
+    }
+    
+    @.java.lang.Override
+    public final void mFormal() {
+    }
+    
+    @.java.lang.Override
+    public void mDefault() {
+    }
+    
+    AbstractImpl() {
+        this.$Concrete$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl(this);
+    }
+}
+class AbstractImplSub extends .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl {
+    
+    @.java.lang.Override
+    public final void mDefault() {
+    }
+    
+    AbstractImplSub() {
+        super();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImplSub();
+    }
+}

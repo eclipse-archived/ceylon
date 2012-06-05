@@ -1,8 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting.cii;
 
 interface C$CI$CII<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
-    
-    public T m2();
 }
 interface C$CI<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
 }

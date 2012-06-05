@@ -241,6 +241,20 @@ public class StructureTest2 extends CompilerTest {
 
     // Tests for concrete members of interfaces
     @Test
+    public void testCncConcrete(){
+        compareWithJavaSource("concrete/Concrete");
+    }
+    @Test
+    public void testCncConcreteAttribute(){
+        compareWithJavaSource("concrete/ConcreteAttribute");
+    }
+    
+    @Test
+    public void testCncListImplementor(){
+        compareWithJavaSource("concrete/ListImplementor");
+    }
+    
+    @Test
     public void testCncThis(){
         compareWithJavaSource("concrete/This");
     }

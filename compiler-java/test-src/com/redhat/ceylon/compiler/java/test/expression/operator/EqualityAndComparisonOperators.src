@@ -19,9 +19,23 @@ final class BasicOperatorsB$impl {
     }
 }
 public abstract class EqualityAndComparisonInteger extends .java.lang.Object implements .ceylon.language.Castable, .ceylon.language.Integral<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>, .ceylon.language.Comparable<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> {
+    private final .ceylon.language.Castable$impl $Castable$impl;
+    private final .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $Integral$impl;
+    private final .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $Numeric$impl;
+    private final .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $Summable$impl;
+    private final .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $Invertable$impl;
+    private final .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $Ordinal$impl;
+    private final .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $Comparable$impl;
     
     public EqualityAndComparisonInteger() {
         super();
+        this.$Castable$impl = new .ceylon.language.Castable$impl(this);
+        this.$Integral$impl = new .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
+        this.$Numeric$impl = new .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
+        this.$Summable$impl = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
+        this.$Invertable$impl = new .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
+        this.$Ordinal$impl = new .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
+        this.$Comparable$impl = new .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
     }
 }
 public class EqualityAndComparisonOperators {

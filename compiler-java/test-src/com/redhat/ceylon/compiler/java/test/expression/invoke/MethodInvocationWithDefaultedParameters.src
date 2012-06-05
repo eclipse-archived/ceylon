@@ -368,84 +368,168 @@ final class Barface$impl {
         return $this.getProp();
     }
     
+    public final void f1() {
+        (
+            let
+            {
+                long $ceylontmp$n$32 = f1$n();
+                $this.f1($ceylontmp$n$32);
+            }
+            returning null;
+        );
+    }
+    
     public final long f1$n() {
         return 5L;
     }
     
-    private final void f1() {
-        $this.f1();
+    public final void f2(final long n) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$s$36 = f2$s(n);
+                $this.f2(n, $ceylontmp$s$36);
+            }
+            returning null;
+        );
     }
     
     public final .java.lang.String f2$s(final long n) {
         return "test";
     }
     
-    private final void f2(final long n) {
-        $this.f2(n);
+    public final void f3() {
+        (
+            let
+            {
+                long $ceylontmp$n$41 = f3$n();
+                long $ceylontmp$m$42 = f3$m($ceylontmp$n$41);
+                $this.f3($ceylontmp$n$41, $ceylontmp$m$42);
+            }
+            returning null;
+        );
+    }
+    
+    public final void f3(final long n) {
+        (
+            let
+            {
+                long $ceylontmp$m$46 = f3$m(n);
+                $this.f3(n, $ceylontmp$m$46);
+            }
+            returning null;
+        );
     }
     
     public final long f3$n() {
         return 5L;
     }
     
-    private final void f3() {
-        $this.f3();
-    }
-    
     public final long f3$m(final long n) {
         return n;
     }
     
-    private final void f3(final long n) {
-        $this.f3(n);
+    public final void f4() {
+        (
+            let
+            {
+                long $ceylontmp$n$51 = f4$n();
+                long $ceylontmp$m$52 = f4$m($ceylontmp$n$51);
+                $this.f4($ceylontmp$n$51, $ceylontmp$m$52);
+            }
+            returning null;
+        );
+    }
+    
+    public final void f4(final long n) {
+        (
+            let
+            {
+                long $ceylontmp$m$56 = f4$m(n);
+                $this.f4(n, $ceylontmp$m$56);
+            }
+            returning null;
+        );
     }
     
     public final long f4$n() {
         return 5L;
     }
     
-    private final void f4() {
-        $this.f4();
-    }
-    
     public final long f4$m(final long n) {
         return n + 1L;
     }
     
-    private final void f4(final long n) {
-        $this.f4(n);
+    public final void f5() {
+        (
+            let
+            {
+                long $ceylontmp$n$60 = f5$n();
+                $this.f5($ceylontmp$n$60);
+            }
+            returning null;
+        );
     }
     
     public final long f5$n() {
         return $this.getProp();
     }
     
-    private final void f5() {
-        $this.f5();
+    public final void f7() {
+        (
+            let
+            {
+                long $ceylontmp$n$64 = f7$n();
+                $this.f7($ceylontmp$n$64);
+            }
+            returning null;
+        );
     }
     
     public final long f7$n() {
         return $this.getProp();
     }
     
-    private final void f7() {
-        $this.f7();
+    public final void f9() {
+        (
+            let
+            {
+                long $ceylontmp$n$68 = f9$n();
+                $this.f9($ceylontmp$n$68);
+            }
+            returning null;
+        );
     }
     
     public final long f9$n() {
         return .ceylon.language.Integer.instance($this.getProp()).getSuccessor().longValue();
     }
     
-    private final void f9() {
-        $this.f9();
+    public final void fa() {
+        (
+            let
+            {
+                long $ceylontmp$n$73 = fa$n();
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$74 = fa$seq($ceylontmp$n$73);
+                $this.fa($ceylontmp$n$73, $ceylontmp$seq$74);
+            }
+            returning null;
+        );
+    }
+    
+    public final void fa(final long n) {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$78 = fa$seq(n);
+                $this.fa(n, $ceylontmp$seq$78);
+            }
+            returning null;
+        );
     }
     
     public final long fa$n() {
         return 5L;
-    }
-    
-    private final void fa() {
-        $this.fa();
     }
     
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> fa$seq(final long n) {
@@ -466,14 +550,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     
     @.java.lang.Override
     public final void f1() {
-        (
-            let
-            {
-                long $ceylontmp$n$55 = f1$n();
-                f1($ceylontmp$n$55);
-            }
-            returning null;
-        );
+        $Barface$impl.f1();
     }
     
     @.java.lang.Override
@@ -483,14 +560,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     
     @.java.lang.Override
     public final void f2(final long n) {
-        (
-            let
-            {
-                .java.lang.String $ceylontmp$s$57 = f2$s(n);
-                f2(n, $ceylontmp$s$57);
-            }
-            returning null;
-        );
+        $Barface$impl.f2(n);
     }
     
     @.java.lang.Override
@@ -500,15 +570,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     
     @.java.lang.Override
     public final void f3() {
-        (
-            let
-            {
-                long $ceylontmp$n$59 = f3$n();
-                long $ceylontmp$m$60 = f3$m($ceylontmp$n$59);
-                f3($ceylontmp$n$59, $ceylontmp$m$60);
-            }
-            returning null;
-        );
+        $Barface$impl.f3();
     }
     
     @.java.lang.Override
@@ -518,14 +580,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     
     @.java.lang.Override
     public final void f3(final long n) {
-        (
-            let
-            {
-                long $ceylontmp$m$62 = f3$m(n);
-                f3(n, $ceylontmp$m$62);
-            }
-            returning null;
-        );
+        $Barface$impl.f3(n);
     }
     
     @.java.lang.Override
@@ -535,15 +590,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     
     @.java.lang.Override
     public final void f4() {
-        (
-            let
-            {
-                long $ceylontmp$n$64 = f4$n();
-                long $ceylontmp$m$65 = f4$m($ceylontmp$n$64);
-                f4($ceylontmp$n$64, $ceylontmp$m$65);
-            }
-            returning null;
-        );
+        $Barface$impl.f4();
     }
     
     @.java.lang.Override
@@ -553,14 +600,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     
     @.java.lang.Override
     public final void f4(final long n) {
-        (
-            let
-            {
-                long $ceylontmp$m$67 = f4$m(n);
-                f4(n, $ceylontmp$m$67);
-            }
-            returning null;
-        );
+        $Barface$impl.f4(n);
     }
     
     @.java.lang.Override
@@ -570,14 +610,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     
     @.java.lang.Override
     public final void f5() {
-        (
-            let
-            {
-                long $ceylontmp$n$69 = f5$n();
-                f5($ceylontmp$n$69);
-            }
-            returning null;
-        );
+        $Barface$impl.f5();
     }
     
     @.java.lang.Override
@@ -587,14 +620,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     
     @.java.lang.Override
     public final void f7() {
-        (
-            let
-            {
-                long $ceylontmp$n$71 = f7$n();
-                f7($ceylontmp$n$71);
-            }
-            returning null;
-        );
+        $Barface$impl.f7();
     }
     
     @.java.lang.Override
@@ -604,14 +630,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     
     @.java.lang.Override
     public final void f9() {
-        (
-            let
-            {
-                long $ceylontmp$n$73 = f9$n();
-                f9($ceylontmp$n$73);
-            }
-            returning null;
-        );
+        $Barface$impl.f9();
     }
     
     @.java.lang.Override
@@ -621,15 +640,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     
     @.java.lang.Override
     public final void fa() {
-        (
-            let
-            {
-                long $ceylontmp$n$75 = fa$n();
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$76 = fa$seq($ceylontmp$n$75);
-                fa($ceylontmp$n$75, $ceylontmp$seq$76);
-            }
-            returning null;
-        );
+        $Barface$impl.fa();
     }
     
     @.java.lang.Override
@@ -639,14 +650,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     
     @.java.lang.Override
     public final void fa(final long n) {
-        (
-            let
-            {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$78 = fa$seq(n);
-                fa(n, $ceylontmp$seq$78);
-            }
-            returning null;
-        );
+        $Barface$impl.fa(n);
     }
     private final long prop;
     
