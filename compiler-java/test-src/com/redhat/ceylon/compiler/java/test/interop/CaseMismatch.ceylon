@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import com.redhat.ceylon.compiler.java.test.interop { javaCaseMismatch }
+import com.redhat.ceylon.compiler.java.test.interop { \IjavaCaseMismatch { SubClass=\IsubClass } }
 
 @nomodel
 @error
@@ -27,6 +27,6 @@ void caseMismatch(){
     Integer i = klass.\iField;
     @error
     klass.\iMethod();
-    // FIXME: this doesn't work because of https://github.com/ceylon/ceylon-spec/issues/228
-    // \IjavaCaseMismatch.\IsubClass klass2 = \IjavaCaseMismatch.\IsubClass();
+    @error
+    \IjavaCaseMismatch.\IsubClass klass2 = SubClass();
 }

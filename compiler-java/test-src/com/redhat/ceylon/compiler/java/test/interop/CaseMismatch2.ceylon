@@ -27,6 +27,6 @@ void caseMismatch(){
     Integer i = klass.fld;
     @error
     klass.mth();
-    // FIXME: this doesn't work because of https://github.com/ceylon/ceylon-spec/issues/228
-    //JCM.Kls klass2 = JCM.Kls();
+    @error
+    Kls klass2 = Kls();
 }
