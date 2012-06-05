@@ -14,7 +14,7 @@ shared interface Iterable<out Element>
 
     doc "Determines if the iterable object is empty, that is
          to say, if the iterator returns no elements."
-    shared actual default Boolean empty {
+    shared default Boolean empty {
         return is Finished iterator.next();
     }
 
@@ -34,10 +34,11 @@ shared interface Iterable<out Element>
                     Iterator<Element> iter = outer.iterator;
                     shared actual Result|Finished next() {
                         value e = iter.next();
-                        if (is Finished e) {
+                        if (is Element x=e) {
+                            return collecting(x);
+                        } else {
                             return exhausted;
                         }
-                        return collecting(e);
                     }
                 }
                 return mappedIterator;
@@ -54,10 +55,19 @@ shared interface Iterable<out Element>
                     Iterator<Element> iter = outer.iterator;
                     shared actual Element|Finished next() {
                         variable Element|Finished e := iter.next();
-                        variable value flag := is Finished e then true else selecting(e);
+                        variable Boolean flag;
+                        if (is Element x=e) {
+                            flag := selecting(x);
+                        } else {
+                            flag := true;
+                        }
                         while (!flag) {
                             e := iter.next();
-                            flag := is Finished e then true else selecting(e);
+                            if (is Element x=e) {
+                                flag := selecting(x);
+                            } else {
+                                flag := true;
+                            }
                         }
                         return e;
                     }
