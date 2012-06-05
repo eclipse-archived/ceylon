@@ -23,7 +23,6 @@ package com.redhat.ceylon.compiler.java.codegen;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -50,28 +49,6 @@ public class BoxingDeclarationVisitor extends Visitor {
         this.transformer = transformer;
     }
     
-    private static Declaration getTopmostRefinedDeclaration(Declaration decl){
-        if(decl instanceof Parameter && decl.getContainer() instanceof Functional){
-            // Parameters in a refined class, interface or method are not considered refinements themselves
-            // so we have to look up the corresponding parameter in the container's refined declaration
-            Functional func = (Functional)decl.getContainer();
-            Parameter param = (Parameter)decl;
-            Functional refinedFunc = (Functional) getTopmostRefinedDeclaration((Declaration)decl.getContainer());
-            // shortcut if the functional doesn't override anything
-            if(refinedFunc == decl.getContainer())
-                return decl;
-            if(func.getParameterLists().size() != 1 || refinedFunc.getParameterLists().size() != 1)
-                throw new RuntimeException("Multiple parameter lists not supported");
-            // find the index of the parameter
-            int index = func.getParameterLists().get(0).getParameters().indexOf(param);
-            return refinedFunc.getParameterLists().get(0).getParameters().get(index);
-        }
-        Declaration refinedDecl = decl.getRefinedDeclaration();
-        if(refinedDecl != null && refinedDecl != decl)
-            return getTopmostRefinedDeclaration(refinedDecl);
-        return decl;
-    }
-    
     @Override
     public void visit(FunctionArgument that) {
         super.visit(that);
@@ -88,7 +65,7 @@ public class BoxingDeclarationVisitor extends Visitor {
         // deal with invalid input
         if(method == null)
             return;
-        Method refinedMethod = (Method) getTopmostRefinedDeclaration(method);
+        Method refinedMethod = (Method) CodegenUtil.getTopmostRefinedDeclaration(method);
         // deal with invalid input
         if(refinedMethod == null)
             return;
@@ -175,7 +152,7 @@ public class BoxingDeclarationVisitor extends Visitor {
         // deal with invalid input
         if(declaration == null)
             return;
-        TypedDeclaration refinedDeclaration = (TypedDeclaration)getTopmostRefinedDeclaration(declaration);
+        TypedDeclaration refinedDeclaration = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(declaration);
         // deal with invalid input
         if(refinedDeclaration == null)
             return;

@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.loader.model.JavaMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -250,6 +251,28 @@ class CodegenUtil {
                 && !decl.isClassOrInterfaceMember()
                 && !decl.isCaptured()
                 && !decl.isShared();
+    }
+
+    static Declaration getTopmostRefinedDeclaration(Declaration decl){
+        if(decl instanceof Parameter && decl.getContainer() instanceof Functional){
+            // Parameters in a refined class, interface or method are not considered refinements themselves
+            // so we have to look up the corresponding parameter in the container's refined declaration
+            Functional func = (Functional)decl.getContainer();
+            Parameter param = (Parameter)decl;
+            Functional refinedFunc = (Functional) getTopmostRefinedDeclaration((Declaration)decl.getContainer());
+            // shortcut if the functional doesn't override anything
+            if(refinedFunc == decl.getContainer())
+                return decl;
+            if(func.getParameterLists().size() != 1 || refinedFunc.getParameterLists().size() != 1)
+                throw new RuntimeException("Multiple parameter lists not supported");
+            // find the index of the parameter
+            int index = func.getParameterLists().get(0).getParameters().indexOf(param);
+            return refinedFunc.getParameterLists().get(0).getParameters().get(index);
+        }
+        Declaration refinedDecl = decl.getRefinedDeclaration();
+        if(refinedDecl != null && refinedDecl != decl)
+            return getTopmostRefinedDeclaration(refinedDecl);
+        return decl;
     }
     
 }
