@@ -656,6 +656,10 @@ public class ClassTransformer extends AbstractTransformer {
             .getter(this, name, decl.getDeclarationModel())
             .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), forCompanion));
         
+        // companion class members are never actual no matter what the Declaration says
+        if(forCompanion)
+            builder.notActual();
+        
         if (Decl.withinClass(decl) || forCompanion) {
             JCBlock body = statementGen().transform(decl.getBlock());
             builder.getterBlock(body);
