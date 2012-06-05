@@ -19,24 +19,24 @@ public final class Iterable$impl<Element> {
         return Iterable$impl._getSequence($this);
     }
     static <Element> Iterable<? extends Element> _getSequence(Iterable<Element> $this) {
-        final SequenceBuilder<Element> sb = new SequenceBuilder();
+        final SequenceBuilder<Element> sb = new SequenceBuilder<Element>();
         sb.appendAll($this);
         return sb.getSequence();
     }
 
     public <Result> Iterable<Result> map(Callable<Result> collecting) {
-        return new MapIterable($this, collecting);
+        return new MapIterable<Element, Result>($this, collecting);
     }
 
     public Iterable<? extends Element> filter(Callable<Boolean> selecting) {
-        return new FilterIterable($this, selecting);
+        return new FilterIterable<Element>($this, selecting);
     }
 
     public <Result> Result fold(Result initial, Callable<Result> accumulating) {
         return Iterable$impl._fold($this, initial, accumulating);
     }
-    static <Result> Result _fold(Iterable $this, Result initial, Callable<Result> accum) {
-        Iterator iter = $this.getIterator();
+    static <Result> Result _fold(Iterable<?> $this, Result initial, Callable<Result> accum) {
+        Iterator<?> iter = $this.getIterator();
         java.lang.Object elem;
         while (!((elem = iter.next()) instanceof Finished)) {
             initial = accum.$call(initial, elem);
@@ -60,16 +60,16 @@ public final class Iterable$impl<Element> {
 
 }
 
-class MapIterable<Element> implements Iterable<Element> {
+class MapIterable<Element, Result> implements Iterable<Result> {
     final Iterable<Element> iterable;
-    final Callable sel;
-    <Result> MapIterable(Iterable<Element> iterable, Callable<Result> collecting) {
+    final Callable<Result> sel;
+    MapIterable(Iterable<Element> iterable, Callable<Result> collecting) {
         this.iterable = iterable;
         sel = collecting;
     }
 
-    class MapIterator<Result> implements Iterator<Result> {
-        final Iterator orig = iterable.getIterator();
+    class MapIterator implements Iterator<Result> {
+        final Iterator<? extends Element> orig = iterable.getIterator();
         java.lang.Object elem;
         public java.lang.Object next() {
             elem = orig.next();
@@ -79,14 +79,14 @@ class MapIterable<Element> implements Iterable<Element> {
             return elem;
         }
     }
-    public Iterator<? extends Element> getIterator() { return new MapIterator(); }
+    public Iterator<Result> getIterator() { return new MapIterator(); }
     public boolean getEmpty() { return getIterator().next() instanceof Finished; }
 
-    @Override public Iterable<? extends Element> getSequence() { return Iterable$impl._getSequence(this); }
-    @Override public Element find(Callable<Boolean> f) { return Iterable$impl._find(this, f); }
-    @Override public Iterable<java.lang.Object> map(Callable f) { return new MapIterable(this, f); }
-    @Override public Iterable<? extends Element> filter(Callable<Boolean> f) { return new FilterIterable(this, f); }
-    @Override public java.lang.Object fold(java.lang.Object ini, Callable f) { return Iterable$impl._fold(this, ini, f); }
+    @Override public Iterable<? extends Result> getSequence() { return Iterable$impl._getSequence(this); }
+    @Override public Result find(Callable<Boolean> f) { return Iterable$impl._find(this, f); }
+    @Override public <R2> Iterable<R2> map(Callable<R2> f) { return new MapIterable<Result, R2>(this, f); }
+    @Override public Iterable<Result> filter(Callable<Boolean> f) { return new FilterIterable<Result>(this, f); }
+    @Override public <R2> R2 fold(R2 ini, Callable<R2> f) { return Iterable$impl._fold(this, ini, f); }
 }
 
 class FilterIterable<Element> implements Iterable<Element> {
