@@ -1137,7 +1137,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private void setMethodOrValueFlags(ClassOrInterface klass, MethodMirror methodMirror, MethodOrValue decl) {
         decl.setShared(methodMirror.isPublic() || methodMirror.isProtected());
         decl.setProtectedVisibility(methodMirror.isProtected());
-        if(methodMirror.isAbstract() || klass instanceof Interface) {
+        if(methodMirror.isAbstract()
+                // Java interfaces are formal
+                || (klass instanceof Interface
+                        && !((LazyInterface)klass).isCeylon())
+                || isAnnotated(methodMirror, "formal")) {
             decl.setFormal(true);
         } else {
             if (!methodMirror.isFinal() && !methodMirror.isStatic()) {
@@ -1150,6 +1154,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
     
+    private boolean isAnnotated(MethodMirror methodMirror, String name) {
+        AnnotationMirror annotations = methodMirror.getAnnotation(CEYLON_ANNOTATIONS_ANNOTATION);
+        if(annotations == null)
+            return false;
+        @SuppressWarnings("unchecked")
+        List<AnnotationMirror> annotationsList = (List<AnnotationMirror>)annotations.getValue();
+        for(AnnotationMirror annotation : annotationsList){
+            if(name.equals(annotation.getValue()))
+                return true;
+        }
+        return false;
+    }
+
     private void setExtendedType(ClassOrInterface klass, ClassMirror classMirror) {
         // look at its super type
         TypeMirror superClass = classMirror.getSuperclass();
