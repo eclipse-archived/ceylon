@@ -1,49 +1,409 @@
 package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
-interface Concrete {
+interface Concrete<A> {
+    
+    public void mShared(final A a, final .ceylon.language.Iterable<? extends A> aseq);
+    
+    public void mShared(final A a);
     
     public void mShared();
     
+    public abstract A mShared$a();
+    
+    public abstract .ceylon.language.Iterable<? extends A> mShared$aseq(final A a);
+    
+    public abstract void mFormal(final A a, final .ceylon.language.Iterable<? extends A> aseq);
+    
+    public abstract void mFormal(final A a);
+    
     public abstract void mFormal();
     
-    public void mDefault();
-}
-final class Concrete$impl {
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $this;
+    public abstract A mFormal$a();
     
-    public void mNonShared() {
+    public abstract .ceylon.language.Iterable<? extends A> mFormal$aseq(final A a);
+    
+    public void mDefault(final A a, final .ceylon.language.Iterable<? extends A> aseq);
+    
+    public void mDefault(final A a);
+    
+    public void mDefault();
+    
+    public abstract A mDefault$a();
+    
+    public abstract .ceylon.language.Iterable<? extends A> mDefault$aseq(final A a);
+}
+final class Concrete$impl<A> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<A> $this;
+    
+    private final A mNonShared$a() {
+        return null;
     }
     
-    public void mShared() {
+    private final .ceylon.language.Iterable<? extends A> mNonShared$aseq(final A a) {
+        return new .ceylon.language.ArraySequence<A>(a);
+    }
+    
+    private final void mNonShared() {
+        (
+            let
+            {
+                A $ceylontmp$a$1 = mNonShared$a();
+                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$2 = mNonShared$aseq($ceylontmp$a$1);
+                mNonShared($ceylontmp$a$1, $ceylontmp$aseq$2);
+            }
+            returning null;
+        );
+    }
+    
+    private final void mNonShared(final A a) {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$4 = mNonShared$aseq(a);
+                mNonShared(a, $ceylontmp$aseq$4);
+            }
+            returning null;
+        );
+    }
+    
+    private void mNonShared(final A a, final .ceylon.language.Iterable<? extends A> aseq) {
+    }
+    
+    public final A mShared$a() {
+        return null;
+    }
+    
+    public final .ceylon.language.Iterable<? extends A> mShared$aseq(final A a) {
+        return new .ceylon.language.ArraySequence<A>(a);
+    }
+    
+    public final void mShared() {
+        (
+            let
+            {
+                A $ceylontmp$a$11 = mShared$a();
+                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$12 = mShared$aseq($ceylontmp$a$11);
+                mShared($ceylontmp$a$11, $ceylontmp$aseq$12);
+            }
+            returning null;
+        );
+    }
+    
+    public final void mShared(final A a) {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$14 = mShared$aseq(a);
+                mShared(a, $ceylontmp$aseq$14);
+            }
+            returning null;
+        );
+    }
+    
+    public void mShared(final A a, final .ceylon.language.Iterable<? extends A> aseq) {
         mNonShared();
     }
     
-    public void mDefault() {
+    public final void mFormal() {
+        (
+            let
+            {
+                A $ceylontmp$a$19 = mFormal$a();
+                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$20 = mFormal$aseq($ceylontmp$a$19);
+                $this.mFormal($ceylontmp$a$19, $ceylontmp$aseq$20);
+            }
+            returning null;
+        );
     }
     
-    Concrete$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $this) {
+    public final void mFormal(final A a) {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$24 = mFormal$aseq(a);
+                $this.mFormal(a, $ceylontmp$aseq$24);
+            }
+            returning null;
+        );
+    }
+    
+    public final A mFormal$a() {
+        return null;
+    }
+    
+    public final .ceylon.language.Iterable<? extends A> mFormal$aseq(final A a) {
+        return new .ceylon.language.ArraySequence<A>(a);
+    }
+    
+    public final A mDefault$a() {
+        return null;
+    }
+    
+    public final .ceylon.language.Iterable<? extends A> mDefault$aseq(final A a) {
+        return new .ceylon.language.ArraySequence<A>(a);
+    }
+    
+    public final void mDefault() {
+        (
+            let
+            {
+                A $ceylontmp$a$31 = mDefault$a();
+                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$32 = mDefault$aseq($ceylontmp$a$31);
+                mDefault($ceylontmp$a$31, $ceylontmp$aseq$32);
+            }
+            returning null;
+        );
+    }
+    
+    public final void mDefault(final A a) {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$34 = mDefault$aseq(a);
+                mDefault(a, $ceylontmp$aseq$34);
+            }
+            returning null;
+        );
+    }
+    
+    public void mDefault(final A a, final .ceylon.language.Iterable<? extends A> aseq) {
+    }
+    
+    Concrete$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<A> $this) {
         this.$this = $this;
     }
 }
-class ConcreteImpl implements .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete {
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl $Concrete$impl;
+final class concreteCallsites {
+    
+    private concreteCallsites() {
+    }
+    
+    static void concreteCallsites(final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete conc) {
+        conc.mShared();
+        conc.mShared(null);
+        conc.mShared(.ceylon.language.Integer.instance(1L));
+        conc.mShared(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$35$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$35$this$ = $arg$35$callable$;
+                .java.lang.Object $arg$35$0 = $arg$35$this$.mShared$a();
+                .ceylon.language.Iterable $arg$35$1 = $arg$35$this$.mShared$aseq($arg$35$0);
+                $arg$35$callable$.mShared($arg$35$0, $arg$35$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$36$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$36$this$ = $arg$36$callable$;
+                .java.lang.Object $arg$36$0 = null;
+                .ceylon.language.Iterable $arg$36$1 = $arg$36$this$.mShared$aseq($arg$36$0);
+                $arg$36$callable$.mShared($arg$36$0, $arg$36$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$37$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$37$this$ = $arg$37$callable$;
+                .java.lang.Object $arg$37$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Iterable $arg$37$1 = $arg$37$this$.mShared$aseq($arg$37$0);
+                $arg$37$callable$.mShared($arg$37$0, $arg$37$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$38$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$38$this$ = $arg$38$callable$;
+                .java.lang.Object $arg$38$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Iterable $arg$38$1 = $arg$38$this$.mShared$aseq($arg$38$0);
+                $arg$38$callable$.mShared($arg$38$0, $arg$38$1);
+            }
+            returning null;
+        );
+        conc.mFormal();
+        conc.mFormal(null);
+        conc.mFormal(.ceylon.language.Integer.instance(1L));
+        conc.mFormal(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$39$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$39$this$ = $arg$39$callable$;
+                .java.lang.Object $arg$39$0 = $arg$39$this$.mFormal$a();
+                .ceylon.language.Iterable $arg$39$1 = $arg$39$this$.mFormal$aseq($arg$39$0);
+                $arg$39$callable$.mFormal($arg$39$0, $arg$39$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$40$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$40$this$ = $arg$40$callable$;
+                .java.lang.Object $arg$40$0 = null;
+                .ceylon.language.Iterable $arg$40$1 = $arg$40$this$.mFormal$aseq($arg$40$0);
+                $arg$40$callable$.mFormal($arg$40$0, $arg$40$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$41$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$41$this$ = $arg$41$callable$;
+                .java.lang.Object $arg$41$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Iterable $arg$41$1 = $arg$41$this$.mFormal$aseq($arg$41$0);
+                $arg$41$callable$.mFormal($arg$41$0, $arg$41$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$42$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$42$this$ = $arg$42$callable$;
+                .java.lang.Object $arg$42$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Iterable $arg$42$1 = $arg$42$this$.mFormal$aseq($arg$42$0);
+                $arg$42$callable$.mFormal($arg$42$0, $arg$42$1);
+            }
+            returning null;
+        );
+        conc.mDefault();
+        conc.mDefault(null);
+        conc.mDefault(.ceylon.language.Integer.instance(1L));
+        conc.mDefault(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$43$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$43$this$ = $arg$43$callable$;
+                .java.lang.Object $arg$43$0 = $arg$43$this$.mDefault$a();
+                .ceylon.language.Iterable $arg$43$1 = $arg$43$this$.mDefault$aseq($arg$43$0);
+                $arg$43$callable$.mDefault($arg$43$0, $arg$43$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$44$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$44$this$ = $arg$44$callable$;
+                .java.lang.Object $arg$44$0 = null;
+                .ceylon.language.Iterable $arg$44$1 = $arg$44$this$.mDefault$aseq($arg$44$0);
+                $arg$44$callable$.mDefault($arg$44$0, $arg$44$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$45$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$45$this$ = $arg$45$callable$;
+                .java.lang.Object $arg$45$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Iterable $arg$45$1 = $arg$45$this$.mDefault$aseq($arg$45$0);
+                $arg$45$callable$.mDefault($arg$45$0, $arg$45$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$46$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$46$this$ = $arg$46$callable$;
+                .java.lang.Object $arg$46$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Iterable $arg$46$1 = $arg$46$this$.mDefault$aseq($arg$46$0);
+                $arg$46$callable$.mDefault($arg$46$0, $arg$46$1);
+            }
+            returning null;
+        );
+    }
+}
+class ConcreteImpl<B> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<B> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<B> $Concrete$impl;
     
     @.java.lang.Override
-    public void mShared() {
+    public final B mShared$a() {
+        return $Concrete$impl.mShared$a();
+    }
+    
+    @.java.lang.Override
+    public final void mShared() {
         $Concrete$impl.mShared();
     }
     
     @.java.lang.Override
-    public void mDefault() {
-        $Concrete$impl.mDefault();
+    public final .ceylon.language.Iterable<? extends B> mShared$aseq(final B a) {
+        return $Concrete$impl.mShared$aseq(a);
+    }
+    
+    @.java.lang.Override
+    public final void mShared(final B a) {
+        $Concrete$impl.mShared(a);
+    }
+    
+    @.java.lang.Override
+    public void mShared(final B a, final .ceylon.language.Iterable<? extends B> aseq) {
+        $Concrete$impl.mShared(a, aseq);
+    }
+    
+    @.java.lang.Override
+    public final B mFormal$a() {
+        return $Concrete$impl.mFormal$a();
     }
     
     @.java.lang.Override
     public final void mFormal() {
+        $Concrete$impl.mFormal();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends B> mFormal$aseq(final B a) {
+        return $Concrete$impl.mFormal$aseq(a);
+    }
+    
+    @.java.lang.Override
+    public final void mFormal(final B a) {
+        $Concrete$impl.mFormal(a);
+    }
+    
+    @.java.lang.Override
+    public final B mDefault$a() {
+        return $Concrete$impl.mDefault$a();
+    }
+    
+    @.java.lang.Override
+    public final void mDefault() {
+        $Concrete$impl.mDefault();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends B> mDefault$aseq(final B a) {
+        return $Concrete$impl.mDefault$aseq(a);
+    }
+    
+    @.java.lang.Override
+    public final void mDefault(final B a) {
+        $Concrete$impl.mDefault(a);
+    }
+    
+    @.java.lang.Override
+    public void mDefault(final B a, final .ceylon.language.Iterable<? extends B> aseq) {
+        $Concrete$impl.mDefault(a, aseq);
+    }
+    
+    @.java.lang.Override
+    public final void mFormal(final B b, final .ceylon.language.Iterable<? extends B> bseq) {
     }
     
     ConcreteImpl() {
-        this.$Concrete$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl(this);
+        this.$Concrete$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<B>(this);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -51,24 +411,236 @@ class ConcreteImpl implements .com.redhat.ceylon.compiler.java.test.structure.co
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImpl();
     }
 }
-class ConcreteImplWithDefault implements .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete {
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl $Concrete$impl;
+final class concreteImplCallsites {
+    
+    private concreteImplCallsites() {
+    }
+    
+    static void concreteImplCallsites(final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImpl conc) {
+        conc.mShared();
+        conc.mShared(null);
+        conc.mShared(.ceylon.language.Integer.instance(1L));
+        conc.mShared(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$47$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$47$this$ = $arg$47$callable$;
+                .java.lang.Object $arg$47$0 = $arg$47$this$.mShared$a();
+                .ceylon.language.Iterable $arg$47$1 = $arg$47$this$.mShared$aseq($arg$47$0);
+                $arg$47$callable$.mShared($arg$47$0, $arg$47$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$48$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$48$this$ = $arg$48$callable$;
+                .java.lang.Object $arg$48$0 = null;
+                .ceylon.language.Iterable $arg$48$1 = $arg$48$this$.mShared$aseq($arg$48$0);
+                $arg$48$callable$.mShared($arg$48$0, $arg$48$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$49$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$49$this$ = $arg$49$callable$;
+                .java.lang.Object $arg$49$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Iterable $arg$49$1 = $arg$49$this$.mShared$aseq($arg$49$0);
+                $arg$49$callable$.mShared($arg$49$0, $arg$49$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$50$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$50$this$ = $arg$50$callable$;
+                .java.lang.Object $arg$50$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Iterable $arg$50$1 = $arg$50$this$.mShared$aseq($arg$50$0);
+                $arg$50$callable$.mShared($arg$50$0, $arg$50$1);
+            }
+            returning null;
+        );
+        conc.mFormal();
+        conc.mFormal(null);
+        conc.mFormal(.ceylon.language.Integer.instance(1L));
+        conc.mFormal(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImpl $arg$51$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImpl $arg$51$this$ = $arg$51$callable$;
+                .java.lang.Object $arg$51$0 = $arg$51$this$.mFormal$a();
+                .ceylon.language.Iterable $arg$51$1 = $arg$51$this$.mFormal$aseq($arg$51$0);
+                $arg$51$callable$.mFormal($arg$51$0, $arg$51$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImpl $arg$52$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImpl $arg$52$this$ = $arg$52$callable$;
+                .java.lang.Object $arg$52$0 = null;
+                .ceylon.language.Iterable $arg$52$1 = $arg$52$this$.mFormal$aseq($arg$52$0);
+                $arg$52$callable$.mFormal($arg$52$0, $arg$52$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImpl $arg$53$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImpl $arg$53$this$ = $arg$53$callable$;
+                .java.lang.Object $arg$53$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Iterable $arg$53$1 = $arg$53$this$.mFormal$aseq($arg$53$0);
+                $arg$53$callable$.mFormal($arg$53$0, $arg$53$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImpl $arg$54$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImpl $arg$54$this$ = $arg$54$callable$;
+                .java.lang.Object $arg$54$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Iterable $arg$54$1 = $arg$54$this$.mFormal$aseq($arg$54$0);
+                $arg$54$callable$.mFormal($arg$54$0, $arg$54$1);
+            }
+            returning null;
+        );
+        conc.mDefault();
+        conc.mDefault(null);
+        conc.mDefault(.ceylon.language.Integer.instance(1L));
+        conc.mDefault(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$55$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$55$this$ = $arg$55$callable$;
+                .java.lang.Object $arg$55$0 = $arg$55$this$.mDefault$a();
+                .ceylon.language.Iterable $arg$55$1 = $arg$55$this$.mDefault$aseq($arg$55$0);
+                $arg$55$callable$.mDefault($arg$55$0, $arg$55$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$56$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$56$this$ = $arg$56$callable$;
+                .java.lang.Object $arg$56$0 = null;
+                .ceylon.language.Iterable $arg$56$1 = $arg$56$this$.mDefault$aseq($arg$56$0);
+                $arg$56$callable$.mDefault($arg$56$0, $arg$56$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$57$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$57$this$ = $arg$57$callable$;
+                .java.lang.Object $arg$57$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Iterable $arg$57$1 = $arg$57$this$.mDefault$aseq($arg$57$0);
+                $arg$57$callable$.mDefault($arg$57$0, $arg$57$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$58$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$58$this$ = $arg$58$callable$;
+                .java.lang.Object $arg$58$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Iterable $arg$58$1 = $arg$58$this$.mDefault$aseq($arg$58$0);
+                $arg$58$callable$.mDefault($arg$58$0, $arg$58$1);
+            }
+            returning null;
+        );
+    }
+}
+class ConcreteImplWithDefault<C> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<C> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<C> $Concrete$impl;
     
     @.java.lang.Override
-    public void mShared() {
+    public final C mShared$a() {
+        return $Concrete$impl.mShared$a();
+    }
+    
+    @.java.lang.Override
+    public final void mShared() {
         $Concrete$impl.mShared();
     }
     
     @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends C> mShared$aseq(final C a) {
+        return $Concrete$impl.mShared$aseq(a);
+    }
+    
+    @.java.lang.Override
+    public final void mShared(final C a) {
+        $Concrete$impl.mShared(a);
+    }
+    
+    @.java.lang.Override
+    public void mShared(final C a, final .ceylon.language.Iterable<? extends C> aseq) {
+        $Concrete$impl.mShared(a, aseq);
+    }
+    
+    @.java.lang.Override
+    public final C mFormal$a() {
+        return $Concrete$impl.mFormal$a();
+    }
+    
+    @.java.lang.Override
     public final void mFormal() {
+        $Concrete$impl.mFormal();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends C> mFormal$aseq(final C a) {
+        return $Concrete$impl.mFormal$aseq(a);
+    }
+    
+    @.java.lang.Override
+    public final void mFormal(final C a) {
+        $Concrete$impl.mFormal(a);
+    }
+    
+    @.java.lang.Override
+    public final C mDefault$a() {
+        return $Concrete$impl.mDefault$a();
     }
     
     @.java.lang.Override
     public final void mDefault() {
+        $Concrete$impl.mDefault();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends C> mDefault$aseq(final C a) {
+        return $Concrete$impl.mDefault$aseq(a);
+    }
+    
+    @.java.lang.Override
+    public final void mDefault(final C a) {
+        $Concrete$impl.mDefault(a);
+    }
+    
+    @.java.lang.Override
+    public final void mFormal(final C c, final .ceylon.language.Iterable<? extends C> cseq) {
+    }
+    
+    @.java.lang.Override
+    public final void mDefault(final C c, final .ceylon.language.Iterable<? extends C> cseq) {
     }
     
     ConcreteImplWithDefault() {
-        this.$Concrete$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl(this);
+        this.$Concrete$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<C>(this);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -76,27 +648,391 @@ class ConcreteImplWithDefault implements .com.redhat.ceylon.compiler.java.test.s
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault();
     }
 }
-abstract class Abstract implements .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete {
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl $Concrete$impl;
+final class concreteImplWithDefaultCallsites {
+    
+    private concreteImplWithDefaultCallsites() {
+    }
+    
+    static void concreteImplWithDefaultCallsites(final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault conc) {
+        conc.mShared();
+        conc.mShared(null);
+        conc.mShared(.ceylon.language.Integer.instance(1L));
+        conc.mShared(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$59$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$59$this$ = $arg$59$callable$;
+                .java.lang.Object $arg$59$0 = $arg$59$this$.mShared$a();
+                .ceylon.language.Iterable $arg$59$1 = $arg$59$this$.mShared$aseq($arg$59$0);
+                $arg$59$callable$.mShared($arg$59$0, $arg$59$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$60$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$60$this$ = $arg$60$callable$;
+                .java.lang.Object $arg$60$0 = null;
+                .ceylon.language.Iterable $arg$60$1 = $arg$60$this$.mShared$aseq($arg$60$0);
+                $arg$60$callable$.mShared($arg$60$0, $arg$60$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$61$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$61$this$ = $arg$61$callable$;
+                .java.lang.Object $arg$61$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Iterable $arg$61$1 = $arg$61$this$.mShared$aseq($arg$61$0);
+                $arg$61$callable$.mShared($arg$61$0, $arg$61$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$62$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$62$this$ = $arg$62$callable$;
+                .java.lang.Object $arg$62$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Iterable $arg$62$1 = $arg$62$this$.mShared$aseq($arg$62$0);
+                $arg$62$callable$.mShared($arg$62$0, $arg$62$1);
+            }
+            returning null;
+        );
+        conc.mFormal();
+        conc.mFormal(null);
+        conc.mFormal(.ceylon.language.Integer.instance(1L));
+        conc.mFormal(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault $arg$63$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault $arg$63$this$ = $arg$63$callable$;
+                .java.lang.Object $arg$63$0 = $arg$63$this$.mFormal$a();
+                .ceylon.language.Iterable $arg$63$1 = $arg$63$this$.mFormal$aseq($arg$63$0);
+                $arg$63$callable$.mFormal($arg$63$0, $arg$63$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault $arg$64$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault $arg$64$this$ = $arg$64$callable$;
+                .java.lang.Object $arg$64$0 = null;
+                .ceylon.language.Iterable $arg$64$1 = $arg$64$this$.mFormal$aseq($arg$64$0);
+                $arg$64$callable$.mFormal($arg$64$0, $arg$64$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault $arg$65$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault $arg$65$this$ = $arg$65$callable$;
+                .java.lang.Object $arg$65$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Iterable $arg$65$1 = $arg$65$this$.mFormal$aseq($arg$65$0);
+                $arg$65$callable$.mFormal($arg$65$0, $arg$65$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault $arg$66$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault $arg$66$this$ = $arg$66$callable$;
+                .java.lang.Object $arg$66$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Iterable $arg$66$1 = $arg$66$this$.mFormal$aseq($arg$66$0);
+                $arg$66$callable$.mFormal($arg$66$0, $arg$66$1);
+            }
+            returning null;
+        );
+        conc.mDefault();
+        conc.mDefault(null);
+        conc.mDefault(.ceylon.language.Integer.instance(1L));
+        conc.mDefault(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault $arg$67$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault $arg$67$this$ = $arg$67$callable$;
+                .java.lang.Object $arg$67$0 = $arg$67$this$.mDefault$a();
+                .ceylon.language.Iterable $arg$67$1 = $arg$67$this$.mDefault$aseq($arg$67$0);
+                $arg$67$callable$.mDefault($arg$67$0, $arg$67$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault $arg$68$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault $arg$68$this$ = $arg$68$callable$;
+                .java.lang.Object $arg$68$0 = null;
+                .ceylon.language.Iterable $arg$68$1 = $arg$68$this$.mDefault$aseq($arg$68$0);
+                $arg$68$callable$.mDefault($arg$68$0, $arg$68$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault $arg$69$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault $arg$69$this$ = $arg$69$callable$;
+                .java.lang.Object $arg$69$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Iterable $arg$69$1 = $arg$69$this$.mDefault$aseq($arg$69$0);
+                $arg$69$callable$.mDefault($arg$69$0, $arg$69$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault $arg$70$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault $arg$70$this$ = $arg$70$callable$;
+                .java.lang.Object $arg$70$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Iterable $arg$70$1 = $arg$70$this$.mDefault$aseq($arg$70$0);
+                $arg$70$callable$.mDefault($arg$70$0, $arg$70$1);
+            }
+            returning null;
+        );
+    }
+}
+abstract class Abstract<D> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<D> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<D> $Concrete$impl;
     
     @.java.lang.Override
-    public void mShared() {
+    public final D mShared$a() {
+        return $Concrete$impl.mShared$a();
+    }
+    
+    @.java.lang.Override
+    public final void mShared() {
         $Concrete$impl.mShared();
     }
     
     @.java.lang.Override
-    public void mDefault() {
-        $Concrete$impl.mDefault();
+    public final .ceylon.language.Iterable<? extends D> mShared$aseq(final D a) {
+        return $Concrete$impl.mShared$aseq(a);
     }
     
-    Abstract() {
-        this.$Concrete$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl(this);
+    @.java.lang.Override
+    public final void mShared(final D a) {
+        $Concrete$impl.mShared(a);
     }
-}
-class AbstractSub extends .com.redhat.ceylon.compiler.java.test.structure.concrete.Abstract {
+    
+    @.java.lang.Override
+    public void mShared(final D a, final .ceylon.language.Iterable<? extends D> aseq) {
+        $Concrete$impl.mShared(a, aseq);
+    }
+    
+    @.java.lang.Override
+    public final D mFormal$a() {
+        return $Concrete$impl.mFormal$a();
+    }
     
     @.java.lang.Override
     public final void mFormal() {
+        $Concrete$impl.mFormal();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends D> mFormal$aseq(final D a) {
+        return $Concrete$impl.mFormal$aseq(a);
+    }
+    
+    @.java.lang.Override
+    public final void mFormal(final D a) {
+        $Concrete$impl.mFormal(a);
+    }
+    
+    @.java.lang.Override
+    public final D mDefault$a() {
+        return $Concrete$impl.mDefault$a();
+    }
+    
+    @.java.lang.Override
+    public final void mDefault() {
+        $Concrete$impl.mDefault();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends D> mDefault$aseq(final D a) {
+        return $Concrete$impl.mDefault$aseq(a);
+    }
+    
+    @.java.lang.Override
+    public final void mDefault(final D a) {
+        $Concrete$impl.mDefault(a);
+    }
+    
+    @.java.lang.Override
+    public void mDefault(final D a, final .ceylon.language.Iterable<? extends D> aseq) {
+        $Concrete$impl.mDefault(a, aseq);
+    }
+    
+    Abstract() {
+        this.$Concrete$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<D>(this);
+    }
+}
+final class abstractCallsites {
+    
+    private abstractCallsites() {
+    }
+    
+    static void abstractCallsites(final .com.redhat.ceylon.compiler.java.test.structure.concrete.Abstract conc) {
+        conc.mShared();
+        conc.mShared(null);
+        conc.mShared(.ceylon.language.Integer.instance(1L));
+        conc.mShared(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$71$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$71$this$ = $arg$71$callable$;
+                .java.lang.Object $arg$71$0 = $arg$71$this$.mShared$a();
+                .ceylon.language.Iterable $arg$71$1 = $arg$71$this$.mShared$aseq($arg$71$0);
+                $arg$71$callable$.mShared($arg$71$0, $arg$71$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$72$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$72$this$ = $arg$72$callable$;
+                .java.lang.Object $arg$72$0 = null;
+                .ceylon.language.Iterable $arg$72$1 = $arg$72$this$.mShared$aseq($arg$72$0);
+                $arg$72$callable$.mShared($arg$72$0, $arg$72$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$73$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$73$this$ = $arg$73$callable$;
+                .java.lang.Object $arg$73$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Iterable $arg$73$1 = $arg$73$this$.mShared$aseq($arg$73$0);
+                $arg$73$callable$.mShared($arg$73$0, $arg$73$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$74$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$74$this$ = $arg$74$callable$;
+                .java.lang.Object $arg$74$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Iterable $arg$74$1 = $arg$74$this$.mShared$aseq($arg$74$0);
+                $arg$74$callable$.mShared($arg$74$0, $arg$74$1);
+            }
+            returning null;
+        );
+        conc.mFormal();
+        conc.mFormal(null);
+        conc.mFormal(.ceylon.language.Integer.instance(1L));
+        conc.mFormal(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$75$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$75$this$ = $arg$75$callable$;
+                .java.lang.Object $arg$75$0 = $arg$75$this$.mFormal$a();
+                .ceylon.language.Iterable $arg$75$1 = $arg$75$this$.mFormal$aseq($arg$75$0);
+                $arg$75$callable$.mFormal($arg$75$0, $arg$75$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$76$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$76$this$ = $arg$76$callable$;
+                .java.lang.Object $arg$76$0 = null;
+                .ceylon.language.Iterable $arg$76$1 = $arg$76$this$.mFormal$aseq($arg$76$0);
+                $arg$76$callable$.mFormal($arg$76$0, $arg$76$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$77$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$77$this$ = $arg$77$callable$;
+                .java.lang.Object $arg$77$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Iterable $arg$77$1 = $arg$77$this$.mFormal$aseq($arg$77$0);
+                $arg$77$callable$.mFormal($arg$77$0, $arg$77$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$78$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$78$this$ = $arg$78$callable$;
+                .java.lang.Object $arg$78$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Iterable $arg$78$1 = $arg$78$this$.mFormal$aseq($arg$78$0);
+                $arg$78$callable$.mFormal($arg$78$0, $arg$78$1);
+            }
+            returning null;
+        );
+        conc.mDefault();
+        conc.mDefault(null);
+        conc.mDefault(.ceylon.language.Integer.instance(1L));
+        conc.mDefault(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$79$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$79$this$ = $arg$79$callable$;
+                .java.lang.Object $arg$79$0 = $arg$79$this$.mDefault$a();
+                .ceylon.language.Iterable $arg$79$1 = $arg$79$this$.mDefault$aseq($arg$79$0);
+                $arg$79$callable$.mDefault($arg$79$0, $arg$79$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$80$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$80$this$ = $arg$80$callable$;
+                .java.lang.Object $arg$80$0 = null;
+                .ceylon.language.Iterable $arg$80$1 = $arg$80$this$.mDefault$aseq($arg$80$0);
+                $arg$80$callable$.mDefault($arg$80$0, $arg$80$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$81$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$81$this$ = $arg$81$callable$;
+                .java.lang.Object $arg$81$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Iterable $arg$81$1 = $arg$81$this$.mDefault$aseq($arg$81$0);
+                $arg$81$callable$.mDefault($arg$81$0, $arg$81$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$82$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$82$this$ = $arg$82$callable$;
+                .java.lang.Object $arg$82$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Iterable $arg$82$1 = $arg$82$this$.mDefault$aseq($arg$82$0);
+                $arg$82$callable$.mDefault($arg$82$0, $arg$82$1);
+            }
+            returning null;
+        );
+    }
+}
+class AbstractSub<E> extends .com.redhat.ceylon.compiler.java.test.structure.concrete.Abstract<E> {
+    
+    @.java.lang.Override
+    public final void mFormal(final E e, final .ceylon.language.Iterable<? extends E> eseq) {
     }
     
     AbstractSub() {
@@ -108,30 +1044,394 @@ class AbstractSub extends .com.redhat.ceylon.compiler.java.test.structure.concre
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSub();
     }
 }
-abstract class AbstractImpl implements .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete {
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl $Concrete$impl;
+final class abstractSubCallsites {
+    
+    private abstractSubCallsites() {
+    }
+    
+    static void abstractSubCallsites(final .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSub conc) {
+        conc.mShared();
+        conc.mShared(null);
+        conc.mShared(.ceylon.language.Integer.instance(1L));
+        conc.mShared(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$83$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$83$this$ = $arg$83$callable$;
+                .java.lang.Object $arg$83$0 = $arg$83$this$.mShared$a();
+                .ceylon.language.Iterable $arg$83$1 = $arg$83$this$.mShared$aseq($arg$83$0);
+                $arg$83$callable$.mShared($arg$83$0, $arg$83$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$84$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$84$this$ = $arg$84$callable$;
+                .java.lang.Object $arg$84$0 = null;
+                .ceylon.language.Iterable $arg$84$1 = $arg$84$this$.mShared$aseq($arg$84$0);
+                $arg$84$callable$.mShared($arg$84$0, $arg$84$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$85$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$85$this$ = $arg$85$callable$;
+                .java.lang.Object $arg$85$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Iterable $arg$85$1 = $arg$85$this$.mShared$aseq($arg$85$0);
+                $arg$85$callable$.mShared($arg$85$0, $arg$85$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$86$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$86$this$ = $arg$86$callable$;
+                .java.lang.Object $arg$86$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Iterable $arg$86$1 = $arg$86$this$.mShared$aseq($arg$86$0);
+                $arg$86$callable$.mShared($arg$86$0, $arg$86$1);
+            }
+            returning null;
+        );
+        conc.mFormal();
+        conc.mFormal(null);
+        conc.mFormal(.ceylon.language.Integer.instance(1L));
+        conc.mFormal(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSub $arg$87$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSub $arg$87$this$ = $arg$87$callable$;
+                .java.lang.Object $arg$87$0 = $arg$87$this$.mFormal$a();
+                .ceylon.language.Iterable $arg$87$1 = $arg$87$this$.mFormal$aseq($arg$87$0);
+                $arg$87$callable$.mFormal($arg$87$0, $arg$87$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSub $arg$88$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSub $arg$88$this$ = $arg$88$callable$;
+                .java.lang.Object $arg$88$0 = null;
+                .ceylon.language.Iterable $arg$88$1 = $arg$88$this$.mFormal$aseq($arg$88$0);
+                $arg$88$callable$.mFormal($arg$88$0, $arg$88$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSub $arg$89$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSub $arg$89$this$ = $arg$89$callable$;
+                .java.lang.Object $arg$89$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Iterable $arg$89$1 = $arg$89$this$.mFormal$aseq($arg$89$0);
+                $arg$89$callable$.mFormal($arg$89$0, $arg$89$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSub $arg$90$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSub $arg$90$this$ = $arg$90$callable$;
+                .java.lang.Object $arg$90$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Iterable $arg$90$1 = $arg$90$this$.mFormal$aseq($arg$90$0);
+                $arg$90$callable$.mFormal($arg$90$0, $arg$90$1);
+            }
+            returning null;
+        );
+        conc.mDefault();
+        conc.mDefault(null);
+        conc.mDefault(.ceylon.language.Integer.instance(1L));
+        conc.mDefault(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$91$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$91$this$ = $arg$91$callable$;
+                .java.lang.Object $arg$91$0 = $arg$91$this$.mDefault$a();
+                .ceylon.language.Iterable $arg$91$1 = $arg$91$this$.mDefault$aseq($arg$91$0);
+                $arg$91$callable$.mDefault($arg$91$0, $arg$91$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$92$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$92$this$ = $arg$92$callable$;
+                .java.lang.Object $arg$92$0 = null;
+                .ceylon.language.Iterable $arg$92$1 = $arg$92$this$.mDefault$aseq($arg$92$0);
+                $arg$92$callable$.mDefault($arg$92$0, $arg$92$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$93$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$93$this$ = $arg$93$callable$;
+                .java.lang.Object $arg$93$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Iterable $arg$93$1 = $arg$93$this$.mDefault$aseq($arg$93$0);
+                $arg$93$callable$.mDefault($arg$93$0, $arg$93$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$94$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$94$this$ = $arg$94$callable$;
+                .java.lang.Object $arg$94$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Iterable $arg$94$1 = $arg$94$this$.mDefault$aseq($arg$94$0);
+                $arg$94$callable$.mDefault($arg$94$0, $arg$94$1);
+            }
+            returning null;
+        );
+    }
+}
+abstract class AbstractImpl<F> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<F> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<F> $Concrete$impl;
     
     @.java.lang.Override
-    public void mShared() {
+    public final F mShared$a() {
+        return $Concrete$impl.mShared$a();
+    }
+    
+    @.java.lang.Override
+    public final void mShared() {
         $Concrete$impl.mShared();
     }
     
     @.java.lang.Override
-    public final void mFormal() {
+    public final .ceylon.language.Iterable<? extends F> mShared$aseq(final F a) {
+        return $Concrete$impl.mShared$aseq(a);
     }
     
     @.java.lang.Override
-    public void mDefault() {
+    public final void mShared(final F a) {
+        $Concrete$impl.mShared(a);
     }
     
-    AbstractImpl() {
-        this.$Concrete$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl(this);
+    @.java.lang.Override
+    public void mShared(final F a, final .ceylon.language.Iterable<? extends F> aseq) {
+        $Concrete$impl.mShared(a, aseq);
     }
-}
-class AbstractImplSub extends .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl {
+    
+    @.java.lang.Override
+    public final F mFormal$a() {
+        return $Concrete$impl.mFormal$a();
+    }
+    
+    @.java.lang.Override
+    public final void mFormal() {
+        $Concrete$impl.mFormal();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends F> mFormal$aseq(final F a) {
+        return $Concrete$impl.mFormal$aseq(a);
+    }
+    
+    @.java.lang.Override
+    public final void mFormal(final F a) {
+        $Concrete$impl.mFormal(a);
+    }
+    
+    @.java.lang.Override
+    public final F mDefault$a() {
+        return $Concrete$impl.mDefault$a();
+    }
     
     @.java.lang.Override
     public final void mDefault() {
+        $Concrete$impl.mDefault();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends F> mDefault$aseq(final F a) {
+        return $Concrete$impl.mDefault$aseq(a);
+    }
+    
+    @.java.lang.Override
+    public final void mDefault(final F a) {
+        $Concrete$impl.mDefault(a);
+    }
+    
+    @.java.lang.Override
+    public final void mFormal(final F f, final .ceylon.language.Iterable<? extends F> fseq) {
+    }
+    
+    @.java.lang.Override
+    public void mDefault(final F f, final .ceylon.language.Iterable<? extends F> fseq) {
+    }
+    
+    AbstractImpl() {
+        this.$Concrete$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<F>(this);
+    }
+}
+final class abstractImpl {
+    
+    private abstractImpl() {
+    }
+    
+    static void abstractImpl(final .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl conc) {
+        conc.mShared();
+        conc.mShared(null);
+        conc.mShared(.ceylon.language.Integer.instance(1L));
+        conc.mShared(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$95$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$95$this$ = $arg$95$callable$;
+                .java.lang.Object $arg$95$0 = $arg$95$this$.mShared$a();
+                .ceylon.language.Iterable $arg$95$1 = $arg$95$this$.mShared$aseq($arg$95$0);
+                $arg$95$callable$.mShared($arg$95$0, $arg$95$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$96$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$96$this$ = $arg$96$callable$;
+                .java.lang.Object $arg$96$0 = null;
+                .ceylon.language.Iterable $arg$96$1 = $arg$96$this$.mShared$aseq($arg$96$0);
+                $arg$96$callable$.mShared($arg$96$0, $arg$96$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$97$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$97$this$ = $arg$97$callable$;
+                .java.lang.Object $arg$97$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Iterable $arg$97$1 = $arg$97$this$.mShared$aseq($arg$97$0);
+                $arg$97$callable$.mShared($arg$97$0, $arg$97$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$98$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$98$this$ = $arg$98$callable$;
+                .java.lang.Object $arg$98$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Iterable $arg$98$1 = $arg$98$this$.mShared$aseq($arg$98$0);
+                $arg$98$callable$.mShared($arg$98$0, $arg$98$1);
+            }
+            returning null;
+        );
+        conc.mFormal();
+        conc.mFormal(null);
+        conc.mFormal(.ceylon.language.Integer.instance(1L));
+        conc.mFormal(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$99$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$99$this$ = $arg$99$callable$;
+                .java.lang.Object $arg$99$0 = $arg$99$this$.mFormal$a();
+                .ceylon.language.Iterable $arg$99$1 = $arg$99$this$.mFormal$aseq($arg$99$0);
+                $arg$99$callable$.mFormal($arg$99$0, $arg$99$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$100$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$100$this$ = $arg$100$callable$;
+                .java.lang.Object $arg$100$0 = null;
+                .ceylon.language.Iterable $arg$100$1 = $arg$100$this$.mFormal$aseq($arg$100$0);
+                $arg$100$callable$.mFormal($arg$100$0, $arg$100$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$101$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$101$this$ = $arg$101$callable$;
+                .java.lang.Object $arg$101$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Iterable $arg$101$1 = $arg$101$this$.mFormal$aseq($arg$101$0);
+                $arg$101$callable$.mFormal($arg$101$0, $arg$101$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$102$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$102$this$ = $arg$102$callable$;
+                .java.lang.Object $arg$102$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Iterable $arg$102$1 = $arg$102$this$.mFormal$aseq($arg$102$0);
+                $arg$102$callable$.mFormal($arg$102$0, $arg$102$1);
+            }
+            returning null;
+        );
+        conc.mDefault();
+        conc.mDefault(null);
+        conc.mDefault(.ceylon.language.Integer.instance(1L));
+        conc.mDefault(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$103$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$103$this$ = $arg$103$callable$;
+                .java.lang.Object $arg$103$0 = $arg$103$this$.mDefault$a();
+                .ceylon.language.Iterable $arg$103$1 = $arg$103$this$.mDefault$aseq($arg$103$0);
+                $arg$103$callable$.mDefault($arg$103$0, $arg$103$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$104$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$104$this$ = $arg$104$callable$;
+                .java.lang.Object $arg$104$0 = null;
+                .ceylon.language.Iterable $arg$104$1 = $arg$104$this$.mDefault$aseq($arg$104$0);
+                $arg$104$callable$.mDefault($arg$104$0, $arg$104$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$105$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$105$this$ = $arg$105$callable$;
+                .java.lang.Object $arg$105$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Iterable $arg$105$1 = $arg$105$this$.mDefault$aseq($arg$105$0);
+                $arg$105$callable$.mDefault($arg$105$0, $arg$105$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$106$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$106$this$ = $arg$106$callable$;
+                .java.lang.Object $arg$106$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Iterable $arg$106$1 = $arg$106$this$.mDefault$aseq($arg$106$0);
+                $arg$106$callable$.mDefault($arg$106$0, $arg$106$1);
+            }
+            returning null;
+        );
+    }
+}
+class AbstractImplSub<G> extends .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl<G> {
+    
+    @.java.lang.Override
+    public final void mDefault(final G g, final .ceylon.language.Iterable<? extends G> gseq) {
     }
     
     AbstractImplSub() {
@@ -141,5 +1441,157 @@ class AbstractImplSub extends .com.redhat.ceylon.compiler.java.test.structure.co
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImplSub();
+    }
+}
+final class abstractImplSubCallsites {
+    
+    private abstractImplSubCallsites() {
+    }
+    
+    static void abstractImplSubCallsites(final .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImplSub conc) {
+        conc.mShared();
+        conc.mShared(null);
+        conc.mShared(.ceylon.language.Integer.instance(1L));
+        conc.mShared(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$107$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$107$this$ = $arg$107$callable$;
+                .java.lang.Object $arg$107$0 = $arg$107$this$.mShared$a();
+                .ceylon.language.Iterable $arg$107$1 = $arg$107$this$.mShared$aseq($arg$107$0);
+                $arg$107$callable$.mShared($arg$107$0, $arg$107$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$108$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$108$this$ = $arg$108$callable$;
+                .java.lang.Object $arg$108$0 = null;
+                .ceylon.language.Iterable $arg$108$1 = $arg$108$this$.mShared$aseq($arg$108$0);
+                $arg$108$callable$.mShared($arg$108$0, $arg$108$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$109$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$109$this$ = $arg$109$callable$;
+                .java.lang.Object $arg$109$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Iterable $arg$109$1 = $arg$109$this$.mShared$aseq($arg$109$0);
+                $arg$109$callable$.mShared($arg$109$0, $arg$109$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$110$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete $arg$110$this$ = $arg$110$callable$;
+                .java.lang.Object $arg$110$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Iterable $arg$110$1 = $arg$110$this$.mShared$aseq($arg$110$0);
+                $arg$110$callable$.mShared($arg$110$0, $arg$110$1);
+            }
+            returning null;
+        );
+        conc.mFormal();
+        conc.mFormal(null);
+        conc.mFormal(.ceylon.language.Integer.instance(1L));
+        conc.mFormal(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$111$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$111$this$ = $arg$111$callable$;
+                .java.lang.Object $arg$111$0 = $arg$111$this$.mFormal$a();
+                .ceylon.language.Iterable $arg$111$1 = $arg$111$this$.mFormal$aseq($arg$111$0);
+                $arg$111$callable$.mFormal($arg$111$0, $arg$111$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$112$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$112$this$ = $arg$112$callable$;
+                .java.lang.Object $arg$112$0 = null;
+                .ceylon.language.Iterable $arg$112$1 = $arg$112$this$.mFormal$aseq($arg$112$0);
+                $arg$112$callable$.mFormal($arg$112$0, $arg$112$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$113$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$113$this$ = $arg$113$callable$;
+                .java.lang.Object $arg$113$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Iterable $arg$113$1 = $arg$113$this$.mFormal$aseq($arg$113$0);
+                $arg$113$callable$.mFormal($arg$113$0, $arg$113$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$114$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl $arg$114$this$ = $arg$114$callable$;
+                .java.lang.Object $arg$114$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Iterable $arg$114$1 = $arg$114$this$.mFormal$aseq($arg$114$0);
+                $arg$114$callable$.mFormal($arg$114$0, $arg$114$1);
+            }
+            returning null;
+        );
+        conc.mDefault();
+        conc.mDefault(null);
+        conc.mDefault(.ceylon.language.Integer.instance(1L));
+        conc.mDefault(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImplSub $arg$115$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImplSub $arg$115$this$ = $arg$115$callable$;
+                .java.lang.Object $arg$115$0 = $arg$115$this$.mDefault$a();
+                .ceylon.language.Iterable $arg$115$1 = $arg$115$this$.mDefault$aseq($arg$115$0);
+                $arg$115$callable$.mDefault($arg$115$0, $arg$115$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImplSub $arg$116$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImplSub $arg$116$this$ = $arg$116$callable$;
+                .java.lang.Object $arg$116$0 = null;
+                .ceylon.language.Iterable $arg$116$1 = $arg$116$this$.mDefault$aseq($arg$116$0);
+                $arg$116$callable$.mDefault($arg$116$0, $arg$116$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImplSub $arg$117$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImplSub $arg$117$this$ = $arg$117$callable$;
+                .java.lang.Object $arg$117$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Iterable $arg$117$1 = $arg$117$this$.mDefault$aseq($arg$117$0);
+                $arg$117$callable$.mDefault($arg$117$0, $arg$117$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImplSub $arg$118$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImplSub $arg$118$this$ = $arg$118$callable$;
+                .java.lang.Object $arg$118$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Iterable $arg$118$1 = $arg$118$this$.mDefault$aseq($arg$118$0);
+                $arg$118$callable$.mDefault($arg$118$0, $arg$118$1);
+            }
+            returning null;
+        );
     }
 }
