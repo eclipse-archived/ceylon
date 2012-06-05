@@ -745,7 +745,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         result |= tdecl.isShared() ? PUBLIC : PRIVATE;
         result |= (tdecl.isFormal() && !tdecl.isDefault() && !forCompanion) ? ABSTRACT : 0;
-        result |= !(tdecl.isFormal() || tdecl.isDefault()) || forCompanion ? FINAL : 0;
+        result |= !(tdecl.isFormal() || tdecl.isDefault() || tdecl.getContainer() instanceof Interface) || forCompanion ? FINAL : 0;
 
         return result;
     }
