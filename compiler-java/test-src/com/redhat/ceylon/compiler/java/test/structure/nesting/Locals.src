@@ -300,7 +300,7 @@ class Local {
             return 0L;
         }
         
-        public final void local3() {
+        private final void local3() {
             (
                 let
                 {
@@ -311,7 +311,7 @@ class Local {
             );
         }
         
-        public void local3(final long i) {
+        private void local3(final long i) {
             
             final class IL$impl {
                 

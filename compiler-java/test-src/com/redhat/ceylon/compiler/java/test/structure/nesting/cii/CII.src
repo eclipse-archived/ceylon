@@ -30,7 +30,7 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
         final class CII$impl {
             private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI$CII<? extends T, ? super X> $this;
             
-            public T m2() {
+            private T m2() {
                 return m1(null);
             }
             
