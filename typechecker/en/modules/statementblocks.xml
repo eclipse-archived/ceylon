@@ -361,10 +361,19 @@
                 the program element hides a declaration implicitly imported from the module 
                 <literal>ceylon.language</literal>.</para>
             </listitem>
+            <!--listitem>
+                <para>A toplevel declaration of the compilation unit containing the program 
+                element hides a declaration explicitly imported by the compilation unit.</para>
+            </listitem-->
             <listitem>
                 <para>A declaration explicitly imported by the compilation unit containing 
-                the program element hides a toplevel declaration of the package containing
-                the compilation unit.</para>
+                the program element hides a toplevel declaration of <!--another compilation unit
+                in--> the package containing the compilation unit.</para>
+            </listitem>
+            <listitem>
+                <para>A declaration explicity imported by name in the compilation unit 
+                containing the program element hides a declaration explicitly imported 
+                by wildcard in the compilation unit.</para>
             </listitem>
         </itemizedlist>
         
