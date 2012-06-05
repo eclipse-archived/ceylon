@@ -696,7 +696,7 @@ public class ClassTransformer extends AbstractTransformer {
         } else if (Decl.isLocal(def)) {
             result |= def.isShared() ? PUBLIC : 0;
         } else {
-            result |= def.isShared() || def.getContainer() instanceof Interface ? PUBLIC : PRIVATE;
+            result |= def.isShared() ? PUBLIC : PRIVATE;
             result |= def.isFormal() && !def.isDefault() ? ABSTRACT : 0;
             result |= !(def.isFormal() || def.isDefault() || def.getContainer() instanceof Interface) ? FINAL : 0;
         }
