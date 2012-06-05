@@ -211,6 +211,10 @@ public class FileContentStore implements ContentStore, StructureBuilder {
             return file;
         }
 
+        public long getLastModified() throws IOException {
+            return file.lastModified();
+        }
+
         public void clean() {
             delete(file, owner);
         }

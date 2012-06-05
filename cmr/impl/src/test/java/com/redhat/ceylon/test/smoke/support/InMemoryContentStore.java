@@ -84,6 +84,7 @@ public class InMemoryContentStore implements ContentStore, StructureBuilder {
     private static class InMemoryContentHandle implements ContentHandle {
 
         private byte[] bytes;
+        private long lastModifed = System.currentTimeMillis();
 
         private InMemoryContentHandle(byte[] bytes) {
             this.bytes = bytes;
@@ -105,6 +106,11 @@ public class InMemoryContentStore implements ContentStore, StructureBuilder {
             IOUtils.copyStream(getBinariesAsStream(), new FileOutputStream(temp));
             temp.deleteOnExit();
             return temp;
+        }
+
+        @Override
+        public long getLastModified() throws IOException {
+            return lastModifed;
         }
 
         @Override

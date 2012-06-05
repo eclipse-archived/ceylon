@@ -51,6 +51,10 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
             return null;
         }
 
+        public long getLastModified() throws IOException {
+            return -1L;
+        }
+
         public void clean() {
         }
     };

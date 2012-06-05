@@ -53,6 +53,15 @@ public interface ContentHandle {
     File getContentAsFile() throws IOException;
 
     /**
+     * Get last modified timestamp.
+     * If last modified is undefined, return -1.
+     *
+     * @return the last modified, or -1 if undefined
+     * @throws IOException for any I/O error
+     */
+    long getLastModified() throws IOException;
+
+    /**
      * Cleanup content.
      */
     void clean();

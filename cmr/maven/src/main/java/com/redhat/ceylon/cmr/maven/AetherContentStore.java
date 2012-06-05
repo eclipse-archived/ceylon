@@ -109,6 +109,10 @@ public class AetherContentStore extends AbstractContentStore {
             return file;
         }
 
+        public long getLastModified() throws IOException {
+            return file.lastModified();
+        }
+
         public void clean() {
         }
     }
@@ -134,6 +138,10 @@ public class AetherContentStore extends AbstractContentStore {
                 throw new IOException("Missing artifact context info!");
 
             return utils.findDependency(node);
+        }
+
+        public long getLastModified() throws IOException {
+            return getContentAsFile().lastModified();
         }
 
         public void clean() {

@@ -28,6 +28,8 @@ import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import org.apache.http.ProtocolException;
+import org.apache.http.client.ClientProtocolException;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,10 +37,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
-
-import org.apache.http.ProtocolException;
-import org.apache.http.client.ClientProtocolException;
 
 /**
  * WebDAV content store.
@@ -102,21 +102,21 @@ public class WebDAVContentStore extends URLContentStore {
             } finally {
                 s.unlock(pUrl, token);
             }
-        }catch(IOException x){
+        } catch (IOException x) {
             throw convertIOException(x);
         }
     }
 
     public CMRException convertIOException(IOException x) {
-        if(x instanceof SardineException){
+        if (x instanceof SardineException) {
             // hide this from callers because its getMessage() is borked
             SardineException sx = (SardineException) x;
-            return new CMRException(sx.getMessage()+": "+sx.getResponsePhrase()+" "+sx.getStatusCode());
+            return new CMRException(sx.getMessage() + ": " + sx.getResponsePhrase() + " " + sx.getStatusCode());
         }
-        if(x instanceof ClientProtocolException){
+        if (x instanceof ClientProtocolException) {
             // in case of protocol exception (invalid response) we get this sort of
             // chain set up with a null message, so unwrap it for better messages
-            if(x.getCause() != null && x.getCause() instanceof ProtocolException)
+            if (x.getCause() != null && x.getCause() instanceof ProtocolException)
                 return new CMRException(x.getCause().getMessage());
         }
         return new CMRException(x);
@@ -135,7 +135,7 @@ public class WebDAVContentStore extends URLContentStore {
     }
 
     protected ContentHandle createContentHandle(Node parent, String child, String path, Node node) {
-        return new WebDAVContentHandle(path);
+        return new WebDAVContentHandle(root + path);
     }
 
     public Iterable<? extends OpenNode> find(Node parent) {
@@ -207,6 +207,17 @@ public class WebDAVContentStore extends URLContentStore {
 
         public File getContentAsFile() throws IOException {
             return null;
+        }
+
+        public long getLastModified() throws IOException {
+            final List<DavResource> list = getSardine().list(url);
+            if (list.isEmpty() == false && list.get(0).isDirectory() == false) {
+                Date modified = list.get(0).getModified();
+                if (modified != null) {
+                    return modified.getTime();
+                }
+            }
+            return -1L;
         }
 
         public void clean() {

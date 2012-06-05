@@ -83,6 +83,11 @@ public class MarkerNode extends AbstractOpenNode {
     }
 
     @Override
+    public long getLastModified() {
+        return -1L;
+    }
+
+    @Override
     public boolean isRemote() {
         return false;
     }

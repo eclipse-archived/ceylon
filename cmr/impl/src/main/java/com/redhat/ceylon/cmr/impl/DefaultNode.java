@@ -204,6 +204,26 @@ public class DefaultNode extends AbstractOpenNode {
     }
 
     @Override
+    public long getLastModified() throws IOException {
+        synchronized (this) {
+            if (handle != null)
+                return handle.getLastModified();
+        }
+
+        final ContentStore cs = findService(ContentStore.class);
+        ContentHandle ch = cs.getContent(this);
+        if (ch == null) {
+            ch = HANDLE_MARKER;
+        }
+
+        synchronized (this) {
+            handle = ch;
+        }
+
+        return ch.getLastModified();
+    }
+
+    @Override
     public String getDisplayString() {
         return getLabel();
     }

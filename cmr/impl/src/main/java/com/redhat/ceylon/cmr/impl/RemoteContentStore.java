@@ -141,6 +141,11 @@ public class RemoteContentStore extends URLContentStore {
             return null;  // unsupported
         }
 
+        public long getLastModified() throws IOException {
+            final URL url = getURL(NodeUtils.getFullPath(node, SEPARATOR));
+            return url.openConnection().getLastModified();
+        }
+
         public void clean() {
         }
     }

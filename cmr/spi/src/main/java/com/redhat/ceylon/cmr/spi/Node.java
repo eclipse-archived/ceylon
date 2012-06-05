@@ -40,11 +40,13 @@ public interface Node {
 
     <T> T getContent(Class<T> contentType) throws IOException;
 
+    long getLastModified() throws IOException;
+
     Node getParent(String label);
 
     Iterable<? extends Node> getParents();
 
     boolean isRemote();
-    
+
     String getDisplayString();
 }
