@@ -55,23 +55,21 @@ public class CachingRepositoryManager extends AbstractNodeRepositoryManager {
     public ArtifactResult getArtifactResult(ArtifactContext context) throws RepositoryException {
         try {
             Node node = getLeafNode(context);
-
-            ArtifactResult result = caching.getArtifactResult(context);
-            if (result != null) {
-                boolean valid = false; // node and file must exist
-                if (node != null) {
+            // node and file must exist to check cache
+            if (node != null) {
+                ArtifactResult result = caching.getArtifactResult(context);
+                if (result != null) {
+                    boolean valid = false;
                     File file = result.artifact();
                     if (file.exists()) {
                         long lm = node.getLastModified();
                         valid = (lm == -1 || lm < file.lastModified());
                     }
+                    if (valid) {
+                        return result;
+                    }
                 }
-                if (valid) {
-                    return result;
-                }
-            }
 
-            if (node != null) {
                 final boolean previous = context.isForceOperation();
                 context.setForceOperation(true);
                 try {
