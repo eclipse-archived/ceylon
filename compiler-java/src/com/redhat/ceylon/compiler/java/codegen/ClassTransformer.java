@@ -229,6 +229,7 @@ public class ClassTransformer extends AbstractTransformer {
             // companion class in the constructor and assign it to a
             // $Interface$impl field
             transformInstantiateCompanions(classBuilder,
+                    model,
                     iface, satisfiedType);
         }
         
@@ -372,9 +373,13 @@ public class ClassTransformer extends AbstractTransformer {
 
     private void transformInstantiateCompanions(
             ClassDefinitionBuilder classBuilder, 
+            Class model,
             Interface iface, ProducedType satisfiedType) {
         at(null);
-        final List<JCExpression> state = List.<JCExpression>of(makeUnquotedIdent("this"));
+        // We may need to cast 'this' because of refined variable inheritance
+        final List<JCExpression> state = List.<JCExpression>of(
+                expressionGen().applyErasureAndBoxing(makeUnquotedIdent("this"), 
+                model.getType(), true, BoxingStrategy.BOXED, satisfiedType));
         final String fieldName = getCompanionFieldName(iface);
         classBuilder.init(make().Exec(make().Assign(
                 makeSelect("this", fieldName),// TODO Use qualified name for quoting? 
