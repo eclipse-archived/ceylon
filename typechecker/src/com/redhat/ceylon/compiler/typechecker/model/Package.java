@@ -131,6 +131,8 @@ public class Package implements ImportableScope {
             List<ProducedType> signature) {
         //this implements the rule that imports hide 
         //toplevel members of a package
+        //TODO: would it be better to look in the given unit 
+        //      first, before checking imports?
         Declaration d = unit.getImportedDeclaration(name, signature);
         if (d!=null) {
             return d;
