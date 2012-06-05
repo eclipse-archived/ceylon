@@ -263,11 +263,17 @@ class CodegenUtil {
             // shortcut if the functional doesn't override anything
             if(refinedFunc == decl.getContainer())
                 return decl;
-            if(func.getParameterLists().size() != 1 || refinedFunc.getParameterLists().size() != 1)
-                throw new RuntimeException("Multiple parameter lists not supported");
-            // find the index of the parameter
-            int index = func.getParameterLists().get(0).getParameters().indexOf(param);
-            return refinedFunc.getParameterLists().get(0).getParameters().get(index);
+            if (func.getParameterLists().size() != refinedFunc.getParameterLists().size()) {
+                throw new RuntimeException("Different numbers of parameter lists");
+            }
+            for (int ii = 0; ii < func.getParameterLists().size(); ii++) {
+                // find the index of the parameter
+                int index = func.getParameterLists().get(ii).getParameters().indexOf(param);
+                if (index == -1) {
+                    continue;
+                }
+                return refinedFunc.getParameterLists().get(ii).getParameters().get(index);
+            }
         }
         Declaration refinedDecl = decl.getRefinedDeclaration();
         if(refinedDecl != null && refinedDecl != decl)
