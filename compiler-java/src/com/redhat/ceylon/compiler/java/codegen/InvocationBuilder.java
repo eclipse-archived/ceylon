@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.NO_PRIMITIVES;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.TYPE_ARGUMENT;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.WANT_RAW_TYPE;
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.COMPANION;
 import static com.sun.tools.javac.code.Flags.FINAL;
 
 import java.util.ArrayList;
@@ -1039,11 +1040,11 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 typeArgs.append(gen.makeJavaType(producedType, TYPE_ARGUMENT));
             }
             ClassOrInterface declaration = (ClassOrInterface)((Tree.BaseTypeExpression) primary).getDeclaration();
-            thisType = gen.makeCompanionType(declaration, typeArgs.toList());
+            thisType = gen.makeJavaType(declaration.getType(), COMPANION);
             defaultedParameterInstance = gen.make().NewClass(
                     null, 
                     null,
-                    gen.makeCompanionType(declaration, typeArgs.toList()), 
+                    gen.makeJavaType(declaration.getType(), COMPANION), 
                     List.<JCExpression>nil(), null);
         } else {
             thisType = gen.makeJavaType(target.getQualifyingType(), NO_PRIMITIVES);

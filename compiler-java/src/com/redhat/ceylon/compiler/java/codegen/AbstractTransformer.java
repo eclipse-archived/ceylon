@@ -33,6 +33,7 @@ import java.util.Map.Entry;
 
 import org.antlr.runtime.Token;
 
+import com.redhat.ceylon.compiler.java.codegen.CodegenUtil.NameFlag;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.loader.TypeFactory;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
@@ -642,6 +643,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     static final int CATCH = 1 << 4;
     static final int SMALL_TYPE = 1 << 5;
     static final int CLASS_NEW = 1 << 6;
+    static final int COMPANION = 1 << 7;
 
     /**
      * This function is used solely for method return types and parameters 
@@ -814,7 +816,11 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                                 && firstQualifyingTypeWithTypeParameters == 0) {
                             name = getCompanionClassName(tdecl);
                         } else {
-                            name = getFQDeclarationName(tdecl);
+                            if ((flags & COMPANION) != 0) {
+                                name = declName(tdecl, QUALIFIED, NameFlag.COMPANION);
+                            } else {
+                                name = declName(tdecl, QUALIFIED);
+                            }
                         }
                         baseType = makeQuotedQualIdentFromString(name);
                     } else {
@@ -838,7 +844,11 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                 jt = makeQuotedIdent(tdecl.getName());
             // don't use underlying type if we want no primitives
             else if((flags & (SATISFIES | NO_PRIMITIVES)) != 0 || simpleType.getUnderlyingType() == null)
-                jt = makeDeclarationName(tdecl);
+                if ((flags & COMPANION) != 0) {
+                    jt = makeQuotedQualIdentFromString(declName(tdecl, QUALIFIED, NameFlag.COMPANION));
+                } else {
+                    jt = makeQuotedQualIdentFromString(declName(tdecl, QUALIFIED));
+                }
             else
                 jt = makeQuotedFQIdent(simpleType.getUnderlyingType());
         }
@@ -1028,7 +1038,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     }
     
     String getCompanionClassName(Declaration decl){
-        return declName(decl, QUALIFIED, COMPANION);
+        return declName(decl, QUALIFIED, NameFlag.COMPANION);
     }
     
     /**
@@ -1826,27 +1836,6 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         Interface iface = (Interface)method.getRefinedDeclaration().getContainer();
         return makeQuotedQualIdent(makeQuotedIdent(getCompanionFieldName(iface)), 
                 CodegenUtil.getDefaultedParamMethodName(method, param));
-    }
-    
-    final JCExpression makeCompanionType(final ClassOrInterface decl, Map<TypeParameter, ProducedType> typeParameters, boolean goRaw) {
-        List<JCExpression> typeArgs;
-        if (goRaw) {
-            typeArgs = List.<JCExpression>nil();
-        } else {
-            typeArgs = typeArguments(decl.getTypeParameters(), typeParameters);
-        }
-        return makeCompanionType(decl, typeArgs);
-    }
-
-    final JCExpression makeCompanionType(final ClassOrInterface decl,
-            List<JCExpression> typeArgs) {
-        String companionClassName = getCompanionClassName(decl);
-        JCExpression baseName = makeQuotedQualIdentFromString(companionClassName);
-        
-        if (!typeArgs.isEmpty()) {
-            return make().TypeApply(baseName, typeArgs);
-        }
-        return baseName;
     }
     
     private int getPosition(Node node) {

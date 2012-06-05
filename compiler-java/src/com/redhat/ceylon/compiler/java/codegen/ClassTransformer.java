@@ -220,19 +220,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (satisfiedInterfaces.contains(iface)) {
             return;
         }
-        // Detect whether we're satisfiying the same interface more than once
-        // and use raw types if so.
-        boolean goRaw = false;
-        Map<TypeDeclaration, java.util.List<ProducedType>> m = new HashMap<TypeDeclaration, java.util.List<ProducedType>>();
-        for (ProducedType t : model.getType().getSupertypes()) {
-            TypeDeclaration declaration = t.getDeclaration();
-            java.util.List<ProducedType> typeArguments = t.getTypeArgumentList();
-            java.util.List<ProducedType> existingTypeArgs = m.put(declaration, typeArguments);
-            if (existingTypeArgs != null) {
-                goRaw = true;
-                break;
-            }
-        }   
+     
         // If there is no $impl (e.g. implementing a Java interface) 
         // then don't instantiate it...
         if (hasImpl(iface)) {
@@ -241,7 +229,7 @@ public class ClassTransformer extends AbstractTransformer {
             // companion class in the constructor and assign it to a
             // $Interface$impl field
             transformInstantiateCompanions(classBuilder,
-                    iface, satisfiedType, goRaw);
+                    iface, satisfiedType);
         }
         
         // For each super interface
@@ -329,6 +317,7 @@ public class ClassTransformer extends AbstractTransformer {
         // Add $impl instances for the whole interface hierarchy
         satisfiedInterfaces.add(iface);
         for (ProducedType sat : iface.getSatisfiedTypes()) {
+            sat = satisfiedType.getSupertype(sat.getDeclaration());
             concreteMembersFromSuperinterfaces(model, classBuilder, sat, satisfiedInterfaces);
         }
         
@@ -387,21 +376,20 @@ public class ClassTransformer extends AbstractTransformer {
 
     private void transformInstantiateCompanions(
             ClassDefinitionBuilder classBuilder, 
-            Interface iface, ProducedType satisfiedType, boolean goRaw) {
+            Interface iface, ProducedType satisfiedType) {
         at(null);
         final List<JCExpression> state = List.<JCExpression>of(makeUnquotedIdent("this"));
-        Map<TypeParameter, ProducedType> typeArguments = satisfiedType.getTypeArguments();
         final String fieldName = getCompanionFieldName(iface);
         classBuilder.init(make().Exec(make().Assign(
                 makeSelect("this", fieldName),// TODO Use qualified name for quoting? 
                 make().NewClass(null, 
                         null, // TODO Type args 
-                        makeCompanionType(iface, typeArguments, goRaw),
+                        makeJavaType(satisfiedType, AbstractTransformer.COMPANION | SATISFIES),
                         state,
                         null))));
         
         classBuilder.field(PRIVATE | FINAL, fieldName, 
-                makeCompanionType(iface, typeArguments, goRaw), null, false);
+                makeJavaType(satisfiedType, AbstractTransformer.COMPANION | SATISFIES), null, false);
     }
 
     private JCMethodDecl makeOuterImpl(final ClassOrInterface model, Interface iface) {
@@ -1292,14 +1280,10 @@ public class ClassTransformer extends AbstractTransformer {
             Class classModel = (Class)model;
             Map<TypeParameter, ProducedType> typeArguments = classModel.getType().getTypeArguments();
             vars.append(makeVar(companionInstanceName, 
-                    makeCompanionType(classModel,
-                            typeArguments, 
-                            false),
+                    makeJavaType(classModel.getType(), AbstractTransformer.COMPANION),
                     make().NewClass(null, // TODO encl == null ???
                             null,
-                            makeCompanionType(classModel,
-                                    typeArguments,
-                                    false),
+                            makeJavaType(classModel.getType(), AbstractTransformer.COMPANION),
                             List.<JCExpression>nil(), null)));
         }
         
