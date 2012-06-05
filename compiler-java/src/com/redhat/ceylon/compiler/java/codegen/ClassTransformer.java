@@ -912,7 +912,7 @@ public class ClassTransformer extends AbstractTransformer {
                 lb.prepend(overloadedMethod);
             }
             if (parameter.isDefaulted()
-                    || isLastParameter(parameterList, parameter)) {        
+                    || parameter.isSequenced()) {        
                 if (Decl.withinInterface(model)
                         && unspecified) {
                     // interface methods without concrete implementation (including 
