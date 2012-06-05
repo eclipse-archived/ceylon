@@ -22,8 +22,7 @@ shared interface TopInterface {
 }
 
 shared interface Interface satisfies TopInterface {
-// BUG
-//    shared actual Integer topFormalMethod(Integer p1){ return p1; }
+    shared actual Integer topFormalMethod(Integer p1){ return p1; }
     shared formal Integer formalMethod(Integer p1);
     shared Integer concreteMethod(Integer p1){ return p1; }
     shared default Integer concreteDefaultMethod(Integer p1){ return p1; }

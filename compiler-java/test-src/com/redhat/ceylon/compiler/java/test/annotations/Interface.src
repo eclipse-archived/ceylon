@@ -23,6 +23,13 @@ public final class TopInterface$impl {
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.annotations.TopInterface"})
 public interface Interface extends .com.redhat.ceylon.compiler.java.test.annotations.TopInterface {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+    public long topFormalMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+    final long p1);
+    
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
     public abstract long formalMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
@@ -44,6 +51,13 @@ public interface Interface extends .com.redhat.ceylon.compiler.java.test.annotat
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class Interface$impl {
     private final .com.redhat.ceylon.compiler.java.test.annotations.Interface $this;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+    public long topFormalMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+    final long p1) {
+        return p1;
+    }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
     public long concreteMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
