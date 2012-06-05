@@ -881,7 +881,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             if (isOptional(ta)) {
                 // For an optional type T?:
                 // - The Ceylon type Foo<T?> results in the Java type Foo<T>.
-                ta = typeFact().getDefiniteType(ta);
+                ta = getNonNullType(ta);
             }
             if (typeFact().isUnion(ta) || typeFact().isIntersection(ta)) {
                 // For any other union type U|V (U nor V is Optional):
@@ -967,6 +967,18 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             idx++;
         }
         return typeArgs;
+    }
+
+    private ProducedType getNonNullType(ProducedType pt) {
+        // typeFact().getDefiniteType() intersects with Object, which isn't 
+        // always right for working with the java type system.
+        if (typeFact().getVoidDeclaration().equals(pt.getDeclaration())) {
+            pt = typeFact().getObjectDeclaration().getType();
+        }
+        else {
+            pt = pt.minus(typeFact().getNothingDeclaration());
+        }
+        return pt;
     }
     
     private boolean isJavaString(ProducedType type) {
