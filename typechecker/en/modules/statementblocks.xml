@@ -377,6 +377,7 @@
         return name;
     }
 }</programlisting>
+<<<<<<< HEAD
 
         <para>As is this code:</para>
         
@@ -387,6 +388,8 @@
 
 class Complex(Float x, Float y=0.0) 
         extends Point(x, y) {}</programlisting>
+=======
+>>>>>>> e8ddd6208cb538b92912cfd1c6115c31476f081a
         
     </section>
     
