@@ -10,7 +10,7 @@ final class callableNamedInvocationSequenced_f {
             let
             {
                 .ceylon.language.Integer $arg$0$0 = .ceylon.language.Integer.instance(1L);
-                .ceylon.language.Iterable $arg$0$1 = .ceylon.language.$empty.getEmpty();
+                .ceylon.language.Iterable<? extends .ceylon.language.String> $arg$0$1 = .ceylon.language.$empty.getEmpty();
             }
             returning foo.$call($arg$0$0, $arg$0$1);
         );
@@ -18,7 +18,7 @@ final class callableNamedInvocationSequenced_f {
             let
             {
                 .ceylon.language.Integer $arg$1$0 = .ceylon.language.Integer.instance(1L);
-                .ceylon.language.Iterable $arg$1$1 = new .ceylon.language.ArraySequence(.ceylon.language.String.instance(""));
+                .ceylon.language.Iterable<? extends .ceylon.language.String> $arg$1$1 = new .ceylon.language.ArraySequence(.ceylon.language.String.instance(""));
             }
             returning foo.$call($arg$1$0, $arg$1$1);
         );
@@ -26,7 +26,7 @@ final class callableNamedInvocationSequenced_f {
             let
             {
                 .ceylon.language.Integer $arg$2$0 = .ceylon.language.Integer.instance(1L);
-                .ceylon.language.Iterable $arg$2$1 = new .ceylon.language.ArraySequence(.ceylon.language.String.instance(""), .ceylon.language.String.instance(""));
+                .ceylon.language.Iterable<? extends .ceylon.language.String> $arg$2$1 = new .ceylon.language.ArraySequence(.ceylon.language.String.instance(""), .ceylon.language.String.instance(""));
             }
             returning foo.$call($arg$2$0, $arg$2$1);
         );

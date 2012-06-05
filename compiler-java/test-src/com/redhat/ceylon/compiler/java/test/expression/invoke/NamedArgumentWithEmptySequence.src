@@ -24,7 +24,7 @@ class NamedArgumentWithEmptySequence {
         (
             let
             {
-                .ceylon.language.Iterable $arg$2$0 = .ceylon.language.$empty.getEmpty();
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$2$0 = .ceylon.language.$empty.getEmpty();
                 m($arg$2$0);
             }
             returning null;
