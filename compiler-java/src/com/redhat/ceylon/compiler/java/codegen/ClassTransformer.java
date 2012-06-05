@@ -49,6 +49,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -219,6 +220,8 @@ public class ClassTransformer extends AbstractTransformer {
         if (satisfiedInterfaces.contains(iface)) {
             return;
         }
+        // Detect whether we're satisfiying the same interface more than once
+        // and use raw types if so.
         boolean goRaw = false;
         Map<TypeDeclaration, java.util.List<ProducedType>> m = new HashMap<TypeDeclaration, java.util.List<ProducedType>>();
         for (ProducedType t : model.getType().getSupertypes()) {
@@ -245,6 +248,7 @@ public class ClassTransformer extends AbstractTransformer {
         for (Declaration member : iface.getMembers()) {
             if (member instanceof Method) {
                 Method method = (Method)member;
+                final ProducedTypedReference typedMember = satisfiedType.getTypedMember(method, Collections.<ProducedType>emptyList());
                 final java.util.List<TypeParameter> typeParameters = method.getTypeParameters();
                 final java.util.List<Parameter> parameters = method.getParameterLists().get(0).getParameters();
                 if (!satisfiedInterfaces.contains((Interface)method.getContainer())) {
@@ -252,14 +256,30 @@ public class ClassTransformer extends AbstractTransformer {
                     for (Parameter param : parameters) {
                         if (param.isDefaulted()
                                 || param.isSequenced()) {
+                            final ProducedTypedReference typedParameter = typedMember.getTypedParameter(param);
                             // If that method has a defaulted parameter, 
                             // we need to generate a default value method
                             // which also delegates to the $impl
-                            final JCMethodDecl defaultValueDelegate = makeDelegateToCompanion(iface, 
-                                    PUBLIC | FINAL, typeParameters, param, param.getType(), 
-                                    CodegenUtil.getDefaultedParamMethodName(method, param), parameters.subList(0, parameters.indexOf(param)),
+                            final JCMethodDecl defaultValueDelegate = makeDelegateToCompanion(iface,
+                                    typedParameter,
+                                    PUBLIC | FINAL, 
+                                    typeParameters, 
+                                    typedParameter.getType(), 
+                                    CodegenUtil.getDefaultedParamMethodName(method, param), 
+                                    parameters.subList(0, parameters.indexOf(param)),
                                     Decl.isAncestorLocal(model));
                             classBuilder.defs(defaultValueDelegate);
+                            
+                            final JCMethodDecl overload = makeDelegateToCompanion(iface,
+                                    typedMember,
+                                    PUBLIC | FINAL, 
+                                    typeParameters, 
+                                    typedParameter.getType(), 
+                                    method.getName(), 
+                                    parameters.subList(0, parameters.indexOf(param)),
+                                    Decl.isAncestorLocal(model));
+                            classBuilder.defs(overload);
+                            
                             // If that method has a defaulted parameter, 
                             // we need to generate a overload method
                             // which also delegates to the $impl
@@ -275,21 +295,26 @@ public class ClassTransformer extends AbstractTransformer {
                 // then generate a method on the class
                 // delegating to the $impl instance
                 if (needsCompanionDelegate(model, member)) {
+                    
                     final JCMethodDecl concreteMemberDelegate = makeDelegateToCompanion(iface,
-                            PUBLIC, method.getTypeParameters(), 
-                            method,
-                            method.getType(), method.getName(), method.getParameterLists().get(0).getParameters(),
+                            typedMember,
+                            PUBLIC, 
+                            method.getTypeParameters(), 
+                            method.getType(), 
+                            method.getName(), 
+                            method.getParameterLists().get(0).getParameters(),
                             Decl.isAncestorLocal(model));
                     classBuilder.defs(concreteMemberDelegate);
                      
                 }
             } else if (member instanceof Getter) {// Concrete getter
                 Getter getter = (Getter)member;
+                final ProducedTypedReference typedMember = satisfiedType.getTypedMember(getter, null);
                 if (needsCompanionDelegate(model, member)) {
                     final JCMethodDecl getterDelegate = makeDelegateToCompanion(iface, 
+                            typedMember,
                             PUBLIC | (getter.isDefault() ? 0 : FINAL), 
                             Collections.<TypeParameter>emptyList(), 
-                            getter, 
                             getter.getType(), 
                             CodegenUtil.getGetterName(member), 
                             Collections.<Parameter>emptyList(),
@@ -318,9 +343,8 @@ public class ClassTransformer extends AbstractTransformer {
      * Generates a method which delegates to the companion instance $Foo$impl
      */
     private JCMethodDecl makeDelegateToCompanion(Interface iface,
-            final long mods,
+            ProducedTypedReference typedMember, final long mods,
             final java.util.List<TypeParameter> typeParameters,
-            TypedDeclaration resultType,
             final ProducedType methodType,
             final String methodName, final java.util.List<Parameter> parameters, boolean ancestorLocal) {
         final MethodDefinitionBuilder concreteWrapper = MethodDefinitionBuilder.method(gen(), ancestorLocal, true, methodName);
@@ -329,10 +353,12 @@ public class ClassTransformer extends AbstractTransformer {
         for (TypeParameter tp : typeParameters) {
             concreteWrapper.typeParameter(tp);
         }
-        concreteWrapper.resultType(resultType);
+        
+        concreteWrapper.resultType(typedMember.getDeclaration(), typedMember.getType());
         ListBuffer<JCExpression> arguments = ListBuffer.<JCExpression>lb();
         for (Parameter param : parameters) {
-            concreteWrapper.parameter(param);
+            final ProducedTypedReference typedParameter = typedMember.getTypedParameter(param);
+            concreteWrapper.parameter(param, typedParameter.getType());
             arguments.add(makeQuotedIdent(param.getName()));
         }
         JCExpression expr = make().Apply(
