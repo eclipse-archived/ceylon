@@ -134,7 +134,6 @@ public class IssuesTest extends CompilerTest {
     }
     
     @Test
-    @Ignore("M4: Waiting for model loader support for self-types")
     public void testBug283() {
         compareWithJavaSource("Bug283");
     }
