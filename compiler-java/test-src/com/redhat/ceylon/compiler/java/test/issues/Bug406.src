@@ -9,7 +9,7 @@ class Bug406 {
             {
                 .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$0 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)full;
             }
-            returning (.ceylon.language.Sequence<? extends .ceylon.language.String>)(!$spreadTest$0.getEmpty() ? (
+            returning (.ceylon.language.Iterable<? extends .ceylon.language.String>)(!$spreadTest$0.getEmpty() ? (
                 let
                 {
                     .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$1$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$0;

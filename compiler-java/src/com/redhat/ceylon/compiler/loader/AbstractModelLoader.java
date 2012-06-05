@@ -961,8 +961,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // and its return type
         try{
             ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, method);
-            method.setUncheckedNullType(!isCeylon);
             method.setType(type);
+            method.setUncheckedNullType(!isCeylon && !methodMirror.getReturnType().isPrimitive());
             method.setDeclaredVoid(methodMirror.isDeclaredVoid());
         }catch(TypeParserException x){
             logError("Invalid type signature for method return type of "+klass.getQualifiedNameString()+"."+methodMirror.getName()+": "+x.getMessage());
@@ -1103,8 +1103,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // FIXME: for the same reason, can it be an overriding field? (actual)
         value.setVariable(!fieldMirror.isFinal());
         try{
-            value.setType(obtainType(fieldMirror.getType(), fieldMirror, klass));
-            value.setUncheckedNullType(!isCeylon);
+            ProducedType type = obtainType(fieldMirror.getType(), fieldMirror, klass);
+            value.setType(type);
+            value.setUncheckedNullType(!isCeylon && !fieldMirror.getType().isPrimitive());
         }catch(TypeParserException x){
             logError("Invalid type signature for field "+klass.getQualifiedNameString()+"."+value.getName()+": "+x.getMessage());
             throw x;
@@ -1121,8 +1122,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setUnit(klass.getUnit());
         setMethodOrValueFlags(klass, methodMirror, value);
         try{
-            value.setType(obtainType(methodMirror.getReturnType(), methodMirror, klass));
-            value.setUncheckedNullType(!isCeylon);
+            ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, klass);
+            value.setType(type);
+            value.setUncheckedNullType(!isCeylon && !methodMirror.getReturnType().isPrimitive());
         }catch(TypeParserException x){
             logError("Invalid type signature for getter type of "+klass.getQualifiedNameString()+"."+methodName+": "+x.getMessage());
             throw x;
@@ -1587,7 +1589,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if (type.getKind() == TypeKind.ARRAY) {
             List<ProducedType> typeArguments = new ArrayList<ProducedType>(1);
             TypeMirror ct = type.getComponentType();
-            ProducedType ctpt = (ProducedType) obtainType(ct, scope, TypeLocation.TYPE_PARAM);
+            // Although we are putting that type into a type param, we have special handling
+            // for arrays and so we should treat it as a toplevel (magic boxing of strings)
+            ProducedType ctpt = (ProducedType) obtainType(ct, scope, TypeLocation.TOPLEVEL);
             typeArguments.add(ctpt);
             ProducedType arrayType = declaration.getProducedType(getQualifyingType(declaration), typeArguments);
             if (ctpt.getUnderlyingType() != null) {
