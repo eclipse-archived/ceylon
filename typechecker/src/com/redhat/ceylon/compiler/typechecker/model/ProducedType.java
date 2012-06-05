@@ -139,6 +139,14 @@ public class ProducedType extends ProducedReference {
             else {
                 ProducedType qt = getQualifyingType();
                 ProducedType tqt = type.getQualifyingType();
+                if (qt!=null &&
+                        qt.getDeclaration().isStaticallyImportable()) {
+                    qt=null;
+                }
+                if (tqt!=null &&
+                        tqt.getDeclaration().isStaticallyImportable()) {
+                    tqt=null;
+                }
                 if (qt==null) {
                     if (tqt!=null) {
                         return false;
@@ -242,6 +250,14 @@ public class ProducedType extends ProducedReference {
             else {
                 ProducedType stqt = st.getQualifyingType();
                 ProducedType tqt = type.getQualifyingType();
+                if (stqt!=null &&
+                        stqt.getDeclaration().isStaticallyImportable()) {
+                    stqt=null;
+                }
+                if (tqt!=null &&
+                        tqt.getDeclaration().isStaticallyImportable()) {
+                    tqt=null;
+                }
                 if (stqt==null) {
                     if (tqt!=null) {
                         //probably extraneous!
@@ -1299,10 +1315,13 @@ public class ProducedType extends ProducedReference {
     
     private String getSimpleProducedTypeName(boolean abbreviate) {
         StringBuilder ptn = new StringBuilder();
-        if (getDeclaration().isMember()) {
-            ptn.append(getQualifyingType().getProducedTypeName(abbreviate))
-                    .append(".");
+        //if (getDeclaration().isMember()) {
+        ProducedType qt = getQualifyingType();
+        if (qt!=null) {
+            ptn.append(qt.getProducedTypeName(abbreviate))
+            .append(".");
         }
+        //}
         ptn.append(getDeclaration().getName());
         if (!getTypeArgumentList().isEmpty()) {
             ptn.append("<");
@@ -1326,12 +1345,15 @@ public class ProducedType extends ProducedReference {
         return ptn.toString();
     }
 
-    private String getSimpleProduceTypeQualifiedName() {
+    private String getSimpleProducedTypeQualifiedName() {
         StringBuilder ptn = new StringBuilder();
-        if (getDeclaration().isMember()) {
-            ptn.append(getQualifyingType().getProducedTypeQualifiedName())
-                    .append(".").append(getDeclaration().getName());
+        //if (getDeclaration().isMember()) {
+        ProducedType qt = getQualifyingType();
+        if (qt!=null) {
+            ptn.append(qt.getProducedTypeQualifiedName())
+            .append(".").append(getDeclaration().getName());
         }
+        //}
         else {
             ptn.append(getDeclaration().getQualifiedNameString());
         }
@@ -1389,7 +1411,7 @@ public class ProducedType extends ProducedReference {
             return name.substring(0,name.length()>0?name.length()-1:0);
         }
         else {            
-            return getSimpleProduceTypeQualifiedName();
+            return getSimpleProducedTypeQualifiedName();
         }
     }
 
