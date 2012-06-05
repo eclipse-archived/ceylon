@@ -1362,10 +1362,26 @@ public class ClassTransformer extends AbstractTransformer {
 
 
     
-    public JCMethodDecl transformConcreteInterfaceMember(MethodDefinition def, ProducedType type) {
+    public List<JCTree> transformConcreteInterfaceMember(MethodDefinition def, ProducedType type) {
+        ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
+        Method model = def.getDeclarationModel();
+        Tree.ParameterList paramList = def.getParameterLists().get(0);
+        for (Tree.Parameter p : paramList.getParameters()) {
+            Parameter param = p.getDeclarationModel();
+            if (param.isDefaulted()
+                    || param.isSequenced()) {
+                MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(),
+                        model.getName());
+                final MethodDefinitionBuilder om = makeOverloadsForDefaultedParameter(true, true, false,
+                        overloadBuilder, def.getDeclarationModel(), 
+                        model.getParameterLists().get(0).getParameters(), param);
+                lb.append(overloadBuilder.build());
+            }
+        }
+        
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(def), true, CodegenUtil.quoteMethodNameIfProperty(def.getDeclarationModel(), gen()));
         
-        for (Tree.Parameter param : def.getParameterLists().get(0).getParameters()) {
+        for (Tree.Parameter param : paramList.getParameters()) {
             methodBuilder.parameter(param);
         }
 
@@ -1378,11 +1394,11 @@ public class ClassTransformer extends AbstractTransformer {
         // FIXME: this needs rewriting to map non-qualified refs to $this
         JCBlock body = statementGen().transform(def.getBlock());
         methodBuilder.block(body);
-                
-        return methodBuilder
+        lb.append(methodBuilder
             .modifiers(transformMethodDeclFlags(def))
             .isActual(Decl.isActual(def))
-            .build();
+            .build());
+        return lb.toList();
     }
 
     /**
