@@ -56,13 +56,13 @@ abstract class Bug446<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable items() {
+    public final .ceylon.language.Iterable<? extends T> items() {
         return $Correspondence$impl.items();
     }
     private final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>> $Ranged$impl;
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
+    public final .ceylon.language.Iterable<? extends T> items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
         return .ceylon.language.bottom.getBottom();
     }
     private final .java.lang.String string;

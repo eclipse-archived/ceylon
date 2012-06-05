@@ -125,7 +125,7 @@ final class anonFunctionNullary {
                 return t;
             }
         };
-        final .ceylon.language.Callable t2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<T>("ceylon.language.Callable<T>"){
+        final .ceylon.language.Callable<? extends T> t2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<T>("ceylon.language.Callable<T>"){
             
             @.java.lang.Override
             public T $call() {

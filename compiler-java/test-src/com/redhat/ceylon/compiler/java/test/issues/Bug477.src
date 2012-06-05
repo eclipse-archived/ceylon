@@ -70,7 +70,7 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
-    public final .ceylon.language.Iterable items() {
+    public final .ceylon.language.Iterable<? extends T> items() {
         return $Correspondence$impl.items();
     }
     private final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>> $Ranged$impl;
@@ -193,7 +193,7 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
-    public final .ceylon.language.Iterable items() {
+    public final .ceylon.language.Iterable<? extends T> items() {
         return $Correspondence$impl.items();
     }
     private final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>> $Ranged$impl;
