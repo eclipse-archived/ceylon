@@ -1107,7 +1107,7 @@ public class ClassTransformer extends AbstractTransformer {
             final ParameterList paramList, Parameter currentParam) {
         
         MethodDefinitionBuilder delegateBuilder = MethodDefinitionBuilder.method(gen(), false, true, methodName);
-        delegateBuilder.modifiers(PRIVATE | FINAL);
+        delegateBuilder.modifiers(FINAL | (model.isShared() ? PUBLIC : PRIVATE));
         copyTypeParameters(model, delegateBuilder);
         delegateBuilder.resultType(model);
         ListBuffer<JCExpression> arguments = ListBuffer.<JCExpression>lb();
