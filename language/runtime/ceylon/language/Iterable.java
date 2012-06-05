@@ -22,25 +22,25 @@ public interface Iterable<Element> extends Container {
     public Iterable<? extends Element> getSequence();
 
     @TypeInfo("ceylon.language.Iterable<Result>")
-    public <Result> Iterable<Result> map(@Name("collecting")
+    public <Result> Iterable<? extends Result> map(@Name("collecting")
         @TypeInfo("ceylon.language.Callable<Result,Element>")
-        Callable<Result> collecting);
+        Callable<? extends Result> collecting);
 
     @TypeInfo("ceylon.language.Iterable<Element>")
     public Iterable<? extends Element> filter(@Name("selecting")
         @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
-        Callable<Boolean> selecting);
+        Callable<? extends Boolean> selecting);
 
     @TypeInfo("Result")
     public <Result> Result fold(@Name("initial")
 		@TypeInfo("Result") Result initial,
 		@Name("accumulating")
         @TypeInfo("ceylon.language.Callable<Result,Result,Element>")
-        Callable<Result> accumulating);
+        Callable<? extends Result> accumulating);
 
     @TypeInfo("Element|ceylon.language.Nothing")
     public Element find(@Name("selecting")
         @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
-        Callable<Boolean> selecting);
+        Callable<? extends Boolean> selecting);
 
 }

@@ -179,9 +179,9 @@ public interface Correspondence<Key,Item> {
         }
 
     @Override public Iterable<? extends Item> getSequence() { return Iterable$impl._getSequence(this); }
-    @Override public Item find(Callable<Boolean> f) { return Iterable$impl._find(this, f); }
-    @Override public <Result> Iterable<Result> map(Callable<Result> f) { return new MapIterable(this, f); }
-    @Override public Iterable<? extends Item> filter(Callable<Boolean> f) { return new FilterIterable(this, f); }
-    @Override public <Result> Result fold(Result ini, Callable<Result> f) { return Iterable$impl._fold(this, ini, f); }
+    @Override public Item find(Callable<? extends Boolean> f) { return Iterable$impl._find(this, f); }
+    @Override public <Result> Iterable<Result> map(Callable<? extends Result> f) { return new MapIterable<Item, Result>(this, f); }
+    @Override public Iterable<? extends Item> filter(Callable<? extends Boolean> f) { return new FilterIterable<Item>(this, f); }
+    @Override public <Result> Result fold(Result ini, Callable<? extends Result> f) { return Iterable$impl._fold(this, ini, f); }
     }
 }

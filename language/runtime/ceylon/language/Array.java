@@ -501,10 +501,10 @@ class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
     }
 
     public Iterable<? extends Element> getSequence() { return $empty.getEmpty(); }
-    public Element find(Callable<Boolean> f) { return null; }
-    public <Result> Iterable<Result> map(Callable<Result> f) { return $empty.getEmpty(); }
-    public Iterable<? extends Element> filter(Callable<Boolean> f) { return this; }
-    public <Result> Result fold(Result ini, Callable<Result> f) { return ini; }
+    public Element find(Callable<? extends Boolean> f) { return null; }
+    public <Result> Iterable<Result> map(Callable<? extends Result> f) { return $empty.getEmpty(); }
+    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { return this; }
+    public <Result> Result fold(Result ini, Callable<? extends Result> f) { return ini; }
 }
 
 @Ignore
@@ -600,8 +600,8 @@ class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
     }
     
     public Iterable<? extends Element> getSequence() { return Iterable$impl._getSequence(this); }
-    public Element find(Callable<Boolean> f) { return Iterable$impl._find(this, f); }
-    public <Result> Iterable<Result> map(Callable<Result> f) { return new MapIterable(this, f); }
-    public Iterable<? extends Element> filter(Callable<Boolean> f) { return new FilterIterable(this, f); }
-    public <Result> Result fold(Result ini, Callable<Result> f) { return Iterable$impl._fold(this, ini, f); }
+    public Element find(Callable<? extends Boolean> f) { return Iterable$impl._find(this, f); }
+    public <Result> Iterable<Result> map(Callable<? extends Result> f) { return new MapIterable<Element, Result>(this, f); }
+    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { return new FilterIterable<Element>(this, f); }
+    public <Result> Result fold(Result ini, Callable<? extends Result> f) { return Iterable$impl._fold(this, ini, f); }
 }

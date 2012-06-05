@@ -35,7 +35,7 @@ public final class Iterable$impl<Element> {
     public <Result> Result fold(Result initial, Callable<Result> accumulating) {
         return Iterable$impl._fold($this, initial, accumulating);
     }
-    static <Result> Result _fold(Iterable<?> $this, Result initial, Callable<Result> accum) {
+    static <Result> Result _fold(Iterable<?> $this, Result initial, Callable<? extends Result> accum) {
         Iterator<?> iter = $this.getIterator();
         java.lang.Object elem;
         while (!((elem = iter.next()) instanceof Finished)) {
@@ -47,7 +47,7 @@ public final class Iterable$impl<Element> {
     public Element find(Callable<Boolean> selecting) {
         return Iterable$impl._find($this, selecting);
     }
-    static <Element> Element _find(Iterable<? extends Element> $this, Callable<Boolean> sel) {
+    static <Element> Element _find(Iterable<? extends Element> $this, Callable<? extends Boolean> sel) {
         Iterator<? extends Element> iter = $this.getIterator();
         java.lang.Object elem;
         while (!((elem = iter.next()) instanceof Finished)) {
@@ -62,8 +62,8 @@ public final class Iterable$impl<Element> {
 
 class MapIterable<Element, Result> implements Iterable<Result> {
     final Iterable<Element> iterable;
-    final Callable<Result> sel;
-    MapIterable(Iterable<Element> iterable, Callable<Result> collecting) {
+    final Callable<? extends Result> sel;
+    MapIterable(Iterable<Element> iterable, Callable<? extends Result> collecting) {
         this.iterable = iterable;
         sel = collecting;
     }
@@ -83,16 +83,16 @@ class MapIterable<Element, Result> implements Iterable<Result> {
     public boolean getEmpty() { return getIterator().next() instanceof Finished; }
 
     @Override public Iterable<? extends Result> getSequence() { return Iterable$impl._getSequence(this); }
-    @Override public Result find(Callable<Boolean> f) { return Iterable$impl._find(this, f); }
-    @Override public <R2> Iterable<R2> map(Callable<R2> f) { return new MapIterable<Result, R2>(this, f); }
-    @Override public Iterable<Result> filter(Callable<Boolean> f) { return new FilterIterable<Result>(this, f); }
-    @Override public <R2> R2 fold(R2 ini, Callable<R2> f) { return Iterable$impl._fold(this, ini, f); }
+    @Override public Result find(Callable<? extends Boolean> f) { return Iterable$impl._find(this, f); }
+    @Override public <R2> Iterable<R2> map(Callable<? extends R2> f) { return new MapIterable<Result, R2>(this, f); }
+    @Override public Iterable<Result> filter(Callable<? extends Boolean> f) { return new FilterIterable<Result>(this, f); }
+    @Override public <R2> R2 fold(R2 ini, Callable<? extends R2> f) { return Iterable$impl._fold(this, ini, f); }
 }
 
 class FilterIterable<Element> implements Iterable<Element> {
     final Iterable<Element> iterable;
-    final Callable<Boolean> f;
-    FilterIterable(Iterable<Element> iterable, Callable<Boolean> selecting) {
+    final Callable<? extends Boolean> f;
+    FilterIterable(Iterable<Element> iterable, Callable<? extends Boolean> selecting) {
         this.iterable = iterable;
         f = selecting;
     }
@@ -112,8 +112,8 @@ class FilterIterable<Element> implements Iterable<Element> {
     public Iterator<Element> getIterator() { return new FilterIterator(); }
     public boolean getEmpty() { return getIterator().next() instanceof Finished; }
     @Override public Iterable<? extends Element> getSequence() { return Iterable$impl._getSequence(this); }
-    @Override public Element find(Callable<Boolean> f) { return Iterable$impl._find(this, f); }
-    @Override public <Result> Iterable<Result> map(Callable<Result> f) { return new MapIterable(this, f); }
-    @Override public Iterable<? extends Element> filter(Callable<Boolean> f) { return new FilterIterable(this, f); }
-    @Override public <Result> Result fold(Result ini, Callable<Result> f) { return Iterable$impl._fold(this, ini, f); }
+    @Override public Element find(Callable<? extends Boolean> f) { return Iterable$impl._find(this, f); }
+    @Override public <Result> Iterable<Result> map(Callable<? extends Result> f) { return new MapIterable<Element, Result>(this, f); }
+    @Override public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { return new FilterIterable<Element>(this, f); }
+    @Override public <Result> Result fold(Result ini, Callable<? extends Result> f) { return Iterable$impl._fold(this, ini, f); }
 }
