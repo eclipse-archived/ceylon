@@ -1305,7 +1305,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         if(ofType == null)
             return List.nil();
         String typeSig = serialiseTypeSignature(ofType);
-        JCExpression caseAttribute = make().Assign(makeUnquotedIdent("of"), 
+        JCExpression caseAttribute = make().Assign(makeUnquotedIdent("value"), 
                 make().Literal(typeSig));
         
         return makeModelAnnotation(syms().ceylonAtCaseTypes, List.of(caseAttribute));
