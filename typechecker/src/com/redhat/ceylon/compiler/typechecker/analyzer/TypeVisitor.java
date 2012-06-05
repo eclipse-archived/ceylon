@@ -37,6 +37,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
+import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrTypeList;
@@ -234,6 +235,7 @@ public class TypeVisitor extends Visitor {
                         name);
             }
             addImport(member, il, i);
+            checkAliasCase(alias, d);
         }
         Tree.ImportMemberOrTypeList imtl = member.getImportMemberOrTypeList();
         if (imtl!=null) {
@@ -252,6 +254,21 @@ public class TypeVisitor extends Visitor {
         	}
         }
         return name;
+    }
+
+    private void checkAliasCase(Tree.Alias alias, Declaration d) {
+        if (alias!=null) {
+            if (d instanceof TypeDeclaration &&
+                    alias.getIdentifier().getToken().getType()!=CeylonLexer.UIDENTIFIER) {
+                alias.getIdentifier().addError("imported type should have uppercase alias: " +
+                    d.getName());
+            }
+            if (d instanceof TypedDeclaration &&
+                    alias.getIdentifier().getToken().getType()!=CeylonLexer.LIDENTIFIER) {
+                alias.getIdentifier().addError("imported member should have lowercase alias: " +
+                    d.getName());
+            }
+        }
     }
 
     private void importMember(Tree.ImportMemberOrType member, TypeDeclaration d, 
@@ -302,6 +319,7 @@ public class TypeVisitor extends Visitor {
             else {
                 addMemberImport(member, il, i);
             }
+            checkAliasCase(alias, m);
         }
         ImportMemberOrTypeList imtl = member.getImportMemberOrTypeList();
         if (imtl!=null) {
