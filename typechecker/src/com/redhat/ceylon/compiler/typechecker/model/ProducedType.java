@@ -137,16 +137,10 @@ public class ProducedType extends ProducedReference {
                 return false;
             }
             else {
-                ProducedType qt = getQualifyingType();
-                ProducedType tqt = type.getQualifyingType();
-                if (qt!=null &&
-                        qt.getDeclaration().isStaticallyImportable()) {
-                    qt=null;
-                }
-                if (tqt!=null &&
-                        tqt.getDeclaration().isStaticallyImportable()) {
-                    tqt=null;
-                }
+                ProducedType qt = getDeclaration().isStaticallyImportable() ?
+                        null : getQualifyingType();
+                ProducedType tqt = type.getDeclaration().isStaticallyImportable() ? 
+                        null : type.getQualifyingType();
                 if (qt==null) {
                     if (tqt!=null) {
                         return false;
@@ -248,16 +242,10 @@ public class ProducedType extends ProducedReference {
                 return false;
             }
             else {
-                ProducedType stqt = st.getQualifyingType();
-                ProducedType tqt = type.getQualifyingType();
-                if (stqt!=null &&
-                        stqt.getDeclaration().isStaticallyImportable()) {
-                    stqt=null;
-                }
-                if (tqt!=null &&
-                        tqt.getDeclaration().isStaticallyImportable()) {
-                    tqt=null;
-                }
+                ProducedType stqt = st.getDeclaration().isStaticallyImportable() ?
+                        null : st.getQualifyingType();
+                ProducedType tqt = type.getDeclaration().isStaticallyImportable() ? 
+                        null : type.getQualifyingType();
                 if (stqt==null) {
                     if (tqt!=null) {
                         //probably extraneous!
