@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.lang.model.element.ElementKind;
-import javax.lang.model.type.NoType;
 import javax.lang.model.type.TypeKind;
 
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
