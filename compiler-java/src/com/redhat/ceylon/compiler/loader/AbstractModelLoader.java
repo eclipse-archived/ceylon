@@ -1260,18 +1260,27 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     }else{
                         // get its first type param
                         type = type.getTypeArgumentList().get(0);
+                        // possibly make it optional
+                        TypeMirror variadicType = typeMirror.getComponentType();
+                        if(!isCeylon && !variadicType.isPrimitive()){
+                            // Java parameters are all optional unless primitives
+                            ProducedType optionalType = typeFactory.getOptionalType(type);
+                            optionalType.setUnderlyingType(type.getUnderlyingType());
+                            type = optionalType;
+                        }
                         // turn it into a T[]
                         type = typeFactory.getEmptyType(typeFactory.getSequenceType(type));
                     }
-                }
-                // variadic params may technically be null in Java, but it Ceylon sequenced params may not
-                // so it breaks the typechecker logic for handling them, and it will always be a case of bugs
-                // in the java side so let's not allow this
-                if(!isCeylon && !typeMirror.isPrimitive() && !isVariadic){
-                    // Java parameters are all optional unless primitives
-                    ProducedType optionalType = typeFactory.getOptionalType(type);
-                    optionalType.setUnderlyingType(type.getUnderlyingType());
-                    type = optionalType;
+                }else{
+                    // variadic params may technically be null in Java, but it Ceylon sequenced params may not
+                    // so it breaks the typechecker logic for handling them, and it will always be a case of bugs
+                    // in the java side so let's not allow this
+                    if(!isCeylon && !typeMirror.isPrimitive()){
+                        // Java parameters are all optional unless primitives
+                        ProducedType optionalType = typeFactory.getOptionalType(type);
+                        optionalType.setUnderlyingType(type.getUnderlyingType());
+                        type = optionalType;
+                    }
                 }
                 parameter.setType(type );
             }catch(TypeParserException x){
