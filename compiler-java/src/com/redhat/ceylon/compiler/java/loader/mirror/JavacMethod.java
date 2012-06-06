@@ -94,6 +94,11 @@ public class JavacMethod implements MethodMirror {
     }
 
     @Override
+    public boolean isVariadic() {
+        return methodSymbol.isVarArgs();
+    }
+
+    @Override
     public List<VariableMirror> getParameters() {
         if (parameters == null) {
             com.sun.tools.javac.util.List<VarSymbol> params = methodSymbol.getParameters();
