@@ -102,4 +102,5 @@ public class TypesJava {
     void variadicObject(java.lang.Object... vars){}
     void variadicJavaString(java.lang.String... vars){}
     void variadicCeylonString(ceylon.language.String... vars){}
+    <T> void variadicT(T... vars){}
 }

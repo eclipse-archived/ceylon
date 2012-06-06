@@ -100,10 +100,26 @@ final class variadicMethods {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         java.variadicByte((byte)1L, (byte)box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(2L)).longValue(), (byte)3L);
         java.variadicLong(1L, box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(2L)).longValue(), 3L);
+        java.variadicLong(1L);
+        java.variadicLong(box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)).longValue());
+        java.variadicLong();
         java.variadicJavaString("a", box.<.ceylon.language.String>box(.ceylon.language.String.instance("b")).toString(), "c");
+        java.variadicJavaString("a");
+        java.variadicJavaString(box.<.ceylon.language.String>box(.ceylon.language.String.instance("a")).toString());
+        java.variadicJavaString();
+        final .ceylon.language.String string = .ceylon.language.String.instance("a");
+        java.variadicJavaString((
+            let
+            {
+                .ceylon.language.String $ceylontmp0 = string;
+            }
+            returning $ceylontmp0 != null ? $ceylontmp0.toString() : null;
+        ));
         java.variadicCeylonString(.ceylon.language.String.instance("a"), box.<.ceylon.language.String>box(.ceylon.language.String.instance("b")), .ceylon.language.String.instance("c"));
         java.variadicObject(.ceylon.language.String.instance("a"), box.<.ceylon.language.String>box(.ceylon.language.String.instance("b")), .ceylon.language.Integer.instance(1L), box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(2L)));
         java.variadicObject(new .java.lang.String("a"), new .java.lang.Integer((int)1L));
+        java.<.ceylon.language.Integer>variadicT(.ceylon.language.Integer.instance(1L), box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(2L)), .ceylon.language.Integer.instance(3L));
+        java.<.ceylon.language.String>variadicT(.ceylon.language.String.instance("a"), box.<.ceylon.language.String>box(.ceylon.language.String.instance("b")), .ceylon.language.String.instance("c"));
     }
     
     public static void main(.java.lang.String[] args) {

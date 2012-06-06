@@ -90,9 +90,24 @@ void variadicMethods() {
 
     @error
     java.variadicLong(1, box(2), 3);
+    @error
+    java.variadicLong(1);
+    @error
+    java.variadicLong(box(1));
+    @error
+    java.variadicLong();
 
     @error
     java.variadicJavaString("a", box("b"), "c");
+    @error
+    java.variadicJavaString("a");
+    @error
+    java.variadicJavaString(box("a"));
+    @error
+    java.variadicJavaString();
+    String? string = "a";
+    @error
+    java.variadicJavaString(string);
 
     @error
     java.variadicCeylonString("a", box("b"), "c");
@@ -102,4 +117,10 @@ void variadicMethods() {
 
     @error
     java.variadicObject(JString("a"), JInteger(1));
+    
+    @error
+    java.variadicT<Integer>(1, box(2), 3);
+
+    @error
+    java.variadicT<String>("a", box("b"), "c");
 }
