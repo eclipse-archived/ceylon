@@ -361,7 +361,8 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
         for (int argIndex = 0; argIndex < numArguments; argIndex++) {
             final JCExpression expr;
             if (!isParameterSequenced(argIndex)
-                    || dontBoxSequence()) {
+                    || dontBoxSequence()
+                    || isJavaMethod()) {
                 expr = this.getTransformedArgumentExpression(argIndex);
             } else {
                 // box with an ArraySequence<T>
@@ -373,6 +374,12 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
             }
             appendArgument(expr);
         }
+    }
+
+    private boolean isJavaMethod() {
+        if(!(primaryDeclaration instanceof Method))
+            return false;
+        return gen.isJavaMethod((Method) primaryDeclaration);
     }
 
     protected abstract Tree.Expression getArgumentExpression(int argIndex);
