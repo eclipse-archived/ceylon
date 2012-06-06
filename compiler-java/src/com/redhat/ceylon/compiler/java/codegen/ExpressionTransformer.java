@@ -1351,7 +1351,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 primaryExpr = null;
                 qualExpr = makeQualIdent(makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()), Util.getGetterName(decl.getName()));
                 selector = null;
-            } else if (decl.isClassMember()) {
+            } else if (decl.isClassMember()
+                        || decl.isInterfaceMember()) {
                 selector = Util.getGetterName(decl.getName());
             } else {
                 // method local attr
