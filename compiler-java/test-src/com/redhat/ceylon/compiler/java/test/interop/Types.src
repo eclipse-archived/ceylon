@@ -523,3 +523,25 @@ final class typeParameters {
         .com.redhat.ceylon.compiler.java.test.interop.typeParameters.typeParameters();
     }
 }
+final class optionalTypes {
+    
+    private optionalTypes() {
+    }
+    
+    static void optionalTypes() {
+        final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
+        final .ceylon.language.String string = .ceylon.language.String.instance("foo");
+        java.stringParams((
+            let
+            {
+                .ceylon.language.String $ceylontmp38 = string;
+            }
+            returning $ceylontmp38 != null ? $ceylontmp38.toString() : null;
+        ), string);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.optionalTypes.optionalTypes();
+    }
+}
