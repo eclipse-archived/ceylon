@@ -1,14 +1,155 @@
 package com.redhat.ceylon.compiler.java.test.expression.selfref;
 
-class OuterReference {
+class OuterReferenceSuper {
     
-    class Inner {
+    public final boolean superTest() {
+        return true;
+    }
+    
+    OuterReferenceSuper() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReferenceSuper();
+    }
+}
+interface OuterReference$InnerIface {
+}
+interface OuterReference$m$1$LocalIface {
+}
+class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReferenceSuper {
+    
+    final class InnerClass$impl {
         
-        private final boolean inner() {
+        InnerClass$impl() {
+            super();
+        }
+        
+        private final boolean $init$b() {
+            return OuterReference.this.superTest();
+        }
+    }
+    
+    class InnerClass {
+        
+        private final boolean m(final boolean b) {
+            OuterReference.this.superTest();
             return OuterReference.this.test();
         }
         
-        Inner() {
+        private final boolean m() {
+            return (
+                let
+                {
+                    boolean $ceylontmp$b$3 = m$b();
+                }
+                returning m($ceylontmp$b$3);
+            );
+        }
+        
+        private final boolean m$b() {
+            return OuterReference.this.superTest();
+        }
+        
+        InnerClass() {
+            (
+                let
+                {
+                    .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.InnerClass$impl $ceylontmp$impl$0 = new .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.InnerClass$impl();
+                    boolean $ceylontmp$b$1 = $ceylontmp$impl$0.$init$b();
+                    this($ceylontmp$b$1);
+                }
+                returning null;
+            );
+        }
+        
+        InnerClass(boolean b) {
+        }
+    }
+    
+    final class InnerIface$impl {
+        private final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference$InnerIface $this;
+        
+        private final boolean m$b() {
+            return OuterReference.this.superTest();
+        }
+        
+        private final boolean m() {
+            return (
+                let
+                {
+                    boolean $ceylontmp$b$5 = m$b();
+                }
+                returning m($ceylontmp$b$5);
+            );
+        }
+        
+        private boolean m(final boolean b) {
+            OuterReference.this.superTest();
+            return OuterReference.this.test();
+        }
+        
+        InnerIface$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference$InnerIface $this) {
+            this.$this = $this;
+        }
+    }
+    
+    private final void m() {
+        
+        final class LocalClass$impl {
+            
+            private final boolean $init$b() {
+                return OuterReference.this.superTest();
+            }
+        }
+        
+        class LocalClass {
+            
+            LocalClass() {
+                (
+                    let
+                    {
+                        LocalClass$impl $ceylontmp$impl$6 = new LocalClass$impl();
+                        boolean $ceylontmp$b$7 = $ceylontmp$impl$6.$init$b();
+                        this($ceylontmp$b$7);
+                    }
+                    returning null;
+                );
+            }
+            
+            LocalClass(boolean b) {
+                OuterReference.this.superTest();
+                OuterReference.this.test();
+            }
+        }
+        
+        final class LocalIface$impl {
+            private final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference$m$1$LocalIface $this;
+            
+            private final boolean m$b() {
+                return OuterReference.this.superTest();
+            }
+            
+            private final void m() {
+                (
+                    let
+                    {
+                        boolean $ceylontmp$b$9 = m$b();
+                        m($ceylontmp$b$9);
+                    }
+                    returning null;
+                );
+            }
+            
+            private void m(final boolean b) {
+                OuterReference.this.superTest();
+                OuterReference.this.test();
+            }
+            
+            LocalIface$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference$m$1$LocalIface $this) {
+                this.$this = $this;
+            }
         }
     }
     
@@ -17,6 +158,7 @@ class OuterReference {
     }
     
     OuterReference() {
+        super();
     }
     
     public static void main(.java.lang.String[] args) {
