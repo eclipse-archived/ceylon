@@ -52,13 +52,13 @@ public class PhasedUnit {
     private List<CommonToken> tokens;
     private ModuleVisitor moduleVisitor;
     private VirtualFile srcDir;
-    private boolean treeValidated;
-    private boolean declarationsScanned;
-    private boolean scanningDeclarations;
-    private boolean typeDeclarationsScanned;
-    private boolean refinementValidated;
-    private boolean flowAnalyzed;
-    private boolean fullyTyped;
+    private boolean treeValidated = false;
+    private boolean declarationsScanned = false;
+    private boolean scanningDeclarations = false;
+    private boolean typeDeclarationsScanned = false;
+    private boolean refinementValidated = false;
+    private boolean flowAnalyzed = false;
+    private boolean fullyTyped = false;
 
     public VirtualFile getSrcDir() {
         return srcDir;
@@ -94,11 +94,12 @@ public class PhasedUnit {
         this.tokens = other.tokens;
         this.moduleVisitor = other.moduleVisitor;
         this.srcDir = other.srcDir;
-        this.treeValidated = treeValidated;
+        this.treeValidated = other.treeValidated;
         this.declarationsScanned = other.declarationsScanned;
         this.scanningDeclarations = other.scanningDeclarations;
         this.typeDeclarationsScanned = other.typeDeclarationsScanned;
         this.refinementValidated = other.refinementValidated;
+        this.fullyTyped = other.fullyTyped;
         this.flowAnalyzed = other.flowAnalyzed;
     }
 
