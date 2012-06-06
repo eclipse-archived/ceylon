@@ -20,6 +20,9 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.CLASS_NEW;
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.EXTENDS;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -1663,16 +1666,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(comp);
         Tree.ComprehensionClause clause = comp.getForComprehensionClause();
         ProducedType targetIterType = typeFact().getIterableType(clause.getTypeModel());
-        ProducedType iteratorType = typeFact().getIteratorType(targetIterType.getTypeArgumentList().get(0));
-        //Define an anonymous subclass of the target type
-        String compname = aliasName("comp");
-        ClassDefinitionBuilder builder = ClassDefinitionBuilder.klass(this, true, compname);
-        builder.extending(iteratorType);
         int idx = 0;
         ExpressionComprehensionClause excc = null;
         String prevItemVar = null;
+        //Iterator fields
+        ListBuffer<JCTree> fields = new ListBuffer<JCTree>();
         while (clause != null) {
-            final String iterVar = compname+"$iter$"+idx;
+            final String iterVar = "iter$"+idx;
             String itemVar = null;
             //spread 1162
             if (clause instanceof ForComprehensionClause) {
@@ -1685,12 +1685,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                                 : iterType.getTypeArgumentList().get(0)));
                 if (clause == comp.getForComprehensionClause()) {
                     //The first iterator can be initialized as a field
-                    builder.field(2, iterVar, iterTypeExpr, make().Apply(null,
-                            make().Select(transformExpression(specexpr.getExpression()), names().fromString("getIterator")), List.<JCExpression>nil()),
-                            false);
+                    fields.add(make().VarDef(make().Modifiers(2), names().fromString(iterVar), iterTypeExpr, make().Apply(null,
+                            make().Select(transformExpression(specexpr.getExpression()), names().fromString("getIterator")), List.<JCExpression>nil())));
                 } else {
                     //The subsequent iterators need to be inside a method, in case they depend on the outer current element
-                    builder.field(2, iterVar, iterTypeExpr, null, false);
+                    fields.add(make().VarDef(make().Modifiers(2), names().fromString(iterVar), iterTypeExpr, null));
                     JCBlock body = make().Block(0l, List.<JCStatement>of(
                             make().If(make().Binary(JCTree.NE, makeUnquotedIdent(iterVar), makeNull()),
                                     make().Exec(make().Apply(null, makeSelect("this", prevItemVar), List.<JCExpression>nil())),
@@ -1700,7 +1699,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                                     names().fromString("getIterator")), List.<JCExpression>nil()))),
                             make().Return(makeUnquotedIdent(iterVar))
                     ));
-                    builder.defs(make().MethodDef(make().Modifiers(2),
+                    fields.add(make().MethodDef(make().Modifiers(2),
                             names().fromString(iterVar), iterTypeExpr, List.<JCTree.JCTypeParameter>nil(),
                             List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(), body, null));
                 }
@@ -1708,15 +1707,15 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (fcl.getForIterator() instanceof ValueIterator) {
                     Value item = ((ValueIterator)fcl.getForIterator()).getVariable().getDeclarationModel();
                     itemVar = item.getName();
-                    builder.field(2, itemVar, makeJavaType(item.getType()), null, false);
-                    builder.field(2, itemVar+"$exhausted", makeJavaType(typeFact().getBooleanDeclaration().getType()), null, false);
+                    fields.add(make().VarDef(make().Modifiers(2), names().fromString(itemVar), makeJavaType(item.getType()), null));
+                    fields.add(make().VarDef(make().Modifiers(2), names().fromString(itemVar+"$exhausted"), makeJavaType(typeFact().getBooleanDeclaration().getType()), null));
                 } else if (fcl.getForIterator() instanceof KeyValueIterator) {
                     KeyValueIterator kviter = (KeyValueIterator)fcl.getForIterator();
                     itemVar = null;//compname+"$item$"+idx;
-                    builder.field(2, kviter.getKeyVariable().getDeclarationModel().getName(),
-                            makeJavaType(kviter.getKeyVariable().getDeclarationModel().getType()), null, false);
-                    builder.field(2, kviter.getValueVariable().getDeclarationModel().getName(),
-                            makeJavaType(kviter.getValueVariable().getDeclarationModel().getType()), null, false);
+                    fields.add(make().VarDef(make().Modifiers(2), names().fromString(kviter.getKeyVariable().getDeclarationModel().getName()),
+                            makeJavaType(kviter.getKeyVariable().getDeclarationModel().getType()), null));
+                    fields.add(make().VarDef(make().Modifiers(2), names().fromString(kviter.getValueVariable().getDeclarationModel().getName()),
+                            makeJavaType(kviter.getValueVariable().getDeclarationModel().getType()), null));
                 } else {
                     return makeErroneous(fcl, "No support yet for iterators of type " + fcl.getForIterator().getClass().getName());
                 }
@@ -1772,7 +1771,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         make().Block(0, List.from(innerBody.toArray(new JCStatement[0]))),
                         make().Block(0, List.from(elseBody.toArray(new JCStatement[0])))));
                 contextBody.add(make().Return(makeBoolean(true)));
-                builder.defs(make().MethodDef(make().Modifiers(2), names().fromString(itemVar),
+                fields.add(make().MethodDef(make().Modifiers(2), names().fromString(itemVar),
                         makeJavaType(typeFact().getBooleanDeclaration().getType()),
                         List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(),
                         make().Block(0, List.from(contextBody.toArray(new JCStatement[0]))), null));
@@ -1788,8 +1787,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                             : ((ExistsOrNonemptyCondition)cond).getVariable();
                     //Initialize the condition's attribute to finished so that this is returned
                     //in case the condition is not met and the iterator is exhausted
-                    builder.field(2, var.getDeclarationModel().getName(),
-                            makeJavaType(typeFact().getObjectDeclaration().getType()), makeFinished(), false);
+                    fields.add(make().VarDef(make().Modifiers(2), names().fromString(var.getDeclarationModel().getName()),
+                            makeJavaType(typeFact().getObjectDeclaration().getType()), makeFinished()));
                 }
                 JCExpression condExpr = make().Binary(JCTree.EQ, make().Apply(null,
                         make().Select(makeUnquotedIdent("this"), names().fromString(prevItemVar)), List.<JCExpression>nil()),
@@ -1800,7 +1799,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     //TODO AND condExpr with negated transformed cond
                 }
                 itemVar = "next" + idx;
-                builder.defs(make().MethodDef(make().Modifiers(2), names().fromString(itemVar),
+                fields.add(make().MethodDef(make().Modifiers(2), names().fromString(itemVar),
                         makeJavaType(typeFact().getBooleanDeclaration().getType()), List.<JCTree.JCTypeParameter>nil(),
                         List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(), make().Block(0, List.<JCStatement>of(
                             make().WhileLoop(condExpr, make().Block(0, List.<JCStatement>nil())),
@@ -1821,27 +1820,29 @@ public class ExpressionTransformer extends AbstractTransformer {
             idx++;
             if (itemVar != null) prevItemVar = itemVar;
         }
-        builder.defs(make().MethodDef(make().Modifiers(1), names().fromString("next"),
-                makeJavaType(typeFact().getObjectDeclaration().getType()), List.<JCTree.JCTypeParameter>nil(),
-                List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(), make().Block(0, List.<JCStatement>of(
-                        make().If(make().Binary(JCTree.EQ,
-                                make().Apply(null, make().Select(makeUnquotedIdent("this"), names().fromString(prevItemVar)), List.<JCExpression>nil()),
-                                makeBoolean(true)),
-                            make().Return(transformExpression(excc.getExpression())),
-                            make().Return(makeFinished()))
+        fields.add(make().MethodDef(make().Modifiers(1), names().fromString("next"),
+            makeJavaType(typeFact().getObjectDeclaration().getType()), List.<JCTree.JCTypeParameter>nil(),
+            List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(), make().Block(0, List.<JCStatement>of(
+                make().Return(
+                    make().Conditional(
+                        make().Binary(JCTree.EQ, make().Apply(null, make().Select(makeUnquotedIdent("this"),
+                            names().fromString(prevItemVar)), List.<JCExpression>nil()), makeBoolean(true)),
+                        transformExpression(excc.getExpression()), makeFinished()))
         )), null));
-        String iterableName = aliasName("compr");
-        ClassDefinitionBuilder iterable = ClassDefinitionBuilder.klass(this, false, iterableName);
-        iterable.extending(targetIterType);
-        builder.modifiers(2);
-        iterable.defs(builder.build());
-        iterable.defs(make().MethodDef(make().Modifiers(1), names().fromString("getIterator"), makeJavaType(iteratorType),
-                List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(),
-                make().Block(0, List.<JCStatement>of(make().Return(makeNewClass(compname, false)))), null));
-        List<JCTree> compclass = iterable.build();
-        current().defs(compclass);
-        System.out.println("builder: " + compclass);
-        return makeNewClass("ceylon.language.Iterable$impl", List.<JCExpression>of(makeNewClass(iterableName, false)), true);
+        ProducedType iteratorType = typeFact().getIteratorType(typeFact().getIteratedType(targetIterType));
+        JCExpression iterator = make().NewClass(null, null,makeJavaType(iteratorType, CLASS_NEW|EXTENDS),
+                List.<JCExpression>nil(), make().AnonymousClassDef(make().Modifiers(0), fields.toList()));
+        JCExpression iterable = make().NewClass(null, null,
+                make().TypeApply(makeIdent(syms().ceylonAbstractIterableType),
+                    List.<JCExpression>of(makeJavaType(typeFact().getIteratedType(targetIterType), NO_PRIMITIVES))),
+                List.<JCExpression>nil(), make().AnonymousClassDef(make().Modifiers(0), List.<JCTree>of(
+                    make().MethodDef(make().Modifiers(1), names().fromString("getIterator"),
+                        makeJavaType(iteratorType, CLASS_NEW|EXTENDS),
+                    List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(),
+                    make().Block(0, List.<JCStatement>of(make().Return(iterator))), null)
+        )));
+        System.out.println("builder: " + iterable);
+        return iterable;
     }
 
     //
