@@ -11,6 +11,7 @@ final class IBug441$impl {
 }
 class Bug441 implements .com.redhat.ceylon.compiler.java.test.issues.IBug441, .ceylon.language.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.Bug441> {
     private final .com.redhat.ceylon.compiler.java.test.issues.IBug441$impl $IBug441$impl;
+    private final .ceylon.language.Cloneable$impl<.com.redhat.ceylon.compiler.java.test.issues.IBug441> $Cloneable$impl;
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.Bug441 getClone() {
@@ -19,6 +20,7 @@ class Bug441 implements .com.redhat.ceylon.compiler.java.test.issues.IBug441, .c
     
     Bug441() {
         this.$IBug441$impl = new .com.redhat.ceylon.compiler.java.test.issues.IBug441$impl(this);
+        this.$Cloneable$impl = new .ceylon.language.Cloneable$impl<.com.redhat.ceylon.compiler.java.test.issues.IBug441>(this);
     }
     
     public static void main(.java.lang.String[] args) {
