@@ -109,32 +109,39 @@ public class Util {
                 List<ParameterList> pls = f.getParameterLists();
                 if (pls!=null && !pls.isEmpty()) {
                     List<Parameter> params = pls.get(0).getParameters();
-                    if (signature.size()!=params.size()) {
+                    int size = params.size();
+                    if (size>0 && params.get(size-1).isSequenced()) {
+                        //ignore sequenced args
+                        //TODO: don't ignore them!
+                        size--;
+                        if (signature.size()<size) {
+                            return false;
+                        }
+                    }
+                    else if (signature.size()!=size) {
                         return false;
                     }
-                    else {
-                        for (int i=0; i<params.size(); i++) {
-                            //ignore optionality for resolving overloads, since
-                            //all all Java method params are treated as optional
-                            ProducedType pdt = params.get(i).getType();
-                            ProducedType sdt = signature.get(i);
-                            if (pdt==null || sdt==null) return false;
-                            ProducedType paramType = d.getUnit().getDefiniteType(pdt);
-                            ProducedType sigType = d.getUnit().getDefiniteType(sdt);
-                            ProducedType ast = sigType.getSupertype(d.getUnit().getArrayDeclaration());
-                            if (ast!=null) sigType = ast;
-                            if (sigType.isSubtypeOf(d.getUnit().getNothingDeclaration().getType())) {
-                                continue;
-                            }
-                            if (isTypeUnknown(sigType) || isTypeUnknown(paramType)) return false;
-                            if (!erase(sigType.getDeclaration())
-                                        .inherits(erase(paramType.getDeclaration())) &&
-                                    underlyingTypesUnequal(paramType, sigType)) {
-                                return false;
-                            }
+                    for (int i=0; i<size; i++) {
+                        //ignore optionality for resolving overloads, since
+                        //all Java method params are treated as optional
+                        ProducedType pdt = params.get(i).getType();
+                        ProducedType sdt = signature.get(i);
+                        if (pdt==null || sdt==null) return false;
+                        ProducedType paramType = d.getUnit().getDefiniteType(pdt);
+                        ProducedType sigType = d.getUnit().getDefiniteType(sdt);
+                        ProducedType ast = sigType.getSupertype(d.getUnit().getArrayDeclaration());
+                        if (ast!=null) sigType = ast;
+                        if (sigType.isSubtypeOf(d.getUnit().getNothingDeclaration().getType())) {
+                            continue;
                         }
-                        return true;
+                        if (isTypeUnknown(sigType) || isTypeUnknown(paramType)) return false;
+                        if (!erase(sigType.getDeclaration())
+                                .inherits(erase(paramType.getDeclaration())) &&
+                                underlyingTypesUnequal(paramType, sigType)) {
+                            return false;
+                        }
                     }
+                    return true;
                 }
                 else {
                     return false;
