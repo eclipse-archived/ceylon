@@ -1,10 +1,8 @@
 package ceylon.language;
 
 import java.io.IOException;
-import java.util.Properties;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -12,7 +10,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @Ceylon @Object
 public class process {
 	
-    @Ignore
+    /*@Ignore
     private static final class PropertiesMap implements Map<String, String> {
         
         private Properties props;
@@ -184,7 +182,7 @@ public class process {
         public java.lang.String toString() {
             return props.toString();
         }
-    }
+    }*/
 
     @SuppressWarnings("unchecked")
     private Iterable<? extends String> args = $empty.getEmpty();
@@ -243,12 +241,12 @@ public class process {
     	System.exit((int) code);
     }
     
-    @TypeInfo("ceylon.language.Map<ceylon.language.String, ceylon.language.String>")
+    /*@TypeInfo("ceylon.language.Map<ceylon.language.String, ceylon.language.String>")
     public Map<? extends String, ? extends String> getProperties() {
         return new PropertiesMap(System.getProperties());
-    }
+    }*/
     
-    @TypeInfo("ceylon.language.Map<ceylon.language.String, ceylon.language.String>")
+    /*@TypeInfo("ceylon.language.Map<ceylon.language.String, ceylon.language.String>")
     public Map<? extends String, ? extends String> getNamedArguments() {
         Properties props = new Properties();
         Iterator<? extends String> iterator = args.getIterator();
@@ -271,6 +269,49 @@ public class process {
             }
         }
         return new PropertiesMap(props);
+    }*/
+    
+    @TypeInfo("ceylon.language.Nothing|ceylon.language.String")
+    public String namedArgumentValue(@Name("name") java.lang.String name) {
+        Iterator<? extends String> iterator = args.getIterator();
+        java.lang.Object next;
+        while ((next = iterator.next()) instanceof String) {
+            String arg = (String) next;
+            if (arg.startsWith("-" + name + "=") || 
+                    arg.startsWith("--" + name + "=")) {
+                return String.instance(arg.value.substring(arg.value.indexOf('=')+1));
+            }
+            if (arg.equals("-" + name) || 
+                    arg.equals("--" + name)) {
+                java.lang.Object val = iterator.next();
+                if (val instanceof String) {
+                    String result = ((String) val);
+                    return result.startsWith("-") ? null : result;
+                }
+            }
+        }
+        return null;
+    }
+    
+    public boolean namedArgumentPresent(@Name("name") java.lang.String name) {
+        Iterator<? extends String> iterator = args.getIterator();
+        java.lang.Object next;
+        while ((next = iterator.next()) instanceof String) {
+            String arg = (String) next;
+            if (arg.startsWith("-" + name + "=") || 
+                    arg.startsWith("--" + name + "=") || 
+                    arg.equals("-" + name) || 
+                    arg.equals("--" + name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    @TypeInfo("ceylon.language.Nothing|ceylon.language.String")
+    public String propertyValue(@Name("name") java.lang.String name) {
+        java.lang.String property = System.getProperty(name);
+        return property==null ? null : String.instance(property);
     }
     
     @Override

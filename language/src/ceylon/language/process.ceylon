@@ -7,12 +7,20 @@ shared object process {
     doc "The command line arguments to the virtual machine."
     shared String[] arguments { throw; }
     
-    doc "The system properties of the virtual machine."
-    shared Map<String,String> properties { throw; }
-    
-    doc "The unix switch-style command line arguments to the 
-         virtual machine."
-    shared Map<String,String> namedArguments { throw; }
+    doc "Determine if an argument of form `-name` or `--name` 
+         was specified among the command line arguments to 
+         the virtual machine."
+    shared Boolean namedArgumentPresent(String name) { throw; }
+
+    doc "The value of an argument of form `-name=value`, 
+         `--name=value`, or `-name value` specified among the 
+         command line arguments to the virtual machine, if
+         any."
+    shared String? namedArgumentValue(String name) { throw; }
+
+    doc "The value of the given system property of the virtual
+         machine, if any."
+    shared String? propertyValue(String name) { throw; }
 
     doc "Print a string to the standard output of the 
          virtual machine process."
