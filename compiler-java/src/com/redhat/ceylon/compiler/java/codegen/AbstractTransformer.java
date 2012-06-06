@@ -1125,6 +1125,15 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         final TypedDeclaration producedParameterDecl = producedTypedReference.getDeclaration();
         final ProducedType declType = producedParameterDecl.getType();
         final TypeDeclaration declTypeDecl = declType.getDeclaration();
+        if(isJavaVariadic(parameter)){
+            // type of param must be T[]
+            ProducedType elementType = typeFact.getElementType(type);
+            if(elementType == null){
+                log.error("ceylon", "Invalid type for Java variadic parameter: "+type.getProducedTypeQualifiedName());
+                return type;
+            }
+            return elementType;
+        }
         if (type.getDeclaration() instanceof ClassOrInterface) {
             // Explicit type parameter
             return producedTypedReference.getType();
@@ -1138,6 +1147,17 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             }
          }
         return type;
+    }
+
+    private boolean isJavaVariadic(Parameter parameter) {
+        return parameter.isSequenced()
+                && parameter.getContainer() instanceof Method
+                && isJavaMethod((Method) parameter.getContainer());
+    }
+
+    boolean isJavaMethod(Method method) {
+        ClassOrInterface container = Decl.getClassOrInterfaceContainer(method);
+        return container != null && !Decl.isCeylon(container);
     }
 
     private ProducedType getTypeForFunctionalParameter(FunctionalParameter fp) {
