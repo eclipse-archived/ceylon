@@ -1616,7 +1616,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             // no need for erasure casts here
             elems.append(expressionGen().transformExpression(expr));
         }
-        return makeSequence(elems.toList(), typeFact().getObjectDeclaration().getType(), CeylonTransformer.WANT_RAW_TYPE);
+        return makeSequenceRaw(elems.toList());
     }
     
     JCExpression makeSequenceRaw(List<JCExpression> elems) {
