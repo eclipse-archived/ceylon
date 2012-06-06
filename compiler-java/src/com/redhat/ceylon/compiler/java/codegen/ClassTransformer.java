@@ -649,6 +649,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     public List<JCTree> transform(AttributeGetterDefinition decl, boolean forCompanion) {
+        ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
         String name = decl.getIdentifier().getText();
         
         // TODO Support concrete getters on interfaces
@@ -666,7 +667,11 @@ public class ClassTransformer extends AbstractTransformer {
         } else {
             builder.isFormal(true);
         }
-        return builder.build();
+        if (!Strategy.onlyOnCompanion(decl.getDeclarationModel()) || forCompanion) {
+            lb.appendList(builder.build());
+        }
+        
+        return lb.toList();
     }
 
     private int transformClassDeclFlags(ClassOrInterface cdecl) {
