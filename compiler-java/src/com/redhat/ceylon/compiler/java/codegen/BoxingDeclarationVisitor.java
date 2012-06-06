@@ -33,6 +33,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeArgument;
@@ -119,7 +120,7 @@ public class BoxingDeclarationVisitor extends Visitor {
             for (int jj = 0; jj < paramList.getParameters().size(); jj++) {
                 Parameter param = paramList.getParameters().get(jj);
                 Parameter refinedParam = refinedParamList.getParameters().get(jj);
-                if (param instanceof Functional) {
+                if (param instanceof Functional && refinedParam instanceof Functional) {
                     boxParameterLists(((Functional)param).getParameterLists(),
                             ((Functional)refinedParam).getParameterLists());
                 }
