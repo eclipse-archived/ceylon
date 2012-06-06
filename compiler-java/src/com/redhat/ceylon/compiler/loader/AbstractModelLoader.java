@@ -1283,7 +1283,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 parameter.setSequenced(true);
             if(paramMirror.getAnnotation(CEYLON_DEFAULTED_ANNOTATION) != null)
                 parameter.setDefaulted(true);
-            markUnboxed(parameter, paramMirror.getType());
+            // if it's variadic, consider the array element type (T[] == T...) for boxing rules
+            markUnboxed(parameter, isVariadic ? 
+                    paramMirror.getType().getComponentType()
+                    : paramMirror.getType());
             parameter.setDeclaration((Declaration) decl);
             parameters.getParameters().add(parameter);
             
