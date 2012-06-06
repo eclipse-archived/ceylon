@@ -342,5 +342,10 @@ public class IssuesTest extends CompilerTest {
         compile("bug569/z/module.ceylon", "bug569/z/Bar.ceylon");
     }
     
+    @Test
+    public void testBug588(){
+        compareWithJavaSource("Bug588");
+    }
+    
 }
 
