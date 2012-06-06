@@ -241,6 +241,8 @@ public class ModelLoaderTest extends CompilerTest {
             compareDeclarations(validDeclaration.getExtendedTypeDeclaration(), modelDeclaration.getExtendedTypeDeclaration());
         // satisfied types!
         compareSatisfiedTypes(name, validDeclaration.getSatisfiedTypeDeclarations(), modelDeclaration.getSatisfiedTypeDeclarations());
+        // case types
+        compareCaseTypes(name, validDeclaration.getCaseTypeDeclarations(), modelDeclaration.getCaseTypeDeclarations());
         // tests specific to classes
         if(validDeclaration instanceof Class){
             Assert.assertTrue(name+" [is class]", modelDeclaration instanceof Class);
@@ -270,6 +272,23 @@ public class ModelLoaderTest extends CompilerTest {
                 continue;
             Declaration validMember = lookupMember(validDeclaration, modelMember);
             Assert.assertNotNull(modelMember.getQualifiedNameString()+" [extra member] encountered in loaded model", validMember);
+        }
+    }
+
+    private void compareCaseTypes(String name,
+            List<TypeDeclaration> validTypeDeclarations,
+            List<TypeDeclaration> modelTypeDeclarations) {
+        if(validTypeDeclarations != null){
+            Assert.assertNotNull(name+ " [null case types]", modelTypeDeclarations);
+        }else{
+            Assert.assertNull(name+ " [non-null case types]", modelTypeDeclarations);
+            return;
+        }
+        Assert.assertEquals(name+ " [case types count]", validTypeDeclarations.size(), modelTypeDeclarations.size());
+        for(int i=0;i<validTypeDeclarations.size();i++){
+            TypeDeclaration validTypeDeclaration = validTypeDeclarations.get(i);
+            TypeDeclaration modelTypeDeclaration = modelTypeDeclarations.get(i);
+            compareDeclarations(validTypeDeclaration, modelTypeDeclaration);
         }
     }
 

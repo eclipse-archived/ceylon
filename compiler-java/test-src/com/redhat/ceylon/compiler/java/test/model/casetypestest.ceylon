@@ -17,4 +17,5 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-CaseTypes<String> caseTypesTest = CaseTypes<String>();CaseTypes2 caseTypesTest2 = CaseTypesLeft();
+CaseTypes<String> caseTypesTest = CaseTypes<String>();
+CaseTypes2 caseTypesTest2 = CaseTypesLeft();
