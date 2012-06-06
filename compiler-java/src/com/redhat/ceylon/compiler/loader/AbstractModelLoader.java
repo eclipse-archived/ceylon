@@ -1231,7 +1231,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         ParameterList parameters = new ParameterList();
         parameters.setNamedParametersSupported(isCeylon);
         decl.addParameterList(parameters);
+        int parameterCount = methodMirror.getParameters().size();
+        int parameterIndex = 0;
+        
         for(VariableMirror paramMirror : methodMirror.getParameters()){
+            boolean isLastParameter = parameterIndex == parameterCount - 1;
+            boolean isVariadic = isLastParameter && methodMirror.isVariadic();
+            
             ValueParameter parameter = new ValueParameter();
             parameter.setContainer((Scope) decl);
             parameter.setUnit(((Element)decl).getUnit());
@@ -1246,7 +1252,22 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             TypeMirror typeMirror = paramMirror.getType();
             try{
                 ProducedType type = obtainType(typeMirror, paramMirror, (Scope) decl);
-                if(!isCeylon && !typeMirror.isPrimitive()){
+                if(isVariadic){
+                    // we have a varargs param, we should have an Array<T> type, which we need to turn into T[]
+                    if(type.getDeclaration() != typeFactory.getArrayDeclaration()
+                            || type.getTypeArgumentList().isEmpty()){
+                        logError("Variadic argument is not of type Array<T>, this is most likely a bug in the compiler");
+                    }else{
+                        // get its first type param
+                        type = type.getTypeArgumentList().get(0);
+                        // turn it into a T[]
+                        type = typeFactory.getEmptyType(typeFactory.getSequenceType(type));
+                    }
+                }
+                // variadic params may technically be null in Java, but it Ceylon sequenced params may not
+                // so it breaks the typechecker logic for handling them, and it will always be a case of bugs
+                // in the java side so let's not allow this
+                if(!isCeylon && !typeMirror.isPrimitive() && !isVariadic){
                     // Java parameters are all optional unless primitives
                     ProducedType optionalType = typeFactory.getOptionalType(type);
                     optionalType.setUnderlyingType(type.getUnderlyingType());
@@ -1257,13 +1278,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 logError("Invalid type signature for parameter "+paramName+" of "+container.getQualifiedNameString()+"."+methodMirror.getName()+": "+x.getMessage());
                 throw x;
             }
-            if(paramMirror.getAnnotation(CEYLON_SEQUENCED_ANNOTATION) != null)
+            if(paramMirror.getAnnotation(CEYLON_SEQUENCED_ANNOTATION) != null
+                    || isVariadic)
                 parameter.setSequenced(true);
             if(paramMirror.getAnnotation(CEYLON_DEFAULTED_ANNOTATION) != null)
                 parameter.setDefaulted(true);
             markUnboxed(parameter, paramMirror.getType());
             parameter.setDeclaration((Declaration) decl);
             parameters.getParameters().add(parameter);
+            
+            parameterIndex++;
         }
     }
 
