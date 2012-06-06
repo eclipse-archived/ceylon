@@ -19,10 +19,9 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.COMPANION;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.NO_PRIMITIVES;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.TYPE_ARGUMENT;
-import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.WANT_RAW_TYPE;
-import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.COMPANION;
 import static com.sun.tools.javac.code.Flags.FINAL;
 
 import java.util.ArrayList;
