@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -11,6 +12,180 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @Ceylon @Object
 public class process {
 	
+    @Ignore
+    private static final class PropertiesMap implements Map<String, String> {
+        
+        private Properties props;
+        
+        private PropertiesMap(Properties props) {
+            this.props = props;
+        }
+
+        @Override
+        public String item(java.lang.Object key) {
+            if (key instanceof String) {
+                return String.instance(props.getProperty(((String)key).value));
+            }
+            else {
+                return null;
+            }
+        }
+
+        @Override
+        public boolean defines(java.lang.Object key) {
+            if (key instanceof String) {
+                return props.containsKey(((String)key).value);
+            }
+            else {
+                return false;
+            }
+        }
+
+        @Override
+        public boolean definesEvery(Iterable<? extends java.lang.Object> keys) {
+            return Correspondence$impl._definesEvery(this, keys);
+        }
+
+        @Override
+        public boolean definesEvery() {
+            return Correspondence$impl._definesEvery(this, $empty.getEmpty());
+        }
+
+        @Override
+        public Iterable<? extends java.lang.Object> definesEvery$keys() {
+            return $empty.getEmpty();
+        }
+
+        @Override
+        public boolean definesAny(Iterable<? extends java.lang.Object> keys) {
+            return Correspondence$impl._definesAny(this, keys);
+        }
+
+        @Override
+        public boolean definesAny() {
+            return Correspondence$impl._definesAny(this, $empty.getEmpty());
+        }
+
+        @Override
+        public Iterable<? extends java.lang.Object> definesAny$keys() {
+            return $empty.getEmpty();
+        }
+
+        @Override
+        public Iterable<? extends String> items(
+                Iterable<? extends java.lang.Object> keys) {
+            return Correspondence$impl._items(this, keys);
+        }
+
+        @Override
+        public Iterable<? extends String> items() {
+            return Correspondence$impl._items(this, $empty.getEmpty());
+        }
+
+        @Override
+        public Iterable<? extends java.lang.Object> items$keys() {
+            return $empty.getEmpty();
+        }
+
+        @Override
+        public boolean getEmpty() {
+            return props.isEmpty();
+        }
+
+        @Override
+        public boolean contains(java.lang.Object element) {
+            if (element instanceof Entry) {
+                Entry entry = (Entry) element;
+                String value = item(entry.getKey());
+                return value!=null && value.equals(entry.getItem());
+            }
+            return false;
+        }
+
+        @Override
+        public Iterator<? extends Entry<? extends String, ? extends String>> getIterator() {
+            return new Iterator<Entry<? extends String,? extends String>>() {
+                java.util.Iterator<java.util.Map.Entry<java.lang.Object, java.lang.Object>> iter = props.entrySet().iterator();
+                @Override
+                public java.lang.Object next() {
+                    if (iter.hasNext()) {
+                        java.util.Map.Entry<java.lang.Object, java.lang.Object> entry = iter.next();
+                        return new Entry(String.instance((java.lang.String) entry.getKey()),
+                                String.instance((java.lang.String) entry.getValue()));
+                    }
+                    else {
+                        return exhausted.getExhausted();
+                    }
+                }
+            };
+        }
+
+        @Override
+        public long getSize() {
+            return props.size();
+        }
+
+        @Override
+        public boolean containsEvery(Iterable<?> elements) {
+            return Category$impl._containsEvery(this, elements);
+        }
+
+        @Override
+        public boolean containsEvery() {
+            return Category$impl._containsEvery(this, $empty.getEmpty());
+        }
+
+        @Override
+        public Iterable<?> containsEvery$elements() {
+            return $empty.getEmpty();
+        }
+
+        @Override
+        public boolean containsAny(Iterable<?> elements) {
+            return Category$impl._containsAny(this, elements);
+        }
+
+        @Override
+        public boolean containsAny() {
+            return Category$impl._containsAny(this, $empty.getEmpty());
+        }
+
+        @Override
+        public Iterable<?> containsAny$elements() {
+            return $empty.getEmpty();
+        }
+
+        @Override
+        public Collection<? extends Entry<? extends String, ? extends String>> getClone() {
+            return this;
+        }
+
+        @Override
+        public long count(java.lang.Object element) {
+            return contains(element) ? 1 : 0;
+        }
+
+        @Override
+        public Set<? extends String> getKeys() {
+            return Map$impl._getKeys(this);
+        }
+
+        @Override
+        public Collection<? extends String> getValues() {
+            return Map$impl._getValues(this);
+        }
+
+        @Override
+        public Map<? extends String, ? extends Set<? extends String>> getInverse() {
+            return Map$impl._getInverse(this);
+        }
+        
+        @Override
+        public java.lang.String toString() {
+            return props.toString();
+        }
+    }
+
     @SuppressWarnings("unchecked")
     private Iterable<? extends String> args = $empty.getEmpty();
     
@@ -70,167 +245,32 @@ public class process {
     
     @TypeInfo("ceylon.language.Map<ceylon.language.String, ceylon.language.String>")
     public Map<? extends String, ? extends String> getProperties() {
-        return new Map<String, String>() {
-            Properties props = System.getProperties();
-            @Override
-            public String item(java.lang.Object key) {
-                if (key instanceof String) {
-                    return String.instance(props.getProperty(((String)key).value));
+        return new PropertiesMap(System.getProperties());
+    }
+    
+    @TypeInfo("ceylon.language.Map<ceylon.language.String, ceylon.language.String>")
+    public Map<? extends String, ? extends String> getNamedArguments() {
+        Properties props = new Properties();
+        Iterator<? extends String> iterator = args.getIterator();
+        java.lang.Object next;
+        while ((next = iterator.next()) instanceof String) {
+            java.lang.String arg = ((String) next).value;
+            if (arg.startsWith("-")) {
+                java.lang.String name;
+                java.lang.String value; 
+                int i = arg.indexOf('=');
+                if (i>0) {
+                    name = arg.substring(1, i);
+                    value = arg.substring(i+1);
                 }
                 else {
-                    return null;
+                    name = arg.substring(1);
+                    value = "";
                 }
+                props.setProperty(name, value);
             }
-
-            @Override
-            public boolean defines(java.lang.Object key) {
-                if (key instanceof String) {
-                    return props.containsKey(((String)key).value);
-                }
-                else {
-                    return false;
-                }
-            }
-
-            @Override
-            public boolean definesEvery(Iterable<? extends java.lang.Object> keys) {
-                return Correspondence$impl._definesEvery(this, keys);
-            }
-
-            @Override
-            public boolean definesEvery() {
-                return Correspondence$impl._definesEvery(this, $empty.getEmpty());
-            }
-
-            @Override
-            public Iterable<? extends java.lang.Object> definesEvery$keys() {
-                return $empty.getEmpty();
-            }
-
-            @Override
-            public boolean definesAny(Iterable<? extends java.lang.Object> keys) {
-                return Correspondence$impl._definesAny(this, keys);
-            }
-
-            @Override
-            public boolean definesAny() {
-                return Correspondence$impl._definesAny(this, $empty.getEmpty());
-            }
-
-            @Override
-            public Iterable<? extends java.lang.Object> definesAny$keys() {
-                return $empty.getEmpty();
-            }
-
-            @Override
-            public Iterable<? extends String> items(
-                    Iterable<? extends java.lang.Object> keys) {
-                return Correspondence$impl._items(this, keys);
-            }
-
-            @Override
-            public Iterable<? extends String> items() {
-                return Correspondence$impl._items(this, $empty.getEmpty());
-            }
-
-            @Override
-            public Iterable<? extends java.lang.Object> items$keys() {
-                return $empty.getEmpty();
-            }
-
-            @Override
-            public boolean getEmpty() {
-                return props.isEmpty();
-            }
-
-            @Override
-            public boolean contains(java.lang.Object element) {
-                if (element instanceof Entry) {
-                    Entry entry = (Entry) element;
-                    String value = item(entry.getKey());
-                    return value!=null && value.equals(entry.getItem());
-                }
-                return false;
-            }
-
-            @Override
-            public Iterator<? extends Entry<? extends String, ? extends String>> getIterator() {
-                return new Iterator<Entry<? extends String,? extends String>>() {
-                    java.util.Iterator<java.util.Map.Entry<java.lang.Object, java.lang.Object>> iter = props.entrySet().iterator();
-                    @Override
-                    public java.lang.Object next() {
-                        if (iter.hasNext()) {
-                            java.util.Map.Entry<java.lang.Object, java.lang.Object> entry = iter.next();
-                            return new Entry(String.instance((java.lang.String) entry.getKey()),
-                                    String.instance((java.lang.String) entry.getValue()));
-                        }
-                        else {
-                            return exhausted.getExhausted();
-                        }
-                    }
-                };
-            }
-
-            @Override
-            public long getSize() {
-                return props.size();
-            }
-
-            @Override
-            public boolean containsEvery(Iterable<?> elements) {
-                return Category$impl._containsEvery(this, elements);
-            }
-
-            @Override
-            public boolean containsEvery() {
-                return Category$impl._containsEvery(this, $empty.getEmpty());
-            }
-
-            @Override
-            public Iterable<?> containsEvery$elements() {
-                return $empty.getEmpty();
-            }
-
-            @Override
-            public boolean containsAny(Iterable<?> elements) {
-                return Category$impl._containsAny(this, elements);
-            }
-
-            @Override
-            public boolean containsAny() {
-                return Category$impl._containsAny(this, $empty.getEmpty());
-            }
-
-            @Override
-            public Iterable<?> containsAny$elements() {
-                return $empty.getEmpty();
-            }
-
-            @Override
-            public Collection<? extends Entry<? extends String, ? extends String>> getClone() {
-                return this;
-            }
-
-            @Override
-            public long count(java.lang.Object element) {
-                return contains(element) ? 1 : 0;
-            }
-
-            @Override
-            public Set<? extends String> getKeys() {
-                return Map$impl._getKeys(this);
-            }
-
-            @Override
-            public Collection<? extends String> getValues() {
-                return Map$impl._getValues(this);
-            }
-
-            @Override
-            public Map<? extends String, ? extends Set<? extends String>> getInverse() {
-                return Map$impl._getInverse(this);
-            }
-        };
+        }
+        return new PropertiesMap(props);
     }
     
     @Override

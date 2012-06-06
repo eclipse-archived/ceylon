@@ -10,9 +10,9 @@ shared object process {
     doc "The system properties of the virtual machine."
     shared Map<String,String> properties { throw; }
     
-    /*doc "The unix switch-style command line arguments to the 
+    doc "The unix switch-style command line arguments to the 
          virtual machine."
-    shared Correspondence<String,String> switches { throw; }*/
+    shared Map<String,String> namedArguments { throw; }
 
     doc "Print a string to the standard output of the 
          virtual machine process."
