@@ -8,8 +8,10 @@ import com.redhat.ceylon.compiler.java.metadata.Object;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon @Object
-public class process {
+public final class process {
 	
+    java.lang.String newline = System.getProperty("line.separator");
+
     /*@Ignore
     private static final class PropertiesMap implements Map<String, String> {
         
@@ -312,6 +314,10 @@ public class process {
     public String propertyValue(@Name("name") java.lang.String name) {
         java.lang.String property = System.getProperty(name);
         return property==null ? null : String.instance(property);
+    }
+    
+    public java.lang.String getNewline() {
+        return newline;
     }
     
     @Override
