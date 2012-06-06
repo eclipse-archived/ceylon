@@ -1461,6 +1461,11 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             expr = unboxBoolean(expr);
         } else if (isCeylonArray(targetType)) {
             expr = unboxArray(expr);
+        } else if (isOptional(targetType)) {
+            targetType = typeFact().getDefiniteType(targetType);
+            if (isCeylonString(targetType)){
+                expr = unboxOptionalString(expr);
+            }
         }
         return expr;
     }
@@ -1521,12 +1526,29 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     }
     
     private JCExpression unboxString(JCExpression value) {
-        if (value instanceof JCLiteral
-                && ((JCLiteral)value).value instanceof String) {
+        if (isStringLiteral(value)) {
             // If it's already a String literal, why call .toString on it?
             return value;
         }
         return makeUnboxType(value, "toString");
+    }
+
+    private boolean isStringLiteral(JCExpression value) {
+        return value instanceof JCLiteral
+                && ((JCLiteral)value).value instanceof String;
+    }
+    
+    private JCExpression unboxOptionalString(JCExpression value){
+        if (isStringLiteral(value)) {
+            // If it's already a String literal, why call .toString on it?
+            return value;
+        }
+        String name = tempName();
+        JCExpression type = makeJavaType(typeFact().getStringDeclaration().getType(), NO_PRIMITIVES);
+        JCExpression expr = make().Conditional(make().Binary(JCTree.NE, makeUnquotedIdent(name), makeNull()), 
+                unboxString(makeUnquotedIdent(name)),
+                makeNull());
+        return makeLetExpr(name, null, type, value, expr);
     }
     
     private JCTree.JCMethodInvocation unboxCharacter(JCExpression value, boolean isJava) {
