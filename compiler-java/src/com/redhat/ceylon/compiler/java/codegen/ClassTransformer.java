@@ -1256,8 +1256,10 @@ public class ClassTransformer extends AbstractTransformer {
         final JCExpression methName;
         if (model instanceof Method) {
             long mods = transformOverloadMethodDeclFlags((Method)model);
-            if (forImplementor) {
+            if (generateBody) {
                 mods &= ~ABSTRACT;
+            }
+            if (forImplementor || forDelegator) {
                 mods |= FINAL;
             }
             overloadBuilder.modifiers(mods);
