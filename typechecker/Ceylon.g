@@ -128,36 +128,21 @@ importElementList returns [ImportMemberOrTypeList importMemberOrTypeList]
 importElement returns [ImportMemberOrType importMemberOrType]
     @init { Alias alias = null; }
     : compilerAnnotations
-    ( memberName 
+    ( in1=importName 
       { $importMemberOrType = new ImportMember(null);
-        $importMemberOrType.setIdentifier($memberName.identifier); }
-      ( s1=SPECIFY
-        { alias = new Alias($s1);
-          alias.setIdentifier($memberName.identifier);
+        $importMemberOrType.setIdentifier($in1.identifier); }
+      ( SPECIFY
+        { alias = new Alias($SPECIFY);
+          alias.setIdentifier($in1.identifier);
           $importMemberOrType.setAlias(alias); 
           $importMemberOrType.setIdentifier(null); }
         (
-          memberNameDeclaration 
-          { $importMemberOrType.setIdentifier($memberNameDeclaration.identifier); }
+          in2=importName 
+          { $importMemberOrType.setIdentifier($in2.identifier); }
         | { displayRecognitionError(getTokenNames(), 
-                  new MismatchedTokenException(LIDENTIFIER, input)); }
-        ) 
+                  new MismatchedTokenException($in1.identifier.getToken().getType(), input)); }
+        )
       )?
-    | typeName 
-      { $importMemberOrType = new ImportType(null);
-        $importMemberOrType.setIdentifier($typeName.identifier); }
-      ( s2=SPECIFY
-        { alias = new Alias($s2);
-          alias.setIdentifier($typeName.identifier);
-          $importMemberOrType.setAlias(alias); 
-          $importMemberOrType.setIdentifier(null); }
-        (
-          typeNameDeclaration 
-          { $importMemberOrType.setIdentifier($typeNameDeclaration.identifier); }
-        | { displayRecognitionError(getTokenNames(), 
-                  new MismatchedTokenException(UIDENTIFIER, input)); }
-        ) 
-      )? 
       (
         iel2=importElementList
         { $importMemberOrType.setImportMemberOrTypeList($iel2.importMemberOrTypeList); }
@@ -170,6 +155,11 @@ importElement returns [ImportMemberOrType importMemberOrType]
 importWildcard returns [ImportWildcard importWildcard]
     : ELLIPSIS
       { $importWildcard = new ImportWildcard($ELLIPSIS); }
+    ;
+
+importName returns [Identifier identifier]
+    : memberName { $identifier=$memberName.identifier; }
+    | typeName { $identifier=$typeName.identifier; }
     ;
 
 packageName returns [Identifier identifier]

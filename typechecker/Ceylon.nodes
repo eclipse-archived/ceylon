@@ -24,7 +24,8 @@
     ALIAS?
     IDENTIFIER
     IMPORT_MEMBER_OR_TYPE_LIST?
-    Declaration declarationModel;)
+    Declaration declarationModel;
+    Import importModel;)
 ^(IMPORT_MEMBER:IMPORT_MEMBER_OR_TYPE)
 ^(IMPORT_TYPE:IMPORT_MEMBER_OR_TYPE)
 

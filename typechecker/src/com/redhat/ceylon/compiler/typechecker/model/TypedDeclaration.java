@@ -96,10 +96,13 @@ public abstract class TypedDeclaration extends Declaration {
             //in case this is a named argument style definition,
     	    //add the parameters of the return type
     	    //TODO: they should not hide locals with the same name!
-    		for ( Parameter p: ((Class) td).getParameterList().getParameters() ) {
-    			if ( isNameMatching(startingWith, p) ) {
-    				result.put(p.getName(), new DeclarationWithProximity(p, proximity));
-    			}
+    		ParameterList pl = ((Class) td).getParameterList();
+    		if (pl!=null) {
+    		    for ( Parameter p: pl.getParameters() ) {
+    		        if ( isNameMatching(startingWith, p) ) {
+    		            result.put(p.getName(), new DeclarationWithProximity(p, proximity));
+    		        }
+    		    }
     		}
     	}
     	return result;

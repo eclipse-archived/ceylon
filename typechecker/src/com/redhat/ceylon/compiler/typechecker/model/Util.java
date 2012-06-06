@@ -121,6 +121,11 @@ public class Util {
                             if (pdt==null || sdt==null) return false;
                             ProducedType paramType = d.getUnit().getDefiniteType(pdt);
                             ProducedType sigType = d.getUnit().getDefiniteType(sdt);
+                            ProducedType ast = sigType.getSupertype(d.getUnit().getArrayDeclaration());
+                            if (ast!=null) sigType = ast;
+                            if (sigType.isSubtypeOf(d.getUnit().getNothingDeclaration().getType())) {
+                                continue;
+                            }
                             if (isTypeUnknown(sigType) || isTypeUnknown(paramType)) return false;
                             if (!erase(sigType.getDeclaration())
                                         .inherits(erase(paramType.getDeclaration())) &&
@@ -265,10 +270,7 @@ public class Util {
         if (pt==null) {
             return;
         }
-        ProducedType selfType = pt.getDeclaration().getSelfType();
-		if (selfType!=null) {
-        	pt = selfType.substitute(pt.getTypeArguments()); //canonicalize type with self type to the self type
-        }
+        pt = canonicalizeSelfType(pt);
         if (pt.getDeclaration() instanceof UnionType) {
             for (ProducedType t: pt.getDeclaration().getCaseTypes() ) {
                 addToUnion( list, t.substitute(pt.getTypeArguments()) );
@@ -295,6 +297,18 @@ public class Util {
             }
         }
     }
+
+    /**
+     * Canonicalize a type with a self type, returning the
+     * argument of the self type
+     */
+    public static ProducedType canonicalizeSelfType(ProducedType pt) {
+        ProducedType selfType = pt.getDeclaration().getSelfType();
+		return selfType==null ? pt :
+        	selfType.substitute(pt.getTypeArguments());
+		    //this version doesn't seem to work for type families:
+		    //pt.getTypeArguments().get(selfType.getDeclaration());
+    }
     
     /**
      * Helper method for eliminating duplicate types from
@@ -306,10 +320,7 @@ public class Util {
         if (pt==null) {
             return;
         }
-        ProducedType selfType = pt.getDeclaration().getSelfType();
-		if (selfType!=null) {
-        	pt = selfType.substitute(pt.getTypeArguments()); //canonicalize type with self type to the self type
-        }
+        pt = canonicalizeSelfType(pt);
         if (pt.getDeclaration() instanceof IntersectionType) {
             for (ProducedType t: pt.getDeclaration().getSatisfiedTypes() ) {
                 addToIntersection(list, t.substitute(pt.getTypeArguments()), unit);

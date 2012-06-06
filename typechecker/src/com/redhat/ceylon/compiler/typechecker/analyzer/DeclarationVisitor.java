@@ -105,7 +105,6 @@ public class DeclarationVisitor extends Visitor {
             scope.getMembers().add(model);
         }
 
-
         handleDeclarationAnnotations(that, model);        
 
         setVisibleScope(model);
@@ -445,7 +444,12 @@ public class DeclarationVisitor extends Visitor {
         visitDeclaration(that, v);
         super.visit(that);
         if ( v.isInterfaceMember() && !v.isFormal()) {
-            that.addError("interfaces may not have simple attributes");
+            if (that.getSpecifierOrInitializerExpression()==null) {
+                that.addError("interface attribute must be annotated formal", 1400);
+            }
+            /*else {
+                that.addError("interfaces may not have simple attributes");
+            }*/
         }
         SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
         if ( v.isFormal() && sie!=null ) {
@@ -657,14 +661,25 @@ public class DeclarationVisitor extends Visitor {
         }
     }
     
+    private int id=0;
+    
     @Override
     public void visit(Tree.ControlClause that) {
         ControlBlock cb = new ControlBlock();
+        cb.setId(id++);
         that.setControlBlock(cb);
         visitElement(that, cb);
         Scope o = enterScope(cb);
         super.visit(that);
         exitScope(o);
+    }
+    
+    @Override
+    public void visit(Tree.Body that) {
+        int oid=id;
+        id=0;
+        super.visit(that);
+        id=oid;
     }
     
     @Override

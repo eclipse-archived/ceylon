@@ -82,4 +82,10 @@ interface InitializerParams {
         @error func(print);
     }
     
+    class A(i) {
+        @error print(i);
+        shared default Integer i;
+        @error print(i);
+    }
+    
 }

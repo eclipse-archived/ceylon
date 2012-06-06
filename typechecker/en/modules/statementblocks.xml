@@ -161,29 +161,30 @@
                 in the namespace of the declaration.</para>
             </listitem>
         </itemizedlist>
-        
-        <comment><para>TODO: Java prohibits a type name from hiding the name of an outer
-        type. Can we easily work around this limitation?</para></comment>
-        
+                
         <para>The namespace of a declaration may not contain a second declaration with 
         the same name. (A parameter or type parameter is considered to be a declaration 
         that is directly contained by the body of the declaration it parameterizes.)</para>
         
-        <para>A class or interface may not inherit a declaration with the same 
-        name as a declaration it contains unless either:</para>
+        <para>A class or interface may not inherit a declaration with the same name as 
+        a declaration it contains unless either:</para>
             
         <itemizedlist>
             <listitem>
-                <para>the contained declaration directly or indirectly refines 
-                the inherited declaration, or</para>
+                <para>the contained declaration directly or indirectly refines the 
+                inherited declaration,</para>
+            </listitem>
+            <listitem>
+                <para>the contained declaration is an initializer parameter of the 
+                class, or</para>
             </listitem>
             <listitem>
                 <para>the inherited declaration is a block local declaration.</para>
             </listitem>
         </itemizedlist>
         
-        <para>A class or interface may not inherit two declarations with the
-        same name unless either:</para>
+        <para>A class or interface may not inherit two declarations with the same name 
+        unless either:</para>
 
         <itemizedlist>
             <listitem>
@@ -192,14 +193,14 @@
                 supertype,</para>
             </listitem>
             <listitem>
-                <para>the class or interface contains a declaration that directly 
-                or indirectly refines both the inherited declarations (in which
-                case both the inherited declarations directly or indirectly refine 
-                some member of a common supertype),</para>
+                <para>the class or interface contains a declaration that directly or 
+                indirectly refines both the inherited declarations (in which case both 
+                the inherited declarations directly or indirectly refine some member 
+                of a common supertype),</para>
             </listitem>
             <listitem>
-                <para>one of the inherited declarations directly or indirectly 
-                refines the other inherited declaration, or</para>
+                <para>one of the inherited declarations directly or indirectly refines 
+                the other inherited declaration, or</para>
             </listitem>
             <listitem>
                 <para>at least one of the inherited declarations is a block local 
@@ -307,16 +308,6 @@
     <section id="hidingdeclaration">
         <title>Hiding a declaration</title>
     
-        <para>An inner body may <emphasis>hide</emphasis> declarations of a containing 
-        body. For example, the following code is legal:</para>
-        
-        <programlisting>class Person(String name) {
-    shared String lowerCaseName {
-        String name = name.lowercased;
-        return name;
-    }
-}</programlisting>
-        
         <para>If two declarations with the same name are both in scope at a certain program 
         element, then one declaration may <emphasis>hide</emphasis> the other declaration.</para>
         
@@ -344,26 +335,67 @@
                 <para>If an inner body is contained (directly or indirectly) in an outer 
                 body, a declaration that is in scope in the inner body but is not in 
                 scope in the outer body hides a declaration that is in scope in the outer 
-                body.</para>
+                body. (In particular, a declaration inherited by a nested class or 
+                interface hides a declaration of the containing body.)</para>
             </listitem>
-            <!--listitem>
-                <para>A declaration inherited by a nested class hides a declaration,
-                parameter, type parameter, or control structure variable of the containing
-                body. <emphasis>TODO: is this the best thing to do?</emphasis></para>
-            </listitem-->
+            <listitem>
+                <para>An initializer parameter of a class containing the program element 
+                hides a declaration inherited by the class.</para>
+            </listitem>
             <listitem>
                 <para>An <literal>actual</literal> declaration hides the declaration it
                 refines.</para>
             </listitem>
             <listitem>
                 <para>A declaration occurring in a body containing the program element 
-                hides a declaration imported by the compilation unit.</para>
+                hides a declaration imported by the compilation unit containing the body
+                or implicitly imported from the module <literal>ceylon.language</literal>.</para>
             </listitem>
             <listitem>
-                <para>A declaration imported by the compilation unit hides a toplevel 
-                declaration of the package containing the program element.</para>
+                <para>A toplevel declaration of the package containing the program element 
+                hides a declaration implicitly imported from the module 
+                <literal>ceylon.language</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>A declaration explicitly imported by the compilation unit containing
+                the program element hides a declaration implicitly imported from the module 
+                <literal>ceylon.language</literal>.</para>
+            </listitem>
+            <!--listitem>
+                <para>A toplevel declaration of the compilation unit containing the program 
+                element hides a declaration explicitly imported by the compilation unit.</para>
+            </listitem-->
+            <listitem>
+                <para>A declaration explicitly imported by the compilation unit containing 
+                the program element hides a toplevel declaration of <!--another compilation unit
+                in--> the package containing the compilation unit.</para>
+            </listitem>
+            <listitem>
+                <para>A declaration explicity imported by name in the compilation unit 
+                containing the program element hides a declaration explicitly imported 
+                by wildcard in the compilation unit.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>For example, the following code is legal:</para>
+        
+        <programlisting>class Person(name) {
+    String name;
+    shared String lowerCaseName {
+        String name = this.name.lowercased;
+        return name;
+    }
+}</programlisting>
+        
+        <para>As is this code:</para>
+        
+        <programlisting>class Point(x, y) {
+    shared Float x; 
+    shared Float y;
+}
+
+class Complex(Float x, Float y=0.0) 
+        extends Point(x, y) {}</programlisting>
         
     </section>
     
@@ -417,9 +449,6 @@
                 <para>the declaration is a toplevel declaration.</para>
             </listitem>
         </itemizedlist-->
-        
-        <comment><para>TODO: fix the referenceability rules for toplevel declarations that 
-        occur in different compilation units! Outlaw simple toplevel attributes?</para></comment>
         
         <para>Note that these rules have very different consequences for:</para>
         
@@ -485,28 +514,24 @@
     <section id="typedetermination">
         <title>Type determinability of a declaration</title>
         
-        <para>A declaration may be in scope at a program element, but its type may
-        not be <emphasis>determinable</emphasis> at the program element. The type 
-        of a declaration is determinable at a program element if the declaration is 
-        in scope at the program element and either:</para>
+        <para>An attribute declared using the keyword <literal>value</literal> 
+        or a method declared using the keyword <literal>function</literal> may 
+        be in scope at a program element, but its type may not be 
+        <emphasis>determinable</emphasis> at the program element.</para>
         
-        <itemizedlist>
-            <listitem>
-                <para>the program element occurs within the lexical scope of the 
-                declaration,</para>
-            </listitem>
-            <listitem>
-                <para>the declaration is a control structure variable or iteration 
-                variable, or</para>
-            </listitem>
-            <listitem>
-                <para>the declaration is not declared using the keyword 
-                <literal>value</literal> or <literal>function</literal>.</para>
-            </listitem>
-        </itemizedlist>
+        <para>The type of an attribute or method declared using the keyword 
+        <literal>value</literal> or <literal>function</literal> is determinable 
+        at a program element if the declaration is in scope at the program 
+        element and the program element occurs within the lexical scope of the 
+        declaration.</para>
         
-        <comment><para>TODO: Can we infer the type of a declaration inside the body
-        of the declaration itself?</para></comment>
+        <comment><para>Note: the type of an attribute or method declared using
+        the keyword <literal>value</literal> or <literal>function</literal> is
+        not determinable within the body of the attribute or method itself.</para></comment>
+        
+        <para>For any other declaration, the type is considered determinable
+        at a program element if the declaration is in scope at the program 
+        element.</para>
         
         <para>The following code is not legal:</para>
         
@@ -536,7 +561,7 @@
                 <literal>Sequence&lt;String&gt;</literal>,</para>
             </listitem>
             <listitem>
-                <para>the member name an unqualified value reference, for example
+                <para>the member in name an unqualified value reference, for example
                 <literal>counter</literal> in <literal>counter.count</literal>, 
                 or</para>
             </listitem>
@@ -590,7 +615,7 @@
                 <literal>Buffer</literal> in <literal>BufferedReader.Buffer</literal>,</para>
             </listitem>
             <listitem>
-                <para>the member name a qualified value reference, for example
+                <para>the member name in a qualified value reference, for example
                 <literal>count</literal> in <literal>counter.count</literal>, or</para>
             </listitem>
             <listitem>

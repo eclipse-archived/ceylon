@@ -24,6 +24,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -36,6 +37,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
+import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrTypeList;
@@ -129,11 +131,22 @@ public class TypeVisitor extends Visitor {
             Module module = unit.getPackage().getModule();
             Package pkg = module.getPackage(nameToImport);
             if (pkg != null) {
-                if (!pkg.getModule().equals(module) && !pkg.isShared()) {
+                if (pkg.getModule().equals(module)) {
+                    return pkg;
+                }
+                if (!pkg.isShared()) {
                     path.addError("imported package is not shared: " + 
                             nameToImport);
                 }
-                return pkg; 
+                //check that the package really does belong to
+                //an imported module, to work around bug where
+                //default package things it can see stuff in
+                //all modules in the same source dir
+                for (ModuleImport mi: module.getImports()) {
+                    if (mi.getModule().equals(pkg.getModule())) {
+                        return pkg; 
+                    }
+                }
             }
             path.addError("package not found in dependent modules: " + nameToImport);
         }
@@ -175,6 +188,7 @@ public class TypeVisitor extends Visitor {
             return null;
         }
         Import i = new Import();
+        member.setImportModel(i);
         Tree.Alias alias = member.getAlias();
         String name = name(member.getIdentifier());
         if (alias==null) {
@@ -182,6 +196,19 @@ public class TypeVisitor extends Visitor {
         }
         else {
             i.setAlias(name(alias.getIdentifier()));
+        }
+        for (Declaration d: unit.getDeclarations()) {
+            String n = d.getName();
+            if (d.isToplevel() && n!=null && 
+                    i.getAlias().equals(n)) {
+                if (alias==null) {
+                    member.getIdentifier()
+                        .addError("toplevel declaration with this name declared in this unit: " + n);
+                }
+                else {
+                    alias.addError("toplevel declaration with this name declared in this unit: " + n);
+                }
+            }
         }
         Declaration d = importedPackage.getMember(name, null);
         if (d==null) {
@@ -193,7 +220,7 @@ public class TypeVisitor extends Visitor {
             member.getIdentifier().addError("root type may not be imported");
         }
         else {
-            if (!d.isShared()) {
+            if (!d.isShared() && !d.getUnit().getPackage().equals(unit.getPackage())) {
                 member.getIdentifier().addError("imported declaration is not shared: " +
                         name, 400);
             }
@@ -208,6 +235,7 @@ public class TypeVisitor extends Visitor {
                         name);
             }
             addImport(member, il, i);
+            checkAliasCase(alias, d);
         }
         Tree.ImportMemberOrTypeList imtl = member.getImportMemberOrTypeList();
         if (imtl!=null) {
@@ -228,12 +256,28 @@ public class TypeVisitor extends Visitor {
         return name;
     }
 
+    private void checkAliasCase(Tree.Alias alias, Declaration d) {
+        if (alias!=null) {
+            if (d instanceof TypeDeclaration &&
+                    alias.getIdentifier().getToken().getType()!=CeylonLexer.UIDENTIFIER) {
+                alias.getIdentifier().addError("imported type should have uppercase alias: " +
+                    d.getName());
+            }
+            if (d instanceof TypedDeclaration &&
+                    alias.getIdentifier().getToken().getType()!=CeylonLexer.LIDENTIFIER) {
+                alias.getIdentifier().addError("imported member should have lowercase alias: " +
+                    d.getName());
+            }
+        }
+    }
+
     private void importMember(Tree.ImportMemberOrType member, TypeDeclaration d, 
             ImportList il) {
         if (member.getIdentifier()==null) {
             return;
         }
         Import i = new Import();
+        member.setImportModel(i);
         Tree.Alias alias = member.getAlias();
         String name = name(member.getIdentifier());
         if (alias==null) {
@@ -275,6 +319,7 @@ public class TypeVisitor extends Visitor {
             else {
                 addMemberImport(member, il, i);
             }
+            checkAliasCase(alias, m);
         }
         ImportMemberOrTypeList imtl = member.getImportMemberOrTypeList();
         if (imtl!=null) {

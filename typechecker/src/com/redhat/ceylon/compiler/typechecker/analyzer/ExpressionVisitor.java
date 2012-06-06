@@ -453,7 +453,9 @@ public class ExpressionVisitor extends Visitor {
         inferType(that, that.getSpecifierOrInitializerExpression());
         if (that.getType()!=null) {
             checkType(that.getType().getTypeModel(), 
-                    that.getSpecifierOrInitializerExpression());
+                    that.getDeclarationModel().getName(),
+                    that.getSpecifierOrInitializerExpression(), 
+                    2100);
         }
     }
     
@@ -491,13 +493,12 @@ public class ExpressionVisitor extends Visitor {
                 else if (d.isToplevel()) {
                     me.addError("toplevel declarations may not be specified");
                 }
+                checkType(me.getTypeModel(), d.getName(), sie, 2100);
             }
         }
         else {
             me.addError("illegal specification statement");
         }
-        //TODO: display the value name in the error message
-        checkType(me.getTypeModel(), sie);
     }
 
     private void refine(Value sv, Tree.BaseMemberExpression bme,
@@ -590,7 +591,7 @@ public class ExpressionVisitor extends Visitor {
                 that.getDefaultArgument().getSpecifierExpression();
         ProducedType t = that.getDeclarationModel().getProducedTypedReference(null, 
                 Collections.<ProducedType>emptyList()).getFullType();
-        checkType(t, se);
+        checkType(t, that.getDeclarationModel().getName(), se, 2100);
     }
 
     @Override
@@ -609,6 +610,15 @@ public class ExpressionVisitor extends Visitor {
         if (sie!=null && sie.getExpression()!=null) {
             checkAssignable(sie.getExpression().getTypeModel(), declaredType, sie, 
                     "specified expression must be assignable to declared type");
+        }
+    }
+
+    private void checkType(ProducedType declaredType, String name,
+            Tree.SpecifierOrInitializerExpression sie, int code) {
+        if (sie!=null && sie.getExpression()!=null) {
+            checkAssignable(sie.getExpression().getTypeModel(), declaredType, sie, 
+                    "specified expression must be assignable to declared type of " + name,
+                    code);
         }
     }
 
@@ -1067,7 +1077,7 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     checkAssignable(at, et, that.getExpression(), 
                             "returned expression must be assignable to return type of " +
-                            returnDeclaration.getName());
+                            returnDeclaration.getName(), 2100);
                 }
             }
         }
@@ -1144,7 +1154,10 @@ public class ExpressionVisitor extends Visitor {
             return unit.getOptionalType(pt);
         }
         else if (op instanceof Tree.SpreadOp) {
-            ProducedType st = unit.getSequenceType(pt);            
+            ProducedType st = unit.getSequenceType(pt);
+            //note: the following is nice, even though
+            //      it is not actually blessed by the
+            //      language spec!
             return unit.isEmptyType(receivingType) ?
                     unit.getEmptyType(st) : st;
         }
@@ -1669,7 +1682,8 @@ public class ExpressionVisitor extends Visitor {
         }
         checkAssignable(argType, pr.getTypedParameter(p.getAliasedParameter()).getFullType(), 
                 a, "named argument must be assignable to parameter " + 
-                p.getName() + " of " + pr.getDeclaration().getName());
+                p.getName() + " of " + pr.getDeclaration().getName(), 
+                2100);
     }
     
     private void checkSequencedArgument(Tree.SequencedArgument a, ProducedReference pr, 
@@ -1791,7 +1805,8 @@ public class ExpressionVisitor extends Visitor {
         else {
             checkAssignable(getPositionalArgumentType(a), paramType, a, 
                     "argument must be assignable to parameter " + 
-                    p.getName() + " of " + pr.getDeclaration().getName());
+                    p.getName() + " of " + pr.getDeclaration().getName(), 
+                    2100);
         }
     }
 
@@ -2266,7 +2281,8 @@ public class ExpressionVisitor extends Visitor {
         ProducedType lhst = leftType(that);
         if ( rhst!=null && lhst!=null ) {
             checkAssignable(rhst, lhst, that.getRightTerm(), 
-                    "assigned expression must be assignable to declared type");
+                    "assigned expression must be assignable to declared type", 
+                    2100);
         }
         //that.setTypeModel(rhst); //stef requests lhst to make it easier on backend
         that.setTypeModel(lhst);
@@ -2836,9 +2852,9 @@ public class ExpressionVisitor extends Visitor {
         else {
             that.setTypeModel(ci);
         }
-        if (defaultArgument) {
+        /*if (defaultArgument) {
             that.addError("reference to outer from default argument expression");
-        }
+        }*/
     }
 
     private boolean inExtendsClause = false;

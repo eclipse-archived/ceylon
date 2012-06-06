@@ -118,7 +118,7 @@ public class ControlFlowVisitor extends Visitor {
     @Override
     public void visit(Tree.MethodDeclaration that) {
         if (that.getSpecifierExpression()!=null) {
-            checkExecutableStatementAllowed(that.getSpecifierExpression());
+            //checkExecutableStatementAllowed(that.getSpecifierExpression());
             super.visit(that);
         }
     }
@@ -275,6 +275,7 @@ public class ControlFlowVisitor extends Visitor {
     
     @Override
     public void visit(Tree.WhileStatement that) {
+        checkExecutableStatementAllowed(that);
         boolean d = beginIndefiniteReturnScope();
         Boolean b = beginLoop();
         that.getWhileClause().visit(this);
