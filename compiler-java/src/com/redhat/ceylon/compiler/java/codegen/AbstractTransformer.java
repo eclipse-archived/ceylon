@@ -20,9 +20,8 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import static com.redhat.ceylon.compiler.java.codegen.CodegenUtil.NameFlag.QUALIFIED;
 import static com.sun.tools.javac.code.Flags.FINAL;
-
-import static com.redhat.ceylon.compiler.java.codegen.CodegenUtil.NameFlag.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +41,6 @@ import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
-import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
