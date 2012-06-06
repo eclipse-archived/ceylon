@@ -7,12 +7,12 @@ shared object process {
     doc "The command line arguments to the virtual machine."
     shared String[] arguments { throw; }
     
+    doc "The system properties of the virtual machine."
+    shared Map<String,String> properties { throw; }
+    
     /*doc "The unix switch-style command line arguments to the 
          virtual machine."
-    shared Correspondence<String,String> switches { throw; }
-
-    doc "The current system properties."
-    shared Correspondence<String,String> properties { throw; }*/
+    shared Correspondence<String,String> switches { throw; }*/
 
     doc "Print a string to the standard output of the 
          virtual machine process."
