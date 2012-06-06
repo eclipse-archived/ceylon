@@ -1,0 +1,185 @@
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
+
+interface ConcreteAttribute<A> {
+    
+    public A getAShared();
+    
+    public abstract A getAFormal();
+    
+    public abstract A getAVariableFormal();
+    
+    public abstract void setAVariableFormal(A aVariableFormal);
+    
+    public A getADefault();
+}
+final class ConcreteAttribute$impl<A> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute<A> $this;
+    
+    private final A getANonShared() {
+        return null;
+    }
+    
+    public final A getAShared() {
+        return getANonShared();
+    }
+    
+    public final A getAFormal() {
+        return $this.getAFormal();
+    }
+    
+    public final A getAVariableFormal() {
+        return $this.getAVariableFormal();
+    }
+    
+    public final void setAVariableFormal(A aVariableFormal) {
+        $this.setAVariableFormal(aVariableFormal);
+    }
+    
+    public final A getADefault() {
+        return null;
+    }
+    
+    ConcreteAttribute$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute<A> $this) {
+        this.$this = $this;
+    }
+}
+final class concreteAttributeCallsite {
+    
+    private concreteAttributeCallsite() {
+    }
+    
+    static void concreteAttributeCallsite(final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute a) {
+        .java.lang.Object v;
+        v = a.getAShared();
+        v = a.getAFormal();
+        v = a.getAVariableFormal();
+        a.setAVariableFormal(null);
+        a.setAVariableFormal(.ceylon.language.Integer.instance(1L));
+        a.setAVariableFormal(.ceylon.language.Float.instance(1.0));
+        v = a.getADefault();
+    }
+}
+class ConcreteAttributeGetterImpl<B> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute<B> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<B> $ConcreteAttribute$impl;
+    
+    @.java.lang.Override
+    public final B getAShared() {
+        return $ConcreteAttribute$impl.getAShared();
+    }
+    
+    @.java.lang.Override
+    public final B getAFormal() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final B getAVariableFormal() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final void setAVariableFormal(B aVariableFormal) {
+    }
+    
+    @.java.lang.Override
+    public final B getADefault() {
+        return null;
+    }
+    
+    public final void setADefault(B aDefault) {
+    }
+    
+    ConcreteAttributeGetterImpl() {
+        this.$ConcreteAttribute$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<B>(this);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttributeGetterImpl();
+    }
+}
+final class concreteAttributeGetterImplCallsite {
+    
+    private concreteAttributeGetterImplCallsite() {
+    }
+    
+    static void concreteAttributeGetterImplCallsite(final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttributeGetterImpl a) {
+        .java.lang.Object v;
+        v = a.getAShared();
+        v = a.getAFormal();
+        v = a.getAVariableFormal();
+        a.setAVariableFormal(null);
+        a.setAVariableFormal(.ceylon.language.Integer.instance(1L));
+        a.setAVariableFormal(.ceylon.language.Float.instance(1.0));
+        v = a.getADefault();
+        a.setADefault(null);
+        a.setADefault(.ceylon.language.Integer.instance(1L));
+        a.setADefault(.ceylon.language.Float.instance(1.0));
+    }
+}
+class ConcreteAttributeValueImpl<C> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute<C> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<C> $ConcreteAttribute$impl;
+    
+    @.java.lang.Override
+    public final C getAShared() {
+        return $ConcreteAttribute$impl.getAShared();
+    }
+    private final C aFormal;
+    
+    @.java.lang.Override
+    public final C getAFormal() {
+        return aFormal;
+    }
+    private C aVariableFormal;
+    
+    @.java.lang.Override
+    public final C getAVariableFormal() {
+        return aVariableFormal;
+    }
+    
+    @.java.lang.Override
+    public final void setAVariableFormal(C aVariableFormal) {
+        this.aVariableFormal = aVariableFormal;
+    }
+    private C aDefault;
+    
+    @.java.lang.Override
+    public final C getADefault() {
+        return aDefault;
+    }
+    
+    public final void setADefault(C aDefault) {
+        this.aDefault = aDefault;
+    }
+    
+    ConcreteAttributeValueImpl() {
+        this.$ConcreteAttribute$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<C>(this);
+        this.aFormal = null;
+        this.aVariableFormal = null;
+        this.aDefault = null;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttributeValueImpl();
+    }
+}
+final class concreteAttributeValueImplCallsite {
+    
+    private concreteAttributeValueImplCallsite() {
+    }
+    
+    static void concreteAttributeValueImplCallsite(final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttributeValueImpl a) {
+        .java.lang.Object v;
+        v = a.getAShared();
+        v = a.getAFormal();
+        v = a.getAVariableFormal();
+        a.setAVariableFormal(null);
+        a.setAVariableFormal(.ceylon.language.Integer.instance(1L));
+        a.setAVariableFormal(.ceylon.language.Float.instance(1.0));
+        v = a.getADefault();
+        a.setADefault(null);
+        a.setADefault(.ceylon.language.Integer.instance(1L));
+        a.setADefault(.ceylon.language.Float.instance(1.0));
+    }
+}
