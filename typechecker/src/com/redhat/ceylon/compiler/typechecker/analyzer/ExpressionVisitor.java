@@ -2852,9 +2852,9 @@ public class ExpressionVisitor extends Visitor {
         else {
             that.setTypeModel(ci);
         }
-        if (defaultArgument) {
+        /*if (defaultArgument) {
             that.addError("reference to outer from default argument expression");
-        }
+        }*/
     }
 
     private boolean inExtendsClause = false;
