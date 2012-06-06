@@ -246,4 +246,17 @@ class Union() {
     for (Comparable<String> s in {elem1, elem2}) {}
     for (Comparable<String> s in {elem2, elem1}) {}
     
+    for (s in {elem1, elem1}) {
+        @type["Comparable<String>"] value sss = s;
+    }
+    for (s in {elem2, elem2}) {
+        @type["String"] value sss = s;
+    }
+    for (s in {elem1, elem2}) {
+        @type["String"] value sss = s;
+    }
+    for (s in {elem2, elem1}) {
+        @type["String"] value sss = s;
+    }
+    
 }

@@ -270,31 +270,52 @@ public class Util {
         if (pt==null) {
             return;
         }
-        pt = canonicalizeSelfType(pt);
         if (pt.getDeclaration() instanceof UnionType) {
             for (ProducedType t: pt.getDeclaration().getCaseTypes() ) {
                 addToUnion( list, t.substitute(pt.getTypeArguments()) );
             }
         }
-        else {
-            Boolean included = pt.isWellDefined();
-            if (included) {
-                for (Iterator<ProducedType> iter = list.iterator(); iter.hasNext();) {
-                    ProducedType t = iter.next();
-                    if (pt.isSubtypeOf(t)) {
-                        included = false;
-                        break;
+        else if (pt.isWellDefined()) {
+            boolean add=true;
+            boolean canonicalize=false;
+            ProducedType toReplace = null;
+            int i=0;
+            for (Iterator<ProducedType> iter = list.iterator(); iter.hasNext();) {
+                ProducedType t = iter.next();
+                if (pt.isSubtypeOf(t)) {
+                    if (canonicalizeInUnion(pt, t)) {
+                        toReplace=canonicalizeSelfType(t);
                     }
-                    //TODO: I think in some very rare occasions 
-                    //      this can cause stack overflows!
-                    else if (pt.isSupertypeOf(t)) {
-                        iter.remove();
-                    }
+                    add=false;
+                    break;
                 }
+                //TODO: I think in some very rare occasions 
+                //      this can cause stack overflows!
+                else if (pt.isSupertypeOf(t)) {
+                    iter.remove();
+                    canonicalize=canonicalizeInUnion(pt, t);
+                }
+                i++;
             }
-            if (included) {
+            if (toReplace!=null) {
+                list.set(i,toReplace);
+            }
+            if (add) {
+                if (canonicalize) {
+                    pt = canonicalizeSelfType(pt);
+                }
                 list.add(pt);
             }
+        }
+    }
+
+    private static boolean canonicalizeInUnion(ProducedType pt, ProducedType t) {
+        if (pt.getDeclaration() instanceof ClassOrInterface &&
+                t.getDeclaration() instanceof ClassOrInterface) {
+            return !pt.getDeclaration().equals(t.getDeclaration());
+        }
+        else {
+            return false;
         }
     }
 
