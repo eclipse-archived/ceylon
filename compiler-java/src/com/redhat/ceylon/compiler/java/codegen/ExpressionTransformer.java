@@ -29,6 +29,7 @@ import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
@@ -1662,10 +1663,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(comp);
         Tree.ComprehensionClause clause = comp.getForComprehensionClause();
         ProducedType targetIterType = typeFact().getIterableType(clause.getTypeModel());
+        ProducedType iteratorType = typeFact().getIteratorType(targetIterType.getTypeArgumentList().get(0));
         //Define an anonymous subclass of the target type
         String compname = aliasName("comp");
         ClassDefinitionBuilder builder = ClassDefinitionBuilder.klass(this, true, compname);
-        builder.extending(targetIterType);
+        builder.extending(iteratorType);
         int idx = 0;
         ExpressionComprehensionClause excc = null;
         String prevItemVar = null;
@@ -1828,10 +1830,18 @@ public class ExpressionTransformer extends AbstractTransformer {
                             make().Return(transformExpression(excc.getExpression())),
                             make().Return(makeFinished()))
         )), null));
-        List<JCTree> compclass = builder.build();
+        String iterableName = aliasName("compr");
+        ClassDefinitionBuilder iterable = ClassDefinitionBuilder.klass(this, false, iterableName);
+        iterable.extending(targetIterType);
+        builder.modifiers(2);
+        iterable.defs(builder.build());
+        iterable.defs(make().MethodDef(make().Modifiers(1), names().fromString("getIterator"), makeJavaType(iteratorType),
+                List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(),
+                make().Block(0, List.<JCStatement>of(make().Return(makeNewClass(compname, false)))), null));
+        List<JCTree> compclass = iterable.build();
         current().defs(compclass);
         System.out.println("builder: " + compclass);
-        return makeNewClass(compname, false);
+        return makeNewClass("ceylon.language.Iterable$impl", List.<JCExpression>of(makeNewClass(iterableName, false)), true);
     }
 
     //
