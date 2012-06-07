@@ -8,14 +8,14 @@ public final class Collection$impl<Element> {
     public Collection$impl(Collection<Element> $this) {
         this.$this = $this;
     }
-    public boolean getEmpty(Collection<Element> $this){
+    public boolean getEmpty(){
         return Collection$impl.<Element>_getEmpty(this.$this);
     }
     static <Element> boolean _getEmpty(Collection<Element> $this){
         return $this.getSize() == 0;
     }
     
-    public boolean contains(Collection<Element> $this, java.lang.Object element){
+    public boolean contains(java.lang.Object element){
         return Collection$impl.<Element>_contains(this.$this, element);
     }
     static <Element> boolean _contains(Collection<Element> $this, java.lang.Object element){
@@ -28,7 +28,7 @@ public final class Collection$impl<Element> {
         return false;
     }
     
-    public long count(Collection<Element> $this, java.lang.Object element){
+    public long count(java.lang.Object element){
         return Collection$impl.<Element>_count(this.$this, element);
     }
     static <Element> long _count(Collection<Element> $this, java.lang.Object element){

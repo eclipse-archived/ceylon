@@ -24,7 +24,7 @@ shared class Exception(description=null, cause=null)
     }
     
     shared actual default String string {
-        return "Exception \"" message "\"";
+        return className(this) + " \"" message "\"";
     }
     
     doc "Print the stack trace to the standard error of

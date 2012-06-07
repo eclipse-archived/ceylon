@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.metadata.Annotation;
+import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.CaseTypes;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
@@ -16,6 +18,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 public interface FixedSized<Element> 
         extends Collection<Element> {
 
+    @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Nothing|Element")
     public Element getFirst();
 

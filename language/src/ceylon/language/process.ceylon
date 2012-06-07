@@ -7,12 +7,23 @@ shared object process {
     doc "The command line arguments to the virtual machine."
     shared String[] arguments { throw; }
     
-    /*doc "The unix switch-style command line arguments to the 
-         virtual machine."
-    shared Correspondence<String,String> switches { throw; }
+    doc "Determine if an argument of form `-name` or `--name` 
+         was specified among the command line arguments to 
+         the virtual machine."
+    shared Boolean namedArgumentPresent(String name) { throw; }
 
-    doc "The current system properties."
-    shared Correspondence<String,String> properties { throw; }*/
+    doc "The value of an argument of form `-name=value`, 
+         `--name=value`, or `-name value` specified among the 
+         command line arguments to the virtual machine, if
+         any."
+    shared String? namedArgumentValue(String name) { throw; }
+
+    doc "The value of the given system property of the virtual
+         machine, if any."
+    shared String? propertyValue(String name) { throw; }
+    
+    doc "The line ending character sequence on this platform."
+    shared String newline { throw; }
 
     doc "Print a string to the standard output of the 
          virtual machine process."
@@ -22,7 +33,8 @@ shared object process {
          virtual machine process."
     see (print)
     shared void writeLine(String line) { 
-        write(line); write("\n"); 
+        write(line);
+        write(newline); 
     }
     
     doc "Print a string to the standard output of the 
@@ -33,7 +45,8 @@ shared object process {
          virtual machine process."
     see (print)
     shared void writeErrorLine(String line) { 
-        writeError(line); writeError("\n"); 
+        writeError(line);
+        writeError(newline);
     }
     
     doc "Read a line of input text from the standard input 

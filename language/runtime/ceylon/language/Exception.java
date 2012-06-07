@@ -58,7 +58,7 @@ public class Exception extends RuntimeException {
 
     @TypeInfo("ceylon.language.String")
     public java.lang.String toString() {
-        return "Exception \"" + getMessage() +"\""; 
+        return className.className(this) + " \"" + getMessage() +"\""; 
     }
     
     @Override

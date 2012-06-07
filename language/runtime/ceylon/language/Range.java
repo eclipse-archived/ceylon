@@ -206,6 +206,11 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     public boolean definesEvery() {
         return Correspondence$impl._definesEvery(this, $empty.getEmpty());
     }
+    @Override
+    @Ignore
+    public Iterable<? extends Integer> definesEvery$keys() {
+        return $empty.getEmpty();
+    }
 
     @Override
     public boolean definesAny(@Sequenced @Name("keys") 
@@ -217,6 +222,11 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     @Ignore
     public boolean definesAny() {
         return Correspondence$impl._definesAny(this, $empty.getEmpty());
+    }
+    @Override
+    @Ignore
+    public Iterable<? extends Integer> definesAny$keys() {
+        return $empty.getEmpty();
     }
 
     @Override
@@ -232,6 +242,12 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     public ceylon.language.List<? extends Element> items() {
         return Correspondence$impl._items(this, $empty.getEmpty());
     }
+    
+    @Override
+    @Ignore
+    public Iterable<? extends Integer> items$keys() {
+        return $empty.getEmpty();
+    }
 
     //TODO: @TypeInfo
     @Override
@@ -245,6 +261,11 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     public boolean containsEvery() {
         return Category$impl._containsEvery(this, $empty.getEmpty());
     }
+    @Override
+    @Ignore
+    public Iterable<?> containsEvery$elements() {
+        return $empty.getEmpty();
+    }
 
     //TODO: @TypeInfo
     @Override
@@ -257,6 +278,11 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     @Ignore
     public boolean containsAny() {
         return Category$impl._containsAny(this, $empty.getEmpty());
+    }
+    @Override
+    @Ignore
+    public Iterable<?> containsAny$elements() {
+        return $empty.getEmpty();
     }
 
     @Override

@@ -373,6 +373,10 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     public boolean definesEvery() {
         return Correspondence$impl._definesEvery(this, $empty.getEmpty());
     }
+    @Ignore
+    public Iterable definesEvery$keys() {
+        return $empty.getEmpty();
+    }
 
     @Override
     public boolean definesAny(@Sequenced @Name("keys") 
@@ -383,6 +387,10 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public boolean definesAny() {
         return Correspondence$impl._definesAny(this, $empty.getEmpty());
+    }
+    @Ignore
+    public Iterable definesAny$keys() {
+        return $empty.getEmpty();
     }
 
     @Override
@@ -396,6 +404,11 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public Iterable<? extends Element> items() {
         return Correspondence$impl._items(this, $empty.getEmpty());
+    }
+    @Override
+    @Ignore
+    public Iterable<? extends Integer> items$keys() {
+        return $empty.getEmpty();
     }
 
     @Override
@@ -464,6 +477,11 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     public boolean containsEvery() {
         return Category$impl._containsEvery(this, $empty.getEmpty());
     }
+    @Override
+    @Ignore
+    public Iterable<?> containsEvery$elements() {
+        return $empty.getEmpty();
+    }
 
     @Override
     public boolean containsAny(@Sequenced @Name("elements") 
@@ -475,6 +493,11 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public boolean containsAny() {
         return Category$impl._containsAny(this, $empty.getEmpty());
+    }
+    @Override
+    @Ignore
+    public Iterable<?> containsAny$elements() {
+        return $empty.getEmpty();
     }
 }
 

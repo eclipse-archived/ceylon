@@ -25,6 +25,9 @@ public final class Category$impl {
     public boolean containsEvery() {
         return _containsEvery($this, $empty.getEmpty());
     }
+    public ceylon.language.Iterable containsEvery$elements() {
+        return $empty.getEmpty();
+    }
 
     static boolean _containsAny(Category $this, ceylon.language.Iterable<?> elements) {
         java.lang.Object element;
@@ -41,5 +44,8 @@ public final class Category$impl {
     }
     public boolean containsAny() {
         return _containsAny($this, $empty.getEmpty());
+    }
+    public ceylon.language.Iterable containsAny$elements() {
+        return $empty.getEmpty();
     }
 }
