@@ -1598,7 +1598,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         // TODO: array access (M2)
         JCExpression expr = null;
         if(leftTerm instanceof Tree.BaseMemberExpression)
-            expr = null;
+            if (needDollarThis((Tree.BaseMemberExpression)leftTerm)) {
+                expr = makeUnquotedIdent("$this");
+            } else {
+                expr = null;
+            }
         else if(leftTerm instanceof Tree.QualifiedMemberExpression){
             Tree.QualifiedMemberExpression qualified = ((Tree.QualifiedMemberExpression)leftTerm);
             expr = transformExpression(qualified.getPrimary(), BoxingStrategy.BOXED, qualified.getTarget().getQualifyingType());
