@@ -33,7 +33,7 @@ public interface List<Element>
     @Override
     public boolean defines(@Name("index") Integer key);
     
-    @Annotations({@Annotation("actual"), @Annotation("default")})
+    @Annotations({@Annotation("actual"), @Annotation("formal")})
     @TypeInfo("ceylon.language.Nothing|Element")
     @Override
     public Element item(@Name("index") Integer key);
