@@ -32,7 +32,6 @@ import static com.redhat.ceylon.compiler.java.codegen.CodegenUtil.NameFlag.*;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
@@ -198,7 +197,6 @@ public class ClassTransformer extends AbstractTransformer {
             if (!(decl instanceof Interface)) {
                 continue;
             }
-            Interface iface = (Interface)decl;
             concreteMembersFromSuperinterfaces((Class)model, classBuilder, satisfiedType, satisfiedInterfaces);
         }
     }
@@ -1141,9 +1139,7 @@ public class ClassTransformer extends AbstractTransformer {
         final String companionInstanceName = tempName("$impl$");
         if (model instanceof Class
                 && !Strategy.defaultParameterMethodStatic(model)) {
-            
             Class classModel = (Class)model;
-            Map<TypeParameter, ProducedType> typeArguments = classModel.getType().getTypeArguments();
             vars.append(makeVar(companionInstanceName, 
                     makeJavaType(classModel.getType(), AbstractTransformer.COMPANION),
                     make().NewClass(null, // TODO encl == null ???
@@ -1227,7 +1223,7 @@ public class ClassTransformer extends AbstractTransformer {
                     || param.isSequenced()) {
                 MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(),
                         model.getName());
-                final MethodDefinitionBuilder om = makeOverloadsForDefaultedParameter(true, true, false,
+                makeOverloadsForDefaultedParameter(true, true, false,
                         overloadBuilder, def.getDeclarationModel(), 
                         model.getParameterLists().get(0).getParameters(), param);
                 lb.append(overloadBuilder.build());
