@@ -202,11 +202,6 @@ public class ClassTransformer extends AbstractTransformer {
             }
             Interface iface = (Interface)decl;
             concreteMembersFromSuperinterfaces((Class)model, classBuilder, satisfiedType, satisfiedInterfaces);
-            
-            /*if (Decl.withinClassOrInterface(decl)) {// TODO What about local interfaces?
-                // Generate $outer() impl if implementing an inner interface
-                classBuilder.defs(makeOuterImpl(model, iface));
-            }*/
         }
     }
 
@@ -389,26 +384,6 @@ public class ClassTransformer extends AbstractTransformer {
                 makeJavaType(satisfiedType, AbstractTransformer.COMPANION | SATISFIES), null, false);
     }
 
-    private JCMethodDecl makeOuterImpl(final ClassOrInterface model, Interface iface) {
-        at(null);
-        
-        MethodDefinitionBuilder outerBuilder = MethodDefinitionBuilder.method(gen(), true, true, "$outer");// TODO ancestorLocal
-        outerBuilder.annotations(makeAtOverride());
-        outerBuilder.annotations(makeAtIgnore());
-        outerBuilder.modifiers(FINAL | PUBLIC);
-        outerBuilder.resultType(null, makeJavaType(iface.getType().getQualifyingType()));
-        Scope container = model.getContainer();
-        final JCExpression expr;
-        if (container instanceof Class) {
-            expr = makeSelect(makeQuotedQualIdentFromString(getFQDeclarationName((Class)container)), "this");
-        } else {
-            expr = makeNull();//TODO makeQuotedIdent("$outer");// TODO Need to have a $outer field and pass in the outer instance to the ctor
-        }
-        outerBuilder.body(make().Return(expr));
-        JCMethodDecl build = outerBuilder.build();
-        return build;
-    }
-
     private void buildCompanion(final Tree.ClassOrInterface def,
             final Interface model, ClassDefinitionBuilder classBuilder) {
         at(def);
@@ -430,62 +405,6 @@ public class ClassTransformer extends AbstractTransformer {
                                 makeSelect("this", "$this"), 
                                 makeUnquotedIdent("$this"))));
         ctor.body(bodyStatements.toList());
-        /*if (Strategy.needsOuterMethodInCompanion(model)) {
-            // interfaces inner to local types have a different type in the 
-            // interface and on the $impl because the real outer type is not 
-            // visible because the interfaces is hoisted to top level
-            final ProducedType outerTypeInterface;
-            final ProducedType outerTypeCompanion;
-            if (Decl.isAncestorLocal(model)) {
-                Scope container = Decl.container(model);
-                while (!(container instanceof TypeDeclaration)) {
-                    container = container.getContainer();
-                }
-                outerTypeCompanion = ((TypeDeclaration)container).getType();
-                outerTypeInterface = typeFact().getObjectDeclaration().getType();
-            } else {
-                outerTypeInterface = thisType.getQualifyingType();
-                outerTypeCompanion = outerTypeInterface;
-            }
-            // ...add a $outer() method to the impl
-            
-            MethodDefinitionBuilder outerBuilderCompanion = MethodDefinitionBuilder.method(gen(), false, true, "$outer");// TODO ancestorLocal
-            outerBuilderCompanion.modifiers(PRIVATE | FINAL);
-            JCExpression jt = makeJavaType(outerTypeCompanion);
-            outerBuilderCompanion.resultType(null, jt);
-            boolean requiresCast = false;
-            JCExpression expr = makeErroneous();
-            Scope container = model.getContainer();
-            if (container instanceof Class) {
-                expr = makeSelect(makeQuotedQualIdentFromString(getFQDeclarationName((Class)container)), "this");
-            } else if (container instanceof Interface) {
-                expr = make().Apply(null,// TODO Type args
-                        makeSelect("$this", "$outer"),
-                        List.<JCExpression>nil());
-                requiresCast = Decl.isLocal((Interface)container);
-            } else if (Decl.isLocal((model))) {
-                while (!(container instanceof TypeDeclaration)) {
-                    container = container.getContainer();
-                }
-                expr = makeSelect(
-                                makeQuotedQualIdentFromString(getFQDeclarationName((TypeDeclaration)container)), 
-                                "this");
-            } else {
-                throw new RuntimeException();
-            }
-            if (requiresCast) {
-                expr = make().TypeCast(makeJavaType(outerTypeCompanion), expr);
-            }
-            outerBuilderCompanion.body(make().Return(expr));
-            companionBuilder.defs(outerBuilderCompanion.build());
-
-            // Add an $outer() method to the interface
-            MethodDefinitionBuilder outerBuilderInterface = MethodDefinitionBuilder.method(gen(), false, true, "$outer");// TODO ancestorLocal
-            outerBuilderInterface.annotations(makeAtIgnore());
-            outerBuilderInterface.modifiers(PUBLIC | ABSTRACT);
-            outerBuilderInterface.resultType(null, makeJavaType(outerTypeInterface));
-            classBuilder.defs(outerBuilderInterface.build());
-        }*/
     }
 
     public List<JCStatement> transformRefinementSpecifierStatement(SpecifierStatement op, ClassDefinitionBuilder classBuilder) {
@@ -1110,115 +1029,6 @@ public class ClassTransformer extends AbstractTransformer {
             return true;
         }
         throw new RuntimeException();
-    }
-
-    private JCMethodDecl makeConcreteInterfaceMethodsForClosure(
-            Method model, final String methodName,
-            final ParameterList paramList, Parameter currentParam) {
-        
-        MethodDefinitionBuilder delegateBuilder = MethodDefinitionBuilder.method(gen(), false, true, methodName);
-        delegateBuilder.modifiers(FINAL | (model.isShared() ? PUBLIC : PRIVATE));
-        copyTypeParameters(model, delegateBuilder);
-        delegateBuilder.resultType(model);
-        ListBuffer<JCExpression> arguments = ListBuffer.<JCExpression>lb();
-        for (Parameter p : paramList.getParameters().subList(0, paramList.getParameters().indexOf(currentParam))) {
-            delegateBuilder.parameter(p);
-            arguments.append(makeQuotedIdent(p.getName()));
-        }
-        JCExpression expr = make().Apply(
-                typeArguments(model),
-                makeSelect("$this", methodName), 
-                arguments.toList());
-        if (isVoid(model)) {
-            delegateBuilder.body(make().Exec(expr));
-        } else {
-            delegateBuilder.body(make().Return(expr));
-        }
-        JCMethodDecl result = delegateBuilder.build();
-        return result;
-    }
-
-    private boolean isLastParameter(final ParameterList paramList,
-            Parameter param) {
-        return paramList.getParameters().indexOf(param) == paramList.getParameters().size();
-    }
-
-    private JCMethodDecl transformDefaultValueMethodImpl(Tree.AnyMethod def,
-            java.util.List<Parameter> parameters, Parameter p) {
-        final Method method = def.getDeclarationModel();
-        String name = CodegenUtil.getDefaultedParamMethodName(method, p);
-        MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(gen(), false, true, name);// TODO ancestorLocal
-        overloadBuilder.annotations(makeAtOverride());
-        overloadBuilder.annotations(makeAtIgnore());
-        overloadBuilder.modifiers(transformOverloadMethodImplFlags(method));
-        for (TypeParameter tp : method.getTypeParameters()) {
-            overloadBuilder.typeParameter(tp);
-        }
-        overloadBuilder.resultType(null, makeJavaType(p.getType()));
-        ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb(); 
-        for (Parameter p2 : parameters.subList(0, parameters.indexOf(p))) {
-            overloadBuilder.parameter(p2);
-            args.append(makeQuotedIdent(p2.getName()));
-        }
-        overloadBuilder.body(make().Return(
-                make().Apply(typeArguments(def),
-                        makeDefaultedParamMethodIdent(method, p),
-                        args.toList())));
-        return overloadBuilder.build();
-    }
-    
-    private JCMethodDecl overloadMethodImpl(
-            Tree.AnyMethod def, java.util.List<Parameter> parameters, Parameter p) {
-        final Method method = def.getDeclarationModel();
-        MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(gen(), false, true, method.getName());// TODO ancestorLocal
-        overloadBuilder.annotations(makeAtOverride());
-        overloadBuilder.annotations(makeAtIgnore());
-        overloadBuilder.modifiers(transformOverloadMethodImplFlags(method));
-        
-        for (TypeParameter tp : method.getTypeParameters()) {
-            overloadBuilder.typeParameter(tp);
-        }
-        overloadBuilder.resultType(method);
-        final ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
-        final ListBuffer<JCStatement> vars = ListBuffer.<JCStatement>lb();        
-        boolean seen = false;
-        // TODO This code is very similar to transformForDefaultedParameter() but
-        // operates on model.Parameter not Tree.Parameter
-        
-        for (Parameter p2 : parameters) {
-            if (p2 == p) {
-                seen = true;
-            }
-            if (!seen) {
-                args.append(makeQuotedIdent(p2.getName()));
-                overloadBuilder.parameter(p2);
-            } else {
-                String tempName = tempName(p2.getName());
-                vars.append(makeVar(
-                        tempName, 
-                        makeJavaType(p2.getType()), 
-                        make().Apply(typeArguments(def),
-                                makeDefaultedParamMethodIdent(method, p2), 
-                            args.toList())));
-                args.append(makeQuotedIdent(tempName));
-            }
-        }
-        
-        JCExpression invocation = make().Apply(
-                typeArguments(def),
-                makeQuotedIdent(method.getName()),
-                args.toList());
-        
-        if (isVoid(method.getType())) {
-            vars.append(make().Exec(invocation));
-            invocation = make().LetExpr(vars.toList(), makeNull());
-            overloadBuilder.body(make().Exec(invocation));
-        } else {
-            invocation = make().LetExpr(vars.toList(), invocation);
-            overloadBuilder.body(make().Return(invocation));
-        }
-        
-        return overloadBuilder.build();
     }
 
     /**
