@@ -18,4 +18,29 @@
  * MA  02110-1301, USA.
  */
 class ListImplementor<X>() satisfies List<X> {
+
+    shared actual ListImplementor<X> clone { 
+        throw;
+    }
+    
+    shared actual ListImplementor<X> segment(Integer from, Integer length) {
+        throw;
+    }
+    
+    shared actual Integer? lastIndex {
+        throw;
+    } 
+    
+    shared actual ListImplementor<X> span(Integer from, Integer? to) {
+        throw;
+    }
+    
+    shared actual Integer hash {
+        throw;
+    }
+    
+    shared actual Boolean equals(Object other) {
+        throw;
+    }
+
 }
