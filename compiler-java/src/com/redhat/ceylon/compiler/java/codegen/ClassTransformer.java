@@ -31,12 +31,10 @@ import static com.sun.tools.javac.code.Flags.STATIC;
 import static com.redhat.ceylon.compiler.java.codegen.CodegenUtil.NameFlag.*;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.loader.ModelResolutionException;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -287,19 +285,43 @@ public class ClassTransformer extends AbstractTransformer {
                      
                 }
             } else if (member instanceof Getter
-                    || member instanceof Value) {// Concrete getter
-                TypedDeclaration getter = (TypedDeclaration)member;
-                final ProducedTypedReference typedMember = satisfiedType.getTypedMember(getter, null);
+                    || member instanceof Setter
+                    || member instanceof Value) {
+                TypedDeclaration attr = (TypedDeclaration)member;
+                final ProducedTypedReference typedMember = satisfiedType.getTypedMember(attr, null);
                 if (needsCompanionDelegate(model, member)) {
-                    final JCMethodDecl getterDelegate = makeDelegateToCompanion(iface, 
-                            typedMember,
-                            PUBLIC | (getter.isDefault() ? 0 : FINAL), 
-                            Collections.<TypeParameter>emptyList(), 
-                            getter.getType(), 
-                            CodegenUtil.getGetterName(getter), 
-                            Collections.<Parameter>emptyList(),
-                            Decl.isAncestorLocal(model));
-                    classBuilder.defs(getterDelegate);
+                    if (member instanceof Value 
+                            || member instanceof Getter) {
+                        final JCMethodDecl getterDelegate = makeDelegateToCompanion(iface, 
+                                typedMember,
+                                PUBLIC | (attr.isDefault() ? 0 : FINAL), 
+                                Collections.<TypeParameter>emptyList(), 
+                                typedMember.getType(), 
+                                CodegenUtil.getGetterName(attr), 
+                                Collections.<Parameter>emptyList(),
+                                Decl.isAncestorLocal(model));
+                        classBuilder.defs(getterDelegate);
+                    }
+                    if (member instanceof Setter) { 
+                        final JCMethodDecl setterDelegate = makeDelegateToCompanion(iface, 
+                                typedMember,
+                                PUBLIC | (attr.isDefault() ? 0 : FINAL), 
+                                Collections.<TypeParameter>emptyList(), 
+                                typeFact().getVoidDeclaration().getType(), 
+                                CodegenUtil.getSetterName(attr), 
+                                Collections.<Parameter>singletonList(((Setter)member).getParameter()),
+                                Decl.isAncestorLocal(model));
+                        classBuilder.defs(setterDelegate);
+                    }
+                    if (member instanceof Value 
+                            && ((Value)attr).isVariable()) {
+                        // I don't *think* this can happen because although a 
+                        // variable Value can be declared on an interface it 
+                        // will need to we refined as a Getter+Setter on a 
+                        // subinterface in order for there to be a method in a 
+                        // $impl to delegate to
+                        throw new RuntimeException();
+                    }
                 }
             } else if (needsCompanionDelegate(model, member)) {
                 log.error("ceylon", "Unhandled concrete interface member " + member.getQualifiedNameString() + " " + member.getClass());
@@ -316,7 +338,13 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     private boolean needsCompanionDelegate(final Class model, Declaration member) {
-        return member.equals(model.getMember(member.getName(), null))
+        final boolean mostRefined;
+        if (member instanceof Setter) {
+            mostRefined = member.equals(((Getter)model.getMember(member.getName(), null)).getSetter());
+        } else {
+            mostRefined = member.equals(model.getMember(member.getName(), null));
+        }
+        return mostRefined
                 && (member.isDefault() || !member.isFormal());
     }
 
@@ -329,13 +357,16 @@ public class ClassTransformer extends AbstractTransformer {
             final ProducedType methodType,
             final String methodName, final java.util.List<Parameter> parameters, boolean ancestorLocal) {
         final MethodDefinitionBuilder concreteWrapper = MethodDefinitionBuilder.systemMethod(gen(), ancestorLocal, methodName);
-        concreteWrapper.modifiers(mods);//TODO
-        concreteWrapper.annotations(makeAtOverride());// TODO Other Annos?
+        concreteWrapper.modifiers(mods);
+        concreteWrapper.annotations(makeAtOverride());
         for (TypeParameter tp : typeParameters) {
             concreteWrapper.typeParameter(tp);
         }
         
-        concreteWrapper.resultType(typedMember.getDeclaration(), typedMember.getType());
+        if (!isVoid(methodType)) {
+            concreteWrapper.resultType(typedMember.getDeclaration(), typedMember.getType());
+        }
+        
         ListBuffer<JCExpression> arguments = ListBuffer.<JCExpression>lb();
         for (Parameter param : parameters) {
             final ProducedTypedReference typedParameter = typedMember.getTypedParameter(param);
