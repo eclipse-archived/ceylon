@@ -21,14 +21,42 @@
 class DefaultSetter() {
     variable Integer a := 0;
     interface I {
-        shared default Integer a {
+        shared formal variable Integer aFormal;
+        shared default Integer aDefault {
             return outer.a;
         }
-        assign a {
-            outer.a := a;
+        assign aDefault {
+            outer.a := aDefault;
         }
     }
-    class C() satisfies I {
+    abstract class Abstract() satisfies I {
+        shared actual default Integer aFormal {
+            return aDefault;
+        }
+        assign aFormal {
+            aDefault := aFormal;
+        }
+    }
+    class Concrete() satisfies I {
+        shared actual Integer aFormal {
+            return 1;
+        }
+        assign aFormal {
+        }
+    }
+    interface ISub satisfies I {
+        shared actual default Integer aFormal {
+            return aDefault;
+        }
+        assign aFormal {
+            aDefault := aFormal;
+        }
+        shared Integer inc() {
+            return aFormal++;
+        }
+    }
+    class Sub() satisfies ISub {
         
     }
+
 }
