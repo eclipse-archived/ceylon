@@ -298,9 +298,9 @@ public class BoxingVisitor extends Visitor {
     public void visit(ExpressionComprehensionClause that) {
         Term t = that.getExpression().getTerm();
         if (t instanceof QualifiedMemberExpression) {
-            if (((QualifiedMemberExpression) t).getDeclaration() instanceof TypedDeclaration) {
+            /*if (((QualifiedMemberExpression) t).getDeclaration() instanceof TypedDeclaration) {
                 ((TypedDeclaration)((QualifiedMemberExpression) t).getDeclaration()).setUnboxed(false);
-            }
+            }*/
             Tree.Primary p = ((QualifiedMemberExpression) t).getPrimary();
             if (p instanceof BaseMemberExpression) {
                 if (((BaseMemberExpression) p).getDeclaration() instanceof TypedDeclaration) {
