@@ -33,11 +33,16 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.EqualityOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Exists;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExpressionComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForComprehensionClause;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IdenticalOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LogicalAssignmentOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LogicalOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
@@ -54,6 +59,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class BoxingVisitor extends Visitor {
@@ -272,6 +278,37 @@ public class BoxingVisitor extends Visitor {
         super.visit(that);
         // this is not conditional
         CodegenUtil.markUnBoxed(that);
+    }
+
+    @Override
+    public void visit(ForComprehensionClause that) {
+        ForIterator iter = that.getForIterator();
+        if (iter instanceof ValueIterator) {
+            ((ValueIterator) iter).getVariable().getDeclarationModel().setUnboxed(false);
+        } else if (iter instanceof KeyValueIterator) {
+            ((KeyValueIterator) iter).getKeyVariable().getDeclarationModel().setUnboxed(false);
+            ((KeyValueIterator) iter).getValueVariable().getDeclarationModel().setUnboxed(false);
+        }
+        super.visit(that);
+    }
+    @Override public void visit(IfComprehensionClause that) {
+        super.visit(that);
+    }
+    @Override
+    public void visit(ExpressionComprehensionClause that) {
+        Term t = that.getExpression().getTerm();
+        if (t instanceof QualifiedMemberExpression) {
+            if (((QualifiedMemberExpression) t).getDeclaration() instanceof TypedDeclaration) {
+                ((TypedDeclaration)((QualifiedMemberExpression) t).getDeclaration()).setUnboxed(false);
+            }
+            Tree.Primary p = ((QualifiedMemberExpression) t).getPrimary();
+            if (p instanceof BaseMemberExpression) {
+                if (((BaseMemberExpression) p).getDeclaration() instanceof TypedDeclaration) {
+                    ((TypedDeclaration)((BaseMemberExpression) p).getDeclaration()).setUnboxed(false);
+                }
+            }
+        }
+        super.visit(that);
     }
 
     private void propagateFromDeclaration(Term that, TypedDeclaration term) {
