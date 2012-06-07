@@ -828,16 +828,30 @@ public class ClassTransformer extends AbstractTransformer {
                     false);
             classBuilder.getCompanionBuilder((Declaration)model.getContainer()).defs(companionDefs);
         }
+        
+        List<JCTree> result;
         if (Strategy.onlyOnCompanion(model)) {
-            return List.<JCTree>nil();
+            result = List.<JCTree>nil();
+        } else {
+            // Transform it for the interface/class
+            result = transformMethod(def, model, methodName, true, !model.isInterfaceMember(), 
+                    body, 
+                    true,
+                    !Decl.withinInterface(model), false, false,
+                    true,
+                    !Strategy.defaultParameterMethodOnSelf(model));
         }
-        // Transform it for the interface/class
-        return transformMethod(def, model, methodName, true, !model.isInterfaceMember(), 
-                body, 
-                true,
-                !Decl.withinInterface(model), false, false,
-                true,
-                !Strategy.defaultParameterMethodOnSelf(model));
+        
+        if (def instanceof Tree.MethodDefinition) {
+            Tree.MethodDefinition m = (Tree.MethodDefinition)def;
+            if (Decl.withinInterface(m) && m.getBlock() != null) {
+                classBuilder.getCompanionBuilder((Declaration)model.getContainer())
+                .defs(transformConcreteInterfaceMember(m, 
+                        ((ClassOrInterface)Decl.container(def)).getType()));
+            }
+        }
+        
+        return result;
     }
 
 
@@ -1210,7 +1224,7 @@ public class ClassTransformer extends AbstractTransformer {
 
 
     
-    public List<JCTree> transformConcreteInterfaceMember(MethodDefinition def, ProducedType type) {
+    private List<JCTree> transformConcreteInterfaceMember(MethodDefinition def, ProducedType type) {
         ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
         Method model = def.getDeclarationModel();
         Tree.ParameterList paramList = def.getParameterLists().get(0);
