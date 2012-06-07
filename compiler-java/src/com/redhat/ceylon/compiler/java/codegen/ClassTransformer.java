@@ -685,10 +685,6 @@ public class ClassTransformer extends AbstractTransformer {
         }
         return mods;
     }
-    
-    private int transformOverloadMethodImplFlags(Method method) {
-        return (transformMethodDeclFlags(method) & (PUBLIC | PRIVATE | PROTECTED)) | FINAL;
-    }
 
     private int transformAttributeFieldDeclFlags(Tree.AttributeDeclaration cdecl) {
         int result = 0;
@@ -825,14 +821,13 @@ public class ClassTransformer extends AbstractTransformer {
         final String methodName = CodegenUtil.quoteMethodNameIfProperty(model, gen());
         if (Decl.withinInterface(model)) {
             // Transform it for the companion
-            final List<JCTree> companionDefs = transformWhatever(def, model, methodName, 
+            final List<JCTree> companionDefs = transformMethod(def, model, methodName, 
                     def instanceof MethodDeclaration
                     && ((MethodDeclaration) def).getSpecifierExpression() != null,
                     def instanceof MethodDeclaration
                     && ((MethodDeclaration) def).getSpecifierExpression() != null,
                     body,
-                    def instanceof MethodDeclaration
-                    && ((MethodDeclaration) def).getSpecifierExpression() == null,
+                    def instanceof MethodDeclaration,
                     true, true, true,
                     !Strategy.defaultParameterMethodOnSelf(model),
                     false);
@@ -842,7 +837,7 @@ public class ClassTransformer extends AbstractTransformer {
             return List.<JCTree>nil();
         }
         // Transform it for the interface/class
-        return transformWhatever(def, model, methodName, true, !model.isInterfaceMember(), 
+        return transformMethod(def, model, methodName, true, !model.isInterfaceMember(), 
                 body, 
                 true,
                 !Decl.withinInterface(model), false, false,
@@ -851,57 +846,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
 
-    
-    private List<JCTree> transformNotCompanion(Tree.AnyMethod def,
-            List<JCStatement> body, final Method model, final String methodName) {
-        
-        ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
-        final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(
-                this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(), 
-                methodName);
-        methodBuilder.resultType(model);
-        copyTypeParameters(model, methodBuilder);
-        final ParameterList parameterList = model.getParameterLists().get(0);
-        Tree.ParameterList paramList = def.getParameterLists().get(0);
-        for (Tree.Parameter param : paramList.getParameters()) {
-            Parameter parameter = param.getDeclarationModel();
-            methodBuilder.parameter(parameter);
-            if (parameter.isDefaulted()
-                    || parameter.isSequenced()) {
-                if (model.getRefinedDeclaration() == model) {
-                    MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(),
-                            methodName);
-                    JCMethodDecl overloadedMethod = makeOverloadsForDefaultedParameter(
-                            !Decl.withinInterface(model), false, false, 
-                            overloadBuilder, 
-                            model, parameterList.getParameters(), parameter).build();
-                    lb.prepend(overloadedMethod);
-                    
-                    
-                    lb.add(makeParamDefaultValueMethod(!Strategy.defaultParameterMethodOnSelf(model), model, paramList, param));    
-                    
-                }
-            }    
-        }
-        if (!model.isInterfaceMember()) {
-            // Construct the outermost method using the body we've built so far
-            body = transformMplBody(model, body);
-            methodBuilder.body(body);
-        } else {
-            methodBuilder.noBody();
-        }
-        methodBuilder
-            .modifiers(transformMethodDeclFlags(model))
-            .isActual(model.isActual())
-            .modelAnnotations(model.getAnnotations());
-        if(CodegenUtil.hasCompilerAnnotation(def, "test")){
-            methodBuilder.annotations(List.of(make().Annotation(makeSelect("org", "junit", "Test"), List.<JCTree.JCExpression>nil())));
-        }   
-        lb.prepend(methodBuilder.build());
-        return lb.toList();
-    }
-
-    private List<JCTree> transformWhatever(Tree.AnyMethod def,
+    private List<JCTree> transformMethod(Tree.AnyMethod def,
             final Method model, final String methodName,
             boolean method,
             boolean includeBody,
@@ -962,103 +907,6 @@ public class ClassTransformer extends AbstractTransformer {
             lb.prepend(methodBuilder.build());
         }
         return lb.toList();
-    }
-    
-    private List<JCTree> transformForCompanion(Tree.AnyMethod def,
-            final Method model,
-            final String methodName) {
-        ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
-        final Tree.ParameterList paramList = def.getParameterLists().get(0);
-        for (Tree.Parameter param : paramList.getParameters()) {
-            Parameter parameter = param.getDeclarationModel();
-            if (parameter.isDefaulted()
-                        || parameter.isSequenced()) {
-                if (model.getRefinedDeclaration() == model) {  
-                    if (def instanceof MethodDeclaration
-                            && ((MethodDeclaration) def).getSpecifierExpression() == null) {
-                        // interface methods without concrete implementation (including 
-                        // overloaded versions) on the companion class by delegating to 
-                        // $this (for closure purposes)
-                        MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(),
-                                methodName);
-                        makeOverloadsForDefaultedParameter(true, true, true, 
-                                overloadBuilder, model, paramList, param);
-                        lb.append(overloadBuilder.build());
-                    }
-                    
-                    if (!Strategy.defaultParameterMethodOnSelf(model)) {
-                        lb.append(makeParamDefaultValueMethod(false, model, paramList, param));
-                    }
-                }
-            }
-        }
-        return lb.toList();
-    }
-
-    private ListBuffer<JCTree> transformMethod(Method model,
-            ClassDefinitionBuilder classBuilder, List<JCStatement> body,
-            boolean unspecified, boolean addTestAnno) {
-        
-        ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
-        final String methodName = CodegenUtil.quoteMethodNameIfProperty(model, gen());
-        
-        final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(), 
-                methodName);
-        
-        methodBuilder.resultType(model);
-        
-        copyTypeParameters(model, methodBuilder);
-        
-        ParameterList parameterList = model.getParameterLists().get(0);
-        for (Parameter parameter : parameterList.getParameters()) {
-            methodBuilder.parameter(parameter);
-            if (parameter.isDefaulted()
-                    || parameter.isSequenced()) {
-                if (model.getRefinedDeclaration() == model) {
-                    MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(),
-                            methodName);
-                    JCMethodDecl overloadedMethod = makeOverloadsForDefaultedParameter(!Decl.withinInterface(model), false, false, 
-                            overloadBuilder, 
-                            model, parameterList.getParameters(), parameter).build();
-                    if (!Decl.withinInterface(model)) {
-                        overloadBuilder.annotations(makeAtOverride());
-                    }
-                    lb.prepend(overloadedMethod);
-                }
-            
-                if (Decl.withinInterface(model)
-                        && unspecified) {
-                    // interface methods without concrete implementation (including 
-                    // overloaded versions) on the companion class by delegating to 
-                    // $this (for closure purposes)
-                    MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(),
-                            methodName);
-                    makeOverloadsForDefaultedParameter(true, true, true, 
-                            overloadBuilder, model, parameterList.getParameters(), parameter);
-                    classBuilder.getCompanionBuilder((Declaration)model.getContainer()).defs(overloadBuilder.build());
-                }
-            }    
-        }
-        
-        if (body != null) {
-            // Construct the outermost method using the body we've built so far
-            body = transformMplBody(model, body);
-            methodBuilder.body(body);
-        } else {
-            methodBuilder.noBody();
-        }
-        
-        methodBuilder
-            .modifiers(transformMethodDeclFlags(model))
-            .isActual(model.isActual())
-            .modelAnnotations(model.getAnnotations());
-        
-        if(addTestAnno){
-            methodBuilder.annotations(List.of(make().Annotation(makeSelect("org", "junit", "Test"), List.<JCTree.JCExpression>nil())));
-        }
-        
-        lb.prepend(methodBuilder.build());
-        return lb;
     }
 
     /**
