@@ -48,6 +48,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
@@ -544,10 +545,10 @@ abstract class DirectInvocationBuilder extends SimpleInvocationBuilder {
  * positional arguments. Supports sequenced and defaulted arguments.
  */
 class PositionalInvocationBuilder extends DirectInvocationBuilder {
-    
+
     private final Tree.PositionalArgumentList positional;
     private final java.util.List<Parameter> parameters;
-    
+
     public PositionalInvocationBuilder(
             AbstractTransformer gen, 
             Tree.Primary primary,
@@ -563,6 +564,9 @@ class PositionalInvocationBuilder extends DirectInvocationBuilder {
     }
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
+        if (argIndex == positional.getPositionalArguments().size() && positional.getComprehension() != null) {
+            return gen.expressionGen().transformComprehension(positional.getComprehension());
+        }
         Tree.Expression expr = getArgumentExpression(argIndex);
         if (expr.getTerm() instanceof FunctionArgument) {
             FunctionArgument farg = (FunctionArgument)expr.getTerm();
@@ -575,11 +579,18 @@ class PositionalInvocationBuilder extends DirectInvocationBuilder {
     }
     @Override
     protected int getNumArguments() {
-        return positional.getPositionalArguments().size();
+        return positional.getPositionalArguments().size() + (positional.getComprehension()==null?0:1);
+    }
+    @Override
+    protected boolean isParameterSequenced(int argIndex) {
+        if (argIndex == positional.getPositionalArguments().size() && positional.getComprehension() != null) {
+            return true;
+        }
+        return super.isParameterSequenced(argIndex);
     }
     @Override
     protected boolean dontBoxSequence() {
-        return positional.getEllipsis() != null;
+        return positional.getEllipsis() != null || positional.getComprehension() != null;
     }
     protected boolean hasDefaultArgument(int ii) {
         return parameters.get(ii).isDefaulted();
@@ -1004,6 +1015,8 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                         // TODO I suspect the above is wrong and we should use
                         // argExpr = makeDefaultedArgumentMethodCall(param);
                         //hasDefaulted |= true;
+                    } else if (namedArgumentList.getComprehension() != null) {
+                        argExpr = gen.expressionGen().transformComprehension(namedArgumentList.getComprehension());
                     } else {
                         argExpr = gen.makeEmpty();
                     }
