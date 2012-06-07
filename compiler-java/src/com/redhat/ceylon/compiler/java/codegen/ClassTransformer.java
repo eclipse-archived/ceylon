@@ -291,8 +291,9 @@ public class ClassTransformer extends AbstractTransformer {
                     classBuilder.defs(concreteMemberDelegate);
                      
                 }
-            } else if (member instanceof Getter) {// Concrete getter
-                Getter getter = (Getter)member;
+            } else if (member instanceof Getter
+                    || member instanceof Value) {// Concrete getter
+                TypedDeclaration getter = (TypedDeclaration)member;
                 final ProducedTypedReference typedMember = satisfiedType.getTypedMember(getter, null);
                 if (needsCompanionDelegate(model, member)) {
                     final JCMethodDecl getterDelegate = makeDelegateToCompanion(iface, 
