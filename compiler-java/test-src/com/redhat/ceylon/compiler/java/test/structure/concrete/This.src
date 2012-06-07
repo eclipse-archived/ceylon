@@ -17,37 +17,37 @@ interface This {
 final class This$impl {
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.This $this;
     
-    public final long m2$i1() {
-        return $this.m1();
-    }
-    
-    public final long m2$i2(final long i1) {
-        return $this.m1();
-    }
-    
-    public final long m2() {
-        return (
-            let
-            {
-                long $ceylontmp$i1$6 = m2$i1();
-                long $ceylontmp$i2$7 = m2$i2($ceylontmp$i1$6);
-            }
-            returning m2($ceylontmp$i1$6, $ceylontmp$i2$7);
-        );
+    public long m2(final long i1, final long i2) {
+        return $this.m1() + $this.m1() + i1 + i2;
     }
     
     public final long m2(final long i1) {
         return (
             let
             {
-                long $ceylontmp$i2$9 = m2$i2(i1);
+                long $ceylontmp$i2$4 = m2$i2(i1);
             }
-            returning m2(i1, $ceylontmp$i2$9);
+            returning m2(i1, $ceylontmp$i2$4);
         );
     }
     
-    public long m2(final long i1, final long i2) {
-        return $this.m1() + $this.m1() + i1 + i2;
+    public final long m2() {
+        return (
+            let
+            {
+                long $ceylontmp$i1$1 = m2$i1();
+                long $ceylontmp$i2$2 = m2$i2($ceylontmp$i1$1);
+            }
+            returning m2($ceylontmp$i1$1, $ceylontmp$i2$2);
+        );
+    }
+    
+    public final long m2$i1() {
+        return $this.m1();
+    }
+    
+    public final long m2$i2(final long i1) {
+        return $this.m1();
     }
     
     class Inner {

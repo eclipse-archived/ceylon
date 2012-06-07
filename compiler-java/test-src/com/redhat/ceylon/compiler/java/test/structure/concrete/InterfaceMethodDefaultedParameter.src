@@ -47,8 +47,8 @@ final class I$impl<T> {
         (
             let
             {
-                long $ceylontmp$i$3 = m$i();
-                $this.m($ceylontmp$i$3);
+                long $ceylontmp$i$1 = m$i();
+                $this.m($ceylontmp$i$1);
             }
             returning null;
         );
@@ -62,9 +62,9 @@ final class I$impl<T> {
         return (
             let
             {
-                long $ceylontmp$i$7 = m2$i();
+                long $ceylontmp$i$5 = m2$i();
             }
-            returning $this.m2($ceylontmp$i$7);
+            returning $this.m2($ceylontmp$i$5);
         );
     }
     
@@ -72,24 +72,24 @@ final class I$impl<T> {
         return 1L;
     }
     
-    public final long m3() {
-        return (
-            let
-            {
-                long $ceylontmp$i$12 = m3$i();
-                long $ceylontmp$n$13 = m3$n($ceylontmp$i$12);
-            }
-            returning $this.m3($ceylontmp$i$12, $ceylontmp$n$13);
-        );
-    }
-    
     public final long m3(final long i) {
         return (
             let
             {
-                long $ceylontmp$n$17 = m3$n(i);
+                long $ceylontmp$n$12 = m3$n(i);
             }
-            returning $this.m3(i, $ceylontmp$n$17);
+            returning $this.m3(i, $ceylontmp$n$12);
+        );
+    }
+    
+    public final long m3() {
+        return (
+            let
+            {
+                long $ceylontmp$i$9 = m3$i();
+                long $ceylontmp$n$10 = m3$n($ceylontmp$i$9);
+            }
+            returning $this.m3($ceylontmp$i$9, $ceylontmp$n$10);
         );
     }
     
@@ -105,9 +105,9 @@ final class I$impl<T> {
         return (
             let
             {
-                long $ceylontmp$n$21 = m4$n(i);
+                long $ceylontmp$n$19 = m4$n(i);
             }
-            returning $this.m4(i, $ceylontmp$n$21);
+            returning $this.m4(i, $ceylontmp$n$19);
         );
     }
     
@@ -115,24 +115,24 @@ final class I$impl<T> {
         return 2L * i;
     }
     
-    public final <U>long m5(final long i) {
-        return (
-            let
-            {
-                T $ceylontmp$t$26 = m5$t(i);
-                U $ceylontmp$u$27 = m5$u(i, $ceylontmp$t$26);
-            }
-            returning $this.m5(i, $ceylontmp$t$26, $ceylontmp$u$27);
-        );
-    }
-    
     public final <U>long m5(final long i, final T t) {
         return (
             let
             {
-                U $ceylontmp$u$31 = m5$u(i, t);
+                U $ceylontmp$u$26 = m5$u(i, t);
             }
-            returning $this.m5(i, t, $ceylontmp$u$31);
+            returning $this.m5(i, t, $ceylontmp$u$26);
+        );
+    }
+    
+    public final <U>long m5(final long i) {
+        return (
+            let
+            {
+                T $ceylontmp$t$23 = m5$t(i);
+                U $ceylontmp$u$24 = m5$u(i, $ceylontmp$t$23);
+            }
+            returning $this.m5(i, $ceylontmp$t$23, $ceylontmp$u$24);
         );
     }
     

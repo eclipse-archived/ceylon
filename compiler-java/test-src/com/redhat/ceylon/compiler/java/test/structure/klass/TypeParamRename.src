@@ -17,40 +17,40 @@ interface TypeParamRename<T, U> {
 final class TypeParamRename$impl<T, U> {
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<T, U> $this;
     
-    public final T m$t() {
-        return null;
+    public U m(final T t) {
+        throw new .ceylon.language.Exception(null, null);
     }
     
     public final U m() {
         return (
             let
             {
-                T $ceylontmp$t$3 = m$t();
+                T $ceylontmp$t$1 = m$t();
             }
-            returning m($ceylontmp$t$3);
+            returning m($ceylontmp$t$1);
         );
     }
     
-    public U m(final T t) {
-        throw new .ceylon.language.Exception(null, null);
+    public final T m$t() {
+        return null;
     }
     
-    public final <V, W>V m2$v() {
-        return null;
+    public <V, W>W m2(final V v) {
+        throw new .ceylon.language.Exception(null, null);
     }
     
     public final <V, W>W m2() {
         return (
             let
             {
-                V $ceylontmp$v$7 = m2$v();
+                V $ceylontmp$v$5 = m2$v();
             }
-            returning m2($ceylontmp$v$7);
+            returning m2($ceylontmp$v$5);
         );
     }
     
-    public <V, W>W m2(final V v) {
-        throw new .ceylon.language.Exception(null, null);
+    public final <V, W>V m2$v() {
+        return null;
     }
     
     TypeParamRename$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<T, U> $this) {

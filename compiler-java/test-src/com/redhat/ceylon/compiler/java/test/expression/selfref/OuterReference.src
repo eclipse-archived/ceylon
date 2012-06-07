@@ -71,8 +71,9 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
     final class InnerIface$impl {
         private final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference$InnerIface $this;
         
-        private final boolean m$b() {
-            return OuterReference.this.superTest();
+        private boolean m(final boolean b) {
+            OuterReference.this.superTest();
+            return OuterReference.this.test();
         }
         
         private final boolean m() {
@@ -85,9 +86,8 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
             );
         }
         
-        private boolean m(final boolean b) {
-            OuterReference.this.superTest();
-            return OuterReference.this.test();
+        private final boolean m$b() {
+            return OuterReference.this.superTest();
         }
         
         InnerIface$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference$InnerIface $this) {
@@ -127,8 +127,9 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
         final class LocalIface$impl {
             private final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference$m$1$LocalIface $this;
             
-            private final boolean m$b() {
-                return OuterReference.this.superTest();
+            private void m(final boolean b) {
+                OuterReference.this.superTest();
+                OuterReference.this.test();
             }
             
             private final void m() {
@@ -142,9 +143,8 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
                 );
             }
             
-            private void m(final boolean b) {
-                OuterReference.this.superTest();
-                OuterReference.this.test();
+            private final boolean m$b() {
+                return OuterReference.this.superTest();
             }
             
             LocalIface$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference$m$1$LocalIface $this) {

@@ -235,8 +235,8 @@ final class MethodWithDefaultParams2$impl {
         (
             let
             {
-                long $ceylontmp$n$24 = f1$n();
-                $this.f1($ceylontmp$n$24);
+                long $ceylontmp$n$22 = f1$n();
+                $this.f1($ceylontmp$n$22);
             }
             returning null;
         );
@@ -250,8 +250,8 @@ final class MethodWithDefaultParams2$impl {
         (
             let
             {
-                .java.lang.String $ceylontmp$s$28 = f2$s(n);
-                $this.f2(n, $ceylontmp$s$28);
+                .java.lang.String $ceylontmp$s$26 = f2$s(n);
+                $this.f2(n, $ceylontmp$s$26);
             }
             returning null;
         );
@@ -261,24 +261,24 @@ final class MethodWithDefaultParams2$impl {
         return "test";
     }
     
-    public final void f3() {
+    public final void f3(final long n) {
         (
             let
             {
-                long $ceylontmp$n$33 = f3$n();
-                long $ceylontmp$m$34 = f3$m($ceylontmp$n$33);
-                $this.f3($ceylontmp$n$33, $ceylontmp$m$34);
+                long $ceylontmp$m$33 = f3$m(n);
+                $this.f3(n, $ceylontmp$m$33);
             }
             returning null;
         );
     }
     
-    public final void f3(final long n) {
+    public final void f3() {
         (
             let
             {
-                long $ceylontmp$m$38 = f3$m(n);
-                $this.f3(n, $ceylontmp$m$38);
+                long $ceylontmp$n$30 = f3$n();
+                long $ceylontmp$m$31 = f3$m($ceylontmp$n$30);
+                $this.f3($ceylontmp$n$30, $ceylontmp$m$31);
             }
             returning null;
         );
@@ -292,24 +292,24 @@ final class MethodWithDefaultParams2$impl {
         return n;
     }
     
-    public final void f4() {
+    public final void f4(final long n) {
         (
             let
             {
-                long $ceylontmp$n$43 = f4$n();
-                long $ceylontmp$m$44 = f4$m($ceylontmp$n$43);
-                $this.f4($ceylontmp$n$43, $ceylontmp$m$44);
+                long $ceylontmp$m$43 = f4$m(n);
+                $this.f4(n, $ceylontmp$m$43);
             }
             returning null;
         );
     }
     
-    public final void f4(final long n) {
+    public final void f4() {
         (
             let
             {
-                long $ceylontmp$m$48 = f4$m(n);
-                $this.f4(n, $ceylontmp$m$48);
+                long $ceylontmp$n$40 = f4$n();
+                long $ceylontmp$m$41 = f4$m($ceylontmp$n$40);
+                $this.f4($ceylontmp$n$40, $ceylontmp$m$41);
             }
             returning null;
         );
@@ -327,8 +327,8 @@ final class MethodWithDefaultParams2$impl {
         (
             let
             {
-                long $ceylontmp$n$52 = f5$n();
-                $this.f5($ceylontmp$n$52);
+                long $ceylontmp$n$50 = f5$n();
+                $this.f5($ceylontmp$n$50);
             }
             returning null;
         );
@@ -338,24 +338,24 @@ final class MethodWithDefaultParams2$impl {
         return $this.getProp();
     }
     
-    public final void f6() {
+    public final void f6(final long n) {
         (
             let
             {
-                long $ceylontmp$n$57 = f6$n();
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$58 = f6$seq($ceylontmp$n$57);
-                $this.f6($ceylontmp$n$57, $ceylontmp$seq$58);
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$57 = f6$seq(n);
+                $this.f6(n, $ceylontmp$seq$57);
             }
             returning null;
         );
     }
     
-    public final void f6(final long n) {
+    public final void f6() {
         (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$62 = f6$seq(n);
-                $this.f6(n, $ceylontmp$seq$62);
+                long $ceylontmp$n$54 = f6$n();
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$55 = f6$seq($ceylontmp$n$54);
+                $this.f6($ceylontmp$n$54, $ceylontmp$seq$55);
             }
             returning null;
         );

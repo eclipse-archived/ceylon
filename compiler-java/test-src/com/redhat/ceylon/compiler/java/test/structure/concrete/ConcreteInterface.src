@@ -15,24 +15,24 @@ interface I1 {
 final class I1$impl {
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I1 $this;
     
-    public final .java.lang.String m1() {
-        return (
-            let
-            {
-                long $ceylontmp$i$4 = m1$i();
-                boolean $ceylontmp$b$5 = m1$b($ceylontmp$i$4);
-            }
-            returning $this.m1($ceylontmp$i$4, $ceylontmp$b$5);
-        );
-    }
-    
     public final .java.lang.String m1(final long i) {
         return (
             let
             {
-                boolean $ceylontmp$b$9 = m1$b(i);
+                boolean $ceylontmp$b$4 = m1$b(i);
             }
-            returning $this.m1(i, $ceylontmp$b$9);
+            returning $this.m1(i, $ceylontmp$b$4);
+        );
+    }
+    
+    public final .java.lang.String m1() {
+        return (
+            let
+            {
+                long $ceylontmp$i$1 = m1$i();
+                boolean $ceylontmp$b$2 = m1$b($ceylontmp$i$1);
+            }
+            returning $this.m1($ceylontmp$i$1, $ceylontmp$b$2);
         );
     }
     
@@ -63,24 +63,24 @@ interface I2 {
 final class I2$impl {
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 $this;
     
-    public final .java.lang.String m2() {
-        return (
-            let
-            {
-                long $ceylontmp$i$14 = m2$i();
-                boolean $ceylontmp$b$15 = m2$b($ceylontmp$i$14);
-            }
-            returning $this.m2($ceylontmp$i$14, $ceylontmp$b$15);
-        );
-    }
-    
     public final .java.lang.String m2(final long i) {
         return (
             let
             {
-                boolean $ceylontmp$b$19 = m2$b(i);
+                boolean $ceylontmp$b$14 = m2$b(i);
             }
-            returning $this.m2(i, $ceylontmp$b$19);
+            returning $this.m2(i, $ceylontmp$b$14);
+        );
+    }
+    
+    public final .java.lang.String m2() {
+        return (
+            let
+            {
+                long $ceylontmp$i$11 = m2$i();
+                boolean $ceylontmp$b$12 = m2$b($ceylontmp$i$11);
+            }
+            returning $this.m2($ceylontmp$i$11, $ceylontmp$b$12);
         );
     }
     

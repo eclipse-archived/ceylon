@@ -35,12 +35,18 @@ interface Concrete<A> {
 final class Concrete$impl<A> {
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<A> $this;
     
-    private final A mNonShared$a() {
-        return null;
+    private void mNonShared(final A a, final .ceylon.language.Iterable<? extends A> aseq) {
     }
     
-    private final .ceylon.language.Iterable<? extends A> mNonShared$aseq(final A a) {
-        return new .ceylon.language.ArraySequence<A>(a);
+    private final void mNonShared(final A a) {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$4 = mNonShared$aseq(a);
+                mNonShared(a, $ceylontmp$aseq$4);
+            }
+            returning null;
+        );
     }
     
     private final void mNonShared() {
@@ -55,18 +61,39 @@ final class Concrete$impl<A> {
         );
     }
     
-    private final void mNonShared(final A a) {
+    private final A mNonShared$a() {
+        return null;
+    }
+    
+    private final .ceylon.language.Iterable<? extends A> mNonShared$aseq(final A a) {
+        return new .ceylon.language.ArraySequence<A>(a);
+    }
+    
+    public void mShared(final A a, final .ceylon.language.Iterable<? extends A> aseq) {
+        mNonShared();
+    }
+    
+    public final void mShared(final A a) {
         (
             let
             {
-                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$4 = mNonShared$aseq(a);
-                mNonShared(a, $ceylontmp$aseq$4);
+                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$9 = mShared$aseq(a);
+                mShared(a, $ceylontmp$aseq$9);
             }
             returning null;
         );
     }
     
-    private void mNonShared(final A a, final .ceylon.language.Iterable<? extends A> aseq) {
+    public final void mShared() {
+        (
+            let
+            {
+                A $ceylontmp$a$6 = mShared$a();
+                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$7 = mShared$aseq($ceylontmp$a$6);
+                mShared($ceylontmp$a$6, $ceylontmp$aseq$7);
+            }
+            returning null;
+        );
     }
     
     public final A mShared$a() {
@@ -77,51 +104,24 @@ final class Concrete$impl<A> {
         return new .ceylon.language.ArraySequence<A>(a);
     }
     
-    public final void mShared() {
+    public final void mFormal(final A a) {
         (
             let
             {
-                A $ceylontmp$a$11 = mShared$a();
-                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$12 = mShared$aseq($ceylontmp$a$11);
-                mShared($ceylontmp$a$11, $ceylontmp$aseq$12);
+                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$19 = mFormal$aseq(a);
+                $this.mFormal(a, $ceylontmp$aseq$19);
             }
             returning null;
         );
-    }
-    
-    public final void mShared(final A a) {
-        (
-            let
-            {
-                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$14 = mShared$aseq(a);
-                mShared(a, $ceylontmp$aseq$14);
-            }
-            returning null;
-        );
-    }
-    
-    public void mShared(final A a, final .ceylon.language.Iterable<? extends A> aseq) {
-        mNonShared();
     }
     
     public final void mFormal() {
         (
             let
             {
-                A $ceylontmp$a$19 = mFormal$a();
-                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$20 = mFormal$aseq($ceylontmp$a$19);
-                $this.mFormal($ceylontmp$a$19, $ceylontmp$aseq$20);
-            }
-            returning null;
-        );
-    }
-    
-    public final void mFormal(final A a) {
-        (
-            let
-            {
-                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$24 = mFormal$aseq(a);
-                $this.mFormal(a, $ceylontmp$aseq$24);
+                A $ceylontmp$a$16 = mFormal$a();
+                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$17 = mFormal$aseq($ceylontmp$a$16);
+                $this.mFormal($ceylontmp$a$16, $ceylontmp$aseq$17);
             }
             returning null;
         );
@@ -135,38 +135,38 @@ final class Concrete$impl<A> {
         return new .ceylon.language.ArraySequence<A>(a);
     }
     
-    public final A mDefault$a() {
-        return null;
-    }
-    
-    public final .ceylon.language.Iterable<? extends A> mDefault$aseq(final A a) {
-        return new .ceylon.language.ArraySequence<A>(a);
-    }
-    
-    public final void mDefault() {
-        (
-            let
-            {
-                A $ceylontmp$a$31 = mDefault$a();
-                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$32 = mDefault$aseq($ceylontmp$a$31);
-                mDefault($ceylontmp$a$31, $ceylontmp$aseq$32);
-            }
-            returning null;
-        );
+    public void mDefault(final A a, final .ceylon.language.Iterable<? extends A> aseq) {
     }
     
     public final void mDefault(final A a) {
         (
             let
             {
-                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$34 = mDefault$aseq(a);
-                mDefault(a, $ceylontmp$aseq$34);
+                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$29 = mDefault$aseq(a);
+                mDefault(a, $ceylontmp$aseq$29);
             }
             returning null;
         );
     }
     
-    public void mDefault(final A a, final .ceylon.language.Iterable<? extends A> aseq) {
+    public final void mDefault() {
+        (
+            let
+            {
+                A $ceylontmp$a$26 = mDefault$a();
+                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$27 = mDefault$aseq($ceylontmp$a$26);
+                mDefault($ceylontmp$a$26, $ceylontmp$aseq$27);
+            }
+            returning null;
+        );
+    }
+    
+    public final A mDefault$a() {
+        return null;
+    }
+    
+    public final .ceylon.language.Iterable<? extends A> mDefault$aseq(final A a) {
+        return new .ceylon.language.ArraySequence<A>(a);
     }
     
     Concrete$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<A> $this) {

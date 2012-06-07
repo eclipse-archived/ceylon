@@ -296,21 +296,6 @@ class Local {
     final class I$impl {
         private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I $this;
         
-        private final long local3$i() {
-            return 0L;
-        }
-        
-        private final void local3() {
-            (
-                let
-                {
-                    long $ceylontmp$i$17 = local3$i();
-                    local3($ceylontmp$i$17);
-                }
-                returning null;
-            );
-        }
-        
         private void local3(final long i) {
             
             final class IL$impl {
@@ -355,9 +340,9 @@ class Local {
                         (
                             let
                             {
-                                IL.ILC$impl $ceylontmp$impl$20 = new IL.ILC$impl();
-                                long $ceylontmp$k$21 = $ceylontmp$impl$20.$init$k();
-                                this($ceylontmp$k$21);
+                                IL.ILC$impl $ceylontmp$impl$18 = new IL.ILC$impl();
+                                long $ceylontmp$k$19 = $ceylontmp$impl$18.$init$k();
+                                this($ceylontmp$k$19);
                             }
                             returning null;
                         );
@@ -373,9 +358,9 @@ class Local {
                     (
                         let
                         {
-                            IL$impl $ceylontmp$impl$18 = new IL$impl();
-                            long $ceylontmp$j$19 = $ceylontmp$impl$18.$init$j();
-                            this($ceylontmp$j$19);
+                            IL$impl $ceylontmp$impl$16 = new IL$impl();
+                            long $ceylontmp$j$17 = $ceylontmp$impl$16.$init$j();
+                            this($ceylontmp$j$17);
                         }
                         returning null;
                     );
@@ -385,6 +370,21 @@ class Local {
                     this.j = j;
                 }
             }
+        }
+        
+        private final void local3() {
+            (
+                let
+                {
+                    long $ceylontmp$i$21 = local3$i();
+                    local3($ceylontmp$i$21);
+                }
+                returning null;
+            );
+        }
+        
+        private final long local3$i() {
+            return 0L;
         }
         
         I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I $this) {

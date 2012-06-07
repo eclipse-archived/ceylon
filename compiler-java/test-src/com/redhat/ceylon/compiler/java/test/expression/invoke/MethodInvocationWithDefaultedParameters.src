@@ -372,8 +372,8 @@ final class Barface$impl {
         (
             let
             {
-                long $ceylontmp$n$32 = f1$n();
-                $this.f1($ceylontmp$n$32);
+                long $ceylontmp$n$30 = f1$n();
+                $this.f1($ceylontmp$n$30);
             }
             returning null;
         );
@@ -387,8 +387,8 @@ final class Barface$impl {
         (
             let
             {
-                .java.lang.String $ceylontmp$s$36 = f2$s(n);
-                $this.f2(n, $ceylontmp$s$36);
+                .java.lang.String $ceylontmp$s$34 = f2$s(n);
+                $this.f2(n, $ceylontmp$s$34);
             }
             returning null;
         );
@@ -398,24 +398,24 @@ final class Barface$impl {
         return "test";
     }
     
-    public final void f3() {
+    public final void f3(final long n) {
         (
             let
             {
-                long $ceylontmp$n$41 = f3$n();
-                long $ceylontmp$m$42 = f3$m($ceylontmp$n$41);
-                $this.f3($ceylontmp$n$41, $ceylontmp$m$42);
+                long $ceylontmp$m$41 = f3$m(n);
+                $this.f3(n, $ceylontmp$m$41);
             }
             returning null;
         );
     }
     
-    public final void f3(final long n) {
+    public final void f3() {
         (
             let
             {
-                long $ceylontmp$m$46 = f3$m(n);
-                $this.f3(n, $ceylontmp$m$46);
+                long $ceylontmp$n$38 = f3$n();
+                long $ceylontmp$m$39 = f3$m($ceylontmp$n$38);
+                $this.f3($ceylontmp$n$38, $ceylontmp$m$39);
             }
             returning null;
         );
@@ -429,24 +429,24 @@ final class Barface$impl {
         return n;
     }
     
-    public final void f4() {
+    public final void f4(final long n) {
         (
             let
             {
-                long $ceylontmp$n$51 = f4$n();
-                long $ceylontmp$m$52 = f4$m($ceylontmp$n$51);
-                $this.f4($ceylontmp$n$51, $ceylontmp$m$52);
+                long $ceylontmp$m$51 = f4$m(n);
+                $this.f4(n, $ceylontmp$m$51);
             }
             returning null;
         );
     }
     
-    public final void f4(final long n) {
+    public final void f4() {
         (
             let
             {
-                long $ceylontmp$m$56 = f4$m(n);
-                $this.f4(n, $ceylontmp$m$56);
+                long $ceylontmp$n$48 = f4$n();
+                long $ceylontmp$m$49 = f4$m($ceylontmp$n$48);
+                $this.f4($ceylontmp$n$48, $ceylontmp$m$49);
             }
             returning null;
         );
@@ -464,8 +464,8 @@ final class Barface$impl {
         (
             let
             {
-                long $ceylontmp$n$60 = f5$n();
-                $this.f5($ceylontmp$n$60);
+                long $ceylontmp$n$58 = f5$n();
+                $this.f5($ceylontmp$n$58);
             }
             returning null;
         );
@@ -479,8 +479,8 @@ final class Barface$impl {
         (
             let
             {
-                long $ceylontmp$n$64 = f7$n();
-                $this.f7($ceylontmp$n$64);
+                long $ceylontmp$n$62 = f7$n();
+                $this.f7($ceylontmp$n$62);
             }
             returning null;
         );
@@ -494,8 +494,8 @@ final class Barface$impl {
         (
             let
             {
-                long $ceylontmp$n$68 = f9$n();
-                $this.f9($ceylontmp$n$68);
+                long $ceylontmp$n$66 = f9$n();
+                $this.f9($ceylontmp$n$66);
             }
             returning null;
         );
@@ -505,24 +505,24 @@ final class Barface$impl {
         return .ceylon.language.Integer.instance($this.getProp()).getSuccessor().longValue();
     }
     
-    public final void fa() {
+    public final void fa(final long n) {
         (
             let
             {
-                long $ceylontmp$n$73 = fa$n();
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$74 = fa$seq($ceylontmp$n$73);
-                $this.fa($ceylontmp$n$73, $ceylontmp$seq$74);
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$73 = fa$seq(n);
+                $this.fa(n, $ceylontmp$seq$73);
             }
             returning null;
         );
     }
     
-    public final void fa(final long n) {
+    public final void fa() {
         (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$78 = fa$seq(n);
-                $this.fa(n, $ceylontmp$seq$78);
+                long $ceylontmp$n$70 = fa$n();
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$71 = fa$seq($ceylontmp$n$70);
+                $this.fa($ceylontmp$n$70, $ceylontmp$seq$71);
             }
             returning null;
         );
