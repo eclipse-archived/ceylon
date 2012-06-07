@@ -1688,7 +1688,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     //in case they depend on the current element of the previous iterator
                     fields.add(make().VarDef(make().Modifiers(2), names().fromString(iterVar), iterTypeExpr, null));
                     JCBlock body = make().Block(0l, List.<JCStatement>of(
-                            make().If(make().Binary(JCTree.NE, makeUnquotedIdent(iterVar), makeNull()),
+                            make().If(make().Binary(JCTree.EQ, makeUnquotedIdent(iterVar), makeNull()),
                                     make().Exec(make().Apply(null, makeSelect("this", prevItemVar), List.<JCExpression>nil())),
                                     null),
                             make().Exec(make().Assign(makeUnquotedIdent(iterVar), make().Apply(null,
@@ -1717,12 +1717,14 @@ public class ExpressionTransformer extends AbstractTransformer {
                 } else {
                     return makeErroneous(fcl, "No support yet for iterators of type " + fcl.getForIterator().getClass().getName());
                 }
+
                 //Now the context for this iterator
                 ListBuffer<JCStatement> contextBody = new ListBuffer<JCStatement>();
                 if (idx>0) {
                     contextBody.add(make().If(make().Binary(JCTree.EQ, makeUnquotedIdent(iterVar), makeNull()),
                             make().Exec(make().Apply(null, makeSelect("this", iterVar), List.<JCExpression>nil())), null));
                 }
+
                 //First we assign the next item to an Object variable
                 String tmpItem = tempName("item");
                 contextBody.add(make().VarDef(make().Modifiers(0), names().fromString(tmpItem),
@@ -1819,6 +1821,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             idx++;
             if (itemVar != null) prevItemVar = itemVar;
         }
+
+        //Define the next() method for the Iterator
         fields.add(make().MethodDef(make().Modifiers(1), names().fromString("next"),
             makeJavaType(typeFact().getObjectDeclaration().getType()), List.<JCTree.JCTypeParameter>nil(),
             List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(), make().Block(0, List.<JCStatement>of(
@@ -1826,7 +1830,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                     make().Conditional(
                         make().Binary(JCTree.EQ, make().Apply(null, make().Select(makeUnquotedIdent("this"),
                             names().fromString(prevItemVar)), List.<JCExpression>nil()), makeBoolean(true)),
-                        transformExpression(excc.getExpression()), makeFinished()))
+                        transformExpression(excc.getExpression()),
+                        makeFinished()))
         )), null));
         ProducedType iteratorType = typeFact().getIteratorType(typeFact().getIteratedType(targetIterType));
         JCExpression iterator = make().NewClass(null, null,makeJavaType(iteratorType, CLASS_NEW|EXTENDS),
