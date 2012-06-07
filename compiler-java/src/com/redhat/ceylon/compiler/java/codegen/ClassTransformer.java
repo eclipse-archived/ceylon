@@ -554,18 +554,32 @@ public class ClassTransformer extends AbstractTransformer {
 		return null;
 	}
 
-	public List<JCTree> transform(AttributeSetterDefinition decl) {
-        JCBlock body = statementGen().transform(decl.getBlock());
+	public List<JCTree> transform(AttributeSetterDefinition decl, boolean forCompanion) {
+	    ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
         String name = decl.getIdentifier().getText();
-        return AttributeDefinitionBuilder
+        final AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
                 /* 
                  * We use the getter as TypedDeclaration here because this is the same type but has a refined
                  * declaration we can use to make sure we're not widening the attribute type.
                  */
             .setter(this, name, decl.getDeclarationModel().getGetter())
-            .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), false))
-            .setterBlock(body)
-            .build();
+            .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), false));
+        
+        // companion class members are never actual no matter what the Declaration says
+        if(forCompanion)
+            builder.notActual();
+        
+        if (Decl.withinClass(decl) || forCompanion) {
+            JCBlock body = statementGen().transform(decl.getBlock());
+            builder.setterBlock(body);
+        } else {
+            builder.isFormal(true);
+        }
+        if (!Strategy.onlyOnCompanion(decl.getDeclarationModel()) || forCompanion) {
+            lb.appendList(builder.build());
+        }
+        
+        return lb.toList();
     }
 
     public List<JCTree> transform(AttributeGetterDefinition decl, boolean forCompanion) {
