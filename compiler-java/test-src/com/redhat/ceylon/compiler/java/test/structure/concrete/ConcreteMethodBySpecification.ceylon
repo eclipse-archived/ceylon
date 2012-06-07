@@ -18,12 +18,17 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-Integer m_ConcreteMethodBySpecification() {
+Integer concreteMethodBySpecificationMethod() {
     return 1;
 }
 @nomodel
 interface ConcreteMethodBySpecification {
-    //shared formal String s();
-    shared Integer m1() = m_ConcreteMethodBySpecification;
-    //shared String m2() = s;
+    shared Integer m1() = concreteMethodBySpecificationMethod;
+    shared formal String mFormal(Integer i);
+    shared String m2(Integer i = 1) = mFormal;
+}
+@nomodel
+interface ConcreteMethodBySpecificationSub satisfies ConcreteMethodBySpecification {
+    
+    shared String m3(Integer i = 1) = mFormal;
 }

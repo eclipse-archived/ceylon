@@ -275,6 +275,11 @@ public class StructureTest2 extends CompilerTest {
     }
     
     @Test
+    public void testCncConcreteMethodBySpecification(){
+        compareWithJavaSource("concrete/ConcreteMethodBySpecification");
+    }
+    
+    @Test
     public void testCncSatisfaction(){
         compareWithJavaSource("concrete/Satisfaction");
     }
