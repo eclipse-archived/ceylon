@@ -129,7 +129,7 @@ public class ClassTransformer extends AbstractTransformer {
                     cbForDevaultValues.defs(makeParamDefaultValueMethod(false, def, paramList, param));
                     // Add overloaded constructors for defaulted parameter
                     MethodDefinitionBuilder overloadBuilder = classBuilder.addConstructor();
-                    makeOverloadsForDefaultedParameter(true,
+                    makeOverloadsForDefaultedParameter(true, false, false,
                             overloadBuilder,
                             model, paramList, param);
                 }
@@ -823,10 +823,13 @@ public class ClassTransformer extends AbstractTransformer {
             ClassDefinitionBuilder classBuilder, List<JCStatement> body) {
         final Method model = def.getDeclarationModel();
         
+        final String methodName = CodegenUtil.quoteMethodNameIfProperty(model, gen());
+        
+        transformForCompanion(def, classBuilder, model, methodName);
+        
         ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
         
         if (!Strategy.onlyOnCompanion(model)) {
-            final String methodName = CodegenUtil.quoteMethodNameIfProperty(model, gen());
             
             final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(), 
                     methodName);
@@ -835,8 +838,10 @@ public class ClassTransformer extends AbstractTransformer {
             
             copyTypeParameters(model, methodBuilder);
             
-            ParameterList parameterList = model.getParameterLists().get(0);
-            for (Parameter parameter : parameterList.getParameters()) {
+            final ParameterList parameterList = model.getParameterLists().get(0);
+            Tree.ParameterList paramList = def.getParameterLists().get(0);
+            for (Tree.Parameter param : paramList.getParameters()) {
+                Parameter parameter = param.getDeclarationModel();
                 methodBuilder.parameter(parameter);
                 if (parameter.isDefaulted()
                         || parameter.isSequenced()) {
@@ -850,19 +855,15 @@ public class ClassTransformer extends AbstractTransformer {
                             overloadBuilder.annotations(makeAtOverride());
                         }
                         lb.prepend(overloadedMethod);
-                    }
-                
-                    if (Decl.withinInterface(model)
-                            && def instanceof MethodDeclaration
-                                            && ((MethodDeclaration) def).getSpecifierExpression() == null) {
-                        // interface methods without concrete implementation (including 
-                        // overloaded versions) on the companion class by delegating to 
-                        // $this (for closure purposes)
-                        MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(),
-                                methodName);
-                        makeOverloadsForDefaultedParameter(true, true, true, 
-                                overloadBuilder, model, parameterList.getParameters(), parameter);
-                        classBuilder.getCompanionBuilder((Declaration)model.getContainer()).defs(overloadBuilder.build());
+                        
+                        JCMethodDecl defaultValueMethodImpl = makeParamDefaultValueMethod(false, model, paramList, param);
+                        if (Strategy.defaultParameterMethodOnSelf(model)) {
+                            lb.add(defaultValueMethodImpl);    
+                        } else {
+                            if (!Strategy.onlyOnCompanion(model)) {
+                                lb.add(makeParamDefaultValueMethod(true, model, paramList, param));
+                            }
+                        }
                     }
                 }    
             }
@@ -885,29 +886,41 @@ public class ClassTransformer extends AbstractTransformer {
             }
             
             lb.prepend(methodBuilder.build());
-            
         }
         
+
+        
+        return lb.toList();
+    }
+
+    private void transformForCompanion(Tree.AnyMethod def,
+            ClassDefinitionBuilder classBuilder, final Method model,
+            final String methodName) {
         final Tree.ParameterList paramList = def.getParameterLists().get(0);
         for (Tree.Parameter param : paramList.getParameters()) {
             Parameter parameter = param.getDeclarationModel();
-            if (model.getRefinedDeclaration() == model 
-                    && (parameter.isDefaulted()
-                        || parameter.isSequenced())) {
-                
-                JCMethodDecl defaultValueMethodImpl = makeParamDefaultValueMethod(false, model, paramList, param);
-                if (Strategy.defaultParameterMethodOnSelf(model)) {
-                    lb.add(defaultValueMethodImpl);    
-                } else {
-                    if (!Strategy.onlyOnCompanion(model)) {
-                        lb.add(makeParamDefaultValueMethod(true, model, paramList, param));
+            if (parameter.isDefaulted()
+                        || parameter.isSequenced()) {
+                if (model.getRefinedDeclaration() == model) {  
+                    JCMethodDecl defaultValueMethodImpl = makeParamDefaultValueMethod(false, model, paramList, param);
+                    if (!Strategy.defaultParameterMethodOnSelf(model)) {
+                        classBuilder.getCompanionBuilder((Declaration)model.getContainer()).defs(defaultValueMethodImpl);
                     }
-                    classBuilder.getCompanionBuilder((Declaration)model.getContainer()).defs(defaultValueMethodImpl);
-                }    
+                    if (Decl.withinInterface(model)
+                            && def instanceof MethodDeclaration
+                                            && ((MethodDeclaration) def).getSpecifierExpression() == null) {
+                        // interface methods without concrete implementation (including 
+                        // overloaded versions) on the companion class by delegating to 
+                        // $this (for closure purposes)
+                        MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(),
+                                methodName);
+                        makeOverloadsForDefaultedParameter(true, true, true, 
+                                overloadBuilder, model, paramList, param);
+                        classBuilder.getCompanionBuilder((Declaration)model.getContainer()).defs(overloadBuilder.build());
+                    }
+                }
             }
         }
-        
-        return lb.toList();
     }
 
     ListBuffer<JCTree> transformMethod(Method model,
@@ -1124,6 +1137,8 @@ public class ClassTransformer extends AbstractTransformer {
      */
     private MethodDefinitionBuilder makeOverloadsForDefaultedParameter(
             boolean generateBody,
+            boolean forImplementor, 
+            boolean forDelegator,
             MethodDefinitionBuilder overloadBuilder,
             Declaration model,
             Tree.ParameterList paramList,
@@ -1133,7 +1148,21 @@ public class ClassTransformer extends AbstractTransformer {
         for (Tree.Parameter param : paramList.getParameters()) {
             parameters.add(param.getDeclarationModel());
         }
-        return makeOverloadsForDefaultedParameter(generateBody, false, false,
+        return makeOverloadsForDefaultedParameter(generateBody, forImplementor, forDelegator,
+                overloadBuilder, model,
+                parameters, currentParam);
+    }
+    
+    private MethodDefinitionBuilder makeOverloadsForDefaultedParameter(
+            boolean generateBody,
+            boolean forImplementor, 
+            boolean forDelegator,
+            MethodDefinitionBuilder overloadBuilder,
+            Declaration model,
+            java.util.List<Parameter> parameters,
+            Tree.Parameter currentParam) {
+        at(currentParam);
+        return makeOverloadsForDefaultedParameter(generateBody, forImplementor, forDelegator,
                 overloadBuilder, model,
                 parameters, currentParam.getDeclarationModel());
     }
