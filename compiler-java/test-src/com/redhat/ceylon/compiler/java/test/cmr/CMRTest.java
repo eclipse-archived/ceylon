@@ -41,6 +41,7 @@ import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import javax.tools.Diagnostic;
 import javax.tools.DiagnosticListener;
 import javax.tools.FileObject;
 import javax.tools.JavaCompiler;
@@ -443,7 +444,7 @@ public class CMRTest extends CompilerTest {
                 "module/multiversion/b/b/module.ceylon", "module/multiversion/b/b/B.ceylon").call();
         Assert.assertEquals(Boolean.FALSE, result);
         
-        compareErrors(collector.actualErrors, new CompilerError(-1, "Trying to import or compile two different versions of the same module: a (1 and 2)"));
+        compareErrors(collector.get(Diagnostic.Kind.ERROR), new CompilerError(-1, "Trying to import or compile two different versions of the same module: a (1 and 2)"));
     }
 
     private int countEntries(JarFile jar) {
