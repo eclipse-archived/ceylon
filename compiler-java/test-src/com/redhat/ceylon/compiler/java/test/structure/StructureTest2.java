@@ -250,6 +250,11 @@ public class StructureTest2 extends CompilerTest {
     }
     
     @Test
+    public void testCncDefaultSetter(){
+        compareWithJavaSource("concrete/DefaultSetter");
+    }
+    
+    @Test
     public void testCncListImplementor(){
         compareWithJavaSource("concrete/ListImplementor");
     }

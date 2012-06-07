@@ -1,0 +1,62 @@
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
+
+interface DefaultSetter$I {
+    
+    public long getA();
+    
+    public void setA(long a);
+}
+class DefaultSetter {
+    private long a;
+    
+    private final long getA() {
+        return a;
+    }
+    
+    private final void setA(long a) {
+        this.a = a;
+    }
+    
+    final class I$impl {
+        private final .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$I $this;
+        
+        public final long getA() {
+            return DefaultSetter.this.getA();
+        }
+        
+        public final long setA(long a) {
+            DefaultSetter.this.setA(a);
+        }
+        
+        I$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$I $this) {
+            this.$this = $this;
+        }
+    }
+    
+    class C implements .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$I {
+        private final .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl $I$impl;
+        
+        @.java.lang.Override
+        public long getA() {
+            return $I$impl.getA();
+        }
+        
+        @.java.lang.Override
+        public void setA(long a) {
+            $I$impl.setA(a);
+        }
+        
+        C() {
+            this.$I$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl(this);
+        }
+    }
+    
+    DefaultSetter() {
+        this.a = 0L;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter();
+    }
+}
